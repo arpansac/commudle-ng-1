@@ -11,7 +11,9 @@
     "dev:ssr": "ng run commudle-admin:serve-ssr",
     "serve:ssr": "node dist/commudle-admin-server/main.js",
     "build:ssr": "ng build --prod && ng run commudle-admin:server:production",
-    "prerender": "ng run commudle-admin:prerender"
+    "prerender": "ng run commudle-admin:prerender",
+    "serve:sls": "serverless offline start",
+    "build:sls": "ng build --prod && ng run commudle-admin:serverless:production"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +35,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@nebular/eva-icons": "5.0.0",
     "@nebular/theme": "^5.0.0",
+    "@ng-toolkit/serverless": "^8.1.0",
     "@nguniversal/express-engine": "^9.1.0",
     "@swimlane/ngx-datatable": "^16.0.3",
     "@tinymce/tinymce-angular": "^3.5.0",
@@ -40,6 +43,7 @@
     "@types/chart.js": "^2.9.22",
     "@types/lodash": "^4.14.156",
     "actioncable": "^5.2.4-2",
+    "aws-serverless-express": "^3.3.8",
     "chart.js": "^2.9.3",
     "eva-icons": "^1.1.2",
     "express": "^4.15.2",
@@ -52,6 +56,7 @@
     "ngx-material-timepicker": "^5.5.1",
     "rxjs": "~6.5.5",
     "rxjs-compat": "^6.5.5",
+    "serverless-offline": "^6.5.0",
     "tslib": "^1.13.0",
     "uuid": "^8.2.0",
     "ws": "^7.3.1",
@@ -79,6 +84,8 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "ng-packagr": "^10.0.1",
     "protractor": "~5.4.0",
+    "serverless": "^1.78.1",
+    "serverless-apigw-binary": "^0.4.4",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.9.6"

@@ -124,6 +124,27 @@
             }
           }
         },
+        "serverless": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/commudle-admin-serverless",
+            "main": "projects/commudle-admin/serverless.ts",
+            "tsConfig": "projects/commudle-admin/tsconfig.serverless.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "projects/commudle-admin/src/environments/environment.ts",
+                  "with": "projects/commudle-admin/src/environments/environment.prod.ts"
+                }
+              ],
+              "sourceMap": false,
+              "optimization": true
+            }
+          }
+        },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {

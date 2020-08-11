@@ -49,3 +49,7 @@ Thumbs.db
 # Firebase
 /.firebase
 /.firebasesrc
+
+
+# Serverless
+.serverless
