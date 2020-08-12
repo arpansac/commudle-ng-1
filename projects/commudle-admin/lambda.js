@@ -1,5 +1,5 @@
-const awsServerlessExpress = require("aws-serverless-express");
 const server = require("../../dist/commudle-admin-serverless/main");
+const awsServerlessExpress = require("aws-serverless-express");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const binaryMimeTypes = [
   "application/javascript",
@@ -22,9 +22,16 @@ const binaryMimeTypes = [
   "font/ttf",
   "font/otf",
 ];
-server.app.use(awsServerlessExpressMiddleware.eventContext());
+
+console.log('***************');
+console.log('***************');
+console.log('***************');
+console.log('***************');
+console.log('***************');
+
+server.app().use(awsServerlessExpressMiddleware.eventContext());
 const serverProxy = awsServerlessExpress.createServer(
-  server.app,
+  server.app(),
   null,
   binaryMimeTypes
 );

@@ -1,15 +1,19 @@
 service: commudle-admin
+
 plugins:
   - serverless-apigw-binary
   - serverless-offline
+
 provider:
   name: aws
   runtime: nodejs12.x
   memorySize: 192
   timeout: 10
+  region: api-south-1
+
 package:
   exclude:
-    - ./**
+    - ../**
   include:
     - "node_modules/aws-serverless-express/**"
     - "node_modules/binary-case/**"
@@ -19,13 +23,16 @@ package:
     - "node_modules/mime-db/**"
     - "dist/**"
     - "projects/commudle-admin/lambda.js"
+
+
 custom:
   apigwBinary:
     types:
       - "*/*"
+
 functions:
-  api:
+  app:
     handler: lambda.handler
     events:
-      - http: GET {proxy+}
-      - http: GET /
+      - http: ANY /
+      - http: ANY {proxy+}

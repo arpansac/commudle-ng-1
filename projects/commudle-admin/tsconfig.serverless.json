@@ -2,10 +2,8 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app-serverless",
-    "target": "es2016",
-    "types": [
-      "node"
-    ]
+    "module": "commonjs",
+    // "types": ["node"]
   },
   "files": [
     "src/main.server.ts",
