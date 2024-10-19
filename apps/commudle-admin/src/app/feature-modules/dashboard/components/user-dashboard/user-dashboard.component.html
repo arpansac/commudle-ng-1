@@ -82,7 +82,7 @@
                     appInfiniteScroll
                     class="activity-feed"
                   >
-                    <div *ngFor="let feed of activityFeed">
+                    <div *ngFor="let feed of activityFeed" appActivityFeed [feed]="feed">
                       <ng-container [ngSwitch]="feed.actionable_type">
                         <ng-container *ngSwitchCase="EDbModels.VOTE">
                           <nb-card class="activity-cards">

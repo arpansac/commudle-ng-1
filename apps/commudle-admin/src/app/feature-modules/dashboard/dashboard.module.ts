@@ -17,6 +17,7 @@ import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modul
 import { LabsModule } from 'apps/commudle-admin/src/app/feature-modules/labs/labs.module';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { EventContentCardComponent } from '../../app-shared-components/event-content-card/event-content-card.component';
+import { ActivityFeedModule } from 'apps/shared-modules/activity-feed/activity-feed.module';
 
 @NgModule({
   declarations: [UserDashboardComponent, DashboardUpdatesComponent],
@@ -28,6 +29,8 @@ import { EventContentCardComponent } from '../../app-shared-components/event-con
     CommunityBuildsModule,
     LabsModule,
     InfiniteScrollModule,
+    ActivityFeedModule,
+
     //Nebular
     NbCardModule,
     NbButtonModule,
