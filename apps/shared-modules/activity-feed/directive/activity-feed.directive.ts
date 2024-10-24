@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { UserEngagementRecordsService } from 'apps/shared-services/user-engagement-records.service';
 import { IActivityFeed } from 'libs/shared/models/src/lib/activity-feed.model';
 
 @Directive({
@@ -10,7 +11,7 @@ export class ActivityFeedDirective {
   timeout: any;
   private observer: IntersectionObserver;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef, private userEngagementRecordsService: UserEngagementRecordsService) {}
 
   ngAfterViewInit() {
     // TODO: change to use dedicated library
@@ -39,5 +40,11 @@ export class ActivityFeedDirective {
       //   clearTimeout(this.timeout);
       this.observer.disconnect();
     }
+  }
+
+  getUserEngagement() {
+    // this.userEngagementRecordsService.userEngagementRecords().subscribe((data) => {
+    //   console.log(data);
+    // });
   }
 }
