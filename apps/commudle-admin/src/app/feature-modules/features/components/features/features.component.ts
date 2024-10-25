@@ -8,6 +8,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faArrowRightArrowLeft, faArrowUpRightDots, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { IFaq } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-features',
@@ -30,22 +31,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   faChartSimple = faChartSimple;
   faArrowRightArrowLeft = faArrowRightArrowLeft;
   isDarkMode = false;
-
-  questions = [
-    'Is there an option to run multiple communities?',
-    'What are the different pricing plans?',
-    'How do new members find my community on Commudle automatically?',
-    'I want to migrate my existing community to Commudle, how to do it?',
-    'Yes, your can sell tickets for your events. We have built integration with Razorpay for our Indian users. Paid ticketing for international users is underway.',
-  ];
-
-  answers = [
-    'Yes, you can run multiple communities on Commudle. You can also build one or more umbrella organizations to group your communities together',
-    'Please visit https://www.commudle.com/pricing to know more.',
-    'When you announce any activity, example an event, a new channel or a newsletter, the users on Commudle are able to view it in the latest updates on the platform. They also get to know about it from the activity of people in their network on Commudle.',
-    'Our team is here to guide you with a custom migration plan for your community. Please contact your account manager or write to use at support@commudle.com.',
-    'Yes, we have built integrations with Stripe and Razorpay for you to sell tickets.',
-  ];
+  faqs: IFaq[];
 
   constructor(
     private cmsService: CmsService,
@@ -65,6 +51,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     if (this.setMetadata) {
       this.setMeta();
     }
+    this.setFaqs();
   }
 
   ngOnDestroy() {
@@ -112,5 +99,34 @@ export class FeaturesComponent implements OnInit, OnDestroy {
       "One stop solution for all your developer relations team's needs. Build one community or a global network of communities with multiple engagements.",
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  setFaqs() {
+    this.faqs = [
+      {
+        question: 'Is there an option to run multiple communities?',
+        answer:
+          'Yes, you can run multiple communities on Commudle. You can also build one or more umbrella organizations to group your communities together',
+      },
+      {
+        question: 'What are the different pricing plans?',
+        answer: 'Please visit https://www.commudle.com/pricing to know more.',
+      },
+      {
+        question: 'How do new members find my community on Commudle automatically?',
+        answer:
+          'When you announce any activity, example an event, a new channel or a newsletter, the users on Commudle are able to view it in the latest updates on the platform. They also get to know about it from the activity of people in their network on Commudle.',
+      },
+      {
+        question: 'I want to migrate my existing community to Commudle, how to do it?',
+        answer:
+          'Our team is here to guide you with a custom migration plan for your community. Please contact your account manager or write to use at support@commudle.com.',
+      },
+      {
+        question:
+          'Yes, your can sell tickets for your events. We have built integration with Razorpay for our Indian users. Paid ticketing for international users is underway.',
+        answer: 'Yes, we have built integrations with Stripe and Razorpay for you to sell tickets.',
+      },
+    ];
   }
 }
