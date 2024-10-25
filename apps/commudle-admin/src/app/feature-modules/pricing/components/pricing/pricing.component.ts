@@ -12,6 +12,7 @@ import { ECmsType } from 'apps/shared-models/enums/cms.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { countries_details } from '@commudle/shared-services';
 import * as momentTimezone from 'moment-timezone';
+import { IFaq } from '@commudle/shared-models';
 @Component({
   selector: 'app-pricing',
   templateUrl: './pricing.component.html',
@@ -35,6 +36,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   selectedCurrency = '';
   countryForm: FormGroup;
   countries = countries_details;
+  faqs: IFaq[] = [];
 
   logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
@@ -83,18 +85,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     },
   ];
 
-  answers = [
-    "We don't think so, the Developer Communities on Commudle are able to manage all their activities here.",
-    "You can host your complete Developer Ecosystem with 100's of Communities on Commudle. We have an organization page too. You have access to all the data and stats you need.",
-    "As a DevRel, it's important to have an experience of building and growing your own Developer Community. Some folks are at leading DevRel positions who started by building their own Community here.",
-    "Yes! From Startup plan and upwards you get access to our API's which can be used to display summary of your communities' activities on your own web page.",
-    "Yes! And it's very easy.",
-    'Absolutely, a few Design Communities are already using Commudle.',
-    'Yes, Commudle supports paid tickets in events. Community organizers can access this feature from their community admin dashboard.',
-    "We use Stripe which has standard payment rates for payments made through different countries defined on this link: https://stripe.com/en-in/pricing. Commudle charges a standard platform fee. Depending on the plan purchased by you this fee can be a part of the annual subscription as a business so that your community leaders don't have to pay for it.",
-    "Yes, unless it's a premium feature, it will be a part of your existing subscription, we will notify you in advance.",
-    'Yes, our users extend across the world.',
-  ];
+  answers = [];
 
   constructor(
     private seoService: SeoService,
@@ -133,6 +124,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     if (this.isMobileView) {
       this.showAllFeatures = false;
     }
+
+    this.setFaqs();
   }
 
   ngOnDestroy(): void {
@@ -223,5 +216,57 @@ export class PricingComponent implements OnInit, OnDestroy {
         priceCurrency: selectedPriceDetail?.currencyType === 'USD' ? 'USD' : 'INR',
       },
     });
+  }
+
+  setFaqs() {
+    this.faqs = [
+      {
+        question: 'Do I need to purchase any other platform when I setup a Community on Commudle?',
+        answer:
+          "We don't think so, the Developer Communities on Commudle are able to manage all their activities here.",
+      },
+      {
+        question: 'How many Communities can I host on Commudle?',
+        answer:
+          "You can host your complete Developer Ecosystem with 100's of Communities on Commudle. We have an organization page too. You have access to all the data and stats you need.",
+      },
+      {
+        question: "I'm looking to build a career in DevRel, how can Commudle be useful in that?",
+        answer:
+          "As a DevRel, it's important to have an experience of building and growing your own Developer Community. Some folks are at leading DevRel positions who started by building their own Community here.",
+      },
+      {
+        question: 'I want to display activities from Commudle on my website, is it possible?',
+        answer:
+          "Yes! From Startup plan and upwards you get access to our API's which can be used to display summary of your communities' activities on your own web page.",
+      },
+      {
+        question: 'Will you help me migrate from other platforms?',
+        answer: "Yes! And it's very easy.",
+      },
+      {
+        question: 'I lead a Design Community, is Commudle for me?',
+        answer: 'Absolutely, a few Design Communities are already using Commudle.',
+      },
+      {
+        question: 'Does Commudle support paid ticket events?',
+        answer:
+          'Yes, Commudle supports paid tickets in events. Community organizers can access this feature from their community admin dashboard.',
+      },
+      {
+        question: 'What are the charges for payments received through payment gateway on Commudle?',
+        answer:
+          "We use Stripe which has standard payment rates for payments made through different countries defined on this link: https://stripe.com/en-in/pricing. Commudle charges a standard platform fee. Depending on the plan purchased by you this fee can be a part of the annual subscription as a business so that your community leaders don't have to pay for it.",
+      },
+      {
+        question: 'Will I get access to new features which are rolled out after I pay for my subscription?',
+        answer:
+          "Yes, unless it's a premium feature, it will be a part of your existing subscription, we will notify you in advance.",
+      },
+      {
+        question: 'Is Commudle the right platform for my global community members?',
+        answer: 'Yes, our users extend across the world.',
+      },
+    ];
   }
 }
