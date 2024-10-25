@@ -11,6 +11,7 @@ import {
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { IFaq } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-book-page',
@@ -18,6 +19,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
   styleUrls: ['./book-page.component.scss'],
 })
 export class BookPageComponent implements OnInit, OnDestroy {
+  faqs: IFaq[];
   constructor(private footerService: FooterService, private seoService: SeoService) {}
 
   staticAssets = staticAssets;
@@ -55,27 +57,10 @@ export class BookPageComponent implements OnInit, OnDestroy {
       'This is for you if you are an established enterprise with a running developer ecosystem or just starting out to build one.',
   };
 
-  questions = [
-    'Who is this handbook for?',
-    'What is the authenticity of this book?',
-    'Who has written this hand book?',
-    'Will this book help me write a proposal or a business plan to build my developer communities?',
-    'Is this book focused on ROI from developer communities?',
-    'Will this book keep getting more updates? Can I contribute?',
-  ];
-
-  answers = [
-    "This is a guide for any business which is selling to software developers. This includes devtools, developer platforms, edtech and blockchain domains. Communities are essential for your company's growth and this book tells you how to build them for a long term.",
-    'This book has real examples collected from people who have built and scaled developer programs, communities and ecosystems globally. This includes leaders from some of the largest developer communities, startups, enterprises like Google, Microsoft, Amazon, Twilio, Github, LambdaTest, etc. For confidentiality reasons, we kept their names as private.',
-    'This handbook is written by Arpan Garg, a founder at Commudle under the guidance of Shrinath V, a renowned product strategy expert. With support from Apra Sahney, Co-Founder at Commudle.',
-    'Yes, we have also included a sample template for the same',
-    'We help you decide the right ROI at the right stage in this book.',
-    "Yes! That's why we are making it openly available for everyone. You can choose to download a pdf or read it on Commudle itself. To contribute, you can add examples or suggest edits by writing an email to arpan(at)commudle(dot)com.",
-  ];
-
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.setMeta();
+    this.setFaqs();
   }
 
   ngOnDestroy(): void {
@@ -88,5 +73,38 @@ export class BookPageComponent implements OnInit, OnDestroy {
       'Build a developer community ecosystem with this practical guide. Lessons from veteran developer relations and community leaders to build, sustain and scale up communities for your edtech, devtools, open source businesses.',
       staticAssets.devrel_ecosystem_blueprint,
     );
+  }
+
+  setFaqs() {
+    this.faqs = [
+      {
+        question: 'Who is this handbook for?',
+        answer:
+          "This is a guide for any business which is selling to software developers. This includes devtools, developer platforms, edtech and blockchain domains. Communities are essential for your company's growth and this book tells you how to build them for a long term.",
+      },
+      {
+        question: 'What is the authenticity of this book?',
+        answer:
+          'This book has real examples collected from people who have built and scaled developer programs, communities and ecosystems globally. This includes leaders from some of the largest developer communities, startups, enterprises like Google, Microsoft, Amazon, Twilio, Github, LambdaTest, etc. For confidentiality reasons, we kept their names as private.',
+      },
+      {
+        question: 'Who has written this hand book?',
+        answer:
+          'This handbook is written by Arpan Garg, a founder at Commudle under the guidance of Shrinath V, a renowned product strategy expert. With support from Apra Sahney, Co-Founder at Commudle.',
+      },
+      {
+        question: 'Will this book help me write a proposal or a business plan to build my developer communities?',
+        answer: 'Yes, we have also included a sample template for the same',
+      },
+      {
+        question: 'Is this book focused on ROI from developer communities?',
+        answer: 'We help you decide the right ROI at the right stage in this book.',
+      },
+      {
+        question: 'Will this book keep getting more updates? Can I contribute?',
+        answer:
+          "Yes! That's why we are making it openly available for everyone. You can choose to download a pdf or read it on Commudle itself. To contribute, you can add examples or suggest edits by writing an email to arpan(at)commudle(dot)com.",
+      },
+    ];
   }
 }
