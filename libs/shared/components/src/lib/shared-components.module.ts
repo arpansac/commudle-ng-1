@@ -22,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { FaqCardComponent } from './components/faq/faq-card/faq-card.component';
+import { PublicFaqsComponent } from './components/public-faqs/public-faqs.component';
 import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 @NgModule({
@@ -35,6 +36,7 @@ import { UserProfileMiniCardComponent } from './components/user-profile/user-pro
     LoadingSpinnerComponent,
     FaqComponent,
     FaqCardComponent,
+    PublicFaqsComponent,
     VotersComponent,
     UserProfileMiniCardComponent,
   ],
@@ -52,7 +54,14 @@ import { UserProfileMiniCardComponent } from './components/user-profile/user-pro
     NbContextMenuModule,
     FontAwesomeModule,
   ],
-  exports: [DiscussionComponent, VoteComponent, ChannelDiscussionComponent, LoadingSpinnerComponent, FaqComponent],
+  exports: [
+    DiscussionComponent,
+    VoteComponent,
+    ChannelDiscussionComponent,
+    LoadingSpinnerComponent,
+    FaqComponent,
+    PublicFaqsComponent,
+  ],
   providers: [InViewportDirective],
 })
 export class SharedComponentsModule {}
