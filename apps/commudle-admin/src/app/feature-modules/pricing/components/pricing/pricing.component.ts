@@ -24,8 +24,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   enterprise: IPricing;
   startup: IPricing;
   devrel: IPricing;
-  isMonthly = true;
-  isAnually = false;
+  isMonthly = false;
+  isAnually = true;
   faCircleCheck = faCircleCheck;
   pricingFeatures: IPricingFeatures[] = [];
   showAllFeatures = true;

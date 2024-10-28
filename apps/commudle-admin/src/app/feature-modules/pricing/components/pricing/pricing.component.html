@@ -27,87 +27,6 @@
               </form>
             </div>
             <div class="cards">
-              <!-- ENTERPRISE -->
-              <div *ngIf="enterprise" class="enterprise-card active-border">
-                <div class="title-cards">
-                  <h2 class="heading">{{ enterprise.name }}</h2>
-                  <p class="sub-heading">
-                    {{ enterprise.description }}
-                  </p>
-                  <div *ngIf="isMonthly || isAnually" class="subscription">
-                    <div *ngIf="enterprise.priceDetails" class="price">
-                      <!-- MONTHLY  -->
-                      <ng-container *ngIf="isMonthly">
-                        <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
-                            }}</span>
-                            <ng-container *ngIf="item.price_after_discount">
-                              <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
-                                <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
-                                </div>
-                              </div>
-                            </ng-container>
-                          </ng-container>
-                        </ng-container>
-                      </ng-container>
-
-                      <!-- ANUALLY -->
-                      <ng-container *ngIf="isAnually">
-                        <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
-                            }}</span>
-
-                            <ng-container *ngIf="item.price_after_discount">
-                              <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
-                                <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
-                                </div>
-                              </div>
-                            </ng-container>
-                          </ng-container>
-                        </ng-container>
-                      </ng-container>
-                    </div>
-                  </div>
-                  <p class="monthly-yearly">
-                    {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annualy' }}
-                  </p>
-                </div>
-                <div class="features">
-                  <p class="features-heading">Key Features</p>
-                  <ul>
-                    <li *ngFor="let feature of enterprise.key_features">
-                      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                      <span class="feature">{{ feature }}</span>
-                    </li>
-                  </ul>
-                </div>
-                <a
-                  [href]="
-                    isMonthly ? enterprise.priceDetails[1].details[0]?.url : enterprise.priceDetails[0].details[0]?.url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ enterprise.button_text }}
-                  </button></a
-                >
-              </div>
-
               <!-- STARTUP -->
               <div *ngIf="startup" class="startup-card">
                 <div class="title-cards">
@@ -165,7 +84,7 @@
                       </ng-container>
                     </div>
                     <p class="monthly-yearly">
-                      {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annualy' }}
+                      {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annually' }}
                     </p>
                   </div>
                 </div>
@@ -178,13 +97,101 @@
                     </li>
                   </ul>
                 </div>
-                <a
-                  [href]="isMonthly ? startup.priceDetails[1].details[0]?.url : startup.priceDetails[0].details[0]?.url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ startup.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ startup.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+              </div>
+
+              <!-- ENTERPRISE -->
+              <div *ngIf="enterprise" class="enterprise-card active-border">
+                <div class="title-cards">
+                  <h2 class="heading">{{ enterprise.name }}</h2>
+                  <p class="sub-heading">
+                    {{ enterprise.description }}
+                  </p>
+                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                    <div *ngIf="enterprise.priceDetails" class="price">
+                      <!-- MONTHLY  -->
+                      <ng-container *ngIf="isMonthly">
+                        <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <!-- ANUALLY -->
+                      <ng-container *ngIf="isAnually">
+                        <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+
+                    <p class="monthly-yearly">
+                      {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annually' }}
+                    </p>
+                  </div>
+                </div>
+                <div class="features">
+                  <p class="features-heading">Key Features</p>
+                  <ul>
+                    <li *ngFor="let feature of enterprise.key_features">
+                      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                      <span class="feature">{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ enterprise.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
 
               <!-- DEVREL -->
@@ -251,14 +258,17 @@
                     </li>
                   </ul>
                 </div>
-                <a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel.priceDetails[1]?.details[0]?.url : devrel.priceDetails[0]?.details[0]?.url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ devrel.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ devrel.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -281,56 +291,6 @@
             <h3 class="pricing-features-subheading">Here are all the amazing features included in our plans</h3>
             <div *appBreakpoints="'>lg'" class="subscription-container">
               <div></div>
-              <div *ngIf="enterprise" class="subscription-header">
-                <p class="heading">{{ enterprise.name }}</p>
-                <div class="header-price">
-                  <span *ngIf="enterprise?.priceDetails">
-                    <!-- MONTHLY  -->
-                    <ng-container *ngIf="isMonthly">
-                      <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                          <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
-                          }}</span>
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
-                          </ng-container>
-                        </ng-container>
-                      </ng-container>
-                    </ng-container>
-
-                    <!-- ANUALLY -->
-                    <ng-container *ngIf="isAnually">
-                      <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                          <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
-                          }}</span>
-
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
-                          </ng-container>
-                        </ng-container>
-                      </ng-container>
-                    </ng-container>
-                  </span>
-                </div>
-                <a
-                  [href]="
-                    isMonthly
-                      ? enterprise?.priceDetails[1]?.details[0]?.url
-                      : enterprise?.priceDetails[0]?.details[0]?.url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ enterprise?.button_text }}
-                  </button></a
-                >
-              </div>
               <div *ngIf="startup" class="subscription-header">
                 <p class="heading">{{ startup.name }}</p>
                 <div class="header-price">
@@ -370,14 +330,69 @@
                     </ng-container>
                   </span>
                 </div>
-                <a
-                  [href]="isMonthly ? startup?.priceDetails[1].details[0].url : startup?.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ startup?.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
+              <div *ngIf="enterprise" class="subscription-header">
+                <p class="heading">{{ enterprise.name }}</p>
+                <div class="header-price">
+                  <span *ngIf="enterprise?.priceDetails">
+                    <!-- MONTHLY  -->
+                    <ng-container *ngIf="isMonthly">
+                      <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <!-- ANUALLY -->
+                    <ng-container *ngIf="isAnually">
+                      <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
+
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </span>
+                </div>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+              </div>
+
               <div *ngIf="devrel" class="subscription-header">
                 <p class="heading">{{ devrel.name }}</p>
                 <div class="header-price">
@@ -413,38 +428,30 @@
                     </ng-container>
                   </span>
                 </div>
-                <a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel?.priceDetails[1].details[0].url : devrel?.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton size="tiny" shape="round" status="primary">
-                    {{ devrel?.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
             <div [ngClass]="{ 'hide-all-features': !showAllFeatures }">
               <div *ngFor="let pricingFeature of pricingFeatures" class="header-section">
                 <div *appBreakpoints="'<=lg'" class="sub-features">
                   <p class="title">{{ pricingFeature.name }}</p>
-                  <p class="enterprise-title">{{ enterprise?.name }}</p>
                   <p class="startup-title">{{ startup?.name }}</p>
+                  <p class="enterprise-title">{{ enterprise?.name }}</p>
                   <p class="devrel-title">{{ devrel?.name }}</p>
                 </div>
                 <p *appBreakpoints="'>lg'" class="title">{{ pricingFeature.name }}</p>
                 <div *ngFor="let subFeature of pricingFeature.features" class="sub-features">
                   <div class="feature-name">{{ subFeature.name }}</div>
-                  <p class="enterprise-highlight">
-                    <ng-container *ngIf="subFeature.custom_text_for_enterprise">
-                      <p class="description">{{ subFeature.custom_text_for_enterprise }}</p>
-                    </ng-container>
-                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && subFeature.enterprise">
-                      <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
-                    </ng-container>
-                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && !subFeature.enterprise">
-                      <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
-                    </ng-container>
-                  </p>
                   <p>
                     <ng-container *ngIf="subFeature.custom_text_for_startup">
                       <p class="description">{{ subFeature.custom_text_for_startup }}</p>
@@ -453,6 +460,17 @@
                       <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
                     </ng-container>
                     <ng-container *ngIf="!subFeature.custom_text_for_startup && !subFeature.startup">
+                      <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
+                    </ng-container>
+                  </p>
+                  <p class="enterprise-highlight">
+                    <ng-container *ngIf="subFeature.custom_text_for_enterprise">
+                      <p class="description">{{ subFeature.custom_text_for_enterprise }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && subFeature.enterprise">
+                      <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && !subFeature.enterprise">
                       <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
                     </ng-container>
                   </p>
@@ -471,29 +489,39 @@
               </div>
               <div *ngIf="enterprise && startup && devrel" class="action-sub-features">
                 <p class="action-title">Choose a Plan</p>
-                <a
-                  [href]="
-                    isMonthly ? enterprise.priceDetails[1].details[0].url : enterprise.priceDetails[0].details[0].url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ enterprise.button_text }}
-                  </button></a
-                >
-                <a
-                  [href]="isMonthly ? startup.priceDetails[1].details[0].url : startup.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ startup.button_text }}
-                  </button></a
-                ><a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel.priceDetails[1].details[0].url : devrel.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton size="tiny" shape="round" status="primary">
-                    {{ devrel.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
             <button
