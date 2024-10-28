@@ -97,15 +97,17 @@
                     </li>
                   </ul>
                 </div>
-                <a
-                  [href]="
-                    isMonthly ? enterprise.priceDetails[1].details[0]?.url : enterprise.priceDetails[0].details[0]?.url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ enterprise.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ enterprise.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
 
               <!-- STARTUP -->
@@ -178,13 +180,17 @@
                     </li>
                   </ul>
                 </div>
-                <a
-                  [href]="isMonthly ? startup.priceDetails[1].details[0]?.url : startup.priceDetails[0].details[0]?.url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ startup.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ startup.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
 
               <!-- DEVREL -->
@@ -251,14 +257,17 @@
                     </li>
                   </ul>
                 </div>
-                <a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel.priceDetails[1]?.details[0]?.url : devrel.priceDetails[0]?.details[0]?.url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                    {{ devrel.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ devrel.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -319,17 +328,17 @@
                     </ng-container>
                   </span>
                 </div>
-                <a
-                  [href]="
-                    isMonthly
-                      ? enterprise?.priceDetails[1]?.details[0]?.url
-                      : enterprise?.priceDetails[0]?.details[0]?.url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ enterprise?.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
               <div *ngIf="startup" class="subscription-header">
                 <p class="heading">{{ startup.name }}</p>
@@ -370,13 +379,17 @@
                     </ng-container>
                   </span>
                 </div>
-                <a
-                  [href]="isMonthly ? startup?.priceDetails[1].details[0].url : startup?.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ startup?.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
               <div *ngIf="devrel" class="subscription-header">
                 <p class="heading">{{ devrel.name }}</p>
@@ -413,14 +426,17 @@
                     </ng-container>
                   </span>
                 </div>
-                <a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel?.priceDetails[1].details[0].url : devrel?.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton size="tiny" shape="round" status="primary">
-                    {{ devrel?.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
             <div [ngClass]="{ 'hide-all-features': !showAllFeatures }">
@@ -471,29 +487,39 @@
               </div>
               <div *ngIf="enterprise && startup && devrel" class="action-sub-features">
                 <p class="action-title">Choose a Plan</p>
-                <a
-                  [href]="
-                    isMonthly ? enterprise.priceDetails[1].details[0].url : enterprise.priceDetails[0].details[0].url
-                  "
-                  (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ enterprise.button_text }}
-                  </button></a
-                >
-                <a
-                  [href]="isMonthly ? startup.priceDetails[1].details[0].url : startup.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  ><button nbButton status="primary" size="tiny" shape="round">
-                    {{ startup.button_text }}
-                  </button></a
-                ><a
-                  *ngIf="devrel.priceDetails[1]?.details && devrel.priceDetails[0]?.details"
-                  [href]="isMonthly ? devrel.priceDetails[1].details[0].url : devrel.priceDetails[0].details[0].url"
-                  (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
-                  ><button nbButton size="tiny" shape="round" status="primary">
-                    {{ devrel.button_text }}
-                  </button></a
-                >
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
             <button
