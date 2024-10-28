@@ -72,7 +72,7 @@ a {
   .upcoming-events,
   .recent-activity {
     @apply com-mt-6 com-mb-3;
-    h2 {
+    .recent-activity-heading {
       @apply com-m-0 com-mb-3 com-text-xl com-font-semibold com-text-Yankees-Blue;
     }
   }
@@ -112,7 +112,7 @@ a {
   @apply com-m-0;
 
   nb-card-header {
-    @apply com-p-3 com-flex com-flex-row com-bg-gray-50;
+    @apply com-p-3 com-flex com-flex-row com-bg-gray-50 com-items-center;
 
     .user {
       @apply com-m-0;

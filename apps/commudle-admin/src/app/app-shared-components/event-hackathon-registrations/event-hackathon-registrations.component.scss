@@ -108,6 +108,10 @@
   @apply com-grid md:com-grid-cols-5 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-100 com-rounded-lg com-mr-2 com-items-center;
 }
 
+.highlighted-row {
+  @apply com-bg-gray-100;
+}
+
 .registration {
   @apply com-flex com-flex-row;
 }
@@ -140,7 +144,7 @@ app-loading-spinner {
 
 #qr-code-desktop,
 #qr-code-mobile {
-  @apply md:com-w-full com-w-auto com-h-full;
+  @apply md:com-w-full com-w-auto com-h-full com-object-cover;
   image-rendering: pixelated;
 }
 

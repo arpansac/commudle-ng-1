@@ -40,6 +40,7 @@ export class EventHackathonRegistrationsComponent implements OnInit {
   }
 
   getMyRegistrations() {
+    this.showEntryPass = [false];
     this.loading = true;
     this.usersService.getMyRegistrations(this.count, this.page).subscribe((data) => {
       this.registrations = data.values;
