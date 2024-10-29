@@ -4,7 +4,7 @@
       <div class="two-column-layout">
         <div class="left-column">
           <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
-          <nb-card class="user-profile-details">
+          <nb-card class="user-profile-details" *appBreakpoints="'>lg'">
             <nb-card-body *ngIf="currentUser">
               <commudle-userprofile-details
                 [userProfileDetails]="userProfileDetails"
@@ -12,7 +12,7 @@
               ></commudle-userprofile-details>
             </nb-card-body>
           </nb-card>
-          <div class="user-managed-communities">
+          <div class="user-managed-communities" *appBreakpoints="'>lg'">
             <nb-card>
               <nb-card-body>
                 <h2 class="user-managed-communities-heading">Your Communities</h2>

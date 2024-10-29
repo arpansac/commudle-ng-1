@@ -14,7 +14,7 @@
 }
 
 .event-registration-heading {
-  @apply com-text-xl com-font-semibold com-text-black com-m-0 com-mb-2 md:com-mb-4 com-px-2;
+  @apply com-text-xl com-font-semibold com-text-black com-m-0 md:com-px-0 com-px-2 com-flex com-justify-center;
 }
 
 .event-title {
@@ -57,12 +57,12 @@
   @apply com-flex com-flex-col  md:com-justify-self-start com-justify-self-end;
 
   .form-type {
-    @apply com-text-gray-500 com-text-10px com-font-medium com-m-0;
+    @apply com-text-gray-500 com-text-10px com-font-medium com-m-0 com-text-end md:com-text-start;
   }
 }
 
 .table-status {
-  @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end com-flex com-flex-col;
+  @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end com-flex com-flex-col com-text-end md:com-text-start;
 }
 
 .confirmed {
