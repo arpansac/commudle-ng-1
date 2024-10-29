@@ -82,7 +82,11 @@ a {
 }
 
 .right-column {
-  @apply md:com-pl-6 com-pt-6 md:com-w-[300px] com-w-full com-flex-shrink-0;
+  @apply com-col-span-1 md:com-pl-6 com-pt-6 com-w-full;
+}
+
+.center-right-column-wrapper {
+  @apply com-grid com-grid-cols-4;
 }
 
 .event-horizontal-card {
@@ -94,7 +98,7 @@ a {
 }
 
 .center-column {
-  @apply com-w-full com-pt-6 md:com-px-0 com-px-3;
+  @apply com-w-full com-pt-6 md:com-px-0 com-px-3  com-col-span-3;
 }
 
 .no-upcoming-events {
