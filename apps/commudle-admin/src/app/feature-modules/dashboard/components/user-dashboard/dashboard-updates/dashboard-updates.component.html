@@ -57,7 +57,7 @@
               <div class="table-heading">Action</div>
             </div>
             <div *ngFor="let registration of myRegistrations; let i = index">
-              <div class="registration-row">
+              <div class="registration-row" [ngClass]="{ 'highlighted-row': showEntryPass[i] }">
                 <div class="event-title-date">
                   <p
                     class="event-title"
