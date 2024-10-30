@@ -82,7 +82,7 @@ nb-card {
       @apply com-flex com-flex-col  md:com-justify-self-start com-justify-self-end;
 
       .form-type {
-        @apply com-text-gray-500 com-text-10px com-font-medium com-m-0;
+        @apply com-text-gray-500 com-text-10px com-font-medium com-m-0 com-text-end  md:com-text-start;
       }
     }
 
@@ -91,7 +91,7 @@ nb-card {
     }
 
     .table-status {
-      @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end  com-flex com-flex-col;
+      @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end  com-flex com-flex-col com-text-end md:com-text-start;
     }
 
     .individual-status {

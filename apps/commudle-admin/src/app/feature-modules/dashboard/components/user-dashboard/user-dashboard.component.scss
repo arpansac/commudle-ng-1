@@ -86,7 +86,7 @@ a {
 }
 
 .center-right-column-wrapper {
-  @apply com-grid com-grid-cols-4;
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-1;
 }
 
 .event-horizontal-card {
@@ -98,7 +98,7 @@ a {
 }
 
 .center-column {
-  @apply com-w-full com-pt-6 md:com-px-0 com-px-3  com-col-span-3;
+  @apply com-w-full com-pt-6 md:com-px-0 com-px-3 md:com-col-span-3 com-col-span-1;
 }
 
 .no-upcoming-events {
