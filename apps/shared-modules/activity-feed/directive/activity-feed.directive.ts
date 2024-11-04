@@ -1,17 +1,23 @@
 import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserEngagementRecordsService } from 'apps/shared-services/user-engagement-records.service';
 import { IActivityFeed } from 'libs/shared/models/src/lib/activity-feed.model';
+import { EDbModels } from '@commudle/shared-models';
 
 @Directive({
   selector: '[appActivityFeed]',
 })
 export class ActivityFeedDirective {
   @Input() feed: IActivityFeed;
+  EDbModels = EDbModels;
 
   timeout: any;
   private observer: IntersectionObserver;
 
   constructor(private el: ElementRef, private userEngagementRecordsService: UserEngagementRecordsService) {}
+
+  ngOnInit() {
+    console.log(this.feed);
+  }
 
   ngAfterViewInit() {
     // TODO: change to use dedicated library
@@ -19,9 +25,10 @@ export class ActivityFeedDirective {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log(this.feed.actionable_type);
-            // this.timeout = setTimeout(() => {
-            // }, 5000);
+            console.log('view', this.feed);
+            this.timeout = setTimeout(() => {
+              this.getUserEngagement('user_view');
+            }, 1000);
           }
         });
       },
@@ -32,7 +39,7 @@ export class ActivityFeedDirective {
 
   @HostListener('click', ['$event'])
   onClick(event: Event) {
-    console.log('Clicked:', this.feed.actionable_type);
+    this.getUserEngagement('user_click');
   }
 
   ngOnDestroy(): void {
@@ -42,9 +49,23 @@ export class ActivityFeedDirective {
     }
   }
 
-  getUserEngagement() {
-    // this.userEngagementRecordsService.userEngagementRecords().subscribe((data) => {
-    //   console.log(data);
-    // });
+  getUserEngagement(event_type: string) {
+    const formData = new FormData();
+    formData.append(
+      'user_engagement_record[parent_id]',
+      this.feed.actionable_type === EDbModels.VOTE ? this.feed.actionable.object_data?.id : this.feed.actionable?.id,
+    );
+    formData.append(
+      'user_engagement_record[parent_type]',
+      this.feed.actionable_type === EDbModels.VOTE ? this.feed.actionable.object_type : this.feed.actionable_type,
+    );
+    formData.append('user_engagement_record[url]', window.location.href);
+    formData.append('user_engagement_record[event_type]', event_type);
+    formData.append('user_engagement_record[created_at]', new Date().toISOString());
+    this.userEngagementRecordsService.userEngagementRecords(formData).subscribe((data) => {
+      // console.log(typeof formData.append('user_engagement_record[url]', window.location.href));
+    });
   }
 }
+
+// formData.append('location[address]', this.locationForm.get('address').value);

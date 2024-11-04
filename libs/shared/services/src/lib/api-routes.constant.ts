@@ -952,6 +952,6 @@ export const API_ROUTES = {
   },
 
   USER_ENGAGEMENT_RECORDS: {
-    CREATE: 'api/v2/feed/uerec',
+    CREATE: 'api/v2/uerec',
   },
 };

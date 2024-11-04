@@ -10,8 +10,7 @@ import { API_ROUTES } from './api-routes.constants';
 export class UserEngagementRecordsService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  userEngagementRecords() {
-    // let params = params.set();
-    // this.http.post(this.apiRoutesService.getRoute(API_ROUTES.USER_ENGAGEMENT_RECORDS.CREATE), { params });
+  userEngagementRecords(feedData) {
+    return this.http.post(this.apiRoutesService.getRoute(API_ROUTES.USER_ENGAGEMENT_RECORDS.CREATE), feedData);
   }
 }
