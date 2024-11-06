@@ -101,19 +101,9 @@ $datatable-summary-row-background-hover: #ddd !default;
   }
 
   &:not(.cell-selection) {
-    .datatable-body-row {
-      &:hover,
-      &:hover .datatable-row-group {
-        background-color: $ngx-datatable-default-background-hover;
-        transition-property: background;
-        transition-duration: 0.3s;
-        transition-timing-function: linear;
-      }
-
-      &:focus,
-      &:focus .datatable-row-group {
-        background-color: $ngx-datatable-default-background-focus;
-      }
+    &:focus,
+    &:focus .datatable-row-group {
+      background-color: $ngx-datatable-default-background-focus;
     }
   }
 
