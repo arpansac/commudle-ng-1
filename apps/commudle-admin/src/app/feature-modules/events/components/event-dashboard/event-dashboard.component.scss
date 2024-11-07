@@ -13,7 +13,8 @@
 }
 
 .sidebar {
-  @apply com-w-80 com-sticky com-top-16 com-h-[calc(100vh-70px)];
+  // com-w-80
+  @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
   a {
     @apply com-text-inherit com-no-underline;

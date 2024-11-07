@@ -35,11 +35,15 @@
 </section>
 
 <section class="md:com-flex">
+  <!-- [ngClass]="{
+    'com-w-[21rem]': sidebarExpanded,
+    'com-w-[2px]': !sidebarExpanded
+  }" -->
   <div class="sidebar" *appBreakpoints="'>md'">
     <commudle-sidebar
-      [isExpanded]="true"
-      [expandedWidth]="ESidebarWidth.XL"
+      [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [forWindow]="false"
+      [eventName]="sidebarEventName"
       [showExpandedButton]="false"
     >
       <div class="action-buttons">
@@ -47,11 +51,14 @@
           <div class="icon">
             <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
           </div>
-          <div class="heading">Back to Admin Panel</div>
+          <!-- <div class="heading">Back to Admin Panel</div> -->
         </a>
-        <div class="!com-px-0 com-my-4">
-          <app-event-status (updatedEventStatus)="event.event_status = $event" [event]="event"></app-event-status>
+        <div (click)="toggleSidebar()" class="sidebar-expand-icon">
+          <fa-icon [icon]="icons.faBars"></fa-icon>
         </div>
+        <!-- <div class="!com-px-0 com-my-4">
+          <app-event-status (updatedEventStatus)="event.event_status = $event" [event]="event"></app-event-status>
+        </div> -->
         <div class="category">
           <div class="category-heading">
             <span>Event Setup</span>
@@ -65,19 +72,19 @@
             <div class="icon">
               <nb-icon icon="info-outline"></nb-icon>
             </div>
-            <div class="heading">Details</div>
+            <div *ngIf="sidebarExpanded" class="heading">Details</div>
           </a>
           <a [routerLink]="['registrations']" [routerLinkActive]="'active'" class="action-button">
             <div class="icon">
               <nb-icon icon="edit-2-outline"></nb-icon>
             </div>
-            <div class="heading">Registrations</div>
+            <div *ngIf="sidebarExpanded" class="heading">Registrations</div>
           </a>
           <a [routerLink]="['agenda']" [routerLinkActive]="'active'" class="action-button">
             <div class="icon">
               <nb-icon icon="calendar-outline"></nb-icon>
             </div>
-            <div class="heading">Location & Agenda</div>
+            <div *ngIf="sidebarExpanded" class="heading">Location & Agenda</div>
           </a>
         </div>
         <hr class="divided-line" />
@@ -93,31 +100,31 @@
           <div class="icon">
             <nb-icon icon="star-outline"></nb-icon>
           </div>
-          <div class="heading">Send Updates</div>
+          <div *ngIf="sidebarExpanded" class="heading">Send Updates</div>
         </a>
         <a [routerLink]="['collaborations']" [routerLinkActive]="'active'" class="action-button">
           <div class="icon">
             <nb-icon icon="pricetags-outline"></nb-icon>
           </div>
-          <div class="heading">Collaborations</div>
+          <div *ngIf="sidebarExpanded" class="heading">Collaborations</div>
         </a>
         <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
           <div class="icon">
             <nb-icon icon="headphones-outline"></nb-icon>
           </div>
-          <div class="heading">Team</div>
+          <div *ngIf="sidebarExpanded" class="heading">Team</div>
         </a>
         <a [routerLink]="['sponsors']" [routerLinkActive]="'active'" class="action-button">
           <div class="icon">
             <nb-icon icon="briefcase-outline"></nb-icon>
           </div>
-          <div class="heading">Sponsors</div>
+          <div *ngIf="sidebarExpanded" class="heading">Sponsors</div>
         </a>
         <a (click)="sendEmails()" class="action-button">
           <div class="icon">
             <fa-icon [icon]="icons.faEnvelope"></fa-icon>
           </div>
-          <div class="heading">Send Emails</div>
+          <div *ngIf="sidebarExpanded" class="heading">Send Emails</div>
         </a>
         <hr class="divided-line" />
         <div class="category-heading">
@@ -131,13 +138,13 @@
           <div class="icon">
             <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
           </div>
-          <div class="heading">Public Event Page</div>
+          <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
         </a>
         <a [routerLink]="['stats']" class="action-button stats" [routerLinkActive]="'active'">
           <div class="icon">
             <fa-icon [icon]="icons.faChartLine"></fa-icon>
           </div>
-          <div class="heading">Event Stats</div>
+          <div *ngIf="sidebarExpanded" class="heading">Event Stats</div>
         </a>
         <a
           class="action-button"
@@ -147,13 +154,13 @@
           <div class="icon">
             <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
           </div>
-          <div class="heading">View Attended Members</div>
+          <div *ngIf="sidebarExpanded" class="heading">View Attended Members</div>
         </a>
         <a class="action-button" (click)="copyTextToClipboard()">
           <div class="icon">
             <fa-icon [icon]="icons.faShareNodes"></fa-icon>
           </div>
-          <div class="heading">Share Event</div>
+          <div *ngIf="sidebarExpanded" class="heading">Share Event</div>
         </a>
         <a
           [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
@@ -163,14 +170,14 @@
           <div class="icon">
             <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
           </div>
-          <div class="heading">Scan Entry Pass</div>
+          <div *ngIf="sidebarExpanded" class="heading">Scan Entry Pass</div>
         </a>
 
         <a [routerLink]="['emails']" [routerLinkActive]="'active'" class="action-button">
           <div class="icon">
             <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
           </div>
-          <div class="heading">Mails Sent Stats</div>
+          <div *ngIf="sidebarExpanded" class="heading">Mails Sent Stats</div>
         </a>
       </div>
     </commudle-sidebar>

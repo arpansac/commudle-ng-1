@@ -24,6 +24,9 @@
   }
 
   &.expanded {
+    &.xsmall {
+      @apply com-w-10;
+    }
     &.small {
       @apply com-w-40;
     }
