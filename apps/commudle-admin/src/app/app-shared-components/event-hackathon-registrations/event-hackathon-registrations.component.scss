@@ -14,7 +14,7 @@
 }
 
 .event-registration-heading {
-  @apply com-text-xl com-font-semibold com-text-black com-m-0 com-mb-2 md:com-mb-4 com-px-2;
+  @apply com-text-xl com-font-semibold com-text-black com-m-0 md:com-px-0 com-px-2 com-flex com-justify-center;
 }
 
 .event-title {
@@ -57,12 +57,12 @@
   @apply com-flex com-flex-col  md:com-justify-self-start com-justify-self-end;
 
   .form-type {
-    @apply com-text-gray-500 com-text-10px com-font-medium com-m-0;
+    @apply com-text-gray-500 com-text-10px com-font-medium com-m-0 com-text-end md:com-text-start;
   }
 }
 
 .table-status {
-  @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end com-flex com-flex-col;
+  @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end com-flex com-flex-col com-text-end md:com-text-start;
 }
 
 .confirmed {
@@ -108,6 +108,10 @@
   @apply com-grid md:com-grid-cols-5 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-100 com-rounded-lg com-mr-2 com-items-center;
 }
 
+.highlighted-row {
+  @apply com-bg-gray-100;
+}
+
 .registration {
   @apply com-flex com-flex-row;
 }
@@ -140,7 +144,7 @@ app-loading-spinner {
 
 #qr-code-desktop,
 #qr-code-mobile {
-  @apply md:com-w-full com-w-auto com-h-full;
+  @apply md:com-w-full com-w-auto com-h-full com-object-cover;
   image-rendering: pixelated;
 }
 

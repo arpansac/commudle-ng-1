@@ -72,7 +72,7 @@ a {
   .upcoming-events,
   .recent-activity {
     @apply com-mt-6 com-mb-3;
-    h2 {
+    .recent-activity-heading {
       @apply com-m-0 com-mb-3 com-text-xl com-font-semibold com-text-Yankees-Blue;
     }
   }
@@ -82,7 +82,11 @@ a {
 }
 
 .right-column {
-  @apply md:com-pl-6 com-pt-6 md:com-w-[300px] com-w-full com-flex-shrink-0;
+  @apply com-col-span-1 md:com-pl-6 com-pt-6 com-w-full;
+}
+
+.center-right-column-wrapper {
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-1;
 }
 
 .event-horizontal-card {
@@ -94,7 +98,7 @@ a {
 }
 
 .center-column {
-  @apply com-w-full com-pt-6 md:com-px-0 com-px-3;
+  @apply com-w-full com-pt-6 md:com-px-0 com-px-3 md:com-col-span-3 com-col-span-1;
 }
 
 .no-upcoming-events {
@@ -112,7 +116,7 @@ a {
   @apply com-m-0;
 
   nb-card-header {
-    @apply com-p-3 com-flex com-flex-row com-bg-gray-50;
+    @apply com-p-3 com-flex com-flex-row com-bg-gray-50 com-items-center;
 
     .user {
       @apply com-m-0;

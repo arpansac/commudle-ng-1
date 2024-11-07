@@ -26,6 +26,7 @@ export class MessageComponent implements OnInit {
   @Input() permittedActions;
   @Input() showFlagIcon = true;
   @Input() showReplyIcon = true;
+  @Input() showFullDateTime = false;
   @Output() sendReply: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendFlag: EventEmitter<number> = new EventEmitter<number>();
   @Output() sendDelete = new EventEmitter();
