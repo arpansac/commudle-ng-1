@@ -418,6 +418,11 @@
           min="0"
         />
       </label>
+      <commudle-alert
+        [error]="data.dfe.event_data_form_entity_group.is_paid"
+        errorMessage="In case of paid ticketing, form will automatically close only when the specified number of people get the entry passes"
+      ></commudle-alert>
+
       <div class="com-mt-2 com-h-max">
         <commudle-alert [info]="true" message="Enter 0 if you want to remove Auto close"></commudle-alert>
       </div>
