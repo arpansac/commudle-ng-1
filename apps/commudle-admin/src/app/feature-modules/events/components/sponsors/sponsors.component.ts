@@ -8,13 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { EventSponsorsService } from './../../../../services/event-sponsors.service';
 import { ActivatedRoute } from '@angular/router';
+import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
 
 @Component({
   selector: 'app-sponsors',
@@ -43,6 +43,7 @@ export class SponsorsComponent implements OnInit {
     private eventSponsorsService: EventSponsorsService,
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: NbDialogService,
   ) {
     this.sponsorForm = this.fb.group({
       logo: ['', Validators.required],
@@ -107,6 +108,7 @@ export class SponsorsComponent implements OnInit {
       this.removeLogo();
       this.sponsorForm.reset();
       this.toastLogService.successDialog(`${data.sponsor.name} added`, 3000);
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -138,5 +140,14 @@ export class SponsorsComponent implements OnInit {
     this.uploadedLogoImage = null;
     this.uploadedLogoImageFile = null;
     this.sponsorForm.get('logo').patchValue('');
+  }
+
+  openConfirmDeleteDialog(confirmDeleteDialogTemplate, sponsor, index) {
+    this.dialogService.open(confirmDeleteDialogTemplate, {
+      context: {
+        sponsor_id: sponsor.id,
+        index: index,
+      },
+    });
   }
 }
