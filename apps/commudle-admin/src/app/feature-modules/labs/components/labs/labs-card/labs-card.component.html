@@ -1,5 +1,5 @@
 <div class="labs-card-container">
-  <a class="clickable" [routerLink]="['/labs', lab.slug]">
+  <a class="clickable" (click)="onNavigate()">
     <div class="lab-header-image">
       <commudle-banner-image
         [headerImagePath]="lab.header_image ? lab.header_image.i160 : staticAssets.community_lab_empty_state"
