@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -82,7 +83,8 @@ export class EventFormResponsesComponent implements OnInit {
   RegistrationTypeNames = RegistrationTypeNames;
   eventLocations: IEventLocation[];
   dialogRef: any;
-
+  userEngagementFilter: FormGroup;
+  community_engagement_filters: Record<string, any> = {};
   //TODO past event stats
   constructor(
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
@@ -99,6 +101,35 @@ export class EventFormResponsesComponent implements OnInit {
   ) {
     this.searchForm = this.fb.group({
       name: [''],
+    });
+    this.userEngagementFilter = this.fb.group({
+      show_total_channel_messages: [''],
+      min_total_channel_messages: [''],
+      max_total_channel_messages: [''],
+      show_total_event_registrations: [''],
+      min_total_event_registrations: [''],
+      max_total_event_registrations: [''],
+      show_total_event_speaker_registrations: [''],
+      min_total_event_speaker_registrations: [''],
+      max_total_event_speaker_registrations: [''],
+      show_total_event_speaker_sessions: [''],
+      min_total_event_speaker_sessions: [''],
+      max_total_event_speaker_sessions: [''],
+      show_total_hackathon_registrations: [''],
+      min_total_hackathon_registrations: [''],
+      max_total_hackathon_registrations: [''],
+      show_total_invited_attended_events: [''],
+      min_total_invited_attended_events: [''],
+      max_total_invited_attended_events: [''],
+      show_total_skipped_events: [''],
+      min_total_skipped_events: [''],
+      max_total_skipped_events: [''],
+      show_total_uninvited_attended_events: [''],
+      min_total_uninvited_attended_events: [''],
+      max_total_uninvited_attended_events: [''],
+      show_total_volunteered_events: [''],
+      min_total_volunteered_events: [''],
+      max_total_volunteered_events: [''],
     });
   }
 
@@ -180,6 +211,7 @@ export class EventFormResponsesComponent implements OnInit {
             this.gender,
             this.selectedEventLocationTrackId,
             formData,
+            Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
           );
         }),
       )
@@ -277,6 +309,7 @@ export class EventFormResponsesComponent implements OnInit {
         this.gender,
         this.selectedEventLocationTrackId,
         formData,
+        Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
       .subscribe((data) => {
         this.totalEntries = data.total;
@@ -443,5 +476,19 @@ export class EventFormResponsesComponent implements OnInit {
         this.toastLogService.successDialog('Payment CSV will be delivered to your email!', 5000);
       }
     });
+  }
+
+  openUserEngagementFilter(userEngagementFilterTemplate) {
+    this.userEngagementFilter.reset();
+    this.dialogService.open(userEngagementFilterTemplate);
+  }
+
+  applyUserEngagementFilter() {
+    this.community_engagement_filters = {};
+    const formValues = this.userEngagementFilter.value;
+    if (formValues.show_total_channel_messages) {
+      this.community_engagement_filters.total_channel_messages = `[${formValues.min_total_channel_messages}, ${formValues.max_total_channel_messages}]`;
+    }
+    this.getResponses();
   }
 }

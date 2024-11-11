@@ -174,3 +174,21 @@ fa-icon {
     }
   }
 }
+.user-engagement-filter {
+  @apply com-w-full md:com-w-[45dvw] com-h-full md:com-max-h-[90dvh];
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  nb-card-body {
+    form {
+      @apply com-flex com-flex-col com-gap-2;
+      .form-group {
+        @apply com-flex com-items-center com-gap-4;
+        > label {
+          @apply com-flex com-gap-3;
+        }
+      }
+    }
+  }
+}
