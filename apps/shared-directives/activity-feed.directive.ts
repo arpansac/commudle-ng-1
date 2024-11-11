@@ -3,10 +3,15 @@ import { UserEngagementRecordsService } from 'apps/shared-services/user-engageme
 import { IActivityFeed } from 'libs/shared/models/src/lib/activity-feed.model';
 import { EDbModels } from '@commudle/shared-models';
 
+export enum UserActivityEventType {
+  USER_VIEW = 'user_view',
+  USER_CLICK = 'user_click',
+}
+
 @Directive({
   selector: '[appActivityFeed]',
 })
-export class ActivityFeedDirective {
+export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
   @Input() feed: IActivityFeed;
   EDbModels = EDbModels;
 
@@ -15,36 +20,30 @@ export class ActivityFeedDirective {
 
   constructor(private el: ElementRef, private userEngagementRecordsService: UserEngagementRecordsService) {}
 
-  ngOnInit() {
-    console.log(this.feed);
-  }
-
   ngAfterViewInit() {
     // TODO: change to use dedicated library
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log('view', this.feed);
             this.timeout = setTimeout(() => {
-              this.getUserEngagement('user_view');
+              this.getUserEngagement(UserActivityEventType.USER_VIEW);
             }, 1000);
           }
         });
       },
-      //   { threshold: 1 }, // how much % of the element is in view
+      { threshold: 1 }, // how much % of the element is in view
     );
     this.observer.observe(this.el.nativeElement);
   }
 
-  @HostListener('click', ['$event'])
-  onClick(event: Event) {
-    this.getUserEngagement('user_click');
+  @HostListener('click')
+  onClick() {
+    this.getUserEngagement(UserActivityEventType.USER_CLICK);
   }
 
   ngOnDestroy(): void {
     if (this.observer) {
-      //   clearTimeout(this.timeout);
       this.observer.disconnect();
     }
   }
@@ -62,10 +61,6 @@ export class ActivityFeedDirective {
     formData.append('user_engagement_record[url]', window.location.href);
     formData.append('user_engagement_record[event_type]', event_type);
     formData.append('user_engagement_record[created_at]', new Date().toISOString());
-    this.userEngagementRecordsService.userEngagementRecords(formData).subscribe((data) => {
-      // console.log(typeof formData.append('user_engagement_record[url]', window.location.href));
-    });
+    this.userEngagementRecordsService.userEngagementRecords(formData).subscribe((data) => {});
   }
 }
-
-// formData.append('location[address]', this.locationForm.get('address').value);
