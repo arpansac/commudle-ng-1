@@ -85,6 +85,7 @@ export class EventFormResponsesComponent implements OnInit {
   dialogRef: any;
   userEngagementFilter: FormGroup;
   community_engagement_filters: Record<string, any> = {};
+  attendedEventList: IEvent[];
   //TODO past event stats
   constructor(
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
@@ -130,6 +131,9 @@ export class EventFormResponsesComponent implements OnInit {
       show_total_volunteered_events: [''],
       min_total_volunteered_events: [''],
       max_total_volunteered_events: [''],
+      show_attended_events: [''],
+      attended_events_attendance: [''],
+      attended_events_slugs: [],
     });
   }
 
@@ -269,6 +273,16 @@ export class EventFormResponsesComponent implements OnInit {
   setPage(pageNumber) {
     this.page = pageNumber + 1;
     if (this.searchForm.get('name').value) {
+      const formData = new FormData();
+      this.emptyMessage = 'Loading...';
+      if (this.forms.length > 0) {
+        for (const form of this.forms) {
+          if (form && form.get('v').value !== '') {
+            formData.append(`qres[]q`, form.get('q').value);
+            formData.append(`qres[]v`, form.get('v').value);
+          }
+        }
+      }
       this.dataFormEntityResponseGroupsService
         .getEventDataFormResponses(
           this.eventDataFormEntityGroupId,
@@ -277,6 +291,9 @@ export class EventFormResponsesComponent implements OnInit {
           this.page,
           this.count,
           this.gender,
+          this.selectedEventLocationTrackId,
+          formData,
+          Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
         )
         .subscribe((data) => {
           this.setResponses(data);
@@ -453,6 +470,7 @@ export class EventFormResponsesComponent implements OnInit {
               this.gender,
               this.selectedEventLocationTrackId,
               formData,
+              Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
             );
           }),
         )
@@ -479,16 +497,159 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   openUserEngagementFilter(userEngagementFilterTemplate) {
-    this.userEngagementFilter.reset();
+    this.getAttendeeEventList();
+    if (Object.keys(this.community_engagement_filters).length === 0) {
+      this.userEngagementFilter.reset();
+    }
+
     this.dialogService.open(userEngagementFilterTemplate);
   }
 
+  isApplyDisabled(): boolean {
+    const formValues = this.userEngagementFilter.value;
+    // Check for each checkbox; if checked, min and max must be filled
+    const requiredFields = [
+      {
+        checkbox: 'show_total_channel_messages',
+        min: 'min_total_channel_messages',
+        max: 'max_total_channel_messages',
+      },
+      {
+        checkbox: 'show_total_event_registrations',
+        min: 'min_total_event_registrations',
+        max: 'max_total_event_registrations',
+      },
+      {
+        checkbox: 'show_total_event_speaker_registrations',
+        min: 'min_total_event_speaker_registrations',
+        max: 'max_total_event_speaker_registrations',
+      },
+      {
+        checkbox: 'show_total_event_speaker_sessions',
+        min: 'min_total_event_speaker_sessions',
+        max: 'max_total_event_speaker_sessions',
+      },
+      {
+        checkbox: 'show_total_hackathon_registrations',
+        min: 'min_total_hackathon_registrations',
+        max: 'max_total_hackathon_registrations',
+      },
+      {
+        checkbox: 'show_total_invited_attended_events',
+        min: 'min_total_invited_attended_events',
+        max: 'max_total_invited_attended_events',
+      },
+      {
+        checkbox: 'show_total_skipped_events',
+        min: 'min_total_skipped_events',
+        max: 'max_total_skipped_events',
+      },
+      {
+        checkbox: 'show_total_uninvited_attended_events',
+        min: 'min_total_uninvited_attended_events',
+        max: 'max_total_uninvited_attended_events',
+      },
+      {
+        checkbox: 'show_total_volunteered_events',
+        min: 'min_total_volunteered_events',
+        max: 'max_total_volunteered_events',
+      },
+    ];
+
+    // Loop through requiredFields to check each condition
+    return requiredFields.some((field) => {
+      if (formValues[field.checkbox]) {
+        // If checkbox is true, min and max values are required
+        return !formValues[field.min] || !formValues[field.max];
+      }
+      return false;
+    });
+  }
+
   applyUserEngagementFilter() {
+    this.isLoading = true;
+    this.emptyMessage = 'Loading';
     this.community_engagement_filters = {};
     const formValues = this.userEngagementFilter.value;
     if (formValues.show_total_channel_messages) {
-      this.community_engagement_filters.total_channel_messages = `[${formValues.min_total_channel_messages}, ${formValues.max_total_channel_messages}]`;
+      this.community_engagement_filters.total_channel_messages = [
+        formValues.min_total_channel_messages,
+        formValues.max_total_channel_messages,
+      ];
+    }
+    if (formValues.show_total_event_registrations) {
+      this.community_engagement_filters.total_event_registrations = [
+        formValues.min_total_event_registrations,
+        formValues.max_total_event_registrations,
+      ];
+    }
+    if (formValues.show_total_event_speaker_registrations) {
+      this.community_engagement_filters.total_event_speaker_registrations = [
+        formValues.min_total_event_speaker_registrations,
+        formValues.max_total_event_speaker_registrations,
+      ];
+    }
+    if (formValues.show_total_event_speaker_sessions) {
+      this.community_engagement_filters.total_event_speaker_sessions = [
+        formValues.min_total_event_speaker_sessions,
+        formValues.max_total_event_speaker_sessions,
+      ];
+    }
+    if (formValues.show_total_hackathon_registrations) {
+      this.community_engagement_filters.total_hackathon_registrations = [
+        formValues.min_total_hackathon_registrations,
+        formValues.max_total_hackathon_registrations,
+      ];
+    }
+    if (formValues.show_total_invited_attended_events) {
+      this.community_engagement_filters.total_invited_attended_events = [
+        formValues.min_total_invited_attended_events,
+        formValues.max_total_invited_attended_events,
+      ];
+    }
+    if (formValues.show_total_skipped_events) {
+      this.community_engagement_filters.total_skipped_events = [
+        formValues.min_total_skipped_events,
+        formValues.max_total_skipped_events,
+      ];
+    }
+    if (formValues.show_total_uninvited_attended_events) {
+      this.community_engagement_filters.total_uninvited_attended_events = [
+        formValues.min_total_uninvited_attended_events,
+        formValues.max_total_uninvited_attended_events,
+      ];
+    }
+    if (formValues.show_total_volunteered_events) {
+      this.community_engagement_filters.total_volunteered_events = [
+        formValues.min_total_volunteered_events,
+        formValues.max_total_volunteered_events,
+      ];
+    }
+    if (formValues.show_attended_events) {
+      this.community_engagement_filters.attended_events = {
+        attendance: formValues.attended_events_attendance,
+        slugs: formValues.attended_events_slugs,
+      };
     }
     this.getResponses();
+  }
+
+  clearUserEngagementFilter() {
+    this.community_engagement_filters = {};
+    this.getResponses();
+  }
+
+  hasCommunityEngagementFilters(): boolean {
+    return Object.keys(this.community_engagement_filters).length > 0;
+  }
+
+  getAttendeeEventList() {
+    if (!this.attendedEventList) {
+      this.dataFormEntityResponseGroupsService
+        .getAttendeeEventList(this.eventDataFormEntityGroupId)
+        .subscribe((data) => {
+          this.attendedEventList = data;
+        });
+    }
   }
 }

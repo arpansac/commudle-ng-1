@@ -257,7 +257,16 @@
             </div>
 
             <div>
-              <p class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">Filter</p>
+              <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
+                <fa-icon [icon]="icons.faFilter"></fa-icon> Filter
+              </span>
+              &nbsp; &nbsp; &nbsp;
+              <span
+                (click)="clearUserEngagementFilter()"
+                class="com-text-red-500 com-cursor-pointer"
+                *ngIf="hasCommunityEngagementFilters()"
+                >Clear Filters</span
+              >
             </div>
           </ng-template>
 
@@ -584,7 +593,7 @@
 <ng-template #userEngagementFilterTemplate let-ref="dialogRef">
   <nb-card class="user-engagement-filter">
     <nb-card-header>
-      <div>Delete Page</div>
+      <div>Filter User Engagement</div>
       <button ghost nbButton size="small" (click)="ref.close()">
         <nb-icon icon="close"></nb-icon>
       </button>
@@ -600,6 +609,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_channel_messages').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_channel_messages" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_channel_messages" placeholder="100" />
           </div>
@@ -614,6 +624,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_event_registrations').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_event_registrations" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_event_registrations" placeholder="100" />
           </div>
@@ -628,6 +639,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_event_speaker_registrations').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_event_speaker_registrations" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_event_speaker_registrations" placeholder="100" />
           </div>
@@ -642,6 +654,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_event_speaker_sessions').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_event_speaker_sessions" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_event_speaker_sessions" placeholder="100" />
           </div>
@@ -656,6 +669,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_hackathon_registrations').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_hackathon_registrations" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_hackathon_registrations" placeholder="100" />
           </div>
@@ -670,6 +684,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_invited_attended_events').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_invited_attended_events" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_invited_attended_events" placeholder="100" />
           </div>
@@ -684,6 +699,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_skipped_events').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_skipped_events" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_skipped_events" placeholder="100" />
           </div>
@@ -698,6 +714,7 @@
           <div *ngIf="userEngagementFilter.get('show_total_uninvited_attended_events').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_uninvited_attended_events" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_uninvited_attended_events" placeholder="100" />
           </div>
@@ -712,15 +729,58 @@
           <div *ngIf="userEngagementFilter.get('show_total_volunteered_events').value">
             <label>Min:</label>
             <input nbInput type="number" formControlName="min_total_volunteered_events" placeholder="0" />
+            &nbsp;
             <label>Max:</label>
             <input nbInput type="number" formControlName="max_total_volunteered_events" placeholder="100" />
+          </div>
+        </div>
+
+        <!-- show_attended_events -->
+        <div class="form-group">
+          <label>
+            <nb-checkbox type="checkbox" formControlName="show_attended_events" />
+            Show Attended Events
+          </label>
+
+          <div *ngIf="userEngagementFilter.get('show_attended_events').value" class="attended-dropdown">
+            <div class="select">
+              <select
+                formControlName="attended_events_attendance"
+                [ngClass]="{
+                  'com-text-[#8E9BB3]': userEngagementFilter.controls['attended_events_attendance'].value === ''
+                }"
+              >
+                <option value="" selected disabled>Select attendee type</option>
+                <option [value]="true">Has Attended</option>
+                <option [value]="false">Not Attended</option>
+              </select>
+            </div>
+            <div class="select">
+              <select
+                multiple
+                formControlName="attended_events_slugs"
+                [ngClass]="{
+                  'com-text-[#8E9BB3]': userEngagementFilter.controls['attended_events_slugs'].value === ''
+                }"
+              >
+                <option value="" selected disabled>Select event slugs</option>
+                <option *ngFor="let event of attendedEventList" [value]="event.slug">{{ event.name }}</option>
+              </select>
+            </div>
           </div>
         </div>
       </form>
     </nb-card-body>
 
     <nb-card-footer>
-      <button nbButton status="primary" (click)="applyUserEngagementFilter()">Apply</button>
+      <button
+        nbButton
+        status="primary"
+        (click)="applyUserEngagementFilter(); ref.close()"
+        [disabled]="isApplyDisabled()"
+      >
+        Apply
+      </button>
       <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>

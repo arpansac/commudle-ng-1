@@ -5,6 +5,7 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { IDataFormEntityResponseGroups } from 'apps/shared-models/data_form_entity_response_groups.model';
+import { IEvent } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class DataFormEntityResponseGroupsService {
       params = params.set('event_location_track_id', eventLocationTrackId);
     }
     if (communityEngagementFilters) {
-      params = params.set('community_engagement_filters', JSON.stringify(communityEngagementFilters));
+      formData.append('community_engagement_filters', JSON.stringify(communityEngagementFilters));
     }
     return this.http.post<any>(
       this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_ENTITY_RESPONSE_GROUPS.GET_EVENT_DATA_FORM_RESPONSES),
@@ -103,6 +104,14 @@ export class DataFormEntityResponseGroupsService {
       token,
       rsvp_status: rsvpStatus,
     });
+  }
+
+  getAttendeeEventList(eventDataFormEntityGroupId: number): Observable<IEvent[]> {
+    const params = new HttpParams().set('event_data_form_entity_group_id', eventDataFormEntityGroupId);
+    return this.http.get<IEvent[]>(
+      this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_ENTITY_RESPONSE_GROUPS.ALL_ATTENDED_EVENTS_FILTERS),
+      { params },
+    );
   }
 
   pGetEventSpeakers(eventId): Observable<IDataFormEntityResponseGroups> {
