@@ -593,10 +593,10 @@ export class EventFormResponsesComponent implements OnInit {
         formValues.max_total_volunteered_events,
       ];
     }
-    if (formValues.show_attended_events) {
+    if (formValues.show_attended_events && formValues.attended_events_attendance && formValues.attended_events_slugs) {
       this.community_engagement_filters.attended_events = {
         attendance: formValues.attended_events_attendance,
-        slugs: formValues.attended_events_slugs,
+        slugs: [formValues.attended_events_slugs],
       };
     }
     this.getResponses();
