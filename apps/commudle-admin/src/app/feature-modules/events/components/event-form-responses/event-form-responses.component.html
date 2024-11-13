@@ -628,7 +628,9 @@
                 }"
               >
                 <option value="" disabled>Select event slugs</option>
-                <option *ngFor="let event of attendedEventList" [value]="event.slug">{{ event.name }}</option>
+                <option *ngFor="let event of attendedEventList | orderBy : ['name'] : ['asc']" [value]="event.slug">
+                  {{ event.name }} - {{ event.kommunity.name }}
+                </option>
               </select>
             </div>
           </div>
