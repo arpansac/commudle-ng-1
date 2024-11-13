@@ -194,18 +194,10 @@ export class EventFormResponsesComponent implements OnInit {
       .pipe(
         debounceTime(800),
         switchMap(() => {
-          const formData = new FormData();
           this.rows = [];
           this.page = 1;
           this.emptyMessage = 'Loading...';
-          if (this.forms.length > 0) {
-            for (const form of this.forms) {
-              if (form && form.get('v').value !== '') {
-                formData.append(`qres[]q`, form.get('q').value);
-                formData.append(`qres[]v`, form.get('v').value);
-              }
-            }
-          }
+
           return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
             this.eventDataFormEntityGroupId,
             this.searchForm.get('name').value.toLowerCase(),
@@ -214,7 +206,7 @@ export class EventFormResponsesComponent implements OnInit {
             this.count,
             this.gender,
             this.selectedEventLocationTrackId,
-            formData,
+            this.getFormData(),
             Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
           );
         }),
@@ -273,16 +265,7 @@ export class EventFormResponsesComponent implements OnInit {
   setPage(pageNumber) {
     this.page = pageNumber + 1;
     if (this.searchForm.get('name').value) {
-      const formData = new FormData();
       this.emptyMessage = 'Loading...';
-      if (this.forms.length > 0) {
-        for (const form of this.forms) {
-          if (form && form.get('v').value !== '') {
-            formData.append(`qres[]q`, form.get('q').value);
-            formData.append(`qres[]v`, form.get('v').value);
-          }
-        }
-      }
       this.dataFormEntityResponseGroupsService
         .getEventDataFormResponses(
           this.eventDataFormEntityGroupId,
@@ -292,7 +275,7 @@ export class EventFormResponsesComponent implements OnInit {
           this.count,
           this.gender,
           this.selectedEventLocationTrackId,
-          formData,
+          this.getFormData(),
           Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
         )
         .subscribe((data) => {
@@ -304,18 +287,10 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   getResponses() {
-    const formData = new FormData();
     this.emptyMessage = 'Loading...';
     this.isLoading = false;
     this.rows = [];
-    if (this.forms.length > 0) {
-      for (const form of this.forms) {
-        if (form && form.get('v').value !== '') {
-          formData.append(`qres[]q`, form.get('q').value);
-          formData.append(`qres[]v`, form.get('v').value);
-        }
-      }
-    }
+
     this.dataFormEntityResponseGroupsService
       .getEventDataFormResponses(
         this.eventDataFormEntityGroupId,
@@ -325,7 +300,7 @@ export class EventFormResponsesComponent implements OnInit {
         this.count,
         this.gender,
         this.selectedEventLocationTrackId,
-        formData,
+        this.getFormData(),
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
       .subscribe((data) => {
@@ -445,7 +420,6 @@ export class EventFormResponsesComponent implements OnInit {
     this.forms[i] = newForm;
     question.editMode = true;
     const vControl = newForm.get('v');
-    const formData = new FormData();
 
     if (vControl) {
       vControl.valueChanges
@@ -455,12 +429,6 @@ export class EventFormResponsesComponent implements OnInit {
             this.rows = [];
             this.page = 1;
             this.emptyMessage = 'Loading...';
-            for (const form of this.forms) {
-              if (form && form.get('v').value !== '') {
-                formData.append(`qres[]q`, form.get('q').value);
-                formData.append(`qres[]v`, form.get('v').value);
-              }
-            }
             return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
               this.eventDataFormEntityGroupId,
               this.searchForm.get('name').value.toLowerCase(),
@@ -469,7 +437,7 @@ export class EventFormResponsesComponent implements OnInit {
               this.count,
               this.gender,
               this.selectedEventLocationTrackId,
-              formData,
+              this.getFormData(),
               Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
             );
           }),
@@ -651,5 +619,28 @@ export class EventFormResponsesComponent implements OnInit {
           this.attendedEventList = data;
         });
     }
+  }
+
+  getFormData() {
+    // Create a Map to hold unique keys
+    const uniqueEntries = new Map();
+
+    for (const form of this.forms) {
+      if (form && form.get('v').value !== '') {
+        const qValue = form.get('q').value;
+        const vValue = form.get('v').value;
+
+        // Update the Map with the latest value for each unique `q` key
+        uniqueEntries.set(qValue, vValue);
+      }
+    }
+
+    // Clear the formData and re-add only unique entries
+    const formData = new FormData();
+    uniqueEntries.forEach((vValue, qValue) => {
+      formData.append(`qres[]q`, qValue);
+      formData.append(`qres[]v`, vValue);
+    });
+    return formData;
   }
 }
