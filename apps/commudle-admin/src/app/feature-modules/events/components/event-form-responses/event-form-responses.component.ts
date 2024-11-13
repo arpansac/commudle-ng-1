@@ -226,6 +226,7 @@ export class EventFormResponsesComponent implements OnInit {
     this.gender = '';
     this.registrationStatusId = 0;
     this.selectedEventLocationTrackId = 0;
+    this.community_engagement_filters = {};
   }
 
   registrationStatusFilter(event) {
@@ -475,6 +476,10 @@ export class EventFormResponsesComponent implements OnInit {
 
   isApplyDisabled(): boolean {
     const formValues = this.userEngagementFilter.value;
+
+    // Helper function to check if a field has a valid value
+    const isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
+
     // Check for each checkbox; if checked, min and max must be filled
     const requiredFields = [
       {
@@ -524,11 +529,30 @@ export class EventFormResponsesComponent implements OnInit {
       },
     ];
 
+    // Check the condition for show_attended_events
+    if (
+      formValues['show_attended_events'] &&
+      (!isValidValue(formValues['attended_events_attendance']) || !isValidValue(formValues['attended_events_slugs']))
+    ) {
+      return true; // If show_attended_events is true and the other two fields are not filled, disable the apply button
+    }
+
     // Loop through requiredFields to check each condition
     return requiredFields.some((field) => {
       if (formValues[field.checkbox]) {
         // If checkbox is true, min and max values are required
-        return !formValues[field.min] || !formValues[field.max];
+        const minValue = formValues[field.min];
+        const maxValue = formValues[field.max];
+
+        // Check if min or max is not filled
+        if (!isValidValue(minValue) || !isValidValue(maxValue)) {
+          return true;
+        }
+
+        // Ensure max is greater than or equal to min
+        if (Number(minValue) > Number(maxValue)) {
+          return true; // If max is less than min, disable the apply button
+        }
       }
       return false;
     });
