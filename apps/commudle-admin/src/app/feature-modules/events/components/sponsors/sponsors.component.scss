@@ -145,3 +145,10 @@ nb-tabset.new-event-sponsor-options {
 h6 {
   @apply com-m-0 com-flex com-items-center;
 }
+
+.remove-sponsor-confirmation {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-items-center com-justify-between;
+  }
+}

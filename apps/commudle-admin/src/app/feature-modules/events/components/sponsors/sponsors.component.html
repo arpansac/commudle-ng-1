@@ -34,7 +34,7 @@
               </small>
             </p>
             <a
-              (click)="removeSponsor(eventSponsor.id, i)"
+              (click)="openConfirmDeleteDialog(sponsorFormTemplate, eventSponsor, i)"
               *ngIf="event.editable"
               class="remove-sponsor-button clickable"
             >
@@ -119,4 +119,22 @@
       </form>
     </nb-tab>
   </nb-tabset>
+</ng-template>
+
+<ng-template #sponsorFormTemplate let-ref="dialogRef" let-data>
+  <nb-card class="remove-sponsor-confirmation">
+    <nb-card-header>
+      <div>Remove Sponsor</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body> Are you sure you want to remove this sponsor? </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="removeSponsor(data.sponsor_id, data.index); ref.close()">
+        Remove
+      </button>
+      <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
 </ng-template>
