@@ -174,3 +174,35 @@ fa-icon {
     }
   }
 }
+
+.filter {
+  @apply com-cursor-pointer;
+}
+.user-engagement-filter {
+  @apply com-w-full md:com-w-[45dvw] com-h-full md:com-max-h-[90dvh];
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  nb-card-body {
+    form {
+      @apply com-flex com-flex-col com-gap-2;
+      .form-group {
+        @apply com-flex com-items-center com-gap-4 com-justify-between com-h-10;
+        > label {
+          @apply com-flex com-gap-3;
+        }
+      }
+      .attended-dropdown {
+        @apply com-grid com-grid-cols-2 com-w-3/5 com-gap-3;
+      }
+
+      .select {
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+        select {
+          @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+        }
+      }
+    }
+  }
+}
