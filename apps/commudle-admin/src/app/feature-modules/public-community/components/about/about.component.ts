@@ -10,6 +10,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { AuthService, CommunityChannelManagerService, CommunityChannelsService } from '@commudle/shared-services';
 import { EDbModels, ICommunityChannel } from '@commudle/shared-models';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { environment } from 'apps/commudle-admin/src/environments/environment';
 
 @Component({
   selector: 'app-about',
@@ -26,6 +27,7 @@ export class AboutComponent implements OnInit {
   isLoading = false;
   defaultChannel: ICommunityChannel;
   currentUser: IUser;
+  eventForSchema = [];
 
   icons = {
     faUsers,
@@ -79,6 +81,7 @@ export class AboutComponent implements OnInit {
     this.eventsService.pGetCommunityEvents('future', this.community.id).subscribe((data) => {
       this.upcomingEvents = data.values;
       this.isLoadingEvents = false;
+      this.setSchema();
     });
   }
 
@@ -89,5 +92,49 @@ export class AboutComponent implements OnInit {
         if (this.currentUser) this.communityChannelManagerService.getChannelRoles(data);
         this.defaultChannel = data;
       });
+  }
+
+  setSchema() {
+    for (const event of this.upcomingEvents) {
+      let location: object, eventStatus: string;
+      if (event.event_locations && Object.keys(event.event_locations).length > 0) {
+        location = {
+          '@type': 'Place',
+          name: event.event_locations[0].name,
+          address: event.event_locations[0].address,
+        };
+        eventStatus = 'OfflineEventAttendanceMode';
+      } else {
+        location = {
+          '@type': 'VirtualLocation',
+          url: environment.app_url + '/communities/' + event.kommunity_slug + '/events/' + event.slug,
+        };
+        eventStatus = 'OnlineEventAttendanceMode';
+      }
+      this.eventForSchema.push({
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        name: event.name,
+        // description: event.description.replace(/<[^>]*>/g, '').substring(0, 200),
+        image: event.header_image_path ? event.header_image_path : event.kommunity.logo_image_path.url,
+        startDate: event.start_time,
+        endDate: event.end_time,
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: 'https://schema.org/' + eventStatus,
+        location: location,
+        organizer: {
+          '@type': 'Organization',
+          // name: event.kommunity.name,
+          url: environment.app_url + '/communities/' + event.kommunity_slug,
+        },
+        offers: {
+          '@type': 'Offer',
+          name: event.name,
+          url: environment.app_url + '/communities/' + event.kommunity_slug + '/events/' + event.slug,
+        },
+      });
+    }
+
+    this.seoService.setSchema(this.eventForSchema);
   }
 }
