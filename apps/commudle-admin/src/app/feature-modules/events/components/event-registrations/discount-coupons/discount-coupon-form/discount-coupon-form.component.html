@@ -71,6 +71,34 @@
           <input formControlName="max_limit" nbInput fullWidth type="number" placeholder="Max Limit" />
         </label>
 
+        <div class="com-flex com-gap-2">
+          <!-- min_users_count -->
+          <label>
+            Min users count
+            <input
+              formControlName="min_users_count"
+              nbInput
+              fullWidth
+              type="number"
+              placeholder="Min users count"
+              min="1"
+            />
+          </label>
+
+          <!-- max_users_count -->
+          <label>
+            Max users count
+            <input
+              formControlName="max_users_count"
+              nbInput
+              fullWidth
+              type="number"
+              placeholder="Max users count"
+              min="1"
+            />
+          </label>
+        </div>
+
         <!-- Expires At* -->
         <label class="com-col-span-1">
           <div>
