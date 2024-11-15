@@ -17,6 +17,12 @@
     <td>Discount Amount</td>
     <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.discount_amount / 100 }}</td>
   </tr>
+  <tr *ngIf="detail.discount_amount > 0 && detail.discount_code">
+    <td>Discount code</td>
+    <td>
+      {{ detail.discount_code.code }}
+    </td>
+  </tr>
   <tr *ngIf="detail.transfer_id">
     <td>Transfer Id</td>
     <td>{{ detail.transfer_id }}</td>
