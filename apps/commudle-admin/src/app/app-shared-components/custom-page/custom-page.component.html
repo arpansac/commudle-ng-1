@@ -30,7 +30,7 @@
     </td>
     <td>
       <div class="action">
-        <button [routerLink]="['../edit', page.slug]" nbButton status="primary" size="tiny">
+        <button [routerLink]="['edit', page.slug]" nbButton status="primary" size="tiny">
           <nb-icon icon="edit"></nb-icon> Edit
         </button>
         <button (click)="openConfirmDialogBox(deleteDialog, page.id, i)" nbButton status="danger" outline size="tiny">
