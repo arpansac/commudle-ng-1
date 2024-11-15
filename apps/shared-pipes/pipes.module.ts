@@ -13,7 +13,6 @@ import { TextToLinksPipe } from './text-to-links.pipe';
 import { TruncateTextPipe } from './truncate-text.pipe';
 import { GroupByDatePipe } from './group-by.pipe';
 import { ReplaceSpacePipe } from './replace-space.pipe';
-import { FileBlobPipe } from './file-blob.pipe';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,6 @@ import { FileBlobPipe } from './file-blob.pipe';
     CapitalizeAndRemoveUnderscorePipe,
     GroupByDatePipe,
     ReplaceSpacePipe,
-    FileBlobPipe,
   ],
   imports: [],
   exports: [
@@ -49,7 +47,6 @@ import { FileBlobPipe } from './file-blob.pipe';
     CapitalizeAndRemoveUnderscorePipe,
     GroupByDatePipe,
     ReplaceSpacePipe,
-    FileBlobPipe,
   ],
 })
 export class SharedPipesModule {}
