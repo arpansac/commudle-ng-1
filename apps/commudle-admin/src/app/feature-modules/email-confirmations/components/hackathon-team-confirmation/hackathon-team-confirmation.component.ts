@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
-import { IHackathonUserResponse, EInvitationStatus } from 'apps/shared-models/hackathon-user-response.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
+import { EInvitationStatus, IHackathonUserResponse } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-team-confirmation',
@@ -26,7 +26,6 @@ export class HackathonTeamConfirmationComponent implements OnInit {
     private hurService: HackathonUserResponsesService,
     private seoService: SeoService,
     private nbDialogService: NbDialogService,
-    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -37,8 +36,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
         this.hur = data.hackathon_user_response;
         if (this.hur.invite_status === EInvitationStatus.INVITED || Number(params.status) === 1) {
           this.onAcceptRoleButton();
-        }
-        if (Number(params.status) === 2) {
+        } else if (Number(params.status) === 2) {
           this.activateRole(this.token, EInvitationStatus.REJECTED);
         } else {
           this.onAcceptRoleButton();

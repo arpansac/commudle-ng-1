@@ -49,6 +49,18 @@ const routes: Routes = [
             component: PublicHackathonChannelsComponent,
           },
           {
+            path: 'channels/:community_channel_id',
+            component: PublicHackathonChannelsComponent,
+          },
+          {
+            path: 'channels/join/:token',
+            component: PublicHackathonChannelsComponent,
+          },
+          {
+            path: 'channels/email-join/:email_token',
+            component: PublicHackathonChannelsComponent,
+          },
+          {
             path: 'user-dashboard',
             component: PublicHackathonUserDashboardComponent,
           },

@@ -43,7 +43,7 @@
           <nb-icon icon="more-vertical" pack="eva"></nb-icon>
         </div>
       </div>
-      <div *ngIf="canReply" class="replies">
+      <div class="replies">
         <div
           class="com-border-0 com-border-l-[0.5px] com-border-solid com-border-gray-300"
           *ngFor="let reply of message.user_messages"
@@ -123,7 +123,7 @@
     <nb-card-body>
       <commudle-editor
         (inViewportAction)="markAsRead(message?.id, $event)"
-        (contentChange)="communityChannelHandlerService.edit(message.id, $event); editMessageTemplateRef.close()"
+        (contentChange)="editMessage(message, $event); editMessageTemplateRef.close()"
         [content]="message.content"
         [editable]="true"
         [inViewportOptions]="{ threshold: [0] }"

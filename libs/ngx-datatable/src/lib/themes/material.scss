@@ -101,19 +101,9 @@ $datatable-summary-row-background-hover: #ddd !default;
   }
 
   &:not(.cell-selection) {
-    .datatable-body-row {
-      &:hover,
-      &:hover .datatable-row-group {
-        background-color: $ngx-datatable-default-background-hover;
-        transition-property: background;
-        transition-duration: 0.3s;
-        transition-timing-function: linear;
-      }
-
-      &:focus,
-      &:focus .datatable-row-group {
-        background-color: $ngx-datatable-default-background-focus;
-      }
+    &:focus,
+    &:focus .datatable-row-group {
+      background-color: $ngx-datatable-default-background-focus;
     }
   }
 
@@ -340,15 +330,7 @@ $datatable-summary-row-background-hover: #ddd !default;
     font-weight: 400;
     color: $datatable-footer-cell-color;
 
-    .page-count {
-      line-height: 50px;
-      height: 50px;
-      padding: 0 1.2rem;
-    }
-
     .datatable-pager {
-      margin: 0 10px;
-
       li {
         vertical-align: middle;
 

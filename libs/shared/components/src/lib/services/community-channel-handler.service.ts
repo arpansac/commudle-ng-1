@@ -103,14 +103,12 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.flag(messageId);
   }
 
-  sendDelete(messageId: number, isSelfMessage?: boolean) {
+  sendDelete(messageId: number) {
     if (this.permittedActions.value.includes('blocked')) {
       return;
     }
 
-    if (isSelfMessage) {
-      this.CommunityChannelChatChannel.delete(messageId);
-    }
+    this.CommunityChannelChatChannel.delete(messageId);
   }
 
   pin(messageId: number) {
@@ -121,8 +119,8 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.unPin(messageId);
   }
 
-  edit(messageId: number, update_message) {
-    this.CommunityChannelChatChannel.update(messageId, update_message);
+  edit(message: IUserMessage, update_message) {
+    this.CommunityChannelChatChannel.update(message.id, update_message);
   }
 
   addMessage(message: IUserMessage, cursor: string) {

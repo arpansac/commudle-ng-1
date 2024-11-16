@@ -1,8 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable no-case-declarations */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EDbModels, ICommunity } from '@commudle/shared-models';
-import { NbDialogService } from '@commudle/theme';
+import { EDbModels, ICommunity, IHackathon } from '@commudle/shared-models';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { NewCommunityChannelComponent } from 'apps/commudle-admin/src/app/feature-modules/community-channels/components/new-community-channel/new-community-channel.component';
 import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/community-channels/model/discussion-type.enum';
 import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/community-channel-manager.service';
@@ -12,9 +13,6 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { faEye, faLock, faPen, faTrash, faUserPlus, faThumbTack } from '@fortawesome/free-solid-svg-icons';
-import { DeleteChannelComponent } from 'apps/commudle-admin/src/app/feature-modules/community-channels/components/channel-settings/delete-channel/delete-channel.component';
-import { InviteFormComponent } from 'apps/commudle-admin/src/app/feature-modules/community-channels/components/channel-settings/invite-form/invite-form.component';
-import { EditChannelComponent } from 'apps/commudle-admin/src/app/feature-modules/community-channels/components/channel-settings/edit-channel/edit-channel.component';
 import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
@@ -26,7 +24,7 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 })
 export class CommunityForumComponent implements OnInit {
   @Input() isCommunityOrganizer = false;
-  parent: ICommunity | ICommunityGroup;
+  parent: ICommunity | ICommunityGroup | IHackathon;
   parentType: EDbModels;
   selectedForum: ICommunityChannel[];
   discussion: IDiscussion;
@@ -44,6 +42,7 @@ export class CommunityForumComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   @Output() updateSelectedForum = new EventEmitter<number>();
+  dialogRef: NbDialogRef<any>;
 
   constructor(
     private communityChannelManagerService: CommunityChannelManagerService,
@@ -76,7 +75,7 @@ export class CommunityForumComponent implements OnInit {
   }
 
   openChat(forumId) {
-    this.updateSelectedForum.emit(forumId);
+    // this.updateSelectedForum.emit(forumId);
     let urlSegments = [];
     switch (this.parentType) {
       case EDbModels.KOMMUNITY:
@@ -84,6 +83,12 @@ export class CommunityForumComponent implements OnInit {
         break;
       case EDbModels.COMMUNITY_GROUP:
         urlSegments = ['orgs', this.parent.slug, 'forums', forumId];
+        break;
+      case EDbModels.HACKATHON:
+        const hackathon = this.parent as IHackathon;
+        if (hackathon.community) {
+          urlSegments = ['communities', hackathon.community.slug, 'hackathons', hackathon.slug, 'forums', forumId];
+        }
         break;
       default:
         console.error('Invalid Parent Type:', this.parentType);
@@ -117,50 +122,14 @@ export class CommunityForumComponent implements OnInit {
     });
   }
 
-  openDeleteDialogBox(channelId) {
-    const dialogRef = this.dialogService.open(DeleteChannelComponent, {
-      closeOnBackdropClick: true,
-      hasBackdrop: true,
-      hasScroll: true,
-      context: {
-        channelId: channelId,
-        currentUrl: 'communities/' + this.parent.slug + '/forums',
-        // discussionType: this.discussionType.CHANNEL,
-      },
-    });
-    dialogRef.componentRef.instance.updateForm.subscribe(() => {
-      dialogRef.close();
+  openDialogBox(template, forum) {
+    this.dialogRef = this.dialogService.open(template, {
+      context: forum,
     });
   }
 
-  openInviteDialogBox(forum) {
-    const dialogRef = this.dialogService.open(InviteFormComponent, {
-      closeOnBackdropClick: true,
-      hasBackdrop: true,
-      hasScroll: true,
-      context: {
-        forum: forum,
-        // invite: true,
-      },
-    });
-    dialogRef.componentRef.instance.updateForm.subscribe(() => {
-      dialogRef.close();
-    });
-  }
-
-  openEditDialogBox(forum) {
-    const dialogRef = this.dialogService.open(EditChannelComponent, {
-      closeOnBackdropClick: true,
-      hasBackdrop: true,
-      hasScroll: true,
-      context: {
-        forum: forum,
-        discussionType: this.discussionType.FORUM,
-      },
-    });
-    dialogRef.componentRef.instance.updateForm.subscribe(() => {
-      dialogRef.close();
-    });
+  closeDialogBox() {
+    this.dialogRef.close();
   }
 
   pin() {

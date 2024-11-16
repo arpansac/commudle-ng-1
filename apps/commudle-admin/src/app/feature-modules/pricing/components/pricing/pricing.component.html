@@ -3,125 +3,272 @@
     <div class="background-container" [ngStyle]="{ 'background-image': getUseCaseCardsUrl() }">
       <div class="base-layout com-min-h-full">
         <div class="pricing-header">
-          <h1 class="heading">Empowering <span>DevRel </span> and Communities</h1>
-          <h2 class="subheading">
-            Commudle is an all in one platform to build and scale your developer community ecosystem. Increase your
-            team's efficiency by 10x and boost your community engagements to build thriving developer communities.
-          </h2>
+          <h1 class="heading">Select a plan for your <span>Community </span></h1>
+          <h2 class="subheading">Increase your DevRel’s efficiency by 10x and your engagements by 100x.</h2>
         </div>
       </div>
       <div>
         <div class="base-layout com-min-h-full">
-          <div class="cards">
-            <div class="enterprise-card">
-              <div class="title">
-                <p class="heading">Commudle for Businesses</p>
-                <p class="sub-heading">
-                  With Commudle, you can bring your DevRel Team, Community Leaders and Members, all at one place with
-                  seamless engagements and deep insights.
-                </p>
-                <a [routerLink]="['/fill-form', 1344]" (click)="gtmDatalayerPush('startup')">
-                  <button nbButton fullWidth status="info">Get Started</button></a
-                >
+          <div class="subscription-cards">
+            <div class="toggle-btn">
+              <div class="toggle-btn-month-annual">
+                <div class="monthly" [ngClass]="{ active: isMonthly }" (click)="toggleSubscription('monthly')">
+                  Monthly
+                </div>
+                <div class="anually" [ngClass]="{ active: isAnually }" (click)="toggleSubscription('anually')">
+                  Annual
+                </div>
               </div>
-              <div class="card-image">
-                <img src="{{ staticAssets.pricing_enterprise }}" />
-              </div>
-              <div class="features">
-                <p class="features-heading">For Businesses Focused on Techies</p>
-                <ul>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Organization dashboard</span>
-                  </li>
-
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Community and events dashboard</span>
-                  </li>
-
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Community & Event Analytics</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Access to Commudle Newsletter & On-platform campaigns</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Customized profile badges & highlights</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Exclusive conference collaboration invites</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Dedicated support for best use of Commudle</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">On platform promotional campaigns</span>
-                  </li>
-                </ul>
-              </div>
+              <form class="select" [formGroup]="countryForm">
+                <select formControlName="currency" (change)="onCountryChange()">
+                  <option [value]="countries[0].currency" selected>{{ countries[0].name }}</option>
+                  <option [value]="countries[1].currency">Global</option>
+                </select>
+              </form>
             </div>
-            <div class="students-card">
-              <div class="title">
-                <p class="heading">Commudle for Students</p>
-                <p class="sub-heading">
-                  Get a dedicated community space for all your members, their content, profiles & multiple engagement
-                  options to share knowledge and build recognition.
-                </p>
-                <a
-                  [routerLink]="['/student-non-profit-community-support']"
-                  (click)="gtmDatalayerPush('non_profit')"
-                  class="buy-btn"
-                  ><button nbButton outline fullWidth status="info">Apply Now</button></a
-                >
-              </div>
-              <div class="card-image">
-                <img src="{{ staticAssets.pricing_students }}" />
-              </div>
-              <div class="features">
-                <p class="features-heading">For The Tech Community Leaders</p>
-                <ul>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Community and events dashboard</span>
-                  </li>
+            <div class="cards">
+              <!-- STARTUP -->
+              <div *ngIf="startup" class="startup-card">
+                <div class="title-cards">
+                  <h2 class="heading">{{ startup.name }}</h2>
+                  <p class="sub-heading">
+                    {{ startup.description }}
+                  </p>
+                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                    <div *ngIf="startup.priceDetails" class="price">
+                      <!-- MONTHLY  -->
+                      <ng-container *ngIf="isMonthly">
+                        <ng-container *ngFor="let item of startup.priceDetails[1].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
 
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Member management</span>
-                  </li>
+                      <!-- ANUALLY -->
+                      <ng-container *ngIf="isAnually">
+                        <ng-container *ngFor="let item of startup.priceDetails[0].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
 
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Community & Event Analytics</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Community newsletters</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Online & Offline events with smart shortlisting</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Channels and forums</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Generative member growth</span>
-                  </li>
-                  <li>
-                    <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
-                    <span class="feature">Networking with experts and community leaders</span>
-                  </li>
-                </ul>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                    <p class="monthly-yearly">
+                      {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annually' }}
+                    </p>
+                  </div>
+                </div>
+                <div class="features">
+                  <p class="features-heading">Key Features</p>
+                  <ul>
+                    <li *ngFor="let feature of startup.key_features">
+                      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                      <span class="feature">{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ startup.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+              </div>
+
+              <!-- ENTERPRISE -->
+              <div *ngIf="enterprise" class="enterprise-card active-border">
+                <div class="title-cards">
+                  <h2 class="heading">{{ enterprise.name }}</h2>
+                  <p class="sub-heading">
+                    {{ enterprise.description }}
+                  </p>
+                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                    <div *ngIf="enterprise.priceDetails" class="price">
+                      <!-- MONTHLY  -->
+                      <ng-container *ngIf="isMonthly">
+                        <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <!-- ANUALLY -->
+                      <ng-container *ngIf="isAnually">
+                        <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+
+                    <p class="monthly-yearly">
+                      {{ isMonthly ? 'per community/month billed monthly' : 'per community/month billed annually' }}
+                    </p>
+                  </div>
+                </div>
+                <div class="features">
+                  <p class="features-heading">Key Features</p>
+                  <ul>
+                    <li *ngFor="let feature of enterprise.key_features">
+                      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                      <span class="feature">{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ enterprise.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+              </div>
+
+              <!-- DEVREL -->
+              <div *ngIf="devrel" class="devrel-card">
+                <div class="title-cards">
+                  <h2 class="heading">{{ devrel.name }}</h2>
+                  <p class="sub-heading">
+                    {{ devrel.description }}
+                  </p>
+                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                    <div *ngIf="devrel.priceDetails" class="price">
+                      <!-- MONTHLY  -->
+                      <ng-container *ngIf="isMonthly">
+                        <ng-container *ngFor="let item of devrel.priceDetails[1].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                      <!-- ANUALLY -->
+                      <ng-container *ngIf="isAnually">
+                        <ng-container *ngFor="let item of devrel.priceDetails[0].details">
+                          <ng-container *ngIf="item.currencyType === selectedCurrency">
+                            <span class="current-price">{{
+                              item.price_after_discount ? item.price_after_discount : item.price
+                            }}</span>
+                            <ng-container *ngIf="item.price_after_discount">
+                              <div class="discount">
+                                <p class="discount-percentage">
+                                  {{ item.discount_percentage }}
+                                </p>
+                                <div>
+                                  <span class="discount-price">{{ item.price }}</span>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                    <p class="monthly-yearly">Contact us for best pricing</p>
+                  </div>
+                </div>
+                <div class="features">
+                  <p class="features-heading">Key Features</p>
+                  <ul>
+                    <li *ngFor="let feature of devrel.key_features">
+                      <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                      <span class="feature">{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
+                      {{ devrel.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -137,827 +284,356 @@
             </div>
           </blockquote>
         </section>
-      </div>
 
-      <!-- Feature comparison (Desktop) -->
-      <div class="base-layout com-min-h-full">
-        <div class="pricing-features">
-          <div
-            class="md:com-mt-[150px] com-max-w-7xl com-min-w-[60rem] md:com-mx-auto md:com-px-8 md:com-m-0 com-mx-3 com-p-0"
-          >
-            <p class="pricing-features-heading">Features to Grow Your Communities</p>
-            <div class="pricing-feature-headings sticky"></div>
-            <div class="pricing-feature-subheadings">Organization</div>
+        <div class="base-layout com-min-h-full">
+          <div class="pricing-features">
+            <h2 class="pricing-features-heading">Discover the Plan That's Right for You</h2>
+            <h3 class="pricing-features-subheading">Here are all the amazing features included in our plans</h3>
+            <div *appBreakpoints="'>lg'" class="subscription-container">
+              <div></div>
+              <div *ngIf="startup" class="subscription-header">
+                <p class="heading">{{ startup.name }}</p>
+                <div class="header-price">
+                  <span *ngIf="startup?.priceDetails">
+                    <!-- MONTHLY  -->
+                    <ng-container *ngIf="isMonthly">
+                      <ng-container *ngFor="let item of startup.priceDetails[1].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
 
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <!-- ANUALLY -->
+                    <ng-container *ngIf="isAnually">
+                      <ng-container *ngFor="let item of startup.priceDetails[0].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
+
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </span>
                 </div>
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+              </div>
+              <div *ngIf="enterprise" class="subscription-header">
+                <p class="heading">{{ enterprise.name }}</p>
+                <div class="header-price">
+                  <span *ngIf="enterprise?.priceDetails">
+                    <!-- MONTHLY  -->
+                    <ng-container *ngIf="isMonthly">
+                      <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+
+                    <!-- ANUALLY -->
+                    <ng-container *ngIf="isAnually">
+                      <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
+
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </span>
+                </div>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
 
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Organization page">
-                    <th class="heading" scope="row">Organization page</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
+              <div *ngIf="devrel" class="subscription-header">
+                <p class="heading">{{ devrel.name }}</p>
+                <div class="header-price">
+                  <span *ngIf="devrel?.priceDetails">
+                    <!-- MONTHLY  -->
+                    <ng-container *ngIf="isMonthly">
+                      <ng-container *ngFor="let item of devrel.priceDetails[1].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
 
-                  <tr key="Teammates">
-                    <th class="heading" scope="row">Organization Dashboard</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
 
-                  <tr key="Members">
-                    <th class="heading" scope="row">Admins</th>
-                    <td class="description">
-                      <span class="item">
-                        <span class="dark">Unlimited</span>
-                      </span>
-                    </td>
-                  </tr>
+                    <!-- ANUALLY -->
+                    <ng-container *ngIf="isAnually">
+                      <ng-container *ngFor="let item of devrel.priceDetails[0].details">
+                        <ng-container *ngIf="item.currencyType === selectedCurrency">
+                          <span class="discounted-price">{{
+                            item.price_after_discount ? item.price_after_discount : item.price
+                          }}</span>
 
-                  <tr key="Export data">
-                    <th class="heading" scope="row">Custom API's</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="API access">
-                    <th class="heading" scope="row">Custom Dashboards</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom APIs">
-                    <th class="heading" scope="row">Key Account Manager</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom Dashboards">
-                    <th class="heading" scope="row">Data Export</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Key Account Manager">
-                    <th class="heading" scope="row">Survey Forms</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Commudle Expert Consultation">
-                    <th class="heading" scope="row">Commudle Expert Consultations</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
+                          <ng-container *ngIf="item.price_after_discount">
+                            <span class="earlier-price">{{ item.price }}</span>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </span>
                 </div>
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
-
-            <div class="pricing-feature-subheadings">Community</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
+            <div [ngClass]="{ 'hide-all-features': !showAllFeatures }">
+              <div *ngFor="let pricingFeature of pricingFeatures" class="header-section">
+                <div *appBreakpoints="'<=lg'" class="sub-features">
+                  <p class="title">{{ pricingFeature.name }}</p>
+                  <p class="startup-title">{{ startup?.name }}</p>
+                  <p class="enterprise-title">{{ enterprise?.name }}</p>
+                  <p class="devrel-title">{{ devrel?.name }}</p>
+                </div>
+                <p *appBreakpoints="'>lg'" class="title">{{ pricingFeature.name }}</p>
+                <div *ngFor="let subFeature of pricingFeature.features" class="sub-features">
+                  <div class="feature-name">{{ subFeature.name }}</div>
+                  <p>
+                    <ng-container *ngIf="subFeature.custom_text_for_startup">
+                      <p class="description">{{ subFeature.custom_text_for_startup }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_startup && subFeature.startup">
+                      <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_startup && !subFeature.startup">
+                      <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
+                    </ng-container>
+                  </p>
+                  <p class="enterprise-highlight">
+                    <ng-container *ngIf="subFeature.custom_text_for_enterprise">
+                      <p class="description">{{ subFeature.custom_text_for_enterprise }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && subFeature.enterprise">
+                      <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_enterprise && !subFeature.enterprise">
+                      <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
+                    </ng-container>
+                  </p>
+                  <p>
+                    <ng-container *ngIf="subFeature.custom_text_for_agency">
+                      <p class="description">{{ subFeature.custom_text_for_agency }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_agency && subFeature.agency">
+                      <fa-icon class="check-mark" [icon]="faCircleCheck"></fa-icon>
+                    </ng-container>
+                    <ng-container *ngIf="!subFeature.custom_text_for_agency && !subFeature.agency">
+                      <fa-icon class="cross-mark" [icon]="faCircleXmark"></fa-icon>
+                    </ng-container>
+                  </p>
                 </div>
               </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Community survey forms">
-                    <th class="heading" scope="row">Dashboard</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Survey Forms</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Members Dashboard</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Pages</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Newsletters</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community newsletters">
-                    <th class="heading" scope="row">Emails</th>
-                    <td class="description">
-                      <span class="item">
-                        <span class="dark">Unlimited</span>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
+              <div *ngIf="enterprise && startup && devrel" class="action-sub-features">
+                <p class="action-title">Choose a Plan</p>
+                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_startup')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ startup?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ enterprise?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
+                <ng-container *ngFor="let item of devrel.priceDetails[isMonthly ? 1 : 0].details">
+                  <a
+                    *ngIf="item.currencyType === selectedCurrency"
+                    [href]="item.url"
+                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                  >
+                    <button nbButton status="primary" size="tiny" shape="round">
+                      {{ devrel?.button_text }}
+                    </button>
+                  </a>
+                </ng-container>
               </div>
             </div>
-
-            <div class="pricing-feature-subheadings">Events</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Multiple locations & tracks">
-                    <th class="heading" scope="row">Free Tickets</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Registration forms">
-                    <th class="heading" scope="row">Paid Tickets (Stripe)</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="RSVP emails">
-                    <th class="heading" scope="row">Smart shortlisting</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="QR code entry passes">
-                    <th class="heading" scope="row">Custom Emails</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Auto attendance using QR">
-                    <th class="heading" scope="row">Email filters</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Calendar invite">
-                    <th class="heading" scope="row">RSVP</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Waitlist management">
-                    <th class="heading" scope="row">QR Scanner</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Feedback forms">
-                    <th class="heading" scope="row">Auto Online Attendance</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Preserve speaker slides">
-                    <th class="heading" scope="row">Post Event Networking</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Enlist/Highlight speakers">
-                    <th class="heading" scope="row">Calendar Invite</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Volunteers">
-                    <th class="heading" scope="row">Online Events</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Inter-community collaborations">
-                    <th class="heading" scope="row">Offline Events</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Display sponsors">
-                    <th class="heading" scope="row">Live Polls</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Live chat">
-                    <th class="heading" scope="row">QnA</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="QnA with voting">
-                    <th class="heading" scope="row">Feedback Forms</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Live polls">
-                    <th class="heading" scope="row">Speaker Session Slides Upload</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Auto mark uninvited attendees">
-                    <th class="heading" scope="row">Community Collaborations</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom emails">
-                    <th class="heading" scope="row">Volunteers/Team</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom emails">
-                    <th class="heading" scope="row">Sponsors</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom emails">
-                    <th class="heading" scope="row">Dashboard</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom emails">
-                    <th class="heading" scope="row">Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-subheadings">Commudle Stage</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Inbuilt commudle stage">
-                    <th class="heading" scope="row">Online streaming</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Streaming to youtube">
-                    <th class="heading" scope="row">Stream to YouTube (RTMP)</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="External link to another platform">
-                    <th class="heading" scope="row">External Link to Another Platform</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Youtube live embed">
-                    <th class="heading" scope="row">YouTube Embed</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Iframe embed">
-                    <th class="heading" scope="row">Iframe Embed</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-subheadings">Analytics</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Event analytics">
-                    <th class="heading" scope="row">Organization Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Community insights">
-                    <th class="heading" scope="row">Community Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Event Stats</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Member Distribution & Interest Stats</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Organization Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Community Analytics</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Event Stats</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Custom stats">
-                    <th class="heading" scope="row">Member Distribution & Interest Stats</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-subheadings">Channels & Forums</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Public channels">
-                    <th class="heading" scope="row">Public</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Private channels">
-                    <th class="heading" scope="row">Readonly</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Protected channels">
-                    <th class="heading" scope="row">Private</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Protected channels">
-                    <th class="heading" scope="row">SEO Optimization</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Protected channels">
-                    <th class="heading" scope="row">Send Message to Email</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-subheadings">Knowledge Sharing</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Labs">
-                    <th class="heading" scope="row">Labs (Tutorials)</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Builds">
-                    <th class="heading" scope="row">Builds (Projects)</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-subheadings">Developer Profile</div>
-
-            <div class="com-relative com-mt-6">
-              <!-- Fake card backgrounds -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-bg-white com-rounded-lg com-shadow-md"></div>
-                </div>
-              </div>
-
-              <table class="pricing-feature-table">
-                <tbody>
-                  <tr key="Display commudle activites">
-                    <th class="heading" scope="row">Skills</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="View speaker slides">
-                    <th class="heading" scope="row">Community activities</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Showcase apps/publications">
-                    <th class="heading" scope="row">Work History</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Blue tick (for experts)">
-                    <th class="heading" scope="row">External Content (Blogs, Videos, etc)</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Star (for community organizers)">
-                    <th class="heading" scope="row">Blue Tick for Experts</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-
-                  <tr key="Customized badges">
-                    <th class="heading" scope="row">Badges</th>
-                    <td class="description">
-                      <span class="item">
-                        <nb-icon class="dark" icon="checkmark-outline"></nb-icon>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <!-- Fake card borders -->
-              <div class="com-absolute com-inset-0 com-flex com-items-stretch com-pointer-events-none">
-                <div class="com-w-1/3 com-pr-4"></div>
-                <div class="com-w-2/3 com-px-4">
-                  <div class="com-w-full com-h-full com-rounded-lg com-ring-2 com-ring-Azure"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="pricing-feature-headings">
-              <div class="com--mt-px com-w-1/3 com-pt-10 com-pr-4 com-flex com-items-end">
-                <div class="com-mt-auto com-text-base com-font-bold com-text-gray-900">Choose a plan</div>
-              </div>
-              <div class="com-px-4 com--mt-px com-w-1/3">
-                <a [routerLink]="['/fill-form', 1344]" (click)="gtmDatalayerPush('startup')" class="buy-btn dark"
-                  >Talk to Commudle Expert</a
+            <button
+              nbButton
+              status="primary"
+              shape="semi-round"
+              *ngIf="!showAllFeatures"
+              (click)="toggleShowAllFeatures()"
+              class="show-all-features-btn"
+            >
+              <p><span>Compare All Features</span><fa-icon [icon]="faArrowDown"></fa-icon></p>
+            </button>
+          </div>
+          <div class="student-section">
+            <div class="student-section-details">
+              <h2 class="heading">Commudle for Students</h2>
+              <h3 class="sub-heading">
+                Get a dedicated community space for all your members, their content, profiles & multiple engagement
+                options to share knowledge and build recognition.
+              </h3>
+              <p class="features-heading-students">For The Tech Community Leaders</p>
+              <ul class="student-features-list">
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Community and events dashboard</span>
+                </li>
+
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Member management</span>
+                </li>
+
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Community & Event Analytics</span>
+                </li>
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Community newsletters</span>
+                </li>
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Generative member growth</span>
+                </li>
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Channels and forums</span>
+                </li>
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Online & Offline events with smart shortlisting</span>
+                </li>
+                <li>
+                  <nb-icon icon="checkmark-circle-2-outline"></nb-icon>
+                  <span class="feature">Networking with experts and community leaders</span>
+                </li>
+              </ul>
+              <a
+                [routerLink]="['/student-non-profit-community-support']"
+                (click)="gtmDatalayerPush('pricing_plan_non_profit')"
+                ><button
+                  nbButton
+                  fullWidth
+                  shape="semi-round"
+                  size="large"
+                  status="primary"
+                  class="md:com-mt-7 com-mt-6"
                 >
+                  Apply Now
+                </button></a
+              >
+            </div>
+            <div class="student-startup-iamge">
+              <img [src]="staticAssets.pricing_students" alt="Commudle for Students and Individuals" />
+            </div>
+          </div>
+          <div class="avenues">
+            <div class="heading">More avenues to interact with Developers on Commudle</div>
+            <p class="sub-heading">
+              Sponsor badges, sessions, run content campaigns with labs & builds, get a sponsored slot in our sponsored
+              emailers through community organizers
+            </p>
+          </div>
+
+          <!-- Logo cloud -->
+          <div class="background-container-community" [ngStyle]="{ 'background-image': getCommunityLogoCardsUrl() }">
+            <div class="base-layout">
+              <div class="pricing-logo-cloud">
+                <p class="subheading">Communities already on Commudle</p>
+                <div class="communities">
+                  <a *ngFor="let logo of logoCloud" [routerLink]="['/search', logo.slug]">
+                    <div class="communities-card">
+                      <div class="logo">
+                        <img [alt]="logo.name" [nbTooltip]="logo.name" [src]="logo.image" />
+                      </div>
+                      <div class="communities-card-text">
+                        <p class="name">{{ logo.name }}</p>
+                        <p class="description">{{ logo.description }}</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
               </div>
-              <div class="com--mt-px com-pl-4 com-w-1/3">
-                <a [routerLink]="['/fill-form', 1345]" (click)="gtmDatalayerPush('enterprise')" class="buy-btn light"
-                  >Apply For An Exclusive Free Trial</a
-                >
+            </div>
+
+            <!-- FAQs -->
+            <div class="base-layout">
+              <div class="faq">
+                <commudle-faq [answers]="answers"></commudle-faq>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="avenues">
-          <div class="heading">More avenues to interact with Developers on Commudle</div>
-          <p class="sub-heading">
-            Sponsor badges, sessions, run content campaigns with labs & builds, get a sponsored slot in our sponsored
-            emailers through community organizers
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Logo cloud -->
-    <div class="background-container-community" [ngStyle]="{ 'background-image': getCommunityLogoCardsUrl() }">
-      <div class="base-layout">
-        <div class="pricing-logo-cloud">
-          <p class="subheading">Communities already on Commudle</p>
-          <div class="communities">
-            <a *ngFor="let logo of logoCloud" [routerLink]="['/search']" [queryParams]="{ q: logo.slug }">
-              <div class="communities-card">
-                <div class="logo">
-                  <img [alt]="logo.name" [nbTooltip]="logo.name" [src]="logo.image" />
-                </div>
-                <div class="communities-card-text">
-                  <p class="name">{{ logo.name }}</p>
-                  <p class="description">{{ logo.description }}</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQs -->
-      <div class="base-layout">
-        <div class="faq">
-          <commudle-faq [answers]="answers"></commudle-faq>
         </div>
       </div>
     </div>

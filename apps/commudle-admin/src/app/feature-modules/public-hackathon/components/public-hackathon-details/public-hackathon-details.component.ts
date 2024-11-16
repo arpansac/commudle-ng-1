@@ -1,4 +1,4 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -10,7 +10,7 @@ import {
   IRound,
   ICommunity,
 } from '@commudle/shared-models';
-import { FaqService, RoundService, countries_details } from '@commudle/shared-services';
+import { FaqService, RoundService, SeoService, countries_details } from '@commudle/shared-services';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discussions.service';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
@@ -59,6 +59,7 @@ export class PublicHackathonDetailsComponent implements OnInit {
     private authWatchService: LibAuthwatchService,
     private hrgService: HackathonResponseGroupService,
     private communitiesService: CommunitiesService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -74,11 +75,13 @@ export class PublicHackathonDetailsComponent implements OnInit {
         this.isOrganizerCheck();
       }),
     ),
-      this.authWatchService.currentUser$.subscribe((currentUser) => {
-        if (currentUser) this.getHackathonCurrentRegistrationDetails();
-      }),
+      this.getHackathonResponseGroup();
+    this.authWatchService.currentUser$.subscribe((currentUser) => {
+      if (currentUser) {
+        this.getHackathonCurrentRegistrationDetails();
+      }
+    }),
       this.checkFragment();
-    this.getHackathonResponseGroup();
   }
 
   checkFragment() {
@@ -97,7 +100,7 @@ export class PublicHackathonDetailsComponent implements OnInit {
   }
 
   getHackathonResponseGroup() {
-    this.hrgService.showHackathonResponseGroup(this.hackathon.id).subscribe((data) => {
+    this.hrgService.pShowHackathonResponseGroup(this.hackathon.id).subscribe((data) => {
       if (data) this.hrgId = data.id;
     });
   }
@@ -113,6 +116,7 @@ export class PublicHackathonDetailsComponent implements OnInit {
     this.subscriptions.push(
       this.faqService.pIndexFaqs(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
         this.faqs = data;
+        this.setSchema();
       }),
     );
   }
@@ -175,5 +179,24 @@ export class PublicHackathonDetailsComponent implements OnInit {
         }
       }),
     );
+  }
+
+  setSchema() {
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: this.faqs.map((faq: { question: string; answer: string }) => {
+        return {
+          '@type': 'Question',
+          name: faq.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: faq.answer,
+          },
+        };
+      }),
+    };
+
+    this.seoService.setSchema(faqSchema);
   }
 }

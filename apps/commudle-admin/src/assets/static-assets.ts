@@ -64,8 +64,9 @@ export const staticAssets = {
   pricing_students:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNlBVQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--239f0b40cbdaf2e55f8e5da07a7f767262f4770d/Commudle%20for%20Students.png',
 
-  pricing_enterprise:
-    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNlRVQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--93d3ffeb355bd0a57e15c1c0eb2b0fea62e436f4/Commudle%20for%20Enterprise.png',
+  //Not using this anymore
+  // pricing_enterprise:
+  // 'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNlRVQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--93d3ffeb355bd0a57e15c1c0eb2b0fea62e436f4/Commudle%20for%20Enterprise.png',
 
   pricing_usecase_cards_desktop:
     'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMnBnQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--19af23aeba1556ddef013ced2d20db12ab1b2c4e/Usecase%20Cards%20Desktop.svg',
@@ -169,4 +170,12 @@ export const staticAssets = {
   // id: 156
   newsletter_empty_state:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNFpUQWc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--f68dde89134d2901fe34429c761a69c02cfcefe4/Newsletter%20Empty%20State.png',
+
+  //id: 157
+  speaker_slides_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBK2UyQWc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--abe73456217c0317dc67f743a094f4bdaeeae8d7/Light%20Mode-Links.svg',
+
+  //id: 158
+  call_for_speaker_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL0N1QWc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--3d0e4b9c60c0f63c0272e41a6ea79608454cc379/CFP-Empty%20State.png',
 };

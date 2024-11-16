@@ -7,6 +7,7 @@ import {
   ICommunity,
   ICommunityChannel,
   ICommunityGroup,
+  IHackathon,
   IUser,
   IUserMessage,
 } from '@commudle/shared-models';
@@ -28,7 +29,7 @@ export class CommunityChannelManagerService {
   forums: ICommunityChannel[] = [];
 
   // set parent for channel or forum
-  private parent: BehaviorSubject<ICommunity | ICommunityGroup> = new BehaviorSubject(null);
+  private parent: BehaviorSubject<ICommunity | ICommunityGroup | IHackathon> = new BehaviorSubject(null);
   public parent$ = this.parent.asObservable();
 
   // set parent type for channel or forum
@@ -100,7 +101,7 @@ export class CommunityChannelManagerService {
     this.currentUser = user;
   }
 
-  setParent(parent: ICommunity | ICommunityGroup, parentType: EDbModels): void {
+  setParent(parent: ICommunity | ICommunityGroup | IHackathon, parentType: EDbModels): void {
     this.parent.next(parent);
     this.parentType.next(parentType);
   }
@@ -150,8 +151,10 @@ export class CommunityChannelManagerService {
   }
 
   updateChannel(channel: ICommunityChannel) {
-    if (this.selectedChannel.value.id === channel.id) {
-      this.selectedChannel.next(channel);
+    if (channel.display_type === this.discussionType.CHANNEL) {
+      if (this.selectedChannel.value.id === channel.id) {
+        this.selectedChannel.next(channel);
+      }
     }
   }
 
@@ -232,36 +235,66 @@ export class CommunityChannelManagerService {
     });
   }
 
-  createChannel(channelData) {
-    this.communityChannelsService
-      .createChannelForum(this.parent.value.id, this.parentType.value, channelData)
-      .subscribe((data) => {
-        // select this channel
-        this.selectedChannel.next(data);
-        // add this channel to the group in the list of channels
-        const allChannels = this.channelsByGroups.value;
-        allChannels[data.group_name]
-          ? allChannels[data.group_name].push(data)
-          : (allChannels[data.group_name] = [data]);
-        this.channelsByGroups.next(allChannels);
-        this.getChannelRoles(data);
-        this.toastLogService.successDialog(`${data.name} Created! You are added as an admin`);
-      });
+  createChannel(channelData): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.communityChannelsService
+        .createChannelForum(this.parent.value.id, this.parentType.value, channelData)
+        .subscribe(
+          (data) => {
+            if (data) {
+              // Select this channel
+              this.selectedChannel.next(data);
+
+              // Add this channel to the group in the list of channels
+              const allChannels = this.channelsByGroups.value;
+              allChannels[data.group_name]
+                ? allChannels[data.group_name].push(data)
+                : (allChannels[data.group_name] = [data]);
+              this.channelsByGroups.next(allChannels);
+
+              // Get channel roles
+              this.getChannelRoles(data);
+
+              // Show success toast
+              this.toastLogService.successDialog(`${data.name} Created! You are added as an admin`);
+
+              // Resolve the promise with true
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          () => {
+            resolve(false);
+          },
+        );
+    });
   }
 
-  createForum(forumData) {
-    this.communityChannelsService
-      .createChannelForum(this.parent.value.id, this.parentType.value, forumData)
-      .subscribe((data) => {
-        // select this channel
-        // this.selectedForum.next(data);
-        // add this channel to the group in the list of channels
-        const allForums = this.forumsByGroup.value;
-        allForums[data.group_name] ? allForums[data.group_name].push(data) : (allForums[data.group_name] = [data]);
-        this.forumsByGroup.next(allForums);
-        this.getForumRoles(data);
-        this.toastLogService.successDialog(`${data.name} Created! You are added as an admin`);
-      });
+  createForum(forumData): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.communityChannelsService
+        .createChannelForum(this.parent.value.id, this.parentType.value, forumData)
+        .subscribe(
+          (data) => {
+            if (data) {
+              const allForums = this.forumsByGroup.value;
+              allForums[data.group_name]
+                ? allForums[data.group_name].push(data)
+                : (allForums[data.group_name] = [data]);
+              this.forumsByGroup.next(allForums);
+              this.getForumRoles(data);
+              this.toastLogService.successDialog(`${data.name} Created! You are added as an admin`);
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          () => {
+            resolve(false);
+          },
+        );
+    });
   }
 
   findAndUpdateChannel(channel) {

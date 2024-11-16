@@ -1,5 +1,5 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { SeoService } from '@commudle/shared-services';
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { AfterViewInit, Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { IEditorValidator } from '@commudle/editor';
 import { EUserRoles, ICommunityChannel, IUserMessage } from '@commudle/shared-models';
@@ -12,13 +12,13 @@ import {
 } from '@commudle/shared-services';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
-import { UserMessageReceiptHandlerService } from '../../../services/user-message-receipt-handler.service';
 import { CommunityChannelHandlerService } from 'libs/shared/components/src/lib/services/community-channel-handler.service';
 import { NbDialogRef, NbDialogService, NbMenuService } from '@commudle/theme';
 import { environment } from '@commudle/shared-environments';
 import { filter } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { UserMessageReceiptHandlerService } from 'libs/shared/components/src/lib/services/user-message-receipt-handler.service';
 
 @Component({
   selector: 'commudle-community-channel-message',
@@ -31,6 +31,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   @Input() canReply = true;
   @Input() messagePinned = false;
   @Input() channelOrForum: ICommunityChannel;
+  @Input() shareMessageUrl: string;
 
   EUserRoles = EUserRoles;
 
@@ -87,10 +88,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
           if (event.item.title === 'Edit') {
             this.openEditForm();
           } else if (event.item.title === 'Delete') {
-            this.communityChannelHandlerService.sendDelete(
-              this.message.id,
-              this.message.user.id === this.authService.getCurrentUser().id,
-            );
+            this.communityChannelHandlerService.sendDelete(this.message.id);
           } else if (event.item.title === 'Share This Message') {
             this.share();
           } else if (event.item.title === 'Pin Message') {
@@ -108,23 +106,26 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
       }
       if (
         this.authService.getCurrentUser()?.id === this.message.user.id ||
-        this.channelsRoles[this.channelOrForumId]?.includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)
+        this.channelsRoles[this.channelOrForum.id]?.includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)
       ) {
         this.contextMenuItems.push({
           title: this.message.pinned ? 'Unpin Message' : 'Pin Message',
         });
       }
-      if (this.channelsRoles[this.channelOrForumId]?.includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)) {
+      if (this.channelsRoles[this.channelOrForum.id]?.includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)) {
         this.contextMenuItems.push({
           title: 'Email to all members',
         });
       }
-      if (this.authService.getCurrentUser().id === this.message.user.id) {
+      if (
+        this.authService.getCurrentUser()?.id === this.message.user.id ||
+        this.channelsRoles[this.channelOrForum.id]?.includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)
+      ) {
         this.contextMenuItems.push({
           title: 'Delete',
         });
       }
-      if (this.authService.getCurrentUser().id) {
+      if (this.authService.getCurrentUser()?.id) {
         this.contextMenuItems.push({
           title: 'Share This Message',
         });
@@ -156,7 +157,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   }
 
   share(): void {
-    const shareLink = `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`;
+    const shareLink = `${this.environment.app_url}/${this.shareMessageUrl}/${this.channelOrForumId}?after=${this.cursor}`;
     this.shareService.shareContent(
       `${shareLink}`,
       'Hey, check out this discussion on Commudle',
@@ -279,5 +280,10 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     return doc.body.textContent || '';
+  }
+
+  editMessage(message, event) {
+    this.communityChannelHandlerService.edit(message, event);
+    this.message.content = event;
   }
 }

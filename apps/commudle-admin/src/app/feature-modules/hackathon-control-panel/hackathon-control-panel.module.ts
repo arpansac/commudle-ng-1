@@ -1,4 +1,4 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HackathonControlPanelRoutes } from './hackathon-control-panel.routing';
@@ -17,6 +17,7 @@ import {
   NbInputModule,
   NbRouteTabsetModule,
   NbSpinnerModule,
+  NbRadioModule,
 } from '@commudle/theme';
 import { HackathonControlPanelContactDetailsFormComponent } from './components/hackathon-control-panel-contact-details-form/hackathon-control-panel-contact-details-form.component';
 import { HackathonControlPanelDatesFormComponent } from './components/hackathon-control-panel-dates-form/hackathon-control-panel-dates-form.component';
@@ -43,6 +44,10 @@ import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
+import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
+import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-channels/hackathon-control-panel-channels.component';
+import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
 
 @NgModule({
   declarations: [
@@ -69,6 +74,9 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     HackathonControlPanelEmailsComponent,
     HackathonWinnerAnnouncementEmailerComponent,
     HackathonStatusFilterGeneralEmailsComponent,
+    HackathonOverallRoundSelectionUpdateEmailComponent,
+    HackathonRoundGeneralMailerComponent,
+    HackathonControlPanelChannelsComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +89,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     AppSharedComponentsModule,
     NewEditorModule,
     SharedPipesModule,
+    CommunityChannelsModule,
 
     //components
     SidebarComponent,
@@ -94,6 +103,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     NbCheckboxModule,
     NbButtonGroupModule,
     NbSpinnerModule,
+    NbRadioModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

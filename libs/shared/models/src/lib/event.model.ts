@@ -24,7 +24,7 @@ export interface IEvent {
   tags: ITag[];
   kommunity_slug: string;
   header_image?: IAttachedFile;
-  event_type: string;
+  event_type: EEventType;
   event_locations_count: number;
   event_speakers_count: number;
   event_volunteers_count: number;
@@ -36,8 +36,15 @@ export interface IEvent {
   event_locations?: object;
   status?: string;
   collaboration_communities: ICommunity[];
+  start_date?: Date;
 }
 
 export interface IEventSearch extends IEvent {
   type: string;
+}
+
+export enum EEventType {
+  OFFLINE = 'offline',
+  ONLINE = 'online',
+  // HYBRID = 'hybrid',
 }

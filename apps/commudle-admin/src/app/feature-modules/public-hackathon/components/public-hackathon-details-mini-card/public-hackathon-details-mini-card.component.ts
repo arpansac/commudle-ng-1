@@ -1,10 +1,10 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, Input, OnInit } from '@angular/core';
 import { IHackathon, EHackathonLocationType } from 'apps/shared-models/hackathon.model';
 import { faGlobe, faAward } from '@fortawesome/free-solid-svg-icons';
-import { countries_details } from '@commudle/shared-services';
+import { AuthService, countries_details } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { IHackathonTeam, IUser } from '@commudle/shared-models';
+import { EHackathonStatus, ICommunity, IHackathonTeam, IUser } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-public-hackathon-details-mini-card',
   templateUrl: './public-hackathon-details-mini-card.component.html',
@@ -12,8 +12,10 @@ import { IHackathonTeam, IUser } from '@commudle/shared-models';
 })
 export class PublicHackathonDetailsMiniCardComponent implements OnInit {
   @Input() hackathon: IHackathon;
-  @Input() userTeamDetails: IHackathonTeam;
+  @Input() community: ICommunity;
   @Input() hrgId: number;
+  userTeamDetails: IHackathonTeam[];
+  currentUser: IUser;
   currentDate: Date;
   hackathonApplicationStartDate: Date;
   hackathonApplicationEndDate: Date;
@@ -23,6 +25,7 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit {
   };
 
   EHackathonLocationType = EHackathonLocationType;
+  EHackathonStatus = EHackathonStatus;
   totalPrizesByCurrency: { currency: any; amount: number }[];
   countryDetails = countries_details;
   users: IUser[];
@@ -30,10 +33,14 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit {
   hackathonStatus: string;
   daysLeft: number;
 
-  constructor(private hackathonService: HackathonService) {}
+  constructor(private hackathonService: HackathonService, private authService: AuthService) {}
 
   ngOnInit() {
     this.fetchInterestedMembers();
+    this.authService.currentUser$.subscribe((data) => {
+      if (data) this.getTeamDetails();
+      this.currentUser = data;
+    });
     if (this.hackathon.application_start_date && this.hackathon.application_end_date)
       this.calculateHackathonDatesStatus();
     if (this.hackathon.total_prize_amount) {
@@ -42,6 +49,14 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit {
         amount: this.hackathon.total_prize_amount[currency],
       }));
     }
+  }
+
+  getTeamDetails() {
+    this.hackathonService
+      .getHackathonCurrentRegistrationDetails(this.hackathon.id)
+      .subscribe((data: IHackathonTeam[]) => {
+        this.userTeamDetails = data;
+      });
   }
 
   calculateHackathonDatesStatus() {

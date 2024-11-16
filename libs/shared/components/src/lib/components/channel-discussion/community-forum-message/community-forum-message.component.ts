@@ -29,6 +29,8 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   @Input() cursor!: string;
   @Input() canReply = true;
   @Input() channelOrForum: ICommunityChannel;
+  @Input() shareMessageUrl: string;
+
   showReplies = false;
   environment = environment;
   faReply = faReply;
@@ -83,10 +85,7 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
           if (event.item.title === 'Edit') {
             this.openEditForm();
           } else if (event.item.title === 'Delete') {
-            this.communityChannelHandlerService.sendDelete(
-              this.message.id,
-              this.message.user.id === this.authService.getCurrentUser().id,
-            );
+            this.communityChannelHandlerService.sendDelete(this.message.id);
             // } else if (event.item.title === 'Pin Message') {
             //   // this.pinMessage(this.message);
             // } else if (event.item.title === 'Unpin Message') {
@@ -149,12 +148,12 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   }
 
   share(): void {
-    const shareLink = `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`;
-
+    const shareLink = `${this.environment.app_url}/${this.shareMessageUrl}/${this.channelOrForumId}?after=${this.cursor}`;
     this.shareService.shareContent(
-      shareLink,
+      `${shareLink}`,
       'Hey, check out this discussion on Commudle',
       this.message.content.length > 40 ? `${this.message.content.substring(0, 40)}...` : this.message.content,
+      shareLink,
       'Copied message link successfully!',
       'Shared message successfully!',
     );
@@ -222,5 +221,10 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     return doc.body.textContent || '';
+  }
+
+  editMessage(message, event) {
+    this.communityChannelHandlerService.edit(message, event);
+    this.message.content = event;
   }
 }

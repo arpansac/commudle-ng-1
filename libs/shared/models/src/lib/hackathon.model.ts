@@ -17,7 +17,7 @@ export interface IHackathon {
   end_date: Date;
   application_start_date: Date;
   application_end_date: Date;
-  time_zone: string;
+  timezone: string;
   created_at: Date;
   location_id: number;
   location_name: string;
@@ -36,6 +36,7 @@ export interface IHackathon {
   community: ICommunity;
   community_group: ICommunityGroup;
   total_prize_amount: object;
+  interested_members_count?: number;
 }
 
 export enum EParticipateTypes {

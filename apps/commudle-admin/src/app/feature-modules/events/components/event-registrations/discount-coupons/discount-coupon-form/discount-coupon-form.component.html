@@ -44,30 +44,61 @@
           <!-- Discount value* -->
           <label>
             Discount value*
+            <input formControlName="discount_value" fullWidth nbInput type="number" placeholder=" Discount value" />
+          </label>
+        </div>
+        <commudle-alert
+          [error]="discountCouponForm.controls.discount_code.get('discount_value').hasError('min')"
+          errorMessage="Value can't be less than 1"
+        >
+        </commudle-alert>
+        <commudle-alert
+          [error]="discountCouponForm.controls.discount_code.get('discount_value').hasError('discount_value_exceeds')"
+          errorMessage="Value can't be greater than 100"
+        >
+        </commudle-alert>
+
+        <div class="com-flex com-gap-2">
+          <!-- min_users_count -->
+          <label>
+            Min users count
             <input
-              formControlName="discount_value"
-              fullWidth
+              formControlName="min_users_count"
               nbInput
+              fullWidth
               type="number"
-              placeholder=" Discount value"
-              min="0"
+              placeholder="Leave empty if not applicable"
+              min="1"
+            />
+          </label>
+
+          <!-- max_users_count -->
+          <label>
+            Max users count
+            <input
+              formControlName="max_users_count"
+              nbInput
+              fullWidth
+              type="number"
+              placeholder="Leave empty if not applicable"
+              min="1"
             />
           </label>
         </div>
+
         <!-- Is Limited* -->
         <label class="com-col-span-1 com-flex com-items-center com-gap-2">
           <input formControlName="is_limited" type="checkbox" />
-          <span class="com-text-primary-500 com-font-medium"> Limited Users </span>
+          <span class="com-text-primary-500 com-font-medium"> Max application limit</span>
         </label>
         <!-- Max Limit* -->
         <label
           class="com-col-span-1"
           *ngIf="discountCouponForm.controls.discount_code.get('is_limited').value === true"
         >
-          Max Limit*
+          Max application limit count*
           <input formControlName="max_limit" nbInput fullWidth type="number" placeholder="Max Limit" />
         </label>
-
         <!-- Expires At* -->
         <label class="com-col-span-1">
           <div>
@@ -87,7 +118,7 @@
           <label class="com-col-span-1 com-my-4"> Select the form in which you want to apply coupon* </label>
           <br />
           <div class="com-grid com-gap-3 com-grid-cols-2">
-            <div
+            <label
               *ngFor="let edfeg of eventDataFormEntityGroups; let i = index"
               class="com-flex com-items-center com-gap-2"
             >
@@ -98,7 +129,7 @@
                 (change)="addEventDataForm($event)"
               />
               <span class="com-text-primary-500 com-font-semibold"> {{ edfeg.name }}, {{ edfeg.id }} </span>
-            </div>
+            </label>
           </div>
         </div>
       </div>

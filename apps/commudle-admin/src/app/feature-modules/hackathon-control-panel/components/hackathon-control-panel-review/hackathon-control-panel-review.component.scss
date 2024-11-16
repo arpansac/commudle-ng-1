@@ -13,12 +13,18 @@ table {
         @apply com-text-black com-text-base com-font-medium;
       }
       .date {
-        @apply com-text-gray-400 com-text-base com-font-medium;
+        @apply com-text-gray-400 com-text-xs com-font-medium;
+      }
+      .project-link {
+        @apply com-text-xs;
+        a {
+          @apply com-no-underline com-text-primary-500;
+        }
       }
     }
-    .round-name {
-      @apply com-bg-primary-500 com-px-3 com-py-2 com-text-white com-h-max com-rounded-2xl com-font-medium com-text-sm;
-    }
+  }
+  .round-name {
+    @apply com-bg-primary-500 com-px-3 com-py-2 com-text-white com-h-max com-rounded-2xl com-font-medium com-text-xs com-w-max;
   }
 }
 
@@ -33,14 +39,17 @@ nb-card-body {
 }
 
 .select-wrapper {
-  @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-32 com-cursor-pointer;
+  @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-28 com-cursor-pointer;
   select {
-    @apply com-text-white com-px-2 com-py-2 com-border-0 com-w-28 com-font-semibold com-rounded com-cursor-pointer;
+    @apply com-text-white com-px-1 com-py-1 com-border-0 com-w-24 com-font-semibold com-rounded com-cursor-pointer com-text-xs;
   }
 }
 
 .response-dialog-box {
   @apply com-w-full com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
+  nb-card-body {
+    @apply com-overflow-x-hidden;
+  }
   .action-buttons {
     > div {
       @apply com-flex com-gap-3;
@@ -57,11 +66,11 @@ nb-card-body {
 
 .user-response-details {
   .user-response-tabs {
-    @apply com-flex com-mb-2;
+    @apply com-flex com-mb-2 com-flex-row com-items-center com-overflow-x-auto;
     .user-response-tab {
-      @apply com-cursor-pointer com-px-4 com-py-2;
+      @apply com-px-4 com-py-2;
       .name {
-        @apply com-font-bold com-text-sm;
+        @apply com-font-bold com-text-sm com-cursor-pointer;
       }
       &.active {
         @apply com-border-0 com-border-b-2 com-border-solid com-border-primary-500;
@@ -92,11 +101,11 @@ nb-card-body {
 
 .notes {
   .details {
-    @apply com-text-base com-line-clamp-1;
+    @apply com-text-xs com-line-clamp-1;
   }
 
   .notes-count {
-    @apply com-text-orange-400 com-text-base com-font-bold;
+    @apply com-text-orange-400 com-text-xs com-font-bold;
   }
 }
 
@@ -104,12 +113,15 @@ nb-card-body {
   @apply com-my-3;
 
   .note-list {
-    @apply com-flex com-gap-2 com-items-center;
+    @apply com-flex com-flex-col com-gap-0.5;
+    .delete-note {
+      @apply com-text-red-500;
+    }
   }
   .note {
     @apply com-flex com-gap-2 com-items-center com-my-3;
     .action-button {
-      @apply com-flex com-flex-col com-justify-between;
+      @apply com-flex com-flex-col com-justify-between com-gap-3;
     }
   }
   button {
@@ -130,7 +142,7 @@ nb-card-body {
 }
 
 .round-selection-mailer {
-  @apply md:com-w-[30dvw];
+  @apply md:com-w-[40dvw] md:com-h-[90dvh] com-w-full;
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }

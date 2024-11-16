@@ -1,4 +1,4 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/community-channel-manager.service';
 import { CommunityChannelNotificationsChannel } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/websockets/community-channel-notifications.channel';
@@ -15,7 +15,8 @@ import { NewCommunityChannelComponent } from 'apps/commudle-admin/src/app/featur
 import { ChannelSettingsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-channels/components/channel-settings/channel-settings.component';
 import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/community-channels/model/discussion-type.enum';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, IHackathon } from '@commudle/shared-models';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 interface EGroupedCommunityChannels {
   [groupName: string]: ICommunityChannel[];
 }
@@ -28,7 +29,8 @@ interface EGroupedCommunityChannels {
 export class CommunityChannelListComponent implements OnInit, OnDestroy {
   @Input() groupedChannels: EGroupedCommunityChannels;
   @Input() isCommunityOrganizer = false;
-  parent: ICommunity | ICommunityGroup;
+  @Input() redirectUrl: string;
+  parent: ICommunity | ICommunityGroup | IHackathon;
   parentType: EDbModels;
   selectedChannel: ICommunityChannel;
   selectedChannelId: number;
@@ -42,6 +44,7 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   discussionType = EDiscussionType;
   newCommunityChannelPopup;
+  faCircleCheck = faCircleCheck;
 
   @Output() updateSelectedChannel = new EventEmitter<ICommunityChannel>();
 
@@ -131,6 +134,7 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
       context: {
         channel: channel,
         invite: true,
+        redirectUrl: this.redirectUrl,
         // currentUrl: 'communities/' + this.parent.slug + '/channels',
       },
     });

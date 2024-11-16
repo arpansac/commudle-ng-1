@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
@@ -8,7 +9,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_ROUTES } from '@commudle/shared-services';
 import { Observable } from 'rxjs';
-import { ICommunityBuild, IHackathonPrize, IHackathonTeam, IHackathonTrack } from '@commudle/shared-models';
+import {
+  ICommunityBuild,
+  ICommunityChannel,
+  IHackathonPrize,
+  IHackathonTeam,
+  IHackathonTrack,
+  IPagination,
+  IPaginationCount,
+} from '@commudle/shared-models';
 
 interface publicHackathonsList {
   upcoming_hackathons: IHackathon[];
@@ -59,7 +68,7 @@ export class HackathonService {
     return this.http.get<IHackathon[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX), { params });
   }
 
-  pIndexHackathons(parentId, parentType: string): Observable<publicHackathonsList> {
+  pIndexHackathons(parentId, parentType: string, when?: string): Observable<IPaginationCount<IHackathon>> {
     let params = new HttpParams();
     switch (parentType) {
       case 'Kommunity': {
@@ -71,9 +80,15 @@ export class HackathonService {
         break;
       }
     }
-    return this.http.get<publicHackathonsList>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.INDEX), {
-      params,
-    });
+    if (when) {
+      params = params.set('when', when);
+    }
+    return this.http.get<IPaginationCount<IHackathon>>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.INDEX),
+      {
+        params,
+      },
+    );
   }
 
   showHackathon(hackathonId): Observable<IHackathon> {
@@ -356,6 +371,14 @@ export class HackathonService {
     );
   }
 
+  roundGeneralEmail(formData): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.ROUND_GENERAL_MAILER), {
+      round_id: Number(formData.round_id),
+      subject: formData.subject,
+      message: formData.message,
+    });
+  }
+
   WinnerAnnouncementEmail(hackathonId, message): Observable<boolean> {
     return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.WINNER_ANNOUNCEMENT_EMAIL), {
       hackathon_id: hackathonId,
@@ -369,6 +392,19 @@ export class HackathonService {
       message: message,
       subject: subject,
       selected_status: selectedStatus,
+    });
+  }
+
+  sendTeamDetailCsv(hackathonId: number | string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.REGISTRATION_DETAILS_CSV), {
+      hackathon_id: hackathonId,
+    });
+  }
+
+  getHackathonUserChannels(hackathonId): Observable<ICommunityChannel[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<ICommunityChannel[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.USERS_CHANNELS), {
+      params,
     });
   }
 
@@ -427,5 +463,21 @@ export class HackathonService {
     return this.http.get<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.IS_MEMBER_OF_PARENT), {
       params,
     });
+  }
+
+  pGetHackathon(when, limit?, after?): Observable<IPagination<IHackathon>> {
+    let params = new HttpParams().set('when', when);
+    if (limit) {
+      params = params.set('limit', limit);
+    }
+    if (after) {
+      params = params.set('after', after);
+    }
+    return this.http.get<IPagination<IHackathon>>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.HACKATHONS),
+      {
+        params,
+      },
+    );
   }
 }

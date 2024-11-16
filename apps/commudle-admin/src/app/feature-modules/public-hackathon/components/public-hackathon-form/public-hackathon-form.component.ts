@@ -1,13 +1,12 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, IHackathonUserResponse } from '@commudle/shared-models';
 import { NbDialogRef, NbDialogService, NbStepperComponent } from '@commudle/theme';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
-import { IHackathonUserResponse } from 'apps/shared-models/hackathon-user-response.model';
 import { IHackathon, EParticipateTypes } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 import { faLinkedinIn, faTwitter, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -55,6 +54,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   dialogRef: NbDialogRef<any>;
 
+  current_user_is_team_lead = true;
+
   constructor(
     private hrgService: HackathonResponseGroupService,
     private activatedRoute: ActivatedRoute,
@@ -70,7 +71,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.hrgService
-        .pShowHackathonResponseGroup(this.activatedRoute.snapshot.params['hackathon_response_group_id'])
+        .pFetchHackathonResponseGroup(this.activatedRoute.snapshot.params['hackathon_response_group_id'])
         .subscribe((data: IHackathonResponseGroup) => {
           this.hackathonResponseGroup = data;
           this.fetchPreExistingFormResponse();
@@ -112,8 +113,9 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
     this.hurService
       .getExistingHackathonUserResponses(this.hackathonResponseGroup.id)
       .subscribe((data: IHackathonUserResponse[]) => {
-        if (data) {
+        if (data.length > 0) {
           this.hackathonUserResponse = data[0];
+          this.current_user_is_team_lead = this.hackathonUserResponse.current_user_is_team_lead;
           this.isLoading = false;
         } else {
           this.isLoading = false;
@@ -138,14 +140,26 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   submitUserResponse(formData) {
     this.hurService.createHackathonResponseGroup(formData, this.hackathonResponseGroup.id).subscribe((data) => {
       this.hackathonUserResponse = data;
-      this.stepper.next();
+      if (this.hackathonResponseGroup.filled_by_only_team_lead && !this.current_user_is_team_lead) {
+        this.toastrService.successDialog('Details has been saved');
+        this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
+        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+      } else {
+        this.stepper.next();
+      }
     });
   }
 
   updateUserResponse(formData) {
     this.hurService.updateHackathonResponseGroup(formData, this.hackathonUserResponse.id).subscribe((data) => {
       this.hackathonUserResponse = data;
-      this.stepper.next();
+      if (this.hackathonResponseGroup.filled_by_only_team_lead && !this.current_user_is_team_lead) {
+        this.toastrService.successDialog('Details has been saved');
+        this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
+        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+      } else {
+        this.stepper.next();
+      }
     });
   }
 

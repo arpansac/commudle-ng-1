@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { IColumnType, Settings } from 'angular2-smart-table';
+import { Cell, Settings } from 'angular2-smart-table';
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { IDataForm } from 'apps/shared-models/data_form.model';
 import { CommunityFormsListActionsComponent } from './community-forms-list-actions/community-forms-list-actions.component';
 import { CommunityFormsListStatsComponent } from './community-forms-list-stats/community-forms-list-stats.component';
-import { NbRouteTab } from '@commudle/theme';
 
 @Component({
   selector: 'app-community-forms-list',
@@ -29,16 +28,24 @@ export class CommunityFormsListComponent implements OnInit {
       },
       mini_stats: {
         title: 'Mini Stats',
-        filter: false,
-        type: IColumnType.Custom,
+        type: 'custom',
         renderComponent: CommunityFormsListStatsComponent,
+        componentInitFunction: (instance: CommunityFormsListStatsComponent, cell: Cell) => {
+          const dataForms: IDataForm = cell.getRow().getData();
+          instance.rowData = dataForms;
+        },
+        isFilterable: false,
         isSortable: false,
       },
       actions: {
         title: 'Actions',
-        filter: false,
-        type: IColumnType.Custom,
+        type: 'custom',
         renderComponent: CommunityFormsListActionsComponent,
+        componentInitFunction: (instance: CommunityFormsListActionsComponent, cell: Cell) => {
+          const dataForms: IDataForm = cell.getRow().getData();
+          instance.rowData = dataForms;
+        },
+        isFilterable: false,
         isSortable: false,
       },
     },

@@ -5,6 +5,7 @@
     ></span>
     <a
       *ngIf="communityId && hackathon && hackathonResponseGroupDetails"
+      target="_blank"
       [routerLink]="[
         '/communities',
         communityId,
@@ -14,7 +15,9 @@
         hackathonResponseGroupDetails.id
       ]"
     >
-      <button nbButton status="primary" size="tiny">Link to register</button></a
+      <button nbButton status="primary" size="tiny">
+        <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon> &nbsp; Link to register
+      </button></a
     >
   </nb-card-header>
   <nb-card-body>
@@ -151,6 +154,16 @@
           </div>
         </div>
       </form>
+
+      <div>
+        <div class="group-name">TO BE FILLED BY</div>
+        <div class="radio-group">
+          <nb-radio-group [(ngModel)]="filled_by_only_team_lead">
+            <nb-radio [value]="false">All team members</nb-radio>
+            <nb-radio [value]="true">Only Team Lead</nb-radio>
+          </nb-radio-group>
+        </div>
+      </div>
 
       <div class="custom-questions" *ngIf="!dataFormId">
         <app-new-data-form

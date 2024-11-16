@@ -43,6 +43,13 @@ import { AdminHackathonComponent } from './admin-hackathon/admin-hackathon.compo
 import { WhatsNewComponent } from 'apps/commudle-admin/src/app/app-shared-components/whats-new/whats-new.component';
 import { HelpDictionaryIframeComponent } from './help-dictionary-iframe/help-dictionary-iframe.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { UpcomingHackathonsComponent } from './upcoming-hackathons/upcoming-hackathons.component';
+import { EventMiniCardComponent } from './event-mini-card/event-mini-card.component';
+import { SpeakerSlidesCardComponent } from './speaker-slides-card/speaker-slides-card.component';
+import { CallForSpeakerCardComponent } from './call-for-speaker-card/call-for-speaker-card.component';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { EventHackathonRegistrationsComponent } from './event-hackathon-registrations/event-hackathon-registrations.component';
+import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +69,10 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     PublicPageSignupNewsletterComponent,
     AdminHackathonComponent,
     HelpDictionaryIframeComponent,
+    UpcomingHackathonsComponent,
+    SpeakerSlidesCardComponent,
+    CallForSpeakerCardComponent,
+    EventHackathonRegistrationsComponent,
   ],
   exports: [
     EmailerComponent,
@@ -82,6 +93,10 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     CustomPageFormComponent,
     WhatsNewComponent,
     HelpDictionaryIframeComponent,
+    UpcomingHackathonsComponent,
+    SpeakerSlidesCardComponent,
+    CallForSpeakerCardComponent,
+    EventHackathonRegistrationsComponent,
   ],
   imports: [
     CommonModule,
@@ -92,6 +107,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     PublicCommunityModule,
     SharedComponentsModule,
     MiniUserProfileModule,
+    SharedDirectivesModule,
     //Standalone
     TechSessionsCardComponent,
     EventHorizontalCardComponent,
@@ -102,6 +118,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     FeaturedExpertsCardComponent,
     WhatsNewComponent,
     HelpSectionComponent,
+    BackButtonComponent,
 
     // Nebular
     NbRadioModule,
@@ -118,6 +135,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     //FontAwesome
     FontAwesomeModule,
     SharedPipesModule,
+    EventMiniCardComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

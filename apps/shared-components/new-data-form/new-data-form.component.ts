@@ -18,6 +18,8 @@ enum EFormPurposes {
   styleUrls: ['./new-data-form.component.scss'],
 })
 export class NewDataFormComponent implements OnInit {
+  @Input() showDescriptionField = true;
+  @Input() showNameInputField = true;
   EFormPurposes = EFormPurposes;
 
   dataForm: IDataForm;
@@ -29,8 +31,10 @@ export class NewDataFormComponent implements OnInit {
   @Input() stickSubmitButtonBottom = false;
   @Input() showNameDescriptionFiled = true;
   @Input() formName: string = '';
+  @Input() showSubmitButton = true;
 
   @Output() newDataForm = new EventEmitter();
+  @Output() invalidFormValue = new EventEmitter();
 
   showNameField = true;
   showQuestionRequiredField = true;
@@ -231,6 +235,7 @@ export class NewDataFormComponent implements OnInit {
   saveDataForm() {
     if (this.createDataForm.invalid) {
       this.createDataForm.markAllAsTouched();
+      this.invalidFormValue.emit();
       return;
     }
     this.newDataForm.emit(this.createDataForm.get('data_form').value);

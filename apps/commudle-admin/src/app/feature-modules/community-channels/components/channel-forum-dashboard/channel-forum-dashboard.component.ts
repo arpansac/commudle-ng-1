@@ -1,9 +1,17 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { faMagnifyingGlass, faUser, faHashtag, faMessage, faBars } from '@fortawesome/free-solid-svg-icons';
-import { EDbModels, EDiscussionType, ICommunity, IUser, IGroupedChannels, EUserRoles } from '@commudle/shared-models';
+import {
+  EDbModels,
+  EDiscussionType,
+  ICommunity,
+  IUser,
+  IGroupedChannels,
+  EUserRoles,
+  IHackathon,
+} from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { CommunityChannelManagerService, SeoService, AuthService } from '@commudle/shared-services';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -17,8 +25,9 @@ import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.s
 })
 export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   @Input() showCommunityList = false;
-  @Input() parent: ICommunity | ICommunityGroup;
+  @Input() parent: ICommunity | ICommunityGroup | IHackathon;
   @Input() parentType: EDbModels;
+  @Input() showForum = true;
 
   communityForums: IGroupedChannels;
   currentUser: IUser;
@@ -58,6 +67,7 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   isSuperAdmin = false;
   sidebarEventName = 'channelForum';
+  redirectUrl: string;
   constructor(
     private authWatchService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -76,17 +86,6 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
     this.setMeta();
     this.getCurrentUser();
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
-
-    switch (this.parentType) {
-      case EDbModels.KOMMUNITY:
-        this.checkCommunityOrganizer();
-        break;
-      case EDbModels.COMMUNITY_GROUP:
-        this.checkCommunityGroupOrganizer();
-        break;
-      default:
-        break;
-    }
     this.setParent();
 
     if (this.discussionTypeForum && this.selectedChannelOrFormId) {
@@ -133,6 +132,24 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   }
 
   setParent() {
+    switch (this.parentType) {
+      case EDbModels.KOMMUNITY:
+        this.checkCommunityOrganizer();
+        this.redirectUrl = `communities/${this.parent.slug}/channels`;
+        break;
+      case EDbModels.COMMUNITY_GROUP:
+        this.redirectUrl = `orgs/${this.parent.slug}/channels`;
+        this.checkCommunityGroupOrganizer();
+        break;
+      case EDbModels.HACKATHON:
+        // eslint-disable-next-line no-case-declarations
+        const hackathon = this.parent as IHackathon; // Cast parent to IHackathon
+        this.redirectUrl = `communities/${hackathon.community.slug}/hackathons/${hackathon.slug}/channels`;
+        this.checkHackathonAdminRoles();
+        break;
+      default:
+        break;
+    }
     this.communityChannelManagerService.setParent(this.parent, this.parentType);
   }
 
@@ -144,6 +161,11 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
         }
       }),
     );
+  }
+
+  // TODO: handle case
+  checkHackathonAdminRoles() {
+    // Handle hackathon roles for channels
   }
 
   checkCommunityGroupOrganizer() {
