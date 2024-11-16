@@ -47,7 +47,7 @@
       [showExpandedButton]="false"
     >
       <div class="action-buttons">
-        <div class="header-icons">
+        <div class="header-icons" [ngClass]="{ 'com-mb-4': !sidebarExpanded }">
           <a [routerLink]="['/admin', 'communities', community.slug]" class="back-admin">
             <div class="icon">
               <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
