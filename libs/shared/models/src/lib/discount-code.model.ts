@@ -10,4 +10,6 @@ export interface IDiscountCode {
   expires_at: Date;
   max_limit: number;
   user: IUser;
+  min_users_count: number;
+  max_users_count: number;
 }

@@ -57,20 +57,48 @@
           errorMessage="Value can't be greater than 100"
         >
         </commudle-alert>
+
+        <div class="com-flex com-gap-2">
+          <!-- min_users_count -->
+          <label>
+            Min users count
+            <input
+              formControlName="min_users_count"
+              nbInput
+              fullWidth
+              type="number"
+              placeholder="Leave empty if not applicable"
+              min="1"
+            />
+          </label>
+
+          <!-- max_users_count -->
+          <label>
+            Max users count
+            <input
+              formControlName="max_users_count"
+              nbInput
+              fullWidth
+              type="number"
+              placeholder="Leave empty if not applicable"
+              min="1"
+            />
+          </label>
+        </div>
+
         <!-- Is Limited* -->
         <label class="com-col-span-1 com-flex com-items-center com-gap-2">
           <input formControlName="is_limited" type="checkbox" />
-          <span class="com-text-primary-500 com-font-medium"> Limited Users </span>
+          <span class="com-text-primary-500 com-font-medium"> Max application limit</span>
         </label>
         <!-- Max Limit* -->
         <label
           class="com-col-span-1"
           *ngIf="discountCouponForm.controls.discount_code.get('is_limited').value === true"
         >
-          Max Limit*
+          Max application limit count*
           <input formControlName="max_limit" nbInput fullWidth type="number" placeholder="Max Limit" />
         </label>
-
         <!-- Expires At* -->
         <label class="com-col-span-1">
           <div>
