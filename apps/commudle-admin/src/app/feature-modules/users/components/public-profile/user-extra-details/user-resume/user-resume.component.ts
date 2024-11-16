@@ -174,6 +174,14 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
           return;
         }
 
+        this.uploadedResume = {
+          id: null,
+          file: file,
+          url: null,
+          name: null,
+          type: null,
+        };
+
         // If content is safe, set it as the upload source
         const reader = new FileReader();
         reader.onload = () => {
