@@ -46,9 +46,17 @@
         </label>
         <label>
           File* (PDF, max size: 5MB)
-          <input (change)="onFileChange($event)" accept="application/pdf" fullWidth nbInput type="file" />
+          <input
+            formControlName="file"
+            (change)="onFileChange($event)"
+            accept="application/pdf"
+            fullWidth
+            nbInput
+            type="file"
+          />
         </label>
       </form>
+
       <object
         *ngIf="uploadedResumeSrc"
         class="com-mt-6 com-min-w-full md:com-min-w-[50vw] com-min-h-[70vh]"
