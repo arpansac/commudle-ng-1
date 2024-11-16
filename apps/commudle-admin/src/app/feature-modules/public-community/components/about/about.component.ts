@@ -115,7 +115,7 @@ export class AboutComponent implements OnInit {
         '@context': 'https://schema.org',
         '@type': 'Event',
         name: event.name,
-        // description: event.description.replace(/<[^>]*>/g, '').substring(0, 200),
+        description: event.description.replace(/<[^>]*>/g, '').substring(0, 200),
         image: event.header_image_path ? event.header_image_path : event.kommunity.logo_image_path.url,
         startDate: event.start_time,
         endDate: event.end_time,
@@ -124,7 +124,7 @@ export class AboutComponent implements OnInit {
         location: location,
         organizer: {
           '@type': 'Organization',
-          // name: event.kommunity.name,
+          name: event.kommunity.name,
           url: environment.app_url + '/communities/' + event.kommunity_slug,
         },
         offers: {
