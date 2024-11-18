@@ -397,10 +397,6 @@ input::-webkit-calendar-picker-indicator {
   @apply com-bg-tWhite;
 }
 
-.cdk-global-scrollblock {
-  @apply com-top-0 #{!important};
-}
-
 :root {
   --color-white-light: #ffffff;
   --color-white-dark: #121212;

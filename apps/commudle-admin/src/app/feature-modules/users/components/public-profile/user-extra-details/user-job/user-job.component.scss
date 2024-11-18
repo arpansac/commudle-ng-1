@@ -15,3 +15,7 @@
     @apply com-space-y-2 com-text-Yankees-Blue;
   }
 }
+
+::ng-deep .cdk-global-scrollblock {
+  @apply com-top-0 #{!important};
+}
