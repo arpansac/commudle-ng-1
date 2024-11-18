@@ -15,7 +15,7 @@
             <small>Resend Invite</small>
           </a>
           <br />
-          <a class="clickable" (click)="remove(org, 'organizers', i)">
+          <a class="clickable" (click)="openDeleteConfirmation(deleteDialog, org, 'organizers', i)">
             <small>Remove</small>
           </a>
         </div>
@@ -84,4 +84,27 @@
       </div>
     </form>
   </div>
+
+  <ng-template #deleteDialog let-data let-ref="dialogRef">
+    <nb-card class="delete-confirmation">
+      <nb-card-header>
+        <div>Remove Confirmation</div>
+        <button ghost nbButton size="small" (click)="ref.close()">
+          <nb-icon icon="close"></nb-icon>
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <div>
+          Are you sure you want to remove &nbsp;<span>{{ data.userRolesUser.user.name }}</span> &nbsp; as an organizer?
+        </div>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="primary" (click)="remove(data.userRolesUser, data.arrayType, data.index); ref.close()">
+          Confirm
+        </button>
+        <button nbButton status="danger" (click)="ref.close()">Cancel</button>
+      </nb-card-footer>
+    </nb-card>
+    userRolesUser, arrayType, index
+  </ng-template>
 </div>
