@@ -107,5 +107,13 @@ a {
 }
 
 .header-icons {
-  @apply com-flex com-justify-between;
+  @apply com-flex;
+}
+
+.header-icons-non-expanded {
+  @apply com-mb-4 com-justify-center;
+}
+
+.header-icons-expanded {
+  @apply com-justify-between;
 }

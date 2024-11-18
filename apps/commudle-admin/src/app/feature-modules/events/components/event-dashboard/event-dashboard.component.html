@@ -43,12 +43,15 @@
       [showExpandedButton]="false"
     >
       <div class="action-buttons">
-        <div class="header-icons" [ngClass]="{ 'com-mb-4': !sidebarExpanded }">
-          <a [routerLink]="['/admin', 'communities', community.slug]" class="back-admin">
+        <div
+          class="header-icons"
+          [ngClass]="{ 'header-icons-non-expanded': !sidebarExpanded, 'header-icons-expanded': sidebarExpanded }"
+        >
+          <a *ngIf="sidebarExpanded" [routerLink]="['/admin', 'communities', community.slug]" class="back-admin">
             <div class="icon">
               <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
             </div>
-            <div *ngIf="sidebarExpanded" class="heading">Back to Admin Panel</div>
+            <div class="heading">Back to Admin Panel</div>
           </a>
           <div (click)="toggleSidebar()" class="sidebar-expand-icon">
             <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
