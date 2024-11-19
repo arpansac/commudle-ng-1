@@ -280,20 +280,13 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   //Using native element javascript because the form input element on which  location is need to be applied is not getting rendered
   initAutocomplete() {
     const addressInput = document.getElementById('addressInput') as HTMLInputElement;
-    // console.log(addressInput);
-    // this.jobForm.get('location').valueChanges.subscribe((value) => {
-    // console.log(value);
     this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
     this.googlePlacesAutocompleteService.placeChanged.subscribe((place) => {
-      // console.log(place);
       this.onLocationPlaceSelected(place);
     });
-    // });
   }
 
   onLocationPlaceSelected(place) {
-    // console.log(place);
     this.jobForm.patchValue({ location: place.formatted_address });
-    // console.log(this.jobForm.get('location').value);
   }
 }
