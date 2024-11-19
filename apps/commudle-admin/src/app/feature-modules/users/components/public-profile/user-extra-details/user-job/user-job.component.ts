@@ -289,7 +289,6 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onLocationPlaceSelected(place) {
-    console.log('🚀 ~ UserJobComponent ~ onLocationPlaceSelected ~ place:', place);
     // this.eventLocationForm
     //   .get('location')
     //   .get('address')
