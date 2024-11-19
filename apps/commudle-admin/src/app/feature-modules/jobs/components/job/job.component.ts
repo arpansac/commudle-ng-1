@@ -196,7 +196,7 @@ export class JobComponent implements OnInit, OnDestroy {
     if (this.job.location_type === EJobLocationType.REMOTE) {
       schemaData.applicantLocationRequirements = {
         '@type': 'Country',
-        name: jobLocation[1],
+        name: jobLocation[jobLocation.length - 1],
       };
       schemaData.jobLocationType = 'TELECOMMUTE';
     } // schema data for non remote location job
@@ -206,7 +206,7 @@ export class JobComponent implements OnInit, OnDestroy {
         address: {
           '@type': 'PostalAddress',
           addressLocality: jobLocation[0],
-          addressCountry: jobLocation[1],
+          addressCountry: jobLocation[jobLocation.length - 1],
         },
       };
     }
