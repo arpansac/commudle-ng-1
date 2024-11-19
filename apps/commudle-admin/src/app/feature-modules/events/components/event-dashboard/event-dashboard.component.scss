@@ -13,19 +13,20 @@
 }
 
 .sidebar {
-  @apply com-w-80 com-sticky com-top-16 com-h-[calc(100vh-70px)];
+  @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
   a {
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
     @apply com-p-4;
-    .back-admin {
+    .back-admin,
+    .sidebar-expand-icon {
       .icon {
-        @apply com-text-[#8F9BB3];
+        @apply com-text-Cadet-Grey;
       }
       .heading {
-        @apply com-text-xs com-text-[#8F9BB3];
+        @apply com-text-xs com-text-Cadet-Grey;
       }
     }
 
@@ -41,7 +42,7 @@
         @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
       }
       .icon {
-        @apply com-text-lg com-text-[#8F9BB3];
+        @apply com-text-lg com-text-Cadet-Grey;
       }
       .heading {
         @apply com-text-sm com-font-light;
@@ -90,7 +91,7 @@ a {
             }
           }
           .icon {
-            @apply com-text-lg com-text-[#8F9BB3];
+            @apply com-text-lg com-text-Cadet-Grey;
           }
           .heading {
             @apply com-text-base com-font-medium com-w-max;
@@ -103,4 +104,16 @@ a {
 
 .router {
   @apply com-my-4 md:com-mx-4 com-mx-0;
+}
+
+.header-icons {
+  @apply com-flex;
+}
+
+.header-icons-non-expanded {
+  @apply com-mb-4 com-justify-center;
+}
+
+.header-icons-expanded {
+  @apply com-justify-between;
 }
