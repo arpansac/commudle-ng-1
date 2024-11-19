@@ -6,6 +6,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
+import { environment } from '@commudle/shared-environments';
 
 @Component({
   selector: 'commudle-public-community-hackathons',
@@ -20,6 +21,9 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   pastHackathons: IHackathon[];
   moment = moment;
   seoDescription: string;
+  schemaForHackathon = [];
+  environment = environment;
+
   constructor(
     private hackathonService: HackathonService,
     private activatedRoute: ActivatedRoute,
@@ -49,6 +53,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
       this.hackathonService.pIndexHackathons(this.community.id, EDbModels.KOMMUNITY, 'future').subscribe((data) => {
         this.upcomingHackathons = data.values;
         this.setSeoService();
+        this.setSchema(this.upcomingHackathons);
       }),
     );
   }
@@ -58,6 +63,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
       this.hackathonService.pIndexHackathons(this.community.id, EDbModels.KOMMUNITY, 'past').subscribe((data) => {
         this.pastHackathons = data.values;
         this.setSeoService();
+        this.setSchema(this.pastHackathons);
       }),
     );
   }
@@ -82,5 +88,45 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
       this.seoDescription,
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  setSchema(hackathons) {
+    for (const hackathon of hackathons) {
+      if (hackathon.start_date) {
+        let location: object, hackathonStatus: string;
+        if (hackathon.hackathon_location_type === 'offline') {
+          location = {
+            '@type': 'Place',
+            name: hackathon.location_name,
+            address: hackathon.location_address,
+          };
+          hackathonStatus = 'OfflineEventAttendanceMode';
+        } else {
+          location = {
+            '@type': 'VirtualLocation',
+            url: environment.app_url + '/communities/' + hackathon.community.slug + '/hackathons/' + hackathon.slug,
+          };
+          hackathonStatus = 'OnlineEventAttendanceMode';
+        }
+        this.schemaForHackathon.push({
+          '@context': 'https://schema.org',
+          '@type': 'Event',
+          name: hackathon.name,
+          description: hackathon.description.replace(/<[^>]*>/g, '').substring(0, 200),
+          image: hackathon.banner_image ? hackathon.banner_image.url : this.community?.logo_path,
+          startDate: hackathon.start_date,
+          endDate: hackathon.end_date,
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/' + hackathonStatus,
+          location: location,
+          organizer: {
+            '@type': 'Organization',
+            name: hackathon.name,
+            url: environment.app_url + '/communities/' + hackathon.community.slug,
+          },
+        });
+      }
+    }
+    this.seoService.setSchema(this.schemaForHackathon);
   }
 }
