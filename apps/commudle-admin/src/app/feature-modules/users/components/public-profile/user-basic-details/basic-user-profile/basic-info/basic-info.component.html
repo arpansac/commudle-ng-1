@@ -67,6 +67,11 @@
       >
         <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
       </span>
+      <commudle-alert
+        [error]="basicInfoForm.get('designation').errors?.['maxlength']"
+        errorMessage="Max characters should be 100"
+      >
+      </commudle-alert>
     </div>
   </div>
 
