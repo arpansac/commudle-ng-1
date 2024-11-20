@@ -21,6 +21,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subscription } from 'rxjs';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 
 @Component({
   selector: 'app-user-job',
@@ -73,6 +74,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
     private userProfileManagerService: UserProfileManagerService,
     private route: ActivatedRoute,
     private gtm: GoogleTagManagerService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
   ) {
     this.jobForm = this.fb.group(
       {
@@ -85,10 +87,10 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
         salary_type: [EJobSalaryType.MONTHLY, Validators.required],
         salary_currency: [EJobSalaryCurrency.INR, Validators.required],
         location_type: [EJobLocationType.REMOTE, Validators.required],
-        location: [''],
+        location: ['', Validators.required],
         job_type: [EJobType.FULL_TIME, Validators.required],
         status: [EJobStatus.OPEN, Validators.required],
-        description: [''],
+        description: ['', Validators.required],
         tags: [''],
       },
       {
@@ -238,6 +240,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   onOpenDialog(templateRef: TemplateRef<any>) {
     this.dialogRef = this.nbDialogService.open(templateRef, { closeOnEsc: false, closeOnBackdropClick: false });
+    this.initAutocomplete();
     this.gtmService('click-add-job', {
       com_user_id: this.currentUser.id,
       com_profile_complete: this.currentUser.profile_completed,
@@ -272,5 +275,18 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   gtmService(event, data) {
     this.gtm.dataLayerPushEvent(event, data);
+  }
+
+  //Using native element javascript because the form input element on which  location is need to be applied is not getting rendered
+  initAutocomplete() {
+    const addressInput = document.getElementById('addressInput') as HTMLInputElement;
+    this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
+    this.googlePlacesAutocompleteService.placeChanged.subscribe((place) => {
+      this.onLocationPlaceSelected(place);
+    });
+  }
+
+  onLocationPlaceSelected(place) {
+    this.jobForm.patchValue({ location: place.formatted_address });
   }
 }

@@ -82,7 +82,7 @@ nb-card {
       @apply com-flex com-flex-col  md:com-justify-self-start com-justify-self-end;
 
       .form-type {
-        @apply com-text-gray-500 com-text-10px com-font-medium com-m-0;
+        @apply com-text-gray-500 com-text-10px com-font-medium com-m-0 com-text-end  md:com-text-start;
       }
     }
 
@@ -91,7 +91,7 @@ nb-card {
     }
 
     .table-status {
-      @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end  com-flex com-flex-col;
+      @apply com-text-xs com-font-medium md:com-justify-self-start com-justify-self-end  com-flex com-flex-col com-text-end md:com-text-start;
     }
 
     .individual-status {
@@ -221,7 +221,7 @@ nb-card {
 }
 
 canvas {
-  @apply com-w-full com-h-full;
+  @apply com-w-full com-h-full com-object-cover;
   image-rendering: pixelated;
 }
 
@@ -235,6 +235,10 @@ canvas {
 
 .registration-row {
   @apply com-grid md:com-grid-cols-4 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-100 com-rounded-lg com-items-center com-mr-2;
+}
+
+.highlighted-row {
+  @apply com-bg-gray-100;
 }
 
 .registration {

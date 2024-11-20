@@ -4,7 +4,7 @@
       <div class="two-column-layout">
         <div class="left-column">
           <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
-          <nb-card class="user-profile-details">
+          <nb-card class="user-profile-details" *appBreakpoints="'>lg'">
             <nb-card-body *ngIf="currentUser">
               <commudle-userprofile-details
                 [userProfileDetails]="userProfileDetails"
@@ -12,7 +12,7 @@
               ></commudle-userprofile-details>
             </nb-card-body>
           </nb-card>
-          <div class="user-managed-communities">
+          <div class="user-managed-communities" *appBreakpoints="'>lg'">
             <nb-card>
               <nb-card-body>
                 <h2 class="user-managed-communities-heading">Your Communities</h2>
@@ -38,40 +38,41 @@
         <div class="main-column">
           <commudle-dashboard-updates></commudle-dashboard-updates>
           <div class="two-column">
-            <div class="center-column">
-              <div class="upcoming-events">
-                <h2>Upcoming</h2>
-                <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-                <div *ngIf="upcomingEventsHackathons.length > 0 && !loading">
-                  <div
-                    *ngFor="let upcomingEventHackathon of upcomingEventsHackathons"
-                    class="event-horizontal-card"
-                    [ngSwitch]="upcomingEventHackathon.object_type"
-                  >
-                    <commudle-event-horizontal-card
-                      *ngSwitchCase="EDbModels.EVENT"
-                      [event]="upcomingEventHackathon.data"
-                    ></commudle-event-horizontal-card>
-                    <commudle-hackathon-horizontal-card
-                      *ngSwitchCase="EDbModels.HACKATHON"
-                      [hackathon]="upcomingEventHackathon.data"
-                    ></commudle-hackathon-horizontal-card>
+            <div class="center-right-column-wrapper">
+              <div class="center-column">
+                <div class="upcoming-events">
+                  <h2>Upcoming</h2>
+                  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+                  <div *ngIf="upcomingEventsHackathons.length > 0 && !loading">
+                    <div
+                      *ngFor="let upcomingEventHackathon of upcomingEventsHackathons"
+                      class="event-horizontal-card"
+                      [ngSwitch]="upcomingEventHackathon.object_type"
+                    >
+                      <commudle-event-horizontal-card
+                        *ngSwitchCase="EDbModels.EVENT"
+                        [event]="upcomingEventHackathon.data"
+                      ></commudle-event-horizontal-card>
+                      <commudle-hackathon-horizontal-card
+                        *ngSwitchCase="EDbModels.HACKATHON"
+                        [hackathon]="upcomingEventHackathon.data"
+                      ></commudle-hackathon-horizontal-card>
+                    </div>
+                  </div>
+                  <div class="no-upcoming-events" *ngIf="upcomingEventsHackathons.length === 0 && !loading">
+                    <h3>No Upcoming Events</h3>
                   </div>
                 </div>
-                <div class="no-upcoming-events" *ngIf="upcomingEventsHackathons.length === 0 && !loading">
-                  <h3>No Upcoming Events</h3>
+                <div *ngIf="total > 0" class="pagination">
+                  <app-pagination
+                    (goTo)="page = $event; getUpcomingEventsHackathons()"
+                    (next)="page = $event; getUpcomingEventsHackathons()"
+                    (previous)="page = $event; getUpcomingEventsHackathons()"
+                    [count]="count"
+                    [current]="page"
+                    [total]="total"
+                  ></app-pagination>
                 </div>
-              </div>
-              <div *ngIf="total > 0" class="pagination">
-                <app-pagination
-                  (goTo)="page = $event; getUpcomingEventsHackathons()"
-                  (next)="page = $event; getUpcomingEventsHackathons()"
-                  (previous)="page = $event; getUpcomingEventsHackathons()"
-                  [count]="count"
-                  [current]="page"
-                  [total]="total"
-                ></app-pagination>
-              </div>
               <div class="recent-activity">
                 <h2>Recent Activity</h2>
                 <app-loading-spinner *ngIf="loadActivity"></app-loading-spinner>
@@ -232,21 +233,21 @@
                             </nb-card-body>
                           </nb-card>
                         </ng-container>
-                      </ng-container>
+                      </div>
+                      <app-loading-spinner *ngIf="loadingActivity"></app-loading-spinner>
                     </div>
-                    <app-loading-spinner *ngIf="loadingActivity"></app-loading-spinner>
+                  </div>
+                  <div class="no-upcoming-events" *ngIf="activityFeed.length === 0 && !loadingActivity">
+                    <h3>No Recent Activity</h3>
                   </div>
                 </div>
-                <div class="no-upcoming-events" *ngIf="activityFeed.length === 0 && !loadingActivity">
-                  <h3>No Recent Activity</h3>
-                </div>
               </div>
-            </div>
-            <div class="right-column">
-              <div class="advertisement">
-                <nb-card>
-                  <nb-card-body><h2>Advertisement</h2></nb-card-body></nb-card
-                >
+              <div class="right-column" *appBreakpoints="'>lg'">
+                <div *ngIf="!loading" class="advertisement">
+                  <nb-card>
+                    <nb-card-body><h2>Advertisement</h2></nb-card-body></nb-card
+                  >
+                </div>
               </div>
             </div>
           </div>

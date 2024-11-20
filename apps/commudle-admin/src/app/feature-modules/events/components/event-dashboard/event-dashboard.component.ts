@@ -11,6 +11,7 @@ import {
   faCircleInfo,
   faChartLine,
   faArrowLeft,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClipboard, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
@@ -22,6 +23,7 @@ import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-compone
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
   selector: 'app-event-dashboard',
@@ -46,9 +48,13 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     faArrowLeft,
     faEnvelopeOpen,
     faEnvelope,
+    faBars,
   };
 
   ESidebarWidth = ESidebarWidth;
+  sidebarEventName = 'eventDashboard';
+  sidebarExpanded = true;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private seoService: SeoService,
@@ -57,17 +63,26 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     private clipboard: Clipboard,
     private windowService: NbWindowService,
     private footerService: FooterService,
+    public sidebarService: SidebarService,
   ) {}
 
   ngOnInit() {
     this.seoService.noIndex(true);
     this.footerService.changeMiniFooterStatus(false);
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
 
     this.activatedRoute.data.subscribe((value) => {
       this.event = value.event;
       this.community = value.community;
       this.seoService.setTitle(`Admin - ${this.event.name} - ${this.community.name}`);
     });
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
+      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+        this.sidebarExpanded = data;
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -104,5 +119,9 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
         mailType: EemailTypes.RSVP,
       },
     });
+  }
+
+  toggleSidebar() {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 }

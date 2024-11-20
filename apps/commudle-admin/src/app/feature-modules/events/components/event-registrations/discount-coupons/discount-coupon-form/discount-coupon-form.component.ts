@@ -40,6 +40,8 @@ export class DiscountCouponFormComponent implements OnInit {
           discount_type: ['', Validators.required],
           discount_value: ['', [Validators.required, Validators.min(1)]],
           is_limited: [false, Validators.required],
+          min_users_count: [],
+          max_users_count: [],
           max_limit: [0],
           expires_at: [''],
         }),
@@ -73,7 +75,7 @@ export class DiscountCouponFormComponent implements OnInit {
       for (const code of this.discountCode.event_data_form_entity_group_ids) {
         this.addEventDataForm(code, 'edit');
       }
-      this.discountCouponForm.get('discount_code').setValue({
+      this.discountCouponForm.get('discount_code').patchValue({
         code: this.discountCode.code,
         discount_type: this.discountCode.discount_type,
         discount_value:
@@ -82,6 +84,8 @@ export class DiscountCouponFormComponent implements OnInit {
             : this.discountCode.discount_value,
         is_limited: this.discountCode.is_limited,
         max_limit: this.discountCode.max_limit,
+        min_users_count: this.discountCode.min_users_count,
+        max_users_count: this.discountCode.max_users_count,
         expires_at: this.discountCode.expires_at ? this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm:ss') : '',
       });
     }

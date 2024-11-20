@@ -19,4 +19,20 @@ export interface IDataFormEntityResponseGroup {
   hackathon?: IHackathon;
   hackathon_team?: IHackathonTeam;
   event_data_form_entity_group?: IEventDataFormEntityGroup;
+  agg_user_community_engagement: IAggUserCommunityEngagement;
+}
+
+export interface IAggUserCommunityEngagement {
+  joined_at: Date;
+  last_channel_message_at: Date;
+  overall_attendance_rate: number;
+  total_channel_messages: number;
+  total_event_registrations: number;
+  total_event_speaker_registrations: number;
+  total_event_speaker_sessions: number;
+  total_hackathon_registrations: number;
+  total_invited_attended_events: number;
+  total_skipped_events: number;
+  total_uninvited_attended_events: number;
+  total_volunteered_events: number;
 }

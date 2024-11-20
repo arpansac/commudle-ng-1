@@ -4,6 +4,7 @@ export enum ESidebarPosition {
 }
 
 export enum ESidebarWidth {
+  XSMALL = 'xsmall',
   SMALL = 'small',
   MEDIUM = 'medium',
   LARGE = 'large',

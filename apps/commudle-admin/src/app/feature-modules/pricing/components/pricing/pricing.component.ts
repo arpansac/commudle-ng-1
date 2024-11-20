@@ -5,7 +5,13 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { Subscription } from 'rxjs';
-
+import { CmsService } from 'apps/shared-services/cms.service';
+import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
+import { ECmsType } from 'apps/shared-models/enums/cms.enum';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { countries_details } from '@commudle/shared-services';
+import * as momentTimezone from 'moment-timezone';
 @Component({
   selector: 'app-pricing',
   templateUrl: './pricing.component.html',
@@ -15,6 +21,20 @@ export class PricingComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   isMobileView = false;
   isDarkMode = false;
+  enterprise: IPricing;
+  startup: IPricing;
+  devrel: IPricing;
+  isMonthly = false;
+  isAnually = true;
+  faCircleCheck = faCircleCheck;
+  pricingFeatures: IPricingFeatures[] = [];
+  showAllFeatures = true;
+  faArrowDown = faArrowDown;
+  faCircleXmark = faCircleXmark;
+  ECmsType = ECmsType;
+  selectedCurrency = '';
+  countryForm: FormGroup;
+  countries = countries_details;
 
   logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
@@ -81,7 +101,19 @@ export class PricingComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private footerService: FooterService,
     private darkModeService: DarkModeService,
-  ) {}
+    private cmsService: CmsService,
+    private fb: FormBuilder,
+  ) {
+    const userTimeZone = momentTimezone.tz.guess();
+    if (userTimeZone === 'Asia/Calcutta') {
+      this.selectedCurrency = this.countries[0].currency;
+    } else {
+      this.selectedCurrency = this.countries[1].currency;
+    }
+    this.countryForm = this.fb.group({
+      currency: [this.selectedCurrency, Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.isMobileView = window.innerWidth <= 1024;
@@ -90,10 +122,17 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.isDarkMode = isDarkMode;
     });
     this.seoService.setTags(
-      'Pricing: Students, DevRels, Startups',
-      'Host all your developer community activities from events, member profiles, 1:1 communications, forums, channels and more, all at one place on Commudle',
+      'Pricing - Community Subscriptions on Commudle',
+      'Choose a pricing plan which is right for your developer community program. Plans include events, hackathons, newsletters, channels, forums etc. We also have a preferred partner network.',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+    this.getEnterpriseData();
+    this.getStartupData();
+    this.getDevrelData();
+    this.getPricingFeatures();
+    if (this.isMobileView) {
+      this.showAllFeatures = false;
+    }
   }
 
   ngOnDestroy(): void {
@@ -122,5 +161,67 @@ export class PricingComponent implements OnInit, OnDestroy {
         return "url('" + staticAssets.pricing_community_logo_desktop + "')";
       }
     }
+  }
+
+  getEnterpriseData(): void {
+    this.cmsService.getDataBySlug('pp-commudle-for-enterprises').subscribe((value) => {
+      this.enterprise = value;
+      this.setSchema(this.enterprise);
+    });
+  }
+
+  getStartupData(): void {
+    this.cmsService.getDataBySlug('pp-commudle-for-startups').subscribe((value) => {
+      this.startup = value;
+      this.setSchema(this.startup);
+    });
+  }
+
+  getDevrelData(): void {
+    this.cmsService.getDataBySlug('pp-commudle-for-devrel-agencies').subscribe((value) => {
+      this.devrel = value;
+    });
+  }
+
+  getPricingFeatures() {
+    const fields = 'name, order, features';
+    const order = 'order asc';
+    this.cmsService.getDataByTypeFieldOrder(ECmsType.PRICING_PLAN_FEATURES, fields, order).subscribe((value) => {
+      this.pricingFeatures = value;
+    });
+  }
+
+  toggleSubscription(value) {
+    this.isMonthly = value === 'monthly' ? true : false;
+    this.isAnually = value === 'anually' ? true : false;
+  }
+
+  toggleShowAllFeatures() {
+    this.showAllFeatures = !this.showAllFeatures;
+  }
+
+  onCountryChange() {
+    this.selectedCurrency = this.countryForm.get('currency').value;
+  }
+
+  setSchema(planType) {
+    const priceDetails = this.isMonthly ? planType.priceDetails[1] : planType.priceDetails[0];
+
+    const selectedPriceDetail = priceDetails.details.find((item) => item.currencyType === this.selectedCurrency);
+
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: planType.name,
+      image: 'https://www.commudle.com/assets/images/commudle-logo-full.png',
+      description: planType.description,
+      brand: 'Commudle',
+      offers: {
+        '@type': 'Offer',
+        url: 'https://www.commudle.com/pricing',
+        price: selectedPriceDetail?.price_after_discount || selectedPriceDetail?.price,
+        priceCurrency: selectedPriceDetail?.currencyType === 'USD' ? 'USD' : 'INR',
+      },
+    });
   }
 }

@@ -5,8 +5,8 @@
         <commudle-back-button text="Back to dashboard" router="/dashboard"></commudle-back-button>
       </div>
       <nb-card class="registrations">
+        <nb-card-header><h2 class="event-registration-heading">Your Registrations</h2></nb-card-header>
         <nb-card-body>
-          <h2 class="event-registration-heading">Your Registrations</h2>
           <div class="event-registrations">
             <div class="registration-grid">
               <div class="registration-header">
@@ -19,7 +19,7 @@
               <app-loading-spinner *ngIf="loading"></app-loading-spinner>
               <div *ngIf="!loading">
                 <div *ngFor="let registration of registrations; let i = index">
-                  <div class="registration-row">
+                  <div class="registration-row" [ngClass]="{ 'highlighted-row': showEntryPass[i] }">
                     <div class="event-title-date">
                       <p
                         class="event-title"

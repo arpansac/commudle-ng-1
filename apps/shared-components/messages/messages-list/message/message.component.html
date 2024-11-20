@@ -32,8 +32,11 @@
                 src="/assets/images/Expert-Tick.svg"
                 title="Expert Tick"
               />
-              <p class="time">
+              <p *ngIf="!showFullDateTime" class="time">
                 {{ moment(message.created_at).format('h:mm A') }}
+              </p>
+              <p class="time" *ngIf="showFullDateTime">
+                {{ moment(message.created_at).format('MMM Do YYYY, h:mm A') }}
               </p>
             </div>
             <commudle-editor [content]="message.content" [editable]="false"></commudle-editor>
@@ -128,6 +131,7 @@
       [permittedActions]="permittedActions"
       [showFlagIcon]="showFlagIcon"
       [showReplyIcon]="showReplyIcon"
+      [showFullDateTime]="showFullDateTime"
     ></app-message>
     <div *ngIf="showReplyForm" class="reply-form">
       <emoji-mart
