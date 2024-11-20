@@ -1,5 +1,5 @@
 <div class="community-build-card">
-  <a (click)="onNavigate()">
+  <a [routerLink]="['/builds', this.communityBuild.slug]">
     <div class="details">
       <div class="community-build-card-image">
         <commudle-banner-image
