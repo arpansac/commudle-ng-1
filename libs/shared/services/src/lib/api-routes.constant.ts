@@ -952,4 +952,8 @@ export const API_ROUTES = {
     INDEX_UPCOMING_HACKATHONS_EVENTS: 'api/v2/feed/events_hackathons/upcoming',
     ACTIVITY_FEED: 'api/v2/activity_feed',
   },
+
+  USER_ENGAGEMENT_RECORDS: {
+    CREATE: 'api/v2/uerec',
+  },
 };

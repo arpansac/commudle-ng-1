@@ -16,6 +16,7 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modules/community-builds/community-builds.module';
 import { LabsModule } from 'apps/commudle-admin/src/app/feature-modules/labs/labs.module';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { EventContentCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-content-card/event-content-card.component';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 
@@ -43,6 +44,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
     HackathonHorizontalCardComponent,
     SharedPipesModule,
     EventContentCardComponent,
+    MiniUserProfileModule,
   ],
 })
 export class DashboardModule {}
