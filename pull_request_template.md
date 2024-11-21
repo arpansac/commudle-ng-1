@@ -8,9 +8,12 @@
 - ( ) Docs
 - (X) Feat
 - ( ) Hotfix
+- ( ) Merge
 
-## description
+## Description
 
 ## Screenshots
+
+## Testing
 
 ## Bundle Size
