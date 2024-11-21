@@ -22,6 +22,9 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subscription } from 'rxjs';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { SeoService } from '@commudle/shared-services';
+import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-job',
@@ -60,6 +63,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   faBriefcase = faBriefcase;
+  schemaForJobs = [];
 
   @ViewChild('jobDialog', { static: true }) jobDialog: TemplateRef<any>;
   @ViewChild('deleteJobDialog', { static: true }) deleteJobDialog: TemplateRef<any>;
@@ -75,6 +79,9 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute,
     private gtm: GoogleTagManagerService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private seoService: SeoService,
+    private enumFormatPipe: EnumFormatPipe,
+    private datePipe: DatePipe,
   ) {
     this.jobForm = this.fb.group(
       {
@@ -159,6 +166,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
           this.jobs = this.jobs.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
           this.page_info = data.page_info;
           this.isLoading = false;
+          this.setSchemaData();
         }),
     );
   }
@@ -288,5 +296,67 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   onLocationPlaceSelected(place) {
     this.jobForm.patchValue({ location: place.formatted_address });
+  }
+
+  setSchemaData() {
+    const schemaArray: any[] = [];
+
+    for (const job of this.jobs) {
+      const jobLocation = job.location.split(',');
+      const datePosted = this.datePipe.transform(job.created_at, 'yyyy-MM-dd');
+      const validThrough = this.datePipe.transform(job.expired_at, 'yyyy-MM-dd');
+      const employmentType = this.enumFormatPipe.transform(job.job_type);
+
+      // Common schema data
+      const schemaData: any = {
+        '@context': 'https://schema.org/',
+        '@type': 'JobPosting',
+        title: job.position,
+        description: job.description,
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: job.company,
+        },
+        employmentType: employmentType,
+        datePosted: datePosted,
+        validThrough: validThrough,
+      };
+
+      // Schema data for base salary under job
+      if (job.min_salary !== 0) {
+        schemaData.baseSalary = {
+          '@type': 'MonetaryAmount',
+          currency: job.salary_currency,
+          value: {
+            '@type': 'QuantitativeValue',
+            minValue: job.min_salary,
+            maxValue: job.max_salary,
+            unitText: job.salary_type,
+          },
+        };
+      }
+      // schema data for remote job
+      if (job.location_type === EJobLocationType.REMOTE) {
+        schemaData.applicantLocationRequirements = {
+          '@type': 'Country',
+          name: jobLocation[jobLocation.length - 1],
+        };
+        schemaData.jobLocationType = 'TELECOMMUTE';
+      } else {
+        // schema data for non-remote location job
+        schemaData.jobLocation = {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: jobLocation[0],
+            addressCountry: jobLocation[jobLocation.length - 1],
+          },
+        };
+      }
+
+      schemaArray.push(schemaData);
+    }
+
+    this.seoService.setSchema(schemaArray);
   }
 }
