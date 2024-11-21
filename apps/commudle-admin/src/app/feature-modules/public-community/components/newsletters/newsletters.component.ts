@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ICommunity } from '@commudle/shared-models';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
+import { environment } from '@commudle/shared-environments';
 @Component({
   selector: 'commudle-newsletters',
   templateUrl: './newsletters.component.html',
@@ -15,6 +16,7 @@ export class NewslettersComponent implements OnInit {
   subscriptions: Subscription[] = [];
   newsletters: INewsletter[];
   community: ICommunity;
+  schemaForNewsletter = [];
 
   constructor(
     private newsletterService: NewsletterService,
@@ -36,6 +38,7 @@ export class NewslettersComponent implements OnInit {
       this.newsletterService.getPIndex(this.community.id, 'Kommunity').subscribe((data) => {
         this.newsletters = data;
         this.setMeta();
+        this.setSchema();
       }),
     );
   }
@@ -48,5 +51,32 @@ export class NewslettersComponent implements OnInit {
         : 'No newsletters to show right now',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  setSchema() {
+    for (const newsletter of this.newsletters) {
+      this.schemaForNewsletter.push({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: newsletter.title,
+        url: environment.app_url + '/communities/' + this.community.slug + 'newsletters' + newsletter.slug,
+        image: newsletter.banner_image?.url,
+        author: {
+          '@type': 'Organization',
+          name: this.community.name,
+          url: environment.app_url + '/communities/' + this.community.slug,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Commudle',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://www.commudle.com/assets/images/commudle-logo-full.png',
+          },
+        },
+        datePublished: newsletter.created_at,
+      });
+    }
+    this.seoService.setSchema(this.schemaForNewsletter);
   }
 }
