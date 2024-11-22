@@ -24,12 +24,12 @@ import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SeoService } from '@commudle/shared-services';
 import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-job',
   templateUrl: './user-job.component.html',
   styleUrls: ['./user-job.component.scss'],
+  providers: [EnumFormatPipe],
 })
 export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -81,7 +81,6 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
     private seoService: SeoService,
     private enumFormatPipe: EnumFormatPipe,
-    private datePipe: DatePipe,
   ) {
     this.jobForm = this.fb.group(
       {
@@ -303,8 +302,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
     for (const job of this.jobs) {
       const jobLocation = job.location.split(',');
-      const datePosted = this.datePipe.transform(job.created_at, 'yyyy-MM-dd');
-      const validThrough = this.datePipe.transform(job.expired_at, 'yyyy-MM-dd');
+      const datePosted = job.created_at;
+      const validThrough = job.expired_at;
       const employmentType = this.enumFormatPipe.transform(job.job_type);
 
       // Common schema data
@@ -312,7 +311,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
         '@context': 'https://schema.org/',
         '@type': 'JobPosting',
         title: job.position,
-        description: job.description,
+        description: job.description ? job.description : 'NA',
         hiringOrganization: {
           '@type': 'Organization',
           name: job.company,
