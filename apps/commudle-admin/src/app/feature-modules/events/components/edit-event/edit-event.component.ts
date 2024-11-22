@@ -101,6 +101,7 @@ export class EditEventComponent implements OnInit {
     if (this.eventId) {
       this.eventsService.getEvent(this.eventId).subscribe((data) => {
         this.event = data;
+        this.event.name = this.event.name + '::CLONE';
         this.fetchData();
       });
     }

@@ -7,7 +7,7 @@
     <nb-card-body>
       <h3 class="com-mt-0">Edit Event</h3>
 
-      <nb-alert status="info" *ngIf="!event.editable">
+      <nb-alert status="info" *ngIf="event && !event.editable">
         <p>
           This event is <strong>{{ event.event_status?.name | titlecase }}</strong> and cannot be edited
         </p>
@@ -124,7 +124,7 @@
 
         <div class="save-button-bottom">
           <button
-            *ngIf="event.editable"
+            *ngIf="event && event.editable"
             [disabled]="tags.length < 3 || submitIsInProcess"
             type="submit"
             nbButton

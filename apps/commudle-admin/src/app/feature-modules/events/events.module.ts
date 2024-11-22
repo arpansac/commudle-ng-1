@@ -128,7 +128,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     EventCheckedInListComponent,
     NewFormAttachGroupsComponent,
   ],
-  exports: [UserDetailsComponent, UserEngagementDataComponent],
+  exports: [UserDetailsComponent, UserEngagementDataComponent, EditEventComponent],
   imports: [
     CommonModule,
     EventsRoutingModule,
