@@ -15,7 +15,7 @@
 }
 
 .sidebar {
-  @apply com-w-80 com-sticky com-top-16 com-h-[calc(100vh-70px)];
+  @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
   a {
     @apply com-text-inherit com-no-underline;
@@ -23,7 +23,8 @@
   .action-buttons {
     @apply com-py-3;
 
-    .back-admin {
+    .back-admin,
+    .sidebar-expand-icon {
       @apply com-px-4;
       .icon {
         @apply com-text-Cadet-Grey;
@@ -79,4 +80,16 @@ a {
 
 .router {
   @apply com-w-full com-my-2 com-mx-4;
+}
+
+.header-icons {
+  @apply com-flex;
+}
+
+.header-icons-non-expanded {
+  @apply com-mb-4 com-justify-center;
+}
+
+.header-icons-expanded {
+  @apply com-justify-between;
 }
