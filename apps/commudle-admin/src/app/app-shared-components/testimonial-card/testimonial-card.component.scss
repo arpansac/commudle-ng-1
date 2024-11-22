@@ -23,21 +23,21 @@ a {
           @apply com-flex com-flex-col com-ml-10px com-text-left;
 
           .name {
-            @apply com-m-0 com-text-sm com-font-bold com-text-primary-500 com-line-clamp-1;
+            @apply com-m-0 com-text-xs com-font-bold com-text-primary-500 com-line-clamp-1;
           }
 
           .username {
-            @apply com-m-0 com-text-sm com-font-normal com-line-clamp-1 com-text-gray-400;
+            @apply com-m-0 com-text-xs com-font-normal com-line-clamp-1 com-text-gray-400;
           }
 
           .designation {
-            @apply com-m-0 com-text-sm com-font-normal com-line-clamp-1 com-text-gray-500;
+            @apply com-m-0 com-text-xs com-font-normal com-line-clamp-1 com-text-gray-500;
           }
         }
       }
 
       .testimonial-text {
-        @apply com-m-0 com-text-lg com-font-normal com-text-black com-text-left;
+        @apply com-m-0 com-text-sm com-font-normal com-text-black com-text-left;
       }
     }
   }
