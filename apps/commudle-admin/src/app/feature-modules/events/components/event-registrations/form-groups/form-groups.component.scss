@@ -16,12 +16,29 @@
       a {
         @apply com-no-underline com-text-xs com-text-tblack;
       }
+      .link-to-fill {
+        @apply com-mt-4 com-border com-border-solid com-border-primary-500 com-rounded-md com-bg-blue-50 hover:com-bg-blue-100 com-h-8 com-w-28 com-flex com-justify-center com-items-center;
+        a {
+          @apply com-text-primary-500 com-flex com-items-center com-no-underline com-gap-2;
+        }
+      }
     }
 
     .edfeg-status-dropdown {
       @apply com-w-28  com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-font-semibold com-cursor-pointer com-bg-[#EDF1F7] hover:com-bg-[#eef2f7]/50  com-border-0 com-mb-4;
       select {
         @apply com-bg-[#EDF1F7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-24;
+      }
+    }
+    .toggle-cards {
+      @apply com-mx-0 com-my-2 com-bg-tWhite;
+      nb-card-body {
+        @apply com-px-4 com-py-2;
+        nb-checkbox {
+          .text {
+            @apply com-text-primary-500 com-px-0;
+          }
+        }
       }
     }
 
@@ -31,11 +48,7 @@
         @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4;
       }
     }
-    .link-to-fill {
-      a {
-        @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4 com-text-tblack com-flex com-items-center com-no-underline;
-      }
-    }
+
     .show-response {
       a {
         @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4 com-text-tblack com-flex com-items-center com-no-underline;

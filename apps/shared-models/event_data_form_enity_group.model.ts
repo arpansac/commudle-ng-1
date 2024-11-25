@@ -18,4 +18,5 @@ export interface IEventDataFormEntityGroup {
   community: ICommunity;
   user_details: any;
   allow_cancellation: boolean;
+  approval_based_payments: boolean;
 }

@@ -70,6 +70,15 @@ export class EventDataFormEntityGroupsService {
     );
   }
 
+  toggleApprovalBasedPayments(eventDataFormEntityGroupId): Observable<boolean> {
+    return this.http.put<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.EVENT_DATA_FORM_ENTITY_GROUPS.TOGGLE_APPROVAL_BASED_PAYMENTS),
+      {
+        event_data_form_entity_group_id: eventDataFormEntityGroupId,
+      },
+    );
+  }
+
   mailCSV(eventDataFormEntityGroupId): Observable<boolean> {
     const params = new HttpParams().set('event_data_form_entity_group_id', eventDataFormEntityGroupId);
     return this.http.get<boolean>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_DATA_FORM_ENTITY_GROUPS.EMAIL_CSV), {

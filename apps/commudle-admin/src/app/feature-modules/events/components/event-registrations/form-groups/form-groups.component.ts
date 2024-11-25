@@ -322,4 +322,15 @@ export class FormGroupsComponent implements OnInit {
       }
     });
   }
+
+  toggleApprovalBasedPayments(eventDataFormEntityGroupId, index) {
+    this.eventDataFormEntityGroupsService.toggleApprovalBasedPayments(eventDataFormEntityGroupId).subscribe((data) => {
+      if (data) {
+        this.eventDataFormEntityGroups[index].approval_based_payments =
+          !this.eventDataFormEntityGroups[index].approval_based_payments;
+        this.toastLogService.successDialog('Updated');
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
 }
