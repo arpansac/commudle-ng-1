@@ -45,6 +45,24 @@ export class CmsService {
     );
   }
 
+  getDataByTypeWithFilterOrder(
+    type: string,
+    filterType: string,
+    keyword: string,
+    orderBy: string,
+    finalCount: number,
+    initialCount: number = 0,
+  ) {
+    return from(
+      this.client.fetch(
+        `*[_type == "${type}" && $keyword in ${filterType}] | order(${orderBy}) [${initialCount}...${finalCount}]`,
+        {
+          keyword,
+        },
+      ),
+    );
+  }
+
   getDataByTypeFieldOrder(type: string, fields: string, order?: string) {
     return from(this.client.fetch(`*[_type == "${type}"]{${fields}} | order(${order}) `));
   }
