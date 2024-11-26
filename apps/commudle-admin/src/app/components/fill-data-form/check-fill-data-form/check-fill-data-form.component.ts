@@ -92,7 +92,8 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     ) {
       if (
         existingResponses.data_form_entity_response_group.registration_status?.name ===
-        ERegistrationStatuses.SHORTLISTED
+          ERegistrationStatuses.SHORTLISTED ||
+        existingResponses.data_form_entity_response_group.registration_status?.name === ERegistrationStatuses.CONFIRMED
       ) {
         this.openPaidForm = true;
       } else {
