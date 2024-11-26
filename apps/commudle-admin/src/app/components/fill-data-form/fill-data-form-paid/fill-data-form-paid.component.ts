@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+/* eslint-disable @nx/enforce-module-boundaries */
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -47,6 +46,7 @@ declare const Razorpay: any;
   styleUrls: ['./fill-data-form-paid.component.scss'],
 })
 export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() existingResponses;
   countries = countries_details; //list of country code for phone numbers codes
   dataFormEntity: IDataFormEntity;
   formClosed = false; //form is closed or open for filling state
@@ -58,8 +58,6 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   currentUser: ICurrentUser;
   dialogRef: NbDialogRef<any>;
   paymentDialogRef: NbDialogRef<any>;
-
-  existingResponses;
 
   subscriptions: Subscription[] = [];
   gtmData: any = {};
@@ -340,15 +338,12 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
 
   // Fetch preExisting form response
   getExistingResponses() {
-    this.subscriptions.push(
-      this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
-        this.existingResponses = data.existing_responses;
-
-        if (!this.dataFormEntity.multi_response && this.existingResponses.length >= 1) {
-          this.selectedFormResponse = this.existingResponses[this.existingResponses.length - 1];
-        }
-      }),
-    );
+    if (this.existingResponses.existing_responses) {
+      if (!this.dataFormEntity.multi_response && this.existingResponses.existing_responses.length >= 1) {
+        this.selectedFormResponse =
+          this.existingResponses.existing_responses[this.existingResponses.existing_responses.length - 1];
+      }
+    }
   }
 
   //get form entityType
@@ -520,6 +515,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       .createEventTicketOrder(
         this.formData,
         this.dataFormEntity.entity_id,
+        this.existingResponses.data_form_entity_response_group.id,
         this.promoCodeApplied ? this.promoCode.toUpperCase() : '',
       )
       .subscribe(
@@ -557,6 +553,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       .updateEventTicketOrder(
         this.formData,
         this.showEventTicketOrder.uuid,
+        this.existingResponses.data_form_entity_response_group.id,
         this.promoCodeApplied ? this.promoCode : '',
       )
       .subscribe(

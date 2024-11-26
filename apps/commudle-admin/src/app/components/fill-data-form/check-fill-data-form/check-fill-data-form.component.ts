@@ -1,3 +1,5 @@
+/* eslint-disable @nx/enforce-module-boundaries */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
@@ -5,6 +7,8 @@ import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
 import { Subscription, interval } from 'rxjs';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
+import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
+import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
 @Component({
   selector: 'commudle-check-fill-data-form',
   templateUrl: './check-fill-data-form.component.html',
@@ -18,6 +22,8 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   faTriangleExclamation = faTriangleExclamation;
   event_slug: string;
   kommunity_slug: string;
+  openPaidForm: boolean;
+  existingResponses;
 
   @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
   @ViewChild('alreadyExistDfe', { static: true }) alreadyExistDfe: TemplateRef<any>;
@@ -27,6 +33,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     private dataFormEntitiesService: DataFormEntitiesService,
     private dialogService: NbDialogService,
     private router: Router,
+    private dataFormEntityResponsesService: DataFormEntityResponsesService,
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +41,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe((params) => {
         this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
           this.dataFormEntity = data;
+          this.getExistingResponses();
           this.formClosed = !this.dataFormEntity.user_can_fill_form; // this will always return true for organizers
           if (
             this.dataFormEntity.form_type.form_type_name === 'attendee' ||
@@ -62,6 +70,38 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  getExistingResponses() {
+    this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
+      this.existingResponses = data;
+
+      this.checkPaidFormStatus(data);
+    });
+  }
+
+  checkPaidFormStatus(existingResponses) {
+    if (
+      this.dataFormEntity.event_data_form_entity_group.is_paid &&
+      !this.dataFormEntity.event_data_form_entity_group.approval_based_payments
+    ) {
+      this.openPaidForm = true;
+    } else if (
+      this.dataFormEntity.event_data_form_entity_group.is_paid &&
+      this.dataFormEntity.event_data_form_entity_group.approval_based_payments
+    ) {
+      if (
+        existingResponses.data_form_entity_response_group.registration_status?.name ===
+          ERegistrationStatuses.SHORTLISTED ||
+        existingResponses.data_form_entity_response_group.registration_status?.name === ERegistrationStatuses.CONFIRMED
+      ) {
+        this.openPaidForm = true;
+      } else {
+        this.openPaidForm = false;
+      }
+    } else {
+      this.openPaidForm = false;
+    }
   }
 
   ngOnDestroy() {

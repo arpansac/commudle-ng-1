@@ -225,6 +225,7 @@ export const API_ROUTES = {
     LIST: 'api/v2/event_data_form_entity_groups/list',
     EMAIL_PAYMENT_DETAILS_CSV: 'api/v2/event_data_form_entity_groups/email_payment_details_csv',
     PUBLIC_OPEN_DATA_FORMS: 'api/v2/event_data_form_entity_groups/public_open_data_forms',
+    TOGGLE_APPROVAL_BASED_PAYMENTS: 'api/v2/event_data_form_entity_groups/toggle_approval_based_payments',
   },
 
   // event_simple_registrations
