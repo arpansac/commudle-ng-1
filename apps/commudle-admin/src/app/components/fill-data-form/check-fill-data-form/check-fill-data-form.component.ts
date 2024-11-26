@@ -50,7 +50,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
             this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
           }
           if (!this.formClosed) {
-            // this.checkFormStatus(params.data_form_entity_id);
+            this.checkFormStatus(params.data_form_entity_id);
           }
         });
       }),
