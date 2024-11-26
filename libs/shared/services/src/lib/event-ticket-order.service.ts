@@ -10,8 +10,15 @@ import { Observable } from 'rxjs';
 export class EventTicketOrderService {
   constructor(private baseApiService: BaseApiService, private http: HttpClient) {}
 
-  createEventTicketOrder(additional_users: any, eventDataFormEntityGroupId, discount_code?): Observable<any> {
-    let params = new HttpParams().set('event_data_form_entity_group_id', eventDataFormEntityGroupId);
+  createEventTicketOrder(
+    additional_users: any,
+    eventDataFormEntityGroupId,
+    dataFormEntityResponseGroupId,
+    discount_code?,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('event_data_form_entity_group_id', eventDataFormEntityGroupId)
+      .set('data_form_entity_response_group_id', dataFormEntityResponseGroupId);
     if (discount_code) {
       params = params.set('discount_code', discount_code);
     }
@@ -20,8 +27,15 @@ export class EventTicketOrderService {
     });
   }
 
-  updateEventTicketOrder(additional_users: any, eventTicketOrderId, discount_code?): Observable<any> {
-    let params = new HttpParams().set('event_ticket_order_id', eventTicketOrderId);
+  updateEventTicketOrder(
+    additional_users: any,
+    eventTicketOrderId,
+    dataFormEntityResponseGroupId,
+    discount_code?,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('event_ticket_order_id', eventTicketOrderId)
+      .set('data_form_entity_response_group_id', dataFormEntityResponseGroupId);
     if (discount_code) {
       params = params.set('discount_code', discount_code);
     }

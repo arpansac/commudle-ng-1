@@ -74,7 +74,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
 
   getExistingResponses() {
     this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
-      this.existingResponses = data.existing_responses;
+      this.existingResponses = data;
 
       this.checkPaidFormStatus(data);
     });

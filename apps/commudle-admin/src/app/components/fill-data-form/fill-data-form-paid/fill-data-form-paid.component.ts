@@ -338,9 +338,10 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
 
   // Fetch preExisting form response
   getExistingResponses() {
-    if (this.existingResponses) {
-      if (!this.dataFormEntity.multi_response && this.existingResponses.length >= 1) {
-        this.selectedFormResponse = this.existingResponses[this.existingResponses.length - 1];
+    if (this.existingResponses.existing_responses) {
+      if (!this.dataFormEntity.multi_response && this.existingResponses.existing_responses.length >= 1) {
+        this.selectedFormResponse =
+          this.existingResponses.existing_responses[this.existingResponses.existing_responses.length - 1];
       }
     }
   }
@@ -514,6 +515,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       .createEventTicketOrder(
         this.formData,
         this.dataFormEntity.entity_id,
+        this.existingResponses.data_form_entity_response_group.id,
         this.promoCodeApplied ? this.promoCode.toUpperCase() : '',
       )
       .subscribe(
@@ -551,6 +553,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       .updateEventTicketOrder(
         this.formData,
         this.showEventTicketOrder.uuid,
+        this.existingResponses.data_form_entity_response_group.id,
         this.promoCodeApplied ? this.promoCode : '',
       )
       .subscribe(
