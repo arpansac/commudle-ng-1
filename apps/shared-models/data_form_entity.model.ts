@@ -14,6 +14,7 @@ export interface IDataFormEntity {
   redirectable_entity_id: number;
   event_data_form_entity_group: {
     is_paid: boolean;
+    approval_based_payments: boolean;
   };
   form_type: {
     form_type_name: string;

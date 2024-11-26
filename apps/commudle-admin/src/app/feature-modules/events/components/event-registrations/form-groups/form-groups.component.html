@@ -27,6 +27,12 @@
               ></fa-icon>
             </p>
             <p class="type">Form type: {{ edfeg.registration_type.name | titlecase }}</p>
+            <div class="link-to-fill">
+              <a *ngIf="event.editable" [routerLink]="['/fill-form', edfeg.data_form_entity.id]" target="_blank">
+                <span class="com-text-sm">Link to fill</span>
+                <nb-icon icon="external-link" class="com-text-sm"></nb-icon>
+              </a>
+            </div>
           </div>
 
           <!-- edfeg status and rsvp toggle -->
@@ -74,29 +80,51 @@
             </div>
 
             <!-- rsvp toggle -->
-            <div
+            <nb-card
+              class="toggle-cards"
               *ngIf="
                 [ERegistationTypes.ATTENDEE, ERegistationTypes.SPEAKER].includes(edfeg.registration_type.name) &&
                 event.editable
               "
-              class="com-mb-2"
             >
-              <nb-toggle (checkedChange)="updateRSVP(edfeg.id, i)" [checked]="edfeg.rsvp_open === true">
-                Allow RSVP
-              </nb-toggle>
-            </div>
+              <nb-card-body>
+                <nb-checkbox status="primary" (checkedChange)="updateRSVP(edfeg.id, i)" [checked]="edfeg.rsvp_open">
+                  <span class="text">Allow RSVP</span>
+                </nb-checkbox>
+              </nb-card-body>
+            </nb-card>
 
-            <div
+            <!--Toggle  allow_cancellation -->
+            <nb-card
               *ngIf="
                 [ERegistationTypes.ATTENDEE, ERegistationTypes.SPEAKER].includes(edfeg.registration_type.name) &&
                 event.editable
               "
-              class="com-mb-2"
+              class="toggle-cards"
             >
-              <nb-toggle (checkedChange)="toggleCancellation(edfeg.id, i)" [checked]="edfeg.allow_cancellation">
-                Allow Entry Pass Cancellation
-              </nb-toggle>
-            </div>
+              <nb-card-body>
+                <nb-checkbox
+                  status="primary"
+                  (checkedChange)="toggleCancellation(edfeg.id, i)"
+                  [checked]="edfeg.allow_cancellation"
+                >
+                  <span class="text"> Allow Entry Pass Cancellation </span>
+                </nb-checkbox>
+              </nb-card-body>
+            </nb-card>
+
+            <!-- Toggle approval_based_payments -->
+            <nb-card *ngIf="edfeg.is_paid && community.payments_enabled" class="toggle-cards">
+              <nb-card-body>
+                <nb-checkbox
+                  status="primary"
+                  (checkedChange)="toggleApprovalBasedPayments(edfeg.id, i)"
+                  [checked]="edfeg.approval_based_payments"
+                >
+                  <span class="text"> Approval Based Payments </span>
+                </nb-checkbox></nb-card-body
+              >
+            </nb-card>
 
             <!-- auto close -->
             <div *ngIf="event.editable">
@@ -119,12 +147,6 @@
                 <fa-icon [icon]="faEnvelope"></fa-icon>
                 Send By Email
               </button>
-            </div>
-            <div class="link-to-fill">
-              <a *ngIf="event.editable" [routerLink]="['/fill-form', edfeg.data_form_entity.id]" target="_blank">
-                <nb-icon icon="external-link" class="com-text-sm"></nb-icon>
-                <span class="com-text-sm">Link to fill</span>
-              </a>
             </div>
           </div>
 

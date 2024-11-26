@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+/* eslint-disable @nx/enforce-module-boundaries */
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -26,6 +27,7 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
   styleUrls: ['./fill-data-form.component.scss'],
 })
 export class FillDataFormComponent implements OnInit, OnDestroy {
+  @Input() existingResponses;
   dataFormEntity: IDataFormEntity;
   formClosed = false;
   showProfileForm = false;
@@ -36,7 +38,6 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   dialogRef: NbDialogRef<any>;
   completeProfileText = 'Complete your profile to boost your chances of getting shortlisted';
-  existingResponses;
 
   subscriptions: Subscription[] = [];
   gtmData: any = {};
@@ -119,13 +120,11 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   }
 
   getExistingResponses() {
-    this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
-      this.existingResponses = data.existing_responses;
-
+    if (this.existingResponses) {
       if (!this.dataFormEntity.multi_response && this.existingResponses.length >= 1) {
         this.selectedFormResponse = this.existingResponses[this.existingResponses.length - 1];
       }
-    });
+    }
   }
 
   getParent() {
