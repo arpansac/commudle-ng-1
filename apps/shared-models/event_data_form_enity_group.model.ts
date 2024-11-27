@@ -1,6 +1,6 @@
 import { IRegistrationType } from './registration_type.model';
 import { IDataFormEntity } from './data_form_entity.model';
-import { ICommunity, IEvent } from '@commudle/shared-models';
+import { ICommunity, IEvent, IPaymentDetail } from '@commudle/shared-models';
 
 export interface IEventDataFormEntityGroup {
   id: number;
@@ -19,4 +19,5 @@ export interface IEventDataFormEntityGroup {
   user_details: any;
   allow_cancellation: boolean;
   approval_based_payments: boolean;
+  paid_ticket_settings: IPaymentDetail;
 }

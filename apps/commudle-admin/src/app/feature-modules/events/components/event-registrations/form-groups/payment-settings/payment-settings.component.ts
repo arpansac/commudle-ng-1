@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentSettingService, ToastrService, countries_details } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -50,6 +50,8 @@ export class PaymentSettingsComponent implements OnInit {
   commudleFeePercentage = 2;
   commudleFeeAmount = 0;
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
+  @Output() paidTicketSettingUpdated = new EventEmitter<IPaymentDetail>();
+
   constructor(
     private paymentSettingService: PaymentSettingService,
     private fb: FormBuilder,
@@ -71,7 +73,7 @@ export class PaymentSettingsComponent implements OnInit {
           country: [''],
           seller_name: [''],
           seller_address: [''],
-          multi_person_ticket: [false],
+          // multi_person_ticket: [],
         }),
       },
       {
@@ -129,6 +131,7 @@ export class PaymentSettingsComponent implements OnInit {
         this.toastrService.successDialog('Payment details has been created');
         this.paymentData = data;
         this.paymentDetailsExist = true;
+        this.paidTicketSettingUpdated.emit(data);
         this.updatePaidTicketingForm(this.paymentData);
         this.closeDialogBox();
       });
@@ -145,6 +148,7 @@ export class PaymentSettingsComponent implements OnInit {
       .subscribe((data: IPaymentDetail) => {
         this.paymentData = data;
         this.toastrService.successDialog('Payment details has been updated');
+        this.paidTicketSettingUpdated.emit(data);
         this.updatePaidTicketingForm(this.paymentData);
         this.closeDialogBox();
       });
@@ -179,7 +183,6 @@ export class PaymentSettingsComponent implements OnInit {
       country: ticketDetails.country,
       seller_name: ticketDetails.seller_name,
       seller_address: ticketDetails.seller_address,
-      multi_person_ticket: ticketDetails.multi_person_ticket,
     });
   }
 
