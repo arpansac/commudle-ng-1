@@ -27,8 +27,8 @@
               <p class="form-name">{{ dataFormEntity.name }}</p>
               <commudle-alert
                 [info]="
-                  dataFormEntity.event_data_form_entity_group.is_paid &&
-                  dataFormEntity.event_data_form_entity_group.approval_based_payments
+                  dataFormEntity?.event_data_form_entity_group?.is_paid &&
+                  dataFormEntity?.event_data_form_entity_group?.approval_based_payments
                 "
                 message="This is an approval based registration process, if you are shortlisted then you will receive a link to make the payment and complete your registration."
               ></commudle-alert>
@@ -82,8 +82,8 @@
         <div class="com-my-3 com-mx-2">
           <commudle-alert
             [info]="
-              dataFormEntity.event_data_form_entity_group.is_paid &&
-              dataFormEntity.event_data_form_entity_group.approval_based_payments
+              dataFormEntity?.event_data_form_entity_group?.is_paid &&
+              dataFormEntity?.event_data_form_entity_group?.approval_based_payments
             "
             message="This is an approval based registration process, if you are shortlisted then you will receive a link to make the payment and complete your registration."
           ></commudle-alert>

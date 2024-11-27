@@ -9,6 +9,7 @@ import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
+import { EDbModels } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-check-fill-data-form',
   templateUrl: './check-fill-data-form.component.html',
@@ -43,11 +44,13 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
           this.dataFormEntity = data;
           this.getExistingResponses();
           this.formClosed = !this.dataFormEntity.user_can_fill_form; // this will always return true for organizers
-          if (
-            this.dataFormEntity.form_type.form_type_name === 'attendee' ||
-            this.dataFormEntity.form_type.form_type_name === 'speaker'
-          ) {
-            this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
+          if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
+            if (
+              this.dataFormEntity.form_type.form_type_name === 'attendee' ||
+              this.dataFormEntity.form_type.form_type_name === 'speaker'
+            ) {
+              this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
+            }
           }
           if (!this.formClosed) {
             this.checkFormStatus(params.data_form_entity_id);
@@ -75,8 +78,11 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   getExistingResponses() {
     this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
       this.existingResponses = data;
-
-      this.checkPaidFormStatus(data);
+      if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
+        this.checkPaidFormStatus(data);
+      } else {
+        this.openPaidForm = false;
+      }
     });
   }
 
