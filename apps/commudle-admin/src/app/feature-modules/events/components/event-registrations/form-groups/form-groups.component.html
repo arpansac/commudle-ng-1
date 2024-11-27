@@ -104,6 +104,7 @@
             >
               <nb-card-body>
                 <nb-checkbox
+                  [disabled]="edfeg.is_paid"
                   status="primary"
                   (checkedChange)="toggleCancellation(edfeg.id, i)"
                   [checked]="edfeg.allow_cancellation"
