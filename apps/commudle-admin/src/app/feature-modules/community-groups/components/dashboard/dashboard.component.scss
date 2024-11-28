@@ -3,15 +3,24 @@
   a {
     @apply com-text-inherit com-no-underline;
   }
-  .action-buttons {
-    @apply com-p-4 com-cursor-pointer;
 
-    .sidebar-expand-icon {
-      .icon {
-        @apply com-text-Cadet-Grey;
+  .action-buttons {
+    @apply com-flex com-flex-col com-p-4 com-cursor-pointer;
+
+    .header {
+      @apply com-text-black com-flex com-items-center com-justify-center com-pb-2;
+
+      .community-name {
+        @apply com-text-xl com-m-0 com-flex-1 com-font-normal;
       }
-      .heading {
-        @apply com-text-xs com-text-Cadet-Grey;
+
+      .sidebar-expand-icon {
+        .icon {
+          @apply com-text-Cadet-Grey;
+        }
+        .heading {
+          @apply com-text-xs com-text-Cadet-Grey;
+        }
       }
     }
 

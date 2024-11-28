@@ -1,19 +1,21 @@
 <div class="com-flex com-w-full">
   <div class="sidebar-container">
     <commudle-sidebar
-      [heading]="communityGroup.name"
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [eventName]="sidebarEventName"
       [forWindow]="false"
       [showExpandedButton]="false"
     >
       <div class="action-buttons">
-        <div
-          (click)="toggleSidebar()"
-          class="sidebar-expand-icon"
-          [ngClass]="sidebarExpanded ? 'expanded-sidebar' : 'collapsed-sidebar'"
-        >
-          <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
+        <div class="header">
+          <p *ngIf="sidebarExpanded" class="community-name">{{ communityGroup.name }}</p>
+          <div
+            (click)="toggleSidebar()"
+            class="sidebar-expand-icon"
+            [ngClass]="sidebarExpanded ? 'expanded-sidebar' : 'collapsed-sidebar'"
+          >
+            <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
+          </div>
         </div>
         <div class="category">
           <!-- <div class="category-heading">
