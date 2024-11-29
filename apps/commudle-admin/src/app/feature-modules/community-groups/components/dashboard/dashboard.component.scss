@@ -1,16 +1,26 @@
 .sidebar-container {
-  @apply com-w-80 com-sticky com-top-16 com-h-screen;
+  @apply com-sticky com-top-16 com-h-screen;
   a {
     @apply com-text-inherit com-no-underline;
   }
+
   .action-buttons {
-    @apply com-p-4 com-cursor-pointer;
-    .back-admin {
-      .icon {
-        @apply com-text-[#8F9BB3];
+    @apply com-flex com-flex-col com-p-4 com-cursor-pointer;
+
+    .header {
+      @apply com-text-black com-flex com-items-center com-justify-center com-pb-2;
+
+      .community-name {
+        @apply com-text-xl com-m-0 com-flex-1 com-font-semibold;
       }
-      .heading {
-        @apply com-text-xs com-text-[#8F9BB3];
+
+      .sidebar-expand-icon {
+        .icon {
+          @apply com-text-Cadet-Grey;
+        }
+        .heading {
+          @apply com-text-xs com-text-Cadet-Grey;
+        }
       }
     }
 
@@ -26,7 +36,7 @@
         @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
       }
       .icon {
-        @apply com-text-lg com-text-[#8F9BB3];
+        @apply com-text-lg com-text-Cadet-Grey;
       }
       .heading {
         @apply com-text-sm com-font-light;
@@ -56,4 +66,12 @@
   .router {
     @apply com-w-full com-max-w-screen-xl com-mx-auto;
   }
+}
+
+.expanded-sidebar {
+  @apply com-flex com-justify-end com-mb-2;
+}
+
+.collapsed-sidebar {
+  @apply com-flex com-justify-center com-mb-2;
 }

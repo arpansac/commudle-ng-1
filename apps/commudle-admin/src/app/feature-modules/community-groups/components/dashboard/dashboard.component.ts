@@ -10,6 +10,7 @@ import {
   faFileLines,
   faHashtag,
   faMessage,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
@@ -39,8 +40,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     faFileLines,
     faHashtag,
     faMessage,
+    faBars,
   };
   ESidebarWidth = ESidebarWidth;
+  sidebarEventName = 'communityGroup';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -59,13 +62,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.setMeta();
       }),
     );
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
 
-    this.sidebarService.setSidebarVisibility('communityGroup', true);
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
+      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+        this.sidebarExpanded = data;
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.seoService.noIndex(false);
+  }
+
+  toggleSidebar() {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
   setMeta() {
