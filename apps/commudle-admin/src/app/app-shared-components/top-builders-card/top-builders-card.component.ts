@@ -5,13 +5,22 @@ import { RouterModule } from '@angular/router';
 import { IUser } from 'apps/shared-models/user.model';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { UserPersonalConnectComponent } from '../user-personal-connect/user-personal-connect.component';
 
 @Component({
   selector: 'commudle-top-builders-card',
   standalone: true,
   templateUrl: './top-builders-card.component.html',
   styleUrls: ['./top-builders-card.component.scss'],
-  imports: [CommonModule, NbCardModule, RouterModule, NbIconModule, MiniUserProfileModule, SharedPipesModule],
+  imports: [
+    CommonModule,
+    NbCardModule,
+    RouterModule,
+    NbIconModule,
+    MiniUserProfileModule,
+    SharedPipesModule,
+    UserPersonalConnectComponent,
+  ],
 })
 export class TopBuildersCardComponent implements OnInit {
   @Input() topBuilder: IUser;

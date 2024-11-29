@@ -329,7 +329,10 @@
               'com-cursor-no-drop': !user.name
             }"
           >
-            <div (click)="displayUserData(user)" class="name" *ngIf="user.name">{{ user.name }}</div>
+            <div (click)="displayUserData(user)" class="name" *ngIf="user.name">
+              {{ user.name }}
+              <commudle-user-personal-connect [user]="user"></commudle-user-personal-connect>
+            </div>
             <div
               class="name"
               *ngIf="!user.name"

@@ -14,7 +14,10 @@
                 </div>
                 <div class="details">
                   <div class="com-flex com-flex-col com-justify-between">
-                    <p class="user-name">{{ judge.name }}</p>
+                    <div class="header">
+                      <p class="user-name">{{ judge.name }}</p>
+                      <!-- <commudle-user-personal-connect [user]="judge"></commudle-user-personal-connect> -->
+                    </div>
                     <p *ngIf="judge.username" class="user-username">@{{ judge.username }}</p>
                     <p class="user-designation">{{ judge.designation }}</p>
                     <div class="judge-type">

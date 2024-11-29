@@ -57,3 +57,7 @@ a {
 .disabled {
   @apply com-pointer-events-none;
 }
+
+.header {
+  @apply com-flex com-flex-row com-items-center;
+}

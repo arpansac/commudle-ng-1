@@ -11,6 +11,7 @@
           <div class="d-flex align-items-center">
             <a [routerLink]="['/users', message.user.username]" target="_blank">
               <span class="name">{{ message.user.name }}</span>
+              <commudle-user-personal-connect [user]="message.user"></commudle-user-personal-connect>
               <span class="username">@{{ message.user.username }}</span>
               <img
                 *ngIf="message.user.is_expert"

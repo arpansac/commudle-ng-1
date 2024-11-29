@@ -37,7 +37,10 @@
               <div class="user-image">
                 <img [src]="user.avatar" alt="{{ user.name }}" />
               </div>
-              <p class="name">{{ user.name }}</p>
+              <div class="user-name-connection">
+                <p class="name">{{ user.name }}</p>
+                <!-- <commudle-user-personal-connect [user]="user"></commudle-user-personal-connect> -->
+              </div>
               <p class="designation">
                 <span class="dot"> &nbsp;·&nbsp; </span> {{ user.designation ? user.designation : '--' }}
               </p>
