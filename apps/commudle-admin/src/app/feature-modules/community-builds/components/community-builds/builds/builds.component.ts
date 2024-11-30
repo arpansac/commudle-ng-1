@@ -75,18 +75,10 @@ export class BuildsComponent implements OnInit {
         this.getCommunityBuilds();
       }
     });
-
-    if (this.activatedRoute.snapshot.queryParams['tags[]']) {
-      this.heading =
-        (typeof this.activatedRoute.snapshot.queryParams['tags[]'] === 'string'
-          ? this.activatedRoute.snapshot.queryParams['tags[]']
-          : this.activatedRoute.snapshot.queryParams['tags[]'].join(', ')) + ' - builds by techies around you';
-    }
   }
 
   filter() {
     this.isAllFilterSelected = false;
-    this.heading = 'Builds by techies around you';
     if (this.timePeriod === 'month') {
       this.month = true;
       this.year = false;
@@ -121,7 +113,6 @@ export class BuildsComponent implements OnInit {
 
   allFilterSelected() {
     this.isAllFilterSelected = true;
-    this.heading = 'Builds by techies around you';
     this.month = false;
     this.year = false;
     this.allTime = false;
