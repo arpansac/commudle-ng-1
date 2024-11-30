@@ -1,6 +1,6 @@
 <div class="builds">
   <div class="heading-filter">
-    <h5 class="heading">Builds by techies around you</h5>
+    <h5 class="heading">{{ this.heading }}</h5>
     <div class="filters">
       <button
         nbButton
@@ -22,7 +22,7 @@
         [(ngModel)]="timePeriod"
         (selectedChange)="filter()"
         filled
-        [status]="isAllFilterSelected ? 'basic' : 'primary'"
+        [status]="month || year || allTime ? 'primary' : 'basic'"
         [ngStyle]="{ color: isAllFilterSelected ? 'black' : 'white' }"
       >
         <nb-option value="month"> Highest upvoted this month</nb-option>

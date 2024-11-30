@@ -25,6 +25,8 @@ export class BuildsComponent implements OnInit {
   limit = 5;
   skeletonLoaderCard = true;
   loadingCommunityBuilds = false;
+  heading = 'Builds by techies around you';
+  selectedTags = [];
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -59,6 +61,12 @@ export class BuildsComponent implements OnInit {
           this.isAllFilterSelected = false;
           this.order_by = 'votes_count';
         }
+        if (this.selectedTags.length > 0) {
+          this.isAllFilterSelected = false;
+          this.month = false;
+          this.year = false;
+          this.allTime = false;
+        }
         this.communityBuilds = [];
         this.getCommunityBuilds();
       } else {
@@ -67,10 +75,18 @@ export class BuildsComponent implements OnInit {
         this.getCommunityBuilds();
       }
     });
+
+    if (this.activatedRoute.snapshot.queryParams['tags[]']) {
+      this.heading =
+        (typeof this.activatedRoute.snapshot.queryParams['tags[]'] === 'string'
+          ? this.activatedRoute.snapshot.queryParams['tags[]']
+          : this.activatedRoute.snapshot.queryParams['tags[]'].join(', ')) + ' - builds by techies around you';
+    }
   }
 
   filter() {
     this.isAllFilterSelected = false;
+    this.heading = 'Builds by techies around you';
     if (this.timePeriod === 'month') {
       this.month = true;
       this.year = false;
@@ -105,6 +121,7 @@ export class BuildsComponent implements OnInit {
 
   allFilterSelected() {
     this.isAllFilterSelected = true;
+    this.heading = 'Builds by techies around you';
     this.month = false;
     this.year = false;
     this.allTime = false;
@@ -125,9 +142,19 @@ export class BuildsComponent implements OnInit {
     if (!this.page_info?.end_cursor) {
       this.communityBuilds = [];
     }
-
+    this.selectedTags = this.activatedRoute.snapshot.queryParams['tags[]']
+      ? this.activatedRoute.snapshot.queryParams['tags[]']
+      : [];
     this.communityBuildsService
-      .pGetAll(this.page_info?.end_cursor, this.limit, this.order_by, this.month, this.year, this.allTime)
+      .pGetAll(
+        this.page_info?.end_cursor,
+        this.limit,
+        this.order_by,
+        this.month,
+        this.year,
+        this.allTime,
+        this.selectedTags,
+      )
       .subscribe((data: IPagination<ICommunityBuild>) => {
         this.communityBuilds = this.communityBuilds.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
         this.total = data.total;
