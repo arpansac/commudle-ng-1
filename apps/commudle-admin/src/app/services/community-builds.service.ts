@@ -115,6 +115,7 @@ export class CommunityBuildsService {
     month?: boolean,
     year?: boolean,
     allTime?: boolean,
+    tags?: any[],
   ): Observable<IPagination<ICommunityBuild>> {
     let params = new HttpParams();
     if (limit) {
@@ -134,6 +135,11 @@ export class CommunityBuildsService {
     }
     if (order_by === 'votes_count') {
       params = params.set('order_by', order_by);
+    }
+    if (tags) {
+      for (let i = 0; i < tags.length; i++) {
+        params = params.append('tags[]', tags[i]);
+      }
     }
     return this.http.get<IPagination<ICommunityBuild>>(
       this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_BUILDS.PUBLIC.INDEX),

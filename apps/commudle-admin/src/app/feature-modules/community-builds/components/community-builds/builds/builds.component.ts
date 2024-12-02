@@ -25,6 +25,8 @@ export class BuildsComponent implements OnInit {
   limit = 5;
   skeletonLoaderCard = true;
   loadingCommunityBuilds = false;
+  heading = 'Builds by techies around you';
+  selectedTags = [];
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -58,6 +60,12 @@ export class BuildsComponent implements OnInit {
           this.allTime = true;
           this.isAllFilterSelected = false;
           this.order_by = 'votes_count';
+        }
+        if (this.selectedTags.length > 0) {
+          this.isAllFilterSelected = false;
+          this.month = false;
+          this.year = false;
+          this.allTime = false;
         }
         this.communityBuilds = [];
         this.getCommunityBuilds();
@@ -125,9 +133,19 @@ export class BuildsComponent implements OnInit {
     if (!this.page_info?.end_cursor) {
       this.communityBuilds = [];
     }
-
+    this.selectedTags = this.activatedRoute.snapshot.queryParams['tags[]']
+      ? this.activatedRoute.snapshot.queryParams['tags[]']
+      : [];
     this.communityBuildsService
-      .pGetAll(this.page_info?.end_cursor, this.limit, this.order_by, this.month, this.year, this.allTime)
+      .pGetAll(
+        this.page_info?.end_cursor,
+        this.limit,
+        this.order_by,
+        this.month,
+        this.year,
+        this.allTime,
+        this.selectedTags,
+      )
       .subscribe((data: IPagination<ICommunityBuild>) => {
         this.communityBuilds = this.communityBuilds.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
         this.total = data.total;

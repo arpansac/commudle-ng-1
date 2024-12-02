@@ -1,6 +1,13 @@
 <div class="builds">
   <div class="heading-filter">
     <h5 class="heading">Builds by techies around you</h5>
+    <app-tag
+      *ngIf="selectedTags.length > 0"
+      [tags]="selectedTags"
+      [backgroundColor]="'com-bg-[#FCEDE7]'"
+      [size]="'tiny'"
+      [fontColor]="'com-text-[#C05324]'"
+    ></app-tag>
     <div class="filters">
       <button
         nbButton
@@ -22,7 +29,7 @@
         [(ngModel)]="timePeriod"
         (selectedChange)="filter()"
         filled
-        [status]="isAllFilterSelected ? 'basic' : 'primary'"
+        [status]="month || year || allTime ? 'primary' : 'basic'"
         [ngStyle]="{ color: isAllFilterSelected ? 'black' : 'white' }"
       >
         <nb-option value="month"> Highest upvoted this month</nb-option>
