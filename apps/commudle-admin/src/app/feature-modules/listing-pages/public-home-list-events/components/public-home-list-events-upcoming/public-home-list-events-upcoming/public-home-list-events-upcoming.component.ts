@@ -18,7 +18,7 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit {
   eventForSchema = [];
   page_info: IPageInfo;
   total: number;
-  limit = 5;
+  limit = 20;
 
   isLoadingUpcoming = false;
   showSpinner = false;
