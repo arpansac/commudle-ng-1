@@ -261,6 +261,9 @@ export class FormGroupsComponent implements OnInit {
     this.eventDataFormEntityGroupsService.togglePaidTicket(eventDataFormEntityGroupId).subscribe((data) => {
       const edfegIndex = this.eventDataFormEntityGroups.findIndex((edfeg) => edfeg.id === eventDataFormEntityGroupId);
       this.eventDataFormEntityGroups[edfegIndex].is_paid = data;
+      if (this.eventDataFormEntityGroups[edfegIndex].allow_cancellation) {
+        this.toggleCancellation(this.eventDataFormEntityGroups[edfegIndex].id, edfegIndex);
+      }
       this.checkDiscountCode();
     });
   }
