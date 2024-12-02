@@ -336,4 +336,24 @@ export class FormGroupsComponent implements OnInit {
       }
     });
   }
+
+  toggleApprovalGroupTicketing(eventDataFormEntityGroup: IEventDataFormEntityGroup, index) {
+    const paidTicketingForm = {
+      paid_ticket_setting: {
+        multi_person_ticket: !eventDataFormEntityGroup.paid_ticket_settings.multi_person_ticket,
+      },
+    };
+    this.paymentSettingService
+      .updateTicketDetails(paidTicketingForm, eventDataFormEntityGroup.paid_ticket_settings.id)
+      .subscribe((data) => {
+        this.eventDataFormEntityGroups[index].paid_ticket_settings = data;
+        this.toastLogService.successDialog('Updated');
+        this.changeDetectorRef.markForCheck();
+      });
+  }
+
+  updatePaidTicketSetting(data, eventDataFormEntityGroup) {
+    const edfegIndex = this.eventDataFormEntityGroups.findIndex((edfeg) => edfeg.id === eventDataFormEntityGroup.id);
+    this.eventDataFormEntityGroups[edfegIndex].paid_ticket_settings = data;
+  }
 }
