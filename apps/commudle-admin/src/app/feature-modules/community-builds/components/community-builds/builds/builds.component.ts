@@ -76,11 +76,11 @@ export class BuildsComponent implements OnInit {
         this.isAllFilterSelected = true;
         this.getCommunityBuilds();
       }
-      this.setSeo();
+      this.setMeta();
     });
   }
 
-  setSeo() {
+  setMeta() {
     let tags = '';
     if (this.selectedTags.length > 0) {
       tags = this.selectedTags.join(', ');
