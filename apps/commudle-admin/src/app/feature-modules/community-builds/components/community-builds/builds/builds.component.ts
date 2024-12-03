@@ -159,6 +159,7 @@ export class BuildsComponent implements OnInit {
     this.selectedTags = this.activatedRoute.snapshot.queryParams['tags[]']
       ? this.activatedRoute.snapshot.queryParams['tags[]']
       : [];
+    this.selectedTags = Array.isArray(this.selectedTags) ? this.selectedTags : [this.selectedTags];
     this.communityBuildsService
       .pGetAll(
         this.page_info?.end_cursor,
