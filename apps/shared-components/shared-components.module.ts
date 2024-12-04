@@ -91,6 +91,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
 import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/user-details-checkbox-form.component';
 import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +166,6 @@ import { NewsletterCardComponent } from './newsletter-card/newsletter-card.compo
     BadgeComponent,
     BackButtonComponent,
     HelpSectionComponent,
-
     // Nebular
     NbButtonModule,
     NbIconModule,
@@ -188,11 +188,10 @@ import { NewsletterCardComponent } from './newsletter-card/newsletter-card.compo
     NbToggleModule,
     NbContextMenuModule,
     NbSpinnerModule,
-
     //cdk
     DragDropModule,
-
     tinyMCEEditorModule,
+    UserPersonalConnectComponent,
   ],
   exports: [
     WorkInProgressComponent,
