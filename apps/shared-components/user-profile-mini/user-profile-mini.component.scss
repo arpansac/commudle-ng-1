@@ -57,7 +57,7 @@
     text-align: left;
 
     .name {
-      margin: 0;
+      @apply com-flex com-flex-row com-items-center com-m-0;
       .disable-anchor {
         pointer-events: none;
       }
