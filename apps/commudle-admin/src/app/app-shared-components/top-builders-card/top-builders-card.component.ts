@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { IUser } from 'apps/shared-models/user.model';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
-import { UserPersonalConnectComponent } from '../user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 
 @Component({
   selector: 'commudle-top-builders-card',

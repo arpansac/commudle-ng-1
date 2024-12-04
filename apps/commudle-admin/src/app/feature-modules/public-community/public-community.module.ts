@@ -44,7 +44,7 @@ import { BackButtonComponent } from 'apps/shared-components/back-button/back-but
 import { PublicCommunityHackathonsComponent } from 'apps/commudle-admin/src/app/feature-modules/public-community/components/public-community-hackathons/public-community-hackathons.component';
 import { EventHorizontalCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-horizontal-card/event-horizontal-card.component';
 import { SharedComponentsModule as newSharedComponentModule } from '@commudle/shared-components';
-import { UserPersonalConnectComponent } from '../../app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 @NgModule({
   declarations: [
     HomeCommunityComponent,

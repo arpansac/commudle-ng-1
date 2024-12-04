@@ -33,7 +33,7 @@ import { PublicHackathonUserDashboardComponent } from 'apps/commudle-admin/src/a
 import { PublicHackathonRegistrationComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/public-hackathon-registration.component';
 import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
-import { UserPersonalConnectComponent } from '../../app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   imports: [

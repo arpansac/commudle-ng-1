@@ -16,8 +16,8 @@
               class="expert-icon"
               src="/assets/images/Expert-Tick.svg"
             />
+            <commudle-user-personal-connect [user]="topBuilder"></commudle-user-personal-connect>
           </p>
-          <commudle-user-personal-connect [user]="topBuilder"></commudle-user-personal-connect>
           <p *ngIf="displayUsername" class="username" title="{{ topBuilder.username }}">
             @{{ topBuilder.username | truncatetext : 15 }}
           </p>
