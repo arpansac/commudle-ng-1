@@ -1,29 +1,14 @@
 .sponsors {
   @apply com-mx-0 com-my-6;
   .event-sponsors {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    @apply com-flex com-items-center com-flex-wrap com-gap-4;
     .event-sponsor {
-      @apply com-my-2 com-mr-2 com-ml-0 md:com-m-2;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 250px;
-      border: 1px dotted lightgrey;
-      border-radius: 5px;
+      @apply com-h-20 com-w-64 com-flex com-gap-2 com-items-center com-border com-border-dotted com-border-Bright-Gray com-rounded-md com-relative;
       .logo {
-        @apply com-bg-tWhite;
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
+        @apply com-h-20 com-w-20 com-p-1 com-flex com-items-center com-border-0 com-border-r com-border-dotted com-border-Bright-Gray;
         img {
-          width: 100%;
+          @apply com-w-full;
         }
-      }
-      .details {
-        margin-left: 5px;
       }
 
       .remove-sponsor-button {
@@ -98,7 +83,6 @@ nb-tabset.new-event-sponsor-options {
         height: 75px;
         display: flex;
         flex-wrap: nowrap;
-        align-items: flex-start;
         margin: 0 auto;
         img {
           max-width: 100%;
@@ -131,6 +115,12 @@ nb-tabset.new-event-sponsor-options {
         overflow: hidden;
         img {
           width: 100%;
+        }
+      }
+      .logo {
+        @apply com-h-4/5 com-p-1 com-flex com-items-center;
+        img {
+          @apply com-w-full;
         }
       }
 
