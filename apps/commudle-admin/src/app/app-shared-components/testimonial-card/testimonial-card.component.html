@@ -14,7 +14,6 @@
           </div>
           <div class="user-details">
             <p class="name">{{ testimonial.name }}</p>
-            <commudle-user-personal-connect [user]="testimonial.user"></commudle-user-personal-connect>
             <p *ngIf="testimonial.username" class="username">@{{ testimonial.username }}</p>
             <p class="designation">{{ testimonial.userDesignation }}</p>
           </div>

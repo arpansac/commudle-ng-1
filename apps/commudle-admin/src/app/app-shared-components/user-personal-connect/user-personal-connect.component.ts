@@ -10,12 +10,12 @@ import { IUser } from '@commudle/shared-models';
   styleUrls: ['./user-personal-connect.component.scss'],
 })
 export class UserPersonalConnectComponent implements OnInit {
-  @Input() user: IUser;
+  @Input() userConnect: number;
   connectionValue: string | null = null;
 
   ngOnInit() {
-    if (this.user && this.user.distance_from_current_user) {
-      this.connectionValue = this.getConnectionValue(this.user.distance_from_current_user);
+    if (this.userConnect) {
+      this.connectionValue = this.getConnectionValue(this.userConnect);
     }
   }
 

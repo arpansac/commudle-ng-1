@@ -43,7 +43,9 @@
                 src="/assets/images/Expert-Tick.svg"
                 title="Expert Tick"
               />
-              <commudle-user-personal-connect [user]="speaker"></commudle-user-personal-connect>
+              <commudle-user-personal-connect
+                [userConnect]="speaker.distance_from_current_user"
+              ></commudle-user-personal-connect>
             </p>
             <p *ngIf="speaker.username" class="username">@{{ speaker.username | truncatetext : maxUserNameLength }}</p>
             <p class="designation">

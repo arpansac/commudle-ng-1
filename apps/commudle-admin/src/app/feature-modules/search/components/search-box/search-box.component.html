@@ -39,7 +39,9 @@
               </div>
               <div class="user-name-connection">
                 <p class="name">{{ user.name }}</p>
-                <commudle-user-personal-connect [user]="user"></commudle-user-personal-connect>
+                <commudle-user-personal-connect
+                  [userConnect]="user.distance_from_current_user"
+                ></commudle-user-personal-connect>
               </div>
               <p class="designation">
                 <span class="dot"> &nbsp;·&nbsp; </span> {{ user.designation ? user.designation : '--' }}

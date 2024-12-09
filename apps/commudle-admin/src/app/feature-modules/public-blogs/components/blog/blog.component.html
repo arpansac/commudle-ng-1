@@ -43,7 +43,9 @@
                 <div class="com-pl-5">
                   <div class="header">
                     <div class="com-text-xl com-font-bold">{{ user.name }}</div>
-                    <commudle-user-personal-connect [user]="user"></commudle-user-personal-connect>
+                    <commudle-user-personal-connect
+                      [userConnect]="user.distance_from_current_user"
+                    ></commudle-user-personal-connect>
                   </div>
                   <div>@{{ user.username }}</div>
                   <div>{{ user.designation }}</div>

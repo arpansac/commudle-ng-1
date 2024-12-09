@@ -21,7 +21,9 @@
             src="/assets/images/Expert-Tick.svg"
             title="Expert Tick"
           />
-          <commudle-user-personal-connect [user]="message.user"></commudle-user-personal-connect>
+          <commudle-user-personal-connect
+            [userConnect]="message.user.distance_from_current_user"
+          ></commudle-user-personal-connect>
         </div>
         <span class="time">{{ moment(message.created_at).format('MMMM Do YYYY, h:mm:ss a') }}</span>
         <span class="edited" *ngIf="message.edited">(edited)</span>
