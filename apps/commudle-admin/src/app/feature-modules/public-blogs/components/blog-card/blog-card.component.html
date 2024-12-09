@@ -12,27 +12,31 @@
           [url]="environment.app_url + '/blogs/' + blog.slug.current"
         ></app-share-button>
       </div>
-      <div [routerLink]="['/blogs', blog?.slug.current]" class="com-w-full com-aspect-[16/9]">
+      <div [routerLink]="['/blogs', blog?.slug.current]" class="image">
         <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-        <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" class="com-w-full" />
+        <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
       </div>
-      <div class="com-p-4">
-        <div [routerLink]="['/blogs', blog?.slug.current]" class="com-h-36">
-          <h6 class="name">
-            {{ blog?.title }}
-          </h6>
+      <!-- <div class="content"> -->
+      <!-- class="com-h-36" -->
+      <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
+        <div class="date-reading-time">
           <p class="date">
-            {{ blog?.publishedAt | date }}
+            <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
           </p>
-          <div class="com-line-clamp-3">
-            {{ blog?.meta_description }}
-          </div>
+          <p class="reading-time"><fa-icon [icon]="faClock"></fa-icon></p>
         </div>
-        <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
-          Read More
-          <nb-icon icon="arrow-forward-outline"></nb-icon>
-        </a>
+        <h6 class="name">
+          {{ blog?.title }}
+        </h6>
+        <div class="meta-description">
+          {{ blog?.meta_description }}
+        </div>
       </div>
+      <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
+        Read Blog &nbsp;
+        <nb-icon icon="arrow-forward-outline"></nb-icon>
+      </a>
+      <!-- </div> -->
     </div>
   </div>
 </div>

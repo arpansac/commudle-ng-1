@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'commudle-blog-card',
@@ -13,6 +14,8 @@ export class BlogCardComponent implements OnInit {
   @Input() shareButton = true;
   environment = environment;
   imageLoading = true;
+  faCalendar = faCalendar;
+  faClock = faClock;
 
   constructor(private cmsService: CmsService) {}
 

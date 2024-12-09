@@ -9,6 +9,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { faRssSquare } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-blog',
@@ -23,8 +24,11 @@ export class BlogComponent implements OnInit, OnDestroy {
   user: IUser;
   faqSchemaData: any;
   faqSchemaDataMainEntity = [];
+  latestBlogs: IBlog[] = [];
 
   faRssSquare = faRssSquare;
+  faCalendar = faCalendar;
+  faClock = faClock;
 
   subscriptions: Subscription[] = [];
 
@@ -32,6 +36,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   imageLoading = true;
 
   environment = environment;
+  blogs: IBlog[];
 
   constructor(
     private cmsService: CmsService,
@@ -42,6 +47,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   ) {
     activatedRoute.params.subscribe(() => {
       this.getData();
+      this.getBlogs();
     });
   }
 
@@ -90,9 +96,21 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.appUsersService.getProfile(this.blog.username).subscribe((data) => {
         this.user = data;
+        console.log(this.user);
+        console.log(this.blog.username);
         this.setFaqSchemaData();
       }),
     );
+  }
+
+  getBlogs() {
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage';
+    const order = 'publishedAt desc';
+    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
+      this.blogs = value;
+      console.log(this.blogs);
+      this.isLoading = false;
+    });
   }
 
   setFaqSchemaData() {
