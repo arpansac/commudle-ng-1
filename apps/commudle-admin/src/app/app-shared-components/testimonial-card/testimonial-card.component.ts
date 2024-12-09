@@ -22,7 +22,6 @@ export class TestimonialCardComponent implements OnInit {
         this.usersService.getProfile(testimonial.username).subscribe((data) => {
           if (data) {
             testimonial.user = data;
-            console.log(testimonial.user);
           }
         });
       }
