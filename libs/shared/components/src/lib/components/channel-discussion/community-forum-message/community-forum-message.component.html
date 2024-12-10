@@ -25,6 +25,9 @@
               src="/assets/images/Expert-Tick.svg"
               title="Expert Tick"
             />
+            <commudle-user-personal-connect
+              [userConnect]="message.user.distance_from_current_user"
+            ></commudle-user-personal-connect>
           </div>
           <span class="time">{{ moment(message.created_at).format('dddd, hh:mm A') }}</span>
         </div>
