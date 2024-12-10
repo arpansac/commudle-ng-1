@@ -4,8 +4,7 @@ import { NbCardModule } from '@commudle/theme';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { RouterModule } from '@angular/router';
-import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
-import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @Component({
   selector: 'commudle-featured-experts-card',
