@@ -1,0 +1,6 @@
+.connection-value {
+  @apply com-flex com-items-center com-flex-row com-text-gray-500 com-text-xs com-font-normal;
+  .dot-icon {
+    @apply com-mx-1 com-my-0 com-text-gray-500;
+  }
+}

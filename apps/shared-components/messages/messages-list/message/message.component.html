@@ -32,6 +32,7 @@
                 src="/assets/images/Expert-Tick.svg"
                 title="Expert Tick"
               />
+
               <p *ngIf="!showFullDateTime" class="time">
                 {{ moment(message.created_at).format('h:mm A') }}
               </p>

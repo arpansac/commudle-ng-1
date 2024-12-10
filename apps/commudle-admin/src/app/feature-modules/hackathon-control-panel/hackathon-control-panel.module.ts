@@ -48,6 +48,7 @@ import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudl
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
 import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-channels/hackathon-control-panel-channels.component';
 import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
@@ -90,11 +91,9 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
     NewEditorModule,
     SharedPipesModule,
     CommunityChannelsModule,
-
     //components
     SidebarComponent,
     HelpSectionComponent,
-
     //nebular
     NbButtonModule,
     NbInputModule,
@@ -104,6 +103,7 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
     NbButtonGroupModule,
     NbSpinnerModule,
     NbRadioModule,
+    UserPersonalConnectComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

@@ -5,7 +5,8 @@
   </div>
   <div class="profile-info">
     <p class="name {{ size }}">
-      <a [routerLink]="['/users', user.username]" class="clickable"> {{ user.name }} </a>
+      <a [routerLink]="['/users', user.username]" class="clickable"> {{ user.name }}</a>
+      <commudle-user-personal-connect [userConnect]="user.distance_from_current_user"></commudle-user-personal-connect>
     </p>
     <p *ngIf="designation" class="designation {{ size }}">{{ user.designation }}</p>
     <p *ngIf="aboutMe" class="about_me {{ size }}">{{ user.about_me }}</p>

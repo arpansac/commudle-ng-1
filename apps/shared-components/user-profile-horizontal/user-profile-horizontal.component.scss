@@ -39,7 +39,7 @@
     max-width: 80%;
     text-align: left;
     .name {
-      @apply com-text-Charcoal com-p-0.5;
+      @apply com-flex com-flex-row com-items-center com-text-Charcoal com-p-0.5;
       margin: 0;
       font-size: 14px;
       font-weight: 500;

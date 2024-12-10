@@ -41,7 +41,12 @@
                   class="com-h-16 com-w-16 com-rounded-full com-border-2 com-bg-tWhite"
                 />
                 <div class="com-pl-5">
-                  <div class="com-text-xl com-font-bold">{{ user.name }}</div>
+                  <div class="header">
+                    <div class="com-text-xl com-font-bold">{{ user.name }}</div>
+                    <commudle-user-personal-connect
+                      [userConnect]="user.distance_from_current_user"
+                    ></commudle-user-personal-connect>
+                  </div>
                   <div>@{{ user.username }}</div>
                   <div>{{ user.designation }}</div>
                 </div>

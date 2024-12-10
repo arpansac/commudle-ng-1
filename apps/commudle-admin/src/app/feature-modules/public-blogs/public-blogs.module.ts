@@ -9,6 +9,7 @@ import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/min
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 @NgModule({
   declarations: [BlogsListComponent, BlogComponent, BlogCardComponent],
   imports: [
@@ -22,6 +23,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MiniUserProfileModule,
     SharedComponentsModule,
     FontAwesomeModule,
+    UserPersonalConnectComponent,
   ],
 })
 export class PublicBlogsModule {}

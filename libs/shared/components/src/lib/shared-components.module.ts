@@ -25,6 +25,7 @@ import { FaqCardComponent } from './components/faq/faq-card/faq-card.component';
 import { PublicFaqsComponent } from './components/public-faqs/public-faqs.component';
 import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
+import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
 @NgModule({
   declarations: [
     DiscussionComponent,
@@ -53,6 +54,7 @@ import { UserProfileMiniCardComponent } from './components/user-profile/user-pro
     InViewportDirective,
     NbContextMenuModule,
     FontAwesomeModule,
+    UserPersonalConnectComponent,
   ],
   exports: [
     DiscussionComponent,
