@@ -20,9 +20,10 @@
         <div *ngFor="let eventSponsor of sponsors; let i = index" class="event-sponsor">
           <div class="logo">
             <img
-              alt="{{ eventSponsor.sponsor.name }}"
-              src="{{ eventSponsor.sponsor.logo.url }}"
-              title="{{ eventSponsor.sponsor.name }}"
+              *ngIf="eventSponsor.sponsor.logo"
+              [alt]="eventSponsor.sponsor.name"
+              [src]="eventSponsor.sponsor.logo.url"
+              [title]="eventSponsor.sponsor.name"
             />
           </div>
           <div class="details">
@@ -64,7 +65,7 @@
             <img alt="{{ sponsor.name }}" src="{{ sponsor.logo.url }}" title="{{ sponsor.name }}" />
           </div>
           <p class="name" nbTooltip="sponsor.link">
-            <small>{{ sponsor.name }}</small>
+            <small class="com-line-clamp-1">{{ sponsor.name }}</small>
           </p>
         </div>
       </div>
