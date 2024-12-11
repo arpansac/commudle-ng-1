@@ -50,7 +50,7 @@ import { CallForSpeakerCardComponent } from './call-for-speaker-card/call-for-sp
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { EventHackathonRegistrationsComponent } from './event-hackathon-registrations/event-hackathon-registrations.component';
 import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
-import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [

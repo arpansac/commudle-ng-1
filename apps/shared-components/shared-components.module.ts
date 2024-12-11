@@ -91,7 +91,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
 import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/user-details-checkbox-form.component';
 import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
-import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [

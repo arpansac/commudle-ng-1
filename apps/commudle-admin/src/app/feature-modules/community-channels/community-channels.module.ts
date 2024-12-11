@@ -54,7 +54,7 @@ import { CommunityForumMessageComponent } from './components/community-forum-mes
 import { ArchiveComponent } from './components/channel-settings/archive/archive.component';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
-import { UserPersonalConnectComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-personal-connect/user-personal-connect.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
