@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faAngleDown, faAngleUp, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { CmsService } from 'apps/shared-services/cms.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
@@ -29,6 +29,8 @@ export class ReadingBookComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   params = '';
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private cmsService: CmsService,
     private activatedRoute: ActivatedRoute,
@@ -43,7 +45,7 @@ export class ReadingBookComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.authwatchService.currentUser$.subscribe((currentUser) => {
+    this.authwatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       this.currentUser = currentUser;
     });
     this.getIndex();
@@ -51,6 +53,8 @@ export class ReadingBookComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   imageUrl(source: any) {
