@@ -7,6 +7,7 @@ import { EPublishStatus, ILab } from 'apps/shared-models/lab.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-my-labs',
@@ -21,6 +22,8 @@ export class MyLabsComponent implements OnInit, OnDestroy {
   labs: ILab[] = [];
   incompleteProfile = false;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private labsService: LabsService,
     private toastLogService: LibToastLogService,
@@ -34,7 +37,7 @@ export class MyLabsComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
 
     this.getAllLabs();
-    this.userSubscription = this.authWatchService.currentUser$.subscribe((data) => {
+    this.userSubscription = this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data && !data.profile_completed) {
         this.incompleteProfile = true;
       }
@@ -44,6 +47,8 @@ export class MyLabsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.seoService.noIndex(false);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getAllLabs() {

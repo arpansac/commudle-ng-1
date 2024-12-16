@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -11,13 +11,14 @@ import { AuthService, CommunityChannelManagerService, CommunityChannelsService }
 import { EDbModels, ICommunityChannel } from '@commudle/shared-models';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
 })
-export class AboutComponent implements OnInit {
+export class AboutComponent implements OnInit, OnDestroy {
   community: ICommunity = null;
   EUserRoles = EUserRoles;
   organizers: IUser[] = [];
@@ -32,6 +33,8 @@ export class AboutComponent implements OnInit {
   icons = {
     faUsers,
   };
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -54,8 +57,13 @@ export class AboutComponent implements OnInit {
     this.setCurrentUser();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   setCurrentUser() {
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       this.getDefaultChannel();
       this.getOrganizers([EUserRoles.ORGANIZER, EUserRoles.EVENT_VOLUNTEER]);

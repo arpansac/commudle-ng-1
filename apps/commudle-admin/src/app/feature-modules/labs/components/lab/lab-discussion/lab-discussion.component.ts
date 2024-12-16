@@ -20,7 +20,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-lab-discussion',
@@ -49,6 +49,8 @@ export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
   @ViewChild('messageInput') private messageInput: ElementRef;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
@@ -62,7 +64,9 @@ export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((user) => (this.currentUser = user)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => (this.currentUser = user)),
+    );
     this.allActions = this.discussionChatChannel.ACTIONS;
     this.receiveData();
   }
@@ -85,6 +89,8 @@ export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
     this.discussionChatChannel.unsubscribe();
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   showText() {

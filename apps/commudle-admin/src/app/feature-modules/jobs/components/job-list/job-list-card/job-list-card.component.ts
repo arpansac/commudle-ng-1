@@ -3,7 +3,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EJobLocationType, EJobStatus, IJob } from 'apps/shared-models/job.model';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import {
   faBuilding,
   faMoneyBills,
@@ -67,6 +67,8 @@ export class JobListCardComponent implements OnInit, OnDestroy {
   faEye = faEye;
   faTrash = faTrash;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private nbToastrService: NbToastrService,
@@ -78,7 +80,7 @@ export class JobListCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
       }),
     );
@@ -86,6 +88,8 @@ export class JobListCardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   copyTextToClipboard(id: number): void {
