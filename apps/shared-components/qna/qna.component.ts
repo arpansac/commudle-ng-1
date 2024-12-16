@@ -21,7 +21,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-qna',
@@ -52,6 +52,8 @@ export class QnaComponent implements OnInit, OnDestroy, AfterContentChecked {
 
   faGrin = faGrin;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private libAuthwatchService: LibAuthwatchService,
     private discussionQnaChannel: DiscussionQnAChannel,
@@ -66,7 +68,11 @@ export class QnaComponent implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.libAuthwatchService.currentUser$.subscribe((value) => (this.currentUser = value)));
+    this.subscriptions.push(
+      this.libAuthwatchService.currentUser$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((value) => (this.currentUser = value)),
+    );
     this.discussionQnaChannel.subscribe(`${this.discussion.id}`);
     this.allActions = this.discussionQnaChannel.ACTIONS;
     this.receiveData();
@@ -76,6 +82,8 @@ export class QnaComponent implements OnInit, OnDestroy, AfterContentChecked {
   ngOnDestroy(): void {
     this.discussionQnaChannel.unsubscribe();
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterContentChecked(): void {

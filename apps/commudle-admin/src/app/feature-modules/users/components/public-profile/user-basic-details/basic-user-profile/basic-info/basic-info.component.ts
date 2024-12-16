@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -6,13 +6,14 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-basic-info',
   templateUrl: './basic-info.component.html',
   styleUrls: ['./basic-info.component.scss'],
 })
-export class BasicInfoComponent implements OnInit {
+export class BasicInfoComponent implements OnInit, OnDestroy {
   @ViewChild('autocompleteInput', { static: true })
   autocompleteInput: ElementRef;
 
@@ -26,6 +27,8 @@ export class BasicInfoComponent implements OnInit {
   faFileImage = faFileImage;
 
   basicInfoForm;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +47,7 @@ export class BasicInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.currentUser = currentUser;
         this.basicInfoForm.patchValue(this.currentUser);
@@ -62,6 +65,11 @@ export class BasicInfoComponent implements OnInit {
     });
 
     this.initAutocomplete();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   displaySelectedProfileImage(event: any) {

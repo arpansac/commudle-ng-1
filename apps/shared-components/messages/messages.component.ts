@@ -9,7 +9,7 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -41,6 +41,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private libAuthwatchService: LibAuthwatchService,
     private discussionChatChannel: DiscussionChatChannel,
@@ -51,7 +53,11 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(this.libAuthwatchService.currentUser$.subscribe((value) => (this.currentUser = value)));
+    this.subscriptions.push(
+      this.libAuthwatchService.currentUser$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((value) => (this.currentUser = value)),
+    );
     this.discussionChatChannel.subscribe(`${this.discussion.id}`);
     this.allActions = this.discussionChatChannel.ACTIONS;
     this.receiveData();
@@ -71,6 +77,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.discussionChatChannel.unsubscribe();
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   receiveData(): void {

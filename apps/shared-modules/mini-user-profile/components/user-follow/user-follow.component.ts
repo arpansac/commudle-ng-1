@@ -16,7 +16,7 @@ import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/go
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-follow',
@@ -40,6 +40,8 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private appUsersService: AppUsersService,
     private authWatchService: LibAuthwatchService,
@@ -51,7 +53,7 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
   ngOnChanges(): void {
     // Get logged in user
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.checkFollowing();
         this.changeDetectorRef.markForCheck();
@@ -61,6 +63,8 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkFollowing() {

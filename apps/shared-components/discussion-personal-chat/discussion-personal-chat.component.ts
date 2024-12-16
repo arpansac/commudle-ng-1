@@ -12,6 +12,7 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { DiscussionPersonalChatChannel } from '../services/websockets/discussion-personal-chat.channel';
 import { IEditorValidator } from '@commudle/editor';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-discussion-personal-chat',
@@ -51,6 +52,8 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
 
   groupedMessages: { date: string; messages: IUserMessage[] }[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
@@ -65,7 +68,9 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentUserSubscription = this.authWatchService.currentUser$.subscribe((user) => (this.currentUser = user));
+    this.currentUserSubscription = this.authWatchService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => (this.currentUser = user));
     this.chatChannelSubscription = this.discussionChatChannel.subscribe(this.discussion.id);
     this.discussionSubscribed.emit(true);
     this.discussionChatChannel.discussionBlockedStatuses$[this.discussion.id].subscribe((data: boolean) => {
@@ -84,6 +89,8 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     this.currentUserSubscription.unsubscribe();
     this.chatChannelSubscription.unsubscribe(this.discussion.id);
     this.channelSubscription.unsubscribe(this.discussion.id);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   scrollToBottom() {

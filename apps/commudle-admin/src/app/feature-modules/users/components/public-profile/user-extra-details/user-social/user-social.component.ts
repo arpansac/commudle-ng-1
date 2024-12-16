@@ -11,7 +11,7 @@ import { ILinkPreview } from 'apps/shared-models/link-preview.model';
 import { ISocialResource } from 'apps/shared-models/social_resource.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { faFileText } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,6 +49,8 @@ export class UserSocialComponent implements OnInit, OnChanges, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private nbDialogService: NbDialogService,
     private nbToastrService: NbToastrService,
@@ -73,7 +75,9 @@ export class UserSocialComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     // Get logged in user
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
     // Subscribe to search
     this.socialLinkChangedSubscription = this.socialLinkChanged.pipe(debounceTime(1000)).subscribe((value) => {
       if (this.urlPattern.test(value)) {
@@ -94,6 +98,8 @@ export class UserSocialComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
     this.socialLinkChangedSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getSocialResources(): void {

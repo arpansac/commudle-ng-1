@@ -19,7 +19,7 @@ import {
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SeoService } from '@commudle/shared-services';
@@ -67,6 +67,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('jobDialog', { static: true }) jobDialog: TemplateRef<any>;
   @ViewChild('deleteJobDialog', { static: true }) deleteJobDialog: TemplateRef<any>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -137,7 +139,9 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     if (changes.user) {
       this.jobs = [];
@@ -154,6 +158,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getJobs() {

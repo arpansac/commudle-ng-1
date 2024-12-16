@@ -11,7 +11,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-payment-log-edfeg',
@@ -33,6 +33,8 @@ export class PaymentLogEdfegComponent implements OnInit {
   transferCreating = false;
 
   searchForm: FormGroup;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -57,7 +59,7 @@ export class PaymentLogEdfegComponent implements OnInit {
       this.fetchPaymentDetails();
     });
 
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
       if (currentUser.user_roles.includes(EUserRoles.SYSTEM_ADMINISTRATOR)) {
         this.isSystemAdmin = true;
@@ -69,6 +71,11 @@ export class PaymentLogEdfegComponent implements OnInit {
       this.page = 1;
       this.fetchPaymentDetails();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchPaymentDetails() {
