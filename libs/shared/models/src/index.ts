@@ -40,3 +40,4 @@ export * from './lib/help-dictionary.model';
 export * from './lib/upcoming-event-hackathon.model';
 export * from './lib/hackathon-user-response.model';
 export * from './lib/activity-feed.model';
+export * from './lib/profanity.model';

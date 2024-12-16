@@ -24,6 +24,7 @@ import { AdminFeaturedUsersComponent } from 'apps/commudle-admin/src/app/feature
 import { AdminFeaturedCommunitiesChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-featured/admin-featured-communities-channels/admin-featured-communities-channels.component';
 import { PaymentLogsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/payment-logs/payment-logs.component';
 import { PaymentDetailComponent } from 'apps/shared-components/payment-detail/payment-detail.component';
+import { AdminProfanityComponent } from './components/admin-profanity/admin-profanity.component';
 
 const routes = [
   {
@@ -134,6 +135,10 @@ const routes = [
       {
         path: 'labs',
         component: LabsComponent,
+      },
+      {
+        path: 'profanity',
+        component: AdminProfanityComponent,
       },
     ],
   },

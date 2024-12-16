@@ -953,4 +953,11 @@ export const API_ROUTES = {
     INDEX_UPCOMING_HACKATHONS_EVENTS: 'api/v2/feed/events_hackathons/upcoming',
     ACTIVITY_FEED: 'api/v2/activity_feed',
   },
+
+  PROFANITY: {
+    INDEX: 'api/v2/profanity', //GET
+    CREATE: 'api/v2/profanity', //POST
+    DELETE: 'api/v2/profanity', //DELETE
+    UPDATE: 'api/v2/profanity', //PUT
+  },
 };
