@@ -86,7 +86,11 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
       }),
         (this.uploadedBanner = this.community.banner_image ? this.community.banner_image.url : '');
       if (this.community.is_visible) {
-        this.seoService.setTags(this.community.name, this.community.mini_description, this.community.logo_path);
+        this.seoService.setTags(
+          this.community.name,
+          this.community.mini_description,
+          this.community.logo_image_path.i64,
+        );
       } else {
         this.seoService.noIndex(true);
       }
