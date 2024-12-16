@@ -5,7 +5,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { FeedService } from 'apps/shared-services/feed.service';
 
 @Component({
@@ -32,6 +32,8 @@ export class UserDashboardComponent implements OnInit {
   activityTotal: number;
   loadingActivity = false;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private appUsersService: AppUsersService,
@@ -46,8 +48,13 @@ export class UserDashboardComponent implements OnInit {
     this.getActivityFeed();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getUserDetails() {
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       if (this.currentUser) {
         this.appUsersService.getProfileStats().subscribe((data) => {

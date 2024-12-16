@@ -7,7 +7,7 @@ import { IEmailUnsubscribeGroup } from 'apps/shared-models/email-unsubscribe-gro
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-email-unsubscribe',
@@ -22,6 +22,8 @@ export class EmailUnsubscribeComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   environment = environment;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,13 +47,17 @@ export class EmailUnsubscribeComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.subscriptions.push(this.authwatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authwatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
   }
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
 
     this.subscriptions.forEach((scubscription: Subscription) => scubscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getSubscription() {

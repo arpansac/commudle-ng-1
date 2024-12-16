@@ -30,6 +30,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-discussion-community-channel',
@@ -66,6 +67,8 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
   highlight = true;
   communityName;
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -106,7 +109,7 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
     this.isLoadingNext = false;
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((user) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
         this.currentUser = user;
       }),
       this.communityChannelManagerService.allChannelRoles$.subscribe((data) => {
@@ -144,6 +147,8 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
     for (const subs of this.subscriptions) {
       subs.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   scrollToBottom() {

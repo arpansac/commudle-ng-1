@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EDbModels, ICommunity, IHackathon } from '@commudle/shared-models';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -13,7 +13,7 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { faEye, faLock, faPen, faTrash, faUserPlus, faThumbTack } from '@fortawesome/free-solid-svg-icons';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
@@ -22,7 +22,7 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
   templateUrl: './community-forum.component.html',
   styleUrls: ['./community-forum.component.scss'],
 })
-export class CommunityForumComponent implements OnInit {
+export class CommunityForumComponent implements OnInit, OnDestroy {
   @Input() isCommunityOrganizer = false;
   parent: ICommunity | ICommunityGroup | IHackathon;
   parentType: EDbModels;
@@ -43,6 +43,8 @@ export class CommunityForumComponent implements OnInit {
 
   @Output() updateSelectedForum = new EventEmitter<number>();
   dialogRef: NbDialogRef<any>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private communityChannelManagerService: CommunityChannelManagerService,
@@ -104,7 +106,7 @@ export class CommunityForumComponent implements OnInit {
 
   getCurrentUser() {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
       }),
     );
@@ -134,5 +136,10 @@ export class CommunityForumComponent implements OnInit {
 
   pin() {
     // TODO need in future
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
