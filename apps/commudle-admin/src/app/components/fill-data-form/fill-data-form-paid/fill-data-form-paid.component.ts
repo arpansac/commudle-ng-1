@@ -91,6 +91,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   totalPrice: number; // total ticket price basePrice * UsersCount - discount price if any
 
   eventTicketOrders: any;
+
   totalTaxAmount = 0;
 
   targetDate: Date;
