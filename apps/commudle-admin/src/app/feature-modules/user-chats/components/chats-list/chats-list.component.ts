@@ -15,8 +15,10 @@ import { Subject, takeUntil } from 'rxjs';
 export class ChatsListComponent implements OnInit, OnDestroy {
   @Input() currentUser: ICurrentUser;
   @Input() allPersonalChatUsers: IDiscussionFollower[];
+  @Input() totalChats: number;
   @Output() getChat: EventEmitter<IDiscussionFollower> = new EventEmitter<IDiscussionFollower>();
   @Output() moveUserToTop: EventEmitter<IDiscussionFollower[]> = new EventEmitter<IDiscussionFollower[]>();
+  @Output() getPersonalChats: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedChatUser: IDiscussionFollower;
 
   showLiveStatus = false;
@@ -65,5 +67,9 @@ export class ChatsListComponent implements OnInit, OnDestroy {
 
   gtmService() {
     this.gtm.dataLayerPushEvent('click-chatlist-open', {});
+  }
+
+  getMoreChatsList() {
+    this.getPersonalChats.emit(true);
   }
 }

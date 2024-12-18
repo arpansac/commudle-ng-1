@@ -9,6 +9,12 @@
     <nb-card-body>
       <nb-list>
         <nb-list-item
+          [infiniteScrollDisabled]="allPersonalChatUsers.length >= totalChats"
+          [infiniteScrollDistance]="10"
+          [infiniteScrollUpDistance]="-8"
+          (scrolled)="getMoreChatsList()"
+          class="messages-list"
+          commudleInfiniteScroll
           (click)="openChat(chatUser)"
           *ngFor="let chatUser of allPersonalChatUsers"
           [ngClass]="{ selectedUser: selectedChatUser === chatUser }"
