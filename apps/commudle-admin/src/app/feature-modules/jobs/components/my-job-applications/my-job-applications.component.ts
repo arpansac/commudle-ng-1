@@ -4,7 +4,7 @@ import { JobApplicationService } from 'apps/commudle-admin/src/app/feature-modul
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EJobApplicationStatus, IJobApplication } from 'apps/shared-models/job-application.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-my-job-applications',
@@ -22,12 +22,14 @@ export class MyJobApplicationsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(private authWatchService: LibAuthwatchService, private jobApplicationService: JobApplicationService) {}
 
   ngOnInit(): void {
     this.isLoading = true;
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser?.id) {
           this.getMyJobApplications();
@@ -38,6 +40,8 @@ export class MyJobApplicationsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getMyJobApplications() {

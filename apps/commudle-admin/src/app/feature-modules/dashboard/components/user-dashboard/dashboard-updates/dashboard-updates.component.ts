@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { EDbModels, EHackathonRegistrationStatus, ICommunity } from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import {
@@ -17,13 +17,14 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { NbDialogService } from '@commudle/theme';
 import { generate } from 'lean-qr';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-dashboard-updates',
   templateUrl: './dashboard-updates.component.html',
   styleUrls: ['./dashboard-updates.component.scss'],
 })
-export class DashboardUpdatesComponent implements OnInit {
+export class DashboardUpdatesComponent implements OnInit, OnDestroy {
   @ViewChild('postContentBox') postContentBox: TemplateRef<any>;
 
   ERegistrationStatuses = ERegistrationStatuses;
@@ -47,6 +48,8 @@ export class DashboardUpdatesComponent implements OnInit {
   currentUser: ICurrentUser;
   EDbModels = EDbModels;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private usersService: AppUsersService,
     private authWatchService: LibAuthwatchService,
@@ -54,10 +57,15 @@ export class DashboardUpdatesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
     });
     this.getMyRegistrations();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   setActiveTab(tab: 'channel' | 'registrations'): void {

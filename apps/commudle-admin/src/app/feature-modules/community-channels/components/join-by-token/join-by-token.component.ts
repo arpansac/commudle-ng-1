@@ -1,12 +1,12 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommunityChannelsService } from '../../services/community-channels.service';
 import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EDiscussionType, ICommunity, IHackathon } from '@commudle/shared-models';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -18,7 +18,7 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
   templateUrl: './join-by-token.component.html',
   styleUrls: ['./join-by-token.component.scss'],
 })
-export class JoinByTokenComponent implements OnInit {
+export class JoinByTokenComponent implements OnInit, OnDestroy {
   @Input() parent: ICommunity | ICommunityGroup | IHackathon;
   @Input() redirectUrl: string;
   joined = false;
@@ -29,6 +29,8 @@ export class JoinByTokenComponent implements OnInit {
   subscriptions: Subscription[] = [];
   discussionType: string;
   currentUser: ICurrentUser;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,7 +51,7 @@ export class JoinByTokenComponent implements OnInit {
         this.channelName = data.name;
       }),
     ),
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser) {
           this.onAcceptRoleButton();
@@ -57,6 +59,11 @@ export class JoinByTokenComponent implements OnInit {
           this.errorHandler.handleError(401, 'Login to apply');
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   verifyToken(decline?: boolean) {

@@ -7,7 +7,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -48,6 +48,8 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
 
   @Output() updateSelectedChannel = new EventEmitter<ICommunityChannel>();
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private communityChannelManagerService: CommunityChannelManagerService,
     private authWatchService: LibAuthwatchService,
@@ -64,7 +66,7 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
       }),
 
@@ -83,6 +85,8 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
     if (this.newCommunityChannelPopup) {
       this.newCommunityChannelPopup.close();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getParent() {

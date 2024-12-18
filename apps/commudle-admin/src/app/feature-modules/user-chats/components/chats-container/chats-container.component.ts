@@ -5,7 +5,7 @@ import { SDiscussionsService } from 'apps/shared-components/services/s-discussio
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IDiscussionFollower } from 'apps/shared-models/discussion-follower.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { UserChatNotificationsChannel } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/websockets/user-chat-notifications.channel';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
@@ -29,6 +29,8 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private sDiscussionService: SDiscussionsService,
     private userChatMessagesChannel: UserChatMessagesChannel,
@@ -40,7 +42,9 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Get current user data
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     // Get the current user's chats
     this.subscriptions.push(
@@ -65,6 +69,8 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkNewMessage() {

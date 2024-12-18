@@ -7,7 +7,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { PushNotificationsService } from 'apps/shared-services/push-notifications.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-push-notification',
@@ -21,6 +21,7 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   private pushNotificationCookieName = 'commudle_push_notification';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private swPush: SwPush,
@@ -33,7 +34,7 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
         if (currentUser && this.isBrowserService.isBrowser()) {
           if (this.swPush.isEnabled) {
             this.listenToPushNotifications();
@@ -47,6 +48,8 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isPushNotificationCookieSet(): boolean {
@@ -88,7 +91,7 @@ export class PushNotificationComponent implements OnInit, OnDestroy {
     });
   }
 
-  createSubscription(subscription: { endpoint: string; p256dh: string; auth: string }, reason: string = ''): void {
+  createSubscription(subscription: { endpoint: string; p256dh: string; auth: string }, reason = ''): void {
     this.subscriptions.push(
       this.pushNotificationsService.createSubscription(subscription, reason).subscribe((value) => {
         if (value) {

@@ -14,7 +14,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import {
   DiscountCodesService,
@@ -91,6 +91,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   totalPrice: number; // total ticket price basePrice * UsersCount - discount price if any
 
   eventTicketOrders: any;
+
   totalTaxAmount = 0;
 
   targetDate: Date;
@@ -115,6 +116,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   formAnswers = {};
   isMobileView = false;
   refundPolicy: ICustomPage;
+  private destroy$ = new Subject<void>();
 
   @ViewChild(UserDetailsFormComponent) userDetailsFormComponent: UserDetailsFormComponent;
 
@@ -165,12 +167,14 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.dialogRef?.close();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   //fetch current user details
   setupCurrentUser() {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser) {
           this.gtmData.com_user_id = this.currentUser.id;
