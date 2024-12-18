@@ -89,7 +89,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
         this.seoService.setTags(
           this.community.name,
           this.community.mini_description,
-          this.community.logo_image_path.i64,
+          this.community.logo_image_path.url,
         );
       } else {
         this.seoService.noIndex(true);

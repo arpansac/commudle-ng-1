@@ -103,7 +103,7 @@ export class EventsComponent implements OnInit {
           '@context': 'https://schema.org',
           '@type': 'Event',
           name: event.name,
-          image: event.header_image_path ? event.header_image_path : this.community.logo_path,
+          image: event.header_image_path ? event.header_image_path : this.community.logo_image_path.url,
           startDate: event.start_time,
           endDate: event.end_time,
           eventStatus: 'https://schema.org/EventScheduled',

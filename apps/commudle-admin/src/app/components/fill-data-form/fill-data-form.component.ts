@@ -164,7 +164,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       this.community = data;
 
       if (!this.event.header_image_path) {
-        this.seoService.setTag('og:image', this.community.logo_image_path.i64);
+        this.seoService.setTag('og:image', this.community.logo_image_path.url);
       }
       // if (!this.redirectRoute) {
       //   this.redirectRoute = ['/communities', this.community.slug, 'events', this.event.slug];
