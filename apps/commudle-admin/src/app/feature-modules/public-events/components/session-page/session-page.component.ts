@@ -80,7 +80,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       `${this.event.name} | Live`,
       this.event.description.replace(/<[^>]*>/g, ''),
-      this.event.header_image_path ? this.event.header_image_path : this.community.logo_path,
+      this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
     );
   }
 

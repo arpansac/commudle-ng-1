@@ -395,7 +395,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
           this.getRefundPolicyPageData();
         }
         if (!this.event.header_image_path) {
-          this.seoService.setTag('og:image', this.community.logo_path);
+          this.seoService.setTag('og:image', this.community.logo_image_path.url);
         }
         // if (!this.redirectRoute) {
         //   this.redirectRoute = ['/communities', this.community.slug, 'events', this.event.slug];

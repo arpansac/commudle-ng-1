@@ -78,7 +78,9 @@ export class UpcomingHackathonsComponent implements OnInit {
           '@type': 'Event',
           name: upcomingHackathon.name,
           description: upcomingHackathon.description.replace(/<[^>]*>/g, '').substring(0, 200),
-          image: upcomingHackathon.banner_image ? upcomingHackathon.banner_image.url : this.community?.logo_path,
+          image: upcomingHackathon.banner_image
+            ? upcomingHackathon.banner_image.url
+            : this.community?.logo_image_path.url,
           startDate: upcomingHackathon.start_date,
           endDate: upcomingHackathon.end_date,
           eventStatus: 'https://schema.org/EventScheduled',

@@ -113,7 +113,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
           '@type': 'Event',
           name: hackathon.name,
           description: hackathon.description.replace(/<[^>]*>/g, '').substring(0, 200),
-          image: hackathon.banner_image ? hackathon.banner_image.url : this.community?.logo_path,
+          image: hackathon.banner_image ? hackathon.banner_image.url : this.community?.logo_image_path.url,
           startDate: hackathon.start_date,
           endDate: hackathon.end_date,
           eventStatus: 'https://schema.org/EventScheduled',

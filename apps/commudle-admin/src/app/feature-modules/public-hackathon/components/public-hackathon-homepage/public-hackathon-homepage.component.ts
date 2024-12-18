@@ -175,7 +175,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
         '@type': 'Event',
         name: this.hackathon.name,
         description: this.hackathon.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.hackathon.banner_image ? this.hackathon.banner_image.url : this.community.logo_path,
+        image: this.hackathon.banner_image ? this.hackathon.banner_image.url : this.community.logo_image_path.i64,
         startDate: this.hackathon.start_date,
         endDate: this.hackathon.end_date,
         eventStatus: 'https://schema.org/EventScheduled',
