@@ -13,3 +13,8 @@ export interface IDiscountCode {
   min_users_count: number;
   max_users_count: number;
 }
+
+export enum EDiscountType {
+  FIXED_AMOUNT = 'fixed_amount',
+  PERCENTAGE = 'percent',
+}

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { EDbModels, ICommunity, IDiscountCode, IEvent } from '@commudle/shared-models';
+import { EDbModels, ICommunity, IDiscountCode, IEvent, EDiscountType } from '@commudle/shared-models';
 import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
@@ -30,9 +30,8 @@ export class DiscountCouponsComponent implements OnInit {
 
   EDbModels = EDbModels;
   EPageType = EPageType;
-
+  EDiscountType = EDiscountType;
   moment = moment;
-
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
   constructor(
     private dialogService: NbDialogService,
