@@ -1,7 +1,14 @@
 <div class="action-buttons">
-  <button nbButton status="primary" (click)="open(discountCodesDialogBox)">View All Discount Codes</button>
-  <button nbButton status="primary" (click)="openFormDialog()" class="create-button">Create Discount Coupon</button>
+  <button nbButton status="primary" (click)="open(discountCodesDialogBox)">
+    <fa-icon [icon]="icons.faTableList"></fa-icon> &nbsp;View All Discount Codes
+  </button>
+  <button nbButton status="primary" (click)="openFormDialog()" class="create-button">
+    <fa-icon [icon]="icons.faMoneyBill"></fa-icon>
+    &nbsp; Create Discount Coupon
+  </button>
   <button nbButton status="primary" (click)="open(refundPage)">
+    <fa-icon [icon]="icons.faHandHoldingDollar"></fa-icon>
+    &nbsp;
     {{ community.has_refund_policy ? 'Edit Refund policy' : 'Create Refund Policy' }}
   </button>
 </div>
@@ -32,30 +39,40 @@
 <ng-template #discountCodesDialogBox let-ref="dialogRef">
   <nb-card>
     <nb-card-header>
-      <span>Discount Codes List</span>
+      <div>
+        <span>Discount Codes List</span>
+        &nbsp; &nbsp; &nbsp;
+        <button nbButton ghost (click)="openFormDialog()" class="create-button">
+          <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp;Create Discount Coupon
+        </button>
+      </div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body>
+    <nb-card-body class="com-p-0">
       <div class="discount-codes">
         <table>
-          <tr>
+          <tr class="table-header">
             <th>Code</th>
             <th>Valid Upto</th>
+            <th>Max application limit count</th>
+            <th>Code Applied</th>
             <th>Value/ Percentage</th>
             <th>Actions</th>
           </tr>
           <tr *ngFor="let discountCode of discountCodes">
             <td>{{ discountCode.code }}</td>
             <td>
-              <span *ngIf="discountCode.expires_at">{{
-                moment(discountCode.expires_at).local().format('DD-MM-YY HH:mm')
-              }}</span>
-              <span *ngIf="!discountCode.expires_at">--</span>
+              {{ discountCode.expires_at ? moment(discountCode.expires_at).local().format('DD-MM-YY HH:mm') : '--' }}
             </td>
+            <td>{{ discountCode.max_limit ? discountCode.max_limit : '--' }}</td>
+            <td>{{ discountCode.discount_applied_count }}</td>
             <td>
-              {{ discountCode.discount_value
+              {{
+                discountCode.discount_type === EDiscountType.PERCENTAGE
+                  ? discountCode.discount_value
+                  : discountCode.discount_value / 100
               }}{{ discountCode.discount_type === EDiscountType.PERCENTAGE ? '%' : '/-' }}
             </td>
             <td class="discount-code-action-buttons">

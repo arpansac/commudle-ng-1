@@ -3,7 +3,14 @@ import { EDbModels, ICommunity, IDiscountCode, IEvent, EDiscountType } from '@co
 import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
-import { faCopy, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCopy,
+  faHandHoldingDollar,
+  faMoneyBill,
+  faPenToSquare,
+  faPlus,
+  faTableList,
+} from '@fortawesome/free-solid-svg-icons';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DiscountCouponFormComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-registrations/discount-coupons/discount-coupon-form/discount-coupon-form.component';
 import { CustomPageFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/custom-page/custom-page-form/custom-page-form.component';
@@ -26,6 +33,10 @@ export class DiscountCouponsComponent implements OnInit {
   icons = {
     faCopy,
     faPenToSquare,
+    faPlus,
+    faMoneyBill,
+    faHandHoldingDollar,
+    faTableList,
   };
 
   EDbModels = EDbModels;

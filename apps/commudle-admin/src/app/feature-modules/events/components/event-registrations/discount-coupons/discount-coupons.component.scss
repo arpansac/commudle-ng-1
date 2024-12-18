@@ -10,7 +10,10 @@ nb-card {
 
 .discount-codes {
   table {
-    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-border-collapse com-w-full com-mt-4;
+    @apply com-border-collapse com-w-full;
+    .table-header {
+      @apply com-sticky com-top-0 com-bg-white;
+    }
 
     td,
     th {
