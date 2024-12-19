@@ -9,7 +9,11 @@
   </div> -->
   <div class="home-events-card-image">
     <div [ngClass]="{ old: moment(event.start_time) < moment() }" class="home-events-card-image-overlay"></div>
-    <img alt="{{ event.name }}" src="{{ event.header_image?.i350 || community.logo_path }}" title="{{ event.name }}" />
+    <img
+      alt="{{ event.name }}"
+      src="{{ event.header_image?.i350 || community.logo_image_path.i64 }}"
+      title="{{ event.name }}"
+    />
   </div>
   <div *ngIf="event.start_time" [ngClass]="{ old: moment(event.start_time) < moment() }" class="home-events-card-date">
     {{ moment(event.start_time).format('MMM DD') }}
@@ -23,7 +27,7 @@
         <img
           alt="{{ community.name }}"
           class="home-events-card-community-logo"
-          src="{{ community.logo_path }}"
+          src="{{ community.logo_image_path.i64 }}"
           title="{{ community.name }}"
         />
         <div class="home-events-card-community-name com-line-clamp-1">{{ community.name }}</div>

@@ -7,8 +7,8 @@
       </div>
     </div>
     <h5 class="event-name">
-      <a [routerLink]="['/communities', community.slug, 'events', event.slug]" class="event">{{event.name}}</a>
-      <span *ngIf="trackSlot"> | {{trackSlot.session_title}}</span>
+      <a [routerLink]="['/communities', community.slug, 'events', event.slug]" class="event">{{ event.name }}</a>
+      <span *ngIf="trackSlot"> | {{ trackSlot.session_title }}</span>
     </h5>
     <div *ngIf="moment().isBetween(moment(startTime), moment(endTime))">
       <p>
@@ -25,9 +25,9 @@
       </div>
       <a [routerLink]="['/communities', community.slug]" class="community d-flex align-items-center">
         <div class="community-logo d-flex align-items-center">
-          <img alt="{{community.name}}" src="{{community.logo_path}}">
+          <img alt="{{ community.name }}" src="{{ community.logo_image_path.i64 }}" />
         </div>
-        <div class="community-name">{{community.name | truncatetext:35}}</div>
+        <div class="community-name">{{ community.name | truncatetext : 35 }}</div>
       </a>
     </div>
   </nb-card-body>

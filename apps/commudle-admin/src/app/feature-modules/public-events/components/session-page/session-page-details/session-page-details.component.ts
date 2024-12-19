@@ -8,10 +8,9 @@ import { IUser } from 'apps/shared-models/user.model';
 @Component({
   selector: 'app-session-page-details',
   templateUrl: './session-page-details.component.html',
-  styleUrls: ['./session-page-details.component.scss']
+  styleUrls: ['./session-page-details.component.scss'],
 })
 export class SessionPageDetailsComponent implements OnInit {
-
   @Input() event: IEvent;
   @Input() community: ICommunity;
   @Input() trackSlot: ITrackSlot;
@@ -23,10 +22,7 @@ export class SessionPageDetailsComponent implements OnInit {
 
   moment = moment;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
