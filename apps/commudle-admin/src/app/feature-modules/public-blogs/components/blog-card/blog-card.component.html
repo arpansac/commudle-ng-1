@@ -16,15 +16,10 @@
         <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
         <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
       </div>
-      <!-- <div class="content"> -->
-      <!-- class="com-h-36" -->
       <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
-        <div class="date-reading-time">
-          <p class="date">
-            <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
-          </p>
-          <p class="reading-time"><fa-icon [icon]="faClock"></fa-icon></p>
-        </div>
+        <p class="date">
+          <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
+        </p>
         <h6 class="name">
           {{ blog?.title }}
         </h6>
@@ -36,7 +31,6 @@
         Read Blog &nbsp;
         <nb-icon icon="arrow-forward-outline"></nb-icon>
       </a>
-      <!-- </div> -->
     </div>
   </div>
 </div>

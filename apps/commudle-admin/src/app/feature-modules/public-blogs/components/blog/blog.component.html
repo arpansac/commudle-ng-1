@@ -6,12 +6,9 @@
           <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
           <div *ngIf="blog" class="blog">
             <div class="header">
-              <div class="date-reading-time">
-                <p class="date">
-                  <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
-                </p>
-                <p class="reading-time"><fa-icon [icon]="faClock"></fa-icon></p>
-              </div>
+              <p class="date">
+                <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
+              </p>
               <h1 class="blog-title">{{ blog.title }}</h1>
             </div>
             <div>

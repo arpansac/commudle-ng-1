@@ -35,22 +35,11 @@
       .header {
         @apply com-flex com-flex-col;
 
-        .date-reading-time {
-          @apply com-flex com-flex-row com-mb-3;
+        .date {
+          @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-mb-3;
 
-          .date {
-            @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-pr-3 com-m-0;
-
-            fa-icon {
-              @apply com-mr-2 com-text-lg;
-            }
-          }
-
-          .reading-time {
-            @apply com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-pl-3;
-            fa-icon {
-              @apply com-mr-2 com-text-lg;
-            }
+          fa-icon {
+            @apply com-mr-2 com-text-lg;
           }
         }
 
@@ -109,7 +98,7 @@
   .similar-blogs {
     @apply com-flex com-flex-col com-pb-8;
     .similar-blogs-heading {
-      @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue;
+      @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue com-my-8;
     }
   }
 
@@ -157,7 +146,7 @@
             @apply com-bg-white com-p-0;
 
             .latest-blog-title {
-              @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-pb-4 com-line-clamp-2;
+              @apply com-flex com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-pb-3 com-line-clamp-2;
             }
             .published-on {
               @apply com-text-xs com-font-medium com-text-gray-500 com-m-0;

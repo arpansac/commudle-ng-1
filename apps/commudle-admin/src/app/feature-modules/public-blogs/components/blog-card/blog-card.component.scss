@@ -29,22 +29,11 @@
       @apply com-h-[180px];
     }
 
-    .date-reading-time {
-      @apply com-flex com-flex-row com-py-3;
+    .date {
+      @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-py-3;
 
-      .date {
-        @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-pr-4 com-m-0;
-
-        fa-icon {
-          @apply com-mr-2 com-text-base;
-        }
-      }
-
-      .reading-time {
-        @apply com-text-xs com-font-semibold com-text-gray-500 com-m-0;
-        fa-icon {
-          @apply com-mr-2 com-text-base;
-        }
+      fa-icon {
+        @apply com-mr-2 com-text-base;
       }
     }
 
