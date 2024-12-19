@@ -1,10 +1,9 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { AuthService, countries_details as countryDetails } from '@commudle/shared-services';
 import { ICommunity, IHackathonPrize, IHackathonTeam } from '@commudle/shared-models';
 
@@ -13,7 +12,7 @@ import { ICommunity, IHackathonPrize, IHackathonTeam } from '@commudle/shared-mo
   templateUrl: './public-hackathon-prizes.component.html',
   styleUrls: ['./public-hackathon-prizes.component.scss'],
 })
-export class PublicHackathonPrizesComponent implements OnInit {
+export class PublicHackathonPrizesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
   hackathonPrizes: IHackathonPrize[];
@@ -21,6 +20,8 @@ export class PublicHackathonPrizesComponent implements OnInit {
   userTeamDetails: IHackathonTeam[];
   hrgId: number;
   community: ICommunity;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -35,7 +36,7 @@ export class PublicHackathonPrizesComponent implements OnInit {
         this.hackathon = data.hackathon;
         this.community = data.community;
         this.getPrizes();
-        this.authService.currentUser$.subscribe((currentUser) => {
+        this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
           if (currentUser) this.getHackathonCurrentRegistrationDetails();
         });
       }),
@@ -43,6 +44,11 @@ export class PublicHackathonPrizesComponent implements OnInit {
     this.hrgService.pShowHackathonResponseGroup(this.hackathon.id).subscribe((data) => {
       if (data) this.hrgId = data.id;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getPrizes() {

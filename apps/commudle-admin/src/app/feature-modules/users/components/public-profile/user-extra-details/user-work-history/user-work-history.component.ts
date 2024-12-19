@@ -8,7 +8,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserWorkHistory } from 'apps/shared-models/user_work_history.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-work-history',
@@ -36,6 +36,8 @@ export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
   dialogRef: NbDialogRef<any>;
 
   subscriptions: Subscription[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -86,7 +88,9 @@ export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     if (changes.user) {
       this.getUserWorkHistories();
@@ -95,6 +99,8 @@ export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getUserWorkHistories() {

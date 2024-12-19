@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -11,6 +11,7 @@ import {
 } from 'apps/shared-helper-modules/custom-validators.validator';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -18,7 +19,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
   templateUrl: './username.component.html',
   styleUrls: ['./username.component.scss'],
 })
-export class UsernameComponent implements OnInit {
+export class UsernameComponent implements OnInit, OnDestroy {
   @Input() showSaveButton = true;
   @Output() usernameValidation: EventEmitter<any> = new EventEmitter<any>();
 
@@ -32,6 +33,8 @@ export class UsernameComponent implements OnInit {
   usernameForm;
 
   @ViewChild('confirmChangeUsername') confirmChangeUsername: TemplateRef<any>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -50,7 +53,7 @@ export class UsernameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.currentUser = currentUser;
         this.currentUsername = this.lastUsername = this.currentUser.username;
@@ -71,6 +74,11 @@ export class UsernameComponent implements OnInit {
     });
 
     this.checkUsername();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkUsername() {

@@ -3,10 +3,10 @@ import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } fro
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { NB_WINDOW, NbMenuService } from '@commudle/theme';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-member',
