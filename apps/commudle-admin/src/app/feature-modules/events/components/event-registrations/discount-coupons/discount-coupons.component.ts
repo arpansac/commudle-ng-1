@@ -43,6 +43,7 @@ export class DiscountCouponsComponent implements OnInit {
   EPageType = EPageType;
   EDiscountType = EDiscountType;
   moment = moment;
+  isLoading: boolean;
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
   constructor(
     private dialogService: NbDialogService,
@@ -57,10 +58,15 @@ export class DiscountCouponsComponent implements OnInit {
   }
 
   getDiscountCoupons() {
-    this.subscriptions.push(
-      this.discountCodesService.discountCodes$.subscribe((data) => {
+    this.isLoading = true;
+    this.discountCodesService.discountCodes$.subscribe(
+      (data) => {
         this.discountCodes = data;
-      }),
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+      },
     );
   }
 
