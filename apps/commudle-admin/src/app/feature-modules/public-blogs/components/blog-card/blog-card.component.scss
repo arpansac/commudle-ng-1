@@ -1,5 +1,6 @@
 .blog-cards {
-  @apply com-grid com-gap-4 com-cursor-pointer md:com-grid-cols-3 com-grid-cols-1;
+  @apply com-cursor-pointer;
+  // @apply com-grid com-gap-5 com-cursor-pointer md:com-grid-cols-3 com-grid-cols-1;
 
   .blog-card {
     // com-border com-border-gray-200 com-border-solid com-border-opacity-60 com-overflow-hidden com-relative
@@ -30,7 +31,7 @@
     }
 
     .date {
-      @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-py-3;
+      @apply com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-py-3;
 
       fa-icon {
         @apply com-mr-2 com-text-base;
@@ -38,7 +39,7 @@
     }
 
     .meta-description {
-      @apply com-line-clamp-3 com-text-sm com-font-normal;
+      @apply com-line-clamp-3 com-text-sm com-font-normal com-text-gray-500;
     }
   }
 }

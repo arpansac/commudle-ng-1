@@ -10,7 +10,7 @@ import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
   styleUrls: ['./blog-card.component.scss'],
 })
 export class BlogCardComponent implements OnInit {
-  @Input() blogs: IBlog[];
+  @Input() blog: IBlog;
   @Input() shareButton = true;
   environment = environment;
   imageLoading = true;

@@ -12,6 +12,7 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 })
 export class BlogsListComponent implements OnInit, OnDestroy {
   blogs: IBlog[];
+  featuredBlogs: IBlog[];
   isLoading = true;
   environment = environment;
 
@@ -24,8 +25,10 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.getBlogs();
+    this.getFeaturedBlogs();
     this.setMeta();
   }
+
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
   }
@@ -38,6 +41,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
   }
+
+  getFeaturedBlogs(): void {}
 
   setMeta(): void {
     this.seoService.setTags(

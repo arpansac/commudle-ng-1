@@ -96,8 +96,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.appUsersService.getProfile(this.blog.username).subscribe((data) => {
         this.user = data;
-        console.log(this.user);
-        console.log(this.blog.username);
         this.setFaqSchemaData();
       }),
     );
@@ -108,7 +106,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     const order = 'publishedAt desc';
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
-      console.log(this.blogs);
       this.isLoading = false;
     });
   }

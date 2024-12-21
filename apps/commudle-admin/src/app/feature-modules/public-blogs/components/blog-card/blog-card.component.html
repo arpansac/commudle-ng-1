@@ -1,36 +1,34 @@
 <div class="blog-cards">
-  <div *ngFor="let blog of blogs">
-    <div class="blog-card">
-      <div class="blog-actions">
-        <app-share-button
-          *ngIf="shareButton"
-          [content]="environment.app_url + '/blogs/' + blog.slug.current"
-          [round]="true"
-          [showText]="false"
-          [text]="blog.title"
-          [title]="blog.title"
-          [url]="environment.app_url + '/blogs/' + blog.slug.current"
-        ></app-share-button>
-      </div>
-      <div [routerLink]="['/blogs', blog?.slug.current]" class="image">
-        <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-        <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
-      </div>
-      <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
-        <p class="date">
-          <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
-        </p>
-        <h6 class="name">
-          {{ blog?.title }}
-        </h6>
-        <div class="meta-description">
-          {{ blog?.meta_description }}
-        </div>
-      </div>
-      <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
-        Read Blog &nbsp;
-        <nb-icon icon="arrow-forward-outline"></nb-icon>
-      </a>
+  <div class="blog-card">
+    <div class="blog-actions">
+      <app-share-button
+        *ngIf="shareButton"
+        [content]="environment.app_url + '/blogs/' + blog.slug.current"
+        [round]="true"
+        [showText]="false"
+        [text]="blog.title"
+        [title]="blog.title"
+        [url]="environment.app_url + '/blogs/' + blog.slug.current"
+      ></app-share-button>
     </div>
+    <div [routerLink]="['/blogs', blog?.slug.current]" class="image">
+      <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
+      <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
+    </div>
+    <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
+      <p class="date">
+        <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
+      </p>
+      <h6 class="name">
+        {{ blog?.title }}
+      </h6>
+      <div class="meta-description">
+        {{ blog?.meta_description }}
+      </div>
+    </div>
+    <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
+      Read Blog &nbsp;
+      <nb-icon icon="arrow-forward-outline"></nb-icon>
+    </a>
   </div>
 </div>

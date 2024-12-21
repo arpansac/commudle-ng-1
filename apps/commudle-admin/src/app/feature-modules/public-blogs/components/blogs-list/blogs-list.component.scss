@@ -1,19 +1,23 @@
 .blogs-list {
   @apply com-bg-white;
-  .blog-container {
-    @apply com-min-h-screen;
-
-    nb-card-header {
-      h1 {
-        @apply com-pt-10;
-      }
-      p {
-        @apply com-text-base;
-      }
-    }
-  }
 
   app-loading-spinner {
     @apply com-flex com-justify-center;
   }
+}
+
+.blog-container {
+  @apply com-min-h-screen;
+
+  .header {
+    @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue com-mb-8;
+  }
+}
+
+.blog-list {
+  @apply com-grid com-grid-cols-3 com-gap-5;
+}
+
+.two-columns {
+  @apply com-gap-5;
 }

@@ -89,7 +89,11 @@
       <!-- similarBlogs Section -->
       <div *ngIf="blog?.similarBlogs" class="similar-blogs">
         <h2 class="similar-blogs-heading">More from the Journal</h2>
-        <commudle-blog-card [blogs]="similarBlogs" [shareButton]="false"></commudle-blog-card>
+        <div class="similar-blogs-list">
+          <div *ngFor="let blog of similarBlogs">
+            <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+          </div>
+        </div>
       </div>
 
       <a [routerLink]="['/blogs']" ghost status="primary" nbButton size="small" class="back-btn">

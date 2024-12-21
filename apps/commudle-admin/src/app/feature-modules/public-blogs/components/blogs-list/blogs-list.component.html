@@ -1,10 +1,39 @@
 <div class="blogs-list">
   <div class="base-layout">
     <div class="container">
-      <div class="two-column-layout medium">
-        <!-- <div class="main-column">
-        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        <div *ngIf="blog" class="blog">
+      <div class="two-column-layout medium two-columns">
+        <div class="main-column">
+          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          <div class="similar-blogs-list">
+            <div *ngFor="let blog of blogs | slice : 0 : 1">
+              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+        <div class="right-column">
+          <div class="similar-blogs-list">
+            <div *ngFor="let blog of blogs | slice : 1">
+              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-column-layout">
+        <div class="blog-container">
+          <h1 class="header">Discover a Wealth of Insightful Blogs</h1>
+          <div class="blog-list">
+            <div *ngFor="let blog of blogs">
+              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div *ngIf="blog" class="blog">
           <div class="header">
             <div class="date-reading-time">
               <p class="date">
@@ -34,10 +63,9 @@
               [round]="false"
             ></app-share-button>
           </div>
-        </div>
-      </div> -->
+        </div> -->
 
-        <!-- <div class="action-buttons">
+<!-- <div class="action-buttons">
         <app-share-button
           [content]="environment.app_url + '/blogs/' + blog.slug.current"
           [title]="blog.title"
@@ -54,35 +82,12 @@
         ></a>
       </div> -->
 
-        <div class="right-column">
-          <div class="latest-blog">
+<!-- <div class="latest-blog">
             <h1 class="heading">Latest Blogs</h1>
             <!-- *ngFor="let latestBlog of latestBlogs" -->
-            <div class="latest-blog-cards">
+<!-- --<div class="latest-blog-cards">
               <div class="latest-blog-card">
                 <h2 class="latest-blog-title">Title</h2>
                 <p class="published-on">Published on <span>date</span></p>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="one-column-layout">
-        <nb-card class="blog-container">
-          <nb-card-header>
-            <h1>Relating with Developers & Communities</h1>
-            <p>
-              Read and connect with developers, devrels & community managers from their experiences in building
-              communities, helping folks to learn new technologies. From diverse backgrounds, people come together and
-              share how they have built their careers, found opportunities and empowered people around them.
-            </p>
-          </nb-card-header>
-          <nb-card-body>
-            <commudle-blog-card [blogs]="blogs"></commudle-blog-card>
-            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-          </nb-card-body>
-        </nb-card>
-      </div>
-    </div>
-  </div>
-</div>
+            </div> -->

@@ -100,6 +100,9 @@
     .similar-blogs-heading {
       @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue com-my-8;
     }
+    .similar-blogs-list {
+      @apply com-grid com-grid-cols-3 com-gap-5;
+    }
   }
 
   app-loading-spinner {
