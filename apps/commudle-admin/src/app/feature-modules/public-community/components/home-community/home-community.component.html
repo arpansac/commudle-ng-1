@@ -24,7 +24,7 @@
                 <img
                   alt="{{ community.name }}"
                   class="logo"
-                  src="{{ community.logo_image_path.i64 }}"
+                  src="{{ community.logo_image_path?.i64 }}"
                   title="{{ community.name }}"
                 />
                 <app-share-button
@@ -133,7 +133,7 @@
                 <div class="mini-logo-section">
                   <img
                     alt="{{ community.name }}"
-                    src="{{ community.logo_image_path.i64 }}"
+                    src="{{ community.logo_image_path?.i64 }}"
                     title="{{ community.name }}"
                     class="mini-logo"
                   />
