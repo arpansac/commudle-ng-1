@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IPaginationCount } from '@commudle/shared-models';
+import { IPaginationCount, IUserRolesUser } from '@commudle/shared-models';
 import { IAttachedFile } from 'apps/shared-models/attached-file.model';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
@@ -62,9 +62,12 @@ export class AppUsersService {
   }
 
   // get list of communities and role of the user in it
-  communities(username): Observable<IUserRolesUsers> {
-    const params = new HttpParams().set('username', username);
-    return this.http.get<IUserRolesUsers>(this.apiRoutesService.getRoute(API_ROUTES.USERS.COMMUNITIES), { params });
+  communities(username: string, page = 1, count = 6): Observable<IPaginationCount<IUserRolesUser>> {
+    const params = new HttpParams().set('username', username).set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<IUserRolesUser>>(
+      this.apiRoutesService.getRoute(API_ROUTES.USERS.COMMUNITIES),
+      { params },
+    );
   }
 
   // admin panel view of list of labs
