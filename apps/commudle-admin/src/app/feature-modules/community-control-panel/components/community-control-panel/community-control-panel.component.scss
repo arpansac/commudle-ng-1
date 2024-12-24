@@ -108,7 +108,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-p-4;
+    @apply com-p-4 com-flex com-flex-col;
     .back-admin,
     .sidebar-expand-icon {
       .icon {
@@ -204,5 +204,5 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-justify-end;
+  @apply com-justify-between;
 }

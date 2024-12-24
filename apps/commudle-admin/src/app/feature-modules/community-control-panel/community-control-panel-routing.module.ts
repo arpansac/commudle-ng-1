@@ -48,20 +48,20 @@ const routes = [
         path: 'notifications',
         component: CommunityAdminNotificationsComponent,
       },
-      {
-        path: 'forms',
-        component: CommunityFormsAndSurveysComponent,
-        children: [
-          {
-            path: '',
-            component: CommunityFormsListComponent,
-          },
-          {
-            path: 'surveys',
-            component: CommunitySurveysComponent,
-          },
-        ],
-      },
+      // {
+      //   path: 'forms',
+      //   component: CommunityFormsAndSurveysComponent,
+      //   children: [
+      //     {
+      //       path: '',
+      //       component: CommunityFormsListComponent,
+      //     },
+      //     {
+      //       path: 'surveys',
+      //       component: CommunitySurveysComponent,
+      //     },
+      //   ],
+      // },
       {
         path: 'edit',
         component: CommunityEditDetailsComponent,
@@ -135,6 +135,14 @@ const routes = [
       {
         path: 'team',
         component: CommunityTeamComponent,
+      },
+      {
+        path: 'forms',
+        component: CommunityFormsListComponent,
+      },
+      {
+        path: 'surveys',
+        component: CommunitySurveysComponent,
       },
       {
         path: 'channels',
