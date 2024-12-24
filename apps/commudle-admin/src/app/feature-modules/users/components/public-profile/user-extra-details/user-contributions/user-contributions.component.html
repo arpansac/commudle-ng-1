@@ -59,9 +59,9 @@
   <nb-card-header>
     <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
     Communities
-    <span *ngIf="communities.length > 4">({{ communities.length }})</span>
+    <span>({{ communitiesTotal }})</span>
   </nb-card-header>
-  <nb-card-body [ngClass]="{ 'view-more': viewMoreCommunitiesSection, 'view-less': !viewMoreCommunitiesSection }">
+  <nb-card-body>
     <div class="grid">
       <app-user-community-card
         *ngFor="let community of communities | sortBy : ['user_role.id'] : ['desc']"
@@ -69,11 +69,14 @@
       ></app-user-community-card>
     </div>
   </nb-card-body>
-  <nb-card-footer *ngIf="communities?.length > 6" (click)="viewMoreCommunities()" class="com-cursor-pointer">
+  <nb-card-footer
+    (click)="viewMoreCommunities()"
+    class="com-cursor-pointer"
+    *ngIf="communitiesTotal !== communities.length"
+  >
     <div>
       {{ footerCommunitiesCardText }}
-      <nb-icon *ngIf="viewMoreCommunitiesSection" icon="arrow-ios-downward-outline"></nb-icon>
-      <nb-icon *ngIf="!viewMoreCommunitiesSection" icon="arrow-ios-upward-outline"></nb-icon>
+      <nb-icon icon="arrow-ios-downward-outline"></nb-icon>
     </div>
   </nb-card-footer>
 </nb-card>
