@@ -16,6 +16,7 @@ import { faCaretDown, faMessage, faNewspaper } from '@fortawesome/free-solid-svg
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { EDbModels } from '@commudle/shared-models';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 interface CustomMenuItem {
   title: string;
@@ -42,6 +43,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
   faCaretDown = faCaretDown;
   faMessage = faMessage;
   faNewspaper = faNewspaper;
+  faInstagram = faInstagram;
 
   items = [{ title: 'pages', slug: 'pages' }];
 
