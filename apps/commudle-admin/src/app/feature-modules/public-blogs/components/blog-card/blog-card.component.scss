@@ -19,7 +19,7 @@
     }
 
     .name {
-      @apply com-line-clamp-2 com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
+      @apply com-line-clamp-2 md:com-text-xl com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
     }
 
     .read-more {
