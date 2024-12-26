@@ -91,9 +91,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   }
 
   updateSeoTitle() {
-    this.seoTitle = this.query
-      ? `${this.query} - Join Leading Developer Communities`
-      : 'Join Leading Developer Communities';
+    this.seoTitle = this.query ? `${this.query} - Developer Communities` : 'Developer Communities';
 
     this.seoService.setTags(
       this.seoTitle,
