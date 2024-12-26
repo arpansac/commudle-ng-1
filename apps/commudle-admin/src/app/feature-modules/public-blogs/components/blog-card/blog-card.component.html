@@ -16,9 +16,14 @@
       <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
     </div>
     <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
-      <p class="date">
-        <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
-      </p>
+      <div class="profile-date">
+        <div *ngIf="user && showUserProfile">
+          <app-user-profile-card-small [user]="user"></app-user-profile-card-small>
+        </div>
+        <p class="date">
+          <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
+        </p>
+      </div>
       <h6 class="name">
         {{ blog?.title }}
       </h6>

@@ -14,6 +14,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   blogs: IBlog[];
   featuredBlogs: IBlog[];
   isLoading = true;
+  isLoadingFeatured = true;
   environment = environment;
 
   constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
@@ -34,7 +35,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   getBlogs() {
-    const fields = '_id,slug,title,publishedAt,meta_description,headerImage';
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
     const order = 'publishedAt desc';
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
@@ -42,7 +43,9 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getFeaturedBlogs(): void {}
+  getFeaturedBlogs(): void {
+    this.isLoadingFeatured = false;
+  }
 
   setMeta(): void {
     this.seoService.setTags(

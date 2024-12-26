@@ -2,19 +2,19 @@
   <div class="base-layout">
     <div class="container">
       <div class="two-column-layout medium two-columns">
-        <div class="main-column">
-          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-          <div class="similar-blogs-list">
+        <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
+        <div class="main-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
             <div *ngFor="let blog of blogs | slice : 0 : 1">
-              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+              <commudle-blog-card [blog]="blog" [shareButton]="false" [showUserProfile]="true"></commudle-blog-card>
             </div>
           </div>
         </div>
-        <div class="right-column">
-          <div class="similar-blogs-list">
-            <div *ngFor="let blog of blogs | slice : 1">
+        <div class="right-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
+            <!-- <div *ngFor="let blog of blogs | slice : 1">
               <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

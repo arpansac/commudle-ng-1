@@ -1,5 +1,5 @@
 .blogs-list {
-  @apply com-bg-white;
+  @apply com-bg-white md:com-pt-12 com-pt-8;
 
   app-loading-spinner {
     @apply com-flex com-justify-center;
@@ -15,9 +15,9 @@
 }
 
 .blog-list {
-  @apply com-grid com-grid-cols-3 com-gap-5;
+  @apply com-grid md:com-grid-cols-3 com-grid-cols-1  com-gap-5;
 }
 
 .two-columns {
-  @apply com-gap-5;
+  @apply com-gap-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-6;
 }
