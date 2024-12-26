@@ -9,6 +9,8 @@ import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/min
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+
 @NgModule({
   declarations: [BlogsListComponent, BlogComponent, BlogCardComponent],
   imports: [
@@ -22,6 +24,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MiniUserProfileModule,
     SharedComponentsModule,
     FontAwesomeModule,
+    SharedDirectivesModule,
   ],
 })
 export class PublicBlogsModule {}

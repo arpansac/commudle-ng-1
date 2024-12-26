@@ -4,7 +4,7 @@
       <div class="two-column-layout medium">
         <div class="main-column">
           <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-          <div *ngIf="blog" class="blog">
+          <div *ngIf="blog && !isLoading" class="blog">
             <div class="header">
               <p class="date">
                 <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
@@ -54,18 +54,19 @@
           </div>
         </div>
 
-        <div class="right-column">
+        <div class="right-column" *appBreakpoints="'>lg'">
           <nb-card class="latest-blog">
             <h1 class="heading">Latest Blogs</h1>
-            <!-- *ngFor="let latestBlog of latestBlogs" -->
             <div class="latest-blog-cards">
-              <nb-card *ngFor="let blog of blogs" class="latest-blog-card">
-                <nb-card-body class="blog-card">
-                  <h2 class="latest-blog-title">{{ blog.title }}</h2>
-                  <p class="published-on">
-                    Published on <span>{{ blog.publishedAt | date }}</span>
-                  </p>
-                </nb-card-body>
+              <nb-card *ngFor="let latestBlog of latestBlogs" class="latest-blog-card">
+                <a [routerLink]="['/blogs', latestBlog?.slug.current]">
+                  <nb-card-body class="blog-card">
+                    <h2 class="latest-blog-title">{{ latestBlog.title }}</h2>
+                    <p class="published-on">
+                      Published on <span>{{ latestBlog.publishedAt | date }}</span>
+                    </p>
+                  </nb-card-body>
+                </a>
               </nb-card>
             </div>
           </nb-card>

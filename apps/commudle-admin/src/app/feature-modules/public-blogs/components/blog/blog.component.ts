@@ -48,6 +48,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     activatedRoute.params.subscribe(() => {
       this.getData();
       this.getBlogs();
+      this.getLatestBlogs();
     });
   }
 
@@ -107,6 +108,14 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
       this.isLoading = false;
+    });
+  }
+
+  getLatestBlogs() {
+    const fields = '_id, slug, title, publishedAt';
+    const order = 'publishedAt desc';
+    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 6, 1).subscribe((value: IBlog[]) => {
+      this.latestBlogs = value;
     });
   }
 

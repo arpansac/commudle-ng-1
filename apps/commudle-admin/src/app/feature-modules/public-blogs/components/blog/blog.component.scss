@@ -1,5 +1,5 @@
 .blog-container {
-  @apply com-bg-white com-border com-border-b com-border-solid com-border-Yankees-Blue com-pb-10 md:com-px-0 com-px-4;
+  @apply com-bg-white com-pb-10 md:com-px-0 com-px-4;
 
   .content {
     ::ng-deep {
@@ -44,7 +44,7 @@
         }
 
         .blog-title {
-          @apply md:com-text-[28px] com-text-xl md:com-font-bold com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-3 md:com-text-left com-text-center;
+          @apply md:com-text-[28px] com-text-xl md:com-font-bold com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-6 com-mb-3 md:com-text-left com-text-center;
         }
       }
 
@@ -159,4 +159,8 @@
       }
     }
   }
+}
+
+a {
+  @apply com-no-underline;
 }
