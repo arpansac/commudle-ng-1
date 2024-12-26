@@ -159,7 +159,7 @@
           <div class="icon">
             <fa-icon [icon]="faScroll"></fa-icon>
           </div>
-          <span *ngIf="sidebarExpanded" class="heading">Forms</span>
+          <span *ngIf="sidebarExpanded" class="heading">Form Data</span>
         </a>
         <a [routerLink]="['stats']" class="action-button" routerLinkActive="active">
           <div class="icon">
@@ -205,9 +205,14 @@
     <div *appBreakpoints="'<=md'" class="event-dashboard-menu">
       <nb-card>
         <nb-card-body>
-          <div class="com-scrollbar-hide">
-            <!-- [routerLinkActiveOptions]="{ exact: true }" -->
-            <a [routerLink]="['./']" class="d-flex" class="action-button">
+          <div class="menu">
+            <a
+              [routerLink]="['./']"
+              class="d-flex"
+              class="action-button"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
               <div class="icon">
                 <nb-icon icon="calendar"></nb-icon>
               </div>
@@ -219,16 +224,6 @@
               class="action-button com-relative com-flex"
               routerLinkActive="active"
             >
-              <app-badge
-                class="com-mt-6px com-mr-1"
-                text="New"
-                [fontColor]="'com-text-tWhite'"
-                [fontSize]="'small'"
-                [borderRadius]="'round'"
-                [color]="'com-bg-Caribbean-Green'"
-                [position]="'top right'"
-              ></app-badge>
-
               <div class="icon">
                 <img
                   [src]="
@@ -249,15 +244,6 @@
               class="action-button com-relative com-flex"
               routerLinkActive="active"
             >
-              <app-badge
-                class="com-mt-6px com-mr-1"
-                text="New"
-                [fontColor]="'com-text-tWhite'"
-                [fontSize]="'small'"
-                [borderRadius]="'round'"
-                [color]="'com-bg-Caribbean-Green'"
-                [position]="'top right'"
-              ></app-badge>
               <div class="icon">
                 <fa-icon [icon]="icons.faBuildingColumns"></fa-icon>
               </div>
@@ -273,7 +259,7 @@
                 <div class="icon">
                   <nb-icon icon="bell"></nb-icon>
                 </div>
-                <span *ngIf="sidebarExpanded" class="heading">Activity</span>
+                <span *ngIf="sidebarExpanded" class="heading">Notifications</span>
               </a>
             </div>
             <a [routerLink]="['members']" class="action-button" routerLinkActive="active">
@@ -286,13 +272,19 @@
               <div class="icon">
                 <fa-icon [icon]="faScroll"></fa-icon>
               </div>
-              <span class="heading">Forms</span>
+              <span class="heading">Form Data</span>
+            </a>
+            <a [routerLink]="['surveys']" class="action-button" routerLinkActive="active">
+              <div class="icon">
+                <fa-icon [icon]="faScroll"></fa-icon>
+              </div>
+              <span *ngIf="sidebarExpanded" class="heading">Surveys</span>
             </a>
             <a [routerLink]="['pages']" class="action-button" routerLinkActive="active">
               <div class="icon">
                 <fa-icon [icon]="icons.faFileLines"></fa-icon>
               </div>
-              <span class="heading">Pages</span>
+              <span class="heading">Page Builder</span>
             </a>
             <a [routerLink]="['newsletters']" class="action-button" routerLinkActive="active">
               <div class="icon">
@@ -304,13 +296,13 @@
               <div class="icon">
                 <nb-icon icon="people"></nb-icon>
               </div>
-              <span class="heading">Team</span>
+              <span class="heading">Manage Team</span>
             </a>
             <a [routerLink]="['edit']" class="action-button" routerLinkActive="active">
               <div class="icon">
                 <nb-icon icon="edit"></nb-icon>
               </div>
-              <span class="heading">Edit Details</span>
+              <span class="heading">Community Profile</span>
             </a>
             <a [routerLink]="['channels']" class="action-button" routerLinkActive="active">
               <div class="icon">
