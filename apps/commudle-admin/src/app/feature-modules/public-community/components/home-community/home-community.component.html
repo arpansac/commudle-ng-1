@@ -79,6 +79,14 @@
                       <nb-icon icon="linkedin" status="info"></nb-icon>
                     </a>
                     <a
+                      *ngIf="community.instagram"
+                      href="{{ community.instagram | completeurl : 'instagram' }}"
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <fa-icon [icon]="faInstagram"></fa-icon>
+                    </a>
+                    <a
                       *ngIf="community.twitter"
                       href="{{ community.twitter | completeurl : 'twitter' }}"
                       rel="noreferrer"
