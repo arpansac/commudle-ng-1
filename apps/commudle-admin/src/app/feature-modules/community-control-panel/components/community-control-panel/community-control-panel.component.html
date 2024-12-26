@@ -63,8 +63,13 @@
           <div *ngIf="sidebarExpanded" class="category-heading">
             <span>Engagements</span>
           </div>
-          <!-- [routerLinkActiveOptions]="{ exact: true }" -->
-          <a [routerLink]="['./']" class="d-flex" class="action-button">
+          <a
+            [routerLink]="['./']"
+            class="d-flex"
+            class="action-button"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <div class="icon">
               <nb-icon icon="calendar"></nb-icon>
             </div>
@@ -98,7 +103,7 @@
             </div>
             <span *ngIf="sidebarExpanded" class="heading">Forums</span>
           </a>
-          <a [routerLink]="['forms/surveys']" class="action-button" routerLinkActive="active">
+          <a [routerLink]="['surveys']" class="action-button" routerLinkActive="active">
             <div class="icon">
               <fa-icon [icon]="faScroll"></fa-icon>
             </div>
@@ -161,7 +166,7 @@
             <nb-icon icon="trending-up-outline"></nb-icon>
           </div>
           <span *ngIf="sidebarExpanded" class="heading">Stats</span>
-          <div class="icon">
+          <div *ngIf="sidebarExpanded" class="icon">
             <nb-icon icon="external-link"></nb-icon>
           </div>
         </a>

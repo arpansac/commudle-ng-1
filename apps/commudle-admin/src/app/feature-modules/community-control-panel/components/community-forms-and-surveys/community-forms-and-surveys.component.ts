@@ -1,3 +1,5 @@
+// DEPRECATED
+
 import { Component, OnInit } from '@angular/core';
 import { NbRouteTab } from '@commudle/theme';
 
