@@ -20,6 +20,9 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
 
   labs: ILab[] = [];
   communities: IUserRolesUser[] = [];
+  communitiesCount = 6;
+  communitiesTotal = 0;
+  communitiesPage = 1;
   builds: ICommunityBuild[] = [];
   attendedEvents: IEvent[] = [];
   pastEvents: IEvent[] = [];
@@ -27,7 +30,6 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   viewMoreEventsSection = true;
-  viewMoreCommunitiesSection = true;
   footerCommunitiesCardText: string;
   footerEventsCardText: string;
   faLightbulb = faLightbulb;
@@ -63,12 +65,17 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
 
   getCommunities(): void {
     this.subscriptions.push(
-      this.appUsersService.communities(this.user.username).subscribe((value) => {
-        // TODO: If some community is undefined then remove it, is that required?
-        this.communities = value.user_roles_users.filter((community) => community.community);
-        this.userProfileMenuService.addMenuItem('communities', this.communities.length > 0);
-        this.footerCommunitiesCardText = `View More (${this.communities.length - 6})`;
-      }),
+      this.appUsersService
+        .communities(this.user.username, this.communitiesPage, this.communitiesCount)
+        .subscribe((res) => {
+          // TODO: If some community is undefined then remove it, is that required?
+          this.communities = this.communities.concat(res.values.filter((community) => community.community));
+          this.communitiesTotal = res.total;
+          this.communitiesPage = res.page;
+          this.userProfileMenuService.addMenuItem('communities', res.total > 0);
+          this.footerCommunitiesCardText =
+            res.total <= this.communities.length ? 'View More' : `View More (${res.total - this.communities.length})`;
+        }),
     );
   }
 
@@ -91,12 +98,8 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   }
 
   viewMoreCommunities() {
-    this.viewMoreCommunitiesSection = !this.viewMoreCommunitiesSection;
-    if (!this.viewMoreCommunitiesSection) {
-      this.footerCommunitiesCardText = `View Less`;
-    } else {
-      this.footerCommunitiesCardText = `View More (${this.communities.length - 6})`;
-    }
+    this.communitiesPage = this.communitiesPage + 1;
+    this.getCommunities();
   }
 
   getAttendedEvents(): void {
