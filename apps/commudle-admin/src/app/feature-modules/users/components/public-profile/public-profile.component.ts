@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
 import {
   UserProfileMenuItems,
@@ -12,7 +12,6 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-
 @Component({
   selector: 'app-public-profile',
   templateUrl: './public-profile.component.html',
@@ -33,6 +32,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private userProfileManagerService: UserProfileManagerService,
     private footerService: FooterService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +60,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         }, {});
       }),
     );
+    this.checkRecapParams();
   }
 
   ngOnDestroy() {
@@ -132,6 +133,15 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         jobTitle: this.user.designation,
         address: this.user.location,
       },
+    });
+  }
+
+  checkRecapParams() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['recap2024']) {
+        const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2024';
+        this.router.navigate([url]);
+      }
     });
   }
 }

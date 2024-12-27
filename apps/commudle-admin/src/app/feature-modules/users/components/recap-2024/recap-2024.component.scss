@@ -1,0 +1,201 @@
+section {
+  @apply com-h-[calc(100dvh-136px)] md:com-h-[100dvh] com-bg-tblack;
+  #confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .recap-container {
+    @apply md:com-flex com-justify-evenly com-h-[calc(100dvh-136px)] md:com-h-[90dvh] com-items-center com-relative -com-mt-5 md:com-mt-0;
+    .navigation-button-left,
+    .navigation-button-right {
+      @apply com-hidden md:com-block;
+    }
+    button {
+      @apply com-h-max;
+    }
+    .carousel {
+      @apply com-overflow-hidden com-h-[calc(100dvh-136px)] com-w-full md:com-h-[80dvh] md:com-w-[400px] com-rounded-lg;
+
+      .container {
+        @apply com-flex com-transition-transform com-duration-700 com-w-full com-h-full;
+        .component-container-wrapper {
+          @apply com-min-w-full com-h-full;
+          .component-container {
+            @apply com-w-full com-h-full com-px-6 com-py-6;
+            p {
+              @apply com-text-tblack;
+            }
+          }
+          &.welcome {
+            .component-container {
+              background-size: 100% 100%;
+            }
+            .commudle-logo,
+            .recap-screen {
+              @apply com-w-full  com-flex com-justify-center;
+            }
+            .commudle-logo {
+              @apply com-animate-fade-left com-animate-delay-100 com-animate-ease-in com-mb-28;
+            }
+            .recap-screen {
+              @apply com-animate-fade-left com-animate-delay-200 com-animate-ease-in com-h-full;
+              img {
+                @apply com-h-4/6;
+              }
+            }
+          }
+          &.first,
+          &.second,
+          &.third,
+          &.fourth,
+          &.fifth,
+          &.sixth {
+            @apply com-bg-tWhite;
+          }
+          &.first,
+          &.second,
+          &.third,
+          &.fourth,
+          &.fifth,
+          &.sixth {
+            .component-container {
+              background-size: 100% 100%;
+            }
+          }
+
+          &.first {
+            .component-container {
+              @apply com-flex com-flex-col com-justify-center com-items-center;
+            }
+            .profile-image {
+              @apply com-border com-border-solid com-border-Bright-Gray com-rounded-full com-w-40 com-h-40 com-shadow-md com-overflow-hidden;
+              img {
+                @apply com-object-contain com-overflow-hidden com-w-full;
+              }
+            }
+            p {
+              @apply com-text-3xl com-text-center;
+            }
+          }
+
+          &.second {
+            .component-container {
+              @apply com-flex com-flex-col com-justify-center com-items-center;
+              .first-line,
+              .second-line,
+              .third-line {
+                @apply com-text-2xl com-text-center com-my-0;
+              }
+              .page-visit-count {
+                @apply com-font-bold com-text-[40px];
+              }
+            }
+          }
+
+          &.third {
+            .component-container {
+              @apply com-flex com-flex-col com-justify-center com-items-center;
+              p {
+                @apply com-my-0 com-text-center;
+              }
+
+              .event-attended-count {
+                @apply com-text-6xl com-font-extrabold com-mb-1;
+              }
+
+              .first-line,
+              .title {
+                @apply com-text-2xl com-font-medium;
+              }
+              .first-line {
+                @apply com-mb-12;
+              }
+
+              .event-name {
+                @apply com-text-xl com-mb-4;
+              }
+            }
+          }
+
+          &.fourth {
+            .component-container {
+              @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
+              p {
+                @apply com-my-0 com-text-center;
+              }
+              .content {
+                .count {
+                  @apply com-font-extrabold com-text-[64px] com-mb-5;
+                }
+                .text {
+                  @apply com-font-medium com-text-2xl com-mb-5;
+                }
+              }
+            }
+          }
+
+          &.fifth {
+            .component-container {
+              @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
+              p {
+                @apply com-my-0 com-text-center;
+              }
+              .content {
+                .count {
+                  @apply com-font-extrabold com-text-[64px] com-mb-5;
+                }
+                .text {
+                  @apply com-font-medium com-text-2xl com-mb-5;
+                }
+              }
+            }
+          }
+
+          &.thank-you {
+            .component-container {
+              background-size: 100% 100%;
+              @apply com-flex com-flex-col com-items-center;
+              .commudle-logo {
+                @apply com-w-full com-flex com-justify-center com-mb-4 md:com-mb-20;
+              }
+              p {
+                @apply com-text-tWhite com-my-0;
+              }
+              .content {
+                @apply com-text-center;
+                .new-year-text {
+                  @apply com-font-bold com-text-xl md:com-text-3xl com-mb-4 md:com-mb-10;
+                }
+                img {
+                  @apply com-mb-4 md:com-mb-10;
+                }
+                .first-line {
+                  @apply com-font-bold com-text-[40px] com-mb-2;
+                }
+                .second-line {
+                  @apply com-font-medium com-text-2xl;
+                }
+                button {
+                  @apply com-w-full com-border-0 com-rounded-lg com-bg-[#ffff]/30 com-py-2 com-font-semibold com-text-base com-text-tWhite com-cursor-pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .action-buttons-mobile {
+      @apply md:com-hidden com-grid com-grid-cols-2 com-absolute com-bottom-0 com-w-full;
+      button {
+        @apply com-opacity-30 com-bg-tblack;
+        fa-icon {
+          @apply com-text-tWhite;
+        }
+      }
+    }
+  }
+}
