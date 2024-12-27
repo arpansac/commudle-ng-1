@@ -235,6 +235,15 @@
       </div>
     </div>
 
+    <div class="action-buttons-mobile">
+      <button nbButton (click)="prevSlide()" [disabled]="currentSlide === 0">
+        <fa-icon [icon]="icons.faChevronLeft"></fa-icon>
+      </button>
+      <button nbButton (click)="nextSlide()" [disabled]="currentSlide === slidesCount - 1">
+        <fa-icon [icon]="icons.faChevronRight"></fa-icon>
+      </button>
+    </div>
+
     <button
       nbButton
       ghost

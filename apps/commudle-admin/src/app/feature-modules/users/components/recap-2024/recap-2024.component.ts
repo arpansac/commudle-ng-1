@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUserRecapStats } from '@commudle/shared-models';
 import { AppUsersService, SeoService, ToastrService } from '@commudle/shared-services';
@@ -173,5 +173,14 @@ export class RecapComponent implements OnInit, OnDestroy {
   redirectToProfile() {
     const url = environment.app_url + '/users/' + this.statsData.user.username;
     window.open(url, '_blank');
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'ArrowRight') {
+      this.nextSlide(); // Call nextSlide on Right Arrow key press
+    } else if (event.key === 'ArrowLeft') {
+      this.prevSlide(); // Call prevSlide on Left Arrow key press
+    }
   }
 }

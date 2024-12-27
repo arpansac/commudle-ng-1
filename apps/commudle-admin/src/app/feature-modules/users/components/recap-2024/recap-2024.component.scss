@@ -1,5 +1,5 @@
 section {
-  @apply com-h-[100dvh] com-bg-tblack;
+  @apply com-h-[calc(100dvh-136px)] md:com-h-[100dvh] com-bg-tblack;
   #confetti {
     position: fixed;
     top: 0;
@@ -9,12 +9,16 @@ section {
     pointer-events: none;
   }
   .recap-container {
-    @apply com-flex com-justify-evenly com-h-[90dvh] com-items-center;
+    @apply md:com-flex com-justify-evenly com-h-[calc(100dvh-136px)] md:com-h-[90dvh] com-items-center com-relative -com-mt-5 md:com-mt-0;
+    .navigation-button-left,
+    .navigation-button-right {
+      @apply com-hidden md:com-block;
+    }
     button {
       @apply com-h-max;
     }
     .carousel {
-      @apply com-overflow-hidden com-h-full com-w-full md:com-h-[80dvh] md:com-w-[400px] com-rounded-lg;
+      @apply com-overflow-hidden com-h-[calc(100dvh-136px)] com-w-full md:com-h-[80dvh] md:com-w-[400px] com-rounded-lg;
 
       .container {
         @apply com-flex com-transition-transform com-duration-700 com-w-full com-h-full;
@@ -156,7 +160,7 @@ section {
               background-size: 100% 100%;
               @apply com-flex com-flex-col com-items-center;
               .commudle-logo {
-                @apply com-w-full com-flex com-justify-center com-mb-20;
+                @apply com-w-full com-flex com-justify-center com-mb-4 md:com-mb-20;
               }
               p {
                 @apply com-text-tWhite com-my-0;
@@ -164,10 +168,10 @@ section {
               .content {
                 @apply com-text-center;
                 .new-year-text {
-                  @apply com-font-bold com-text-3xl com-mb-10;
+                  @apply com-font-bold com-text-xl md:com-text-3xl com-mb-4 md:com-mb-10;
                 }
                 img {
-                  @apply com-mb-10;
+                  @apply com-mb-4 md:com-mb-10;
                 }
                 .first-line {
                   @apply com-font-bold com-text-[40px] com-mb-2;
@@ -181,6 +185,15 @@ section {
               }
             }
           }
+        }
+      }
+    }
+    .action-buttons-mobile {
+      @apply md:com-hidden com-grid com-grid-cols-2 com-absolute com-bottom-0 com-w-full;
+      button {
+        @apply com-opacity-30 com-bg-tblack;
+        fa-icon {
+          @apply com-text-tWhite;
         }
       }
     }
