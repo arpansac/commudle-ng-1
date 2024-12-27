@@ -22,10 +22,13 @@ section {
           @apply com-min-w-full com-h-full;
           .component-container {
             @apply com-w-full com-h-full com-px-6 com-py-6;
+            p {
+              @apply com-text-tblack;
+            }
           }
           &.welcome {
             .component-container {
-              @apply com-bg-center;
+              background-size: 100% 100%;
             }
             .commudle-logo,
             .recap-screen {
@@ -150,7 +153,8 @@ section {
 
           &.thank-you {
             .component-container {
-              @apply com-bg-center com-flex com-flex-col com-items-center;
+              background-size: 100% 100%;
+              @apply com-flex com-flex-col com-items-center;
               .commudle-logo {
                 @apply com-w-full com-flex com-justify-center com-mb-20;
               }
@@ -172,7 +176,7 @@ section {
                   @apply com-font-medium com-text-2xl;
                 }
                 button {
-                  @apply com-w-full com-border-0 com-rounded-lg com-bg-[#ffff]/30 com-py-2 com-font-semibold com-text-base com-text-Ghost-White com-cursor-pointer;
+                  @apply com-w-full com-border-0 com-rounded-lg com-bg-[#ffff]/30 com-py-2 com-font-semibold com-text-base com-text-tWhite com-cursor-pointer;
                 }
               }
             }

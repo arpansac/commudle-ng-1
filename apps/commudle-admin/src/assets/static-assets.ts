@@ -198,4 +198,8 @@ export const staticAssets = {
   // id: 177
   recap_background_screen_2:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMTZKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--6c07df782f0232f0d05083b5f95781e3e2af4a1a/Top%20&%20Bottom%20Bar.png',
+
+  // id: 178
+  fire_illustration:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1dKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c9f794bbbe2aae7cc67e71e39f46ba4557a6156c/Fire%20Illustration.svg',
 };

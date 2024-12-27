@@ -170,4 +170,8 @@ export class RecapComponent implements OnInit, OnDestroy {
         this.libToastLogService.successDialog('Shared Successfully!');
       });
   }
+  redirectToProfile() {
+    const url = environment.app_url + '/users/' + this.statsData.user.username;
+    window.open(url, '_blank');
+  }
 }
