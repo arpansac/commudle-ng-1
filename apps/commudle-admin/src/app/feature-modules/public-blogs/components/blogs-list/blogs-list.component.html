@@ -5,16 +5,20 @@
       <div class="two-column-layout medium two-columns">
         <div class="main-column" *ngIf="!isLoadingFeatured">
           <div class="featured-blogs-list">
-            <div *ngFor="let blog of blogs | slice : 0 : 1">
-              <commudle-blog-card [blog]="blog" [shareButton]="false" [showUserProfile]="true"></commudle-blog-card>
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 0 : 1">
+              <commudle-blog-card
+                [blog]="featuredBlog"
+                [shareButton]="false"
+                [showUserProfile]="true"
+              ></commudle-blog-card>
             </div>
           </div>
         </div>
         <div class="right-column" *ngIf="!isLoadingFeatured">
           <div class="featured-blogs-list">
-            <!-- <div *ngFor="let blog of blogs | slice : 1">
-              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
-            </div> -->
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 1">
+              <commudle-blog-card [blog]="featuredBlog" [shareButton]="false"></commudle-blog-card>
+            </div>
           </div>
         </div>
       </div>

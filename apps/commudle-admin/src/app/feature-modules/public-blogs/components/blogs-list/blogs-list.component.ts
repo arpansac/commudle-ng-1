@@ -44,7 +44,14 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   getFeaturedBlogs(): void {
-    this.isLoadingFeatured = false;
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
+    const order = 'publishedAt desc';
+    this.cmsService
+      .getDataByTypeFilterFieldOrderCount('blog', fields, order, 'isFeatured', true, 3)
+      .subscribe((value: IBlog[]) => {
+        this.featuredBlogs = value;
+        this.isLoadingFeatured = false;
+      });
   }
 
   setMeta(): void {
