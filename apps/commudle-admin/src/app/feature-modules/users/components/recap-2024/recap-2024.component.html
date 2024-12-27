@@ -59,11 +59,14 @@
         <!-- Learning -->
         <div class="component-container-wrapper third">
           <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-            <p class="title">You Attended</p>
-            <p class="event-attended-count">
-              {{ statsData?.total_events_attended }}
+            <p class="title" *ngIf="statsData.total_events_attended > 0">You Attended</p>
+            <p class="event-attended-count" *ngIf="statsData.total_events_attended > 0">
+              {{ statsData.total_events_attended }}
             </p>
-            <p class="first-line">📅 Events & 🏆 Hackathons</p>
+            <p class="first-line" *ngIf="statsData.total_events_attended > 0">📅 Events & 🏆 Hackathons</p>
+            <p class="title" *ngIf="statsData.total_events_attended === 0">
+              This year you attended events and can now be a champion at hackathons too!
+            </p>
             <p class="event-name" *ngFor="let event_attended of statsData?.events_attended">
               {{ event_attended.name }}
             </p>
