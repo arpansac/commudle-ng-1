@@ -29,7 +29,7 @@
 
         <!-- first Screen -->
         <div class="component-container-wrapper first">
-          <div class="component-container">
+          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
             <div class="profile-image">
               <img [src]="statsData?.user.photo.url" [alt]="statsData?.user.name" />
             </div>
@@ -43,7 +43,7 @@
 
         <!-- Profile Visits -->
         <div class="component-container-wrapper second">
-          <div class="component-container">
+          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
             <p class="first-line">So many curious people..</p>
             <p>
               <svg width="176" height="185" viewBox="0 0 176 185" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +67,7 @@
 
         <!-- Learning -->
         <div class="component-container-wrapper third">
-          <div class="component-container">
+          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
             <p class="title">You Attended</p>
             <p class="event-attended-count">
               {{ statsData?.total_events_attended }}
@@ -83,6 +83,7 @@
         <div class="component-container-wrapper fourth">
           <div
             class="component-container"
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
             *ngIf="
               statsData.total_labs_published > 0 &&
               statsData.total_builds_published > 0 &&
@@ -115,6 +116,7 @@
               statsData.total_builds_published === 0 &&
               statsData.total_speaker_events === 0
             "
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
           >
             <div class="content">
               <p class="text">
@@ -129,6 +131,7 @@
               statsData.total_speaker_events === 0 &&
               (statsData.total_labs_published !== 0 || statsData.total_builds_published !== 0)
             "
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
           >
             <div class="content" *ngIf="statsData.total_builds_published > 0">
               <p class="count">
@@ -156,6 +159,7 @@
               statsData.total_labs_published === 0 &&
               statsData.total_builds_published === 0
             "
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
           >
             <div class="content" *ngIf="statsData.total_speaker_events > 0">
               <p class="count">
@@ -179,13 +183,14 @@
                 statsData.total_followers_gained === 0;
               else networkingData
             "
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
           >
             <div class="content">
               <p class="text">2025 will be the year to create & grow your amazing developer network!</p>
             </div>
           </div>
           <ng-template #networkingData>
-            <div class="component-container">
+            <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
               <div class="content" *ngIf="statsData.total_communities_joined">
                 <p class="count">
                   {{ statsData.total_communities_joined }}

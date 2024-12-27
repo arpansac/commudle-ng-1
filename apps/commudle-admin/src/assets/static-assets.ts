@@ -194,4 +194,8 @@ export const staticAssets = {
   // id: 176
   heart_illustration:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBME9KQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--ec25aae53fb2fa7cd2bd0ee215d20fc5f35a41f5/Pixelated%20Heart.svg',
+
+  // id: 177
+  recap_background_screen_2:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMTZKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--6c07df782f0232f0d05083b5f95781e3e2af4a1a/Top%20&%20Bottom%20Bar.png',
 };
