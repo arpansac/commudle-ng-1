@@ -515,6 +515,7 @@ export const API_ROUTES = {
     PROFILE_STATS: 'api/v2/users/profile_stats',
     GET_USER_BY_EMAIL: 'api/v2/users/get_user_by_email',
     MY_REGISTRATIONS: 'api/v2/users/my_registrations',
+    RECAP_STATS: 'api/v2/users/recap_stats',
   },
 
   SPEAKER_RESOURCES: {

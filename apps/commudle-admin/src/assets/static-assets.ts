@@ -178,4 +178,20 @@ export const staticAssets = {
   //id: 158
   call_for_speaker_empty_state:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL0N1QWc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--3d0e4b9c60c0f63c0272e41a6ea79608454cc379/CFP-Empty%20State.png',
+
+  // id: 173
+  commudle_white_full_logo:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeVdKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--3f2c4cf1c8ae2c1848d20b804ad18d4136c97a97/Commudle%20Logo%20White.svg',
+
+  // id: 174
+  recap_2024_screen:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeWFKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--305e18960a46f9046bb4fc06e59b2086599a7b52/Recap%202024.svg',
+
+  // id: 175
+  recap_background_screen_1:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMEdKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--ee17891618ed1092e76affc1534daf69778a01a9/Background%20Image.png',
+
+  // id: 176
+  heart_illustration:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBME9KQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--ec25aae53fb2fa7cd2bd0ee215d20fc5f35a41f5/Pixelated%20Heart.svg',
 };

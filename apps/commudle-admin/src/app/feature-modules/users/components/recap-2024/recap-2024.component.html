@@ -1,0 +1,252 @@
+<section>
+  <canvas id="confetti" width="1" height="1"></canvas>
+  <canvas id="thankyou-confetti" width="1" height="1"></canvas>
+  <div class="recap-container">
+    <button nbButton ghost class="navigation-button-left" (click)="prevSlide()" [disabled]="currentSlide === 0">
+      <fa-icon [icon]="icons.faChevronLeft"></fa-icon>
+    </button>
+
+    <div class="carousel">
+      <!-- Slides container -->
+      <div
+        *ngIf="statsData"
+        class="container"
+        [ngStyle]="{
+          transform: 'translateX(-' + currentSlide * 100 + '%)',
+        }"
+      >
+        <!-- Welcome Screen -->
+        <div class="component-container-wrapper welcome">
+          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_1 }})">
+            <div class="commudle-logo">
+              <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" />
+            </div>
+            <div class="recap-screen">
+              <img [src]="staticAssets.recap_2024_screen" title="recap 2024" />
+            </div>
+          </div>
+        </div>
+
+        <!-- first Screen -->
+        <div class="component-container-wrapper first">
+          <div class="component-container">
+            <div class="profile-image">
+              <img [src]="statsData?.user.photo.url" [alt]="statsData?.user.name" />
+            </div>
+            <p>
+              Hey 👋 <br />
+              <strong>{{ statsData?.user.name }}!</strong> <br />
+              Let's take a look at your community journey in 2024!
+            </p>
+          </div>
+        </div>
+
+        <!-- Profile Visits -->
+        <div class="component-container-wrapper second">
+          <div class="component-container">
+            <p class="first-line">So many curious people..</p>
+            <p>
+              <svg width="176" height="185" viewBox="0 0 176 185" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M175.5 97.5368C175.5 86.928 173.611 76.7566 170.147 67.3466C167.779 95.0724 152.992 109.313 137.54 102.682C123.067 96.4666 132.821 72.2394 133.541 60.6788C134.756 41.0819 133.479 18.6502 97.8669 0C112.665 28.2969 99.5809 45.877 85.8588 46.9471C70.6338 48.1356 56.6904 33.8688 61.8375 10.7168C45.1713 22.9925 44.6875 43.6544 49.8294 57.0208C55.1926 70.9531 49.6132 82.5291 36.5346 83.8154C21.9169 85.2559 13.7949 68.1698 21.2838 40.943C8.32353 56.1976 0.5 75.954 0.5 97.5368C0.5 145.842 39.6743 185 88 185C136.326 185 175.5 145.842 175.5 97.5368Z"
+                  fill="#F4900C"
+                />
+                <path
+                  d="M141.498 123.257C142.259 139.123 128.316 145.344 120.812 142.339C109.972 138.002 112.88 130.552 110.09 115.117C107.301 99.6827 96.5792 88.9659 80.7108 84.248C92.2917 116.831 74.2925 128.839 64.8579 130.984C55.2226 133.176 45.541 130.979 44.4344 110.369C33.1932 121.554 26.2344 137.029 26.2344 154.131C26.2344 156.024 26.3528 157.887 26.5175 159.739C42.3189 175.349 64.0241 185 87.9991 185C111.974 185 133.679 175.349 149.481 159.739C149.645 157.887 149.764 156.024 149.764 154.131C149.764 142.879 146.758 132.337 141.498 123.257Z"
+                  fill="#FFCC4D"
+                />
+              </svg>
+            </p>
+            <p class="second-line">Your profile was visited</p>
+            <p class="page-visit-count">
+              {{ statsData?.total_page_visits }}
+            </p>
+            <p class="third-line">times by the techies</p>
+          </div>
+        </div>
+
+        <!-- Learning -->
+        <div class="component-container-wrapper third">
+          <div class="component-container">
+            <p class="title">You Attended</p>
+            <p class="event-attended-count">
+              {{ statsData?.total_events_attended }}
+            </p>
+            <p class="first-line">📅 Events & 🏆 Hackathons</p>
+            <p class="event-name" *ngFor="let event_attended of statsData?.events_attended">
+              {{ event_attended.name }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Sharing Knowledge & Inspiring Others -->
+        <div class="component-container-wrapper fourth">
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_labs_published > 0 &&
+              statsData.total_builds_published > 0 &&
+              statsData.total_speaker_events > 0
+            "
+          >
+            <div class="content">
+              <p class="count">
+                {{ statsData.total_speaker_events }}
+              </p>
+              <p class="text">🎤 Tech talks given</p>
+            </div>
+            <div class="content">
+              <p class="count">
+                {{ statsData.total_builds_published }}
+              </p>
+              <p class="text">💡 Builds published</p>
+            </div>
+            <div class="content">
+              <p class="count">
+                {{ statsData.total_labs_published }}
+              </p>
+              <p class="text">🔮 Labs published</p>
+            </div>
+          </div>
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_labs_published === 0 &&
+              statsData.total_builds_published === 0 &&
+              statsData.total_speaker_events === 0
+            "
+          >
+            <div class="content">
+              <p class="text">
+                2025 is the year when you can give your first Tech Talk and share your knowledge with the developer
+                community!
+              </p>
+            </div>
+          </div>
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_speaker_events === 0 &&
+              (statsData.total_labs_published !== 0 || statsData.total_builds_published !== 0)
+            "
+          >
+            <div class="content" *ngIf="statsData.total_builds_published > 0">
+              <p class="count">
+                {{ statsData.total_builds_published }}
+              </p>
+              <p class="text">💡 Builds published</p>
+            </div>
+            <div class="content" *ngIf="statsData.total_labs_published > 0">
+              <p class="count">
+                {{ statsData.total_labs_published }}
+              </p>
+              <p class="text">🔮 Labs published</p>
+            </div>
+            <div class="content">
+              <p class="text">
+                2025 is the year when you can give your first Tech Talk and share your knowledge with the developer
+                community!
+              </p>
+            </div>
+          </div>
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_speaker_events > 0 &&
+              statsData.total_labs_published === 0 &&
+              statsData.total_builds_published === 0
+            "
+          >
+            <div class="content" *ngIf="statsData.total_speaker_events > 0">
+              <p class="count">
+                {{ statsData.total_speaker_events }}
+              </p>
+              <p class="text">🎤 Tech talks given</p>
+            </div>
+            <div class="content">
+              <p class="text">2025 is the year when you can share your projects with the techies of the world!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Networking -->
+        <div class="component-container-wrapper fifth">
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_communities_joined === 0 &&
+                statsData.total_followed_users === 0 &&
+                statsData.total_followers_gained === 0;
+              else networkingData
+            "
+          >
+            <div class="content">
+              <p class="text">2025 will be the year to create & grow your amazing developer network!</p>
+            </div>
+          </div>
+          <ng-template #networkingData>
+            <div class="component-container">
+              <div class="content" *ngIf="statsData.total_communities_joined">
+                <p class="count">
+                  {{ statsData.total_communities_joined }}
+                </p>
+                <p class="text">🌐 Communities joined by you</p>
+              </div>
+              <div class="content" *ngIf="statsData.total_followed_users">
+                <p class="count">
+                  {{ statsData.total_followed_users }}
+                </p>
+                <p class="text">🙌 People followed by you</p>
+              </div>
+              <div class="content" *ngIf="statsData.total_followers_gained">
+                <p class="count">
+                  {{ statsData.total_followers_gained }}
+                </p>
+                <p class="text">🤩 People followed you</p>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- Thank You Screen -->
+        <div class="component-container-wrapper thank-you">
+          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_1 }})">
+            <div class="commudle-logo">
+              <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" />
+            </div>
+            <div class="content">
+              <p class="new-year-text">
+                Wish You A Very
+                <br />
+                Happy New Year <br />2025
+              </p>
+              <img [src]="staticAssets.heart_illustration" />
+              <div class="text">
+                <p class="first-line">Thank You!</p>
+                <p class="second-line">For being an inspiring Techie</p>
+              </div>
+              <br />
+              <button class="share" (click)="copyTextToClipboard()">
+                Share &nbsp;
+                <fa-icon [icon]="icons.faShare"></fa-icon>
+              </button>
+              <br />
+              <br />
+              <button class="connect" (click)="copyTextToClipboard()">Connect with {{ statsData.user.name }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      nbButton
+      ghost
+      class="navigation-button-right"
+      (click)="nextSlide()"
+      [disabled]="currentSlide === slidesCount - 1"
+    >
+      <fa-icon [icon]="icons.faChevronRight"></fa-icon>
+    </button>
+  </div>
+</section>
