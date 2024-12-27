@@ -1,4 +1,4 @@
-<div class="blog-cards">
+<div *ngIf="blog" class="blog-cards">
   <div class="blog-card">
     <div class="blog-actions">
       <app-share-button
@@ -13,7 +13,7 @@
     </div>
     <div [routerLink]="['/blogs', blog?.slug.current]" class="image">
       <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-      <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" />
+      <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage)?.url()" />
     </div>
     <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
       <div class="profile-date">

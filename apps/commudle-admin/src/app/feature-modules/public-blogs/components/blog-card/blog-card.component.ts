@@ -28,15 +28,19 @@ export class BlogCardComponent implements OnInit {
   }
 
   imageUrl(source: any) {
-    this.imageLoading = false;
-    return this.cmsService.getImageUrl(source);
+    if (source) {
+      this.imageLoading = false;
+      return this.cmsService.getImageUrl(source);
+    }
   }
 
   getUserProfile() {
-    this.usersService.getProfile(this.blog.username).subscribe((data) => {
-      if (data) {
-        this.user = data;
-      }
-    });
+    if (this.blog.username) {
+      this.usersService.getProfile(this.blog.username).subscribe((data) => {
+        if (data) {
+          this.user = data;
+        }
+      });
+    }
   }
 }

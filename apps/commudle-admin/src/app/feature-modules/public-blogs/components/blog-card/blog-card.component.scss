@@ -2,7 +2,7 @@
   @apply com-cursor-pointer;
 
   .blog-card {
-    @apply com-flex com-flex-col com-h-full com-rounded-lg;
+    @apply com-flex com-flex-col com-h-full com-rounded-lg com-relative;
 
     .blog-actions {
       @apply com-absolute com-top-2 com-right-2;
@@ -12,7 +12,7 @@
       @apply com-w-full com-aspect-[16/9];
 
       img {
-        @apply com-w-full com-rounded-xl;
+        @apply com-w-full com-h-full com-rounded-xl com-object-contain;
       }
     }
 

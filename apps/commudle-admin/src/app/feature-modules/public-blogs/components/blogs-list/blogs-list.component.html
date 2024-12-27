@@ -20,7 +20,7 @@
       </div>
       <div class="one-column-layout">
         <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        <div class="blog-container" *ngIf="blogs.length > 0">
+        <div class="blog-container" *ngIf="!isLoading">
           <h1 class="header">Discover a Wealth of Insightful Blogs</h1>
           <div class="blog-list">
             <div *ngFor="let blog of blogs">

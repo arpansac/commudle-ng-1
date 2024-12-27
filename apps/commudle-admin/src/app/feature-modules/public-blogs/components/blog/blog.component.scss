@@ -25,12 +25,12 @@
   }
 
   .two-column-layout {
-    @apply com-pt-10;
+    @apply com-pt-10 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
 
   .main-column {
     .blog {
-      @apply com-pb-8 md:com-pr-[30px] com-pr-0 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+      @apply com-pb-8 md:com-pr-[30px] com-pr-0;
 
       .header {
         @apply com-flex com-flex-col md:com-items-start com-items-center;
@@ -110,10 +110,10 @@
   }
 
   .user-profile-large {
-    @apply com-flex com-flex-row com-justify-between com-items-center com-mb-5;
+    @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-justify-center com-items-center com-mb-5;
 
     .action-buttons {
-      @apply com-flex com-flex-row com-mt-0 com-gap-4;
+      @apply com-flex com-flex-row com-gap-4 md:com-mt-0 com-mt-4;
       .rss-button {
         fa-icon {
           @apply com-text-[32px] com-text-orange-500 com-rounded-lg;
@@ -121,14 +121,6 @@
       }
     }
   }
-
-  // app-share-button {
-  //   ::ng-deep {
-  //     button {
-  //       @apply com-rounded-lg com-text-base #{!important};
-  //     }
-  //   }
-  // }
 
   .back-btn {
     @apply com-w-max com-p-0;
@@ -166,7 +158,7 @@ a {
 }
 
 .blog-faq {
-  @apply com-m-0 com-py-5;
+  @apply com-mt-5 com-mb-0 com-mx-0;
 
   nb-card-body {
     @apply com-p-4;
@@ -176,11 +168,11 @@ a {
     }
 
     ul {
-      @apply com-list-none com-pl-0;
+      @apply com-list-none com-pl-0 com-my-5;
     }
 
     .question {
-      @apply com-text-xl com-font-bold com-pb-3;
+      @apply com-text-xl com-font-bold com-pb-2;
     }
   }
 }
