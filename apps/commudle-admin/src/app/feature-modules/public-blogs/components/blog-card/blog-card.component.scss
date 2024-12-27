@@ -8,14 +8,6 @@
       @apply com-absolute com-top-2 com-right-2;
     }
 
-    .image {
-      @apply com-w-full com-aspect-[16/9];
-
-      img {
-        @apply com-w-full com-h-full com-rounded-xl com-object-contain;
-      }
-    }
-
     .name {
       @apply com-line-clamp-2 md:com-text-xl com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-3;
     }
@@ -42,5 +34,9 @@
     .meta-description {
       @apply com-line-clamp-3 com-text-sm com-font-normal com-text-gray-500;
     }
+  }
+
+  .image {
+    @apply com-rounded-lg;
   }
 }

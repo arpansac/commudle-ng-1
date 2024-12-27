@@ -37,8 +37,13 @@
               <div class="image-content">
                 <div class="image">
                   <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-                  <img [alt]="blog.title" [src]="imageUrl(blog.headerImage).url()" />
+                  <commudle-banner-image
+                    [headerImagePath]="imageUrl(blog?.headerImage).url()"
+                    [name]="blog?.title"
+                    [aspectRatio]="'3/2'"
+                  ></commudle-banner-image>
                 </div>
+
                 <article>
                   <div [innerHTML]="richText" class="!com-max-w-full content"></div>
                 </article>

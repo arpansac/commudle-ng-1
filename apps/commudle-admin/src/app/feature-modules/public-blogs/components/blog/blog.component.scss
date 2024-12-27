@@ -52,11 +52,7 @@
         @apply com-flex com-flex-col;
 
         .image {
-          @apply com-aspect-[3/2] com-mb-3;
-
-          img {
-            @apply com-w-full com-object-cover com-object-center com-rounded-3xl;
-          }
+          @apply com-mb-3;
         }
 
         article {

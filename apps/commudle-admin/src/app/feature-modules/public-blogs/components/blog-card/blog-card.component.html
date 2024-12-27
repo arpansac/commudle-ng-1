@@ -1,5 +1,5 @@
 <div *ngIf="blog" class="blog-cards">
-  <div class="blog-card">
+  <div [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
     <div class="blog-actions">
       <app-share-button
         *ngIf="shareButton"
@@ -11,11 +11,13 @@
         [url]="environment.app_url + '/blogs/' + blog.slug.current"
       ></app-share-button>
     </div>
-    <div [routerLink]="['/blogs', blog?.slug.current]" class="image">
-      <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-      <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage)?.url()" />
-    </div>
-    <div class="content" [routerLink]="['/blogs', blog?.slug.current]">
+    <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
+    <commudle-banner-image
+      [headerImagePath]="imageUrl(blog?.headerImage).url()"
+      [name]="blog?.title"
+      [aspectRatio]="'16/9'"
+    ></commudle-banner-image>
+    <div class="content">
       <div class="profile-date">
         <div *ngIf="user && showUserProfile">
           <app-user-profile-card-small [user]="user"></app-user-profile-card-small>
@@ -31,9 +33,9 @@
         {{ blog?.meta_description }}
       </div>
     </div>
-    <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
+    <div class="read-more">
       Read Blog &nbsp;
       <nb-icon icon="arrow-forward-outline"></nb-icon>
-    </a>
+    </div>
   </div>
 </div>
