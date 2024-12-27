@@ -25,7 +25,7 @@
     }
 
     .content {
-      @apply com-h-[180px];
+      @apply md:com-h-[180px] com-h-full;
     }
 
     .profile-date {

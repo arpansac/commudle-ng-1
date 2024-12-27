@@ -1,8 +1,8 @@
 <div class="blogs-list">
   <div class="base-layout">
     <div class="container">
+      <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
       <div class="two-column-layout medium two-columns">
-        <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
         <div class="main-column" *ngIf="!isLoadingFeatured">
           <div class="featured-blogs-list">
             <div *ngFor="let blog of blogs | slice : 0 : 1">
@@ -19,7 +19,8 @@
         </div>
       </div>
       <div class="one-column-layout">
-        <div class="blog-container">
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <div class="blog-container" *ngIf="blogs.length > 0">
           <h1 class="header">Discover a Wealth of Insightful Blogs</h1>
           <div class="blog-list">
             <div *ngFor="let blog of blogs">
@@ -32,62 +33,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div *ngIf="blog" class="blog">
-          <div class="header">
-            <div class="date-reading-time">
-              <p class="date">
-                <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
-              </p>
-              <p class="reading-time"><fa-icon [icon]="faClock"></fa-icon></p>
-            </div>
-            <h1 class="blog-title">{{ blog.title }}</h1>
-          </div>
-          <div>
-            <app-user-profile-card-large [user]="user"></app-user-profile-card-large>
-            <div class="image-content">
-              <div class="image">
-                <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-                <img [alt]="blog.title" [src]="imageUrl(blog.headerImage).url()" />
-              </div>
-              <article>
-                <div [innerHTML]="richText" class="!com-prose !com-prose-sm !com-max-w-full content"></div>
-              </article>
-            </div>
-            <app-share-button
-              [content]="environment.app_url + '/blogs/' + blog.slug.current"
-              [title]="blog.title"
-              [text]="blog.title"
-              [url]="environment.app_url + '/blogs/' + blog.slug.current"
-              [showText]="true"
-              [round]="false"
-            ></app-share-button>
-          </div>
-        </div> -->
-
-<!-- <div class="action-buttons">
-        <app-share-button
-          [content]="environment.app_url + '/blogs/' + blog.slug.current"
-          [title]="blog.title"
-          [text]="blog.title"
-          [url]="environment.app_url + '/blogs/' + blog.slug.current"
-          [showText]="true"
-          [round]="false"
-        ></app-share-button>
-        <a
-          [href]="'https://json.commudle.com/api/v2/sanity/blogs/rss/blog_feed.rss?blog_slug=' + blog.slug.current"
-          target="_blank"
-          class="rss-button"
-          ><fa-icon [icon]="faRssSquare"></fa-icon
-        ></a>
-      </div> -->
-
-<!-- <div class="latest-blog">
-            <h1 class="heading">Latest Blogs</h1>
-            <!-- *ngFor="let latestBlog of latestBlogs" -->
-<!-- --<div class="latest-blog-cards">
-              <div class="latest-blog-card">
-                <h2 class="latest-blog-title">Title</h2>
-                <p class="published-on">Published on <span>date</span></p>
-              </div>
-            </div> -->

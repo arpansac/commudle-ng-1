@@ -116,7 +116,7 @@
       @apply com-flex com-flex-row com-mt-0 com-gap-4;
       .rss-button {
         fa-icon {
-          @apply com-text-[32px] com-text-Azure com-rounded-lg;
+          @apply com-text-[32px] com-text-orange-500 com-rounded-lg;
         }
       }
     }
@@ -163,4 +163,24 @@
 
 a {
   @apply com-no-underline;
+}
+
+.blog-faq {
+  @apply com-m-0 com-py-5;
+
+  nb-card-body {
+    @apply com-p-4;
+
+    h2 {
+      @apply com-m-0;
+    }
+
+    ul {
+      @apply com-list-none com-pl-0;
+    }
+
+    .question {
+      @apply com-text-xl com-font-bold com-pb-3;
+    }
+  }
 }
