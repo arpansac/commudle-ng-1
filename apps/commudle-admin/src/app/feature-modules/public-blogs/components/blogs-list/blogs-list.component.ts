@@ -12,7 +12,9 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 })
 export class BlogsListComponent implements OnInit, OnDestroy {
   blogs: IBlog[];
+  featuredBlogs: IBlog[];
   isLoading = true;
+  isLoadingFeatured = true;
   environment = environment;
 
   constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
@@ -24,19 +26,32 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.getBlogs();
+    this.getFeaturedBlogs();
     this.setMeta();
   }
+
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
   }
 
   getBlogs() {
-    const fields = '_id,slug,title,publishedAt,meta_description,headerImage';
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
     const order = 'publishedAt desc';
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
       this.isLoading = false;
     });
+  }
+
+  getFeaturedBlogs(): void {
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
+    const order = 'publishedAt desc';
+    this.cmsService
+      .getDataByTypeFilterFieldOrderCount('blog', fields, order, 'isFeatured', true, 3)
+      .subscribe((value: IBlog[]) => {
+        this.featuredBlogs = value;
+        this.isLoadingFeatured = false;
+      });
   }
 
   setMeta(): void {

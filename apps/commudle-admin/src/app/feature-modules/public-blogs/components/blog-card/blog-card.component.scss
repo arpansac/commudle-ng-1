@@ -1,27 +1,42 @@
 .blog-cards {
-  @apply com-grid com-gap-4 com-cursor-pointer;
-  @apply sm:com-grid-cols-2;
-  @apply lg:com-grid-cols-3 lg:com-gap-8;
+  @apply com-cursor-pointer;
 
   .blog-card {
-    @apply com-flex com-flex-col com-h-full com-border com-border-gray-200 com-border-solid com-border-opacity-60 com-rounded-lg com-overflow-hidden com-relative;
+    @apply com-flex com-flex-col com-h-full com-rounded-lg com-relative;
 
     .blog-actions {
       @apply com-absolute com-top-2 com-right-2;
     }
 
-    .date {
-      @apply com-tracking-widest com-text-xs com-font-medium com-text-gray-400 com-my-1;
-    }
-
     .name {
-      @apply com-line-clamp-2 com-text-lg com-font-medium com-text-gray-900 com-my-1.5;
+      @apply com-line-clamp-2 md:com-text-xl com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-3;
     }
 
     .read-more {
-      @apply com-text-blue-500 com-inline-flex com-items-center com-no-underline com-mt-4;
-      @apply md:com-mb-2;
-      @apply lg:com-mb-0 com-gap-x-1;
+      @apply com-text-Yankees-Blue com-inline-flex com-items-center com-no-underline com-mt-3 com-text-sm com-font-normal md:com-mb-2;
     }
+
+    .content {
+      @apply md:com-h-[180px] com-h-full;
+    }
+
+    .profile-date {
+      @apply com-flex com-flex-row com-items-center com-justify-between;
+      .date {
+        @apply com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-py-3;
+
+        fa-icon {
+          @apply com-mr-2 com-text-base;
+        }
+      }
+    }
+
+    .meta-description {
+      @apply com-line-clamp-3 com-text-sm com-font-normal com-text-gray-500;
+    }
+  }
+
+  .image {
+    @apply com-rounded-lg;
   }
 }

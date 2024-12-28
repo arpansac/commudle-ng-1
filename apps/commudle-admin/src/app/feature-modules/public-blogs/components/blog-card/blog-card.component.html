@@ -1,38 +1,41 @@
-<div class="blog-cards">
-  <div *ngFor="let blog of blogs">
-    <div class="blog-card">
-      <div class="blog-actions">
-        <app-share-button
-          *ngIf="shareButton"
-          [content]="environment.app_url + '/blogs/' + blog.slug.current"
-          [round]="true"
-          [showText]="false"
-          [text]="blog.title"
-          [title]="blog.title"
-          [url]="environment.app_url + '/blogs/' + blog.slug.current"
-        ></app-share-button>
-      </div>
-      <div [routerLink]="['/blogs', blog?.slug.current]" class="com-w-full com-aspect-[16/9]">
-        <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-        <img [alt]="blog?.title" [src]="imageUrl(blog?.headerImage).url()" class="com-w-full" />
-      </div>
-      <div class="com-p-4">
-        <div [routerLink]="['/blogs', blog?.slug.current]" class="com-h-36">
-          <h6 class="name">
-            {{ blog?.title }}
-          </h6>
-          <p class="date">
-            {{ blog?.publishedAt | date }}
-          </p>
-          <div class="com-line-clamp-3">
-            {{ blog?.meta_description }}
-          </div>
+<div *ngIf="blog" class="blog-cards">
+  <div [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
+    <div class="blog-actions">
+      <app-share-button
+        *ngIf="shareButton"
+        [content]="environment.app_url + '/blogs/' + blog.slug.current"
+        [round]="true"
+        [showText]="false"
+        [text]="blog.title"
+        [title]="blog.title"
+        [url]="environment.app_url + '/blogs/' + blog.slug.current"
+      ></app-share-button>
+    </div>
+    <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
+    <commudle-banner-image
+      [headerImagePath]="imageUrl(blog?.headerImage).url()"
+      [name]="blog?.title"
+      [aspectRatio]="'16/9'"
+    ></commudle-banner-image>
+    <div class="content">
+      <div class="profile-date">
+        <div *ngIf="user && showUserProfile">
+          <app-user-profile-card-small [user]="user"></app-user-profile-card-small>
         </div>
-        <a [routerLink]="['/blogs', blog?.slug.current]" class="read-more">
-          Read More
-          <nb-icon icon="arrow-forward-outline"></nb-icon>
-        </a>
+        <p class="date">
+          <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
+        </p>
       </div>
+      <h6 class="name">
+        {{ blog?.title }}
+      </h6>
+      <div class="meta-description">
+        {{ blog?.meta_description }}
+      </div>
+    </div>
+    <div class="read-more">
+      Read Blog &nbsp;
+      <nb-icon icon="arrow-forward-outline"></nb-icon>
     </div>
   </div>
 </div>

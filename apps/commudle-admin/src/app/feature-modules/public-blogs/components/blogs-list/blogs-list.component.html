@@ -1,20 +1,39 @@
-<div class="base-layout">
-  <div class="container">
-    <div class="one-column-layout">
-      <nb-card class="blog-container">
-        <nb-card-header>
-          <h1>Relating with Developers & Communities</h1>
-          <p>
-            Read and connect with developers, devrels & community managers from their experiences in building
-            communities, helping folks to learn new technologies. From diverse backgrounds, people come together and
-            share how they have built their careers, found opportunities and empowered people around them.
-          </p>
-        </nb-card-header>
-        <nb-card-body>
-          <commudle-blog-card [blogs]="blogs"></commudle-blog-card>
-          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        </nb-card-body>
-      </nb-card>
+<div class="blogs-list">
+  <div class="base-layout">
+    <div class="container">
+      <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
+      <div class="two-column-layout medium two-columns">
+        <div class="main-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 0 : 1">
+              <commudle-blog-card
+                [blog]="featuredBlog"
+                [shareButton]="false"
+                [showUserProfile]="true"
+              ></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+        <div class="right-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 1">
+              <commudle-blog-card [blog]="featuredBlog" [shareButton]="false"></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-column-layout">
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <div class="blog-container" *ngIf="!isLoading">
+          <h1 class="header">Discover a Wealth of Insightful Blogs</h1>
+          <div class="blog-list">
+            <div *ngFor="let blog of blogs">
+              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
