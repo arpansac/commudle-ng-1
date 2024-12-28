@@ -22,7 +22,7 @@
           </div>
           <div *ngIf="community" class="community">
             <div class="logo">
-              <img alt="{{ community.name }}" src="{{ community.logo_path }}" title="{{ community.name }}" />
+              <img alt="{{ community.name }}" src="{{ community.logo_image_path.i64 }}" title="{{ community.name }}" />
             </div>
             <p
               *ngIf="

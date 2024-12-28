@@ -5,7 +5,7 @@ import { SDiscussionsService } from 'apps/shared-components/services/s-discussio
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IDiscussionFollower } from 'apps/shared-models/discussion-follower.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { UserChatNotificationsChannel } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/websockets/user-chat-notifications.channel';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
@@ -15,6 +15,9 @@ import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/go
   styleUrls: ['./chats-container.component.scss'],
 })
 export class ChatsContainerComponent implements OnInit, OnDestroy {
+  page = 1;
+  count = 10;
+  total: number;
   // Number of allowed chat windows
   numChatWindows: number;
   // Chats windows distance from right
@@ -28,6 +31,9 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
 
   subscriptions: Subscription[] = [];
+  loading = true;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sDiscussionService: SDiscussionsService,
@@ -40,14 +46,11 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Get current user data
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
-
-    // Get the current user's chats
     this.subscriptions.push(
-      this.sDiscussionService.getPersonalChats().subscribe((data) => {
-        this.allPersonalChatUsers = data.discussion_followers;
-      }),
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
     );
+
+    this.getPersonalChat();
 
     // TODO: Make this better
     // Calculate screen width to find the number of chat windows that are allowed simultaneously
@@ -65,6 +68,8 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkNewMessage() {
@@ -132,5 +137,19 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
       this.allPersonalChatUsers.splice(index, 1);
     }
     this.allPersonalChatUsers.unshift(value[0]);
+  }
+
+  getPersonalChat() {
+    if (this.loading) {
+      this.loading = false;
+      this.subscriptions.push(
+        this.sDiscussionService.getPersonalChats(this.page, this.count).subscribe((data) => {
+          this.allPersonalChatUsers = [...this.allPersonalChatUsers, ...data.values];
+          this.page = data.page + 1;
+          this.total = data.total;
+          this.loading = true;
+        }),
+      );
+    }
   }
 }

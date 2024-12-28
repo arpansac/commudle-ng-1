@@ -12,7 +12,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { NotificationsStore } from '../../feature-modules/notifications/store/notifications.store';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -40,6 +40,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   notificationCount = 0;
 
   subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -57,10 +58,12 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getCurrentUser(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
 
       if (currentUser) {

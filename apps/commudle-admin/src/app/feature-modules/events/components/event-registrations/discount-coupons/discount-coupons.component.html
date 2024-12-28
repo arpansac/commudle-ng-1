@@ -1,40 +1,21 @@
 <div class="action-buttons">
-  <button nbButton status="primary" (click)="openFormDialog()" class="create-button">Create Discount Coupon</button>
-  <button nbButton status="primary" (click)="open(refundPage)">
+  <button nbButton status="primary" (click)="open(discountCodesDialogBox)" size="small">
+    <fa-icon [icon]="icons.faTableList"></fa-icon> &nbsp;View All Discount Codes
+  </button>
+  <button nbButton status="primary" (click)="openFormDialog()" class="create-button" size="small">
+    <fa-icon [icon]="icons.faMoneyBill"></fa-icon>
+    &nbsp; Create Discount Coupon
+  </button>
+  <button nbButton status="primary" (click)="open(refundPage)" size="small">
+    <fa-icon [icon]="icons.faHandHoldingDollar"></fa-icon>
+    &nbsp;
     {{ community.has_refund_policy ? 'Edit Refund policy' : 'Create Refund Policy' }}
   </button>
 </div>
-<div class="discount-codes">
-  <table *ngFor="let discountCode of discountCodes">
-    <tr>
-      <th class="heading">Code</th>
-      <th class="heading" *ngIf="discountCode.expires_at">Valid Upto</th>
-      <th>
-        <div class="action-button" (click)="openFormDialog(discountCode)">
-          <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
-          <span> Edit </span>
-        </div>
-      </th>
-    </tr>
-    <tr>
-      <td class="content">{{ discountCode.code }}</td>
-      <td class="content" *ngIf="discountCode.expires_at">
-        {{ moment(discountCode.expires_at).local().format('DD-MM-YY HH:mm') }}
-      </td>
-
-      <td>
-        <div class="action-button" (click)="copyTextToClipboard(discountCode.code)">
-          <fa-icon [icon]="icons.faCopy"></fa-icon>
-          <span> Copy </span>
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
 
 <ng-template #refundPage let-ref="dialogRef">
-  <nb-card class="com-max-h-[90dvh] com-w-full md:com-w-[70dvw]">
-    <nb-card-header class="com-flex com-justify-between com-items-center">
+  <nb-card>
+    <nb-card-header>
       <span>Refund Policy</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
@@ -52,5 +33,62 @@
     <nb-card-footer>
       <button nbButton status="primary" (click)="createOrUpdateRefundPage()">Save</button>
     </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #discountCodesDialogBox let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>
+        <span>Discount Codes List</span>
+        &nbsp; &nbsp; &nbsp;
+        <button nbButton (click)="openFormDialog()" class="create-button" status="primary" outline size="small">
+          <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp;Create Discount Coupon
+        </button>
+      </div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="com-p-0">
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      <div class="discount-codes" *ngIf="!isLoading">
+        <table>
+          <tr class="table-header">
+            <th>Code</th>
+            <th>Valid Upto</th>
+            <th>Max application limit count</th>
+            <th>Discount Used/Applied</th>
+            <th>Discount</th>
+            <th>Actions</th>
+          </tr>
+          <tr *ngFor="let discountCode of discountCodes">
+            <td>{{ discountCode.code }}</td>
+            <td>
+              {{ discountCode.expires_at ? moment(discountCode.expires_at).local().format('DD-MM-YY HH:mm') : '--' }}
+            </td>
+            <td>{{ discountCode.max_limit ? discountCode.max_limit : '--' }}</td>
+            <td>{{ discountCode.discount_used_count }}/{{ discountCode.discount_applied_count }}</td>
+            <td>
+              {{
+                discountCode.discount_type === EDiscountType.PERCENTAGE
+                  ? discountCode.discount_value
+                  : discountCode.discount_value / 100
+              }}{{ discountCode.discount_type === EDiscountType.PERCENTAGE ? '%' : '/-' }}
+            </td>
+            <td class="discount-code-action-buttons">
+              <div class="action-button" (click)="openFormDialog(discountCode)">
+                <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
+                <span> Edit </span>
+              </div>
+              <div class="action-button" (click)="copyTextToClipboard(discountCode.code)">
+                <fa-icon [icon]="icons.faCopy"></fa-icon>
+                <span> Copy </span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </nb-card-body>
   </nb-card>
 </ng-template>

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { SVotesService } from '../services/s-votes.service';
 import { VoteChannel } from '../services/websockets/vote.channel';
@@ -31,6 +31,8 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
 
   VotersComponent = VotersComponent;
 
+  private destroy$ = new Subject<void>();
+
   userSubscription;
   votesChannelSubscription;
   votesChannelListSubscription: Subscription;
@@ -53,7 +55,7 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userSubscription = this.authWatchService.currentUser$.subscribe((data) => {
+    this.userSubscription = this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       this.initData();
     });
@@ -65,6 +67,8 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
       this.votesChannelDataSubscription.unsubscribe();
     }
     this.voteChannel.unsubscribe(this.votableType, this.votableId, this.uuid);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initData() {

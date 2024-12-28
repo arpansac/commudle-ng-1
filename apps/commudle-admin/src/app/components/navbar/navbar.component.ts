@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faBars, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { NbMenuItem, NbSidebarService, NbSidebarState } from '@commudle/theme';
@@ -8,14 +8,14 @@ import { TruncateTextPipe } from 'apps/shared-pipes/truncate-text.pipe';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   userContextMenu: NbMenuItem[] = [{ title: 'Logout', link: '/logout' }];
   sideBarNotifications = false;
@@ -27,6 +27,7 @@ export class NavbarComponent implements OnInit {
   isDarkMode = false;
   faSun = faSun;
   faMoon = faMoon;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -45,7 +46,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getUser() {
-    this.authwatchService.currentUser$.subscribe((currentUser) => {
+    this.authwatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       this.currentUser = currentUser;
 
       if (this.currentUser) {
@@ -95,5 +96,10 @@ export class NavbarComponent implements OnInit {
 
   toggleDarkMode(isDarkMode: boolean): void {
     this.darkModeService.toggleDarkMode(isDarkMode);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

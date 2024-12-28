@@ -16,6 +16,7 @@ import { faCaretDown, faMessage, faNewspaper } from '@fortawesome/free-solid-svg
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { EDbModels } from '@commudle/shared-models';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 interface CustomMenuItem {
   title: string;
@@ -42,6 +43,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
   faCaretDown = faCaretDown;
   faMessage = faMessage;
   faNewspaper = faNewspaper;
+  faInstagram = faInstagram;
 
   items = [{ title: 'pages', slug: 'pages' }];
 
@@ -86,7 +88,11 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
       }),
         (this.uploadedBanner = this.community.banner_image ? this.community.banner_image.url : '');
       if (this.community.is_visible) {
-        this.seoService.setTags(this.community.name, this.community.mini_description, this.community.logo_path);
+        this.seoService.setTags(
+          this.community.name,
+          this.community.mini_description,
+          this.community.logo_image_path.url,
+        );
       } else {
         this.seoService.noIndex(true);
       }

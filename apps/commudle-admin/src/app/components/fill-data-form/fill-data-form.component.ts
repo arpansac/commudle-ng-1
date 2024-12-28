@@ -14,7 +14,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
@@ -44,6 +44,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   faArrowRight = faArrowRight;
   formAnswers = {};
+  private destroy$ = new Subject<void>();
 
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
   @ViewChild(UserDetailsFormComponent) userDetailsFormComponent: UserDetailsFormComponent;
@@ -81,7 +82,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser) {
           this.appUsersService.getProfileStats().subscribe((data) => {
@@ -95,7 +96,8 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
+    this.destroy$.next();
+    this.destroy$.complete();
     this.dialogRef?.close();
   }
 
@@ -164,7 +166,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       this.community = data;
 
       if (!this.event.header_image_path) {
-        this.seoService.setTag('og:image', this.community.logo_path);
+        this.seoService.setTag('og:image', this.community.logo_image_path.url);
       }
       // if (!this.redirectRoute) {
       //   this.redirectRoute = ['/communities', this.community.slug, 'events', this.event.slug];

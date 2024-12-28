@@ -16,6 +16,9 @@
               class="expert-icon"
               src="/assets/images/Expert-Tick.svg"
             />
+            <commudle-user-personal-connect
+              [userConnect]="topBuilder.distance_from_current_user"
+            ></commudle-user-personal-connect>
           </p>
           <p *ngIf="displayUsername" class="username" title="{{ topBuilder.username }}">
             @{{ topBuilder.username | truncatetext : 15 }}

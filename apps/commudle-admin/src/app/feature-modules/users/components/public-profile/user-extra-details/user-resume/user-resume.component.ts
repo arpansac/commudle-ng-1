@@ -9,7 +9,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '@commudle/shared-services';
 
@@ -37,6 +37,8 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('userResumeDialog', { static: true }) userResumeDialog: TemplateRef<any>;
 
   subscriptions: Subscription[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -73,7 +75,9 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     if (changes.user) {
       this.userProfileMenuService.addMenuItem('resume', false);
@@ -83,6 +87,8 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getUserResumes() {

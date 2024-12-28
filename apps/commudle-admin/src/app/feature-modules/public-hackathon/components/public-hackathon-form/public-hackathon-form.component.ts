@@ -8,7 +8,7 @@ import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/servi
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
 import { IHackathon, EParticipateTypes } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faLinkedinIn, faTwitter, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faGlobe, faInfoCircle, faHashtag, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
@@ -56,6 +56,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
 
   current_user_is_team_lead = true;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private hrgService: HackathonResponseGroupService,
     private activatedRoute: ActivatedRoute,
@@ -84,7 +86,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
           this.hasTeammateOption = true;
         }
       }),
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser) {
           this.appUsersService.getProfileStats().subscribe((data) => {
@@ -97,7 +99,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
+    this.destroy$.next();
+    this.destroy$.complete();
     this.dialogRef?.close();
   }
 

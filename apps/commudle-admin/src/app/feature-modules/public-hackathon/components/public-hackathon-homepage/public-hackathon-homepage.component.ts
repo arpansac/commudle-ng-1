@@ -5,7 +5,7 @@ import { EHackathonRegistrationStatus, ICommunity, IHackathonTeam } from '@commu
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faLinkedinIn, faTwitter, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faGlobe,
@@ -56,6 +56,8 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   environment = environment;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private hackathonService: HackathonService,
@@ -73,13 +75,15 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.authService.currentUser$.subscribe((currentUser) => {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) this.getHackathonCurrentRegistrationDetails();
     });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getHackathonAndCommunity() {
@@ -171,7 +175,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
         '@type': 'Event',
         name: this.hackathon.name,
         description: this.hackathon.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.hackathon.banner_image ? this.hackathon.banner_image.url : this.community.logo_path,
+        image: this.hackathon.banner_image ? this.hackathon.banner_image.url : this.community.logo_image_path.i64,
         startDate: this.hackathon.start_date,
         endDate: this.hackathon.end_date,
         eventStatus: 'https://schema.org/EventScheduled',

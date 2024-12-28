@@ -1,17 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IHackathonUserResponse } from '@commudle/shared-models';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-user-details-form',
   templateUrl: './user-details-form.component.html',
   styleUrls: ['./user-details-form.component.scss'],
 })
-export class UserDetailsFormComponent implements OnInit {
+export class UserDetailsFormComponent implements OnInit, OnDestroy {
   @Input() userFormDetails;
   @Input() showActionButtons = true;
   @Input() hackathonUserResponse: IHackathonUserResponse;
@@ -24,6 +25,8 @@ export class UserDetailsFormComponent implements OnInit {
   uploadedProfilePicture: any;
   faFileImage = faFileImage;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private fb: FormBuilder,
@@ -31,11 +34,16 @@ export class UserDetailsFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       this.uploadedProfilePicture = this.currentUser.avatar;
       this.userForm = this.createForm(this.userFormDetails);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createForm(userDetails: any): FormGroup {

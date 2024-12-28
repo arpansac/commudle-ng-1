@@ -48,6 +48,7 @@ import { PublicHomeListSpeakersModule } from 'apps/commudle-admin/src/app/featur
 import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modules/community-builds/community-builds.module';
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     PublicHomeListSpeakersModule,
     AppSharedComponentsModule,
     HelpSectionComponent,
+    UserPersonalConnectComponent,
 
     // Nebular
     NbCardModule,

@@ -49,7 +49,7 @@ export class AgendaComponent implements OnInit {
         '@type': 'Event',
         name: this.event.name,
         description: this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_path,
+        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
         startDate: this.event.start_time,
         endDate: this.event.end_time,
         eventStatus: 'https://schema.org/EventScheduled',

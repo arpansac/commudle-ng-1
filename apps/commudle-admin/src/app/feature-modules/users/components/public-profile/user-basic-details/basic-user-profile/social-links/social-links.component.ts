@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import {
   faBehance,
@@ -12,13 +12,14 @@ import {
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-social-links',
   templateUrl: './social-links.component.html',
   styleUrls: ['./social-links.component.scss'],
 })
-export class SocialLinksComponent implements OnInit {
+export class SocialLinksComponent implements OnInit, OnDestroy {
   @Output() socialLinksFormValidity: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   currentUser: ICurrentUser;
@@ -32,6 +33,8 @@ export class SocialLinksComponent implements OnInit {
   faGitlab = faGitlab;
   faFacebook = faFacebook;
   faInstagram = faInstagram;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +57,7 @@ export class SocialLinksComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.currentUser = currentUser;
         this.socialLinksForm.patchValue(this.currentUser);
@@ -67,5 +70,10 @@ export class SocialLinksComponent implements OnInit {
       this.userProfileManagerService.userProfileForm.patchValue(value);
       this.socialLinksFormValidity.emit(this.socialLinksForm.valid); // whenever form value changes check validity
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

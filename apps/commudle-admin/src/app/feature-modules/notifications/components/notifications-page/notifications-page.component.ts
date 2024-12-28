@@ -8,7 +8,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { SeoService } from 'apps/shared-services/seo.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-notifications-page',
@@ -23,6 +23,8 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private seoService: SeoService,
     private notificationsStore: NotificationsStore,
@@ -34,7 +36,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         if (data) {
           this.currentUser = data;
         }
@@ -55,6 +57,8 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   markAllAsRead() {

@@ -7,7 +7,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_video_stream_sources.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-event-embedded-video-stream',
@@ -30,6 +30,8 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   embeddedVideoStreamForm;
 
   subscription: Subscription;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -77,13 +79,15 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
       this.getEmbeddedVideoStream();
     }
 
-    this.subscription = this.authService.currentUser$.subscribe((data: ICurrentUser) => {
+    this.subscription = this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data: ICurrentUser) => {
       this.currentUser = data;
     });
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   validateRtmpUrl(control) {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, EventEmitter, Output, Input, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import { CommunityChannelManagerService, CommunityChannelsService, ToastrService } from '@commudle/shared-services';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 
@@ -30,6 +30,8 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
   totalMembers = 0;
   totalOrganizers = 0;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private communityChannelsService: CommunityChannelsService,
     private libAuthWatchService: LibAuthwatchService,
@@ -50,6 +52,8 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnChanges(): void {
@@ -62,7 +66,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
   // details of current user
   getCurrentUser() {
     this.subscriptions.push(
-      this.libAuthWatchService.currentUser$.subscribe((data) => {
+      this.libAuthWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser.user_roles.includes(EUserRoles.SYSTEM_ADMINISTRATOR)) {
           this.isSuperAdmin = true;

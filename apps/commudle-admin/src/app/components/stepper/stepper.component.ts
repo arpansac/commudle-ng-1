@@ -1,5 +1,5 @@
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
@@ -9,7 +9,7 @@ import { faUsersViewfinder, faGlobe, faUser, faComments, faFile } from '@fortawe
 import { IUser } from 'apps/shared-models/user.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IAttachedFile } from 'apps/shared-models/attached-file.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { UserResumeService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-resume.service';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import * as confetti from 'canvas-confetti';
@@ -20,7 +20,7 @@ import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/go
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'],
 })
-export class StepperComponent implements OnInit {
+export class StepperComponent implements OnInit, OnDestroy {
   tagsDialog: string[] = [];
   tags: string[] = [];
   user: IUser;
@@ -56,6 +56,7 @@ export class StepperComponent implements OnInit {
   ];
 
   canvas = <HTMLCanvasElement>document.getElementById('confetti');
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -73,7 +74,7 @@ export class StepperComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.usersService.getProfile(currentUser.username).subscribe((data) => {
           if (data) {
@@ -88,6 +89,11 @@ export class StepperComponent implements OnInit {
       }
     });
     this.getResume();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Function to remove a tag

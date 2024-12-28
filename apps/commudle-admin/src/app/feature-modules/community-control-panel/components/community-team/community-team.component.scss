@@ -53,3 +53,20 @@
     }
   }
 }
+
+.delete-confirmation {
+  nb-card-footer,
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    div {
+      @apply com-flex;
+
+      span {
+        @apply com-font-semibold;
+      }
+    }
+  }
+}

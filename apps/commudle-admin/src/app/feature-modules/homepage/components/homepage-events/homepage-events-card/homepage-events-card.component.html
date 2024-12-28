@@ -8,7 +8,7 @@
     <img
       alt="{{ event.name }}"
       class="com-object-cover com-object-center"
-      src="{{ event.header_image?.i350 || community.logo_path }}"
+      src="{{ event.header_image?.i350 || community.logo_image_path.i64 }}"
       title="{{ event.name }}"
     />
   </div>
@@ -35,7 +35,7 @@
           <img
             alt="{{ community.name }}"
             class="home-events-card-community-logo"
-            src="{{ community.logo_path }}"
+            src="{{ community.logo_image_path.i64 }}"
             title="{{ community.name }}"
           />
           <p class="home-events-card-community-name">{{ community.name }}</p>

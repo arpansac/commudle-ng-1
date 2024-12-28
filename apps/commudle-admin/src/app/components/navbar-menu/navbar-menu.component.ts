@@ -12,7 +12,7 @@ import { NbMenuService, NbPopoverDirective } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
@@ -55,6 +55,7 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   showContextMenu = false;
 
   @ViewChildren(NbPopoverDirective) popovers: QueryList<NbPopoverDirective>;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authwatchService: LibAuthwatchService,
@@ -64,7 +65,7 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authwatchService.currentUser$.subscribe((currentUser) => {
+    this.authwatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       this.currentUser = currentUser;
 
       if (currentUser) {
@@ -76,6 +77,8 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getUnreadNotificationsCount() {

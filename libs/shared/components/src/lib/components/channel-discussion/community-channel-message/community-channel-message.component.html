@@ -12,7 +12,7 @@
     <img [alt]="message.user.name" [src]="message.user.photo.i64" [title]="message.user.name" class="avatar" />
     <div class="message">
       <div class="prefix">
-        <div class="com-flex com-items-baseline com-gap-2">
+        <div class="com-flex com-items-baseline">
           <a [routerLink]="['/users', message.user.username]" class="name">{{ message.user.name }}</a>
           <img
             *ngIf="message.user.is_expert"
@@ -21,6 +21,9 @@
             src="/assets/images/Expert-Tick.svg"
             title="Expert Tick"
           />
+          <commudle-user-personal-connect
+            [userConnect]="message.user.distance_from_current_user"
+          ></commudle-user-personal-connect>
         </div>
         <span class="time">{{ moment(message.created_at).format('MMMM Do YYYY, h:mm:ss a') }}</span>
         <span class="edited" *ngIf="message.edited">(edited)</span>

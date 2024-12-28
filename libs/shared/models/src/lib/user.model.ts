@@ -56,6 +56,7 @@ export interface IUser {
   total_labs_votes?: number;
   created_at: Date;
   instagram: string;
+  distance_from_current_user: number;
 }
 
 export interface IUserSearch extends IUser {

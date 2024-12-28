@@ -14,7 +14,7 @@ import {
 import * as moment from 'moment';
 import { ENotificationStatuses } from 'apps/shared-models/enums/notification_statuses.enum';
 import { INotification } from 'apps/shared-models/notification.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -54,6 +54,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges,
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private notificationsStore: NotificationsStore,
     private authWatchService: LibAuthwatchService,
@@ -63,7 +65,7 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges,
   ngOnInit(): void {
     this.count = this.notificationsCount;
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
         this.currentUser = currentUser;
       }),
     );
@@ -110,6 +112,8 @@ export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges,
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkIntersection(entries: IntersectionObserverEntry[]) {
