@@ -15,6 +15,7 @@ export class BlogCardComponent implements OnInit {
   @Input() blog: IBlog;
   @Input() shareButton = true;
   @Input() showUserProfile = false;
+  @Input() fixCardHeight = true;
   user: IUser;
   environment = environment;
   imageLoading = true;

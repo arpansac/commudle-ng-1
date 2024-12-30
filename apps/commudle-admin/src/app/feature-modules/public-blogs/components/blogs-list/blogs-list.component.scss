@@ -10,18 +10,26 @@
   @apply com-min-h-screen;
 
   .header {
-    @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue com-mb-8;
+    @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-mb-8;
   }
 }
 
 .blog-list {
-  @apply com-grid md:com-grid-cols-3 com-grid-cols-1  com-gap-8;
+  @apply com-grid md:com-grid-cols-3 com-grid-cols-1 com-gap-8;
 }
 
 .two-columns {
-  @apply com-gap-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-pb-6 com-pb-0;
+  @apply com-gap-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-pb-6 com-pb-4;
 }
 
 app-loading-spinner {
   @apply com-my-4;
+}
+
+.featured-blogs-list {
+  @apply com-flex com-flex-col com-gap-8;
+}
+
+.main-heading {
+  @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-10 com-mb-8 md:com-text-left com-text-center;
 }
