@@ -1,5 +1,5 @@
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ICommunity } from 'apps/shared-models/community.model';
 import {
   NbComponentShape,
@@ -15,13 +15,14 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { IUserRolesUser } from '@commudle/shared-models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-membership-toggle',
   templateUrl: './membership-toggle.component.html',
   styleUrls: ['./membership-toggle.component.scss'],
 })
-export class MembershipToggleComponent implements OnInit {
+export class MembershipToggleComponent implements OnInit, OnDestroy {
   isMember = false;
   dialogRef;
   selectExit;
@@ -39,6 +40,8 @@ export class MembershipToggleComponent implements OnInit {
   userRolesUserList: IUserRolesUser[];
   userRolesUserIds: number[];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private userRolesUsersService: UserRolesUsersService,
     private dialogService: NbDialogService,
@@ -48,10 +51,15 @@ export class MembershipToggleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
     });
     this.checkMembership();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkMembership() {

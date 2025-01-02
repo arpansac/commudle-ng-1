@@ -12,7 +12,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { ProfileStatusBarService } from './services/profile-status-bar.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 @Component({
@@ -34,6 +34,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   ESidebarWidth = ESidebarWidth;
 
   private isDarkModeSubscription: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private apiRoutes: ApiRoutesService,
@@ -60,7 +61,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnInit(): void {
     this.seoService.setCanonical();
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
 
       if (this.isBrowser) {
@@ -94,6 +95,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnDestroy(): void {
     // this.notificationsService.unsubscribeFromNotifications();
     this.isDarkModeSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   closeSidebar(): void {

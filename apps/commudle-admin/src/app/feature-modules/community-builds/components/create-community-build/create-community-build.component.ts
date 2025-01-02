@@ -16,7 +16,7 @@ import { EBuildType, EPublishStatus, ICommunityBuild } from 'apps/shared-models/
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { EDbModels } from '@commudle/shared-models';
@@ -111,6 +111,8 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   hackathonUserResponses: IHackathonUserResponses;
   currentUser: ICurrentUser;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private seoService: SeoService,
     private fb: FormBuilder,
@@ -163,13 +165,15 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUser() {
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
     });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   validateLink(): ValidatorFn {

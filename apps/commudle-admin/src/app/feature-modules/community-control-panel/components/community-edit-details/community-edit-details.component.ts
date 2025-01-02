@@ -80,6 +80,7 @@ export class CommunityEditDetailsComponent implements OnInit {
         github: [''],
         website: [''],
         linkedin: [''],
+        instagram: [''],
         location: ['', Validators.required],
       }),
     });

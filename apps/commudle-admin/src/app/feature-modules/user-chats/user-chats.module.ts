@@ -16,6 +16,7 @@ import { ChatsContainerComponent } from './components/chats-container/chats-cont
 import { ChatsListComponent } from './components/chats-list/chats-list.component';
 import { ChatsWindowComponent } from './components/chats-window/chats-window.component';
 import { EditorModule } from '@commudle/editor';
+import { InfiniteScrollModule } from '@commudle/infinite-scroll';
 
 @NgModule({
   declarations: [ChatsContainerComponent, ChatsListComponent, ChatsWindowComponent],
@@ -23,6 +24,7 @@ import { EditorModule } from '@commudle/editor';
   imports: [
     CommonModule,
     SharedComponentsModule,
+    InfiniteScrollModule,
 
     // Nebular
     NbCardModule,

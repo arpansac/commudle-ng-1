@@ -1,9 +1,16 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { EDbModels, ICommunity, IDiscountCode, IEvent } from '@commudle/shared-models';
+import { EDbModels, ICommunity, IDiscountCode, IEvent, EDiscountType } from '@commudle/shared-models';
 import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
-import { faCopy, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCopy,
+  faHandHoldingDollar,
+  faMoneyBill,
+  faPenToSquare,
+  faPlus,
+  faTableList,
+} from '@fortawesome/free-solid-svg-icons';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DiscountCouponFormComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-registrations/discount-coupons/discount-coupon-form/discount-coupon-form.component';
 import { CustomPageFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/custom-page/custom-page-form/custom-page-form.component';
@@ -26,13 +33,17 @@ export class DiscountCouponsComponent implements OnInit {
   icons = {
     faCopy,
     faPenToSquare,
+    faPlus,
+    faMoneyBill,
+    faHandHoldingDollar,
+    faTableList,
   };
 
   EDbModels = EDbModels;
   EPageType = EPageType;
-
+  EDiscountType = EDiscountType;
   moment = moment;
-
+  isLoading: boolean;
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
   constructor(
     private dialogService: NbDialogService,
@@ -47,10 +58,15 @@ export class DiscountCouponsComponent implements OnInit {
   }
 
   getDiscountCoupons() {
-    this.subscriptions.push(
-      this.discountCodesService.discountCodes$.subscribe((data) => {
+    this.isLoading = true;
+    this.discountCodesService.discountCodes$.subscribe(
+      (data) => {
         this.discountCodes = data;
-      }),
+        this.isLoading = false;
+      },
+      (error) => {
+        this.isLoading = false;
+      },
     );
   }
 

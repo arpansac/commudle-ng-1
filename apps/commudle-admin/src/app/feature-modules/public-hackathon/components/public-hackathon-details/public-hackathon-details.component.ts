@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   EDbModels,
@@ -20,14 +20,14 @@ import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import moment from 'moment';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faPencil, faAward, faSackDollar, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'commudle-public-hackathon-details',
   templateUrl: './public-hackathon-details.component.html',
   styleUrls: ['./public-hackathon-details.component.scss'],
 })
-export class PublicHackathonDetailsComponent implements OnInit {
+export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   community: ICommunity;
   EDbModels = EDbModels;
@@ -49,6 +49,8 @@ export class PublicHackathonDetailsComponent implements OnInit {
     faSackDollar,
     faCircleQuestion,
   };
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -76,12 +78,17 @@ export class PublicHackathonDetailsComponent implements OnInit {
       }),
     ),
       this.getHackathonResponseGroup();
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.getHackathonCurrentRegistrationDetails();
       }
     }),
       this.checkFragment();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkFragment() {

@@ -11,8 +11,13 @@ import { UserNetworkComponent } from './components/public-profile/user-network/u
 import { CommunicationPreferencesComponent } from './components/public-profile/user-basic-details/communication-preferences/communication-preferences.component';
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
+import { RecapComponent } from './components/recap-2024/recap-2024.component';
 
 const routes: Routes = [
+  {
+    path: ':username/recap-2024',
+    component: RecapComponent,
+  },
   {
     path: ':username',
     component: PublicProfileComponent,
@@ -67,6 +72,7 @@ const routes: Routes = [
           },
         ],
       },
+
       { path: '**', redirectTo: '' },
     ],
   },

@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { faUserLargeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -9,13 +9,14 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ToastrService } from '@commudle/shared-services';
 import { IHackathonUserResponse } from '@commudle/shared-models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-public-hackathon-teammate-form',
   templateUrl: './public-hackathon-teammate-form.component.html',
   styleUrls: ['./public-hackathon-teammate-form.component.scss'],
 })
-export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewInit {
+export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() hackathonUserResponse: IHackathonUserResponse;
   @Input() hackathonResponseGroup: IHackathonResponseGroup;
   @Input() hasTeammateOption: boolean;
@@ -31,6 +32,8 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
     faPlus,
   };
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private hurService: HackathonUserResponsesService,
@@ -44,7 +47,7 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       if (!this.hasTeammateOption) {
         this.teammateForm.patchValue({
@@ -52,6 +55,11 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
         });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit() {

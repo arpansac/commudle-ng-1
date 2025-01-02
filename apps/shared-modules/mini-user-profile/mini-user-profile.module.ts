@@ -11,6 +11,7 @@ import { UserFollowComponent } from './components/user-follow/user-follow.compon
 import { MiniUserProfileDirective } from './directives/mini-user-profile.directive';
 import { HiringLookingWorksTagsComponent } from './components/hiring-looking-works-tags/hiring-looking-works-tags.component';
 import { BadgeComponent } from '../../shared-components/badge/badge.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,12 @@ import { BadgeComponent } from '../../shared-components/badge/badge.component';
     SharedPipesModule,
     RouterModule,
     BadgeComponent,
-
     //Nebular
     NbCardModule,
     NbTagModule,
     NbIconModule,
     NbButtonModule,
+    UserPersonalConnectComponent,
   ],
 
   exports: [

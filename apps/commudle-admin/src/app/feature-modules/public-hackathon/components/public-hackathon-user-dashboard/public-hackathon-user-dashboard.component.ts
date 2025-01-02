@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   EDbModels,
@@ -15,13 +15,13 @@ import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/servi
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 @Component({
   selector: 'commudle-public-hackathon-user-dashboard',
   templateUrl: './public-hackathon-user-dashboard.component.html',
   styleUrls: ['./public-hackathon-user-dashboard.component.scss'],
 })
-export class PublicHackathonUserDashboardComponent implements OnInit {
+export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy {
   icons = {
     faArrowRight,
     faUserMinus,
@@ -34,6 +34,8 @@ export class PublicHackathonUserDashboardComponent implements OnInit {
   EDbModels: EDbModels;
   EDiscussionType = EDiscussionType;
   channels: ICommunityChannel[];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,7 +53,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit {
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
         this.getChannels();
-        this.authService.currentUser$.subscribe((currentUser) => {
+        this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
           if (currentUser) this.getHackathonCurrentRegistrationDetails();
         });
       }),
@@ -60,6 +62,12 @@ export class PublicHackathonUserDashboardComponent implements OnInit {
       }),
     );
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   getHackathonCurrentRegistrationDetails() {
     this.subscriptions.push(
       this.hackathonService

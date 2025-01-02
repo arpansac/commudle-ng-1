@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,13 +15,14 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { EAttachmentType } from '@commudle/shared-models';
 import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { validate } from 'uuid';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-speaker-resource-form',
   templateUrl: './speaker-resource-form.component.html',
   styleUrls: ['./speaker-resource-form.component.scss'],
 })
-export class SpeakerResourceFormComponent implements OnInit {
+export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
   token: string;
   eventId: number;
   speakerResource: ISpeakerResource;
@@ -40,6 +41,7 @@ export class SpeakerResourceFormComponent implements OnInit {
   speakerResourceForm;
 
   @ViewChild('fileInput') fileInput: any;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -75,7 +77,7 @@ export class SpeakerResourceFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data));
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
     this.appUsersService.getProfileStats().subscribe((data) => {
       this.userProfileDetails = data;
     });
@@ -191,5 +193,10 @@ export class SpeakerResourceFormComponent implements OnInit {
     }
     this.uploadedPdf = null;
     this.uploadedPdfSrc = '';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

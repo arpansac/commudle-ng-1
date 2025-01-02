@@ -65,6 +65,7 @@ import { CommunicationPreferencesComponent } from './components/public-profile/u
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
 import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
+import { RecapComponent } from './components/recap-2024/recap-2024.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-c
     CommunicationPreferencesComponent,
     CookiePreferencesComponent,
     AccountManagementComponent,
+    RecapComponent,
   ],
   imports: [
     CommonModule,

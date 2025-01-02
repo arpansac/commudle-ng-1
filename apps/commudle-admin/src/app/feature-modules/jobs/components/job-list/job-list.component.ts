@@ -16,7 +16,7 @@ import {
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-job-list',
@@ -62,6 +62,8 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private jobService: JobService,
     private fb: FormBuilder,
@@ -88,7 +90,9 @@ export class JobListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     this.urlParamsToForm();
 
@@ -105,6 +109,8 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   urlParamsToForm() {

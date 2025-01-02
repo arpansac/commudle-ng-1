@@ -6,7 +6,7 @@ import { NB_WINDOW, NbMenuService } from '@commudle/theme';
 import { filter, map } from 'rxjs/operators';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-member',
@@ -28,6 +28,8 @@ export class MemberComponent implements OnInit, OnDestroy {
   contextMenuItems = [];
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private menuService: NbMenuService,
@@ -43,11 +45,13 @@ export class MemberComponent implements OnInit, OnDestroy {
     for (const subs of this.subscriptions) {
       subs.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getCurrentUser() {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.setContextMenuItems();
       }),

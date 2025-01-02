@@ -8,7 +8,7 @@ import { HmsApiService } from 'apps/shared-modules/hms-video/services/hms-api.se
 import { HmsVideoStateService } from 'apps/shared-modules/hms-video/services/hms-video-state.service';
 import { HmsLiveChannel } from 'apps/shared-modules/hms-video/services/websockets/hms-live.channel';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HmsStageService } from '../../services/hms-stage.service';
 
 @Component({
@@ -31,6 +31,8 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
 
   isInitialConnection = true;
   subscriptions: Subscription[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -57,7 +59,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
     if (this.embeddedVideoStream.hms_room_id) {
       // Get current user
       this.subscriptions.push(
-        this.authWatchService.currentUser$.subscribe((value: ICurrentUser) => {
+        this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((value: ICurrentUser) => {
           this.currentUser = value;
           // Get client token
           this.getClient();
@@ -69,6 +71,8 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.hmsLiveChannel.unsubscribe(this.currentUser?.id);
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getClient(): void {

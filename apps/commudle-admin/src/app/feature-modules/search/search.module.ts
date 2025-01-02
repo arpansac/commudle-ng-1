@@ -32,6 +32,7 @@ import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modu
 import { LocationHeaderComponent } from 'apps/commudle-admin/src/app/feature-modules/search/components/location-header/location-header.component';
 import { EventHorizontalCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-horizontal-card/event-horizontal-card.component';
 import { TechSessionsCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/tech-sessions-card/tech-sessions-card.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [SearchBoxComponent, SearchPageComponent, SearchDetailsComponent, LocationHeaderComponent],
@@ -64,6 +65,7 @@ import { TechSessionsCardComponent } from 'apps/commudle-admin/src/app/app-share
     SkeletonCardsComponent,
     EventHorizontalCardComponent,
     TechSessionsCardComponent,
+    UserPersonalConnectComponent,
   ],
   providers: [TitleCasePipe],
 })

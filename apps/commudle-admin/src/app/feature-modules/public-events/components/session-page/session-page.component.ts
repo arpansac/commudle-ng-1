@@ -21,7 +21,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { hmsActions, hmsStore } from 'apps/shared-modules/hms-video/stores/hms.store';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-session-page',
@@ -58,6 +58,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   EUserRoles = EUserRoles;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private trackSlotsService: TrackSlotsService,
@@ -78,7 +80,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       `${this.event.name} | Live`,
       this.event.description.replace(/<[^>]*>/g, ''),
-      this.event.header_image_path ? this.event.header_image_path : this.community.logo_path,
+      this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
     );
   }
 
@@ -86,7 +88,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.resolveData();
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.getMyRoles();
       }),
@@ -95,6 +97,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
 
     // Show Footer
   }

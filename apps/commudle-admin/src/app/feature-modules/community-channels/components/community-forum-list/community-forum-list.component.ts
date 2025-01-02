@@ -8,7 +8,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -45,6 +45,8 @@ export class CommunityForumListComponent implements OnInit, OnDestroy {
 
   @Output() updateSelectedForum = new EventEmitter<ICommunityChannel>();
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private communityChannelManagerService: CommunityChannelManagerService,
     private authWatchService: LibAuthwatchService,
@@ -62,7 +64,7 @@ export class CommunityForumListComponent implements OnInit, OnDestroy {
         this.communityForums = data;
       }),
 
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
       }),
       this.communityChannelManagerService.communityRoles$.subscribe((data) => {
@@ -84,6 +86,8 @@ export class CommunityForumListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getParent() {

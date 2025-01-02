@@ -1,6 +1,7 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
@@ -26,6 +27,7 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
     private activatedRoute: ActivatedRoute,
+    private dialogService: NbDialogService,
   ) {
     this.userRolesUserForm = this.fb.group({
       email: ['', Validators.required],
@@ -66,6 +68,10 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
 
       this.toastLogService.successDialog('Removed and informed by email!', 3000);
     });
+  }
+
+  openDeleteConfirmation(dialog: TemplateRef<any>, userRolesUser, arrayType, index) {
+    this.dialogService.open(dialog, { context: { userRolesUser, arrayType, index } });
   }
 
   createUserRolesUser() {

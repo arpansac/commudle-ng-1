@@ -1,16 +1,17 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IHackathon, EHackathonLocationType } from 'apps/shared-models/hackathon.model';
 import { faGlobe, faAward } from '@fortawesome/free-solid-svg-icons';
 import { AuthService, countries_details } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonStatus, ICommunity, IHackathonTeam, IUser } from '@commudle/shared-models';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'commudle-public-hackathon-details-mini-card',
   templateUrl: './public-hackathon-details-mini-card.component.html',
   styleUrls: ['./public-hackathon-details-mini-card.component.scss'],
 })
-export class PublicHackathonDetailsMiniCardComponent implements OnInit {
+export class PublicHackathonDetailsMiniCardComponent implements OnInit, OnDestroy {
   @Input() hackathon: IHackathon;
   @Input() community: ICommunity;
   @Input() hrgId: number;
@@ -33,11 +34,13 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit {
   hackathonStatus: string;
   daysLeft: number;
 
+  private destroy$ = new Subject<void>();
+
   constructor(private hackathonService: HackathonService, private authService: AuthService) {}
 
   ngOnInit() {
     this.fetchInterestedMembers();
-    this.authService.currentUser$.subscribe((data) => {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) this.getTeamDetails();
       this.currentUser = data;
     });
@@ -49,6 +52,11 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit {
         amount: this.hackathon.total_prize_amount[currency],
       }));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getTeamDetails() {

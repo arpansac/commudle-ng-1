@@ -54,6 +54,7 @@ import { CommunityForumMessageComponent } from './components/community-forum-mes
 import { ArchiveComponent } from './components/channel-settings/archive/archive.component';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 
 @NgModule({
   declarations: [
@@ -94,14 +95,11 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     MentionModule,
     InfiniteScrollModule,
     SharedComponentsModule, //new
-
     //External
     FontAwesomeModule,
-
     //standalone modules
     SidebarComponent,
     HelpSectionComponent,
-
     // nebular
     NbInputModule,
     NbButtonModule,
@@ -119,6 +117,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     NbPopoverModule,
     NbAccordionModule,
     NbTabsetModule,
+    UserPersonalConnectComponent,
   ],
   exports: [ChannelForumDashboardComponent, SendMessageFormComponent],
 })

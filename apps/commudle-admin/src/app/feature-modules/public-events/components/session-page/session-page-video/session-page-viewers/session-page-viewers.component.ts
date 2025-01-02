@@ -13,7 +13,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { HmsStageService } from 'apps/shared-modules/hms-video/services/hms-stage.service';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -42,6 +42,8 @@ export class SessionPageViewersComponent implements OnInit, OnDestroy {
   faChalkboardTeacher = faChalkboardTeacher;
   faCommentDots = faCommentDots;
   faHand = faHand;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private userObjectVisitChannel: UserObjectVisitChannel,
@@ -78,7 +80,7 @@ export class SessionPageViewersComponent implements OnInit, OnDestroy {
               this.getCurrentUsersList();
             }
           }),
-          this.authWatchService.currentUser$.subscribe((currentUser) => {
+          this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
             if (currentUser) {
               this.currentUser = currentUser;
             }
@@ -105,6 +107,8 @@ export class SessionPageViewersComponent implements OnInit, OnDestroy {
     if (this.usersListSubscription) {
       this.usersListSubscription.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getPastUsersList() {

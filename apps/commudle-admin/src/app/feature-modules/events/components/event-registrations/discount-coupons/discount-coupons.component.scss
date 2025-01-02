@@ -1,19 +1,34 @@
 .action-buttons {
   @apply com-flex com-items-center com-gap-5 com-my-4;
 }
+nb-card {
+  @apply com-max-h-[90dvh] com-w-full md:com-w-[70dvw];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
 
 .discount-codes {
-  @apply com-grid md:com-grid-cols-3 com-gap-4;
   table {
-    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-py-3 com-px-4;
-    .heading {
-      @apply com-font-medium com-text-sm com-text-gray-500;
+    @apply com-border-collapse com-w-full;
+    .table-header {
+      @apply com-sticky com-top-0 com-bg-white;
     }
-    .action-button {
-      @apply com-text-primary-500 com-text-xs com-cursor-pointer com-font-normal;
+
+    td,
+    th {
+      @apply com-p-4;
     }
-    .content {
-      @apply com-text-sm com-font-semibold;
+
+    tr:not(:last-child) {
+      @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+    }
+
+    .discount-code-action-buttons {
+      @apply com-flex com-gap-4;
+      .action-button {
+        @apply com-text-primary-500 com-text-xs com-cursor-pointer com-font-normal;
+      }
     }
   }
 }

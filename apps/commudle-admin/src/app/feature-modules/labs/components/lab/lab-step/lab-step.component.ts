@@ -17,7 +17,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { ILabStep } from 'apps/shared-models/lab-step.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-lab-step',
@@ -39,6 +39,8 @@ export class LabStepComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   isBrowser: boolean;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private authWatchService: LibAuthwatchService,
@@ -53,7 +55,7 @@ export class LabStepComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data: ICurrentUser) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data: ICurrentUser) => {
         this.currentUser = data;
       }),
     );
@@ -79,6 +81,8 @@ export class LabStepComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewChecked() {

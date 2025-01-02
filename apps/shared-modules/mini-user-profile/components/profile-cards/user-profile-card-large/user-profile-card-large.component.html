@@ -24,6 +24,9 @@
             {{ user.name }}
           </p>
           <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
+          <commudle-user-personal-connect
+            [userConnect]="user.distance_from_current_user"
+          ></commudle-user-personal-connect>
         </div>
         <p class="username com-line-clamp-1 com-w-max com-mt-1" title="{{ user.username }}">
           @{{ user.username | truncatetext : maxUserNameLength }}

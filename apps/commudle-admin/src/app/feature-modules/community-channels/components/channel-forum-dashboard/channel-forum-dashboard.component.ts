@@ -1,7 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faMagnifyingGlass, faUser, faHashtag, faMessage, faBars } from '@fortawesome/free-solid-svg-icons';
 import {
   EDbModels,
@@ -68,6 +68,9 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   isSuperAdmin = false;
   sidebarEventName = 'channelForum';
   redirectUrl: string;
+
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: AuthService,
     private activatedRoute: ActivatedRoute,
@@ -117,11 +120,13 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getCurrentUser() {
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.communityChannelManagerService.setCurrentUser(data);
         if (this.currentUser.user_roles.includes(EUserRoles.SYSTEM_ADMINISTRATOR)) {
