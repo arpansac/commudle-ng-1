@@ -81,14 +81,9 @@
             class="action-button com-relative com-flex"
             routerLinkActive="active"
           >
-            <img
-              [src]="
-                darkMode
-                  ? environment.base_url + '/icons/hackathon-icon-white.svg'
-                  : environment.base_url + '/icons/hackathon-icon-gray.svg'
-              "
-              alt="Hackathon Icon"
-            />
+            <div class="icon">
+              <img [src]="environment.base_url + '/icons/hackathon-icon-cadet-grey.svg'" alt="Hackathon Icon" />
+            </div>
             <span *ngIf="sidebarExpanded" class="heading">Hackathons</span>
           </a>
           <a [routerLink]="['channels']" class="action-button" routerLinkActive="active">
