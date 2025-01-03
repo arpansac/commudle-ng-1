@@ -16,6 +16,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   isLoadingFeatured = true;
   environment = environment;
+  tags: string[] = [];
+  activeTag = 'all';
 
   constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
 
@@ -27,6 +29,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.getBlogs();
     this.getFeaturedBlogs();
+    this.getTags();
     this.setMeta();
   }
 
@@ -52,6 +55,38 @@ export class BlogsListComponent implements OnInit, OnDestroy {
         this.featuredBlogs = value;
         this.isLoadingFeatured = false;
       });
+  }
+
+  getTags(): void {
+    const fields = 'tags, publishedAt';
+    const order = 'publishedAt desc';
+    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
+      value.forEach((blog) => {
+        if (blog.tags) {
+          blog.tags.forEach((tag) => {
+            if (!this.tags.includes(tag.value)) {
+              this.tags.push(tag.value);
+            }
+            console.log(tag.value);
+          });
+        }
+      });
+      // this.tags = value;
+    });
+  }
+
+  // getFilteredData(tag: string) {
+  //   this.cmsService.getDataByTypeWithFilter('blog', 'tags[]', tag, 10).subscribe((data) => {
+  //     if (data) {
+  //       console.log(data);
+  //       // this.testimonials = data;
+  //     }
+  //   });
+  // }
+
+  setActiveTag(tag: string): void {
+    this.activeTag = tag; // Set the active tag
+    // this.getFilteredData(tag);
   }
 
   setMeta(): void {
