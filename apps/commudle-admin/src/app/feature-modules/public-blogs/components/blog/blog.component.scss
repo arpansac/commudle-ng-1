@@ -53,6 +53,10 @@
 
         .image {
           @apply com-mb-3;
+
+          img {
+            @apply com-w-full com-h-full com-rounded-lg;
+          }
         }
 
         article {
@@ -106,7 +110,7 @@
   }
 
   .user-profile-large {
-    @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-justify-center com-items-center com-mb-5;
+    @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-justify-center com-items-center md:com-items-end com-mb-5;
 
     .action-buttons {
       @apply com-flex com-flex-row com-gap-4 md:com-mt-0 com-mt-4;

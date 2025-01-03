@@ -1,6 +1,7 @@
 <div class="blogs-list">
   <div class="base-layout">
     <div class="container">
+      <h1 class="main-heading">Blogs from the Developer Ecosystem</h1>
       <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
       <div class="two-column-layout medium two-columns">
         <div class="main-column" *ngIf="!isLoadingFeatured">
@@ -10,6 +11,7 @@
                 [blog]="featuredBlog"
                 [shareButton]="false"
                 [showUserProfile]="true"
+                [fixCardHeight]="false"
               ></commudle-blog-card>
             </div>
           </div>
@@ -17,7 +19,11 @@
         <div class="right-column" *ngIf="!isLoadingFeatured">
           <div class="featured-blogs-list">
             <div *ngFor="let featuredBlog of featuredBlogs | slice : 1">
-              <commudle-blog-card [blog]="featuredBlog" [shareButton]="false"></commudle-blog-card>
+              <commudle-blog-card
+                [blog]="featuredBlog"
+                [shareButton]="false"
+                [fixCardHeight]="false"
+              ></commudle-blog-card>
             </div>
           </div>
         </div>
@@ -25,7 +31,7 @@
       <div class="one-column-layout">
         <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
         <div class="blog-container" *ngIf="!isLoading">
-          <h1 class="header">Discover a Wealth of Insightful Blogs</h1>
+          <h2 class="header">Relating with Developers & Communities</h2>
           <div class="blog-list">
             <div *ngFor="let blog of blogs">
               <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>

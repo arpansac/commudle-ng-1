@@ -17,7 +17,7 @@
       [name]="blog?.title"
       [aspectRatio]="'16/9'"
     ></commudle-banner-image>
-    <div class="content">
+    <div class="content" [ngClass]="{ content: fixCardHeight }">
       <div class="profile-date">
         <div *ngIf="user && showUserProfile">
           <app-user-profile-card-small [user]="user"></app-user-profile-card-small>
@@ -26,9 +26,9 @@
           <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
         </p>
       </div>
-      <h6 class="name">
+      <h3 class="name">
         {{ blog?.title }}
-      </h6>
+      </h3>
       <div class="meta-description">
         {{ blog?.meta_description }}
       </div>

@@ -37,11 +37,7 @@
               <div class="image-content">
                 <div class="image">
                   <app-loading-spinner *ngIf="imageLoading"></app-loading-spinner>
-                  <commudle-banner-image
-                    [headerImagePath]="imageUrl(blog?.headerImage).url()"
-                    [name]="blog?.title"
-                    [aspectRatio]="'3/2'"
-                  ></commudle-banner-image>
+                  <img [src]="imageUrl(blog?.headerImage).url()" [alt]="blog?.title" />
                 </div>
 
                 <article>
@@ -88,7 +84,7 @@
 
       <!-- similarBlogs Section -->
       <div *ngIf="blog?.similarBlogs" class="similar-blogs">
-        <h2 class="similar-blogs-heading">More from the Journal</h2>
+        <h2 class="similar-blogs-heading">Recommended from Commudle</h2>
         <div class="similar-blogs-list">
           <div *ngFor="let blog of similarBlogs">
             <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
