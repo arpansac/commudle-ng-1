@@ -30,6 +30,7 @@ export interface ICommunity {
   upcoming_events_count: number;
   has_refund_policy: boolean;
   upcoming_hackathons_count: number;
+  instagram: string;
 }
 
 export interface ICommunitySearch extends ICommunity {

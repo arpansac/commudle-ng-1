@@ -9,7 +9,7 @@
     <div class="logo">
       <img
         alt="{{ community.name }}"
-        src="{{ community.logo_image_path.i64 || community.logo_image?.url || community.logo_image_path?.url }}"
+        src="{{ community.logo_image_path?.i64 || community.logo_image?.url || community.logo_image_path?.url }}"
         title="{{ community.name }}"
       />
     </div>
