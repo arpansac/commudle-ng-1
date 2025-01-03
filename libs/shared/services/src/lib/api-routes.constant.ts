@@ -961,4 +961,11 @@ export const API_ROUTES = {
     DELETE: 'api/v2/profanity', //DELETE
     UPDATE: 'api/v2/profanity', //PUT
   },
+
+  CAMPAIGNS_TYPES: {
+    INDEX: 'api/v2/campaigns/campaign_type', //GET
+    CREATE: 'api/v2/campaigns/campaign_type', //POST
+    TOGGLE_STATUS: 'api/v2/campaigns/campaign_type/toggle_status', //PUT
+    UPDATE: 'api/v2/campaigns/campaign_type', //PUT
+  },
 };

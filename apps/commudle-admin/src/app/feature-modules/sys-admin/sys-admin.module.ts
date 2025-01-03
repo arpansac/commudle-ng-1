@@ -49,6 +49,7 @@ import { AdminFeaturedUsersComponent } from './components/admin-featured/admin-f
 import { AdminFeaturedCommunitiesChannelsComponent } from './components/admin-featured/admin-featured-communities-channels/admin-featured-communities-channels.component';
 import { PaymentLogsComponent } from './components/payment-logs/payment-logs.component';
 import { AdminProfanityComponent } from './components/admin-profanity/admin-profanity.component';
+import { CampaignTypesComponent } from './components/campaign-types/campaign-types.component';
 @NgModule({
   declarations: [
     SysAdminComponent,
@@ -77,6 +78,7 @@ import { AdminProfanityComponent } from './components/admin-profanity/admin-prof
     AdminFeaturedCommunitiesChannelsComponent,
     PaymentLogsComponent,
     AdminProfanityComponent,
+    CampaignTypesComponent,
   ],
   imports: [
     CommonModule,

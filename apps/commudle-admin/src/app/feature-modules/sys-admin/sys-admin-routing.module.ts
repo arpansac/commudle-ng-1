@@ -25,6 +25,7 @@ import { AdminFeaturedCommunitiesChannelsComponent } from 'apps/commudle-admin/s
 import { PaymentLogsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/payment-logs/payment-logs.component';
 import { PaymentDetailComponent } from 'apps/shared-components/payment-detail/payment-detail.component';
 import { AdminProfanityComponent } from './components/admin-profanity/admin-profanity.component';
+import { CampaignTypesComponent } from './components/campaign-types/campaign-types.component';
 
 const routes = [
   {
@@ -139,6 +140,10 @@ const routes = [
       {
         path: 'profanity',
         component: AdminProfanityComponent,
+      },
+      {
+        path: 'campaign-types',
+        component: CampaignTypesComponent,
       },
     ],
   },
