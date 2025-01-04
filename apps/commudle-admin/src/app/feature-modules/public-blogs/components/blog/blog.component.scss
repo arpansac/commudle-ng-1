@@ -36,7 +36,7 @@
         @apply com-flex com-flex-col md:com-items-start com-items-center;
 
         .date {
-          @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-mb-3;
+          @apply com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-mb-3;
 
           fa-icon {
             @apply com-mr-2 com-text-lg;
