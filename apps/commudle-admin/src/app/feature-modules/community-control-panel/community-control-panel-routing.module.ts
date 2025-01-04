@@ -50,17 +50,11 @@ const routes = [
       },
       {
         path: 'forms',
-        component: CommunityFormsAndSurveysComponent,
-        children: [
-          {
-            path: '',
-            component: CommunityFormsListComponent,
-          },
-          {
-            path: 'surveys',
-            component: CommunitySurveysComponent,
-          },
-        ],
+        component: CommunityFormsListComponent,
+      },
+      {
+        path: 'surveys',
+        component: CommunitySurveysComponent,
       },
       {
         path: 'edit',
