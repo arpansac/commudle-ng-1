@@ -67,7 +67,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
             if (!this.tags.includes(tag.value)) {
               this.tags.push(tag.value);
             }
-            console.log(tag.value);
+            // console.log(tag.value);
           });
         }
       });
@@ -75,18 +75,25 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // getFilteredData(tag: string) {
-  //   this.cmsService.getDataByTypeWithFilter('blog', 'tags[]', tag, 10).subscribe((data) => {
-  //     if (data) {
-  //       console.log(data);
-  //       // this.testimonials = data;
-  //     }
-  //   });
-  // }
+  getFilteredData(tag: string) {
+    this.isLoading = true;
+    if (tag === 'all') {
+      this.getBlogs();
+    } else {
+      this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
+        if (data) {
+          this.blogs = data;
+          this.isLoading = false;
+          console.log(data);
+          // this.testimonials = data;
+        }
+      });
+    }
+  }
 
   setActiveTag(tag: string): void {
     this.activeTag = tag; // Set the active tag
-    // this.getFilteredData(tag);
+    this.getFilteredData(tag);
   }
 
   setMeta(): void {

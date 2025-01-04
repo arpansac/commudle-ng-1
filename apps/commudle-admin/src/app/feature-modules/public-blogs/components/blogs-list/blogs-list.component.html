@@ -29,8 +29,7 @@
         </div>
       </div>
       <div class="one-column-layout">
-        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        <div class="blog-container" *ngIf="!isLoading">
+        <div class="blog-container">
           <h2 class="header">Relating with Developers & Communities</h2>
           <div class="tags">
             <nb-tag-list>
@@ -53,7 +52,8 @@
               ></nb-tag>
             </nb-tag-list>
           </div>
-          <div class="blog-list">
+          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          <div class="blog-list" *ngIf="!isLoading">
             <div *ngFor="let blog of blogs">
               <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
               <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
