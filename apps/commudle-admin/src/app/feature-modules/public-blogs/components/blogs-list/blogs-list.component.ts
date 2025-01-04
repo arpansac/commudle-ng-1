@@ -67,11 +67,9 @@ export class BlogsListComponent implements OnInit, OnDestroy {
             if (!this.tags.includes(tag.value)) {
               this.tags.push(tag.value);
             }
-            // console.log(tag.value);
           });
         }
       });
-      // this.tags = value;
     });
   }
 
@@ -84,15 +82,13 @@ export class BlogsListComponent implements OnInit, OnDestroy {
         if (data) {
           this.blogs = data;
           this.isLoading = false;
-          console.log(data);
-          // this.testimonials = data;
         }
       });
     }
   }
 
   setActiveTag(tag: string): void {
-    this.activeTag = tag; // Set the active tag
+    this.activeTag = tag;
     this.getFilteredData(tag);
   }
 
