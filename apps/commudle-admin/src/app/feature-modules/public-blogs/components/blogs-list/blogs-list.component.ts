@@ -4,6 +4,7 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-blogs',
@@ -19,13 +20,27 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   tags: string[] = [];
   activeTag = 'all';
 
-  constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
+  constructor(
+    private cmsService: CmsService,
+    private seoService: SeoService,
+    private footerService: FooterService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+  ) {}
 
   imageUrl(source: any) {
     return this.cmsService.getImageUrl(source);
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      const tag = params['tag'];
+      if (tag) {
+        this.setActiveTag(tag);
+      } else {
+        this.setActiveTag('all');
+      }
+    });
     this.footerService.changeFooterStatus(true);
     this.getBlogs();
     this.getFeaturedBlogs();
@@ -89,6 +104,11 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   setActiveTag(tag: string): void {
     this.activeTag = tag;
+    if (tag == 'all') {
+      this.router.navigate(['/blogs']);
+    } else {
+      this.router.navigate(['/blogs/category', tag]);
+    }
     this.getFilteredData(tag);
   }
 

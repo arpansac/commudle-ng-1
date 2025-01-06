@@ -70,13 +70,15 @@ export class BlogComponent implements OnInit, OnDestroy {
     const slug: string = this.activatedRoute.snapshot.params.id;
     this.subscriptions.push(
       this.cmsService.getDataBySlug(slug).subscribe((value: IBlog) => {
-        this.blog = value;
-        this.richText = this.cmsService.getHtmlFromBlock(value);
-        this.setUser();
-        this.setMeta();
-        this.isLoading = false;
-        if (this.blog.similarBlogs) {
-          this.getSimilarBlogs(this.blog.similarBlogs);
+        if (value) {
+          this.blog = value;
+          this.richText = this.cmsService.getHtmlFromBlock(value);
+          this.setUser();
+          this.setMeta();
+          this.isLoading = false;
+          if (this.blog.similarBlogs) {
+            this.getSimilarBlogs(this.blog.similarBlogs);
+          }
         }
       }),
     );

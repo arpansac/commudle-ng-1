@@ -36,7 +36,7 @@
               <nb-tag
                 [text]="'All'"
                 appearance="outline"
-                removable
+                [removable]="activeTag === 'all'"
                 [status]="activeTag === 'all' ? 'primary' : 'basic'"
                 size="small"
                 (click)="setActiveTag('all')"
@@ -45,7 +45,7 @@
                 *ngFor="let tag of tags"
                 [text]="tag"
                 appearance="outline"
-                removable
+                [removable]="activeTag === tag"
                 [status]="activeTag === tag ? 'primary' : 'basic'"
                 size="small"
                 (click)="setActiveTag(tag)"
