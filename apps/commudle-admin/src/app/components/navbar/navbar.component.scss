@@ -3,15 +3,15 @@
 }
 
 .home-navbar {
-  @apply com-w-full com-grid com-grid-cols-4 md:com-grid-cols-3 com-items-center com-gap-2;
+  @apply com-w-full com-grid com-grid-cols-5 md:com-grid-cols-3 com-items-center com-gap-2;
 
-  div > button {
+  .profile {
     @apply com-p-2 com-h-10;
   }
 }
 
 .home-sidebar {
-  @apply com-w-12 com-h-12 com-flex com-justify-end com-items-center com-cursor-pointer;
+  @apply com-w-11 com-h-12 com-flex com-justify-end com-items-center com-cursor-pointer;
 
   fa-icon,
   nb-icon {
@@ -26,10 +26,29 @@
 .toggle-dark-mode {
   @apply com-cursor-pointer;
 
-  .toggle-btn {
-    @apply com-bg-gray-200 com-h-6 com-w-6 #{!important};
+  .toggle-btn-moon {
+    @apply com-bg-gray-200 com-rounded-full com-w-9 com-h-9 com-flex com-justify-center com-items-center #{!important};
+
+    fa-icon {
+      @apply com-text-xl;
+    }
     img {
       @apply com-w-full;
     }
   }
+
+  .toggle-btn-sun {
+    @apply com-bg-gray-200 com-rounded-full com-w-9 com-h-9 com-flex com-justify-center com-items-center #{!important};
+
+    fa-icon {
+      @apply com-text-xl;
+    }
+    img {
+      @apply com-w-5 com-h-5;
+    }
+  }
+}
+
+.profile-container {
+  @apply com-flex;
 }
