@@ -152,7 +152,7 @@ export class BlogComponent implements OnInit, OnDestroy {
         '@type': 'BlogPosting',
         mainEntityOfPage: {
           '@type': 'WebPage',
-          '@id': `${environment.app_url}/blogs/${this.blog.slug}`,
+          '@id': `${environment.app_url}/blogs/${this.blog.slug.current}`,
         },
         headline: this.blog.title,
         description: this.blog.meta_description,

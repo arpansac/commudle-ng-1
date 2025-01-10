@@ -5,6 +5,7 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
   selector: 'app-blogs',
@@ -19,6 +20,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   environment = environment;
   tags: string[] = [];
   activeTag = 'all';
+  schemaForHackathon = [];
 
   constructor(
     private cmsService: CmsService,
@@ -26,6 +28,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     private footerService: FooterService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private appUsersService: AppUsersService,
   ) {}
 
   imageUrl(source: any) {
@@ -42,7 +45,6 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       }
     });
     this.footerService.changeFooterStatus(true);
-    this.getBlogs();
     this.getFeaturedBlogs();
     this.getTags();
     this.setMeta();
@@ -57,6 +59,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     const order = 'publishedAt desc';
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
+      this.setSchema();
       this.isLoading = false;
     });
   }
@@ -96,6 +99,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
         if (data) {
           this.blogs = data;
+          this.setSchema();
           this.isLoading = false;
         }
       });
@@ -119,4 +123,37 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
+
+  setSchema() {
+    for (const blog of this.blogs) {
+      this.schemaForHackathon.push({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${environment.app_url}/blogs/${blog.slug.current}`,
+        },
+        headline: blog.title,
+        description: blog.meta_description,
+        image: this.imageUrl(blog.headerImage).url(),
+        author: {
+          type: 'Person',
+          // name: this.getUser(blog.username),
+          url: `${environment.app_url}/users/${blog.username}`,
+        },
+        datePublished: blog.publishedAt,
+      });
+    }
+    this.seoService.setSchema(this.schemaForHackathon);
+  }
+
+  // getUser(username: string): Observable<string> {
+  //   return this.appUsersService.getProfile(username).pipe(map((user) => user.name));
+  // }
+
+  // getUser(username) {
+  //   this.appUsersService.getProfile(username).subscribe((user) => {
+  //     return user.name;
+  //   });
+  // }
 }
