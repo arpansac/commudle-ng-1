@@ -116,7 +116,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   getLatestBlogs() {
     const fields = '_id, slug, title, publishedAt';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 6, 1).subscribe((value: IBlog[]) => {
+    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 5).subscribe((value: IBlog[]) => {
       this.latestBlogs = value;
     });
   }
