@@ -114,8 +114,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   setMeta(): void {
     this.seoService.setTags(
-      'Relating with Developers & Communities',
-      'Blogs in the form of experiences and knowledge, authored by Developers, Designers, Community Managers and DevRels',
+      'Commudle Blog: Insights from DevRels and Developer Communities',
+      'Explore the latest in developer relations and community building. Discover expert DevRel interviews, community success stories, and engagement tips. Elevate your developer communities today',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
