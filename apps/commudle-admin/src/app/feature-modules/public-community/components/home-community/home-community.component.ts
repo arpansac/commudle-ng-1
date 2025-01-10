@@ -82,7 +82,6 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe((data) => {
       this.community = data.community;
-      console.log(this.community);
       this.getCustomPages();
       this.updateHeaderVariation();
       this.newsletterService.getPIndex(this.community.id, 'Kommunity').subscribe((data) => {
