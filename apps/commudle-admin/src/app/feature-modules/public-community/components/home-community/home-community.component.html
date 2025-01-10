@@ -115,6 +115,10 @@
               </div>
               <div class="membership-toggle">
                 <div class="com-flex md:com-justify-end">
+                  <div class="organization-details com-mr-4">
+                    <fa-icon [icon]="faBuilding"></fa-icon>
+                    <span>organization name (number)</span>
+                  </div>
                   <app-membership-toggle
                     [community]="community"
                     [shapes]="'semi-round'"
@@ -152,6 +156,10 @@
                 </div>
               </div>
               <div class="action-buttons">
+                <div class="organization-details">
+                  <fa-icon [icon]="faBuilding"></fa-icon>
+                  <span>organization name (number)</span>
+                </div>
                 <app-membership-toggle
                   [community]="community"
                   [shapes]="'semi-round'"

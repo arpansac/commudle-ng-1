@@ -12,7 +12,7 @@ import { NbDialogService, NbMenuService } from '@commudle/theme';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
-import { faCaretDown, faMessage, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faMessage, faNewspaper, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { EDbModels } from '@commudle/shared-models';
@@ -44,6 +44,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
   faMessage = faMessage;
   faNewspaper = faNewspaper;
   faInstagram = faInstagram;
+  faBuilding = faBuilding;
 
   items = [{ title: 'pages', slug: 'pages' }];
 
@@ -81,6 +82,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe((data) => {
       this.community = data.community;
+      console.log(this.community);
       this.getCustomPages();
       this.updateHeaderVariation();
       this.newsletterService.getPIndex(this.community.id, 'Kommunity').subscribe((data) => {
