@@ -2,7 +2,7 @@
   @apply com-cursor-pointer;
 
   .blog-card {
-    @apply com-flex com-flex-col com-h-full com-rounded-lg com-relative;
+    @apply com-flex com-flex-col com-h-full com-rounded-lg com-relative com-no-underline;
 
     .blog-actions {
       @apply com-absolute com-top-2 com-right-2;
