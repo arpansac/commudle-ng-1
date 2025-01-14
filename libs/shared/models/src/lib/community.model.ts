@@ -31,6 +31,7 @@ export interface ICommunity {
   has_refund_policy: boolean;
   upcoming_hackathons_count: number;
   instagram: string;
+  community_group: { name: string; member_count: number };
 }
 
 export interface ICommunitySearch extends ICommunity {
