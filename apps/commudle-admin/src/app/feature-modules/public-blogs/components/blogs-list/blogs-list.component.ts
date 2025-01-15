@@ -124,8 +124,9 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     );
   }
 
-  setSchema() {
+  async setSchema() {
     for (const blog of this.blogs) {
+      const authorName = await this.getUser(blog.username);
       this.schemaForHackathon.push({
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
@@ -138,7 +139,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
         image: this.imageUrl(blog.headerImage).url(),
         author: {
           type: 'Person',
-          // name: this.getUser(blog.username),
+          name: authorName,
           url: `${environment.app_url}/users/${blog.username}`,
         },
         datePublished: blog.publishedAt,
@@ -147,13 +148,10 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.seoService.setSchema(this.schemaForHackathon);
   }
 
-  // getUser(username: string): Observable<string> {
-  //   return this.appUsersService.getProfile(username).pipe(map((user) => user.name));
-  // }
-
-  // getUser(username) {
-  //   this.appUsersService.getProfile(username).subscribe((user) => {
-  //     return user.name;
-  //   });
-  // }
+  getUser(username): Promise<string> {
+    return this.appUsersService
+      .getProfile(username)
+      .toPromise()
+      .then((user) => user.name);
+  }
 }
