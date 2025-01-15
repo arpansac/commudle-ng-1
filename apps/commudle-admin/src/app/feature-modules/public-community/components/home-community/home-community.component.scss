@@ -180,7 +180,7 @@
 }
 
 .organization-details {
-  @apply com-flex com-items-center com-bg-blue-50 com-text-primary-500 com-rounded-lg com-p-2 com-flex-shrink-0 com-mr-4;
+  @apply com-flex com-items-center com-bg-blue-50 com-text-primary-500 com-rounded-lg com-p-2 com-flex-shrink-0 com-mr-4 com-no-underline;
 
   fa-icon {
     @apply com-flex com-text-xs;
