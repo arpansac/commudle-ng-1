@@ -124,7 +124,7 @@
 
         <div class="save-button-bottom">
           <button
-            *ngIf="event && event.editable"
+            *ngIf="event && (type === 'clone' || (type === 'Save' && event.editable))"
             [disabled]="tags.length < 3 || submitIsInProcess"
             type="submit"
             nbButton
