@@ -13,6 +13,7 @@ import {
 import * as moment from 'moment';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-messages-list',
@@ -34,13 +35,16 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   moment = moment;
   messageContainer: HTMLDivElement;
   isNearBottom: boolean;
+  schemaForMessages = [];
 
   @ViewChild('messagesList') messagesList: ElementRef<HTMLDivElement>;
   @ViewChildren('messageElement') messageElements: QueryList<any>;
 
-  constructor() {}
+  constructor(private seoService: SeoService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setSchema();
+  }
 
   ngAfterViewInit(): void {
     this.messageContainer = this.messagesList.nativeElement;
@@ -81,5 +85,52 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
     const position = this.messageContainer.scrollTop + this.messageContainer.offsetHeight;
     const height = this.messageContainer.scrollHeight;
     return position > height - threshold;
+  }
+
+  setSchema() {
+    for (const message of this.messages) {
+      this.schemaForMessages.push({
+        '@context': 'https://schema.org',
+        '@type': 'DiscussionForumPosting',
+        headline: 'Comments',
+        text: this.removeHtmlTags(message.content),
+        author: {
+          '@type': 'Person',
+          name: message.user.name ? message.user.name : message.user.username,
+          url: `https://www.commudle.com/users/${message.user.username}`,
+        },
+        datePublished: message.created_at,
+        comment: message.user_messages ? this.getUserMessages(message) : '',
+      });
+    }
+    this.seoService.setSchema(this.schemaForMessages);
+  }
+
+  removeHtmlTags(content): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    return doc.body.textContent || '';
+  }
+
+  getUserMessages(message) {
+    const resultArray = [];
+    for (const userMessage of message.user_messages) {
+      if (userMessage) {
+        const transformedMessage = {
+          '@type': 'Comment',
+          text: this.removeHtmlTags(userMessage.content),
+          author: {
+            '@type': 'Person',
+            name: userMessage.user.name ? userMessage.user.name : userMessage.user.username,
+            url: `https://www.commudle.com/users/${userMessage.user.username}`,
+          },
+          datePublished: userMessage.created_at,
+        };
+
+        resultArray.push(transformedMessage);
+      }
+    }
+
+    return resultArray;
   }
 }
