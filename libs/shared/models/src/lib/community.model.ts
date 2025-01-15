@@ -1,3 +1,4 @@
+import { ICommunityGroup } from './community-group.model';
 import { IAttachedFile } from './attached-file.model';
 import { ITag } from './tag.model';
 
@@ -31,7 +32,7 @@ export interface ICommunity {
   has_refund_policy: boolean;
   upcoming_hackathons_count: number;
   instagram: string;
-  community_group: { name: string; member_count: number };
+  community_group: ICommunityGroup;
 }
 
 export interface ICommunitySearch extends ICommunity {
