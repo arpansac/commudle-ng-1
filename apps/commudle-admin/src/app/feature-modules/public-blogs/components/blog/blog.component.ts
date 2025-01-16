@@ -70,13 +70,15 @@ export class BlogComponent implements OnInit, OnDestroy {
     const slug: string = this.activatedRoute.snapshot.params.id;
     this.subscriptions.push(
       this.cmsService.getDataBySlug(slug).subscribe((value: IBlog) => {
-        this.blog = value;
-        this.richText = this.cmsService.getHtmlFromBlock(value);
-        this.setUser();
-        this.setMeta();
-        this.isLoading = false;
-        if (this.blog.similarBlogs) {
-          this.getSimilarBlogs(this.blog.similarBlogs);
+        if (value) {
+          this.blog = value;
+          this.richText = this.cmsService.getHtmlFromBlock(value);
+          this.setUser();
+          this.setMeta();
+          this.isLoading = false;
+          if (this.blog.similarBlogs) {
+            this.getSimilarBlogs(this.blog.similarBlogs);
+          }
         }
       }),
     );
@@ -114,7 +116,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   getLatestBlogs() {
     const fields = '_id, slug, title, publishedAt';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 6, 1).subscribe((value: IBlog[]) => {
+    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 5).subscribe((value: IBlog[]) => {
       this.latestBlogs = value;
     });
   }
@@ -150,7 +152,7 @@ export class BlogComponent implements OnInit, OnDestroy {
         '@type': 'BlogPosting',
         mainEntityOfPage: {
           '@type': 'WebPage',
-          '@id': `${environment.app_url}/blogs/${this.blog.slug}`,
+          '@id': `${environment.app_url}/blogs/${this.blog.slug.current}`,
         },
         headline: this.blog.title,
         description: this.blog.meta_description,

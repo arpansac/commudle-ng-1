@@ -29,10 +29,31 @@
         </div>
       </div>
       <div class="one-column-layout">
-        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        <div class="blog-container" *ngIf="!isLoading">
+        <div class="blog-container">
           <h2 class="header">Relating with Developers & Communities</h2>
-          <div class="blog-list">
+          <div class="tags">
+            <nb-tag-list>
+              <nb-tag
+                [text]="'All'"
+                appearance="outline"
+                [removable]="activeTag === 'all'"
+                [status]="activeTag === 'all' ? 'primary' : 'basic'"
+                size="small"
+                (click)="setActiveTag('all')"
+              ></nb-tag>
+              <nb-tag
+                *ngFor="let tag of tags"
+                [text]="tag"
+                appearance="outline"
+                [removable]="activeTag === tag"
+                [status]="activeTag === tag ? 'primary' : 'basic'"
+                size="small"
+                (click)="setActiveTag(tag)"
+              ></nb-tag>
+            </nb-tag-list>
+          </div>
+          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+          <div class="blog-list" *ngIf="!isLoading">
             <div *ngFor="let blog of blogs">
               <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
               <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

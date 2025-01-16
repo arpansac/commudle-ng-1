@@ -1,5 +1,5 @@
 <div *ngIf="blog" class="blog-cards">
-  <div [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
+  <a [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
     <div class="blog-actions">
       <app-share-button
         *ngIf="shareButton"
@@ -33,9 +33,9 @@
         {{ blog?.meta_description }}
       </p>
     </div>
-    <div class="read-more">
+    <a class="read-more">
       Read Blog &nbsp;
       <nb-icon icon="arrow-forward-outline"></nb-icon>
-    </div>
-  </div>
+    </a>
+  </a>
 </div>

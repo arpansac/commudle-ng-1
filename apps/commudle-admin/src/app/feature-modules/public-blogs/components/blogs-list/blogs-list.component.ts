@@ -4,6 +4,8 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
   selector: 'app-blogs',
@@ -16,17 +18,35 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   isLoadingFeatured = true;
   environment = environment;
+  tags: string[] = [];
+  activeTag = 'all';
+  schemaForHackathon = [];
 
-  constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
+  constructor(
+    private cmsService: CmsService,
+    private seoService: SeoService,
+    private footerService: FooterService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private appUsersService: AppUsersService,
+  ) {}
 
   imageUrl(source: any) {
     return this.cmsService.getImageUrl(source);
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      const tag = params['tag'];
+      if (tag) {
+        this.setActiveTag(tag);
+      } else {
+        this.setActiveTag('all');
+      }
+    });
     this.footerService.changeFooterStatus(true);
-    this.getBlogs();
     this.getFeaturedBlogs();
+    this.getTags();
     this.setMeta();
   }
 
@@ -39,6 +59,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     const order = 'publishedAt desc';
     this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
       this.blogs = value;
+      this.setSchema();
       this.isLoading = false;
     });
   }
@@ -54,11 +75,83 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       });
   }
 
+  getTags(): void {
+    const fields = 'tags, publishedAt';
+    const order = 'publishedAt desc';
+    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
+      value.forEach((blog) => {
+        if (blog.tags) {
+          blog.tags.forEach((tag) => {
+            if (!this.tags.includes(tag.value)) {
+              this.tags.push(tag.value);
+            }
+          });
+        }
+      });
+    });
+  }
+
+  getFilteredData(tag: string) {
+    this.isLoading = true;
+    if (tag === 'all') {
+      this.getBlogs();
+    } else {
+      this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
+        if (data) {
+          this.blogs = data;
+          this.setSchema();
+          this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  setActiveTag(tag: string): void {
+    this.activeTag = tag;
+    if (tag == 'all') {
+      this.router.navigate(['/blogs']);
+    } else {
+      this.router.navigate(['/blogs/category', tag]);
+    }
+    this.getFilteredData(tag);
+  }
+
   setMeta(): void {
     this.seoService.setTags(
-      'Relating with Developers & Communities',
-      'Blogs in the form of experiences and knowledge, authored by Developers, Designers, Community Managers and DevRels',
+      'Commudle Blog: Insights from DevRels and Developer Communities',
+      'Explore the latest in developer relations and community building. Discover expert DevRel interviews, community success stories, and engagement tips. Elevate your developer communities today',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  async setSchema() {
+    for (const blog of this.blogs) {
+      const authorName = await this.getUser(blog.username);
+      this.schemaForHackathon.push({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${environment.app_url}/blogs/${blog.slug.current}`,
+        },
+        headline: blog.title,
+        description: blog.meta_description,
+        image: this.imageUrl(blog.headerImage).url(),
+        author: {
+          type: 'Person',
+          name: authorName,
+          url: `${environment.app_url}/users/${blog.username}`,
+        },
+        datePublished: blog.publishedAt,
+      });
+    }
+    this.seoService.setSchema(this.schemaForHackathon);
+  }
+
+  getUser(username): Promise<string> {
+    return this.appUsersService
+      .getProfile(username)
+      .toPromise()
+      .then((user) => user.name);
   }
 }
