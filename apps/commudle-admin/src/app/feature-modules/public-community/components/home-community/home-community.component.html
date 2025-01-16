@@ -119,6 +119,7 @@
                     *ngIf="community.community_group"
                     [routerLink]="['/orgs', community.community_group.slug]"
                     class="organization-details"
+                    [title]="community.community_group.name"
                   >
                     <fa-icon [icon]="faBuilding"></fa-icon>
                     <span>{{ community.community_group.name }} ({{ community.community_group.member_count }})</span>
