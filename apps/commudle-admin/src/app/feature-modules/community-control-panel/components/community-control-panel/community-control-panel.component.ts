@@ -16,6 +16,7 @@ import { environment } from '@commudle/shared-environments';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
   selector: 'app-community-control-panel',
@@ -56,6 +57,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
     private darkModeService: DarkModeService,
     private router: Router,
     public sidebarService: SidebarService,
+    private footerService: FooterService,
   ) {}
 
   ngOnInit() {
@@ -78,11 +80,13 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
         this.sidebarExpanded = data;
       });
     }
+    this.footerService.changeMiniFooterStatus(false);
   }
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.footerService.changeMiniFooterStatus(true);
   }
 
   toggleSidebar() {
