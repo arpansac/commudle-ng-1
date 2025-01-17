@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { SeoService } from '@commudle/shared-services';
+import { ActivatedRoute } from '@angular/router';
+import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 
 @Component({
   selector: 'app-messages-list',
@@ -40,15 +42,27 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   @ViewChild('messagesList') messagesList: ElementRef<HTMLDivElement>;
   @ViewChildren('messageElement') messageElements: QueryList<any>;
 
-  constructor(private seoService: SeoService) {}
+  constructor(
+    private seoService: SeoService,
+    private activatedRoute: ActivatedRoute,
+    private eventsService: EventsService,
+  ) {}
 
   ngOnInit(): void {
-    this.setSchema();
+    this.activatedRoute.params.subscribe((param) => {
+      this.getEvent(param.event_id);
+    });
   }
 
   ngAfterViewInit(): void {
     this.messageContainer = this.messagesList.nativeElement;
     this.messageElements.changes.subscribe((value) => this.onMessageElementsChanged(value));
+  }
+
+  getEvent(eventId) {
+    this.eventsService.pGetEvent(eventId).subscribe((data) => {
+      this.setSchema(data.name, data.created_at);
+    });
   }
 
   emitReply(messageId: number, content): void {
@@ -87,23 +101,29 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
     return position > height - threshold;
   }
 
-  setSchema() {
-    for (const message of this.messages) {
-      this.schemaForMessages.push({
-        '@context': 'https://schema.org',
-        '@type': 'DiscussionForumPosting',
-        headline: 'Comments',
-        text: this.removeHtmlTags(message.content),
-        author: {
-          '@type': 'Person',
-          name: message.user.name ? message.user.name : message.user.username,
-          url: `https://www.commudle.com/users/${message.user.username}`,
-        },
-        datePublished: message.created_at,
-        comment: message.user_messages ? this.getUserMessages(message) : '',
-      });
-    }
-    this.seoService.setSchema(this.schemaForMessages);
+  setSchema(eventName, eventTime): void {
+    const commentsArray = this.messages.map((message: IUserMessage) => ({
+      '@type': 'Comment',
+      text: this.removeHtmlTags(message.content),
+      datePublished: message.created_at,
+      author: {
+        '@type': 'Person',
+        name: message.user?.name ? message.user.name : message.user.username,
+        url: `https://www.commudle.com/users/${message.user?.username}`,
+      },
+      comment: message.user_messages ? this.getUserMessages(message) : '',
+    }));
+
+    const discussionSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      url: 'https://commudle.com/assets/images/commudle-logo192.png',
+      datePublished: eventTime,
+      headline: eventName,
+      comment: commentsArray,
+    };
+
+    this.seoService.setSchema(discussionSchema);
   }
 
   removeHtmlTags(content): string {
