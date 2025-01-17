@@ -104,6 +104,7 @@ export class EventsComponent implements OnInit {
           '@type': 'Event',
           name: event.name,
           image: event.header_image_path ? event.header_image_path : this.community.logo_image_path.url,
+          description: event.description.replace(/<[^>]*>/g, '').substring(0, 200),
           startDate: event.start_time,
           endDate: event.end_time,
           eventStatus: 'https://schema.org/EventScheduled',
@@ -113,6 +114,10 @@ export class EventsComponent implements OnInit {
             '@type': 'Organization',
             name: this.community.name,
             url: environment.app_url + '/communities/' + this.community.slug,
+          },
+          performer: {
+            '@type': 'PerformingGroup',
+            name: this.community.name,
           },
           offers: {
             '@type': 'Offer',
