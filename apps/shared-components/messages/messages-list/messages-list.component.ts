@@ -103,7 +103,6 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   }
 
   setSchema(data): void {
-    console.log(data);
     const commentsArray = this.messages.map((message: IUserMessage) => ({
       '@type': 'Comment',
       text: this.removeHtmlTags(message.content),
