@@ -16,6 +16,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { SeoService } from '@commudle/shared-services';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
+import { environment } from '@commudle/shared-environments';
 
 @Component({
   selector: 'app-messages-list',
@@ -61,7 +62,7 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
 
   getEvent(eventId) {
     this.eventsService.pGetEvent(eventId).subscribe((data) => {
-      this.setSchema(data.name, data.created_at);
+      this.setSchema(data);
     });
   }
 
@@ -101,7 +102,8 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
     return position > height - threshold;
   }
 
-  setSchema(eventName, eventTime): void {
+  setSchema(data): void {
+    console.log(data);
     const commentsArray = this.messages.map((message: IUserMessage) => ({
       '@type': 'Comment',
       text: this.removeHtmlTags(message.content),
@@ -118,8 +120,13 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',
       url: 'https://commudle.com/assets/images/commudle-logo192.png',
-      datePublished: eventTime,
-      headline: eventName,
+      author: {
+        '@type': 'Person',
+        name: data.name,
+        url: environment.app_url + '/communities/' + data.kommunity_slug + '/events/' + data.slug,
+      },
+      datePublished: data.created_at,
+      headline: data.name,
       comment: commentsArray,
     };
 
