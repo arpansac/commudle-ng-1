@@ -1,5 +1,5 @@
 nb-card {
-  @apply com-w-full md:com-w-630px com-h-full md:com-min-h-[70dvh] md:com-max-h-[90dvh];
+  @apply com-w-screen com-mx-0 md:com-w-[40dvw] com-max-h-[90dvh];
   nb-card-header {
     @apply com-flex com-justify-between;
     button {
@@ -7,6 +7,12 @@ nb-card {
     }
   }
   nb-card-body {
+    @apply com-p-0 com-overflow-x-hidden;
+    ::ng-deep {
+      .tabset {
+        @apply com-overflow-x-scroll;
+      }
+    }
     nb-tab {
       @apply com-p-0;
     }
