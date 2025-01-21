@@ -18,7 +18,14 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   isLoadingFeatured = true;
   environment = environment;
-  tags: string[] = [];
+  tags: {
+    slug: string;
+    value: string;
+  }[] = [];
+  defaultTag = {
+    slug: 'all',
+    value: 'all',
+  };
   activeTag = 'all';
   schemaForHackathon = [];
 
@@ -39,9 +46,13 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
       if (tag) {
+        const tag = {
+          value: this.slugToText(params['tag']),
+          slug: params['tag'],
+        };
         this.setActiveTag(tag);
       } else {
-        this.setActiveTag('all');
+        this.setActiveTag(this.defaultTag);
       }
     });
     this.footerService.changeFooterStatus(true);
@@ -82,8 +93,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       value.forEach((blog) => {
         if (blog.tags) {
           blog.tags.forEach((tag) => {
-            if (!this.tags.includes(tag.value)) {
-              this.tags.push(tag.value);
+            if (!this.tags.some((existingTag) => existingTag.value === tag.value)) {
+              this.tags.push({ slug: this.generateSlug(tag.value), value: tag.value });
             }
           });
         }
@@ -91,9 +102,20 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getFilteredData(tag: string) {
+  generateSlug(text: string): string {
+    return text
+      .trim() // Remove leading & trailing spaces
+      .toLowerCase() // Convert to lowercase
+      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+  }
+
+  slugToText(slug: string): string {
+    return slug.replace(/-/g, ' '); // Replace hyphens with spaces
+  }
+
+  getFilteredData(tag) {
     this.isLoading = true;
-    if (tag === 'all') {
+    if (tag === this.defaultTag.slug) {
       this.getBlogs();
     } else {
       this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
@@ -106,14 +128,14 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     }
   }
 
-  setActiveTag(tag: string): void {
-    this.activeTag = tag;
-    if (tag == 'all') {
+  setActiveTag(tag): void {
+    this.activeTag = tag.value;
+    if (tag.slug == this.defaultTag.slug) {
       this.router.navigate(['/blogs']);
     } else {
-      this.router.navigate(['/blogs/category', tag]);
+      this.router.navigate(['/blogs/category', tag.slug]);
     }
-    this.getFilteredData(tag);
+    this.getFilteredData(tag.value);
   }
 
   setMeta(): void {

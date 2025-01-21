@@ -34,19 +34,19 @@
           <div class="tags">
             <nb-tag-list>
               <nb-tag
-                [text]="'All'"
+                [text]="defaultTag.value"
                 appearance="outline"
-                [removable]="activeTag === 'all'"
-                [status]="activeTag === 'all' ? 'primary' : 'basic'"
+                [removable]="activeTag === defaultTag.value"
+                [status]="activeTag === defaultTag.value ? 'primary' : 'basic'"
                 size="small"
-                (click)="setActiveTag('all')"
+                (click)="setActiveTag(defaultTag)"
               ></nb-tag>
               <nb-tag
                 *ngFor="let tag of tags"
-                [text]="tag"
+                [text]="tag.value"
                 appearance="outline"
-                [removable]="activeTag === tag"
-                [status]="activeTag === tag ? 'primary' : 'basic'"
+                [removable]="activeTag === tag.value"
+                [status]="activeTag === tag.value ? 'primary' : 'basic'"
                 size="small"
                 (click)="setActiveTag(tag)"
               ></nb-tag>
