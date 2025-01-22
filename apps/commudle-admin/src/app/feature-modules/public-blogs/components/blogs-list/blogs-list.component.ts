@@ -28,6 +28,10 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   };
   activeTag = 'all';
   schemaForHackathon = [];
+  total: number;
+  page = 1;
+  initialCount = 0;
+  finalCount = 15;
 
   constructor(
     private cmsService: CmsService,
@@ -43,6 +47,12 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['page']) {
+        this.page = Number(params['page']);
+        this.updatePagesAndCount(false);
+      }
+    });
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
       if (tag) {
@@ -54,6 +64,9 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       } else {
         this.setActiveTag(this.defaultTag);
       }
+    });
+    this.cmsService.getCountOfType('blog').subscribe((total) => {
+      this.total = total;
     });
     this.footerService.changeFooterStatus(true);
     this.getFeaturedBlogs();
@@ -68,11 +81,29 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   getBlogs() {
     const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
-      this.blogs = value;
-      this.setSchema();
-      this.isLoading = false;
+    this.cmsService
+      .getDataByTypeFieldOrderCount('blog', fields, order, this.finalCount, this.initialCount)
+      .subscribe((value: IBlog[]) => {
+        this.blogs = [];
+        this.blogs = value;
+        this.setSchema();
+        this.isLoading = false;
+      });
+  }
+
+  getTagFilterBlogs(tag) {
+    this.cmsService.getCountOfTypeWithFilter('blog', 'tags[].value', tag).subscribe((total) => {
+      this.total = total;
     });
+    this.cmsService
+      .getDataByTypeWithFilter('blog', 'tags[].value', tag, this.finalCount, this.initialCount)
+      .subscribe((data) => {
+        if (data) {
+          this.blogs = data;
+          this.setSchema();
+          this.isLoading = false;
+        }
+      });
   }
 
   getFeaturedBlogs(): void {
@@ -118,22 +149,18 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     if (tag === this.defaultTag.slug) {
       this.getBlogs();
     } else {
-      this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
-        if (data) {
-          this.blogs = data;
-          this.setSchema();
-          this.isLoading = false;
-        }
-      });
+      this.getTagFilterBlogs(tag);
     }
   }
 
   setActiveTag(tag): void {
     this.activeTag = tag.value;
     if (tag.slug == this.defaultTag.slug) {
-      this.router.navigate(['/blogs']);
+      this.router.navigate(['/blogs'], { queryParams: { page: this.page } });
     } else {
-      this.router.navigate(['/blogs/category', tag.slug]);
+      this.page = 1;
+      this.updatePagesAndCount(false);
+      this.router.navigate(['/blogs/category', tag.slug], { queryParams: { page: this.page } });
     }
     this.getFilteredData(tag.value);
   }
@@ -175,5 +202,20 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       .getProfile(username)
       .toPromise()
       .then((user) => user.name);
+  }
+
+  updatePagesAndCount(loadBlogs = true): void {
+    this.initialCount = (this.page - 1) * 15;
+    this.finalCount = this.page * 15;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: this.page },
+      queryParamsHandling: 'merge',
+    });
+
+    if (loadBlogs) {
+      this.getBlogs();
+    }
   }
 }

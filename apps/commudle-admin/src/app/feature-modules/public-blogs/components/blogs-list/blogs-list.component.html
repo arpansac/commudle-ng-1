@@ -59,6 +59,17 @@
               <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
             </div>
           </div>
+          <div class="pagination" *ngIf="blogs">
+            <app-pagination
+              (goTo)="page = $event; updatePagesAndCount()"
+              (next)="page = $event; updatePagesAndCount()"
+              (previous)="page = $event; updatePagesAndCount()"
+              *ngIf="blogs.length > 0"
+              [count]="15"
+              [current]="page"
+              [total]="total"
+            ></app-pagination>
+          </div>
         </div>
       </div>
     </div>
