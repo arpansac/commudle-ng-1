@@ -55,6 +55,7 @@ export class CommunityEmailsListComponent implements OnInit {
       context: {
         message: email.message,
       },
+      windowClass: 'email-preview-window',
     });
   }
 }
