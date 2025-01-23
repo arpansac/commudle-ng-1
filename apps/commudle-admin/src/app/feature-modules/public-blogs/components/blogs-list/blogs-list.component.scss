@@ -36,4 +36,11 @@ app-loading-spinner {
 
 .tags {
   @apply com-mb-8;
+  nb-tag {
+    @apply com-lowercase;
+  }
+}
+
+.pagination {
+  @apply com-my-8;
 }

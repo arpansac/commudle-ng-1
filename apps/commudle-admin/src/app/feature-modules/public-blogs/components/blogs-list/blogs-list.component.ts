@@ -18,9 +18,20 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   isLoadingFeatured = true;
   environment = environment;
-  tags: string[] = [];
+  tags: {
+    slug: string;
+    value: string;
+  }[] = [];
+  defaultTag = {
+    slug: 'all',
+    value: 'all',
+  };
   activeTag = 'all';
   schemaForHackathon = [];
+  total: number;
+  page = 1;
+  initialCount = 0;
+  finalCount = 15;
 
   constructor(
     private cmsService: CmsService,
@@ -36,13 +47,26 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['page']) {
+        this.page = Number(params['page']);
+        this.updatePagesAndCount(false);
+      }
+    });
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
       if (tag) {
+        const tag = {
+          value: this.slugToText(params['tag']),
+          slug: params['tag'],
+        };
         this.setActiveTag(tag);
       } else {
-        this.setActiveTag('all');
+        this.setActiveTag(this.defaultTag);
       }
+    });
+    this.cmsService.getCountOfType('blog').subscribe((total) => {
+      this.total = total;
     });
     this.footerService.changeFooterStatus(true);
     this.getFeaturedBlogs();
@@ -57,11 +81,29 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   getBlogs() {
     const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
-      this.blogs = value;
-      this.setSchema();
-      this.isLoading = false;
+    this.cmsService
+      .getDataByTypeFieldOrderCount('blog', fields, order, this.finalCount, this.initialCount)
+      .subscribe((value: IBlog[]) => {
+        this.blogs = [];
+        this.blogs = value;
+        this.setSchema();
+        this.isLoading = false;
+      });
+  }
+
+  getTagFilterBlogs(tag) {
+    this.cmsService.getCountOfTypeWithFilter('blog', 'tags[].value', tag).subscribe((total) => {
+      this.total = total;
     });
+    this.cmsService
+      .getDataByTypeWithFilter('blog', 'tags[].value', tag, this.finalCount, this.initialCount)
+      .subscribe((data) => {
+        if (data) {
+          this.blogs = data;
+          this.setSchema();
+          this.isLoading = false;
+        }
+      });
   }
 
   getFeaturedBlogs(): void {
@@ -82,8 +124,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       value.forEach((blog) => {
         if (blog.tags) {
           blog.tags.forEach((tag) => {
-            if (!this.tags.includes(tag.value)) {
-              this.tags.push(tag.value);
+            if (!this.tags.some((existingTag) => existingTag.value === tag.value)) {
+              this.tags.push({ slug: this.generateSlug(tag.value), value: tag.value });
             }
           });
         }
@@ -91,29 +133,36 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getFilteredData(tag: string) {
+  generateSlug(text: string): string {
+    return text
+      .trim() // Remove leading & trailing spaces
+      .toLowerCase() // Convert to lowercase
+      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+  }
+
+  slugToText(slug: string): string {
+    return slug.replace(/-/g, ' '); // Replace hyphens with spaces
+  }
+
+  getFilteredData(tag) {
     this.isLoading = true;
-    if (tag === 'all') {
+    if (tag === this.defaultTag.slug) {
       this.getBlogs();
     } else {
-      this.cmsService.getDataByTypeWithFilter('blog', 'tags[].value', tag, 10).subscribe((data) => {
-        if (data) {
-          this.blogs = data;
-          this.setSchema();
-          this.isLoading = false;
-        }
-      });
+      this.getTagFilterBlogs(tag);
     }
   }
 
-  setActiveTag(tag: string): void {
-    this.activeTag = tag;
-    if (tag == 'all') {
-      this.router.navigate(['/blogs']);
+  setActiveTag(tag): void {
+    this.activeTag = tag.value;
+    if (tag.slug == this.defaultTag.slug) {
+      this.router.navigate(['/blogs'], { queryParams: { page: this.page } });
     } else {
-      this.router.navigate(['/blogs/category', tag]);
+      this.page = 1;
+      this.updatePagesAndCount(false);
+      this.router.navigate(['/blogs/category', tag.slug], { queryParams: { page: this.page } });
     }
-    this.getFilteredData(tag);
+    this.getFilteredData(tag.value);
   }
 
   setMeta(): void {
@@ -153,5 +202,20 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       .getProfile(username)
       .toPromise()
       .then((user) => user.name);
+  }
+
+  updatePagesAndCount(loadBlogs = true): void {
+    this.initialCount = (this.page - 1) * 15;
+    this.finalCount = this.page * 15;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: this.page },
+      queryParamsHandling: 'merge',
+    });
+
+    if (loadBlogs) {
+      this.getBlogs();
+    }
   }
 }
