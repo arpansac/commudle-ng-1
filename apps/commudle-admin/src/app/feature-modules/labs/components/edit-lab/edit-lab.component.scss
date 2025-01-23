@@ -127,10 +127,6 @@
     }
   }
 
-  .editor {
-    @apply com-mt-4;
-  }
-
   .publish-notification {
     @apply com-mt-8 com-mb-6 com-text-base com-font-normal;
   }
@@ -144,6 +140,21 @@
 
     nb-icon {
       @apply com-text-2xl;
+    }
+  }
+}
+
+editor {
+  @apply com-mt-4;
+  ::ng-deep {
+    div.tox.tox-tinymce {
+      @apply com-border-0;
+
+      div.tox-editor-container {
+        div.tox-editor-header {
+          @apply com-top-[56px] #{!important};
+        }
+      }
     }
   }
 }
