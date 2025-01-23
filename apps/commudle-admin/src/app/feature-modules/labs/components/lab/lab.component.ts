@@ -153,6 +153,7 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   getLab(labId) {
     this.labsService.pShow(labId).subscribe((data) => {
       this.lab = data;
+      this.setSeoSchema();
       this.setMeta();
       this.labDescription = this.sanitizer.bypassSecurityTrustHtml(this.lab.description);
       this.triggerDialogB = false;
@@ -238,5 +239,19 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
       .then(() => {
         this.libToastLogService.successDialog('Shared successfully!');
       });
+  }
+
+  setSeoSchema() {
+    this.seoService.setSchema({
+      '@context': 'https://schema.org/',
+      '@type': 'HowTo',
+      name: this.lab.name,
+      image: this.lab.header_image.url,
+      step: this.lab.lab_steps.map((step) => ({
+        '@type': 'HowToStep',
+        name: step.name,
+        url: `${this.environment.app_url}/labs/${this.lab.slug}/steps/${step.id}`,
+      })),
+    });
   }
 }
