@@ -64,7 +64,7 @@
               (goTo)="page = $event; updatePagesAndCount()"
               (next)="page = $event; updatePagesAndCount()"
               (previous)="page = $event; updatePagesAndCount()"
-              *ngIf="blogs.length > 0"
+              *ngIf="total > 0"
               [count]="15"
               [current]="page"
               [total]="total"
