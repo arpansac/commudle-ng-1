@@ -7,7 +7,7 @@ import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/se
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
+import { environment } from '@commudle/shared-environments';
 @Component({
   selector: 'app-labs-search',
   templateUrl: './labs-search.component.html',
@@ -118,6 +118,7 @@ export class LabsSearchComponent implements OnInit {
     }
     this.labsService.pIndex(this.pageInfo?.end_cursor, this.limit, this.query).subscribe((data) => {
       this.labs = this.labs.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+      this.setSeoSchema();
       this.total = data.total;
       this.pageInfo = data.page_info;
       this.skeletonLoaderCard = false;
@@ -125,5 +126,21 @@ export class LabsSearchComponent implements OnInit {
       this.loading = false;
       this.isLoadingSearch = false;
     });
+  }
+
+  setSeoSchema() {
+    const schemaArray = this.labs.map((lab) => ({
+      '@context': 'https://schema.org/',
+      '@type': 'HowTo',
+      name: lab.name,
+      image: lab.header_image.url,
+      step: lab.lab_steps.map((step) => ({
+        '@type': 'HowToStep',
+        name: step.name,
+        url: `${environment.app_url}/labs/${lab.slug}/steps/${step.id}`,
+      })),
+    }));
+
+    this.seoService.setSchema(schemaArray);
   }
 }
