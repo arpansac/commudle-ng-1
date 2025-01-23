@@ -1,3 +1,5 @@
+@import './apps/commudle-admin/src/assets/styles/variables';
+
 .create-lab {
   .two-column-layout {
     .main-column {
@@ -127,10 +129,6 @@
     }
   }
 
-  .editor {
-    @apply com-mt-4;
-  }
-
   .publish-notification {
     @apply com-mt-8 com-mb-6 com-text-base com-font-normal;
   }
@@ -144,6 +142,22 @@
 
     nb-icon {
       @apply com-text-2xl;
+    }
+  }
+}
+
+editor {
+  @apply com-mt-4;
+  ::ng-deep {
+    div.tox.tox-tinymce {
+      border: none;
+
+      // this holds true only for fixed menubar
+      div.tox-editor-container {
+        div.tox-editor-header {
+          top: $top-nav-height !important;
+        }
+      }
     }
   }
 }
