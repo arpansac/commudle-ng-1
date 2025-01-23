@@ -1,5 +1,3 @@
-@import './apps/commudle-admin/src/assets/styles/variables';
-
 .create-lab {
   .two-column-layout {
     .main-column {
@@ -150,12 +148,11 @@ editor {
   @apply com-mt-4;
   ::ng-deep {
     div.tox.tox-tinymce {
-      border: none;
+      @apply com-border-0;
 
-      // this holds true only for fixed menubar
       div.tox-editor-container {
         div.tox-editor-header {
-          top: $top-nav-height !important;
+          @apply com-top-[56px] #{!important};
         }
       }
     }
