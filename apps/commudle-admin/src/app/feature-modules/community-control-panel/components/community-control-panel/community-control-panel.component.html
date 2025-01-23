@@ -165,6 +165,12 @@
             <nb-icon icon="external-link"></nb-icon>
           </div>
         </a>
+        <a [routerLink]="['emails']" class="action-button" routerLinkActive="active">
+          <div class="icon">
+            <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
+          </div>
+          <span *ngIf="sidebarExpanded" class="heading">Mails Sent Stats</span>
+        </a>
         <hr class="divided-line" />
         <div *ngIf="sidebarExpanded" class="category-heading">
           <div>Admin</div>

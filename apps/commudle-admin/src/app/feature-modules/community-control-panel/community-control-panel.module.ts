@@ -59,6 +59,8 @@ import { AdminCommunityHackathonComponent } from './components/admin-community-h
 import { CommunityPaymentLogsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-payment-logs/community-payment-logs.component';
 import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-bank-details/community-bank-details.component';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
+import { ReusableComponentsModule } from 'apps/commudle-admin/src/app/feature-modules/reusable-components/reusable-components.module';
+import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +89,7 @@ import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.compone
     AdminCommunityHackathonComponent,
     CommunityPaymentLogsComponent,
     CommunityBankDetailsComponent,
+    CommunityMailsSentStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -103,6 +106,7 @@ import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.compone
     EventsModule,
     AppSharedComponentsModule,
     CommunityChannelsModule,
+    ReusableComponentsModule,
 
     //standalone
     SidebarComponent,

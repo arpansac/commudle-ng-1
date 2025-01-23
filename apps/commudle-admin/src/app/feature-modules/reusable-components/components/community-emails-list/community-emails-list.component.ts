@@ -34,7 +34,7 @@ export class CommunityEmailsListComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.parent.data.subscribe((data) => {
-      this.communityId = data.community.id;
+      if (!this.communityId) this.communityId = data.community.id;
       this.getEmails();
     });
   }
