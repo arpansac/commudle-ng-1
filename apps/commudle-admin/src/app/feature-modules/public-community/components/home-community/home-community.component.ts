@@ -186,6 +186,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
   updateHeaderVariation() {
     const url = this.router.url;
     const value = url.split(this.community.slug)[1];
+    // If value exists but is only query params (starts with '?'), keep mini header false
     if (value && !value.startsWith('?')) {
       this.showMiniHeader = true;
     } else {
