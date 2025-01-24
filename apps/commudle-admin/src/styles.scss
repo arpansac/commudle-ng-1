@@ -155,6 +155,15 @@ nb-window.form-window {
   }
 }
 
+nb-window.email-preview-window {
+  nb-card {
+    @apply md:com-w-[600px] com-w-full;
+    img {
+      @apply com-w-full;
+    }
+  }
+}
+
 .lh-fw {
   font-weight: 300 !important;
 }
