@@ -24,6 +24,8 @@ import { AdminCommunityHackathonComponent } from './components/admin-community-h
 import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-bank-details/community-bank-details.component';
 import { CommunityPaymentLogsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-payment-logs/community-payment-logs.component';
 import { PaymentLogEdfegComponent } from 'apps/shared-components/payment-detail/payment-log-edfeg/payment-log-edfeg.component';
+import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
+
 const routes = [
   {
     path: 'new',
@@ -94,6 +96,10 @@ const routes = [
             component: CustomPageFormComponent,
           },
         ],
+      },
+      {
+        path: 'emails',
+        component: CommunityMailsSentStatsComponent,
       },
       {
         path: 'newsletters',
