@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChange
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IEditorValidator } from '@commudle/editor';
+import { IEvent } from '@commudle/shared-models';
 import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
 import { DiscussionChatChannel } from 'apps/shared-components/services/websockets/discussion-chat.channel';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -18,6 +19,7 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 })
 export class MessagesComponent implements OnInit, OnDestroy {
   @Input() discussion: IDiscussion;
+  @Input() parentData: IEvent;
   @Output() newMessage: EventEmitter<any> = new EventEmitter<any>();
 
   currentUser: ICurrentUser;

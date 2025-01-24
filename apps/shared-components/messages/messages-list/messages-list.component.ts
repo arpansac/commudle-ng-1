@@ -14,9 +14,8 @@ import * as moment from 'moment';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { SeoService } from '@commudle/shared-services';
-import { ActivatedRoute } from '@angular/router';
-import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { environment } from '@commudle/shared-environments';
+import { IEvent } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-messages-list',
@@ -30,6 +29,7 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   @Input() permittedActions;
   @Input() showMessagesLoader;
   @Input() discussionOpen: boolean;
+  @Input() parentData: IEvent;
   @Output() getPreviousMessages: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendReply: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendFlag: EventEmitter<number> = new EventEmitter<number>();
@@ -43,27 +43,16 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   @ViewChild('messagesList') messagesList: ElementRef<HTMLDivElement>;
   @ViewChildren('messageElement') messageElements: QueryList<any>;
 
-  constructor(
-    private seoService: SeoService,
-    private activatedRoute: ActivatedRoute,
-    private eventsService: EventsService,
-  ) {}
+  constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((param) => {
-      this.getEvent(param.event_id);
-    });
+    this.setSchema();
+    console.log(this.parentData);
   }
 
   ngAfterViewInit(): void {
     this.messageContainer = this.messagesList.nativeElement;
     this.messageElements.changes.subscribe((value) => this.onMessageElementsChanged(value));
-  }
-
-  getEvent(eventId) {
-    this.eventsService.pGetEvent(eventId).subscribe((data) => {
-      this.setSchema(data);
-    });
   }
 
   emitReply(messageId: number, content): void {
@@ -102,7 +91,7 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
     return position > height - threshold;
   }
 
-  setSchema(data): void {
+  setSchema(): void {
     const commentsArray = this.messages.map((message: IUserMessage) => ({
       '@type': 'Comment',
       text: this.removeHtmlTags(message.content),
@@ -121,11 +110,11 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
       url: 'https://commudle.com/assets/images/commudle-logo192.png',
       author: {
         '@type': 'Person',
-        name: data.name,
-        url: environment.app_url + '/communities/' + data.kommunity_slug + '/events/' + data.slug,
+        name: this.parentData.name,
+        url: environment.app_url + '/communities/' + this.parentData.kommunity_slug + '/events/' + this.parentData.slug,
       },
-      datePublished: data.created_at,
-      headline: data.name,
+      datePublished: this.parentData.created_at,
+      headline: this.parentData.name,
       comment: commentsArray,
     };
 
