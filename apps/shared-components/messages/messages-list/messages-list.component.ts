@@ -47,7 +47,6 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.setSchema();
-    console.log(this.parentData);
   }
 
   ngAfterViewInit(): void {
