@@ -66,7 +66,7 @@
       <nb-card *ngIf="discussionChat">
         <nb-card-header>Discussion</nb-card-header>
         <nb-card-body>
-          <app-messages [discussion]="discussionChat"></app-messages>
+          <app-messages [discussion]="discussionChat" [parentData]="speakerResource.event"></app-messages>
         </nb-card-body>
       </nb-card>
     </div>

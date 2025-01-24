@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IEvent } from '@commudle/shared-models';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { SessionPageNotificationsService } from 'apps/shared-services/session-page-notifications.service';
 
@@ -9,6 +10,7 @@ import { SessionPageNotificationsService } from 'apps/shared-services/session-pa
 })
 export class SessionPageChatComponent implements OnInit {
   @Input() chat: IDiscussion;
+  @Input() parentData: IEvent;
   @Output() newMessage: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private sessionPageNotificationsService: SessionPageNotificationsService) {}
