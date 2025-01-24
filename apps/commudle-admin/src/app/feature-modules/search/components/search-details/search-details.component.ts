@@ -10,5 +10,10 @@ export class SearchDetailsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Remove HTML tags from the about field
+    if (this.option.type === 'Community' && this.option.about) {
+      this.option.about = this.option.about.replace(/<[^>]*>/g, '');
+    }
+  }
 }
