@@ -166,7 +166,7 @@ export class BlogComponent implements OnInit, OnDestroy {
         },
         datePublished: this.blog.publishedAt,
         wordCount: this.richText.split(/\s+/).length,
-        keywords: [this.blog.tags.map((tag) => tag.value).join(', ')],
+        keywords: [this.blog.tags ? this.blog.tags.map((tag) => tag.value).join(', ') : ''],
         publisher: {
           '@type': 'Organization',
           '@id': 'https://www.commudle.com/',

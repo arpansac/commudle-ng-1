@@ -27,7 +27,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     value: 'all',
   };
   activeTag = 'all';
-  schemaForHackathon = [];
+  schemaForBlog = [];
   total: number;
   page = 1;
   initialCount = 0;
@@ -79,7 +79,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   getBlogs() {
-    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
+    const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username, tags';
     const order = 'publishedAt desc';
     this.cmsService
       .getDataByTypeFieldOrderCount('blog', fields, order, this.finalCount, this.initialCount)
@@ -176,7 +176,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   async setSchema() {
     for (const blog of this.blogs) {
       const authorName = await this.getUser(blog.username);
-      this.schemaForHackathon.push({
+      this.schemaForBlog.push({
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         mainEntityOfPage: {
@@ -194,7 +194,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
         datePublished: blog.publishedAt,
       });
     }
-    this.seoService.setSchema(this.schemaForHackathon);
+    this.seoService.setSchema(this.schemaForBlog);
   }
 
   getUser(username): Promise<string> {
