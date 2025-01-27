@@ -203,6 +203,7 @@
                   [routerLink]="['/communities', community.slug]"
                   class="d-flex"
                   routerLinkActive="active"
+                  [ngClass]="{ active: !showMiniHeader }"
                 >
                   <nb-icon icon="info" status="basic"></nb-icon>
                   <span class="title">About</span>
