@@ -64,7 +64,7 @@ export class PaymentSettingsComponent implements OnInit {
         paid_ticket_setting: this.fb.group({
           bank_ac_type: ['', Validators.required],
           bank_ac_id: ['', Validators.required],
-          price: ['', Validators.required],
+          price: ['', [Validators.required, Validators.min(2)]],
           currency: ['inr', Validators.required],
           has_taxes: [false],
           tax_name: [''],
