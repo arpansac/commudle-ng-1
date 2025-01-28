@@ -12,6 +12,10 @@ const routes: Routes = [
     path: ':id',
     component: BlogComponent,
   },
+  {
+    path: 'category/:tag',
+    component: BlogsListComponent,
+  },
 ];
 
 @NgModule({

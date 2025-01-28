@@ -4,6 +4,8 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
   selector: 'app-blogs',
@@ -16,17 +18,59 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   isLoadingFeatured = true;
   environment = environment;
+  tags: {
+    slug: string;
+    value: string;
+  }[] = [];
+  defaultTag = {
+    slug: 'all',
+    value: 'all',
+  };
+  activeTag = 'all';
+  schemaForHackathon = [];
+  total: number;
+  page = 1;
+  initialCount = 0;
+  finalCount = 15;
 
-  constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
+  constructor(
+    private cmsService: CmsService,
+    private seoService: SeoService,
+    private footerService: FooterService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private appUsersService: AppUsersService,
+  ) {}
 
   imageUrl(source: any) {
     return this.cmsService.getImageUrl(source);
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['page']) {
+        this.page = Number(params['page']);
+        this.updatePagesAndCount(false);
+      }
+    });
+    this.activatedRoute.params.subscribe((params) => {
+      const tag = params['tag'];
+      if (tag) {
+        const tag = {
+          value: this.slugToText(params['tag']),
+          slug: params['tag'],
+        };
+        this.setActiveTag(tag);
+      } else {
+        this.setActiveTag(this.defaultTag);
+      }
+    });
+    this.cmsService.getCountOfType('blog').subscribe((total) => {
+      this.total = total;
+    });
     this.footerService.changeFooterStatus(true);
-    this.getBlogs();
     this.getFeaturedBlogs();
+    this.getTags();
     this.setMeta();
   }
 
@@ -37,10 +81,29 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   getBlogs() {
     const fields = '_id,slug,title,publishedAt,meta_description,headerImage, username';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
-      this.blogs = value;
-      this.isLoading = false;
+    this.cmsService
+      .getDataByTypeFieldOrderCount('blog', fields, order, this.finalCount, this.initialCount)
+      .subscribe((value: IBlog[]) => {
+        this.blogs = [];
+        this.blogs = value;
+        this.setSchema();
+        this.isLoading = false;
+      });
+  }
+
+  getTagFilterBlogs(tag) {
+    this.cmsService.getCountOfTypeWithFilter('blog', 'tags[].value', tag).subscribe((total) => {
+      this.total = total;
     });
+    this.cmsService
+      .getDataByTypeWithFilter('blog', 'tags[].value', tag, this.finalCount, this.initialCount)
+      .subscribe((data) => {
+        if (data) {
+          this.blogs = data;
+          this.setSchema();
+          this.isLoading = false;
+        }
+      });
   }
 
   getFeaturedBlogs(): void {
@@ -54,11 +117,105 @@ export class BlogsListComponent implements OnInit, OnDestroy {
       });
   }
 
+  getTags(): void {
+    const fields = 'tags, publishedAt';
+    const order = 'publishedAt desc';
+    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
+      value.forEach((blog) => {
+        if (blog.tags) {
+          blog.tags.forEach((tag) => {
+            if (!this.tags.some((existingTag) => existingTag.value === tag.value)) {
+              this.tags.push({ slug: this.generateSlug(tag.value), value: tag.value });
+            }
+          });
+        }
+      });
+    });
+  }
+
+  generateSlug(text: string): string {
+    return text
+      .trim() // Remove leading & trailing spaces
+      .toLowerCase() // Convert to lowercase
+      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+  }
+
+  slugToText(slug: string): string {
+    return slug.replace(/-/g, ' '); // Replace hyphens with spaces
+  }
+
+  getFilteredData(tag) {
+    this.isLoading = true;
+    if (tag === this.defaultTag.slug) {
+      this.getBlogs();
+    } else {
+      this.getTagFilterBlogs(tag);
+    }
+  }
+
+  setActiveTag(tag): void {
+    this.activeTag = tag.value;
+    if (tag.slug == this.defaultTag.slug) {
+      this.router.navigate(['/blogs'], { queryParams: { page: this.page } });
+    } else {
+      this.page = 1;
+      this.updatePagesAndCount(false);
+      this.router.navigate(['/blogs/category', tag.slug], { queryParams: { page: this.page } });
+    }
+    this.getFilteredData(tag.value);
+  }
+
   setMeta(): void {
     this.seoService.setTags(
-      'Relating with Developers & Communities',
-      'Blogs in the form of experiences and knowledge, authored by Developers, Designers, Community Managers and DevRels',
+      'Commudle Blog: Insights from DevRels and Developer Communities',
+      'Explore the latest in developer relations and community building. Discover expert DevRel interviews, community success stories, and engagement tips. Elevate your developer communities today',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  async setSchema() {
+    for (const blog of this.blogs) {
+      const authorName = await this.getUser(blog.username);
+      this.schemaForHackathon.push({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${environment.app_url}/blogs/${blog.slug.current}`,
+        },
+        headline: blog.title,
+        description: blog.meta_description,
+        image: this.imageUrl(blog.headerImage).url(),
+        author: {
+          type: 'Person',
+          name: authorName,
+          url: `${environment.app_url}/users/${blog.username}`,
+        },
+        datePublished: blog.publishedAt,
+      });
+    }
+    this.seoService.setSchema(this.schemaForHackathon);
+  }
+
+  getUser(username): Promise<string> {
+    return this.appUsersService
+      .getProfile(username)
+      .toPromise()
+      .then((user) => user.name);
+  }
+
+  updatePagesAndCount(loadBlogs = true): void {
+    this.initialCount = (this.page - 1) * 15;
+    this.finalCount = this.page * 15;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: this.page },
+      queryParamsHandling: 'merge',
+    });
+
+    if (loadBlogs) {
+      this.getBlogs();
+    }
   }
 }

@@ -17,11 +17,13 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
 
 @Component({
   selector: 'app-job-list',
   templateUrl: './job-list.component.html',
   styleUrls: ['./job-list.component.scss'],
+  providers: [EnumFormatPipe],
 })
 export class JobListComponent implements OnInit, OnDestroy {
   jobs: IJob[] = [];
@@ -71,6 +73,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     private router: Router,
     private seoService: SeoService,
     private activatedRoute: ActivatedRoute,
+    private enumFormatPipe: EnumFormatPipe,
   ) {
     this.filterForm = this.fb.group({
       category: [''],
@@ -200,6 +203,7 @@ export class JobListComponent implements OnInit, OnDestroy {
           this.page_info = data.page_info;
           this.isLoading = false;
           this.isFilterLoading = false;
+          this.setSchemaData();
         }),
     );
     this.setMeta();
@@ -227,6 +231,67 @@ export class JobListComponent implements OnInit, OnDestroy {
       fragment: 'jobs',
       queryParams: { hiring: 'true' },
     });
+  }
+
+  setSchemaData() {
+    const schemaArray: any[] = [];
+    for (const job of this.jobs) {
+      const jobLocation = job.location.split(',');
+      const datePosted = job.created_at;
+      const validThrough = job.expired_at;
+      const employmentType = this.enumFormatPipe.transform(job.job_type);
+
+      // Common schema data
+      const schemaData: any = {
+        '@context': 'https://schema.org/',
+        '@type': 'JobPosting',
+        title: job.position,
+        description: job.description ? job.description : 'NA',
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: job.company,
+        },
+        employmentType: employmentType,
+        datePosted: datePosted,
+        validThrough: validThrough,
+      };
+
+      // Schema data for base salary under job
+      if (job.min_salary !== 0) {
+        schemaData.baseSalary = {
+          '@type': 'MonetaryAmount',
+          currency: job.salary_currency,
+          value: {
+            '@type': 'QuantitativeValue',
+            minValue: job.min_salary,
+            maxValue: job.max_salary,
+            unitText: job.salary_type,
+          },
+        };
+      }
+      // schema data for remote job
+      if (job.location_type === EJobLocationType.REMOTE) {
+        schemaData.applicantLocationRequirements = {
+          '@type': 'Country',
+          name: jobLocation[jobLocation.length - 1],
+        };
+        schemaData.jobLocationType = 'TELECOMMUTE';
+      } else {
+        // schema data for non-remote location job
+        schemaData.jobLocation = {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: jobLocation[0],
+            addressCountry: jobLocation[jobLocation.length - 1],
+          },
+        };
+      }
+
+      schemaArray.push(schemaData);
+    }
+
+    this.seoService.setSchema(schemaArray);
   }
 
   setMeta(): void {

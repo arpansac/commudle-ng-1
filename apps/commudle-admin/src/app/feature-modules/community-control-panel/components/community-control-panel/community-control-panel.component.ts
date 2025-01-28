@@ -7,13 +7,22 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { faScroll } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faScroll } from '@fortawesome/free-solid-svg-icons';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
-import { faBuildingColumns, faFileLines, faNewspaper, faMessage } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBuildingColumns,
+  faFileLines,
+  faNewspaper,
+  faMessage,
+  faEnvelopeOpen,
+} from '@fortawesome/free-solid-svg-icons';
 import { environment } from '@commudle/shared-environments';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
+import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
   selector: 'app-community-control-panel',
@@ -35,10 +44,15 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
     faFileLines,
     faNewspaper,
     faMessage,
+    faBars,
+    faEnvelopeOpen,
   };
   environment = environment;
   darkMode: boolean;
   isHackathonActive = false;
+  sidebarExpanded = true;
+  ESidebarWidth = ESidebarWidth;
+  sidebarEventName = 'community';
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -49,6 +63,8 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private darkModeService: DarkModeService,
     private router: Router,
+    public sidebarService: SidebarService,
+    private footerService: FooterService,
   ) {}
 
   ngOnInit() {
@@ -63,11 +79,25 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
         this.isHackathonActive = this.router.url.toString().includes('/hackathons');
       }
     });
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+
+    // eslint-disable-next-line no-prototype-builtins
+    if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
+      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+        this.sidebarExpanded = data;
+      });
+    }
+    this.footerService.changeMiniFooterStatus(false);
   }
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.footerService.changeMiniFooterStatus(true);
+  }
+
+  toggleSidebar() {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
   setCommunity() {

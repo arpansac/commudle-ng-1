@@ -173,7 +173,7 @@ export class JobComponent implements OnInit, OnDestroy {
       '@context': 'https://schema.org/',
       '@type': 'JobPosting',
       title: this.job.position,
-      description: this.job.description,
+      description: this.job.description ? this.job.description : 'No Description Provided',
       hiringOrganization: {
         '@type': 'Organization',
         name: this.job.company,

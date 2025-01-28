@@ -24,7 +24,7 @@
                 <img
                   alt="{{ community.name }}"
                   class="logo"
-                  src="{{ community.logo_image_path?.i64 }}"
+                  src="{{ community.logo_image_path?.i320 }}"
                   title="{{ community.name }}"
                 />
                 <app-share-button
@@ -115,6 +115,15 @@
               </div>
               <div class="membership-toggle">
                 <div class="com-flex md:com-justify-end">
+                  <a
+                    *ngIf="community.community_group"
+                    [routerLink]="['/orgs', community.community_group.slug]"
+                    class="organization-details"
+                    [title]="community.community_group.name"
+                  >
+                    <fa-icon [icon]="faBuilding"></fa-icon>
+                    <span>{{ community.community_group.name }} ({{ community.community_group.member_count }})</span>
+                  </a>
                   <app-membership-toggle
                     [community]="community"
                     [shapes]="'semi-round'"

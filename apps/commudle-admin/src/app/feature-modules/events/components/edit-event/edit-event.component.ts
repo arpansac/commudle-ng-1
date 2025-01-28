@@ -130,7 +130,7 @@ export class EditEventComponent implements OnInit {
   fetchData() {
     this.event.tags.forEach((value) => this.tags.push(value.name));
 
-    if (!this.event.editable) {
+    if (!this.event.editable && this.type === 'Save') {
       this.eventForm.get('event').disable();
     }
 

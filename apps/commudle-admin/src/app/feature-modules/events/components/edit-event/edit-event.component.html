@@ -1,5 +1,5 @@
 <div class="event-edit-form-container">
-  <div class="backButton" *ngIf="type === 'save'">
+  <div class="backButton" *ngIf="type === 'Save'">
     <commudle-back-button text="Back"></commudle-back-button>
   </div>
 
@@ -7,7 +7,7 @@
     <nb-card-body>
       <h3 class="com-mt-0">Edit Event</h3>
 
-      <nb-alert status="info" *ngIf="event && !event.editable">
+      <nb-alert status="info" *ngIf="event && !event.editable && type === 'Save'">
         <p>
           This event is <strong>{{ event.event_status?.name | titlecase }}</strong> and cannot be edited
         </p>
@@ -124,7 +124,7 @@
 
         <div class="save-button-bottom">
           <button
-            *ngIf="event && event.editable"
+            *ngIf="event && (type === 'clone' || (type === 'Save' && event.editable))"
             [disabled]="tags.length < 3 || submitIsInProcess"
             type="submit"
             nbButton

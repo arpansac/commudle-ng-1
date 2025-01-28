@@ -58,6 +58,9 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
 import { AdminCommunityHackathonComponent } from './components/admin-community-hackathon/admin-community-hackathon.component';
 import { CommunityPaymentLogsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-payment-logs/community-payment-logs.component';
 import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/community-control-panel/components/community-payments/community-bank-details/community-bank-details.component';
+import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
+import { ReusableComponentsModule } from 'apps/commudle-admin/src/app/feature-modules/reusable-components/reusable-components.module';
+import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +89,7 @@ import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/featu
     AdminCommunityHackathonComponent,
     CommunityPaymentLogsComponent,
     CommunityBankDetailsComponent,
+    CommunityMailsSentStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -102,6 +106,10 @@ import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/featu
     EventsModule,
     AppSharedComponentsModule,
     CommunityChannelsModule,
+    ReusableComponentsModule,
+
+    //standalone
+    SidebarComponent,
 
     // Nebular
     NbCardModule,

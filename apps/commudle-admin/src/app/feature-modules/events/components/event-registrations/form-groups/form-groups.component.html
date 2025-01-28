@@ -27,8 +27,8 @@
               ></fa-icon>
             </p>
             <p class="type">Form type: {{ edfeg.registration_type.name | titlecase }}</p>
-            <div class="link-to-fill">
-              <a *ngIf="event.editable" [routerLink]="['/fill-form', edfeg.data_form_entity.id]" target="_blank">
+            <div class="link-to-fill" *ngIf="event.editable">
+              <a [routerLink]="['/fill-form', edfeg.data_form_entity.id]" target="_blank">
                 <span class="com-text-sm">Link to fill</span>
                 <nb-icon icon="external-link" class="com-text-sm"></nb-icon>
               </a>

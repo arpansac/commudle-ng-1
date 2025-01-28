@@ -54,7 +54,7 @@ export class CommunityFormsListComponent implements OnInit {
   constructor(private dataFormsService: DataFormsService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.newFormParentId = this.activatedRoute.parent.parent.snapshot.params.community_id;
+    this.newFormParentId = this.activatedRoute.parent.snapshot.params.community_id;
     if (this.newFormParentId) {
       this.getDataForms();
     }

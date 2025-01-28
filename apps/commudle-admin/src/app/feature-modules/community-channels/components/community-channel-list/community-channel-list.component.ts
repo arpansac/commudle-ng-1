@@ -154,6 +154,7 @@ export class CommunityChannelListComponent implements OnInit, OnDestroy {
       context: {
         channel: channel,
         discussionType: this.discussionType.CHANNEL,
+        redirectUrl: this.redirectUrl,
         // currentUrl: 'communities/' + this.parent.slug + '/channels',
       },
     });

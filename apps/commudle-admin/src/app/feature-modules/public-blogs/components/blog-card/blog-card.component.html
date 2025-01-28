@@ -1,5 +1,5 @@
 <div *ngIf="blog" class="blog-cards">
-  <div [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
+  <a [routerLink]="['/blogs', blog?.slug.current]" class="blog-card">
     <div class="blog-actions">
       <app-share-button
         *ngIf="shareButton"
@@ -17,7 +17,7 @@
       [name]="blog?.title"
       [aspectRatio]="'16/9'"
     ></commudle-banner-image>
-    <div class="content">
+    <div class="content" [ngClass]="{ content: fixCardHeight }">
       <div class="profile-date">
         <div *ngIf="user && showUserProfile">
           <app-user-profile-card-small [user]="user"></app-user-profile-card-small>
@@ -26,16 +26,16 @@
           <fa-icon [icon]="faCalendar"></fa-icon><span>{{ blog.publishedAt | date }}</span>
         </p>
       </div>
-      <h6 class="name">
+      <h3 class="name">
         {{ blog?.title }}
-      </h6>
-      <div class="meta-description">
+      </h3>
+      <p class="meta-description">
         {{ blog?.meta_description }}
-      </div>
+      </p>
     </div>
-    <div class="read-more">
+    <a class="read-more">
       Read Blog &nbsp;
       <nb-icon icon="arrow-forward-outline"></nb-icon>
-    </div>
-  </div>
+    </a>
+  </a>
 </div>

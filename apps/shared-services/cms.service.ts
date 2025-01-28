@@ -137,4 +137,16 @@ export class CmsService {
   getImageUrl(source: SanityImageSource): ImageUrlBuilder {
     return this.imageUrlBuilder.image(source);
   }
+
+  getCountOfType(type: string) {
+    return from(this.client.fetch(`count(*[_type == "${type}"])`));
+  }
+
+  getCountOfTypeWithFilter(type: string, filterType: string, keyword: string) {
+    return from(
+      this.client.fetch(`count(*[_type == "${type}" && $keyword in ${filterType}])`, {
+        keyword,
+      }),
+    );
+  }
 }
