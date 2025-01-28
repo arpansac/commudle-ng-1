@@ -1,5 +1,5 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { ToastrService } from '@commudle/shared-services';
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import { HackathonWinnerService } from 'apps/commudle-admin/src/app/services/hackathon-winner.service';
@@ -25,6 +25,10 @@ export class HackathonPrizeCardComponent implements OnInit {
     faXmark,
   };
 
+  page = 1;
+  total: number;
+  count = 10;
+
   constructor(
     private nbDialogService: NbDialogService,
     private hackathonService: HackathonService,
@@ -47,22 +51,31 @@ export class HackathonPrizeCardComponent implements OnInit {
   }
 
   openPrizeDistributionDialogBox(dialog) {
-    this.hackathonService.indexUserResponses(this.hackathonPrize.hackathon_id).subscribe((data) => {
-      if (data) {
-        this.hackathonUserResponses = data;
-        for (const hur of this.hackathonUserResponses) {
-          for (const hw of hur.team.hackathon_winners) {
-            if (hw.hackathon_prize.id === this.hackathonPrize.id) {
-              hur.team.prize_selected = true;
-              break;
-            } else {
-              hur.team.prize_selected = false;
+    this.fetchHackathonUserResponses();
+    this.nbDialogService.open(dialog, {});
+  }
+
+  fetchHackathonUserResponses() {
+    this.hackathonService
+      .indexUserResponses(this.hackathonPrize.hackathon_id, this.page, this.count)
+      .subscribe((data) => {
+        if (data) {
+          this.hackathonUserResponses = data.values;
+          this.page = data.page;
+          this.total = data.total;
+
+          for (const hur of this.hackathonUserResponses) {
+            for (const hw of hur.team.hackathon_winners) {
+              if (hw.hackathon_prize.id === this.hackathonPrize.id) {
+                hur.team.prize_selected = true;
+                break;
+              } else {
+                hur.team.prize_selected = false;
+              }
             }
           }
         }
-      }
-    });
-    this.nbDialogService.open(dialog, {});
+      });
   }
 
   addWinner(team: IHackathonTeam, index: number) {

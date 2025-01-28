@@ -118,6 +118,16 @@
       <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
       <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
     </ng-template>
+
+    <app-pagination
+      *ngIf="total > 0"
+      [count]="count"
+      [current]="page"
+      [total]="total"
+      (goTo)="page = $event; fetchUserResponses()"
+      (next)="page = $event; fetchUserResponses()"
+      (previous)="page = $event; fetchUserResponses()"
+    ></app-pagination>
   </nb-card-body>
 </nb-card>
 
