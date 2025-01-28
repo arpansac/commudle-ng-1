@@ -24,8 +24,8 @@
   align-items: center;
   display: flex;
 
-  > div {
-    @apply com-h-24 com-w-24 com-overflow-hidden com-my-3;
+  .logo {
+    @apply com-h-14 com-w-14 com-overflow-hidden;
 
     img {
       @apply com-bg-tWhite com-h-full com-object-contain com-rounded-md com-w-full com-p-1;
@@ -33,19 +33,19 @@
   }
 
   h4 {
-    margin: 0 1rem 0;
+    @apply com-mx-2 com-my-0;
   }
 }
 
 .header-links {
-  div {
-    @apply com-mb-4;
+  .people-logo {
+    @apply com-mb-4 com-mt-1;
   }
   .buttons {
-    @apply com-flex com-flex-wrap com-justify-evenly md:com-justify-start;
+    @apply com-flex com-flex-wrap md:com-gap-0 com-gap-2 com-justify-evenly md:com-justify-start;
     a,
     button {
-      @apply com-mr-4 com-mt-4;
+      @apply md:com-mr-4 com-m-0;
     }
   }
 }
@@ -98,7 +98,7 @@
 }
 
 .header {
-  @apply com-bg-white com-px-10 com-pb-4;
+  @apply com-bg-white md:com-p-4 com-px-3 com-py-4;
 }
 
 .sidebar {
