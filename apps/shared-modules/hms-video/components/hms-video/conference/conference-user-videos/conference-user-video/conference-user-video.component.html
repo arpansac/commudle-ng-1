@@ -78,7 +78,12 @@
     </a>
     <!-- button to follow speaker -->
     <div class="com-ml-2">
-      <app-user-follow [username]="metaData.username" appearance="outline" status="basic"></app-user-follow>
+      <app-user-follow
+        [username]="metaData.username"
+        [userId]="metaData.id"
+        appearance="outline"
+        status="basic"
+      ></app-user-follow>
     </div>
   </div>
 </div>
