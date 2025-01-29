@@ -25,10 +25,10 @@
   display: flex;
 
   .logo {
-    @apply com-h-14 com-w-14 com-overflow-hidden;
+    @apply com-h-12 com-w-12 com-overflow-hidden;
 
     img {
-      @apply com-bg-tWhite com-h-full com-object-contain com-rounded-md com-w-full com-p-1;
+      @apply com-bg-tWhite com-h-full com-object-contain com-rounded-lg com-w-full;
     }
   }
 
