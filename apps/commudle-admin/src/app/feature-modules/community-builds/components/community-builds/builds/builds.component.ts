@@ -173,7 +173,6 @@ export class BuildsComponent implements OnInit {
       )
       .subscribe((data: IPagination<ICommunityBuild>) => {
         this.communityBuilds = this.communityBuilds.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-        console.log(this.communityBuilds);
         this.total = data.total;
         this.page_info = data.page_info;
         this.loadingCommunityBuilds = false;
