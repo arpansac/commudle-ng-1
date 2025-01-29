@@ -23,7 +23,9 @@
               <td>{{ campaignType.name }}</td>
               <td>{{ campaignType.description }}</td>
               <td>{{ campaignType.active }}</td>
-              <td>{{ campaignType.user.email }}</td>
+              <td>
+                <app-user-profile-mini [user]="campaignType.user" size="small"></app-user-profile-mini>
+              </td>
             </tr>
           </table>
         </nb-card-body>
@@ -49,6 +51,15 @@
             <input formControlName="name" nbInput type="text" fullWidth placeholder="Name"
           /></label>
         </div>
+        <commudle-alert
+          *ngIf="
+            campaignTypeForm.controls['name'].touched &&
+            campaignTypeForm.controls['name'].hasError('required') &&
+            campaignTypeForm.controls['name'].invalid
+          "
+          errorMessage="Name is Required"
+          [error]="true"
+        ></commudle-alert>
         <br />
         <div>
           <label>
@@ -57,6 +68,15 @@
             <textarea formControlName="description" nbInput type="text" fullWidth placeholder="Description"></textarea>
           </label>
         </div>
+        <commudle-alert
+          *ngIf="
+            campaignTypeForm.controls['description'].touched &&
+            campaignTypeForm.controls['description'].hasError('required') &&
+            campaignTypeForm.controls['description'].invalid
+          "
+          errorMessage="Description is Required"
+          [error]="true"
+        ></commudle-alert>
         <br />
         <nb-toggle formControlName="active" labelPosition="left"> Active <span class="required">*</span></nb-toggle>
       </form>

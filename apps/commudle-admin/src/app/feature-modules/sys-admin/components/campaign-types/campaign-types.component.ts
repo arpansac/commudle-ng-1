@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ICampaignType } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { SysAdminCampaignTypesService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign-types.service';
 
@@ -10,7 +11,7 @@ import { SysAdminCampaignTypesService } from 'apps/commudle-admin/src/app/featur
 })
 export class CampaignTypesComponent implements OnInit {
   campaignTypeForm: FormGroup;
-  campaignTypes;
+  campaignTypes: ICampaignType[];
 
   constructor(
     private dialogService: NbDialogService,
@@ -29,13 +30,17 @@ export class CampaignTypesComponent implements OnInit {
   }
 
   getCampaignTypes() {
-    this.sysAdminCampaignTypesService.getCampaignTypes().subscribe((res) => {
+    this.sysAdminCampaignTypesService.getCampaignTypes().subscribe((res: ICampaignType[]) => {
       this.campaignTypes = res;
-      console.log('🚀 ~ CampaignTypesComponent ~ this.sysAdminCampaignTypesService.getCampaignTypes ~ res:', res);
     });
   }
 
   openDialog(dialog) {
+    this.campaignTypeForm.patchValue({
+      name: '',
+      description: '',
+      active: true,
+    });
     this.dialogService.open(dialog);
   }
 
