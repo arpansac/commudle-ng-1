@@ -5,7 +5,7 @@
         <div *ngIf="event.header_image_path || event.header_image">
           <div *appBreakpoints="'>lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="event.header_image_path || event.header_image.i350"
+              [headerImagePath]="event.header_image_path || event.header_image.i320"
               [name]="event.name"
               [topRightCurve]="false"
               [bottomRightCurve]="false"
@@ -13,7 +13,7 @@
           </div>
           <div *appBreakpoints="'<=lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="event.header_image_path || event.header_image.i350"
+              [headerImagePath]="event.header_image_path || event.header_image.i320"
               [name]="event.name"
               [bottomRightCurve]="false"
               [bottomLeftCurve]="false"
