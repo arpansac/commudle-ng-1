@@ -1,13 +1,13 @@
 <div *ngIf="community" class="header">
   <div class="basic-details">
-    <div>
+    <div class="logo">
       <img alt="{{ community.name }}" src="{{ community.logo_image_path?.i96 }}" title="{{ community.name }}" />
     </div>
     <h4>{{ community.name }}</h4>
   </div>
 
   <section class="header-links">
-    <div>
+    <div class="people-logo">
       <nb-icon icon="people-outline"></nb-icon>
       {{ community.members_count }} Members
     </div>
