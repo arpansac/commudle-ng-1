@@ -28,6 +28,7 @@ export class BuildsComponent implements OnInit {
   loadingCommunityBuilds = false;
   heading = 'Builds by techies around you';
   selectedTags = [];
+  schemaForBuild = [];
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -177,6 +178,26 @@ export class BuildsComponent implements OnInit {
         this.loadingCommunityBuilds = false;
         this.skeletonLoaderCard = false;
         this.loading = false;
+        this.setSchema();
       });
+  }
+
+  setSchema() {
+    for (const build of this.communityBuilds) {
+      this.schemaForBuild.push({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: build.name,
+        description: build.description,
+        datePublished: build.created_at,
+        screenshot: build.images ? build.images[0].url : '',
+        offers: {
+          '@type': 'Offer',
+          price: 0,
+        },
+        applicationCategory: 'Software Engineering',
+      });
+    }
+    this.seoService.setSchema(this.schemaForBuild);
   }
 }
