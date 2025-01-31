@@ -8,6 +8,7 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-build-details',
@@ -37,6 +38,7 @@ export class CommunityBuildDetailsComponent implements OnInit {
     private dialogService: NbDialogService,
     private discussionsService: DiscussionsService,
     private sanitizer: DomSanitizer,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class CommunityBuildDetailsComponent implements OnInit {
       this.embedCode = null;
     }
     this.isSingleImage();
+    this.setSchema();
   }
 
   openImage(image) {
@@ -79,5 +82,21 @@ export class CommunityBuildDetailsComponent implements OnInit {
     } else if (event.key === 'ArrowRight') {
       this.imageNav(1);
     }
+  }
+
+  setSchema() {
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: this.cBuild.name,
+      description: this.cBuild.description,
+      datePublished: this.cBuild.created_at,
+      screenshot: this.cBuild.images.length > 0 ? this.cBuild.images[0].url : '',
+      offers: {
+        '@type': 'Offer',
+        price: 0,
+      },
+      applicationCategory: 'Software Engineering',
+    });
   }
 }
