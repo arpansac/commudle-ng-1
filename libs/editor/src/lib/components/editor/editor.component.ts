@@ -43,6 +43,7 @@ export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() status: NbComponentStatus = 'basic';
   @Input() appearance: NbButtonAppearance = 'filled';
   @Input() addAttachment = false;
+  @Input() twoLineClamp = false;
 
   @Output() contentChange = new EventEmitter<string>();
   @Output() uploadImages = new EventEmitter<any>();
