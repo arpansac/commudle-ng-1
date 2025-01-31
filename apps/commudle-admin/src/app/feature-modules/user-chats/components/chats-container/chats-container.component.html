@@ -4,6 +4,7 @@
       (getChat)="openChat($event)"
       (moveUserToTop)="liveUpdates($event)"
       (getPersonalChats)="getPersonalChat()"
+      [loadingChat]="isLoadingChat"
       [allPersonalChatUsers]="allPersonalChatUsers"
       [totalChats]="total"
       [currentUser]="currentUser"

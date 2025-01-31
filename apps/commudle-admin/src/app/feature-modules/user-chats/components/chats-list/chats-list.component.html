@@ -43,9 +43,15 @@
           </div>
         </nb-list-item>
       </nb-list>
+      <app-loading-spinner *ngIf="loadingChat"></app-loading-spinner>
     </nb-card-body>
   </nb-card>
-  <button (click)="showChat = !showChat; gtmService()" class="chats-list-toggle" nbButton shape="round">
+  <button
+    (click)="showChat = !showChat; gtmService(); getMoreChatsList()"
+    class="chats-list-toggle"
+    nbButton
+    shape="round"
+  >
     <nb-badge *ngIf="unreadCount > 0" status="info" text="{{ unreadCount }}"></nb-badge>
     <nb-icon icon="message-square-outline"></nb-icon>
   </button>
