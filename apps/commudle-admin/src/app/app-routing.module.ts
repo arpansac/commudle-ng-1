@@ -28,6 +28,11 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'campaign',
+    loadChildren: () =>
+      import('./feature-modules/admin-campaign/admin-campaign.module').then((m) => m.AdminCampaignModule),
+  },
+  {
     path: 'notifications',
     loadChildren: () =>
       import('./feature-modules/notifications/notifications.module').then((m) => m.NotificationsModule),
