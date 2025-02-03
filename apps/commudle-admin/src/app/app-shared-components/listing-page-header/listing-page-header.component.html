@@ -4,14 +4,10 @@
       <div class="content">
         <div class="header-text">
           <h1 class="title">
-            <!-- <button class="button">
-              <nb-icon class="bulb-icon" icon="bulb-outline"></nb-icon></button
-            > -->
             {{ header.title }}
           </h1>
           <p class="heading">{{ header.heading }}</p>
           <div *ngIf="richText" [innerHTML]="richText" class="content"></div>
-          <!-- <p class="subheading">{{ buildsPageHeader.sub_heading }}</p> -->
         </div>
         <ng-container *ngIf="header?.image_link">
           <a class="header-image" [href]="header.image_link">
