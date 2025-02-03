@@ -10,7 +10,7 @@
             {{ header.title }}
           </h1>
           <p class="heading">{{ header.heading }}</p>
-          <div [innerHTML]="richText" class="content"></div>
+          <div *ngIf="richText" [innerHTML]="richText" class="content"></div>
           <!-- <p class="subheading">{{ buildsPageHeader.sub_heading }}</p> -->
         </div>
         <ng-container *ngIf="header?.image_link">

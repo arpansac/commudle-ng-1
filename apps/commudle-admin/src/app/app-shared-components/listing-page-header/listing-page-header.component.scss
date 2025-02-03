@@ -1,20 +1,18 @@
 .header {
-  //   @apply md:com-max-h-[386px] com-max-h-full;
+  @apply md:com-h-[470px] com-h-full;
+
   .background {
     @apply com-m-0 com-p-0 com-w-full com-h-full;
-    // md:com-h-[386px]
 
     .base-layout {
       @apply com-min-h-full;
       .content {
-        @apply com-flex md:com-flex-row com-flex-col md:com-justify-between md:com-max-h-[390px] com-max-h-full;
-        // md:com-rounded-lg com-rounded-none  md:com-w-[1280px]
+        @apply com-flex md:com-flex-row com-flex-col com-h-full com-p-0 com-m-0 md:com-py-10 com-pt-6 com-pb-0;
         .header-text {
-          @apply com-flex com-flex-col md:com-px-0 com-px-4 md:com-pb-0 md:com-pt-10 com-py-6 md:com-w-[620px] com-w-full com-h-full;
-          //   md:com-min-h-[386px] yeah chaiye hoga shyd
+          @apply com-flex com-flex-col com-items-center md:com-items-start md:com-text-left com-text-center md:com-px-0 com-px-6 com-py-0 md:com-w-[620px] com-w-full com-h-full md:com-mr-10 com-mr-0;
 
           .title {
-            @apply com-flex com-items-center md:com-text-[42px] com-text-2xl com-font-bold com-mt-0 com-mb-9 md:com-mb-8 com-text-tYankees-Blue;
+            @apply com-flex com-items-center md:com-text-[42px] com-text-2xl com-font-bold com-m-0 com-mb-4 com-text-tYankees-Blue;
 
             // .button {
             //   @apply com-mr-4 md:com-w-[52px] md:com-h-[52px] com-w-11 com-h-11 com-bg-Blanched-Almond com-border-0 com-flex com-items-center com-rounded-md;
@@ -25,7 +23,7 @@
             // }
           }
           .heading {
-            @apply md:com-text-lg com-text-base com-font-normal com-m-0 com-mx-0 md:com-mb-[52px] com-mb-8 com-text-tgray-500;
+            @apply md:com-text-lg com-text-base com-font-normal com-m-0 md:com-mb-9 com-mb-6 com-text-tgray-500;
           }
 
           .subheading {
@@ -33,11 +31,11 @@
           }
 
           .content {
-            @apply md:com-w-[666px] com-w-full;
-            // com-text-lg com-font-normal
+            @apply md:com-w-[620px] com-w-full com-p-0 md:com-pb-0 com-pb-6;
             ::ng-deep {
               p {
-                @apply com-text-tgray-500 com-m-0 com-mb-2 com-w-full;
+                @apply com-m-0 com-w-full;
+                // com-text-tgray-500
               }
             }
           }
@@ -45,10 +43,8 @@
 
         .header-image {
           @apply com-flex com-items-center com-m-0;
-          //   com-h-[300px] md:com-h-[386px]
           img {
             @apply com-h-full com-mx-auto;
-            //  com-py-1
           }
         }
       }
