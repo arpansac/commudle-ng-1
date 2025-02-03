@@ -29,13 +29,7 @@ nb-actions {
         fa-icon,
         nb-icon,
         span {
-          @apply com-text-blue-600 com-font-medium;
-          // background: linear-gradient(45deg, #ff0000, #00ff00);
-          // -webkit-background-clip: text;
-          // -webkit-text-fill-color: transparent;
-          // background: linear-gradient(180deg, #3366ff 0%, #0095ff 100%);
-          // background-clip: text;
-          // @apply com-text-5xl com-bg-clip-text com-text-transparent com-bg-gradient-to-b com-from-primary-500 com-to-primary-600 com-font-medium;
+          @apply com-text-primary-500 com-font-medium;
         }
       }
 
