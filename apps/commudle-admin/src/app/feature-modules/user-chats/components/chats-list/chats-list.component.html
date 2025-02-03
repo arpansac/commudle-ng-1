@@ -31,7 +31,11 @@
             <p class="date">{{ moment(chatUser.last_message.created_at).format('ll') }}</p>
           </div>
           <div class="latest-message-count">
-            <commudle-editor [content]="chatUser.last_message.content" [editable]="false"></commudle-editor>
+            <commudle-editor
+              [content]="chatUser.last_message.content"
+              [editable]="false"
+              [twoLineClamp]="true"
+            ></commudle-editor>
             <app-badge
               *ngIf="currentUser && chatUser.unread_messages_count > 0"
               [text]="chatUser.unread_messages_count"
@@ -43,9 +47,15 @@
           </div>
         </nb-list-item>
       </nb-list>
+      <app-loading-spinner *ngIf="loadingChat"></app-loading-spinner>
     </nb-card-body>
   </nb-card>
-  <button (click)="showChat = !showChat; gtmService()" class="chats-list-toggle" nbButton shape="round">
+  <button
+    (click)="showChat = !showChat; gtmService(); getMoreChatsList()"
+    class="chats-list-toggle"
+    nbButton
+    shape="round"
+  >
     <nb-badge *ngIf="unreadCount > 0" status="info" text="{{ unreadCount }}"></nb-badge>
     <nb-icon icon="message-square-outline"></nb-icon>
   </button>

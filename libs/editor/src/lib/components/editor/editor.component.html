@@ -7,7 +7,7 @@
     <p>📎</p>
   </button>
   <commudle-editor-menu *ngIf="showMenu && editable" [editor]="editor"></commudle-editor-menu>
-  <tiptap [editor]="editor" [ngClass]="{ editable: editable }"></tiptap>
+  <tiptap [editor]="editor" [ngClass]="{ editable: editable, 'two-line-clamp': twoLineClamp }"></tiptap>
 
   <button
     (click)="onClick()"
