@@ -1,1 +1,25 @@
-<p>campaign-form works!</p>
+<section>
+  <div class="sidebar">
+    <commudle-sidebar
+      [expandedWidth]="ESidebarWidth.XL"
+      [forWindow]="false"
+      [eventName]="sidebarEventName"
+      [showExpandedButton]="false"
+      heading="Advertisement Dashboard"
+      [isExpanded]="true"
+    >
+    </commudle-sidebar>
+  </div>
+  <div class="right-section">
+    <div class="header">
+      <span class="step-one">New Order</span>
+      &nbsp;
+      <fa-icon [icon]="icons.faAnglesRight"></fa-icon>
+      &nbsp;
+      <span class="step-two">Select Campaign</span>
+    </div>
+    <div class="form">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+section {
+  @apply com-w-full com-bg-white com-min-h-screen com-flex;
+  .sidebar {
+    @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+  }
+
+  .right-section {
+    @apply com-w-full;
+    .header {
+      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4;
+      .step-one {
+        @apply com-text-gray-500 com-text-base com-font-medium;
+      }
+      .step-two {
+        @apply com-text-Yankees-Blue com-text-base com-font-medium;
+      }
+    }
+    .form {
+      @apply com-px-6 com-py-4;
+    }
+  }
+}

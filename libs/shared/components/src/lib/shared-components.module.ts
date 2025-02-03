@@ -26,6 +26,9 @@ import { PublicFaqsComponent } from './components/public-faqs/public-faqs.compon
 import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 import { UserPersonalConnectComponent } from './components/user-personal-connect/user-personal-connect.component';
+import { InputComponent } from './components/input/input.component';
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     DiscussionComponent,
@@ -40,6 +43,7 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     PublicFaqsComponent,
     VotersComponent,
     UserProfileMiniCardComponent,
+    InputComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +59,7 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     NbContextMenuModule,
     FontAwesomeModule,
     UserPersonalConnectComponent,
+    FormsModule,
   ],
   exports: [
     DiscussionComponent,
@@ -63,6 +68,7 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     LoadingSpinnerComponent,
     FaqComponent,
     PublicFaqsComponent,
+    InputComponent,
   ],
   providers: [InViewportDirective],
 })
