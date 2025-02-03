@@ -52,6 +52,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   communityId: string | number;
   EInvitationStatus = EInvitationStatus;
   selectedResponse;
+  isLoading = false;
 
   page = 1;
   total: number;
@@ -131,10 +132,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   fetchUserResponses() {
+    this.isLoading = true;
     this.hackathonService.indexUserResponses(this.hackathonId, this.page, this.count).subscribe((data) => {
       this.userResponses = data.values;
       this.page = data.page;
       this.total = data.total;
+      this.isLoading = false;
     });
   }
 
