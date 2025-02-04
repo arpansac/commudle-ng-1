@@ -21,8 +21,8 @@ export class SysAdminCampaignTypesService {
     });
   }
 
-  updateCampaignType(formData, campaignId: number): Observable<ICampaignType> {
-    const params = new HttpParams().set('campaign_id', campaignId);
+  updateCampaignType(formData, campaignTypeId: number): Observable<ICampaignType> {
+    const params = new HttpParams().set('campaign_type_id', campaignTypeId);
 
     return this.http.put<ICampaignType>(
       this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.UPDATE),

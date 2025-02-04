@@ -57,20 +57,35 @@ export class CampaignTypesComponent implements OnInit {
         active: true,
       });
     }
-    this.dialogService.open(dialog);
+    this.dialogService.open(dialog, { context: { campaignType: campaignType } });
   }
 
   create() {
     this.sysAdminCampaignTypesService.createCampaignType(this.campaignTypeForm.value).subscribe((res) => {
-      this.campaignTypes.push(res);
+      if (res) {
+        this.campaignTypes.push(res);
+      }
     });
+  }
+
+  update(campaignTypeId: number) {
+    this.sysAdminCampaignTypesService
+      .updateCampaignType(this.campaignTypeForm.value, campaignTypeId)
+      .subscribe((res) => {
+        if (res) {
+          const campaignTypeIndex = this.campaignTypes.findIndex((c) => c.id === campaignTypeId);
+          this.campaignTypes[campaignTypeIndex] = res;
+        }
+      });
   }
 
   toggleCampaignStatus(campaignTypeId: number) {
     this.sysAdminCampaignTypesService.toggleCampaignStatus(campaignTypeId).subscribe((res) => {
-      const campaign = this.campaignTypes.find((c) => c.id === campaignTypeId);
-      campaign.active = res;
-      this.toasterService.successDialog('Campaign status updated successfully');
+      if (res) {
+        const campaignTypeIndex = this.campaignTypes.findIndex((c) => c.id === campaignTypeId);
+        this.campaignTypes[campaignTypeIndex].active = !this.campaignTypes[campaignTypeIndex].active;
+        this.toasterService.successDialog('Campaign status updated successfully');
+      }
     });
   }
 }
