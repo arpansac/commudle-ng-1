@@ -23,3 +23,4 @@ export * from './lib/note.service';
 export * from './lib/razorpay.service';
 export * from './lib/help-dictionary.store';
 export * from './lib/campaign-type.service';
+export * from './lib/campaign.service';

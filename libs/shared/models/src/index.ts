@@ -43,3 +43,4 @@ export * from './lib/activity-feed.model';
 export * from './lib/profanity.model';
 export * from './lib/user-recap-stats.model';
 export * from './lib/campaign-type.model';
+export * from './lib/campaign.model';

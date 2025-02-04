@@ -12,11 +12,11 @@ export class SysAdminCampaignTypesService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
   getCampaignTypes(): Observable<ICampaignType[]> {
-    return this.http.get<ICampaignType[]>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS_TYPES.INDEX));
+    return this.http.get<ICampaignType[]>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.INDEX));
   }
 
   createCampaignType(formData): Observable<ICampaignType> {
-    return this.http.post<ICampaignType>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS_TYPES.CREATE), {
+    return this.http.post<ICampaignType>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.CREATE), {
       campaign_type: formData,
     });
   }
@@ -25,7 +25,7 @@ export class SysAdminCampaignTypesService {
     const params = new HttpParams().set('campaign_id', campaignId);
 
     return this.http.put<ICampaignType>(
-      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS_TYPES.UPDATE),
+      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.UPDATE),
       {
         campaign_type: formData,
       },
@@ -35,11 +35,9 @@ export class SysAdminCampaignTypesService {
     );
   }
 
-  toggleCampaignStatus(campaignId: number): Observable<boolean> {
-    const params = new HttpParams().set('campaign_id', campaignId);
-
-    return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS_TYPES.TOGGLE_STATUS), {
-      params,
+  toggleCampaignStatus(campaignTypeId: number): Observable<boolean> {
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.TOGGLE_STATUS), {
+      campaign_type_id: campaignTypeId,
     });
   }
 }

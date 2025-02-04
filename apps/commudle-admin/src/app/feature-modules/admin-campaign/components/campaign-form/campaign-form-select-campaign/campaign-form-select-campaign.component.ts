@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ICampaignType } from '@commudle/shared-models';
-import { CampaignTypeService } from '@commudle/shared-services';
+import { CampaignService, CampaignTypeService } from '@commudle/shared-services';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -11,16 +11,15 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 })
 export class CampaignFormSelectCampaignComponent implements OnInit {
   campaignTypes: ICampaignType[];
-  campaignForm: FormGroup;
   selectedCampaignTypeId: number;
   icons = {
     faArrowRight,
   };
-  constructor(private campaignTypeService: CampaignTypeService, private fb: FormBuilder) {
-    this.campaignForm = this.fb.group({
-      campaign_type_id: [NaN, Validators.required],
-    });
-  }
+  constructor(
+    private campaignTypeService: CampaignTypeService,
+    private campaignService: CampaignService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.getCampaignTypes();
@@ -34,6 +33,11 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
 
   selectCampaignType(campaignTypeId: number) {
     this.selectedCampaignTypeId = campaignTypeId;
-    this.campaignForm.patchValue({ campaign_type_id: campaignTypeId });
+  }
+
+  createCampaign() {
+    this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res) => {
+      this.router.navigate(['campaign', 'edit', res.id, 'order-setup']);
+    });
   }
 }

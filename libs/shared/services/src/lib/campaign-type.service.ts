@@ -12,6 +12,8 @@ export class CampaignTypeService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
   getCampaignTypes(): Observable<ICampaignType[]> {
-    return this.http.get<ICampaignType[]>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS_TYPES.PUBLIC.INDEX));
+    return this.http.get<ICampaignType[]>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.PUBLIC.INDEX),
+    );
   }
 }

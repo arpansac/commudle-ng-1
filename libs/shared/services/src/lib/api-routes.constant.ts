@@ -962,13 +962,17 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/profanity', //PUT
   },
 
-  CAMPAIGNS_TYPES: {
-    INDEX: 'api/v2/campaigns/campaign_type', //GET
-    CREATE: 'api/v2/campaigns/campaign_type', //POST
-    TOGGLE_STATUS: 'api/v2/campaigns/campaign_type/toggle_status', //PUT
-    UPDATE: 'api/v2/campaigns/campaign_type', //PUT
-    PUBLIC: {
-      INDEX: 'api/v2/campaigns/campaign_type/public', //GET
+  CAMPAIGNS: {
+    INDEX: 'api/v2/campaigns', //GET
+    CREATE: 'api/v2/campaigns', //POST
+    CAMPAIGNS_TYPES: {
+      INDEX: 'api/v2/campaigns/campaign_types', //GET
+      CREATE: 'api/v2/campaigns/campaign_types', //POST
+      TOGGLE_STATUS: 'api/v2/campaigns/campaign_types/toggle_status', //PUT
+      UPDATE: 'api/v2/campaigns/campaign_types', //PUT
+      PUBLIC: {
+        INDEX: 'api/v2/campaigns/campaign_types/public', //GET
+      },
     },
   },
 };

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICampaignType } from '@commudle/shared-models';
+import { ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { SysAdminCampaignTypesService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign-types.service';
-
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'commudle-campaign-types',
   templateUrl: './campaign-types.component.html',
@@ -12,11 +13,17 @@ import { SysAdminCampaignTypesService } from 'apps/commudle-admin/src/app/featur
 export class CampaignTypesComponent implements OnInit {
   campaignTypeForm: FormGroup;
   campaignTypes: ICampaignType[];
+  icons = {
+    faEdit,
+    faTrash,
+  };
+  isLoading = true;
 
   constructor(
     private dialogService: NbDialogService,
     private fb: FormBuilder,
     private sysAdminCampaignTypesService: SysAdminCampaignTypesService,
+    private toasterService: ToastrService,
   ) {
     this.campaignTypeForm = this.fb.group({
       name: ['', Validators.required],
@@ -32,21 +39,38 @@ export class CampaignTypesComponent implements OnInit {
   getCampaignTypes() {
     this.sysAdminCampaignTypesService.getCampaignTypes().subscribe((res: ICampaignType[]) => {
       this.campaignTypes = res;
+      this.isLoading = false;
     });
   }
 
-  openDialog(dialog) {
-    this.campaignTypeForm.patchValue({
-      name: '',
-      description: '',
-      active: true,
-    });
+  openDialog(dialog, campaignType?: ICampaignType) {
+    if (campaignType) {
+      this.campaignTypeForm.patchValue({
+        name: campaignType.name,
+        description: campaignType.description,
+        active: campaignType.active,
+      });
+    } else {
+      this.campaignTypeForm.patchValue({
+        name: '',
+        description: '',
+        active: true,
+      });
+    }
     this.dialogService.open(dialog);
   }
 
   create() {
     this.sysAdminCampaignTypesService.createCampaignType(this.campaignTypeForm.value).subscribe((res) => {
       this.campaignTypes.push(res);
+    });
+  }
+
+  toggleCampaignStatus(campaignTypeId: number) {
+    this.sysAdminCampaignTypesService.toggleCampaignStatus(campaignTypeId).subscribe((res) => {
+      const campaign = this.campaignTypes.find((c) => c.id === campaignTypeId);
+      campaign.active = res;
+      this.toasterService.successDialog('Campaign status updated successfully');
     });
   }
 }

@@ -50,6 +50,7 @@ import { AdminFeaturedCommunitiesChannelsComponent } from './components/admin-fe
 import { PaymentLogsComponent } from './components/payment-logs/payment-logs.component';
 import { AdminProfanityComponent } from './components/admin-profanity/admin-profanity.component';
 import { CampaignTypesComponent } from './components/campaign-types/campaign-types.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [
     SysAdminComponent,
@@ -89,6 +90,8 @@ import { CampaignTypesComponent } from './components/campaign-types/campaign-typ
     SharedDirectivesModule,
     SharedPipesModule,
     MiniUserProfileModule,
+
+    FontAwesomeModule,
 
     // Nebular
     NbCardModule,

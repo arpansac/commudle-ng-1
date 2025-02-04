@@ -8,8 +8,12 @@ const routes: Routes = [
   {
     path: 'new',
     component: CampaignFormComponent,
+    children: [{ path: '', component: CampaignFormSelectCampaignComponent }],
+  },
+  {
+    path: 'edit/:campaign-id',
+    component: CampaignFormComponent,
     children: [
-      { path: '', component: CampaignFormSelectCampaignComponent },
       {
         path: 'order-setup',
         component: CampaignFormOrderSetupComponent,
@@ -19,10 +23,6 @@ const routes: Routes = [
         component: CampaignFormOrderConfirmationComponent,
       },
     ],
-  },
-  {
-    path: 'edit/:campaign-id',
-    component: CampaignFormComponent,
   },
 ];
 
