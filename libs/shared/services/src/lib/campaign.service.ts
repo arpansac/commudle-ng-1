@@ -17,6 +17,10 @@ export class CampaignService {
     });
   }
 
+  indexCampaigns(): Observable<ICampaign[]> {
+    return this.http.get<ICampaign[]>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX));
+  }
+
   updateCampaign(formData, campaignId: number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
 

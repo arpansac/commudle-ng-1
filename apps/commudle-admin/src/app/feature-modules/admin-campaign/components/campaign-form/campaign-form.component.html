@@ -10,7 +10,7 @@
     >
       <div class="action-buttons">
         <div class="header-icons">
-          <a [routerLink]="['campaign']" class="back-admin">
+          <a [routerLink]="['/campaigns']" class="back-admin">
             <div class="icon">
               <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
             </div>
@@ -80,7 +80,7 @@
       &nbsp;
       <fa-icon [icon]="icons.faAnglesRight"></fa-icon>
       &nbsp;
-      <span class="step-two">Select Campaign</span>
+      <span class="step-two">{{ slug }}</span>
     </div>
     <div class="form">
       <router-outlet></router-outlet>

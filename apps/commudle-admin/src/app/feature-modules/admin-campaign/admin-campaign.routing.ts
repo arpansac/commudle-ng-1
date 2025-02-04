@@ -4,12 +4,24 @@ import { CampaignFormSelectCampaignComponent } from './components/campaign-form/
 import { CampaignFormOrderSetupComponent } from './components/campaign-form/campaign-form-order-setup/campaign-form-order-setup.component';
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
 import { CampaignResolver } from './resolver/campaign.resolver';
+import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
 
 const routes: Routes = [
+  { path: '', component: CampaignDashboardComponent },
   {
     path: 'new',
     component: CampaignFormComponent,
-    children: [{ path: '', component: CampaignFormSelectCampaignComponent }],
+    children: [
+      { path: '', component: CampaignFormSelectCampaignComponent },
+      {
+        path: 'order-setup',
+        component: CampaignFormOrderSetupComponent,
+      },
+      {
+        path: 'order-confirmation',
+        component: CampaignFormOrderConfirmationComponent,
+      },
+    ],
   },
   {
     path: 'edit/:campaign_id',

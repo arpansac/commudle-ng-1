@@ -33,8 +33,10 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
       this.campaignTypes = res;
       this.isLoading = false;
       this.activatedRoute.data.subscribe((params) => {
-        this.campaign = params.campaign;
-        this.selectedCampaignTypeId = params.campaign.campaign_type_id;
+        if (params.campaign) {
+          this.campaign = params.campaign;
+          this.selectedCampaignTypeId = this.campaign.campaign_type_id;
+        }
       });
     });
   }
@@ -45,7 +47,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
 
   createCampaign() {
     this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res) => {
-      this.router.navigate(['campaign', 'edit', res.id, 'order-setup']);
+      this.router.navigate(['campaigns', 'edit', res.id, 'order-setup']);
     });
   }
 
@@ -53,7 +55,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     this.campaignService
       .updateCampaign({ campaign_type_id: this.selectedCampaignTypeId }, this.campaign.id)
       .subscribe((res) => {
-        this.router.navigate(['campaign', 'edit', res.id, 'order-setup']);
+        this.router.navigate(['campaigns', 'edit', res.id, 'order-setup']);
       });
   }
 }

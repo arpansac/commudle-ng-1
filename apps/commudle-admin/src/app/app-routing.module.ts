@@ -28,7 +28,7 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'campaign',
+    path: 'campaigns',
     loadChildren: () =>
       import('./feature-modules/admin-campaign/admin-campaign.module').then((m) => m.AdminCampaignModule),
   },
