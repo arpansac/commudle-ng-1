@@ -11,6 +11,7 @@
           <th>Campaign Name</th>
           <th>Status</th>
           <th>Budget</th>
+          <th>Campaign Type</th>
           <th>Duration Time</th>
           <th>Action</th>
         </tr>
@@ -18,6 +19,7 @@
           <td>{{ campaign.name }}</td>
           <td>{{ campaign.status }}</td>
           <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
+          <td>{{ campaign.campaign_type.name }}</td>
           <td>
             <span *ngIf="campaign.start_time">Start Time: {{ moment(campaign.start_time) }}</span>
             <span *ngIf="campaign.end_time">End Time: {{ moment(campaign.end_time) }}</span>
