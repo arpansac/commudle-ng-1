@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
@@ -15,6 +15,20 @@ export class CampaignService {
     return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE), {
       campaign_type_id: campaignTypeId,
     });
+  }
+
+  updateCampaign(formData, campaignId: number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_type_id', campaignId);
+
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE),
+      {
+        campaign_type: formData,
+      },
+      {
+        params,
+      },
+    );
   }
 
   getCampaign(): Observable<ICampaign[]> {
