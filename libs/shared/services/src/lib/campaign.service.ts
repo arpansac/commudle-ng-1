@@ -18,12 +18,12 @@ export class CampaignService {
   }
 
   updateCampaign(formData, campaignId: number): Observable<ICampaign> {
-    const params = new HttpParams().set('campaign_type_id', campaignId);
+    const params = new HttpParams().set('campaign_id', campaignId);
 
     return this.http.put<ICampaign>(
       this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE),
       {
-        campaign_type: formData,
+        campaign: formData,
       },
       {
         params,
@@ -31,7 +31,8 @@ export class CampaignService {
     );
   }
 
-  getCampaign(): Observable<ICampaign[]> {
-    return this.http.get<ICampaign[]>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX));
+  fetchCampaign(campaignId: number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
   }
 }

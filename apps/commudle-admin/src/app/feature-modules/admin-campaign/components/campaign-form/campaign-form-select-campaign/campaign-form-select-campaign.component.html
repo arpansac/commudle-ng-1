@@ -9,7 +9,8 @@
     </p>
   </div>
 
-  <nb-card>
+  <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+  <nb-card *ngIf="!isLoading">
     <nb-card-header>Select one of the following</nb-card-header>
     <nb-card-body>
       <div *ngFor="let campaignType of campaignTypes" class="campaign-type">
@@ -27,11 +28,12 @@
   </nb-card>
 
   <button
+    *ngIf="!isLoading"
     nbButton
     outline
     status="primary"
     shape="semi-round"
-    (click)="createCampaign()"
+    (click)="campaign ? updateCampaign() : createCampaign()"
     [disabled]="!selectedCampaignTypeId"
   >
     Next - Campaign Setup &nbsp;

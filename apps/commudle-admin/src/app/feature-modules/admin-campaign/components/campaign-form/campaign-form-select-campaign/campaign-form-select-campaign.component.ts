@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ICampaignType } from '@commudle/shared-models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ICampaign, ICampaignType } from '@commudle/shared-models';
 import { CampaignService, CampaignTypeService } from '@commudle/shared-services';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,10 +15,13 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   icons = {
     faArrowRight,
   };
+  campaign: ICampaign;
+  isLoading = true;
   constructor(
     private campaignTypeService: CampaignTypeService,
     private campaignService: CampaignService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -28,6 +31,11 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   getCampaignTypes() {
     this.campaignTypeService.getCampaignTypes().subscribe((res) => {
       this.campaignTypes = res;
+      this.isLoading = false;
+      this.activatedRoute.data.subscribe((params) => {
+        this.campaign = params.campaign;
+        this.selectedCampaignTypeId = params.campaign.campaign_type_id;
+      });
     });
   }
 
@@ -39,5 +47,13 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res) => {
       this.router.navigate(['campaign', 'edit', res.id, 'order-setup']);
     });
+  }
+
+  updateCampaign() {
+    this.campaignService
+      .updateCampaign({ campaign_type_id: this.selectedCampaignTypeId }, this.campaign.id)
+      .subscribe((res) => {
+        this.router.navigate(['campaign', 'edit', res.id, 'order-setup']);
+      });
   }
 }

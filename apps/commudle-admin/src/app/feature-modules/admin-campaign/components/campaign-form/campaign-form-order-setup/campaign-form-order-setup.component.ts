@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'commudle-campaign-form-order-setup',
@@ -6,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./campaign-form-order-setup.component.scss'],
 })
 export class CampaignFormOrderSetupComponent implements OnInit {
-  constructor() {}
+  fragment: string;
+  constructor(private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      this.fragment = fragment || '';
+      console.log(this.fragment); // Output: 'user-info' if clicked
+    });
+  }
 }

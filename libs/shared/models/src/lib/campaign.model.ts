@@ -11,6 +11,7 @@ export interface ICampaign {
   budget: number;
   currency_type: string;
   status: ECampaignStatus;
+  campaign_type_id: number;
   campaign_type: ICampaignType;
   //  campaign_asset_id: nil,
   created_at: Date;
