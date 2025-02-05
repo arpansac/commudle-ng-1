@@ -10,4 +10,5 @@ export interface IListingPageHeader {
   content: [];
   image_link?: string;
   background_image: SanityImageObject;
+  pre_heading: string;
 }
