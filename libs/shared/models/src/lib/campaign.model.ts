@@ -13,13 +13,17 @@ export interface ICampaign {
   status: ECampaignStatus;
   campaign_type_id: number;
   campaign_type: ICampaignType;
-  //  campaign_asset_id: nil,
   created_at: Date;
   updated_at: Date;
 }
 
 export enum ECampaignStatus {
-  DRAFT = 'draft',
-  COMPLETE = 'complete',
   INCOMPLETE = 'incomplete',
+  DRAFT = 'draft',
+  SUBMITTED = 'submitted',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  CHANGES_REQUIRED = 'changes_required',
+  LIVE = 'live',
+  COMPLETE = 'complete',
 }

@@ -6,34 +6,9 @@
     </button>
     <commudle-loading-spinner *ngIf="isLoading; else campaignsTable"></commudle-loading-spinner>
     <ng-template #campaignsTable>
-      <table *ngIf="campaigns.length > 0; else noCampaignFound">
-        <tr>
-          <th>Campaign Name</th>
-          <th>Status</th>
-          <th>Budget</th>
-          <th>Campaign Type</th>
-          <th>Duration Time</th>
-          <th>Action</th>
-        </tr>
-        <tr *ngFor="let campaign of campaigns">
-          <td>{{ campaign.name }}</td>
-          <td>{{ campaign.status }}</td>
-          <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
-          <td>{{ campaign.campaign_type.name }}</td>
-          <td>
-            <span *ngIf="campaign.start_time">Start Time: {{ moment(campaign.start_time) }}</span>
-            <span *ngIf="campaign.end_time">End Time: {{ moment(campaign.end_time) }}</span>
-          </td>
-          <td>
-            <a [routerLink]="['edit', campaign.id]">
-              <button nbButton status="info" size="tiny">
-                <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon> &nbsp; Edit
-              </button>
-            </a>
-            <!-- <button nbButton status="danger"><fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Edit</button> -->
-          </td>
-        </tr>
-      </table>
+      <div *ngIf="campaigns.length > 0; else noCampaignFound">
+        <commudle-campaign-list [campaigns]="campaigns"></commudle-campaign-list>
+      </div>
 
       <ng-template #noCampaignFound>
         <br />

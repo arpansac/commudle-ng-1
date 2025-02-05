@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICampaignType } from '@commudle/shared-models';
 import { ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { SysAdminCampaignTypesService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign-types.service';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign.service';
 @Component({
   selector: 'commudle-campaign-types',
   templateUrl: './campaign-types.component.html',
@@ -22,7 +22,7 @@ export class CampaignTypesComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private fb: FormBuilder,
-    private sysAdminCampaignTypesService: SysAdminCampaignTypesService,
+    private sysAdminCampaignTypesService: SysAdminCampaignService,
     private toasterService: ToastrService,
   ) {
     this.campaignTypeForm = this.fb.group({

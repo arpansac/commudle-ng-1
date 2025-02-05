@@ -1,0 +1,12 @@
+<commudle-campaign-list [campaigns]="campaigns" [sysAdmin]="true"></commudle-campaign-list>
+<br />
+<br />
+<app-pagination
+  *ngIf="total > 0"
+  (goTo)="page = $event; fetchCampaigns()"
+  (next)="page = $event; fetchCampaigns()"
+  (previous)="page = $event; fetchCampaigns()"
+  [count]="count"
+  [current]="page"
+  [total]="total"
+></app-pagination>

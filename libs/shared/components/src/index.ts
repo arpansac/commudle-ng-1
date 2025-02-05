@@ -13,3 +13,5 @@ export * from './lib/components/faq/faq.component';
 export * from './lib/components/public-faqs/public-faqs.component';
 
 export * from './lib/components/input/input.component';
+
+export * from './lib/components/campaign-list/campaign-list.component';

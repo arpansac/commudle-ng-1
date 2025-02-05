@@ -28,6 +28,7 @@ import { UserProfileMiniCardComponent } from './components/user-profile/user-pro
 import { UserPersonalConnectComponent } from './components/user-personal-connect/user-personal-connect.component';
 import { InputComponent } from './components/input/input.component';
 import { FormsModule } from '@angular/forms';
+import { CampaignListComponent } from './components/campaign-list/campaign-list.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { FormsModule } from '@angular/forms';
     VotersComponent,
     UserProfileMiniCardComponent,
     InputComponent,
+    CampaignListComponent,
   ],
   imports: [
     CommonModule,
@@ -69,6 +71,7 @@ import { FormsModule } from '@angular/forms';
     FaqComponent,
     PublicFaqsComponent,
     InputComponent,
+    CampaignListComponent,
   ],
   providers: [InViewportDirective],
 })

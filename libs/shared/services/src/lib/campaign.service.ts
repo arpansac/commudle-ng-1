@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICampaign } from '@commudle/shared-models';
+import { ECampaignStatus, ICampaign } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -38,5 +38,12 @@ export class CampaignService {
   fetchCampaign(campaignId: number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
+  }
+
+  sysAdminUpdateStatus(campaignId: number, campaignStatus: ECampaignStatus): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SYS_ADMIN_STATUS_UPDATE), {
+      campaign_id: campaignId,
+      campaign_status: campaignStatus,
+    });
   }
 }
