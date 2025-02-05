@@ -48,12 +48,12 @@
       <span>Notifications</span>
     </a>
   </nb-action>
-  <!-- <nb-action *ngIf="!currentUser">
-    <a routerLink="/my-profile" routerLinkActive="active">
+  <nb-action *ngIf="currentUser">
+    <a *appBreakpoints="'<=md'" [routerLink]="['users', currentUser.username]" routerLinkActive="active">
       <fa-icon [icon]="faUser"></fa-icon>
       <span>Profile</span>
     </a>
-  </nb-action> -->
+  </nb-action>
   <nb-action *ngIf="!currentUser">
     <a (click)="showContextMenu = !showContextMenu" [nbContextMenu]="contextMenuItems">
       <fa-icon [icon]="faEllipsisV"></fa-icon>

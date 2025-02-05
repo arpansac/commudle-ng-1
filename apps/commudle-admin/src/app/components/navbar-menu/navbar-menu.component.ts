@@ -7,6 +7,7 @@ import {
   faBell,
   faEllipsisV,
   faHandHoldingDollar,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { NbMenuService, NbPopoverDirective } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
@@ -31,6 +32,7 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   faInfoCircle = faInfoCircle;
   faEllipsisV = faEllipsisV;
   faHandHoldingDollar = faHandHoldingDollar;
+  faUser = faUser;
 
   notificationCount = 0;
   ENotificationSenderTypes = ENotificationSenderTypes;
