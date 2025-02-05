@@ -20,7 +20,7 @@
         }
 
         a {
-          @apply com-text-primary-500 com-break-words;
+          @apply com-text-primary-500 com-break-all;
         }
 
         & p.is-editor-empty:first-child::before {
@@ -29,6 +29,14 @@
           float: left;
           height: 0;
           pointer-events: none;
+        }
+      }
+    }
+
+    &.two-line-clamp {
+      ::ng-deep {
+        p {
+          @apply com-line-clamp-2;
         }
       }
     }

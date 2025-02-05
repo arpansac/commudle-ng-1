@@ -150,10 +150,12 @@ export class BlogComponent implements OnInit, OnDestroy {
       {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
+        name: this.blog.title,
         mainEntityOfPage: {
           '@type': 'WebPage',
           '@id': `${environment.app_url}/blogs/${this.blog.slug.current}`,
         },
+        url: `${environment.app_url}/blogs/${this.blog.slug.current}`,
         headline: this.blog.title,
         description: this.blog.meta_description,
         image: this.imageUrl(this.blog.headerImage).url(),
@@ -163,6 +165,18 @@ export class BlogComponent implements OnInit, OnDestroy {
           url: `${environment.app_url}/users/${this.blog.username}`,
         },
         datePublished: this.blog.publishedAt,
+        wordCount: this.richText.split(/\s+/).length,
+        keywords: [this.blog.tags ? this.blog.tags.map((tag) => tag.value).join(', ') : ''],
+        publisher: {
+          '@type': 'Organization',
+          '@id': 'https://www.commudle.com/',
+          name: 'Commudle',
+          logo: {
+            '@type': 'ImageObject',
+            '@id': 'https://commudle.com/assets/images/commudle-logo192.png',
+            url: 'https://commudle.com/assets/images/commudle-logo192.png',
+          },
+        },
       },
       faqSchemaData ? faqSchemaData : {},
     ]);

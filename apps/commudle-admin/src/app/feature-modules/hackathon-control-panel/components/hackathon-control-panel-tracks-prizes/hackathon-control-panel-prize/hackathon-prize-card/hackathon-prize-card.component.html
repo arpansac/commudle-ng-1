@@ -89,6 +89,16 @@
           </td>
         </tr>
       </table>
+
+      <app-pagination
+        *ngIf="total > 0"
+        [count]="count"
+        [current]="page"
+        [total]="total"
+        (goTo)="page = $event; fetchHackathonUserResponses()"
+        (next)="page = $event; fetchHackathonUserResponses()"
+        (previous)="page = $event; fetchHackathonUserResponses()"
+      ></app-pagination>
     </nb-card-body>
   </nb-card>
 </ng-template>

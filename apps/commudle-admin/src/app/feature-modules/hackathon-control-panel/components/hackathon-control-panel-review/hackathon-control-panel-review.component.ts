@@ -30,6 +30,7 @@ import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudl
 export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   userResponses: IHackathonUserResponses[];
   hackathon: IHackathon;
+  hackathonId: string;
   moment = moment;
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   EHackathonRegistrationStatusColor = EHackathonRegistrationStatusColor;
@@ -51,6 +52,11 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   communityId: string | number;
   EInvitationStatus = EInvitationStatus;
   selectedResponse;
+  isLoading = false;
+
+  page = 1;
+  total: number;
+  count = 10;
 
   tinyMCE = {
     height: 200,
@@ -108,7 +114,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.communityId = params.get('community_id');
-      this.fetchUserResponses(params.get('hackathon_id'));
+      this.hackathonId = params.get('hackathon_id');
+      this.fetchUserResponses();
       this.fetchHackathon(params.get('hackathon_id'));
       this.indexRounds(params.get('hackathon_id'));
     });
@@ -124,9 +131,13 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.dialogRef?.close();
   }
 
-  fetchUserResponses(hackathonId) {
-    this.hackathonService.indexUserResponses(hackathonId).subscribe((data: IHackathonUserResponses[]) => {
-      this.userResponses = data;
+  fetchUserResponses() {
+    this.isLoading = true;
+    this.hackathonService.indexUserResponses(this.hackathonId, this.page, this.count).subscribe((data) => {
+      this.userResponses = data.values;
+      this.page = data.page;
+      this.total = data.total;
+      this.isLoading = false;
     });
   }
 

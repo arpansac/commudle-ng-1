@@ -1,3 +1,12 @@
+.review-section {
+  nb-card-body {
+    @apply com-flex com-flex-col com-justify-between com-min-h-[680px];
+    .pagination {
+      @apply com-w-2/3;
+    }
+  }
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -32,10 +41,6 @@ td,
 th {
   text-align: left;
   padding: 8px;
-}
-
-nb-card-body {
-  @apply com-flex com-flex-col com-gap-3;
 }
 
 .select-wrapper {

@@ -16,6 +16,7 @@ export class ChatsListComponent implements OnInit, OnDestroy {
   @Input() currentUser: ICurrentUser;
   @Input() allPersonalChatUsers: IDiscussionFollower[];
   @Input() totalChats: number;
+  @Input() loadingChat: boolean;
   @Output() getChat: EventEmitter<IDiscussionFollower> = new EventEmitter<IDiscussionFollower>();
   @Output() moveUserToTop: EventEmitter<IDiscussionFollower[]> = new EventEmitter<IDiscussionFollower[]>();
   @Output() getPersonalChats: EventEmitter<boolean> = new EventEmitter<boolean>();

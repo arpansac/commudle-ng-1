@@ -33,6 +33,8 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   loading = true;
 
+  isLoadingChat = true;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -50,7 +52,7 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
       this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
     );
 
-    this.getPersonalChat();
+    // this.getPersonalChat();
 
     // TODO: Make this better
     // Calculate screen width to find the number of chat windows that are allowed simultaneously
@@ -142,12 +144,14 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
   getPersonalChat() {
     if (this.loading) {
       this.loading = false;
+      this.isLoadingChat = true;
       this.subscriptions.push(
         this.sDiscussionService.getPersonalChats(this.page, this.count).subscribe((data) => {
           this.allPersonalChatUsers = [...this.allPersonalChatUsers, ...data.values];
           this.page = data.page + 1;
           this.total = data.total;
           this.loading = true;
+          this.isLoadingChat = false;
         }),
       );
     }

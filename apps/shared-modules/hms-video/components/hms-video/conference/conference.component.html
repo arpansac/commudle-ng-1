@@ -20,7 +20,7 @@
       (click)="toggleStreaming()"
       *ngIf="
         (localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER) &&
-        embeddedVideoStream?.rtmp_url.length > 0
+        embeddedVideoStream?.rtmp_url?.length > 0
       "
       [nbTooltip]="isStreaming ? 'Stop Streaming' : 'Start Streaming'"
       ghost

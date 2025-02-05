@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { SeoService } from '@commudle/shared-services';
+import { environment } from '@commudle/shared-environments';
+import { IEvent } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-messages-list',
@@ -27,6 +29,7 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
   @Input() permittedActions;
   @Input() showMessagesLoader;
   @Input() discussionOpen: boolean;
+  @Input() parentData: IEvent;
   @Output() getPreviousMessages: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendReply: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendFlag: EventEmitter<number> = new EventEmitter<number>();
@@ -87,23 +90,34 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
     return position > height - threshold;
   }
 
-  setSchema() {
-    for (const message of this.messages) {
-      this.schemaForMessages.push({
-        '@context': 'https://schema.org',
-        '@type': 'DiscussionForumPosting',
-        headline: 'Comments',
-        text: this.removeHtmlTags(message.content),
-        author: {
-          '@type': 'Person',
-          name: message.user.name ? message.user.name : message.user.username,
-          url: `https://www.commudle.com/users/${message.user.username}`,
-        },
-        datePublished: message.created_at,
-        comment: message.user_messages ? this.getUserMessages(message) : '',
-      });
-    }
-    this.seoService.setSchema(this.schemaForMessages);
+  setSchema(): void {
+    const commentsArray = this.messages.map((message: IUserMessage) => ({
+      '@type': 'Comment',
+      text: this.removeHtmlTags(message.content),
+      datePublished: message.created_at,
+      author: {
+        '@type': 'Person',
+        name: message.user?.name ? message.user.name : message.user.username,
+        url: `https://www.commudle.com/users/${message.user?.username}`,
+      },
+      comment: message.user_messages ? this.getUserMessages(message) : '',
+    }));
+
+    const discussionSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      url: 'https://commudle.com/assets/images/commudle-logo192.png',
+      author: {
+        '@type': 'Person',
+        name: this.parentData.name,
+        url: environment.app_url + '/communities/' + this.parentData.kommunity_slug + '/events/' + this.parentData.slug,
+      },
+      datePublished: this.parentData.created_at ? this.parentData.created_at : this.parentData.start_time,
+      headline: this.parentData.name,
+      comment: commentsArray,
+    };
+
+    this.seoService.setSchema(discussionSchema);
   }
 
   removeHtmlTags(content): string {

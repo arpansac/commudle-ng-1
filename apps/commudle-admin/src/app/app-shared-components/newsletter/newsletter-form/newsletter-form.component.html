@@ -60,6 +60,11 @@
       ></commudle-alert>
     </div>
 
+    <commudle-alert
+      [info]="true"
+      message="All the images should have a max width of 600px for the best viewer experience on mobile and desktop"
+    ></commudle-alert>
+
     <div class="banner-image">
       <label for="banner_image">Banner Image</label>
       <div class="com-w-full" *ngIf="!(imagePreview || newsletterForm.controls['banner_image'].value)">

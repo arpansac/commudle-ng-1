@@ -270,9 +270,14 @@ export class HackathonService {
     });
   }
 
-  indexUserResponses(hackathonId): Observable<IHackathonUserResponses[]> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<IHackathonUserResponses[]>(
+  indexUserResponses(
+    hackathonId: string | number,
+    page = 1,
+    count = 10,
+  ): Observable<IPaginationCount<IHackathonUserResponses>> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
+
+    return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),
       {
         params,
