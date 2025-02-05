@@ -12,6 +12,7 @@ export class AdminCampaignsListComponent implements OnInit {
   page = 1;
   count = 10;
   total: number;
+  isLoading = true;
 
   constructor(private campaignService: SysAdminCampaignService) {}
 
@@ -20,10 +21,12 @@ export class AdminCampaignsListComponent implements OnInit {
   }
 
   fetchCampaigns() {
+    this.isLoading = true;
     this.campaignService.getSysAdminIndex(this.page, this.count).subscribe((res) => {
       this.campaigns = res.values;
       this.page = res.page;
       this.total = res.total;
+      this.isLoading = false;
     });
   }
 }

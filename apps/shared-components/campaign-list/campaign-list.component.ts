@@ -15,12 +15,13 @@ export class CampaignListComponent {
   moment = moment;
   icons = { faEdit };
   ECampaignStatus = ECampaignStatus;
-  constructor(private campaignService: CampaignService, private tostrService: ToastrService) {}
+
+  constructor(private campaignService: CampaignService, private toasterService: ToastrService) {}
 
   updateStatus(event, campaignId) {
     this.campaignService.sysAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
       if (res) {
-        this.tostrService.successDialog('Campaign status updated successfully');
+        this.toasterService.successDialog('Campaign status updated successfully');
       }
     });
   }

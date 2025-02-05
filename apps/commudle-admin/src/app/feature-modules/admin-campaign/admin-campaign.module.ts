@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminCampaignRoutes } from './admin-campaign.routing';
-import { SharedComponentsModule } from '@commudle/shared-components';
+import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/shared-components';
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
 import { CampaignFormOrderSetupComponent } from './components/campaign-form/campaign-form-order-setup/campaign-form-order-setup.component';
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
+import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { CampaignFormOrderConfirmationComponent } from './components/campaign-fo
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    NewSharedComponentsModule,
 
     //Standalone components
     SidebarComponent,

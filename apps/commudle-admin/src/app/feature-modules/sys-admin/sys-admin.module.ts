@@ -53,7 +53,7 @@ import { CampaignTypesComponent } from './components/admin-campaigns/campaign-ty
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminCampaignsComponent } from './components/admin-campaigns/admin-campaigns.component';
 import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-campaigns-list/admin-campaigns-list.component';
-import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/shared-components';
+
 @NgModule({
   declarations: [
     SysAdminComponent,
@@ -95,7 +95,6 @@ import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/s
     SharedDirectivesModule,
     SharedPipesModule,
     MiniUserProfileModule,
-    NewSharedComponentsModule,
 
     FontAwesomeModule,
 

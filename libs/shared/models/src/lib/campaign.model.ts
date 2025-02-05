@@ -1,3 +1,4 @@
+import { IUser } from './user.model';
 import { ICampaignType } from './campaign-type.model';
 
 export interface ICampaign {
@@ -15,6 +16,7 @@ export interface ICampaign {
   campaign_type: ICampaignType;
   created_at: Date;
   updated_at: Date;
+  user: IUser;
 }
 
 export enum ECampaignStatus {
