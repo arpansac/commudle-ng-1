@@ -5,6 +5,7 @@
     <th>Status</th>
     <th>Budget</th>
     <th>Duration Time</th>
+    <th>Created At</th>
     <th>Action</th>
   </tr>
   <tr *ngFor="let campaign of campaigns">
@@ -13,9 +14,12 @@
     <td>{{ campaign.status }}</td>
     <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
     <td>
-      <span *ngIf="campaign.start_time">Start Time: {{ moment(campaign.start_time) }}</span>
-      <span *ngIf="campaign.end_time">End Time: {{ moment(campaign.end_time) }}</span>
+      <span *ngIf="campaign.start_time"
+        >Start Time: {{ moment(campaign.start_time).format('MMM Do, YYYY - h:mm a') }}</span
+      >
+      <span *ngIf="campaign.end_time">End Time: {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }}</span>
     </td>
+    <td>{{ moment(campaign.created_at).format('MMM Do, YYYY - h:mm a') }}</td>
     <td>
       <a *ngIf="!sysAdmin" [routerLink]="['edit', campaign.id]">
         <button nbButton status="info" size="tiny">
