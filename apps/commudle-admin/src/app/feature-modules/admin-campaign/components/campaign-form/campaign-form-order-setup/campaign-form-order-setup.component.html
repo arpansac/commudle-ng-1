@@ -1,1 +1,214 @@
-<p>campaign-form-order-setup works!</p>
+<div>
+  <div class="text">
+    <p class="heading">Please fill all the required sections below to setup your order.</p>
+    <p class="sub-heading">
+      Your order will go live upon approval. You have selected Global awareness campaign from Commudle
+    </p>
+  </div>
+
+  <!-- User Information -->
+  <nb-card>
+    <nb-card-header>
+      <span class="left">User Information</span>
+      <span class="right">Please enter your name and contact information</span>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form">
+        <form [formGroup]="campaignForm">
+          <div>
+            <label for="name">Name<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input placeholder="Name" (valueChange)="handleInput($event, 'name')"></commudle-input>
+            </div>
+          </div>
+          <div>
+            <label for="email_address">Email Address <span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input placeholder="Email" (valueChange)="handleInput($event, 'email_address')"></commudle-input>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <!-- Campaign Information -->
+  <nb-card>
+    <nb-card-header>
+      <span class="left">Campaign Information</span>
+      <span class="right">Please enter a name for this campaign and the company name</span>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form">
+        <form [formGroup]="campaignForm">
+          <div>
+            <label for="company_name">Company Name<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                placeholder="Company Name"
+                (valueChange)="handleInput($event, 'company_name')"
+              ></commudle-input>
+            </div>
+          </div>
+          <div>
+            <label for="campaign_name">Campaign Name<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                placeholder="Campaign Name"
+                (valueChange)="handleInput($event, 'campaign_name')"
+              ></commudle-input>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <!-- Schedule -->
+  <nb-card>
+    <nb-card-header>
+      <span class="left">Schedule</span>
+      <span class="right">Select your start and end date</span>
+    </nb-card-header>
+    <nb-card-body>
+      <commudle-alert
+        [info]="true"
+        message="Continue serving until the full budget is exhausted (even if going past the end date). Note that all ads are subject to approval by the publisher."
+      ></commudle-alert>
+      <br />
+      <div class="form">
+        <form [formGroup]="campaignForm">
+          <div>
+            <label for="start_time">Select Starting Date<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                [type]="'datetime-local'"
+                (valueChange)="handleInput($event, 'start_time')"
+              ></commudle-input>
+            </div>
+          </div>
+          <div>
+            <label for="end_time">Select Ending Date<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                [type]="'datetime-local'"
+                (valueChange)="handleInput($event, 'end_time')"
+              ></commudle-input>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <!-- Goal/ Budget -->
+  <nb-card>
+    <nb-card-header>
+      <span class="left">Goal/ Budget</span>
+      <span class="right">Enter your budget for the whole campaign</span>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form">
+        <form [formGroup]="campaignForm">
+          <div class="budget-amount">
+            <span class="budget">$3.49</span>
+            <span class="per-day">Per Day</span>
+          </div>
+          <div>
+            <label for="budget">Enter your budget<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                placeholder="Budget amount"
+                [type]="'number'"
+                (valueChange)="handleInput($event, 'budget')"
+              ></commudle-input>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <!-- Creative Assets -->
+  <nb-card>
+    <nb-card-header>
+      <span class="left">Creative Assets</span>
+      <span class="right">Please enter your name and contact information</span>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form creative-assets">
+        <form [formGroup]="campaignForm">
+          <div formArrayName="campaign_assets">
+            <div
+              class="creative-assets-controller"
+              *ngFor="let asset of campaignAssets.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <!-- Image Upload -->
+              <label for="image-{{ i }}">Attach Image <span class="required"> *</span></label>
+              <br />
+              <div class="image-upload-container">
+                <input id="image-{{ i }}" type="file" (change)="onFileChange($event, i)" />
+              </div>
+              <p class="image-info">(Allowed 1280x720, PNG, JPG,GIF,WEBP, max 300 KB)</p>
+              <br />
+              <!-- Headline -->
+              <label for="headline-{{ i }}">Headline <span class="required"> *</span></label>
+              <br />
+              <!-- <input id="headline-{{ i }}" type="text" formControlName="headline" /> -->
+              <div class="creative-assets-input">
+                <textarea
+                  id="headline-{{ i }}"
+                  placeholder="A very long line of text which is expected to span more than two to three lines so it breaks as the text increases."
+                  formControlName="headline"
+                ></textarea>
+              </div>
+              <br />
+
+              <!-- url -->
+              <label for="url-{{ i }}">Add Link <span class="required"> *</span></label>
+              <br />
+              <!-- <input id="url-{{ i }}" type="text" formControlName="url" /> -->
+              <div class="creative-assets-input">
+                <commudle-input
+                  (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
+                  placeholder="eg: https://www.commudle.com/"
+                  [type]="'text'"
+                ></commudle-input>
+              </div>
+
+              <!-- <button type="button" (click)="removeCampaignAsset(i)">Remove</button> -->
+            </div>
+          </div>
+        </form>
+        <div>
+          <button nbButton outline type="button" (click)="addCampaignAsset()">
+            <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add another Asset
+          </button>
+          <p>Add another image which will keep rotating with above image</p>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <div class="next-button">
+    <button
+      nbButton
+      outline
+      status="primary"
+      shape="semi-round"
+      [disabled]="!campaignForm.valid"
+      (click)="updateCampaign()"
+    >
+      Next - Campaign Setup &nbsp;
+      <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+    </button>
+  </div>
+</div>

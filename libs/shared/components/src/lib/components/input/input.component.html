@@ -1,3 +1,10 @@
 <div>
-  <input class="" [placeholder]="placeholder" [(ngModel)]="inputValue" (ngModelChange)="onInputChange()" />
+  <input
+    [id]="id"
+    [name]="name"
+    [type]="type"
+    [placeholder]="placeholder"
+    [value]="inputValue"
+    (input)="onInputChange($event)"
+  />
 </div>
