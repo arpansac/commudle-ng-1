@@ -24,15 +24,9 @@ export class CampaignService {
   updateCampaign(formData, campaignId: number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
 
-    return this.http.put<ICampaign>(
-      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE),
-      {
-        campaign: formData,
-      },
-      {
-        params,
-      },
-    );
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE), formData, {
+      params,
+    });
   }
 
   fetchCampaign(campaignId: number): Observable<ICampaign> {

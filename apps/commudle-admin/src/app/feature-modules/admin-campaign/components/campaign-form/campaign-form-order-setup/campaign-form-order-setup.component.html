@@ -16,17 +16,25 @@
       <div class="form">
         <form [formGroup]="campaignForm">
           <div>
-            <label for="name">Name<span class="required"> *</span></label>
+            <label for="contact_name">Name<span class="required"> *</span></label>
             <br />
             <div class="input">
-              <commudle-input placeholder="Name" (valueChange)="handleInput($event, 'name')"></commudle-input>
+              <commudle-input
+                [inputValue]="campaignForm.get('contact_name').value"
+                placeholder="Name"
+                (valueChange)="handleInput($event, 'contact_name')"
+              ></commudle-input>
             </div>
           </div>
           <div>
-            <label for="email_address">Email Address <span class="required"> *</span></label>
+            <label for="contact_email">Email Address <span class="required"> *</span></label>
             <br />
             <div class="input">
-              <commudle-input placeholder="Email" (valueChange)="handleInput($event, 'email_address')"></commudle-input>
+              <commudle-input
+                [inputValue]="campaignForm.get('contact_email').value"
+                placeholder="Email"
+                (valueChange)="handleInput($event, 'contact_email')"
+              ></commudle-input>
             </div>
           </div>
         </form>
@@ -48,18 +56,20 @@
             <br />
             <div class="input">
               <commudle-input
+                [inputValue]="campaignForm.get('company_name').value"
                 placeholder="Company Name"
                 (valueChange)="handleInput($event, 'company_name')"
               ></commudle-input>
             </div>
           </div>
           <div>
-            <label for="campaign_name">Campaign Name<span class="required"> *</span></label>
+            <label for="name">Campaign Name<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
+                [inputValue]="campaignForm.get('name').value"
                 placeholder="Campaign Name"
-                (valueChange)="handleInput($event, 'campaign_name')"
+                (valueChange)="handleInput($event, 'name')"
               ></commudle-input>
             </div>
           </div>
@@ -87,6 +97,7 @@
             <br />
             <div class="input">
               <commudle-input
+                [inputValue]="campaignForm.get('start_time').value"
                 [type]="'datetime-local'"
                 (valueChange)="handleInput($event, 'start_time')"
               ></commudle-input>
@@ -97,6 +108,7 @@
             <br />
             <div class="input">
               <commudle-input
+                [inputValue]="campaignForm.get('end_time').value"
                 [type]="'datetime-local'"
                 (valueChange)="handleInput($event, 'end_time')"
               ></commudle-input>
@@ -125,6 +137,7 @@
             <br />
             <div class="input">
               <commudle-input
+                [inputValue]="campaignForm.get('budget').value"
                 placeholder="Budget amount"
                 [type]="'number'"
                 (valueChange)="handleInput($event, 'budget')"
@@ -155,9 +168,15 @@
               <label for="image-{{ i }}">Attach Image <span class="required"> *</span></label>
               <br />
               <div class="image-upload-container">
-                <input id="image-{{ i }}" type="file" (change)="onFileChange($event, i)" />
+                <input
+                  id="image-{{ i }}"
+                  type="file"
+                  (change)="onFileChange($event, i)"
+                  accept="image/png, image/jpeg, image/jpg"
+                />
               </div>
-              <p class="image-info">(Allowed 1280x720, PNG, JPG,GIF,WEBP, max 300 KB)</p>
+              <p class="image-info">(Allowed 1280x720, PNG, JPG, max 2MB)</p>
+              <img [src]="imagePreview[i]" alt="" />
               <br />
               <!-- Headline -->
               <label for="headline-{{ i }}">Headline <span class="required"> *</span></label>
@@ -178,6 +197,7 @@
               <!-- <input id="url-{{ i }}" type="text" formControlName="url" /> -->
               <div class="creative-assets-input">
                 <commudle-input
+                  [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
                   (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
                   placeholder="eg: https://www.commudle.com/"
                   [type]="'text'"

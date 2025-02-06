@@ -10,8 +10,8 @@ export class InputComponent {
   @Input() type: 'text' | 'number' | 'datetime-local' = 'text';
   @Input() id: string;
   @Input() name: string;
+  @Input() inputValue: string | number = '';
   @Output() valueChange = new EventEmitter<string | number>();
-  inputValue: string | number = '';
 
   onInputChange(event: any) {
     if (this.type === 'number') {

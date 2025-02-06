@@ -27,7 +27,7 @@ import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 import { UserPersonalConnectComponent } from './components/user-personal-connect/user-personal-connect.component';
 import { InputComponent } from './components/input/input.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -60,6 +60,7 @@ import { FormsModule } from '@angular/forms';
     FontAwesomeModule,
     UserPersonalConnectComponent,
     FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     DiscussionComponent,
