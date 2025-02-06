@@ -2,7 +2,14 @@ div {
   @apply com-m-0 md:com-px-0 com-px-4;
 
   .title {
-    @apply com-text-2xl com-font-bold com-text-Dark-Jungle-Green md:com-mb-0 md:com-mt-9 com-my-6;
+    @apply md:com-mb-0 md:com-mt-9 com-my-6;
+
+    a {
+      @apply com-no-underline;
+      span {
+        @apply com-text-2xl com-font-bold com-text-Dark-Jungle-Green;
+      }
+    }
 
     button {
       @apply com-mr-4;

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { IEvent } from 'apps/shared-models/event.model';
 import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'commudle-public-home-list-events-past',
   templateUrl: './public-home-list-events-past.component.html',
   styleUrls: ['./public-home-list-events-past.component.scss'],
 })
-export class PublicHomeListEventsPastComponent implements OnInit {
+export class PublicHomeListEventsPastComponent implements OnInit, AfterViewInit {
   pastEvents: IEvent[] = [];
   faCalendarCheck = faCalendarCheck;
 
@@ -19,10 +20,26 @@ export class PublicHomeListEventsPastComponent implements OnInit {
   isLoadingUpcoming = false;
   showSpinner = false;
 
-  constructor(private eventsService: EventsService) {}
+  constructor(private eventsService: EventsService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.getPastEvents();
+  }
+
+  ngAfterViewInit() {
+    // TODO optimize this
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        setTimeout(() => {
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+            });
+          }
+        }, 500);
+      }
+    });
   }
 
   getPastEvents() {

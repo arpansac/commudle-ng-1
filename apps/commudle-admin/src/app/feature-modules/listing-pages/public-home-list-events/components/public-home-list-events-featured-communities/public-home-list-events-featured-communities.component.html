@@ -3,6 +3,7 @@
     'container-scroll': isMobileView || showCardsHorizontal,
     container: !(isMobileView || showCardsHorizontal)
   }"
+  id="featured-communities"
 >
   <nb-card-body>
     <div class="heading">
@@ -10,7 +11,9 @@
         <fa-icon [icon]="faUserGroup"></fa-icon>
       </button>
       <div>
-        <h3 class="title">Featured Communities</h3>
+        <h3 class="title">
+          <a [routerLink]="'.'" fragment="featured-communities">Featured Communities</a>
+        </h3>
         <h4 class="sub-heading">Join the most active groups</h4>
       </div>
     </div>
