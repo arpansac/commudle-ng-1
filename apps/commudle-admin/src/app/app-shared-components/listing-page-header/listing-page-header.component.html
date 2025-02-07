@@ -3,10 +3,11 @@
     <div class="base-layout">
       <div class="content">
         <div class="header-text">
-          <h1 class="title">
-            {{ header.title }}
+          <p class="pre-heading">{{ header.pre_heading }}</p>
+          <h1 class="heading">
+            {{ header.heading }}
           </h1>
-          <p class="heading">{{ header.heading }}</p>
+          <p class="sub-heading">{{ header.sub_heading }}</p>
           <div *ngIf="richText" [innerHTML]="richText" class="content"></div>
         </div>
         <ng-container *ngIf="header?.image_link">
