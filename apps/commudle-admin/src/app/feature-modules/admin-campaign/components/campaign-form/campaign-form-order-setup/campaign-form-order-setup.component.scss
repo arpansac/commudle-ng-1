@@ -14,7 +14,10 @@ div {
   nb-card {
     @apply com-mx-0;
     nb-card-header {
-      @apply com-bg-gray-50 com-flex com-justify-between com-items-center;
+      @apply com-bg-gray-50;
+      a {
+        @apply com-flex com-justify-between com-items-center com-no-underline;
+      }
       .left {
         @apply com-text-base com-font-semibold com-text-Yankees-Blue;
       }
