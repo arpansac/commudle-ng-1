@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { DatePipe } from '@angular/common';
@@ -161,6 +161,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     formData.append('campaign[start_time]', formValue.start_time);
     formData.append('campaign[end_time]', formValue.end_time);
     formData.append('campaign[budget]', formValue.budget);
+    formData.append('campaign[status]', ECampaignStatus.DRAFT);
 
     // Append campaign assets
     formValue.campaign_assets.forEach((asset, index) => {

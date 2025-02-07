@@ -12,6 +12,7 @@ import { CampaignDashboardComponent } from './components/campaign-dashboard/camp
 import { CampaignFormOrderSetupComponent } from './components/campaign-form/campaign-form-order-setup/campaign-form-order-setup.component';
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     FormsModule,
     ReactiveFormsModule,
     NewSharedComponentsModule,
+    SharedPipesModule,
 
     //Standalone components
     SidebarComponent,

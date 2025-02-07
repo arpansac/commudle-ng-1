@@ -22,7 +22,7 @@
       </div>
       <div>
         <p class="heading">Status</p>
-        <p class="value">{{ campaign?.status }}</p>
+        <p class="value">{{ campaign?.status | capitalizeAndRemoveUnderscore }}</p>
       </div>
       <div>
         <p class="heading">Total</p>
