@@ -8,7 +8,7 @@
 
   <!-- User Information -->
   <nb-card>
-    <nb-card-header>
+    <nb-card-header id="user-information">
       <a [routerLink]="[]" fragment="user-information">
         <span class="left">User Information</span>
         <span class="right">Please enter your name and contact information</span>
@@ -46,8 +46,8 @@
 
   <!-- Campaign Information -->
   <nb-card>
-    <nb-card-header>
-      <a [routerLink]="[]" fragment="user-information">
+    <nb-card-header id="campaign-information">
+      <a [routerLink]="[]" fragment="campaign-information">
         <span class="left">Campaign Information</span>
         <span class="right">Please enter a name for this campaign and the company name</span>
       </a>
@@ -84,8 +84,8 @@
 
   <!-- Schedule -->
   <nb-card>
-    <nb-card-header>
-      <a [routerLink]="[]" fragment="user-information">
+    <nb-card-header id="schedule">
+      <a [routerLink]="[]" fragment="schedule">
         <span class="left">Schedule</span>
         <span class="right">Select your start and end date</span>
       </a>
@@ -127,8 +127,8 @@
 
   <!-- Goal/ Budget -->
   <nb-card>
-    <nb-card-header>
-      <a [routerLink]="[]" fragment="user-information">
+    <nb-card-header id="budget">
+      <a [routerLink]="[]" fragment="budget">
         <span class="left">Goal/ Budget</span>
         <span class="right">Enter your budget for the whole campaign</span>
       </a>
@@ -159,8 +159,8 @@
 
   <!-- Creative Assets -->
   <nb-card>
-    <nb-card-header>
-      <a [routerLink]="[]" fragment="user-information">
+    <nb-card-header id="creative-assets">
+      <a [routerLink]="[]" fragment="creative-assets">
         <span class="left">Creative Assets</span>
         <span class="right">Please enter your name and contact information</span>
       </a>
@@ -177,6 +177,9 @@
               <!-- Image Upload -->
               <label for="image-{{ i }}">Attach Image <span class="required"> *</span></label>
               <br />
+              <div class="preview-image" *ngIf="imagePreview[i]">
+                <img [src]="imagePreview[i]" />
+              </div>
               <div class="image-upload-container">
                 <input
                   id="image-{{ i }}"
@@ -186,7 +189,6 @@
                 />
               </div>
               <p class="image-info">(Allowed 1280x720, PNG, JPG, max 2MB)</p>
-              <img [src]="imagePreview[i]" alt="" />
               <br />
               <!-- Headline -->
               <label for="headline-{{ i }}">Headline <span class="required"> *</span></label>
@@ -215,6 +217,8 @@
               </div>
 
               <!-- <button type="button" (click)="removeCampaignAsset(i)">Remove</button> -->
+              <br />
+              <hr />
             </div>
           </div>
         </form>

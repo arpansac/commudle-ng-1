@@ -58,6 +58,12 @@ div {
             }
             .creative-assets-controller {
               @apply com-mb-4;
+              .preview-image {
+                @apply com-aspect-[16/9] com-h-40 com-mb-2 com-border com-border-solid com-border-Bright-Gray com-p-1 com-rounded-md com-flex com-justify-center com-items-center;
+                img {
+                  @apply com-w-full com-h-full com-object-contain;
+                }
+              }
             }
           }
         }

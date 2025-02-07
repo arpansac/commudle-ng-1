@@ -1,7 +1,6 @@
 section {
-  @apply com-w-full com-bg-white com-min-h-screen com-flex;
+  @apply com-w-full com-bg-white com-min-h-screen com-flex com-flex-row-reverse;
   .sidebar {
-    @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
     a {
       @apply com-text-inherit com-no-underline;
     }
@@ -49,7 +48,7 @@ section {
   }
 
   .right-section {
-    @apply com-w-full;
+    @apply com-w-[calc(100%-320px)] com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
     .header {
       @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4;
       .step-one {

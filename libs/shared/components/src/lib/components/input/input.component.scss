@@ -1,6 +1,6 @@
 div {
   @apply com-w-full;
   input {
-    @apply com-w-full com-bg-transparent placeholder:com-text-slate-400 com-text-slate-700 com-text-sm com-border com-border-solid com-border-slate-200 com-rounded-md com-px-3 com-py-2 com-transition com-duration-300  focus:com-outline-none focus:com-border-primary-500 hover:com-border-primary-300;
+    @apply com-w-full com-bg-transparent placeholder:com-text-gray-400 com-text-black com-text-sm com-border com-border-solid com-border-slate-200 com-rounded-md com-px-3 com-py-2 com-transition com-duration-300  focus:com-outline-none focus:com-border-primary-500 hover:com-border-primary-300;
   }
 }

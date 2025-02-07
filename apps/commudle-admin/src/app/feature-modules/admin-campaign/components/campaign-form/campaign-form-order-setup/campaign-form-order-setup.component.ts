@@ -43,7 +43,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
   createCampaignAsset(asset?: ICampaignAsset): FormGroup {
     return this._fb.group({
-      image: [null, Validators.required],
+      image: [asset ? asset?.image.filename : null, Validators.required],
       headline: [asset ? asset?.headline : '', Validators.required],
       url: [asset ? asset?.url : '', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]], // Ensure URL is valid
     });
@@ -62,10 +62,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.fragment.subscribe((fragment) => {
-      this.fragment = fragment || '';
-      console.log(this.fragment);
-    });
+    this.checkFragment();
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
       if (this.campaign.name) {
@@ -187,6 +184,23 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       console.log(data);
+    });
+  }
+
+  checkFragment() {
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        requestAnimationFrame(() => {
+          const element = document.getElementById(fragment);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest',
+            });
+          }
+        });
+      }
     });
   }
 }
