@@ -6,7 +6,7 @@ nb-card {
       @apply com-mt-0 com-mb-4 com-mx-0 com-flex md:com-py-0 md:com-px-4 com-p-4 md:com-bg-transparent com-bg-Anti-Flash-White com-flex-col md:com-mb-7;
 
       .title {
-        @apply com-m-0;
+        @apply com-flex com-m-0;
         a {
           @apply md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0 com-no-underline;
         }

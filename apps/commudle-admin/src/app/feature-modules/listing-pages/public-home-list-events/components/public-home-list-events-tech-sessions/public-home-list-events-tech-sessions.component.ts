@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faHeadset } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -12,7 +12,7 @@ import { ISessions } from 'apps/shared-models/sessions.model';
   templateUrl: './public-home-list-events-tech-sessions.component.html',
   styleUrls: ['./public-home-list-events-tech-sessions.component.scss'],
 })
-export class PublicHomeListEventsTechSessionsComponent implements OnInit {
+export class PublicHomeListEventsTechSessionsComponent implements OnInit, AfterViewInit {
   @Input() communityGroupId: number;
   techSessions: ISessions[] = [];
   faHeadset = faHeadset;
@@ -23,10 +23,26 @@ export class PublicHomeListEventsTechSessionsComponent implements OnInit {
   showSkeletonCard = true;
   limit = 4;
 
-  constructor(private eventsService: EventsService) {}
+  constructor(private eventsService: EventsService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.getTechSessions();
+  }
+
+  ngAfterViewInit() {
+    // TODO optimize this
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        setTimeout(() => {
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+            });
+          }
+        }, 500);
+      }
+    });
   }
 
   getTechSessions() {

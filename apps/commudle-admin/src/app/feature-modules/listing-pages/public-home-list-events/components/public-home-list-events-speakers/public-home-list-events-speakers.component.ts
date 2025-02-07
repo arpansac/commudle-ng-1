@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -11,7 +11,7 @@ import { IUser } from 'apps/shared-models/user.model';
   templateUrl: './public-home-list-events-speakers.component.html',
   styleUrls: ['./public-home-list-events-speakers.component.scss'],
 })
-export class PublicHomeListEventsSpeakersComponent implements OnInit {
+export class PublicHomeListEventsSpeakersComponent implements OnInit, AfterViewInit {
   @Input() parentType: string;
   @Input() eventId: string;
   @Input() communityGroupId: number;
@@ -25,7 +25,11 @@ export class PublicHomeListEventsSpeakersComponent implements OnInit {
   limit = 4;
   mini = true;
 
-  constructor(private communitiesService: CommunitiesService, private eventsService: EventsService) {}
+  constructor(
+    private communitiesService: CommunitiesService,
+    private eventsService: EventsService,
+    private activatedRoute: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     switch (this.parentType) {
@@ -38,6 +42,22 @@ export class PublicHomeListEventsSpeakersComponent implements OnInit {
         break;
       }
     }
+  }
+
+  ngAfterViewInit() {
+    // TODO optimize this
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        setTimeout(() => {
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+            });
+          }
+        }, 500);
+      }
+    });
   }
 
   getEventsSpeakersList() {
