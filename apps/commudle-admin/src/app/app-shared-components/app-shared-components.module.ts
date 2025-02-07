@@ -51,6 +51,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { EventHackathonRegistrationsComponent } from './event-hackathon-registrations/event-hackathon-registrations.component';
 import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +122,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     HelpSectionComponent,
     BackButtonComponent,
     UserPersonalConnectComponent,
+    ListingPageHeaderComponent,
 
     // Nebular
     NbRadioModule,

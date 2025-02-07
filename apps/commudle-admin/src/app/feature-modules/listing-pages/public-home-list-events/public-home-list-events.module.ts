@@ -21,6 +21,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-pages-layout/listing-pages-layout.component';
 import { EventsVolunteerListComponent } from './components/events-volunteer-list/events-volunteer-list.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 @NgModule({
   declarations: [
     PublicHomeListEventsComponent,
@@ -49,6 +50,7 @@ import { EventsVolunteerListComponent } from './components/events-volunteer-list
     SharedDirectivesModule,
     SkeletonCardsComponent,
     ListingPagesLayoutComponent,
+    ListingPageHeaderComponent,
   ],
   exports: [
     PublicHomeListEventsHeaderComponent,
