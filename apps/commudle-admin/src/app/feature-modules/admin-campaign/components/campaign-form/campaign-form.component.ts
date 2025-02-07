@@ -10,6 +10,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router, NavigationEnd } from '@angular/router';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 @Component({
   selector: 'commudle-campaign-form',
   templateUrl: './campaign-form.component.html',
@@ -29,12 +30,13 @@ export class CampaignFormComponent implements OnInit {
     faSackDollar,
     faFileImage,
   };
-  constructor(private router: Router) {
+  constructor(private router: Router, private footerService: FooterService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
   ngOnInit() {
     this.generateSlug();
+    this.footerService.changeMiniFooterStatus(false);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.generateSlug();

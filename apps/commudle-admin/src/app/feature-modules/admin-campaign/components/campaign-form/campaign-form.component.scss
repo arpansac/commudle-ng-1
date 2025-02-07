@@ -6,7 +6,7 @@ section {
     }
 
     .number {
-      @apply com-flex com-justify-center com-items-center com-w-5 com-h-5 com-bg-gray-300 com-rounded-full com-font-semibold com-text-xs;
+      @apply com-flex com-justify-center com-items-center com-w-5 com-h-5 com-bg-gray-300 com-rounded-full com-font-semibold com-text-xs com-text-tblack;
     }
     .action-buttons {
       .back-admin {
@@ -22,7 +22,7 @@ section {
       .action-button {
         @apply com-flex com-gap-2 com-items-center com-cursor-pointer com-pl-7 com-py-3;
         &.active {
-          @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+          @apply com-bg-Bright-Gray com-text-tYankees-Blue;
         }
         .icon {
           @apply com-text-lg com-text-Cadet-Grey;
@@ -33,7 +33,7 @@ section {
       }
 
       .action-button:hover {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+        @apply com-bg-Bright-Gray com-text-tYankees-Blue;
       }
 
       .sub-headings {

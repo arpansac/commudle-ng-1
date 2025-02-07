@@ -55,7 +55,9 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     this.campaignService
       .updateCampaign({ campaign: { campaign_type_id: this.selectedCampaignTypeId } }, this.campaign.id)
       .subscribe((res) => {
-        this.router.navigate(['campaigns', 'edit', res.id, 'order-setup']);
+        this.router.navigate(['campaigns', 'edit', res.id, 'order-setup'], {
+          fragment: 'user-information',
+        });
       });
   }
 }

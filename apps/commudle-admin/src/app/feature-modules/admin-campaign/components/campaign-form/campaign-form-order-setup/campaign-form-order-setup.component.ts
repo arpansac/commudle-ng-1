@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
@@ -28,6 +28,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     private campaignService: CampaignService,
     private datePipe: DatePipe,
     private toasterService: ToastrService,
+    private router: Router,
   ) {
     this.campaignForm = this._fb.group({
       name: ['', Validators.required], //campaign name
@@ -147,12 +148,6 @@ export class CampaignFormOrderSetupComponent implements OnInit {
       console.error(`Invalid index ${index} for form array ${formArrayName}`);
     }
   }
-  // updateCampaign() {
-  //   console.log(this.campaignForm.value);
-  //   this.campaignService.updateCampaign(this.campaignForm.value, this.campaign.id).subscribe((data) => {
-  //     console.log(data);
-  //   });
-  // }
 
   updateCampaign() {
     const formData = new FormData();
@@ -177,13 +172,10 @@ export class CampaignFormOrderSetupComponent implements OnInit {
       }
     });
 
-    // Send formData via HTTP request
-    // this.http.post('/api/campaigns', formData).subscribe((response) => {
-    //   console.log('Campaign Submitted:', response);
-    // });
-
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
-      console.log(data);
+      if (data) {
+        this.router.navigate(['campaigns', 'edit', data.id, 'order-confirmation']);
+      }
     });
   }
 
