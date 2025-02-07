@@ -22,22 +22,46 @@
             <br />
             <div class="input">
               <commudle-input
-                [inputValue]="campaignForm.get('contact_name').value"
                 placeholder="Name"
+                [inputValue]="campaignForm.get('contact_name').value"
+                (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
                 (valueChange)="handleInput($event, 'contact_name')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('contact_name')?.invalid &&
+                campaignForm.get('contact_name')?.touched &&
+                campaignForm.get('contact_name')?.hasError('required')
+              "
+              errorMessage="Contact Name is required"
+            ></commudle-alert>
           </div>
           <div>
             <label for="contact_email">Email Address <span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
-                [inputValue]="campaignForm.get('contact_email').value"
                 placeholder="Email"
+                [inputValue]="campaignForm.get('contact_email').value"
+                (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
                 (valueChange)="handleInput($event, 'contact_email')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('contact_email')?.invalid &&
+                campaignForm.get('contact_email')?.touched &&
+                campaignForm.get('contact_email')?.hasError('required')
+              "
+              errorMessage="Email is required"
+            ></commudle-alert>
+            <commudle-alert
+              [error]="
+                campaignForm.get('contact_email')?.touched && campaignForm.get('contact_email')?.hasError('email')
+              "
+              errorMessage="Invalid Email address"
+            ></commudle-alert>
           </div>
         </form>
       </div>
@@ -60,22 +84,40 @@
             <br />
             <div class="input">
               <commudle-input
-                [inputValue]="campaignForm.get('company_name').value"
                 placeholder="Company Name"
+                [inputValue]="campaignForm.get('company_name').value"
+                (blurEvent)="campaignForm.get('company_name').markAsTouched()"
                 (valueChange)="handleInput($event, 'company_name')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('company_name')?.invalid &&
+                campaignForm.get('company_name')?.touched &&
+                campaignForm.get('company_name')?.hasError('required')
+              "
+              errorMessage="Company name is required"
+            ></commudle-alert>
           </div>
           <div>
             <label for="name">Campaign Name<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
-                [inputValue]="campaignForm.get('name').value"
                 placeholder="Campaign Name"
+                [inputValue]="campaignForm.get('name').value"
+                (blurEvent)="campaignForm.get('name').markAsTouched()"
                 (valueChange)="handleInput($event, 'name')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('name')?.invalid &&
+                campaignForm.get('name')?.touched &&
+                campaignForm.get('name')?.hasError('required')
+              "
+              errorMessage="Campaign name is required"
+            ></commudle-alert>
           </div>
         </form>
       </div>
@@ -105,9 +147,18 @@
               <commudle-input
                 [inputValue]="campaignForm.get('start_time').value"
                 [type]="'datetime-local'"
+                (blurEvent)="campaignForm.get('start_time').markAsTouched()"
                 (valueChange)="handleInput($event, 'start_time')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('start_time')?.invalid &&
+                campaignForm.get('start_time')?.touched &&
+                campaignForm.get('start_time')?.hasError('required')
+              "
+              errorMessage="Start time is required"
+            ></commudle-alert>
           </div>
           <div>
             <label for="end_time">Select Ending Date<span class="required"> *</span></label>
@@ -116,9 +167,22 @@
               <commudle-input
                 [inputValue]="campaignForm.get('end_time').value"
                 [type]="'datetime-local'"
+                (blurEvent)="campaignForm.get('end_time').markAsTouched()"
                 (valueChange)="handleInput($event, 'end_time')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('end_time')?.invalid &&
+                campaignForm.get('end_time')?.touched &&
+                campaignForm.get('end_time')?.hasError('required')
+              "
+              errorMessage="End time is required"
+            ></commudle-alert>
+            <commudle-alert
+              [error]="campaignForm.hasError('endTimeInvalid')"
+              errorMessage="End time should be greater than start time."
+            ></commudle-alert>
           </div>
         </form>
       </div>
@@ -145,12 +209,21 @@
             <br />
             <div class="input">
               <commudle-input
-                [inputValue]="campaignForm.get('budget').value"
                 placeholder="Budget amount"
+                [inputValue]="campaignForm.get('budget').value"
                 [type]="'number'"
+                (blurEvent)="campaignForm.get('budget').markAsTouched()"
                 (valueChange)="handleInput($event, 'budget')"
               ></commudle-input>
             </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('budget')?.invalid &&
+                campaignForm.get('budget')?.touched &&
+                campaignForm.get('budget')?.hasError('required')
+              "
+              errorMessage="Budget is required"
+            ></commudle-alert>
           </div>
         </form>
       </div>

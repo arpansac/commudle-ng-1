@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
@@ -30,21 +30,42 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     private toasterService: ToastrService,
     private router: Router,
   ) {
-    this.campaignForm = this._fb.group({
-      name: ['', Validators.required], //campaign name
-      contact_name: ['', Validators.required],
-      contact_email: ['', [Validators.required, Validators.email]],
-      company_name: ['', Validators.required],
-      start_time: ['', Validators.required],
-      end_time: ['', Validators.required],
-      budget: [0, Validators.required],
-      campaign_assets: this._fb.array([this.createCampaignAsset()]),
-    });
+    this.campaignForm = this._fb.group(
+      {
+        name: ['', Validators.required], //campaign name
+        contact_name: ['', Validators.required],
+        contact_email: ['', [Validators.required, Validators.email]],
+        company_name: ['', Validators.required],
+        start_time: ['', Validators.required],
+        end_time: ['', Validators.required],
+        budget: [0, Validators.required],
+        campaign_assets: this._fb.array([this.createCampaignAsset()]),
+      },
+      {
+        validator: this.endTimeValidator, // Add the custom validator
+      },
+    );
+  }
+
+  endTimeValidator(formGroup: AbstractControl) {
+    const startTime = formGroup.get('start_time')?.value;
+    const endTime = formGroup.get('end_time')?.value;
+
+    if (startTime && endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+
+      if (end <= start) {
+        return { endTimeInvalid: true }; // Custom validation error
+      }
+    }
+
+    return null;
   }
 
   createCampaignAsset(asset?: ICampaignAsset): FormGroup {
     return this._fb.group({
-      image: [asset ? asset?.image.filename : null, Validators.required],
+      image: [asset ? asset?.image?.url : null, Validators.required],
       headline: [asset ? asset?.headline : '', Validators.required],
       url: [asset ? asset?.url : '', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]], // Ensure URL is valid
     });
@@ -135,7 +156,6 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
   handleInput(value: string | number, key: string) {
     this.campaignForm.patchValue({ [key]: value });
-    console.log(this.campaignForm.value);
   }
 
   handleArrayFormInput(value: string | number, key: string, index: number, formArrayName: string) {
@@ -143,7 +163,6 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
     if (formArray && formArray.controls[index]) {
       formArray.at(index).patchValue({ [key]: value });
-      console.log(this.campaignForm.value); // Debugging output
     } else {
       console.error(`Invalid index ${index} for form array ${formArrayName}`);
     }

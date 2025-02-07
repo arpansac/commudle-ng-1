@@ -12,6 +12,7 @@ export class InputComponent {
   @Input() name: string;
   @Input() inputValue: string | number = '';
   @Output() valueChange = new EventEmitter<string | number>();
+  @Output() blurEvent = new EventEmitter<void>(); // Added for blur event
 
   onInputChange(event: any) {
     if (this.type === 'number') {
@@ -20,5 +21,9 @@ export class InputComponent {
       this.inputValue = event.target.value;
     }
     this.valueChange.emit(this.inputValue);
+  }
+
+  onBlur() {
+    this.blurEvent.emit(); // Emit blur event
   }
 }
