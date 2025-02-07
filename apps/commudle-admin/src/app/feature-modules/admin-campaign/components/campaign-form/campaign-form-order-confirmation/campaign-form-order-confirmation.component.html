@@ -29,10 +29,19 @@
         <p class="value">{{ campaign?.budget }}</p>
       </div>
       <div>
-        <button nbButton>
-          <fa-icon [icon]="icons.faEdit"></fa-icon>
-        </button>
+        <a [routerLink]="['/campaigns', 'edit', campaign?.id, 'order-setup']" fragment="user-information">
+          <button nbButton>
+            <fa-icon [icon]="icons.faEdit"></fa-icon>
+          </button>
+        </a>
       </div>
     </nb-card-body>
   </nb-card>
+  <br />
+  <div class="next-button">
+    <button nbButton status="primary" shape="semi-round" (click)="submitForApproval()">
+      Submit for Approval &nbsp;
+      <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+    </button>
+  </div>
 </div>

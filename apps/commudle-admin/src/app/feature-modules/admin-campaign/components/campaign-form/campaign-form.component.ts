@@ -30,6 +30,7 @@ export class CampaignFormComponent implements OnInit {
     faSackDollar,
     faFileImage,
   };
+
   constructor(private router: Router, private footerService: FooterService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
@@ -53,9 +54,5 @@ export class CampaignFormComponent implements OnInit {
     } else {
       this.slug = 'Select Campaign';
     }
-  }
-
-  slugToText(slug: string): string {
-    return slug.replace(/-/g, ' '); // Replace hyphens with spaces
   }
 }
