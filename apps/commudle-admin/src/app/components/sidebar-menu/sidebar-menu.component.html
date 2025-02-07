@@ -28,7 +28,7 @@
       </a>
     </nb-list-item>
 
-    <nb-list-item>
+    <nb-list-item *ngIf="currentUser">
       <a [routerLink]="['/campaigns']">
         <fa-icon [icon]="faRectangleAd"></fa-icon>
         <span>My Campaigns</span>
