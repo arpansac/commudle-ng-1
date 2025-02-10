@@ -65,6 +65,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
   createCampaignAsset(asset?: ICampaignAsset): FormGroup {
     return this._fb.group({
+      id: [asset ? asset?.id : ''],
       image: [asset ? asset?.image?.url : null, Validators.required],
       headline: [asset ? asset?.headline : '', Validators.required],
       url: [asset ? asset?.url : '', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]], // Ensure URL is valid
@@ -186,6 +187,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     formValue.campaign_assets.forEach((asset, index) => {
       formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline);
       formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url);
+      formData.append(`campaign[campaign_assets[${index}][id]]`, asset.id);
 
       if (asset.image instanceof File) {
         formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
