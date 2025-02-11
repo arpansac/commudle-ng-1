@@ -32,10 +32,11 @@
           }
 
           .content {
-            @apply md:com-w-[620px] com-w-full com-p-0 md:com-pb-0 com-pb-6;
+            @apply com-flex com-flex-col md:com-w-[620px] com-w-full com-p-0 com-m-0 md:com-mb-4 com-mb-3 md:com-mt-4 com-mt-0;
             ::ng-deep {
               p {
                 @apply com-m-0 com-w-full;
+                color: initial;
               }
             }
           }
