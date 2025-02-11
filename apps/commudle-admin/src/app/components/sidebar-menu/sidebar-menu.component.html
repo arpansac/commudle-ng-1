@@ -119,7 +119,7 @@
     </nb-accordion>
   </div>
 
-  <div *ngIf="isPageAdsAdmin || isBadgesAdmin || isAssetsAdmin || isFeaturedItemsAdmin">
+  <div *ngIf="isPageAdsAdmin || isBadgesAdmin || isAssetsAdmin || isFeaturedItemsAdmin || isAdCampaignAdmin">
     <nb-accordion class="sidebar-common-menu">
       <nb-accordion-item [expanded]="true">
         <nb-accordion-item-header>Common Menu</nb-accordion-item-header>
@@ -137,6 +137,9 @@
         </nb-accordion-item-body>
         <nb-accordion-item-body *ngIf="isAssetsAdmin">
           <a [routerLink]="['/sys-admin', 'static-assets']">Static Assets</a>
+        </nb-accordion-item-body>
+        <nb-accordion-item-body *ngIf="isAdCampaignAdmin">
+          <a [routerLink]="['/sys-admin', 'campaigns']">Campaigns</a>
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>

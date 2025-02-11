@@ -43,6 +43,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isFeaturedCommunitiesAdmin = false;
   isAssetsAdmin = false;
   isFeaturedItemsAdmin = false;
+  isAdCampaignAdmin = false;
 
   notificationCount = 0;
 
@@ -109,6 +110,9 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
         if (currentUser.user_roles.includes(EUserRoles.COMMUNITY_ADMIN)) {
           this.getManagingCommunityGroups();
+        }
+        if (currentUser.user_roles.includes(EUserRoles.AD_CAMPAIGN_ADMIN)) {
+          this.isAdCampaignAdmin = true;
         }
       }
     });

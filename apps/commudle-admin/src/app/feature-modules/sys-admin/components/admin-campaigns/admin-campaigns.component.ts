@@ -12,7 +12,7 @@ export class AdminCampaignsComponent implements OnInit {
       route: './',
     },
     {
-      title: 'Campaigns Type',
+      title: 'Campaign Types',
       route: 'types',
     },
   ];
