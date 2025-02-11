@@ -1,6 +1,9 @@
 import { IAttachedFile } from './attached-file.model';
 import { IUser } from './user.model';
 import { IUserMessage } from './user-message.model';
+import { EDbModels } from './db-models.enum';
+import { ICommunity } from './community.model';
+import { IHackathon } from './hackathon.model';
 
 export interface ICommunityChannel {
   id: number;
@@ -26,6 +29,9 @@ export interface ICommunityChannel {
   discussion_id: number;
   members_count: number;
   default: boolean;
+  parent_type: EDbModels;
+  // TODO: Handle other parent cases
+  parent: ICommunity | IHackathon;
 }
 
 export interface IGroupedChannels {
