@@ -1,0 +1,42 @@
+<div>
+  <div class="text">
+    <p class="header">Welcome to Commudle’s Self-Serve Advertising Portal</p>
+    <p class="sub-heading">This is where you can set up a campaign instantly, all on your own.</p>
+    <p class="header">Why advertise on Commudle?</p>
+    <p class="sub-heading">
+      Commudle is the fastest-growing professional network for developers worldwide. When you advertise with our in-feed
+      native ads, you’re putting your brand in front of over 1M developers when they’re curious and in discovery mode.
+    </p>
+  </div>
+
+  <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+  <nb-card *ngIf="!isLoading">
+    <nb-card-header>Select one of the following</nb-card-header>
+    <nb-card-body>
+      <div *ngFor="let campaignType of campaignTypes" class="campaign-type">
+        <div (click)="selectCampaignType(campaignType.id)">
+          <div class="radio-button" [ngClass]="{ selected: selectedCampaignTypeId === campaignType.id }">
+            <span></span>
+          </div>
+          <div class="campaign-info">
+            <p class="header">{{ campaignType.name }}</p>
+            <p class="sub-heading">{{ campaignType.description }}</p>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <button
+    *ngIf="!isLoading"
+    nbButton
+    outline
+    status="primary"
+    shape="semi-round"
+    (click)="campaign ? updateCampaign() : createCampaign()"
+    [disabled]="!selectedCampaignTypeId"
+  >
+    Next - Campaign Setup &nbsp;
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </button>
+</div>

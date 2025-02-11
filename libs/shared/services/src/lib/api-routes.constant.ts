@@ -961,4 +961,22 @@ export const API_ROUTES = {
     DELETE: 'api/v2/profanity', //DELETE
     UPDATE: 'api/v2/profanity', //PUT
   },
+
+  CAMPAIGNS: {
+    INDEX: 'api/v2/campaigns', //GET
+    CREATE: 'api/v2/campaigns', //POST
+    UPDATE: 'api/v2/campaigns', //PUT
+    SHOW: 'api/v2/campaigns/show', //GET
+    SYS_ADMIN_INDEX: 'api/v2/campaigns/sys_admin_index', //GET
+    SYS_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/sys_admin_status_update', //PUT
+    CAMPAIGNS_TYPES: {
+      INDEX: 'api/v2/campaigns/campaign_types', //GET
+      CREATE: 'api/v2/campaigns/campaign_types', //POST
+      TOGGLE_STATUS: 'api/v2/campaigns/campaign_types/toggle_status', //PUT
+      UPDATE: 'api/v2/campaigns/campaign_types', //PUT
+      PUBLIC: {
+        INDEX: 'api/v2/campaigns/campaign_types/public', //GET
+      },
+    },
+  },
 };
