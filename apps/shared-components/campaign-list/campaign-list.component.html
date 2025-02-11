@@ -1,15 +1,15 @@
 <table>
   <tr>
-    <th>Campaign Type</th>
-    <th>Campaign Name</th>
-    <th>Status</th>
+    <th [width]="300">Campaign Type</th>
+    <th [width]="200">Campaign Name</th>
+    <th [width]="200">Status</th>
     <th>Budget</th>
-    <th>Duration Time</th>
-    <th>Created At</th>
+    <th [width]="300">Duration Time</th>
+    <th [width]="300">Created At</th>
     <th *ngIf="sysAdmin">Created By</th>
     <th>Action</th>
   </tr>
-  <tr *ngFor="let campaign of campaigns">
+  <tr *ngFor="let campaign of campaigns" (click)="openPopup(showCampaignDetails, campaign.id)">
     <td>{{ campaign.campaign_type.name }}</td>
     <td>{{ campaign.name }}</td>
     <td>
@@ -26,10 +26,11 @@
     </td>
     <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
     <td>
-      <span *ngIf="campaign.start_time"
-        >Start Time: {{ moment(campaign.start_time).format('MMM Do, YYYY - h:mm a') }}</span
-      >
-      <span *ngIf="campaign.end_time">End Time: {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }}</span>
+      <span *ngIf="campaign.start_time">
+        Start Time: {{ moment(campaign.start_time).format('MMM Do, YYYY - h:mm a') }}
+      </span>
+      <br />
+      <span *ngIf="campaign.end_time"> End Time: {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }} </span>
     </td>
     <td>{{ moment(campaign.created_at).format('MMM Do, YYYY - h:mm a') }}</td>
     <td *ngIf="sysAdmin">
@@ -44,3 +45,43 @@
     </td>
   </tr>
 </table>
+
+<ng-template #showCampaignDetails let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>Campaign Details</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="campaign-details">
+        <div><strong>Name:</strong> {{ data.name }}</div>
+        <div><strong>Company Name:</strong> {{ data.company_name }}</div>
+        <div><strong>Contact Name:</strong> {{ data.contact_name }}</div>
+        <div><strong>Contact Email:</strong> {{ data.contact_email }}</div>
+        <div><strong>Start Time:</strong> {{ moment(data.start_time).format('MMM Do, YYYY - h:mm a') }}</div>
+        <div><strong>End Time:</strong> {{ moment(data.end_time).format('MMM Do, YYYY - h:mm a') }}</div>
+        <div><strong>Budget:</strong> {{ data.budget | currency : data.currency_type }}</div>
+        <div><strong>Status:</strong> {{ data.status }}</div>
+        <div><strong>Created At:</strong> {{ moment(data.created_at).format('MMM Do, YYYY - h:mm a') }}</div>
+
+        <div *ngIf="data.campaign_assets?.length">
+          <strong>Campaign Assets:</strong>
+          <ul>
+            <li *ngFor="let asset of data.campaign_assets">
+              <div><strong>Headline:</strong> {{ asset.headline }}</div>
+              <div>
+                <strong>URL:</strong> <a [href]="asset.url" target="_blank">{{ asset.url }}</a>
+              </div>
+              <div *ngIf="asset.image">
+                <strong>Image:</strong><br />
+                <img [src]="asset.image.url" alt="Asset Image" width="100" />
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
