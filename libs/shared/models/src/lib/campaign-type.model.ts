@@ -6,4 +6,7 @@ export interface ICampaignType {
   id: number;
   user: IUser;
   active: boolean;
+  budget_amount: number;
+  image_dimension: { height: number; width: number };
+  slug: string;
 }

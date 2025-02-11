@@ -60,34 +60,88 @@
             <span class="required">*</span>
             <input formControlName="name" nbInput type="text" fullWidth placeholder="Name"
           /></label>
+          <commudle-alert
+            *ngIf="
+              campaignTypeForm.controls['name'].touched &&
+              campaignTypeForm.controls['name'].hasError('required') &&
+              campaignTypeForm.controls['name'].invalid
+            "
+            errorMessage="Name is Required"
+            [error]="true"
+          ></commudle-alert>
         </div>
-        <commudle-alert
-          *ngIf="
-            campaignTypeForm.controls['name'].touched &&
-            campaignTypeForm.controls['name'].hasError('required') &&
-            campaignTypeForm.controls['name'].invalid
-          "
-          errorMessage="Name is Required"
-          [error]="true"
-        ></commudle-alert>
         <br />
+
+        <div>
+          <label>
+            Slug
+            <span class="required">*</span>
+            <input formControlName="slug" nbInput type="text" fullWidth placeholder="slug"
+          /></label>
+          <commudle-alert
+            *ngIf="
+              campaignTypeForm.controls['slug'].touched &&
+              campaignTypeForm.controls['slug'].hasError('required') &&
+              campaignTypeForm.controls['slug'].invalid
+            "
+            errorMessage="Slug is Required"
+            [error]="true"
+          ></commudle-alert>
+        </div>
+        <br />
+
+        <div>
+          <label>
+            Budget Amount
+            <span class="required">*</span>
+            <input formControlName="budget_amount" nbInput type="number" fullWidth placeholder="Budget Amount"
+          /></label>
+          <commudle-alert
+            *ngIf="
+              campaignTypeForm.controls['budget_amount'].touched &&
+              campaignTypeForm.controls['budget_amount'].hasError('required') &&
+              campaignTypeForm.controls['budget_amount'].invalid
+            "
+            errorMessage="Budget Amount is Required"
+            [error]="true"
+          ></commudle-alert>
+        </div>
+        <br />
+
+        <div>
+          <label>Image Dimensions </label>
+          <div formGroupName="image_dimension">
+            <label>
+              Height <span class="required">*</span>
+              <input nbInput type="number" formControlName="height" placeholder="Enter height" />
+            </label>
+
+            <label>
+              Width <span class="required">*</span>
+              <input nbInput type="number" formControlName="width" placeholder="Enter width" />
+            </label>
+          </div>
+        </div>
+        <br />
+
         <div>
           <label>
             Description
             <span class="required">*</span>
             <textarea formControlName="description" nbInput type="text" fullWidth placeholder="Description"></textarea>
+            <commudle-alert
+              *ngIf="
+                campaignTypeForm.controls['description'].touched &&
+                campaignTypeForm.controls['description'].hasError('required') &&
+                campaignTypeForm.controls['description'].invalid
+              "
+              errorMessage="Description is Required"
+              [error]="true"
+            ></commudle-alert>
           </label>
         </div>
-        <commudle-alert
-          *ngIf="
-            campaignTypeForm.controls['description'].touched &&
-            campaignTypeForm.controls['description'].hasError('required') &&
-            campaignTypeForm.controls['description'].invalid
-          "
-          errorMessage="Description is Required"
-          [error]="true"
-        ></commudle-alert>
         <br />
+
         <nb-toggle formControlName="active" labelPosition="left"> Active <span class="required">*</span></nb-toggle>
       </form>
     </nb-card-body>
