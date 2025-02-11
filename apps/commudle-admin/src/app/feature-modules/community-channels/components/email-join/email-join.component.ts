@@ -45,7 +45,6 @@ export class EmailJoinComponent implements OnInit {
   getChannelInfo() {
     this.subscriptions.push(
       this.communityChannelsService.showChannelForm(this.channelId).subscribe((data) => {
-        console.log('🚀 ~ EmailJoinComponent ~ this.communityChannelsService.showChannelForm ~ data:', data);
         this.discussionType = data.display_type === EDiscussionType.CHANNEL ? 'channels' : 'forums';
         this.communityChannel = data;
         this.channelName = data.name;
@@ -77,7 +76,6 @@ export class EmailJoinComponent implements OnInit {
     this.subscriptions.push(
       this.communityChannelsService.joinChannel(this.channelId, this.joinToken, decline).subscribe(
         (data) => {
-          console.log('🚀 ~ EmailJoinComponent ~ joinChannel ~ data:', data);
           if (data) {
             this.libToasLogService.successDialog(`Taking you to the ${this.discussionType}!`, 2500);
             if (decline) {
@@ -103,7 +101,6 @@ export class EmailJoinComponent implements OnInit {
 
   redirect(acceptanceStatus = true) {
     let redirectPath = '';
-    // http://localhost:4200/communities/arshdeep-singh/hackathons/testing-csv/channels/email-join/e7e2d6af-014d-41cc-afcd-99c184cb0751?ch=461
     switch (this.communityChannel.parent_type) {
       case EDbModels.KOMMUNITY:
         redirectPath = `/communities/${this.community.id}/${this.discussionType}/${this.channelId}`;
