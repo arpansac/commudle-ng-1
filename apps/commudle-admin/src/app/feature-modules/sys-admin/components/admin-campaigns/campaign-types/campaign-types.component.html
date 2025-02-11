@@ -15,13 +15,19 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Budget Amount</th>
           <th>Active</th>
           <th>User</th>
           <th [width]="200">Action</th>
         </tr>
         <tr *ngFor="let campaignType of campaignTypes">
-          <td>{{ campaignType.name }}</td>
+          <td>
+            {{ campaignType.name }}
+            <br />
+            <small>{{ campaignType.slug }}</small>
+          </td>
           <td>{{ campaignType.description }}</td>
+          <td>{{ campaignType.budget_amount }}</td>
           <td>
             <nb-toggle [checked]="campaignType.active" (checkedChange)="toggleCampaignStatus(campaignType.id)">
             </nb-toggle>
