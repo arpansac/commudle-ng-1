@@ -1,5 +1,5 @@
 .container-scroll {
-  @apply com-m-0  com-border-none;
+  @apply com-m-0 com-border-none;
   nb-card-body {
     @apply com-p-0;
     .heading {
@@ -37,7 +37,7 @@
 }
 
 .container {
-  @apply com-m-0 com-mx-0 com-bg-Bright-Gray-opacity-30;
+  @apply com-m-0 com-mx-0 com-bg-Bright-Gray-opacity-30 com-border-none;
   nb-card-body {
     @apply com-px-3 com-pt-4 com-pb-0;
     .heading {
