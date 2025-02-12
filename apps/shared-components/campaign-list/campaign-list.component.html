@@ -6,15 +6,19 @@
     <th>Budget</th>
     <th [width]="300">Duration Time</th>
     <th [width]="300">Created At</th>
-    <th *ngIf="sysAdmin">Created By</th>
+    <th *ngIf="isCampaignAdmin">Created By</th>
     <th>Action</th>
   </tr>
-  <tr *ngFor="let campaign of campaigns" (click)="openPopup(showCampaignDetails, campaign.id)">
+  <tr
+    *ngFor="let campaign of campaigns"
+    (click)="openPopup(showCampaignDetails, campaign.id)"
+    [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
+  >
     <td>{{ campaign.campaign_type.name }}</td>
     <td>{{ campaign.name }}</td>
     <td>
-      <div *ngIf="!sysAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
-      <div *ngIf="sysAdmin">
+      <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
+      <div *ngIf="isCampaignAdmin">
         <div class="select">
           <select [(ngModel)]="campaign.status" (change)="updateStatus($event, campaign.id)">
             <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
@@ -33,11 +37,11 @@
       <span *ngIf="campaign.end_time"> End Time: {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }} </span>
     </td>
     <td>{{ moment(campaign.created_at).format('MMM Do, YYYY - h:mm a') }}</td>
-    <td *ngIf="sysAdmin">
+    <td *ngIf="isCampaignAdmin">
       <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
     </td>
     <td>
-      <a *ngIf="!sysAdmin" [routerLink]="['edit', campaign.id]">
+      <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
         <button nbButton status="info" size="tiny">
           <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon> &nbsp; Edit
         </button>
@@ -47,10 +51,10 @@
 </table>
 
 <ng-template #showCampaignDetails let-data let-ref="dialogRef">
-  <nb-card>
+  <nb-card class="campaign-details">
     <nb-card-header>
       <div>Campaign Details</div>
-      <button ghost nbButton size="small" (click)="ref.close()">
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>

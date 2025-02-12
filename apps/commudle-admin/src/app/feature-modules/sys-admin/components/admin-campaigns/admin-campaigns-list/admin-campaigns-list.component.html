@@ -1,6 +1,6 @@
 <app-loading-spinner *ngIf="isLoading; else campaignList"></app-loading-spinner>
 <ng-template #campaignList>
-  <commudle-campaign-list [campaigns]="campaigns" [sysAdmin]="true"></commudle-campaign-list
+  <commudle-campaign-list [campaigns]="campaigns" [isCampaignAdmin]="true"></commudle-campaign-list
 ></ng-template>
 <br />
 <br />

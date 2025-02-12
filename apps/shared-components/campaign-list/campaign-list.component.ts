@@ -12,7 +12,7 @@ import moment from 'moment';
 })
 export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
-  @Input() sysAdmin = false;
+  @Input() isCampaignAdmin = false;
   moment = moment;
   icons = { faEdit };
   ECampaignStatus = ECampaignStatus;
@@ -32,10 +32,12 @@ export class CampaignListComponent {
   }
 
   openPopup(dialog, campaignId) {
-    this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
-      if (campaign) {
-        this.dialogService.open(dialog, { context: campaign });
-      }
-    });
+    if (this.isCampaignAdmin) {
+      this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
+        if (campaign) {
+          this.dialogService.open(dialog, { context: campaign });
+        }
+      });
+    }
   }
 }
