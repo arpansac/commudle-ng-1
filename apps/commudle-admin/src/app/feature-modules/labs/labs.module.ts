@@ -35,7 +35,6 @@ import { LabDiscussionComponent } from './components/lab/lab-discussion/lab-disc
 import { LabStepComponent } from './components/lab/lab-step/lab-step.component';
 import { LabComponent } from './components/lab/lab.component';
 import { LabsCardComponent } from './components/labs/labs-card/labs-card.component';
-import { LabsHeaderComponent } from './components/labs/labs-header/labs-header.component';
 import { LabsSearchComponent } from './components/labs/labs-search/labs-search.component';
 import { LabsComponent } from './components/labs/labs.component';
 import { LabListItemComponent } from './components/my-labs/lab-list-item/lab-list-item.component';
@@ -49,6 +48,7 @@ import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modul
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +62,6 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     LabDiscussionComponent,
     LabDiscussionMessageComponent,
     LabDetailsComponent,
-    LabsHeaderComponent,
     LabsSearchComponent,
     LabsCardComponent,
   ],
@@ -86,10 +85,10 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     MiniUserProfileModule,
     PublicHomeListSpeakersModule,
     CommunityBuildsModule,
-    PublicHomeListSpeakersModule,
     AppSharedComponentsModule,
     HelpSectionComponent,
     UserPersonalConnectComponent,
+    ListingPageHeaderComponent,
 
     // Nebular
     NbCardModule,
