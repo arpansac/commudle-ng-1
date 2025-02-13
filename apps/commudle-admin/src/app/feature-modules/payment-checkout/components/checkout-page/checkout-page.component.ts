@@ -1,8 +1,21 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@commudle/shared-environments';
-import { IPurchaseOrder, IRazorpayOrder, IUser, EPurchaseOrderStatus } from '@commudle/shared-models';
-import { countries_details, PurchaseOrderService, RazorpayService, ToastrService } from '@commudle/shared-services';
+import {
+  IPurchaseOrder,
+  IRazorpayOrder,
+  IUser,
+  EPurchaseOrderStatus,
+  EDbModels,
+  ICampaign,
+} from '@commudle/shared-models';
+import {
+  CampaignService,
+  countries_details,
+  PurchaseOrderService,
+  RazorpayService,
+  ToastrService,
+} from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -27,6 +40,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   totalTaxAmount: number;
   countryDetails = countries_details;
   EPurchaseOrderStatus = EPurchaseOrderStatus;
+  campaign: ICampaign;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
 
@@ -39,9 +53,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private authWatchService: LibAuthwatchService,
     private dialogService: NbDialogService,
+    private campaignService: CampaignService,
   ) {}
 
   ngOnInit() {
+    this.setupCurrentUser();
     this.activatedRoute.params.subscribe((params) => {
       this.showPurchaseOrder(params['purchase_order_uuid']);
     });
@@ -59,7 +75,20 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       this.purchaseOrder.currency_symbol = this.countryDetails.find(
         (detail) => detail.currency === this.purchaseOrder.currency,
       ).symbol;
+      this.fetchParent();
     });
+  }
+
+  fetchParent() {
+    switch (this.purchaseOrder.orderable_type) {
+      case EDbModels.CAMPAIGN:
+        this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
+          this.campaign = campaign;
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   setupCurrentUser() {
@@ -69,11 +98,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       }),
     );
   }
-  submitFormAndPay() {}
+  Pay() {
+    this.createOrUpdateRazorpayOrder(this.purchaseOrder.id);
+  }
 
   createOrUpdateRazorpayOrder(etoId) {
     const orderDetails = {
-      amount: Math.round((this.totalPrice + this.totalTaxAmount) * 100),
+      amount: Math.round(this.purchaseOrder.amount_to_be_paid),
       currency: this.purchaseOrder.currency,
       notes: {
         orderable_id: this.purchaseOrder.orderable_id,

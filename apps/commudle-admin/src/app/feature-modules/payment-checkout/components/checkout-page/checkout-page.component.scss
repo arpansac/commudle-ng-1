@@ -1,3 +1,60 @@
+.payment-details-section {
+  nb-card {
+    nb-card-body {
+      @apply com-p-0;
+      .paid-message-container {
+        @apply com-flex com-flex-col com-justify-center com-my-6;
+        fa-icon {
+          @apply com-text-5xl com-text-Caribbean-Green com-mx-auto;
+        }
+        .message {
+          @apply com-text-xl com-font-semibold com-text-center;
+        }
+      }
+
+      .order-summary-message {
+        @apply com-px-4 com-py-2 com-text-base com-italic;
+      }
+
+      .payment-details {
+        @apply com-flex com-justify-between com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-py-2 com-px-4;
+        span {
+          @apply com-text-base com-font-medium;
+        }
+        .heading {
+          @apply com-text-gray-500;
+        }
+      }
+
+      .recipient {
+        .heading {
+          @apply com-px-4 com-py-2 com-text-base com-italic;
+        }
+        .recipient-details {
+          @apply com-flex com-justify-between com-gap-2 com-py-2 com-px-4;
+        }
+      }
+
+      .user-details {
+        @apply com-px-6 com-py-4;
+        form {
+          @apply com-mt-3;
+        }
+        form > div {
+          @apply com-flex com-flex-col com-gap-3;
+        }
+        .add-another-user {
+          @apply com-border-0 com-text-primary-500 com-bg-transparent  com-py-3 com-text-base com-cursor-pointer com-font-semibold;
+        }
+      }
+    }
+  }
+
+  .info-container {
+    @apply com-my-2 com-px-2;
+  }
+}
+
 .payment-error-dialog {
   @apply com-w-96;
   nb-card-body {

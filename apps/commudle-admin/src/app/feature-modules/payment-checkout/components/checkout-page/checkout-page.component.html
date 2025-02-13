@@ -1,91 +1,78 @@
 <div class="base-layout">
   <div class="container">
-    <div class="one-column-layout">
-      <div class="payment-details-section" *ngIf="purchaseOrder">
+    <div class="two-column-layout medium">
+      <div class="main-column">
         <nb-card>
           <nb-card-body>
-            <div class="com-flex com-justify-center com-my-6">
-              <div class="com-flex com-flex-col com-gap-1">
-                <div class="com-flex">
-                  <fa-icon
-                    [icon]="icons.faCircleCheck"
-                    class="com-text-5xl com-text-Caribbean-Green com-mx-auto"
-                  ></fa-icon>
-                </div>
-                <div class="com-text-xl com-font-semibold" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
-                  Payment Successful!
-                </div>
-              </div>
-            </div>
-            <div class="com-px-4 com-py-2 com-text-base com-italic">Order Summary</div>
-            <div class="payment-deatils !com-flex-col">
-              <div class="com-flex com-justify-between">
-                <span class="heading">Price </span>
-                <span class="value">
-                  <!-- <span class="heading com-mr-2">x{{ showEventTicketOrder?.eto_users.length }}</span> -->
-                  <span>
-                    {{ purchaseOrder.currency_symbol }}
-                    {{ purchaseOrder.amount_to_be_paid }}
-                  </span>
-                </span>
-              </div>
-            </div>
-            <div class="payment-deatils" *ngIf="purchaseOrder.discount_code?.discount_value > 0">
-              <span class="heading">Discount Amount</span>
-              <span class="value">
-                {{ purchaseOrder.currency_symbol }}
-                {{ purchaseOrder.discount_code.discount_value / 100 }}
-              </span>
-            </div>
-            <div class="payment-deatils" *ngIf="purchaseOrder.tax_amount > 0">
-              <!-- <span class="heading">{{ paymentDetails.tax_name }} ({{ paymentDetails.tax_percentage }}%)</span> -->
-              <span class="value">
-                {{ purchaseOrder.currency_symbol }}
-                {{ purchaseOrder.tax_amount / 100 }}
-              </span>
-            </div>
-            <div class="payment-deatils">
-              <span class="heading">Total</span>
-              <span class="value">
-                {{ purchaseOrder.currency_symbol }}
-                {{ purchaseOrder.amount_to_be_paid / 100 }}
-              </span>
-            </div>
-
-            <div class="com-px-4 com-py-2 com-text-base com-italic">Recipients</div>
-            <div class="com-pb-2 com-px-4">
-              <div class="com-flex com-justify-between com-gap-2 com-py-2">
-                <!-- <div>{{ purchaseOrder.user.name | titlecase }}</div>
-                <div class="com-flex com-flex-col">
-                  <span>{{ purchaseOrder.user.email }}</span>
-                  <span>{{ purchaseOrder.user.phone }}</span>
-                </div> -->
-              </div>
+            <div *ngIf="campaign">
+              <div class="name">Campaign Name: {{ campaign.name }}</div>
             </div>
           </nb-card-body>
         </nb-card>
+      </div>
 
-        <nb-card *ngIf="purchaseOrder.status === EPurchaseOrderStatus.UNPAID">
-          <nb-card-body> </nb-card-body>
-        </nb-card>
-        <div class="com-my-2 com-px-2">
-          <commudle-alert
-            [info]="true"
-            message="For any technical support please reach out to payments_support@commudle.com"
-          ></commudle-alert>
-        </div>
-        <div class="com-my-2 com-px-2">
-          <commudle-alert [info]="true">
-            <div infoContent>
-              For any refund related queries please reach out to the event organizers, Commudle is not responsible for
-              any refund or disputes between the ticket purchasing party and the ticket seller.
-            </div></commudle-alert
-          >
-        </div>
-        <div class="com-px-2" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
-          <button nbButton status="primary" fullWidth (click)="submitFormAndPay()" [disabled]="isLoadingPayment">
-            Submit & Pay
-          </button>
+      <div class="right-column">
+        <div class="payment-details-section" *ngIf="purchaseOrder">
+          <nb-card>
+            <nb-card-body>
+              <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="paid-message-container">
+                <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+                <p class="message">Payment Successful!</p>
+              </div>
+
+              <!-- price -->
+              <div class="order-summary-message">Order Summary</div>
+              <div class="payment-details">
+                <span class="heading">Price </span>
+                <span class="value">
+                  <span>
+                    {{ purchaseOrder.currency_symbol }}
+                    {{ purchaseOrder.amount_to_be_paid / 100 }}
+                  </span>
+                </span>
+              </div>
+
+              <!-- total -->
+              <div class="payment-details">
+                <span class="heading">Total</span>
+                <span class="value">
+                  {{ purchaseOrder.currency_symbol }}
+                  {{ purchaseOrder.amount_to_be_paid / 100 }}
+                </span>
+              </div>
+
+              <div class="recipient">
+                <div class="heading">Recipients</div>
+                <div class="recipient-details">
+                  <div>{{ purchaseOrder.user.name | titlecase }}</div>
+                  <div class="user-contact-details">
+                    <span>{{ purchaseOrder.user.email }}</span>
+                    <br />
+                    <span>{{ purchaseOrder.user.phone }}</span>
+                  </div>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+          <div class="info-container">
+            <commudle-alert
+              [info]="true"
+              message="For any technical support please reach out to payments_support@commudle.com"
+            ></commudle-alert>
+          </div>
+
+          <div class="info-container">
+            <commudle-alert
+              [info]="true"
+              message="  For any refund related queries please reach out to the event organizers, Commudle is not responsible for
+                any refund or disputes between the ticket purchasing party and the ticket seller."
+            >
+            </commudle-alert>
+          </div>
+          <div class="com-px-2" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.UNPAID">
+            <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
+          </div>
         </div>
       </div>
     </div>
