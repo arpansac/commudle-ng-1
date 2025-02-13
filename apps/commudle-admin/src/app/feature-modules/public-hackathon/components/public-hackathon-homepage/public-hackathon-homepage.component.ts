@@ -141,7 +141,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
 
   setSeoService() {
     this.seoService.setTags(
-      this.hackathon.name + 'by' + this.community.name,
+      this.hackathon.name + ' by ' + this.community.name,
       this.removeHtmlTags(this.hackathon.description),
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
