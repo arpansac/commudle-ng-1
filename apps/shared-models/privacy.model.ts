@@ -7,4 +7,5 @@ export interface IPrivacy {
   last_updated_at: Date;
   headerImage: SanityImageObject;
   content: [];
+  markdown_content: string;
 }
