@@ -102,7 +102,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.createOrUpdateRazorpayOrder(this.purchaseOrder.id);
   }
 
-  createOrUpdateRazorpayOrder(etoId) {
+  createOrUpdateRazorpayOrder(poId) {
     const orderDetails = {
       amount: Math.round(this.purchaseOrder.amount_to_be_paid),
       currency: this.purchaseOrder.currency,
@@ -112,13 +112,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         user_email: this.currentUser.email,
       },
     };
-    if (orderDetails.amount === 0) {
-      // this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
-      //   closeOnBackdropClick: false,
-      // });
-      // return;
-    }
-    this.razorpayService.createOrFindOrder(orderDetails, etoId).subscribe((data: IRazorpayOrder) => {
+    this.razorpayService.createOrFindOrder(orderDetails, { po_id: poId }).subscribe((data: IRazorpayOrder) => {
       this.razorPaySubmit(data);
     });
   }
@@ -128,7 +122,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     const options = {
       key: environment.razorpay_key,
       order_id: order.rzp_order_id,
-      notes: {},
       handler: (response: unknown) => {
         {
           this.razorpayService

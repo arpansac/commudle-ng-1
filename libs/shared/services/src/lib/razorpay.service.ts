@@ -54,8 +54,14 @@ export class RazorpayService {
     });
   }
 
-  createOrFindOrder(orderDetails, etoId): Observable<IRazorpayOrder> {
-    const params = new HttpParams().set('eto_id', etoId);
+  createOrFindOrder(orderDetails, parentOrder): Observable<IRazorpayOrder> {
+    let params = new HttpParams();
+    if (parentOrder.eto_id) {
+      params = params.set('eto_id', parentOrder.eto_id);
+    }
+    if (parentOrder.po_id) {
+      params = params.set('po_id', parentOrder.po_id);
+    }
     return this.http.post<IRazorpayOrder>(
       this.baseApiService.getRoute(API_ROUTES.RAZORPAY.FIND_OR_CREATE_ORDER),
       {
