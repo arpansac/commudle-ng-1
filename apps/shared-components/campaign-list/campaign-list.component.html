@@ -19,7 +19,7 @@
     <td>
       <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
       <div *ngIf="isCampaignAdmin">
-        <div class="select">
+        <div class="select" (click)="$event.stopPropagation()">
           <select [(ngModel)]="campaign.status" (change)="updateStatus($event, campaign.id)">
             <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
               {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
@@ -42,8 +42,29 @@
     </td>
     <td>
       <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
-        <button nbButton status="info" size="tiny">
-          <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon> &nbsp; Edit
+        <button
+          nbButton
+          status="info"
+          [disabled]="
+            campaign.status === ECampaignStatus.APPROVED ||
+            campaign.status === ECampaignStatus.LIVE ||
+            campaign.status === ECampaignStatus.COMPLETE
+          "
+        >
+          <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
+          &nbsp; Edit
+        </button>
+      </a>
+      &nbsp; &nbsp;
+      <a
+        *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED && campaign.purchase_order"
+        [routerLink]="['/checkout', campaign.purchase_order.uuid]"
+        (click)="$event.stopPropagation()"
+        target="_blank"
+      >
+        <button nbButton status="primary">
+          <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
+          &nbsp; Pay Now
         </button>
       </a>
     </td>

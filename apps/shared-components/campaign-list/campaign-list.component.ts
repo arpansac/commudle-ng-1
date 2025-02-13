@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import moment from 'moment';
 
@@ -14,7 +14,7 @@ export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
   moment = moment;
-  icons = { faEdit };
+  icons = { faEdit, faReceipt };
   ECampaignStatus = ECampaignStatus;
 
   constructor(
