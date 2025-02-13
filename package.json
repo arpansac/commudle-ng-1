@@ -78,6 +78,7 @@
     "ng2-completer": "^9.0.1",
     "ngx-cookie-service": "^16.1.0",
     "ngx-linky": "^4.0.0",
+    "ngx-markdown": "^16.0.0",
     "ngx-stripe": "^16.4.0",
     "prerender-node": "^3.7.0",
     "prismjs": "^1.29.0",
