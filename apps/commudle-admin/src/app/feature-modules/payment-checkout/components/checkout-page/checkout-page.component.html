@@ -1,0 +1,111 @@
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <div class="payment-details-section" *ngIf="purchaseOrder">
+        <nb-card>
+          <nb-card-body>
+            <div class="com-flex com-justify-center com-my-6">
+              <div class="com-flex com-flex-col com-gap-1">
+                <div class="com-flex">
+                  <fa-icon
+                    [icon]="icons.faCircleCheck"
+                    class="com-text-5xl com-text-Caribbean-Green com-mx-auto"
+                  ></fa-icon>
+                </div>
+                <div class="com-text-xl com-font-semibold" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+                  Payment Successful!
+                </div>
+              </div>
+            </div>
+            <div class="com-px-4 com-py-2 com-text-base com-italic">Order Summary</div>
+            <div class="payment-deatils !com-flex-col">
+              <div class="com-flex com-justify-between">
+                <span class="heading">Price </span>
+                <span class="value">
+                  <!-- <span class="heading com-mr-2">x{{ showEventTicketOrder?.eto_users.length }}</span> -->
+                  <span>
+                    {{ purchaseOrder.currency_symbol }}
+                    {{ purchaseOrder.amount_to_be_paid }}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="payment-deatils" *ngIf="purchaseOrder.discount_code?.discount_value > 0">
+              <span class="heading">Discount Amount</span>
+              <span class="value">
+                {{ purchaseOrder.currency_symbol }}
+                {{ purchaseOrder.discount_code.discount_value / 100 }}
+              </span>
+            </div>
+            <div class="payment-deatils" *ngIf="purchaseOrder.tax_amount > 0">
+              <!-- <span class="heading">{{ paymentDetails.tax_name }} ({{ paymentDetails.tax_percentage }}%)</span> -->
+              <span class="value">
+                {{ purchaseOrder.currency_symbol }}
+                {{ purchaseOrder.tax_amount / 100 }}
+              </span>
+            </div>
+            <div class="payment-deatils">
+              <span class="heading">Total</span>
+              <span class="value">
+                {{ purchaseOrder.currency_symbol }}
+                {{ purchaseOrder.amount_to_be_paid / 100 }}
+              </span>
+            </div>
+
+            <div class="com-px-4 com-py-2 com-text-base com-italic">Recipients</div>
+            <div class="com-pb-2 com-px-4">
+              <div class="com-flex com-justify-between com-gap-2 com-py-2">
+                <!-- <div>{{ purchaseOrder.user.name | titlecase }}</div>
+                <div class="com-flex com-flex-col">
+                  <span>{{ purchaseOrder.user.email }}</span>
+                  <span>{{ purchaseOrder.user.phone }}</span>
+                </div> -->
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card *ngIf="purchaseOrder.status === EPurchaseOrderStatus.UNPAID">
+          <nb-card-body> </nb-card-body>
+        </nb-card>
+        <div class="com-my-2 com-px-2">
+          <commudle-alert
+            [info]="true"
+            message="For any technical support please reach out to payments_support@commudle.com"
+          ></commudle-alert>
+        </div>
+        <div class="com-my-2 com-px-2">
+          <commudle-alert [info]="true">
+            <div infoContent>
+              For any refund related queries please reach out to the event organizers, Commudle is not responsible for
+              any refund or disputes between the ticket purchasing party and the ticket seller.
+            </div></commudle-alert
+          >
+        </div>
+        <div class="com-px-2" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+          <button nbButton status="primary" fullWidth (click)="submitFormAndPay()" [disabled]="isLoadingPayment">
+            Submit & Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- paymentErrorDialog -->
+<ng-template #paymentErrorDialog let-data let-ref="dialogRef">
+  <nb-card class="payment-error-dialog">
+    <nb-card-body>
+      <div class="exclamation-container">
+        <div>
+          <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
+        </div>
+      </div>
+      <p class="primary-text">Seems like there is a problem with payment</p>
+      <p (click)="reload(); ref.close()" class="reload-button">
+        <fa-icon [icon]="icons.faRotateRight"></fa-icon>Refresh to retry payment
+      </p>
+      <p class="secondary-text">If money was deducted from your account, please reach out to our support</p>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

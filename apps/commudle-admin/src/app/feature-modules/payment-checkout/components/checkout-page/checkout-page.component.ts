@@ -1,0 +1,148 @@
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from '@commudle/shared-environments';
+import { IPurchaseOrder, IRazorpayOrder, IUser, EPurchaseOrderStatus } from '@commudle/shared-models';
+import { countries_details, PurchaseOrderService, RazorpayService, ToastrService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { faTriangleExclamation, faRotateRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+declare const Razorpay: any;
+@Component({
+  selector: 'commudle-checkout-page',
+  templateUrl: './checkout-page.component.html',
+  styleUrls: ['./checkout-page.component.scss'],
+})
+export class CheckoutPageComponent implements OnInit, OnDestroy {
+  purchaseOrder: IPurchaseOrder;
+  currentUser: IUser;
+  isLoadingPayment = false;
+  subscriptions: Subscription[] = [];
+  icons = {
+    faTriangleExclamation,
+    faRotateRight,
+    faCircleCheck,
+  };
+  totalPrice: number;
+  totalTaxAmount: number;
+  countryDetails = countries_details;
+  EPurchaseOrderStatus = EPurchaseOrderStatus;
+
+  @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private purchaseOrderService: PurchaseOrderService,
+    private razorpayService: RazorpayService,
+    private toastrService: ToastrService,
+    private authWatchService: LibAuthwatchService,
+    private dialogService: NbDialogService,
+  ) {}
+
+  ngOnInit() {
+    this.activatedRoute.params.subscribe((params) => {
+      this.showPurchaseOrder(params['purchase_order_uuid']);
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  showPurchaseOrder(purchaseOrderUuid) {
+    this.purchaseOrderService.showPurchaseOrder(purchaseOrderUuid).subscribe((data: IPurchaseOrder) => {
+      this.purchaseOrder = data;
+      this.purchaseOrder.currency_symbol = this.countryDetails.find(
+        (detail) => detail.currency === this.purchaseOrder.currency,
+      ).symbol;
+    });
+  }
+
+  setupCurrentUser() {
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+        this.currentUser = data;
+      }),
+    );
+  }
+  submitFormAndPay() {}
+
+  createOrUpdateRazorpayOrder(etoId) {
+    const orderDetails = {
+      amount: Math.round((this.totalPrice + this.totalTaxAmount) * 100),
+      currency: this.purchaseOrder.currency,
+      notes: {
+        orderable_id: this.purchaseOrder.orderable_id,
+        orderable_type: this.purchaseOrder.orderable_type,
+        user_email: this.currentUser.email,
+      },
+    };
+    if (orderDetails.amount === 0) {
+      // this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
+      //   closeOnBackdropClick: false,
+      // });
+      // return;
+    }
+    this.razorpayService.createOrFindOrder(orderDetails, etoId).subscribe((data: IRazorpayOrder) => {
+      this.razorPaySubmit(data);
+    });
+  }
+
+  razorPaySubmit(order: IRazorpayOrder) {
+    this.isLoadingPayment = true;
+    const options = {
+      key: environment.razorpay_key,
+      order_id: order.rzp_order_id,
+      notes: {},
+      handler: (response: unknown) => {
+        {
+          this.razorpayService
+            .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
+            .subscribe((data) => {
+              if (data) {
+                this.toastrService.successDialog('Your Payment Was Received Successfully');
+                this.isLoadingPayment = false;
+              }
+            });
+        }
+      },
+      prefill: {
+        name: this.currentUser.name,
+        email: this.currentUser.email,
+        contact: this.currentUser.phone ? this.currentUser.phone : '',
+      },
+      modal: {
+        escape: false,
+        reload: false,
+        ondismiss: () => {
+          console.error('Checkout form closed by the user');
+          this.isLoadingPayment = false;
+          this.dialogService.open(this.paymentErrorDialog, {
+            closeOnBackdropClick: false,
+          });
+        },
+      },
+    };
+    const rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', (response: any) => {
+      {
+        this.razorpayService
+          .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
+          .subscribe((data) => {
+            this.isLoadingPayment = false;
+            alert('Message from Razorpay:' + response.error.description);
+          });
+      }
+    });
+    rzp1.open();
+  }
+
+  // Reloads the current window location.
+  reload() {
+    window.location.reload();
+  }
+}
