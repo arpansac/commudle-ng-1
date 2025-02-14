@@ -1,8 +1,7 @@
-<nb-card>
+<nb-card id="agenda">
   <nb-card-header>
-    <h6>
-      <nb-icon icon="calendar-outline" status="primary"></nb-icon>
-      Agenda
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="agenda"><nb-icon icon="calendar-outline" status="primary"></nb-icon>Agenda</a>
     </h6>
     <div *ngIf="showShareButton" class="share-btn">
       <a [routerLink]="['/communities', community.slug, 'events', event.slug, 'agenda']" target="_blank">
