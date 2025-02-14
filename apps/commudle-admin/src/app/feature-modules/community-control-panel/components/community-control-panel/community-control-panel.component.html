@@ -1,22 +1,26 @@
 <div *ngIf="community" class="header">
   <div class="basic-details">
-    <div class="logo">
-      <img alt="{{ community.name }}" src="{{ community.logo_image_path?.i96 }}" title="{{ community.name }}" />
+    <div class="logo-name">
+      <div class="logo">
+        <img alt="{{ community.name }}" src="{{ community.logo_image_path?.i96 }}" title="{{ community.name }}" />
+      </div>
+      <h4>
+        {{ community.name }}
+      </h4>
     </div>
-    <h4>{{ community.name }}</h4>
+    <p class="people-logo">
+      <nb-icon icon="people-outline"></nb-icon>
+      {{ community.members_count }} Members
+    </p>
   </div>
 
   <section class="header-links">
-    <div class="people-logo">
-      <nb-icon icon="people-outline"></nb-icon>
-      {{ community.members_count }} Members
-    </div>
     <div class="buttons">
-      <button (click)="sendEmails()" nbButton size="small" status="primary">
+      <button (click)="sendEmails()" nbButton size="tiny" status="primary">
         <nb-icon icon="email-outline"></nb-icon>
         Send Emails
       </button>
-      <a [routerLink]="['/communities', community.slug]" nbButton size="small" status="primary" target="_blank">
+      <a [routerLink]="['/communities', community.slug]" nbButton size="tiny" status="primary" target="_blank">
         Public Page
         <nb-icon icon="external-link"></nb-icon>
       </a>
@@ -30,7 +34,7 @@
         Channels
         <nb-icon icon="external-link"></nb-icon>
       </a> -->
-      <a [routerLink]="['stats']" nbButton size="small" status="success" target="_blank">
+      <a [routerLink]="['stats']" nbButton size="tiny" status="success" target="_blank">
         <nb-icon icon="trending-up-outline"></nb-icon>
         Stats <sup>New</sup>&nbsp;
         <nb-icon icon="external-link"></nb-icon>
@@ -44,21 +48,10 @@
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [forWindow]="false"
       [eventName]="sidebarEventName"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
+      [heading]="'Community Admin Menu'"
     >
       <div class="action-buttons">
-        <div
-          class="header-icons"
-          [ngClass]="{
-            'header-icons-non-expanded': !sidebarExpanded,
-            'header-icons-expanded': sidebarExpanded
-          }"
-        >
-          <p *ngIf="sidebarExpanded" class="category-heading">Community Admin Menu</p>
-          <div (click)="toggleSidebar()" class="sidebar-expand-icon">
-            <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
-          </div>
-        </div>
         <div class="category">
           <div *ngIf="sidebarExpanded" class="category-heading">
             <span>Engagements</span>
