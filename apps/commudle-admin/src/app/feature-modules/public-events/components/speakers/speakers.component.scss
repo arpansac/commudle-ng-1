@@ -3,8 +3,14 @@ nb-card {
 
   nb-card-header {
     @apply com-py-4 md:com-px-6 com-px-4;
-    h6 {
-      @apply md:com-font-semibold com-font-bold com-m-0;
+    .title {
+      @apply com-flex com-m-0;
+      a {
+        @apply md:com-font-semibold com-font-bold com-no-underline com-text-Yankees-Blue;
+        nb-icon {
+          @apply com-mr-1;
+        }
+      }
     }
   }
   nb-card-body {

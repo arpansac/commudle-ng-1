@@ -28,6 +28,9 @@ nb-card {
       @apply com-flex com-m-0;
       a {
         @apply md:com-font-semibold com-font-bold com-no-underline com-text-Yankees-Blue;
+        nb-icon {
+          @apply com-mr-1;
+        }
       }
     }
 
