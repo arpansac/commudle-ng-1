@@ -7,7 +7,7 @@ th {
   @apply com-p-4;
 }
 
-tr:not(:last-child) {
+tr {
   @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
 }
 
@@ -22,4 +22,8 @@ tr:not(:last-child) {
   nb-card-header {
     @apply com-flex com-justify-between;
   }
+}
+
+.duration-time {
+  @apply com-justify-center com-text-center;
 }

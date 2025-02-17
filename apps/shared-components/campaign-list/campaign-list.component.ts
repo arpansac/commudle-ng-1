@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
+import { ICampaign, ECampaignStatus, EPurchaseOrderStatus } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
@@ -16,6 +16,8 @@ export class CampaignListComponent {
   moment = moment;
   icons = { faEdit, faReceipt };
   ECampaignStatus = ECampaignStatus;
+
+  EPurchaseOrderStatus = EPurchaseOrderStatus;
 
   constructor(
     private campaignService: CampaignService,

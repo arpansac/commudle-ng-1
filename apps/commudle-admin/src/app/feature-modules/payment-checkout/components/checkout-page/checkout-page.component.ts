@@ -106,11 +106,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     const orderDetails = {
       amount: Math.round(this.purchaseOrder.amount_to_be_paid),
       currency: this.purchaseOrder.currency,
-      notes: {
-        orderable_id: this.purchaseOrder.orderable_id,
-        orderable_type: this.purchaseOrder.orderable_type,
-        user_email: this.currentUser.email,
-      },
     };
     this.razorpayService.createOrFindOrder(orderDetails, { po_id: poId }).subscribe((data: IRazorpayOrder) => {
       this.razorPaySubmit(data);

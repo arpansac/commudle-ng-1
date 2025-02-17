@@ -6,8 +6,8 @@
     <th>Budget</th>
     <th [width]="300">Duration Time</th>
     <th [width]="300">Created At</th>
-    <th *ngIf="isCampaignAdmin">Created By</th>
-    <th>Action</th>
+    <th *ngIf="isCampaignAdmin">Payment</th>
+    <th *ngIf="!isCampaignAdmin">Action</th>
   </tr>
   <tr
     *ngFor="let campaign of campaigns"
@@ -20,7 +20,11 @@
       <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
       <div *ngIf="isCampaignAdmin">
         <div class="select" (click)="$event.stopPropagation()">
-          <select [(ngModel)]="campaign.status" (change)="updateStatus($event, campaign.id)">
+          <select
+            [disabled]="campaign.status === ECampaignStatus.COMPLETE"
+            [(ngModel)]="campaign.status"
+            (change)="updateStatus($event, campaign.id)"
+          >
             <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
               {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
             </option>
@@ -29,23 +33,29 @@
       </div>
     </td>
     <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
-    <td>
-      <small *ngIf="campaign.start_time">
-        Start Time:
-        <br />
+    <td class="duration-time">
+      <span *ngIf="campaign.start_time">
         {{ moment(campaign.start_time).format('MMM Do, YYYY - h:mm a') }}
-      </small>
+      </span>
       <br />
-      <small *ngIf="campaign.end_time">
-        End Time: <br />
+      <span *ngIf="campaign.end_time">|</span>
+      <br />
+      <span *ngIf="campaign.end_time">
         {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }}
-      </small>
-    </td>
-    <td>{{ moment(campaign.created_at).format('MMM Do, YYYY') }}</td>
-    <td *ngIf="isCampaignAdmin">
-      <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
+      </span>
     </td>
     <td>
+      {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
+      <div *ngIf="isCampaignAdmin">
+        <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
+      </div>
+    </td>
+    <td *ngIf="isCampaignAdmin">
+      <span *ngIf="campaign.purchase_order">
+        {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
+      </span>
+    </td>
+    <td *ngIf="!isCampaignAdmin">
       <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
         <button
           nbButton
