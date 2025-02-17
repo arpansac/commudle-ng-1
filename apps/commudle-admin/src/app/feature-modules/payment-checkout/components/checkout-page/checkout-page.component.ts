@@ -8,6 +8,7 @@ import {
   EPurchaseOrderStatus,
   EDbModels,
   ICampaign,
+  IRazorpayPayment,
 } from '@commudle/shared-models';
 import {
   CampaignService,
@@ -41,6 +42,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   countryDetails = countries_details;
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   campaign: ICampaign;
+  paymentPaid = false;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
 
@@ -59,7 +61,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setupCurrentUser();
     this.activatedRoute.params.subscribe((params) => {
-      this.showPurchaseOrder(params['purchase_order_uuid']);
+      this.fetchPurchaseOrder(params['purchase_order_uuid']);
     });
   }
 
@@ -69,9 +71,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  showPurchaseOrder(purchaseOrderUuid) {
+  fetchPurchaseOrder(purchaseOrderUuid) {
     this.purchaseOrderService.showPurchaseOrder(purchaseOrderUuid).subscribe((data: IPurchaseOrder) => {
       this.purchaseOrder = data;
+      if (this.purchaseOrder.status === EPurchaseOrderStatus.PAID) {
+        this.paymentPaid = true;
+      }
       this.purchaseOrder.currency_symbol = this.countryDetails.find(
         (detail) => detail.currency === this.purchaseOrder.currency,
       ).symbol;
@@ -121,10 +126,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         {
           this.razorpayService
             .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
-            .subscribe((data) => {
+            .subscribe((data: IRazorpayPayment) => {
               if (data) {
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.isLoadingPayment = false;
+                this.paymentPaid = true;
               }
             });
         }

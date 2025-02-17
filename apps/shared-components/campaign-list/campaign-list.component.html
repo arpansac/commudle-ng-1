@@ -18,8 +18,11 @@
     <td>{{ campaign.name }}</td>
     <td>
       <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
-      <div *ngIf="isCampaignAdmin">
-        <div class="select" (click)="$event.stopPropagation()">
+      <div *ngFor="let reason of campaign.unapproved_reasons">
+        {{ reason.text }}
+      </div>
+      <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()">
+        <div class="select">
           <select
             [disabled]="campaign.status === ECampaignStatus.COMPLETE"
             [(ngModel)]="campaign.status"
@@ -29,6 +32,14 @@
               {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
             </option>
           </select>
+        </div>
+        <div
+          *ngIf="campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED"
+        >
+          <label for="notes">
+            <input size="small" type="text" placeholder="Write Note" nbInput [(ngModel)]="noteTexts[campaign.id]" />
+          </label>
+          <button nbButton size="tiny" (click)="updateNotes(campaign.id)">Save</button>
         </div>
       </div>
     </td>

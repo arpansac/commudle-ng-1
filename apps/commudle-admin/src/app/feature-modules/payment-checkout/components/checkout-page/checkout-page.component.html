@@ -15,7 +15,7 @@
         <div class="payment-details-section" *ngIf="purchaseOrder">
           <nb-card>
             <nb-card-body>
-              <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="paid-message-container">
+              <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                 <p class="message">Payment Successful!</p>
               </div>
@@ -70,7 +70,7 @@
             >
             </commudle-alert>
           </div>
-          <div class="com-px-2" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.UNPAID">
+          <div class="com-px-2" *ngIf="!paymentPaid">
             <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
           </div>
         </div>
