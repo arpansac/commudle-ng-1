@@ -1,7 +1,6 @@
 <nb-card *ngIf="currentUser?.id === user.id" class="user-resume" id="resume">
   <nb-card-header>
-    <fa-icon [icon]="faClipboard" class="com-text-Azure"></fa-icon>
-    Resume
+    <a [routerLink]="'.'" fragment="resume"><fa-icon [icon]="faClipboard" class="com-text-Azure"></fa-icon>Resume</a>
   </nb-card-header>
   <nb-card-body>
     <button
