@@ -96,4 +96,15 @@ export class CampaignTypesComponent implements OnInit {
       }
     });
   }
+
+  generateSlug() {
+    const slug = this.campaignTypeForm
+      .get('name')
+      .value.trim() // Remove leading & trailing spaces
+      .toLowerCase() // Convert to lowercase
+      .replace(/\s+/g, '_'); // Replace spaces with hyphens
+    this.campaignTypeForm.patchValue({
+      slug: slug,
+    });
+  }
 }

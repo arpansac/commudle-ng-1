@@ -51,7 +51,11 @@
       </button>
     </nb-card-header>
     <nb-card-body>
-      <form (ngSubmit)="create()" [formGroup]="campaignTypeForm">
+      <form
+        (ngSubmit)="create()"
+        [formGroup]="campaignTypeForm"
+        (ngSubmit)="data.campaignType ? update(data.campaignType.id) : create(); ref.close()"
+      >
         <div>
           <label>
             Name
@@ -74,8 +78,13 @@
           <label>
             Slug
             <span class="required">*</span>
-            <input formControlName="slug" nbInput type="text" fullWidth placeholder="slug"
-          /></label>
+            <div class="com-flex com-gap-2">
+              <input formControlName="slug" nbInput type="text" fullWidth placeholder="slug" />
+              <button (click)="$event.stopPropagation(); generateSlug()" type="button" nbButton outline>
+                Generate
+              </button>
+            </div>
+          </label>
           <commudle-alert
             *ngIf="
               campaignTypeForm.controls['slug'].touched &&
@@ -149,6 +158,7 @@
         status="primary"
         (click)="data.campaignType ? update(data.campaignType.id) : create(); ref.close()"
         [disabled]="!campaignTypeForm.valid"
+        type="submit"
       >
         {{ data.campaignType ? 'Update' : 'Create' }}
       </button>
