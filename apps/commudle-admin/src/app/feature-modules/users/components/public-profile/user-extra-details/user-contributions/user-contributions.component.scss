@@ -11,6 +11,10 @@ nb-card {
       fa-icon {
         @apply com-mr-1;
       }
+
+      span {
+        @apply com-ml-1;
+      }
     }
   }
 
