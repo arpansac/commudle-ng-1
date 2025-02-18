@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
 import { faEdit, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 @Component({
@@ -16,7 +17,13 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
     faArrowRight,
   };
   moment = moment;
-  constructor(private activatedRoute: ActivatedRoute, private campaignService: CampaignService) {}
+  @ViewChild('submissionCampaign') submissionCampaignDialog: TemplateRef<any>;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private campaignService: CampaignService,
+    private _dialogService: NbDialogService,
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.parent.data.subscribe((data) => {
@@ -27,6 +34,14 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
   submitForApproval() {
     this.campaignService
       .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
-      .subscribe();
+      .subscribe((data) => {
+        if (data) {
+          this.openDialog(this.submissionCampaignDialog);
+        }
+      });
+  }
+
+  openDialog(dialog) {
+    this._dialogService.open(dialog);
   }
 }

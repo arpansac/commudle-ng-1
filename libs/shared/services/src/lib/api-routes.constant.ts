@@ -979,4 +979,8 @@ export const API_ROUTES = {
       },
     },
   },
+
+  PURCHASE_ORDER: {
+    SHOW: 'api/v2/purchase_orders/show', //GET
+  },
 };

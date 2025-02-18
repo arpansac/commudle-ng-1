@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
-import { CampaignService, ToastrService } from '@commudle/shared-services';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { ICampaign, ECampaignStatus, EPurchaseOrderStatus, EDbModels } from '@commudle/shared-models';
+import { CampaignService, NoteService, ToastrService } from '@commudle/shared-services';
+import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { NbDialogService } from '@commudle/theme';
 import moment from 'moment';
 
 @Component({
@@ -11,18 +12,50 @@ import moment from 'moment';
 })
 export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
-  @Input() sysAdmin = false;
+  @Input() isCampaignAdmin = false;
   moment = moment;
-  icons = { faEdit };
+  icons = { faEdit, faReceipt };
   ECampaignStatus = ECampaignStatus;
 
-  constructor(private campaignService: CampaignService, private toasterService: ToastrService) {}
+  EPurchaseOrderStatus = EPurchaseOrderStatus;
+  noteTexts: { [campaignId: number]: string } = {};
+
+  constructor(
+    private campaignService: CampaignService,
+    private toasterService: ToastrService,
+    private dialogService: NbDialogService,
+    private noteService: NoteService,
+  ) {}
 
   updateStatus(event, campaignId) {
     this.campaignService.sysAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
       if (res) {
+        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+        this.campaigns[index] = res;
         this.toasterService.successDialog('Campaign status updated successfully');
       }
+    });
+  }
+
+  openPopup(dialog, campaignId) {
+    if (this.isCampaignAdmin) {
+      this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
+        if (campaign) {
+          this.dialogService.open(dialog, { context: campaign });
+        }
+      });
+    }
+  }
+
+  updateNotes(campaignId: number) {
+    if (!this.noteTexts[campaignId]) return; // Prevent empty submissions
+
+    const formData = new FormData();
+    formData.append('note[text]', this.noteTexts[campaignId]);
+    this.noteService.createNote(formData, EDbModels.CAMPAIGN, campaignId).subscribe((note) => {
+      const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+      this.campaigns[index].unapproved_reasons.push(note);
+      this.noteTexts[campaignId] = '';
     });
   }
 }

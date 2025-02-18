@@ -1,6 +1,8 @@
 import { IUser } from './user.model';
 import { ICampaignType } from './campaign-type.model';
 import { ICampaignAsset } from './campaign-asset.model';
+import { IPurchaseOrder } from './purchase-order.model';
+import { INote } from './note.model';
 
 export interface ICampaign {
   id: number;
@@ -19,6 +21,8 @@ export interface ICampaign {
   updated_at: Date;
   user: IUser;
   campaign_assets: ICampaignAsset[];
+  purchase_order: IPurchaseOrder;
+  unapproved_reasons: INote[];
 }
 
 export enum ECampaignStatus {

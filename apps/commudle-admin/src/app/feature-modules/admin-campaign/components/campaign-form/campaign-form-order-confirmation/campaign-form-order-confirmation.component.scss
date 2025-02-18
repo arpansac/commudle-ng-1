@@ -33,3 +33,10 @@ nb-card {
     }
   }
 }
+
+.submission-dialog {
+  @apply com-w-80;
+  nb-card-body {
+    @apply com-block;
+  }
+}

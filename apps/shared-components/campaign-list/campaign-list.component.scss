@@ -7,7 +7,7 @@ th {
   @apply com-p-4;
 }
 
-tr:not(:last-child) {
+tr {
   @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
 }
 
@@ -16,4 +16,14 @@ tr:not(:last-child) {
   select {
     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
   }
+}
+
+.campaign-details {
+  nb-card-header {
+    @apply com-flex com-justify-between;
+  }
+}
+
+.duration-time {
+  @apply com-justify-center com-text-center;
 }
