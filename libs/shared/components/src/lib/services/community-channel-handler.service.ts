@@ -103,12 +103,12 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.flag(messageId);
   }
 
-  sendDelete(messageId: number) {
+  sendDelete(message: IUserMessage) {
     if (this.permittedActions.value.includes('blocked')) {
       return;
     }
-
-    this.CommunityChannelChatChannel.delete(messageId);
+    this.removePinnedMessage(message);
+    this.CommunityChannelChatChannel.delete(message.id);
   }
 
   pin(messageId: number) {
@@ -152,7 +152,7 @@ export class CommunityChannelHandlerService {
 
   removePinnedMessage(message: IUserMessage) {
     const currentPinnedMessages = this.pinnedMessages.getValue();
-    const updatedPinnedMessages = currentPinnedMessages.filter((msg) => msg !== message);
+    const updatedPinnedMessages = currentPinnedMessages.filter((msg) => msg.id !== message.id);
 
     this.pinnedMessages.next(updatedPinnedMessages);
   }
