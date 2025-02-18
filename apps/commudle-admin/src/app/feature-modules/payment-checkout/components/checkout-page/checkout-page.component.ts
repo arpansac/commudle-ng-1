@@ -104,17 +104,25 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     );
   }
   Pay() {
+    this.isLoadingPayment = true;
     this.createOrUpdateRazorpayOrder(this.purchaseOrder.id);
   }
 
   createOrUpdateRazorpayOrder(poId) {
+    this.isLoadingPayment = true;
+
     const orderDetails = {
       amount: Math.round(this.purchaseOrder.amount_to_be_paid),
       currency: this.purchaseOrder.currency,
     };
-    this.razorpayService.createOrFindOrder(orderDetails, { po_id: poId }).subscribe((data: IRazorpayOrder) => {
-      this.razorPaySubmit(data);
-    });
+    this.razorpayService.createOrFindOrder(orderDetails, { po_id: poId }).subscribe(
+      (data: IRazorpayOrder) => {
+        this.razorPaySubmit(data);
+      },
+      (error) => {
+        this.isLoadingPayment = false;
+      },
+    );
   }
 
   razorPaySubmit(order: IRazorpayOrder) {
@@ -126,13 +134,18 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         {
           this.razorpayService
             .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
-            .subscribe((data: IRazorpayPayment) => {
-              if (data) {
-                this.toastrService.successDialog('Your Payment Was Received Successfully');
+            .subscribe(
+              (data: IRazorpayPayment) => {
+                if (data) {
+                  this.toastrService.successDialog('Your Payment Was Received Successfully');
+                  this.isLoadingPayment = false;
+                  this.paymentPaid = true;
+                }
+              },
+              (error) => {
                 this.isLoadingPayment = false;
-                this.paymentPaid = true;
-              }
-            });
+              },
+            );
         }
       },
       prefill: {
