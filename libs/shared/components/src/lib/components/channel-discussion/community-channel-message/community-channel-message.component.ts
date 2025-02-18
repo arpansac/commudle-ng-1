@@ -88,7 +88,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
           if (event.item.title === 'Edit') {
             this.openEditForm();
           } else if (event.item.title === 'Delete') {
-            this.communityChannelHandlerService.sendDelete(this.message);
+            this.deleteMessage();
           } else if (event.item.title === 'Share This Message') {
             this.share();
           } else if (event.item.title === 'Pin Message') {
@@ -194,6 +194,10 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
         this.contextMenuItems[idx].title = 'Pin Message';
       }
     });
+  }
+
+  deleteMessage() {
+    this.communityChannelHandlerService.sendDelete(this.message);
   }
 
   sendMessageByEmail(userMessageId) {
