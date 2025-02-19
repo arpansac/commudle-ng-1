@@ -178,8 +178,8 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     formData.append('campaign[contact_name]', formValue.contact_name);
     formData.append('campaign[contact_email]', formValue.contact_email);
     formData.append('campaign[company_name]', formValue.company_name);
-    formData.append('campaign[start_time]', formValue.start_time);
-    formData.append('campaign[end_time]', formValue.end_time);
+    formData.append('campaign[start_time]', this.convertDateToLocal(formValue.start_time));
+    formData.append('campaign[end_time]', this.convertDateToLocal(formValue.end_time));
     formData.append('campaign[budget]', formValue.budget);
     formData.append('campaign[status]', ECampaignStatus.DRAFT);
 
@@ -216,5 +216,9 @@ export class CampaignFormOrderSetupComponent implements OnInit {
         });
       }
     });
+  }
+
+  convertDateToLocal(date) {
+    return new Date(date).toISOString();
   }
 }
