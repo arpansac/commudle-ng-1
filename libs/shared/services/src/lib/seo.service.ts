@@ -139,4 +139,10 @@ export class SeoService {
     els.forEach((el) => this.document.head.removeChild(el));
     // }
   }
+
+  removeHtmlTags(content): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    return doc.body.textContent || '';
+  }
 }
