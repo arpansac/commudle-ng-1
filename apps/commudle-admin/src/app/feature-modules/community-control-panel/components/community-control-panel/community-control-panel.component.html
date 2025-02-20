@@ -195,127 +195,121 @@
     </commudle-sidebar>
   </div>
 
-  <div class="right-column">
-    <div *appBreakpoints="'<=md'" class="event-dashboard-menu">
-      <nb-card>
-        <nb-card-body>
-          <div class="menu">
-            <a
-              [routerLink]="['./']"
-              class="d-flex"
-              class="action-button"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              <div class="icon">
-                <nb-icon icon="calendar"></nb-icon>
-              </div>
-              <span class="heading">Events</span>
-            </a>
-            <a
-              *ngIf="community.hackathon_enabled"
-              [routerLink]="['hackathons']"
-              class="action-button com-relative com-flex"
-              routerLinkActive="active"
-            >
-              <div class="icon">
-                <img
-                  [src]="
-                    isHackathonActive
-                      ? environment.base_url + '/icons/hackathon-icon-primary.svg'
-                      : darkMode
-                      ? environment.base_url + '/icons/hackathon-icon-white.svg'
-                      : environment.base_url + '/icons/hackathon-icon-gray.svg'
-                  "
-                  alt="Hackathon Icon"
-                />
-              </div>
-              <span class="heading">Hackathons</span>
-            </a>
-            <a
-              *ngIf="community.payments_enabled"
-              [routerLink]="['payments']"
-              class="action-button com-relative com-flex"
-              routerLinkActive="active"
-            >
-              <div class="icon">
-                <fa-icon [icon]="icons.faBuildingColumns"></fa-icon>
-              </div>
-              <span class="heading">Bank Details</span>
-            </a>
-            <div class="com-relative" *ngIf="isOrganizer">
-              <a [routerLink]="['notifications']" class="action-button" routerLinkActive="active">
-                <nb-badge
-                  *ngIf="notificationCount > 0"
-                  [text]="notificationCount.toString()"
-                  status="danger"
-                ></nb-badge>
-                <div class="icon">
-                  <nb-icon icon="bell"></nb-icon>
-                </div>
-                <span *ngIf="sidebarExpanded" class="heading">Notifications</span>
-              </a>
+  <div *appBreakpoints="'<=md'" class="event-dashboard-menu">
+    <nb-card>
+      <nb-card-body>
+        <div class="menu">
+          <a
+            [routerLink]="['./']"
+            class="d-flex"
+            class="action-button"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <div class="icon">
+              <nb-icon icon="calendar"></nb-icon>
             </div>
-            <a [routerLink]="['members']" class="action-button" routerLinkActive="active">
+            <span class="heading">Events</span>
+          </a>
+          <a
+            *ngIf="community.hackathon_enabled"
+            [routerLink]="['hackathons']"
+            class="action-button com-relative com-flex"
+            routerLinkActive="active"
+          >
+            <div class="icon">
+              <img
+                [src]="
+                  isHackathonActive
+                    ? environment.base_url + '/icons/hackathon-icon-primary.svg'
+                    : darkMode
+                    ? environment.base_url + '/icons/hackathon-icon-white.svg'
+                    : environment.base_url + '/icons/hackathon-icon-gray.svg'
+                "
+                alt="Hackathon Icon"
+              />
+            </div>
+            <span class="heading">Hackathons</span>
+          </a>
+          <a
+            *ngIf="community.payments_enabled"
+            [routerLink]="['payments']"
+            class="action-button com-relative com-flex"
+            routerLinkActive="active"
+          >
+            <div class="icon">
+              <fa-icon [icon]="icons.faBuildingColumns"></fa-icon>
+            </div>
+            <span class="heading">Bank Details</span>
+          </a>
+          <div class="com-relative" *ngIf="isOrganizer">
+            <a [routerLink]="['notifications']" class="action-button" routerLinkActive="active">
+              <nb-badge *ngIf="notificationCount > 0" [text]="notificationCount.toString()" status="danger"></nb-badge>
               <div class="icon">
-                <nb-icon icon="people"></nb-icon>
+                <nb-icon icon="bell"></nb-icon>
               </div>
-              <span class="heading">Members</span>
-            </a>
-            <a [routerLink]="['forms']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="faScroll"></fa-icon>
-              </div>
-              <span class="heading">Form Data</span>
-            </a>
-            <a [routerLink]="['surveys']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="faScroll"></fa-icon>
-              </div>
-              <span *ngIf="sidebarExpanded" class="heading">Surveys</span>
-            </a>
-            <a [routerLink]="['pages']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="icons.faFileLines"></fa-icon>
-              </div>
-              <span class="heading">Page Builder</span>
-            </a>
-            <a [routerLink]="['newsletters']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="icons.faNewspaper"></fa-icon>
-              </div>
-              <span class="heading">Newsletters</span>
-            </a>
-            <a [routerLink]="['team']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <nb-icon icon="people"></nb-icon>
-              </div>
-              <span class="heading">Manage Team</span>
-            </a>
-            <a [routerLink]="['edit']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <nb-icon icon="edit"></nb-icon>
-              </div>
-              <span class="heading">Community Profile</span>
-            </a>
-            <a [routerLink]="['channels']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <nb-icon icon="hash"></nb-icon>
-              </div>
-              <span class="heading">Channels</span>
-            </a>
-            <a [routerLink]="['forums']" class="action-button" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="icons.faMessage"></fa-icon>
-              </div>
-              <span class="heading">Forums</span>
+              <span *ngIf="sidebarExpanded" class="heading">Notifications</span>
             </a>
           </div>
-        </nb-card-body>
-      </nb-card>
-    </div>
-    <div class="router">
-      <router-outlet></router-outlet>
-    </div>
+          <a [routerLink]="['members']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <nb-icon icon="people"></nb-icon>
+            </div>
+            <span class="heading">Members</span>
+          </a>
+          <a [routerLink]="['forms']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <fa-icon [icon]="faScroll"></fa-icon>
+            </div>
+            <span class="heading">Form Data</span>
+          </a>
+          <a [routerLink]="['surveys']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <fa-icon [icon]="faScroll"></fa-icon>
+            </div>
+            <span *ngIf="sidebarExpanded" class="heading">Surveys</span>
+          </a>
+          <a [routerLink]="['pages']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <fa-icon [icon]="icons.faFileLines"></fa-icon>
+            </div>
+            <span class="heading">Page Builder</span>
+          </a>
+          <a [routerLink]="['newsletters']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <fa-icon [icon]="icons.faNewspaper"></fa-icon>
+            </div>
+            <span class="heading">Newsletters</span>
+          </a>
+          <a [routerLink]="['team']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <nb-icon icon="people"></nb-icon>
+            </div>
+            <span class="heading">Manage Team</span>
+          </a>
+          <a [routerLink]="['edit']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <nb-icon icon="edit"></nb-icon>
+            </div>
+            <span class="heading">Community Profile</span>
+          </a>
+          <a [routerLink]="['channels']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <nb-icon icon="hash"></nb-icon>
+            </div>
+            <span class="heading">Channels</span>
+          </a>
+          <a [routerLink]="['forums']" class="action-button" routerLinkActive="active">
+            <div class="icon">
+              <fa-icon [icon]="icons.faMessage"></fa-icon>
+            </div>
+            <span class="heading">Forums</span>
+          </a>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="router">
+    <router-outlet></router-outlet>
   </div>
 </section>
