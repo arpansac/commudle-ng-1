@@ -1,7 +1,6 @@
 <nb-card accent="primary" class="user-job" id="jobs">
   <nb-card-header>
-    <fa-icon [icon]="faBriefcase" class="com-text-primary-500"></fa-icon>
-    Jobs
+    <a [routerLink]="'.'" fragment="jobs"><fa-icon [icon]="faBriefcase" class="com-text-primary-500"></fa-icon> Jobs</a>
   </nb-card-header>
   <nb-card-body>
     <div *ngIf="jobs.length === 0" class="com-text-2xl com-text-gray-400">No Jobs Posted</div>

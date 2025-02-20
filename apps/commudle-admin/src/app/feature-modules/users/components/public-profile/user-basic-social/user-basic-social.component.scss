@@ -2,7 +2,12 @@
 
 .user-basic-social-container {
   nb-card-header {
-    @apply com-text-lg com-font-medium com-text-Yankees-Blue;
+    a {
+      @apply com-flex com-m-0 com-text-lg com-font-medium com-text-Yankees-Blue com-no-underline;
+      fa-icon {
+        @apply com-mr-1;
+      }
+    }
   }
 
   nb-card-body {
