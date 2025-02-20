@@ -1,8 +1,9 @@
-<nb-card *ngIf="collaborationCommunities.length > 0">
+<nb-card *ngIf="collaborationCommunities.length > 0" id="collaborations">
   <nb-card-header>
-    <h6>
-      <nb-icon icon="pricetags-outline" status="warning"></nb-icon>
-      Collaborations
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="collaborations"
+        ><nb-icon icon="pricetags-outline" status="warning"></nb-icon>Collaborations</a
+      >
     </h6>
   </nb-card-header>
   <nb-card-body>

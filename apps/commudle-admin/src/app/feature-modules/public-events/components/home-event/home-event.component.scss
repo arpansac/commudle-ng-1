@@ -59,8 +59,14 @@
         @apply com-mx-0 md:com-rounded-[10px] com-rounded-none;
         nb-card-header {
           @apply com-py-4 md:com-px-6 com-px-4 com-flex com-items-center com-justify-between;
-          h6 {
-            @apply md:com-font-semibold com-font-bold;
+          .title {
+            @apply com-flex com-m-0;
+            a {
+              @apply md:com-font-semibold com-font-bold com-no-underline com-text-Yankees-Blue;
+              nb-icon {
+                @apply com-mr-1;
+              }
+            }
           }
         }
         nb-card-body {
