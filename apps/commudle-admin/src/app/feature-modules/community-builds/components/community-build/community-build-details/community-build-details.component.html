@@ -8,7 +8,7 @@
       ></app-badge>
       <div class="date-edit-btn">
         <p class="date">{{ cBuild.created_at | date }}</p>
-        <a *ngIf="cBuild.user.username === currentUser.username" [routerLink]="['edit']" title="edit">
+        <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
           <nb-icon icon="edit"></nb-icon>
         </a>
       </div>
