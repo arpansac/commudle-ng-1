@@ -51,7 +51,7 @@
         <!-- date -->
         <div>
           <label for="name">Round Date*</label>
-          <input id="name" type="date" nbInput fullWidth formControlName="date" />
+          <input id="name" type="date" nbInput fullWidth formControlName="date" [min]="today" />
           <commudle-alert
             *ngIf="
               roundForm.controls['date'].invalid &&
@@ -112,7 +112,7 @@
       <button
         nbButton
         status="primary"
-        (click)="data.round ? updateRound(data.round, data.index) : createRound(); ref.close()"
+        (click)="data.round ? updateRound(data.round, data.index) : createRound()"
         [disabled]="!roundForm.valid"
       >
         Save

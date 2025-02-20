@@ -22,6 +22,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   };
   hackathonSlug = '';
   communitySlug: string;
+  dialogRef: any;
+
+  today: string = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
   constructor(
     private roundService: RoundService,
     private activatedRoute: ActivatedRoute,
@@ -64,7 +67,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
       this.roundForm.reset();
     }
 
-    this.nbDialogService.open(dialog, {
+    this.dialogRef = this.nbDialogService.open(dialog, {
       context: { index: index, round: round },
     });
   }
@@ -82,6 +85,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         if (data) {
           this.rounds.unshift(data);
           this.toastrService.successDialog('Round Created');
+          this.dialogRef.close();
           this.roundForm.reset();
         }
       });
@@ -92,6 +96,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
       if (data) {
         this.toastrService.successDialog('Round was updated');
         this.rounds[index] = data;
+        this.dialogRef.close();
       }
     });
   }
