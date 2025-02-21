@@ -2,17 +2,25 @@ div {
   @apply com-m-0 md:com-px-0 com-px-4;
 
   .title {
-    @apply md:com-mb-0 md:com-mt-9 com-my-6;
+    @apply md:com-mb-2 md:com-mt-6 com-my-6;
 
     a {
-      @apply com-no-underline;
-      span {
-        @apply com-text-2xl com-font-bold com-text-Dark-Jungle-Green;
+      @apply com-flex com-flex-row com-no-underline;
+      .title {
+        @apply com-text-2xl com-m-0 com-font-bold com-text-Dark-Jungle-Green com-mb-2;
+      }
+
+      .sub-heading {
+        @apply com-text-sm com-m-0 com-font-medium com-text-gray-500;
       }
     }
 
     button {
       @apply com-mr-4;
+    }
+
+    .heading-subheading {
+      @apply com-flex com-flex-col com-m-0;
     }
 
     fa-icon {
@@ -21,7 +29,7 @@ div {
   }
 
   .event-horizontal-card {
-    @apply com-border-solid com-border-0 md:com-border-b com-border-b-0 md:com-py-6 com-pb-4 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
+    @apply com-border-solid com-border-0 md:com-border-b com-border-b-0 md:com-py-4 com-pb-4 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
   }
 
   .load-more {

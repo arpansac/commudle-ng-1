@@ -2,8 +2,11 @@
   <h2 class="title">
     <a [routerLink]="'.'" fragment="upcoming-events"
       ><button nbButton status="basic" size="small" shape="semi-round">
-        <fa-icon [icon]="faCalendarDays"></fa-icon></button
-      ><span>Upcoming Events</span></a
+        <fa-icon [icon]="faCalendarDays"></fa-icon>
+      </button>
+      <div class="heading-subheading">
+        <span class="title">Upcoming Events</span><span class="sub-heading">Explore latest & exciting events</span>
+      </div></a
     >
   </h2>
   <div *ngFor="let event of upcomingEvents" class="event-horizontal-card">

@@ -24,29 +24,22 @@
           <nb-icon icon="link" status="primary"></nb-icon>
         </div>
         <div class="upcoming-card-details-desktop">
-          <div>
-            <div>
-              <p class="event-title">{{ event.name }}</p>
-              <div class="interested-members" *ngIf="event.interested_members_count > 0">
-                <app-badge
-                  [text]="event.interested_members_count"
-                  [fontColor]="'com-text-tAuro-Metal-Saurus'"
-                  [nbIcon]="'people-outline'"
-                  [fontSize]="'small'"
-                  [borderRadius]="'round'"
-                  [color]="'com-bg-Bright-Gray-Light'"
-                ></app-badge>
-              </div>
-            </div>
+          <div class="time-badge">
             <p class="event-time">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
-          </div>
-          <div class="badge-register">
-            <div *ngIf="community" class="community-badge">
-              <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
+            <div class="interested-members" *ngIf="event.interested_members_count > 0">
+              <app-badge
+                [text]="event.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
             </div>
-            <button nbButton status="info" shape="rectangle" size="medium" outline class="register-button">
-              Register
-            </button>
+          </div>
+          <p class="event-title">{{ event.name }}</p>
+          <div *ngIf="community" class="community-badge">
+            <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
           </div>
         </div>
       </a>
