@@ -61,6 +61,7 @@ export class BookPageComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.setMeta();
     this.setFaqs();
+    this.setSchema();
   }
 
   ngOnDestroy(): void {
@@ -106,5 +107,29 @@ export class BookPageComponent implements OnInit, OnDestroy {
           "Yes! That's why we are making it openly available for everyone. You can choose to download a pdf or read it on Commudle itself. To contribute, you can add examples or suggest edits by writing an email to arpan(at)commudle(dot)com.",
       },
     ];
+  }
+
+  setSchema() {
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'Book',
+      name: 'The Developer Ecosystem BluePrint : Strategies for Building Thriving Communities',
+      description: 'A handbook for Developer Relations teams to build, sustain and grow their developer programs',
+      url: 'https://www.commudle.com/developer-ecosystem-blueprint/book/who-should-read',
+      image: staticAssets.devrel_ecosystem_blueprint,
+      author: {
+        '@type': 'Person',
+        name: 'Arpan Garg',
+        url: 'https://www.commudle.com/users/arpansac',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Commudle',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://www.commudle.com/assets/images/commudle-logo-full.png',
+        },
+      },
+    });
   }
 }
