@@ -9,16 +9,16 @@
       <small *ngIf="user.phone"> / {{ user.phone === 'Not Visible' ? 'Phone: Not Visible' : user.phone }}</small>
     </p>
     <div class="social-links">
-      <a *ngIf="user.github" href="{{ user.github }}" target="_blank">
+      <a *ngIf="user.github" href="{{ user.github | completeurl : 'github' }}" target="_blank">
         <fa-icon [icon]="faGithub"></fa-icon>
       </a>
-      <a *ngIf="user.twitter" href="{{ user.twitter }}" target="_blank">
+      <a *ngIf="user.twitter" href="{{ user.twitter | completeurl : 'twitter' }}" target="_blank">
         <fa-icon [icon]="faTwitter"></fa-icon>
       </a>
-      <a *ngIf="user.linkedin" href="{{ user.linkedin }}" target="_blank">
+      <a *ngIf="user.linkedin" href="{{ user.linkedin | completeurl : 'linkedin' }}" target="_blank">
         <fa-icon [icon]="faLinkedin"></fa-icon>
       </a>
-      <a *ngIf="user.personal_website" href="{{ user.personal_website }}" target="_blank">
+      <a *ngIf="user.personal_website" href="{{ user.personal_website | completeurl }}" target="_blank">
         <fa-icon [icon]="faInfo"></fa-icon>
       </a>
     </div>
