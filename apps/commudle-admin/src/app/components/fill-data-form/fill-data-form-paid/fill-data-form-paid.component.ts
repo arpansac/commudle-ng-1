@@ -515,6 +515,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
 
   // click for open payment box and get ticket order id
   createTicketOrder() {
+    this.isLoadingPayment = true;
     this.eventTicketOrderService
       .createEventTicketOrder(
         this.formData,
@@ -553,6 +554,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   updateTickerOrder() {
+    this.isLoadingPayment = true;
     this.eventTicketOrderService
       .updateEventTicketOrder(
         this.formData,
@@ -627,6 +629,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
 
   // create or update razorpay order
   createOrUpdateRazorpayOrder(etoId) {
+    this.isLoadingPayment = true;
     const orderDetails = {
       amount: Math.round((this.totalPrice + this.totalTaxAmount) * 100),
       currency: 'INR',
@@ -644,14 +647,20 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       this.checkEventTicketOrder(this.dataFormEntity.entity_id);
       return;
     }
-    this.razorpayService.createOrFindOrder(orderDetails, etoId).subscribe((data: IRazorpayOrder) => {
-      this.razorPaySubmit(data);
-    });
+    this.razorpayService.createOrFindOrder(orderDetails, etoId).subscribe(
+      (data: IRazorpayOrder) => {
+        this.razorPaySubmit(data);
+      },
+      () => {
+        this.dialogService.open(this.paymentErrorDialog, {
+          closeOnBackdropClick: false,
+        });
+      },
+    );
   }
 
   // load and pay razorpay
   razorPaySubmit(order: IRazorpayOrder) {
-    this.isLoadingPayment = true;
     const options = {
       key: environment.razorpay_key,
       order_id: order.rzp_order_id,
@@ -688,7 +697,6 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
         ondismiss: () => {
           console.error('Checkout form closed by the user');
           this.resetPromoCode();
-          this.isLoadingPayment = false;
           this.dialogService.open(this.paymentErrorDialog, {
             closeOnBackdropClick: false,
           });
@@ -702,7 +710,6 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
           .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
           .subscribe((data) => {
             this.resetPromoCode();
-            this.isLoadingPayment = false;
             alert('Message from Razorpay:' + response.error.description);
           });
       }
