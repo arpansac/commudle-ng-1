@@ -29,6 +29,7 @@ export class EventHorizontalCardComponent implements OnInit {
   @Input() event: IEvent;
   community: ICommunity;
   moment = moment;
+  tags: string[] = [];
 
   constructor(private communitiesService: CommunitiesService) {}
 
@@ -42,5 +43,10 @@ export class EventHorizontalCardComponent implements OnInit {
       .subscribe((data) => {
         this.community = data;
       });
+  }
+
+  getTagNames() {
+    this.tags = Object.values(this.event.tags).map((tag) => tag.name);
+    return this.tags;
   }
 }

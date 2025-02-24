@@ -54,3 +54,7 @@ nb-card {
     }
   }
 }
+
+.tags {
+  @apply com-flex com-flex-wrap com-gap-2 com-h-[30px] com-overflow-hidden #{!important};
+}

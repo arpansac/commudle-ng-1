@@ -41,6 +41,15 @@
           <div *ngIf="community" class="community-badge">
             <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
           </div>
+          <div class="tags">
+            <app-tag
+              [tags]="getTagNames()"
+              [backgroundColor]="'com-bg-Azure-opacity-10'"
+              [size]="'tiny'"
+              [fontColor]="'com-text-blue-500'"
+              [maximumTag]="5"
+            ></app-tag>
+          </div>
         </div>
       </a>
     </div>
