@@ -24,7 +24,7 @@
       <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()">
         <div class="select">
           <select
-            [disabled]="campaign.status === ECampaignStatus.COMPLETE"
+            [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
             [(ngModel)]="campaign.status"
             (change)="updateStatus($event, campaign.id)"
           >
@@ -76,6 +76,7 @@
             campaign.status === ECampaignStatus.LIVE ||
             campaign.status === ECampaignStatus.COMPLETE
           "
+          size="small"
         >
           <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
           &nbsp; Edit
@@ -83,12 +84,17 @@
       </a>
       &nbsp; &nbsp;
       <a
-        *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED && campaign.purchase_order"
+        *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
         [routerLink]="['/checkout', campaign.purchase_order.uuid]"
         (click)="$event.stopPropagation()"
         target="_blank"
       >
-        <button nbButton status="primary">
+        <button
+          nbButton
+          status="primary"
+          [disabled]="campaign?.purchase_order.status === EPurchaseOrderStatus.PAID"
+          size="small"
+        >
           <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
           &nbsp; Pay Now
         </button>
