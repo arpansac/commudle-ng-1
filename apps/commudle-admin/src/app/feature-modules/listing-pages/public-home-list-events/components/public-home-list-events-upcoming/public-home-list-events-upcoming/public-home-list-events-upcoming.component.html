@@ -1,4 +1,4 @@
-<div *ngIf="upcomingEvents.length > 0" id="upcoming-events">
+<div *ngIf="upcomingEvents.length > 0 || isLoadingUpcoming" id="upcoming-events">
   <h2 class="title">
     <a [routerLink]="'.'" fragment="upcoming-events"
       ><button nbButton status="basic" size="small" shape="semi-round">
@@ -9,11 +9,14 @@
       </div></a
     >
   </h2>
-  <div *ngFor="let event of upcomingEvents" class="event-horizontal-card">
-    <commudle-event-horizontal-card [event]="event"></commudle-event-horizontal-card>
+  <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
+  <div *ngIf="!isLoadingUpcoming">
+    <div *ngFor="let event of upcomingEvents" class="event-horizontal-card">
+      <commudle-event-horizontal-card [event]="event"></commudle-event-horizontal-card>
+    </div>
   </div>
   <div class="load-more">
-    <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
+    <app-loading-spinner *ngIf="showSpinner && !isLoadingUpcoming"></app-loading-spinner>
     <button
       *ngIf="page_info?.has_next_page"
       [disabled]="showSpinner"
