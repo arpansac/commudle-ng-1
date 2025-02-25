@@ -22,6 +22,8 @@ export class CampaignFormOrderSetupComponent implements OnInit {
   };
   campaign: ICampaign;
   imagePreview = [];
+  tags = [];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
@@ -98,6 +100,9 @@ export class CampaignFormOrderSetupComponent implements OnInit {
           end_time: this.datePipe.transform(this.campaign.end_time, 'yyyy-MM-ddTHH:mm:ss'),
           budget: this.campaign.budget,
         });
+        if (this.campaign.tags) {
+          this.tags = this.campaign.tags;
+        }
 
         if (this.campaign.campaign_assets.length > 0) {
           // Patch Campaign Assets (FormArray)
@@ -196,7 +201,7 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       if (data) {
-        this.router.navigate(['campaigns', 'edit', data.id, 'order-confirmation']);
+        this.submitTags();
       }
     });
   }
@@ -227,6 +232,22 @@ export class CampaignFormOrderSetupComponent implements OnInit {
       this.campaignForm.get('company_name').value + '-' + this.campaignForm.get('contact_name').value;
     this.campaignForm.patchValue({
       name: campaignName,
+    });
+  }
+
+  onTagAdd(value: string) {
+    if (!this.tags.includes(value)) {
+      this.tags.push(value);
+    }
+  }
+
+  onTagDelete(value: string) {
+    this.tags = this.tags.filter((tag: string) => tag !== value);
+  }
+
+  submitTags() {
+    this.campaignService.updateTags(this.campaign.id, this.tags).subscribe(() => {
+      this.router.navigate(['campaigns', 'edit', this.campaign.id, 'order-confirmation']);
     });
   }
 }

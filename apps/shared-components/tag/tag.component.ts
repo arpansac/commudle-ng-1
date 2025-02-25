@@ -17,6 +17,7 @@ export class TagComponent implements OnInit, OnDestroy {
   @Input() fontColor: string;
   @Input() maximumTag;
   @Input() size; //It can be tiny;
+  @Input() minTagLimit = true;
 
   @Output() tagAdd: EventEmitter<string> = new EventEmitter<string>();
   @Output() tagDelete: EventEmitter<string> = new EventEmitter<string>();
@@ -62,5 +63,15 @@ export class TagComponent implements OnInit, OnDestroy {
 
   onTagRemove(tag): void {
     this.tagDelete.emit(tag);
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    const inputElement = event.target as HTMLInputElement;
+
+    // Check if Backspace is pressed and input is empty
+    if (event.key === 'Backspace' && inputElement.value === '' && this.tags.length > 0) {
+      const lastTag = this.tags[this.tags.length - 1];
+      this.onTagRemove(lastTag);
+    }
   }
 }

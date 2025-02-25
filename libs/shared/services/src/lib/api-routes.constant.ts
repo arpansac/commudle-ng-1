@@ -966,6 +966,7 @@ export const API_ROUTES = {
     INDEX: 'api/v2/campaigns', //GET
     CREATE: 'api/v2/campaigns', //POST
     UPDATE: 'api/v2/campaigns', //PUT
+    UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
     SHOW: 'api/v2/campaigns/show', //GET
     SYS_ADMIN_INDEX: 'api/v2/campaigns/sys_admin_index', //GET
     SYS_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/sys_admin_status_update', //PUT

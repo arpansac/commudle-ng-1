@@ -193,7 +193,7 @@
   <nb-card>
     <nb-card-header id="budget">
       <a [routerLink]="[]" fragment="budget">
-        <span class="left">Goal/ Budget</span>
+        <span class="left">Price</span>
         <span class="right">Enter your budget for the whole campaign</span>
       </a>
     </nb-card-header>
@@ -202,7 +202,7 @@
         <form [formGroup]="campaignForm">
           <div class="budget-amount">
             <span class="budget">$3.49</span>
-            <span class="per-day">Per Day</span>
+            <span class="per-day">Per Minute</span>
           </div>
           <div>
             <label for="budget">Enter your budget<span class="required"> *</span></label>
@@ -227,6 +227,21 @@
           </div>
         </form>
       </div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+      <app-tag
+        (tagAdd)="onTagAdd($event)"
+        (tagDelete)="onTagDelete($event)"
+        [backgroundColor]="'com-bg-tAnti-Flash'"
+        [editable]="true"
+        [fontColor]="'com-text-tYankees-Blue'"
+        [tags]="tags"
+        [minTagLimit]="false"
+      ></app-tag>
     </nb-card-body>
   </nb-card>
 

@@ -40,4 +40,11 @@ export class CampaignService {
       campaign_status: campaignStatus,
     });
   }
+
+  updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE_TAGS), {
+      campaign_id: campaignId,
+      tags,
+    });
+  }
 }
