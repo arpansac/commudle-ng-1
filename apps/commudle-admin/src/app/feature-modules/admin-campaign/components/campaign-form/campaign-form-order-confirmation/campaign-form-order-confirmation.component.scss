@@ -35,7 +35,7 @@ nb-card {
 }
 
 .submission-dialog {
-  @apply com-w-80;
+  @apply com-w-full md:com-w-[40dvw];
   nb-card-body {
     @apply com-block;
   }
