@@ -87,7 +87,7 @@
                 placeholder="Company Name"
                 [inputValue]="campaignForm.get('company_name').value"
                 (blurEvent)="campaignForm.get('company_name').markAsTouched()"
-                (valueChange)="handleInput($event, 'company_name')"
+                (valueChange)="handleInput($event, 'company_name'); generateCampaignName()"
               ></commudle-input>
             </div>
             <commudle-alert
@@ -306,14 +306,7 @@
   </nb-card>
 
   <div class="next-button">
-    <button
-      nbButton
-      outline
-      status="primary"
-      shape="semi-round"
-      [disabled]="!campaignForm.valid"
-      (click)="updateCampaign()"
-    >
+    <button nbButton status="primary" shape="semi-round" [disabled]="!campaignForm.valid" (click)="updateCampaign()">
       Next - Campaign Setup &nbsp;
       <fa-icon [icon]="icons.faArrowRight"></fa-icon>
     </button>

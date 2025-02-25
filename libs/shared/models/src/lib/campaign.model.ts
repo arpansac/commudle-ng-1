@@ -12,6 +12,8 @@ export interface ICampaign {
   contact_email: string;
   start_time: Date;
   end_time: Date;
+  start_date: Date;
+  end_date: Date;
   budget: number;
   currency_type: string;
   status: ECampaignStatus;

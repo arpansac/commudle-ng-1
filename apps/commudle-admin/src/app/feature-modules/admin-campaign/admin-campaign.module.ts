@@ -13,6 +13,7 @@ import { CampaignFormOrderSetupComponent } from './components/campaign-form/camp
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { LinkyModule } from 'ngx-linky';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
     ReactiveFormsModule,
     NewSharedComponentsModule,
     SharedPipesModule,
+    LinkyModule,
 
     //Standalone components
     SidebarComponent,

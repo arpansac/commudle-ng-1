@@ -53,6 +53,7 @@ import { CampaignTypesComponent } from './components/admin-campaigns/campaign-ty
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminCampaignsComponent } from './components/admin-campaigns/admin-campaigns.component';
 import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-campaigns-list/admin-campaigns-list.component';
+import { LinkyModule } from 'ngx-linky';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,8 @@ import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-
     SharedDirectivesModule,
     SharedPipesModule,
     MiniUserProfileModule,
+
+    LinkyModule,
 
     FontAwesomeModule,
 

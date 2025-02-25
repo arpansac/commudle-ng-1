@@ -21,8 +21,8 @@
         <br />
         <small>{{ campaignType.slug }}</small>
       </td>
-      <td>{{ campaignType.description }}</td>
-      <td>{{ campaignType.budget_amount }}</td>
+      <td><p [innerHTML]="campaignType.description | linky : { sanitizeHtml: true }"></p></td>
+      <td>${{ campaignType.budget_amount }}</td>
       <td>
         <nb-toggle [checked]="campaignType.active" (checkedChange)="toggleCampaignStatus(campaignType.id)"> </nb-toggle>
       </td>
@@ -99,10 +99,11 @@
 
         <div>
           <label>
-            Budget Amount
+            Budget Amount Per Minute
+            <small>($)</small>
             <span class="required">*</span>
-            <input formControlName="budget_amount" nbInput type="number" fullWidth placeholder="Budget Amount"
-          /></label>
+            <input formControlName="budget_amount" nbInput type="number" fullWidth placeholder="Budget Amount" />
+          </label>
           <commudle-alert
             *ngIf="
               campaignTypeForm.controls['budget_amount'].touched &&

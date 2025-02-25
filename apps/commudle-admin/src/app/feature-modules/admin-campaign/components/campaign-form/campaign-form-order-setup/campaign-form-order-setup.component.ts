@@ -221,4 +221,12 @@ export class CampaignFormOrderSetupComponent implements OnInit {
   convertDateToLocal(date) {
     return new Date(date).toISOString();
   }
+
+  generateCampaignName() {
+    const campaignName =
+      this.campaignForm.get('company_name').value + '-' + this.campaignForm.get('contact_name').value;
+    this.campaignForm.patchValue({
+      name: campaignName,
+    });
+  }
 }
