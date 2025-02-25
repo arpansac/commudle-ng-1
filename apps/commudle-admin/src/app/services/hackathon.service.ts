@@ -446,9 +446,9 @@ export class HackathonService {
     );
   }
 
-  pIndexProjects(hackathonId): Observable<ICommunityBuild[]> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<ICommunityBuild[]>(
+  pIndexProjects(hackathonId: number, page = 1, count = 10): Observable<IPaginationCount<ICommunityBuild>> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<ICommunityBuild>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.INDEX_PROJECTS),
       {
         params,
