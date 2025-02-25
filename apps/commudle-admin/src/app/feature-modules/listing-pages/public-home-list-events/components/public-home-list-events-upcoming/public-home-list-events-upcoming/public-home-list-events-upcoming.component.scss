@@ -7,7 +7,7 @@ div {
     a {
       @apply com-flex com-flex-row com-no-underline;
       .title {
-        @apply com-text-2xl com-m-0 com-font-bold com-text-Dark-Jungle-Green com-mb-2;
+        @apply md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2;
       }
 
       .sub-heading {
