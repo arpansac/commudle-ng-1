@@ -19,11 +19,8 @@ tr {
 }
 
 .campaign-details {
+  @apply com-h-full md:com-h-[90dvh];
   nb-card-header {
     @apply com-flex com-justify-between;
   }
-}
-
-.duration-time {
-  @apply com-justify-center com-text-center;
 }

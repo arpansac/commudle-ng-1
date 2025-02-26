@@ -1,0 +1,34 @@
+.title {
+  @apply com-mb-5;
+}
+
+.campaign-info {
+  @apply com-grid com-gap-2 com-grid-cols-2;
+}
+
+.campaign-item {
+  @apply com-bg-gray-100 com-p-2 com-rounded-md com-text-sm;
+}
+
+.campaign-item a {
+  @apply com-appearance-none;
+}
+
+.campaign-section {
+  @apply com-mt-5;
+  h6 {
+    @apply com-m-0;
+  }
+}
+
+.assets-list {
+  @apply com-p-0 com-list-none;
+}
+
+.asset-item {
+  @apply com-bg-gray-100 com-p-2 com-rounded-md com-mb-1;
+}
+
+.asset-image {
+  @apply com-w-full com-max-w-52 com-h-auto com-mt-2 com-rounded-md com-block;
+}

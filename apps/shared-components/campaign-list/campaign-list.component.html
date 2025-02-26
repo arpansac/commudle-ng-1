@@ -43,17 +43,11 @@
         </div>
       </div>
     </td>
-    <td *ngIf="campaign.budget">{{ campaign.currency_type }}{{ campaign.budget }}</td>
+    <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td>
     <td class="duration-time">
-      <span *ngIf="campaign.start_time">
-        {{ moment(campaign.start_time).format('MMM Do, YYYY - h:mm a') }}
-      </span>
+      <span *ngIf="campaign.start_time"> Start Date: {{ moment(campaign.start_date).format('MMM Do, YYYY') }} </span>
       <br />
-      <span *ngIf="campaign.end_time">|</span>
-      <br />
-      <span *ngIf="campaign.end_time">
-        {{ moment(campaign.end_time).format('MMM Do, YYYY - h:mm a') }}
-      </span>
+      <span *ngIf="campaign.end_time"> End Date: {{ moment(campaign.end_date).format('MMM Do, YYYY') }} </span>
     </td>
     <td>
       {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
@@ -112,33 +106,7 @@
       </button>
     </nb-card-header>
     <nb-card-body>
-      <div class="campaign-details">
-        <div><strong>Name:</strong> {{ data.name }}</div>
-        <div><strong>Company Name:</strong> {{ data.company_name }}</div>
-        <div><strong>Contact Name:</strong> {{ data.contact_name }}</div>
-        <div><strong>Contact Email:</strong> {{ data.contact_email }}</div>
-        <div><strong>Start Time:</strong> {{ moment(data.start_time).format('MMM Do, YYYY - h:mm a') }}</div>
-        <div><strong>End Time:</strong> {{ moment(data.end_time).format('MMM Do, YYYY - h:mm a') }}</div>
-        <div><strong>Budget:</strong> {{ data.budget | currency : data.currency_type }}</div>
-        <div><strong>Status:</strong> {{ data.status }}</div>
-        <div><strong>Created At:</strong> {{ moment(data.created_at).format('MMM Do, YYYY - h:mm a') }}</div>
-
-        <div *ngIf="data.campaign_assets?.length">
-          <strong>Campaign Assets:</strong>
-          <ul>
-            <li *ngFor="let asset of data.campaign_assets">
-              <div><strong>Headline:</strong> {{ asset.headline }}</div>
-              <div>
-                <strong>URL:</strong> <a [href]="asset.url" target="_blank">{{ asset.url }}</a>
-              </div>
-              <div *ngIf="asset.image">
-                <strong>Image:</strong><br />
-                <img [src]="asset.image.url" alt="Asset Image" width="100" />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <commudle-campaign-details [campaignId]="data"></commudle-campaign-details>
     </nb-card-body>
   </nb-card>
 </ng-template>
