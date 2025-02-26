@@ -269,7 +269,7 @@
             <div *ngFor="let note of notes; let i = index" class="note-list">
               <div>
                 <span>{{ note.text }} &nbsp;</span>
-                <span class="delete-note clickable" (click)="destroyNote(note.id, i)">
+                <span class="delete-note clickable" (click)="destroyNote(note.id, i, selectedUserResponse)">
                   <fa-icon [icon]="faXmark"></fa-icon>
                 </span>
               </div>
@@ -286,7 +286,7 @@
               <div class="action-button">
                 <button
                   size="tiny"
-                  (click)="updateNotes(selectedTeamDetails.id)"
+                  (click)="updateNotes(selectedUserResponse)"
                   class="add-button"
                   nbButton
                   status="primary"
