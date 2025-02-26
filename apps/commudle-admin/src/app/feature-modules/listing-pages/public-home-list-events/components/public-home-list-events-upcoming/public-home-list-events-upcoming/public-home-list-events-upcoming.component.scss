@@ -1,4 +1,4 @@
-div {
+.upcoming-events {
   @apply com-m-0 md:com-px-0 com-px-4;
 
   .title {
@@ -20,7 +20,7 @@ div {
     }
 
     .heading-subheading {
-      @apply com-flex com-flex-col com-m-0;
+      @apply com-flex com-flex-col com-m-0 com-p-0;
     }
 
     fa-icon {

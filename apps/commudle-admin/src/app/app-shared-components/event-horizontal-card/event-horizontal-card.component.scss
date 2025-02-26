@@ -19,7 +19,7 @@ nb-card {
         }
 
         .upcoming-card-details-desktop {
-          @apply md:com-pl-4 md:com-pr-0 md:com-py-3 com-px-4 com-py-5 com-overflow-hidden com-flex com-flex-col com-w-full;
+          @apply md:com-pl-4 md:com-pr-0 md:com-py-3 com-px-0 com-py-3 com-overflow-hidden com-flex com-flex-col com-w-full;
 
           .time-badge {
             @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2;
