@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { DatePipe } from '@angular/common';
+import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-campaign-form-order-setup',
   templateUrl: './campaign-form-order-setup.component.html',
   styleUrls: ['./campaign-form-order-setup.component.scss'],
 })
-export class CampaignFormOrderSetupComponent implements OnInit {
+export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   fragment: string;
   campaignForm: FormGroup;
   icons = {
@@ -24,11 +24,12 @@ export class CampaignFormOrderSetupComponent implements OnInit {
   imagePreview = [];
   tags = [];
 
+  formSubscription: Subscription;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
     private campaignService: CampaignService,
-    private datePipe: DatePipe,
     private toasterService: ToastrService,
     private router: Router,
   ) {
@@ -40,29 +41,31 @@ export class CampaignFormOrderSetupComponent implements OnInit {
         company_name: ['', Validators.required],
         start_time: ['', Validators.required],
         end_time: ['', Validators.required],
+        start_date: ['', Validators.required],
+        end_date: ['', Validators.required],
         budget: [0, Validators.required],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
       {
-        validator: this.endTimeValidator, // Add the custom validator
+        validator: this.endDateValidator, // Add the custom validator
       },
     );
   }
 
-  endTimeValidator(formGroup: AbstractControl) {
-    const startTime = formGroup.get('start_time')?.value;
-    const endTime = formGroup.get('end_time')?.value;
+  endDateValidator(formGroup: AbstractControl): ValidationErrors | null {
+    const startDate = formGroup.get('start_date')?.value;
+    const endDate = formGroup.get('end_date')?.value;
 
-    if (startTime && endTime) {
-      const start = new Date(startTime);
-      const end = new Date(endTime);
+    if (!startDate || !endDate) return null; // No validation if either date is missing
 
-      if (end <= start) {
-        return { endTimeInvalid: true }; // Custom validation error
-      }
-    }
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    return null;
+    // Ensure end date is at least 3 days after the start date
+    const minEndDate = new Date(start);
+    minEndDate.setDate(minEndDate.getDate() + 3);
+
+    return end < minEndDate ? { endDateValidator: true } : null;
   }
 
   createCampaignAsset(asset?: ICampaignAsset): FormGroup {
@@ -88,37 +91,48 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
   ngOnInit() {
     this.checkFragment();
+    this.subscribeToFormChanges();
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
-      if (this.campaign.name) {
-        this.campaignForm.patchValue({
-          name: this.campaign.name,
-          contact_name: this.campaign.contact_name,
-          contact_email: this.campaign.contact_email,
-          company_name: this.campaign.company_name,
-          start_time: this.datePipe.transform(this.campaign.start_time, 'yyyy-MM-ddTHH:mm:ss'),
-          end_time: this.datePipe.transform(this.campaign.end_time, 'yyyy-MM-ddTHH:mm:ss'),
-          budget: this.campaign.budget,
-        });
-        if (this.campaign.tags) {
-          this.tags = this.campaign.tags;
-        }
-
-        if (this.campaign.campaign_assets.length > 0) {
-          // Patch Campaign Assets (FormArray)
-          const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
-
-          // Clear existing items in the FormArray
-          campaignAssetsFormArray.clear();
-
-          // Loop through campaign_assets and add them to the FormArray
-          this.campaign.campaign_assets.forEach((asset, index) => {
-            campaignAssetsFormArray.push(this.createCampaignAsset(asset));
-            this.imagePreview[index] = asset.image.url;
-          });
-        }
-      }
+      this.patchCampaignForm();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.formSubscription.unsubscribe();
+  }
+
+  patchCampaignForm() {
+    if (this.campaign.name) {
+      this.campaignForm.patchValue({
+        name: this.campaign.name,
+        contact_name: this.campaign.contact_name,
+        contact_email: this.campaign.contact_email,
+        company_name: this.campaign.company_name,
+        start_time: this.campaign.start_time,
+        end_time: this.campaign.end_time,
+        start_date: this.campaign.start_date,
+        end_date: this.campaign.end_date,
+        budget: this.campaign.budget,
+      });
+      if (this.campaign.tags) {
+        this.tags = this.campaign.tags;
+      }
+
+      if (this.campaign.campaign_assets.length > 0) {
+        // Patch Campaign Assets (FormArray)
+        const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+
+        // Clear existing items in the FormArray
+        campaignAssetsFormArray.clear();
+
+        // Loop through campaign_assets and add them to the FormArray
+        this.campaign.campaign_assets.forEach((asset, index) => {
+          campaignAssetsFormArray.push(this.createCampaignAsset(asset));
+          this.imagePreview[index] = asset.image.url;
+        });
+      }
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -169,8 +183,6 @@ export class CampaignFormOrderSetupComponent implements OnInit {
 
     if (formArray && formArray.controls[index]) {
       formArray.at(index).patchValue({ [key]: value });
-    } else {
-      console.error(`Invalid index ${index} for form array ${formArrayName}`);
     }
   }
 
@@ -183,8 +195,10 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     formData.append('campaign[contact_name]', formValue.contact_name);
     formData.append('campaign[contact_email]', formValue.contact_email);
     formData.append('campaign[company_name]', formValue.company_name);
-    formData.append('campaign[start_time]', this.convertDateToLocal(formValue.start_time));
-    formData.append('campaign[end_time]', this.convertDateToLocal(formValue.end_time));
+    formData.append('campaign[start_time]', formValue.start_time);
+    formData.append('campaign[end_time]', formValue.end_time);
+    formData.append('campaign[start_date]', formValue.start_date);
+    formData.append('campaign[end_date]', formValue.end_date);
     formData.append('campaign[budget]', formValue.budget);
     formData.append('campaign[status]', ECampaignStatus.DRAFT);
 
@@ -223,10 +237,6 @@ export class CampaignFormOrderSetupComponent implements OnInit {
     });
   }
 
-  convertDateToLocal(date) {
-    return new Date(date).toISOString();
-  }
-
   generateCampaignName() {
     const campaignName =
       this.campaignForm.get('company_name').value + '-' + this.campaignForm.get('contact_name').value;
@@ -248,6 +258,37 @@ export class CampaignFormOrderSetupComponent implements OnInit {
   submitTags() {
     this.campaignService.updateTags(this.campaign.id, this.tags).subscribe(() => {
       this.router.navigate(['campaigns', 'edit', this.campaign.id, 'order-confirmation']);
+    });
+  }
+
+  subscribeToFormChanges(): void {
+    this.formSubscription = combineLatest([
+      this.campaignForm.get('start_date').valueChanges,
+      this.campaignForm.get('end_date').valueChanges,
+      this.campaignForm.get('start_time').valueChanges,
+      this.campaignForm.get('end_time').valueChanges,
+    ])
+      .pipe(
+        debounceTime(300), // Prevents too many calls
+        filter(([startDate, endDate, startTime, endTime]) => startDate && endDate && startTime && endTime), // Ensure all values are present
+      )
+      .subscribe(() => {
+        this.calculateEstimatedAmount();
+      });
+  }
+
+  calculateEstimatedAmount() {
+    const startDate = this.campaignForm.get('start_date').value;
+    const endDate = this.campaignForm.get('end_date').value;
+    const startTime = this.campaignForm.get('start_time').value;
+    const endTime = this.campaignForm.get('end_time').value;
+    if (!startDate || !endDate || !startTime || !endTime) {
+      return;
+    }
+    this.campaignService.calculateBudget(this.campaign.id, startDate, endDate, startTime, endTime).subscribe((data) => {
+      this.campaignForm.patchValue({
+        budget: data,
+      });
     });
   }
 }
