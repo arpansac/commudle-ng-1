@@ -200,7 +200,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[start_date]', formValue.start_date);
     formData.append('campaign[end_date]', formValue.end_date);
     formData.append('campaign[budget]', formValue.budget);
-    formData.append('campaign[status]', ECampaignStatus.DRAFT);
 
     // Append campaign assets
     formValue.campaign_assets.forEach((asset, index) => {
