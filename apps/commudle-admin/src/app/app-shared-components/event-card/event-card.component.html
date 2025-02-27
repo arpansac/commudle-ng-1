@@ -7,16 +7,30 @@
       <nb-card-body>
         <div *ngIf="event.header_image_path || event.header_image">
           <commudle-banner-image
+            class="desktop-image"
+            *appBreakpoints="'>lg'"
             [headerImagePath]="event.header_image_path || event.header_image?.i320"
             [name]="event.name"
             [bottomRightCurve]="false"
             [bottomLeftCurve]="false"
           ></commudle-banner-image>
+          <commudle-banner-image
+            class="mobile-image"
+            *appBreakpoints="'<=lg'"
+            [headerImagePath]="event.header_image_path || event.header_image?.i320"
+            [name]="event.name"
+            [aspectRatio]="'1/1'"
+          ></commudle-banner-image>
         </div>
-        <div *ngIf="!(event.header_image_path || event.header_image)" class="without-header-image">
-          <nb-icon icon="link" status="primary"></nb-icon>
+        <div *ngIf="!(event.header_image_path || event.header_image)">
+          <div *appBreakpoints="'>lg'" class="without-header-image-desktop">
+            <nb-icon icon="link" status="primary"></nb-icon>
+          </div>
+          <div *appBreakpoints="'<=lg'" class="without-header-image-mobile">
+            <nb-icon icon="link" status="primary"></nb-icon>
+          </div>
         </div>
-        <div class="details-container">
+        <div *appBreakpoints="'>lg'" class="details-container">
           <div class="event-details">
             <div class="details">
               <div class="completed" *ngIf="event.event_status.name === 'completed'">
@@ -39,13 +53,30 @@
               <!-- <span *ngIf="event.kommunity_id !== community.id" class="collaboration">(Collaboration)</span> -->
             </p>
             <p class="event-timings">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
-            <div class="community-badge">
-              <div *ngIf="community">
-                <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
-              </div>
+            <div *ngIf="community" class="community-badge">
+              <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
             </div>
           </div>
           <a class="view-details">View Details</a>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="details-container-mobile">
+          <div class="time-badge">
+            <p class="event-time">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
+            <div class="interested-members" *ngIf="event.interested_members_count > 0">
+              <app-badge
+                [text]="event.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+            </div>
+          </div>
+          <p class="event-title">{{ event.name }}</p>
+          <div *ngIf="community" class="community-badge">
+            <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
+          </div>
         </div>
       </nb-card-body>
     </nb-card>

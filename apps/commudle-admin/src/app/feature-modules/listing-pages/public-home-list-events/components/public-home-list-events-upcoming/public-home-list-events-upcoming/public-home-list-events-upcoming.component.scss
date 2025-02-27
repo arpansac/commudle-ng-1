@@ -33,7 +33,7 @@
   }
 
   .load-more {
-    @apply com-text-center md:com-mt-8 com-m-0;
+    @apply com-text-center md:com-mt-8 com-mt-4 com-m-0;
 
     app-loading-spinner {
       @apply com-mb-6;
