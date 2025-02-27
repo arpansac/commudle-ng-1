@@ -71,17 +71,17 @@ nb-card {
           }
 
           .details {
-            @apply com-flex com-flex-col com-items-start;
+            @apply com-flex com-flex-col com-items-start com-w-full com-overflow-hidden;
 
             .event-title {
               @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-2 com-line-clamp-1;
             }
 
             .time-badge {
-              @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2;
+              @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2 com-w-full;
 
               .event-time {
-                @apply com-flex com-text-xs com-font-medium com-m-0 com-text-gray-500;
+                @apply com-flex com-text-xs com-font-medium com-m-0 com-text-gray-500 com-mr-16 com-flex-shrink-0;
               }
 
               .community-badge {
