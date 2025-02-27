@@ -16,8 +16,16 @@ export class PurchaseOrderService {
     return this.http.get<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.SHOW), { params });
   }
 
-  indexByOrderType(orderableType: EDbModels, page = 1, count = 10): Observable<IPaginationCount<IPurchaseOrder>> {
-    const params = new HttpParams().set('orderable_type', orderableType).set('page', page).set('count', count);
+  indexByOrderType(
+    orderableType: EDbModels,
+    page = 1,
+    count = 10,
+    search?,
+  ): Observable<IPaginationCount<IPurchaseOrder>> {
+    let params = new HttpParams().set('orderable_type', orderableType).set('page', page).set('count', count);
+    if (search) {
+      params = params.set('q', search);
+    }
     return this.http.get<IPaginationCount<IPurchaseOrder>>(
       this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.INDEX_BY_ORDERABLE_TYPE),
       { params },

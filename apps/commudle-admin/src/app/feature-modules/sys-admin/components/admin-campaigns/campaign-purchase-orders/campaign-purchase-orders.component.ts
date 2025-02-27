@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, IPurchaseOrder } from '@commudle/shared-models';
 import { PurchaseOrderService } from '@commudle/shared-services';
 import moment from 'moment';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'commudle-campaign-purchase-orders',
@@ -25,15 +26,22 @@ export class CampaignPurchaseOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPaymentDetails();
+
+    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.fetchPaymentDetails();
+    });
   }
 
   fetchPaymentDetails() {
     this.isLoading = true;
-    this.purchaseOrderService.indexByOrderType(EDbModels.CAMPAIGN, this.page, this.count).subscribe((data) => {
-      this.purchaseOrders = data.values;
-      this.page = data.page;
-      this.total = data.total;
-      this.isLoading = false;
-    });
+    this.purchaseOrderService
+      .indexByOrderType(EDbModels.CAMPAIGN, this.page, this.count, this.searchForm.get('search').value)
+      .subscribe((data) => {
+        this.purchaseOrders = data.values;
+        this.page = data.page;
+        this.total = data.total;
+        this.isLoading = false;
+      });
   }
 }
