@@ -54,6 +54,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AdminCampaignsComponent } from './components/admin-campaigns/admin-campaigns.component';
 import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-campaigns-list/admin-campaigns-list.component';
 import { LinkyModule } from 'ngx-linky';
+import { CampaignPurchaseOrdersComponent } from './components/admin-campaigns/campaign-purchase-orders/campaign-purchase-orders.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { LinkyModule } from 'ngx-linky';
     CampaignTypesComponent,
     AdminCampaignsComponent,
     AdminCampaignsListComponent,
+    CampaignPurchaseOrdersComponent,
   ],
   imports: [
     CommonModule,

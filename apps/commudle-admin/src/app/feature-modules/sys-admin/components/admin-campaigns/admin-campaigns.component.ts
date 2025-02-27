@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'commudle-admin-campaigns',
   templateUrl: './admin-campaigns.component.html',
   styleUrls: ['./admin-campaigns.component.scss'],
 })
-export class AdminCampaignsComponent implements OnInit {
+export class AdminCampaignsComponent {
   tabs = [
     {
       title: 'All Campaigns',
@@ -15,8 +15,9 @@ export class AdminCampaignsComponent implements OnInit {
       title: 'Campaign Types',
       route: 'types',
     },
+    {
+      title: 'Purchase Orders',
+      route: 'purchase-orders',
+    },
   ];
-  constructor() {}
-
-  ngOnInit() {}
 }

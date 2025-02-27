@@ -984,5 +984,6 @@ export const API_ROUTES = {
 
   PURCHASE_ORDER: {
     SHOW: 'api/v2/purchase_orders/show', //GET
+    INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
   },
 };
