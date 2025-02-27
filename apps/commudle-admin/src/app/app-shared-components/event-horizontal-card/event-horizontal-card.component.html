@@ -23,7 +23,7 @@
         <div *ngIf="!event.header_image" class="no-image-header">
           <nb-icon icon="link" status="primary"></nb-icon>
         </div>
-        <div class="upcoming-card-details-desktop">
+        <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div class="time-badge">
             <p class="event-time">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
             <div class="interested-members" *ngIf="event.interested_members_count > 0">
@@ -49,6 +49,32 @@
               [fontColor]="'com-text-blue-500'"
               [maximumTag]="5"
             ></app-tag>
+          </div>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="upcoming-card-details-mobile">
+          <div class="time">
+            <p class="event-month">{{ moment(event.start_time).format('MMM') }}</p>
+            <p class="event-date">{{ moment(event.start_time).format('D') }}</p>
+            <p class="event-day">{{ moment(event.start_time).format('ddd') }}</p>
+          </div>
+          <div class="details">
+            <p class="event-title">{{ event.name }}</p>
+            <div class="time-badge">
+              <p class="event-time">{{ moment(event.start_time).format('h:mm a') }} onwards</p>
+              <div *ngIf="community" class="community-badge">
+                <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
+              </div>
+            </div>
+            <div class="interested-members" *ngIf="event.interested_members_count > 0">
+              <app-badge
+                [text]="event.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+            </div>
           </div>
         </div>
       </a>
