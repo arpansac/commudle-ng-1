@@ -1,126 +1,149 @@
 <nb-card class="review-section">
-  <nb-card-header *ngIf="userResponses && userResponses.length > 0">
+  <nb-card-header>
     <div class="header">
       Applications & Projects<commudle-help-section
         [helpDictionaryName]="'hackathon-applications-projects'"
       ></commudle-help-section>
     </div>
-    <button nbButton status="primary" (click)="openRoundSelectionUpdateEmailDialogBox()" class="com-w-max">
+    <button
+      *ngIf="userResponses && userResponses.length > 0"
+      nbButton
+      status="primary"
+      (click)="openRoundSelectionUpdateEmailDialogBox()"
+      class="com-w-max"
+    >
       Send round selection update email
     </button>
 
     &nbsp; &nbsp;
-    <button nbButton status="primary" (click)="sendTeamDetailsCsv()" class="com-w-max">
+    <button
+      *ngIf="userResponses && userResponses.length > 0"
+      nbButton
+      status="primary"
+      (click)="sendTeamDetailsCsv()"
+      class="com-w-max"
+    >
       <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
     </button>
     &nbsp; &nbsp;
     <a
-      *ngIf="hackathon"
+      *ngIf="hackathon && userResponses && userResponses.length > 0"
       [routerLink]="['/admin', 'communities', communityId, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
     >
       <button nbButton status="primary" class="com-w-max">Select Winner</button>
     </a>
   </nb-card-header>
   <nb-card-body>
-    <app-loading-spinner *ngIf="isLoading; else userResponsesContainer"></app-loading-spinner>
-    <ng-template #userResponsesContainer>
-      <table *ngIf="userResponses && userResponses.length > 0; else noUserResponse">
-        <tr>
-          <th width="300px">Name</th>
-          <th>Round</th>
-          <th width="200px">Updates</th>
-          <th width="200px">Notes</th>
-          <th>Application Status</th>
-        </tr>
-        <tr
-          *ngFor="let userResponse of userResponses; let i = index"
-          (click)="openDialogBox(userResponseDetailsDialogBox, userResponse.team.id, i)"
-          class="user-response"
-        >
-          <td class="name">
-            <div class="team-details">
-              <div class="team-name">
-                {{ userResponse.team.name }}
-                <span *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"> 🏆</span>
+    <div>
+      <form [formGroup]="searchForm">
+        <input
+          formControlName="search"
+          nbInput
+          type="text"
+          fullWidth
+          placeholder="Search with Team name, User's name or User's email"
+        />
+      </form>
+      <app-loading-spinner *ngIf="isLoading; else userResponsesContainer"></app-loading-spinner>
+      <ng-template #userResponsesContainer>
+        <table *ngIf="userResponses && userResponses.length > 0; else noUserResponse">
+          <tr>
+            <th width="300px">Name</th>
+            <th>Round</th>
+            <th width="200px">Updates</th>
+            <th width="200px">Notes</th>
+            <th>Application Status</th>
+          </tr>
+          <tr
+            *ngFor="let userResponse of userResponses; let i = index"
+            (click)="openDialogBox(userResponseDetailsDialogBox, userResponse.team.id, i)"
+            class="user-response"
+          >
+            <td class="name">
+              <div class="team-details">
+                <div class="team-name">
+                  {{ userResponse.team.name }}
+                  <span *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"> 🏆</span>
+                </div>
+                <div class="date">
+                  {{ moment(userResponse.team.created_at).format('DD MMM YYYY') }}
+                </div>
+                <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
+                  Link to project:
+                  <a [routerLink]="['/builds', userResponse.team.community_build.slug]" target="_blank">
+                    <fa-icon [icon]="faUpRightFromSquare"></fa-icon> {{ userResponse.team.community_build.name }}</a
+                  >
+                </div>
               </div>
-              <div class="date">
-                {{ moment(userResponse.team.created_at).format('DD MMM YYYY') }}
+            </td>
+            <td>
+              <div *ngIf="userResponse.team.round" class="round-name">
+                {{ userResponse.team.round?.name }}
               </div>
-              <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
-                Link to project:
-                <a [routerLink]="['/builds', userResponse.team.community_build.slug]" target="_blank">
-                  <fa-icon [icon]="faUpRightFromSquare"></fa-icon> {{ userResponse.team.community_build.name }}</a
+            </td>
+
+            <td class="updates">
+              <div *ngIf="userResponse.team.entity_updates.length > 0">
+                <span
+                  class="details"
+                  [innerHTML]="userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details"
+                ></span>
+                <span
+                  class="timeago"
+                  title="{{
+                    moment(
+                      userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].created_at
+                    ).format('dddd Do MMM, YYYY h:mm A')
+                  }}"
                 >
+                  {{
+                    moment(
+                      userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].created_at
+                    ).fromNow()
+                  }}
+                </span>
               </div>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="userResponse.team.round" class="round-name">
-              {{ userResponse.team.round?.name }}
-            </div>
-          </td>
-
-          <td class="updates">
-            <div *ngIf="userResponse.team.entity_updates.length > 0">
-              <span
-                class="details"
-                [innerHTML]="userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details"
-              ></span>
-              <span
-                class="timeago"
-                title="{{
-                  moment(
-                    userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].created_at
-                  ).format('dddd Do MMM, YYYY h:mm A')
-                }}"
-              >
-                {{
-                  moment(
-                    userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].created_at
-                  ).fromNow()
-                }}
-              </span>
-            </div>
-          </td>
-          <td class="notes">
-            <div *ngIf="userResponse.team.notes.length > 0">
-              <span class="details">{{ userResponse.team.notes[userResponse.team.notes.length - 1].text }}</span>
-              <span class="notes-count"> {{ userResponse.team.notes.length }} Notes </span>
-            </div>
-          </td>
-          <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
-            <div
-              [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
-              class="select-wrapper"
-            >
-              <select
-                (change)="optionChanged($event, userResponse.team.id, i)"
-                [(ngModel)]="userResponse.team.registration_status"
+            </td>
+            <td class="notes">
+              <div *ngIf="userResponse.team.notes.length > 0">
+                <span class="details">{{ userResponse.team.notes[userResponse.team.notes.length - 1].text }}</span>
+                <span class="notes-count"> {{ userResponse.team.notes.length }} Notes </span>
+              </div>
+            </td>
+            <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
+              <div
                 [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
+                class="select-wrapper"
               >
-                <option [value]="EHackathonRegistrationStatus.REGISTERED">
-                  {{ EHackathonRegistrationStatus.REGISTERED | titlecase }}
-                </option>
-                <option [value]="EHackathonRegistrationStatus.WAITLISTED">
-                  {{ EHackathonRegistrationStatus.WAITLISTED | titlecase }}
-                </option>
-                <option [value]="EHackathonRegistrationStatus.ACCEPTED">
-                  {{ EHackathonRegistrationStatus.ACCEPTED | titlecase }}
-                </option>
-                <option [value]="EHackathonRegistrationStatus.REJECTED">
-                  {{ EHackathonRegistrationStatus.REJECTED | titlecase }}
-                </option>
-              </select>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </ng-template>
+                <select
+                  (change)="optionChanged($event, userResponse.team.id, i)"
+                  [(ngModel)]="userResponse.team.registration_status"
+                  [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
+                >
+                  <option [value]="EHackathonRegistrationStatus.REGISTERED">
+                    {{ EHackathonRegistrationStatus.REGISTERED | titlecase }}
+                  </option>
+                  <option [value]="EHackathonRegistrationStatus.WAITLISTED">
+                    {{ EHackathonRegistrationStatus.WAITLISTED | titlecase }}
+                  </option>
+                  <option [value]="EHackathonRegistrationStatus.ACCEPTED">
+                    {{ EHackathonRegistrationStatus.ACCEPTED | titlecase }}
+                  </option>
+                  <option [value]="EHackathonRegistrationStatus.REJECTED">
+                    {{ EHackathonRegistrationStatus.REJECTED | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </ng-template>
 
-    <ng-template #noUserResponse>
-      <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
-      <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
-    </ng-template>
+      <ng-template #noUserResponse>
+        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
+        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
+      </ng-template>
+    </div>
 
     <div *ngIf="total > 0" class="pagination">
       <app-pagination

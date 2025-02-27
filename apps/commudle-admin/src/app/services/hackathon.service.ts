@@ -19,10 +19,6 @@ import {
   IPaginationCount,
 } from '@commudle/shared-models';
 
-interface publicHackathonsList {
-  upcoming_hackathons: IHackathon[];
-  past_hackathons: IHackathon[];
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -274,9 +270,13 @@ export class HackathonService {
     hackathonId: string | number,
     page = 1,
     count = 10,
+    search?: string,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
-    const params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
+    if (search) {
+      params = params.set('q', search);
+    }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),
       {
