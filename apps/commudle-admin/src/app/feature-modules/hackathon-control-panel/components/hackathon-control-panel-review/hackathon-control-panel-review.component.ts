@@ -61,6 +61,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   total: number;
   count = 10;
 
+  selectedRoundIdForFilter = '';
+  selectedStatusForFilter = '';
+
   tinyMCE = {
     height: 200,
     menubar: false,
@@ -144,7 +147,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   fetchUserResponses() {
     this.isLoading = true;
     this.hackathonService
-      .indexUserResponses(this.hackathonId, this.page, this.count, this.searchForm.get('search').value)
+      .indexUserResponses(
+        this.hackathonId,
+        this.page,
+        this.count,
+        this.searchForm.get('search').value,
+        Number(this.selectedRoundIdForFilter),
+        this.selectedStatusForFilter,
+      )
       .subscribe((data) => {
         this.userResponses = data.values;
         this.page = data.page;
@@ -192,6 +202,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.dialogRef = this.nbDialogService.open(HackathonOverallRoundSelectionUpdateEmailComponent, {
       context: {
         hackathonId: this.hackathon.id,
+        roundSelection: this.selectedRoundIdForFilter ? Number(this.selectedRoundIdForFilter) : 0,
       },
     });
   }
@@ -278,5 +289,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.toastrService.successDialog('CSV is being generated, it will be emailed to you shortly!');
       }
     });
+  }
+
+  onRoundChange(event) {
+    this.selectedRoundIdForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  onStatusChange(event) {
+    this.selectedStatusForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  clearAllFilter() {
+    this.selectedStatusForFilter = '';
+    this.selectedRoundIdForFilter = '';
+    this.page = 1;
+    this.fetchUserResponses();
   }
 }

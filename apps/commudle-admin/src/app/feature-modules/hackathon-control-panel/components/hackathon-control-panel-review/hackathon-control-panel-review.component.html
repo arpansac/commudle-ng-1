@@ -5,33 +5,66 @@
         [helpDictionaryName]="'hackathon-applications-projects'"
       ></commudle-help-section>
     </div>
-    <button
-      *ngIf="userResponses && userResponses.length > 0"
-      nbButton
-      status="primary"
-      (click)="openRoundSelectionUpdateEmailDialogBox()"
-      class="com-w-max"
-    >
-      Send round selection update email
-    </button>
+    <div class="actions">
+      <button
+        *ngIf="userResponses && userResponses.length > 0"
+        nbButton
+        status="primary"
+        (click)="openRoundSelectionUpdateEmailDialogBox()"
+        class="com-w-max"
+      >
+        Send round selection update email
+      </button>
 
-    &nbsp; &nbsp;
-    <button
-      *ngIf="userResponses && userResponses.length > 0"
-      nbButton
-      status="primary"
-      (click)="sendTeamDetailsCsv()"
-      class="com-w-max"
-    >
-      <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
-    </button>
-    &nbsp; &nbsp;
-    <a
-      *ngIf="hackathon && userResponses && userResponses.length > 0"
-      [routerLink]="['/admin', 'communities', communityId, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
-    >
-      <button nbButton status="primary" class="com-w-max">Select Winner</button>
-    </a>
+      <button
+        *ngIf="userResponses && userResponses.length > 0"
+        nbButton
+        status="primary"
+        (click)="sendTeamDetailsCsv()"
+        class="com-w-max"
+      >
+        <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
+      </button>
+
+      <a
+        *ngIf="hackathon && userResponses && userResponses.length > 0"
+        [routerLink]="['/admin', 'communities', communityId, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
+      >
+        <button nbButton status="primary" class="com-w-max">Select Winner</button>
+      </a>
+
+      <div class="select">
+        <select
+          (change)="onRoundChange($event)"
+          [(ngModel)]="selectedRoundIdForFilter"
+          [ngClass]="{
+            'not-active': selectedRoundIdForFilter === ''
+          }"
+        >
+          <option value="" selected disabled>Filter with round</option>
+          <option *ngFor="let round of hackathonRounds" [value]="round.id">
+            {{ round.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="select">
+        <select
+          (change)="onStatusChange($event)"
+          [(ngModel)]="selectedStatusForFilter"
+          [ngClass]="{
+            'not-active': selectedStatusForFilter === ''
+          }"
+        >
+          <option value="" selected disabled>Filter with status</option>
+          <option *ngFor="let status of EHackathonRegistrationStatus | keyvalue" [value]="status.value">
+            {{ status.value | capitalizeAndRemoveUnderscore }}
+          </option>
+        </select>
+      </div>
+
+      <div class="clear-filter" (click)="clearAllFilter()">Clear All Filter</div>
+    </div>
   </nb-card-header>
   <nb-card-body>
     <div>

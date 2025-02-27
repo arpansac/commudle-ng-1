@@ -271,11 +271,19 @@ export class HackathonService {
     page = 1,
     count = 10,
     search?: string,
+    roundId?: number,
+    status?: string,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
     if (search) {
       params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (status) {
+      params = params.set('status', status);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),
