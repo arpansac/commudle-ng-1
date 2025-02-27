@@ -71,7 +71,7 @@ nb-option {
       }
 
       .name {
-        @apply com-m-0 com-p-0 com-text-xs com-font-medium com-text-black com-shrink-0 com-line-clamp-1;
+        @apply com-m-0 com-p-0 com-text-xs com-font-medium com-text-black com-line-clamp-1 com-flex-shrink-0;
       }
 
       .designation,
@@ -79,6 +79,7 @@ nb-option {
       .event-date {
         @apply com-m-0 com-p-0 com-text-xs com-font-normal com-text-Quartz com-line-clamp-1;
         text-wrap: nowrap;
+        flex: 1;
 
         .dot {
           @apply com-text-xs com-font-medium com-text-black;
