@@ -29,6 +29,7 @@ import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudl
 })
 export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   userResponses: IHackathonUserResponses[];
+  selectedUserResponse: IHackathonUserResponses;
   hackathon: IHackathon;
   hackathonId: string;
   moment = moment;
@@ -160,6 +161,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.hackathonService.showUserResponsesByTeam(teamId).subscribe((data: IHackathonUserResponses) => {
       this.selectedTeamDetails = data.team;
       this.selectedUserResponsesDetails = data.user_responses;
+      this.selectedUserResponse = data;
       this.notesIndex(data.team.id);
       this.selectedUserDetails = this.selectedUserResponsesDetails[0];
       this.getQuestionAnswer();
@@ -203,7 +205,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.notesList.removeAt(index);
   }
 
-  updateNotes(teamId) {
+  updateNotes(selectedUserResponse: IHackathonUserResponses) {
+    const teamId = selectedUserResponse.team.id;
     for (const note of this.notesForm.value.note) {
       if (note.value !== '') {
         const formData = new FormData();
@@ -213,6 +216,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
             this.removeNote(index);
           }
           this.notes.push(data);
+          const userResponseIndex = this.userResponses.findIndex((userResponse) => userResponse.team.id === teamId);
+          this.userResponses[userResponseIndex].team.notes.push(data);
         });
       }
     }
@@ -244,9 +249,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  destroyNote(noteId, index) {
+  destroyNote(noteId, index, selectedUserResponse) {
+    const teamId = selectedUserResponse.team.id;
     this.noteService.destroyNote(noteId).subscribe((data) => {
-      if (data) this.notes.splice(index, 1);
+      if (data) {
+        this.notes.splice(index, 1);
+        const userResponseIndex = this.userResponses.findIndex((userResponse) => userResponse.team.id === teamId);
+        const noteIndex = this.userResponses[userResponseIndex].team.notes.findIndex((note) => note.id === noteId);
+        this.userResponses[userResponseIndex].team.notes.splice(noteIndex, 1);
+      }
     });
   }
 
