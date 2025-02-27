@@ -1,0 +1,62 @@
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div *ngIf="campaign && !isLoading" class="campaign-container">
+  <h2 class="title">Campaign Details</h2>
+
+  <div class="campaign-info">
+    <div class="campaign-item"><strong>Campaign Name:</strong> {{ campaign.name }}</div>
+
+    <div class="campaign-item"><strong>Company Name:</strong> {{ campaign.company_name }}</div>
+
+    <div class="campaign-item"><strong>Contact Name:</strong> {{ campaign.contact_name }}</div>
+
+    <div class="campaign-item">
+      <strong>Contact Email:</strong> <a [href]="'mailto:' + campaign.contact_email">{{ campaign.contact_email }}</a>
+    </div>
+
+    <div class="campaign-item"><strong>Start Date:</strong> {{ campaign.start_date | date : 'longDate' }}</div>
+
+    <div class="campaign-item"><strong>End Date:</strong> {{ campaign.end_date | date : 'longDate' }}</div>
+
+    <div class="campaign-item"><strong>Start Time:</strong> {{ campaign.start_time }}</div>
+
+    <div class="campaign-item"><strong>End Time:</strong> {{ campaign.end_time }}</div>
+
+    <div class="campaign-item"><strong>Budget:</strong> {{ campaign.budget | currency : campaign.currency_type }}</div>
+
+    <div class="campaign-item"><strong>Campaign Type:</strong> {{ campaign.campaign_type?.name }}</div>
+
+    <div class="campaign-item">
+      <strong>Status:</strong> <span>{{ campaign.status | capitalizeAndRemoveUnderscore }}</span>
+    </div>
+
+    <div class="campaign-item"><strong>Created At:</strong> {{ campaign.created_at | date : 'longDate' }}</div>
+
+    <div class="campaign-item">
+      <strong>Tags:</strong>
+      <span *ngIf="campaign.tags?.length; else noTags">
+        {{ campaign.tags.join(', ') }}
+      </span>
+      <ng-template #noTags> No Tags </ng-template>
+    </div>
+
+    <div class="campaign-item"><strong>Created by:</strong> {{ campaign.user?.name }}</div>
+  </div>
+
+  <div class="campaign-section">
+    <h6>Campaign Assets</h6>
+    <ul *ngIf="campaign.campaign_assets?.length; else noAssets" class="assets-list">
+      <li *ngFor="let asset of campaign.campaign_assets" class="asset-item">
+        <p>
+          <strong>{{ asset.headline }}</strong>
+        </p>
+        <img [src]="asset.image.url" [alt]="asset.headline" class="asset-image" />
+        <p>
+          Url:
+          <a [href]="asset.url">{{ asset.url }}</a>
+        </p>
+      </li>
+    </ul>
+    <ng-template #noAssets> No Assets </ng-template>
+  </div>
+</div>

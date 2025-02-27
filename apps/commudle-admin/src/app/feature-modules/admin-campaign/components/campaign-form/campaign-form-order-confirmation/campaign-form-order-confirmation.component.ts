@@ -36,6 +36,7 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
       .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
       .subscribe((data) => {
         if (data) {
+          this.campaign = data;
           this.openDialog(this.submissionCampaignDialog);
         }
       });

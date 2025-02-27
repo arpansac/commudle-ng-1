@@ -20,7 +20,7 @@
           </div>
           <div class="campaign-info">
             <p class="header">{{ campaignType.name }}</p>
-            <p class="sub-heading">{{ campaignType.description }}</p>
+            <p [innerHTML]="campaignType.description | linky : { sanitizeHtml: true }"></p>
           </div>
         </div>
       </div>
@@ -30,7 +30,6 @@
   <button
     *ngIf="!isLoading"
     nbButton
-    outline
     status="primary"
     shape="semi-round"
     (click)="campaign ? updateCampaign() : createCampaign()"

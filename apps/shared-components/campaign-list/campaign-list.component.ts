@@ -38,13 +38,7 @@ export class CampaignListComponent {
   }
 
   openPopup(dialog, campaignId) {
-    if (this.isCampaignAdmin) {
-      this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
-        if (campaign) {
-          this.dialogService.open(dialog, { context: campaign });
-        }
-      });
-    }
+    this.dialogService.open(dialog, { context: campaignId });
   }
 
   updateNotes(campaignId: number) {

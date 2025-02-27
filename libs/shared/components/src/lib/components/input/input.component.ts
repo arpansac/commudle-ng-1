@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class InputComponent {
   @Input() placeholder = 'Enter text';
-  @Input() type: 'text' | 'number' | 'datetime-local' = 'text';
+  @Input() type: 'text' | 'number' | 'datetime-local' | 'time' | 'date' = 'text';
   @Input() id: string;
   @Input() name: string;
   @Input() inputValue: string | number = '';

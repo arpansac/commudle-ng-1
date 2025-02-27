@@ -29,7 +29,7 @@ export class CampaignTypesComponent implements OnInit {
       name: ['', Validators.required],
       slug: ['', Validators.required],
       description: ['', Validators.required],
-      active: [true, Validators.required],
+      active: [true],
       budget_amount: ['', Validators.required],
       image_dimension: this.fb.group({
         height: [NaN, Validators.required],
@@ -64,6 +64,9 @@ export class CampaignTypesComponent implements OnInit {
       });
     } else {
       this.campaignTypeForm.reset();
+      this.campaignTypeForm.patchValue({
+        active: true,
+      });
     }
     this.dialogService.open(dialog, { context: { campaignType: campaignType } });
   }

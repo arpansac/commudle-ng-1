@@ -87,7 +87,7 @@
                 placeholder="Company Name"
                 [inputValue]="campaignForm.get('company_name').value"
                 (blurEvent)="campaignForm.get('company_name').markAsTouched()"
-                (valueChange)="handleInput($event, 'company_name')"
+                (valueChange)="handleInput($event, 'company_name'); generateCampaignName()"
               ></commudle-input>
             </div>
             <commudle-alert
@@ -140,13 +140,62 @@
       <br />
       <div class="form">
         <form [formGroup]="campaignForm">
+          <!-- start date -->
           <div>
-            <label for="start_time">Select Starting Date<span class="required"> *</span></label>
+            <label for="start_date">Select Starting Date<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                [inputValue]="campaignForm.get('start_date').value"
+                [type]="'date'"
+                (blurEvent)="campaignForm.get('start_date').markAsTouched()"
+                (valueChange)="handleInput($event, 'start_date')"
+              ></commudle-input>
+            </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('start_date')?.invalid &&
+                campaignForm.get('start_date')?.touched &&
+                campaignForm.get('start_date')?.hasError('required')
+              "
+              errorMessage="Start date is required"
+            ></commudle-alert>
+          </div>
+
+          <!-- end date -->
+          <div>
+            <label for="end_date">Select Ending Date<span class="required"> *</span></label>
+            <br />
+            <div class="input">
+              <commudle-input
+                [inputValue]="campaignForm.get('end_date').value"
+                [type]="'date'"
+                (blurEvent)="campaignForm.get('end_date').markAsTouched()"
+                (valueChange)="handleInput($event, 'end_date')"
+              ></commudle-input>
+            </div>
+            <commudle-alert
+              [error]="
+                campaignForm.get('end_date')?.invalid &&
+                campaignForm.get('end_date')?.touched &&
+                campaignForm.get('end_date')?.hasError('required')
+              "
+              errorMessage="End date is required"
+            ></commudle-alert>
+            <commudle-alert
+              [error]="campaignForm.hasError('endDateValidator')"
+              errorMessage="End date must be at least 3 days after the start date."
+            ></commudle-alert>
+          </div>
+
+          <!-- start time -->
+          <div>
+            <label for="start_time">Select Starting time<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
                 [inputValue]="campaignForm.get('start_time').value"
-                [type]="'datetime-local'"
+                [type]="'time'"
                 (blurEvent)="campaignForm.get('start_time').markAsTouched()"
                 (valueChange)="handleInput($event, 'start_time')"
               ></commudle-input>
@@ -157,16 +206,18 @@
                 campaignForm.get('start_time')?.touched &&
                 campaignForm.get('start_time')?.hasError('required')
               "
-              errorMessage="Start time is required"
+              errorMessage="start time is required"
             ></commudle-alert>
           </div>
+
+          <!-- end time -->
           <div>
-            <label for="end_time">Select Ending Date<span class="required"> *</span></label>
+            <label for="end_time">Select Ending Time<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
                 [inputValue]="campaignForm.get('end_time').value"
-                [type]="'datetime-local'"
+                [type]="'time'"
                 (blurEvent)="campaignForm.get('end_time').markAsTouched()"
                 (valueChange)="handleInput($event, 'end_time')"
               ></commudle-input>
@@ -179,21 +230,17 @@
               "
               errorMessage="End time is required"
             ></commudle-alert>
-            <commudle-alert
-              [error]="campaignForm.hasError('endTimeInvalid')"
-              errorMessage="End time should be greater than start time."
-            ></commudle-alert>
           </div>
         </form>
       </div>
     </nb-card-body>
   </nb-card>
 
-  <!-- Goal/ Budget -->
+  <!-- Price -->
   <nb-card>
-    <nb-card-header id="budget">
-      <a [routerLink]="[]" fragment="budget">
-        <span class="left">Goal/ Budget</span>
+    <nb-card-header id="price">
+      <a [routerLink]="[]" fragment="price">
+        <span class="left">Price</span>
         <span class="right">Enter your budget for the whole campaign</span>
       </a>
     </nb-card-header>
@@ -201,13 +248,16 @@
       <div class="form">
         <form [formGroup]="campaignForm">
           <div class="budget-amount">
-            <span class="budget">$3.49</span>
-            <span class="per-day">Per Day</span>
+            <span class="budget">${{ campaign.campaign_type.budget_amount }}</span>
+            <span class="per-day">Per Minute</span>
           </div>
           <div>
-            <label for="budget">Enter your budget<span class="required"> *</span></label>
+            <label for="budget">Your estimated budget</label>
             <br />
-            <div class="input">
+            <div class="budget-amount">
+              <div class="budget">${{ campaignForm.get('budget').value }}</div>
+            </div>
+            <!-- <div class="input">
               <commudle-input
                 placeholder="Budget amount"
                 [inputValue]="campaignForm.get('budget').value"
@@ -215,7 +265,7 @@
                 (blurEvent)="campaignForm.get('budget').markAsTouched()"
                 (valueChange)="handleInput($event, 'budget')"
               ></commudle-input>
-            </div>
+            </div> -->
             <commudle-alert
               [error]="
                 campaignForm.get('budget')?.invalid &&
@@ -227,6 +277,26 @@
           </div>
         </form>
       </div>
+    </nb-card-body>
+  </nb-card>
+
+  <!-- Tags -->
+  <nb-card>
+    <nb-card-header>
+      <a [routerLink]="[]" fragment="tags">
+        <span class="left">Tags</span>
+      </a>
+    </nb-card-header>
+    <nb-card-body>
+      <app-tag
+        (tagAdd)="onTagAdd($event)"
+        (tagDelete)="onTagDelete($event)"
+        [backgroundColor]="'com-bg-tAnti-Flash'"
+        [editable]="true"
+        [fontColor]="'com-text-tYankees-Blue'"
+        [tags]="tags"
+        [minTagLimit]="false"
+      ></app-tag>
     </nb-card-body>
   </nb-card>
 
@@ -306,14 +376,7 @@
   </nb-card>
 
   <div class="next-button">
-    <button
-      nbButton
-      outline
-      status="primary"
-      shape="semi-round"
-      [disabled]="!campaignForm.valid"
-      (click)="updateCampaign()"
-    >
+    <button nbButton status="primary" shape="semi-round" [disabled]="!campaignForm.valid" (click)="updateCampaign()">
       Next - Campaign Setup &nbsp;
       <fa-icon [icon]="icons.faArrowRight"></fa-icon>
     </button>

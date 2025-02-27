@@ -93,6 +93,7 @@ import { UserDetailsFormComponent } from './user-details-form/user-details-form.
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
+import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 
 @NgModule({
   declarations: [
@@ -148,6 +149,7 @@ import { CampaignListComponent } from './campaign-list/campaign-list.component';
     UserDetailsFormComponent,
     NewsletterCardComponent,
     CampaignListComponent,
+    CampaignDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -238,6 +240,7 @@ import { CampaignListComponent } from './campaign-list/campaign-list.component';
     UserDetailsFormComponent,
     NewsletterCardComponent,
     CampaignListComponent,
+    CampaignDetailsComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

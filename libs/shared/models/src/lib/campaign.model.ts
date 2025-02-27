@@ -12,17 +12,22 @@ export interface ICampaign {
   contact_email: string;
   start_time: Date;
   end_time: Date;
+  start_date: Date;
+  end_date: Date;
   budget: number;
   currency_type: string;
-  status: ECampaignStatus;
   campaign_type_id: number;
-  campaign_type: ICampaignType;
   created_at: Date;
   updated_at: Date;
+  tags: string[];
+
+  status: ECampaignStatus;
+
   user: IUser;
+  campaign_type: ICampaignType;
   campaign_assets: ICampaignAsset[];
-  purchase_order: IPurchaseOrder;
-  unapproved_reasons: INote[];
+  purchase_order?: IPurchaseOrder;
+  unapproved_reasons?: INote[];
 }
 
 export enum ECampaignStatus {

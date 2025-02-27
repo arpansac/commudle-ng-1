@@ -5,7 +5,7 @@
         <nb-card>
           <nb-card-body>
             <div *ngIf="campaign">
-              <div class="name">Campaign Name: {{ campaign.name }}</div>
+              <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
             </div>
           </nb-card-body>
         </nb-card>

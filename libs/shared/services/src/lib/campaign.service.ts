@@ -40,4 +40,23 @@ export class CampaignService {
       campaign_status: campaignStatus,
     });
   }
+
+  updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE_TAGS), {
+      campaign_id: campaignId,
+      tags,
+    });
+  }
+
+  calculateBudget(campaignId: number, startDate, endDate, startTime, endTime): Observable<ICampaign> {
+    const params = new HttpParams()
+      .set('campaign_id', campaignId)
+      .set('start_date', startDate)
+      .set('end_date', endDate)
+      .set('start_time', startTime)
+      .set('end_time', endTime);
+    return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CALC_ESTIMATED_PRICE), {
+      params,
+    });
+  }
 }

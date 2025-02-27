@@ -1,4 +1,5 @@
 .payment-details-section {
+  @apply com-sticky com-top-20;
   nb-card {
     nb-card-body {
       @apply com-p-0;

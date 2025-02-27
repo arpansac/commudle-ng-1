@@ -4,16 +4,24 @@
     *ngFor="let tag of getTags()"
     [ngClass]="{ tiny: size === 'tiny' }"
     class="{{ backgroundColor }} {{ fontColor }}"
-    >{{ tag }} <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"></fa-icon
-  ></span>
+  >
+    {{ tag }}
+    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"></fa-icon>
+  </span>
+
   <input
     (tagAdd)="onTagAdd($event)"
+    (keydown)="onKeyDown($event)"
     *ngIf="editable"
     [disabled]="inputDisabled"
     nbInput
     fullWidth
     nbTagInput
-    placeholder="Type something and press enter to keep adding (Atleast {{ minimumTags }} tags)"
+    [placeholder]="
+      minTagLimit
+        ? 'Type something and press enter to keep adding (At least {{ minimumTags }} tags)'
+        : 'Type something and press enter to keep adding'
+    "
     type="text"
   />
 </div>
