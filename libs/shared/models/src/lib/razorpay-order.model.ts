@@ -12,5 +12,5 @@ export interface IRazorpayOrder {
   created_at: string;
   updated_at: string;
   razorpay_payment: IRazorpayPayment;
-  orderable?: IEventTicketOrder | ICampaign;
+  orderable?: IEventTicketOrder;
 }
