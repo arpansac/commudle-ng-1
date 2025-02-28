@@ -11,7 +11,6 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import * as _ from 'lodash';
 import { CommunityChannelManagerService, CommunityChannelsService, ToastrService } from '@commudle/shared-services';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from '@commudle/shared-models';
