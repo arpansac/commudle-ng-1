@@ -971,6 +971,9 @@ export const API_ROUTES = {
     CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
     SYS_ADMIN_INDEX: 'api/v2/campaigns/sys_admin_index', //GET
     SYS_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/sys_admin_status_update', //PUT
+    PUBLIC: {
+      ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET
+    },
     CAMPAIGNS_TYPES: {
       INDEX: 'api/v2/campaigns/campaign_types', //GET
       CREATE: 'api/v2/campaigns/campaign_types', //POST

@@ -15,7 +15,7 @@
           <p class="heading">{{ buildsPageHeader.heading }}</p>
           <div [innerHTML]="richText" class="content"></div>
         </div>
-        <ng-container *ngIf="buildsPageHeader?.image_link">
+        <!-- <ng-container *ngIf="buildsPageHeader?.image_link">
           <a class="header-image" [href]="buildsPageHeader.image_link">
             <img [src]="imageUrl(buildsPageHeader.header_image).url()" class="com-w-full" />
           </a>
@@ -24,7 +24,8 @@
           <div class="header-image">
             <img [src]="imageUrl(buildsPageHeader.header_image).url()" class="com-w-full" />
           </div>
-        </ng-container>
+        </ng-container> -->
+        <commudle-campaign-assets-display></commudle-campaign-assets-display>
       </div>
     </div>
   </div>

@@ -1,0 +1,13 @@
+<div class="carousel">
+  <div
+    *ngIf="campaign"
+    class="container"
+    [ngStyle]="{
+          transform: 'translateX(-' + currentSlide * 100 + '%)',
+        }"
+  >
+    <div class="component-container-wrapper welcome" *ngFor="let ca of campaign.campaign_assets">
+      <img [src]="ca.image.url" class="slider-image" />
+    </div>
+  </div>
+</div>
