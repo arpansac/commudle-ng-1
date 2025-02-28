@@ -11,13 +11,17 @@ import {
   ViewChildren,
   QueryList,
 } from '@angular/core';
-import { CommunityChannelManagerService, CommunityChannelsService, ToastrService } from '@commudle/shared-services';
+import {
+  AuthService,
+  CommunityChannelManagerService,
+  CommunityChannelsService,
+  ToastrService,
+} from '@commudle/shared-services';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from '@commudle/shared-models';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 
 @Component({
-  selector: 'app-channel-members',
+  selector: 'commudle-channel-members',
   templateUrl: './channel-members.component.html',
   styleUrls: ['./channel-members.component.scss'],
 })
@@ -46,7 +50,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
 
   constructor(
     private communityChannelsService: CommunityChannelsService,
-    private libAuthWatchService: LibAuthwatchService,
+    private authService: AuthService,
     private toastrService: ToastrService,
     private communityChannelManagerService: CommunityChannelManagerService,
   ) {}
@@ -108,7 +112,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
   // details of current user
   getCurrentUser() {
     this.subscriptions.push(
-      this.libAuthWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser.user_roles.includes(EUserRoles.SYSTEM_ADMINISTRATOR)) {
           this.isSuperAdmin = true;
@@ -200,9 +204,11 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
   leaveChannel(index) {
     if (window.confirm(`Are you sure you want to exit ${this.channelOrForum.name}?`)) {
       this.communityChannelsService.memberExitChannel(this.channelOrForum.id).subscribe((data) => {
-        this.allUsers.splice(index, 1);
-        this.toastrService.successDialog('You have exited this channel');
-        window.location.reload();
+        if (data) {
+          this.allUsers.splice(index, 1);
+          this.toastrService.successDialog('You have exited this channel');
+          window.location.reload();
+        }
       });
     }
   }
