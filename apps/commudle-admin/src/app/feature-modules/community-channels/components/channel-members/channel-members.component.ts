@@ -1,4 +1,16 @@
-import { Component, OnDestroy, OnInit, EventEmitter, Output, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  ElementRef,
+  AfterViewInit,
+  ViewChildren,
+  QueryList,
+} from '@angular/core';
 import * as _ from 'lodash';
 import { CommunityChannelManagerService, CommunityChannelsService, ToastrService } from '@commudle/shared-services';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -10,7 +22,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
   templateUrl: './channel-members.component.html',
   styleUrls: ['./channel-members.component.scss'],
 })
-export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
+export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() channelOrForum: ICommunityChannel;
   @Input() discussionType;
   subscriptions: Subscription[] = [];
@@ -31,6 +43,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
   totalOrganizers = 0;
 
   private destroy$ = new Subject<void>();
+  @ViewChildren('memberDiv') memberDivs!: QueryList<ElementRef>;
 
   constructor(
     private communityChannelsService: CommunityChannelsService,
@@ -47,6 +60,36 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
       this.getChannelRoles();
     } else if (this.discussionType === 'forum') {
       this.getForumsRoles();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.observeLastElement();
+  }
+
+  observeLastElement() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const lastEntry = entries[0];
+        if (lastEntry.isIntersecting && this.channelMembers.length < this.totalMembers) {
+          console.log('Last element in viewport, fetching more members...');
+          this.getMembers();
+        }
+      },
+      { threshold: 1.0 }, // Fires when the last element is fully in view
+    );
+
+    this.memberDivs.changes.subscribe(() => {
+      if (this.memberDivs.length) {
+        const lastItem = this.memberDivs.last.nativeElement;
+        observer.observe(lastItem);
+      }
+    });
+
+    // Initial check in case elements are already available
+    if (this.memberDivs.length) {
+      const lastItem = this.memberDivs.last.nativeElement;
+      observer.observe(lastItem);
     }
   }
 
@@ -105,6 +148,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges {
   getMembers() {
     if (!this.isLoading) {
       this.isLoading = true;
+
       this.subscriptions.push(
         this.communityChannelsService
           .channelForumMembersIndex(this.channelOrForum.id, this.pageInfo?.end_cursor)
