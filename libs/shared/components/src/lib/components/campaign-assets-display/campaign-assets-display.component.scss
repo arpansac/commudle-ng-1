@@ -9,9 +9,15 @@
   .component-container-wrapper {
     @apply com-w-full com-flex-shrink-0 com-flex-grow-0;
     flex: 0 0 100%; /* Each slide takes full width */
+    .slider-image {
+      @apply com-h-full com-w-auto com-cursor-pointer;
+    }
   }
 }
 
-img {
-  @apply com-h-full com-w-auto;
+.header-image {
+  @apply com-flex com-items-center com-m-0 com-h-[300px] md:com-h-[386px];
+  img {
+    @apply com-h-full com-mx-auto com-py-1;
+  }
 }
