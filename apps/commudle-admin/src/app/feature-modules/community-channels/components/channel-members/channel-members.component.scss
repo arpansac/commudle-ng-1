@@ -13,6 +13,10 @@
       padding: 0.5rem;
     }
 
+    nb-card-body {
+      overscroll-behavior: contain;
+    }
+
     nb-list {
       nb-list-item {
         border: none;

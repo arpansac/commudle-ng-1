@@ -15,7 +15,7 @@
       </span>
     </nb-card-header>
     <nb-card-body>
-      <div>
+      <div class="members-list">
         <div *ngFor="let u of admins; let i = index" class="com-my-3">
           <app-member
             (exitChannel)="leaveChannel(i)"
@@ -25,13 +25,7 @@
             [userRolesUser]="u"
           ></app-member>
         </div>
-        <div
-          *ngFor="let u of channelMembers; let i = index"
-          (scrolled)="getMembers()"
-          [infiniteScrollDisabled]="channelMembers.length >= totalMembers"
-          appInfiniteScroll
-          class="com-my-3"
-        >
+        <div *ngFor="let u of channelMembers; let i = index" #memberDiv class="com-my-3">
           <app-member
             (exitChannel)="leaveChannel(i)"
             (makeAdmin)="addAdmin(i, u.id)"
