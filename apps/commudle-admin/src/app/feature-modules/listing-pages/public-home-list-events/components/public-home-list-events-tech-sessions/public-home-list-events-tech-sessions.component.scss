@@ -1,5 +1,5 @@
 nb-card {
-  @apply com-mx-0 com-m-0;
+  @apply com-mx-0 md:com-border com-border-0 com-m-0;
 
   nb-card-body {
     @apply com-p-0 md:com-p-4;
@@ -18,7 +18,7 @@ nb-card {
     }
 
     .tech-sessions {
-      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 com-items-center com-w-full com-justify-center;
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 com-items-center md:com-justify-center;
       .tech-sessions-card {
         @apply com-m-0 com-w-full;
       }
