@@ -119,3 +119,13 @@ p {
     }
   }
 }
+
+.date-edit-btn {
+  @apply com-flex com-flex-row com-items-center;
+  .date {
+    @apply com-text-sm com-m-0;
+  }
+  nb-icon {
+    @apply com-ml-4 com-text-Yankees-Blue com-cursor-pointer;
+  }
+}

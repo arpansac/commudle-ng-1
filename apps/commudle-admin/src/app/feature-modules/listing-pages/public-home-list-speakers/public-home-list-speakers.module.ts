@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { PublicHomeListSpeakersRoutingModule } from './public-home-list-speakers-routing.module';
 import { PublicHomeListSpeakersComponent } from './components/public-home-list-speakers/public-home-list-speakers.component';
 import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-pages-layout/listing-pages-layout.component';
-import { SpeakersHeaderComponent } from './components/speakers-header/speakers-header.component';
 import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
 import { PublicHomeListSpeakersUpcomingComponent } from './components/public-home-list-speakers-upcoming/public-home-list-speakers-upcoming.component';
 import {
@@ -30,11 +29,11 @@ import { EmptyStateComponent } from './components/empty-state-component/empty-st
 import { AppSharedComponentsModule } from '../../../app-shared-components/app-shared-components.module';
 import { SpeakerSlidesComponent } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/components/speaker-slides/speaker-slides.component';
 import { SpeakerCfpComponent } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/speaker-cfp/speaker-cfp.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 
 @NgModule({
   declarations: [
     PublicHomeListSpeakersComponent,
-    SpeakersHeaderComponent,
     PublicHomeListSpeakersUpcomingComponent,
     PublicHomeListSpeakersProfileComponent,
     PublicHomeListSpeakersContentComponent,
@@ -56,11 +55,9 @@ import { SpeakerCfpComponent } from 'apps/commudle-admin/src/app/feature-modules
     FormsModule,
     ReactiveFormsModule,
     AppSharedComponentsModule,
-
     //Standalone
     EventContentCardComponent,
     SkeletonVerticalCardsComponent,
-
     //Nebular
     NbCardModule,
     NbButtonModule,
@@ -68,6 +65,7 @@ import { SpeakerCfpComponent } from 'apps/commudle-admin/src/app/feature-modules
     NbIconModule,
     NbInputModule,
     NbFormFieldModule,
+    ListingPageHeaderComponent,
   ],
   exports: [PublicHomeListSpeakersContentComponent, EmptyStateComponent, PublicHomeListSpeakersUpcomingComponent],
 })

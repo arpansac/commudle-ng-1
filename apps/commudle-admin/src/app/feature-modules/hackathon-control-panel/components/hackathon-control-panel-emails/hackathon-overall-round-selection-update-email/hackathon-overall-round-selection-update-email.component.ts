@@ -11,8 +11,8 @@ import { NbDialogRef } from '@commudle/theme';
 })
 export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnInit {
   @Input() hackathonId: number | string;
+  @Input() roundSelection = 0;
   faXmark = faXmark;
-  roundSelection = 0;
   hackathonRounds: IRound[];
   message: string;
   isLoading = false;

@@ -1,4 +1,4 @@
-<div class="com-flex com-justify-between com-items-center com-gap-2 com-container com-max-w-screen-xl com-px-2">
+<div class="com-flex com-justify-between com-items-center com-gap-3 com-container com-max-w-screen-xl com-px-2">
   <a [routerLink]="['/']">
     <div *ngIf="!isDarkMode">
       <img
@@ -36,22 +36,22 @@
 
   <div class="home-navbar">
     <app-search-box
-      class="com-col-span-3 md:com-col-span-1 md:com-justify-self-start com-w-10/12"
-      shape="rectangle"
+      class="com-col-span-4 md:com-col-span-1 md:com-justify-self-start"
+      shape="semi-round"
     ></app-search-box>
 
     <app-navbar-menu *appBreakpoints="'>md'" class="com-justify-self-center"></app-navbar-menu>
 
     <div class="user-login">
       <div class="toggle-dark-mode">
-        <button *ngIf="!isDarkMode" (click)="toggleDarkMode(true)" class="toggle-btn" nbButton>
+        <button *ngIf="!isDarkMode" (click)="toggleDarkMode(true)" class="toggle-btn-moon" nbButton>
           <fa-icon [icon]="faMoon"></fa-icon>
         </button>
-        <button *ngIf="isDarkMode" (click)="toggleDarkMode(false)" class="toggle-btn !com-p-0" nbButton>
+        <button *ngIf="isDarkMode" (click)="toggleDarkMode(false)" class="toggle-btn-sun !com-p-0" nbButton>
           <img src="https://json.commudle.com/icons/dark-mode-sun-icon.svg" />
         </button>
       </div>
-      <div>
+      <div class="profile-container" *appBreakpoints="'>md'">
         <img
           *ngIf="currentUser; else guest"
           [alt]="currentUser.name"
@@ -60,8 +60,18 @@
           class="com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite"
         />
         <ng-template #guest>
-          <button (click)="login()" *appBreakpoints="'>lg'" nbButton outline size="small">Login / Signup</button>
-          <button (click)="login()" *appBreakpoints="'<=lg'" nbButton outline size="small" title="Login / Signup">
+          <button (click)="login()" *appBreakpoints="'>lg'" nbButton outline size="small" class="profile">
+            Login / Signup
+          </button>
+          <button
+            (click)="login()"
+            *appBreakpoints="'<=lg'"
+            nbButton
+            outline
+            size="small"
+            class="profile"
+            title="Login / Signup"
+          >
             <nb-icon icon="log-in-outline"></nb-icon>
           </button>
         </ng-template>

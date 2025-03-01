@@ -9,6 +9,9 @@ import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
 @Component({
   selector: 'app-community-build-details',
@@ -27,10 +30,12 @@ export class CommunityBuildDetailsComponent implements OnInit {
   currImage = null;
   singleImage: boolean;
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
+  currentUser: ICurrentUser;
 
   moment = moment;
 
   environment = environment;
+  private destroy$ = new Subject<void>();
 
   @ViewChild('imageTemplate') imageTemplate: TemplateRef<any>;
 
@@ -39,10 +44,14 @@ export class CommunityBuildDetailsComponent implements OnInit {
     private discussionsService: DiscussionsService,
     private sanitizer: DomSanitizer,
     private seoService: SeoService,
+    private authWatchService: LibAuthwatchService,
   ) {}
 
   ngOnInit() {
     this.getDiscussionChat();
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
+      this.currentUser = currentUser;
+    });
     this.teammates = this.cBuild.user_roles_users;
     if (this.cBuild.video_iframe?.startsWith('<iframe') && this.cBuild.video_iframe?.endsWith('</iframe>')) {
       this.embedCode = this.sanitizer.bypassSecurityTrustHtml(this.cBuild.video_iframe);

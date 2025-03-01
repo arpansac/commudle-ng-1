@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NbCardModule, NbButtonModule, NbIconModule } from '@commudle/theme';
 import { PublicHomeListEventsRoutingModule } from './public-home-list-events-routing.module';
 import { PublicHomeListEventsComponent } from './components/public-home-list-events/public-home-list-events.component';
-import { PublicHomeListEventsHeaderComponent } from './components/public-home-list-events-header/public-home-list-events-header.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { PublicHomeListEventsUpcomingComponent } from './components/public-home-list-events-upcoming/public-home-list-events-upcoming/public-home-list-events-upcoming.component';
 import { PublicHomeListEventsFeaturedCommunitiesComponent } from './components/public-home-list-events-featured-communities/public-home-list-events-featured-communities.component';
@@ -21,10 +20,10 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-pages-layout/listing-pages-layout.component';
 import { EventsVolunteerListComponent } from './components/events-volunteer-list/events-volunteer-list.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 @NgModule({
   declarations: [
     PublicHomeListEventsComponent,
-    PublicHomeListEventsHeaderComponent,
     PublicHomeListEventsUpcomingComponent,
     PublicHomeListEventsFeaturedCommunitiesComponent,
     PublicHomeListEventsPastComponent,
@@ -49,9 +48,9 @@ import { EventsVolunteerListComponent } from './components/events-volunteer-list
     SharedDirectivesModule,
     SkeletonCardsComponent,
     ListingPagesLayoutComponent,
+    ListingPageHeaderComponent,
   ],
   exports: [
-    PublicHomeListEventsHeaderComponent,
     PublicHomeListEventsFeaturedCommunitiesComponent,
     PublicHomeListEventsTechSessionsComponent,
     PublicHomeListEventsSpeakersComponent,

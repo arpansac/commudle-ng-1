@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -6,12 +6,13 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'commudle-public-home-list-events-upcoming',
   templateUrl: './public-home-list-events-upcoming.component.html',
   styleUrls: ['./public-home-list-events-upcoming.component.scss'],
 })
-export class PublicHomeListEventsUpcomingComponent implements OnInit {
+export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewInit {
   community: ICommunity;
   upcomingEvents: IEvent[] = [];
   faCalendarDays = faCalendarDays;
@@ -23,10 +24,30 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit {
   isLoadingUpcoming = false;
   showSpinner = false;
 
-  constructor(private eventsService: EventsService, private seoService: SeoService) {}
+  constructor(
+    private eventsService: EventsService,
+    private seoService: SeoService,
+    private activatedRoute: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.getUpcomingEvents();
+  }
+
+  ngAfterViewInit() {
+    // TODO optimize this
+    this.activatedRoute.fragment.subscribe((fragment) => {
+      if (fragment) {
+        setTimeout(() => {
+          const element = document.querySelector('#' + fragment);
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+            });
+          }
+        }, 500);
+      }
+    });
   }
 
   getUpcomingEvents() {

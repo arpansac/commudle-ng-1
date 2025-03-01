@@ -9,7 +9,7 @@ import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { Subscription } from 'rxjs';
-import { EDiscussionType } from '@commudle/shared-models';
+import { EDbModels, EDiscussionType } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-email-join',
@@ -54,34 +54,6 @@ export class EmailJoinComponent implements OnInit {
     );
   }
 
-  joinChannel(decline?: boolean) {
-    this.subscriptions.push(
-      this.communityChannelsService.joinChannel(this.channelId, this.joinToken, decline).subscribe(
-        (data) => {
-          if (data) {
-            this.libToasLogService.successDialog(`Taking you to the ${this.discussionType}!`, 2500);
-            if (decline) {
-              this.router.navigate(['/communities', this.community.id, this.discussionType, this.channelId], {
-                queryParams: { decline: true },
-              });
-            } else {
-              this.router.navigate(['/communities', this.community.id, this.discussionType, this.channelId]);
-            }
-          }
-        },
-        (error) => {
-          this.router.navigate(['/communities', this.community.id, this.discussionType, this.channelId]);
-        },
-      ),
-    );
-  }
-
-  reject() {
-    const queryParams = { ch: this.channelId, decline: true };
-    this.router.navigate([], { queryParams });
-    this.joinChannel(true);
-  }
-
   onAcceptRoleButton() {
     const dialogRef = this.nbDialogService.open(UserConsentsComponent, {
       context: {
@@ -98,5 +70,56 @@ export class EmailJoinComponent implements OnInit {
         this.joinChannel();
       }
     });
+  }
+
+  joinChannel(decline?: boolean) {
+    this.subscriptions.push(
+      this.communityChannelsService.joinChannel(this.channelId, this.joinToken, decline).subscribe(
+        (data) => {
+          if (data) {
+            this.libToasLogService.successDialog(`Taking you to the ${this.discussionType}!`, 2500);
+            if (decline) {
+              this.redirect(true);
+            } else {
+              this.redirect();
+            }
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.redirect();
+        },
+      ),
+    );
+  }
+
+  reject() {
+    const queryParams = { ch: this.channelId, decline: true };
+    this.router.navigate([], { queryParams });
+    this.joinChannel(true);
+  }
+
+  redirect(acceptanceStatus = true) {
+    let redirectPath = '';
+    switch (this.communityChannel.parent_type) {
+      case EDbModels.KOMMUNITY:
+        redirectPath = `/communities/${this.community.id}/${this.discussionType}/${this.channelId}`;
+        break;
+      case EDbModels.HACKATHON:
+        redirectPath = `/communities/${this.community.slug}/hackathons/${this.communityChannel.parent.slug}/${this.discussionType}/${this.channelId}`;
+        break;
+      default:
+        console.error('Something went wrong with channel parent, please contact commudle support');
+        redirectPath = '';
+        break;
+    }
+
+    if (acceptanceStatus) {
+      this.router.navigate([redirectPath]);
+    } else {
+      this.router.navigate([redirectPath], {
+        queryParams: { decline: true },
+      });
+    }
   }
 }

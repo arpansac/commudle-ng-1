@@ -8,6 +8,16 @@
           <commudle-build-card [communityBuild]="build" [showHackathonPrizes]="true"></commudle-build-card>
         </nb-card-body>
       </nb-card>
+      <div class="pagination" *ngIf="total > 0">
+        <app-pagination
+          (goTo)="page = $event; fetchHackathonProjects()"
+          (next)="page = $event; fetchHackathonProjects()"
+          (previous)="page = $event; fetchHackathonProjects()"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
+      </div>
     </ng-template>
   </nb-card-body>
 </nb-card>

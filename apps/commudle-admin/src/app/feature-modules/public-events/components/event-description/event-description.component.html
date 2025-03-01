@@ -1,8 +1,7 @@
-<nb-card>
+<nb-card id="details">
   <nb-card-header class="com-flex com-items-center">
-    <h6>
-      <nb-icon icon="info-outline" status="info"></nb-icon>
-      Details
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="details"><nb-icon icon="info-outline" status="info"></nb-icon>Details</a>
     </h6>
     <app-share-button
       *ngIf="share"

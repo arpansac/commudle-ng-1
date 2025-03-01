@@ -1,5 +1,6 @@
+/* eslint-disable no-useless-escape */
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import {
   faBehance,
   faDribbble,
@@ -42,17 +43,17 @@ export class SocialLinksComponent implements OnInit, OnDestroy {
     private userProfileManagerService: UserProfileManagerService,
   ) {
     this.socialLinksForm = this.fb.group({
-      personal_website: [''],
-      github: [''],
-      linkedin: [''],
-      twitter: [''],
-      dribbble: [''],
-      behance: [''],
-      medium: [''],
-      gitlab: [''],
-      facebook: [''],
-      youtube: [''],
-      instagram: [''],
+      personal_website: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      github: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      linkedin: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      twitter: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      dribbble: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      behance: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      medium: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      gitlab: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      facebook: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      youtube: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
+      instagram: ['', [Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/.*)?$/)]],
     });
   }
 

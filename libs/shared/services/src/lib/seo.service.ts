@@ -113,30 +113,36 @@ export class SeoService {
   }
 
   setSchema(schema: Record<string, any>, className = 'structured-data') {
-    if (this.isBot) {
-      let script;
-      // let shouldAppend = false;
-      // append only if schema doesn't already exist
-      // if (this.document.head.getElementsByClassName(className).length) {
-      //   script = this.document.head.getElementsByClassName(className)[0];
-      // } else {
-      //   shouldAppend = true;
-      // }
-      script = this.document.createElement('script');
-      script.setAttribute('class', className);
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify(schema);
-      this.document.head.appendChild(script);
-    }
+    // if (this.isBot) {
+    let script;
+    // let shouldAppend = false;
+    // append only if schema doesn't already exist
+    // if (this.document.head.getElementsByClassName(className).length) {
+    //   script = this.document.head.getElementsByClassName(className)[0];
+    // } else {
+    //   shouldAppend = true;
+    // }
+    script = this.document.createElement('script');
+    script.setAttribute('class', className);
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(schema);
+    this.document.head.appendChild(script);
+    // }
   }
 
   removeSchema(): void {
-    if (this.isBot) {
-      const els = [];
-      ['structured-data', 'structured-data-org'].forEach((c) => {
-        els.push(...Array.from(this.document.head.getElementsByClassName(c)));
-      });
-      els.forEach((el) => this.document.head.removeChild(el));
-    }
+    // if (this.isBot) {
+    const els = [];
+    ['structured-data', 'structured-data-org'].forEach((c) => {
+      els.push(...Array.from(this.document.head.getElementsByClassName(c)));
+    });
+    els.forEach((el) => this.document.head.removeChild(el));
+    // }
+  }
+
+  removeHtmlTags(content): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    return doc.body.textContent || '';
   }
 }

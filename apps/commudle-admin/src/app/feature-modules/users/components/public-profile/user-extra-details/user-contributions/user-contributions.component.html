@@ -1,8 +1,9 @@
 <nb-card *ngIf="builds?.length > 0" id="builds">
   <nb-card-header>
-    <fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>
-    Builds
-    <span *ngIf="builds.length > 4">({{ builds.length }})</span>
+    <a [routerLink]="'.'" fragment="builds"
+      ><fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>Builds
+      <span *ngIf="builds.length > 4">({{ builds.length }})</span></a
+    >
   </nb-card-header>
   <nb-card-body>
     <div class="grid">
@@ -13,9 +14,10 @@
 
 <nb-card *ngIf="pastEvents?.length > 0" id="talks-at-events">
   <nb-card-header>
-    <fa-icon [icon]="faCalendar" class="com-text-Azure"></fa-icon>
-    Talks at Events
-    <span *ngIf="pastEvents.length > 4">({{ pastEvents.length }})</span>
+    <a [routerLink]="'.'" fragment="talks-at-events"
+      ><fa-icon [icon]="faCalendar" class="com-text-Azure"></fa-icon>Talks at Events
+      <span *ngIf="pastEvents.length > 4">({{ pastEvents.length }})</span></a
+    >
   </nb-card-header>
   <nb-card-body>
     <div class="grid">
@@ -26,9 +28,11 @@
 
 <nb-card *ngIf="attendedEvents?.length > 0" id="attended-events">
   <nb-card-header>
-    <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
-    Attended Events
-    <span *ngIf="attendedEvents.length > 4">({{ attendedEvents.length }})</span>
+    <a [routerLink]="'.'" fragment="attended-events"
+      ><fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
+      Attended Events
+      <span *ngIf="attendedEvents.length > 4">({{ attendedEvents.length }})</span></a
+    >
   </nb-card-header>
   <nb-card-body [ngClass]="{ 'view-more-events': viewMoreEventsSection, 'view-less': !viewMoreEventsSection }">
     <div class="grid">
@@ -57,9 +61,11 @@
 
 <nb-card *ngIf="communities?.length > 0" id="communities">
   <nb-card-header>
-    <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
-    Communities
-    <span>({{ communitiesTotal }})</span>
+    <a [routerLink]="'.'" fragment="communities"
+      ><fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
+      Communities
+      <span>({{ communitiesTotal }})</span></a
+    >
   </nb-card-header>
   <nb-card-body>
     <div class="grid">
@@ -83,9 +89,11 @@
 
 <nb-card *ngIf="labs?.length > 0" id="labs">
   <nb-card-header>
-    <fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
-    Labs
-    <span *ngIf="labs.length > 4">({{ labs.length }})</span>
+    <a [routerLink]="'.'" fragment="labs"
+      ><fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
+      Labs
+      <span *ngIf="labs.length > 4">({{ labs.length }})</span></a
+    >
   </nb-card-header>
   <nb-card-body>
     <div class="grid">

@@ -1,7 +1,8 @@
 <nb-card class="user-basic-social-container" id="about">
   <nb-card-header>
-    <fa-icon [icon]="faExclamationCircle" class="com-text-primary-500"></fa-icon>
-    About
+    <a [routerLink]="'.'" fragment="about"
+      ><fa-icon [icon]="faExclamationCircle" class="com-text-primary-500"></fa-icon>About</a
+    >
   </nb-card-header>
   <nb-card-body>
     <div *ngIf="user.about_me" class="about">

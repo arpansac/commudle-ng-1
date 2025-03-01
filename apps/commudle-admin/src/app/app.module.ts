@@ -70,7 +70,6 @@ import { UserProfileComponent } from './app-shared-components/user-profile/user-
 import { AppComponent } from './app.component';
 import { AboutOldComponent } from './components/about-old/about-old.component';
 import { AboutComponent } from './components/about/about.component';
-import { CommunitiesAboutComponent } from './components/communities/communities-about/communities-about.component';
 import { CommunitiesFeaturedComponent } from './components/communities/communities-featured/communities-featured.component';
 import { CommunitiesListComponent } from './components/communities/communities-list/communities-list.component';
 import { CommunitiesPostsComponent } from './components/communities/communities-posts/communities-posts.component';
@@ -121,6 +120,7 @@ import { SkeletonScreensModule } from './feature-modules/skeleton-screens/skelet
 import { UserChatsModule } from './feature-modules/user-chats/user-chats.module';
 import { UsersModule } from './feature-modules/users/users.module';
 import { AppInitService } from './services/app-init.service';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -131,7 +131,6 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     AppComponent,
     OrganizerCommunitiesListComponent,
     CommunityComponent,
-    CommunitiesAboutComponent,
     CommunitiesListComponent,
     CommunitiesPostsComponent,
     CommunitiesFeaturedComponent,
@@ -246,13 +245,12 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     NbPopoverModule,
     NbToggleModule,
     NbAutocompleteModule,
-
     // Other external npm modules
     Angular2SmartTableModule,
     NgxStripeModule.forRoot(environment.stripe),
-
     // standalone components
     CommunitiesCardComponent,
+    ListingPageHeaderComponent,
   ],
   providers: [
     AppInitService,

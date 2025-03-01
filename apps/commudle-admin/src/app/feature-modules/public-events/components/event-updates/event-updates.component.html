@@ -1,8 +1,7 @@
-<nb-card *ngIf="eventUpdates.length > 0">
+<nb-card *ngIf="eventUpdates.length > 0" id="updates">
   <nb-card-header>
-    <h6>
-      <nb-icon icon="star-outline" status="warning"></nb-icon>
-      Updates
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="updates"><nb-icon icon="star-outline" status="warning"></nb-icon> Updates</a>
     </h6>
   </nb-card-header>
   <nb-card-body>
