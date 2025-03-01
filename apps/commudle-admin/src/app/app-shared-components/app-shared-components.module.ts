@@ -52,7 +52,7 @@ import { EventHackathonRegistrationsComponent } from './event-hackathon-registra
 import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
-
+import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/shared-components';
 @NgModule({
   declarations: [
     EmailerComponent,

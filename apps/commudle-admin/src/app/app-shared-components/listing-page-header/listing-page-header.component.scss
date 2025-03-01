@@ -42,6 +42,9 @@
           }
         }
 
+        .image-wrapper {
+          @apply md:com-w-[620px] md:com-h-[390px] com-w-full com-h-full;
+        }
         .header-image {
           @apply com-flex com-items-center com-m-0 md:com-w-[620px] md:com-h-[390px] com-w-full com-h-full;
           img {
