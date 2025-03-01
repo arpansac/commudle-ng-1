@@ -7,7 +7,9 @@
         }"
   >
     <div class="component-container-wrapper welcome" *ngFor="let ca of campaign.campaign_assets">
-      <img [src]="ca.image.url" class="slider-image" />
+      <a [href]="ca.url" target="_blank">
+        <img [src]="ca.image.url" class="slider-image" [alt]="ca.headline" [title]="ca.headline" />
+      </a>
     </div>
   </div>
 </div>
