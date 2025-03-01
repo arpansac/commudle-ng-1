@@ -14,12 +14,11 @@
         />
       </div>
       <div class="details">
-        <div class="name d-flex align-items-center">
+        <div class="name">
           <p
             [activateMiniProfileDirective]="activateMiniProfileDirective"
             [username]="user.username"
             appMiniUserProfile
-            class="com-line-clamp-1"
           >
             {{ user.name }}
           </p>
@@ -28,9 +27,7 @@
             [userConnect]="user.distance_from_current_user"
           ></commudle-user-personal-connect>
         </div>
-        <p class="username com-line-clamp-1 com-w-max com-mt-1" title="{{ user.username }}">
-          @{{ user.username | truncatetext : maxUserNameLength }}
-        </p>
+        <p class="username" title="{{ user.username }}">@{{ user.username | truncatetext : maxUserNameLength }}</p>
         <app-hiring-looking-works-tags
           *ngIf="showHiringLookingTags"
           [user]="user"
@@ -48,7 +45,7 @@
             *ngIf="user.speaker_events_count > 0"
             [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
             [fontColor]="'com-text-tAuro-Metal-Saurus'"
-            [fontSize]="'small'"
+            [fontSize]="'x-small'"
             [borderRadius]="'round'"
             [color]="'com-bg-Bright-Gray-opacity-60'"
           ></app-badge>
@@ -84,6 +81,7 @@
       [name]="user.name"
       [userId]="user.id"
       [isMobileWidthFull]="isMobileWidthFull"
+      [appearance]="appearanceOfFollowButton"
       class="follow-btn"
     ></app-user-follow>
   </div>
