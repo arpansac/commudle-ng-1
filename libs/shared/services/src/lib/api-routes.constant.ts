@@ -677,6 +677,9 @@ export const API_ROUTES = {
   TAGS: {
     INDEX: 'api/v2/tags',
     UPDATE: 'api/v2/tags',
+    PUBLIC: {
+      INDEX: 'api/v2/tags/public',
+    },
   },
 
   MENTIONS: {

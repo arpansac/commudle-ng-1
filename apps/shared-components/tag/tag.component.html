@@ -9,19 +9,27 @@
     <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"></fa-icon>
   </span>
 
-  <input
-    (tagAdd)="onTagAdd($event)"
-    (keydown)="onKeyDown($event)"
-    *ngIf="editable"
-    [disabled]="inputDisabled"
-    nbInput
-    fullWidth
-    nbTagInput
-    [placeholder]="
-      minTagLimit
-        ? 'Type something and press enter to keep adding (At least {{ minimumTags }} tags)'
-        : 'Type something and press enter to keep adding'
-    "
-    type="text"
-  />
+  <form [formGroup]="searchForm">
+    <input
+      (tagAdd)="onTagAdd($event)"
+      (keydown)="onKeyDown($event)"
+      *ngIf="editable"
+      [disabled]="inputDisabled"
+      nbInput
+      fullWidth
+      nbTagInput
+      formControlName="q"
+      [placeholder]="
+        minTagLimit
+          ? 'Type something and press enter to keep adding (At least ' + minimumTags + ' tags)'
+          : 'Type something and press enter to keep adding'
+      "
+      type="text"
+      list="tags"
+    />
+
+    <datalist id="tags">
+      <option *ngFor="let tag of suggestedTags" [value]="tag.name"></option>
+    </datalist>
+  </form>
 </div>

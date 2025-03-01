@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { NbTagComponent, NbTagInputAddEvent } from '@commudle/theme';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ITag } from '@commudle/shared-models';
+import { TagService } from '@commudle/shared-services';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, fromEvent, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-tag',
@@ -24,10 +26,27 @@ export class TagComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   faXmark = faXmark;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  searchForm: FormGroup;
+  query = '';
+  suggestedTags: ITag[];
+  constructor(private tagService: TagService, private fb: FormBuilder) {
+    this.searchForm = this.fb.group({
+      q: [''],
+    });
+  }
+  ngOnInit(): void {
+    this.subscription = this.searchForm.valueChanges
+      .pipe(
+        debounceTime(800),
+        switchMap(() => {
+          this.query = this.searchForm.get('q')?.value || '';
+          return this.tagService.index(this.query, true);
+        }),
+      )
+      .subscribe((data) => {
+        this.suggestedTags = data.values;
+      });
+  }
 
   ngOnDestroy(): void {
     if (this.subscription) {
