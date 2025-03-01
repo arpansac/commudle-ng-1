@@ -19,10 +19,10 @@ nb-card {
     .user-profile-card-large {
       @apply com-flex md:com-block com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-m-0 md:com-mx-0 com-mx-4 com-gap-4 md:com-gap-0 com-items-center;
       .user-profile-card-large-card {
-        @apply md:com-py-3 com-m-0 com-border com-border-solid md:com-border-b md:com-border-0 com-border-Bright-Gray md:com-p-0 com-p-4 com-h-full md:com-h-auto com-rounded-lg;
+        @apply md:com-py-3 com-m-0 com-border com-border-solid md:com-border-0 md:com-border-b com-border-Bright-Gray md:com-p-0 com-p-4 com-h-full md:com-h-auto md:com-rounded-none com-rounded-lg;
 
         &:last-child {
-          @apply com-border-b-0;
+          @apply md:com-border-0 #{!important};
         }
       }
     }
