@@ -1,3 +1,4 @@
+import { ICampaign } from './campaign.model';
 import { IEventTicketOrder } from './event-ticket-order.model';
 import { IRazorpayPayment } from './razorpay-payment.model';
 
@@ -11,5 +12,5 @@ export interface IRazorpayOrder {
   created_at: string;
   updated_at: string;
   razorpay_payment: IRazorpayPayment;
-  orderable: IEventTicketOrder;
+  orderable?: IEventTicketOrder;
 }

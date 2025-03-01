@@ -1,0 +1,17 @@
+.carousel {
+  @apply com-overflow-hidden com-w-full com-rounded-lg com-relative com-h-full;
+
+  .container {
+    @apply com-flex com-transition-transform com-duration-700 com-h-full;
+    width: 100%; /* Ensure width adapts dynamically */
+  }
+
+  .component-container-wrapper {
+    @apply com-w-full com-flex-shrink-0 com-flex-grow-0;
+    flex: 0 0 100%; /* Each slide takes full width */
+  }
+}
+
+img {
+  @apply com-h-full com-w-auto;
+}
