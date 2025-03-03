@@ -1,5 +1,8 @@
 .carousel {
   @apply com-overflow-hidden com-w-full com-relative com-h-full;
+  .promoted-badge {
+    @apply com-absolute com-right-0 com-top-0 com-rounded-md com-bg-blue-100 com-z-30 com-px-2 com-py-1;
+  }
 
   .container {
     @apply com-flex com-transition-transform com-duration-700 com-h-full;
@@ -7,10 +10,11 @@
   }
 
   .component-container-wrapper {
-    @apply com-w-full com-flex-shrink-0 com-flex-grow-0;
+    @apply com-w-full com-flex-shrink-0 com-flex-grow-0 com-rounded-md;
     flex: 0 0 100%; /* Each slide takes full width */
+
     .slider-image {
-      @apply com-w-full com-h-full com-cursor-pointer com-object-contain;
+      @apply com-w-full com-h-full com-cursor-pointer com-object-contain com-overflow-hidden;
     }
   }
 }
