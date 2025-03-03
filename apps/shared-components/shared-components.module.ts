@@ -11,6 +11,7 @@ import {
   NbAccordionModule,
   NbActionsModule,
   NbAlertModule,
+  NbAutocompleteModule,
   NbBadgeModule,
   NbButtonModule,
   NbCardModule,
@@ -192,6 +193,7 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
     NbToggleModule,
     NbContextMenuModule,
     NbSpinnerModule,
+    NbAutocompleteModule,
     //cdk
     DragDropModule,
     tinyMCEEditorModule,

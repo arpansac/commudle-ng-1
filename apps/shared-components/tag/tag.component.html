@@ -26,10 +26,16 @@
       "
       type="text"
       list="tags"
+      [nbAutocomplete]="autoControl"
     />
-
+    <nb-autocomplete #autoControl>
+      <nb-option *ngFor="let tag of suggestedTags" [value]="tag.name">
+        {{ tag.name }}
+      </nb-option>
+    </nb-autocomplete>
+    <!-- 
     <datalist id="tags">
       <option *ngFor="let tag of suggestedTags" [value]="tag.name"></option>
-    </datalist>
+    </datalist> -->
   </form>
 </div>
