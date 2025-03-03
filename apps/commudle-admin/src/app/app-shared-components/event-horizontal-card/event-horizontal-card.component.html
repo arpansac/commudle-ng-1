@@ -41,7 +41,7 @@
           <div *ngIf="community" class="community-badge">
             <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
           </div>
-          <div class="tags">
+          <div *ngIf="event.tags" class="tags">
             <app-tag
               [tags]="getTagNames()"
               [backgroundColor]="'com-bg-Azure-opacity-10'"
