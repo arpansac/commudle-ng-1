@@ -8,6 +8,10 @@
   }
 }
 
+.plus-icon {
+  @apply com-text-white #{!important};
+}
+
 .fullWidth {
   @apply com-w-full;
 }
@@ -28,12 +32,5 @@ nb-select {
         @apply com-text-Azure #{!important};
       }
     }
-  }
-}
-
-button {
-  span,
-  nb-icon {
-    @apply com-text-Azure;
   }
 }

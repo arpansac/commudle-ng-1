@@ -1,4 +1,4 @@
-<div *ngIf="upcomingEvents.length > 0 || isLoadingUpcoming" id="upcoming-events" class="upcoming-events">
+<div id="upcoming-events" class="upcoming-events">
   <h2 class="title">
     <a [routerLink]="'.'" fragment="upcoming-events">
       <div class="heading-subheading">
@@ -6,11 +6,19 @@
       </div></a
     >
   </h2>
-  <app-loading-spinner *ngIf="isLoadingUpcoming"></app-loading-spinner>
+  <app-skeleton-cards
+    [ImageShapeCircle]="false"
+    [ImageShapeSquare]="true"
+    [cards]="4"
+    *ngIf="isLoadingUpcoming"
+  ></app-skeleton-cards>
   <div *ngIf="!isLoadingUpcoming">
     <div *ngFor="let event of upcomingEvents" class="event-horizontal-card">
       <commudle-event-horizontal-card [event]="event"></commudle-event-horizontal-card>
     </div>
+  </div>
+  <div class="no-upcoming" *ngIf="!isLoadingUpcoming && upcomingEvents.length === 0">
+    <p>No Upcoming Events</p>
   </div>
   <div class="load-more">
     <app-loading-spinner *ngIf="showSpinner && !isLoadingUpcoming"></app-loading-spinner>

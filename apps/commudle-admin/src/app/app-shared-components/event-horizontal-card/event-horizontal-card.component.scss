@@ -25,7 +25,7 @@ nb-card {
             @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2;
 
             .interested-members {
-              @apply com-flex-shrink-0;
+              @apply com-flex-shrink-0 com-pr-2;
               button {
                 @apply com-py-1 com-px-2 com-w-max;
                 nb-icon {

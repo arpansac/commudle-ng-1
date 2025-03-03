@@ -40,3 +40,14 @@
     }
   }
 }
+
+app-skeleton-cards {
+  @apply com-my-4;
+}
+
+.no-upcoming {
+  @apply com-flex com-justify-center com-items-center;
+  p {
+    @apply com-text-lg com-font-medium com-text-Yankees-Blue;
+  }
+}
