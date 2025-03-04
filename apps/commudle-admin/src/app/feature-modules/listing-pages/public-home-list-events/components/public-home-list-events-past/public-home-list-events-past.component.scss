@@ -19,7 +19,7 @@
     }
   }
   .past-events-card-list {
-    @apply com-grid com-grid-cols-1 md:com-grid-cols-3 md:com-gap-5 com-gap-0 md:com-m-0 com-mx-4 com-my-0;
+    @apply com-grid com-grid-cols-1 md:com-grid-cols-3 md:com-gap-6 com-gap-0 md:com-m-0 com-mx-4 com-my-0;
 
     commudle-event-card {
       @apply com-border-0 md:com-border-b-0 com-border-b com-border-solid com-border-Bright-Gray com-py-3 md:com-py-0;
