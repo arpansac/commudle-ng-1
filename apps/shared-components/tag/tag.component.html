@@ -6,18 +6,17 @@
     class="{{ backgroundColor }} {{ fontColor }}"
   >
     {{ tag }}
-    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"></fa-icon>
+    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"> </fa-icon>
   </span>
 
   <form [formGroup]="searchForm">
     <input
-      (tagAdd)="onTagAdd($event)"
       (keydown)="onKeyDown($event)"
+      (keyup.enter)="addTagFromInput($event)"
       *ngIf="editable"
       [disabled]="inputDisabled"
       nbInput
       fullWidth
-      nbTagInput
       formControlName="q"
       [placeholder]="
         minTagLimit
@@ -25,17 +24,20 @@
           : 'Type something and press enter to keep adding'
       "
       type="text"
-      list="tags"
       [nbAutocomplete]="autoControl"
     />
-    <nb-autocomplete #autoControl>
-      <nb-option *ngFor="let tag of suggestedTags" [value]="tag.name">
+    <nb-autocomplete #autoControl (selectedChange)="onTagAdd($event)">
+      <nb-option *ngFor="let tag of autoCompleteTags" [value]="tag.name">
         {{ tag.name }}
       </nb-option>
     </nb-autocomplete>
-    <!-- 
-    <datalist id="tags">
-      <option *ngFor="let tag of suggestedTags" [value]="tag.name"></option>
-    </datalist> -->
   </form>
+</div>
+
+<div *ngIf="showSuggestedTags">
+  <div class="suggested-tags">
+    <span class="suggested-tag" *ngFor="let tag of suggestedTags" (click)="onTagAdd(tag.name)">
+      {{ tag.name }}
+    </span>
+  </div>
 </div>

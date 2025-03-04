@@ -11,12 +11,25 @@ import { Observable } from 'rxjs';
 export class TagService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  index(search: string, ai_corrected?: boolean): Observable<IPaginationCount<ITag>> {
+  autocompleteTags(search: string, ai_corrected?: boolean): Observable<IPaginationCount<ITag>> {
     let params = new HttpParams().set('q', search);
     if (ai_corrected) {
       params = params.set('ai_corrected', ai_corrected);
     }
-    return this.http.get<IPaginationCount<ITag>>(this.baseApiService.getRoute(API_ROUTES.TAGS.PUBLIC.INDEX), {
+    return this.http.get<IPaginationCount<ITag>>(
+      this.baseApiService.getRoute(API_ROUTES.TAGS.PUBLIC.AUTOCOMPLETE_TAGS),
+      {
+        params,
+      },
+    );
+  }
+
+  suggestedTags(search: string, ai_corrected?: boolean): Observable<IPaginationCount<ITag>> {
+    let params = new HttpParams().set('q', search);
+    if (ai_corrected) {
+      params = params.set('ai_corrected', ai_corrected);
+    }
+    return this.http.get<IPaginationCount<ITag>>(this.baseApiService.getRoute(API_ROUTES.TAGS.PUBLIC.SUGGESTED_TAGS), {
       params,
     });
   }

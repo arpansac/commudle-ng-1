@@ -678,7 +678,8 @@ export const API_ROUTES = {
     INDEX: 'api/v2/tags',
     UPDATE: 'api/v2/tags',
     PUBLIC: {
-      INDEX: 'api/v2/tags/public',
+      AUTOCOMPLETE_TAGS: 'api/v2/tags/public/autocomplete_tags',
+      SUGGESTED_TAGS: 'api/v2/tags/public/suggested_tags',
     },
   },
 

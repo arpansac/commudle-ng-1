@@ -1,7 +1,3 @@
-nb-tag {
-  @apply com-normal-case;
-}
-
 .tag.tiny {
   @apply com-text-xs com-font-medium com-mr-10px;
 }
@@ -17,12 +13,12 @@ nb-tag {
 .editable {
   @apply com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-rounded-[4px] com-px-4 com-py-1;
 }
-form {
-  @apply com-w-full;
-}
 
-input {
+form {
   @apply com-flex-1 com-w-auto com-max-w-full;
+  input {
+    @apply com-w-full;
+  }
 }
 
 input .size-medium {
@@ -31,4 +27,16 @@ input .size-medium {
 
 [nbInput] {
   @apply com-max-w-full #{!important};
+}
+
+.suggested-tags {
+  @apply com-flex com-flex-wrap com-gap-2 com-mt-2;
+  .suggested-tag {
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    @apply com-bg-gray-100 com-px-3 com-py-2 com-rounded-2xl com-cursor-pointer;
+
+    &:hover {
+      @apply com-scale-105;
+    }
+  }
 }
