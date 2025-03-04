@@ -1,8 +1,8 @@
 .base-layout {
-  @apply com-pb-8;
+  @apply com-pb-8 com-pt-4;
   .container {
     .details-section {
-      @apply com-mx-0;
+      @apply com-mx-0 com-mt-0;
       nb-card-body {
         @apply com-flex com-justify-between com-items-center;
         .details {
