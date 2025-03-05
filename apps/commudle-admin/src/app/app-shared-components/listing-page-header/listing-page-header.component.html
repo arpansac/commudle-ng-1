@@ -3,23 +3,19 @@
     <div class="base-layout">
       <div class="content">
         <div class="header-text">
-          <p class="pre-heading">{{ header.pre_heading }}</p>
-          <h1 class="heading">
+          <p *ngIf="header.pre_heading" class="pre-heading">{{ header.pre_heading }}</p>
+          <h1 *ngIf="header.heading" class="heading">
             {{ header.heading }}
           </h1>
-          <p class="sub-heading">{{ header.sub_heading }}</p>
+          <p *ngIf="header.sub_heading" class="sub-heading">{{ header.sub_heading }}</p>
           <div *ngIf="richText" [innerHTML]="richText" class="content"></div>
         </div>
-        <ng-container *ngIf="header?.image_link">
-          <a class="header-image" [href]="header.image_link">
-            <img [src]="imageUrl(header.header_image).url()" class="com-w-full" />
-          </a>
-        </ng-container>
-        <ng-container *ngIf="!header?.image_link">
-          <div class="header-image">
-            <img [src]="imageUrl(header.header_image).url()" class="com-w-full" />
-          </div>
-        </ng-container>
+        <div class="image-wrapper">
+          <commudle-campaign-assets-display
+            [defaultImage]="imageUrl(header.header_image).url()"
+            [defaultImageUrl]="header.image_link"
+          ></commudle-campaign-assets-display>
+        </div>
       </div>
     </div>
   </div>

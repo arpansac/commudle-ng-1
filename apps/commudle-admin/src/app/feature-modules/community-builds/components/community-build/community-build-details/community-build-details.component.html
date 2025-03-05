@@ -6,7 +6,12 @@
         [nbIcon]="CBuildTypeDisplay[cBuild.build_type].icon"
         [text]="cBuild.build_type | titlecase"
       ></app-badge>
-      <p class="fs-p3">{{ cBuild.created_at | date }}</p>
+      <div class="date-edit-btn">
+        <p class="date">{{ cBuild.created_at | date }}</p>
+        <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
+          <nb-icon icon="edit"></nb-icon>
+        </a>
+      </div>
     </div>
     <h1 class="fs-h2 community-build-name">{{ cBuild.name }}</h1>
     <div class="community-build-author com-my-4">

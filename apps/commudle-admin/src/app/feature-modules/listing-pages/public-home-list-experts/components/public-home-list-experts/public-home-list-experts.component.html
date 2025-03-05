@@ -1,6 +1,8 @@
 <div class="experts-page">
   <commudle-listing-pages-layout>
-    <div header><commudle-experts-header></commudle-experts-header></div>
+    <div header>
+      <commudle-listing-page-header [parentType]="'experts'"></commudle-listing-page-header>
+    </div>
     <div one-column *ngIf="isMobileView">
       <div class="apply-expert">
         <a routerLink="/fill-form/1093" nbButton status="info" size="giant" class="button">

@@ -6,22 +6,38 @@
     class="{{ backgroundColor }} {{ fontColor }}"
   >
     {{ tag }}
-    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"></fa-icon>
+    <fa-icon *ngIf="editable" class="remove-icon" (click)="onTagRemove(tag)" [icon]="faXmark"> </fa-icon>
   </span>
 
-  <input
-    (tagAdd)="onTagAdd($event)"
-    (keydown)="onKeyDown($event)"
-    *ngIf="editable"
-    [disabled]="inputDisabled"
-    nbInput
-    fullWidth
-    nbTagInput
-    [placeholder]="
-      minTagLimit
-        ? 'Type something and press enter to keep adding (At least {{ minimumTags }} tags)'
-        : 'Type something and press enter to keep adding'
-    "
-    type="text"
-  />
+  <form [formGroup]="searchForm">
+    <input
+      (keydown)="onKeyDown($event)"
+      (keyup.enter)="addTagFromInput($event)"
+      *ngIf="editable"
+      [disabled]="inputDisabled"
+      nbInput
+      fullWidth
+      formControlName="q"
+      [placeholder]="
+        minTagLimit
+          ? 'Type something and press enter to keep adding (At least ' + minimumTags + ' tags)'
+          : 'Type something and press enter to keep adding'
+      "
+      type="text"
+      [nbAutocomplete]="autoControl"
+    />
+    <nb-autocomplete #autoControl (selectedChange)="onTagAdd($event)">
+      <nb-option *ngFor="let tag of autoCompleteTags" [value]="tag.name">
+        {{ tag.name }}
+      </nb-option>
+    </nb-autocomplete>
+  </form>
+</div>
+
+<div *ngIf="showSuggestedTags">
+  <div class="suggested-tags">
+    <span class="suggested-tag" *ngFor="let tag of suggestedTags" (click)="onTagAdd(tag.name)">
+      {{ tag.name }}
+    </span>
+  </div>
 </div>

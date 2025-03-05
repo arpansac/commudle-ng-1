@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { SharedComponentsModule } from '@commudle/shared-components';
 
 @Component({
   selector: 'commudle-listing-page-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SharedComponentsModule],
   templateUrl: './listing-page-header.component.html',
   styleUrls: ['./listing-page-header.component.scss'],
 })

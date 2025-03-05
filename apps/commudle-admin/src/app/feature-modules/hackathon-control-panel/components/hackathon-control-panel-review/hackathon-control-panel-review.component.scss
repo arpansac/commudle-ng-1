@@ -1,4 +1,27 @@
 .review-section {
+  nb-card-header {
+    .header {
+      @apply com-flex com-items-center com-mb-2;
+    }
+
+    .actions {
+      @apply com-flex com-flex-wrap com-gap-3 com-items-center;
+
+      .select {
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max;
+        select {
+          @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+          &.not-active {
+            @apply com-text-[#8E9BB3];
+          }
+        }
+      }
+
+      .clear-filter {
+        @apply com-text-red-500 com-cursor-pointer;
+      }
+    }
+  }
   nb-card-body {
     @apply com-flex com-flex-col com-justify-between com-min-h-[680px];
     .pagination {
@@ -151,8 +174,4 @@ th {
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
-}
-
-.header {
-  @apply com-flex com-items-center com-mb-2;
 }

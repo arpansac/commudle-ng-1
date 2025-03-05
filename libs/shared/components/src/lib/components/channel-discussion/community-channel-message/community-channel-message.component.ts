@@ -88,7 +88,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
           if (event.item.title === 'Edit') {
             this.openEditForm();
           } else if (event.item.title === 'Delete') {
-            this.communityChannelHandlerService.sendDelete(this.message.id);
+            this.deleteMessage();
           } else if (event.item.title === 'Share This Message') {
             this.share();
           } else if (event.item.title === 'Pin Message') {
@@ -172,35 +172,6 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     this.editMessageTemplateRef = this.dialogService.open(this.editMessageTemplate);
   }
 
-  togglePinStatus() {
-    this.communityChannelManagerService.pinData$.subscribe((data) => {
-      if (data) {
-        switch (data.action) {
-          case 'pin': {
-            if (data.user_message.id === this.message.id) {
-              this.message.pinned = false;
-              const idx = this.contextMenuItems.findIndex((item) => item.title === 'Unpin Message');
-              if (idx !== -1) {
-                this.contextMenuItems[idx].title = 'Pin Message';
-              }
-            }
-            break;
-          }
-          case 'unpin': {
-            if (data.user_message.id === this.message.id) {
-              this.message.pinned = false;
-              const idx = this.contextMenuItems.findIndex((item) => item.title === 'Unpin Message');
-              if (idx !== -1) {
-                this.contextMenuItems[idx].title = 'Pin Message';
-              }
-            }
-            break;
-          }
-        }
-      }
-    });
-  }
-
   pinMessage(message: IUserMessage) {
     this.communityChannelsService.pinMessage(message.id, this.channelOrForumId).subscribe(() => {
       this.libToastLogService.successDialog('Pinned Message Successfully!');
@@ -225,6 +196,10 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     });
   }
 
+  deleteMessage() {
+    this.communityChannelHandlerService.sendDelete(this.message);
+  }
+
   sendMessageByEmail(userMessageId) {
     if (window.confirm(`Are you sure you want to send this to all members on their email?`)) {
       this.communityChannelsService.sendMessageByEmail(userMessageId, this.channelOrForumId).subscribe((data) => {
@@ -242,7 +217,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
       '@type': 'DiscussionForumPosting',
       url: shareLink,
       headline: this.channelOrForum.name,
-      text: this.removeHtmlTags(this.message.content),
+      text: this.seoService.removeHtmlTags(this.message.content),
       author: {
         '@type': 'Person',
         name: this.message.user.name ? this.message.user.name : this.message.user.username,
@@ -260,7 +235,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
       if (userMessage) {
         const transformedMessage = {
           '@type': 'Comment',
-          text: this.removeHtmlTags(userMessage.content),
+          text: this.seoService.removeHtmlTags(userMessage.content),
           author: {
             '@type': 'Person',
             name: userMessage.user.name ? userMessage.user.name : userMessage.user.username,
@@ -274,12 +249,6 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     }
 
     return resultArray;
-  }
-
-  removeHtmlTags(content): string {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-    return doc.body.textContent || '';
   }
 
   editMessage(message, event) {

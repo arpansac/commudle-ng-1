@@ -103,12 +103,12 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.flag(messageId);
   }
 
-  sendDelete(messageId: number) {
+  sendDelete(message: IUserMessage) {
     if (this.permittedActions.value.includes('blocked')) {
       return;
     }
-
-    this.CommunityChannelChatChannel.delete(messageId);
+    this.removePinnedMessage(message);
+    this.CommunityChannelChatChannel.delete(message.id);
   }
 
   pin(messageId: number) {
@@ -152,7 +152,7 @@ export class CommunityChannelHandlerService {
 
   removePinnedMessage(message: IUserMessage) {
     const currentPinnedMessages = this.pinnedMessages.getValue();
-    const updatedPinnedMessages = currentPinnedMessages.filter((msg) => msg !== message);
+    const updatedPinnedMessages = currentPinnedMessages.filter((msg) => msg.id !== message.id);
 
     this.pinnedMessages.next(updatedPinnedMessages);
   }
@@ -198,7 +198,21 @@ export class CommunityChannelHandlerService {
           if (data.parent_type === 'Discussion') {
             const messages = this.messages.value.filter((message) => message.data.id !== data.user_message_id);
             this.messages.next(messages);
+          } else if (data.parent_type === 'UserMessage') {
+            // Find the parent message
+            const parentMessage = this.messages.value.find((message) => message.data.id === data.parent_id);
+
+            if (parentMessage) {
+              parentMessage.data.user_messages = parentMessage.data.user_messages.filter(
+                (reply) => reply.id !== data.user_message_id,
+              );
+            }
+
+            // Remove the target message from the main message list
+            const messages = this.messages.value.filter((message) => message.data.id !== data.user_message_id);
+            this.messages.next(messages);
           }
+
           break;
 
         case 'update':

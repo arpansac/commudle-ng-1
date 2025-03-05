@@ -21,26 +21,29 @@
 }
 
 .basic-details {
-  align-items: center;
-  display: flex;
+  @apply com-flex md:com-flex-row com-flex-col com-items-center com-m-0 com-mb-3;
 
-  .logo {
-    @apply com-h-12 com-w-12 com-overflow-hidden;
+  .logo-name {
+    @apply com-flex com-items-center;
+    .logo {
+      @apply com-h-12 com-w-12 com-overflow-hidden;
 
-    img {
-      @apply com-bg-tWhite com-h-full com-object-contain com-rounded-lg com-w-full;
+      img {
+        @apply com-bg-tWhite com-h-full com-object-contain com-rounded-lg com-w-full;
+      }
+    }
+
+    h4 {
+      @apply com-mx-2 com-my-0;
     }
   }
 
-  h4 {
-    @apply com-mx-2 com-my-0;
+  .people-logo {
+    @apply com-m-0 com-ml-2;
   }
 }
 
 .header-links {
-  .people-logo {
-    @apply com-mb-4 com-mt-1;
-  }
   .buttons {
     @apply com-flex com-flex-wrap md:com-gap-0 com-gap-2 com-justify-evenly md:com-justify-start;
     a,
@@ -108,11 +111,11 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-flex com-flex-col com-p-4;
+    @apply com-flex com-flex-col com-px-4 com-pb-4;
     .back-admin,
     .sidebar-expand-icon {
       .icon {
-        @apply com-text-Cadet-Grey;
+        @apply com-text-Cadet-Grey com-cursor-pointer;
       }
       .heading {
         @apply com-text-xs com-text-Cadet-Grey;
@@ -131,7 +134,7 @@
         @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
       }
       .icon {
-        @apply com-h-8 com-w-8 com-text-Cadet-Grey com-flex com-items-center com-justify-center com-mr-2 com-flex-shrink-0;
+        @apply com-h-8 com-w-8 com-text-Cadet-Grey com-flex com-items-center com-justify-center com-flex-shrink-0;
 
         fa-icon,
         nb-icon,
@@ -140,7 +143,7 @@
         }
       }
       .heading {
-        @apply com-text-sm com-font-light;
+        @apply com-text-sm com-font-light com-ml-2;
       }
       &.public-event-page {
         @apply com-text-Azure;
@@ -165,7 +168,7 @@ a {
   @apply com-flex com-items-center;
 }
 .right-column {
-  @apply com-w-full com-bg-white com-rounded-lg md:com-mt-4 com-max-w-screen-xl com-mx-auto;
+  @apply com-w-full;
 }
 
 .event-dashboard-menu {
@@ -198,7 +201,7 @@ a {
 }
 
 .router {
-  @apply com-max-w-screen-xl com-mx-auto;
+  @apply com-w-full md:com-m-4 com-m-0 com-bg-white com-rounded-lg;
 }
 
 .header-icons {
@@ -210,5 +213,5 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-justify-between;
+  @apply com-justify-between com-items-center;
 }

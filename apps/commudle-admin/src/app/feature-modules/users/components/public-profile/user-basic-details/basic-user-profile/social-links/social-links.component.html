@@ -6,6 +6,10 @@
         Personal Website
         <input formControlName="personal_website" fullWidth nbInput placeholder="Enter complete url" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('personal_website').invalid && socialLinksForm.get('personal_website').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
     <div>
       <label>
@@ -13,6 +17,10 @@
         Github
         <input formControlName="github" fullWidth nbInput placeholder="Link to your profile" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('github').invalid && socialLinksForm.get('github').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
 
@@ -23,6 +31,10 @@
         Linkedin
         <input formControlName="linkedin" fullWidth nbInput placeholder="Link to your profile" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('linkedin').invalid && socialLinksForm.get('linkedin').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
     <div>
       <label>
@@ -30,6 +42,10 @@
         Twitter
         <input formControlName="twitter" fullWidth nbInput placeholder="Link to your profile" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('twitter').invalid && socialLinksForm.get('twitter').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
 
@@ -40,6 +56,10 @@
         Youtube
         <input formControlName="youtube" fullWidth nbInput placeholder="Link to your channel" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('youtube').invalid && socialLinksForm.get('youtube').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
     <div>
       <label>
@@ -47,6 +67,10 @@
         Medium
         <input formControlName="medium" fullWidth nbInput placeholder="Link to your profile / publication" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('medium').invalid && socialLinksForm.get('medium').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
 
@@ -57,6 +81,10 @@
         Dribbble
         <input formControlName="dribbble" fullWidth nbInput placeholder="Link to your work" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('dribbble').invalid && socialLinksForm.get('dribbble').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
     <div>
       <label>
@@ -64,6 +92,10 @@
         Behance
         <input formControlName="behance" fullWidth nbInput placeholder="Link to your work" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('behance').invalid && socialLinksForm.get('behance').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
 
@@ -74,6 +106,10 @@
         Gitlab
         <input formControlName="gitlab" fullWidth nbInput placeholder="Link to your work" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('gitlab').invalid && socialLinksForm.get('gitlab').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
     <div>
       <label>
@@ -81,6 +117,10 @@
         Facebook
         <input formControlName="facebook" fullWidth nbInput placeholder="Link to your profile / page" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('facebook').invalid && socialLinksForm.get('facebook').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
   <div class="row">
@@ -90,6 +130,10 @@
         Instagram
         <input formControlName="instagram" fullWidth nbInput placeholder="Link to your profile" type="url" />
       </label>
+      <commudle-alert
+        [error]="socialLinksForm.get('instagram').invalid && socialLinksForm.get('instagram').touched"
+        errorMessage="Enter complete url (https://....)"
+      ></commudle-alert>
     </div>
   </div>
 </form>

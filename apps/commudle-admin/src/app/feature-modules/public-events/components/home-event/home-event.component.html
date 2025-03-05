@@ -119,7 +119,11 @@
         <div #commentsSection id="comments">
           <nb-card *ngIf="discussionChat" class="home-event-discussion">
             <nb-card-header>
-              <h6><nb-icon icon="message-circle-outline" status="info"></nb-icon> Comments</h6>
+              <h6 class="title">
+                <a [routerLink]="'.'" fragment="comments"
+                  ><nb-icon icon="message-circle-outline" status="info"></nb-icon>Comments</a
+                >
+              </h6>
               <button
                 *ngIf="isOrganizer && discussionChat && items"
                 nbButton

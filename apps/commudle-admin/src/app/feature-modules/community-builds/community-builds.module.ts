@@ -34,7 +34,6 @@ import { MyCommunityBuildsComponent } from './components/my-community-builds/my-
 import { TeammateInviteConfirmationComponent } from './components/teammate-invite-confirmation/teammate-invite-confirmation.component';
 import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-events/public-home-list-events.module';
 import { FeaturedProjectsCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-projects-card/featured-projects-card.component';
-import { BuildsHeaderComponent } from 'apps/commudle-admin/src/app/feature-modules/community-builds/components/community-builds/builds-header/builds-header.component';
 import { BuildsTopBuildersComponent } from './components/community-builds/builds-top-builders/builds-top-builders.component';
 import { TopBuildersCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/top-builders-card/top-builders-card.component';
 import { ExploreExpertsComponent } from './components/community-builds/explore-experts/explore-experts.component';
@@ -44,6 +43,7 @@ import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-sha
 import { FeaturedProjectsComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-projects/featured-projects.component';
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,6 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     BuildListItemComponent,
     TeammateInviteConfirmationComponent,
     CommunityBuildCardComponent,
-    BuildsHeaderComponent,
     BuildsTopBuildersComponent,
     ExploreExpertsComponent,
     BuildsComponent,
@@ -98,6 +97,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     //FontAwesomeModule
     FontAwesomeModule,
     AppSharedComponentsModule,
+    ListingPageHeaderComponent,
   ],
 })
 export class CommunityBuildsModule {}

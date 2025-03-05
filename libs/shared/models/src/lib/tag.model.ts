@@ -7,4 +7,5 @@ export interface ITag {
   category?: string;
   color?: string;
   picture?: IAttachedFile;
+  ai_corrected?: boolean;
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
 import { CampaignService } from '@commudle/shared-services';
 
@@ -8,7 +8,9 @@ import { CampaignService } from '@commudle/shared-services';
   styleUrls: ['./campaign-assets-display.component.scss'],
 })
 export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
-  campaign: ICampaign | null = null;
+  @Input() defaultImage: string;
+  @Input() defaultImageUrl: string;
+  campaign: ICampaign;
   currentSlide = 0;
   slidesCount = 0;
   private intervalId: any;
@@ -29,17 +31,17 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
     this.clearAutoSlide();
   }
 
+  nextSlide() {
+    if (this.slidesCount > 0) {
+      this.currentSlide = (this.currentSlide + 1) % this.slidesCount; // Loop back to first slide
+    }
+  }
+
   private startAutoSlide() {
     this.clearAutoSlide(); // Clear any existing interval before starting a new one
     this.intervalId = setInterval(() => {
       this.nextSlide();
     }, 5000); // 5 seconds
-  }
-
-  nextSlide() {
-    if (this.slidesCount > 0) {
-      this.currentSlide = (this.currentSlide + 1) % this.slidesCount; // Loop back to first slide
-    }
   }
 
   private clearAutoSlide() {
