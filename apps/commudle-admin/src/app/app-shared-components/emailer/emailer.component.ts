@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 import { EventsService } from '../../services/events.service';
-import { NbWindowRef } from '@commudle/theme';
+import { NbWindowRef, NbDialogService } from '@commudle/theme';
 import { EventDataFormEntityGroupsService } from '../../services/event-data-form-entity-groups.service';
 import { EemailTypes } from '../../../../../shared-models/enums/email_types.enum';
 import { EmailsService } from '../../services/emails.service';
@@ -19,6 +19,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./emailer.component.scss'],
 })
 export class EmailerComponent implements OnInit, OnDestroy {
+  @ViewChild('emailPreview') emailPreview: TemplateRef<any>;
+  showEmailFilters = true;
   EemailTypes = EemailTypes;
 
   // external properties received via windowRef
@@ -250,6 +252,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     private eventSimpleRegistrationsService: EventSimpleRegistrationsService,
     private emailsService: EmailsService,
     private toastLogService: LibToastLogService,
+    private dialogService: NbDialogService,
     protected windowRef: NbWindowRef,
   ) {
     this.eMailForm = this.fb.group({
@@ -485,5 +488,14 @@ export class EmailerComponent implements OnInit, OnDestroy {
         this.isEmailSending = false;
       },
     );
+  }
+
+  openEmailPreviewTemplate() {
+    console.log('TemplateRef:', this.emailPreview);
+    this.dialogService.open(this.emailPreview);
+    // this.dialogService.open(this.emailPreview, {
+    //   closeOnEsc: true,
+    //   closeOnBackdropClick: false,
+    // });
   }
 }

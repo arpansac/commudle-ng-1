@@ -1,8 +1,5 @@
 .emailer-component {
-  height: 65vh;
-  overflow-y: scroll;
-  position: relative;
-  padding-bottom: 50px;
+  @apply com-h-[65vh] com-overflow-y-auto com-relative;
 }
 
 .submit-button {
@@ -12,7 +9,20 @@
 }
 
 .fieldset {
-  margin: 1rem 0;
+  @apply com-mx-0 com-my-6;
+  .label {
+    @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+  }
+  input {
+    @apply com-rounded-lg com-mt-3;
+
+    &::placeholder {
+      @apply com-p-3 com-text-sm com-font-normal com-text-gray-400;
+    }
+  }
+  editor {
+    @apply com-mt-3;
+  }
   nb-radio {
     &::ng-deep {
       span {
@@ -30,4 +40,8 @@
   > .fieldset {
     margin-right: 1.5rem;
   }
+}
+
+.action-btns {
+  @apply com-flex com-items-center com-gap-6;
 }
