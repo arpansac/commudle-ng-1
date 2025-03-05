@@ -246,7 +246,7 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
       '@context': 'https://schema.org/',
       '@type': 'HowTo',
       name: this.lab.name,
-      image: this.lab.header_image.url,
+      image: this.lab.header_image?.url,
       step: this.lab.lab_steps.map((step) => ({
         '@type': 'HowToStep',
         name: step.name,
