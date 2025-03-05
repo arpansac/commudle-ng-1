@@ -10,6 +10,7 @@ import { CampaignService } from '@commudle/shared-services';
 export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
   @Input() defaultImage: string;
   @Input() defaultImageUrl: string;
+  @Input() campaignTypeSlug: string;
   campaign: ICampaign;
   currentSlide = 0;
   slidesCount = 0;
@@ -18,13 +19,15 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
   constructor(private campaignService: CampaignService) {}
 
   ngOnInit() {
-    this.campaignService.indexOngoingCampaign(3).subscribe((data) => {
-      if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-        this.campaign = data;
-        this.slidesCount = this.campaign.campaign_assets.length;
-        this.startAutoSlide();
-      }
-    });
+    if (this.campaignTypeSlug) {
+      this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+        if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+          this.campaign = data;
+          this.slidesCount = this.campaign.campaign_assets.length;
+          this.startAutoSlide();
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

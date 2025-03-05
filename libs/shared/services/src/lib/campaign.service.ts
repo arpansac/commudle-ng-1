@@ -61,8 +61,8 @@ export class CampaignService {
   }
 
   //PUBLIC API
-  indexOngoingCampaign(campaignTypeId: number): Observable<ICampaign> {
-    const params = new HttpParams().set('campaign_type_id', campaignTypeId);
+  indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.PUBLIC.ONGOING_CAMPAIGN), {
       params,
     });
