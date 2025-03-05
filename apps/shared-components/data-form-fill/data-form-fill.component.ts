@@ -4,9 +4,6 @@ import { IDataForm } from 'apps/shared-models/data_form.model';
 import { EQuestionTypes } from 'apps/shared-models/enums/question_types.enum';
 import { IQuestion } from 'apps/shared-models/question.model';
 import { SDataFormsService } from '../services/s-data-forms.service';
-import { NbDialogService } from '@commudle/theme';
-import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
-import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 
 @Component({
   selector: 'app-data-form-fill',
@@ -37,11 +34,7 @@ export class DataFormFillComponent implements OnInit, OnChanges {
 
   dataFormEntityResponseForm;
 
-  constructor(
-    private dataFormsService: SDataFormsService,
-    private fb: FormBuilder,
-    private nbDialogService: NbDialogService,
-  ) {}
+  constructor(private dataFormsService: SDataFormsService, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.getDataForm();
@@ -134,25 +127,25 @@ export class DataFormFillComponent implements OnInit, OnChanges {
     this.isFormSubmitting = false;
   }
 
-  onAcceptRoleButton() {
-    this.dataFormsService.isMemberOfAllCollaboratingCommunities(this.eventId).subscribe((data) => {
-      if (data) {
-        this.submitForm();
-        return;
-      }
-      const dialogRef = this.nbDialogService.open(UserConsentsComponent, {
-        context: {
-          consentType: ConsentTypesEnum.OneClickRegistrationForm,
-        },
-      });
-      dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
-        dialogRef.close();
-        if (result === 'accepted') {
-          this.submitForm();
-        }
-      });
-    });
-  }
+  // onAcceptRoleButton() {
+  //   this.dataFormsService.isMemberOfAllCollaboratingCommunities(this.eventId).subscribe((data) => {
+  //     if (data) {
+  //       this.submitForm();
+  //       return;
+  //     }
+  //     const dialogRef = this.nbDialogService.open(UserConsentsComponent, {
+  //       context: {
+  //         consentType: ConsentTypesEnum.OneClickRegistrationForm,
+  //       },
+  //     });
+  //     dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+  //       dialogRef.close();
+  //       if (result === 'accepted') {
+  //         this.submitForm();
+  //       }
+  //     });
+  //   });
+  // }
 
   viewMore() {
     this.showFullDescription = !this.showFullDescription;
