@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunityBuild } from '@commudle/shared-models';
+import { ICommunityBuild, IPaginationCount } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
@@ -15,13 +15,16 @@ export class PublicHackathonProjectsComponent implements OnInit, OnDestroy {
   communityBuilds: ICommunityBuild[];
   hackathon: IHackathon;
   isLoading = true;
+  total = 0;
+  count = 10;
+  page = 1;
   constructor(private hackathonService: HackathonService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
-        this.indexHackathonProjects();
+        this.fetchHackathonProjects();
       }),
     );
   }
@@ -29,12 +32,17 @@ export class PublicHackathonProjectsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  indexHackathonProjects() {
+  fetchHackathonProjects() {
+    this.isLoading = true;
     this.subscriptions.push(
-      this.hackathonService.pIndexProjects(this.hackathon.id).subscribe((data: ICommunityBuild[]) => {
-        this.communityBuilds = data;
-        this.isLoading = false;
-      }),
+      this.hackathonService
+        .pIndexProjects(this.hackathon.id, this.page, this.count)
+        .subscribe((data: IPaginationCount<ICommunityBuild>) => {
+          this.communityBuilds = data.values;
+          this.total = data.total;
+          this.page = data.page;
+          this.isLoading = false;
+        }),
     );
   }
 }

@@ -17,10 +17,11 @@ import {
   IRound,
 } from '@commudle/shared-models';
 import { faXmark, faPlus, faCheck, faUpRightFromSquare, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -29,6 +30,7 @@ import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudl
 })
 export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   userResponses: IHackathonUserResponses[];
+  selectedUserResponse: IHackathonUserResponses;
   hackathon: IHackathon;
   hackathonId: string;
   moment = moment;
@@ -53,10 +55,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   EInvitationStatus = EInvitationStatus;
   selectedResponse;
   isLoading = false;
+  searchForm: FormGroup;
 
   page = 1;
   total: number;
   count = 10;
+
+  selectedRoundIdForFilter = '';
+  selectedStatusForFilter = '';
 
   tinyMCE = {
     height: 200,
@@ -105,6 +111,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
     });
+    this.searchForm = this.fb.group({
+      search: [''],
+    });
   }
 
   get notesList() {
@@ -118,6 +127,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.fetchUserResponses();
       this.fetchHackathon(params.get('hackathon_id'));
       this.indexRounds(params.get('hackathon_id'));
+    });
+    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.fetchUserResponses();
     });
   }
 
@@ -133,12 +146,21 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   fetchUserResponses() {
     this.isLoading = true;
-    this.hackathonService.indexUserResponses(this.hackathonId, this.page, this.count).subscribe((data) => {
-      this.userResponses = data.values;
-      this.page = data.page;
-      this.total = data.total;
-      this.isLoading = false;
-    });
+    this.hackathonService
+      .indexUserResponses(
+        this.hackathonId,
+        this.page,
+        this.count,
+        this.searchForm.get('search').value,
+        Number(this.selectedRoundIdForFilter),
+        this.selectedStatusForFilter,
+      )
+      .subscribe((data) => {
+        this.userResponses = data.values;
+        this.page = data.page;
+        this.total = data.total;
+        this.isLoading = false;
+      });
   }
 
   optionChanged(event, teamId, index) {
@@ -160,6 +182,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.hackathonService.showUserResponsesByTeam(teamId).subscribe((data: IHackathonUserResponses) => {
       this.selectedTeamDetails = data.team;
       this.selectedUserResponsesDetails = data.user_responses;
+      this.selectedUserResponse = data;
       this.notesIndex(data.team.id);
       this.selectedUserDetails = this.selectedUserResponsesDetails[0];
       this.getQuestionAnswer();
@@ -179,6 +202,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.dialogRef = this.nbDialogService.open(HackathonOverallRoundSelectionUpdateEmailComponent, {
       context: {
         hackathonId: this.hackathon.id,
+        roundSelection: this.selectedRoundIdForFilter ? Number(this.selectedRoundIdForFilter) : 0,
       },
     });
   }
@@ -203,7 +227,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.notesList.removeAt(index);
   }
 
-  updateNotes(teamId) {
+  updateNotes(selectedUserResponse: IHackathonUserResponses) {
+    const teamId = selectedUserResponse.team.id;
     for (const note of this.notesForm.value.note) {
       if (note.value !== '') {
         const formData = new FormData();
@@ -213,6 +238,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
             this.removeNote(index);
           }
           this.notes.push(data);
+          const userResponseIndex = this.userResponses.findIndex((userResponse) => userResponse.team.id === teamId);
+          this.userResponses[userResponseIndex].team.notes.push(data);
         });
       }
     }
@@ -244,9 +271,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  destroyNote(noteId, index) {
+  destroyNote(noteId, index, selectedUserResponse) {
+    const teamId = selectedUserResponse.team.id;
     this.noteService.destroyNote(noteId).subscribe((data) => {
-      if (data) this.notes.splice(index, 1);
+      if (data) {
+        this.notes.splice(index, 1);
+        const userResponseIndex = this.userResponses.findIndex((userResponse) => userResponse.team.id === teamId);
+        const noteIndex = this.userResponses[userResponseIndex].team.notes.findIndex((note) => note.id === noteId);
+        this.userResponses[userResponseIndex].team.notes.splice(noteIndex, 1);
+      }
     });
   }
 
@@ -256,5 +289,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.toastrService.successDialog('CSV is being generated, it will be emailed to you shortly!');
       }
     });
+  }
+
+  onRoundChange(event) {
+    this.selectedRoundIdForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  onStatusChange(event) {
+    this.selectedStatusForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  clearAllFilter() {
+    this.selectedStatusForFilter = '';
+    this.selectedRoundIdForFilter = '';
+    this.page = 1;
+    this.fetchUserResponses();
   }
 }
