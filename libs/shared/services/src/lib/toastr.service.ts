@@ -25,6 +25,13 @@ export class ToastrService {
     });
   }
 
+  errorDialog(message, duration = 2500) {
+    this.nbToastrService.danger('Error', message, {
+      status: 'error',
+      duration: duration,
+    });
+  }
+
   notificationDialog(message, icon = 'email-outline', duration = 5000) {
     const iconConfig: NbIconConfig = { icon: icon, pack: 'eva' };
     const position: NbGlobalPosition = NbGlobalPhysicalPosition.BOTTOM_LEFT;

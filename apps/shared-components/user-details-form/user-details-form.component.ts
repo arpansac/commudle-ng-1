@@ -74,6 +74,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
   submitUserDetails() {
     if (this.userForm.invalid) {
+      this.toastLogService.errorDialog('Please complete the profile fields');
       this.userForm.markAllAsTouched();
       return;
     }

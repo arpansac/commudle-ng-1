@@ -21,6 +21,10 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { UserDetailsFormComponent } from 'apps/shared-components/user-details-form/user-details-form.component';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
+import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
+import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
+import { SDataFormsService } from 'apps/shared-components/services/s-data-forms.service';
+
 @Component({
   selector: 'app-fill-data-form',
   templateUrl: './fill-data-form.component.html',
@@ -64,6 +68,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private appUsersService: AppUsersService,
     private userProfileManagerService: UserProfileManagerService,
+    private dataFormsService: SDataFormsService,
   ) {}
 
   ngOnInit() {
@@ -174,12 +179,40 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  onAcceptRoleButton() {
+    if (this.event.id) {
+      this.dataFormsService.isMemberOfAllCollaboratingCommunities(this.event.id).subscribe((data) => {
+        if (data) {
+          this.submitForm();
+          return;
+        }
+        const dialogRef = this.dialogService.open(UserConsentsComponent, {
+          context: {
+            consentType: ConsentTypesEnum.OneClickRegistrationForm,
+          },
+        });
+        dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+          dialogRef.close();
+          if (result === 'accepted') {
+            this.submitForm();
+          }
+        });
+      });
+    } else {
+      this.submitForm();
+    }
+  }
+
   updateUserDetailsAndSubmitForm($event) {
     this.formAnswers = $event;
     if (this.dataFormEntity.user_details) {
       this.userDetailsFormComponent.submitUserDetails();
     } else {
-      this.submitForm();
+      if (this.event) {
+        this.onAcceptRoleButton();
+      } else {
+        this.submitForm();
+      }
     }
   }
 
@@ -203,7 +236,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       phone: event.phone ? event.phone : this.currentUser.phone,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
-    this.submitForm();
+    this.onAcceptRoleButton();
   }
 
   submitForm() {
