@@ -1,3 +1,6 @@
+nb-card {
+  @apply com-mx-0;
+}
 .hackathon-form {
   form {
     @apply com-flex com-flex-col com-gap-4;
@@ -37,5 +40,11 @@
     .save-button {
       @apply com-mt-5;
     }
+  }
+}
+
+.next-step-container {
+  a {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-no-underline hover:com-text-Yankees-Blue;
   }
 }

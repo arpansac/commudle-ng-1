@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NextStepCardComponent implements OnInit {
   @Input() routePath: string;
+  @Input() routerLink: string;
   @Input() headingText: string;
   @Input() subHeadingText: string;
   @Input() communitySlug: string;

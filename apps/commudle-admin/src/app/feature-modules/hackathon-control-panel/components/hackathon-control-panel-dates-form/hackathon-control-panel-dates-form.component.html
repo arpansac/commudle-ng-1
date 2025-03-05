@@ -106,3 +106,38 @@
     </form>
   </nb-card-body>
 </nb-card>
+
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <div class="next-steps-card">
+    <commudle-next-step-card
+      headingText="Add Tracks & Prizes"
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/tracks'
+      "
+      [faIcon]="icons.faAward"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Setup Rounds"
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/rounds'
+      "
+      [faIcon]="icons.faGamepad"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Setup Registration Form"
+      [routerLink]="
+        '/admin' +
+        '/communities/' +
+        hackathon.community.slug +
+        '/hackathon-dashboard/' +
+        hackathon.slug +
+        '/registrations'
+      "
+      [faIcon]="icons.faRectangleList"
+    ></commudle-next-step-card>
+  </div>
+</div>

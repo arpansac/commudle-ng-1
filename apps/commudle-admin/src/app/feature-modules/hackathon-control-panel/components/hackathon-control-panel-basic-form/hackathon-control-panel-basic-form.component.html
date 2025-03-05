@@ -308,3 +308,19 @@
     </form>
   </nb-card-body>
 </nb-card>
+
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <commudle-next-step-card
+    headingText="Set Contact & Social Links"
+    [routerLink]="
+      '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/contact'
+    "
+    [faIcon]="icons.faLink"
+  ></commudle-next-step-card>
+</div>
+
+<!-- faLink -->

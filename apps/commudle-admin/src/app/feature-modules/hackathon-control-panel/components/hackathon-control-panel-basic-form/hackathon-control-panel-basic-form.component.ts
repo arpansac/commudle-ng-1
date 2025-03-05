@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonLocationType, EParticipateTypes, IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
-import { faFileImage } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faFileImage, faLink } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-basic-form',
@@ -28,6 +28,8 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
 
   icons = {
     faFileImage,
+    faLink,
+    faArrowRight,
   };
 
   isLoading = false;

@@ -23,6 +23,41 @@
   </nb-card-footer>
 </nb-card>
 
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <div class="next-steps-card">
+    <commudle-next-step-card
+      headingText="Setup Registration Form"
+      [routerLink]="
+        '/admin' +
+        '/communities/' +
+        hackathon.community.slug +
+        '/hackathon-dashboard/' +
+        hackathon.slug +
+        '/registrations'
+      "
+      [faIcon]="icons.faRectangleList"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Sponsors"
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/sponsors'
+      "
+      [faIcon]="icons.faSackDollar"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Judges, Speakers & Mentors"
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/speakers'
+      "
+      [faIcon]="icons.faMicrophone"
+    ></commudle-next-step-card>
+  </div>
+</div>
+
 <ng-template #addRoundsDialogBox let-ref="dialogRef" let-data>
   <nb-card class="round-form-dialog-box">
     <nb-card-header class="actions">
