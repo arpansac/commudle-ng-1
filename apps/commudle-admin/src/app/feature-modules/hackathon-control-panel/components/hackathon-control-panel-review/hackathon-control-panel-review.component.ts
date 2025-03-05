@@ -128,10 +128,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.fetchHackathon(params.get('hackathon_id'));
       this.indexRounds(params.get('hackathon_id'));
     });
-    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
-      this.page = 1;
-      this.fetchUserResponses();
-    });
+    if (this.userResponses && this.userResponses.length > 0) {
+      this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+        this.page = 1;
+        this.fetchUserResponses();
+      });
+    }
   }
 
   fetchHackathon(hackathonId) {
@@ -304,9 +306,11 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   clearAllFilter() {
-    this.selectedStatusForFilter = '';
-    this.selectedRoundIdForFilter = '';
-    this.page = 1;
-    this.fetchUserResponses();
+    if (this.selectedStatusForFilter || this.selectedRoundIdForFilter) {
+      this.selectedStatusForFilter = '';
+      this.selectedRoundIdForFilter = '';
+      this.page = 1;
+      this.fetchUserResponses();
+    }
   }
 }

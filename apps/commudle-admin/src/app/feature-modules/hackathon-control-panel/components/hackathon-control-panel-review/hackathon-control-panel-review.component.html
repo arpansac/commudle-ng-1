@@ -1,10 +1,26 @@
 <nb-card class="review-section">
   <nb-card-header>
     <div class="header">
-      Applications & Projects<commudle-help-section
-        [helpDictionaryName]="'hackathon-applications-projects'"
-      ></commudle-help-section>
+      Applications & Projects
+      <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
+      <a
+        *ngIf="communityId && hackathon && hackathon.hackathon_response_group"
+        target="_blank"
+        [routerLink]="[
+          '/communities',
+          communityId,
+          'hackathons',
+          hackathon.slug,
+          'fill-form',
+          hackathon.hackathon_response_group.id
+        ]"
+      >
+        <button nbButton status="primary" size="tiny">
+          <fa-icon [icon]="faUpRightFromSquare"></fa-icon> &nbsp; Link to register
+        </button>
+      </a>
     </div>
+
     <div class="actions">
       <button
         *ngIf="userResponses && userResponses.length > 0"
@@ -63,7 +79,13 @@
         </select>
       </div>
 
-      <div class="clear-filter" (click)="clearAllFilter()">Clear All Filter</div>
+      <div
+        class="clear-filter"
+        (click)="clearAllFilter()"
+        *ngIf="this.selectedStatusForFilter || this.selectedRoundIdForFilter"
+      >
+        Clear All Filter
+      </div>
     </div>
   </nb-card-header>
   <nb-card-body>
