@@ -76,31 +76,25 @@
   <div class="com-flex com-flex-wrap com-gap-0 md:com-gap-4">
     <commudle-next-step-card
       *ngIf="event.event_status.id === 2"
-      routePath="update"
       [faIcon]="icons.faStar"
       headingText="Post Updates"
       subHeadingText="Keep your members updated with the latest happening for your event!"
       buttonText="Post now"
-      [eventSlug]="event.slug"
-      [communitySlug]="community.slug"
+      [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/update'"
     ></commudle-next-step-card>
     <commudle-next-step-card
-      routePath="collaborations"
       [nbIcon]="'pricetags-outline'"
       headingText="Add Collaborations & Teammates"
       subHeadingText="Collaborate with communities, add teammates & volunteers"
       buttonText="add now"
-      [eventSlug]="event.slug"
-      [communitySlug]="community.slug"
+      [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/collaborations'"
     ></commudle-next-step-card>
     <commudle-next-step-card
-      routePath="sponsors"
       [nbIcon]="'briefcase-outline'"
       headingText="Add Sponsors"
       subHeadingText="Add your event sponsors and give the due credits"
       buttonText="add now"
-      [eventSlug]="event.slug"
-      [communitySlug]="community.slug"
+      [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/sponsors'"
     ></commudle-next-step-card>
   </div>
 </div>

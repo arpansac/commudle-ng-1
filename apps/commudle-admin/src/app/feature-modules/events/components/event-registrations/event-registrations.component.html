@@ -48,11 +48,9 @@
     <fa-icon [icon]="icons.faArrowRight"></fa-icon>
   </a>
   <commudle-next-step-card
-    routePath="agenda"
     [nbIcon]="'calendar-outline'"
     headingText="Setup Location & Agenda"
     subHeadingText="Add schedule of the event from confirmed speakers"
-    [eventSlug]="event.slug"
-    [communitySlug]="community.slug"
+    [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/agenda'"
   ></commudle-next-step-card>
 </div>
