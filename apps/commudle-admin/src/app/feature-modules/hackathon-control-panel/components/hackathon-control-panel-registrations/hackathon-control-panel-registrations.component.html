@@ -165,22 +165,34 @@
         </div>
       </div>
 
-      <div class="custom-questions" *ngIf="!dataFormId">
-        <app-new-data-form
-          (newDataForm)="submit($event)"
-          formName="Hackathon Attendee Registration Form"
-          [stickSubmitButtonBottom]="true"
-          [showNameDescriptionFiled]="false"
-        >
-        </app-new-data-form>
+      <div>
+        <div class="group-name">FORM</div>
+        <nb-checkbox status="basic" [(ngModel)]="isFormInclude">Include a form</nb-checkbox>
       </div>
-      <div *ngIf="dataFormId">
-        <commudle-edit-data-form
-          [dataFormId]="dataFormId"
-          [showNameDescriptionFiled]="false"
-          [centerLayout]="false"
-          (updateFormDataEvent)="updateData($event)"
-        ></commudle-edit-data-form>
+
+      <div *ngIf="isFormInclude">
+        <div class="custom-questions" *ngIf="!dataFormId">
+          <app-new-data-form
+            (newDataForm)="submit($event)"
+            formName="Hackathon Attendee Registration Form"
+            [stickSubmitButtonBottom]="true"
+            [showNameDescriptionFiled]="false"
+          >
+          </app-new-data-form>
+        </div>
+        <div *ngIf="dataFormId">
+          <commudle-edit-data-form
+            [dataFormId]="dataFormId"
+            [showNameDescriptionFiled]="false"
+            [centerLayout]="false"
+            (updateFormDataEvent)="updateData($event)"
+          ></commudle-edit-data-form>
+        </div>
+      </div>
+
+      <div *ngIf="!isFormInclude">
+        <br />
+        <button nbButton fullWidth status="primary" (click)="updateOrCreateHackathonUserResponse()">Save</button>
       </div>
     </div>
   </nb-card-body>
