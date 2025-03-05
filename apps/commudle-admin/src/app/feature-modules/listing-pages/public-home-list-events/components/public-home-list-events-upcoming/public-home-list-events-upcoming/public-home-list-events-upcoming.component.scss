@@ -1,18 +1,26 @@
-div {
+.upcoming-events {
   @apply com-m-0 md:com-px-0 com-px-4;
 
   .title {
-    @apply md:com-mb-0 md:com-mt-9 com-my-6;
+    @apply md:com-mb-2 md:com-mt-6 com-my-6;
 
     a {
-      @apply com-no-underline;
-      span {
-        @apply com-text-2xl com-font-bold com-text-Dark-Jungle-Green;
+      @apply com-flex com-flex-row com-no-underline;
+      .title {
+        @apply md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2;
+      }
+
+      .sub-heading {
+        @apply com-text-sm com-m-0 com-font-medium com-text-gray-500;
       }
     }
 
     button {
       @apply com-mr-4;
+    }
+
+    .heading-subheading {
+      @apply com-flex com-flex-col com-m-0 com-p-0;
     }
 
     fa-icon {
@@ -21,14 +29,25 @@ div {
   }
 
   .event-horizontal-card {
-    @apply com-border-solid com-border-0 md:com-border-b com-border-b-0 md:com-py-6 com-pb-4 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
+    @apply com-border-solid com-border-0 com-border-b md:com-py-4 com-pb-3 com-pt-6 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
   }
 
   .load-more {
-    @apply com-text-center md:com-mt-8 com-m-0;
+    @apply com-text-center md:com-mt-8 com-mt-4 com-m-0;
 
     app-loading-spinner {
       @apply com-mb-6;
     }
+  }
+}
+
+app-skeleton-cards {
+  @apply com-my-4;
+}
+
+.no-upcoming {
+  @apply com-flex com-justify-center com-items-center;
+  p {
+    @apply com-text-lg com-font-medium com-text-Yankees-Blue;
   }
 }

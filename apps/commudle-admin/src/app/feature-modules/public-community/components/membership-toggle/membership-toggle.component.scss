@@ -8,6 +8,10 @@
   }
 }
 
+.plus-icon {
+  @apply com-text-white #{!important};
+}
+
 .fullWidth {
   @apply com-w-full;
 }
@@ -23,15 +27,10 @@ nb-option {
 nb-select {
   ::ng-deep {
     button {
-      span {
-        @apply com-text-Yankees-Blue;
+      span,
+      nb-icon {
+        @apply com-text-Azure #{!important};
       }
     }
-  }
-}
-
-button {
-  span {
-    @apply com-text-Yankees-Blue;
   }
 }

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NbButtonAppearance } from '@commudle/theme';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { IUser } from 'apps/shared-models/user.model';
 
@@ -21,6 +22,7 @@ export class UserProfileCardLargeComponent implements OnInit {
   @Input() isMobileWidthFull = false;
   @Input() showSpeakersCount = false;
   @Input() showHiringLookingTags = true;
+  @Input() appearanceOfFollowButton: NbButtonAppearance = 'filled';
   @Output() componentClicked = new EventEmitter();
 
   constructor(private userChatsService: UserChatsService) {}

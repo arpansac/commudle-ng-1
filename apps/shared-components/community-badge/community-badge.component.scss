@@ -1,6 +1,5 @@
 .community-badge {
-  @apply com-w-max com-cursor-pointer com-overflow-x-hidden com-bg-gray-100;
-  border-radius: 99em;
+  @apply com-w-max com-cursor-pointer com-overflow-x-hidden;
 
   &:hover {
     background: rgba(0, 0, 0, 0.1);
@@ -11,17 +10,15 @@
   }
 
   .logo {
-    @apply com-flex com-justify-center com-items-center com-overflow-hidden com-m-0 com-mr-6px com-bg-tWhite;
+    @apply com-flex com-justify-center com-items-center com-overflow-hidden com-m-0 com-mr-2 com-bg-tWhite com-border com-border-solid com-border-Bright-Gray;
     border-radius: 50%;
     img {
       @apply com-w-full;
     }
-
-    box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
   }
 
   .name {
-    @apply com-m-0 com-text-black;
+    @apply com-m-0 com-text-xs com-font-medium com-text-gray-500;
   }
 }
 
@@ -30,19 +27,19 @@
 }
 
 .community-badge.small {
-  @apply com-py-1 com-px-2;
+  @apply com-p-0;
 
   .logo {
     @apply com-w-[20px] com-h-[20px];
   }
 
   .name {
-    @apply com-text-xs com-font-semibold;
+    @apply com-text-xs com-font-medium;
   }
 }
 
 .community-badge.medium {
-  @apply com-pt-6px com-pr-3 com-pb-6px com-pl-6px;
+  @apply com-p-0;
 
   .logo {
     @apply com-w-[30px] com-h-[30px];

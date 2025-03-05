@@ -45,7 +45,7 @@ nb-card {
 }
 
 .event-card-list {
-  @apply com-flex com-space-x-4 md:com-space-x-0 md:com-grid md:com-grid-cols-3 md:com-gap-4;
+  @apply com-flex com-gap-8 md:com-gap-4 md:com-grid md:com-grid-cols-3;
 }
 
 .channels-cards-list {
