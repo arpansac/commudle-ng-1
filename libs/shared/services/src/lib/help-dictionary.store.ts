@@ -75,7 +75,7 @@ const helpDictionary = {
   //Hackathons
   'hackathon-updates': {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/hackathons/post-updates',
+    url: 'https://documentation.commudle.com/hackathons/how-to-post-updates-on-the-public-page-of-the-hackathon',
   },
   'hackathon-communications': {
     type: EHelpDictionaryType.URL,
