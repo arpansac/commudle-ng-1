@@ -76,6 +76,12 @@
             [error]="true"
             errorMessage="Order is required"
           ></commudle-alert>
+          <br />
+          <commudle-alert
+            *ngIf="roundForm.controls['order'].value === 1"
+            [info]="true"
+            message="when you select a round as default round, each application which is set to 'Accepted' status will automatically be added to this round."
+          ></commudle-alert>
           <!-- Min value error -->
           <commudle-alert
             *ngIf="roundForm.controls['order'].touched && roundForm.controls['order'].hasError('min')"
