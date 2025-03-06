@@ -327,9 +327,12 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEventSpecificEmail($event) {
+    // const selectedValue = (event.target as HTMLSelectElement)?.value;
+    // console.log(selectedValue);
     // if not, then reset the form below the event select
     switch ($event) {
       case EemailTypes.GENERAL_ALL:
+        console.log('1');
         this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.isEventSpecificEmail = false;
 
@@ -340,12 +343,14 @@ export class EmailerComponent implements OnInit, OnDestroy {
         this.selectedEventDataFormEntityGroup = undefined;
         break;
       case 'event':
+        console.log('2');
         this.isEventSpecificEmail = true;
         this.eMailForm.get('body').clearValidators();
         this.eMailForm.get('body').updateValueAndValidity();
 
         break;
       default:
+        console.log('3');
         this.isEventSpecificEmail = false;
         break;
     }
@@ -476,6 +481,21 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    this.isEmailSending = true;
+    this.emailsService.sendEmail(this.eMailForm.value, this.community.id).subscribe(
+      (data) => {
+        this.isEmailSending = false;
+        this.close();
+        this.toastLogService.successDialog('Emails are being delivered!');
+      },
+      (error) => {
+        this.close();
+        this.isEmailSending = false;
+      },
+    );
+  }
+
+  previewEmail() {
     this.isEmailSending = true;
     this.emailsService.sendEmail(this.eMailForm.value, this.community.id).subscribe(
       (data) => {

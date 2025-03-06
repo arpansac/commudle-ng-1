@@ -1,32 +1,28 @@
 <div class="emailer-component">
-  <form (ngSubmit)="submitForm()" [formGroup]="eMailForm">
+  <form [formGroup]="eMailForm">
+    <div class="filters"></div>
     <div *ngIf="showEmailFilters" class="fieldset">
-      <p>{{ community.name }}</p>
-      <nb-radio-group name="members" formControlName="members" (valueChange)="toggleEventSpecificEmail($event)">
-        <nb-radio value="{{ EemailTypes.GENERAL_ALL }}">
+      <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($event)">
+        <option value="" disabled>Filter Emails</option>
+        <option selected value="{{ EemailTypes.GENERAL_ALL }}">
           General Email (to All or a Specific Member)
           <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
-        </nb-radio>
-        <nb-radio value="{{ EemailTypes.EVENT_SPEAKER }}"> To All Speakers</nb-radio>
-        <nb-radio value="event">
+        </option>
+        <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
+        <option value="event">
           Event Specific Emails
-          <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section
-        ></nb-radio>
-      </nb-radio-group>
+          <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section>
+        </option>
+      </select>
     </div>
 
     <div *ngIf="isEventSpecificEmail && showEmailFilters" class="fieldset">
-      <nb-select
-        (selectedChange)="getEventDataFormEntityGroups($event)"
-        filled
-        formControlName="event_id"
-        placeholder="Select Event"
-        status="primary"
-      >
-        <nb-option *ngFor="let event of events" [value]="event.id">
+      <select (change)="getEventDataFormEntityGroups($event)" formControlName="event_id">
+        <option value="" disabled>Select Event</option>
+        <option *ngFor="let event of events" [value]="event.id">
           {{ event.name }}
-        </nb-option>
-      </nb-select>
+        </option>
+      </select>
 
       <div class="fieldset form-mail-type-selection">
         <div *ngIf="eventDataFormEntityGroups.length > 0" class="fieldset">
@@ -127,16 +123,17 @@
 
     <div class="action-btns">
       <button
-        (click)="openEmailPreviewTemplate()"
+        (click)="openEmailPreviewTemplate(); $event.stopPropagation()"
         [disabled]="!eMailForm.valid || isEmailSending"
         nbButton
         status="primary"
         shape="semi-round"
-        #emailPreview
+        type="button"
       >
         Preview Email
       </button>
       <button
+        (click)="submitForm()"
         [disabled]="!eMailForm.valid || isEmailSending"
         fullWidth
         nbButton

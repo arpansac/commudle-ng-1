@@ -45,3 +45,7 @@
 .action-btns {
   @apply com-flex com-items-center com-gap-6;
 }
+
+select {
+  @apply com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 com-w-40 com-text-sm com-font-normal com-text-Yankees-Blue;
+}
