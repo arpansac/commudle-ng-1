@@ -63,6 +63,8 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
         tier_priority: hackathonSponsor.tier_priority,
       });
       this.imagePreview = hackathonSponsor.sponsor.logo.url;
+    } else {
+      this.resetSponsorForm();
     }
 
     this.nbDialogService.open(dialog, {
@@ -122,7 +124,7 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
     });
     this.hackathonService.createSponsor(formData, this.hackathonSlug).subscribe((data) => {
       if (data) this.hackathonSponsors.unshift(data);
-      this.sponsorForm.reset();
+      this.resetSponsorForm();
     });
   }
 
@@ -146,7 +148,18 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
     });
     this.hackathonService.updateSponsor(formData, sponsorId).subscribe((data) => {
       if (data) this.hackathonSponsors[index] = data;
-      this.sponsorForm.reset();
+      this.resetSponsorForm();
+    });
+  }
+
+  resetSponsorForm() {
+    this.sponsorForm.patchValue({
+      name: '',
+      description: '',
+      logo: null,
+      tier_name: '',
+      link: '',
+      tier_priority: 1,
     });
   }
 }
