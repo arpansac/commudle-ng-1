@@ -1,7 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
+import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
@@ -146,11 +146,14 @@ export class HackathonService {
     );
   }
 
-  indexSponsors(hackathonId): Observable<IHackathonSponsor[]> {
+  indexSponsors(hackathonId): Observable<IHackathonSponsorGroupedByTierName> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<IHackathonSponsor[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_SPONSORS), {
-      params,
-    });
+    return this.http.get<IHackathonSponsorGroupedByTierName>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_SPONSORS),
+      {
+        params,
+      },
+    );
   }
 
   destroySponsor(sponsorId): Observable<boolean> {
