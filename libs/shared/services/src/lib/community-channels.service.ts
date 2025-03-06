@@ -200,10 +200,13 @@ export class CommunityChannelsService {
     );
   }
 
-  channelForumMembersIndex(channelId: number, after: string): Observable<IPagination<IUserRolesUser>> {
+  channelForumMembersIndex(channelId: number, query: string, after: string): Observable<IPagination<IUserRolesUser>> {
     let params = new HttpParams().set('community_channel_id', channelId);
     if (after) {
       params = params.set('after', after);
+    }
+    if (query) {
+      params = params.set('q', query);
     }
     return this.http.get<IPagination<IUserRolesUser>>(
       this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.MEMBERS.INDEX),
@@ -253,8 +256,11 @@ export class CommunityChannelsService {
     );
   }
 
-  getChannelAdmins(channelId: number): Observable<IUserRolesUsers> {
-    const params = new HttpParams().set('community_channel_id', channelId);
+  getChannelAdmins(channelId: number, query: string): Observable<IUserRolesUsers> {
+    let params = new HttpParams().set('community_channel_id', channelId);
+    if (query) {
+      params = params.set('q', query);
+    }
     return this.http.get<IUserRolesUsers>(
       this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.GET_CHANNEL_ADMINS),
       {

@@ -17,8 +17,9 @@ import {
   CommunityChannelsService,
   ToastrService,
 } from '@commudle/shared-services';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, Subscription, takeUntil } from 'rxjs';
 import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from '@commudle/shared-models';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'commudle-channel-members',
@@ -47,13 +48,20 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
 
   private destroy$ = new Subject<void>();
   @ViewChildren('memberDiv') memberDivs!: QueryList<ElementRef>;
+  channelForm: FormGroup;
+  query = '';
 
   constructor(
     private communityChannelsService: CommunityChannelsService,
     private authService: AuthService,
     private toastrService: ToastrService,
     private communityChannelManagerService: CommunityChannelManagerService,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.channelForm = this.fb.group({
+      q: '',
+    });
+  }
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -64,35 +72,52 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
     } else if (this.discussionType === 'forum') {
       this.getForumsRoles();
     }
+
+    this.search();
+  }
+
+  search() {
+    this.channelForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.query = this.channelForm.controls['q'].value;
+      this.pageInfo = null;
+      this.admins = [];
+      this.channelMembers = [];
+      this.getMembers();
+      this.getAdmins();
+    });
   }
 
   ngAfterViewInit(): void {
-    this.observeLastElement();
+    this.observeThirdLastElement();
   }
 
-  observeLastElement() {
+  observeThirdLastElement() {
     const observer = new IntersectionObserver(
       (entries) => {
-        const lastEntry = entries[0];
-        if (lastEntry.isIntersecting && this.channelMembers.length < this.totalMembers) {
-          console.log('Last element in viewport, fetching more members...');
-          this.getMembers();
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && this.channelMembers.length < this.totalMembers) {
+            this.getMembers();
+          }
+        });
       },
-      { threshold: 1.0 }, // Fires when the last element is fully in view
+      { threshold: 1.0, rootMargin: '100px' }, // Root margin ensures early detection
     );
 
     this.memberDivs.changes.subscribe(() => {
-      if (this.memberDivs.length) {
-        const lastItem = this.memberDivs.last.nativeElement;
-        observer.observe(lastItem);
-      }
+      this.attachObserver(observer);
     });
 
-    // Initial check in case elements are already available
-    if (this.memberDivs.length) {
-      const lastItem = this.memberDivs.last.nativeElement;
-      observer.observe(lastItem);
+    // Initial check if elements are already available
+    this.attachObserver(observer);
+  }
+
+  attachObserver(observer: IntersectionObserver) {
+    observer.disconnect(); // Clear previous observers
+
+    if (this.memberDivs.length >= 3) {
+      // Observe the third last element
+      const thirdLastIndex = this.memberDivs.length - 3;
+      observer.observe(this.memberDivs.get(thirdLastIndex).nativeElement);
     }
   }
 
@@ -154,7 +179,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
 
       this.subscriptions.push(
         this.communityChannelsService
-          .channelForumMembersIndex(this.channelOrForum.id, this.pageInfo?.end_cursor)
+          .channelForumMembersIndex(this.channelOrForum.id, this.query, this.pageInfo?.end_cursor)
           .subscribe((data) => {
             this.channelMembers = this.channelMembers.concat(
               data.page.reduce((acc, value) => [...acc, value.data], []),
@@ -170,7 +195,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
   // get admin of channels not members
   getAdmins() {
     this.subscriptions.push(
-      this.communityChannelsService.getChannelAdmins(this.channelOrForum.id).subscribe((data) => {
+      this.communityChannelsService.getChannelAdmins(this.channelOrForum.id, this.query).subscribe((data) => {
         this.admins = this.admins.concat(data.user_roles_users);
         this.totalOrganizers = data.total;
       }),

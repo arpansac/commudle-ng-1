@@ -15,6 +15,18 @@
       </span>
     </nb-card-header>
     <nb-card-body>
+      <div class="search">
+        <form [formGroup]="channelForm">
+          <input
+            nbInput
+            type="text"
+            formControlName="q"
+            fieldSize="small"
+            placeholder="search with user's name or designation"
+            fullWidth
+          />
+        </form>
+      </div>
       <div class="members-list">
         <div *ngFor="let u of admins; let i = index" class="com-my-3">
           <app-member
