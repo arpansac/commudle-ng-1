@@ -1,10 +1,8 @@
 <section class="hackathon-details">
   <app-community-badge *ngIf="community" [community]="community" size="small"></app-community-badge>
-  <div *ngIf="hackathon">
-    <h1>{{ hackathon.name }}</h1>
-    <div class="badge">
-      <p>Hackathon</p>
-    </div>
+  <h1>{{ hackathon?.name }}</h1>
+  <div class="badge">
+    <p>Hackathon</p>
   </div>
 </section>
 
