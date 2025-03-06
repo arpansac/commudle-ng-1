@@ -1,4 +1,3 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { countries_details } from '@commudle/shared-services';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +24,7 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
   };
   hackathonPrizes: IHackathonPrize[];
   countryDetails = countries_details;
-
+  isLoading = true;
   tinyMCE = {
     min_height: 200,
     menubar: false,
@@ -103,6 +102,7 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
   fetchPrizes(hackathonId) {
     this.hackathonService.getPrizesByHackathon(hackathonId).subscribe((data) => {
       this.hackathonPrizes = data;
+      this.isLoading = false;
     });
   }
 
