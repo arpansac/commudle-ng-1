@@ -64,7 +64,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         order: round.order,
       });
     } else {
-      this.roundForm.reset();
+      this.resetRoundForm();
     }
 
     this.dialogRef = this.nbDialogService.open(dialog, {
@@ -86,7 +86,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
           this.rounds.unshift(data);
           this.toastrService.successDialog('Round Created');
           this.dialogRef.close();
-          this.roundForm.reset();
+          this.resetRoundForm();
         }
       });
   }
@@ -113,6 +113,19 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         this.toastrService.successDialog('Channel Created');
         this.rounds[index] = data;
       }
+    });
+  }
+
+  resetRoundForm() {
+    this.roundForm.reset(); // Reset form completely
+    this.roundForm.setValidators(null); // Remove any previous validators
+
+    // Reinitialize with validators
+    this.roundForm = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      date: ['', Validators.required],
+      order: ['', [Validators.required, Validators.min(1)]],
     });
   }
 }

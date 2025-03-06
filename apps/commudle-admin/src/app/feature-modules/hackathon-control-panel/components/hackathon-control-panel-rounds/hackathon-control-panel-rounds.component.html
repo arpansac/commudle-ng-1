@@ -115,7 +115,7 @@
         (click)="data.round ? updateRound(data.round, data.index) : createRound()"
         [disabled]="!roundForm.valid"
       >
-        Save
+        {{ data.round ? 'Update Round' : 'Create Round' }}
       </button>
       <button nbButton status="danger" outline (click)="ref.close(); roundForm.reset()">Cancel</button>
     </nb-card-footer>
