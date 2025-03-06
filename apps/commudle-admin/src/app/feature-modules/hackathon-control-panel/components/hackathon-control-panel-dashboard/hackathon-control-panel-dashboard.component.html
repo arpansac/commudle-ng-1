@@ -4,6 +4,18 @@
   <div class="badge">
     <p>Hackathon</p>
   </div>
+  <a
+    [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug]"
+    target="_blank"
+    class="public-page-button"
+  >
+    <button nbButton status="primary" shape="round">
+      Public Page &nbsp;
+      <div class="icon">
+        <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+      </div>
+    </button>
+  </a>
 </section>
 
 <section class="com-flex">

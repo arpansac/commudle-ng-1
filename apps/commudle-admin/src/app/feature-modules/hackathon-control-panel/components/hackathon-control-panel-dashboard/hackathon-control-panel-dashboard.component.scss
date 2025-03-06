@@ -9,6 +9,9 @@
       @apply com-m-0 com-text-purple-700 com-text-sm;
     }
   }
+  .public-page-button {
+    @apply com-no-underline;
+  }
 }
 
 .sidebar {
