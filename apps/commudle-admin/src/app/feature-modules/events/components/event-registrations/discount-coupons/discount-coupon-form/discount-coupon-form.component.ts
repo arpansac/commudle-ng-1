@@ -194,4 +194,11 @@ export class DiscountCouponFormComponent implements OnInit {
   closeDialogBox() {
     this.dialogRef.close();
   }
+
+  updateMaxApplicationCount() {
+    const isLimited = this.discountCouponForm.get('discount_code.is_limited')?.value;
+    if (!isLimited) {
+      this.discountCouponForm.get('discount_code.max_limit')?.setValue(0);
+    }
+  }
 }

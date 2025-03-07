@@ -13,6 +13,9 @@ nb-card {
     @apply com-border-collapse com-w-full;
     .table-header {
       @apply com-sticky com-top-0 com-bg-white;
+      .text-help {
+        @apply com-flex com-items-center;
+      }
     }
 
     td,
