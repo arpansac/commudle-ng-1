@@ -31,6 +31,7 @@
   <div class="next-steps-card">
     <commudle-next-step-card
       headingText="Setup Registration Form"
+      subHeadingText="Create a registration form to enable participants to register for the hackathon and submit projects."
       [routerLink]="
         '/admin' +
         '/communities/' +
@@ -43,6 +44,7 @@
     ></commudle-next-step-card>
     <commudle-next-step-card
       headingText="Add Sponsors"
+      subHeadingText="Create multiple tiers for your hackathon’s sponsors to showcase them on the public page."
       [routerLink]="
         '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/sponsors'
       "
@@ -50,6 +52,7 @@
     ></commudle-next-step-card>
     <commudle-next-step-card
       headingText="Add Judges, Speakers & Mentors"
+      subHeadingText="Add and showcase the profile of judges, speakers and mentors at your hackathon with the participants."
       [routerLink]="
         '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/speakers'
       "

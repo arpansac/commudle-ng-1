@@ -115,6 +115,7 @@
   <div class="next-steps-card">
     <commudle-next-step-card
       headingText="Add Tracks & Prizes"
+      subHeadingText="Create multiple tracks and add the prizes which will be won by the top projects."
       [routerLink]="
         '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/tracks'
       "
@@ -122,6 +123,7 @@
     ></commudle-next-step-card>
     <commudle-next-step-card
       headingText="Setup Rounds"
+      subHeadingText="Create the process flow for rounds through which the teams will progress during the hackathon."
       [routerLink]="
         '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/rounds'
       "
@@ -129,6 +131,7 @@
     ></commudle-next-step-card>
     <commudle-next-step-card
       headingText="Setup Registration Form"
+      subHeadingText="Create a registration form to enable participants to register for the hackathon and submit projects."
       [routerLink]="
         '/admin' +
         '/communities/' +
