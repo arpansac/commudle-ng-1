@@ -9,7 +9,7 @@
 }
 
 .fieldset {
-  @apply com-mx-0 com-my-6;
+  @apply com-mx-0 com-mt-6;
   .label {
     @apply com-text-sm com-font-medium com-text-Yankees-Blue;
   }
@@ -41,7 +41,7 @@
 }
 
 .action-btns {
-  @apply com-flex com-items-center com-gap-6;
+  @apply com-flex com-items-center com-gap-6 com-mt-6;
 }
 
 select {
@@ -49,5 +49,5 @@ select {
 }
 
 .filters {
-  @apply com-flex com-flex-row com-gap-2;
+  @apply com-flex com-flex-row com-gap-2 com-items-center;
 }

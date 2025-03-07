@@ -1,7 +1,7 @@
 <div class="emailer-component">
   <form [formGroup]="eMailForm">
     <div class="filters">
-      <div *ngIf="showEmailFilters" class="fieldset">
+      <div *ngIf="showEmailFilters">
         <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($event)">
           <option value="" disabled>Filter Emails</option>
           <option selected value="{{ EemailTypes.GENERAL_ALL }}">
@@ -16,7 +16,7 @@
         </select>
       </div>
 
-      <div *ngIf="isEventSpecificEmail && showEmailFilters" class="fieldset">
+      <div *ngIf="isEventSpecificEmail && showEmailFilters" class="filters">
         <select (change)="getEventDataFormEntityGroups($event)" formControlName="event_id">
           <option value="" selected disabled>Select Event</option>
           <option *ngFor="let event of events" [value]="event.id">
@@ -24,8 +24,8 @@
           </option>
         </select>
 
-        <div class="form-mail-type-selection">
-          <div *ngIf="eventDataFormEntityGroups.length > 0" class="fieldset">
+        <div class="form-mail-type-selection filters">
+          <div *ngIf="eventDataFormEntityGroups.length > 0">
             <select
               (change)="toggleEventDataFormEntityGroupType($event)"
               formControlName="event_data_form_entity_group_id"
@@ -37,11 +37,11 @@
               </option>
             </select>
           </div>
-          <div *ngIf="eventSimpleRegistration" class="fieldset">
+          <div *ngIf="eventSimpleRegistration">
             <p>Single Click Registration</p>
           </div>
 
-          <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration" class="fieldset">
+          <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration">
             <select
               *ngIf="selectedEventDataFormEntityGroup"
               (change)="toggleEmailBodyValidation($event)"
