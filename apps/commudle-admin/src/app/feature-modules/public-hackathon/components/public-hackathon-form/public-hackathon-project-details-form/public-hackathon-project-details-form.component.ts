@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { IHackathonTrack, IHackathonUserResponse } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
@@ -22,7 +22,7 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   constructor(private hackathonService: HackathonService, private fb: FormBuilder) {
     this.hackathonProjectDetailsForm = this.fb.group({
       hackathon_track_id: '',
-      project_description: ['', Validators.required],
+      project_description: ['', [Validators.required, this.minWordsValidator(50)]],
     });
   }
 
@@ -37,6 +37,15 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
         project_description: this.hackathonUserResponse.project_description,
       });
     }
+  }
+
+  minWordsValidator(minWords: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return { minWords: true };
+
+      const words = control.value.trim().split(/\s+/); // Split by spaces
+      return words.length >= minWords ? null : { minWords: { requiredWords: minWords, actualWords: words.length } };
+    };
   }
 
   updateProblemStatement() {

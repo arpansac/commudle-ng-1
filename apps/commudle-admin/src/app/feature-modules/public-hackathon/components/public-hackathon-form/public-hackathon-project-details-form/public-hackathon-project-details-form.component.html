@@ -33,6 +33,12 @@
       fullWidth
       formControlName="project_description"
     ></textarea>
+    <commudle-alert
+      [error]="this.hackathonProjectDetailsForm.get('project_description').errors?.['minWords'] && this.hackathonProjectDetailsForm.get('project_description').touched"
+      errorMessage="Minimum 50 words required."
+    >
+      "</commudle-alert
+    >
   </div>
 
   <div class="action-buttons">

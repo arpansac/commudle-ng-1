@@ -1,11 +1,22 @@
 <section class="hackathon-details">
-  <app-community-badge *ngIf="community" [community]="community" size="small"></app-community-badge>
-  <div *ngIf="hackathon">
-    <h1>{{ hackathon.name }}</h1>
-    <div class="badge">
-      <p>Hackathon</p>
-    </div>
+  <h1>{{ hackathon?.name }}</h1>
+  <div class="badge">
+    <p>Hackathon</p>
   </div>
+  <app-community-badge *ngIf="community" [community]="community" size="small"></app-community-badge>
+  <a
+    *ngIf="hackathon"
+    [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug]"
+    target="_blank"
+    class="public-page-button"
+  >
+    <button nbButton status="primary" shape="round" size="tiny">
+      Public Page &nbsp;
+      <div class="icon">
+        <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+      </div>
+    </button>
+  </a>
 </section>
 
 <section class="com-flex">
@@ -98,7 +109,7 @@
                 <div class="icon">
                   <fa-icon [icon]="icons.faRectangleList"></fa-icon>
                 </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Registrations</div>
+                <div *ngIf="sidebarExpanded" class="action-button-name">Registration Form</div>
               </a>
               <a class="action-button" [routerLink]="['sponsors']" routerLinkActive="active">
                 <div class="icon">
