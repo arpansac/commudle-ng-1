@@ -11,7 +11,7 @@ nb-card {
         }
 
         .no-image-header {
-          @apply md:com-w-[389px] md:com-h-[143px]  com-w-full com-h-[145px] com-flex com-items-center com-justify-center;
+          @apply md:com-w-[389px] md:com-h-[143px]  com-w-full com-h-[145px] com-flex com-items-center com-justify-center com-flex-shrink-0;
 
           nb-icon {
             @apply com-text-5xl;
