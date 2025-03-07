@@ -257,7 +257,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   ) {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
-      event_id: [null],
+      event_id: [''],
       event_data_form_entity_group_id: [null],
       event_simple_registration_id: [null],
       registration_selection_type: [''],
@@ -293,11 +293,12 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   getEventDataFormEntityGroups(eventId) {
+    const selectedEventId = (eventId.target as HTMLSelectElement)?.value;
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.controls.registration_selection_type.reset();
 
-    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
+    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(selectedEventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
       this.prefillForm('event_data_form_entity_group_id');
     });
@@ -326,13 +327,11 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.windowRef.close();
   }
 
-  toggleEventSpecificEmail($event) {
-    // const selectedValue = (event.target as HTMLSelectElement)?.value;
-    // console.log(selectedValue);
+  toggleEventSpecificEmail(event) {
+    const selectedValue = (event.target as HTMLSelectElement)?.value;
     // if not, then reset the form below the event select
-    switch ($event) {
+    switch (selectedValue) {
       case EemailTypes.GENERAL_ALL:
-        console.log('1');
         this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.isEventSpecificEmail = false;
 
@@ -343,22 +342,21 @@ export class EmailerComponent implements OnInit, OnDestroy {
         this.selectedEventDataFormEntityGroup = undefined;
         break;
       case 'event':
-        console.log('2');
         this.isEventSpecificEmail = true;
         this.eMailForm.get('body').clearValidators();
         this.eMailForm.get('body').updateValueAndValidity();
 
         break;
       default:
-        console.log('3');
         this.isEventSpecificEmail = false;
         break;
     }
   }
 
   toggleEventDataFormEntityGroupType($event) {
+    const selectedValue = Number(($event.target as HTMLSelectElement)?.value);
     this.selectedFormRegistrationType = [];
-    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === $event);
+    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === selectedValue);
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
@@ -373,13 +371,14 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEmailBodyValidation($event) {
-    this.selectedEmailType = $event;
-    if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes($event)) {
+    const selectedValue = ($event.target as HTMLSelectElement)?.value as EemailTypes;
+    this.selectedEmailType = selectedValue;
+    if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes(selectedValue)) {
       this.eMailForm.controls['body'].setValidators([Validators.required]);
     } else {
       this.eMailForm.controls['body'].clearValidators();
     }
-    this.setEmailSubject($event);
+    this.setEmailSubject(selectedValue);
 
     if (this.prefillCompleted) {
       this.recipientUsername = '';
@@ -511,7 +510,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   openEmailPreviewTemplate() {
-    console.log('TemplateRef:', this.emailPreview);
     this.dialogService.open(this.emailPreview);
     // this.dialogService.open(this.emailPreview, {
     //   closeOnEsc: true,

@@ -1,69 +1,71 @@
 <div class="emailer-component">
   <form [formGroup]="eMailForm">
-    <div class="filters"></div>
-    <div *ngIf="showEmailFilters" class="fieldset">
-      <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($event)">
-        <option value="" disabled>Filter Emails</option>
-        <option selected value="{{ EemailTypes.GENERAL_ALL }}">
-          General Email (to All or a Specific Member)
-          <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
-        </option>
-        <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
-        <option value="event">
-          Event Specific Emails
-          <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section>
-        </option>
-      </select>
-    </div>
+    <div class="filters">
+      <div *ngIf="showEmailFilters" class="fieldset">
+        <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($event)">
+          <option value="" disabled>Filter Emails</option>
+          <option selected value="{{ EemailTypes.GENERAL_ALL }}">
+            General Email (to All or a Specific Member)
+            <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
+          </option>
+          <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
+          <option value="event">
+            Event Specific Emails
+            <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section>
+          </option>
+        </select>
+      </div>
 
-    <div *ngIf="isEventSpecificEmail && showEmailFilters" class="fieldset">
-      <select (change)="getEventDataFormEntityGroups($event)" formControlName="event_id">
-        <option value="" disabled>Select Event</option>
-        <option *ngFor="let event of events" [value]="event.id">
-          {{ event.name }}
-        </option>
-      </select>
+      <div *ngIf="isEventSpecificEmail && showEmailFilters" class="fieldset">
+        <select (change)="getEventDataFormEntityGroups($event)" formControlName="event_id">
+          <option value="" selected disabled>Select Event</option>
+          <option *ngFor="let event of events" [value]="event.id">
+            {{ event.name }}
+          </option>
+        </select>
 
-      <div class="fieldset form-mail-type-selection">
-        <div *ngIf="eventDataFormEntityGroups.length > 0" class="fieldset">
-          <p>Source?</p>
-          <nb-radio-group
-            (valueChange)="toggleEventDataFormEntityGroupType($event)"
-            formControlName="event_data_form_entity_group_id"
-            name="event_data_form_entity_group_id"
-          >
-            <nb-radio *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
-              {{ edfeg.name }}
-            </nb-radio>
-          </nb-radio-group>
-        </div>
-        <div *ngIf="eventSimpleRegistration" class="fieldset">
-          <p>Single Click Registration</p>
-        </div>
+        <div class="form-mail-type-selection">
+          <div *ngIf="eventDataFormEntityGroups.length > 0" class="fieldset">
+            <select
+              (change)="toggleEventDataFormEntityGroupType($event)"
+              formControlName="event_data_form_entity_group_id"
+              name="event_data_form_entity_group_id"
+            >
+              <option value="null" selected disabled>Select Form</option>
+              <option *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
+                {{ edfeg.name }}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="eventSimpleRegistration" class="fieldset">
+            <p>Single Click Registration</p>
+          </div>
 
-        <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration" class="fieldset">
-          <p>Let's Be Specific!</p>
-          <nb-radio-group
-            (valueChange)="toggleEmailBodyValidation($event)"
-            *ngIf="selectedEventDataFormEntityGroup"
-            formControlName="registration_selection_type"
-            name="registration_selection_type"
-          >
-            <nb-radio *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
-              {{ reg.display }}
-            </nb-radio>
-          </nb-radio-group>
+          <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration" class="fieldset">
+            <select
+              *ngIf="selectedEventDataFormEntityGroup"
+              (change)="toggleEmailBodyValidation($event)"
+              formControlName="registration_selection_type"
+              name="registration_selection_type"
+            >
+              <option value="" selected disabled>Let's Be Specific!</option>
+              <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
+                {{ reg.display }}
+              </option>
+            </select>
 
-          <nb-radio-group
-            (valueChange)="toggleEmailBodyValidation($event)"
-            *ngIf="eventSimpleRegistration"
-            formControlName="registration_selection_type"
-            name="registration_selection_type"
-          >
-            <nb-radio *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
-              {{ reg.display }}
-            </nb-radio>
-          </nb-radio-group>
+            <select
+              *ngIf="eventSimpleRegistration"
+              (change)="toggleEmailBodyValidation($event)"
+              formControlName="registration_selection_type"
+              name="registration_selection_type"
+            >
+              <!-- <option value="" selected disabled>Let's Be Specific!</option> -->
+              <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
+                {{ reg.display }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

@@ -33,13 +33,11 @@
 }
 
 .form-mail-type-selection {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  @apply com-flex com-flex-row com-flex-wrap;
 
-  > .fieldset {
-    margin-right: 1.5rem;
-  }
+  // > .fieldset {
+  //   margin-right: 1.5rem;
+  // }
 }
 
 .action-btns {
@@ -48,4 +46,8 @@
 
 select {
   @apply com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 com-w-40 com-text-sm com-font-normal com-text-Yankees-Blue;
+}
+
+.filters {
+  @apply com-flex com-flex-row com-gap-2;
 }
