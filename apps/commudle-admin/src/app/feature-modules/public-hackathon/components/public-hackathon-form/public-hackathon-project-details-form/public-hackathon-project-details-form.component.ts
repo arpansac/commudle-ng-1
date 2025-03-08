@@ -22,7 +22,7 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   constructor(private hackathonService: HackathonService, private fb: FormBuilder) {
     this.hackathonProjectDetailsForm = this.fb.group({
       hackathon_track_id: '',
-      project_description: ['', [Validators.required, this.minWordsValidator(50)]],
+      project_description: [''],
     });
   }
 
@@ -63,7 +63,7 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
       this.hackathonTracks = data;
       const hackathonTrackIdControl = this.hackathonProjectDetailsForm.get('hackathon_track_id');
       if (hackathonTrackIdControl && this.hackathonTracks.length > 0) {
-        hackathonTrackIdControl.setValidators([Validators.required]);
+        // hackathonTrackIdControl.setValidators([Validators.required]);
       } else if (hackathonTrackIdControl) {
         hackathonTrackIdControl.clearValidators();
       }
