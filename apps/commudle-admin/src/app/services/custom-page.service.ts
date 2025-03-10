@@ -140,6 +140,13 @@ export class CustomPageService {
     );
   }
 
+  attachImage(customPageId, image): Observable<boolean> {
+    const params = new HttpParams().set('custom_page_id', customPageId);
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CUSTOM_PAGES.ATTACH_TEXT_IMAGE), image, {
+      params,
+    });
+  }
+
   getRefundPolicyPage(parentId, parentType: EDbModels) {
     let params = new HttpParams();
     switch (parentType) {

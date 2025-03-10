@@ -781,6 +781,7 @@ export const API_ROUTES = {
     INDEX: 'api/v2/custom_pages', //GET
     GET_SLUG: 'api/v2/custom_pages/generate_slug',
     REFUND_POLICY_PAGE: 'api/v2/custom_pages/refund_policy_page',
+    ATTACH_TEXT_IMAGE: 'api/v2/custom_pages/attach_text_image',
     PUBLIC: {
       SHOW: 'api/v2/custom_pages/public/show', //GET
       INDEX: 'api/v2/custom_pages/public/index', //GET
