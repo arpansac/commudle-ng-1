@@ -46,8 +46,14 @@
                             >
                           </p>
                           <p class="event-timing">
-                            <span *ngIf="event.end_time !== null"
-                              >{{ moment(event.start_time).format('dddd, MMM Do, YYYY - h:mm a') }}
+                            <span *ngIf="event.end_time !== null">
+                              <!-- {{ moment(event.start_time).format('dddd, MMM Do, YYYY - h:mm a') }} -->
+                              {{
+                                momentTimezone
+                                  .tz(moment.utc(event.start_time), event.timezone)
+                                  .format('dddd, MMM Do, YYYY- h:mm a')
+                              }}
+                              {{ momentTimezone.tz(event.timezone).format('z') }}
                             </span>
                             <span
                               *ngIf="
@@ -56,9 +62,15 @@
                               "
                             >
                               to
-                              <span *ngIf="event.end_time !== null">{{
-                                moment(event.end_time).format('dddd, MMM Do, YYYY - h:mm a')
-                              }}</span>
+                              <span *ngIf="event.end_time !== null">
+                                <!-- {{ moment(event.end_time).format('dddd, MMM Do, YYYY - h:mm a') }} -->
+                                {{
+                                  momentTimezone
+                                    .tz(moment.utc(event.end_time), event.timezone)
+                                    .format('dddd, MMM Do, YYYY- h:mm a')
+                                }}
+                                {{ momentTimezone.tz(event.timezone).format('z') }}
+                              </span>
                             </span>
                             <span
                               *ngIf="
