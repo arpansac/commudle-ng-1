@@ -3,12 +3,12 @@
     Sponsors
     <commudle-help-section [helpDictionaryName]="'hackathon-sponsors'"></commudle-help-section>
     &nbsp;
-    <button nbButton status="primary" shape="semi-round" (click)="openSponsorDialogBox(addSponsorDialogBox)">
+  </nb-card-header>
+  <nb-card-body>
+    <button nbButton status="primary" (click)="openSponsorDialogBox(addSponsorDialogBox)">
       <fa-icon [icon]="icons.faPlus"></fa-icon>
       &nbsp; Add Sponsor
     </button>
-  </nb-card-header>
-  <nb-card-body>
     <div *ngFor="let hackathonSponsorsGrouped of hackathonSponsorGroupedByTierName | keyvalue">
       <div class="sponsors-cards-container">
         <h6>{{ hackathonSponsorsGrouped.key }}</h6>
