@@ -1,9 +1,5 @@
-.add-round-button {
-  @apply com-border-2 com-border-dashed com-border-slate-500 com-rounded-lg com-text-center com-py-5 com-cursor-pointer;
-}
-
 .rounds-card {
-  @apply com-grid com-grid-cols-3;
+  @apply com-grid com-grid-cols-3 com-gap-4;
 }
 
 .round-form-dialog-box {

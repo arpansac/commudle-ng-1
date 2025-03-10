@@ -3,32 +3,30 @@
     >Rounds<commudle-help-section [helpDictionaryName]="'hackathon-rounds'"></commudle-help-section
   ></nb-card-header>
   <nb-card-body>
-    <div (click)="openRoundDialogBox(addRoundsDialogBox)" class="add-round-button">
-      <fa-icon [icon]="icons.faPlus"></fa-icon>
-      <br />
-      <span>Add Round</span>
+    <button (click)="openRoundDialogBox(addRoundsDialogBox)" nbButton status="primary">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Round
+    </button>
+    <div class="rounds-card" *ngIf="rounds && rounds.length > 0">
+      <div *ngFor="let round of rounds; let i = index">
+        <commudle-hackathon-control-panel-round-card
+          [round]="round"
+          [communitySlug]="communitySlug"
+          [hackathonSlug]="hackathonSlug"
+          (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
+          (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"
+          (createChannelForRound)="openRoundDialogBox(createChannelDialogBox, $event, i)"
+        ></commudle-hackathon-control-panel-round-card>
+      </div>
     </div>
   </nb-card-body>
-  <nb-card-footer class="rounds-card" *ngIf="rounds && rounds.length > 0">
-    <div *ngFor="let round of rounds; let i = index">
-      <commudle-hackathon-control-panel-round-card
-        [round]="round"
-        [communitySlug]="communitySlug"
-        [hackathonSlug]="hackathonSlug"
-        (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
-        (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"
-        (createChannelForRound)="openRoundDialogBox(createChannelDialogBox, $event, i)"
-      ></commudle-hackathon-control-panel-round-card>
-    </div>
-  </nb-card-footer>
 </nb-card>
 
 <ng-template #addRoundsDialogBox let-ref="dialogRef" let-data>
   <nb-card class="round-form-dialog-box">
     <nb-card-header class="actions">
       <span>{{ data.round ? 'Edit Round' : 'Add Round' }}</span>
-      <button nbButton ghost shape="round" (click)="ref.close(); roundForm.reset()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -126,8 +124,8 @@
   <nb-card>
     <nb-card-header class="actions">
       <span>Are you sure?</span>
-      <button nbButton ghost (click)="ref.close()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -146,8 +144,8 @@
       <span
         >Create Channel for Round: <strong>{{ data.round.name }}</strong></span
       >
-      <button nbButton ghost (click)="ref.close()" shape="round">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
