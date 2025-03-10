@@ -23,8 +23,8 @@
   <nb-card class="prize-form">
     <nb-card-header>
       <span> {{ data.prize ? 'Edit Prize' : 'New Prize' }}</span>
-      <button (click)="ref.close()" ghost nbButton shape="round" size="tiny">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -128,8 +128,8 @@
   <nb-card>
     <nb-card-header>
       <span>Confirm delete Prize</span>
-      <button (click)="ref.close()" ghost nbButton>
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>Are you sure, you want to delete Prize?</nb-card-body>

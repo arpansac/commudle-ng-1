@@ -26,8 +26,8 @@
   <nb-card class="track-form">
     <nb-card-header>
       <span> {{ data.track ? 'Edit Track' : 'New Track' }}</span>
-      <button (click)="ref.close(); trackForm.reset()" ghost nbButton shape="round" size="tiny">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -92,8 +92,8 @@
   <nb-card>
     <nb-card-header>
       <span>Confirm delete track</span>
-      <button (click)="ref.close()" ghost nbButton>
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>Are you sure, you want to delete track?</nb-card-body>
