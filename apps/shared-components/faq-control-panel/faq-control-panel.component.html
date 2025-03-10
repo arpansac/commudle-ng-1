@@ -28,8 +28,8 @@
       <span>
         {{ data.faq ? 'Edit FAQ' : 'Add FAQ' }}
       </span>
-      <button nbButton ghost shape="round" size="tiny" (click)="ref.close(); faqForm.reset()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>

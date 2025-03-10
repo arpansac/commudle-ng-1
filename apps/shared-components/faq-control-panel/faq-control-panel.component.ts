@@ -56,6 +56,11 @@ export class FaqControlPanelComponent implements OnInit {
         question: faq.question,
         answer: faq.answer,
       });
+    } else {
+      this.faqForm.patchValue({
+        question: '',
+        answer: '',
+      });
     }
     this.nbDialogService.open(dialog, {
       context: { index: index, faq: faq },
