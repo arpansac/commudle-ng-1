@@ -12,12 +12,16 @@
   @apply com-mx-0 com-mt-6;
   .label {
     @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+
+    .mandatory-field {
+      @apply com-text-red-500;
+    }
   }
   input {
-    @apply com-rounded-lg com-mt-3;
+    @apply com-rounded-lg com-mt-3 com-py-3 com-px-4;
 
     &::placeholder {
-      @apply com-p-3 com-text-sm com-font-normal com-text-gray-400;
+      @apply com-text-sm com-font-normal com-text-gray-400;
     }
   }
   editor {

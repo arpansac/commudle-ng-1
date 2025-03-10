@@ -5,7 +5,7 @@
         <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($event)">
           <option value="" disabled>Filter Emails</option>
           <option selected value="{{ EemailTypes.GENERAL_ALL }}">
-            General Email (to All or a Specific Member)
+            General Email (To All or a Specific Member)
             <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
           </option>
           <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
@@ -83,13 +83,16 @@
           <br />
           <b>Selected Username</b>: <u>{{ recipientUsername }}</u>
         </p>
-        <label *ngIf="!recipientUsername" for="recipient_email" class="label">To</label>
+        <label *ngIf="!recipientUsername" for="recipient_email" class="label"
+          >To<span class="mandatory-field">*</span></label
+        >
         <input
           formControlName="recipient_email"
           fullWidth
           nbInput
           placeholder="Enter 1 email addresses or leave blank for all matching members"
           type="text"
+          fieldSize="small"
         />
       </div>
       <div>
@@ -97,8 +100,15 @@
       </div>
     </div>
     <div class="fieldset">
-      <label for="subject" class="label"> Subject* </label>
-      <input formControlName="subject" fullWidth nbInput type="text" />
+      <label for="subject" class="label"> Subject<span class="mandatory-field">*</span></label>
+      <input
+        formControlName="subject"
+        fullWidth
+        fieldSize="small"
+        nbInput
+        type="text"
+        placeholder="Add Your Subject Line"
+      />
       <span
         *ngIf="
           eMailForm['controls'].subject.touched &&
@@ -110,7 +120,7 @@
       </span>
     </div>
     <div class="fieldset">
-      <label class="label"> Message From Organizers </label>
+      <label class="label">Message From Organizers<span class="mandatory-field">*</span></label>
       <span
         *ngIf="
           eMailForm['controls'].body.touched &&

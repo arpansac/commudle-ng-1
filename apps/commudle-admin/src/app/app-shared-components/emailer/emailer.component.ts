@@ -52,6 +52,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     height: 200,
     menubar: false,
     convert_urls: false,
+    placeholder: 'Add your email message',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
     plugins: [
