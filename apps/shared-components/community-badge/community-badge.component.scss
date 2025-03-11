@@ -1,10 +1,6 @@
 .community-badge {
   @apply com-w-max com-cursor-pointer com-overflow-x-hidden;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
   a {
     @apply com-flex com-flex-nowrap com-w-max com-items-center com-no-underline;
   }

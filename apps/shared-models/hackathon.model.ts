@@ -1,5 +1,6 @@
 import { IAttachedFile, ICommunity } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
 
 export interface IHackathon {
   id: number;
@@ -35,6 +36,7 @@ export interface IHackathon {
   community: ICommunity;
   community_group: ICommunityGroup;
   total_prize_amount: {};
+  hackathon_response_group: IHackathonResponseGroup;
 }
 
 export enum EParticipateTypes {

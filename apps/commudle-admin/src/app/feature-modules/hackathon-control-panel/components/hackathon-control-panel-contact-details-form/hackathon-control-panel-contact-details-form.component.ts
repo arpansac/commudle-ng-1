@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { IHackathon } from '@commudle/shared-models';
 import { ToastrService, countries_details } from '@commudle/shared-services';
+import { faArrowRight, faCalendarDays, faLink } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
@@ -17,8 +19,15 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
 
   countriesDetails = countries_details;
   contactInfo: IContactInfo;
+  hackathon: IHackathon;
   hackathonSlug = '';
   communitySlug = '';
+
+  icons = {
+    faArrowRight,
+    faLink,
+    faCalendarDays,
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +54,7 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
       this.communitySlug = params.get('community_id');
+      this.fetchHackathonDetails(params.get('hackathon_id'));
       this.fetchHackathonContactDetails(params.get('hackathon_id'));
     });
   }
@@ -105,5 +115,13 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
       .subscribe((data) => {
         if (data) this.toastrService.successDialog('Contact Info updated');
       });
+  }
+
+  fetchHackathonDetails(hackathonId) {
+    this.subscriptions.push(
+      this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        this.hackathon = data;
+      }),
+    );
   }
 }

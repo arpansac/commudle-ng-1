@@ -78,11 +78,9 @@
     <fa-icon [icon]="icons.faArrowRight"></fa-icon>
   </a>
   <commudle-next-step-card
-    routePath="registrations"
     [faIcon]="icons.faFileLines"
     headingText="Setup Registrations"
     subHeadingText="Open attendee registrations, call for speakers, feedbacks. Paid ticketing also supported!"
-    [eventSlug]="event.slug"
-    [communitySlug]="community.slug"
+    [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/registrations'"
   ></commudle-next-step-card>
 </div>

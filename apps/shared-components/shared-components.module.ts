@@ -92,7 +92,7 @@ import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/u
 import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
-
+import { NextStepCardComponent } from './next-step-card/next-step-card.component';
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -146,6 +146,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     UserDetailsCheckboxFormComponent,
     UserDetailsFormComponent,
     NewsletterCardComponent,
+    NextStepCardComponent,
   ],
   imports: [
     CommonModule,
@@ -235,6 +236,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     UserDetailsCheckboxFormComponent,
     UserDetailsFormComponent,
     NewsletterCardComponent,
+    NextStepCardComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

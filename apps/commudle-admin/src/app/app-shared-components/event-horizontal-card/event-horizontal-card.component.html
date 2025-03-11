@@ -25,7 +25,10 @@
         </div>
         <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div class="time-badge">
-            <p class="event-time">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
+            <p class="event-time">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
+              {{ momentTimezone.tz(event.timezone).format('z') }}
+            </p>
             <div class="interested-members" *ngIf="event.interested_members_count > 0">
               <app-badge
                 [text]="event.interested_members_count"
@@ -53,14 +56,24 @@
         </div>
         <div *appBreakpoints="'<=lg'" class="upcoming-card-details-mobile">
           <div class="time">
-            <p class="event-month">{{ moment(event.start_time).format('MMM') }}</p>
-            <p class="event-date">{{ moment(event.start_time).format('D') }}</p>
-            <p class="event-day">{{ moment(event.start_time).format('ddd') }}</p>
+            <p class="event-month">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('MMM') }}
+            </p>
+            <p class="event-date">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('D') }}
+            </p>
+            <p class="event-day">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('ddd') }}
+            </p>
           </div>
           <div class="details">
             <p class="event-title">{{ event.name }}</p>
             <div class="time-badge">
-              <p class="event-time">{{ moment(event.start_time).format('h:mm a') }} onwards</p>
+              <p class="event-time">
+                {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm a') }}
+                {{ momentTimezone.tz(event.timezone).format('z') }}
+                onwards
+              </p>
               <div *ngIf="community" class="community-badge">
                 <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
               </div>

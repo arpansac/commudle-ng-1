@@ -182,8 +182,12 @@
             </div>
             <ng-template #multiDate>
               <strong>
-                {{ moment(event.start_time).format('dddd, MMM Do, YYYY- h:mm a') }} to
-                {{ moment(event.end_time).format('dddd, MMM Do, YYYY- h:mm a') }}
+                {{
+                  momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a')
+                }}
+                {{ momentTimezone.tz(event.timezone).format('z') }} to
+                {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a') }}
+                {{ momentTimezone.tz(event.timezone).format('z') }}
               </strong>
             </ng-template>
             <div *ngIf="event.interested_members_count" class="attending-members">

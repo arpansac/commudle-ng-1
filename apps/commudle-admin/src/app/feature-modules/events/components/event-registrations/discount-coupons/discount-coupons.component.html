@@ -58,7 +58,18 @@
             <th>Code</th>
             <th>Valid Upto</th>
             <th>Max application limit count</th>
-            <th>Discount Used/Applied</th>
+            <th>
+              <div class="text-help">
+                Discount Used
+                <commudle-help-section helpDictionaryName="discount-code-used-count"></commudle-help-section>
+              </div>
+            </th>
+            <th>
+              <div class="text-help">
+                Discount Applied
+                <commudle-help-section helpDictionaryName="discount-code-applied-count"></commudle-help-section>
+              </div>
+            </th>
             <th>Discount</th>
             <th>Actions</th>
           </tr>
@@ -68,7 +79,12 @@
               {{ discountCode.expires_at ? moment(discountCode.expires_at).local().format('DD-MM-YY HH:mm') : '--' }}
             </td>
             <td>{{ discountCode.max_limit ? discountCode.max_limit : '--' }}</td>
-            <td>{{ discountCode.discount_used_count }}/{{ discountCode.discount_applied_count }}</td>
+            <td>
+              {{ discountCode.discount_used_count }}
+            </td>
+            <td>
+              {{ discountCode.discount_applied_count }}
+            </td>
             <td>
               {{
                 discountCode.discount_type === EDiscountType.PERCENTAGE

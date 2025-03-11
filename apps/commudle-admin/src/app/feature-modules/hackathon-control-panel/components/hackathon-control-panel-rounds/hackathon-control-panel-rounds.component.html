@@ -21,6 +21,44 @@
   </nb-card-body>
 </nb-card>
 
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <div class="next-steps-card">
+    <commudle-next-step-card
+      headingText="Setup Registration Form"
+      subHeadingText="Create a registration form to enable participants to register for the hackathon and submit projects."
+      [routerLink]="
+        '/admin' +
+        '/communities/' +
+        hackathon.community.slug +
+        '/hackathon-dashboard/' +
+        hackathon.slug +
+        '/registrations'
+      "
+      [faIcon]="icons.faRectangleList"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Sponsors"
+      subHeadingText="Create multiple tiers for your hackathon’s sponsors to showcase them on the public page."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/sponsors'
+      "
+      [faIcon]="icons.faSackDollar"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Judges, Speakers & Mentors"
+      subHeadingText="Add and showcase the profile of judges, speakers and mentors at your hackathon with the participants."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/speakers'
+      "
+      [faIcon]="icons.faMicrophone"
+    ></commudle-next-step-card>
+  </div>
+</div>
+
 <ng-template #addRoundsDialogBox let-ref="dialogRef" let-data>
   <nb-card class="round-form-dialog-box">
     <nb-card-header class="actions">
@@ -73,6 +111,12 @@
             "
             [error]="true"
             errorMessage="Order is required"
+          ></commudle-alert>
+          <br />
+          <commudle-alert
+            *ngIf="roundForm.controls['order'].value === 1"
+            [info]="true"
+            message="when you select a round as default round, each application which is set to 'Accepted' status will automatically be added to this round."
           ></commudle-alert>
           <!-- Min value error -->
           <commudle-alert

@@ -6,13 +6,13 @@
 <br />
 <form [formGroup]="teammateForm">
   <div>
-    <label for="name">{{ hasTeammateOption ? 'Team Name*' : 'What did you call your self?' }}</label>
+    <label for="name">{{ hasTeammateOption ? 'Team Name*' : 'Your Name?*' }}</label>
     <input
       type="text"
       nbInput
       fullWidth
       formControlName="name"
-      [placeholder]="hasTeammateOption ? 'Team Name*' : 'What did you call your self?'"
+      [placeholder]="hasTeammateOption ? 'Team Name*' : 'Your Name?*'"
     />
   </div>
   <ng-container formArrayName="teammates">
