@@ -78,11 +78,11 @@
       class="fieldset"
     >
       <div>
-        <p *ngIf="recipientUsername">
+        <label *ngIf="recipientUsername" class="label">
           To<span class="mandatory-field">*</span>
           <br />
           <b>Selected Username</b>: <u>{{ recipientUsername }}</u>
-        </p>
+        </label>
         <label *ngIf="!recipientUsername" for="recipient_email" class="label"
           >To<span class="mandatory-field">*</span></label
         >
