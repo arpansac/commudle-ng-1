@@ -1,3 +1,4 @@
+
 nb-card {
   @apply com-mx-0;
 }
@@ -6,7 +7,7 @@ nb-card {
 }
 
 .rounds-card {
-  @apply com-grid com-grid-cols-3;
+  @apply com-grid com-grid-cols-3 com-gap-4;
 }
 
 .round-form-dialog-box {

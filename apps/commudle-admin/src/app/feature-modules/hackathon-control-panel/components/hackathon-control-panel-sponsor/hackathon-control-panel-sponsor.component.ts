@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
+import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
+import { ToastrService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-hackathon-control-panel-sponsor',
   templateUrl: './hackathon-control-panel-sponsor.component.html',
@@ -20,12 +21,13 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
   };
   imagePreview: string;
 
-  hackathonSponsors: IHackathonSponsor[];
+  hackathonSponsorGroupedByTierName: IHackathonSponsorGroupedByTierName;
   constructor(
     private activatedRoute: ActivatedRoute,
     private nbDialogService: NbDialogService,
     private fb: FormBuilder,
     private hackathonService: HackathonService,
+    private toasterService: ToastrService,
   ) {
     this.sponsorForm = this.fb.group({
       name: ['', Validators.required],
@@ -63,6 +65,8 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
         tier_priority: hackathonSponsor.tier_priority,
       });
       this.imagePreview = hackathonSponsor.sponsor.logo.url;
+    } else {
+      this.resetSponsorForm();
     }
 
     this.nbDialogService.open(dialog, {
@@ -77,8 +81,8 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
   }
 
   indexSponsors(hackathonId) {
-    this.hackathonService.indexSponsors(hackathonId).subscribe((data: IHackathonSponsor[]) => {
-      this.hackathonSponsors = data;
+    this.hackathonService.indexSponsors(hackathonId).subscribe((data: IHackathonSponsorGroupedByTierName) => {
+      this.hackathonSponsorGroupedByTierName = data;
     });
   }
 
@@ -120,33 +124,89 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
         formData.append('sponsor[' + key + ']', value);
       }
     });
-    this.hackathonService.createSponsor(formData, this.hackathonSlug).subscribe((data) => {
-      if (data) this.hackathonSponsors.unshift(data);
-      this.sponsorForm.reset();
+    this.hackathonService.createSponsor(formData, this.hackathonSlug).subscribe((data: IHackathonSponsor) => {
+      if (data) {
+        const tierName = data.tier_name;
+
+        if (!this.hackathonSponsorGroupedByTierName[tierName]) {
+          this.hackathonSponsorGroupedByTierName[tierName] = [];
+        }
+        this.hackathonSponsorGroupedByTierName[tierName].unshift(data);
+        this.toasterService.successDialog('Sponsor added successfully!');
+      }
     });
   }
 
-  destroySponsor(sponsor, index) {
-    this.hackathonService.destroySponsor(this.hackathonSponsors[index].id).subscribe((data) => {
-      if (data) this.hackathonSponsors.splice(index, 1);
+  destroySponsor(sponsor: IHackathonSponsor, index: number) {
+    this.hackathonService.destroySponsor(sponsor.id).subscribe((data) => {
+      if (data) {
+        const tierName = sponsor.tier_name;
+
+        if (this.hackathonSponsorGroupedByTierName[tierName]) {
+          this.hackathonSponsorGroupedByTierName[tierName].splice(index, 1);
+
+          // Remove the tier if it becomes empty
+          if (this.hackathonSponsorGroupedByTierName[tierName].length === 0) {
+            delete this.hackathonSponsorGroupedByTierName[tierName];
+          }
+        }
+
+        this.toasterService.successDialog('Sponsor removed successfully!');
+      }
     });
   }
 
-  updateSponsor(sponsorId, index) {
+  updateSponsor(sponsorId: number, index: number, tierName: string) {
     const formData = new FormData();
 
     Object.keys(this.sponsorForm.value).forEach((key) => {
       const value = this.sponsorForm.value[key];
 
       if (value instanceof File) {
-        formData.append('sponsor[' + key + ']', value, value.name); // Append the file with its name
+        formData.append(`sponsor[${key}]`, value, value.name); // Append the file with its name
       } else if (key !== 'logo') {
-        formData.append('sponsor[' + key + ']', value);
+        formData.append(`sponsor[${key}]`, value);
       }
     });
-    this.hackathonService.updateSponsor(formData, sponsorId).subscribe((data) => {
-      if (data) this.hackathonSponsors[index] = data;
-      this.sponsorForm.reset();
+
+    this.hackathonService.updateSponsor(formData, sponsorId).subscribe((data: IHackathonSponsor) => {
+      if (data) {
+        const oldTierName = this.hackathonSponsorGroupedByTierName[tierName] ? tierName : null;
+        const newTierName = data.tier_name;
+
+        // Remove sponsor from old tier if tier name changed
+        if (oldTierName && oldTierName !== newTierName) {
+          this.hackathonSponsorGroupedByTierName[oldTierName].splice(index, 1);
+
+          // If old tier is empty, delete it
+          if (this.hackathonSponsorGroupedByTierName[oldTierName].length === 0) {
+            delete this.hackathonSponsorGroupedByTierName[oldTierName];
+          }
+
+          // Add sponsor to new tier
+          if (!this.hackathonSponsorGroupedByTierName[newTierName]) {
+            this.hackathonSponsorGroupedByTierName[newTierName] = [];
+          }
+          this.hackathonSponsorGroupedByTierName[newTierName].push(data);
+        } else {
+          // If the tier name didn't change, simply update the existing entry
+          this.hackathonSponsorGroupedByTierName[tierName][index] = data;
+        }
+
+        this.toasterService.successDialog('Sponsor updated successfully!');
+        this.resetSponsorForm();
+      }
+    });
+  }
+
+  resetSponsorForm() {
+    this.sponsorForm.patchValue({
+      name: '',
+      description: '',
+      logo: null,
+      tier_name: '',
+      link: '',
+      tier_priority: 1,
     });
   }
 }

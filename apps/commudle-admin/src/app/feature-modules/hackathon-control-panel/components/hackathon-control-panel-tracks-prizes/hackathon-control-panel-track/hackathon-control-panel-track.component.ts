@@ -21,7 +21,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   };
   hackathonTracks: IHackathonTrack[];
   hackathonSlug = '';
-
+  isLoading = true;
   tinyMCE = {
     min_height: 200,
     menubar: false,
@@ -79,6 +79,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   indexTracks(hackathonId) {
     this.hackathonService.indexTracks(hackathonId).subscribe((data: IHackathonTrack[]) => {
       this.hackathonTracks = data;
+      this.isLoading = false;
     });
   }
 

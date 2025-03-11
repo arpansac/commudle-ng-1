@@ -1,31 +1,37 @@
-<nb-card>
-  <nb-card-header
-    >Sponsors<commudle-help-section [helpDictionaryName]="'hackathon-sponsors'"></commudle-help-section
-  ></nb-card-header>
+<nb-card class="sponsors-container">
+  <nb-card-header>
+    Sponsors
+    <commudle-help-section [helpDictionaryName]="'hackathon-sponsors'"></commudle-help-section>
+    &nbsp;
+  </nb-card-header>
   <nb-card-body>
-    <div (click)="openSponsorDialogBox(addSponsorDialogBox)" class="add-sponsors-button">
+    <button nbButton status="primary" (click)="openSponsorDialogBox(addSponsorDialogBox)">
       <fa-icon [icon]="icons.faPlus"></fa-icon>
-      <br />
-      <span>Add Sponsors</span>
+      &nbsp; Add Sponsor
+    </button>
+    <div *ngFor="let hackathonSponsorsGrouped of hackathonSponsorGroupedByTierName | keyvalue">
+      <div class="sponsors-cards-container">
+        <h6>{{ hackathonSponsorsGrouped.key }}</h6>
+        <div class="sponsors-cards">
+          <div *ngFor="let hackathonSponsor of hackathonSponsorsGrouped.value; let i = index">
+            <commudle-hackathon-control-panel-sponsor-card
+              [hackathonSponsor]="hackathonSponsor"
+              (destroySponsorEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
+              (editSponsorEvent)="openSponsorDialogBox(addSponsorDialogBox, $event, i)"
+            ></commudle-hackathon-control-panel-sponsor-card>
+          </div>
+        </div>
+      </div>
     </div>
   </nb-card-body>
-  <nb-card-footer class="sponsors-card" *ngIf="hackathonSponsors && hackathonSponsors.length > 0">
-    <div *ngFor="let hackathonSponsor of hackathonSponsors; let i = index">
-      <commudle-hackathon-control-panel-sponsor-card
-        [hackathonSponsor]="hackathonSponsor"
-        (destroySponsorEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
-        (editSponsorEvent)="openSponsorDialogBox(addSponsorDialogBox, $event, i)"
-      ></commudle-hackathon-control-panel-sponsor-card>
-    </div>
-  </nb-card-footer>
 </nb-card>
 
 <ng-template #addSponsorDialogBox let-ref="dialogRef" let-data>
   <nb-card class="sponsor-form-dialog-box">
     <nb-card-header class="actions">
       <span>{{ data.sponsor ? 'Edit Sponsor' : 'Add Sponsor' }}</span>
-      <button nbButton ghost shape="round" size="tiny" (click)="ref.close(); sponsorForm.reset()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -49,13 +55,15 @@
         <div>
           <label for="tier_priority">Tier Priority*</label>
           <br />
-          <select name="tier_priority" formControlName="tier_priority">
-            <option [value]="1">1 (Highest)</option>
-            <option [value]="2">2</option>
-            <option [value]="3">3</option>
-            <option [value]="4">4</option>
-            <option [value]="5">5 (Lowest)</option>
-          </select>
+          <div class="select">
+            <select name="tier_priority" formControlName="tier_priority">
+              <option [value]="1">1 (Highest)</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+              <option [value]="5">5 (Lowest)</option>
+            </select>
+          </div>
           <!-- <input placeholder="Tier name" nbInput fullWidth formControlName="tier_priority" type="number" /> -->
           <commudle-alert
             *ngIf="
@@ -64,7 +72,7 @@
               sponsorForm.controls['tier_priority'].hasError('required')
             "
             [error]="true"
-            errorMessage="Tier name is required"
+            errorMessage="Tier Priority is required"
           ></commudle-alert>
         </div>
 
@@ -159,12 +167,15 @@
       <button
         nbButton
         status="primary"
-        (click)="data.sponsor ? updateSponsor(data.sponsor.id, data.index) : createSponsor(); ref.close()"
+        (click)="
+          data.sponsor ? updateSponsor(data.sponsor.id, data.index, data.sponsor.tier_name) : createSponsor();
+          ref.close()
+        "
         [disabled]="sponsorForm.invalid"
       >
         {{ data.sponsor ? 'Update' : 'Save' }}
       </button>
-      <button nbButton status="danger" outline (click)="ref.close(); sponsorForm.reset()">Cancel</button>
+      <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>
@@ -173,8 +184,8 @@
   <nb-card>
     <nb-card-header class="actions">
       <span>Confirm delete Sponsor</span>
-      <button nbButton ghost (click)="ref.close()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>Are you sure, you want to delete sponsor?</nb-card-body>
