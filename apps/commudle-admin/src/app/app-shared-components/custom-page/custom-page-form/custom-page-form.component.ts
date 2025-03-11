@@ -29,7 +29,6 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
   imagesList = [];
 
   subscriptions: Subscription[] = [];
-  customPage: ICustomPage;
   @ViewChild('cancelDialogBox') cancelDialogBox: TemplateRef<any>;
   tinyMCE = {
     min_height: 500,
@@ -113,11 +112,11 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  uploadTextImage(blobInfo, progress) {
+  uploadTextImage(blobInfo) {
     const promise = new Promise<any>((resolve, reject) => {
       const formData: any = new FormData();
       formData.append('image', blobInfo.blob());
-      this.customPageService.attachImage(this.customPage.id, formData).subscribe({
+      this.customPageService.attachImage(formData).subscribe({
         next: (res: any) => {
           this.imagesList.push({ value: res });
           resolve(res);
@@ -180,7 +179,6 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
       .createNewCustomPage(this.customPageForm.value, this.parentId, this.parentType)
       .subscribe((data) => {
         if (data) {
-          this.customPage = data;
           this.pageCreated.emit(data);
           this.toastrService.successDialog('Page Created');
           if (!this.pageType) this.backPage();
@@ -191,7 +189,6 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
   update() {
     this.customPageService.update(this.customPageForm.value, this.pageSlug).subscribe((data) => {
       if (data) {
-        this.customPage = data;
         this.toastrService.successDialog('Page Updated');
         if (!this.pageType) this.backPage();
       }
