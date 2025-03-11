@@ -298,14 +298,12 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   getEventDataFormEntityGroups(eventId) {
-    console.log('called');
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.controls.registration_selection_type.reset();
 
     this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
-      console.log(this.eventDataFormEntityGroups);
       this.prefillForm('event_data_form_entity_group_id');
     });
   }
@@ -333,9 +331,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.windowRef.close();
   }
 
-  toggleEventSpecificEmail(event) {
+  toggleEventSpecificEmail($event) {
     // if not, then reset the form below the event select
-    switch (event) {
+    switch ($event) {
       case EemailTypes.GENERAL_ALL:
         this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.isEventSpecificEmail = false;
@@ -358,13 +356,11 @@ export class EmailerComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleEventDataFormEntityGroupType($event) {
-    console.log($event, 'called');
+  toggleEventDataFormEntityGroupType(event) {
     this.selectedFormRegistrationType = [];
-    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === $event);
-    console.log(this.eventDataFormEntityGroups.find((k) => k.id === $event));
+    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id == event);
     //here
-    this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup?.id;
+    this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
 
@@ -445,7 +441,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
           break;
 
         case 'event_data_form_entity_group_id':
-          console.log(this.eventDataFormEntityGroupId, 'prefilled');
           if (this.eventDataFormEntityGroupId && !this.prefillCompleted) {
             this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find(
               (k) => k.id === this.eventDataFormEntityGroupId,
