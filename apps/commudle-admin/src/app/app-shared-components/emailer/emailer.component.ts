@@ -3,13 +3,13 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
-import { EventsService } from '../../services/events.service';
+import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { NbWindowRef, NbDialogService } from '@commudle/theme';
-import { EventDataFormEntityGroupsService } from '../../services/event-data-form-entity-groups.service';
-import { EemailTypes } from '../../../../../shared-models/enums/email_types.enum';
-import { EmailsService } from '../../services/emails.service';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
+import { EmailsService } from 'apps/commudle-admin/src/app/services/emails.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { EventSimpleRegistrationsService } from '../../services/event-simple-registrations.service';
+import { EventSimpleRegistrationsService } from 'apps/commudle-admin/src/app/services/event-simple-registrations.service';
 import { IEventSimpleRegistration } from 'apps/shared-models/event_simple_registration.model';
 import { Subscription } from 'rxjs';
 import { EmailerPreviewService } from '@commudle/shared-services';
@@ -359,7 +359,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
   toggleEventDataFormEntityGroupType(event) {
     this.selectedFormRegistrationType = [];
     this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id == event);
-    //here
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
