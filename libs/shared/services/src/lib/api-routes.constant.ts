@@ -427,6 +427,13 @@ export const API_ROUTES = {
   // communication_mailers
   SEND_COMMUNITY_EMAILS: 'api/v2/communication_mailers/community_emails',
 
+  //preview emails
+  EMAIL_PREVIEWS: {
+    COMMUNITY_EMAILS: {
+      EMAIL: 'api/v2/email_previews/community_emails/email',
+    },
+  },
+
   SEARCH: {
     INDEX: 'api/v2/search',
     SCOPE: 'api/v2/search/scope',

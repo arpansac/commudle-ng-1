@@ -52,6 +52,7 @@ import { EventHackathonRegistrationsComponent } from './event-hackathon-registra
 import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { LinkyModule } from 'ngx-linky';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,8 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
     SharedComponentsModule,
     MiniUserProfileModule,
     SharedDirectivesModule,
+    LinkyModule,
+
     //Standalone
     TechSessionsCardComponent,
     EventHorizontalCardComponent,

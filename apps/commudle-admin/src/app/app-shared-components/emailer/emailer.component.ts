@@ -12,6 +12,7 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { EventSimpleRegistrationsService } from '../../services/event-simple-registrations.service';
 import { IEventSimpleRegistration } from 'apps/shared-models/event_simple_registration.model';
 import { Subscription } from 'rxjs';
+import { EmailerPreviewService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-emailer',
@@ -22,6 +23,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   @ViewChild('emailPreview') emailPreview: TemplateRef<any>;
   showEmailFilters = true;
   EemailTypes = EemailTypes;
+  previewData: string;
 
   // external properties received via windowRef
   community: ICommunity;
@@ -254,6 +256,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     private emailsService: EmailsService,
     private toastLogService: LibToastLogService,
     private dialogService: NbDialogService,
+    private emailerPreviewService: EmailerPreviewService,
     protected windowRef: NbWindowRef,
   ) {
     this.eMailForm = this.fb.group({
@@ -276,6 +279,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.prefillForm('event_id');
       } else {
+        this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.prefillForm('general_all');
       }
 
@@ -294,13 +298,14 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   getEventDataFormEntityGroups(eventId) {
-    const selectedEventId = (eventId.target as HTMLSelectElement)?.value;
+    console.log('called');
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.controls.registration_selection_type.reset();
 
-    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(selectedEventId).subscribe((data) => {
+    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
+      console.log(this.eventDataFormEntityGroups);
       this.prefillForm('event_data_form_entity_group_id');
     });
   }
@@ -329,9 +334,8 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEventSpecificEmail(event) {
-    const selectedValue = (event.target as HTMLSelectElement)?.value;
     // if not, then reset the form below the event select
-    switch (selectedValue) {
+    switch (event) {
       case EemailTypes.GENERAL_ALL:
         this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.isEventSpecificEmail = false;
@@ -355,10 +359,12 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEventDataFormEntityGroupType($event) {
-    const selectedValue = Number(($event.target as HTMLSelectElement)?.value);
+    console.log($event, 'called');
     this.selectedFormRegistrationType = [];
-    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === selectedValue);
-    this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
+    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === $event);
+    console.log(this.eventDataFormEntityGroups.find((k) => k.id === $event));
+    //here
+    this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup?.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
 
@@ -372,14 +378,13 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEmailBodyValidation($event) {
-    const selectedValue = ($event.target as HTMLSelectElement)?.value as EemailTypes;
-    this.selectedEmailType = selectedValue;
-    if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes(selectedValue)) {
+    this.selectedEmailType = $event;
+    if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes($event)) {
       this.eMailForm.controls['body'].setValidators([Validators.required]);
     } else {
       this.eMailForm.controls['body'].clearValidators();
     }
-    this.setEmailSubject(selectedValue);
+    this.setEmailSubject($event);
 
     if (this.prefillCompleted) {
       this.recipientUsername = '';
@@ -440,6 +445,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
           break;
 
         case 'event_data_form_entity_group_id':
+          console.log(this.eventDataFormEntityGroupId, 'prefilled');
           if (this.eventDataFormEntityGroupId && !this.prefillCompleted) {
             this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find(
               (k) => k.id === this.eventDataFormEntityGroupId,
@@ -496,25 +502,16 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   previewEmail() {
-    this.isEmailSending = true;
-    this.emailsService.sendEmail(this.eMailForm.value, this.community.id).subscribe(
-      (data) => {
-        this.isEmailSending = false;
-        this.close();
-        this.toastLogService.successDialog('Emails are being delivered!');
-      },
-      (error) => {
-        this.close();
-        this.isEmailSending = false;
-      },
-    );
+    this.emailerPreviewService.previewEmail(this.eMailForm.value, this.community.id).subscribe((result) => {
+      this.previewData = result.preview;
+      this.openEmailPreviewTemplate();
+    });
   }
 
   openEmailPreviewTemplate() {
-    this.dialogService.open(this.emailPreview);
-    // this.dialogService.open(this.emailPreview, {
-    //   closeOnEsc: true,
-    //   closeOnBackdropClick: false,
-    // });
+    this.dialogService.open(this.emailPreview, {
+      closeOnEsc: true,
+      closeOnBackdropClick: false,
+    });
   }
 }
