@@ -116,7 +116,7 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
     const promise = new Promise<any>((resolve, reject) => {
       const formData: any = new FormData();
       formData.append('image', blobInfo.blob());
-      this.customPageService.attachImage(formData).subscribe({
+      this.customPageService.attachImage(formData, this.parentId, this.parentType).subscribe({
         next: (res: any) => {
           this.imagesList.push({ value: res });
           resolve(res);
