@@ -708,10 +708,22 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       {
         this.razorpayService
           .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
-          .subscribe((data) => {
-            this.resetPromoCode();
-            alert('Message from Razorpay:' + response.error.description);
-          });
+          .subscribe(
+            (data) => {
+              this.resetPromoCode();
+              const userConfirmed = confirm('Message from Razorpay:' + response.error.description);
+              if (userConfirmed) {
+                this.reload();
+              } else {
+                this.reload();
+              }
+            },
+            () => {
+              this.dialogService.open(this.paymentErrorDialog, {
+                closeOnBackdropClick: false,
+              });
+            },
+          );
       }
     });
     rzp1.open();
