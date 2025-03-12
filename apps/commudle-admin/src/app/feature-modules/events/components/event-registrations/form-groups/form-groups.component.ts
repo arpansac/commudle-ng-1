@@ -247,6 +247,7 @@ export class FormGroupsComponent implements OnInit {
         event: this.event,
         eventDataFormEntityGroupId: eventDataFormEntityGroup.id,
         mailType: EemailTypes.SEND_LINK,
+        showEmailFilters: false,
       },
     });
   }

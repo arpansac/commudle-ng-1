@@ -1,17 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
-import { EventsService } from '../../services/events.service';
-import { NbWindowRef } from '@commudle/theme';
-import { EventDataFormEntityGroupsService } from '../../services/event-data-form-entity-groups.service';
-import { EemailTypes } from '../../../../../shared-models/enums/email_types.enum';
-import { EmailsService } from '../../services/emails.service';
+import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
+import { NbWindowRef, NbDialogService } from '@commudle/theme';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
+import { EmailsService } from 'apps/commudle-admin/src/app/services/emails.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { EventSimpleRegistrationsService } from '../../services/event-simple-registrations.service';
+import { EventSimpleRegistrationsService } from 'apps/commudle-admin/src/app/services/event-simple-registrations.service';
 import { IEventSimpleRegistration } from 'apps/shared-models/event_simple_registration.model';
 import { Subscription } from 'rxjs';
+import { EmailerPreviewService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-emailer',
@@ -19,7 +20,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./emailer.component.scss'],
 })
 export class EmailerComponent implements OnInit, OnDestroy {
+  @ViewChild('emailPreview') emailPreview: TemplateRef<any>;
+  showEmailFilters = true;
   EemailTypes = EemailTypes;
+  previewData: string;
 
   // external properties received via windowRef
   community: ICommunity;
@@ -50,6 +54,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     height: 200,
     menubar: false,
     convert_urls: false,
+    placeholder: 'Add your email message',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
     plugins: [
@@ -250,11 +255,13 @@ export class EmailerComponent implements OnInit, OnDestroy {
     private eventSimpleRegistrationsService: EventSimpleRegistrationsService,
     private emailsService: EmailsService,
     private toastLogService: LibToastLogService,
+    private dialogService: NbDialogService,
+    private emailerPreviewService: EmailerPreviewService,
     protected windowRef: NbWindowRef,
   ) {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
-      event_id: [null],
+      event_id: [''],
       event_data_form_entity_group_id: [null],
       event_simple_registration_id: [null],
       registration_selection_type: [''],
@@ -272,6 +279,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.prefillForm('event_id');
       } else {
+        this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.prefillForm('general_all');
       }
 
@@ -348,9 +356,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleEventDataFormEntityGroupType($event) {
+  toggleEventDataFormEntityGroupType(event) {
     this.selectedFormRegistrationType = [];
-    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id === $event);
+    this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id == event);
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
@@ -485,5 +493,19 @@ export class EmailerComponent implements OnInit, OnDestroy {
         this.isEmailSending = false;
       },
     );
+  }
+
+  previewEmail() {
+    this.emailerPreviewService.previewEmail(this.eMailForm.value, this.community.id).subscribe((result) => {
+      this.previewData = result.preview;
+      this.openEmailPreviewTemplate();
+    });
+  }
+
+  openEmailPreviewTemplate() {
+    this.dialogService.open(this.emailPreview, {
+      closeOnEsc: true,
+      closeOnBackdropClick: false,
+    });
   }
 }
