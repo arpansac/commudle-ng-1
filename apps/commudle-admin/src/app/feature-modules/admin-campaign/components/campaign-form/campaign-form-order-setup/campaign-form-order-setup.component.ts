@@ -135,7 +135,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFileChange(event: any, index: number) {
     const file = (event.target as HTMLInputElement).files?.[0];
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -151,19 +150,44 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
     if (file.size > maxSize) {
       this.toasterService.warningDialog('The image size should not exceed 2 MB.');
-      event.target = '';
+      event.target.value = '';
       return;
     }
 
-    // Ensure `campaignAssets` is correctly accessed as FormArray
-    const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
-    if (campaignAssets && campaignAssets.at(index)) {
-      campaignAssets.at(index).patchValue({ image: file });
-      campaignAssets.at(index).get('image')?.updateValueAndValidity();
+    // Check for image dimensions
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      if (
+        img.width !== this.campaign.campaign_type.image_dimension.width ||
+        img.height !== this.campaign.campaign_type.image_dimension.height
+      ) {
+        this.toasterService.warningDialog(
+          'Image must be exactly ' +
+            this.campaign.campaign_type.image_dimension.width +
+            ' X ' +
+            this.campaign.campaign_type.image_dimension.height +
+            ' pixels.',
+        );
+        event.target.value = ''; // Reset input field
+        return;
+      }
 
-      // Display image preview
-      this.previewImage(file, index);
-    }
+      // Ensure `campaignAssets` is correctly accessed as FormArray
+      const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
+      if (campaignAssets && campaignAssets.at(index)) {
+        campaignAssets.at(index).patchValue({ image: file });
+        campaignAssets.at(index).get('image')?.updateValueAndValidity();
+
+        // Display image preview
+        this.previewImage(file, index);
+      }
+    };
+
+    img.onerror = () => {
+      this.toasterService.warningDialog('Invalid image file.');
+      event.target.value = '';
+    };
   }
 
   previewImage(file: File, i) {

@@ -135,7 +135,7 @@
     <nb-card-body>
       <commudle-alert
         [info]="true"
-        message="Continue serving until the full budget is exhausted (even if going past the end date). Note that all ads are subject to approval by the publisher."
+        message="Ad will be served to users every day from the start to end time of that selected day. For Example: Start Date: 1 Jan 2025, End Date: 15 Jan 2025 Start Time: 10am, End Time: 12pm This sample schedule will show the Ad to the user every day from 1st Jan 2025 to 15th Jan 2025 between 10am to 12pm only. Select your Ad schedule accordingly."
       ></commudle-alert>
       <br />
       <div class="form">
@@ -190,7 +190,7 @@
 
           <!-- start time -->
           <div>
-            <label for="start_time">Select Starting time<span class="required"> *</span></label>
+            <label for="start_time">Daily Start Time<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
@@ -212,7 +212,7 @@
 
           <!-- end time -->
           <div>
-            <label for="end_time">Select Ending Time<span class="required"> *</span></label>
+            <label for="end_time">Daily End Time<span class="required"> *</span></label>
             <br />
             <div class="input">
               <commudle-input
@@ -252,7 +252,7 @@
             <span class="per-day">Per Minute</span>
           </div>
           <div>
-            <label for="budget">Your estimated budget</label>
+            <label for="budget">Your Estimated Cost</label>
             <br />
             <div class="budget-amount">
               <div class="budget">${{ campaignForm.get('budget').value }}</div>
@@ -333,23 +333,29 @@
                   accept="image/png, image/jpeg, image/jpg"
                 />
               </div>
-              <p class="image-info">(Allowed 1280x720, PNG, JPG, max 2MB)</p>
+              <p class="image-info">
+                (Allowed {{ campaign.campaign_type.image_dimension.width }} X
+                {{ campaign.campaign_type.image_dimension.height }}, PNG, JPG, max 2MB)
+              </p>
               <br />
-              <!-- Headline -->
-              <label for="headline-{{ i }}">Headline <span class="required"> *</span></label>
+              <!-- Description -->
+              <label for="headline-{{ i }}">Description <span class="required"> *</span></label>
               <br />
               <!-- <input id="headline-{{ i }}" type="text" formControlName="headline" /> -->
               <div class="creative-assets-input">
                 <textarea
                   id="headline-{{ i }}"
-                  placeholder="A very long line of text which is expected to span more than two to three lines so it breaks as the text increases."
+                  placeholder="Add a brief description, it help with SEO"
                   formControlName="headline"
                 ></textarea>
               </div>
               <br />
 
               <!-- url -->
-              <label for="url-{{ i }}">Add Link <span class="required"> *</span></label>
+              <label for="url-{{ i }}"
+                >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
+                <span class="required"> *</span></label
+              >
               <br />
               <!-- <input id="url-{{ i }}" type="text" formControlName="url" /> -->
               <div class="creative-assets-input">

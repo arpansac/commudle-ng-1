@@ -17,6 +17,7 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
     faArrowRight,
   };
   moment = moment;
+  consent = false;
   @ViewChild('submissionCampaign') submissionCampaignDialog: TemplateRef<any>;
 
   constructor(
@@ -28,6 +29,9 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
+      if (this.campaign.status === ECampaignStatus.SUBMITTED) {
+        this.consent = true;
+      }
     });
   }
 

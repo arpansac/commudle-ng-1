@@ -16,12 +16,13 @@
         <p class="heading">Name</p>
         <p class="value">{{ campaign?.name }}</p>
       </div>
-      <div>
+      <div class="date-section">
         <p class="heading">Date</p>
         <p class="value">
-          Start Date: <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span>
-          <br />
-          End Date: <span>{{ moment(campaign.end_date).format('MMM Do, YYYY') }}</span>
+          From <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span> to
+          <span>{{ moment(campaign.end_date).format('MMM Do, YYYY') }}</span> between
+          <span> {{ campaign.start_time }}</span> and
+          <span>{{ campaign.end_time }}</span>
         </p>
       </div>
       <div>
@@ -41,17 +42,30 @@
       </div>
     </nb-card-body>
   </nb-card>
+  <commudle-alert
+    [info]="true"
+    message="All ads are subject to approval from our team. In case of any changes needed or rejection, you will be notified by email"
+  ></commudle-alert>
+  <br />
+  <nb-checkbox [(ngModel)]="consent" status="basic">
+    By submitting this ad for approval you confirm that you have read our privacy policy and terms & conditions. You
+    also understand that all the information provided here is correct and does not pose any harm to anyone who visits
+    Commudle.
+  </nb-checkbox>
+
+  <br />
   <br />
   <div class="next-button">
-    <button nbButton status="primary" shape="semi-round" (click)="submitForApproval()">
+    <button nbButton status="primary" (click)="submitForApproval()" [disabled]="!consent">
       Submit for Approval &nbsp;
       <fa-icon [icon]="icons.faArrowRight"></fa-icon>
     </button>
   </div>
 </div>
 
-<ng-template #submissionCampaign>
+<ng-template #submissionCampaign let-ref="dialogRef">
   <nb-card class="submission-dialog">
+    <nb-card-header>Your Campaign is submitted for approval</nb-card-header>
     <nb-card-body>
       Your Campaign have Been submit, We will shortly give response Thank You for submitting your campaign.
       <br />
@@ -67,5 +81,8 @@
       <br />
       Stay Tuned!
     </nb-card-body>
+    <nb-card-footer>
+      <button (click)="ref.close()" routerLink="/campaigns" nbButton status="primary">Go To My Ad Campaigns</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>
