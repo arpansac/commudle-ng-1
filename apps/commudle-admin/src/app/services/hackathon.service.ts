@@ -447,9 +447,9 @@ export class HackathonService {
     });
   }
 
-  pIndexSponsors(hackathonId): Observable<IHackathonSponsor[]> {
+  pIndexSponsors(hackathonId): Observable<IHackathonSponsorGroupedByTierName> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<IHackathonSponsor[]>(
+    return this.http.get<IHackathonSponsorGroupedByTierName>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.INDEX_SPONSORS),
       {
         params,

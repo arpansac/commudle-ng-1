@@ -59,9 +59,23 @@
           </h2>
         </nb-card-header>
         <nb-card-body class="sponsors-cards">
-          <div *ngFor="let sponsor of sponsors" class="sponsor-card">
-            <img [src]="sponsor.sponsor.logo.url" [alt]="sponsor.sponsor.name" />
-            <div class="name">{{ sponsor.sponsor.name }}</div>
+          <div *ngFor="let hackathonSponsorGrouped of hackathonSponsorGroupedByTierName | keyvalue">
+            <span class="sponsor-group-name"> {{ hackathonSponsorGrouped.key }}</span>
+            <div class="sponsor-card-container">
+              <div
+                *ngFor="let hackathonSponsor of hackathonSponsorGrouped.value"
+                class="sponsor-card"
+                [nbTooltip]="hackathonSponsor.sponsor.description"
+              >
+                <a
+                  [href]="hackathonSponsor.sponsor.link"
+                  [ngClass]="{ 'com-pointer-events-none': !hackathonSponsor.sponsor.link }"
+                >
+                  <img [src]="hackathonSponsor.sponsor.logo.url" [alt]="hackathonSponsor.sponsor.name" />
+                  <div class="name">{{ hackathonSponsor.sponsor.name }}</div>
+                </a>
+              </div>
+            </div>
           </div>
         </nb-card-body>
       </nb-card>
