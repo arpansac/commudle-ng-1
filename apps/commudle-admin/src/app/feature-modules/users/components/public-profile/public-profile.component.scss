@@ -27,3 +27,11 @@
     width: calc(100% + 30px);
   }
 }
+
+.two-column-layout {
+  @apply com-mt-6;
+}
+
+.main-column {
+  @apply md:com-mr-[30px] com-mr-0;
+}

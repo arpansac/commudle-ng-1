@@ -4,13 +4,24 @@ p {
 }
 
 .user-details-container {
-  @apply com-mb-0 com-rounded-bl-none com-rounded-br-none;
+  @apply com-m-0 com-rounded-bl-none com-rounded-br-none;
 
   nb-card-body {
     @apply com-p-0;
+
+    .profile-header {
+      @apply com-p-6;
+
+      .action-btn-mobile {
+        @apply com-flex com-space-x-2 com-mt-4;
+      }
+
+      .avtar-follow {
+        @apply com-flex com-items-end;
+      }
+    }
     .user-avatar {
-      @apply md:com-h-[180px] md:com-w-[180px] com-bg-white com-rounded-full com-relative com-z-50 -com-mt-24;
-      @apply com-relative com-z-50 -com-mt-20 md:-com-mt-24;
+      @apply md:com-h-[140px] md:com-w-[140px] com-rounded-full com-relative com-z-50 -com-mt-20 md:-com-mt-24;
       .avatar {
         @apply md:com-m-2px com-block com-h-40 com-w-40 md:com-h-44 md:com-w-44 com-rounded-full com-object-cover com-object-center com-mx-auto com-border com-border-solid com-border-gray-300;
       }

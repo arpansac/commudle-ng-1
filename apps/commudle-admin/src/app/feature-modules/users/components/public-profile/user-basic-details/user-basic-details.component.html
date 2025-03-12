@@ -1,9 +1,9 @@
 <nb-card class="user-details-container">
   <nb-card-body *ngIf="user">
     <app-user-cover-photo [user]="user" (coverImageUpdate)="updateProfile.emit()"></app-user-cover-photo>
-    <div class="com-px-6 com-pb-4">
+    <div class="profile-header">
       <div class="com-flex com-flex-col com-items-center md:com-flex-row md:com-justify-between md:com-items-end">
-        <div class="com-flex com-items-end">
+        <div class="avtar-follow">
           <div class="user-avatar">
             <img [alt]="user.name" [src]="user.avatar" [title]="user.name" class="avatar" />
           </div>
@@ -17,7 +17,7 @@
             class="com-ml-6 com-mb-4"
           ></app-user-follow>
         </div>
-        <div class="com-flex com-space-x-2 com-mt-4">
+        <div class="action-btn-mobile">
           <app-user-follow
             *appBreakpoints="'<=md'"
             (userFollowed)="updateProfile.emit()"
