@@ -9,6 +9,7 @@ import {
   NbRouteTabsetModule,
   NbStepperModule,
   NbIconModule,
+  NbTooltipModule,
 } from '@commudle/theme';
 import { PublicHackathonHomepageComponent } from './components/public-hackathon-homepage/public-hackathon-homepage.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -47,6 +48,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     NbRouteTabsetModule,
     NbStepperModule,
     NbIconModule,
+    NbTooltipModule,
     FontAwesomeModule,
     SharedComponentsModule,
     NewSharedComponentsModule,

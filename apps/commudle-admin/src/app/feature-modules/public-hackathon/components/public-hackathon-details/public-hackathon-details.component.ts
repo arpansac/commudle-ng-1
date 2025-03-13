@@ -16,7 +16,7 @@ import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discuss
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
-import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
+import { IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import moment from 'moment';
@@ -31,7 +31,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   community: ICommunity;
   EDbModels = EDbModels;
-  sponsors: IHackathonSponsor[];
+  hackathonSponsorGroupedByTierName: IHackathonSponsorGroupedByTierName;
   faqs: IFaq[];
   tracks: IHackathonTrack[];
   discussionChat: IDiscussion;
@@ -115,7 +115,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   getSponsors() {
     this.subscriptions.push(
       this.hackathonService.pIndexSponsors(this.hackathon.id).subscribe((data) => {
-        this.sponsors = data;
+        this.hackathonSponsorGroupedByTierName = data;
       }),
     );
   }
