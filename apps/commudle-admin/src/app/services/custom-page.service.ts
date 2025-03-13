@@ -140,8 +140,21 @@ export class CustomPageService {
     );
   }
 
-  attachImage(image): Observable<boolean> {
-    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CUSTOM_PAGES.ATTACH_TEXT_IMAGE), image);
+  attachImage(image, parentId, parentType: EDbModels): Observable<boolean> {
+    let params = new HttpParams();
+    switch (parentType) {
+      case EDbModels.KOMMUNITY: {
+        params = params.set('community_id', parentId);
+        break;
+      }
+      case EDbModels.COMMUNITY_GROUP: {
+        params = params.set('community_group_id', parentId);
+        break;
+      }
+    }
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CUSTOM_PAGES.ATTACH_TEXT_IMAGE), image, {
+      params,
+    });
   }
 
   getRefundPolicyPage(parentId, parentType: EDbModels) {
