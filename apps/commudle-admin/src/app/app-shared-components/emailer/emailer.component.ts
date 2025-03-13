@@ -262,7 +262,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
       event_id: [''],
-      event_data_form_entity_group_id: [null],
+      event_data_form_entity_group_id: [''],
       event_simple_registration_id: [null],
       registration_selection_type: [''],
       resend: [false],
@@ -279,7 +279,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.prefillForm('event_id');
       } else {
-        this.selectedEmailType = EemailTypes.GENERAL_ALL;
+        // this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.prefillForm('general_all');
       }
 
@@ -333,6 +333,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   toggleEventSpecificEmail($event) {
     // if not, then reset the form below the event select
+    console.log($event);
     switch ($event) {
       case EemailTypes.GENERAL_ALL:
         this.selectedEmailType = EemailTypes.GENERAL_ALL;
@@ -357,22 +358,32 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEventDataFormEntityGroupType(event) {
+    console.log(event, 'event');
     this.selectedFormRegistrationType = [];
     this.selectedEventDataFormEntityGroup = this.eventDataFormEntityGroups.find((k) => k.id == event);
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
+    console.log(this.selectedFormRegistrationType, 'selected');
+    console.log(this.eMailForm.value, 'form');
+    console.log(this.mailType, 'type');
 
     if (this.mailType && !this.prefillCompleted) {
       this.eMailForm.patchValue({
+        // registration_selection_type: this.selectedFormRegistrationType[0]?.value || '', // Set to first option or empty
         registration_selection_type: this.mailType,
       });
       this.toggleEmailBodyValidation(this.mailType);
       this.prefillCompleted = true;
     }
+    // this.eMailForm.patchValue({
+    //   registration_selection_type: this.selectedFormRegistrationType[0]?.value || '', // Set to first option or empty
+    // });
   }
 
   toggleEmailBodyValidation($event) {
+    console.log($event);
+    console.log(this.eMailForm, 'form');
     this.selectedEmailType = $event;
     if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes($event)) {
       this.eMailForm.controls['body'].setValidators([Validators.required]);
