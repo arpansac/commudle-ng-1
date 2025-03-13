@@ -53,7 +53,7 @@
               </option>
             </select>
 
-            <!-- <select
+            <select
               *ngIf="eventSimpleRegistration"
               (change)="toggleEmailBodyValidation($any($event.target).value)"
               formControlName="registration_selection_type"
@@ -63,7 +63,7 @@
               <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
                 {{ reg.display }}
               </option>
-            </select> -->
+            </select>
           </div>
         </div>
       </div>
@@ -122,15 +122,6 @@
       >
       <editor [init]="tinyMCE" formControlName="body"> </editor>
     </div>
-    <h1>{{ selectedEventDataFormEntityGroup || eventSimpleRegistration }}1</h1>
-    <h1>{{ !eMailForm.get('registration_selection_type').value }}2</h1>
-    <h1>
-      {{
-        (selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
-          !eMailForm.get('registration_selection_type').value
-      }}3
-    </h1>
-    <h1>{{ !!(selectedEventDataFormEntityGroup || eventSimpleRegistration) }} 4</h1>
     <div class="action-btns">
       <button
         (click)="previewEmail(); $event.stopPropagation()"
@@ -156,7 +147,8 @@
           isEmailSending ||
           (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
           (eventDataFormEntityGroups.length > 0 && !eMailForm.get('event_data_form_entity_group_id').value) ||
-          (isEventSpecificEmail && !eMailForm.get('registration_selection_type').value)
+          ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
+            !eMailForm.get('registration_selection_type').value)
         "
         fullWidth
         nbButton
