@@ -8,7 +8,7 @@
             {{ header.heading }}
           </h1>
           <p *ngIf="header.sub_heading" class="sub-heading">{{ header.sub_heading }}</p>
-          <div *ngIf="richText" [innerHTML]="richText" class="content"></div>
+          <div *ngIf="richText" [innerHTML]="richText | safe : 'html'" class="inner-html"></div>
         </div>
         <ng-container *ngIf="header?.image_link">
           <a class="header-image" [href]="header.image_link">
