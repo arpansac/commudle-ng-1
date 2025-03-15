@@ -49,6 +49,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   isEmailSending = false;
+  selectedEventId: number;
 
   tinyMCE = {
     height: 200,
@@ -297,6 +298,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   getEventDataFormEntityGroups(eventId) {
+    this.selectedEventId = eventId;
+    console.log(eventId);
+    console.log(this.event?.name);
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
@@ -378,6 +382,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEmailBodyValidation($event) {
+    console.log($event);
     this.selectedEmailType = $event;
     if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes($event)) {
       this.eMailForm.controls['body'].setValidators([Validators.required]);
@@ -392,20 +397,23 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   setEmailSubject(emailType) {
+    const selectedEvent = this.events.find((k) => k.id == this.selectedEventId);
+    console.log(this.events);
+    console.log(selectedEvent);
     let subjectLine = '';
     switch (emailType) {
       case EemailTypes.ENTRY_PASS:
-        subjectLine = `ENTRY PASS :: ${this.event?.name}`;
+        subjectLine = `ENTRY PASS :: ${selectedEvent.name}`;
         break;
       case EemailTypes.SEND_LINK:
         if (this.selectedEventDataFormEntityGroup) {
-          subjectLine = `${this.selectedEventDataFormEntityGroup?.name} :: ${this.event?.name}`;
+          subjectLine = `${this.selectedEventDataFormEntityGroup?.name} :: ${selectedEvent.name}`;
         } else {
-          subjectLine = `${this.event?.name}  :: [${this.community?.name}]`;
+          subjectLine = `${selectedEvent.name}  :: [${this.community?.name}]`;
         }
         break;
       case EemailTypes.RSVP:
-        subjectLine = `RSVP :: ${this.event?.name} :: Reserve your seat`;
+        subjectLine = `RSVP :: ${selectedEvent.name} :: Reserve your seat`;
         break;
       default:
         subjectLine = '';
