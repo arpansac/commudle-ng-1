@@ -279,7 +279,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.prefillForm('event_id');
       } else {
-        this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.prefillForm('general_all');
       }
 
@@ -370,6 +369,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
 
     if (this.mailType && !this.prefillCompleted) {
+      this.eMailForm.patchValue({
+        registration_selection_type: this.mailType,
+      });
       this.toggleEmailBodyValidation(this.mailType);
       this.prefillCompleted = true;
     }
@@ -393,17 +395,17 @@ export class EmailerComponent implements OnInit, OnDestroy {
     let subjectLine = '';
     switch (emailType) {
       case EemailTypes.ENTRY_PASS:
-        subjectLine = `ENTRY PASS :: ${this.event.name}`;
+        subjectLine = `ENTRY PASS :: ${this.event?.name}`;
         break;
       case EemailTypes.SEND_LINK:
         if (this.selectedEventDataFormEntityGroup) {
-          subjectLine = `${this.selectedEventDataFormEntityGroup.name} :: ${this.event.name}`;
+          subjectLine = `${this.selectedEventDataFormEntityGroup?.name} :: ${this.event?.name}`;
         } else {
-          subjectLine = `${this.event.name}  :: [${this.community.name}]`;
+          subjectLine = `${this.event?.name}  :: [${this.community?.name}]`;
         }
         break;
       case EemailTypes.RSVP:
-        subjectLine = `RSVP :: ${this.event.name} :: Reserve your seat`;
+        subjectLine = `RSVP :: ${this.event?.name} :: Reserve your seat`;
         break;
       default:
         subjectLine = '';

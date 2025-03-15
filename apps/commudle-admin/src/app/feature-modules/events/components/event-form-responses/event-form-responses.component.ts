@@ -346,7 +346,7 @@ export class EventFormResponsesComponent implements OnInit {
 
   openRSVPEmailWindow() {
     this.windowService.open(EmailerComponent, {
-      title: `Send RSVP To All Shortlisted`,
+      title: `Send Mail`,
       context: {
         community: this.community,
         event: this.event,
@@ -358,7 +358,7 @@ export class EventFormResponsesComponent implements OnInit {
 
   openEntryPassEmailWindow() {
     this.windowService.open(EmailerComponent, {
-      title: `Send Entry Pass All Confirmed`,
+      title: `Send Mail`,
       context: {
         community: this.community,
         event: this.event,

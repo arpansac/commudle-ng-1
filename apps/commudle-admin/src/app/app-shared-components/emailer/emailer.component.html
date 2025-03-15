@@ -47,7 +47,7 @@
               (change)="toggleEmailBodyValidation($any($event.target).value)"
               formControlName="registration_selection_type"
             >
-              <option value="" selected disabled>Let's Be Specific!</option>
+              <option value="" disabled selected>Let's Be Specific!</option>
               <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
                 {{ reg.display }}
               </option>
@@ -84,6 +84,7 @@
         </label>
         <label *ngIf="!recipientUsername" for="recipient_email" class="label">To</label>
         <input
+          *ngIf="!recipientUsername"
           formControlName="recipient_email"
           fullWidth
           nbInput
