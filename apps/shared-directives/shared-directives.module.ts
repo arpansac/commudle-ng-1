@@ -6,7 +6,7 @@ import { HighlightLinksDirective } from './highlight-links.directive';
 import { LazyLoadImagesDirective } from './lazy-load-images.directive';
 import { TextareaAutoresizeDirective } from './textarea-autoresize.directive';
 import { LongPressDirective } from './longpress.directive';
-
+import { ActivityFeedDirective } from './activity-feed.directive';
 @NgModule({
   declarations: [
     ClickOutsideDirective,
@@ -15,6 +15,7 @@ import { LongPressDirective } from './longpress.directive';
     BreakpointsDirective,
     TextareaAutoresizeDirective,
     LongPressDirective,
+    ActivityFeedDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -24,6 +25,7 @@ import { LongPressDirective } from './longpress.directive';
     BreakpointsDirective,
     TextareaAutoresizeDirective,
     LongPressDirective,
+    ActivityFeedDirective,
   ],
 })
 export class SharedDirectivesModule {}

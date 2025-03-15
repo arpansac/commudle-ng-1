@@ -993,4 +993,8 @@ export const API_ROUTES = {
     SHOW: 'api/v2/purchase_orders/show', //GET
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
   },
+
+  USER_ENGAGEMENT_RECORDS: {
+    CREATE: 'api/v2/uerec',
+  },
 };
