@@ -669,6 +669,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
         event_id: this.event.id,
         user_email: this.currentUser.email,
         edfeg_id: this.dataFormEntity.entity_id,
+        discount_code: this.promoCode.toUpperCase(),
       },
       handler: (response: any) => {
         {
