@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
 import { SharedComponentsModule } from '@commudle/shared-components';
-import { CampaignTypeSlug } from '@commudle/shared-models';
+import { ECampaignTypeSlug } from '@commudle/shared-models';
+
 @Component({
   selector: 'commudle-listing-page-header',
   standalone: true,
@@ -15,7 +16,7 @@ export class ListingPageHeaderComponent implements OnInit {
   @Input() parentType: string;
   header: IListingPageHeader;
   richText: string;
-  CampaignTypeSlug = CampaignTypeSlug;
+  CampaignTypeSlug = ECampaignTypeSlug;
 
   constructor(private cmsService: CmsService) {}
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ICampaign } from '@commudle/shared-models';
+import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
 import { CampaignService, UserEngagementRecordsService } from '@commudle/shared-services';
 
 @Component({
@@ -17,6 +17,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
   slidesCount = 0;
   private intervalId: any;
   userEngagementRecordForm: FormGroup;
+  UserActivityEventType = EUserActivityEventType;
 
   constructor(
     private campaignService: CampaignService,
@@ -39,6 +40,11 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
           this.campaign = data;
           this.slidesCount = this.campaign.campaign_assets.length;
           this.startAutoSlide();
+          this.userEngagementRecordForm.patchValue({
+            parent_id: this.campaign.id,
+            parent_type: EDbModels.CAMPAIGN,
+          });
+          this.createUserEngagement(EUserActivityEventType.USER_VIEW);
         }
       });
     }
@@ -68,7 +74,21 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
     }
   }
 
-  createUserEngagement() {
-    this.uerService.userEngagementRecords(this.userEngagementRecordForm).subscribe((data) => {});
+  onClick() {
+    this.createUserEngagement(EUserActivityEventType.USER_CLICK);
+  }
+
+  createUserEngagement(eventType) {
+    if (this.campaign) {
+      this.userEngagementRecordForm.patchValue({
+        event_type: eventType,
+        parent_id: this.campaign.id,
+        parent_type: EDbModels.CAMPAIGN,
+        url: window.location.href,
+      });
+      this.uerService
+        .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
+        .subscribe();
+    }
   }
 }

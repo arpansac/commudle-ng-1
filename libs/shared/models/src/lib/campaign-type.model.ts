@@ -11,6 +11,7 @@ export interface ICampaignType {
   slug: string;
 }
 
-export enum CampaignTypeSlug {
+export enum ECampaignTypeSlug {
   COMMUNITY_PAGE_HEADER = 'community_page_header',
+  EVENT_BANNER_IMAGE = 'event_banner_image',
 }
