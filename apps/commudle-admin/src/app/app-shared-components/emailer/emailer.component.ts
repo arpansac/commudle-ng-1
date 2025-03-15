@@ -299,8 +299,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   getEventDataFormEntityGroups(eventId) {
     this.selectedEventId = eventId;
-    console.log(eventId);
-    console.log(this.event?.name);
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
@@ -382,7 +380,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   toggleEmailBodyValidation($event) {
-    console.log($event);
     this.selectedEmailType = $event;
     if (![EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes($event)) {
       this.eMailForm.controls['body'].setValidators([Validators.required]);
@@ -398,8 +395,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   setEmailSubject(emailType) {
     const selectedEvent = this.events.find((k) => k.id == this.selectedEventId);
-    console.log(this.events);
-    console.log(selectedEvent);
     let subjectLine = '';
     switch (emailType) {
       case EemailTypes.ENTRY_PASS:
