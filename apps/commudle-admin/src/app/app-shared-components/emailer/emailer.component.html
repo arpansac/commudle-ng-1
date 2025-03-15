@@ -31,7 +31,7 @@
               formControlName="event_data_form_entity_group_id"
               name="event_data_form_entity_group_id"
             >
-              <option value="null" selected disabled>Select Form</option>
+              <option value="" selected disabled>Select Form</option>
               <option *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
                 {{ edfeg.name }}
               </option>
@@ -46,7 +46,6 @@
               *ngIf="selectedEventDataFormEntityGroup"
               (change)="toggleEmailBodyValidation($any($event.target).value)"
               formControlName="registration_selection_type"
-              name="registration_selection_type"
             >
               <option value="" selected disabled>Let's Be Specific!</option>
               <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
@@ -79,13 +78,11 @@
     >
       <div>
         <label *ngIf="recipientUsername" class="label">
-          To<span class="mandatory-field">*</span>
+          To
           <br />
           <b>Selected Username</b>: <u>{{ recipientUsername }}</u>
         </label>
-        <label *ngIf="!recipientUsername" for="recipient_email" class="label"
-          >To<span class="mandatory-field">*</span></label
-        >
+        <label *ngIf="!recipientUsername" for="recipient_email" class="label">To</label>
         <input
           formControlName="recipient_email"
           fullWidth
@@ -120,29 +117,17 @@
       </span>
     </div>
     <div class="fieldset">
-      <label class="label">Message From Organizers<span class="mandatory-field">*</span></label>
-      <span
-        *ngIf="
-          eMailForm['controls'].body.touched &&
-          eMailForm['controls'].body.invalid &&
-          eMailForm['controls'].body.errors.required
-        "
+      <label class="label"
+        >Message From Organizers<span *ngIf="!isEventSpecificEmail" class="mandatory-field">*</span></label
       >
-        <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-      </span>
       <editor [init]="tinyMCE" formControlName="body"> </editor>
     </div>
-
     <div class="action-btns">
       <button
         (click)="previewEmail(); $event.stopPropagation()"
         [disabled]="
           !eMailForm.valid ||
           isEmailSending ||
-          ([EemailTypes.GENERAL_ALL, EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes(
-            selectedEmailType
-          ) == true &&
-            !eMailForm.get('recipient_email').value) ||
           (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
           (eventDataFormEntityGroups.length > 0 && !eMailForm.get('event_data_form_entity_group_id').value) ||
           ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
@@ -157,7 +142,14 @@
       </button>
       <button
         (click)="submitForm()"
-        [disabled]="!eMailForm.valid || isEmailSending"
+        [disabled]="
+          !eMailForm.valid ||
+          isEmailSending ||
+          (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
+          (eventDataFormEntityGroups.length > 0 && !eMailForm.get('event_data_form_entity_group_id').value) ||
+          ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
+            !eMailForm.get('registration_selection_type').value)
+        "
         fullWidth
         nbButton
         status="primary"
@@ -179,7 +171,13 @@
     ></nb-card-header>
     <nb-card-body>
       <p class="sample-preview">This is a preview of your email</p>
-      <div [innerHTML]="previewData | linky : { sanitizeHtml: false }" class="inner-html"></div>
+      <div class="info-message">
+        <commudle-alert
+          [info]="true"
+          message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
+        ></commudle-alert>
+      </div>
+      <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div>
     </nb-card-body>
     <nb-card-footer>
       <button nbButton status="primary" shape="semi-round" (click)="ref.close()">Close</button>

@@ -54,7 +54,7 @@ select {
 }
 
 .template-card {
-  @apply com-m-0 com-p-0 md:com-w-[600px] com-h-full md:com-max-h-[90dvh] com-w-full com-overflow-y-auto;
+  @apply com-m-0 com-p-0 md:com-w-[650px] com-h-full md:com-max-h-[90dvh] com-w-full com-overflow-y-auto;
 
   nb-card-header {
     @apply com-flex com-items-center com-justify-between com-py-4 com-px-6;
@@ -74,20 +74,13 @@ select {
 
   .inner-html {
     @apply com-p-4 com-rounded-lg com-bg-gray-50;
-
-    ::ng-deep {
-      footer {
-        img {
-          @apply com-w-auto;
-        }
-      }
-      img {
-        @apply com-w-full;
-      }
-    }
   }
 }
 
 .resend-mail {
   @apply com-mt-1;
+}
+
+.info-message {
+  @apply com-mb-4;
 }

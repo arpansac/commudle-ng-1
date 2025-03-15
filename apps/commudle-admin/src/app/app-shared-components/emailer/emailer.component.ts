@@ -262,8 +262,8 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
       event_id: [''],
-      event_data_form_entity_group_id: [null],
-      event_simple_registration_id: [null],
+      event_data_form_entity_group_id: [''],
+      event_simple_registration_id: [''],
       registration_selection_type: [''],
       resend: [false],
       recipient_email: [''],
@@ -300,7 +300,10 @@ export class EmailerComponent implements OnInit, OnDestroy {
   getEventDataFormEntityGroups(eventId) {
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
-    this.eMailForm.controls.registration_selection_type.reset();
+    this.eMailForm.patchValue({
+      registration_selection_type: '',
+      event_data_form_entity_group_id: '',
+    });
 
     this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
@@ -311,7 +314,10 @@ export class EmailerComponent implements OnInit, OnDestroy {
   getEventSimpleRegistration(eventId) {
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
-    this.eMailForm.controls.registration_selection_type.reset();
+    this.eMailForm.patchValue({
+      registration_selection_type: '',
+      event_data_form_entity_group_id: '',
+    });
 
     this.eventSimpleRegistrationsService.pGet(eventId).subscribe((data) => {
       this.eventSimpleRegistration = data;
@@ -364,9 +370,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
 
     if (this.mailType && !this.prefillCompleted) {
-      this.eMailForm.patchValue({
-        registration_selection_type: this.mailType,
-      });
       this.toggleEmailBodyValidation(this.mailType);
       this.prefillCompleted = true;
     }
@@ -496,7 +499,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   previewEmail() {
-    this.emailerPreviewService.previewEmail(this.eMailForm.value, this.community.id).subscribe((result) => {
+    this.emailerPreviewService.communityEmailPreview(this.eMailForm.value, this.community.id).subscribe((result) => {
       this.previewData = result.preview;
       this.openEmailPreviewTemplate();
     });
