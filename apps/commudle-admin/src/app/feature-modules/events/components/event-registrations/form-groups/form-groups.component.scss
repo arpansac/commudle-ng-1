@@ -17,7 +17,7 @@
         @apply com-no-underline com-text-xs com-text-tblack;
       }
       .link-to-fill {
-        @apply com-mt-4 com-border com-border-solid com-border-primary-500 com-rounded-md com-bg-blue-50 hover:com-bg-blue-100 com-h-8 com-w-28 com-flex com-justify-center com-items-center;
+        @apply com-mt-4 com-border com-border-solid com-border-primary-500 com-rounded-md com-bg-blue-100 hover:com-bg-blue-100 com-h-8 com-w-28 com-flex com-justify-center com-items-center;
         a {
           @apply com-text-primary-500 com-flex com-items-center com-no-underline com-gap-2;
         }
@@ -45,7 +45,7 @@
     .send-email {
       @apply com-mb-4;
       button {
-        @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4;
+        @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4 com-cursor-pointer;
       }
     }
 

@@ -300,6 +300,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   getEventDataFormEntityGroups(eventId) {
     this.selectedEventId = eventId;
     this.eventDataFormEntityGroups = [];
+    this.eventDataFormEntityGroupId = null;
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
       registration_selection_type: '',
