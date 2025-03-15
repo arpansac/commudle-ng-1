@@ -1,12 +1,6 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
-import { UserEngagementRecordsService } from 'apps/shared-services/user-engagement-records.service';
-import { IActivityFeed } from 'libs/shared/models/src/lib/activity-feed.model';
-import { EDbModels } from '@commudle/shared-models';
-
-export enum UserActivityEventType {
-  USER_VIEW = 'user_view',
-  USER_CLICK = 'user_click',
-}
+import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
+import { UserEngagementRecordsService } from '@commudle/shared-services';
+import { EUserActivityEventType, EDbModels, IActivityFeed } from '@commudle/shared-models';
 
 @Directive({
   selector: '[appActivityFeed]',
@@ -27,7 +21,7 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.timeout = setTimeout(() => {
-              this.getUserEngagement(UserActivityEventType.USER_VIEW);
+              this.getUserEngagement(EUserActivityEventType.USER_VIEW);
             }, 1000);
           }
         });
@@ -39,7 +33,7 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
 
   @HostListener('click')
   onClick() {
-    this.getUserEngagement(UserActivityEventType.USER_CLICK);
+    this.getUserEngagement(EUserActivityEventType.USER_CLICK);
   }
 
   ngOnDestroy(): void {
