@@ -33,20 +33,21 @@
               </option>
             </select>
           </div>
-          <table class="notes-table">
-            <thead>
-              <tr>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let reason of campaign.unapproved_reasons">
-                <td>
-                  {{ reason.text }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <nb-card class="notes-table" *ngIf="campaign.unapproved_reasons.length > 0">
+            <nb-card-body>
+              <table>
+                <tr>
+                  <th>Note</th>
+                </tr>
+                <tr *ngFor="let reason of campaign.unapproved_reasons">
+                  <td>
+                    {{ reason.text }}
+                  </td>
+                </tr>
+              </table>
+            </nb-card-body>
+          </nb-card>
+
           <div
             *ngIf="campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED"
             class="com-flex com-gap-1"
