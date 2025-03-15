@@ -1,100 +1,122 @@
-<table>
-  <tr>
-    <th [width]="300">Campaign Type</th>
-    <th [width]="200">Campaign Name</th>
-    <th [width]="200">Status</th>
-    <th>Budget</th>
-    <th [width]="300">Duration Time</th>
-    <th [width]="300">Created At</th>
-    <th *ngIf="isCampaignAdmin">Payment</th>
-    <th *ngIf="!isCampaignAdmin">Action</th>
-  </tr>
-  <tr
-    *ngFor="let campaign of campaigns"
-    (click)="openPopup(showCampaignDetails, campaign.id)"
-    [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
-  >
-    <td>{{ campaign.campaign_type.name }}</td>
-    <td>{{ campaign.name }}</td>
-    <td>
-      <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
-      <div *ngFor="let reason of campaign.unapproved_reasons">
-        {{ reason.text }}
-      </div>
-      <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()">
-        <div class="select">
-          <select
-            [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
-            [(ngModel)]="campaign.status"
-            (change)="updateStatus($event, campaign.id)"
+<table class="main-table">
+  <thead>
+    <tr>
+      <th [width]="300">Campaign Type</th>
+      <th [width]="200">Campaign Name</th>
+      <th [width]="200">Status</th>
+      <th>Budget</th>
+      <th [width]="300">Duration Time</th>
+      <th [width]="300">Created At</th>
+      <th *ngIf="isCampaignAdmin">Payment</th>
+      <th *ngIf="!isCampaignAdmin">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let campaign of campaigns"
+      (click)="openPopup(showCampaignDetails, campaign.id)"
+      [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
+    >
+      <td>{{ campaign.campaign_type.name }}</td>
+      <td>{{ campaign.name }}</td>
+      <td>
+        <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
+        <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()">
+          <div class="select">
+            <select
+              [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
+              [(ngModel)]="campaign.status"
+              (change)="updateStatus($event, campaign.id)"
+            >
+              <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
+                {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
+              </option>
+            </select>
+          </div>
+          <table class="notes-table">
+            <thead>
+              <tr>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let reason of campaign.unapproved_reasons">
+                <td>
+                  {{ reason.text }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            *ngIf="campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED"
+            class="com-flex com-gap-1"
           >
-            <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
-              {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
-            </option>
-          </select>
+            <label for="notes">
+              <input
+                fieldSize="small"
+                type="text"
+                placeholder="Write Note"
+                nbInput
+                [(ngModel)]="noteTexts[campaign.id]"
+              />
+            </label>
+            <button nbButton size="tiny" (click)="updateNotes(campaign.id)">Save</button>
+          </div>
         </div>
-        <div
-          *ngIf="campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED"
-        >
-          <label for="notes">
-            <input size="small" type="text" placeholder="Write Note" nbInput [(ngModel)]="noteTexts[campaign.id]" />
-          </label>
-          <button nbButton size="tiny" (click)="updateNotes(campaign.id)">Save</button>
+      </td>
+      <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td>
+      <td class="duration-time">
+        <span *ngIf="campaign.start_time"> Start Date: {{ moment(campaign.start_date).format('MMM Do, YYYY') }} </span>
+        <br />
+        <span *ngIf="campaign.end_time"> End Date: {{ moment(campaign.end_date).format('MMM Do, YYYY') }} </span>
+      </td>
+      <td>
+        {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
+        <div *ngIf="isCampaignAdmin">
+          <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
         </div>
-      </div>
-    </td>
-    <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td>
-    <td class="duration-time">
-      <span *ngIf="campaign.start_time"> Start Date: {{ moment(campaign.start_date).format('MMM Do, YYYY') }} </span>
-      <br />
-      <span *ngIf="campaign.end_time"> End Date: {{ moment(campaign.end_date).format('MMM Do, YYYY') }} </span>
-    </td>
-    <td>
-      {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
-      <div *ngIf="isCampaignAdmin">
-        <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
-      </div>
-    </td>
-    <td *ngIf="isCampaignAdmin">
-      <span *ngIf="campaign.purchase_order">
-        {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
-      </span>
-    </td>
-    <td *ngIf="!isCampaignAdmin">
-      <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
-        <button
-          nbButton
-          status="info"
-          [disabled]="
-            campaign.status === ECampaignStatus.APPROVED ||
-            campaign.status === ECampaignStatus.LIVE ||
-            campaign.status === ECampaignStatus.COMPLETE
-          "
-          size="small"
+      </td>
+      <td *ngIf="isCampaignAdmin">
+        <span *ngIf="campaign.purchase_order">
+          {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
+        </span>
+      </td>
+      <td *ngIf="!isCampaignAdmin">
+        <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
+          <button
+            nbButton
+            status="info"
+            [disabled]="
+              campaign.status === ECampaignStatus.APPROVED ||
+              campaign.status === ECampaignStatus.LIVE ||
+              campaign.status === ECampaignStatus.COMPLETE
+            "
+            size="small"
+          >
+            <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
+            &nbsp; Edit
+          </button>
+        </a>
+        &nbsp; &nbsp;
+        <a
+          *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
+          [routerLink]="['/checkout', campaign.purchase_order.uuid]"
+          (click)="$event.stopPropagation()"
+          target="_blank"
         >
-          <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
-          &nbsp; Edit
-        </button>
-      </a>
-      &nbsp; &nbsp;
-      <a
-        *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
-        [routerLink]="['/checkout', campaign.purchase_order.uuid]"
-        (click)="$event.stopPropagation()"
-        target="_blank"
-      >
-        <button
-          nbButton
-          status="primary"
-          [disabled]="campaign?.purchase_order.status === EPurchaseOrderStatus.PAID"
-          size="small"
-        >
-          <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
-          &nbsp; Pay Now
-        </button>
-      </a>
-    </td>
-  </tr>
+          <button
+            nbButton
+            status="primary"
+            [disabled]="campaign?.purchase_order.status === EPurchaseOrderStatus.PAID"
+            size="small"
+          >
+            <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
+            &nbsp; Pay Now
+          </button>
+        </a>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <ng-template #showCampaignDetails let-data let-ref="dialogRef">

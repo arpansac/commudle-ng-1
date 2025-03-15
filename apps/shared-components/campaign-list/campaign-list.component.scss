@@ -1,14 +1,24 @@
-table {
+.main-table {
   @apply com-border-collapse com-w-full com-mt-4;
+  td,
+  th {
+    @apply com-p-4;
+  }
+
+  tr {
+    @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+  }
 }
 
-td,
-th {
-  @apply com-p-4;
-}
-
-tr {
-  @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+.notes-table {
+  @apply com-border-collapse com-w-full;
+  td,
+  th {
+    @apply com-p-0 com-text-left;
+  }
+  tr {
+    @apply com-border-0 com-border-b-0;
+  }
 }
 
 .select {
