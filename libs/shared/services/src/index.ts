@@ -26,3 +26,4 @@ export * from './lib/campaign-type.service';
 export * from './lib/campaign.service';
 export * from './lib/purchase-order.service';
 export * from './lib/tag.service';
+export * from './lib/user-engagement-records.service';

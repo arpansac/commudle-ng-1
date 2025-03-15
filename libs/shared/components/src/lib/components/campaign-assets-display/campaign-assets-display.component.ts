@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ICampaign } from '@commudle/shared-models';
-import { CampaignService } from '@commudle/shared-services';
+import { CampaignService, UserEngagementRecordsService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-campaign-assets-display',
@@ -15,8 +16,21 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
   currentSlide = 0;
   slidesCount = 0;
   private intervalId: any;
+  userEngagementRecordForm: FormGroup;
 
-  constructor(private campaignService: CampaignService) {}
+  constructor(
+    private campaignService: CampaignService,
+    private uerService: UserEngagementRecordsService,
+    private fb: FormBuilder,
+  ) {
+    this.userEngagementRecordForm = this.fb.group({
+      url: '',
+      event_type: '',
+      created_at: new Date().toISOString(),
+      parent_id: '',
+      parent_type: '',
+    });
+  }
 
   ngOnInit() {
     if (this.campaignTypeSlug) {
@@ -52,5 +66,9 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+  }
+
+  createUserEngagement() {
+    this.uerService.userEngagementRecords(this.userEngagementRecordForm).subscribe((data) => {});
   }
 }
