@@ -262,9 +262,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
   ) {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
-      event_id: [''],
-      event_data_form_entity_group_id: [''],
-      event_simple_registration_id: [''],
+      event_id: [null],
+      event_data_form_entity_group_id: [null],
+      event_simple_registration_id: [null],
       registration_selection_type: [''],
       resend: [false],
       recipient_email: [''],
@@ -300,16 +300,20 @@ export class EmailerComponent implements OnInit, OnDestroy {
   getEventDataFormEntityGroups(eventId) {
     this.selectedEventId = eventId;
     this.eventDataFormEntityGroups = [];
-    this.eventDataFormEntityGroupId = null;
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
       registration_selection_type: '',
-      event_data_form_entity_group_id: '',
+      event_data_form_entity_group_id: null,
     });
-
     this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
-      this.prefillForm('event_data_form_entity_group_id');
+      if (this.eventDataFormEntityGroups.length > 0) {
+        this.prefillForm('event_data_form_entity_group_id');
+      } else {
+        this.eMailForm.patchValue({
+          event_data_form_entity_group_id: null,
+        });
+      }
     });
   }
 
@@ -318,7 +322,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
       registration_selection_type: '',
-      event_data_form_entity_group_id: '',
+      event_data_form_entity_group_id: null,
     });
 
     this.eventSimpleRegistrationsService.pGet(eventId).subscribe((data) => {
@@ -370,7 +374,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
-
     if (this.mailType && !this.prefillCompleted) {
       this.eMailForm.patchValue({
         registration_selection_type: this.mailType,
@@ -457,7 +460,13 @@ export class EmailerComponent implements OnInit, OnDestroy {
             this.eMailForm.patchValue({
               event_data_form_entity_group_id: this.eventDataFormEntityGroupId,
             });
-            this.toggleEventDataFormEntityGroupType(this.selectedEventDataFormEntityGroup.id);
+            if (this.selectedEventDataFormEntityGroup) {
+              this.toggleEventDataFormEntityGroupType(this.selectedEventDataFormEntityGroup.id);
+            } else {
+              this.eMailForm.patchValue({
+                event_data_form_entity_group_id: null,
+              });
+            }
           }
           break;
 
