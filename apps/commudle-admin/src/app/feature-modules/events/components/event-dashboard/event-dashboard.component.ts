@@ -111,7 +111,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
 
   sendEmails() {
     this.windowService.open(EmailerComponent, {
-      title: `Send RSVP To All Shortlisted`,
+      title: `Send Mails`,
       context: {
         community: this.community,
         event: this.event,

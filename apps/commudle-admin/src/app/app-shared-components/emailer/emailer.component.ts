@@ -49,6 +49,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   isEmailSending = false;
+  selectedEventId: number;
 
   tinyMCE = {
     height: 200,
@@ -261,9 +262,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
   ) {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
-      event_id: [''],
-      event_data_form_entity_group_id: [''],
-      event_simple_registration_id: [''],
+      event_id: [null],
+      event_data_form_entity_group_id: [null],
+      event_simple_registration_id: [null],
       registration_selection_type: [''],
       resend: [false],
       recipient_email: [''],
@@ -279,7 +280,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
       if (this.event) {
         this.prefillForm('event_id');
       } else {
-        this.selectedEmailType = EemailTypes.GENERAL_ALL;
         this.prefillForm('general_all');
       }
 
@@ -298,16 +298,22 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   getEventDataFormEntityGroups(eventId) {
+    this.selectedEventId = eventId;
     this.eventDataFormEntityGroups = [];
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
       registration_selection_type: '',
-      event_data_form_entity_group_id: '',
+      event_data_form_entity_group_id: null,
     });
-
     this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(eventId).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
-      this.prefillForm('event_data_form_entity_group_id');
+      if (this.eventDataFormEntityGroups.length > 0) {
+        this.prefillForm('event_data_form_entity_group_id');
+      } else {
+        this.eMailForm.patchValue({
+          event_data_form_entity_group_id: null,
+        });
+      }
     });
   }
 
@@ -316,7 +322,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.selectedFormRegistrationType = [];
     this.eMailForm.patchValue({
       registration_selection_type: '',
-      event_data_form_entity_group_id: '',
+      event_data_form_entity_group_id: null,
     });
 
     this.eventSimpleRegistrationsService.pGet(eventId).subscribe((data) => {
@@ -368,8 +374,10 @@ export class EmailerComponent implements OnInit, OnDestroy {
     this.eventDataFormEntityGroupId = this.selectedEventDataFormEntityGroup.id;
     this.selectedFormRegistrationType =
       this.registrationSelectionType[this.selectedEventDataFormEntityGroup.registration_type.name];
-
     if (this.mailType && !this.prefillCompleted) {
+      this.eMailForm.patchValue({
+        registration_selection_type: this.mailType,
+      });
       this.toggleEmailBodyValidation(this.mailType);
       this.prefillCompleted = true;
     }
@@ -390,20 +398,21 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   setEmailSubject(emailType) {
+    const selectedEvent = this.events.find((k) => k.id == this.selectedEventId);
     let subjectLine = '';
     switch (emailType) {
       case EemailTypes.ENTRY_PASS:
-        subjectLine = `ENTRY PASS :: ${this.event.name}`;
+        subjectLine = `ENTRY PASS :: ${selectedEvent.name}`;
         break;
       case EemailTypes.SEND_LINK:
         if (this.selectedEventDataFormEntityGroup) {
-          subjectLine = `${this.selectedEventDataFormEntityGroup.name} :: ${this.event.name}`;
+          subjectLine = `${this.selectedEventDataFormEntityGroup?.name} :: ${selectedEvent.name}`;
         } else {
-          subjectLine = `${this.event.name}  :: [${this.community.name}]`;
+          subjectLine = `${selectedEvent.name}  :: [${this.community?.name}]`;
         }
         break;
       case EemailTypes.RSVP:
-        subjectLine = `RSVP :: ${this.event.name} :: Reserve your seat`;
+        subjectLine = `RSVP :: ${selectedEvent.name} :: Reserve your seat`;
         break;
       default:
         subjectLine = '';
@@ -451,7 +460,13 @@ export class EmailerComponent implements OnInit, OnDestroy {
             this.eMailForm.patchValue({
               event_data_form_entity_group_id: this.eventDataFormEntityGroupId,
             });
-            this.toggleEventDataFormEntityGroupType(this.selectedEventDataFormEntityGroup.id);
+            if (this.selectedEventDataFormEntityGroup) {
+              this.toggleEventDataFormEntityGroupType(this.selectedEventDataFormEntityGroup.id);
+            } else {
+              this.eMailForm.patchValue({
+                event_data_form_entity_group_id: null,
+              });
+            }
           }
           break;
 

@@ -1,7 +1,7 @@
-<div class="emailer-component">
+<div class="emailer-component custom-scrollbar">
   <form [formGroup]="eMailForm">
-    <div class="filters">
-      <div *ngIf="showEmailFilters">
+    <div *ngIf="showEmailFilters" class="filters">
+      <div>
         <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($any($event.target).value)">
           <option value="" disabled>Filter Emails</option>
           <option selected value="{{ EemailTypes.GENERAL_ALL }}">
@@ -16,9 +16,9 @@
         </select>
       </div>
 
-      <div *ngIf="isEventSpecificEmail && showEmailFilters" class="filters">
+      <div *ngIf="isEventSpecificEmail" class="filters">
         <select (change)="getEventDataFormEntityGroups($any($event.target).value)" formControlName="event_id">
-          <option value="" selected disabled>Select Event</option>
+          <option value="null" selected disabled>Select Event</option>
           <option *ngFor="let event of events" [value]="event.id">
             {{ event.name }}
           </option>
@@ -31,7 +31,7 @@
               formControlName="event_data_form_entity_group_id"
               name="event_data_form_entity_group_id"
             >
-              <option value="" selected disabled>Select Form</option>
+              <option value="null" selected disabled>Select Form</option>
               <option *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
                 {{ edfeg.name }}
               </option>
@@ -43,18 +43,18 @@
 
           <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration">
             <select
-              *ngIf="selectedEventDataFormEntityGroup"
+              *ngIf="selectedEventDataFormEntityGroup && selectedFormRegistrationType.length > 0"
               (change)="toggleEmailBodyValidation($any($event.target).value)"
               formControlName="registration_selection_type"
             >
-              <option value="" selected disabled>Let's Be Specific!</option>
+              <option value="" disabled selected>Let's Be Specific!</option>
               <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
                 {{ reg.display }}
               </option>
             </select>
 
             <select
-              *ngIf="eventSimpleRegistration"
+              *ngIf="eventSimpleRegistration && selectedFormRegistrationType.length > 0"
               (change)="toggleEmailBodyValidation($any($event.target).value)"
               formControlName="registration_selection_type"
               name="registration_selection_type"
@@ -84,6 +84,7 @@
         </label>
         <label *ngIf="!recipientUsername" for="recipient_email" class="label">To</label>
         <input
+          *ngIf="!recipientUsername"
           formControlName="recipient_email"
           fullWidth
           nbInput
@@ -129,9 +130,12 @@
           !eMailForm.valid ||
           isEmailSending ||
           (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
-          (eventDataFormEntityGroups.length > 0 && !eMailForm.get('event_data_form_entity_group_id').value) ||
+          (eventDataFormEntityGroups.length > 0 &&
+            !eMailForm.get('event_data_form_entity_group_id').value &&
+            isEventSpecificEmail) ||
           ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
-            !eMailForm.get('registration_selection_type').value)
+            !eMailForm.get('registration_selection_type').value &&
+            isEventSpecificEmail)
         "
         nbButton
         status="primary"
@@ -146,9 +150,10 @@
           !eMailForm.valid ||
           isEmailSending ||
           (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
-          (eventDataFormEntityGroups.length > 0 && !eMailForm.get('event_data_form_entity_group_id').value) ||
+          (!eMailForm.get('event_data_form_entity_group_id').value && isEventSpecificEmail) ||
           ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
-            !eMailForm.get('registration_selection_type').value)
+            !eMailForm.get('registration_selection_type').value &&
+            isEventSpecificEmail)
         "
         fullWidth
         nbButton
