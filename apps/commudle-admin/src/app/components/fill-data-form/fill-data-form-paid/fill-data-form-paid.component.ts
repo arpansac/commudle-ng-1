@@ -768,7 +768,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   resetPromoCode() {
-    if (this.showEventTicketOrder) {
+    if (this.showEventTicketOrder && this.promoCode) {
       this.eventTicketOrderService.resetDiscountCode(this.showEventTicketOrder.uuid).subscribe((data) => {
         if (data) {
           this.removePromoCode();
