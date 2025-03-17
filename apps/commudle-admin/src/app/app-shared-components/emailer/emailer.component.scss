@@ -46,11 +46,15 @@
 }
 
 select {
-  @apply com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 com-w-40 com-text-sm com-font-normal com-text-Yankees-Blue;
+  @apply com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 md:com-w-40 com-w-full com-text-sm com-font-normal com-text-Yankees-Blue;
 }
 
 .filters {
-  @apply com-flex com-flex-row com-gap-2 com-items-center;
+  @apply com-flex md:com-flex-row com-flex-col com-gap-2 com-items-center com-w-full;
+}
+
+.filter {
+  @apply com-w-full md:com-w-40;
 }
 
 .template-card {
