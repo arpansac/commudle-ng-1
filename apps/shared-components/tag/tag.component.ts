@@ -90,8 +90,8 @@ export class TagComponent implements OnInit, OnDestroy {
   getSuggestedTags(query) {
     if (query) {
       this.subscription.push(
-        this.tagService.suggestedTags(query, false).subscribe((data) => {
-          this.suggestedTags = data.values;
+        this.tagService.suggestedTags(query, true).subscribe((data) => {
+          this.suggestedTags = data.values.filter((tag) => !this.tags.includes(tag.name));
         }),
       );
     }
