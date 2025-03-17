@@ -7,6 +7,8 @@ import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
 import { ToastrService } from '@commudle/shared-services';
+import { FormBuilder } from '@angular/forms';
+import { EmailPreviewComponent } from 'libs/shared/components/src/lib/components/email-preview/email-preview.component';
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',
@@ -17,6 +19,9 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   message = '';
   dialogRef: NbDialogRef<any>;
   isLoading = false;
+  showPreviewSpinner = false;
+  previewEmailForm;
+
   tinyMCE = {
     min_height: 300,
     menubar: false,
@@ -58,7 +63,12 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     private hackathonService: HackathonService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToastrService,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.previewEmailForm = this.fb.group({
+      message: [''],
+    });
+  }
 
   ngOnInit() {
     this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -107,5 +117,14 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     this.message = '';
     this.isLoading = false;
     this.dialogRef.close();
+  }
+
+  previewEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      message: this.message,
+    });
+    this.dialogRef = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { hackathonId },
+    });
   }
 }

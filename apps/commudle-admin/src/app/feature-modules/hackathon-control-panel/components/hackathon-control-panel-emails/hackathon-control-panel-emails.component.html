@@ -37,9 +37,9 @@
 <ng-template #SendRegistrationsByMail let-ref="dialogRef">
   <nb-card class="mail-popup">
     <nb-card-header>
-      <span> Pre-formatted email</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
-        <!-- <nb-icon icon="close"></nb-icon> -->X
+      <span>Registration Invite Email</span>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -47,19 +47,30 @@
         [info]="true"
         message="This will send a pre-formatted email and a notification to all members of the community"
       ></commudle-alert>
-      <br />
-      <div>
-        <label for="message">Message (optional)</label>
+      <div class="message-field">
+        <label for="message" class="message">Message (Optional)</label>
         <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
       </div>
     </nb-card-body>
     <nb-card-footer>
       <button
+        (click)="previewEmail(hackathonId); showPreviewSpinner = true"
         nbButton
         status="primary"
+        shape="semi-round"
+        [nbSpinner]="showPreviewSpinner"
+        type="button"
+      >
+        Preview Email
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        fullWidth
         (click)="SendRegistrationsMailer()"
         [nbSpinner]="isLoading"
-        [disabled]="isLoading || message"
+        [disabled]="isLoading"
       >
         Send
       </button>

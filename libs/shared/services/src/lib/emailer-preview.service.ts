@@ -16,4 +16,14 @@ export class EmailerPreviewService {
       community_id: String(communityId),
     });
   }
+
+  hackathonRegistrationEmail(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.STATUS_FILTER_GENERAL_EMAIL),
+      {
+        email_form: formData,
+        community_id: String(hackathonId),
+      },
+    );
+  }
 }
