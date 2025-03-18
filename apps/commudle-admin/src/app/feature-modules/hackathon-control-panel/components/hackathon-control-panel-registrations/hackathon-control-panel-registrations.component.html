@@ -165,23 +165,60 @@
         </div>
       </div>
 
-      <div class="custom-questions" *ngIf="!dataFormId">
-        <app-new-data-form
-          (newDataForm)="submit($event)"
-          formName="Hackathon Attendee Registration Form"
-          [stickSubmitButtonBottom]="true"
-          [showNameDescriptionFiled]="false"
-        >
-        </app-new-data-form>
+      <div>
+        <div class="group-name">FORM</div>
+        <nb-checkbox status="basic" [(ngModel)]="isFormInclude">Include a form</nb-checkbox>
       </div>
-      <div *ngIf="dataFormId">
-        <commudle-edit-data-form
-          [dataFormId]="dataFormId"
-          [showNameDescriptionFiled]="false"
-          [centerLayout]="false"
-          (updateFormDataEvent)="updateData($event)"
-        ></commudle-edit-data-form>
+
+      <div *ngIf="isFormInclude">
+        <div class="custom-questions" *ngIf="!dataFormId">
+          <app-new-data-form
+            (newDataForm)="submit($event)"
+            formName="Hackathon Attendee Registration Form"
+            [stickSubmitButtonBottom]="true"
+            [showNameDescriptionFiled]="false"
+          >
+          </app-new-data-form>
+        </div>
+        <div *ngIf="dataFormId">
+          <commudle-edit-data-form
+            [dataFormId]="dataFormId"
+            [showNameDescriptionFiled]="false"
+            [centerLayout]="false"
+            (updateFormDataEvent)="updateData($event)"
+          ></commudle-edit-data-form>
+        </div>
+      </div>
+
+      <div *ngIf="!isFormInclude">
+        <br />
+        <button nbButton fullWidth status="primary" (click)="updateOrCreateHackathonUserResponse()">Save</button>
       </div>
     </div>
   </nb-card-body>
 </nb-card>
+
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <div class="next-steps-card">
+    <commudle-next-step-card
+      headingText="Add Judges, Speakers & Mentors"
+      subHeadingText="Add and showcase the profile of judges, speakers and mentors at your hackathon with the participants."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/speakers'
+      "
+      [faIcon]="icons.faMicrophone"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add FAQ's"
+      subHeadingText="Add all the FAQ’s for participants in the hackathon."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/faqs'
+      "
+      [faIcon]="icons.faCircleQuestion"
+    ></commudle-next-step-card>
+  </div>
+</div>

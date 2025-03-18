@@ -2,10 +2,19 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels } from '@commudle/shared-models';
+import { IRound, EDbModels, IHackathon } from '@commudle/shared-models';
 import { RoundService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faFileImage,
+  faXmark,
+  faArrowRight,
+  faRectangleList,
+  faMicrophone,
+  faSackDollar,
+} from '@fortawesome/free-solid-svg-icons';
+import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -15,16 +24,23 @@ import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons'
 export class HackathonControlPanelRoundsComponent implements OnInit {
   roundForm: FormGroup;
   rounds: IRound[];
+  hackathon: IHackathon;
   icons = {
     faPlus,
     faFileImage,
     faXmark,
+    faArrowRight,
+    faRectangleList,
+    faMicrophone,
+    faSackDollar,
   };
+
   hackathonSlug = '';
   communitySlug: string;
   dialogRef: any;
 
   today: string = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
+
   constructor(
     private roundService: RoundService,
     private activatedRoute: ActivatedRoute,
@@ -32,6 +48,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
     private fb: FormBuilder,
     private toastrService: ToastrService,
     private datePipe: DatePipe,
+    private hackathonService: HackathonService,
   ) {
     this.roundForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,6 +62,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
       this.communitySlug = params.get('community_id');
+      this.fetchHackathon();
       this.indexRounds(params.get('hackathon_id'));
     });
   }
@@ -52,6 +70,12 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   indexRounds(hackathonId) {
     this.roundService.indexRounds(hackathonId, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
       this.rounds = data;
+    });
+  }
+
+  fetchHackathon() {
+    this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data) => {
+      this.hackathon = data;
     });
   }
 
@@ -64,7 +88,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         order: round.order,
       });
     } else {
-      this.roundForm.reset();
+      this.resetRoundForm();
     }
 
     this.dialogRef = this.nbDialogService.open(dialog, {
@@ -86,7 +110,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
           this.rounds.unshift(data);
           this.toastrService.successDialog('Round Created');
           this.dialogRef.close();
-          this.roundForm.reset();
+          this.resetRoundForm();
         }
       });
   }
@@ -113,6 +137,19 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         this.toastrService.successDialog('Channel Created');
         this.rounds[index] = data;
       }
+    });
+  }
+
+  resetRoundForm() {
+    this.roundForm.reset(); // Reset form completely
+    this.roundForm.setValidators(null); // Remove any previous validators
+
+    // Reinitialize with validators
+    this.roundForm = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      date: ['', Validators.required],
+      order: ['', [Validators.required, Validators.min(1)]],
     });
   }
 }

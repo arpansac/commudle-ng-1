@@ -127,7 +127,6 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
       title: `Send Email to All ${this.community.members_count} Members`,
       context: {
         community: this.community,
-        mailType: EemailTypes.GENERAL_ALL,
       },
     });
   }

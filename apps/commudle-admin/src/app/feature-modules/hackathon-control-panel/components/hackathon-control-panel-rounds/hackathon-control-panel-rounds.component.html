@@ -3,32 +3,68 @@
     >Rounds<commudle-help-section [helpDictionaryName]="'hackathon-rounds'"></commudle-help-section
   ></nb-card-header>
   <nb-card-body>
-    <div (click)="openRoundDialogBox(addRoundsDialogBox)" class="add-round-button">
-      <fa-icon [icon]="icons.faPlus"></fa-icon>
-      <br />
-      <span>Add Round</span>
+    <button (click)="openRoundDialogBox(addRoundsDialogBox)" nbButton status="primary">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Round
+    </button>
+    <div class="rounds-card" *ngIf="rounds && rounds.length > 0">
+      <div *ngFor="let round of rounds; let i = index">
+        <commudle-hackathon-control-panel-round-card
+          [round]="round"
+          [communitySlug]="communitySlug"
+          [hackathonSlug]="hackathonSlug"
+          (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
+          (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"
+          (createChannelForRound)="openRoundDialogBox(createChannelDialogBox, $event, i)"
+        ></commudle-hackathon-control-panel-round-card>
+      </div>
     </div>
   </nb-card-body>
-  <nb-card-footer class="rounds-card" *ngIf="rounds && rounds.length > 0">
-    <div *ngFor="let round of rounds; let i = index">
-      <commudle-hackathon-control-panel-round-card
-        [round]="round"
-        [communitySlug]="communitySlug"
-        [hackathonSlug]="hackathonSlug"
-        (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
-        (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"
-        (createChannelForRound)="openRoundDialogBox(createChannelDialogBox, $event, i)"
-      ></commudle-hackathon-control-panel-round-card>
-    </div>
-  </nb-card-footer>
 </nb-card>
+
+<div *ngIf="hackathon" class="next-step-container">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <div class="next-steps-card">
+    <commudle-next-step-card
+      headingText="Setup Registration Form"
+      subHeadingText="Create a registration form to enable participants to register for the hackathon and submit projects."
+      [routerLink]="
+        '/admin' +
+        '/communities/' +
+        hackathon.community.slug +
+        '/hackathon-dashboard/' +
+        hackathon.slug +
+        '/registrations'
+      "
+      [faIcon]="icons.faRectangleList"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Sponsors"
+      subHeadingText="Create multiple tiers for your hackathon’s sponsors to showcase them on the public page."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/sponsors'
+      "
+      [faIcon]="icons.faSackDollar"
+    ></commudle-next-step-card>
+    <commudle-next-step-card
+      headingText="Add Judges, Speakers & Mentors"
+      subHeadingText="Add and showcase the profile of judges, speakers and mentors at your hackathon with the participants."
+      [routerLink]="
+        '/admin' + '/communities/' + hackathon.community.slug + '/hackathon-dashboard/' + hackathon.slug + '/speakers'
+      "
+      [faIcon]="icons.faMicrophone"
+    ></commudle-next-step-card>
+  </div>
+</div>
 
 <ng-template #addRoundsDialogBox let-ref="dialogRef" let-data>
   <nb-card class="round-form-dialog-box">
     <nb-card-header class="actions">
       <span>{{ data.round ? 'Edit Round' : 'Add Round' }}</span>
-      <button nbButton ghost shape="round" (click)="ref.close(); roundForm.reset()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -76,6 +112,12 @@
             [error]="true"
             errorMessage="Order is required"
           ></commudle-alert>
+          <br />
+          <commudle-alert
+            *ngIf="roundForm.controls['order'].value === 1"
+            [info]="true"
+            message="when you select a round as default round, each application which is set to 'Accepted' status will automatically be added to this round."
+          ></commudle-alert>
           <!-- Min value error -->
           <commudle-alert
             *ngIf="roundForm.controls['order'].touched && roundForm.controls['order'].hasError('min')"
@@ -115,7 +157,7 @@
         (click)="data.round ? updateRound(data.round, data.index) : createRound()"
         [disabled]="!roundForm.valid"
       >
-        Save
+        {{ data.round ? 'Update Round' : 'Create Round' }}
       </button>
       <button nbButton status="danger" outline (click)="ref.close(); roundForm.reset()">Cancel</button>
     </nb-card-footer>
@@ -126,8 +168,8 @@
   <nb-card>
     <nb-card-header class="actions">
       <span>Are you sure?</span>
-      <button nbButton ghost (click)="ref.close()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
@@ -144,10 +186,10 @@
   <nb-card>
     <nb-card-header class="actions">
       <span
-        >Create Channel for <strong>{{ data.round.name }}</strong></span
+        >Create Channel for Round: <strong>{{ data.round.name }}</strong></span
       >
-      <button nbButton ghost (click)="ref.close()" shape="round">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>

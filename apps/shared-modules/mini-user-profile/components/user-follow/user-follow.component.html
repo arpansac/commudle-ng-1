@@ -1,7 +1,7 @@
 <div *ngIf="currentUser?.id !== userId" class="user-follow">
   <button
     (click)="isFollowing ? toggleFollow() : onFollowClick()"
-    [appearance]="appearance ?? (isFollowing ? 'outline' : 'filled')"
+    [appearance]="appearance ?? (isFollowing || appearance === 'outline' ? 'outline' : 'filled')"
     [ngClass]="{ 'fixed-width': !showIcon, 'width-full': isMobileWidthFull }"
     [status]="status === 'basic' ? 'basic' : 'info'"
     class="follow-btn"

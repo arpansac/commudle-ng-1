@@ -21,7 +21,7 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewI
   total: number;
   limit = 20;
 
-  isLoadingUpcoming = false;
+  isLoadingUpcoming = true;
   showSpinner = false;
 
   constructor(
@@ -51,7 +51,6 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewI
   }
 
   getUpcomingEvents() {
-    this.isLoadingUpcoming = true;
     this.showSpinner = true;
     this.eventsService.getEventsList('future', this.limit, this.page_info?.end_cursor).subscribe((data) => {
       if (data) {

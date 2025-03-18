@@ -23,30 +23,71 @@
         <div *ngIf="!event.header_image" class="no-image-header">
           <nb-icon icon="link" status="primary"></nb-icon>
         </div>
-        <div class="upcoming-card-details-desktop">
-          <div>
-            <div>
-              <p class="event-title">{{ event.name }}</p>
-              <div class="interested-members" *ngIf="event.interested_members_count > 0">
-                <app-badge
-                  [text]="event.interested_members_count"
-                  [fontColor]="'com-text-tAuro-Metal-Saurus'"
-                  [nbIcon]="'people-outline'"
-                  [fontSize]="'small'"
-                  [borderRadius]="'round'"
-                  [color]="'com-bg-Bright-Gray-Light'"
-                ></app-badge>
+        <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
+          <div class="time-badge">
+            <p class="event-time">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
+              {{ momentTimezone.tz(event.timezone).format('z') }}
+            </p>
+            <div class="interested-members" *ngIf="event.interested_members_count > 0">
+              <app-badge
+                [text]="event.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+            </div>
+          </div>
+          <p class="event-title">{{ event.name }}</p>
+          <div *ngIf="community" class="community-badge">
+            <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
+          </div>
+          <div *ngIf="event.tags" class="tags">
+            <app-tag
+              [tags]="getTagNames()"
+              [backgroundColor]="'com-bg-Azure-opacity-10'"
+              [size]="'tiny'"
+              [fontColor]="'com-text-blue-500'"
+              [maximumTag]="5"
+            ></app-tag>
+          </div>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="upcoming-card-details-mobile">
+          <div class="time">
+            <p class="event-month">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('MMM') }}
+            </p>
+            <p class="event-date">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('D') }}
+            </p>
+            <p class="event-day">
+              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('ddd') }}
+            </p>
+          </div>
+          <div class="details">
+            <p class="event-title">{{ event.name }}</p>
+            <div class="time-badge">
+              <p class="event-time">
+                {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm a') }}
+                {{ momentTimezone.tz(event.timezone).format('z') }}
+                onwards
+              </p>
+              <div *ngIf="community" class="community-badge">
+                <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
               </div>
             </div>
-            <p class="event-time">{{ moment(event.start_time).format('dddd, MMM Do, YYYY') }}</p>
-          </div>
-          <div class="badge-register">
-            <div *ngIf="community" class="community-badge">
-              <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
+            <div class="interested-members" *ngIf="event.interested_members_count > 0">
+              <app-badge
+                [text]="event.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
             </div>
-            <button nbButton status="info" shape="rectangle" size="medium" outline class="register-button">
-              Register
-            </button>
           </div>
         </div>
       </a>

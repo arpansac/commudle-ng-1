@@ -95,7 +95,7 @@ import { NewsletterCardComponent } from './newsletter-card/newsletter-card.compo
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
-
+import { NextStepCardComponent } from './next-step-card/next-step-card.component';
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -151,6 +151,7 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
     NewsletterCardComponent,
     CampaignListComponent,
     CampaignDetailsComponent,
+    NextStepCardComponent,
   ],
   imports: [
     CommonModule,
@@ -243,6 +244,7 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
     NewsletterCardComponent,
     CampaignListComponent,
     CampaignDetailsComponent,
+    NextStepCardComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

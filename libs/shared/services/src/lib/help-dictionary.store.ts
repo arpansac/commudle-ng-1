@@ -75,7 +75,7 @@ const helpDictionary = {
   //Hackathons
   'hackathon-updates': {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/hackathons/post-updates',
+    url: 'https://documentation.commudle.com/hackathons/how-to-post-updates-on-the-public-page-of-the-hackathon',
   },
   'hackathon-communications': {
     type: EHelpDictionaryType.URL,
@@ -120,6 +120,14 @@ const helpDictionary = {
   'hackathon-contacts-social-links': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/hackathons/add-links-and-other-details',
+  },
+  'discount-code-applied-count': {
+    type: EHelpDictionaryType.TEXT,
+    text: 'This is the count of people who have used the discount code but may or may not have completed the payment.',
+  },
+  'discount-code-used-count': {
+    type: EHelpDictionaryType.TEXT,
+    text: 'This is the count of people for which the discount code was applied and payment has been completed.',
   },
 };
 

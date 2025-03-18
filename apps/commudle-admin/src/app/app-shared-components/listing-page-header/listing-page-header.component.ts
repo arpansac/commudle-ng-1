@@ -4,11 +4,12 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
 import { SharedComponentsModule } from '@commudle/shared-components';
 import { ECampaignTypeSlug } from '@commudle/shared-models';
+import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 
 @Component({
   selector: 'commudle-listing-page-header',
   standalone: true,
-  imports: [CommonModule, SharedComponentsModule],
+  imports: [CommonModule, SharedComponentsModule, SharedPipesModule],
   templateUrl: './listing-page-header.component.html',
   styleUrls: ['./listing-page-header.component.scss'],
 })

@@ -7,3 +7,7 @@ export interface IHackathonSponsor {
   tier_name: string;
   tier_priority: number;
 }
+
+export interface IHackathonSponsorGroupedByTierName {
+  tier_name: IHackathonSponsor[];
+}

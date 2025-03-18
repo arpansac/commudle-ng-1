@@ -669,6 +669,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
         event_id: this.event.id,
         user_email: this.currentUser.email,
         edfeg_id: this.dataFormEntity.entity_id,
+        discount_code: this.promoCode.toUpperCase(),
       },
       handler: (response: any) => {
         {
@@ -708,10 +709,22 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       {
         this.razorpayService
           .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
-          .subscribe((data) => {
-            this.resetPromoCode();
-            alert('Message from Razorpay:' + response.error.description);
-          });
+          .subscribe(
+            (data) => {
+              this.resetPromoCode();
+              const userConfirmed = confirm('Message from Razorpay:' + response.error.description);
+              if (userConfirmed) {
+                this.reload();
+              } else {
+                this.reload();
+              }
+            },
+            () => {
+              this.dialogService.open(this.paymentErrorDialog, {
+                closeOnBackdropClick: false,
+              });
+            },
+          );
       }
     });
     rzp1.open();
@@ -755,7 +768,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   resetPromoCode() {
-    if (this.showEventTicketOrder) {
+    if (this.showEventTicketOrder && this.promoCode) {
       this.eventTicketOrderService.resetDiscountCode(this.showEventTicketOrder.uuid).subscribe((data) => {
         if (data) {
           this.removePromoCode();

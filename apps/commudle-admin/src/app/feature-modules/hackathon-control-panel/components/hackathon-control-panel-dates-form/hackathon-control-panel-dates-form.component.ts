@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from '@commudle/shared-services';
+import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-dates-form',
@@ -23,6 +24,13 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
   allTimeZones;
   userTimeZone;
   invalidFormFields = false;
+
+  icons = {
+    faArrowRight,
+    faAward,
+    faGamepad,
+    faRectangleList,
+  };
 
   constructor(
     private fb: FormBuilder,

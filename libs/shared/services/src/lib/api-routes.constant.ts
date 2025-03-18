@@ -427,6 +427,13 @@ export const API_ROUTES = {
   // communication_mailers
   SEND_COMMUNITY_EMAILS: 'api/v2/communication_mailers/community_emails',
 
+  //preview emails
+  EMAIL_PREVIEWS: {
+    COMMUNITY_EMAILS: {
+      EMAIL: 'api/v2/email_previews/community_emails/email',
+    },
+  },
+
   SEARCH: {
     INDEX: 'api/v2/search',
     SCOPE: 'api/v2/search/scope',
@@ -785,6 +792,7 @@ export const API_ROUTES = {
     INDEX: 'api/v2/custom_pages', //GET
     GET_SLUG: 'api/v2/custom_pages/generate_slug',
     REFUND_POLICY_PAGE: 'api/v2/custom_pages/refund_policy_page',
+    ATTACH_TEXT_IMAGE: 'api/v2/custom_pages/attach_text_image',
     PUBLIC: {
       SHOW: 'api/v2/custom_pages/public/show', //GET
       INDEX: 'api/v2/custom_pages/public/index', //GET

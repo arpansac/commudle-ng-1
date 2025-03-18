@@ -1,10 +1,6 @@
 <div class="past-events" id="past-events">
   <h2 class="title">
-    <a [routerLink]="'.'" fragment="past-events"
-      ><button nbButton status="basic" size="small" shape="semi-round">
-        <fa-icon [icon]="faCalendarCheck"></fa-icon></button
-      ><span>Past Events</span></a
-    >
+    <a [routerLink]="'.'" fragment="past-events"><span>Past Events</span></a>
   </h2>
   <div class="past-events-card-list">
     <commudle-event-card *ngFor="let event of pastEvents" [event]="event"></commudle-event-card>

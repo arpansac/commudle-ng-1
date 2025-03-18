@@ -26,6 +26,7 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
     faChevronLeft,
   };
   EPageType = EPageType;
+  imagesList = [];
 
   subscriptions: Subscription[] = [];
   @ViewChild('cancelDialogBox') cancelDialogBox: TemplateRef<any>;
@@ -59,9 +60,11 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
       'media',
     ],
     toolbar:
-      'bold italic backcolor | codesample emoticons | link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media code | removeformat | table',
+      'h2  h3  h4  h5 fontsize | bold italic backcolor | codesample image emoticons | link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media code | removeformat | table',
     default_link_target: '_blank',
+    font_size_formats: '8px 10px 12px 14px 16px 18px 20px 22px 24px',
     branding: false,
+    images_upload_handler: this.uploadTextImage.bind(this),
     license_key: 'gpl',
   };
 
@@ -107,6 +110,23 @@ export class CustomPageFormComponent implements OnInit, OnDestroy {
         }
       },
     );
+  }
+
+  uploadTextImage(blobInfo) {
+    const promise = new Promise<any>((resolve, reject) => {
+      const formData: any = new FormData();
+      formData.append('image', blobInfo.blob());
+      this.customPageService.attachImage(formData, this.parentId, this.parentType).subscribe({
+        next: (res: any) => {
+          this.imagesList.push({ value: res });
+          resolve(res);
+        },
+        error: (err: any) => {
+          reject(err);
+        },
+      });
+    });
+    return promise;
   }
 
   ngOnDestroy(): void {

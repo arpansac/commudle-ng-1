@@ -1,8 +1,5 @@
 .emailer-component {
-  height: 65vh;
-  overflow-y: scroll;
-  position: relative;
-  padding-bottom: 50px;
+  @apply md:com-max-h-[65dvh] com-h-full com-overflow-y-auto com-relative;
 }
 
 .submit-button {
@@ -12,7 +9,17 @@
 }
 
 .fieldset {
-  margin: 1rem 0;
+  @apply com-mx-0 com-mt-6;
+  input {
+    @apply com-rounded-lg com-mt-3 com-py-3 com-px-4;
+
+    &::placeholder {
+      @apply com-text-sm com-font-normal com-text-gray-400;
+    }
+  }
+  editor {
+    @apply com-mt-3;
+  }
   nb-radio {
     &::ng-deep {
       span {
@@ -22,12 +29,62 @@
   }
 }
 
-.form-mail-type-selection {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+.label {
+  @apply com-text-sm com-font-medium com-text-Yankees-Blue;
 
-  > .fieldset {
-    margin-right: 1.5rem;
+  .mandatory-field {
+    @apply com-text-red-500;
   }
+}
+
+.form-mail-type-selection {
+  @apply com-flex com-flex-row com-flex-wrap;
+}
+
+.action-btns {
+  @apply com-flex com-items-center com-gap-6 com-mt-6;
+}
+
+select {
+  @apply com-border-0 com-rounded-lg com-bg-gray-100 com-pr-2 com-pl-3 com-py-2 md:com-w-40 com-w-full com-text-sm com-font-normal com-text-Yankees-Blue;
+}
+
+.filters {
+  @apply com-flex md:com-flex-row com-flex-col com-gap-2 com-items-center com-w-full;
+}
+
+.filter {
+  @apply com-w-full md:com-w-40;
+}
+
+.template-card {
+  @apply com-m-0 com-p-0 md:com-w-[650px] com-h-full md:com-max-h-[90dvh] com-w-full com-overflow-y-auto;
+
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between com-py-4 com-px-6;
+
+    h3 {
+      @apply com-m-0  com-text-base com-font-medium com-text-Yankees-Blue;
+    }
+
+    button {
+      @apply com-rounded-full;
+    }
+  }
+
+  .sample-preview {
+    @apply com-flex com-justify-center com-text-base com-font-normal com-text-gray-500 com-mb-6;
+  }
+
+  .inner-html {
+    @apply com-p-4 com-rounded-lg com-bg-gray-50;
+  }
+}
+
+.resend-mail {
+  @apply com-mt-1;
+}
+
+.info-message {
+  @apply com-mb-4;
 }

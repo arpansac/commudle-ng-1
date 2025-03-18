@@ -133,7 +133,7 @@ export class LabsSearchComponent implements OnInit {
       '@context': 'https://schema.org/',
       '@type': 'HowTo',
       name: lab.name,
-      image: lab.header_image.url,
+      image: lab.header_image ? lab.header_image.url : '',
       step: lab.lab_steps.map((step) => ({
         '@type': 'HowToStep',
         name: step.name,

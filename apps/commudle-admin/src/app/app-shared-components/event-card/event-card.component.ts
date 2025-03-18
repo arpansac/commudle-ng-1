@@ -7,12 +7,13 @@ import * as moment from 'moment';
 import { IEvent } from 'apps/shared-models/event.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 
 @Component({
   selector: 'commudle-event-card',
   templateUrl: './event-card.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, NbCardModule, SharedComponentsModule, NbIconModule],
+  imports: [CommonModule, RouterModule, NbCardModule, SharedComponentsModule, NbIconModule, SharedDirectivesModule],
   styleUrls: ['./event-card.component.scss'],
 })
 export class EventCardComponent implements OnInit {

@@ -1,9 +1,12 @@
+nb-card {
+  @apply com-mx-0;
+}
 .add-round-button {
   @apply com-border-2 com-border-dashed com-border-slate-500 com-rounded-lg com-text-center com-py-5 com-cursor-pointer;
 }
 
 .rounds-card {
-  @apply com-grid com-grid-cols-3;
+  @apply com-grid com-grid-cols-3 com-gap-4;
 }
 
 .round-form-dialog-box {
@@ -19,4 +22,13 @@
 
 nb-card-header {
   @apply com-flex com-items-center;
+}
+
+.next-step-container {
+  a {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-no-underline hover:com-text-Yankees-Blue;
+  }
+  .next-steps-card {
+    @apply com-flex com-flex-wrap com-gap-3;
+  }
 }

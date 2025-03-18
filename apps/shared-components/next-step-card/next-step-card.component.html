@@ -9,15 +9,12 @@
       <div class="sub-heading">{{ subHeadingText }}</div>
     </div>
     <div class="button">
-      <button
-        [routerLink]="['/admin', 'communities', communitySlug, 'event-dashboard', eventSlug, routePath]"
-        nbButton
-        status="primary"
-        fullWidth
-        size="small"
-      >
-        {{ buttonText }}
-      </button>
+      <!-- ['/admin', 'communities', communitySlug, 'event-dashboard', eventSlug, routePath] -->
+      <a [routerLink]="routerLink">
+        <button nbButton status="primary" fullWidth size="small">
+          {{ buttonText }}
+        </button>
+      </a>
     </div>
   </nb-card-body>
 </nb-card>

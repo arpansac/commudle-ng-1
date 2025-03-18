@@ -37,19 +37,19 @@
 }
 
 .container {
-  @apply com-m-0 com-mx-0 com-bg-Bright-Gray-opacity-30 com-border-none;
+  @apply com-m-0;
   nb-card-body {
-    @apply com-px-3 com-pt-4 com-pb-0;
+    @apply com-p-4;
     .heading {
       @apply com-m-0 md:com-mb-8 md:com-p-0 md:com-mt-0 com-mt-10 com-p-4 md:com-bg-transparent com-bg-Anti-Flash-White;
       .title {
         @apply com-flex com-m-0;
         a {
-          @apply md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+          @apply md:com-text-sm com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline;
         }
       }
       .sub-heading {
-        @apply com-text-xs com-font-normal com-text-gunmetal com-m-0;
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
       }
     }
 

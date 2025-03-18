@@ -9,6 +9,8 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import * as momentTimezone from 'moment-timezone';
+
 @Component({
   selector: 'commudle-event-horizontal-card',
   standalone: true,
@@ -29,6 +31,8 @@ export class EventHorizontalCardComponent implements OnInit {
   @Input() event: IEvent;
   community: ICommunity;
   moment = moment;
+  tags: string[] = [];
+  momentTimezone = momentTimezone;
 
   constructor(private communitiesService: CommunitiesService) {}
 
@@ -42,5 +46,10 @@ export class EventHorizontalCardComponent implements OnInit {
       .subscribe((data) => {
         this.community = data;
       });
+  }
+
+  getTagNames() {
+    this.tags = Object.values(this.event.tags).map((tag) => tag.name);
+    return this.tags;
   }
 }

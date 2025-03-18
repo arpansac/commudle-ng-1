@@ -9,7 +9,7 @@ import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/servi
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCircleQuestion, faMicrophone, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'commudle-hackathon-control-panel-registrations',
   templateUrl: './hackathon-control-panel-registrations.component.html',
@@ -26,7 +26,12 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
   filled_by_only_team_lead = true;
   icons = {
     faUpRightFromSquare,
+    faArrowRight,
+    faMicrophone,
+    faCircleQuestion,
   };
+
+  isFormInclude = false;
   constructor(
     private fb: FormBuilder,
     private hrgService: HackathonResponseGroupService,
@@ -77,6 +82,9 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
       if (data) {
         this.hackathonResponseGroupDetails = data;
         this.dataFormId = data.data_form_id;
+        if (this.dataFormId) {
+          this.isFormInclude = true;
+        }
         this.filled_by_only_team_lead = data.filled_by_only_team_lead;
         this.userDetailsForm.patchValue({
           name: data.user_details.name,
@@ -112,7 +120,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
         }
       });
     } else {
-      this.hackathonResponseGroupDetails ? this.updateHackathonResponseGroup() : this.createHackathonResponseGroup();
+      this.updateOrCreateHackathonUserResponse();
     }
   }
 
@@ -122,6 +130,10 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
         this.updateHackathonResponseGroup(data);
       }
     });
+  }
+
+  updateOrCreateHackathonUserResponse() {
+    this.hackathonResponseGroupDetails ? this.updateHackathonResponseGroup() : this.createHackathonResponseGroup();
   }
 
   createHackathonResponseGroup(data?) {

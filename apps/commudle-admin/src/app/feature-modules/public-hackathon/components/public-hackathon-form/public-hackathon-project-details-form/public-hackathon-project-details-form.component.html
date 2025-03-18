@@ -1,6 +1,6 @@
 <form [formGroup]="hackathonProjectDetailsForm">
   <div *ngIf="hackathonTracks && hackathonTracks.length > 0">
-    <label for="hackathon_track_id">SELECT TRACK</label>
+    <label for="hackathon_track_id">Select Track (Optional)</label>
     <br />
     <select
       formControlName="hackathon_track_id"
@@ -22,7 +22,7 @@
   </div>
 
   <div>
-    <label for="project_description">DESCRIBE YOUR PROJECT/ IDEA IN BRIEF</label>
+    <label for="project_description">Describe Your Project/ Idea In Brief (Optional)</label>
     <br />
     <textarea
       name="project_description"
@@ -33,6 +33,12 @@
       fullWidth
       formControlName="project_description"
     ></textarea>
+    <!-- <commudle-alert
+      [error]="this.hackathonProjectDetailsForm.get('project_description').errors?.['minWords'] && this.hackathonProjectDetailsForm.get('project_description').touched"
+      errorMessage="Minimum 50 words required."
+    >
+      "</commudle-alert
+    > -->
   </div>
 
   <div class="action-buttons">

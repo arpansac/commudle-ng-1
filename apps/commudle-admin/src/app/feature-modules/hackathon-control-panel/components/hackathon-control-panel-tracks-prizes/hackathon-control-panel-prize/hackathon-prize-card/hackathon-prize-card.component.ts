@@ -99,4 +99,23 @@ export class HackathonPrizeCardComponent implements OnInit {
       }
     });
   }
+
+  openAddWinnerConfirmationDialogBox(dialog, team: IHackathonTeam, index: number) {
+    this.nbDialogService.open(dialog, {
+      context: {
+        team: team,
+        index: index,
+      },
+    });
+  }
+
+  removeWinnerConfirmationDialogBox(dialog, winnerId, userResponseIndex, winnerIndex) {
+    this.nbDialogService.open(dialog, {
+      context: {
+        winnerId: winnerId,
+        userResponseIndex: userResponseIndex,
+        winnerIndex: winnerIndex,
+      },
+    });
+  }
 }
