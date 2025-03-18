@@ -8,9 +8,9 @@ import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
 import { ToastrService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
-import { EmailPreviewComponent } from 'libs/shared/components/src/lib/components/email-preview/email-preview.component';
 import { EmailerPreviewService } from '@commudle/shared-services';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',

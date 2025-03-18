@@ -26,7 +26,6 @@ import { PublicFaqsComponent } from './components/public-faqs/public-faqs.compon
 import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 import { UserPersonalConnectComponent } from './components/user-personal-connect/user-personal-connect.component';
-import { EmailPreviewComponent } from './components/email-preview/email-preview.component';
 @NgModule({
   declarations: [
     DiscussionComponent,
@@ -41,7 +40,6 @@ import { EmailPreviewComponent } from './components/email-preview/email-preview.
     PublicFaqsComponent,
     VotersComponent,
     UserProfileMiniCardComponent,
-    EmailPreviewComponent,
   ],
   imports: [
     CommonModule,
