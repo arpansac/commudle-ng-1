@@ -17,12 +17,12 @@ export class EmailerPreviewService {
     });
   }
 
-  hackathonRegistrationEmail(formData, hackathonId): Observable<any> {
+  hackathonRegistrationEmailPreview(formData, hackathonId): Observable<any> {
     return this.http.post<any>(
       this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.STATUS_FILTER_GENERAL_EMAIL),
       {
         email_form: formData,
-        community_id: String(hackathonId),
+        hackathon_id: String(hackathonId),
       },
     );
   }

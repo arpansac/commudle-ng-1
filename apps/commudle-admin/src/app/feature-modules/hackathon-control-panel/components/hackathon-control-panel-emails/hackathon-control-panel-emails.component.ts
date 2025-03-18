@@ -9,6 +9,7 @@ import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/ap
 import { ToastrService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
 import { EmailPreviewComponent } from 'libs/shared/components/src/lib/components/email-preview/email-preview.component';
+import { EmailerPreviewService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',
@@ -21,6 +22,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   isLoading = false;
   showPreviewSpinner = false;
   previewEmailForm;
+  previewData: string;
 
   tinyMCE = {
     min_height: 300,
@@ -64,9 +66,10 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toasterService: ToastrService,
     private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
   ) {
     this.previewEmailForm = this.fb.group({
-      message: [''],
+      body: [''],
     });
   }
 
@@ -121,10 +124,20 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
 
   previewEmail(hackathonId) {
     this.previewEmailForm.patchValue({
-      message: this.message,
+      body: this.message,
     });
+    this.emailerPreviewService
+      .hackathonRegistrationEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
     this.dialogRef = this.nbDialogService.open(EmailPreviewComponent, {
-      context: { hackathonId },
+      context: { previewData },
     });
   }
 }
