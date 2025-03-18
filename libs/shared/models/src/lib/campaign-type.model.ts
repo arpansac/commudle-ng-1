@@ -12,6 +12,11 @@ export interface ICampaignType {
 }
 
 export enum ECampaignTypeSlug {
-  COMMUNITY_PAGE_HEADER = 'community_page_header',
-  EVENT_BANNER_IMAGE = 'event_banner_image',
+  LISTING_PAGE_EVENTS_BANNER = 'listing-page-events-banner-image',
+  LISTING_PAGE_COMMUNITIES_BANNER = 'listing-page-communities-banner-image',
+  LISTING_PAGE_SPEAKERS_BANNER = 'listing-page-speakers-banner-image',
+  LISTING_PAGE_LABS_BANNER = 'listing-page-labs-banner-image',
+  LISTING_PAGE_BUILDS_BANNER = 'listing-page-builds-banner-image',
+  USER_DASHBOARD_RIGHT_SIDEBAR = 'user-dashboard-right-sidebar-image',
+  EVENT_BANNER = 'event_banner_image',
 }

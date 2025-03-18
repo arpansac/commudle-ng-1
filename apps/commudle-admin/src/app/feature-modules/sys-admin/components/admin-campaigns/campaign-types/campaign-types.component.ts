@@ -105,7 +105,7 @@ export class CampaignTypesComponent implements OnInit {
       .get('name')
       .value.trim() // Remove leading & trailing spaces
       .toLowerCase() // Convert to lowercase
-      .replace(/\s+/g, '_'); // Replace spaces with hyphens
+      .replace(/\s+/g, '-'); // Replace spaces with '-
     this.campaignTypeForm.patchValue({
       slug: slug,
     });
