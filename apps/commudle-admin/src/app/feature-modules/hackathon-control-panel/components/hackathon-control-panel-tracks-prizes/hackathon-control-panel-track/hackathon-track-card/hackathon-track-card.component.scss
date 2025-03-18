@@ -24,6 +24,9 @@
       }
     }
   }
+  .no-prize-added {
+    @apply com-p-4 com-border-0 com-border-t com-border-solid com-border-slate-200;
+  }
 }
 .delete-prize-dialog {
   nb-card-header,
