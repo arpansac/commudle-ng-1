@@ -8,6 +8,9 @@
 
 .tag {
   @apply com-px-4 com-py-1 com-mx-1 com-my-1 com-rounded-3xl com-font-medium;
+  fa-icon {
+    @apply com-cursor-pointer;
+  }
 }
 
 .editable {
@@ -17,16 +20,8 @@
 form {
   @apply com-flex-1 com-w-auto com-max-w-full;
   input {
-    @apply com-w-full;
+    @apply com-w-full com-border-0 com-bg-transparent com-h-9;
   }
-}
-
-input .size-medium {
-  max-width: max-content;
-}
-
-[nbInput] {
-  @apply com-max-w-full #{!important};
 }
 
 .suggested-tags {
