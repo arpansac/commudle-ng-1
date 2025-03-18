@@ -26,4 +26,14 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonWinnerAnnouncementEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.WINNER_ANNOUNCEMENT_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: String(hackathonId),
+      },
+    );
+  }
 }

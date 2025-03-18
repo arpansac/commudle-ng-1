@@ -1,8 +1,11 @@
 import { ToastrService } from '@commudle/shared-services';
 import { Component, Input } from '@angular/core';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { NbDialogRef } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder } from '@angular/forms';
+import { EmailPreviewComponent } from 'libs/shared/components/src/lib/components/email-preview/email-preview.component';
+import { EmailerPreviewService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-hackathon-winner-announcement-emailer',
   templateUrl: './hackathon-winner-announcement-emailer.component.html',
@@ -13,6 +16,10 @@ export class HackathonWinnerAnnouncementEmailerComponent {
   message = '';
   faXmark = faXmark;
   isLoading = false;
+  showPreviewSpinner = false;
+  previewEmailForm;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -53,8 +60,15 @@ export class HackathonWinnerAnnouncementEmailerComponent {
   constructor(
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
     protected dialogRef: NbDialogRef<HackathonWinnerAnnouncementEmailerComponent>,
-  ) {}
+  ) {
+    this.previewEmailForm = this.fb.group({
+      body: [''],
+    });
+  }
 
   SendWinnerAnnouncementMailer() {
     this.isLoading = true;
@@ -69,6 +83,25 @@ export class HackathonWinnerAnnouncementEmailerComponent {
         this.closeDialogBox();
       },
     );
+  }
+
+  previewEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+    });
+    this.emailerPreviewService
+      .hackathonWinnerAnnouncementEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 
   closeDialogBox() {

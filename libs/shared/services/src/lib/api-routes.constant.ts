@@ -434,6 +434,7 @@ export const API_ROUTES = {
     },
     HACKATHON_EMAILS: {
       STATUS_FILTER_GENERAL_EMAIL: 'api/v2/email_previews/hackathon_emails/status_filter_general_email',
+      WINNER_ANNOUNCEMENT_EMAIL: 'api/v2/email_previews/hackathon_emails/winner_announcement_email',
     },
   },
 
