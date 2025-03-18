@@ -9,36 +9,52 @@
     <form [formGroup]="roundGeneralMailerForm">
       <div class="round">
         <label for="round_id">
-          Select Round*
+          Select Round<span class="mandatory-field">*</span>
           <select
             formControlName="round_id"
             [ngClass]="{
               'com-text-[#8E9BB3]': roundGeneralMailerForm.get('round_id').value === ''
             }"
           >
-            <option disabled value="">Select round*</option>
+            <option disabled value="">Select round</option>
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
               {{ hackathonRound.name }}
             </option>
           </select>
         </label>
       </div>
-      <br />
       <div class="subject">
         <label for="subject">
-          Subject*
+          Subject<span class="mandatory-field">*</span>
           <input formControlName="subject" type="text" nbInput placeholder="Subject" fullWidth />
         </label>
       </div>
-      <br />
       <div class="message">
-        <label for="message">Message*</label>
+        <label for="message">Message<span class="mandatory-field">*</span></label>
         <editor [init]="tinyMCE" formControlName="message"></editor>
       </div>
     </form>
   </nb-card-body>
   <nb-card-footer>
-    <button nbButton status="primary" [disabled]="roundGeneralMailerForm.invalid" (click)="roundGeneralMailer()">
+    <button
+      (click)="previewEmail(hackathonId); showPreviewSpinner = true"
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [nbSpinner]="showPreviewSpinner"
+      type="button"
+      [disabled]="roundGeneralMailerForm.invalid"
+    >
+      Preview Email
+    </button>
+    <button
+      nbButton
+      shape="semi-round"
+      status="primary"
+      fullWidth
+      [disabled]="roundGeneralMailerForm.invalid"
+      (click)="roundGeneralMailer()"
+    >
       Send
     </button>
   </nb-card-footer>

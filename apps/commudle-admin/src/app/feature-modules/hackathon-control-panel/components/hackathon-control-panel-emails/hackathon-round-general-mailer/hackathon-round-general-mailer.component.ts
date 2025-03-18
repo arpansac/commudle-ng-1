@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EDbModels, IRound } from '@commudle/shared-models';
-import { RoundService, ToastrService } from '@commudle/shared-services';
-import { NbDialogRef } from '@commudle/theme';
+import { RoundService, ToastrService, EmailerPreviewService } from '@commudle/shared-services';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   selector: 'commudle-hackathon-round-general-mailer',
@@ -17,6 +18,9 @@ export class HackathonRoundGeneralMailerComponent implements OnInit {
   hackathonRounds: IRound[];
   isLoading = false;
   roundGeneralMailerForm: FormGroup;
+  showPreviewSpinner = false;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -59,6 +63,8 @@ export class HackathonRoundGeneralMailerComponent implements OnInit {
     private toastrService: ToastrService,
     private dialogRef: NbDialogRef<HackathonRoundGeneralMailerComponent>,
     private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
   ) {
     this.roundGeneralMailerForm = this.fb.group({
       subject: ['', Validators.required],
@@ -89,6 +95,25 @@ export class HackathonRoundGeneralMailerComponent implements OnInit {
       () => {
         this.isLoading = false;
       };
+  }
+
+  previewEmail(hackathonId) {
+    const previewData = {
+      body: this.roundGeneralMailerForm.value.message,
+      subject: this.roundGeneralMailerForm.value.subject,
+      round_id: this.roundGeneralMailerForm.value.round_id,
+    };
+    this.emailerPreviewService.hackathonRoundEmailPreview(previewData, hackathonId).subscribe((result) => {
+      this.previewData = result.preview;
+      this.openEmailPreviewTemplate(this.previewData);
+      this.showPreviewSpinner = false;
+    });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 
   closePopup() {
