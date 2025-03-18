@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
 import { SharedComponentsModule } from '@commudle/shared-components';
-import { ECampaignTypeSlug } from '@commudle/shared-models';
+import { ECampaignTypeSlug, EDbModels } from '@commudle/shared-models';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 
 @Component({
@@ -17,12 +17,31 @@ export class ListingPageHeaderComponent implements OnInit {
   @Input() parentType: string;
   header: IListingPageHeader;
   richText: string;
-  CampaignTypeSlug = ECampaignTypeSlug;
+  CampaignTypeSlug: string;
 
   constructor(private cmsService: CmsService) {}
 
   ngOnInit(): void {
     this.getHeaderText(this.parentType);
+    switch (this.parentType) {
+      case 'event-listing-page':
+        this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_EVENTS_BANNER;
+        break;
+      case 'communities':
+        this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_COMMUNITIES_BANNER;
+        break;
+      case 'labs':
+        this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_LABS_BANNER;
+        break;
+      case 'builds':
+        this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_BUILDS_BANNER;
+        break;
+      case 'speakers':
+        this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_SPEAKERS_BANNER;
+        break;
+      default:
+        break;
+    }
   }
 
   imageUrl(source: any) {
