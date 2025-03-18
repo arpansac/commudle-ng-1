@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from '@commudle/shared-services';
-import { NbDialogRef } from '@commudle/theme';
+import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EInvitationStatus } from '@commudle/shared-models';
+import { FormBuilder, Validators } from '@angular/forms';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   selector: 'commudle-hackathon-status-filter-general-emails',
@@ -19,6 +21,10 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   selectedRecipient = 'all';
   EInvitationStatus = EInvitationStatus;
   selectedStatus = '';
+  showPreviewSpinner = false;
+  previewEmailForm;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -59,8 +65,18 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   constructor(
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
     protected dialogRef: NbDialogRef<HackathonStatusFilterGeneralEmailsComponent>,
-  ) {}
+  ) {
+    {
+      this.previewEmailForm = this.fb.group({
+        body: [''],
+        subject: ['', Validators.required],
+      });
+    }
+  }
 
   SendStatusFilterGeneralMailer() {
     this.isLoading = true;
@@ -77,6 +93,32 @@ export class HackathonStatusFilterGeneralEmailsComponent {
           this.closeDialogBox();
         },
       );
+  }
+
+  onRecipientChange() {
+    if (this.selectedRecipient === 'all') {
+      this.selectedStatus = '';
+    }
+  }
+
+  previewEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+      subject: this.subject,
+    });
+    this.emailerPreviewService
+      .hackathonStatusFilterEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 
   closeDialogBox() {
