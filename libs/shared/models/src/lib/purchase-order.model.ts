@@ -16,6 +16,8 @@ export interface IPurchaseOrder {
   orderable_type: string;
   orderable_id: number;
   discount_code_id: number;
+  base_amount: number;
+  base_currency: string;
   orderable: ICampaign;
   user: IUser;
   status: EPurchaseOrderStatus;

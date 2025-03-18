@@ -3,7 +3,7 @@
     <tr>
       <th [width]="300">Campaign Type</th>
       <th [width]="200">Campaign Name</th>
-      <th [width]="200">Status</th>
+      <th [width]="400">Status</th>
       <th>Budget</th>
       <th [width]="300">Duration Time</th>
       <th [width]="300">Created At</th>
@@ -38,10 +38,18 @@
               <table>
                 <tr>
                   <th>Note</th>
+                  <th>Created At</th>
+                  <th>Created By</th>
                 </tr>
                 <tr *ngFor="let reason of campaign.unapproved_reasons">
                   <td>
                     {{ reason.text }}
+                  </td>
+                  <td>
+                    {{ moment(reason.created_at).format('MMM Do, YYYY') }}
+                  </td>
+                  <td>
+                    {{ reason.user.name }}
                   </td>
                 </tr>
               </table>

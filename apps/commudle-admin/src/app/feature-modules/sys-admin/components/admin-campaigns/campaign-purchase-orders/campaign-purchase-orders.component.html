@@ -23,8 +23,8 @@
           <th>Paid by</th>
           <th>Total amount</th>
           <th>Discount code</th>
-          <th>Tax amount</th>
-          <th>Application fee amount</th>
+          <!-- <th>Tax amount</th> -->
+          <!-- <th>Application fee amount</th> -->
           <th>Payment gateway fee</th>
         </tr>
         <tr *ngFor="let po of purchaseOrders; let i = index">
@@ -39,9 +39,9 @@
           </td>
           <td>{{ po.amount_to_be_paid / 100 | currency : po.currency }}</td>
           <td>{{ po?.discount_code ? po.discount_code.code : 'NA' }}</td>
-          <td>NA</td>
-          <td>NA</td>
-          <td>{{ po.payment_gateway_fee / 100 | currency : po.currency }}</td>
+          <!-- <td>NA</td> -->
+          <!-- <td>NA</td> -->
+          <td>{{ po.payment_gateway_fee / 100 | currency : po.base_currency }}</td>
         </tr>
       </table>
     </div>

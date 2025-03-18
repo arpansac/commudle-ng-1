@@ -172,7 +172,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
           .subscribe((data) => {
             this.isLoadingPayment = false;
-            alert('Message from Razorpay:' + response.error.description);
+            const userConfirmed = confirm('Message from Razorpay:' + response.error.description);
+            if (userConfirmed) {
+              this.reload();
+            } else {
+              this.reload();
+            }
           });
       }
     });

@@ -11,19 +11,22 @@
 }
 
 .notes-table {
-  @apply com-mx-0;
+  @apply com-mx-0 com-rounded;
   nb-card-body {
     @apply com-p-0;
   }
   table {
-    @apply com-border-collapse com-w-full;
-  }
-  td,
-  th {
-    @apply com-p-1;
-  }
-  tr:not(:last-child) {
-    @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+    @apply com-w-full com-border-collapse;
+    td,
+    th {
+      @apply com-text-left com-p-2;
+    }
+    th {
+      @apply com-bg-Bright-Gray;
+    }
+    tr {
+      @apply hover:com-bg-gray-50;
+    }
   }
 }
 
