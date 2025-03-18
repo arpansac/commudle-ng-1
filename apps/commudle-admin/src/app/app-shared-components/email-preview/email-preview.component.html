@@ -1,4 +1,3 @@
-<!-- <ng-template let-ref="dialogRef"> -->
 <nb-card class="template-card">
   <nb-card-header
     ><h3>Email Preview</h3>
@@ -9,16 +8,14 @@
   <nb-card-body>
     <p class="sample-preview">This is a preview of your email</p>
     <div class="info-message">
-      <!-- <commudle-alert
-          [info]="true"
-          message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
-        ></commudle-alert> -->
+      <commudle-alert
+        [info]="true"
+        message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
+      ></commudle-alert>
     </div>
-    <!-- <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div> -->
-    <div [innerHTML]="previewData" class="inner-html"></div>
+    <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div>
   </nb-card-body>
   <nb-card-footer>
     <button nbButton status="primary" shape="semi-round" (click)="closePopup()">Close</button>
   </nb-card-footer>
 </nb-card>
-<!-- </ng-template> -->
