@@ -16,11 +16,22 @@ export class CampaignDashboardComponent implements OnInit {
     faPlus,
     faEdit,
   };
+  pagination = {
+    page: 1,
+    count: 10,
+    total: 0,
+  };
   constructor(private campaignService: CampaignService) {}
 
   ngOnInit() {
-    this.campaignService.indexCampaigns().subscribe((res) => {
-      this.campaigns = res;
+    this.fetchCampaigns();
+  }
+
+  fetchCampaigns() {
+    this.campaignService.indexCampaigns(this.pagination.page, this.pagination.count).subscribe((res) => {
+      this.campaigns = res.values;
+      this.pagination.total = res.total;
+      this.pagination.page = res.page;
       this.isLoading = false;
     });
   }

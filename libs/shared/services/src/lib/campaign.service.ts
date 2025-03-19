@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ECampaignStatus, ICampaign, ICampaignStats } from '@commudle/shared-models';
+import { ECampaignStatus, ICampaign, ICampaignStats, IPaginationCount } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -17,8 +17,11 @@ export class CampaignService {
     });
   }
 
-  indexCampaigns(): Observable<ICampaign[]> {
-    return this.http.get<ICampaign[]>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX));
+  indexCampaigns(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
+    const params = new HttpParams().set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<ICampaign>>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX), {
+      params,
+    });
   }
 
   updateCampaign(formData, campaignId: number): Observable<ICampaign> {

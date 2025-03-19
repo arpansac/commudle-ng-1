@@ -10,6 +10,16 @@
         <commudle-campaign-list [campaigns]="campaigns"></commudle-campaign-list>
       </div>
 
+      <app-pagination
+        *ngIf="pagination.total > 0"
+        (goTo)="pagination.page = $event; fetchCampaigns()"
+        (next)="pagination.page = $event; fetchCampaigns()"
+        (previous)="pagination.page = $event; fetchCampaigns()"
+        [count]="pagination.count"
+        [current]="pagination.page"
+        [total]="pagination.total"
+      ></app-pagination>
+
       <ng-template #noCampaignFound>
         <br />
         <br />
