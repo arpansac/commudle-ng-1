@@ -2,7 +2,6 @@ import { ToastrService } from '@commudle/shared-services';
 import { Component, Input } from '@angular/core';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder } from '@angular/forms';
 import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
@@ -14,7 +13,6 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 export class HackathonWinnerAnnouncementEmailerComponent {
   @Input() hackathonId: number;
   message = '';
-  faXmark = faXmark;
   isLoading = false;
   showPreviewSpinner = false;
   previewEmailForm;

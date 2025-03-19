@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -16,7 +15,6 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   @Input() hackathonId: number;
   message = '';
   subject = '';
-  faXmark = faXmark;
   isLoading = false;
   selectedRecipient = 'all';
   EInvitationStatus = EInvitationStatus;

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EDbModels, IRound } from '@commudle/shared-models';
 import { RoundService, ToastrService, EmailerPreviewService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
@@ -14,7 +13,6 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 })
 export class HackathonRoundGeneralMailerComponent implements OnInit {
   @Input() hackathonId: number | string;
-  faXmark = faXmark;
   hackathonRounds: IRound[];
   isLoading = false;
   roundGeneralMailerForm: FormGroup;

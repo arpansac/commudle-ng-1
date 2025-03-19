@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EDbModels, IHackathon, IRound } from '@commudle/shared-models';
 import { RoundService, ToastrService, EmailerPreviewService } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -14,7 +13,6 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnInit {
   @Input() hackathonId: number | string;
   @Input() roundSelection = 0;
-  faXmark = faXmark;
   hackathonRounds: IRound[];
   message: string;
   isLoading = false;

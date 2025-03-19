@@ -9,7 +9,6 @@ import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/ap
 import { ToastrService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
 import { EmailerPreviewService } from '@commudle/shared-services';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
@@ -24,7 +23,6 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   showPreviewSpinner = false;
   previewEmailForm;
   previewData: string;
-  faXmark = faXmark;
 
   tinyMCE = {
     min_height: 300,
