@@ -56,4 +56,14 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonOverallRoundSelectionEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.OVERALL_ROUND_SELECTION_UPDATE_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: String(hackathonId),
+      },
+    );
+  }
 }

@@ -70,12 +70,10 @@ export class HackathonStatusFilterGeneralEmailsComponent {
     private nbDialogService: NbDialogService,
     protected dialogRef: NbDialogRef<HackathonStatusFilterGeneralEmailsComponent>,
   ) {
-    {
-      this.previewEmailForm = this.fb.group({
-        body: [''],
-        subject: ['', Validators.required],
-      });
-    }
+    this.previewEmailForm = this.fb.group({
+      body: [''],
+      subject: ['', Validators.required],
+    });
   }
 
   SendStatusFilterGeneralMailer() {
