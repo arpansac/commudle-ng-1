@@ -19,6 +19,7 @@ import {
   NbSpinnerModule,
   NbRadioModule,
   NbIconModule,
+  NbTooltipModule,
 } from '@commudle/theme';
 import { HackathonControlPanelContactDetailsFormComponent } from './components/hackathon-control-panel-contact-details-form/hackathon-control-panel-contact-details-form.component';
 import { HackathonControlPanelDatesFormComponent } from './components/hackathon-control-panel-dates-form/hackathon-control-panel-dates-form.component';
@@ -106,6 +107,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     NbRadioModule,
     UserPersonalConnectComponent,
     NbIconModule,
+    NbTooltipModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

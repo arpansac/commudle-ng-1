@@ -118,7 +118,12 @@
               <div class="team-details">
                 <div class="team-name">
                   {{ userResponse.team.name }}
-                  <span *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"> 🏆</span>
+                  <span
+                    *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"
+                    [nbTooltip]="hackathonWinner.hackathon_prize.name"
+                  >
+                    🏆</span
+                  >
                 </div>
                 <div class="date">
                   {{ moment(userResponse.team.created_at).format('DD MMM YYYY') }}
@@ -389,11 +394,18 @@
               <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
             </span>
           </div>
-          <div class="com-flex com-items-center com-gap-10 com-my-3">
-            <button (click)="addNote()" class="add-button" nbButton status="warning">
+          <div class="com-my-3">
+            <button (click)="addNote()" class="add-button" nbButton status="warning" size="small">
               <fa-icon class="clickable" [icon]="faPlus"></fa-icon>
               Add Note
             </button>
+            <br />
+            <br />
+
+            <commudle-alert
+              [info]="true"
+              message="Notes are private to the hackathon organizers and are not visible to the participant"
+            ></commudle-alert>
           </div>
         </div>
       </div>
@@ -406,8 +418,8 @@
       </div>
 
       <div *ngIf="selectedUserDetails.project_description">
-        <label>Project Description</label>
-        <div class="border-box-text">{{ selectedUserDetails.project_description }}</div>
+        <label><strong>Project Description</strong></label>
+        <div>{{ selectedUserDetails.project_description }}</div>
       </div>
 
       <div class="user-response-details">
@@ -443,6 +455,7 @@
         <div *ngIf="selectedUserDetails" class="selected-user-details">
           <a [routerLink]="['/users', selectedUserDetails.username]" target="_blank" class="com-w-max com-p-2">
             Go To Profile
+            <fa-icon [icon]="faUpRightFromSquare"></fa-icon>
           </a>
           <!-- About -->
           <div *ngIf="selectedUserDetails.about_me">
