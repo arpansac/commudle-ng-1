@@ -17,9 +17,9 @@ export class EmailerPreviewService {
     });
   }
 
-  hackathonRegistrationEmailPreview(formData, hackathonId): Observable<any> {
+  hackathonInviteRegistrationEmailPreview(formData, hackathonId): Observable<any> {
     return this.http.post<any>(
-      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.STATUS_FILTER_GENERAL_EMAIL),
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.INVITE_REGISTRATIONS_EMAIL),
       {
         email_form: formData,
         hackathon_id: String(hackathonId),
@@ -30,6 +30,26 @@ export class EmailerPreviewService {
   hackathonWinnerAnnouncementEmailPreview(formData, hackathonId): Observable<any> {
     return this.http.post<any>(
       this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.WINNER_ANNOUNCEMENT_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: String(hackathonId),
+      },
+    );
+  }
+
+  hackathonStatusFilterEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.STATUS_FILTER_GENERAL_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: String(hackathonId),
+      },
+    );
+  }
+
+  hackathonRoundEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.ROUND_GENERAL_EMAIL),
       {
         email_form: formData,
         hackathon_id: String(hackathonId),

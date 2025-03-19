@@ -129,7 +129,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
       body: this.message,
     });
     this.emailerPreviewService
-      .hackathonRegistrationEmailPreview(this.previewEmailForm.value, hackathonId)
+      .hackathonInviteRegistrationEmailPreview(this.previewEmailForm.value, hackathonId)
       .subscribe((result) => {
         this.previewData = result.preview;
         this.openEmailPreviewTemplate(this.previewData);
