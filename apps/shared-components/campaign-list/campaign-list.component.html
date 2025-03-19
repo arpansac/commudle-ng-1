@@ -21,8 +21,8 @@
       <td>{{ campaign.name }}</td>
       <td>
         <div *ngIf="!isCampaignAdmin">{{ campaign.status | capitalizeAndRemoveUnderscore }}</div>
-        <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()">
-          <div class="select">
+        <div>
+          <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
             <select
               [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
               [(ngModel)]="campaign.status"
@@ -39,7 +39,7 @@
                 <tr>
                   <th>Note</th>
                   <th>Created At</th>
-                  <th>Created By</th>
+                  <th *ngIf="isCampaignAdmin">Created By</th>
                 </tr>
                 <tr *ngFor="let reason of campaign.unapproved_reasons">
                   <td>
@@ -48,7 +48,7 @@
                   <td>
                     {{ moment(reason.created_at).format('MMM Do, YYYY') }}
                   </td>
-                  <td>
+                  <td *ngIf="isCampaignAdmin">
                     {{ reason.user.name }}
                   </td>
                 </tr>
@@ -57,7 +57,10 @@
           </nb-card>
 
           <div
-            *ngIf="campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED"
+            *ngIf="
+              isCampaignAdmin &&
+              (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
+            "
             class="com-flex com-gap-1"
           >
             <label for="notes">
