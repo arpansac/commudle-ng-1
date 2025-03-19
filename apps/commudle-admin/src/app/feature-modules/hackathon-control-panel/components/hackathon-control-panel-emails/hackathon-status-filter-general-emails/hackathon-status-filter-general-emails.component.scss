@@ -22,8 +22,8 @@ nb-card-body {
   @apply com-p-6;
 }
 
-.mail-popup {
-  @apply md:com-w-[50dvw] md:com-max-h-[90dvh];
+.mail-popups {
+  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-full;
 }
 
 .message-field {
