@@ -23,6 +23,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   showPreviewSpinner = false;
   previewEmailForm;
   previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -136,7 +137,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   }
 
   openEmailPreviewTemplate(previewData) {
-    this.dialogRef = this.nbDialogService.open(EmailPreviewComponent, {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
       context: { previewData },
     });
   }
