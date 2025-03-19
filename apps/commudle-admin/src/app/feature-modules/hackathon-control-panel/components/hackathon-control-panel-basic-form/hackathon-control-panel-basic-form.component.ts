@@ -112,7 +112,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       if (this.hackathonSlug) {
         this.fetchHackathonDetails();
       } else {
-        this.seoService.setTags('Admin | Hackathon', '', '');
+        this.seoService.setTitle('New Hackathon');
       }
     });
   }
