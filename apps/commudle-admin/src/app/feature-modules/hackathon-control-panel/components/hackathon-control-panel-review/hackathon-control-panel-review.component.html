@@ -28,6 +28,7 @@
         status="primary"
         (click)="openRoundSelectionUpdateEmailDialogBox()"
         class="com-w-max"
+        size="small"
       >
         Send round selection update email
       </button>
@@ -38,6 +39,7 @@
         status="primary"
         (click)="sendTeamDetailsCsv()"
         class="com-w-max"
+        size="small"
       >
         <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
       </button>
@@ -46,7 +48,7 @@
         *ngIf="hackathon && userResponses && userResponses.length > 0"
         [routerLink]="['/admin', 'communities', communityId, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
       >
-        <button nbButton status="primary" class="com-w-max">Select Winner</button>
+        <button nbButton status="primary" class="com-w-max" size="small">Select Winner</button>
       </a>
 
       <div class="select">
@@ -240,6 +242,7 @@
             status="primary"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.ACCEPTED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Accepted
           </button>
@@ -248,6 +251,7 @@
             status="danger"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.REJECTED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Reject
           </button>
@@ -256,6 +260,7 @@
             status="warning"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.WAITLISTED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Waitlist
           </button>
@@ -266,6 +271,7 @@
             status="primary"
             fullWidth
             (click)="generateTeamRegistrationStatusNotification(selectedTeamDetails.id)"
+            size="small"
           >
             {{ selectedTeamDetails.acceptance_mail_sent ? 'resend Acceptance Email' : 'Send Acceptance Email' }}
           </button>
@@ -274,6 +280,7 @@
             status="danger"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.REGISTERED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Undo Accept
           </button>
@@ -285,6 +292,7 @@
             status="primary"
             fullWidth
             (click)="generateTeamRegistrationStatusNotification(selectedTeamDetails.id)"
+            size="small"
           >
             Send Rejection Email
           </button>
@@ -293,6 +301,7 @@
             status="danger"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.REGISTERED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Undo Reject
           </button>
@@ -304,6 +313,7 @@
             status="primary"
             fullWidth
             (click)="generateTeamRegistrationStatusNotification(selectedTeamDetails.id)"
+            size="small"
           >
             Send Waitlist Email
           </button>
@@ -312,10 +322,18 @@
             status="danger"
             fullWidth
             (click)="optionChanged(EHackathonRegistrationStatus.REGISTERED, selectedTeamDetails.id, data.index)"
+            size="small"
           >
             Undo Waitlist
           </button>
         </div>
+      </div>
+      <br />
+      <div *ngIf="selectedTeamDetails.hackathon_winners">
+        <label><strong>Prize Details</strong></label>
+        <ul>
+          <li *ngFor="let winners of selectedTeamDetails.hackathon_winners">🏆 {{ winners.hackathon_prize.name }}</li>
+        </ul>
       </div>
       <div
         class="round-select"
@@ -347,21 +365,25 @@
 
       <div [formGroup]="notesForm" class="notes-form">
         <div formArrayName="note" class="field">
-          <label>Notes </label>
+          <label>Notes:</label>
           <div *ngIf="notes && notes.length > 0">
-            <div *ngFor="let note of notes; let i = index" class="note-list">
-              <div>
-                <span>{{ note.text }} &nbsp;</span>
-                <span class="delete-note clickable" (click)="destroyNote(note.id, i, selectedUserResponse)">
-                  <fa-icon [icon]="faXmark"></fa-icon>
-                </span>
-              </div>
-              <small>
-                <span class="com-text-Auro-Metal-Saurus"
-                  >{{ moment(note.created_at).format('LT DD-MM-YYYY') }} by {{ note.user.name }}</span
-                >
-              </small>
-            </div>
+            <ul>
+              <li *ngFor="let note of notes; let i = index">
+                <div class="note-list">
+                  <div>
+                    <span>{{ note.text }} &nbsp;</span>
+                    <span class="delete-note clickable" (click)="destroyNote(note.id, i, selectedUserResponse)">
+                      <fa-icon [icon]="faXmark"></fa-icon>
+                    </span>
+                  </div>
+                  <small>
+                    <span class="com-text-Auro-Metal-Saurus"
+                      >{{ moment(note.created_at).format('LT DD-MM-YYYY') }} by {{ note.user.name }}</span
+                    >
+                  </small>
+                </div>
+              </li>
+            </ul>
           </div>
           <div *ngFor="let note of notesForm.controls.note['controls']; let i = index">
             <div [formGroupName]="i" class="note">
@@ -411,18 +433,35 @@
       </div>
 
       <div *ngIf="selectedTeamDetails.entity_updates.length > 0">
-        <label>Updates</label>
-        <div *ngFor="let update of selectedTeamDetails.entity_updates">
-          <div class="border-box-text" [innerHTML]="update.details"></div>
-        </div>
+        <label>Updates:</label>
+        <ul>
+          <li *ngFor="let update of selectedTeamDetails.entity_updates">
+            <div class="updates" [innerHTML]="update.details"></div>
+            <small class="com-text-Auro-Metal-Saurus">{{ moment(update.created_at).format('LT DD-MM-YYYY') }}</small>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="selectedUserDetails.track">
+        <strong>Track Details:</strong>
+        <ul>
+          <li>
+            <div>{{ selectedUserDetails.track.name }}</div>
+          </li>
+        </ul>
       </div>
 
       <div *ngIf="selectedUserDetails.project_description">
-        <label><strong>Project Description</strong></label>
-        <div>{{ selectedUserDetails.project_description }}</div>
+        <strong>Project Description:</strong>
+        <ul>
+          <li>
+            <div>{{ selectedUserDetails.project_description }}</div>
+          </li>
+        </ul>
       </div>
 
       <div class="user-response-details">
+        <strong>Members:</strong>
         <div class="user-response-tabs custom-scrollbar">
           <div
             *ngFor="let user of data.userResponse"
