@@ -28,7 +28,7 @@ export class CampaignListComponent {
   ) {}
 
   updateStatus(event, campaignId) {
-    this.campaignService.sysAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
+    this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
       if (res) {
         const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
         this.campaigns[index] = res;

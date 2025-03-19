@@ -35,16 +35,16 @@ export class SysAdminCampaignService {
     );
   }
 
-  toggleCampaignStatus(campaignTypeId: number): Observable<boolean> {
+  toggleCampaignTypeStatus(campaignTypeId: number): Observable<boolean> {
     return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGNS_TYPES.TOGGLE_STATUS), {
       campaign_type_id: campaignTypeId,
     });
   }
 
-  getSysAdminIndex(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
+  index(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
     const params = new HttpParams().set('page', page).set('count', count);
     return this.http.get<IPaginationCount<ICampaign>>(
-      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.SYS_ADMIN_INDEX),
+      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_INDEX),
       { params },
     );
   }

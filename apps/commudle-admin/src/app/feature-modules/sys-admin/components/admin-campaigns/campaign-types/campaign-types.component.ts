@@ -91,7 +91,7 @@ export class CampaignTypesComponent implements OnInit {
   }
 
   toggleCampaignStatus(campaignTypeId: number) {
-    this.sysAdminCampaignTypesService.toggleCampaignStatus(campaignTypeId).subscribe((res) => {
+    this.sysAdminCampaignTypesService.toggleCampaignTypeStatus(campaignTypeId).subscribe((res) => {
       if (res) {
         const campaignTypeIndex = this.campaignTypes.findIndex((c) => c.id === campaignTypeId);
         this.campaignTypes[campaignTypeIndex].active = !this.campaignTypes[campaignTypeIndex].active;

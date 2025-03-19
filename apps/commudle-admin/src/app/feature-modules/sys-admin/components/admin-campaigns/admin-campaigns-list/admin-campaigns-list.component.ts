@@ -22,7 +22,7 @@ export class AdminCampaignsListComponent implements OnInit {
 
   fetchCampaigns() {
     this.isLoading = true;
-    this.campaignService.getSysAdminIndex(this.page, this.count).subscribe((res) => {
+    this.campaignService.index(this.page, this.count).subscribe((res) => {
       this.campaigns = res.values;
       this.page = res.page;
       this.total = res.total;
