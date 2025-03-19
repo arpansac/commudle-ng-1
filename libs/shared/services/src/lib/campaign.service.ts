@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ECampaignStatus, ICampaign } from '@commudle/shared-models';
+import { ECampaignStatus, ICampaign, ICampaignStats } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -56,6 +56,13 @@ export class CampaignService {
       .set('start_time', startTime)
       .set('end_time', endTime);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CALC_ESTIMATED_PRICE), {
+      params,
+    });
+  }
+
+  getStats(campaignId: number): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS), {
       params,
     });
   }

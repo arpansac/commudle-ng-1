@@ -123,6 +123,13 @@
             &nbsp; Pay Now
           </button>
         </a>
+        <a
+          *ngIf="campaign.status === ECampaignStatus.LIVE || campaign.status === ECampaignStatus.COMPLETE"
+          [routerLink]="['stats', campaign.id]"
+          (click)="$event.stopPropagation()"
+        >
+          <button nbButton status="success" size="small">Stats</button>
+        </a>
       </td>
     </tr>
   </tbody>

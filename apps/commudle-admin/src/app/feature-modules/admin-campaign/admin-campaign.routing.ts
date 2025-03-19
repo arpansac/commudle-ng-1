@@ -5,6 +5,7 @@ import { CampaignFormOrderSetupComponent } from './components/campaign-form/camp
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
 import { CampaignResolver } from './resolver/campaign.resolver';
 import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
+import { CampaignStatsComponent } from './components/campaign-stats/campaign-stats.component';
 
 const routes: Routes = [
   { path: '', component: CampaignDashboardComponent },
@@ -41,6 +42,10 @@ const routes: Routes = [
         component: CampaignFormOrderConfirmationComponent,
       },
     ],
+  },
+  {
+    path: 'stats/:campaign_id',
+    component: CampaignStatsComponent,
   },
 ];
 

@@ -1,0 +1,20 @@
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <nb-card>
+        <nb-card-body>
+          <div class="campaign-stats-container" *ngIf="campaignStats">
+            <div class="campaign-stats-item">
+              <div class="campaign-stats-item-label">Total Clicks:</div>
+              <div class="campaign-stats-item-value">{{ campaignStats.total_clicks }}</div>
+            </div>
+            <div class="campaign-stats-item">
+              <div class="campaign-stats-item-label">Total Views:</div>
+              <div class="campaign-stats-item-value">{{ campaignStats.total_views }}</div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

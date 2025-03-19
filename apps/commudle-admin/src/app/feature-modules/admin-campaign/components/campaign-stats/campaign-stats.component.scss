@@ -1,0 +1,14 @@
+.campaign-stats-container {
+  @apply com-grid com-grid-cols-2 com-gap-4;
+
+  .campaign-stats-item {
+    @apply com-flex com-flex-col com-items-center com-p-4 com-bg-gray-50 com-rounded-lg com-shadow-md;
+    .campaign-stats-item-label {
+      @apply com-text-lg com-font-semibold com-text-gray-700;
+    }
+
+    .campaign-stats-item-value {
+      @apply com-text-3xl com-font-bold com-text-blue-600;
+    }
+  }
+}

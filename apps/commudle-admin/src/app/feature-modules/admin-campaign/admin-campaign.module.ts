@@ -14,6 +14,7 @@ import { CampaignFormOrderConfirmationComponent } from './components/campaign-fo
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { LinkyModule } from 'ngx-linky';
+import { CampaignStatsComponent } from './components/campaign-stats/campaign-stats.component';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { LinkyModule } from 'ngx-linky';
     CampaignFormOrderSetupComponent,
     CampaignFormOrderConfirmationComponent,
     CampaignDashboardComponent,
+    CampaignStatsComponent,
   ],
 })
 export class AdminCampaignModule {}

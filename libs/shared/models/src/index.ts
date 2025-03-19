@@ -47,3 +47,4 @@ export * from './lib/campaign.model';
 export * from './lib/campaign-asset.model';
 export * from './lib/purchase-order.model';
 export * from './lib/user-activity-event-type.enum';
+export * from './lib/campaign-stats.model';
