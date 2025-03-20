@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@commudle/shared-environments';
 import {
   IPurchaseOrder,
@@ -17,7 +17,7 @@ import {
   RazorpayService,
   ToastrService,
 } from '@commudle/shared-services';
-import { NbDialogService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTriangleExclamation, faRotateRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -43,8 +43,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   campaign: ICampaign;
   paymentPaid = false;
+  private dialogRef: NbDialogRef<any>;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
+  @ViewChild('loadingDialog', { static: true }) loadingDialog: TemplateRef<any>;
 
   private destroy$ = new Subject<void>();
 
@@ -56,10 +58,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private authWatchService: LibAuthwatchService,
     private dialogService: NbDialogService,
     private campaignService: CampaignService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.setupCurrentUser();
+    this.openLoadingDilaogbox();
+    this.fetchCurrentUser();
     this.activatedRoute.params.subscribe((params) => {
       this.fetchPurchaseOrder(params['purchase_order_uuid']);
     });
@@ -69,13 +74,22 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.destroy$.next();
     this.destroy$.complete();
+    this.closeLoadingDialogBox();
   }
 
   fetchPurchaseOrder(purchaseOrderUuid) {
+    const lastSegment = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path || '';
     this.purchaseOrderService.showPurchaseOrder(purchaseOrderUuid).subscribe((data: IPurchaseOrder) => {
       this.purchaseOrder = data;
       if (this.purchaseOrder.status === EPurchaseOrderStatus.PAID) {
         this.paymentPaid = true;
+        if (lastSegment !== 'complete') {
+          this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+        }
+      } else {
+        if (lastSegment === 'complete') {
+          this.router.navigate(['checkout', this.purchaseOrder.uuid]);
+        }
       }
       this.purchaseOrder.currency_symbol = this.countryDetails.find(
         (detail) => detail.currency === this.purchaseOrder.currency,
@@ -89,6 +103,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       case EDbModels.CAMPAIGN:
         this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
           this.campaign = campaign;
+          this.closeLoadingDialogBox();
         });
         break;
       default:
@@ -96,13 +111,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  setupCurrentUser() {
+  fetchCurrentUser() {
     this.subscriptions.push(
       this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
       }),
     );
   }
+
   Pay() {
     this.isLoadingPayment = true;
     this.createOrUpdateRazorpayOrder(this.purchaseOrder.id);
@@ -140,6 +156,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                   this.toastrService.successDialog('Your Payment Was Received Successfully');
                   this.isLoadingPayment = false;
                   this.paymentPaid = true;
+                  this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
                 }
               },
               (error) => {
@@ -187,5 +204,17 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   // Reloads the current window location.
   reload() {
     window.location.reload();
+  }
+
+  openLoadingDilaogbox() {
+    this.dialogRef = this.dialogService.open(this.loadingDialog, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      hasScroll: false,
+    });
+  }
+
+  closeLoadingDialogBox() {
+    if (this.dialogRef) this.dialogRef.close();
   }
 }

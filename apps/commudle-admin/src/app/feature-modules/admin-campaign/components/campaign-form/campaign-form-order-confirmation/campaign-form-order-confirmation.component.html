@@ -65,15 +65,18 @@
 
 <ng-template #submissionCampaign let-ref="dialogRef">
   <nb-card class="submission-dialog">
-    <nb-card-header>Your Campaign is submitted for approval</nb-card-header>
+    <nb-card-header>Your Campaign Is Submitted For Approval</nb-card-header>
     <nb-card-body>
-      Your Campaign have Been submit, We will shortly give response Thank You for submitting your campaign.
+      <div class="animation">
+        <span #successAnimation></span>
+      </div>
+      Your Campaign has been submit, We will shortly give response Thank You for submitting your campaign.
       <br />
       Next Steps:
       <ol>
         <li>We will review the campaign timings, assets and other parameters.</li>
         <li>
-          If everything is correct then you will receive an approval emall with a payment link. Once you make the
+          If everything is correct then you will receive an approval email with a payment link. Once you make the
           payment, the campaign will be set to go live.
         </li>
         <li>In case any changes are required, our team will get back to you over email.</li>

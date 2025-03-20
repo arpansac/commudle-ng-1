@@ -2,9 +2,9 @@
   <div class="container">
     <div class="two-column-layout medium">
       <div class="main-column">
-        <nb-card>
+        <nb-card *ngIf="campaign">
           <nb-card-body>
-            <div *ngIf="campaign">
+            <div>
               <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
             </div>
           </nb-card-body>
@@ -95,4 +95,9 @@
       <p class="secondary-text">If money was deducted from your account, please reach out to our support</p>
     </nb-card-body>
   </nb-card>
+</ng-template>
+
+<!-- fullPageLoadingDialog -->
+<ng-template #loadingDialog let-data let-ref="dialogRef">
+  <app-loading-spinner></app-loading-spinner>
 </ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
 import { CampaignService } from '@commudle/shared-services';
@@ -20,6 +20,8 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
   consent = false;
   @ViewChild('submissionCampaign') submissionCampaignDialog: TemplateRef<any>;
 
+  @ViewChild('successAnimation', { static: false }) SuccessAnimationContainer: ElementRef<HTMLDivElement>;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private campaignService: CampaignService,
@@ -35,6 +37,18 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
     });
   }
 
+  setAnimation() {
+    import('lottie-web').then((l) => {
+      l.default.loadAnimation({
+        container: this.SuccessAnimationContainer.nativeElement,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        path: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
+      });
+    });
+  }
+
   submitForApproval() {
     this.campaignService
       .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
@@ -42,11 +56,16 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
         if (data) {
           this.campaign = data;
           this.openDialog(this.submissionCampaignDialog);
+          this.setAnimation();
         }
       });
   }
 
   openDialog(dialog) {
-    this._dialogService.open(dialog);
+    this._dialogService.open(dialog, {
+      closeOnEsc: false,
+      closeOnBackdropClick: false,
+      hasScroll: false,
+    });
   }
 }
