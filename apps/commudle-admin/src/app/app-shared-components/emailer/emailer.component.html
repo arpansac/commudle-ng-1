@@ -182,6 +182,9 @@
           message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
         ></commudle-alert>
       </div>
+      <div class="warning-message">
+        <commudle-alert warning="This feature is in beta"> </commudle-alert>
+      </div>
       <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div>
     </nb-card-body>
     <nb-card-footer>
