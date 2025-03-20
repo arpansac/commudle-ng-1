@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
@@ -33,6 +34,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
   currentUser: ICurrentUser;
   faExclamationTriangle = faExclamationTriangle;
+  faPenToSquare = faPenToSquare;
 
   // The updated tags
   tagsDialog: string[] = [];
