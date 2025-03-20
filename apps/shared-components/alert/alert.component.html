@@ -13,3 +13,11 @@
     <ng-content select="[infoContent]"></ng-content>
   </p>
 </div>
+
+<div class="warning" *ngIf="warning" [ngClass]="{ 'warning-border': border }">
+  <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
+  <p>
+    {{ warning }}
+    <ng-content select="[warningMessage]"></ng-content>
+  </p>
+</div>
