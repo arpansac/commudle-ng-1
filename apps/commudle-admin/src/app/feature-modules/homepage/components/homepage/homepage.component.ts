@@ -82,7 +82,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
               renderer: 'svg',
               loop: true,
               autoplay: true,
-              path: 'http://localhost:4200/assets/lottie/homepage.json',
+              path: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
             });
           });
         }
