@@ -14,7 +14,7 @@
   }
 
   nb-card-body {
-    @apply md:com-w-full com-w-[100dvw];
+    @apply md:com-w-full com-w-[96dvw] com-overflow-x-hidden;
   }
 
   .sample-preview {
@@ -22,6 +22,12 @@
   }
 
   .inner-html {
-    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center com-mt-6;
+    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center com-mt-6  com-overflow-x-scroll;
+
+    ::ng-deep {
+      table {
+        @apply com-bg-white #{!important};
+      }
+    }
   }
 }
