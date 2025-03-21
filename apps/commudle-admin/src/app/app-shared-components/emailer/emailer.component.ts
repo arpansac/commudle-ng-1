@@ -355,6 +355,9 @@ export class EmailerComponent implements OnInit, OnDestroy {
         this.eventDataFormEntityGroups = [];
         this.selectedEvent = undefined;
         this.selectedEventDataFormEntityGroup = undefined;
+        this.eMailForm.patchValue({
+          subject: '',
+        });
         break;
       case 'event':
         this.isEventSpecificEmail = true;
