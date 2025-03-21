@@ -15,6 +15,7 @@ export class CampaignStatsComponent implements OnInit {
   @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('viewsOverTime') ViewsOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
+  @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService) {}
 
@@ -31,6 +32,7 @@ export class CampaignStatsComponent implements OnInit {
       this.clicksOverDays();
       this.viewsOverTime();
       this.clicksOverTime();
+      this.genderDistribution();
     });
   }
 
@@ -284,6 +286,35 @@ export class CampaignStatsComponent implements OnInit {
             },
           ],
         },
+      },
+    });
+  }
+
+  genderDistribution() {
+    if (!this.GenderDistributionChart?.nativeElement || !this.campaignStats.user_gender_distribution) {
+      return;
+    }
+
+    return new Chart(this.GenderDistributionChart.nativeElement, {
+      type: 'pie',
+      data: {
+        datasets: [
+          {
+            data: [
+              this.campaignStats.user_gender_distribution.male,
+              this.campaignStats.user_gender_distribution.female,
+              this.campaignStats.user_gender_distribution.prefer_not_to_answer,
+              this.campaignStats.user_gender_distribution.NA,
+            ],
+            backgroundColor: ['blue', '#ff43bc', 'purple', 'green'],
+          },
+        ],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: ['Male', 'Female', 'Prefer Not Answer', 'NA'],
+      },
+      options: {
+        responsive: true,
       },
     });
   }

@@ -11,4 +11,10 @@ export interface ICampaignStats {
     total: number;
     tags: ITag[];
   };
+  user_gender_distribution: {
+    male: number;
+    female: number;
+    prefer_not_to_answer: number;
+    NA: number;
+  };
 }
