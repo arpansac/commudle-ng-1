@@ -5,7 +5,7 @@ import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/s
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NbButtonModule, NbCardModule, NbCheckboxModule } from '@commudle/theme';
+import { NbButtonModule, NbCardModule, NbCheckboxModule, NbTagModule } from '@commudle/theme';
 import { CampaignFormSelectCampaignComponent } from './components/campaign-form/campaign-form-select-campaign/campaign-form-select-campaign.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
@@ -35,6 +35,7 @@ import { CampaignStatsComponent } from './components/campaign-stats/campaign-sta
     NbCardModule,
     NbButtonModule,
     NbCheckboxModule,
+    NbTagModule,
   ],
   declarations: [
     CampaignFormComponent,

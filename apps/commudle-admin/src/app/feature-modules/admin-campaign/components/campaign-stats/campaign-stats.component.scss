@@ -1,5 +1,5 @@
 .campaign-stats-container {
-  @apply com-grid com-grid-cols-2 com-gap-4;
+  @apply com-grid com-grid-cols-2 com-gap-4 com-mb-6;
 
   .campaign-stats-item {
     @apply com-flex com-flex-col com-items-center com-p-4 com-bg-gray-50 com-rounded-lg com-shadow-md;
@@ -10,5 +10,19 @@
     .campaign-stats-item-value {
       @apply com-text-3xl com-font-bold com-text-blue-600;
     }
+  }
+}
+
+.graph-container {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-6;
+  .campaign-graph-container {
+    @apply com-p-4 com-bg-gray-50 com-rounded-lg com-shadow-md com-mb-6;
+  }
+  .title {
+    @apply com-text-lg com-font-semibold com-text-gray-700 com-mt-6 com-mb-3;
+  }
+
+  .chart-container {
+    @apply com-h-96;
   }
 }
