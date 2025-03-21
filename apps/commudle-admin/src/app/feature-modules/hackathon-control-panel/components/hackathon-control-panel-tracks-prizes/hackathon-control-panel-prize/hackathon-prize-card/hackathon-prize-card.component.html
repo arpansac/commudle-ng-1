@@ -17,8 +17,11 @@
         <span *ngIf="hackathonPrize.prize_amount && hackathonPrize.prize_amount > 0">
           {{ this.prizeCurrencySymbol?.symbol }}{{ hackathonPrize.prize_amount }},
         </span>
-        {{ hackathonPrize.no_of_winners }}
-        {{ hackathonPrize.no_of_winners === 1 ? 'Winner' : 'Winners' }}
+        <br />
+        <span>
+          Can have {{ hackathonPrize.no_of_winners }}
+          {{ hackathonPrize.no_of_winners === 1 ? 'Winner' : 'Winners' }}
+        </span>
       </p>
       <div class="description" [innerHTML]="hackathonPrize.description"></div>
     </div>
