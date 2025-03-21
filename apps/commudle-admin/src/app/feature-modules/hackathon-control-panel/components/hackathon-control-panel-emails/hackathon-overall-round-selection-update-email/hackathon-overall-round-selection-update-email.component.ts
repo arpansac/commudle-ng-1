@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { EDbModels, IHackathon, IRound } from '@commudle/shared-models';
-import { RoundService, ToastrService } from '@commudle/shared-services';
+import { RoundService, ToastrService, EmailerPreviewService } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { NbDialogRef } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import { FormBuilder, Validators } from '@angular/forms';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
   selector: 'commudle-hackathon-overall-round-selection-update-email',
   templateUrl: './hackathon-overall-round-selection-update-email.component.html',
@@ -12,10 +13,13 @@ import { NbDialogRef } from '@commudle/theme';
 export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnInit {
   @Input() hackathonId: number | string;
   @Input() roundSelection = 0;
-  faXmark = faXmark;
   hackathonRounds: IRound[];
   message: string;
   isLoading = false;
+  showPreviewSpinner = false;
+  previewEmailForm;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -58,7 +62,15 @@ export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnIni
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
     private dialogRef: NbDialogRef<HackathonOverallRoundSelectionUpdateEmailComponent>,
-  ) {}
+    private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
+  ) {
+    this.previewEmailForm = this.fb.group({
+      body: [''],
+      round_id: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.indexRounds();
@@ -87,6 +99,26 @@ export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnIni
           },
         );
     }
+  }
+
+  previewEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+      round_id: this.roundSelection,
+    });
+    this.emailerPreviewService
+      .hackathonOverallRoundSelectionEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 
   closePopup() {

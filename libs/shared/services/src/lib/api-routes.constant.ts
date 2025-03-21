@@ -432,6 +432,14 @@ export const API_ROUTES = {
     COMMUNITY_EMAILS: {
       EMAIL: 'api/v2/email_previews/community_emails/email',
     },
+    HACKATHON_EMAILS: {
+      INVITE_REGISTRATIONS_EMAIL: 'api/v2/email_previews/hackathon_emails/invite_registrations_email',
+      STATUS_FILTER_GENERAL_EMAIL: 'api/v2/email_previews/hackathon_emails/status_filter_general_email',
+      WINNER_ANNOUNCEMENT_EMAIL: 'api/v2/email_previews/hackathon_emails/winner_announcement_email',
+      ROUND_GENERAL_EMAIL: 'api/v2/email_previews/hackathon_emails/round_general_email',
+      OVERALL_ROUND_SELECTION_UPDATE_EMAIL:
+        'api/v2/email_previews/hackathon_emails/overall_round_selection_update_email',
+    },
   },
 
   SEARCH: {

@@ -1,8 +1,8 @@
 <nb-card class="round-selection-mailer">
   <nb-card-header>
-    <span>Send round selection update email</span>
-    <button nbButton ghost shape="round" (click)="closePopup()">
-      <fa-icon [icon]="faXmark"></fa-icon>
+    <span>Send Round Selection Update Email</span>
+    <button nbButton shape="round" (click)="closePopup()">
+      <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
@@ -11,22 +11,36 @@
       message="This will send a pre-formatted email and a notification to all members of the community"
     ></commudle-alert>
     <div class="round-select">
+      <label>Select Round<span class="mandatory-field">*</span></label>
       <select [(ngModel)]="roundSelection">
-        <option hidden [ngValue]="0">Select round*</option>
+        <option disabled [ngValue]="0">Select round</option>
         <option *ngFor="let hackathonRound of hackathonRounds" [ngValue]="hackathonRound.id">
           {{ hackathonRound.name }}
         </option>
       </select>
     </div>
-    <div>
-      <label for="message">Message (optional)</label>
+    <div class="message">
+      <label for="message">Message (Optional)</label>
       <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
     </div>
   </nb-card-body>
   <nb-card-footer>
     <button
+      (click)="previewEmail(hackathonId); showPreviewSpinner = true"
       nbButton
       status="primary"
+      shape="semi-round"
+      [nbSpinner]="showPreviewSpinner"
+      type="button"
+      [disabled]="roundSelection === 0"
+    >
+      Preview Email
+    </button>
+    <button
+      nbButton
+      status="primary"
+      shape="semi-round"
+      fullWidth
       [disabled]="roundSelection === 0 || isLoading"
       (click)="OverallRoundSelectionUpdateEmail()"
     >
