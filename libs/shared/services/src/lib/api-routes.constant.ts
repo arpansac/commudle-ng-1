@@ -679,6 +679,12 @@ export const API_ROUTES = {
     COMMUNITY_BUILDS: {
       USER_ENGAGEMENT: 'api/v2/stats/community_builds/user_engagement',
     },
+    HACKATHONS: {
+      GENDER_DISTRIBUTIONS: 'api/v2/stats/hackathons/gender_distributions',
+      HACKATHON_TEAM_STATS: 'api/v2/stats/hackathons/hackathon_team_stats',
+      HACKATHON_USER_RESPONSES_TAGS: 'api/v2/stats/hackathons/hackathon_user_responses_tags',
+      HACKATHON_TEAM_OVER_TIME: 'api/v2/stats/hackathons/hackathon_team_over_time',
+    },
   },
 
   TAGS: {

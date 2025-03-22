@@ -182,6 +182,12 @@
               </div>
               <div *ngIf="sidebarExpanded" class="action-button-name">Public Page</div>
             </a>
+            <a class="action-button" [routerLink]="['stats']" target="_blank">
+              <div class="icon">
+                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="action-button-name">Stats</div>
+            </a>
           </div>
         </div>
       </div>

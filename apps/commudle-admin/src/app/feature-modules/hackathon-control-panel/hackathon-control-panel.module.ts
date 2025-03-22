@@ -50,6 +50,7 @@ import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/ap
 import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-channels/hackathon-control-panel-channels.component';
 import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-stats/hackathon-control-panel-stats.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     HackathonOverallRoundSelectionUpdateEmailComponent,
     HackathonRoundGeneralMailerComponent,
     HackathonControlPanelChannelsComponent,
+    HackathonControlPanelStatsComponent,
   ],
   imports: [
     CommonModule,
