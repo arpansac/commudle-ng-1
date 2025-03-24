@@ -66,7 +66,8 @@ import { CookiePreferencesComponent } from './components/public-profile/user-bas
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
 import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
 import { RecapComponent } from './components/recap-2024/recap-2024.component';
-
+import { PublicProfileCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/users/components/public-profile/public-profile-campaign/public-profile-campaign.component';
+import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 @NgModule({
   declarations: [
     PublicProfileComponent,
@@ -105,6 +106,7 @@ import { RecapComponent } from './components/recap-2024/recap-2024.component';
     CookiePreferencesComponent,
     AccountManagementComponent,
     RecapComponent,
+    PublicProfileCampaignComponent,
   ],
   imports: [
     CommonModule,
@@ -118,6 +120,7 @@ import { RecapComponent } from './components/recap-2024/recap-2024.component';
     MiniUserProfileModule,
     SharedComponentsModule,
     JobsModule,
+    newSharedComponentsModule,
     EventMiniCardComponent,
 
     // Nebular
