@@ -1,4 +1,73 @@
 <nb-card>
   <nb-card-header>Stats</nb-card-header>
-  <nb-card-body></nb-card-body>
+  <nb-card-body>
+    <div class="hackathon-stats-container" *ngIf="hackathonTeamStats">
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Hackathon Teams Count</div>
+        <div class="hackathon-stats-item-value">{{ hackathonTeamStats.hackathon_teams_count }}</div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Hackathon User Responses Count</div>
+        <div class="hackathon-stats-item-value">{{ hackathonTeamStats.hackathon_user_responses_count }}</div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Accepted Count</div>
+        <div class="hackathon-stats-item-value">
+          {{ hackathonTeamStats.hackathon_team_statuses_count.accepted_count }}
+        </div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Waitlisted Count:</div>
+        <div class="hackathon-stats-item-value">
+          {{ hackathonTeamStats.hackathon_team_statuses_count.waitlisted_count }}
+        </div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Rejected Count:</div>
+        <div class="hackathon-stats-item-value">
+          {{ hackathonTeamStats.hackathon_team_statuses_count.rejected_count }}
+        </div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Registered Count:</div>
+        <div class="hackathon-stats-item-value">
+          {{ hackathonTeamStats.hackathon_team_statuses_count.registered_count }}
+        </div>
+      </div>
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Total:</div>
+        <div class="hackathon-stats-item-value">{{ hackathonTeamStats.hackathon_team_statuses_count.total }}</div>
+      </div>
+    </div>
+
+    <div class="graph-container">
+      <div class="hackathon-graph-container">
+        <h2 class="title">Gender Distribution</h2>
+        <div class="chart-container">
+          <canvas #genderDistribution></canvas>
+        </div>
+      </div>
+
+      <div class="hackathon-graph-container">
+        <h2 class="title">Hackathon team registration over time</h2>
+        <div class="chart-container">
+          <canvas #hackathonTeamOverTime></canvas>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="hackathonUserResponsesTags">
+      <h2>User Tags</h2>
+      <div>
+        <nb-tag-list>
+          <nb-tag
+            status="info"
+            appearance="outline"
+            *ngFor="let tag of hackathonUserResponsesTags.users_tags.tags"
+            text="{{ tag[0] }} ({{ tag[1] }})"
+            [removable]="false"
+          ></nb-tag>
+        </nb-tag-list>
+      </div>
+    </div>
+  </nb-card-body>
 </nb-card>

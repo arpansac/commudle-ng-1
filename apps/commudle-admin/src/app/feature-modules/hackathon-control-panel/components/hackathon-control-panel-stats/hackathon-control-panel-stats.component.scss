@@ -1,0 +1,31 @@
+.hackathon-stats-container {
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 lg:com-grid-cols-3 com-gap-4 com-p-4;
+}
+
+.hackathon-stats-item {
+  @apply com-bg-white com-rounded-xl com-shadow-md com-p-4 com-text-center;
+}
+
+.hackathon-stats-item-label {
+  @apply com-text-sm com-font-bold com-text-gray-500 com-mb-1;
+}
+
+.hackathon-stats-item-value {
+  @apply com-text-lg com-font-bold com-text-gray-900;
+}
+
+.graph-container {
+  @apply com-flex com-flex-wrap com-gap-6 com-mt-6;
+}
+
+.hackathon-graph-container {
+  @apply com-flex-1 com-min-w-[300px];
+}
+
+.chart-container {
+  @apply com-bg-white com-p-4 com-rounded-xl com-shadow-md;
+}
+
+.title {
+  @apply com-text-lg com-font-bold com-mb-3 com-text-gray-900;
+}
