@@ -8,6 +8,8 @@ import { Observable, timer } from 'rxjs';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { AwsS3Bucket } from 'apps/commudle-admin/src/assets/static-assets';
+
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
@@ -82,7 +84,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
               renderer: 'svg',
               loop: true,
               autoplay: true,
-              path: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
+              path: AwsS3Bucket.home_page_animation,
             });
           });
         }
