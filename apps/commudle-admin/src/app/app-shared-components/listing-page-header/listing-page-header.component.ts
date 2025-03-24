@@ -39,8 +39,6 @@ export class ListingPageHeaderComponent implements OnInit {
       case 'speakers':
         this.CampaignTypeSlug = ECampaignTypeSlug.LISTING_PAGE_SPEAKERS_BANNER;
         break;
-      default:
-        break;
     }
   }
 
