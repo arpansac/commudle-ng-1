@@ -217,6 +217,6 @@ export const staticAssets = {
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1haQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--3ac3f616e038ae04b87599ca3010d6074b99c22c/Profile.png',
 
   // id: 184
-  campaign_search_default:
+  campaign_main_search_page_default:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM2JaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5421b123dd9db86301a665078f27c5bcec0e85b1/Search.png',
 };
