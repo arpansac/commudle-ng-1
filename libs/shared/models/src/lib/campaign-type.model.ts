@@ -19,4 +19,7 @@ export enum ECampaignTypeSlug {
   LISTING_PAGE_BUILDS_BANNER = 'listing-page-builds-banner-image',
   USER_DASHBOARD_RIGHT_SIDEBAR = 'user-dashboard-right-sidebar-image',
   EVENT_BANNER = 'event_banner_image',
+  USER_PROFILE_RIGHT_SIDEBAR_IMAGE = 'user-profile-right-sidebar-image',
+  USER_NOTIFICATION_RIGHT_SIDEBAR_IMAGE = 'user-notification-right-sidebar-image',
+  MAIN_SEARCH_PAGE_RIGHT_SIDEBAR_IMAGE = 'main-search-page-right-sidebar-image',
 }
