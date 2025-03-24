@@ -85,7 +85,13 @@ export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.toggleEndDateValue();
+
+    this.userWorkHistoryForm.get('is_working').valueChanges.subscribe(() => {
+      this.toggleEndDateValue();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.subscriptions.push(
@@ -101,6 +107,18 @@ export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  toggleEndDateValue(): void {
+    const isWorking = this.userWorkHistoryForm.get('is_working').value;
+    const endDate = this.userWorkHistoryForm.get('end_date');
+
+    if (isWorking) {
+      endDate.disable();
+      endDate.setValue('');
+    } else {
+      endDate.enable();
+    }
   }
 
   getUserWorkHistories() {
