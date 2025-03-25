@@ -6,7 +6,7 @@ import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/da
 import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
 import { Subscription, interval } from 'rxjs';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { NbDialogService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
 import { EDbModels } from '@commudle/shared-models';
@@ -25,6 +25,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   kommunity_slug: string;
   openPaidForm: boolean;
   existingResponses;
+  dialogRef: NbDialogRef<any>;
 
   @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
   @ViewChild('alreadyExistDfe', { static: true }) alreadyExistDfe: TemplateRef<any>;
@@ -65,7 +66,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
       this.dataFormEntitiesService.checkFormStatus(dataFormId).subscribe((data) => {
         if (!data.form_open) {
           this.clearInterval();
-          const dialogRef = this.dialogService.open(this.formClosedDialog, {
+          this.dialogRef = this.dialogService.open(this.formClosedDialog, {
             closeOnBackdropClick: false,
             closeOnEsc: false,
             hasScroll: false,
@@ -113,6 +114,9 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.clearInterval();
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   clearInterval() {
