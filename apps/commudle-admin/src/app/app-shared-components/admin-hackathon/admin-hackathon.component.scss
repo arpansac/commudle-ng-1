@@ -10,7 +10,7 @@ table {
 
   td,
   th {
-    @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-2;
+    @apply com-text-left com-p-2;
   }
 
   tr:nth-child(even) {
@@ -18,6 +18,6 @@ table {
   }
 
   .action-buttons {
-    @apply com-flex com-justify-evenly;
+    @apply com-flex com-justify-evenly com-flex-wrap;
   }
 }
