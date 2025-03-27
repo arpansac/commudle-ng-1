@@ -12,7 +12,7 @@ p {
   nb-card-body {
     @apply com-p-4;
     .heading {
-      @apply com-grid com-grid-cols-1 md:com-grid-cols-5 com-gap-2;
+      @apply com-flex com-justify-between;
 
       .job {
         @apply md:com-col-span-3;
@@ -30,18 +30,22 @@ p {
         }
       }
 
+      .date-location {
+        @apply com-flex com-gap-6  com-justify-start md:com-justify-end;
+      }
+
       .date,
       .location {
-        @apply com-text-sm com-text-gray-700 com-flex;
+        @apply com-flex com-text-sm com-font-medium com-text-gray-500;
 
         nb-icon {
-          @apply com-text-Blue-Jeans com-mr-1;
+          @apply com-text-gray-500 com-mr-1;
         }
       }
     }
 
     .description {
-      @apply com-mt-3 com-text-base com-text-gray-900 com-whitespace-pre-wrap;
+      @apply com-mt-6 com-text-sm com-text-slate-600 com-whitespace-pre-wrap;
     }
   }
 }

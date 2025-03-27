@@ -7,7 +7,7 @@ h4 {
   @apply com-m-0 com-cursor-pointer;
 
   nb-card-body {
-    @apply com-p-2 com-flex com-items-center com-gap-2;
+    @apply com-p-3 com-flex com-items-center com-gap-3;
 
     .user-communities-logo {
       @apply com-h-12 com-w-12 com-rounded-full com-object-contain com-object-center com-bg-tWhite;
@@ -22,7 +22,7 @@ h4 {
     }
 
     .user-communities-members {
-      @apply com-mt-1 com-text-xs com-text-blue-500;
+      @apply com-mt-1 com-text-xs com-font-medium com-text-blue-500;
     }
   }
 }

@@ -35,16 +35,18 @@
         </div>
         <p class="company">{{ userWorkHistory.company }}</p>
       </div>
-      <div class="date">
-        <nb-icon icon="calendar"></nb-icon>
-        {{ userWorkHistory.start_date | date: 'MMM yyyy' }} -
-        <span *ngIf="userWorkHistory.is_working; else endDate">Present</span>
-        <ng-template #endDate>{{ userWorkHistory.end_date | date: 'MMM yyyy' }}</ng-template>
+      <div class="date-location">
+        <div class="date">
+          <nb-icon icon="calendar"></nb-icon>
+          {{ userWorkHistory.start_date | date : 'MMM yyyy' }} -
+          <span *ngIf="userWorkHistory.is_working; else endDate">Present</span>
+          <ng-template #endDate>{{ userWorkHistory.end_date | date : 'MMM yyyy' }}</ng-template>
+        </div>
+        <p class="location">
+          <nb-icon icon="pin"></nb-icon>
+          {{ userWorkHistory.location }}
+        </p>
       </div>
-      <p class="location com-justify-start md:com-justify-end">
-        <nb-icon icon="pin"></nb-icon>
-        {{ userWorkHistory.location }}
-      </p>
     </div>
     <p class="description">{{ userWorkHistory.description }}</p>
   </nb-card-body>

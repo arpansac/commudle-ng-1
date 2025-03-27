@@ -29,7 +29,7 @@
 <nb-card *ngIf="attendedEvents?.length > 0" id="attended-events">
   <nb-card-header>
     <a [routerLink]="'.'" fragment="attended-events"
-      ><fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>
+      ><fa-icon [icon]="faIdBadge" class="com-text-green-600"></fa-icon>
       Attended Events
       <span *ngIf="attendedEvents.length > 4">({{ attendedEvents.length }})</span></a
     >

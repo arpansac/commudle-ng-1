@@ -7,7 +7,7 @@ import { ISpeakerResource } from 'apps/shared-models/speaker_resource.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { Subscription } from 'rxjs';
-import { faLightbulb, faCalendar, faUsers, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { faLightbulb, faCalendar, faUsers, faBookOpen, faIdBadge } from '@fortawesome/free-solid-svg-icons';
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
@@ -36,6 +36,7 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   faCalendar = faCalendar;
   faUsers = faUsers;
   faBookOpen = faBookOpen;
+  faIdBadge = faIdBadge;
 
   constructor(private appUsersService: AppUsersService, public userProfileMenuService: UserProfileMenuService) {}
 
