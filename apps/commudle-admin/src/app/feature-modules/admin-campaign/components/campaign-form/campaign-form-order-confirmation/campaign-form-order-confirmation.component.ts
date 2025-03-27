@@ -5,6 +5,7 @@ import { CampaignService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faEdit, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import { AwsS3Bucket } from 'apps/commudle-admin/src/assets/static-assets';
 @Component({
   selector: 'commudle-campaign-form-order-confirmation',
   templateUrl: './campaign-form-order-confirmation.component.html',
@@ -44,7 +45,7 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
         renderer: 'svg',
         loop: false,
         autoplay: true,
-        path: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
+        path: AwsS3Bucket.success_animation,
       });
     });
   }

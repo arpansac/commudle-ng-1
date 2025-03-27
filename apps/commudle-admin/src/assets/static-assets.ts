@@ -220,3 +220,7 @@ export const staticAssets = {
   campaign_main_search_page_default:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM2JaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5421b123dd9db86301a665078f27c5bcec0e85b1/Search.png',
 };
+
+export const AwsS3Bucket = {
+  success_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
+};
