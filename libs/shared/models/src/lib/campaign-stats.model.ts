@@ -17,5 +17,5 @@ export interface ICampaignStats {
     prefer_not_to_answer: number;
     NA: number;
   };
-  uer_ip_addresses: string[];
+  user_locations: [];
 }

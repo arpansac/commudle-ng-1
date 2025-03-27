@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CampaignService } from '@commudle/shared-services';
 import { ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
+declare let google: any;
 
 @Component({
   selector: 'commudle-campaign-stats',
@@ -33,6 +34,7 @@ export class CampaignStatsComponent implements OnInit {
       this.viewsOverTime();
       this.clicksOverTime();
       this.genderDistribution();
+      this.initMapChart();
     });
   }
 
@@ -317,5 +319,39 @@ export class CampaignStatsComponent implements OnInit {
         responsive: true,
       },
     });
+  }
+
+  initMapChart() {
+    google.charts.load('current', {
+      packages: ['geochart'],
+    });
+    google.charts.setOnLoadCallback(this.drawRegionsMap.bind(this));
+  }
+
+  drawRegionsMap() {
+    const data = google.visualization.arrayToDataTable([
+      ['Region', 'Popularity'],
+      ...this.campaignStats.user_locations.map((location) => [location[0], location[1]]),
+    ]);
+
+    const options = {
+      displayMode: 'markers',
+      region: 'IN', // Focus on India
+      resolution: 'provinces', // Highlights states instead of individual points
+      colorAxis: { colors: ['#70a1ff', '#1e90ff'] }, // Gradient colors
+      backgroundColor: '#f4f4f4', // Light grey background
+      datalessRegionColor: '#dddddd', // Grey for areas with no data
+      defaultColor: '#f00', // Default fill color
+      tooltip: { textStyle: { color: '#333' }, showColorCode: true }, // Better tooltip
+      enableRegionInteractivity: true,
+      explorer: {
+        actions: ['dragToZoom', 'rightClickToReset'], // Enable zoom and pan
+        keepInBounds: true, // Prevent users from panning too far
+        zoomDelta: 1.2, // Zoom step
+      },
+    };
+
+    const chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+    chart.draw(data, options);
   }
 }
