@@ -8,6 +8,9 @@
   tr:not(:last-child) {
     @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
   }
+  .action-buttons {
+    @apply com-flex com-flex-wrap com-justify-start com-items-center com-gap-4;
+  }
 }
 
 .notes-table {
@@ -41,5 +44,13 @@
   @apply com-h-full md:com-h-[90dvh];
   nb-card-header {
     @apply com-flex com-justify-between;
+  }
+}
+
+.update-newsletter {
+  @apply com-w-full md:com-w-[20dvw];
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
   }
 }

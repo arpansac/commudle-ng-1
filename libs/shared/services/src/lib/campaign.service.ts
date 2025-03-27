@@ -70,6 +70,16 @@ export class CampaignService {
     });
   }
 
+  updateNewsletterWithCampaign(campaignId: number, newsletterId: number): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_UPDATE_NEWSLETTER),
+      {
+        campaign_id: campaignId,
+        newsletter_id: newsletterId,
+      },
+    );
+  }
+
   //PUBLIC API
   indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);

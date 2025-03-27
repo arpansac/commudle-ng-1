@@ -8,13 +8,13 @@
       <th [width]="300">Duration Time</th>
       <th [width]="300">Created At</th>
       <th *ngIf="isCampaignAdmin">Payment</th>
-      <th *ngIf="!isCampaignAdmin">Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
     <tr
       *ngFor="let campaign of campaigns"
-      (click)="openPopup(showCampaignDetails, campaign.id)"
+      (click)="openPopup(showCampaignDetails, campaign)"
       [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
     >
       <td>{{ campaign.campaign_type.name }}</td>
@@ -78,9 +78,12 @@
       </td>
       <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td>
       <td class="duration-time">
-        <span *ngIf="campaign.start_time"> Start Date: {{ moment(campaign.start_date).format('MMM Do, YYYY') }} </span>
-        <br />
-        <span *ngIf="campaign.end_time"> End Date: {{ moment(campaign.end_date).format('MMM Do, YYYY') }} </span>
+        <div *ngIf="campaign.start_date">
+          From <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span> to
+          <span>{{ moment(campaign.end_date).format('MMM Do, YYYY') }}</span> between
+          <span> {{ campaign.start_time }}</span> and
+          <span>{{ campaign.end_time }}</span>
+        </div>
       </td>
       <td>
         {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
@@ -93,7 +96,7 @@
           {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
         </span>
       </td>
-      <td *ngIf="!isCampaignAdmin">
+      <td class="action-buttons">
         <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
           <button
             nbButton
@@ -109,7 +112,6 @@
             &nbsp; Edit
           </button>
         </a>
-        &nbsp; &nbsp;
         <a
           *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
           [routerLink]="['/checkout', campaign.purchase_order.uuid]"
@@ -131,8 +133,19 @@
           [routerLink]="['stats', campaign.id]"
           (click)="$event.stopPropagation()"
         >
-          <button nbButton status="success" size="small">Stats</button>
+          <button nbButton status="success" size="small">
+            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+            &nbsp; Stats
+          </button>
         </a>
+        <button
+          *ngIf="isCampaignAdmin && campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER"
+          nbButton
+          status="info"
+          (click)="$event.stopPropagation(); openPopup(updateNewsletter, campaign)"
+        >
+          Update Newsletter
+        </button>
       </td>
     </tr>
   </tbody>
@@ -147,7 +160,30 @@
       </button>
     </nb-card-header>
     <nb-card-body>
-      <commudle-campaign-details [campaignId]="data"></commudle-campaign-details>
+      <commudle-campaign-details [campaignId]="data.campaignId"></commudle-campaign-details>
     </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #updateNewsletter let-data let-ref="dialogRef">
+  <nb-card class="update-newsletter">
+    <nb-card-header>
+      <div>
+        Update Newsletter for Campaign
+        {{ data.campaignId }}
+      </div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <input type="number" nbInput placeholder="Newsletter ID" [(ngModel)]="newsletterId" />
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="updateNewsletterWithCampaign(data.campaignId); ref.close()">
+        Update
+      </button>
+      <button nbButton status="danger" (click)="ref.close()">Close</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

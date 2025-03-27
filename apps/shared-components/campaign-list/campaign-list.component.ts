@@ -1,7 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { ICampaign, ECampaignStatus, EPurchaseOrderStatus, EDbModels } from '@commudle/shared-models';
+import {
+  ICampaign,
+  ECampaignStatus,
+  EPurchaseOrderStatus,
+  EDbModels,
+  ECampaignTypeSlug,
+} from '@commudle/shared-models';
 import { CampaignService, NoteService, ToastrService } from '@commudle/shared-services';
-import { faEdit, faReceipt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faReceipt, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import moment from 'moment';
 
@@ -14,12 +20,13 @@ export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
   moment = moment;
-  icons = { faEdit, faReceipt };
+  icons = { faEdit, faReceipt, faArrowUpRightFromSquare };
   ECampaignStatus = ECampaignStatus;
+  ECampaignTypeSlug = ECampaignTypeSlug;
 
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   noteTexts: { [campaignId: number]: string } = {};
-
+  newsletterId: number;
   constructor(
     private campaignService: CampaignService,
     private toasterService: ToastrService,
@@ -37,8 +44,15 @@ export class CampaignListComponent {
     });
   }
 
-  openPopup(dialog, campaignId) {
-    this.dialogService.open(dialog, { context: campaignId });
+  openPopup(dialog, campaign) {
+    if (this.isCampaignAdmin) {
+      if (campaign.newsletter_id) {
+        this.newsletterId = campaign.newsletter_id;
+      } else {
+        this.newsletterId = null;
+      }
+      this.dialogService.open(dialog, { context: { campaignId: campaign.id } });
+    }
   }
 
   updateNotes(campaignId: number) {
@@ -50,6 +64,16 @@ export class CampaignListComponent {
       const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
       this.campaigns[index].unapproved_reasons.push(note);
       this.noteTexts[campaignId] = '';
+    });
+  }
+
+  updateNewsletterWithCampaign(campaignId) {
+    this.campaignService.updateNewsletterWithCampaign(campaignId, this.newsletterId).subscribe((res) => {
+      if (res) {
+        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+        this.campaigns[index].newsletter_id = this.newsletterId;
+        this.toasterService.successDialog('Campaign updated successfully');
+      }
     });
   }
 }

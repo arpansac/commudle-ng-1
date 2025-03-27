@@ -983,6 +983,7 @@ export const API_ROUTES = {
     CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
     CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns/campaign_admin_index', //GET
     CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
+    CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
     STATS: 'api/v2/campaigns/stats', //GET
     PUBLIC: {
       ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET

@@ -22,4 +22,5 @@ export enum ECampaignTypeSlug {
   USER_PROFILE_RIGHT_SIDEBAR_IMAGE = 'user-profile-right-sidebar-image',
   USER_NOTIFICATION_RIGHT_SIDEBAR_IMAGE = 'user-notification-right-sidebar-image',
   MAIN_SEARCH_PAGE_RIGHT_SIDEBAR_IMAGE = 'main-search-page-right-sidebar-image',
+  MAIN_NEWSLETTER = 'main-newsletter',
 }
