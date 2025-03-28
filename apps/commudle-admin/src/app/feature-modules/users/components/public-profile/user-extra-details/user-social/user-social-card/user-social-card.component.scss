@@ -5,58 +5,36 @@ p {
 }
 
 .user-social-card {
-  border: 1px solid $platinum;
-  border-radius: $border-5;
-  margin: $space-12 0;
+  @apply com-m-0 com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
 
   nb-card-body {
-    flex-direction: row;
-    padding: $space-16;
-    width: 100%;
+    @apply com-flex com-flex-row com-p-4 com-w-full;
 
     .user-social-card-image {
-      height: 120px;
-      overflow: hidden;
-      text-decoration: none;
-      width: 250px;
+      @apply com-w-[196px] com-h-[124px] com-flex com-justify-center com-items-center;
 
       img {
-        width: 100%;
+        @apply com-w-full;
       }
     }
 
     .user-social-card-details {
-      margin-left: $space-16;
-      text-decoration: none;
-      width: 100%;
+      @apply com-flex com-flex-col com-ml-4 com-no-underline com-w-full;
 
       .user-social-card-tags {
-        flex-wrap: wrap;
-        gap: $space-4;
-        margin-bottom: $space-12;
+        @apply com-flex com-flex-wrap com-gap-1 com-mb-4;
 
         .user-social-card-tag {
-          background-color: $lavender;
-          border-radius: $border-20;
-          color: $neon-blue;
-          font-size: $fs-h6;
-          padding: 0 $space-8;
+          @apply com-bg-blue-50 com-rounded-3xl com-text-Azure com-text-xs com-font-medium com-px-3 com-py-1;
         }
       }
 
       .user-social-card-title {
-        @apply com-text-gunmetal;
-        font-size: $fs-h4;
-        font-weight: $fw-600;
-        line-height: 19px;
+        @apply com-text-Yankees-Blue com-text-base com-font-medium com-mb-2;
       }
 
       .user-social-card-description {
-        @apply com-text-Spanish-Gray;
-        font-size: $fs-h6;
-        font-style: italic;
-        line-height: 14px;
-        margin-top: $space-4;
+        @apply com-text-sm com-font-normal com-text-gray-500;
       }
 
       .user-social-card-favicon {

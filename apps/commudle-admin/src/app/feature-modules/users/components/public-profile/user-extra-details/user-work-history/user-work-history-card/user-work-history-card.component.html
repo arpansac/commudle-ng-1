@@ -38,7 +38,7 @@
       <div class="date-location">
         <div class="date">
           <nb-icon icon="calendar"></nb-icon>
-          {{ userWorkHistory.start_date | date : 'MMM yyyy' }} -
+          {{ userWorkHistory.start_date | date : 'MMM yyyy' }} -&nbsp;
           <span *ngIf="userWorkHistory.is_working; else endDate">Present</span>
           <ng-template #endDate>{{ userWorkHistory.end_date | date : 'MMM yyyy' }}</ng-template>
         </div>
