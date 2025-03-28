@@ -203,3 +203,9 @@ export const staticAssets = {
   fire_illustration:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1dKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c9f794bbbe2aae7cc67e71e39f46ba4557a6156c/Fire%20Illustration.svg',
 };
+
+export const AwsS3Bucket = {
+  home_page_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
+
+  brand_guidelines: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/brand+guidelines.pdf',
+};
