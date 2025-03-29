@@ -5,7 +5,7 @@ import { CampaignFormOrderSetupComponent } from './components/campaign-form/camp
 import { CampaignFormOrderConfirmationComponent } from './components/campaign-form/campaign-form-order-confirmation/campaign-form-order-confirmation.component';
 import { CampaignResolver } from './resolver/campaign.resolver';
 import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
-import { CampaignStatsComponent } from './components/campaign-stats/campaign-stats.component';
+import { AdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/admin-campaign/components/admin-campaign-stats/admin-campaign-stats.component';
 
 const routes: Routes = [
   { path: '', component: CampaignDashboardComponent },
@@ -45,7 +45,7 @@ const routes: Routes = [
   },
   {
     path: 'stats/:campaign_id',
-    component: CampaignStatsComponent,
+    component: AdminCampaignStatsComponent,
   },
 ];
 

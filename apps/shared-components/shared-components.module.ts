@@ -96,6 +96,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 import { NextStepCardComponent } from './next-step-card/next-step-card.component';
+import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -152,6 +153,7 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
     CampaignListComponent,
     CampaignDetailsComponent,
     NextStepCardComponent,
+    CampaignStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -245,6 +247,7 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
     CampaignListComponent,
     CampaignDetailsComponent,
     NextStepCardComponent,
+    CampaignStatsComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

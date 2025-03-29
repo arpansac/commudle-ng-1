@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CampaignService } from '@commudle/shared-services';
 import { ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
@@ -11,6 +11,7 @@ declare let google: any;
   styleUrls: ['./campaign-stats.component.scss'],
 })
 export class CampaignStatsComponent implements OnInit {
+  @Input() campaignId: number;
   campaignStats: ICampaignStats;
   @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
@@ -21,9 +22,9 @@ export class CampaignStatsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private campaignService: CampaignService) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.getCampaignStats(params['campaign_id']);
-    });
+    // this.route.params.subscribe((params) => {
+    this.getCampaignStats(this.campaignId);
+    // });
   }
 
   getCampaignStats(campaignId: number) {

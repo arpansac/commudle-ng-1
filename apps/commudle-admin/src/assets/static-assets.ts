@@ -222,11 +222,9 @@ export const staticAssets = {
 };
 
 export const AwsS3Bucket = {
-  success_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
-};
-
-export const AwsS3Bucket = {
   home_page_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
 
   brand_guidelines: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/brand+guidelines.pdf',
+
+  success_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
 };

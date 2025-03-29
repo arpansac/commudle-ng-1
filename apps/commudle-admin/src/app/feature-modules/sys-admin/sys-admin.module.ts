@@ -55,6 +55,7 @@ import { AdminCampaignsComponent } from './components/admin-campaigns/admin-camp
 import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-campaigns-list/admin-campaigns-list.component';
 import { LinkyModule } from 'ngx-linky';
 import { CampaignPurchaseOrdersComponent } from './components/admin-campaigns/campaign-purchase-orders/campaign-purchase-orders.component';
+import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/sys-admin-campaign-stats/sys-admin-campaign-stats.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { CampaignPurchaseOrdersComponent } from './components/admin-campaigns/ca
     AdminCampaignsComponent,
     AdminCampaignsListComponent,
     CampaignPurchaseOrdersComponent,
+    SysAdminCampaignStatsComponent,
   ],
   imports: [
     CommonModule,
