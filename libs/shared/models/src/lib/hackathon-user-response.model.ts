@@ -1,3 +1,4 @@
+import { IHackathonTrack } from './hackathon-track.model';
 import { IUser } from './user.model';
 
 export interface IHackathonUserResponse extends IUser {
@@ -11,6 +12,7 @@ export interface IHackathonUserResponse extends IUser {
   user_email: string;
   invite_status: EInvitationStatus;
   current_user_is_team_lead: boolean;
+  track: IHackathonTrack;
 }
 
 export enum EInvitationStatus {

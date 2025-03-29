@@ -13,13 +13,12 @@
             ></app-user-profile-card-large>
             <ng-container *ngIf="communityBuild.user_roles_users.length > 0">
               <p class="fs-p1">Teammates</p>
-              <ng-container *ngFor="let teammate of communityBuild.user_roles_users">
+              <div *ngFor="let teammate of communityBuild.user_roles_users">
                 <app-user-profile-card-small
-                  *ngIf="teammate.user.name"
                   [user]="teammate.user"
                   class="com-block com-mt-2"
                 ></app-user-profile-card-small>
-              </ng-container>
+              </div>
             </ng-container>
           </nb-card-body>
         </nb-card>
@@ -47,7 +46,6 @@
             <p class="fs-p1">Teammates</p>
             <ng-container *ngFor="let teammate of communityBuild.user_roles_users">
               <app-user-profile-card-small
-                *ngIf="teammate.user.name"
                 [user]="teammate.user"
                 class="com-block com-mt-2"
               ></app-user-profile-card-small>

@@ -57,7 +57,10 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     this.dataFormEntityResponseGroupsService
       .updateEventRegistrationStatus(registrationStatusId, this.userResponse.id)
       .subscribe((data) => {
-        this.updatedRegistrationStatus.emit(data);
+        if (data.entry_pass) {
+          this.userResponse.entry_pass = data.entry_pass;
+        }
+        this.updatedRegistrationStatus.emit(data.registration_status);
         this.toastLogService.successDialog('Updated!');
       });
   }

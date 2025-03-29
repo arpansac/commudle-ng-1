@@ -53,6 +53,7 @@ import { BackButtonComponent } from 'apps/shared-components/back-button/back-but
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { LinkyModule } from 'ngx-linky';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { LinkyModule } from 'ngx-linky';
     SpeakerSlidesCardComponent,
     CallForSpeakerCardComponent,
     EventHackathonRegistrationsComponent,
+    EmailPreviewComponent,
   ],
   exports: [
     EmailerComponent,
@@ -100,6 +102,7 @@ import { LinkyModule } from 'ngx-linky';
     SpeakerSlidesCardComponent,
     CallForSpeakerCardComponent,
     EventHackathonRegistrationsComponent,
+    EmailPreviewComponent,
   ],
   imports: [
     CommonModule,

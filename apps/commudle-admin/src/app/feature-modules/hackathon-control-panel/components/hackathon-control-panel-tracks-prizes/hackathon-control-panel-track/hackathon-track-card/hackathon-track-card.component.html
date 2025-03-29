@@ -29,10 +29,20 @@
           </div>
         </div>
         <div class="prize">
-          {{ hackathonPrize.currency_symbol }}{{ hackathonPrize.prize_amount }}, {{ hackathonPrize.no_of_winners }}
-          {{ hackathonPrize.no_of_winners === 1 ? 'Winner' : 'Winners' }}
+          {{ hackathonPrize.currency_symbol }}{{ hackathonPrize.prize_amount }}
+          <br />
+          <span>
+            Can have {{ hackathonPrize.no_of_winners }}
+            {{ hackathonPrize.no_of_winners === 1 ? 'Winner' : 'Winners' }}
+          </span>
         </div>
       </div>
+    </div>
+    <div *ngIf="hackathonTrack.hackathon_prizes && hackathonTrack.hackathon_prizes.length === 0" class="no-prize-added">
+      No Prize Added
+      <br />
+      <br />
+      <button nbButton status="primary" routerLink="prizes">Add Prize</button>
     </div>
   </nb-card-body>
 </nb-card>
