@@ -1,37 +1,26 @@
 .hackathon-stats-container {
-  @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 lg:com-grid-cols-3 com-gap-4 com-p-4;
-}
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-3 lg:com-grid-cols-4 com-gap-4 com-pb-7;
+  .hackathon-stats-item {
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-4 com-bg-gray-50;
+    .hackathon-stats-item-label {
+      @apply com-text-gray-600 com-text-xs com-uppercase;
+    }
 
-.hackathon-stats-item {
-  @apply com-bg-white com-rounded-xl com-p-4 com-text-center;
-}
-
-.hackathon-stats-item-label {
-  @apply com-text-sm com-font-bold com-text-gray-500 com-mb-1;
-}
-
-.hackathon-stats-item-value {
-  @apply com-text-lg com-font-bold com-text-gray-900;
+    .hackathon-stats-item-value {
+      @apply com-text-Yankees-Blue com-text-xl com-font-bold;
+    }
+  }
 }
 
 .graph-container {
-  @apply com-flex com-flex-wrap com-gap-6 com-mt-6;
-}
-
-.hackathon-graph-container {
-  @apply com-flex-1 com-min-w-[300px];
-}
-
-.chart-container {
-  @apply com-bg-white com-p-4 com-rounded-xl;
-}
-
-.title {
-  @apply com-text-lg com-font-bold com-mb-3 com-text-gray-900;
-}
-
-.map {
-  nb-card {
-    @apply com-h-96;
+  .title {
+    @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
   }
+  .chart-container {
+    @apply com-h-72 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
+  }
+}
+
+.graph-container-wrapper {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-5;
 }

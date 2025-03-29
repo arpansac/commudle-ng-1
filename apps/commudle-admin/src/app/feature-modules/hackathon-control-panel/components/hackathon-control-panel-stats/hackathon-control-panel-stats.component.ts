@@ -48,8 +48,12 @@ export class HackathonControlPanelStatsComponent implements OnInit {
             },
           ],
 
-          // These labels appear in the legend and in the tooltips when hovering different arcs
-          labels: ['Male', 'Female', 'Prefer Not Answer', 'NA'],
+          labels: [
+            `Male ${userGenderDistribution.male}`,
+            `Female  ${userGenderDistribution.female}`,
+            `Prefer Not Answer  ${userGenderDistribution.prefer_not_to_answer}`,
+            `NA  ${userGenderDistribution.NA}`,
+          ],
         },
         options: {
           responsive: true,
