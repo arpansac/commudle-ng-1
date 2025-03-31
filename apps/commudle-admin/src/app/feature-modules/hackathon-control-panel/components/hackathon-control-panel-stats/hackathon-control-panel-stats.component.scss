@@ -17,7 +17,11 @@
     @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
   }
   .chart-container {
-    @apply com-h-72 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
+    @apply com-h-auto com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
+  }
+
+  .chart-time-container {
+    @apply com-h-96 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
   }
 }
 
