@@ -3,7 +3,7 @@
 </div>
 <section *ngIf="event.editable">
   <nb-button-group
-    (valueChange)="updateStatus($event[0])"
+    (valueChange)="openConfirmationPopup($event[0])"
     [size]="isMobileView ? 'medium' : 'small'"
     filled
     class="border"
@@ -23,3 +23,15 @@
 <section *ngIf="!event.editable">
   <nb-alert status="success" class="com-mb-0">This event is completed!</nb-alert>
 </section>
+
+<ng-template #completeStatusConfirmationPopup let-ref="dialogRef" let-data>
+  <nb-card>
+    <nb-card-body>
+      <div>Are you sure you want to change status to Completed ?</div>
+    </nb-card-body>
+    <nb-card-footer class="action-buttons">
+      <button (click)="ref.close(true)" nbButton status="success">Yes</button>
+      <button (click)="ref.close(false)" nbButton status="danger">No</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
