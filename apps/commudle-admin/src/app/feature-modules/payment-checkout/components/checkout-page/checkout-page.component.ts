@@ -148,6 +148,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       order_id: order.rzp_order_id,
       handler: (response: unknown) => {
         {
+          this.openLoadingDilaogbox();
           this.razorpayService
             .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
             .subscribe(
@@ -156,6 +157,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                   this.toastrService.successDialog('Your Payment Was Received Successfully');
                   this.isLoadingPayment = false;
                   this.paymentPaid = true;
+                  this.closeLoadingDialogBox();
                   this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
                 }
               },
