@@ -35,7 +35,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   ) {
     this.campaignForm = this._fb.group(
       {
-        name: ['', Validators.required], //campaign name
+        name: ['', [Validators.required, Validators.pattern(/^\S*$/)]], //campaign name
         contact_name: ['', Validators.required],
         contact_email: ['', [Validators.required, Validators.email]],
         company_name: ['', Validators.required],
@@ -261,11 +261,24 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   }
 
   generateCampaignName() {
-    const campaignName =
-      this.campaignForm.get('company_name').value + '-' + this.campaignForm.get('contact_name').value;
+    const companyName = this.campaignForm.get('company_name')?.value?.trim().replace(/\s+/g, '-') || '';
+    const contactName = this.campaignForm.get('contact_name')?.value?.trim().replace(/\s+/g, '-') || '';
+
+    let campaignName = '';
+
+    if (companyName && contactName) {
+      campaignName = `${companyName}-${contactName}`;
+    } else if (companyName) {
+      campaignName = companyName;
+    } else if (contactName) {
+      campaignName = contactName;
+    }
+
     this.campaignForm.patchValue({
       name: campaignName,
     });
+
+    this.campaignForm.get('name')?.updateValueAndValidity(); // Ensures validation updates
   }
 
   onTagAdd(value: string) {

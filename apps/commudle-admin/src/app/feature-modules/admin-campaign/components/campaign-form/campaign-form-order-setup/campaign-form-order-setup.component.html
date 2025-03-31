@@ -25,7 +25,7 @@
                 placeholder="Name"
                 [inputValue]="campaignForm.get('contact_name').value"
                 (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
-                (valueChange)="handleInput($event, 'contact_name')"
+                (valueChange)="handleInput($event, 'contact_name'); generateCampaignName()"
               ></commudle-input>
             </div>
             <commudle-alert
@@ -117,6 +117,10 @@
                 campaignForm.get('name')?.hasError('required')
               "
               errorMessage="Campaign name is required"
+            ></commudle-alert>
+            <commudle-alert
+              [error]="campaignForm.get('name')?.touched && campaignForm.get('name')?.hasError('pattern')"
+              errorMessage="Campaign name should not have any space"
             ></commudle-alert>
           </div>
         </form>
