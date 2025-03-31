@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IEvent } from 'apps/shared-models/event.model';
-import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NbButtonModule, NbCardModule, NbIconModule } from '@commudle/theme';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -31,7 +31,7 @@ export class EventMiniCardComponent implements OnInit {
   @Input() cardType: string;
   @Input() iconSize: 'small' | 'medium' = 'small';
   community: ICommunity;
-  faCalendarCheck = faCalendarCheck;
+  faCheck = faCheck;
   environment = environment;
   moment = moment;
 
