@@ -21,7 +21,7 @@ p {
       }
 
       .edit-icon {
-        @apply com-border-0 com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-bg-transparent;
 
         fa-icon {
           @apply com-mr-2;
@@ -35,8 +35,12 @@ p {
       }
     }
 
+    .header {
+      @apply com-flex com-flex-col md:com-flex-row com-justify-between;
+    }
+
     .user-info {
-      @apply com-w-full com-mt-2;
+      @apply com-w-full com-mt-4;
 
       .name {
         @apply com-flex com-gap-6px com-items-center;
@@ -60,10 +64,6 @@ p {
 
       .name-username {
         @apply com-text-center md:com-text-left;
-      }
-
-      .name-job-tags {
-        @apply com-flex com-flex-col md:com-flex-row com-justify-between;
       }
 
       .job-tags {
