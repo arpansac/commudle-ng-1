@@ -993,6 +993,7 @@ export const API_ROUTES = {
     CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
     CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
     STATS: 'api/v2/campaigns/stats', //GET
+    CAMPAIGN_RESEND_PAYMENT_LINK: 'api/v2/campaigns/campaign_resend_payment_link', //POST
     PUBLIC: {
       ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET
     },

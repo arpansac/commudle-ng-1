@@ -95,6 +95,15 @@
         <span *ngIf="campaign.purchase_order">
           {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
         </span>
+        <button
+          class="resend-payment-button"
+          *ngIf="campaign?.purchase_order?.status === EPurchaseOrderStatus.UNPAID"
+          nbButton
+          status="info"
+          (click)="resendPaymentLink(campaign.id); $event.stopPropagation()"
+        >
+          Resend payment link
+        </button>
       </td>
       <td class="action-buttons">
         <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">

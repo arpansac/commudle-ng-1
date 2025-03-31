@@ -76,4 +76,12 @@ export class CampaignListComponent {
       }
     });
   }
+
+  resendPaymentLink(campaignId) {
+    this.campaignService.resendPaymentLink(campaignId).subscribe((res) => {
+      if (res) {
+        this.toasterService.successDialog('Payment Link Sent');
+      }
+    });
+  }
 }

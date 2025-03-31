@@ -80,6 +80,12 @@ export class CampaignService {
     );
   }
 
+  resendPaymentLink(campaignId: number): Observable<boolean> {
+    return this.http.post<boolean>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_RESEND_PAYMENT_LINK), {
+      campaign_id: campaignId,
+    });
+  }
+
   //PUBLIC API
   indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);
