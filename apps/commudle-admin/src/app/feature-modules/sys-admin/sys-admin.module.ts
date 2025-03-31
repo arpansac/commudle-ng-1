@@ -56,6 +56,7 @@ import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-
 import { LinkyModule } from 'ngx-linky';
 import { CampaignPurchaseOrdersComponent } from './components/admin-campaigns/campaign-purchase-orders/campaign-purchase-orders.component';
 import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/sys-admin-campaign-stats/sys-admin-campaign-stats.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,8 @@ import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feat
     NbRouteTabsetModule,
     NbDialogModule.forChild(),
     NbFormFieldModule,
+    EditorModule,
   ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
 export class SysAdminModule {}

@@ -21,7 +21,7 @@
         <br />
         <small>{{ campaignType.slug }}</small>
       </td>
-      <td><p [innerHTML]="campaignType.description | linky : { sanitizeHtml: true }"></p></td>
+      <td><p [innerHTML]="campaignType.description"></p></td>
       <td>${{ campaignType.budget_amount }}</td>
       <td>
         <nb-toggle [checked]="campaignType.active" (checkedChange)="toggleCampaignStatus(campaignType.id)"> </nb-toggle>
@@ -136,7 +136,9 @@
           <label>
             Description
             <span class="required">*</span>
-            <textarea formControlName="description" nbInput type="text" fullWidth placeholder="Description"></textarea>
+            <!-- <textarea formControlName="description" nbInput type="text" fullWidth placeholder="Description"></textarea> -->
+            <editor [init]="tinyMCE" formControlName="description"> </editor>
+
             <commudle-alert
               *ngIf="
                 campaignTypeForm.controls['description'].touched &&

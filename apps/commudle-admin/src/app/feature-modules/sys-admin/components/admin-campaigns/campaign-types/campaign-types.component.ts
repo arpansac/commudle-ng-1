@@ -19,6 +19,42 @@ export class CampaignTypesComponent implements OnInit {
   };
   isLoading = true;
 
+  tinyMCE = {
+    min_height: 200,
+    menubar: false,
+    convert_urls: false,
+    placeholder: 'Description for your Campaign Type',
+    content_style:
+      "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 14px !important;}",
+    plugins: [
+      'emoticons',
+      'advlist',
+      'lists',
+      'autolink',
+      'link',
+      'charmap',
+      'preview',
+      'anchor',
+      'image',
+      'visualblocks',
+      'code',
+      'charmap',
+      'codesample',
+      'insertdatetime',
+      'table',
+      'code',
+      'help',
+      'wordcount',
+      'autoresize',
+    ],
+    toolbar:
+      'h2  h3  h4  h5 fontsize | bold italic backcolor | emoticons | link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+    default_link_target: '_blank',
+    font_size_formats: '8px 10px 12px 14px 16px 18px 20px 22px 24px',
+    branding: false,
+    license_key: 'gpl',
+  };
+
   constructor(
     private dialogService: NbDialogService,
     private fb: FormBuilder,

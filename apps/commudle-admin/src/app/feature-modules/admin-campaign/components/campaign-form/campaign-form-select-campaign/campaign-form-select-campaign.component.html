@@ -20,7 +20,7 @@
           </div>
           <div class="campaign-info">
             <p class="header">{{ campaignType.name }}</p>
-            <p [innerHTML]="campaignType.description | linky : { sanitizeHtml: true }"></p>
+            <p (click)="$event.stopPropagation()" [innerHTML]="campaignType.description"></p>
           </div>
         </div>
       </div>

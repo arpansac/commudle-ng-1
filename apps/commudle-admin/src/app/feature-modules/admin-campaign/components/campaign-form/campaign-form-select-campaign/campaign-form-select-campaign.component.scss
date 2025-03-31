@@ -27,7 +27,7 @@ nb-card {
         }
         &.selected {
           span {
-            @apply com-bg-gray-300;
+            @apply com-bg-primary-500;
           }
         }
       }
