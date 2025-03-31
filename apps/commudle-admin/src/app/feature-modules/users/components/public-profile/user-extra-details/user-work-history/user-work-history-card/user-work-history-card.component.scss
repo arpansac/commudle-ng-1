@@ -36,10 +36,10 @@ p {
 
       .date,
       .location {
-        @apply com-flex com-text-sm com-font-medium com-text-gray-500;
+        @apply com-flex com-text-sm com-font-medium com-text-blue-500;
 
         nb-icon {
-          @apply com-text-gray-400 com-mr-1;
+          @apply com-text-blue-500 com-mr-1;
         }
       }
     }

@@ -27,48 +27,19 @@
           </p>
         </div>
       </div>
-      <!-- <p class="event-time" *ngIf="cardType !== 'hackathons'">
-        {{ moment(attendedEvent.start_time).format('dddd, MMM Do, YYYY') }}
-      </p>
-      <p class="event-time" *ngIf="cardType === 'hackathons'">
-        {{ moment(attendedEvent.start_date).format('dddd, MMM Do, YYYY') }}
-      </p> -->
       <div class="time" *ngIf="cardType !== 'attendedEventCard'">
-        <p class="event-month">
-          {{ moment(attendedEvent.start_date).format('MMM') }}
-          <!-- {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('MMM') }} -->
+        <p class="event-month-header">
+          {{ moment(attendedEvent.start_date ? attendedEvent.start_date : attendedEvent.start_time).format('MMM') }}
         </p>
-        <p class="event-date">
-          {{ moment(attendedEvent.start_date).format('D') }}
-          <!-- {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('D') }} -->
-        </p>
-        <p class="event-day">
-          {{ moment(attendedEvent.start_date).format('ddd') }}
-          <!-- {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('ddd') }} -->
-        </p>
+        <div class="date-month">
+          <p class="event-date">
+            {{ moment(attendedEvent.start_date ? attendedEvent.start_date : attendedEvent.start_time).format('D') }}
+          </p>
+          <p class="event-day">
+            {{ moment(attendedEvent.start_date ? attendedEvent.start_date : attendedEvent.start_time).format('ddd') }}
+          </p>
+        </div>
       </div>
-      <!-- <div *ngIf="cardType === 'attendedEventCard'" nbButton size="small" shape="semi-round" class="icon">
-        <fa-icon
-          [icon]="faCalendarCheck"
-          [ngClass]="{
-            iconSizeSmall: iconSize === 'small',
-            iconSizeMedium: iconSize === 'medium'
-          }"
-        ></fa-icon>
-      </div>
-      <div *ngIf="cardType === 'upcomingEvents'" nbButton size="small" shape="semi-round" class="icon">
-        <nb-icon
-          icon="calendar"
-          [ngClass]="{
-            iconSizeSmall: iconSize === 'small',
-            iconSizeMedium: iconSize === 'medium'
-          }"
-        ></nb-icon>
-      </div>
-      <div *ngIf="cardType === 'hackathons'" nbButton size="small" shape="semi-round" class="icon">
-        <img [src]="environment.base_url + '/icons/hackathon-icon-info.svg'" alt="Hackathon Icon" />
-      </div> -->
-
       <div class="content">
         <h4 class="title">{{ attendedEvent.name }}</h4>
         <div *ngIf="community" class="community-badge">

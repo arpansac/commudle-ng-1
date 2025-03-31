@@ -22,11 +22,15 @@ p {
       @apply com-flex com-flex-col com-ml-4 com-no-underline com-w-full;
 
       .user-social-card-tags {
-        @apply com-flex com-flex-wrap com-gap-1 com-mb-4;
+        @apply com-flex com-flex-wrap com-gap-1;
 
         .user-social-card-tag {
           @apply com-bg-blue-50 com-rounded-3xl com-text-Azure com-text-xs com-font-medium com-px-3 com-py-1;
         }
+      }
+
+      .tags-favicon {
+        @apply com-flex com-justify-between com-mb-4;
       }
 
       .user-social-card-title {
@@ -38,10 +42,7 @@ p {
       }
 
       .user-social-card-favicon {
-        @apply com-bg-tWhite;
-        border-radius: 50%;
-        margin-top: $space-12;
-        max-width: 20px;
+        @apply com-bg-tWhite com-ml-5 com-rounded-full com-max-w-5 com-flex-shrink-0;
       }
     }
 

@@ -9,17 +9,19 @@
       <!-- <img [alt]="socialResource.title" [src]="socialResource.image?.url" [title]="socialResource.title" /> -->
     </a>
     <a [href]="socialResource.link" class="user-social-card-details" rel="noreferrer" target="_blank">
-      <div class="user-social-card-tags">
-        <div *ngFor="let tag of socialResource.tags" class="user-social-card-tag">{{ tag.name }}</div>
+      <div class="tags-favicon">
+        <div class="user-social-card-tags">
+          <div *ngFor="let tag of socialResource.tags" class="user-social-card-tag">{{ tag.name }}</div>
+        </div>
+        <img
+          [alt]="socialResource.title"
+          [src]="socialResource.favicon"
+          [title]="socialResource.title"
+          class="user-social-card-favicon"
+        />
       </div>
       <p class="user-social-card-title">{{ socialResource.title }}</p>
       <p class="user-social-card-description">{{ socialResource.description | truncatetext : 150 }}</p>
-      <img
-        [alt]="socialResource.title"
-        [src]="socialResource.favicon"
-        [title]="socialResource.title"
-        class="user-social-card-favicon"
-      />
     </a>
     <button
       (click)="onDialogOpen()"
