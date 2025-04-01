@@ -4,6 +4,10 @@ p {
   margin: 0;
 }
 
+a {
+  @apply md:com-w-auto com-w-full;
+}
+
 .user-social-card {
   @apply com-m-0 com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
 
@@ -11,7 +15,7 @@ p {
     @apply com-flex com-flex-row com-p-4 com-w-full;
 
     .user-social-card-image {
-      @apply com-w-[196px] com-h-[124px] com-flex com-justify-center com-items-center;
+      @apply md:com-w-[196px] md:com-h-[124px] com-h-[142px] com-w-full com-flex com-justify-center com-items-center;
 
       img {
         @apply com-w-full;
@@ -62,7 +66,6 @@ p {
 
       .user-social-card-image {
         margin-bottom: $space-16;
-        width: 100%;
       }
 
       .user-social-card-details {
