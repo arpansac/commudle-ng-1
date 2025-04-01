@@ -22,6 +22,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-user-basic-details',
@@ -35,6 +36,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   currentUser: ICurrentUser;
   faExclamationTriangle = faExclamationTriangle;
   faPenToSquare = faPenToSquare;
+  staticAssets = staticAssets;
 
   // The updated tags
   tagsDialog: string[] = [];
