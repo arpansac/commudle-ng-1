@@ -123,14 +123,8 @@
           </a>
         </div>
         <nb-tag-list *ngIf="user.tags.length > 0" class="tags">
-          <nb-tag *ngFor="let tag of user.tags" [text]="tag.name" appearance="outline" status="info"></nb-tag>
-          <nb-tag
-            (click)="onTagDialogOpen()"
-            *ngIf="currentUser?.id === user.id"
-            class="com-cursor-pointer"
-            status="info"
-            text="+"
-          ></nb-tag>
+          <nb-tag *ngFor="let tag of user.tags" [text]="tag.name" appearance="outline" class="user-tags"></nb-tag>
+          <nb-tag (click)="onTagDialogOpen()" *ngIf="currentUser?.id === user.id" class="add-tag" text="+"></nb-tag>
         </nb-tag-list>
       </div>
     </div>

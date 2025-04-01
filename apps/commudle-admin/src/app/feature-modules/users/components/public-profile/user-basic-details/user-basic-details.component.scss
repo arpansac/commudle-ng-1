@@ -113,8 +113,11 @@ p {
       .tags {
         @apply com-mt-5;
 
-        nb-tag {
-          @apply com-text-sm com-font-medium com-border-none;
+        .user-tags {
+          @apply com-text-sm com-font-medium com-border-none com-text-Yankees-Blue com-bg-blue-50;
+        }
+        .add-tag {
+          @apply com-text-sm com-font-medium com-border-none com-text-white com-bg-Azure com-cursor-pointer;
         }
       }
     }
