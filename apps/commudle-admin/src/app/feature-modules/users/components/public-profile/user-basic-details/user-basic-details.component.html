@@ -7,13 +7,6 @@
           <img [alt]="user.name" [src]="user.avatar" [title]="user.name" class="avatar" />
         </div>
         <div class="action-btn-mobile">
-          <app-user-follow
-            (userFollowed)="updateProfile.emit()"
-            [username]="user.username"
-            [name]="user.name"
-            [userId]="user.id"
-            [disabled]="user.deactivated"
-          ></app-user-follow>
           <app-share-button
             [content]="environment.app_url + '/users/' + user.username"
             [title]="user.name + ' ' + user.designation"
@@ -43,11 +36,19 @@
               shape="semi-round"
               size="small"
               status="info"
+              outline
             >
               <nb-icon icon="paper-plane"></nb-icon>
               Message
             </button>
           </ng-template>
+          <app-user-follow
+            (userFollowed)="updateProfile.emit()"
+            [username]="user.username"
+            [name]="user.name"
+            [userId]="user.id"
+            [disabled]="user.deactivated"
+          ></app-user-follow>
         </div>
       </div>
       <div class="user-info">
