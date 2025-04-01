@@ -87,14 +87,14 @@ p {
       }
 
       .designation {
-        @apply com-text-base com-flex com-items-center com-gap-2 com-mt-4;
+        @apply com-text-base com-flex md:com-items-center com-items-start com-gap-2 com-mt-4;
 
         p {
           @apply com-text-base com-text-Yankees-Blue;
         }
 
         nb-icon {
-          @apply com-text-base md:com-text-lg com-text-Azure;
+          @apply com-text-base md:com-text-lg com-text-Azure md:com-mt-0 com-mt-1 com-flex-shrink-0;
         }
       }
 
