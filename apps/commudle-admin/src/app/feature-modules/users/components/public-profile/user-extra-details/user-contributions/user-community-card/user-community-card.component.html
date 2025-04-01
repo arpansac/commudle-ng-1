@@ -10,15 +10,18 @@
       [title]="community.community.name"
       class="user-communities-logo"
     />
-    <div class="com-flex com-flex-col">
-      <h4 class="user-communities-name">{{ community.community.name }}</h4>
-      <p class="user-communities-role">
-        <nb-icon icon="star" *ngIf="community.user_role.name === 'organizer'"></nb-icon>
-        <span>
-          {{ community.user_role.name | titlecase }}
-        </span>
-      </p>
-      <p class="user-communities-members">{{ community.community.members_count }} members</p>
+    <div class="content-badge">
+      <div class="content">
+        <div class="title-badge">
+          <h4 class="user-communities-name">{{ community.community.name }}</h4>
+        </div>
+        <p class="user-communities-members">{{ community.community.members_count }} members</p>
+      </div>
+      <img
+        *ngIf="community.user_role.name === 'organizer'"
+        src="{{ staticAssets.organizer_badge }}"
+        class="organizer-badge"
+      />
     </div>
   </nb-card-body>
 </nb-card>

@@ -56,19 +56,20 @@
           <div>
             <div class="name-username">
               <div class="name !com-contents md:!com-flex">
-                <h1>{{ user.name }}</h1>
-                <img
-                  *ngIf="user.is_expert"
-                  alt="Expert Tick"
-                  class="expert-icon"
-                  src="/assets/images/Expert-Tick.svg"
-                  title="Expert Tick"
-                />
+                <h1>
+                  {{ user.name
+                  }}<img
+                    *ngIf="user.is_expert"
+                    alt="Expert Tick"
+                    class="expert-icon"
+                    src="/assets/images/Expert-Tick.svg"
+                    title="Expert Tick"
+                  />
+                </h1>
                 <app-hiring-looking-works-tags
                   *ngIf="!user.deactivated"
                   [user]="user"
                   [size]="'large'"
-                  class="com-block com-h-3 md:com-h-7"
                 ></app-hiring-looking-works-tags>
                 <button
                   *ngIf="user.deactivated"

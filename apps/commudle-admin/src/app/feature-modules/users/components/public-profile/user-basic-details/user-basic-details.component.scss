@@ -17,7 +17,7 @@ p {
       }
 
       .action-btn-mobile {
-        @apply com-flex com-gap-3;
+        @apply com-flex com-gap-3 md:com-mt-0 com-mt-4;
       }
 
       .edit-icon {
@@ -29,7 +29,7 @@ p {
       }
     }
     .user-avatar {
-      @apply md:com-h-[140px] md:com-w-[140px] com-rounded-full com-relative com-z-50 -com-mt-20 md:com-mt-[-94px];
+      @apply md:com-h-[140px] md:com-w-[140px] com-rounded-full com-relative com-z-50 -com-mt-20 md:com-mt-[-94px] com-bg-white;
       .avatar {
         @apply md:com-m-2px com-block com-h-40 com-w-40 md:com-h-[140px] md:com-w-[140px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
       }
@@ -43,10 +43,10 @@ p {
       @apply com-w-full com-mt-4;
 
       .name {
-        @apply com-flex com-gap-6px com-items-center;
+        @apply com-flex md:com-flex-row com-flex-col md:com-gap-6px com-gap-0 md:com-items-center;
 
         .expert-icon {
-          @apply com-h-3 com-w-3 md:com-h-6 md:com-w-6;
+          @apply com-h-3 com-w-3 md:com-h-6 md:com-w-6 com-ml-3;
         }
 
         h1 {
@@ -59,11 +59,11 @@ p {
       }
 
       .username {
-        @apply com-text-base com-text-gray-400 com-mt-1;
+        @apply com-text-base com-text-gray-400;
       }
 
       .name-username {
-        @apply com-text-center md:com-text-left;
+        @apply com-flex com-flex-col md:com-items-start com-items-center com-text-center md:com-text-left;
       }
 
       .job-tags {

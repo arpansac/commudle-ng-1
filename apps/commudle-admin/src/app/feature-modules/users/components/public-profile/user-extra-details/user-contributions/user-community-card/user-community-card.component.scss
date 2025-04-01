@@ -14,17 +14,21 @@ h4 {
     }
 
     .user-communities-name {
-      @apply com-text-sm com-font-semibold com-line-clamp-1;
-    }
-
-    .user-communities-role {
-      @apply com-text-xs com-text-gray-500 com-py-2px;
+      @apply com-text-sm com-font-medium com-line-clamp-1;
     }
 
     .user-communities-members {
-      @apply com-mt-1 com-text-xs com-font-medium com-text-blue-500;
+      @apply com-mt-1 com-text-xs com-font-normal com-text-blue-500;
     }
   }
+}
+
+.title-badge {
+  @apply com-flex com-flex-row com-justify-between;
+}
+
+.organizer-badge {
+  @apply -com-mt-4 com-flex com-flex-shrink-0;
 }
 
 .organizer {
@@ -34,4 +38,12 @@ h4 {
       @apply com-text-tWhite com-mr-1;
     }
   }
+}
+
+.content {
+  @apply com-flex com-flex-col com-w-full;
+}
+
+.content-badge {
+  @apply com-flex com-justify-between com-items-start com-w-full;
 }
