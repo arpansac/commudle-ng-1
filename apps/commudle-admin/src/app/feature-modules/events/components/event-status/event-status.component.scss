@@ -6,3 +6,7 @@
 .category-heading {
   @apply com-text-sm com-font-semibold com-my-2  com-flex com-items-center com-pb-1;
 }
+
+.action-buttons {
+  @apply com-flex com-justify-between com-my-0;
+}
