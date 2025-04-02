@@ -77,7 +77,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (data.header_image) {
         this.homePageBannerImage = this.cmsService.getImageUrl(data.header_image);
       } else {
-        if (this.isBrowserService.isBrowser()) {
+        if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
           import('lottie-web').then((l) => {
             l.default.loadAnimation({
               container: this.homepageAnimationContainer.nativeElement,

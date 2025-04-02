@@ -33,6 +33,7 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
   @Input() status: NbComponentStatus;
   @Input() isMobileWidthFull = false;
   @Input() disabled = false;
+  @Input() round: boolean = false;
   @Output() userFollowed: EventEmitter<any> = new EventEmitter<any>();
   currentUser: ICurrentUser;
   isFollowing = false;

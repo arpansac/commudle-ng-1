@@ -219,6 +219,14 @@ export const staticAssets = {
   // id: 184
   campaign_main_search_page_default:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM2JaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5421b123dd9db86301a665078f27c5bcec0e85b1/Search.png',
+  
+  //id: 186
+  organizer_badge:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBK1hqQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--a2d1c89e63d8f6a580edf38e4fe6748f175c97fa/Organizer%20Badge.svg',
+
+  //id: 185
+  expert_tick:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL25pQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--59f8c841f2235ca8f35ad2f3343e7ddaa92c6a2b/Expert%20Blue%20Tick.svg',
 };
 
 export const AwsS3Bucket = {

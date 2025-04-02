@@ -1,5 +1,5 @@
 .user-profile-menu {
-  @apply com-sticky com-top-[68px] com-z-10 com-mt-0 com-rounded-tl-none com-rounded-tr-none;
+  @apply com-sticky com-top-[68px] com-z-10 com-m-0 com-mb-4 com-rounded-tl-none com-rounded-tr-none;
 
   nb-card-body {
     @apply com-px-2;
@@ -26,4 +26,12 @@
     @apply com-border-0 com-border-b-4 com-border-solid com-border-primary-500 com-pt-3;
     width: calc(100% + 30px);
   }
+}
+
+.two-column-layout {
+  @apply com-mt-6;
+}
+
+.main-column {
+  @apply md:com-mr-6 com-mr-0;
 }

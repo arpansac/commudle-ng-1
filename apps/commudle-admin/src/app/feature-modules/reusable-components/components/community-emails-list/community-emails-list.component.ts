@@ -1,4 +1,3 @@
-import { NbWindowService } from '@commudle/theme';
 import {
   Component,
   OnInit,
@@ -12,6 +11,7 @@ import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/st
 import { IFixedEmail } from 'apps/shared-models/fixed-email.model';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@commudle/theme';
 
 @Component({
   selector: 'app-community-emails-list',
@@ -27,9 +27,9 @@ export class CommunityEmailsListComponent implements OnInit {
   isLoading = true;
   constructor(
     private statsCommunitiesService: StatsCommunitiesService,
-    private windowService: NbWindowService,
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -49,13 +49,12 @@ export class CommunityEmailsListComponent implements OnInit {
     });
   }
 
-  openEmailPreview(email: IFixedEmail) {
-    this.windowService.open(this.emailMessageTemplate, {
-      title: email.subject,
+  openEmailPreview(email) {
+    this.dialogService.open(this.emailMessageTemplate, {
       context: {
+        title: email.subject,
         message: email.message,
       },
-      windowClass: 'email-preview-window',
     });
   }
 }

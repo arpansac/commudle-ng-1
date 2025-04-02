@@ -109,6 +109,12 @@ export class CommunityEditDetailsComponent implements OnInit {
   displaySelectedLogo(event: any) {
     if (event.target.files && event.target.files[0]) {
       const logoFile = event.target.files[0];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(logoFile.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedLogoFile = logoFile;
       const reader = new FileReader();
       reader.onload = (e: any) => (this.uploadedLogo = reader.result);
@@ -119,6 +125,12 @@ export class CommunityEditDetailsComponent implements OnInit {
   displaySelectedBanner(event: any) {
     if (event.target.files && event.target.files[0]) {
       const bannerFile = event.target.files[0];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(bannerFile.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedBannerFile = bannerFile;
       const reader = new FileReader();
       reader.onload = (e: any) => (this.uploadedBanner = reader.result);

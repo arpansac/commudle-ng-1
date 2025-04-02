@@ -6,6 +6,7 @@ import { EntityUpdatesService } from 'apps/commudle-admin/src/app/services/entit
 import { EDbModels, IEntityUpdate } from '@commudle/shared-models';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { ToastrService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-updates',
@@ -28,6 +29,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private entityUpdatesService: EntityUpdatesService,
     private hackathonService: HackathonService,
+    private toasterService: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -78,6 +80,12 @@ export class HackathonControlPanelUpdatesComponent implements OnInit {
 
   uploadImages(event) {
     for (let i = 0; i < event.length; i++) {
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(event[i].type)) {
+        this.toasterService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.selectedImages.push(event[i]);
     }
     this.showPreview();

@@ -6,7 +6,7 @@
     [status]="status === 'basic' ? 'basic' : 'info'"
     class="follow-btn"
     nbButton
-    shape="semi-round"
+    [shape]="round ? 'round' : 'semi-round'"
     size="small"
     [disabled]="disabled"
   >

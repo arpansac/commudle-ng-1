@@ -6,18 +6,16 @@
       [title]="lab.name"
       class="user-lab-cover-image"
     />
-    <div class="com-p-2">
+    <div class="content">
       <h4 class="user-lab-name">{{ lab.name }}</h4>
       <p class="user-lab-description">{{ lab.description }}</p>
       <div class="user-lab-interactions">
-        <span>
-          <nb-icon icon="eye"></nb-icon>
-          {{ lab.total_visitors }}
-        </span>
-        <span>
-          <nb-icon icon="heart"></nb-icon>
-          {{ lab.votes_count }}
-        </span>
+        <app-votes-display
+          [icon]="'heart-outline'"
+          [votableId]="lab.id"
+          [votableType]="'Lab'"
+          [textAlignment]="'after'"
+        ></app-votes-display>
       </div>
     </div>
   </nb-card-body>

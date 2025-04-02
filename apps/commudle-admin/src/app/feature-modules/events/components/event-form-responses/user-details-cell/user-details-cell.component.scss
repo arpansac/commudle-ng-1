@@ -72,3 +72,10 @@
     }
   }
 }
+
+.confirm-delete-entry-pass {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}

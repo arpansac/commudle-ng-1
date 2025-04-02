@@ -18,6 +18,7 @@ import { HackathonControlPanelReviewComponent } from 'apps/commudle-admin/src/ap
 import { HackathonControlPanelRoundsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-rounds/hackathon-control-panel-rounds.component';
 import { HackathonControlPanelEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-control-panel-emails.component';
 import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-channels/hackathon-control-panel-channels.component';
+import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-stats/hackathon-control-panel-stats.component';
 
 const routes: Routes = [
   {
@@ -107,6 +108,10 @@ const routes: Routes = [
           {
             path: 'channels/email-join/:email_token',
             component: HackathonControlPanelChannelsComponent,
+          },
+          {
+            path: 'stats',
+            component: HackathonControlPanelStatsComponent,
           },
         ],
       },
