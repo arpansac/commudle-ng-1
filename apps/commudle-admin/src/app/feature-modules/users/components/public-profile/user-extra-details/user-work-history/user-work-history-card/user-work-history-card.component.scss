@@ -12,13 +12,13 @@ p {
   nb-card-body {
     @apply com-p-4;
     .heading {
-      @apply com-grid com-grid-cols-1 md:com-grid-cols-5 com-gap-2;
+      @apply com-flex md:com-flex-row com-flex-col md:com-justify-between;
 
       .job {
         @apply md:com-col-span-3;
 
         .job-title {
-          @apply com-text-xl com-font-semibold com-w-44 md:com-w-max com-text-Yankees-Blue;
+          @apply com-text-xl com-font-semibold com-w-full com-text-Yankees-Blue;
         }
 
         .button {
@@ -26,22 +26,26 @@ p {
         }
 
         .company {
-          @apply com-text-base com-text-gray-500;
+          @apply com-text-base com-text-gray-500 md:com-mb-0 com-mb-2;
         }
+      }
+
+      .date-location {
+        @apply com-flex md:com-flex-row com-flex-col md:com-gap-6 com-gap-1 com-justify-start md:com-justify-end;
       }
 
       .date,
       .location {
-        @apply com-text-sm com-text-gray-700 com-flex;
+        @apply com-flex com-text-sm com-font-medium com-text-blue-500;
 
         nb-icon {
-          @apply com-text-Blue-Jeans com-mr-1;
+          @apply com-text-blue-500 com-mr-1;
         }
       }
     }
 
     .description {
-      @apply com-mt-3 com-text-base com-text-gray-900 com-whitespace-pre-wrap;
+      @apply md:com-mt-6 com-mt-4 com-text-sm com-text-gray-600 com-whitespace-pre-wrap;
     }
   }
 }
