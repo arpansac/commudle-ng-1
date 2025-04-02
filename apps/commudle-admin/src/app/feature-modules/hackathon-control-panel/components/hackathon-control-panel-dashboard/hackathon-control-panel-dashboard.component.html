@@ -17,6 +17,14 @@
       </div>
     </button>
   </a>
+  <a [routerLink]="['stats']" target="_blank">
+    <div class="icon">
+      <button nbButton status="success" shape="round" size="tiny">
+        <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+        &nbsp; Stats
+      </button>
+    </div>
+  </a>
 </section>
 
 <section class="com-flex">
@@ -181,6 +189,12 @@
                 <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
               </div>
               <div *ngIf="sidebarExpanded" class="action-button-name">Public Page</div>
+            </a>
+            <a class="stats" [routerLink]="['stats']" target="_blank">
+              <button nbButton status="success">
+                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                &nbsp; Stats
+              </button>
             </a>
           </div>
         </div>

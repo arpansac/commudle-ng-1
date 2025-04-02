@@ -3,7 +3,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-admin-hackathon',
@@ -21,6 +21,7 @@ export class AdminHackathonComponent implements OnInit {
   moment = moment;
   icons = {
     faPlus,
+    faArrowUpRightFromSquare,
   };
 
   constructor(private hackathonService: HackathonService) {}

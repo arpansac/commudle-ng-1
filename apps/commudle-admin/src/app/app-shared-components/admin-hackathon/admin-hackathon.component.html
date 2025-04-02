@@ -37,7 +37,17 @@
           <button nbButton status="primary" size="tiny">Dashboard</button>
         </a>
         <a [routerLink]="['/communities', parentId, 'hackathons', hackathon.slug]" target="_blank">
-          <button nbButton status="primary" size="tiny">Public Page</button>
+          <button nbButton status="primary" size="tiny">
+            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Public Page
+          </button>
+        </a>
+        <a
+          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug, 'stats']"
+          target="_blank"
+        >
+          <button nbButton status="success" size="tiny">
+            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Stats
+          </button>
         </a>
       </td>
     </tr>
