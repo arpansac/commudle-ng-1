@@ -1,25 +1,35 @@
 <nb-card class="user-social-card">
   <nb-card-body class="d-flex align-items-center">
-    <a
-      [href]="socialResource.link"
-      class="user-social-card-image d-flex justify-content-center align-items-center"
-      rel="noreferrer"
-      target="_blank"
-    >
-      <img [alt]="socialResource.title" [src]="socialResource.image?.url" [title]="socialResource.title" />
+    <a [href]="socialResource.link" rel="noreferrer" target="_blank">
+      <commudle-banner-image
+        *appBreakpoints="'>lg'"
+        [aspectRatio]="'8/5'"
+        class="user-social-card-image"
+        [headerImagePath]="socialResource.image?.url"
+        [name]="socialResource.title"
+      ></commudle-banner-image>
+      <commudle-banner-image
+        *appBreakpoints="'<=lg'"
+        [aspectRatio]="'43/20'"
+        class="user-social-card-image"
+        [headerImagePath]="socialResource.image?.url"
+        [name]="socialResource.title"
+      ></commudle-banner-image>
     </a>
     <a [href]="socialResource.link" class="user-social-card-details" rel="noreferrer" target="_blank">
-      <div class="user-social-card-tags d-flex">
-        <div *ngFor="let tag of socialResource.tags" class="user-social-card-tag">{{ tag.name }}</div>
+      <div class="tags-favicon">
+        <div class="user-social-card-tags">
+          <div *ngFor="let tag of socialResource.tags" class="user-social-card-tag">{{ tag.name }}</div>
+        </div>
+        <img
+          [alt]="socialResource.title"
+          [src]="socialResource.favicon"
+          [title]="socialResource.title"
+          class="user-social-card-favicon"
+        />
       </div>
       <p class="user-social-card-title">{{ socialResource.title }}</p>
-      <p class="user-social-card-description">{{ socialResource.description | truncatetext: 150 }}</p>
-      <img
-        [alt]="socialResource.title"
-        [src]="socialResource.favicon"
-        [title]="socialResource.title"
-        class="user-social-card-favicon"
-      />
+      <p class="user-social-card-description">{{ socialResource.description | truncatetext : 150 }}</p>
     </a>
     <button
       (click)="onDialogOpen()"

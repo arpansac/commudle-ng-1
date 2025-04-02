@@ -1,7 +1,9 @@
 <br />
-<button (click)="openPrizeFormDialogBox(addPrizeDialogBox)" nbButton status="primary" shape="semi-round">
-  <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Prize
-</button>
+<div class="com-mx-2">
+  <button (click)="openPrizeFormDialogBox(addPrizeDialogBox)" nbButton status="primary">
+    <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Prize
+  </button>
+</div>
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 <div class="hackathon-prize-cards" *ngIf="hackathonPrizes && hackathonPrizes.length > 0; else noPrize">
   <div *ngFor="let hackathonPrize of hackathonPrizes; let i = index">

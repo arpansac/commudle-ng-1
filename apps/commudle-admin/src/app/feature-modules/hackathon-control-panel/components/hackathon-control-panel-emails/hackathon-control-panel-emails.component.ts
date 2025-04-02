@@ -7,6 +7,9 @@ import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
 import { ToastrService } from '@commudle/shared-services';
+import { FormBuilder } from '@angular/forms';
+import { EmailerPreviewService } from '@commudle/shared-services';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',
@@ -17,6 +20,11 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   message = '';
   dialogRef: NbDialogRef<any>;
   isLoading = false;
+  showPreviewSpinner = false;
+  previewEmailForm;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
+
   tinyMCE = {
     min_height: 300,
     menubar: false,
@@ -58,7 +66,13 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     private hackathonService: HackathonService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToastrService,
-  ) {}
+    private fb: FormBuilder,
+    private emailerPreviewService: EmailerPreviewService,
+  ) {
+    this.previewEmailForm = this.fb.group({
+      body: [''],
+    });
+  }
 
   ngOnInit() {
     this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -107,5 +121,24 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     this.message = '';
     this.isLoading = false;
     this.dialogRef.close();
+  }
+
+  previewEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+    });
+    this.emailerPreviewService
+      .hackathonInviteRegistrationEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 }

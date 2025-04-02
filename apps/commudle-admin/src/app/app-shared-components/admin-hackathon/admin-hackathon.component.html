@@ -24,7 +24,16 @@
       </td>
       <td>{{ hackathon.status | titlecase }}</td>
       <td class="action-buttons">
-        <a [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]">
+        <a
+          *ngIf="hackathon.status !== EHackathonStatus.OPEN"
+          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]"
+        >
+          <button nbButton status="primary" size="tiny">Dashboard</button>
+        </a>
+        <a
+          *ngIf="hackathon.status === EHackathonStatus.OPEN"
+          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug, 'review']"
+        >
           <button nbButton status="primary" size="tiny">Dashboard</button>
         </a>
         <a [routerLink]="['/communities', parentId, 'hackathons', hackathon.slug]" target="_blank">

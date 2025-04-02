@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-user-build-card',
@@ -8,6 +9,7 @@ import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 })
 export class UserBuildCardComponent implements OnChanges {
   @Input() build: ICommunityBuild;
+  moment = moment;
 
   constructor() {}
 

@@ -48,6 +48,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
   createForm(userDetails: any): FormGroup {
     const formGroupConfig: any = {};
+    const urlPattern = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d]{2,}(\/.*)?$/;
 
     // Dynamically add form controls based on configuration
     Object.keys(userDetails).forEach((key) => {
@@ -56,15 +57,33 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
         if (key === 'work_experience_months') {
           userValues = userValues / 12;
         }
+
+        let validators = [Validators.required];
+
+        // Add URL validation for social media fields
+        if (
+          key === 'github' ||
+          key === 'gitlab' ||
+          key === 'linkedin' ||
+          key === 'medium' ||
+          key === 'twitter' ||
+          key === 'youtube' ||
+          key === 'behance' ||
+          key === 'dribbble' ||
+          key === 'instagram' ||
+          key === 'facebook'
+        ) {
+          validators.push(Validators.pattern(urlPattern));
+        }
         if (this.hackathonUserResponse) {
           formGroupConfig[key] = [
             this.hackathonUserResponse && this.hackathonUserResponse[key]
               ? this.hackathonUserResponse[key]
               : userValues,
-            Validators.required,
+            validators,
           ];
         } else {
-          formGroupConfig[key] = [userValues, Validators.required];
+          formGroupConfig[key] = [userValues, validators];
         }
       }
     });

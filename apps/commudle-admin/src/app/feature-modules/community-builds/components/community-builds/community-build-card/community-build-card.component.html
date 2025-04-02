@@ -35,7 +35,7 @@
             [color]="'com-bg-Seashell'"
           ></app-badge>
         </div>
-        <p class="description">{{ communityBuild.description }}</p>
+        <div [innerHTML]="communityBuild.description" class="description"></div>
         <div *appBreakpoints="'>lg'" class="app-user-profile-card">
           <app-user-profile-card-medium [user]="communityBuild.user"></app-user-profile-card-medium>
         </div>

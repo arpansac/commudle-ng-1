@@ -137,6 +137,14 @@ th {
   }
 }
 
+.updates {
+  ::ng-deep {
+    p {
+      @apply com-my-0;
+    }
+  }
+}
+
 .notes-form {
   @apply com-my-3;
 

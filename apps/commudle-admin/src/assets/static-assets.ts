@@ -202,4 +202,18 @@ export const staticAssets = {
   // id: 178
   fire_illustration:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1dKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c9f794bbbe2aae7cc67e71e39f46ba4557a6156c/Fire%20Illustration.svg',
+
+  //id: 186
+  organizer_badge:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBK1hqQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--a2d1c89e63d8f6a580edf38e4fe6748f175c97fa/Organizer%20Badge.svg',
+
+  //id: 185
+  expert_tick:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL25pQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--59f8c841f2235ca8f35ad2f3343e7ddaa92c6a2b/Expert%20Blue%20Tick.svg',
+};
+
+export const AwsS3Bucket = {
+  home_page_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
+
+  brand_guidelines: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/brand+guidelines.pdf',
 };

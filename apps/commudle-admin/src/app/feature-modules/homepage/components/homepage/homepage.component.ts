@@ -8,6 +8,7 @@ import { Observable, timer } from 'rxjs';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { AwsS3Bucket } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-homepage',
@@ -76,14 +77,14 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (data.header_image) {
         this.homePageBannerImage = this.cmsService.getImageUrl(data.header_image);
       } else {
-        if (this.isBrowserService.isBrowser()) {
+        if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
           import('lottie-web').then((l) => {
             l.default.loadAnimation({
               container: this.homepageAnimationContainer.nativeElement,
               renderer: 'svg',
               loop: true,
               autoplay: true,
-              path: 'https://assets7.lottiefiles.com/packages/lf20_3lol1shu/json files/json file.json',
+              path: AwsS3Bucket.home_page_animation,
             });
           });
         }

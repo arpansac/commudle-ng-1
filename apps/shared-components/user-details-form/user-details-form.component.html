@@ -117,6 +117,14 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('twitter').touched &&
+        userForm.get('twitter').invalid &&
+        userForm.get('twitter').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
+    ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('linkedin')">
     <label for="name">Linkedin*</label>
@@ -127,6 +135,14 @@
       "
       [error]="true"
       [errorMessage]="'Required Field'"
+    ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('linkedin').touched &&
+        userForm.get('linkedin').invalid &&
+        userForm.get('linkedin').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
     ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('dribbble')">
@@ -139,6 +155,14 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('dribbble').touched &&
+        userForm.get('dribbble').invalid &&
+        userForm.get('dribbble').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
+    ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('youtube')">
     <label for="name">Youtube*</label>
@@ -150,6 +174,14 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('youtube').touched &&
+        userForm.get('youtube').invalid &&
+        userForm.get('youtube').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
+    ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('medium')">
     <label for="name">Medium*</label>
@@ -158,6 +190,12 @@
       *ngIf="userForm.get('medium').touched && userForm.get('medium').invalid && userForm.get('medium').errors.required"
       [error]="true"
       [errorMessage]="'Required Field'"
+    ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('medium').touched && userForm.get('medium').invalid && userForm.get('medium').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
     ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('behance')">
@@ -170,6 +208,14 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('behance').touched &&
+        userForm.get('behance').invalid &&
+        userForm.get('behance').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
+    ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('gitlab')">
     <label for="name">Gitlab*</label>
@@ -179,6 +225,12 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('gitlab').touched && userForm.get('gitlab').invalid && userForm.get('gitlab').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
+    ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('github')">
     <label for="name">Github*</label>
@@ -187,6 +239,12 @@
       *ngIf="userForm.get('github').touched && userForm.get('github').invalid && userForm.get('github').errors.required"
       [error]="true"
       [errorMessage]="'Required Field'"
+    ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('github').touched && userForm.get('github').invalid && userForm.get('github').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
     ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('facebook')">
@@ -198,6 +256,14 @@
       "
       [error]="true"
       [errorMessage]="'Required Field'"
+    ></commudle-alert>
+    <commudle-alert
+      [error]="
+        userForm.get('facebook').touched &&
+        userForm.get('facebook').invalid &&
+        userForm.get('facebook').hasError('pattern')
+      "
+      errorMessage="Enter complete url (https://....)"
     ></commudle-alert>
   </div>
   <div *ngIf="userForm.get('tshirt_size')">

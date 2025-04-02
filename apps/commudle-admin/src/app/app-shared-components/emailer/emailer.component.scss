@@ -73,7 +73,7 @@ select {
   }
 
   nb-card-body {
-    @apply md:com-w-full com-w-[96dvw];
+    @apply md:com-w-full com-w-[96dvw] com-overflow-x-hidden;
   }
 
   .sample-preview {
@@ -81,7 +81,13 @@ select {
   }
 
   .inner-html {
-    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center;
+    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center com-overflow-x-scroll;
+
+    ::ng-deep {
+      table {
+        @apply com-bg-white #{!important};
+      }
+    }
   }
 }
 

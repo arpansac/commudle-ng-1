@@ -112,7 +112,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       if (this.hackathonSlug) {
         this.fetchHackathonDetails();
       } else {
-        this.seoService.setTags('Admin | Hackathon', '', '');
+        this.seoService.setTitle('New Hackathon');
       }
     });
   }
@@ -224,7 +224,8 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
 
     this.hackathonService.createHackathon(formData, this.parentId, this.parentType).subscribe(
       (data) => {
-        if (data) this.router.navigate(['/admin', 'communities', this.parentId, 'hackathon-dashboard', data.slug]);
+        if (data)
+          this.router.navigate(['/admin', 'communities', this.parentId, 'hackathon-dashboard', data.slug, 'dates']);
         this.isLoading = false;
       },
       () => {
