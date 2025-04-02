@@ -6,6 +6,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import * as moment from 'moment';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from '@commudle/shared-services';
 @Component({
   selector: 'app-event-updates',
   templateUrl: './event-updates.component.html',
@@ -25,7 +26,11 @@ export class EventUpdatesComponent implements OnInit {
   };
 
   isLoading = false;
-  constructor(private eventUpdatesService: EventUpdatesService, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private eventUpdatesService: EventUpdatesService,
+    private activatedRoute: ActivatedRoute,
+    private toasterService: ToastrService,
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.parent.data.subscribe((value) => {
@@ -69,6 +74,12 @@ export class EventUpdatesComponent implements OnInit {
 
   uploadImages(event) {
     for (let i = 0; i < event.length; i++) {
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(event[i].type)) {
+        this.toasterService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.selectedImages.push(event[i]);
     }
     this.showPreview();

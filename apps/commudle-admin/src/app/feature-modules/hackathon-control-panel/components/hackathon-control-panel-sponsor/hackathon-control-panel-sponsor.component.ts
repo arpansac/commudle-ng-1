@@ -88,6 +88,12 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
 
   onFileChange(event) {
     const file = (event.target as HTMLInputElement).files[0];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+    if (!allowedTypes.includes(file.type)) {
+      this.toasterService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+      return;
+    }
     this.sponsorForm.patchValue({
       logo: file,
     });

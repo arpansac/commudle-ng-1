@@ -127,6 +127,12 @@ export class SponsorsComponent implements OnInit {
         this.toastLogService.warningDialog('Image should be less than 2 Mb', 3000);
         return;
       }
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedLogoImageFile = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
