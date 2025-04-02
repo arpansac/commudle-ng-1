@@ -28,10 +28,14 @@
       </a>
     </nb-list-item>
 
-    <nb-list-item *ngIf="currentUser">
-      <a [routerLink]="['/campaigns']">
+    <nb-list-item *ngIf="currentUser" class="disable">
+      <a>
         <fa-icon [icon]="faRectangleAd"></fa-icon>
-        <span>My Campaigns</span>
+        <div>
+          <span>My Ad Campaigns</span>
+          <br />
+          <small>(Coming Soon!)</small>
+        </div>
       </a>
     </nb-list-item>
 
