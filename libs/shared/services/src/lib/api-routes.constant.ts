@@ -1000,6 +1000,7 @@ export const API_ROUTES = {
     CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
     STATS: 'api/v2/campaigns/stats', //GET
     CAMPAIGN_RESEND_PAYMENT_LINK: 'api/v2/campaigns/campaign_resend_payment_link', //POST
+    CAMPAIGN_UNAPPROVED_CHANGES_MAIL: 'api/v2/campaigns/campaign_unapproved_changes_mail', //POST
     PUBLIC: {
       ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET
     },

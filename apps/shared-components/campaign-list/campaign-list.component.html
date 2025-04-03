@@ -70,10 +70,24 @@
                 placeholder="Write Note"
                 nbInput
                 [(ngModel)]="noteTexts[campaign.id]"
+                (click)="$event.stopPropagation()"
               />
             </label>
-            <button nbButton size="tiny" (click)="updateNotes(campaign.id)">Save</button>
+            <button nbButton size="tiny" (click)="updateNotes(campaign.id); $event.stopPropagation()">Save</button>
           </div>
+          <button
+            class="resend-payment-button"
+            *ngIf="
+              isCampaignAdmin &&
+              (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
+            "
+            nbButton
+            status="info"
+            [disabled]="campaign.unapproved_reasons.length === 0"
+            (click)="campaignUnapprovedChangesMail(campaign.id); $event.stopPropagation()"
+          >
+            Send mail
+          </button>
         </div>
       </td>
       <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td>

@@ -84,4 +84,12 @@ export class CampaignListComponent {
       }
     });
   }
+
+  campaignUnapprovedChangesMail(campaignId) {
+    this.campaignService.campaignUnapprovedChangesMail(campaignId).subscribe((res) => {
+      if (res) {
+        this.toasterService.successDialog('Mail Sent');
+      }
+    });
+  }
 }
