@@ -692,6 +692,7 @@ export const API_ROUTES = {
       HACKATHON_TEAM_STATS: 'api/v2/stats/hackathons/hackathon_team_stats',
       HACKATHON_USER_RESPONSES_TAGS: 'api/v2/stats/hackathons/hackathon_user_responses_tags',
       HACKATHON_TEAM_OVER_TIME: 'api/v2/stats/hackathons/hackathon_team_over_time',
+      HACKATHON_USER_VISIT: 'api/v2/stats/hackathons/user_visit',
     },
   },
 

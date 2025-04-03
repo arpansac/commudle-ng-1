@@ -78,6 +78,19 @@
       </div>
     </div>
 
+    <div class="hackathon-stats-container" *ngIf="totalUserVisits">
+      <div class="hackathon-stats-item">
+        <div class="hackathon-stats-item-label">Total User Visits</div>
+        <div class="hackathon-stats-item-value">{{ totalUserVisits }}</div>
+      </div>
+    </div>
+    <div class="graph-container">
+      <span class="title">Hackathon Views over days</span>
+      <div class="chart-time-container">
+        <canvas #hackathonUserVisitOverDays></canvas>
+      </div>
+    </div>
+
     <!-- <div class="graph-container">
       <span class="title">Map Wise Distribution</span>
       <div class="chart-container"> -->
