@@ -90,8 +90,8 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
       this.sDiscussionService.getOrCreatePersonalChat([followerId]).subscribe((data) => {
         // If chatting to a brand new user, include that in allPersonalChatUsers
         // Duplicates are added if done by .includes, hence this elaborate way of checking allPersonalChatUser id's
-        const isThere = this.discussionFollowers.some((value) => value.id === data.id);
-        if (!isThere) {
+        const userExists = this.allPersonalChatUsers.some((user) => user.id === data.id);
+        if (!userExists) {
           this.allPersonalChatUsers.unshift(data);
         }
         this.openChat(data);
@@ -147,7 +147,11 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
       this.isLoadingChat = true;
       this.subscriptions.push(
         this.sDiscussionService.getPersonalChats(this.page, this.count).subscribe((data) => {
-          this.allPersonalChatUsers = [...this.allPersonalChatUsers, ...data.values];
+          const newChats = data.values.filter(
+            (newChat) =>
+              !this.allPersonalChatUsers.some((existingChat) => existingChat.discussion_id === newChat.discussion_id),
+          );
+          this.allPersonalChatUsers = [...this.allPersonalChatUsers, ...newChats];
           this.page = data.page + 1;
           this.total = data.total;
           this.loading = true;
