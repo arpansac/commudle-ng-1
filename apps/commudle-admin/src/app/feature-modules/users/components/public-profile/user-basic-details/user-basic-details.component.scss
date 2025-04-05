@@ -31,7 +31,7 @@ p {
     .user-avatar {
       @apply md:com-h-[140px] md:com-w-[140px] com-rounded-full com-relative com-z-50 -com-mt-20 md:com-mt-[-94px] com-bg-white;
       .avatar {
-        @apply md:com-m-2px com-block com-h-40 com-w-40 md:com-h-[140px] md:com-w-[140px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
+        @apply com-block com-h-40 com-w-40 md:com-h-[140px] md:com-w-[140px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
       }
     }
 
