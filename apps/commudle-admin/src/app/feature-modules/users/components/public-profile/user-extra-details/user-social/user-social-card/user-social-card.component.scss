@@ -50,6 +50,14 @@ a {
       }
     }
 
+    .content {
+      @apply com-flex com-flex-col;
+    }
+
+    .content-button {
+      @apply com-flex com-flex-row;
+    }
+
     .user-social-card-delete {
       float: right;
       font-weight: $fw-400;

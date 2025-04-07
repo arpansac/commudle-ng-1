@@ -28,19 +28,23 @@
           class="user-social-card-favicon"
         />
       </div>
-      <p class="user-social-card-title">{{ socialResource.title }}</p>
-      <p class="user-social-card-description">{{ socialResource.description | truncatetext : 150 }}</p>
+      <div class="content-button">
+        <div class="content">
+          <p class="user-social-card-title">{{ socialResource.title }}</p>
+          <p class="user-social-card-description">{{ socialResource.description | truncatetext : 150 }}</p>
+        </div>
+        <button
+          (click)="onDialogOpen()"
+          *ngIf="currentUser?.id === user.id"
+          class="user-social-card-delete"
+          ghost
+          nbButton
+          status="danger"
+        >
+          Delete
+        </button>
+      </div>
     </a>
-    <button
-      (click)="onDialogOpen()"
-      *ngIf="currentUser?.id === user.id"
-      class="user-social-card-delete"
-      ghost
-      nbButton
-      status="danger"
-    >
-      Delete
-    </button>
   </nb-card-body>
 </nb-card>
 
