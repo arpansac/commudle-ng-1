@@ -40,4 +40,11 @@ export class StatsHackathonService {
       params,
     });
   }
+
+  hackathonUserVisits(hackathonId: number | string): Observable<any> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_USER_VISIT), {
+      params,
+    });
+  }
 }

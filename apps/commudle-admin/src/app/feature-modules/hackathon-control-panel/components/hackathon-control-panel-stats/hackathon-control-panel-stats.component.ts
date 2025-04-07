@@ -12,8 +12,10 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   private hackathonId: string;
   hackathonTeamStats: any;
   hackathonUserResponsesTags: any;
+  totalUserVisits: number;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('hackathonTeamOverTime') HackathonTeamOverTimeChart: ElementRef<HTMLCanvasElement>;
+  @ViewChild('hackathonUserVisitOverDays') HackathonUserVisitOverDays: ElementRef<HTMLCanvasElement>;
   constructor(private route: ActivatedRoute, private statsHackathonService: StatsHackathonService) {}
 
   ngOnInit() {
@@ -23,6 +25,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
       this.getHackathonTeamStats();
       this.getHackathonUserResponsesTags();
       this.getHackathonTeamOverTime();
+      this.getHackathonUserVisits();
     });
   }
 
@@ -73,7 +76,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
         data: {
           datasets: [
             {
-              label: 'Views Over Time',
+              label: 'Registration Over Time',
               data: hackathonTeamOverTime.map((item) => ({
                 t: new Date(item.x), // Chart.js 2.x uses 't' instead of 'x' for time
                 y: item.y,
@@ -113,7 +116,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
                 },
                 scaleLabel: {
                   display: true,
-                  labelString: 'Views',
+                  labelString: 'Count',
                 },
               },
             ],
@@ -132,6 +135,81 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   getHackathonUserResponsesTags() {
     this.statsHackathonService.hackathonUserResponsesTags(this.hackathonId).subscribe((data) => {
       this.hackathonUserResponsesTags = data;
+    });
+  }
+
+  getHackathonUserVisits() {
+    this.statsHackathonService.hackathonUserVisits(this.hackathonId).subscribe((data) => {
+      this.totalUserVisits = data.user_visits.total;
+      const hackathonTeamOverTime = data.user_visits.over_date;
+      if (!this.HackathonUserVisitOverDays?.nativeElement || !hackathonTeamOverTime) {
+        return;
+      }
+      new Chart(this.HackathonUserVisitOverDays.nativeElement, {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              label: 'Views Over Time',
+              data: hackathonTeamOverTime.map((item) => ({
+                t: new Date(item.x), // Ensure this is in 'YYYY-MM-DD' format
+                y: item.y,
+              })),
+              borderColor: '#5072ff',
+              backgroundColor: 'rgba(80, 114, 255, 0.2)',
+              borderWidth: 2,
+              pointBackgroundColor: '#1f3bb3',
+              pointRadius: 5,
+              lineTension: 0.4, // Smooth curve
+              fill: true,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                type: 'time', // Time scale for proper date parsing
+                time: {
+                  unit: 'day', // Display by day
+                  tooltipFormat: 'YYYY-MM-DD', // Tooltip will show full date
+                  displayFormats: { day: 'YYYY-MM-DD' }, // Axis label format
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Date (Daily)',
+                },
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 7, // Adjust this to control the number of visible dates
+                },
+              },
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 5,
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Views',
+                },
+              },
+            ],
+          },
+          legend: {
+            display: true,
+            position: 'top',
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+          },
+        },
+      });
     });
   }
 }
