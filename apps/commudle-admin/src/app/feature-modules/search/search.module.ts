@@ -33,9 +33,16 @@ import { LocationHeaderComponent } from 'apps/commudle-admin/src/app/feature-mod
 import { EventHorizontalCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-horizontal-card/event-horizontal-card.component';
 import { TechSessionsCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/tech-sessions-card/tech-sessions-card.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
-
+import { SearchPageCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/search/components/search-page-campaign/search-page-campaign.component';
+import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 @NgModule({
-  declarations: [SearchBoxComponent, SearchPageComponent, SearchDetailsComponent, LocationHeaderComponent],
+  declarations: [
+    SearchBoxComponent,
+    SearchPageComponent,
+    SearchDetailsComponent,
+    LocationHeaderComponent,
+    SearchPageCampaignComponent,
+  ],
   exports: [SearchBoxComponent],
   imports: [
     CommonModule,
@@ -55,6 +62,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     SharedComponentsModule,
     PublicHomeListSpeakersModule,
     PublicHomeListEventsModule,
+    newSharedComponentsModule,
     LabsFeaturedCardComponent,
     MiniUserProfileModule,
     PublicCommunityModule,

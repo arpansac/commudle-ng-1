@@ -28,6 +28,17 @@
       </a>
     </nb-list-item>
 
+    <nb-list-item *ngIf="currentUser" class="disable">
+      <a>
+        <fa-icon [icon]="faRectangleAd"></fa-icon>
+        <div>
+          <span>My Ad Campaigns</span>
+          <br />
+          <small>(Coming Soon!)</small>
+        </div>
+      </a>
+    </nb-list-item>
+
     <nb-list-item>
       <a [routerLink]="['/newsletters']">
         <fa-icon [icon]="faNewspaper"></fa-icon>
@@ -112,7 +123,7 @@
     </nb-accordion>
   </div>
 
-  <div *ngIf="isPageAdsAdmin || isBadgesAdmin || isAssetsAdmin || isFeaturedItemsAdmin">
+  <div *ngIf="isPageAdsAdmin || isBadgesAdmin || isAssetsAdmin || isFeaturedItemsAdmin || isAdCampaignAdmin">
     <nb-accordion class="sidebar-common-menu">
       <nb-accordion-item [expanded]="true">
         <nb-accordion-item-header>Common Menu</nb-accordion-item-header>
@@ -130,6 +141,9 @@
         </nb-accordion-item-body>
         <nb-accordion-item-body *ngIf="isAssetsAdmin">
           <a [routerLink]="['/sys-admin', 'static-assets']">Static Assets</a>
+        </nb-accordion-item-body>
+        <nb-accordion-item-body *ngIf="isAdCampaignAdmin">
+          <a [routerLink]="['/sys-admin', 'campaigns']">Campaigns</a>
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>

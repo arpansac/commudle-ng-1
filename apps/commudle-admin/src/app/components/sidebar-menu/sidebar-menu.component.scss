@@ -55,3 +55,10 @@ nb-accordion-item {
 nb-accordion-item-header {
   @apply com-text-Yankees-Blue;
 }
+
+.disable {
+  @apply com-opacity-85 com-relative;
+  a {
+    @apply com-cursor-not-allowed;
+  }
+}

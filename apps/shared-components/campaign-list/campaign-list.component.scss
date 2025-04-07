@@ -1,0 +1,60 @@
+.main-table {
+  @apply com-border-collapse com-w-full com-mt-4;
+  td,
+  th {
+    @apply com-p-4;
+  }
+
+  tr:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+  }
+  .action-buttons {
+    @apply com-flex com-flex-wrap com-justify-start com-items-center com-gap-4;
+  }
+}
+
+.notes-table {
+  @apply com-mx-0 com-rounded;
+  nb-card-body {
+    @apply com-p-0;
+  }
+  table {
+    @apply com-w-full com-border-collapse;
+    td,
+    th {
+      @apply com-text-left com-p-2;
+    }
+    th {
+      @apply com-bg-Bright-Gray;
+    }
+    tr {
+      @apply hover:com-bg-gray-50;
+    }
+  }
+}
+
+.resend-payment-button {
+  @apply com-mt-2;
+}
+
+.select {
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+  select {
+    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+  }
+}
+
+.campaign-details {
+  @apply com-h-full md:com-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between;
+  }
+}
+
+.update-newsletter {
+  @apply com-w-full md:com-w-[20dvw];
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}

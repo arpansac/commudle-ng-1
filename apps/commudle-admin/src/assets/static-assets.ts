@@ -203,6 +203,23 @@ export const staticAssets = {
   fire_illustration:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1dKQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c9f794bbbe2aae7cc67e71e39f46ba4557a6156c/Fire%20Illustration.svg',
 
+  // CAMPAIGNS Default Images
+  // id: 181
+  campaign_user_dashboard_default:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1BaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1496e3081bac87329bd5cc57d5076f1513179304/Dashboard.png',
+
+  // id: 182
+  campaign_user_notification_default:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1RaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--f8a801f178b9dbc6e76e32acde0908971b865894/Notification.png',
+
+  // id: 183
+  campaign_user_profile_default:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1haQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--3ac3f616e038ae04b87599ca3010d6074b99c22c/Profile.png',
+
+  // id: 184
+  campaign_main_search_page_default:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM2JaQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5421b123dd9db86301a665078f27c5bcec0e85b1/Search.png',
+  
   //id: 186
   organizer_badge:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBK1hqQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--a2d1c89e63d8f6a580edf38e4fe6748f175c97fa/Organizer%20Badge.svg',
@@ -216,4 +233,6 @@ export const AwsS3Bucket = {
   home_page_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/data.json',
 
   brand_guidelines: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/brand+guidelines.pdf',
+
+  success_animation: 'https://commudle-public-assets-docs.s3.ap-south-1.amazonaws.com/checkmark-complete.json',
 };

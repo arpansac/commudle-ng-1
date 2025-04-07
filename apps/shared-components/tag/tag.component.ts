@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { NbTagComponent, NbTagInputAddEvent } from '@commudle/theme';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ITag } from '@commudle/shared-models';
+import { TagService } from '@commudle/shared-services';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, fromEvent, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-tag',
@@ -17,50 +19,95 @@ export class TagComponent implements OnInit, OnDestroy {
   @Input() fontColor: string;
   @Input() maximumTag;
   @Input() size; //It can be tiny;
+  @Input() minTagLimit = true;
+  @Input() showAutoSuggestDropDown = false;
+  @Input() showSuggestedTags = false;
 
   @Output() tagAdd: EventEmitter<string> = new EventEmitter<string>();
   @Output() tagDelete: EventEmitter<string> = new EventEmitter<string>();
 
-  subscription: Subscription;
+  private subscription: Subscription[] = [];
   faXmark = faXmark;
+  searchForm: FormGroup;
+  query = '';
+  suggestedTags: ITag[];
+  autoCompleteTags: ITag[];
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  constructor(private tagService: TagService, private fb: FormBuilder) {
+    this.searchForm = this.fb.group({
+      q: [''],
+    });
+  }
+  ngOnInit(): void {
+    if (this.showAutoSuggestDropDown) {
+      this.subscription.push(
+        this.searchForm.valueChanges
+          .pipe(
+            debounceTime(500),
+            filter(() => !!this.searchForm.get('q')?.value?.trim()), // Ensures `q` has value
+            distinctUntilChanged(), // Avoid duplicate API calls
+            switchMap(() => this.tagService.autocompleteTags(this.searchForm.get('q')?.value, true)),
+          )
+          .subscribe((data) => {
+            this.autoCompleteTags = data?.values || [];
+          }),
+      );
+    }
+  }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription.forEach((sub) => sub.unsubscribe());
   }
 
-  getTags() {
-    let tags = this.tags.filter(Boolean);
-
-    if (this.maximumTag) {
-      tags = tags.slice(0, this.maximumTag);
-    }
-
-    return tags;
+  getTags(): string[] {
+    return this.maximumTag ? this.tags.slice(0, this.maximumTag) : this.tags;
   }
 
-  onTagAdd({ value, input }): void {
-    this.tagAdd.emit(value);
+  onTagAdd(tag: string): void {
+    if (!tag.trim()) return;
 
-    if (input) {
-      input.nativeElement.value = '';
-      this.subscription = fromEvent(input.nativeElement.parentNode, 'keypress', { capture: true }).subscribe(
-        (e: any) => {
-          if (e.target === input.nativeElement && e.key === 'Enter') {
-            e.stopPropagation();
-            e.preventDefault();
-          }
-        },
-      );
+    this.tagAdd.emit(tag);
+
+    setTimeout(() => {
+      this.clearInput(); // Breaks event loop
+    }, 0);
+
+    if (this.showSuggestedTags) {
+      this.getSuggestedTags(tag);
     }
   }
 
   onTagRemove(tag): void {
     this.tagDelete.emit(tag);
+  }
+
+  onKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Backspace' && !this.searchForm.get('q')?.value.trim() && this.tags.length) {
+      this.onTagRemove(this.tags[this.tags.length - 1]);
+    }
+  }
+
+  getSuggestedTags(query) {
+    if (query) {
+      this.subscription.push(
+        this.tagService.suggestedTags(query, true).subscribe((data) => {
+          this.suggestedTags = data.values.filter((tag) => !this.tags.includes(tag.name));
+        }),
+      );
+    }
+  }
+
+  clearInput(): void {
+    this.searchForm.patchValue({ q: '' }, { emitEvent: false }); // Stops re-triggering
+    this.autoCompleteTags = [];
+  }
+
+  addTagFromInput(event): void {
+    event.preventDefault(); // Prevents form submission
+
+    const tag = this.searchForm.get('q')?.value?.trim();
+    if (tag) {
+      this.onTagAdd(tag);
+    }
   }
 }

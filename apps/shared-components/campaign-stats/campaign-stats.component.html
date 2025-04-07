@@ -1,0 +1,90 @@
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <nb-card>
+        <nb-card-header> Campaign Stats </nb-card-header>
+        <nb-card-body>
+          <div class="campaign-stats-number" *ngIf="campaignStats">
+            <nb-card>
+              <nb-card-body>
+                <div class="campaign-stats-item-label">Total Views:</div>
+                <div class="campaign-stats-item-value">{{ campaignStats.total_views }}</div>
+              </nb-card-body>
+            </nb-card>
+
+            <nb-card>
+              <nb-card-body>
+                <div class="campaign-stats-item-label">Total Clicks:</div>
+                <div class="campaign-stats-item-value">{{ campaignStats.total_clicks }}</div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+
+          <div class="graph-container">
+            <div class="campaign-graph-container">
+              <span class="title">Views Over Days</span>
+              <div class="chart-container">
+                <canvas #viewsOverDays></canvas>
+              </div>
+            </div>
+            <div class="campaign-graph-container">
+              <span class="title">Views Over Time</span>
+              <div class="chart-container">
+                <canvas #viewsOverTime></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="graph-container">
+            <div class="campaign-graph-container">
+              <span class="title">Clicks Over Days</span>
+              <div class="chart-container">
+                <canvas #clicksOverDays></canvas>
+              </div>
+            </div>
+
+            <div class="campaign-graph-container">
+              <span class="title">Clicks Over Time</span>
+              <div class="chart-container">
+                <canvas #clicksOverTime></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="graph-container">
+            <div class="campaign-graph-container">
+              <span class="title">Gender Distribution</span>
+              <div class="chart-container">
+                <canvas #genderDistribution></canvas>
+              </div>
+            </div>
+
+            <div class="campaign-graph-container">
+              <span class="title">User Tags</span>
+              <div class="chart-container">
+                <nb-tag-list *ngIf="campaignStats">
+                  <nb-tag
+                    status="info"
+                    appearance="outline"
+                    *ngFor="let tag of campaignStats.user_tags.tags"
+                    text="{{ tag[0] }} ({{ tag[1] }})"
+                    [removable]="false"
+                  ></nb-tag>
+                </nb-tag-list>
+              </div>
+            </div>
+          </div>
+
+          <div class="map">
+            <div class="campaign-graph-container">
+              <span class="title">Map Wise Distribution</span>
+              <div class="chart-container">
+                <div id="regions_div"></div>
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+div {
+  .text {
+    p {
+      @apply com-m-0;
+      &.heading {
+        @apply com-font-semibold com-text-lg com-text-Yankees-Blue;
+      }
+      &.sub-heading {
+        @apply com-text-base com-text-gray-500;
+      }
+    }
+  }
+
+  nb-card {
+    @apply com-mx-0;
+    nb-card-header {
+      @apply com-bg-gray-50;
+      a {
+        @apply com-flex com-justify-between com-items-center com-no-underline;
+      }
+      .left {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+      }
+      .right {
+        @apply com-font-medium com-text-sm com-text-gray-500;
+      }
+    }
+    nb-card-body {
+      .form {
+        form {
+          @apply com-grid com-grid-cols-2 com-gap-8;
+          div {
+            label {
+              @apply com-pb-1;
+              .required {
+                @apply com-text-red-500;
+              }
+            }
+            .input {
+              @apply com-mt-1 com-w-full;
+            }
+          }
+          .image-info {
+            @apply com-text-sm com-italic com-font-medium com-text-gray-500 com-mb-0;
+          }
+          .image-upload-container {
+            @apply com-border com-border-solid com-border-Bright-Gray com-w-full  com-rounded-md com-px-5 com-py-2;
+          }
+        }
+        &.creative-assets {
+          form {
+            @apply com-block;
+            .creative-assets-input {
+              @apply com-mt-1 com-w-full;
+              textarea {
+                @apply com-border com-border-solid com-border-Bright-Gray com-rounded-md com-p-4 com-w-full;
+              }
+            }
+            .creative-assets-controller {
+              @apply com-mb-4;
+              .preview-image {
+                @apply com-aspect-[16/9] com-h-40 com-mb-2 com-border com-border-solid com-border-Bright-Gray com-p-1 com-rounded-md com-flex com-justify-center com-items-center;
+                img {
+                  @apply com-w-full com-h-full com-object-contain;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .budget-amount {
+        @apply com-flex com-gap-1 com-items-center;
+        .budget {
+          @apply com-font-bold com-text-3xl com-text-green-600;
+        }
+        .per-day {
+          @apply com-rounded-2xl com-border com-border-solid com-border-Bright-Gray com-bg-gray-500 com-font-medium com-text-sm com-text-white com-px-1;
+        }
+      }
+    }
+  }
+}

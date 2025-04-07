@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { faFlask, faNewspaper, faHouse, faSuitcase, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFlask,
+  faNewspaper,
+  faHouse,
+  faSuitcase,
+  faLightbulb,
+  faRectangleAd,
+} from '@fortawesome/free-solid-svg-icons';
 import { NbSidebarService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
-import { ICommunities } from 'apps/shared-models/communities.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunityGroups } from 'apps/shared-models/community-groups.model';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -25,6 +31,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   faFlask = faFlask;
   faNewspaper = faNewspaper;
   faLightbulb = faLightbulb;
+  faRectangleAd = faRectangleAd;
   currentUser: ICurrentUser;
   managedCommunities: ICommunity[] = [];
   managedCommunityGroups: ICommunityGroup[] = [];
@@ -36,6 +43,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isFeaturedCommunitiesAdmin = false;
   isAssetsAdmin = false;
   isFeaturedItemsAdmin = false;
+  isAdCampaignAdmin = false;
 
   notificationCount = 0;
 
@@ -102,6 +110,9 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
         if (currentUser.user_roles.includes(EUserRoles.COMMUNITY_ADMIN)) {
           this.getManagingCommunityGroups();
+        }
+        if (currentUser.user_roles.includes(EUserRoles.AD_CAMPAIGN_ADMIN)) {
+          this.isAdCampaignAdmin = true;
         }
       }
     });

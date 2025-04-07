@@ -1,0 +1,65 @@
+<section>
+  <form [formGroup]="searchForm">
+    <input
+      formControlName="search"
+      nbInput
+      type="text"
+      fullWidth
+      placeholder="Search with Name, Email, Payment Id, Transfer Id"
+    />
+  </form>
+  <br />
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <ng-container *ngIf="!isLoading && purchaseOrders?.length > 0; else noDetailFound">
+    <div class="table-container">
+      <table>
+        <tr>
+          <th>Payment Id</th>
+          <th>Created At</th>
+          <th>Status on Commudle</th>
+          <th>Status on Razorpay</th>
+          <th>Paid by</th>
+          <th>Total amount</th>
+          <th>Discount code</th>
+          <!-- <th>Tax amount</th> -->
+          <!-- <th>Application fee amount</th> -->
+          <th>Payment gateway fee</th>
+        </tr>
+        <tr *ngFor="let po of purchaseOrders; let i = index">
+          <td>{{ po?.razorpay_order?.razorpay_payment?.rzp_payment_id }}</td>
+          <td>{{ moment(po.created_at).format('DD MMM YYYY hh:MM A') }}</td>
+          <td>{{ po.status | titlecase }}</td>
+          <td>{{ po?.razorpay_order?.razorpay_payment?.status | titlecase }}</td>
+          <td>
+            {{ po.user.name }}
+            <br />
+            {{ po.user.email }}
+          </td>
+          <td>{{ po.amount_to_be_paid / 100 | currency : po.currency }}</td>
+          <td>{{ po?.discount_code ? po.discount_code.code : 'NA' }}</td>
+          <!-- <td>NA</td> -->
+          <!-- <td>NA</td> -->
+          <td>{{ po.payment_gateway_fee / 100 | currency : po.base_currency }}</td>
+        </tr>
+      </table>
+    </div>
+
+    <br />
+
+    <app-pagination
+      (goTo)="page = $event; fetchPaymentDetails()"
+      (next)="page = $event; fetchPaymentDetails()"
+      (previous)="page = $event; fetchPaymentDetails()"
+      *ngIf="total > 0"
+      [count]="count"
+      [current]="page"
+      [total]="total"
+    ></app-pagination>
+  </ng-container>
+
+  <ng-template #noDetailFound>
+    <div *ngIf="!isLoading">No Payment record found!</div>
+  </ng-template>
+</section>

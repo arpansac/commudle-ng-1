@@ -49,6 +49,15 @@ import { AdminFeaturedUsersComponent } from './components/admin-featured/admin-f
 import { AdminFeaturedCommunitiesChannelsComponent } from './components/admin-featured/admin-featured-communities-channels/admin-featured-communities-channels.component';
 import { PaymentLogsComponent } from './components/payment-logs/payment-logs.component';
 import { AdminProfanityComponent } from './components/admin-profanity/admin-profanity.component';
+import { CampaignTypesComponent } from './components/admin-campaigns/campaign-types/campaign-types.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AdminCampaignsComponent } from './components/admin-campaigns/admin-campaigns.component';
+import { AdminCampaignsListComponent } from './components/admin-campaigns/admin-campaigns-list/admin-campaigns-list.component';
+import { LinkyModule } from 'ngx-linky';
+import { CampaignPurchaseOrdersComponent } from './components/admin-campaigns/campaign-purchase-orders/campaign-purchase-orders.component';
+import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/sys-admin-campaign-stats/sys-admin-campaign-stats.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+
 @NgModule({
   declarations: [
     SysAdminComponent,
@@ -77,6 +86,11 @@ import { AdminProfanityComponent } from './components/admin-profanity/admin-prof
     AdminFeaturedCommunitiesChannelsComponent,
     PaymentLogsComponent,
     AdminProfanityComponent,
+    CampaignTypesComponent,
+    AdminCampaignsComponent,
+    AdminCampaignsListComponent,
+    CampaignPurchaseOrdersComponent,
+    SysAdminCampaignStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -87,6 +101,10 @@ import { AdminProfanityComponent } from './components/admin-profanity/admin-prof
     SharedDirectivesModule,
     SharedPipesModule,
     MiniUserProfileModule,
+
+    LinkyModule,
+
+    FontAwesomeModule,
 
     // Nebular
     NbCardModule,
@@ -105,6 +123,8 @@ import { AdminProfanityComponent } from './components/admin-profanity/admin-prof
     NbRouteTabsetModule,
     NbDialogModule.forChild(),
     NbFormFieldModule,
+    EditorModule,
   ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
 export class SysAdminModule {}

@@ -28,6 +28,16 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'campaigns',
+    loadChildren: () =>
+      import('./feature-modules/admin-campaign/admin-campaign.module').then((m) => m.AdminCampaignModule),
+  },
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./feature-modules/payment-checkout/payment-checkout.module').then((m) => m.PaymentCheckoutModule),
+  },
+  {
     path: 'notifications',
     loadChildren: () =>
       import('./feature-modules/notifications/notifications.module').then((m) => m.NotificationsModule),

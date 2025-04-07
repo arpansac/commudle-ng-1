@@ -1,7 +1,3 @@
-nb-tag {
-  @apply com-normal-case;
-}
-
 .tag.tiny {
   @apply com-text-xs com-font-medium com-mr-10px;
 }
@@ -12,20 +8,30 @@ nb-tag {
 
 .tag {
   @apply com-px-4 com-py-1 com-mx-1 com-my-1 com-rounded-3xl com-font-medium;
+  fa-icon {
+    @apply com-cursor-pointer;
+  }
 }
 
 .editable {
   @apply com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-rounded-[4px] com-px-4 com-py-1;
 }
 
-input {
+form {
   @apply com-flex-1 com-w-auto com-max-w-full;
+  input {
+    @apply com-w-full com-border-0 com-bg-transparent com-h-9;
+  }
 }
 
-input .size-medium {
-  max-width: max-content;
-}
+.suggested-tags {
+  @apply com-flex com-flex-wrap com-gap-2 com-mt-2;
+  .suggested-tag {
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    @apply com-bg-gray-100 com-px-3 com-py-2 com-rounded-2xl com-cursor-pointer;
 
-[nbInput] {
-  @apply com-max-w-full #{!important};
+    &:hover {
+      @apply com-scale-105;
+    }
+  }
 }

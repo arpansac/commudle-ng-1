@@ -1,0 +1,22 @@
+<div class="carousel" *ngIf="campaign; else displayDefaultImage">
+  <div class="promoted-badge">Promoted</div>
+
+  <div
+    class="container"
+    [ngStyle]="{
+          transform: 'translateX(-' + currentSlide * 100 + '%)',
+        }"
+  >
+    <div class="component-container-wrapper" *ngFor="let ca of campaign.campaign_assets">
+      <a [href]="ca.url" target="_blank" (click)="createUserEngagement(UserActivityEventType.USER_CLICK)">
+        <img [src]="ca.image.url" class="slider-image" [alt]="ca.headline" [title]="ca.headline" />
+      </a>
+    </div>
+  </div>
+</div>
+
+<ng-template #displayDefaultImage>
+  <a class="header-image" [href]="defaultImageUrl" [ngClass]="{ 'com-pointer-events-none': !defaultImageUrl }">
+    <img [src]="defaultImage" class="com-w-full" />
+  </a>
+</ng-template>

@@ -26,6 +26,10 @@ import { PublicFaqsComponent } from './components/public-faqs/public-faqs.compon
 import { VotersComponent } from './components/vote/voters/voters.component';
 import { UserProfileMiniCardComponent } from './components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 import { UserPersonalConnectComponent } from './components/user-personal-connect/user-personal-connect.component';
+import { InputComponent } from './components/input/input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CampaignAssetsDisplayComponent } from './components/campaign-assets-display/campaign-assets-display.component';
+
 @NgModule({
   declarations: [
     DiscussionComponent,
@@ -40,6 +44,8 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     PublicFaqsComponent,
     VotersComponent,
     UserProfileMiniCardComponent,
+    InputComponent,
+    CampaignAssetsDisplayComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +61,8 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     NbContextMenuModule,
     FontAwesomeModule,
     UserPersonalConnectComponent,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     DiscussionComponent,
@@ -63,6 +71,8 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
     LoadingSpinnerComponent,
     FaqComponent,
     PublicFaqsComponent,
+    InputComponent,
+    CampaignAssetsDisplayComponent,
   ],
   providers: [InViewportDirective],
 })

@@ -15,4 +15,5 @@ export enum EDbModels {
   VOTE = 'Vote',
   SOCIAL_RESOURCE = 'SocialResource',
   EVENT_DATA_FORM_ENTITY_GROUP = 'EventDataFormEntityGroup',
+  CAMPAIGN = 'Campaign',
 }

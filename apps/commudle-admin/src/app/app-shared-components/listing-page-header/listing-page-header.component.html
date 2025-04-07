@@ -10,16 +10,13 @@
           <p *ngIf="header.sub_heading" class="sub-heading">{{ header.sub_heading }}</p>
           <div *ngIf="richText" [innerHTML]="richText | safe : 'html'" class="inner-html"></div>
         </div>
-        <ng-container *ngIf="header?.image_link">
-          <a class="header-image" [href]="header.image_link">
-            <img [src]="imageUrl(header.header_image).url()" class="com-w-full" />
-          </a>
-        </ng-container>
-        <ng-container *ngIf="!header?.image_link">
-          <div class="header-image">
-            <img [src]="imageUrl(header.header_image).url()" class="com-w-full" />
-          </div>
-        </ng-container>
+        <div class="image-wrapper">
+          <commudle-campaign-assets-display
+            [defaultImage]="imageUrl(header.header_image).url()"
+            [defaultImageUrl]="header.image_link"
+            [campaignTypeSlug]="CampaignTypeSlug"
+          ></commudle-campaign-assets-display>
+        </div>
       </div>
     </div>
   </div>

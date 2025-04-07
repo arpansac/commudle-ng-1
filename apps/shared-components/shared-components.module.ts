@@ -11,6 +11,7 @@ import {
   NbAccordionModule,
   NbActionsModule,
   NbAlertModule,
+  NbAutocompleteModule,
   NbBadgeModule,
   NbButtonModule,
   NbCardModule,
@@ -92,7 +93,10 @@ import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/u
 import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { CampaignListComponent } from './campaign-list/campaign-list.component';
+import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 import { NextStepCardComponent } from './next-step-card/next-step-card.component';
+import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -146,7 +150,10 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
     UserDetailsCheckboxFormComponent,
     UserDetailsFormComponent,
     NewsletterCardComponent,
+    CampaignListComponent,
+    CampaignDetailsComponent,
     NextStepCardComponent,
+    CampaignStatsComponent,
   ],
   imports: [
     CommonModule,
@@ -189,6 +196,7 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
     NbToggleModule,
     NbContextMenuModule,
     NbSpinnerModule,
+    NbAutocompleteModule,
     //cdk
     DragDropModule,
     tinyMCEEditorModule,
@@ -236,7 +244,10 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
     UserDetailsCheckboxFormComponent,
     UserDetailsFormComponent,
     NewsletterCardComponent,
+    CampaignListComponent,
+    CampaignDetailsComponent,
     NextStepCardComponent,
+    CampaignStatsComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

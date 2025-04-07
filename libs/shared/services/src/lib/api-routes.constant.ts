@@ -699,6 +699,10 @@ export const API_ROUTES = {
   TAGS: {
     INDEX: 'api/v2/tags',
     UPDATE: 'api/v2/tags',
+    PUBLIC: {
+      AUTOCOMPLETE_TAGS: 'api/v2/tags/public/autocomplete_tags',
+      SUGGESTED_TAGS: 'api/v2/tags/public/suggested_tags',
+    },
   },
 
   MENTIONS: {
@@ -983,5 +987,41 @@ export const API_ROUTES = {
     CREATE: 'api/v2/profanity', //POST
     DELETE: 'api/v2/profanity', //DELETE
     UPDATE: 'api/v2/profanity', //PUT
+  },
+
+  CAMPAIGNS: {
+    INDEX: 'api/v2/campaigns', //GET
+    CREATE: 'api/v2/campaigns', //POST
+    UPDATE: 'api/v2/campaigns', //PUT
+    UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
+    SHOW: 'api/v2/campaigns/show', //GET
+    CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
+    CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns/campaign_admin_index', //GET
+    CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
+    CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
+    STATS: 'api/v2/campaigns/stats', //GET
+    CAMPAIGN_RESEND_PAYMENT_LINK: 'api/v2/campaigns/campaign_resend_payment_link', //POST
+    CAMPAIGN_UNAPPROVED_CHANGES_MAIL: 'api/v2/campaigns/campaign_unapproved_changes_mail', //POST
+    PUBLIC: {
+      ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET
+    },
+    CAMPAIGNS_TYPES: {
+      INDEX: 'api/v2/campaigns/campaign_types', //GET
+      CREATE: 'api/v2/campaigns/campaign_types', //POST
+      TOGGLE_STATUS: 'api/v2/campaigns/campaign_types/toggle_status', //PUT
+      UPDATE: 'api/v2/campaigns/campaign_types', //PUT
+      PUBLIC: {
+        INDEX: 'api/v2/campaigns/campaign_types/public', //GET
+      },
+    },
+  },
+
+  PURCHASE_ORDER: {
+    SHOW: 'api/v2/purchase_orders/show', //GET
+    INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
+  },
+
+  USER_ENGAGEMENT_RECORDS: {
+    CREATE: 'api/v2/uerec',
   },
 };

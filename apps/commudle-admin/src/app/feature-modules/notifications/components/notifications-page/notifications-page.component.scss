@@ -19,7 +19,7 @@
   }
 
   .right-column {
-    @apply md:com-flex com-hidden;
+    @apply md:com-flex md:com-flex-col com-hidden;
     .user {
       @apply com-w-[374px] com-h-max com-flex-shrink-0 com-border com-rounded-lg com-border-solid com-border-Bright-Gray com-bg-white com-mt-4;
     }

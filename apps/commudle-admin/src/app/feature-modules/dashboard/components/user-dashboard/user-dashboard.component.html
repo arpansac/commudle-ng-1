@@ -74,7 +74,7 @@
                   ></app-pagination>
                 </div>
                 <div class="recent-activity">
-                  <h2 class="recent-activity-heading">Recent Activity</h2>
+                  <h2>Recent Activity</h2>
                   <app-loading-spinner *ngIf="loadActivity"></app-loading-spinner>
                   <div *ngIf="activityFeed.length > 0">
                     <div
@@ -86,7 +86,7 @@
                       <div *ngFor="let feed of activityFeed">
                         <ng-container [ngSwitch]="feed.actionable_type">
                           <ng-container *ngSwitchCase="EDbModels.VOTE">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2 class="user">
                                   <img
@@ -124,7 +124,7 @@
                           </ng-container>
 
                           <ng-container *ngSwitchCase="EDbModels.COMMUNITY_BUILD">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2>
                                   <img
@@ -145,7 +145,7 @@
                           </ng-container>
 
                           <ng-container *ngSwitchCase="EDbModels.EVENT">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2>
                                   <img
@@ -168,7 +168,7 @@
                           </ng-container>
 
                           <ng-container *ngSwitchCase="EDbModels.HACKATHON">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2>
                                   <img
@@ -191,7 +191,7 @@
                           </ng-container>
 
                           <ng-container *ngSwitchCase="EDbModels.LAB">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2>
                                   <img
@@ -212,7 +212,7 @@
                           </ng-container>
 
                           <ng-container *ngSwitchCase="EDbModels.SOCIAL_RESOURCE">
-                            <nb-card class="activity-cards">
+                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
                               <nb-card-header
                                 ><h2>
                                   <img
@@ -244,11 +244,7 @@
                 </div>
               </div>
               <div class="right-column" *appBreakpoints="'>lg'">
-                <div *ngIf="!loading" class="advertisement">
-                  <nb-card>
-                    <nb-card-body><h2>Advertisement</h2></nb-card-body></nb-card
-                  >
-                </div>
+                <commudle-user-dashboard-campaign></commudle-user-dashboard-campaign>
               </div>
             </div>
           </div>
