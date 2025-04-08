@@ -647,7 +647,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       this.checkEventTicketOrder(this.dataFormEntity.entity_id);
       return;
     }
-    this.razorpayService.createOrFindOrder(orderDetails, etoId).subscribe(
+    this.razorpayService.createOrFindOrder(orderDetails, { eto_id: etoId }).subscribe(
       (data: IRazorpayOrder) => {
         this.razorPaySubmit(data);
       },
