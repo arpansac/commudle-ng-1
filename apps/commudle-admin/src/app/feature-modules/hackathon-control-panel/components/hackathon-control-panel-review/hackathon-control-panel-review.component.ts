@@ -12,6 +12,7 @@ import {
   EHackathonRegistrationStatusColor,
   EInvitationStatus,
   IHackathonTeam,
+  IHackathonTrack,
   IHackathonUserResponse,
   INote,
   IRound,
@@ -37,6 +38,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   EHackathonRegistrationStatusColor = EHackathonRegistrationStatusColor;
   hackathonRounds: IRound[];
+  hackathonTracks: IHackathonTrack[];
   selectedUserDetails: IHackathonUserResponse;
   faXmark = faXmark;
   faPlus = faPlus;
@@ -63,6 +65,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   selectedRoundIdForFilter = '';
   selectedStatusForFilter = '';
+  selectedTrackForFilter = '';
+  showOnlyWinnerEntry = false;
 
   tinyMCE = {
     height: 200,
@@ -127,6 +131,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.fetchUserResponses();
       this.fetchHackathon(params.get('hackathon_id'));
       this.indexRounds(params.get('hackathon_id'));
+      this.indexTracks(params.get('hackathon_id'));
     });
     if (this.userResponses && this.userResponses.length > 0) {
       this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
@@ -156,6 +161,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.searchForm.get('search').value,
         Number(this.selectedRoundIdForFilter),
         this.selectedStatusForFilter,
+        this.showOnlyWinnerEntry,
+        Number(this.selectedTrackForFilter),
       )
       .subscribe((data) => {
         this.userResponses = data.values;
@@ -177,6 +184,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   indexRounds(hackathonId) {
     this.roundService.indexRounds(hackathonId, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
       this.hackathonRounds = data;
+    });
+  }
+
+  indexTracks(hackathonId) {
+    this.hackathonService.indexTracks(hackathonId).subscribe((data) => {
+      this.hackathonTracks = data;
     });
   }
 
@@ -299,6 +312,18 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.fetchUserResponses();
   }
 
+  onTrackChange(event) {
+    this.selectedTrackForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  onSelectWinnerChange(event) {
+    this.showOnlyWinnerEntry = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
   onStatusChange(event) {
     this.selectedStatusForFilter = event.target.value;
     this.page = 1;
@@ -306,9 +331,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   clearAllFilter() {
-    if (this.selectedStatusForFilter || this.selectedRoundIdForFilter) {
+    if (this.selectedStatusForFilter || this.selectedRoundIdForFilter || this.selectedTrackForFilter) {
       this.selectedStatusForFilter = '';
       this.selectedRoundIdForFilter = '';
+      this.selectedTrackForFilter = '';
       this.page = 1;
       this.fetchUserResponses();
     }

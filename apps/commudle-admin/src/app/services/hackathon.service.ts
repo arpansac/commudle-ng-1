@@ -276,6 +276,8 @@ export class HackathonService {
     search?: string,
     roundId?: number,
     status?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
@@ -287,6 +289,12 @@ export class HackathonService {
     }
     if (status) {
       params = params.set('status', status);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),

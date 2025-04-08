@@ -81,6 +81,28 @@
         </select>
       </div>
 
+      <div class="select">
+        <select
+          (change)="onTrackChange($event)"
+          [(ngModel)]="selectedTrackForFilter"
+          [ngClass]="{
+            'not-active': selectedTrackForFilter === ''
+          }"
+        >
+          <option value="" selected disabled>Filter with Tracks</option>
+          <option *ngFor="let track of hackathonTracks" [value]="track.id">
+            {{ track.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="select">
+        <select (change)="onSelectWinnerChange($event)" [(ngModel)]="showOnlyWinnerEntry">
+          <option [value]="false">Show All</option>
+          <option [value]="true">Show Only Winners</option>
+        </select>
+      </div>
+
       <div
         class="clear-filter"
         (click)="clearAllFilter()"
