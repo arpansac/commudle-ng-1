@@ -94,21 +94,11 @@
   <div *appBreakpoints="'>lg'">
     <div (click)="toggleSidebar()" class="home-sidebar">
       <fa-icon [icon]="faBars"></fa-icon>
-      <nb-badge
-        *ngIf="sideBarState === 'collapsed' && sideBarNotifications"
-        position="top end"
-        status="danger"
-      ></nb-badge>
     </div>
   </div>
   <div *appBreakpoints="'<=lg'">
     <div *ngIf="currentUser" (click)="toggleSidebar()" class="home-sidebar">
       <fa-icon [icon]="faBars"></fa-icon>
-      <nb-badge
-        *ngIf="sideBarState === 'collapsed' && sideBarNotifications"
-        position="top end"
-        status="danger"
-      ></nb-badge>
     </div>
     <button
       *ngIf="!currentUser"

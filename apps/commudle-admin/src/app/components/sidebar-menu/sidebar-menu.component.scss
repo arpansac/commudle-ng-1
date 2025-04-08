@@ -1,6 +1,6 @@
-// .sidebar {
-//   // transition: width 0.05;
-// }
+.sidebar {
+  @apply com-p-5 com-h-full;
+}
 
 .sidebar-common-menu {
   a {
@@ -15,6 +15,10 @@
       font-size: 0.9735rem;
     }
   }
+}
+
+nb-list-item:first-child {
+  @apply com-border-0;
 }
 
 .router-link-active {

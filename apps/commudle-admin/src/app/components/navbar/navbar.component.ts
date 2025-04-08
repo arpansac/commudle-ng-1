@@ -9,6 +9,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { Subject, takeUntil } from 'rxjs';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -28,14 +29,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faSun = faSun;
   faMoon = faMoon;
   faMagnifyingGlass = faMagnifyingGlass;
+  sidebarEventName = 'MainSidebar';
   private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
-    private sidebarService: NbSidebarService,
     private authwatchService: LibAuthwatchService,
     private appCentralNotificationService: AppCentralNotificationService,
     private darkModeService: DarkModeService,
+    public sidebarService: SidebarService,
   ) {}
 
   ngOnInit(): void {
@@ -83,12 +85,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.appCentralNotificationService.sidebarNotifications$.subscribe((data) => (this.sideBarNotifications = data));
   }
 
-  checkSideBarState(): void {
-    this.sidebarService.getSidebarState('mainMenu').subscribe((data) => (this.sideBarState = data));
-  }
-
   toggleSidebar(): void {
-    this.sidebarService.toggle(false, 'mainMenu');
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
   login() {

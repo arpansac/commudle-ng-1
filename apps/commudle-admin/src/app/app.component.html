@@ -7,24 +7,19 @@
       <app-navbar></app-navbar>
     </nb-layout-header>
 
-    <nb-sidebar
-      (clickOutside)="closeSidebar()"
-      [(state)]="sideBarState"
-      [fixed]="true"
-      appClickOutside
-      exclude=".home-sidebar"
-      right
-      tag="mainMenu"
-    >
-      <app-sidebar-menu></app-sidebar-menu>
-    </nb-sidebar>
-
     <nb-layout-column>
       <div id="mini-user-profile-container"></div>
       <app-profile-status-bar *ngIf="currentUser && profileBarStatus"></app-profile-status-bar>
       <div class="com-min-h-screen router-outlet">
         <commudle-sidebar [eventName]="'helpSection'" [expandedWidth]="ESidebarWidth.XL" [showExpandedButton]="false"
           ><commudle-help-dictionary-iframe [eventName]="'helpSection'"></commudle-help-dictionary-iframe
+        ></commudle-sidebar>
+        <commudle-sidebar
+          class="main-sidebar"
+          [eventName]="sidebarEventName"
+          [expandedWidth]="ESidebarWidth.XL"
+          [showExpandedButton]="false"
+          ><app-sidebar-menu></app-sidebar-menu
         ></commudle-sidebar>
         <router-outlet></router-outlet>
       </div>
