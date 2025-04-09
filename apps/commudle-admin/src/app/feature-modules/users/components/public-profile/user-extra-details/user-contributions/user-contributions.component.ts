@@ -47,6 +47,8 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
       this.labs = [];
       this.builds = [];
       this.attendedEvents = [];
+      this.communitiesPage = 1;
+      this.communitiesTotal = 0;
       this.getPastEvents();
       this.getCommunities();
       this.getLabs();
