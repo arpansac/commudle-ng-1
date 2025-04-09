@@ -23,6 +23,7 @@ import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -338,5 +339,13 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.page = 1;
       this.fetchUserResponses();
     }
+  }
+
+  openIndividualTeamEmailDialogBox(hackathonTeam: IHackathonTeam) {
+    this.nbDialogService.open(HackathonIndividualTeamEmailComponent, {
+      context: {
+        hackathonTeam: hackathonTeam,
+      },
+    });
   }
 }

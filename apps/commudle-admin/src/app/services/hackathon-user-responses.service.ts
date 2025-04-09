@@ -123,4 +123,15 @@ export class HackathonUserResponsesService {
       },
     );
   }
+
+  individualTeamEmail(hackathonTeamId: number, emailData): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_USER_RESPONSE.HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL),
+      {
+        hackathon_team_id: hackathonTeamId,
+        subject: emailData.subject,
+        message: emailData.body,
+      },
+    );
+  }
 }

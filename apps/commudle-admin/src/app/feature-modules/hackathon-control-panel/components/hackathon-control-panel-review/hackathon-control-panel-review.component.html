@@ -132,6 +132,7 @@
             <th width="200px">Updates</th>
             <th width="200px">Notes</th>
             <th>Application Status</th>
+            <th>Actions</th>
           </tr>
           <tr
             *ngFor="let userResponse of userResponses; let i = index"
@@ -218,6 +219,15 @@
                   </option>
                 </select>
               </div>
+            </td>
+            <td class="actions">
+              <button
+                nbButton
+                status="primary"
+                (click)="openIndividualTeamEmailDialogBox(userResponse.team); $event.stopPropagation()"
+              >
+                Send Email
+              </button>
             </td>
           </tr>
         </table>
