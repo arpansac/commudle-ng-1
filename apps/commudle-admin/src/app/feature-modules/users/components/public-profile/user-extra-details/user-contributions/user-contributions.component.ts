@@ -43,6 +43,10 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user) {
       this.pastEvents = [];
+      this.communities = [];
+      this.labs = [];
+      this.builds = [];
+      this.attendedEvents = [];
       this.getPastEvents();
       this.getCommunities();
       this.getLabs();
