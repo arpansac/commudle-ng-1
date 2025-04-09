@@ -12,38 +12,38 @@ export class StatsHackathonService {
 
   genderDistribution(hackathonId: number | string): Observable<any> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.GENDER_DISTRIBUTIONS), {
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.GENDER), {
       params,
     });
   }
 
   hackathonTeamStats(hackathonId: number | string): Observable<unknown> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<unknown>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_TEAM_STATS), {
+    return this.http.get<unknown>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_TEAM), {
       params,
     });
   }
 
   hackathonUserResponsesTags(hackathonId: number | string): Observable<any> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.USER_TAGS), {
+      params,
+    });
+  }
+
+  hackathonTeamOverTime(hackathonId: number | string): Observable<any> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<any>(
-      this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_USER_RESPONSES_TAGS),
+      this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.TEAM_REGISTRATIONS_OVER_TIME),
       {
         params,
       },
     );
   }
 
-  hackathonTeamOverTime(hackathonId: number | string): Observable<any> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_TEAM_OVER_TIME), {
-      params,
-    });
-  }
-
   hackathonUserVisits(hackathonId: number | string): Observable<any> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
-    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_USER_VISIT), {
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.HACKATHON_USER_VISITS), {
       params,
     });
   }
