@@ -8,6 +8,8 @@ import {
   faEllipsisV,
   faHandHoldingDollar,
   faUser,
+  faCalendarDays,
+  faBriefcase,
 } from '@fortawesome/free-solid-svg-icons';
 import { NbMenuService, NbPopoverDirective } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
@@ -33,6 +35,8 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   faEllipsisV = faEllipsisV;
   faHandHoldingDollar = faHandHoldingDollar;
   faUser = faUser;
+  faCalendarDays = faCalendarDays;
+  faBriefcase = faBriefcase;
 
   notificationCount = 0;
   ENotificationSenderTypes = ENotificationSenderTypes;

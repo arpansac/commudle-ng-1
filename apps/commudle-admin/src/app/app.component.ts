@@ -32,6 +32,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   systemTheme;
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
+  sidebarEventName = 'MainSidebar';
 
   private isDarkModeSubscription: Subscription;
   private destroy$ = new Subject<void>();
@@ -40,7 +41,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private apiRoutes: ApiRoutesService,
     private authWatchService: LibAuthwatchService,
     private actionCableConnectionSocket: ActionCableConnectionSocket,
-    private sidebarService: NbSidebarService,
     private cookieConsentService: CookieConsentService,
     private cdr: ChangeDetectorRef,
     // private notificationsService: NotificationsService,
@@ -84,6 +84,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.themeCheck();
     this.closeSidebarOnRouteChange();
 
+    this.helpSidebarService.setSidebarVisibility(this.sidebarEventName, false, true, ESidebarPosition.RIGHT);
     this.helpSidebarService.setSidebarVisibility('helpSection', false, true, ESidebarPosition.RIGHT);
   }
 
@@ -97,12 +98,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.isDarkModeSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  closeSidebar(): void {
-    if (this.sideBarState === 'expanded') {
-      this.sidebarService.collapse('mainMenu');
-    }
   }
 
   /**
@@ -120,8 +115,13 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         const isVisible = this.helpSidebarService.getSidebarVisibility('helpSection');
+        const isMainSidebarVisible = this.helpSidebarService.getSidebarVisibility(this.sidebarEventName);
+
         if (isVisible) {
           this.helpSidebarService.closeSidebar('helpSection');
+        }
+        if (isMainSidebarVisible) {
+          this.helpSidebarService.closeSidebar(this.sidebarEventName);
         }
       }
     });

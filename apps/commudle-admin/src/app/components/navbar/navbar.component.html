@@ -35,10 +35,22 @@
   </a>
 
   <div class="home-navbar">
-    <app-search-box
-      class="com-col-span-4 md:com-col-span-1 md:com-justify-self-start"
-      shape="semi-round"
-    ></app-search-box>
+    <ng-container *ngIf="!currentUser; else searchBox">
+      <div *appBreakpoints="'<=lg'" [routerLink]="['/search']" class="logged-out-search">
+        <fa-icon [icon]="faMagnifyingGlass"></fa-icon>
+      </div>
+      <app-search-box
+        *appBreakpoints="'>lg'"
+        class="md:com-col-span-1 md:com-justify-self-start"
+        shape="semi-round"
+      ></app-search-box>
+    </ng-container>
+    <ng-template #searchBox>
+      <app-search-box
+        class="com-col-span-4 md:com-col-span-1 md:com-justify-self-start"
+        shape="semi-round"
+      ></app-search-box>
+    </ng-template>
 
     <app-navbar-menu *appBreakpoints="'>md'" class="com-justify-self-center"></app-navbar-menu>
 
@@ -79,12 +91,25 @@
     </div>
   </div>
 
-  <div (click)="toggleSidebar()" class="home-sidebar">
-    <fa-icon [icon]="faBars"></fa-icon>
-    <nb-badge
-      *ngIf="sideBarState === 'collapsed' && sideBarNotifications"
-      position="top end"
-      status="danger"
-    ></nb-badge>
+  <div *appBreakpoints="'>lg'">
+    <div (click)="toggleSidebar()" class="home-sidebar">
+      <fa-icon [icon]="faBars"></fa-icon>
+    </div>
+  </div>
+  <div *appBreakpoints="'<=lg'">
+    <div *ngIf="currentUser" (click)="toggleSidebar()" class="home-sidebar">
+      <fa-icon [icon]="faBars"></fa-icon>
+    </div>
+    <button
+      *ngIf="!currentUser"
+      (click)="login()"
+      nbButton
+      size="small"
+      status="info"
+      shape="semi-round"
+      class="profile"
+    >
+      Login
+    </button>
   </div>
 </div>
