@@ -65,6 +65,24 @@
                 <fa-icon [icon]="icons.faUserMinus"></fa-icon>
               </button>
             </div>
+            <div
+              *ngIf="
+                hur.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION ||
+                hur.invite_status === EInvitationStatus.INVITED
+              "
+            >
+              <button
+                nbButton
+                ghost
+                status="danger"
+                (click)="openDialogBox(resendInvite, hur, team, i, team_index)"
+                *ngIf="team.user_id !== hur.user_id"
+              >
+                <!-- <fa-icon [icon]="icons.faUserMinus"></fa-icon> -->
+
+                Resend Invite
+              </button>
+            </div>
           </div>
         </nb-card-body>
       </nb-card>
@@ -93,6 +111,35 @@
         remove
       </button>
       <button nbButton status="primary" ghost (click)="ref.close()">cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #resendInvite let-data let-ref="dialogRef">
+  <nb-card class="resend-invite-dialogbox">
+    <nb-card-header>
+      <span>Resend Invitation</span>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+
+    <nb-card-body>
+      <p>
+        Are you sure you want to resend an invite to <strong>{{ data.hur.name }}</strong
+        >?
+      </p>
+      <p>
+        This will resend an invitation email to <strong>{{ data.hur.user_email }}</strong> and allow them to accept or
+        reject your hackathon team invite.
+      </p>
+    </nb-card-body>
+
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="resendInviteToMember(data.hur, data.team); ref.close()">
+        Resend Invite
+      </button>
+      <button nbButton ghost (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

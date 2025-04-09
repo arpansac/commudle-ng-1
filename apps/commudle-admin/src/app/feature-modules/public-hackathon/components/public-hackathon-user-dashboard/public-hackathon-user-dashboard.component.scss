@@ -62,3 +62,11 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+
+.resend-invite-dialogbox {
+  @apply md:com-max-w-[30dvw];
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
