@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
-import { CampaignService, UserEngagementRecordsService } from '@commudle/shared-services';
+import { CampaignService, GoogleTagManagerService, UserEngagementRecordsService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-campaign-assets-display',
@@ -23,6 +23,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
     private campaignService: CampaignService,
     private uerService: UserEngagementRecordsService,
     private fb: FormBuilder,
+    private gtmService: GoogleTagManagerService,
   ) {
     this.userEngagementRecordForm = this.fb.group({
       url: '',
@@ -88,7 +89,12 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
       });
       this.uerService
         .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
-        .subscribe();
+        .subscribe(() =>
+          this.gtmService.dataLayerPushEvent(eventType, {
+            com_campaign_id: this.campaign.id,
+            com_current_page_url: window.location.href,
+          }),
+        );
     }
   }
 }
