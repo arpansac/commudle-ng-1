@@ -148,6 +148,7 @@ import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/s
     BasicInfoComponent,
     SocialLinksComponent,
     UserCoverPhotoComponent,
+    UserBuildCardComponent,
   ],
   providers: [UserProfileMenuService],
 })

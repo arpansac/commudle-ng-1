@@ -1,0 +1,40 @@
+.container {
+  @apply com-p-0 md:com-mt-6;
+
+  .image {
+    @apply com-m-0 com-mr-3 com-w-9 com-h-9;
+  }
+
+  // .emoji {
+  //   @apply com-bg-white com-text-Yankees-Blue com-mr-3 com-rounded-xl md:com-h-12 md:com-w-12 com-border-none;
+
+  //   fa-icon {
+  //     @apply com-text-lg;
+  //   }
+  // }
+
+  .header-text {
+    @apply com-flex com-flex-col com-m-0  com-pb-6;
+    .title {
+      @apply com-flex com-flex-row com-items-center com-m-0 com-mb-2;
+      a {
+        @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 com-no-underline;
+      }
+    }
+    .sub-heading {
+      @apply com-text-sm com-font-medium com-text-gray-500 com-m-0;
+    }
+  }
+
+  .featured-project-cards {
+    @apply com-w-full com-flex md:com-flex-row com-flex-col com-m-0 com-p-0 com-gap-6;
+    .featured-project-card {
+      @apply com-m-0 com-p-0 com-w-full;
+      //   md:com-w-full com-w-[303px]
+    }
+  }
+}
+
+.skeleton-cards {
+  @apply com-p-0 com-px-4;
+}

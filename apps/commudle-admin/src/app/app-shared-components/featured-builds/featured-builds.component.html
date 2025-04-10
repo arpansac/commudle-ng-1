@@ -1,0 +1,31 @@
+<div class="container" id="featured-builds">
+  <!-- <button *ngIf="showBulbEmojiOnHeading" nbButton class="emoji" size="small">
+        <fa-icon [icon]="faLightbulb"></fa-icon>
+      </button> -->
+  <div class="header-text">
+    <h3 class="title">
+      <div class="image">
+        <img alt="Featured Projects" src="{{ staticAssets.emojis.stars }}" title="Featured Projects" />
+      </div>
+      <a [routerLink]="'.'" fragment="featured-builds">Featured Projects</a>
+    </h3>
+    <h4 class="sub-heading">Check out amazing projects and get inspired</h4>
+  </div>
+  <div class="skeleton-cards">
+    <app-skeleton-cards
+      [cards]="5"
+      [ImageShapeSquare]="false"
+      [ImageShapeCircle]="false"
+      *ngIf="showSpinner"
+    ></app-skeleton-cards>
+  </div>
+  <div class="featured-project-cards">
+    <div class="featured-project-card" *ngFor="let featuredProject of featuredProjects | slice : 0 : 3">
+      <app-user-build-card [build]="featuredProject.community_build"></app-user-build-card>
+      <!-- <commudle-featured-projects-card
+        [communityBuild]="featuredProject.community_build"
+        [showTag]="false"
+      ></commudle-featured-projects-card> -->
+    </div>
+  </div>
+</div>

@@ -24,7 +24,6 @@
       </div>
       <div class="community-build-card-details">
         <div class="community-build-card-title-time">
-          <h5 class="title">{{ communityBuild.name }}</h5>
           <p class="time">{{ moment(communityBuild.created_at).format('MMM Do, YYYY') }}</p>
           <app-badge
             *ngIf="communityBuild.hackathon_team"
@@ -35,6 +34,7 @@
             [color]="'com-bg-Seashell'"
           ></app-badge>
         </div>
+        <h5 class="title">{{ communityBuild.name }}</h5>
         <div [innerHTML]="communityBuild.description" class="description"></div>
         <div *appBreakpoints="'>lg'" class="app-user-profile-card">
           <app-user-profile-card-medium [user]="communityBuild.user"></app-user-profile-card-medium>
