@@ -1,6 +1,6 @@
 <div class="homepage">
   <div class="homepage-section com-py-8 md:com-py-16 com-px-2 md:com-px-0">
-    <div class="com-flex com-flex-col-reverse com-gap-8 com-items-start md:com-gap-16 md:com-flex-row">
+    <div class="com-flex com-flex-col-reverse com-gap-8 com-items-start md:com-gap-16 md:com-flex-row com-items-center">
       <div class="com-w-full md:com-min-h-[600px] com-relative">
         <h1 class="page-heading">Where <span>developers grow</span> together</h1>
         <app-search-box [overrideSearchStatus]="true" shape="semi-round"></app-search-box>
@@ -38,7 +38,10 @@
           </ng-container>
         </div>
         <!--        <ng-lottie [options]="options" containerClass="com-w-full"></ng-lottie>-->
-        <div *ngIf="!this.homePageBannerImage" #homepageAnimation></div>
+        <!-- <div *ngIf="!this.homePageBannerImage" #homepageAnimation></div> -->
+        <div *ngIf="!this.homePageBannerImage" class="homepage-static-image">
+          <img [src]="staticAsset.homepage_static_image" alt="" />
+        </div>
       </div>
     </div>
   </div>

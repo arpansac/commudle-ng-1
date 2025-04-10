@@ -8,7 +8,7 @@ import { Observable, timer } from 'rxjs';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
-import { AwsS3Bucket } from 'apps/commudle-admin/src/assets/static-assets';
+import { AwsS3Bucket, staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-homepage',
@@ -19,6 +19,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
   timer$: Observable<number>;
   homePageBannerImage;
   banner: IListingPageHeader;
+  staticAsset = staticAssets;
 
   @ViewChild('homepageAnimation', { static: false }) homepageAnimationContainer: ElementRef<HTMLDivElement>;
 
