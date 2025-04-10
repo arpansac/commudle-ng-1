@@ -95,6 +95,13 @@ export class CampaignService {
     );
   }
 
+  destroy(campaignId: number): Observable<boolean> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.DESTROY), {
+      params,
+    });
+  }
+
   //PUBLIC API
   indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);

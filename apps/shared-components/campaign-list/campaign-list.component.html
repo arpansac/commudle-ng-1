@@ -173,6 +173,15 @@
         >
           Update Newsletter
         </button>
+        <button
+          *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
+          nbButton
+          status="danger"
+          size="small"
+          (click)="$event.stopPropagation(); destroy(campaign.id)"
+        >
+          Destroy
+        </button>
       </td>
     </tr>
   </tbody>
