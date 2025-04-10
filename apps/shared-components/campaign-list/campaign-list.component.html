@@ -24,7 +24,11 @@
         <div>
           <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
             <select
-              [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
+              [disabled]="
+                campaign.status === ECampaignStatus.COMPLETE ||
+                campaign.status === ECampaignStatus.LIVE ||
+                campaign.status === ECampaignStatus.INCOMPLETE
+              "
               [(ngModel)]="campaign.status"
               (change)="updateStatus($event, campaign.id)"
             >
