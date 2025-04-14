@@ -68,7 +68,7 @@ export class CampaignListComponent {
   }
 
   updateNewsletterWithCampaign(campaignId) {
-    this.campaignService.updateNewsletterWithCampaign(campaignId, this.newsletterId).subscribe((res) => {
+    this.campaignService.updateNewsletterWithCampaign(campaignId, Number(this.newsletterId)).subscribe((res) => {
       if (res) {
         const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
         this.campaigns[index].newsletter_id = this.newsletterId;
