@@ -106,7 +106,7 @@
       <div
         class="clear-filter"
         (click)="clearAllFilter()"
-        *ngIf="this.selectedStatusForFilter || this.selectedRoundIdForFilter"
+        *ngIf="selectedStatusForFilter || selectedRoundIdForFilter || selectedTrackForFilter"
       >
         Clear All Filter
       </div>
