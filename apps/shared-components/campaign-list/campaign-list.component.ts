@@ -92,4 +92,14 @@ export class CampaignListComponent {
       }
     });
   }
+
+  destroy(campaignId) {
+    this.campaignService.destroy(campaignId).subscribe((res) => {
+      if (res) {
+        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+        this.campaigns.splice(index, 1);
+        this.toasterService.successDialog('Campaign deleted successfully');
+      }
+    });
+  }
 }

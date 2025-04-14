@@ -24,7 +24,11 @@
         <div>
           <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
             <select
-              [disabled]="campaign.status === ECampaignStatus.COMPLETE || campaign.status === ECampaignStatus.LIVE"
+              [disabled]="
+                campaign.status === ECampaignStatus.COMPLETE ||
+                campaign.status === ECampaignStatus.LIVE ||
+                campaign.status === ECampaignStatus.INCOMPLETE
+              "
               [(ngModel)]="campaign.status"
               (change)="updateStatus($event, campaign.id)"
             >
@@ -168,6 +172,15 @@
           (click)="$event.stopPropagation(); openPopup(updateNewsletter, campaign)"
         >
           Update Newsletter
+        </button>
+        <button
+          *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
+          nbButton
+          status="danger"
+          size="small"
+          (click)="$event.stopPropagation(); destroy(campaign.id)"
+        >
+          Destroy
         </button>
       </td>
     </tr>

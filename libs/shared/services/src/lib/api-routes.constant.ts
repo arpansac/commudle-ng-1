@@ -1002,6 +1002,7 @@ export const API_ROUTES = {
     STATS: 'api/v2/campaigns/stats', //GET
     CAMPAIGN_RESEND_PAYMENT_LINK: 'api/v2/campaigns/campaign_resend_payment_link', //POST
     CAMPAIGN_UNAPPROVED_CHANGES_MAIL: 'api/v2/campaigns/campaign_unapproved_changes_mail', //POST
+    DESTROY: 'api/v2/campaigns', //DELETE
     PUBLIC: {
       ONGOING_CAMPAIGN: 'api/v2/campaigns/public/ongoing_campaign', //GET
     },
