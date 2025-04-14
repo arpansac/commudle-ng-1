@@ -87,3 +87,10 @@
     @apply com-mt-2;
   }
 }
+
+.homepage-static-image {
+  @apply com-w-full com-h-full;
+  img {
+    @apply com-w-full com-h-full;
+  }
+}
