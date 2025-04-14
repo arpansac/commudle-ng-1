@@ -688,11 +688,11 @@ export const API_ROUTES = {
       USER_ENGAGEMENT: 'api/v2/stats/community_builds/user_engagement',
     },
     HACKATHONS: {
-      GENDER_DISTRIBUTIONS: 'api/v2/stats/hackathons/gender_distributions',
-      HACKATHON_TEAM_STATS: 'api/v2/stats/hackathons/hackathon_team_stats',
-      HACKATHON_USER_RESPONSES_TAGS: 'api/v2/stats/hackathons/hackathon_user_responses_tags',
-      HACKATHON_TEAM_OVER_TIME: 'api/v2/stats/hackathons/hackathon_team_over_time',
-      HACKATHON_USER_VISIT: 'api/v2/stats/hackathons/user_visit',
+      GENDER: 'api/v2/stats/hackathons/gender',
+      HACKATHON_TEAM: 'api/v2/stats/hackathons/hackathon_team',
+      USER_TAGS: 'api/v2/stats/hackathons/user_tags',
+      TEAM_REGISTRATIONS_OVER_TIME: 'api/v2/stats/hackathons/team_registrations_over_time',
+      HACKATHON_USER_VISITS: 'api/v2/stats/hackathons/user_visits',
     },
   },
 
