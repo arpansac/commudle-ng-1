@@ -90,9 +90,12 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy {
       this.uerService
         .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
         .subscribe(() =>
-          this.gtmService.dataLayerPushEvent(eventType, {
+          this.gtmService.dataLayerPushEvent('ad_campaign', {
             com_campaign_id: this.campaign.id,
+            com_campaign_name: this.campaign.name,
+            com_campaign_type: this.campaign.campaign_type,
             com_current_page_url: window.location.href,
+            com_event_type: eventType,
           }),
         );
     }
