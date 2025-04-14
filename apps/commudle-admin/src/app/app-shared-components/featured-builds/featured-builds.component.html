@@ -1,7 +1,4 @@
 <div class="container" id="featured-builds">
-  <!-- <button *ngIf="showBulbEmojiOnHeading" nbButton class="emoji" size="small">
-        <fa-icon [icon]="faLightbulb"></fa-icon>
-      </button> -->
   <div class="header-text">
     <h3 class="title">
       <div class="image">
@@ -22,10 +19,6 @@
   <div class="featured-project-cards">
     <div class="featured-project-card" *ngFor="let featuredProject of featuredProjects | slice : 0 : 3">
       <app-user-build-card [build]="featuredProject.community_build"></app-user-build-card>
-      <!-- <commudle-featured-projects-card
-        [communityBuild]="featuredProject.community_build"
-        [showTag]="false"
-      ></commudle-featured-projects-card> -->
     </div>
   </div>
 </div>

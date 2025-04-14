@@ -1,5 +1,5 @@
 .publish-build-button {
-  @apply md:com-mx-0 com-mx-4 md:com-my-8 com-mt-8 com-mb-6 md:com-w-[343px];
+  @apply md:com-mx-0 com-mx-4 md:com-my-0 com-mt-8 com-mb-6 md:com-w-[343px];
   .button {
     @apply com-w-full com-text-tChocolate-Traditional com-bg-Seashell com-border-tChocolate-Traditional com-rounded-lg com-mb-3;
   }
@@ -9,4 +9,13 @@
 .explore-experts,
 .featured-projects {
   @apply com-m-0 md:com-mt-4 com-mt-10;
+}
+
+.right-column,
+.main-column {
+  @apply md:com-mt-8;
+}
+
+.header {
+  @apply com-border com-border-solid com-border-Bright-Gray;
 }

@@ -1,17 +1,9 @@
 .container {
-  @apply com-p-0 md:com-mt-6;
+  @apply com-p-0 com-m-0;
 
   .image {
     @apply com-m-0 com-mr-3 com-w-9 com-h-9;
   }
-
-  // .emoji {
-  //   @apply com-bg-white com-text-Yankees-Blue com-mr-3 com-rounded-xl md:com-h-12 md:com-w-12 com-border-none;
-
-  //   fa-icon {
-  //     @apply com-text-lg;
-  //   }
-  // }
 
   .header-text {
     @apply com-flex com-flex-col com-m-0  com-pb-6;
