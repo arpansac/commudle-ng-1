@@ -9,12 +9,15 @@
 .sidebar {
   transition: 0.3s;
 
-  @apply com-pt-0 com-h-full com-z-20 com-bg-white com-text-black com-overflow-auto;
+  @apply com-pt-0 com-z-20 com-bg-white com-text-black com-overflow-auto;
   &.hideFullSidebar {
     @apply com-w-0;
   }
   &.forWindow {
-    @apply com-fixed;
+    @apply com-fixed md:com-h-[calc(100dvh-70px)] com-h-[calc(100dvh-130px)];
+  }
+  &.notForWindow {
+    @apply com-h-full;
   }
   &.left {
     @apply com-left-0;
