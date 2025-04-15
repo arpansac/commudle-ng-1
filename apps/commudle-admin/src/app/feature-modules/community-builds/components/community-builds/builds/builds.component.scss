@@ -1,18 +1,18 @@
 .builds {
   @apply md:com-my-10 com-mx-0 com-mt-8 com-mb-0 com-p-0 md:com-px-0 com-px-4;
   .heading-filter {
-    @apply com-flex com-justify-between md:com-mb-0 com-mb-4 com-m-0;
+    @apply com-flex md:com-flex-row com-flex-col com-justify-between com-m-0 md:com-mb-0 com-mb-2;
 
     .header-text {
-      @apply md:com-flex com-flex-col com-m-0  com-pb-1 com-hidden;
+      @apply com-flex com-flex-col com-m-0  com-pb-1;
       .title {
         @apply com-flex com-flex-row com-items-center com-m-0 com-mb-2;
         a {
-          @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 com-no-underline;
+          @apply md:com-text-2xl com-text-xl md:com-font-bold com-font-semibold com-text-Yankees-Blue com-m-0 com-no-underline;
         }
       }
       .sub-heading {
-        @apply com-text-sm com-font-medium com-text-gray-500 com-m-0;
+        @apply md:com-flex com-hidden com-text-sm com-font-medium com-text-gray-500 com-m-0;
       }
     }
 
@@ -27,7 +27,7 @@
     }
   }
   .builds-card {
-    @apply com-flex com-flex-col com-border-solid com-border-0 com-border-b md:com-py-5 com-py-6 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
+    @apply com-flex com-flex-col com-border-solid com-border-0 com-border-b md:com-py-5 com-py-4 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
   }
 
   .view-more-button {

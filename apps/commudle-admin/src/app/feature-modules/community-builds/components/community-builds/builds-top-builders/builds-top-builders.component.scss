@@ -1,11 +1,11 @@
 nb-card {
-  @apply com-p-0 com-m-0;
+  @apply com-p-0 com-m-0 md:com-border com-border-0;
 
   nb-card-body {
-    @apply com-p-4 com-m-0;
+    @apply md:com-p-4 com-px-4 com-m-0;
 
     .title {
-      @apply com-flex com-flex-col com-items-center com-mb-8;
+      @apply com-flex com-flex-col md:com-mb-8 com-mb-7;
       h3 {
         @apply com-m-0 com-mb-1 com-leading-[0px];
         a {
@@ -25,10 +25,14 @@ nb-card {
     }
 
     .tags {
-      @apply md:com-flex md:com-justify-center com-m-0 com-mb-4 md:com-mt-0 md:com-mb-5 com-mt-2 com-ml-4 md:com-ml-0;
+      @apply md:com-flex md:com-justify-center com-m-0 com-mb-4 md:com-mt-0 md:com-mb-5 com-mt-2 com-mx-0;
 
       nb-tag {
         @apply com-bg-white com-text-gray-600 com-text-xs com-font-medium;
+      }
+
+      .nb-tag-remove {
+        @apply com-text-xs com-font-medium #{!important};
       }
 
       .activeTag {
@@ -37,12 +41,12 @@ nb-card {
     }
 
     .top-builders {
-      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-mb-10 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-4 com-p-0 md:com-pb-0 com-items-center md:com-justify-center;
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-m-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-4 com-p-0 md:com-pb-0 com-items-center md:com-justify-center;
       .top-builders-card {
-        @apply com-m-0 com-px-0 com-w-full com-py-3 com-rounded-none;
+        @apply com-m-0 com-w-full md:com-py-3 com-p-0 com-rounded-none;
       }
       .top-builders-card:not(:last-child) {
-        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        @apply com-border-0 md:com-border-b com-border-b-0 com-border-solid com-border-Bright-Gray;
       }
 
       app-loading-spinner {

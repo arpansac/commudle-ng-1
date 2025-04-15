@@ -18,13 +18,13 @@ p {
       }
 
       .community-build-card-details {
-        @apply com-w-full md:com-pl-4 com-pl-2 md:com-pr-[74px] com-pt-0;
+        @apply com-w-full md:com-pl-4 com-pl-3 md:com-pr-[74px] com-pt-0;
 
         .community-build-card-title-time {
           @apply md:com-flex com-block md:com-flex-row com-flex-col com-items-center md:com-mb-2 com-mb-1;
 
           .time {
-            @apply md:com-text-sm com-text-[10px] md:com-font-medium com-font-normal com-m-0 com-text-gray-500 com-mr-4;
+            @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500 com-mr-4;
           }
 
           app-badge {
@@ -33,7 +33,7 @@ p {
         }
 
         .title {
-          @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-line-clamp-1 com-mb-1 md:com-mb-2;
+          @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-line-clamp-1 com-mb-2;
         }
 
         .description {

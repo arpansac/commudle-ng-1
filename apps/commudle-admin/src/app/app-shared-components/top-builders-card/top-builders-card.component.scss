@@ -3,10 +3,10 @@ a {
 }
 
 nb-card {
-  @apply com-m-0 com-overflow-hidden com-h-auto com-border-0 md:com-w-full com-w-[313px];
+  @apply com-m-0 com-overflow-hidden com-h-auto md:com-border-0 com-border md:com-w-full com-w-[313px];
 
   nb-card-body {
-    @apply com-p-0 com-overflow-hidden com-flex-row;
+    @apply md:com-p-0 com-p-3 com-overflow-hidden com-flex-row;
 
     .content {
       @apply com-flex com-flex-row;

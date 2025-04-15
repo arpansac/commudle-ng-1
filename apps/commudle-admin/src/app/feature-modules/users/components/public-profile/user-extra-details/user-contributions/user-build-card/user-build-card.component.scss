@@ -18,7 +18,7 @@ h4 {
     }
 
     .user-build-name {
-      @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-line-clamp-1 com-mb-1;
+      @apply md:com-text-sm com-text-base md:com-font-semibold com-font-medium com-text-Yankees-Blue com-line-clamp-1 com-mb-1;
     }
 
     .time {
@@ -26,7 +26,7 @@ h4 {
     }
 
     .content {
-      @apply com-flex com-flex-row com-justify-between com-p-3;
+      @apply com-flex com-flex-row com-justify-between com-p-4 md:com-p-3;
     }
 
     .votes {
