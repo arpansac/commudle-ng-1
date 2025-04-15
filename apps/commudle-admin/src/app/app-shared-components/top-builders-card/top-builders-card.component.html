@@ -53,7 +53,7 @@
         </a>
         <div *ngIf="allignFollowButtonToRight">
           <app-user-follow
-            [username]="topBuilder.username | truncatetext : maxUserNameLength"
+            [username]="topBuilder.username"
             [isMobileWidthFull]="true"
             [name]="topBuilder.name"
             [userId]="topBuilder.id"

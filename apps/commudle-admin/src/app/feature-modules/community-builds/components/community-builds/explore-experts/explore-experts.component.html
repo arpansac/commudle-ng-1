@@ -1,13 +1,8 @@
 <nb-card id="experts">
   <nb-card-body>
     <div class="heading">
-      <button nbButton status="basic" class="image">
-        <img alt="Experts" src="{{ staticAssets.emojis.shield }}" title="Experts" />
-      </button>
-      <div class="text">
-        <h3 class="title"><a [routerLink]="'.'" fragment="experts">EXPERTS TO FOLLOW</a></h3>
-        <h4 class="sub-heading">Grow your network</h4>
-      </div>
+      <h3 class="title"><a [routerLink]="'.'" fragment="experts">EXPERTS TO FOLLOW</a></h3>
+      <h4 class="sub-heading">Grow your network</h4>
     </div>
     <app-skeleton-cards
       [cards]="4"
@@ -21,7 +16,7 @@
           <commudle-top-builders-card
             [topBuilder]="topBuilder"
             [displayDesignation]="true"
-            [showFollowButton]="true"
+            [allignFollowButtonToRight]="true"
           ></commudle-top-builders-card>
         </div>
         <div *appBreakpoints="'<=lg'">

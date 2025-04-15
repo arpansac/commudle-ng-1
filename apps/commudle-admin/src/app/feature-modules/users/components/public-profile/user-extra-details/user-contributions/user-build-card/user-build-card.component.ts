@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import moment from 'moment';
 
@@ -10,6 +11,7 @@ import moment from 'moment';
 export class UserBuildCardComponent implements OnChanges {
   @Input() build: ICommunityBuild;
   moment = moment;
+  staticAssets = staticAssets;
 
   constructor() {}
 
