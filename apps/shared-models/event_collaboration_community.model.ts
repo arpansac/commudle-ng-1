@@ -12,6 +12,6 @@ export interface IEventCollaborationCommunity {
 }
 
 export enum EEventCollaborationCommunityStatus {
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
 }

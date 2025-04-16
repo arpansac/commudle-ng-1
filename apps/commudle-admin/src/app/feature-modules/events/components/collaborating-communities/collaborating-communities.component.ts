@@ -15,7 +15,10 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { EventCollaborationCommunitiesService } from 'apps/commudle-admin/src/app/services/event-collaboration-communities.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { IEventCollaborationCommunity } from 'apps/shared-models/event_collaboration_community.model';
+import {
+  IEventCollaborationCommunity,
+  EEventCollaborationCommunityStatus,
+} from 'apps/shared-models/event_collaboration_community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
@@ -30,7 +33,7 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
 
   @ViewChild('autoInput') input;
   @ViewChild('collaborationConfirmation') collaborationConfirmationDialog;
-
+  EEventCollaborationCommunityStatus = EEventCollaborationCommunityStatus;
   communities: ICommunity[];
   selectedCommunity = '';
   typing = false;

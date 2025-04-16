@@ -7,6 +7,13 @@
   </nb-card-header>
   <nb-card-body>
     <div>
+      <div *ngIf="collaborationCommunities.length > 0">
+        <commudle-alert
+          [info]="true"
+          message="In case your collaboration request email was missed by the organizers of the community, they can also accept the request from the notifications in their community dashboard"
+        ></commudle-alert>
+        <br />
+      </div>
       <div class="collaboration-communities">
         <div *ngFor="let col of collaborationCommunities; let i = index" class="community">
           <div class="logo">
@@ -24,7 +31,11 @@
               <!-- <a (click)="resendConfirmationEmail(col.id)" *ngIf="!col.approved" class="clickable">
                 <small> Resend Request </small>
               </a> -->
-              <a (click)="removeCollaboration(col.id, i)" class="clickable">
+              <a
+                [ngClass]="{ disabled: col.status && col.status === EEventCollaborationCommunityStatus.REJECTED }"
+                (click)="removeCollaboration(col.id, i)"
+                class="clickable"
+              >
                 <small> Remove </small>
               </a>
             </div>

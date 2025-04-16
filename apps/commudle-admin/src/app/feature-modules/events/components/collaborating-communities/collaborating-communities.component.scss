@@ -68,3 +68,7 @@
     @apply com-flex com-items-center com-justify-between;
   }
 }
+
+.disabled {
+  @apply com-pointer-events-none com-opacity-50 com-cursor-not-allowed;
+}
