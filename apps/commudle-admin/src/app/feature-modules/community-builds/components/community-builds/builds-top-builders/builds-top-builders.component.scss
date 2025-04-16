@@ -5,7 +5,7 @@ nb-card {
     @apply com-p-0 com-m-0;
 
     .title {
-      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-px-4;
+      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4;
       //TODO: Convert style css to tailwindCss
       background: linear-gradient(210deg, #e5e7eb -46.76%, #fff 71.16%);
       h3 {
@@ -27,7 +27,7 @@ nb-card {
     }
 
     .tags {
-      @apply md:com-flex md:com-justify-center com-m-0 com-mx-0 md:com-pt-4 md:com-pb-5 com-px-4;
+      @apply md:com-flex md:com-justify-center com-m-0 com-mx-0 md:com-pt-4 md:com-pb-5 com-p-4;
 
       nb-tag {
         @apply com-bg-white com-text-gray-600 com-text-xs com-font-medium;

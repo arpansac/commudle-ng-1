@@ -10,7 +10,7 @@ p {
     .details {
       @apply com-flex;
       .community-build-card-image {
-        @apply com-flex com-justify-center com-pt-1 md:com-h-[118px] com-h-[68px] com-w-full;
+        @apply com-flex com-pt-1 md:com-h-[118px] com-h-[68px] com-w-full com-relative;
 
         app-badge {
           @apply md:com-hidden com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;

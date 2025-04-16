@@ -1,7 +1,7 @@
 nb-card {
   @apply com-p-0 com-m-0 md:com-border com-border-0;
   nb-card-body {
-    @apply com-m-0 com-p-4;
+    @apply com-m-0 md:com-p-4 com-px-4 com-py-0;
     .heading {
       @apply com-flex com-flex-col md:com-mb-8 com-mb-7;
 
