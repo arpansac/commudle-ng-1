@@ -52,6 +52,16 @@ export class EventCollaborationCommunitiesService {
     });
   }
 
+  updateStatus(token, status): Observable<any> {
+    return this.http.put<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EVENT_COLLABORATION_COMMUNITIES.UPDATE_STATUS),
+      {
+        token,
+        status,
+      },
+    );
+  }
+
   pGet(eventId): Observable<IEventCollaborationCommunities> {
     const params = new HttpParams().set('event_id', eventId);
     return this.http.get<IEventCollaborationCommunities>(

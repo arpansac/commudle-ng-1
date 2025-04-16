@@ -8,4 +8,10 @@ export interface IEventCollaborationCommunity {
   approved: boolean;
   community: ICommunity;
   user: IUser;
+  status: EEventCollaborationCommunityStatus;
+}
+
+export enum EEventCollaborationCommunityStatus {
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
