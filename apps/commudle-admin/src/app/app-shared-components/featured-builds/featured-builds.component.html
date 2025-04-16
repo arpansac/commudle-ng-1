@@ -1,13 +1,16 @@
 <div class="container" id="featured-builds">
-  <div class="header-text">
-    <h3 class="title">
-      <div class="image">
-        <img alt="Featured Projects" src="{{ staticAssets.emojis.eye }}" title="Featured Projects" />
-      </div>
-      <a [routerLink]="'.'" fragment="featured-builds">Featured Projects</a>
-    </h3>
-    <h4 class="sub-heading">Check out amazing projects and get inspired</h4>
+  <div class="header">
+    <div class="image">
+      <img alt="Featured Projects" src="{{ staticAssets.emojis.eye }}" title="Featured Projects" />
+    </div>
+    <div class="header-text">
+      <h3 class="title">
+        <a [routerLink]="'.'" fragment="featured-builds">Featured Projects</a>
+      </h3>
+      <h4 class="sub-heading">Check out amazing projects and get inspired</h4>
+    </div>
   </div>
+
   <div class="skeleton-cards">
     <app-skeleton-cards
       [cards]="5"
