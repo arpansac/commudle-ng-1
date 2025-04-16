@@ -480,6 +480,7 @@ export const API_ROUTES = {
     DELETE: 'api/v2/event_collaboration_communities',
     RESEND_INVITATION: 'api/v2/event_collaboration_communities/resend_invitation',
     CONFIRM: 'api/v2/event_collaboration_communities/confirm',
+    UPDATE_STATUS: 'api/v2/event_collaboration_communities/update_status',
     PUBLIC_INDEX: 'api/v2/event_collaboration_communities/public_index',
   },
 

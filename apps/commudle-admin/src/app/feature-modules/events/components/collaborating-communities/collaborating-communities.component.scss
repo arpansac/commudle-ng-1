@@ -60,3 +60,15 @@
     }
   }
 }
+
+.confirmation-dialog-box {
+  @apply md:com-w-[40dvw] com-w-full;
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-items-center com-justify-between;
+  }
+}
+
+.disabled {
+  @apply com-pointer-events-none com-opacity-50 com-cursor-not-allowed;
+}

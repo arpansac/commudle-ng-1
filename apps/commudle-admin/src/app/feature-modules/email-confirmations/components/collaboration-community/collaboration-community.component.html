@@ -19,7 +19,30 @@
           </div>
         </div>
 
-        <div class="event-details">
+        <div
+          *ngIf="
+            !eventCollaboration.approved || eventCollaboration.status === EEventCollaborationCommunityStatus.REJECTED
+          "
+          class="status"
+        >
+          <div class="collaboration-status">
+            <div class="collaboration-community-logo">
+              <img
+                alt="{{ eventCollaboration.community.name }}"
+                src="{{ eventCollaboration.community.logo_image_path.i64 }}"
+                title="{{ eventCollaboration.community.name }}"
+              />
+            </div>
+            <p>
+              <span>
+                Thank You, we have received your response for
+                <strong class="com-text-red-500 com-uppercase">rejecting</strong> the collaboration request.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="event-details" *ngIf="community">
           <div class="event">
             <p>
               <a [routerLink]="['/communities', community.slug, 'events', eventCollaboration.event.slug]">

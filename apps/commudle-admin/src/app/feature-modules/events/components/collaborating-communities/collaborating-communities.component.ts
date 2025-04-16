@@ -9,12 +9,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@commudle/theme';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventCollaborationCommunitiesService } from 'apps/commudle-admin/src/app/services/event-collaboration-communities.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { IEventCollaborationCommunity } from 'apps/shared-models/event_collaboration_community.model';
+import {
+  IEventCollaborationCommunity,
+  EEventCollaborationCommunityStatus,
+} from 'apps/shared-models/event_collaboration_community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
@@ -28,7 +32,8 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
   @Input() event: IEvent;
 
   @ViewChild('autoInput') input;
-
+  @ViewChild('collaborationConfirmation') collaborationConfirmationDialog;
+  EEventCollaborationCommunityStatus = EEventCollaborationCommunityStatus;
   communities: ICommunity[];
   selectedCommunity = '';
   typing = false;
@@ -43,6 +48,7 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
     private communitiesService: CommunitiesService,
     private changeDetectorRef: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -55,7 +61,8 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
   }
 
   onSelectionChange($event) {
-    this.createCollaboration($event.id);
+    this.openConfirmationBox($event.id);
+    // this.createCollaboration($event.id);
     this.selectedCommunity = '';
     this.input.nativeElement.value = '';
     this.communities = [];
@@ -98,13 +105,21 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
   }
 
   resendConfirmationEmail(collaborationCommunityId) {
-    this.eventCollaborationCommunitiesService.resendInvitationMail(collaborationCommunityId).subscribe((data) => {
-      this.toastLogService.successDialog('Collaboration request email resent!');
-      this.changeDetectorRef.markForCheck();
-    });
+    // this.eventCollaborationCommunitiesService.resendInvitationMail(collaborationCommunityId).subscribe((data) => {
+    //   this.toastLogService.successDialog('Collaboration request email resent!');
+    //   this.changeDetectorRef.markForCheck();
+    // });
   }
 
   checkTyping() {
     this.typing = this.input.nativeElement.value.length > 2;
+  }
+
+  openConfirmationBox(communityId) {
+    this.dialogService.open(this.collaborationConfirmationDialog, {
+      context: {
+        communityId: communityId,
+      },
+    });
   }
 }
