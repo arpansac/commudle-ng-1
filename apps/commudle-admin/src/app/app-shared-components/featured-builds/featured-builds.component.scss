@@ -3,6 +3,9 @@
 
   .image {
     @apply com-m-0 com-mr-3 com-w-9 com-h-9;
+    img {
+      @apply com-w-full;
+    }
   }
 
   .header-text {
