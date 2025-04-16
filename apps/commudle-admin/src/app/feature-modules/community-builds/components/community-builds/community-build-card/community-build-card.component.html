@@ -1,7 +1,7 @@
 <div class="community-build-card">
   <a [routerLink]="[communityBuild.slug]">
     <div class="details">
-      <div class="community-build-card-image">
+      <div>
         <commudle-banner-image
           [headerImagePath]="
             communityBuild.images[0] ? communityBuild.images[0].url : staticAssets.community_build_empty_state
@@ -12,6 +12,7 @@
           [bottomRightCurve]="false"
           [bottomLeftCurve]="false"
           [aspectRatio]="'3/2'"
+          class="community-build-card-image"
         ></commudle-banner-image>
         <app-badge
           *ngIf="communityBuild.hackathon_team"
