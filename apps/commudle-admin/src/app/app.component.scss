@@ -2,14 +2,6 @@
   width: 100vw;
 }
 
-.main-sidebar {
-  ::ng-deep {
-    .sidebar {
-      @apply com-shadow-md com-shadow-gray-300;
-    }
-  }
-}
-
 ::ng-deep {
   .cdk-overlay-container {
     .cookie-consent {

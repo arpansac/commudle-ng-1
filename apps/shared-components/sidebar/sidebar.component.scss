@@ -25,6 +25,9 @@
   &.right {
     @apply com-right-0;
   }
+  &.showBorder {
+    @apply com-border-y-0 com-border-x com-border-solid com-border-Bright-Gray;
+  }
 
   &.expanded {
     &.xsmall {

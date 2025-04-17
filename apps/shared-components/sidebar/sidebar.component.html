@@ -1,4 +1,5 @@
 <div
+  #sidebarElement
   class="sidebar custom-scrollbar"
   [ngClass]="{
     expanded: expandSidebar || isExpanded,
@@ -11,7 +12,8 @@
     small: expandedWidth === ESidebarWidth.SMALL,
     medium: expandedWidth === ESidebarWidth.MEDIUM,
     large: expandedWidth === ESidebarWidth.LARGE,
-    extraLarge: expandedWidth === ESidebarWidth.XL
+    extraLarge: expandedWidth === ESidebarWidth.XL,
+    showBorder: showBorder,
   }"
 >
   <div class="header" *ngIf="heading || showExpandedButton">
