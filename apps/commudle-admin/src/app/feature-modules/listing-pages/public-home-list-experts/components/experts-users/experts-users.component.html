@@ -5,9 +5,6 @@
         <commudle-featured-experts-card [expert]="expert"></commudle-featured-experts-card>
       </div>
     </div>
-    <div *ngIf="experts.length === 0">
-      <h3 class="no-user-text">Experts to be added soon!</h3>
-    </div>
   </div>
   <div *ngIf="isLoadingExperts" class="load-more">
     <app-loading-spinner></app-loading-spinner>

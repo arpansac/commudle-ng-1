@@ -6,10 +6,6 @@
   @apply com-flex com-flex-col;
 }
 
-.card {
-  @apply md:com-w-[276px] com-h-[444px] com-w-full;
-}
-
 .no-user-text {
   @apply com-text-lg com-font-medium com-m-0;
 }

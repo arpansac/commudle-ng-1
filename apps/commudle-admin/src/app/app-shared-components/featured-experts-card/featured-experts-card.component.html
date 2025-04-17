@@ -6,27 +6,30 @@
           <img src="{{ expert.photo.i320 }}" alt="{{ expert.name }}" />
         </div>
         <div class="details">
-          <div class="expert-name">
-            <p class="name">{{ expert.name }}</p>
-            <img
-              *ngIf="expert.is_expert"
-              alt="Expert Tick"
-              class="expert-tick"
-              src="/assets/images/Expert-Tick.svg"
-              title="Expert Tick"
-            />
-            <commudle-user-personal-connect
-              [userConnect]="expert.distance_from_current_user"
-            ></commudle-user-personal-connect>
+          <div class="name-header">
+            <div class="expert-name">
+              <p class="name">{{ expert.name }}</p>
+              <img
+                *ngIf="expert.is_expert"
+                alt="Expert Tick"
+                class="expert-tick"
+                src="/assets/images/Expert-Tick.svg"
+                title="Expert Tick"
+              />
+              <commudle-user-personal-connect
+                [userConnect]="expert.distance_from_current_user"
+              ></commudle-user-personal-connect>
+            </div>
+            <app-user-follow
+              [username]="expert.username"
+              [name]="expert.name"
+              [isMobileWidthFull]="true"
+              [userId]="expert.id"
+              [appearance]="'outline'"
+            ></app-user-follow>
           </div>
           <p class="expert-username">@{{ expert.username }}</p>
           <p class="expert-designation">{{ expert.designation }}</p>
-          <app-user-follow
-            [username]="expert.username"
-            [name]="expert.name"
-            [isMobileWidthFull]="true"
-            [userId]="expert.id"
-          ></app-user-follow>
         </div>
       </div>
     </nb-card-body>

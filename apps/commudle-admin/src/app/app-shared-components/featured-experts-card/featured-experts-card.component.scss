@@ -3,7 +3,7 @@ a {
 }
 
 nb-card {
-  @apply com-m-0 com-h-full com-w-full;
+  @apply com-m-0 com-h-full com-w-full com-border-0;
 
   nb-card-body {
     @apply com-p-0;
@@ -12,19 +12,23 @@ nb-card {
       @apply com-flex com-flex-col;
 
       .expert-image {
-        @apply com-h-[274px];
+        @apply com-h-[278px];
         img {
-          @apply com-w-full com-h-full com-rounded-t-[10px] com-object-cover;
+          @apply com-w-full com-h-full com-rounded-xl com-object-cover;
         }
       }
 
       .details {
-        @apply com-px-4 com-pb-4 com-pt-3;
+        @apply com-p-0 com-pt-2;
+
+        .name-header {
+          @apply com-flex com-flex-row com-justify-between com-items-center com-w-full;
+        }
 
         .expert-name {
-          @apply com-flex com-flex-row com-items-center com-m-0 com-mb-1;
+          @apply com-flex com-flex-row com-items-center com-m-0 com-mb-1 com-mr-4 com-flex-shrink;
           .name {
-            @apply com-text-base com-font-medium com-text-black com-m-0;
+            @apply com-text-base com-font-medium com-text-Yankees-Blue com-m-0;
           }
 
           .expert-tick {
@@ -33,11 +37,11 @@ nb-card {
         }
 
         .expert-username {
-          @apply com-text-sm com-font-normal com-text-Quartz com-m-0 com-mb-1;
+          @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mb-1;
         }
 
         .expert-designation {
-          @apply com-text-sm com-font-normal com-text-Dark-Jungle-Green com-m-0 com-mb-4 com-line-clamp-2 com-h-10;
+          @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-2 com-line-clamp-2 com-h-10;
         }
       }
     }

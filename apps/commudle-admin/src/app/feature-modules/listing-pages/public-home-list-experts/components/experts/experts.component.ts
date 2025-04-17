@@ -15,6 +15,7 @@ export class ExpertsComponent implements OnInit {
   expertBadges;
   badgesList: badgesList[] = [];
   showSpinner = true;
+  badgeHasExperts: { [badgeId: string]: boolean } = {};
 
   constructor(private expertsService: ExpertsService) {}
 
@@ -27,5 +28,9 @@ export class ExpertsComponent implements OnInit {
       this.expertBadges = data;
       this.showSpinner = false;
     });
+  }
+
+  updateBadgeExpertsStatus(badgeId: string, hasExperts: boolean) {
+    this.badgeHasExperts[badgeId] = hasExperts;
   }
 }

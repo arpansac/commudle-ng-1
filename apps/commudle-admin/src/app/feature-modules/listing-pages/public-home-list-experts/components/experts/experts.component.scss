@@ -1,16 +1,16 @@
 .heading {
   @apply com-flex com-items-center com-m-0 com-mb-6;
 
-  .image {
-    @apply com-h-[52px] com-w-[52px] md:com-mr-1 com-mr-2;
-    img {
-      @apply com-h-full com-w-full com-object-contain;
-    }
-  }
+  // .image {
+  //   @apply com-h-[52px] com-w-[52px] md:com-mr-1 com-mr-2;
+  //   img {
+  //     @apply com-h-full com-w-full com-object-contain;
+  //   }
+  // }
   .heading-name {
     @apply com-m-0;
     a {
-      @apply com-text-2xl com-font-semibold com-text-black com-no-underline;
+      @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-no-underline;
     }
   }
 }
@@ -19,6 +19,6 @@
   @apply md:com-mx-0 com-mx-4;
 }
 
-.experts {
-  @apply com-py-5;
+.users {
+  @apply com-pb-[60px];
 }
