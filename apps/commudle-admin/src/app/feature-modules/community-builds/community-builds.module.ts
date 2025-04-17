@@ -44,7 +44,7 @@ import { FeaturedProjectsComponent } from 'apps/commudle-admin/src/app/app-share
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
-import { FeaturedBuildsComponent } from '../../app-shared-components/featured-builds/featured-builds.component';
+import { FeaturedBuildsComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-builds/featured-builds.component';
 
 @NgModule({
   declarations: [
