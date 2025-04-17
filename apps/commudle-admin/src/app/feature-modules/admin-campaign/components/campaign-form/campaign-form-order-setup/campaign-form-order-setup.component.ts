@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignStatus } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   tags = [];
 
   formSubscription: Subscription;
+  ECampaignTypeSlug = ECampaignTypeSlug;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -159,8 +160,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     img.src = URL.createObjectURL(file);
     img.onload = () => {
       if (
-        img.width !== this.campaign.campaign_type.image_dimension.width ||
-        img.height !== this.campaign.campaign_type.image_dimension.height
+        img.width !== this.campaign.campaign_type.image_dimension?.width ||
+        img.height !== this.campaign.campaign_type.image_dimension?.height
       ) {
         this.toasterService.warningDialog(
           'Image must be exactly ' +
