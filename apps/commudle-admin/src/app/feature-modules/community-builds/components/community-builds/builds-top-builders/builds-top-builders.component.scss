@@ -5,7 +5,7 @@ nb-card {
     @apply com-p-0 com-m-0;
 
     .title {
-      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4;
+      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4 com-rounded-t-xl;
       //TODO: Convert style css to tailwindCss
       background: linear-gradient(210deg, #e5e7eb -46.76%, #fff 71.16%);
       h3 {
@@ -54,7 +54,7 @@ nb-card {
         @apply com-m-0 com-w-full md:com-py-3 com-p-0 com-rounded-none;
       }
       .top-builders-card:not(:last-child) {
-        @apply com-border-0 md:com-border-b com-border-b-0 md:com-border-solid md:com-border-Bright-Gray;
+        @apply com-border-0 md:com-border-b md:com-border-solid md:com-border-Bright-Gray;
       }
 
       app-loading-spinner {
