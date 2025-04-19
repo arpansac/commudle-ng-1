@@ -72,3 +72,7 @@
 .disabled {
   @apply com-pointer-events-none com-opacity-50 com-cursor-not-allowed;
 }
+
+.rejected {
+  @apply com-uppercase com-text-red-500 com-mt-2;
+}
