@@ -38,6 +38,9 @@
               >
                 <small> Remove </small>
               </a>
+              <small *ngIf="col.status === EEventCollaborationCommunityStatus.REJECTED" class="rejected">
+                REJECTED
+              </small>
             </div>
           </div>
         </div>
