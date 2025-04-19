@@ -77,19 +77,20 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.banner = data;
       if (data.header_image) {
         this.homePageBannerImage = this.cmsService.getImageUrl(data.header_image);
-      } else {
-        if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
-          import('lottie-web').then((l) => {
-            l.default.loadAnimation({
-              container: this.homepageAnimationContainer.nativeElement,
-              renderer: 'svg',
-              loop: true,
-              autoplay: true,
-              path: AwsS3Bucket.home_page_animation,
-            });
-          });
-        }
       }
+      // else {
+      //   if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
+      //     import('lottie-web').then((l) => {
+      //       l.default.loadAnimation({
+      //         container: this.homepageAnimationContainer.nativeElement,
+      //         renderer: 'svg',
+      //         loop: true,
+      //         autoplay: true,
+      //         path: AwsS3Bucket.home_page_animation,
+      //       });
+      //     });
+      //   }
+      // }
     });
   }
 
