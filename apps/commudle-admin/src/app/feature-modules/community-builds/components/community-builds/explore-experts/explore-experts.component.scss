@@ -1,31 +1,25 @@
 nb-card {
-  @apply com-p-0 com-m-0 md:com-bg-Bright-Gray-opacity-30 com-border-0;
+  @apply com-p-0 com-m-0 md:com-border com-border-0;
   nb-card-body {
-    @apply md:com-pt-4 md:com-px-3 com-m-0 com-p-0;
+    @apply com-m-0 md:com-p-4 com-px-4 com-py-0;
     .heading {
-      @apply com-flex com-items-center md:com-pt-0 md:com-pb-6 com-m-0 md:com-px-0 com-p-4 md:com-bg-transparent com-bg-Anti-Flash-White;
+      @apply com-flex com-flex-col md:com-mb-8 com-mb-7;
 
-      .image {
-        @apply com-p-10px com-m-0 com-mr-3 com-rounded-xl com-w-[52px] com-h-[52px];
+      .title {
+        @apply com-m-0 com-mb-1 com-leading-[0];
+        a {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-no-underline;
+        }
       }
-
-      .text {
-        .title {
-          @apply com-m-0;
-          a {
-            @apply com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-2px com-mt-0 com-mx-0 com-no-underline;
-          }
-        }
-        .sub-heading {
-          @apply com-text-sm com-font-normal com-text-gunmetal com-m-0;
-        }
+      .sub-heading {
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
       }
     }
 
     .top-experts {
-      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-mb-0 md:com-m-0 com-gap-4 md:com-gap-x-5 com-mt-4 com-p-0 md:com-pb-4;
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-m-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-4 com-p-0 md:com-pb-0 com-items-center md:com-justify-center;
       .top-expert-card {
-        @apply com-m-0 com-p-0;
+        @apply com-m-0 com-px-0 com-w-full md:com-py-3 com-p-0 com-rounded-none;
       }
     }
   }

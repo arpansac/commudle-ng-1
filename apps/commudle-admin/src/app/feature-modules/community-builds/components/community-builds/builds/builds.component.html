@@ -1,6 +1,11 @@
 <div class="builds">
   <div class="heading-filter">
-    <h5 class="heading">Builds by techies around you</h5>
+    <div class="header-text">
+      <h3 class="title">
+        <a [routerLink]="'.'" fragment="featured-builds">Latest Builds</a>
+      </h3>
+      <h4 class="sub-heading">Explore latest projects and get inspired</h4>
+    </div>
     <app-tag
       *ngIf="selectedTags.length > 0"
       [tags]="selectedTags"

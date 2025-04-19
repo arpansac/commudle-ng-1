@@ -10,7 +10,7 @@ p {
     .details {
       @apply com-flex;
       .community-build-card-image {
-        @apply com-flex com-justify-center com-pt-1 md:com-w-[135px] md:com-h-[90px] com-w-[102px] com-h-[68px] com-overflow-hidden com-relative;
+        @apply com-flex com-pt-1 md:com-h-[118px] com-h-[68px] com-w-full com-relative;
 
         app-badge {
           @apply md:com-hidden com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
@@ -18,25 +18,26 @@ p {
       }
 
       .community-build-card-details {
-        @apply com-w-full md:com-pl-4 com-pl-2 md:com-pr-[74px] com-pt-0;
+        @apply com-w-full md:com-pl-4 com-pl-3 md:com-pr-[74px] com-pt-0;
 
         .community-build-card-title-time {
           @apply md:com-flex com-block md:com-flex-row com-flex-col com-items-center md:com-mb-2 com-mb-1;
-          .title {
-            @apply md:com-text-base com-text-sm com-font-semibold com-text-Dark-Jungle-Green com-m-0 com-mr-4 com-line-clamp-1 com-mb-1 md:com-mb-0;
-          }
 
           .time {
-            @apply md:com-text-xs com-text-[10px] md:com-font-medium com-font-normal com-m-0 com-text-Auro-Metal-Saurus com-line-clamp-1 com-mr-4;
+            @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500 com-mr-4;
           }
 
           app-badge {
             @apply md:com-flex com-hidden com-border com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
           }
         }
+
+        .title {
+          @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-line-clamp-1 com-mb-2;
+        }
+
         .description {
-          @apply com-text-xs md:com-text-sm com-font-normal com-text-Auro-Metal-Saurus com-m-0 com-mb-2 com-hidden md:com-flex com-break-all;
-          @apply com-line-clamp-2;
+          @apply com-text-xs md:com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-2 com-hidden md:com-flex com-line-clamp-1;
         }
       }
     }

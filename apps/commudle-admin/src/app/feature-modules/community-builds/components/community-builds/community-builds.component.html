@@ -1,59 +1,57 @@
-<commudle-listing-pages-layout>
-  <div header>
-    <commudle-listing-page-header [parentType]="'builds'"></commudle-listing-page-header>
-  </div>
-  <div one-column *ngIf="isMobileView">
-    <div class="publish-build-button">
-      <a [routerLink]="['/builds/create']" nbButton size="giant" class="button">
-        <nb-icon icon="plus"></nb-icon>
-        Share your Build
-      </a>
-      <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
+<div>
+  <commudle-listing-pages-layout>
+    <div header class="header">
+      <commudle-listing-page-header [parentType]="'builds'"></commudle-listing-page-header>
     </div>
-    <commudle-builds></commudle-builds>
-    <div class="featured-projects">
-      <commudle-featured-projects></commudle-featured-projects>
-    </div>
-    <div class="top-builders">
-      <commudle-builds-top-builders
-        [heading]="'POPULAR BUILDERS'"
-        [subHeading]="'Follow these builders and get inspired'"
-        [parentType]="'builds'"
-      ></commudle-builds-top-builders>
-    </div>
-    <div class="explore-experts">
-      <commudle-explore-experts></commudle-explore-experts>
-    </div>
-  </div>
-  <div main-column *ngIf="!isMobileView">
-    <commudle-builds></commudle-builds>
-  </div>
-  <div right-column>
-    <div class="publish-build-button">
-      <a [routerLink]="['/builds/create']" nbButton size="giant" class="button">
-        <nb-icon icon="plus"></nb-icon>
-        Share your Build
-      </a>
-      <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
-    </div>
-    <div>
+    <div one-column *ngIf="isMobileView">
+      <div class="publish-build-button">
+        <a [routerLink]="['/builds/create']" nbButton size="large" class="button">
+          <nb-icon icon="plus"></nb-icon>
+          Share your Build
+        </a>
+        <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
+      </div>
+      <commudle-featured-builds></commudle-featured-builds>
+      <commudle-builds></commudle-builds>
       <div class="top-builders">
         <commudle-builds-top-builders
-          [backgroundColor]="'#D59B5D'"
           [heading]="'POPULAR BUILDERS'"
           [subHeading]="'Follow these builders and get inspired'"
           [parentType]="'builds'"
-          [toolTipText]="
-            'People whose builds have the highest upvotes in the selected duration. The number in the profile card displays overall total builds and overall total stars.'
-          "
         ></commudle-builds-top-builders>
-      </div>
-      <div class="featured-projects">
-        <commudle-featured-projects></commudle-featured-projects>
       </div>
       <div class="explore-experts">
         <commudle-explore-experts></commudle-explore-experts>
       </div>
     </div>
-  </div>
-</commudle-listing-pages-layout>
+    <div main-column *ngIf="!isMobileView" class="main-column">
+      <commudle-featured-builds></commudle-featured-builds>
+      <commudle-builds></commudle-builds>
+    </div>
+    <div right-column class="right-column">
+      <div class="publish-build-button">
+        <a [routerLink]="['/builds/create']" nbButton size="large" class="button">
+          <nb-icon icon="plus"></nb-icon>
+          Share your Build
+        </a>
+        <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
+      </div>
+      <div>
+        <div class="top-builders">
+          <commudle-builds-top-builders
+            [backgroundColor]="'#D59B5D'"
+            [heading]="'POPULAR BUILDERS'"
+            [subHeading]="'Follow these builders and get inspired'"
+            [parentType]="'builds'"
+            [toolTipText]="
+              'People whose builds have the highest upvotes in the selected duration. The number in the profile card displays overall total builds and overall total stars.'
+            "
+          ></commudle-builds-top-builders>
+        </div>
+        <div class="explore-experts">
+          <commudle-explore-experts></commudle-explore-experts>
+        </div>
+      </div>
+    </div>
+  </commudle-listing-pages-layout>
+</div>

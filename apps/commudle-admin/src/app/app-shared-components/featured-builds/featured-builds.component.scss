@@ -1,0 +1,38 @@
+.featured-projects {
+  @apply com-p-0 md:com-m-0 com-mx-4;
+
+  .image {
+    @apply com-m-0 com-mr-3 com-w-9 com-h-9;
+    img {
+      @apply com-w-full;
+    }
+  }
+
+  .header {
+    @apply com-flex com-items-center com-m-0  md:com-pb-6 com-pb-7;
+  }
+
+  .header-text {
+    @apply com-flex com-flex-col com-m-0;
+    .title {
+      @apply com-flex com-flex-row com-items-center com-m-0 com-mb-2;
+      a {
+        @apply md:com-text-2xl com-text-sm com-font-semibold md:com-font-bold com-text-Yankees-Blue com-m-0 com-no-underline;
+      }
+    }
+    .sub-heading {
+      @apply md:com-text-sm com-text-xs md:com-font-medium com-font-normal com-text-gray-500 com-m-0;
+    }
+  }
+
+  .featured-project-cards {
+    @apply com-w-full com-flex md:com-flex-row com-flex-col com-m-0 com-p-0 com-gap-6;
+    .featured-project-card {
+      @apply com-m-0 com-p-0 com-w-full;
+    }
+  }
+}
+
+.skeleton-cards {
+  @apply com-p-0 com-px-4;
+}

@@ -45,8 +45,11 @@ export const staticAssets = {
     shield:
       'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOGdxQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--32a059c060494592838a43c620dc5f95da5ae4d6/sheild-front-color.png',
 
-    medal_of_honour:
-      'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOGNxQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c32f54e069ae256b46224c8d591a14e100abcc9d/b3d37220175f46299a2639f1bf15ded2.png',
+    eye: 'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmYwQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2c7ce1630c25afe50463bd60d8b11c64806f1266/Eye%20Animated%20Icon%20(2).gif',
+
+    //Not using this anymore
+    // medal_of_honour:
+    //   'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOGNxQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c32f54e069ae256b46224c8d591a14e100abcc9d/b3d37220175f46299a2639f1bf15ded2.png',
 
     smiley:
       'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNjFWQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7b8fa3296cfbb5419adb6d7ab200fb727e3faad6/eee169b54e19448db171335e87d0e20a.svg',
