@@ -43,3 +43,7 @@ nb-card {
     }
   }
 }
+
+.disabled {
+  @apply com-cursor-not-allowed com-pointer-events-none;
+}

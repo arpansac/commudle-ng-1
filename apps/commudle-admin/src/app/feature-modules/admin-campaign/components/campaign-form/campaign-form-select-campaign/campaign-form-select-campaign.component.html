@@ -13,7 +13,7 @@
   <nb-card *ngIf="!isLoading">
     <nb-card-header>Select one of the following</nb-card-header>
     <nb-card-body>
-      <div *ngFor="let campaignType of campaignTypes" class="campaign-type">
+      <div *ngFor="let campaignType of campaignTypes" class="campaign-type" [ngClass]="{ disabled: campaignExists }">
         <div (click)="selectCampaignType(campaignType.id)">
           <div class="radio-button" [ngClass]="{ selected: selectedCampaignTypeId === campaignType.id }">
             <span></span>

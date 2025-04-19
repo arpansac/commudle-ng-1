@@ -17,6 +17,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   };
   campaign: ICampaign;
   isLoading = true;
+  campaignExists = false;
   constructor(
     private campaignTypeService: CampaignTypeService,
     private campaignService: CampaignService,
@@ -35,6 +36,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
       this.activatedRoute.data.subscribe((params) => {
         if (params.campaign) {
           this.campaign = params.campaign;
+          this.campaignExists = true;
           this.selectedCampaignTypeId = this.campaign.campaign_type_id;
         }
       });
