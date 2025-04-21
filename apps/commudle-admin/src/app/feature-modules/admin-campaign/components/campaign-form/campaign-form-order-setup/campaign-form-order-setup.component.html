@@ -129,7 +129,7 @@
   </nb-card>
 
   <!-- Schedule -->
-  <nb-card *ngIf="campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER">
+  <nb-card *ngIf="campaign.campaign_type.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER">
     <nb-card-header id="schedule">
       <a [routerLink]="[]" fragment="schedule">
         <span class="left">Schedule</span>
@@ -253,7 +253,9 @@
         <form [formGroup]="campaignForm">
           <div class="budget-amount">
             <span class="budget">${{ campaign.campaign_type.budget_amount }}</span>
-            <span class="per-day">Per Minute</span>
+            <span class="per-day" *ngIf="campaign.campaign_type.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER"
+              >Per Minute</span
+            >
           </div>
           <div>
             <label for="budget">Your Estimated Cost</label>

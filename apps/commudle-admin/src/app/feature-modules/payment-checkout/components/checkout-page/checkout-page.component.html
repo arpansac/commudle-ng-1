@@ -42,24 +42,24 @@
               </div>
 
               <div class="recipient">
-                <div class="heading">Recipients</div>
+                <div class="heading">Recipient</div>
                 <div class="recipient-details">
-                  <div>{{ purchaseOrder.user.name | titlecase }}</div>
-                  <div class="user-contact-details">
-                    <span>{{ purchaseOrder.user.email }}</span>
-                    <br />
-                    <span>{{ purchaseOrder.user.phone }}</span>
-                  </div>
+                  <div class="name">{{ purchaseOrder.user.name | titlecase }}</div>
+                  <span class="email">{{ purchaseOrder.user.email }}</span>
+                  <br />
+                  <span class="phone">{{ purchaseOrder.user.phone }}</span>
                 </div>
               </div>
             </nb-card-body>
           </nb-card>
 
           <div class="info-container">
-            <commudle-alert
-              [info]="true"
-              message="For any technical support please reach out to payments_support@commudle.com"
-            ></commudle-alert>
+            <commudle-alert [info]="true">
+              <div infoContent>
+                For any technical support please reach out to
+                <a href="mailto:payments_support@commudle.com">payments_support&#64;commudle.com</a>
+              </div>
+            </commudle-alert>
           </div>
 
           <div class="info-container">

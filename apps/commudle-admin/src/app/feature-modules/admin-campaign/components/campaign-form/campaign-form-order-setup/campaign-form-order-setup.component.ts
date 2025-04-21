@@ -40,10 +40,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         contact_name: ['', Validators.required],
         contact_email: ['', [Validators.required, Validators.email]],
         company_name: ['', Validators.required],
-        start_time: ['', Validators.required],
-        end_time: ['', Validators.required],
-        start_date: ['', Validators.required],
-        end_date: ['', Validators.required],
+        start_time: [''],
+        end_time: [''],
+        start_date: [''],
+        end_date: [''],
         budget: [0, Validators.required],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
@@ -133,6 +133,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
           this.imagePreview[index] = asset.image.url;
         });
       }
+    }
+
+    if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
+      this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
+        this.campaignForm.patchValue({ budget: data });
+      });
     }
   }
 
