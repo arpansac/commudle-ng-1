@@ -32,7 +32,14 @@
         </a>
         <a
           *ngIf="hackathon.status === EHackathonStatus.OPEN"
-          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug, 'review']"
+          [routerLink]="[
+            '/admin',
+            'communities',
+            parentId,
+            'hackathon-dashboard',
+            hackathon.slug,
+            'applications-dashboard'
+          ]"
         >
           <button nbButton status="primary" size="tiny">Dashboard</button>
         </a>
