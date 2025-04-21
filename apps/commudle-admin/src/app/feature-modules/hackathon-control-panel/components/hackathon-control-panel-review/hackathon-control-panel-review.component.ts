@@ -128,12 +128,11 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.fetchHackathon(params.get('hackathon_id'));
       this.indexRounds(params.get('hackathon_id'));
     });
-    if (this.userResponses && this.userResponses.length > 0) {
-      this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
-        this.page = 1;
-        this.fetchUserResponses();
-      });
-    }
+
+    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.fetchUserResponses();
+    });
   }
 
   fetchHackathon(hackathonId) {

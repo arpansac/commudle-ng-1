@@ -82,7 +82,7 @@ const routes: Routes = [
             component: HackathonControlPanelUpdatesComponent,
           },
           {
-            path: 'review',
+            path: 'applications-dashboard',
             component: HackathonControlPanelReviewComponent,
           },
           {
