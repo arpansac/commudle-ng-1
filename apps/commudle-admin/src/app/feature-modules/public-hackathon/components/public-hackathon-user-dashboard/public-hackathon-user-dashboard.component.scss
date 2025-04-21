@@ -45,10 +45,12 @@ nb-card {
 
 .team-details-container {
   .team-detail {
-    @apply com-flex com-items-center com-justify-between;
     .details {
       @apply com-flex com-flex-col;
     }
+  }
+  button {
+    @apply com-px-0;
   }
   .team-detail:not(:last-child) {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-mb-2 com-pb-2;
