@@ -9,9 +9,9 @@
   >
     <ng-container *ngIf="badgeHasExperts[expertBadge.id] !== false">
       <div class="heading">
-        <!-- <div *ngIf="expertBadge.image" class="image">
-        <img [src]="expertBadge.image.i64 || expertBadge.image.url" />
-      </div> -->
+        <div *ngIf="expertBadge.image" class="image">
+          <img [src]="expertBadge.image.i64 || expertBadge.image.url" />
+        </div>
         <h2 class="heading-name">
           <a [routerLink]="'.'" fragment="{{ expertBadge.name | replaceSpace }}">{{ expertBadge.name }}</a>
         </h2>

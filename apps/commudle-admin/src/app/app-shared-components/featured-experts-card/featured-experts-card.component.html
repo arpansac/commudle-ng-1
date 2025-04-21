@@ -1,12 +1,14 @@
-<a *ngIf="expert" [routerLink]="['/users', expert.username]">
-  <nb-card>
-    <nb-card-body>
-      <div class="expert-card">
+<nb-card *ngIf="expert">
+  <nb-card-body>
+    <div class="expert-card">
+      <a [routerLink]="['/users', expert.username]">
         <div *ngIf="expert.photo" class="expert-image">
           <img src="{{ expert.photo.i320 }}" alt="{{ expert.name }}" />
         </div>
-        <div class="details">
-          <div class="name-header">
+      </a>
+      <div class="details">
+        <div class="name-header">
+          <a [routerLink]="['/users', expert.username]">
             <div class="expert-name">
               <p class="name">{{ expert.name }}</p>
               <img
@@ -20,18 +22,20 @@
                 [userConnect]="expert.distance_from_current_user"
               ></commudle-user-personal-connect>
             </div>
-            <app-user-follow
-              [username]="expert.username"
-              [name]="expert.name"
-              [isMobileWidthFull]="true"
-              [userId]="expert.id"
-              [appearance]="'outline'"
-            ></app-user-follow>
-          </div>
+          </a>
+          <app-user-follow
+            [username]="expert.username"
+            [name]="expert.name"
+            [isMobileWidthFull]="true"
+            [userId]="expert.id"
+            [appearance]="'outline'"
+          ></app-user-follow>
+        </div>
+        <a [routerLink]="['/users', expert.username]">
           <p class="expert-username">@{{ expert.username }}</p>
           <p class="expert-designation">{{ expert.designation }}</p>
-        </div>
+        </a>
       </div>
-    </nb-card-body>
-  </nb-card>
-</a>
+    </div>
+  </nb-card-body>
+</nb-card>
