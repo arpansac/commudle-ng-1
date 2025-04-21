@@ -46,8 +46,8 @@ export class CampaignListComponent {
 
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
-      if (campaign.newsletter_id) {
-        this.newsletterId = campaign.newsletter_id;
+      if (campaign.main_newsletter_id) {
+        this.newsletterId = campaign.main_newsletter_id;
       } else {
         this.newsletterId = null;
       }
@@ -71,7 +71,7 @@ export class CampaignListComponent {
     this.campaignService.updateNewsletterWithCampaign(campaignId, this.newsletterId).subscribe((res) => {
       if (res) {
         const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
-        this.campaigns[index].newsletter_id = this.newsletterId;
+        this.campaigns[index].main_newsletter_id = this.newsletterId;
         this.toasterService.successDialog('Campaign updated successfully');
       }
     });

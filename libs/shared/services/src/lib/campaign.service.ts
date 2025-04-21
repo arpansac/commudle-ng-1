@@ -83,6 +83,16 @@ export class CampaignService {
     });
   }
 
+  getNewsletterStats(campaignId: number): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.MAIN_NEWSLETTER_CAMPAIGN_STATS),
+      {
+        params,
+      },
+    );
+  }
+
   updateNewsletterWithCampaign(campaignId: number, newsletterId: number): Observable<ICampaign> {
     return this.http.put<ICampaign>(
       this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_UPDATE_NEWSLETTER),

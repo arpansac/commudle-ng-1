@@ -20,7 +20,7 @@ export interface ICampaign {
   created_at: Date;
   updated_at: Date;
   tags: string[];
-  newsletter_id: number;
+  main_newsletter_id: number;
 
   status: ECampaignStatus;
 
