@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignType } from '@commudle/shared-models';
 import { CampaignService, CampaignTypeService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -23,6 +24,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     private campaignService: CampaignService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -44,6 +46,9 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   }
 
   selectCampaignType(campaignTypeId: number) {
+    if (this.campaignExists) {
+      return;
+    }
     this.selectedCampaignTypeId = campaignTypeId;
   }
 
@@ -61,5 +66,21 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
           fragment: 'user-information',
         });
       });
+  }
+
+  getClampedText(description: string): string {
+    const limit = 100;
+    if (description.length > limit) {
+      return description.slice(0, limit) + '...';
+    }
+    return description;
+  }
+
+  viewMoreClicked(dialog, campaignType: ICampaignType) {
+    this.dialogService.open(dialog, {
+      context: {
+        campaignType: campaignType,
+      },
+    });
   }
 }

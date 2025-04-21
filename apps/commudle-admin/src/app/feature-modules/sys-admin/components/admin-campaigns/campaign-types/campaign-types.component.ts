@@ -46,9 +46,10 @@ export class CampaignTypesComponent implements OnInit {
       'help',
       'wordcount',
       'autoresize',
+      'image',
     ],
     toolbar:
-      'h2  h3  h4  h5 fontsize | bold italic backcolor | emoticons | link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+      'h2  h3  h4  h5 fontsize | bold italic backcolor | emoticons | link | image | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
     default_link_target: '_blank',
     font_size_formats: '8px 10px 12px 14px 16px 18px 20px 22px 24px',
     branding: false,
