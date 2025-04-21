@@ -41,10 +41,6 @@ export class CampaignStatsComponent implements OnInit {
   getNewsletterCampaignStats() {
     this.campaignService.getNewsletterStats(this.campaign.id).subscribe((stats: ICampaignStats) => {
       this.campaignStats = stats;
-      console.log(
-        '🚀 ~ CampaignStatsComponent ~ this.campaignService.getNewsletterCampaignStats ~ this.campaignStats:',
-        this.campaignStats,
-      );
     });
   }
 
