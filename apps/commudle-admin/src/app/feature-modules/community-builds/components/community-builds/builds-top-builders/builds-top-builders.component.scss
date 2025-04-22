@@ -5,9 +5,8 @@ nb-card {
     @apply com-p-0 com-m-0;
 
     .title {
-      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4;
-      //TODO: Convert style css to tailwindCss
-      background: linear-gradient(210deg, #e5e7eb -46.76%, #fff 71.16%);
+      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4 com-rounded-t-lg;
+      @apply com-bg-gradient-to-l com-from-gray-100 com-to-white;
       h3 {
         @apply com-m-0 com-mb-1 com-leading-[0px];
         a {
@@ -44,7 +43,7 @@ nb-card {
       }
 
       .activeTag {
-        @apply com-border-gray-500 com-bg-gray-200 com-text-xs com-font-medium;
+        @apply com-border-gray-500 com-bg-gray-100 com-text-xs com-font-medium;
       }
     }
 
@@ -54,7 +53,7 @@ nb-card {
         @apply com-m-0 com-w-full md:com-py-3 com-p-0 com-rounded-none;
       }
       .top-builders-card:not(:last-child) {
-        @apply com-border-0 md:com-border-b com-border-b-0 md:com-border-solid md:com-border-Bright-Gray;
+        @apply com-border-0 md:com-border-b md:com-border-solid md:com-border-Bright-Gray;
       }
 
       app-loading-spinner {
@@ -62,7 +61,7 @@ nb-card {
       }
 
       .load-more {
-        @apply com-text-center com-m-0 com-pb-4 md:com-bg-white com-rounded-md;
+        @apply com-text-center com-m-0 com-p-4 com-rounded-md;
       }
     }
   }

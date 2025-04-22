@@ -1,20 +1,24 @@
-<nb-card [routerLink]="['/builds', build.slug]" class="user-build">
+<nb-card class="user-build">
   <nb-card-body>
-    <div class="build-card-image">
-      <commudle-banner-image
-        [headerImagePath]="build.images[0] ? build.images[0]?.url : staticAssets.community_build_empty_state"
-        [name]="build.name"
-        [bottomRightCurve]="false"
-        [bottomLeftCurve]="false"
-        [aspectRatio]="'4/3'"
-      ></commudle-banner-image>
-    </div>
-    <div class="content">
-      <div class="details">
-        <h4 class="user-build-name">{{ build.name }}</h4>
-        <p class="time">{{ moment(build.created_at).format('MMM Do, YYYY') }}</p>
-        <app-user-profile-card-small [user]="build.user"></app-user-profile-card-small>
+    <a [routerLink]="['/builds', build.slug]">
+      <div class="build-card-image">
+        <commudle-banner-image
+          [headerImagePath]="build.images[0] ? build.images[0]?.url : staticAssets.community_build_empty_state"
+          [name]="build.name"
+          [bottomRightCurve]="false"
+          [bottomLeftCurve]="false"
+          [aspectRatio]="'4/3'"
+        ></commudle-banner-image>
       </div>
+    </a>
+    <div class="content">
+      <a [routerLink]="['/builds', build.slug]">
+        <div class="details">
+          <h4 class="user-build-name">{{ build.name }}</h4>
+          <p class="time">{{ moment(build.created_at).format('MMM Do, YYYY') }}</p>
+          <app-user-profile-card-small [user]="build.user"></app-user-profile-card-small>
+        </div>
+      </a>
       <div class="votes">
         <app-votes-display
           [icon]="'star'"
