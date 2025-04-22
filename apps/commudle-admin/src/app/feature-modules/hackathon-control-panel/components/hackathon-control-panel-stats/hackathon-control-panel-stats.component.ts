@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IHackathon, EParticipateTypes } from '@commudle/shared-models';
+import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { StatsHackathonService } from 'apps/commudle-admin/src/app/services/stats/hackathons.service';
 import Chart from 'chart.js';
 
@@ -13,14 +15,27 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   hackathonTeamStats: any;
   hackathonUserResponsesTags: any;
   totalUserVisits: number;
+  hackathon: IHackathon;
+  EParticipateTypes = EParticipateTypes;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('hackathonTeamOverTime') HackathonTeamOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('hackathonUserVisitOverDays') HackathonUserVisitOverDays: ElementRef<HTMLCanvasElement>;
-  constructor(private route: ActivatedRoute, private statsHackathonService: StatsHackathonService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private statsHackathonService: StatsHackathonService,
+    private hackathonService: HackathonService,
+  ) {}
 
   ngOnInit() {
     this.route.parent.paramMap.subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
+      this.hackathonService.showHackathon(this.hackathonId).subscribe((hackathon) => {
+        this.hackathon = hackathon;
+        console.log(
+          '🚀 ~ HackathonControlPanelStatsComponent ~ this.hackathonService.showHackathon ~  this.hackathon:',
+          this.hackathon,
+        );
+      });
       this.getGenderDistributionChart();
       this.getHackathonTeamStats();
       this.getHackathonUserResponsesTags();
