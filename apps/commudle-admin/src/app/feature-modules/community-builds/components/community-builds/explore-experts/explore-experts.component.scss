@@ -26,4 +26,8 @@ nb-card {
       }
     }
   }
+
+  .load-more {
+    @apply com-text-center com-m-0 com-pt-4 com-rounded-md;
+  }
 }

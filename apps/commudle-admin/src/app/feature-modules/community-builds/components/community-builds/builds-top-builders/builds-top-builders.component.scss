@@ -5,7 +5,7 @@ nb-card {
     @apply com-p-0 com-m-0;
 
     .title {
-      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4 com-rounded-t-xl;
+      @apply com-flex com-flex-col md:com-m-0 md:com-p-4 com-p-4 com-rounded-t-lg;
       //TODO: Convert style css to tailwindCss
       background: linear-gradient(210deg, #e5e7eb -46.76%, #fff 71.16%);
       h3 {
