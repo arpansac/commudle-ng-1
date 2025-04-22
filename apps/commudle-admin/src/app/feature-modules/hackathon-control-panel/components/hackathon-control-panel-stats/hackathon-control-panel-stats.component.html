@@ -31,7 +31,7 @@
         </div>
       </div>
       <!-- Teams Count -->
-      <div class="hackathon-stats-item">
+      <div class="hackathon-stats-item" *ngIf="hackathon?.participate_types === EParticipateTypes.TEAM">
         <div class="hackathon-stats-item-label">Teams Count</div>
         <div class="hackathon-stats-item-value">{{ hackathonTeamStats.hackathon_teams_count }}</div>
       </div>
