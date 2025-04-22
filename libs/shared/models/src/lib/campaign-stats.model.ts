@@ -18,4 +18,12 @@ export interface ICampaignStats {
     NA: number;
   };
   user_locations: [];
+  newsletter_email_stats: {
+    opens: number;
+    uniq_opens: number;
+    clicks: number;
+    uniq_clicks: number;
+    delivered: number;
+    sents: number;
+  };
 }

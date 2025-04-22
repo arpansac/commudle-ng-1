@@ -51,13 +51,26 @@ export class CampaignService {
     });
   }
 
-  calculateBudget(campaignId: number, startDate, endDate, startTime, endTime): Observable<ICampaign> {
-    const params = new HttpParams()
-      .set('campaign_id', campaignId)
-      .set('start_date', startDate)
-      .set('end_date', endDate)
-      .set('start_time', startTime)
-      .set('end_time', endTime);
+  calculateBudget(
+    campaignId: number,
+    startDate = null,
+    endDate = null,
+    startTime = null,
+    endTime = null,
+  ): Observable<ICampaign> {
+    let params = new HttpParams().set('campaign_id', campaignId);
+    if (startDate) {
+      params = params.set('start_date', startDate);
+    }
+    if (endDate) {
+      params = params.set('end_date', endDate);
+    }
+    if (startTime) {
+      params = params.set('start_time', startTime);
+    }
+    if (endTime) {
+      params = params.set('end_time', endTime);
+    }
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CALC_ESTIMATED_PRICE), {
       params,
     });
@@ -68,6 +81,16 @@ export class CampaignService {
     return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS), {
       params,
     });
+  }
+
+  getNewsletterStats(campaignId: number): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.MAIN_NEWSLETTER_CAMPAIGN_STATS),
+      {
+        params,
+      },
+    );
   }
 
   updateNewsletterWithCampaign(campaignId: number, newsletterId: number): Observable<ICampaign> {

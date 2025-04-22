@@ -43,3 +43,17 @@ nb-card {
     }
   }
 }
+
+.disabled {
+  @apply com-cursor-not-allowed com-pointer-events-none;
+  .clamped-description {
+    @apply com-pointer-events-auto;
+  }
+}
+
+.description-card {
+  @apply com-w-full md:com-w-[40dvw] com-max-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}

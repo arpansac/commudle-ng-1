@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignStatus } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
 import { CampaignService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   tags = [];
 
   formSubscription: Subscription;
+  ECampaignTypeSlug = ECampaignTypeSlug;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,10 +40,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         contact_name: ['', Validators.required],
         contact_email: ['', [Validators.required, Validators.email]],
         company_name: ['', Validators.required],
-        start_time: ['', Validators.required],
-        end_time: ['', Validators.required],
-        start_date: ['', Validators.required],
-        end_date: ['', Validators.required],
+        start_time: [''],
+        end_time: [''],
+        start_date: [''],
+        end_date: [''],
         budget: [0, Validators.required],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
@@ -133,6 +134,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         });
       }
     }
+
+    if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
+      this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
+        this.campaignForm.patchValue({ budget: data });
+      });
+    }
   }
 
   onFileChange(event: any, index: number) {
@@ -159,8 +166,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     img.src = URL.createObjectURL(file);
     img.onload = () => {
       if (
-        img.width !== this.campaign.campaign_type.image_dimension.width ||
-        img.height !== this.campaign.campaign_type.image_dimension.height
+        img.width !== this.campaign.campaign_type.image_dimension?.width ||
+        img.height !== this.campaign.campaign_type.image_dimension?.height
       ) {
         this.toasterService.warningDialog(
           'Image must be exactly ' +

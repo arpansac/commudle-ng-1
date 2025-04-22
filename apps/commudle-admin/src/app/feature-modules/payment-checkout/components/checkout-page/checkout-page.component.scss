@@ -32,7 +32,14 @@
           @apply com-px-4 com-py-2 com-text-base com-italic;
         }
         .recipient-details {
-          @apply com-flex com-justify-between com-gap-2 com-py-2 com-px-4;
+          @apply com-gap-2 com-py-2 com-px-4;
+          .name {
+            @apply com-font-semibold;
+          }
+          .email,
+          .phone {
+            @apply com-italic;
+          }
         }
       }
 

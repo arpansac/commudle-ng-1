@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CampaignService } from '@commudle/shared-services';
-import { ICampaignStats } from '@commudle/shared-models';
+import { ECampaignStatus, ECampaignTypeSlug, ICampaign, ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
 declare let google: any;
 
@@ -12,6 +12,7 @@ declare let google: any;
 })
 export class CampaignStatsComponent implements OnInit {
   @Input() campaignId: number;
+  campaign: ICampaign;
   campaignStats: ICampaignStats;
   @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
@@ -22,13 +23,29 @@ export class CampaignStatsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private campaignService: CampaignService) {}
 
   ngOnInit() {
-    // this.route.params.subscribe((params) => {
-    this.getCampaignStats(this.campaignId);
-    // });
+    this.fetchCampaigns();
   }
 
-  getCampaignStats(campaignId: number) {
-    this.campaignService.getStats(campaignId).subscribe((stats: ICampaignStats) => {
+  fetchCampaigns() {
+    this.campaignService.fetchCampaign(this.campaignId).subscribe((campaign) => {
+      this.campaign = campaign;
+      if (this.campaign.main_newsletter_id && this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
+        this.getNewsletterCampaignStats();
+      }
+      if (this.campaign.campaign_type.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER) {
+        this.getCampaignStats();
+      }
+    });
+  }
+
+  getNewsletterCampaignStats() {
+    this.campaignService.getNewsletterStats(this.campaign.id).subscribe((stats: ICampaignStats) => {
+      this.campaignStats = stats;
+    });
+  }
+
+  getCampaignStats() {
+    this.campaignService.getStats(this.campaign.id).subscribe((stats: ICampaignStats) => {
       this.campaignStats = stats;
       this.viewsOverDays();
       this.clicksOverDays();
