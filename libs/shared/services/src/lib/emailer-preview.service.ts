@@ -66,4 +66,16 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonTeamIndividualGeneralEmailPreview(formData, hackathonTeamId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(
+        API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL,
+      ),
+      {
+        email_form: formData,
+        hackathon_team_id: hackathonTeamId,
+      },
+    );
+  }
 }

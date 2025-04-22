@@ -9,8 +9,7 @@
     <p class="sample-preview">This is a preview of your email</p>
     <div class="info-message">
       <commudle-alert
-        [info]="true"
-        message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
+        warning="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
       ></commudle-alert>
     </div>
     <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div>

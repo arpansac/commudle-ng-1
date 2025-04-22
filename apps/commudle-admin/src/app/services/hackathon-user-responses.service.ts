@@ -113,4 +113,25 @@ export class HackathonUserResponsesService {
       { params },
     );
   }
+
+  resendInviteToTeammate(hackathonTeamId, hackathonUserResponseId): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_USER_RESPONSE.TEAMMATE_INVITE_REMINDER_EMAIL),
+      {
+        hackathon_user_response_id: hackathonUserResponseId,
+        hackathon_team_id: hackathonTeamId,
+      },
+    );
+  }
+
+  individualTeamEmail(hackathonTeamId: number, emailData): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_USER_RESPONSE.HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL),
+      {
+        hackathon_team_id: hackathonTeamId,
+        subject: emailData.subject,
+        message: emailData.body,
+      },
+    );
+  }
 }

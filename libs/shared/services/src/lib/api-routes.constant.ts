@@ -439,6 +439,8 @@ export const API_ROUTES = {
       ROUND_GENERAL_EMAIL: 'api/v2/email_previews/hackathon_emails/round_general_email',
       OVERALL_ROUND_SELECTION_UPDATE_EMAIL:
         'api/v2/email_previews/hackathon_emails/overall_round_selection_update_email',
+      HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL:
+        'api/v2/email_previews/hackathon_emails/hackathon_team_individual_general_email',
     },
   },
 
@@ -921,6 +923,8 @@ export const API_ROUTES = {
     COMPLETE_HUR_STATUS: 'api/v2/hackathon_user_response/complete_hur_status', //PUT
     GET_DATA_FORM_RESPONSES: 'api/v2/hackathon_user_response/get_data_form_responses', //GET
     REMOVE_TEAM_MEMBER: 'api/v2/hackathon_user_response/remove_team_member', //PUT
+    TEAMMATE_INVITE_REMINDER_EMAIL: 'api/v2/hackathon_user_response/teammate_invite_reminder_email', //POST
+    HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL: 'api/v2/hackathon_user_response/hackathon_team_individual_general_email', //POST
   },
 
   ENTITY_UPDATES: {

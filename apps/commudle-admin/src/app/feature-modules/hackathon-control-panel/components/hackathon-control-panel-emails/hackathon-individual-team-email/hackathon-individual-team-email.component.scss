@@ -1,0 +1,17 @@
+.mail-popup {
+  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-full;
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center com-gap-4;
+  }
+
+  nb-card-body {
+    .mandatory-field {
+      @apply com-text-red-500 com-ml-0.5;
+    }
+
+    .subject {
+      @apply com-mb-4;
+    }
+  }
+}

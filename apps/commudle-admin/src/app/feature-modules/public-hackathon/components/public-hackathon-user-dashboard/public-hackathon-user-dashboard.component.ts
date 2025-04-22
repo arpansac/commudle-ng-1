@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   EDbModels,
   EDiscussionType,
+  EInvitationStatus,
   ICommunityChannel,
   IHackathonTeam,
   IHackathonUserResponse,
@@ -34,6 +35,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   EDbModels: EDbModels;
   EDiscussionType = EDiscussionType;
   channels: ICommunityChannel[];
+  EInvitationStatus = EInvitationStatus;
 
   private destroy$ = new Subject<void>();
 
@@ -108,6 +110,14 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
       if (data) {
         this.toasterService.successDialog('Team member removed from your team');
         this.userTeamDetails[teamIndex].hackathon_user_responses.splice(index, 1);
+      }
+    });
+  }
+
+  resendInviteToMember(hur: IHackathonUserResponse, team: IHackathonTeam) {
+    this.hackathonUserResponseService.resendInviteToTeammate(team.id, hur.id).subscribe((data) => {
+      if (data) {
+        this.toasterService.successDialog('Team member invite resent');
       }
     });
   }
