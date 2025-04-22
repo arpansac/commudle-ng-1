@@ -19,6 +19,7 @@
     height: 160px;
     border: 0.5px solid lightgrey;
     padding: 0.5rem;
+    @apply com-rounded-md;
     .logo {
       @apply com-bg-tWhite;
       width: 50px;
