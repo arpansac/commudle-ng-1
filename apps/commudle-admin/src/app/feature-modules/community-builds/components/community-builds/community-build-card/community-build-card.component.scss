@@ -5,16 +5,20 @@ p {
 .community-build-card {
   @apply com-flex com-flex-row com-no-underline com-overflow-hidden com-justify-between;
 
+  .image-badge-wrapper {
+    @apply com-relative;
+  }
+
   a {
     @apply com-no-underline;
     .details {
       @apply com-flex;
       .community-build-card-image {
         @apply com-flex com-pt-1 md:com-h-[118px] com-h-[68px] com-w-full com-relative;
+      }
 
-        app-badge {
-          @apply md:com-hidden com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
-        }
+      .mobile-hackathon-badge {
+        @apply md:com-hidden com-absolute com-top-3 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
       }
 
       .community-build-card-details {
@@ -27,7 +31,7 @@ p {
             @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500 com-mr-4;
           }
 
-          app-badge {
+          .desktop-hackathon-badge {
             @apply md:com-flex com-hidden com-border com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
           }
         }

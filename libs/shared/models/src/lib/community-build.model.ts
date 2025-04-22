@@ -26,6 +26,7 @@ export interface ICommunityBuild {
   live_app_link: string;
   hackathon_team: IHackathonTeam;
   entity_updates?: IEntityUpdate[];
+  thumbnail_image: IAttachedFile;
 }
 
 export interface ICommunityBuildSearch extends ICommunityBuild {
