@@ -69,7 +69,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   }
 
   getClampedText(description: string): string {
-    const limit = 100;
+    const limit = 150;
     if (description.length > limit) {
       return description.slice(0, limit) + '...';
     }

@@ -38,7 +38,7 @@
             <p class="header">{{ campaignType.name }}</p>
             <p class="clamped-description">
               <span [innerHTML]="getClampedText(campaignType.description)"></span>&nbsp;
-              <ng-container *ngIf="campaignType.description.length > 100">
+              <ng-container *ngIf="campaignType.description.length > 150">
                 <a (click)="viewMoreClicked(formTypeDescription, campaignType); $event.stopPropagation()">View More</a>
               </ng-container>
             </p>
