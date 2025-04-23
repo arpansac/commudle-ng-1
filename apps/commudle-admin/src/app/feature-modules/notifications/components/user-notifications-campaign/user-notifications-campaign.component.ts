@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from '@commudle/shared-environments';
 import { ECampaignTypeSlug } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 @Component({
@@ -9,4 +10,5 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 export class UserNotificationsCampaignComponent {
   staticAssets = staticAssets;
   ECampaignTypeSlug = ECampaignTypeSlug;
+  defaultUrl = environment.app_url + '/campaigns/new';
 }
