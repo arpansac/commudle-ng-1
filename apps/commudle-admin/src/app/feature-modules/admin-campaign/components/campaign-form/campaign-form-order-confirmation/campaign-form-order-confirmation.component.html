@@ -42,14 +42,19 @@
       </div>
     </nb-card-body>
   </nb-card>
-  <commudle-alert
-    [info]="true"
-    message="All ads are subject to approval from our team. In case of any changes needed or rejection, you will be notified by email"
-  ></commudle-alert>
+  <commudle-alert [info]="true">
+    <div infoContent>
+      All ads are subject to approval from our team. In case of any changes needed or rejection, you will be notified by
+      email. For any queries please write to
+      <a href="mailto:campaigns_support@commudle.com">campaigns_support&#64;commudle.com</a>
+    </div>
+  </commudle-alert>
   <br />
   <nb-checkbox [(ngModel)]="consent" status="basic">
-    By submitting this ad for approval you confirm that you have read our privacy policy and terms & conditions. You
-    also understand that all the information provided here is correct and does not pose any harm to anyone who visits
+    By submitting this ad for approval you confirm that you have read our
+    <a href="https://www.commudle.com/policies/privacy-policy" target="_blank">privacy policy</a> and
+    <a href="https://www.commudle.com/policies/terms-and-conditions" target="_blank">terms & conditions.</a> You also
+    understand that all the information provided here is correct and does not pose any harm to anyone who visits
     Commudle.
   </nb-checkbox>
 

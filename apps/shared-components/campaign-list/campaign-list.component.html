@@ -178,7 +178,7 @@
           nbButton
           status="danger"
           size="small"
-          (click)="$event.stopPropagation(); destroy(campaign.id)"
+          (click)="$event.stopPropagation(); openDestroyCampaignPopup(destroyCampaign, campaign)"
         >
           Destroy
         </button>
@@ -220,6 +220,29 @@
         Update
       </button>
       <button nbButton status="danger" (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #destroyCampaign let-data let-ref="dialogRef">
+  <nb-card class="destroy-campaign">
+    <nb-card-header>
+      <div>
+        Are you sure ?
+        {{ data.campaign.name }}
+      </div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>
+        You want to destroy <strong>{{ data.campaign.name }}</strong>
+      </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="danger" (click)="destroy(data.campaign.id); ref.close()">Destroy</button>
+      <button nbButton status="info" (click)="ref.close()">Close</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>
