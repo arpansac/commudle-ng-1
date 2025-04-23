@@ -21,6 +21,10 @@
     </p>
   </div>
 
+  <commudle-alert [info]="true">
+    <div infoContent>Select campaign type carefully, it cannot be edited once you move to the next step.</div>
+  </commudle-alert>
+
   <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
   <nb-card *ngIf="!isLoading">
     <nb-card-header>Select one of the following</nb-card-header>
