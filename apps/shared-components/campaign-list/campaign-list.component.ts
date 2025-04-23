@@ -26,7 +26,7 @@ export class CampaignListComponent {
 
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   noteTexts: { [campaignId: number]: string } = {};
-  newsletterId: number;
+  newsletterId: number | null;
   constructor(
     private campaignService: CampaignService,
     private toasterService: ToastrService,
@@ -53,6 +53,10 @@ export class CampaignListComponent {
       }
       this.dialogService.open(dialog, { context: { campaignId: campaign.id } });
     }
+  }
+
+  openDestroyCampaignPopup(dialog, campaign) {
+    this.dialogService.open(dialog, { context: { campaign: campaign } });
   }
 
   updateNotes(campaignId: number) {

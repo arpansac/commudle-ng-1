@@ -51,7 +51,8 @@
   }
 }
 
-.update-newsletter {
+.update-newsletter,
+.destroy-campaign {
   @apply com-w-full md:com-w-[20dvw];
   nb-card-header,
   nb-card-footer {
