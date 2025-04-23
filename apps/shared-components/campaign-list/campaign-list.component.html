@@ -237,7 +237,8 @@
     </nb-card-header>
     <nb-card-body>
       <p>
-        You want to destroy <strong>{{ data.campaign.name }}</strong>
+        Are you sure you want to delete {{ data.campaign.name ? data.campaign.name : 'this campaign' }} This action
+        cannot be undone.
       </p>
     </nb-card-body>
     <nb-card-footer>
