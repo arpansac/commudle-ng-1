@@ -180,3 +180,16 @@ th {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+.send-application-status-dialog-box {
+  @apply com-w-full md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  .email-buttons-actions {
+    @apply com-space-y-6;
+    .email-buttons {
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-3;
+    }
+  }
+}

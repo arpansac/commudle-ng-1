@@ -78,4 +78,16 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonSendTeamStatusEmailByFilterEmailPreview(hackathonId, registrationStatus): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(
+        API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.HACKATHON_SEND_TEAM_STATUS_EMAIL_BY_FILTER,
+      ),
+      {
+        hackathon_id: hackathonId,
+        team_registration_status: registrationStatus,
+      },
+    );
+  }
 }
