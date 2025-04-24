@@ -45,7 +45,7 @@ export const staticAssets = {
     shield:
       'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOGdxQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--32a059c060494592838a43c620dc5f95da5ae4d6/sheild-front-color.png',
 
-    eye: 'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmYwQXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2c7ce1630c25afe50463bd60d8b11c64806f1266/Eye%20Animated%20Icon%20(2).gif',
+    eye: 'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNWNCQkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4f019af13cdd9381bf1e7fc9371fde5f1ba7ea9f/Eye%20Animated%20Icon%20(3).gif',
 
     //Not using this anymore
     // medal_of_honour:
