@@ -1,5 +1,5 @@
 nb-card {
-  @apply com-m-0 md:com-h-[166px] com-h-[144px] com-w-full;
+  @apply com-m-0 com-h-full com-w-full;
 
   nb-card-body {
     @apply com-p-3 com-overflow-hidden;
@@ -8,7 +8,7 @@ nb-card {
       @apply com-no-underline;
 
       .tags-and-logo {
-        @apply com-flex com-justify-between md:com-mb-4 com-mb-2 com-max-h-7 com-overflow-hidden com-flex-nowrap;
+        @apply com-flex com-justify-between com-max-h-7 com-overflow-hidden com-flex-nowrap;
 
         img {
           @apply com-h-5 com-w-5 com-rounded-full com-object-contain com-object-center com-ml-4 com-bg-tWhite;
@@ -16,10 +16,10 @@ nb-card {
       }
 
       .title {
-        @apply md:com-text-sm com-text-base com-font-normal md:com-font-bold com-m-0 com-text-Dark-Jungle-Green md:com-line-clamp-2 com-line-clamp-1 com-mb-3 md:com-max-h-10;
+        @apply md:com-text-sm com-text-base com-font-normal md:com-font-medium com-m-0 com-text-Yankees-Blue md:com-line-clamp-2 com-line-clamp-1 com-mb-1 md:com-max-h-10;
       }
       .description {
-        @apply md:com-text-xs com-text-sm com-font-normal com-m-0 com-text-Quartz com-line-clamp-2 md:com-max-h-8;
+        @apply md:com-text-xs com-text-sm com-font-normal com-m-0 com-text-gray-500 com-line-clamp-2 md:com-max-h-8 md:com-mb-4 com-mb-2;
       }
     }
   }
