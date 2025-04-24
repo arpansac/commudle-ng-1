@@ -19,7 +19,7 @@ nb-card {
         @apply md:com-text-sm com-text-base com-font-normal md:com-font-medium com-m-0 com-text-Yankees-Blue md:com-line-clamp-2 com-line-clamp-1 com-mb-1 md:com-max-h-10;
       }
       .description {
-        @apply md:com-text-xs com-text-sm com-font-normal com-m-0 com-text-gray-500 com-line-clamp-2 md:com-max-h-8 md:com-mb-4 com-mb-2;
+        @apply md:com-text-xs com-text-sm com-font-normal com-m-0 com-text-gray-500 com-line-clamp-2 md:com-max-h-8 md:com-mb-4 com-mb-2 md:com-h-auto com-h-10;
       }
     }
   }
