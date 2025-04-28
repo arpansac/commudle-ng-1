@@ -17,10 +17,14 @@
           [parentType]="'communities'"
         ></commudle-public-home-list-events-speakers>
       </div>
-      <commudle-public-home-list-speakers-content
-        [parentType]="'communities'"
-      ></commudle-public-home-list-speakers-content>
-      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+      <div class="speakers-content">
+        <commudle-public-home-list-speakers-content
+          [parentType]="'communities'"
+        ></commudle-public-home-list-speakers-content>
+      </div>
+      <div class="tech-sessions">
+        <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+      </div>
     </div>
     <div main-column class="main-column" *ngIf="!isMobileView">
       <commudle-experts-featured></commudle-experts-featured>

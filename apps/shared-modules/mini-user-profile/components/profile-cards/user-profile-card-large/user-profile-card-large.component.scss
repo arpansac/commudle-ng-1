@@ -14,16 +14,16 @@ p {
 
 .user-profile-large {
   .avatar {
-    @apply com-h-11 com-w-11 com-rounded-full com-object-cover com-object-center com-align-middle com-bg-tWhite;
+    @apply com-h-[48px] com-w-[48px] com-rounded-full com-object-cover com-object-center com-align-middle com-bg-tWhite;
   }
 
   .details {
-    margin-left: $space-16;
+    @apply com-ml-3;
 
     .name {
       @apply com-flex com-items-center;
       p {
-        @apply com-font-medium md:com-text-sm com-text-Yankees-Blue com-text-base com-line-clamp-1;
+        @apply com-font-medium com-text-sm com-text-Yankees-Blue com-line-clamp-1;
         word-break: break-word;
       }
 
@@ -50,7 +50,7 @@ p {
     }
 
     .speaker-count {
-      @apply com-mt-3 com-mb-2 com-mx-0 md:com-h-auto com-h-6;
+      @apply md:com-h-auto com-h-6 com-flex-shrink-0;
     }
 
     .social {
@@ -78,4 +78,16 @@ app-badge {
       @apply com-bg-Bright-Gray-opacity-60;
     }
   }
+}
+
+.name-header {
+  @apply com-flex com-flex-row com-justify-between com-items-center;
+}
+
+.align-right-speaker-count {
+  @apply com-mr-3;
+}
+
+.desktop-speaker-count {
+  @apply com-mt-3 com-mb-2 com-mx-0;
 }

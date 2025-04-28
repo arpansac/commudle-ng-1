@@ -23,6 +23,7 @@ export class UserProfileCardLargeComponent implements OnInit {
   @Input() showSpeakersCount = false;
   @Input() showHiringLookingTags = true;
   @Input() appearanceOfFollowButton: NbButtonAppearance = 'filled';
+  @Input() alignSpeakerCountToRight = false;
   @Output() componentClicked = new EventEmitter();
 
   constructor(private userChatsService: UserChatsService) {}

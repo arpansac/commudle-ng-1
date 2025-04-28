@@ -14,18 +14,30 @@
         />
       </div>
       <div class="details">
-        <div class="name">
-          <p
-            [activateMiniProfileDirective]="activateMiniProfileDirective"
-            [username]="user.username"
-            appMiniUserProfile
-          >
-            {{ user.name }}
-          </p>
-          <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
-          <commudle-user-personal-connect
-            [userConnect]="user.distance_from_current_user"
-          ></commudle-user-personal-connect>
+        <div class="name-header">
+          <div class="name" [ngClass]="{ 'align-right-speaker-count': alignSpeakerCountToRight }">
+            <p
+              [activateMiniProfileDirective]="activateMiniProfileDirective"
+              [username]="user.username"
+              appMiniUserProfile
+            >
+              {{ user.name }}
+            </p>
+            <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
+            <commudle-user-personal-connect
+              [userConnect]="user.distance_from_current_user"
+            ></commudle-user-personal-connect>
+          </div>
+          <div *ngIf="showSpeakersCount && alignSpeakerCountToRight" class="speaker-count">
+            <app-badge
+              *ngIf="user.speaker_events_count > 0"
+              [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'x-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-opacity-60'"
+            ></app-badge>
+          </div>
         </div>
         <p class="username" title="{{ user.username }}">@{{ user.username | truncatetext : maxUserNameLength }}</p>
         <app-hiring-looking-works-tags
@@ -34,13 +46,17 @@
           [size]="'small'"
         ></app-hiring-looking-works-tags>
         <p
-          [ngClass]="{ 'com-line-clamp-3': truncateDesignation, 'com-h-[60px]': horizontalScroll }"
+          [ngClass]="{ 'com-line-clamp-2': truncateDesignation, 'com-h-12': horizontalScroll }"
           class="designation"
           title="{{ user.designation }}"
         >
           {{ user.designation || '--' }}
         </p>
-        <div *ngIf="showSpeakersCount" class="speaker-count">
+        <div
+          *ngIf="showSpeakersCount && !alignSpeakerCountToRight"
+          class="speaker-count"
+          [ngClass]="{ 'desktop-speaker-count': !alignSpeakerCountToRight }"
+        >
           <app-badge
             *ngIf="user.speaker_events_count > 0"
             [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
