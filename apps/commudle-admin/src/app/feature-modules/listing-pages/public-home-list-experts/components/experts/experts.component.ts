@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { IBadge, IPagination, IUser } from '@commudle/shared-models';
-import { ExpertsService } from 'apps/commudle-admin/src/app/services/experts.service';
 
 interface badgesList {
   badge: IBadge;
@@ -11,26 +10,25 @@ interface badgesList {
   templateUrl: './experts.component.html',
   styleUrls: ['./experts.component.scss'],
 })
-export class ExpertsComponent implements OnInit {
-  expertBadges;
+export class ExpertsComponent implements OnChanges {
+  @Input() expertBadges: IBadge[] = [];
+  @Input() startSlice = 0;
+  @Input() endSlice: number;
+  filteredExpertBadges: IBadge[] = [];
   badgesList: badgesList[] = [];
   showSpinner = true;
-  badgeHasExperts: { [badgeId: string]: boolean } = {};
 
-  constructor(private expertsService: ExpertsService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.getBadges();
-  }
-
-  getBadges() {
-    this.expertsService.getExpertBadges('expert').subscribe((data) => {
-      this.expertBadges = data;
-      this.showSpinner = false;
-    });
-  }
-
-  updateBadgeExpertsStatus(badgeId: string, hasExperts: boolean) {
-    this.badgeHasExperts[badgeId] = hasExperts;
+  ngOnChanges(): void {
+    this.showSpinner = true;
+    if (this.expertBadges && this.expertBadges.length > 0) {
+      this.expertBadges.forEach((expertBadge) => {
+        if (expertBadge) {
+          this.filteredExpertBadges.push(expertBadge);
+        }
+        this.showSpinner = false;
+      });
+    }
   }
 }

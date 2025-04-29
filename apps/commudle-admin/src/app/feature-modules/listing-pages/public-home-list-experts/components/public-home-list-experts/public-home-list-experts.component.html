@@ -11,7 +11,13 @@
         </a>
       </div>
       <commudle-experts-featured></commudle-experts-featured>
-      <commudle-experts></commudle-experts>
+
+      <commudle-experts
+        *ngIf="expertBadges"
+        [expertBadges]="expertBadges"
+        [startSlice]="0"
+        [endSlice]="1"
+      ></commudle-experts>
       <div class="speakers">
         <commudle-public-home-list-events-speakers
           [parentType]="'communities'"
@@ -25,10 +31,20 @@
       <div class="tech-sessions">
         <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
       </div>
+      <commudle-experts
+        *ngIf="expertBadges"
+        [expertBadges]="expertBadges"
+        [startSlice]="1"
+        [endSlice]="expertBadgesLength"
+      ></commudle-experts>
     </div>
     <div main-column class="main-column" *ngIf="!isMobileView">
       <commudle-experts-featured></commudle-experts-featured>
-      <commudle-experts></commudle-experts>
+      <commudle-experts
+        *ngIf="expertBadges"
+        [expertBadges]="expertBadges"
+        [endSlice]="expertBadgesLength"
+      ></commudle-experts>
     </div>
     <div right-column class="right-column">
       <div class="apply-expert">

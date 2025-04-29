@@ -27,7 +27,6 @@ export class ExpertsUsersComponent implements OnInit {
     this.isLoadingExperts = true;
     this.expertsService.getExpertUsers(this.BadgeId, this.pageInfo?.end_cursor, this.limit).subscribe((data) => {
       this.experts = this.experts.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-      this.hasExperts.emit(this.experts.length > 0);
       this.total = data.total;
       this.pageInfo = data.page_info;
       this.isLoadingExperts = false;
