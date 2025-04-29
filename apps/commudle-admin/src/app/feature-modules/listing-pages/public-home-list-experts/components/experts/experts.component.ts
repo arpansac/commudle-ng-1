@@ -24,7 +24,7 @@ export class ExpertsComponent implements OnChanges {
     this.showSpinner = true;
     if (this.expertBadges && this.expertBadges.length > 0) {
       this.expertBadges.forEach((expertBadge) => {
-        if (expertBadge) {
+        if (expertBadge && expertBadge.users_count > 0) {
           this.filteredExpertBadges.push(expertBadge);
         }
         this.showSpinner = false;

@@ -11,4 +11,5 @@ export interface IBadge {
   image: IAttachedFile;
   slug: string;
   badge_type: EBadgeTypes;
+  users_count: number;
 }

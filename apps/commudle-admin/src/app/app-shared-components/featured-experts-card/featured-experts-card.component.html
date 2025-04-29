@@ -34,6 +34,10 @@
         <a [routerLink]="['/users', expert.username]">
           <p class="expert-username">@{{ expert.username }}</p>
           <p class="expert-designation">{{ expert.designation }}</p>
+          <div *ngIf="expert.company_name" class="expert-company">
+            <fa-icon class="expert-company-icon" [icon]="faBriefcase"></fa-icon>
+            <p class="expert-company-name">{{ expert.company_name }}</p>
+          </div>
         </a>
       </div>
     </div>

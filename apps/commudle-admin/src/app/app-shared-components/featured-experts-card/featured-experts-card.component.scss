@@ -6,7 +6,7 @@ nb-card {
   @apply com-m-0 com-h-full com-w-full com-border-0;
 
   nb-card-body {
-    @apply com-p-0;
+    @apply com-p-0 com-overflow-hidden;
 
     .expert-card {
       @apply com-flex md:com-flex-col com-flex-row com-w-full;
@@ -43,10 +43,22 @@ nb-card {
         .expert-designation {
           @apply md:com-text-sm com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mb-2 com-line-clamp-2 md:com-h-10 com-h-auto;
         }
-      }
 
-      app-user-follow {
-        @apply md:com-ml-0 com-ml-4;
+        .expert-company {
+          @apply com-flex com-flex-row com-text-gray-500;
+
+          .expert-company-icon {
+            @apply md:com-h-4 md:com-w-4 com-h-3 com-w-3 md:com-mr-2 com-mr-1;
+          }
+
+          .expert-company-name {
+            @apply md:com-text-sm com-text-xs md:com-font-medium com-font-normal com-m-0;
+          }
+        }
+
+        app-user-follow {
+          @apply md:com-ml-0 com-ml-4;
+        }
       }
     }
   }
