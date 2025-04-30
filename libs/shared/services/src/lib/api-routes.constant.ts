@@ -698,6 +698,7 @@ export const API_ROUTES = {
       USER_TAGS: 'api/v2/stats/hackathons/user_tags',
       TEAM_REGISTRATIONS_OVER_TIME: 'api/v2/stats/hackathons/team_registrations_over_time',
       HACKATHON_USER_VISITS: 'api/v2/stats/hackathons/user_visits',
+      USER_LOCATIONS: 'api/v2/stats/hackathons/user_locations',
     },
   },
 
