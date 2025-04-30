@@ -49,6 +49,7 @@ import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-share
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,6 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
     HelpSectionComponent,
     UserPersonalConnectComponent,
     ListingPageHeaderComponent,
-
     // Nebular
     NbCardModule,
     NbInputModule,
@@ -105,6 +105,7 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
     ListingPagesLayoutComponent,
     SkeletonVerticalCardsComponent,
     SkeletonCardsComponent,
+    UserExpertTickComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 

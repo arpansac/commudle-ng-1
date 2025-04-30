@@ -45,6 +45,7 @@ import { PublicCommunityHackathonsComponent } from 'apps/commudle-admin/src/app/
 import { EventHorizontalCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-horizontal-card/event-horizontal-card.component';
 import { SharedComponentsModule as newSharedComponentModule } from '@commudle/shared-components';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     BackButtonComponent,
     EventHorizontalCardComponent,
     UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
 })
 export class PublicCommunityModule {}
