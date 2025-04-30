@@ -147,11 +147,16 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   createUserEngagementForDefaultImage(eventType) {
-    // FIXME: Send relevent data to user engagement record
     this.userEngagementRecordForm.patchValue({
       event_type: eventType,
       url: window.location.href,
     });
-    this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
+
+    this.gtmService.dataLayerPushEvent('default_ad_campaign', {
+      com_current_page_url: window.location.href,
+      com_event_type: eventType,
+      com_campaign_type_slug: this.campaignTypeSlug,
+    });
+    // this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
   }
 }
