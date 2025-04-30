@@ -51,7 +51,6 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['page']) {
         this.page = Number(params['page']);
-        // this.page === 1 ? (this.showFeaturedBlogsSection = true) : (this.showFeaturedBlogsSection = false);
         this.updatePagesAndCount(false);
       }
     });
