@@ -1,9 +1,9 @@
 <div class="blogs-list">
   <div class="base-layout">
     <div class="container">
-      <h1 class="main-heading">Blogs from the Developer Ecosystem</h1>
+      <h1 class="main-heading" *ngIf="showFeaturedBlogsSection && page === 1">Blogs from the Developer Ecosystem</h1>
       <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
-      <div class="two-column-layout medium two-columns">
+      <div class="two-column-layout medium two-columns" *ngIf="showFeaturedBlogsSection && page === 1">
         <div class="main-column" *ngIf="!isLoadingFeatured">
           <div class="featured-blogs-list">
             <div *ngFor="let featuredBlog of featuredBlogs | slice : 0 : 1">

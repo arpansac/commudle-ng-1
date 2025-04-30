@@ -32,6 +32,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   page = 1;
   initialCount = 0;
   finalCount = 15;
+  showFeaturedBlogsSection = true;
 
   constructor(
     private cmsService: CmsService,
@@ -50,18 +51,21 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['page']) {
         this.page = Number(params['page']);
+        // this.page === 1 ? (this.showFeaturedBlogsSection = true) : (this.showFeaturedBlogsSection = false);
         this.updatePagesAndCount(false);
       }
     });
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
       if (tag) {
+        this.showFeaturedBlogsSection = false;
         const tag = {
           value: this.slugToText(params['tag']),
           slug: params['tag'],
         };
         this.setActiveTag(tag);
       } else {
+        this.showFeaturedBlogsSection = true;
         this.setActiveTag(this.defaultTag);
       }
     });
