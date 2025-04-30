@@ -5,27 +5,19 @@ import { SuggestionBoxComponent } from './components/suggestion-box/suggestion-b
 import { NbListModule } from '@commudle/theme';
 import { EntityProfileComponent } from './components/entity-profile/entity-profile.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
-
-
-
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
-  declarations: [
-    MentionDirective,
-    SuggestionBoxComponent,
-    EntityProfileComponent
-  ],
+  declarations: [MentionDirective, SuggestionBoxComponent, EntityProfileComponent],
 
   imports: [
     CommonModule,
     SharedPipesModule,
-
     //Nebular
-    NbListModule
+    NbListModule,
+    UserExpertTickComponent,
   ],
 
-  exports: [
-    MentionDirective
-  ]
+  exports: [MentionDirective],
 })
-export class MentionModule { }
+export class MentionModule {}
