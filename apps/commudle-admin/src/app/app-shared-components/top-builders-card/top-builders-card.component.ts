@@ -6,7 +6,6 @@ import { IUser } from 'apps/shared-models/user.model';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @Component({
@@ -33,8 +32,6 @@ export class TopBuildersCardComponent implements OnInit {
   @Input() showFollowButton = false;
   @Input() allignFollowButtonToRight = false;
   @Input() displayUsername = true;
-
-  staticAssets = staticAssets;
 
   constructor() {}
 
