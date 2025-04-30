@@ -26,12 +26,6 @@ p {
         @apply com-font-medium md:com-text-sm com-text-Yankees-Blue com-text-base com-line-clamp-1;
         word-break: break-word;
       }
-
-      img {
-        height: 16px;
-        margin-left: $space-4;
-        width: 16px;
-      }
     }
 
     .username {

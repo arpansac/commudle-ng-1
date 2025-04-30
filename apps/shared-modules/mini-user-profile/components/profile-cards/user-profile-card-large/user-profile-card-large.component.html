@@ -22,7 +22,7 @@
           >
             {{ user.name }}
           </p>
-          <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
+          <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
           <commudle-user-personal-connect
             [userConnect]="user.distance_from_current_user"
           ></commudle-user-personal-connect>
