@@ -57,6 +57,7 @@ export interface IUser {
   created_at: Date;
   instagram: string;
   distance_from_current_user: number;
+  company_name: string;
 }
 
 export interface IUserSearch extends IUser {

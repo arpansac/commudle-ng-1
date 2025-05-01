@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { ExpertsService } from 'apps/commudle-admin/src/app/services/experts.service';
+import { IBadge } from 'apps/shared-models/badge.model';
 
 @Component({
   selector: 'commudle-public-home-list-experts',
@@ -9,12 +11,27 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 })
 export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
-  constructor(private seoService: SeoService, private footerService: FooterService) {}
+  expertBadges: IBadge[] = [];
+  expertBadgesLength: number;
+
+  constructor(
+    private seoService: SeoService,
+    private footerService: FooterService,
+    private expertsService: ExpertsService,
+  ) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
     this.setMeta();
+    this.getBadges();
+  }
+
+  getBadges() {
+    this.expertsService.getExpertBadges('expert').subscribe((data) => {
+      this.expertBadges = data;
+      this.expertBadgesLength = this.expertBadges.length;
+    });
   }
 
   setMeta(): void {
