@@ -66,9 +66,9 @@
           <app-tag
             *ngIf="speakersTagsLength > 0"
             [tags]="getTagNames()"
-            [backgroundColor]="'com-bg-Azure-opacity-10'"
+            [backgroundColor]="'com-bg-gray-50'"
             [size]="'tiny'"
-            [fontColor]="'com-text-Dark-Jungle-Green'"
+            [fontColor]="'com-text-gray-500'"
             [maximumTag]="3"
           ></app-tag>
         </div>
@@ -78,6 +78,7 @@
             [name]="speaker.name"
             [userId]="speaker.id"
             [isMobileWidthFull]="true"
+            [appearance]="'outline'"
           ></app-user-follow>
         </div>
       </div>
