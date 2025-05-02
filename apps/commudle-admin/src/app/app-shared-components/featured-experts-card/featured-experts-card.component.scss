@@ -45,10 +45,10 @@ nb-card {
         }
 
         .expert-company {
-          @apply com-flex com-flex-row com-text-gray-500;
+          @apply com-flex com-flex-row com-text-gray-500 com-pb-2 com-items-center;
 
           .expert-company-icon {
-            @apply md:com-h-4 md:com-w-4 com-h-3 com-w-3 md:com-mr-2 com-mr-1;
+            @apply md:com-w-4 com-w-3 md:com-mr-2 com-mr-1;
           }
 
           .expert-company-name {

@@ -190,7 +190,7 @@ export class BuildsComponent implements OnInit {
         name: build.name,
         description: build.description,
         datePublished: build.created_at,
-        screenshot: build.images.length > 0 ? build.images[0].url : '',
+        screenshot: build.images?.length > 0 ? build.images[0].url : '',
         offers: {
           '@type': 'Offer',
           price: 0,

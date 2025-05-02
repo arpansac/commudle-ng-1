@@ -8,10 +8,10 @@ nb-card {
       @apply com-no-underline;
 
       .tags-and-logo {
-        @apply com-flex com-justify-between com-max-h-7 com-overflow-hidden com-flex-nowrap com-items-center;
+        @apply com-flex com-justify-between com-max-h-7 com-overflow-hidden com-flex-nowrap com-items-start;
 
         img {
-          @apply com-h-5 com-w-5 com-rounded-full com-object-contain com-object-center com-ml-4 com-bg-tWhite;
+          @apply com-h-5 com-w-5 com-rounded-full com-object-contain com-object-center com-ml-4 com-mt-6px com-bg-tWhite;
         }
       }
 
