@@ -46,7 +46,7 @@
         </nb-card>
         <nb-card *ngIf="!isLoading">
           <nb-card-body>
-            <div *ngIf="hackathonUserResponsesByTeam.length > 1" class="mb-4">
+            <div *ngIf="hackathonUserResponsesByTeam && hackathonUserResponsesByTeam.length > 1" class="mb-4">
               <label class="font-medium mr-2">Switch Team:</label>
               <select
                 class="com-border com-rounded com-px-2 com-py-1"
