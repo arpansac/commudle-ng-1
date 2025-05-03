@@ -3,7 +3,7 @@ import { API_ROUTES } from '@commudle/shared-services';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
-import { IHackathonUserResponse } from '@commudle/shared-models';
+import { IHackathonUserResponse, IHackathonUserResponsesGroupByTeam } from '@commudle/shared-models';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,9 +21,9 @@ export class HackathonUserResponsesService {
     );
   }
 
-  getExistingHackathonUserResponses(hackathonResponseGroupId): Observable<IHackathonUserResponse[]> {
+  getExistingHackathonUserResponses(hackathonResponseGroupId): Observable<IHackathonUserResponsesGroupByTeam[]> {
     const params = new HttpParams().set('hackathon_response_group_id', hackathonResponseGroupId);
-    return this.http.get<IHackathonUserResponse[]>(
+    return this.http.get<IHackathonUserResponsesGroupByTeam[]>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_USER_RESPONSE.GET_EXISTING_HACKATHON_USER_RESPONSES),
       { params },
     );

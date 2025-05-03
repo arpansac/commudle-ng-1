@@ -1,7 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity, IHackathonUserResponse } from '@commudle/shared-models';
+import { ICommunity, IHackathonUserResponse, IHackathonUserResponsesGroupByTeam } from '@commudle/shared-models';
 import { NbDialogRef, NbDialogService, NbStepperComponent } from '@commudle/theme';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
@@ -33,6 +33,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   hackathonUserResponse: IHackathonUserResponse;
   contactInfo: IContactInfo;
+  selectedTeamIndex = 0;
+  hackathonUserResponsesByTeam: IHackathonUserResponsesGroupByTeam[];
 
   @ViewChild('stepper') stepper: NbStepperComponent;
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
@@ -115,15 +117,30 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   fetchPreExistingFormResponse() {
     this.hurService
       .getExistingHackathonUserResponses(this.hackathonResponseGroup.id)
-      .subscribe((data: IHackathonUserResponse[]) => {
+      .subscribe((data: IHackathonUserResponsesGroupByTeam[]) => {
         if (data.length > 0) {
-          this.hackathonUserResponse = data[0];
-          this.current_user_is_team_lead = this.hackathonUserResponse.current_user_is_team_lead;
+          this.hackathonUserResponsesByTeam = data;
+          if (this.hackathonUserResponsesByTeam.length > 0) {
+            this.switchTeam(0); // default to first team
+          }
           this.isLoading = false;
         } else {
           this.isLoading = false;
         }
       });
+  }
+
+  switchTeam(index: number) {
+    const selectedTeamGroup: IHackathonUserResponsesGroupByTeam = this.hackathonUserResponsesByTeam[index];
+    if (selectedTeamGroup?.hackathon_user_responses?.length) {
+      this.hackathonUserResponse = selectedTeamGroup.hackathon_user_responses[0];
+      this.current_user_is_team_lead = this.hackathonUserResponse.current_user_is_team_lead;
+      this.selectedTeamIndex = index;
+    }
+  }
+  //Call it from html when user clicks on team change
+  switchTeamIndex(event: any) {
+    this.switchTeam(event.value);
   }
 
   UpdateOrSubmitResponse(formData) {
