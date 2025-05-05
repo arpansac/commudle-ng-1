@@ -31,22 +31,24 @@
       <div class="user-details d-flex flex-column justify-content-space-between">
         <a [routerLink]="['/users', speaker.username]" class="clickable">
           <div class="text-details">
-            <div *ngIf="speaker.hiring || speaker.looking_for_work" class="hiring-looking-works-tags">
-              <app-hiring-looking-works-tags [user]="speaker"></app-hiring-looking-works-tags>
+            <div class="user-name-header">
+              <p class="user-name">
+                {{ speaker.name }}
+                <img
+                  *ngIf="speaker.is_expert"
+                  alt="Expert Tick"
+                  class="expert-icon"
+                  src="/assets/images/Expert-Tick.svg"
+                  title="Expert Tick"
+                />
+                <commudle-user-personal-connect
+                  [userConnect]="speaker.distance_from_current_user"
+                ></commudle-user-personal-connect>
+              </p>
+              <div *ngIf="speaker.hiring || speaker.looking_for_work" class="hiring-looking-works-tags">
+                <app-hiring-looking-works-tags [user]="speaker"></app-hiring-looking-works-tags>
+              </div>
             </div>
-            <p class="user-name">
-              {{ speaker.name }}
-              <img
-                *ngIf="speaker.is_expert"
-                alt="Expert Tick"
-                class="expert-icon"
-                src="/assets/images/Expert-Tick.svg"
-                title="Expert Tick"
-              />
-              <commudle-user-personal-connect
-                [userConnect]="speaker.distance_from_current_user"
-              ></commudle-user-personal-connect>
-            </p>
             <p *ngIf="speaker.username" class="username">@{{ speaker.username | truncatetext : maxUserNameLength }}</p>
             <p class="designation">
               {{ speaker.designation || '--' }}

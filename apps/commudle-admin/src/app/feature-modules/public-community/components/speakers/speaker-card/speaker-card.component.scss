@@ -11,7 +11,7 @@ nb-card {
       @apply com-overflow-hidden;
 
       .banner-image {
-        @apply com-h-[92px] com-overflow-hidden com-w-full;
+        @apply com-h-[94px] com-overflow-hidden com-w-full;
 
         img {
           @apply com-h-full com-object-cover com-object-center com-w-full;
@@ -31,7 +31,7 @@ nb-card {
       }
 
       .user-image {
-        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[52px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
+        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[58px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
 
         img {
           @apply com-h-full com-object-cover com-w-full;
@@ -57,11 +57,11 @@ nb-card {
             }
 
             .hiring-looking-works-tags {
-              @apply com-mb-2 com-m-0;
+              @apply com-m-0 com-flex com-shrink-0;
             }
 
             .user-name {
-              @apply com-m-0 com-mb-1 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center com-line-clamp-1;
+              @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center com-line-clamp-1;
 
               .expert-icon {
                 @apply com-w-14px com-ml-1 com-h-14px com-align-middle;
@@ -115,4 +115,8 @@ nb-card {
       }
     }
   }
+}
+
+.user-name-header {
+  @apply com-flex com-items-center com-flex-row com-gap-2 com-m-0 com-mb-1;
 }
