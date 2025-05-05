@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
+import { IPaginationCount } from '@commudle/shared-models';
+import { IFixedEmail } from 'apps/shared-models/fixed-email.model';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +55,15 @@ export class StatsHackathonService {
     return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.USER_LOCATIONS), {
       params,
     });
+  }
+
+  hackathonEmailStats(hackathonId: number | string, page = 1, count = 10): Observable<IPaginationCount<IFixedEmail>> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<IFixedEmail>>(
+      this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.EMAILS),
+      {
+        params,
+      },
+    );
   }
 }

@@ -7,6 +7,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { ICommunity } from 'apps/shared-models/community.model';
 import * as moment from 'moment';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 
 @Component({
   selector: 'commudle-tech-sessions-card',
@@ -21,6 +22,7 @@ import * as moment from 'moment';
     NbCardModule,
     SharedComponentsModule,
     NbIconModule,
+    MiniUserProfileModule,
   ],
 })
 export class TechSessionsCardComponent implements OnInit {

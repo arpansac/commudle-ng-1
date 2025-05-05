@@ -6,6 +6,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @Component({
   selector: 'commudle-top-builders-card',
@@ -20,6 +21,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     MiniUserProfileModule,
     SharedPipesModule,
     UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
 })
 export class TopBuildersCardComponent implements OnInit {

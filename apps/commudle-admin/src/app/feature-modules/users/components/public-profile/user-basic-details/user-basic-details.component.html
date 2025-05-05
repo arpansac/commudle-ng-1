@@ -58,17 +58,7 @@
           <div>
             <div class="name-username">
               <div class="name">
-                <h1>
-                  {{ user.name
-                  }}<img
-                    *ngIf="user.is_expert"
-                    alt="Expert Tick"
-                    class="expert-icon"
-                    src="{{ staticAssets.expert_tick }}
-                    "
-                    title="Expert Tick"
-                  />
-                </h1>
+                <h1>{{ user.name }}<commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick></h1>
                 <app-hiring-looking-works-tags
                   *ngIf="!user.deactivated"
                   [user]="user"

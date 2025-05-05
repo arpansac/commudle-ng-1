@@ -1,5 +1,5 @@
 nb-card {
-  @apply com-m-0 md:com-min-h-[144px] com-h-full;
+  @apply com-m-0 com-h-full;
 
   nb-card-body {
     @apply com-p-3;
@@ -7,29 +7,12 @@ nb-card {
     a {
       @apply com-no-underline;
 
-      .content {
-        @apply com-no-underline com-flex com-items-start com-m-0 com-mb-4;
-
-        nb-icon {
-          @apply com-mr-2 com-text-gray-500 com-mt-1 com-text-base com-flex-shrink-0;
-        }
-
-        .session-link {
-          @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-line-clamp-1;
-        }
+      .session-link {
+        @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-line-clamp-1 com-mb-2;
       }
 
-      .details {
-        @apply com-m-0;
-        .event-title {
-          @apply md:com-text-sm com-text-base com-font-normal com-m-0 com-text-Yankees-Blue com-line-clamp-1 com-mb-2;
-        }
-        .event-time {
-          @apply com-text-xs com-font-medium com-mb-4 com-mt-0 com-text-gray-500;
-        }
-      }
-      .community-badge {
-        @apply com-m-0 com-min-h-[28px];
+      .event-time {
+        @apply com-text-xs com-font-normal com-mb-4 com-mt-0 com-text-gray-500;
       }
     }
   }

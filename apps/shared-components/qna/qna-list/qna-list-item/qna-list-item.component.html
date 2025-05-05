@@ -11,16 +11,10 @@
         <p class="name">
           <a [routerLink]="['/users', message.user.username]">{{ message.user.name }}</a>
         </p>
-        <img
-          *ngIf="message.user.is_expert"
-          alt="Expert Tick"
-          class="expert-icon"
-          src="/assets/images/Expert-Tick.svg"
-          title="Expert Tick"
-        />
+        <commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
         <p class="time">{{ moment(message.created_at).fromNow() }}</p>
       </div>
-      <p [innerHTML]="message.content | linky: { sanitizeHtml: true }" class="content"></p>
+      <p [innerHTML]="message.content | linky : { sanitizeHtml: true }" class="content"></p>
     </div>
     <div
       *ngIf="permittedActions.includes(allActions.VOTE) && canVote"

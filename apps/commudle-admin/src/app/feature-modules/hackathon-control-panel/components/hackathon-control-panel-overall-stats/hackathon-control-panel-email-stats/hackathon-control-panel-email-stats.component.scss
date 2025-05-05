@@ -1,0 +1,16 @@
+table {
+  @apply com-border-collapse com-w-full;
+
+  td,
+  th {
+    @apply com-text-left com-p-2;
+  }
+
+  tr:nth-child(even) {
+    @apply com-bg-Bright-Gray;
+  }
+}
+
+.pagination {
+  @apply com-mt-4;
+}

@@ -35,6 +35,7 @@ import { FeaturedProjectsComponent } from '../../app-shared-components/featured-
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { FeaturedCommunityCardMediumComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-community-card-medium/featured-community-card-medium.component';
 import { FirstSigninComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/homepage-dashboard/first-signin/first-signin.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { FirstSigninComponent } from 'apps/commudle-admin/src/app/feature-module
     FontAwesomeModule,
     AppSharedComponentsModule,
     FeaturedCommunityCardMediumComponent,
+    UserExpertTickComponent,
   ],
 })
 export class HomepageModule {}

@@ -1,0 +1,38 @@
+<nb-card>
+  <nb-card-body>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Sent at</th>
+          <th>Recipients</th>
+          <th>Delivered</th>
+          <th>Clicks</th>
+          <th>Opens</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emailStat of hackathonEmailStats">
+          <td>{{ emailStat.subject }}</td>
+          <td>{{ moment(emailStat.created_at).format('MMM D, YYYY [at] h:mm A') }}</td>
+          <td>{{ emailStat.recipients_count }}</td>
+          <td>{{ emailStat.email_total_stats.delivered }}</td>
+          <td>{{ emailStat.email_total_stats.click }}</td>
+          <td>{{ emailStat.email_total_stats.open }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <app-pagination
+        (goTo)="page = $event; getEmailStats()"
+        (next)="page = $event; getEmailStats()"
+        (previous)="page = $event; getEmailStats()"
+        *ngIf="total > 0"
+        [count]="count"
+        [current]="page"
+        [total]="total"
+      ></app-pagination>
+    </div>
+  </nb-card-body>
+</nb-card>

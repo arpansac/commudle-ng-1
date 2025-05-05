@@ -25,14 +25,7 @@
               <p class="name">
                 <a [routerLink]="['/users', message.user.username]">{{ message.user.name }}</a>
               </p>
-              <img
-                *ngIf="message.user.is_expert"
-                alt="Expert Tick"
-                class="expert-icon"
-                src="/assets/images/Expert-Tick.svg"
-                title="Expert Tick"
-              />
-
+              <commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
               <p *ngIf="!showFullDateTime" class="time">
                 {{ moment(message.created_at).format('h:mm A') }}
               </p>
@@ -135,43 +128,7 @@
       [showFullDateTime]="showFullDateTime"
     ></app-message>
     <div *ngIf="showReplyForm" class="reply-form">
-      <emoji-mart
-        (emojiSelect)="addEmoji($event)"
-        [ngClass]="{ active: showEmojiPicker }"
-        [style]="{ width: '100%' }"
-        set="twitter"
-        title="Select an emoji"
-      ></emoji-mart>
-      <form (submit)="emitReply()" [formGroup]="replyForm">
-        <nb-form-field>
-          <button
-            (click)="showEmojiPicker = !showEmojiPicker"
-            class="emoji-picker"
-            ghost
-            nbButton
-            nbPrefix
-            size="tiny"
-            type="button"
-          >
-            <fa-icon [icon]="faGrin"></fa-icon>
-          </button>
-          <input
-            #messageInput
-            appMention
-            fieldSize="tiny"
-            formControlName="content"
-            fullWidth
-            maxlength="200"
-            minlength="1"
-            nbInput
-            placeholder="Reply"
-            type="text"
-          />
-          <button [disabled]="!replyForm.valid" ghost nbButton nbSuffix size="tiny">
-            <nb-icon icon="paper-plane"></nb-icon>
-          </button>
-        </nb-form-field>
-      </form>
+      <commudle-editor (contentChange)="emitReply($event)" [validators]="validators"></commudle-editor>
     </div>
   </div>
 </div>

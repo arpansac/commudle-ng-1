@@ -104,7 +104,7 @@
         </div>
       </td>
       <td>
-        {{ moment(campaign.created_at).format('MMM Do, YYYY') }}
+        {{ moment(campaign.created_at).format('MMM Do, YYYY, h:mm a') }}
         <div *ngIf="isCampaignAdmin">
           <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
         </div>

@@ -22,12 +22,6 @@ p {
 
     .name {
       @apply com-text-xs com-font-medium com-text-Dark-Jungle-Green;
-
-      img {
-        height: 10px;
-        margin-left: $space-4;
-        width: 10px;
-      }
     }
 
     .designation {

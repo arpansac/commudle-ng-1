@@ -56,13 +56,7 @@
                   <p class="d-flex align-items-center">
                     published by&nbsp;
                     <a [routerLink]="['/users', lab.user.username]" class="name" target="_blank">{{ lab.user.name }}</a>
-                    <img
-                      *ngIf="lab.user.is_expert"
-                      alt="Expert Tick"
-                      class="expert-icon"
-                      src="/assets/images/Expert-Tick.svg"
-                      title="Expert Tick"
-                    />&nbsp;
+                    <commudle-user-expert-tick *ngIf="lab.user.is_expert"></commudle-user-expert-tick>&nbsp;
                     <span class="date">{{ lab.published_at | date }}</span>
                   </p>
                 </div>

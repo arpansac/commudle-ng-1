@@ -97,6 +97,7 @@ import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 import { NextStepCardComponent } from './next-step-card/next-step-card.component';
 import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -201,6 +202,7 @@ import { CampaignStatsComponent } from './campaign-stats/campaign-stats.componen
     DragDropModule,
     tinyMCEEditorModule,
     UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
   exports: [
     WorkInProgressComponent,

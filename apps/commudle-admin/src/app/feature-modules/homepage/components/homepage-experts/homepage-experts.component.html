@@ -12,7 +12,7 @@
           <div>
             <h3 class="homepage-expert-name">
               {{ expert.name }}
-              <img alt="Expert Tick" class="expert-icon" src="/assets/images/Expert-Tick.svg" />
+              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
             </h3>
             <p class="homepage-expert-designation">{{ expert.designation }}</p>
           </div>
