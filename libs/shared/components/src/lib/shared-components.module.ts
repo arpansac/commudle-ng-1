@@ -29,6 +29,7 @@ import { UserPersonalConnectComponent } from './components/user-personal-connect
 import { InputComponent } from './components/input/input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignAssetsDisplayComponent } from './components/campaign-assets-display/campaign-assets-display.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { CampaignAssetsDisplayComponent } from './components/campaign-assets-dis
     UserPersonalConnectComponent,
     FormsModule,
     ReactiveFormsModule,
+    UserExpertTickComponent,
   ],
   exports: [
     DiscussionComponent,

@@ -30,10 +30,6 @@ nb-card {
           .name {
             @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0;
           }
-
-          .expert-tick {
-            @apply com-h-4 com-w-4 com-m-0 com-ml-2;
-          }
         }
 
         .expert-username {

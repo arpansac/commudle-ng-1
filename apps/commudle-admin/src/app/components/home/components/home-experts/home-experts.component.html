@@ -20,7 +20,7 @@
           <div class="home-expert-details">
             <div class="home-expert-name d-flex align-items-center">
               <p [username]="expert.username" appMiniUserProfile class="com-line-clamp-1">{{ expert.name }}</p>
-              <img *ngIf="expert.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" />
+              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
             </div>
             <p class="home-expert-designation com-line-clamp-1">{{ expert.designation }}</p>
             <p class="home-expert-followers">{{ expert.followers_count.toString() + ' followers' }}</p>

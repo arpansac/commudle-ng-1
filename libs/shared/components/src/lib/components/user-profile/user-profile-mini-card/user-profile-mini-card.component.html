@@ -7,13 +7,7 @@
       <a [routerLink]="['/users', user.username]" target="_blank" [ngClass]="{ 'disable-anchor': disableAnchor }"
         ><strong>{{ user.name }}</strong></a
       >
-      <img
-        *ngIf="user.is_expert"
-        alt="Expert Tick"
-        class="expert-icon"
-        src="/assets/images/Expert-Tick.svg"
-        title="Expert Tick"
-      />
+      <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
     </p>
     <p *ngIf="designation" class="designation {{ size }}">
       {{ user.designation | slice : 0 : 50 }}

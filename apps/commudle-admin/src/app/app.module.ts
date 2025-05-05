@@ -121,6 +121,7 @@ import { UserChatsModule } from './feature-modules/user-chats/user-chats.module'
 import { UsersModule } from './feature-modules/users/users.module';
 import { AppInitService } from './services/app-init.service';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -251,6 +252,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     // standalone components
     CommunitiesCardComponent,
     ListingPageHeaderComponent,
+    UserExpertTickComponent,
   ],
   providers: [
     AppInitService,

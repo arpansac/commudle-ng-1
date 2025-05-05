@@ -28,10 +28,6 @@ nb-card {
 
         .name {
           @apply com-flex com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-line-clamp-1 com-items-center;
-
-          .expert-icon {
-            @apply com-h-4 com-w-4 com-m-0 com-ml-2;
-          }
         }
 
         .username {

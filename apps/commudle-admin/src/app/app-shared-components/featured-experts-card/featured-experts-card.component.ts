@@ -5,6 +5,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { RouterModule } from '@angular/router';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { IUser } from 'apps/shared-models/user.model';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -20,6 +21,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NbCardModule,
     MiniUserProfileModule,
     UserPersonalConnectComponent,
+    UserExpertTickComponent,
     FontAwesomeModule,
   ],
 })

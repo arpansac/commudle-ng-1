@@ -36,13 +36,7 @@
             </div>
             <p class="user-name">
               {{ speaker.name }}
-              <img
-                *ngIf="speaker.is_expert"
-                alt="Expert Tick"
-                class="expert-icon"
-                src="/assets/images/Expert-Tick.svg"
-                title="Expert Tick"
-              />
+              <commudle-user-expert-tick *ngIf="speaker.is_expert"></commudle-user-expert-tick>
               <commudle-user-personal-connect
                 [userConnect]="speaker.distance_from_current_user"
               ></commudle-user-personal-connect>

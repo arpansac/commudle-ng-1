@@ -11,13 +11,7 @@
           <a [routerLink]="['/users', expert.username]">
             <div class="expert-name">
               <p class="name">{{ expert.name }}</p>
-              <img
-                *ngIf="expert.is_expert"
-                alt="Expert Tick"
-                class="expert-tick"
-                src="/assets/images/Expert-Tick.svg"
-                title="Expert Tick"
-              />
+              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
               <commudle-user-personal-connect
                 [userConnect]="expert.distance_from_current_user"
               ></commudle-user-personal-connect>

@@ -35,6 +35,7 @@ import { TechSessionsCardComponent } from 'apps/commudle-admin/src/app/app-share
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { SearchPageCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/search/components/search-page-campaign/search-page-campaign.component';
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 @NgModule({
   declarations: [
     SearchBoxComponent,
@@ -74,6 +75,7 @@ import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/s
     EventHorizontalCardComponent,
     TechSessionsCardComponent,
     UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
   providers: [TitleCasePipe],
 })

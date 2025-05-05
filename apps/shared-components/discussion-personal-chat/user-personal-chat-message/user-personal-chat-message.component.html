@@ -10,13 +10,7 @@ app-chats-window
           <div class="d-flex align-items-center">
             <span class="name">{{ message.user.name }}</span>
             <span class="username">@{{ message.user.username }}</span>
-            <img
-              *ngIf="message.user.is_expert"
-              alt="Expert Tick"
-              class="expert-icon"
-              src="/assets/images/Expert-Tick.svg"
-              title="Expert Tick"
-            />
+            <commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
           </div>
           <div class="date">{{ moment(message.created_at).format("MMM D [']YY") }}</div>
         </div>
