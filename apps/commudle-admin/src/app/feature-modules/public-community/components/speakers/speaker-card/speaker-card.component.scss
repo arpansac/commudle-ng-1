@@ -49,7 +49,7 @@ nb-card {
         @apply md:com-mx-3 md:com-mt-3 md:com-mb-3 com-m-4;
 
         a {
-          @apply com-h-[142px] com-no-underline;
+          @apply com-h-full com-no-underline;
 
           .text-details {
             p {
@@ -61,7 +61,7 @@ nb-card {
             }
 
             .user-name {
-              @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center com-line-clamp-1;
+              @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center com-line-clamp-1 com-h-[34px];
             }
 
             .username {
@@ -69,7 +69,7 @@ nb-card {
             }
 
             .designation {
-              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2;
+              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2 com-h-8;
             }
           }
 
@@ -83,14 +83,14 @@ nb-card {
             }
 
             .location {
-              @apply com-flex com-text-xs com-font-normal com-text-Azure com-flex-shrink-0;
+              @apply com-flex com-text-xs com-font-normal  com-flex-shrink-0;
 
               nb-icon {
                 @apply com-w-[14px] com-mr-1 com-text-Azure;
               }
 
               p {
-                @apply com-m-0;
+                @apply com-m-0 com-text-Azure;
               }
             }
           }
