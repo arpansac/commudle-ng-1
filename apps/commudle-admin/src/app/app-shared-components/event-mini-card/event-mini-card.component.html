@@ -27,7 +27,7 @@
           </p>
         </div>
       </div>
-      <div class="time" *ngIf="cardType !== 'attendedEventCard'">
+      <div class="time" *ngIf="cardType === 'hackathons' || cardType === 'upcomingEvents'">
         <p class="event-month-header">
           {{ moment(attendedEvent.start_date ? attendedEvent.start_date : attendedEvent.start_time).format('MMM') }}
         </p>

@@ -1,27 +1,29 @@
-<div *ngIf="upcomingEvents.length > 0" id="upcoming-events">
-  <div class="heading">
-    <h3 class="title"><a [routerLink]="'.'" fragment="upcoming-events">Upcoming Events</a></h3>
-    <h4 class="sub-heading">Check out amazing events lined up</h4>
-  </div>
-  <app-skeleton-cards
-    *ngIf="showSpinner"
-    [cards]="4"
-    [ImageShapeSquare]="true"
-    [ImageShapeCircle]="false"
-  ></app-skeleton-cards>
-  <div class="upcoming-events custom-scrollbar">
-    <div class="upcoming-events-card" *ngFor="let upcomingEvent of upcomingEvents">
-      <commudle-event-mini-card
-        [attendedEvent]="upcomingEvent"
-        [iconSize]="'medium'"
-        [cardType]="'upcomingEvents'"
-      ></commudle-event-mini-card>
+<nb-card *ngIf="upcomingEvents.length > 0" id="upcoming-events">
+  <nb-card-body>
+    <div class="heading">
+      <h3 class="title"><a [routerLink]="'.'" fragment="upcoming-events">Upcoming Events</a></h3>
+      <h4 class="sub-heading">Check out amazing events lined up</h4>
     </div>
-  </div>
-  <div class="load-more" *ngIf="pageInfo?.has_next_page">
-    <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
-    <a [routerLink]="['/events']">
-      <button *ngIf="pageInfo?.has_next_page" nbButton outline size="tiny" status="basic">View All</button>
-    </a>
-  </div>
-</div>
+    <app-skeleton-cards
+      *ngIf="showSpinner"
+      [cards]="4"
+      [ImageShapeSquare]="true"
+      [ImageShapeCircle]="false"
+    ></app-skeleton-cards>
+    <div class="upcoming-events custom-scrollbar">
+      <div class="upcoming-events-card" *ngFor="let upcomingEvent of upcomingEvents">
+        <commudle-event-mini-card
+          [attendedEvent]="upcomingEvent"
+          [iconSize]="'medium'"
+          [cardType]="'upcomingEvents'"
+        ></commudle-event-mini-card>
+      </div>
+    </div>
+    <div class="load-more" *ngIf="pageInfo?.has_next_page">
+      <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
+      <a [routerLink]="['/events']">
+        <button *ngIf="pageInfo?.has_next_page" nbButton outline size="tiny" status="basic">View All</button>
+      </a>
+    </div>
+  </nb-card-body>
+</nb-card>
