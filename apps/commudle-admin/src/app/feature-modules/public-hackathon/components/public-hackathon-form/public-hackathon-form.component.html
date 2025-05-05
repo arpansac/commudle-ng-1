@@ -44,21 +44,25 @@
             </div>
           </nb-card-body>
         </nb-card>
+        <nb-card *ngIf="hackathonUserResponsesByTeam && hackathonUserResponsesByTeam.length > 1">
+          <nb-card-body>
+            <div>
+              <commudle-alert
+                [info]="true"
+                message=" You seem to be a part of multiple teams, please select the team for which you want to fill the form"
+              ></commudle-alert>
+              <div class="select">
+                <select [value]="selectedTeamIndex" (change)="switchTeamIndex($event.target)">
+                  <option *ngFor="let team of hackathonUserResponsesByTeam; let i = index" [value]="i">
+                    {{ team.hackathon_team.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
         <nb-card *ngIf="!isLoading">
           <nb-card-body>
-            <div *ngIf="hackathonUserResponsesByTeam && hackathonUserResponsesByTeam.length > 1" class="mb-4">
-              <label class="font-medium mr-2">Switch Team:</label>
-              <select
-                class="com-border com-rounded com-px-2 com-py-1"
-                [value]="selectedTeamIndex"
-                (change)="switchTeamIndex($event.target)"
-              >
-                <option *ngFor="let team of hackathonUserResponsesByTeam; let i = index" [value]="i">
-                  {{ team.hackathon_team.name }}
-                </option>
-              </select>
-            </div>
-
             <nb-stepper orientation="horizontal" [linear]="true" #stepper disableStepNavigation>
               <nb-step label="Profile">
                 <commudle-user-details-form

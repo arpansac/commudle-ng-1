@@ -141,6 +141,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   //Call it from html when user clicks on team change
   switchTeamIndex(event: any) {
     this.switchTeam(event.value);
+    this.stepper.reset();
   }
 
   UpdateOrSubmitResponse(formData) {
