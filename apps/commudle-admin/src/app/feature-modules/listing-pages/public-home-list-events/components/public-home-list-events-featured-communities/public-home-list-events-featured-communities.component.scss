@@ -3,7 +3,7 @@
   nb-card-body {
     @apply com-p-0;
     .heading {
-      @apply com-m-0 com-p-4 com-bg-Anti-Flash-White com-flex com-flex-row com-items-center;
+      @apply com-mt-0 md:com-mb-8 com-mb-4 com-mx-0 md:com-p-0 com-px-4 com-py-3 com-flex com-flex-col com-bg-gradient-to-l com-from-gray-100 com-to-white;
 
       button {
         @apply com-bg-white com-text-Yankees-Blue com-mr-3 com-rounded-xl md:com-h-12 md:com-w-12 com-border-none;
@@ -39,9 +39,9 @@
 .container {
   @apply com-m-0;
   nb-card-body {
-    @apply com-p-4;
+    @apply com-p-0;
     .heading {
-      @apply com-m-0 md:com-mb-8 md:com-p-0 md:com-mt-0 com-mt-10 com-p-4 md:com-bg-transparent com-bg-Anti-Flash-White;
+      @apply com-mt-0 com-mb-4 com-mx-0 md:com-p-4 com-px-4 com-py-3 com-flex com-flex-col com-bg-gradient-to-l com-from-gray-100 com-to-white;
       .title {
         @apply com-flex com-m-0;
         a {
@@ -54,7 +54,7 @@
     }
 
     .featured-communities {
-      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-p-0 md:com-block;
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-p-0 md:com-p-4 md:com-pt-0 md:com-block;
       .featured-communities-card {
         @apply com-m-0 md:com-rounded-none com-rounded-xl com-p-0 md:com-py-3;
       }
