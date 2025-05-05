@@ -18,7 +18,9 @@ import { HackathonControlPanelReviewComponent } from 'apps/commudle-admin/src/ap
 import { HackathonControlPanelRoundsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-rounds/hackathon-control-panel-rounds.component';
 import { HackathonControlPanelEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-control-panel-emails.component';
 import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-channels/hackathon-control-panel-channels.component';
-import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-stats/hackathon-control-panel-stats.component';
+import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-stats/hackathon-control-panel-stats.component';
+import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-overall-stats.component';
+import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
 
 const routes: Routes = [
   {
@@ -111,7 +113,14 @@ const routes: Routes = [
           },
           {
             path: 'stats',
-            component: HackathonControlPanelStatsComponent,
+            component: HackathonControlPanelOverallStatsComponent,
+            children: [
+              {
+                path: '',
+                component: HackathonControlPanelStatsComponent,
+              },
+              { path: 'emails', component: HackathonControlPanelEmailStatsComponent },
+            ],
           },
         ],
       },

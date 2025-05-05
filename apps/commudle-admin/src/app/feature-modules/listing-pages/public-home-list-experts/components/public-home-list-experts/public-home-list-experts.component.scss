@@ -5,10 +5,13 @@
   }
 }
 
-.right-column {
+.right-column,
+.main-column {
   @apply com-p-0 com-pt-8;
 }
 
-.speakers {
-  @apply com-m-0 com-mb-6;
+.speakers,
+.speakers-content,
+.tech-sessions {
+  @apply com-m-0 md:com-mb-8 com-mb-6;
 }

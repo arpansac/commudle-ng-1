@@ -14,13 +14,7 @@
       <div class="prefix">
         <div class="com-flex com-items-baseline">
           <a [routerLink]="['/users', message.user.username]" class="name">{{ message.user.name }}</a>
-          <img
-            *ngIf="message.user.is_expert"
-            alt="Expert Tick"
-            class="expert-icon"
-            src="/assets/images/Expert-Tick.svg"
-            title="Expert Tick"
-          />
+          <commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
           <commudle-user-personal-connect
             [userConnect]="message.user.distance_from_current_user"
           ></commudle-user-personal-connect>
@@ -75,14 +69,8 @@
     <div class="message">
       <div class="prefix">
         <div class="com-flex com-items-baseline com-gap-2">
-          <a [routerLink]="['/users', message.user.username]" class="name">{{ message.user.name }}</a>
-          <img
-            *ngIf="message.user.is_expert"
-            alt="Expert Tick"
-            class="expert-icon"
-            src="/assets/images/Expert-Tick.svg"
-            title="Expert Tick"
-          />
+          <a [routerLink]="['/users', message.user.username]" class="name">{{ message.user.name }}</a
+          ><commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
         </div>
         <span class="time">{{ moment(message.created_at).format('MMMM Do YYYY, h:mm:ss a') }}</span>
         <span class="edited" *ngIf="message.edited">(edited)</span>

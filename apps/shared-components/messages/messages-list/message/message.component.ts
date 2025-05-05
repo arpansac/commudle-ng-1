@@ -40,8 +40,6 @@ export class MessageComponent implements OnInit {
   isVotingBlocked = false;
   totalVotesCount: number;
 
-  replyForm;
-
   @ViewChild('messageInput') messageInput: ElementRef<HTMLInputElement>;
 
   faGrin = faGrin;
@@ -51,11 +49,7 @@ export class MessageComponent implements OnInit {
     // private userMessageReceiptHandlerService: UserMessageReceiptHandlerService,
     private injector: Injector,
     private votesService: SVotesService,
-  ) {
-    this.replyForm = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
-    });
-  }
+  ) {}
 
   validators: IEditorValidator = {
     required: true,
@@ -68,14 +62,9 @@ export class MessageComponent implements OnInit {
     this.getAllVotes();
   }
 
-  emitReply(): void {
-    if (this.replyForm.valid) {
-      this.sendReply.emit(this.replyForm.value);
-      this.replyForm.reset();
-      this.replyForm.updateValueAndValidity();
-      this.showReplyForm = false;
-      this.showEmojiPicker = false;
-    }
+  emitReply(value): void {
+    this.sendReply.emit({ content: value });
+    this.showReplyForm = false;
   }
 
   emitFlag(messageId: number): void {
@@ -84,13 +73,6 @@ export class MessageComponent implements OnInit {
 
   emitDelete(messageId: number, isSelfMessage: boolean): void {
     this.sendDelete.emit({ messageId, isSelfMessage });
-  }
-
-  addEmoji(event): void {
-    this.replyForm.patchValue({
-      content: (this.replyForm.get('content').value || '').concat(`${event.emoji.native}`),
-    });
-    this.messageInput.nativeElement.focus();
   }
 
   markAsRead(messageId: number, { visible }: { visible: boolean }): void {

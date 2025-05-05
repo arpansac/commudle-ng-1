@@ -6,8 +6,8 @@
       </div>
       <div class="details">
         <p class="name">
-          {{ option.name
-          }}<img *ngIf="option.is_expert" alt="Expert Tick" class="expert-icon" src="/assets/images/Expert-Tick.svg" />
+          {{ option.name }}
+          <commudle-user-expert-tick *ngIf="option.is_expert"></commudle-user-expert-tick>
           <button *ngIf="option.is_community_leader" nbButton shape="round" size="tiny" outline class="leader">
             Leader
           </button>

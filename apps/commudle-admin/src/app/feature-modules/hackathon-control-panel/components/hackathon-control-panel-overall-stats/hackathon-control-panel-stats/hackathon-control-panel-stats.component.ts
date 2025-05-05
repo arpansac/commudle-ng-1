@@ -27,14 +27,10 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.parent.paramMap.subscribe((params) => {
+    this.route.parent.parent.paramMap.subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
       this.hackathonService.showHackathon(this.hackathonId).subscribe((hackathon) => {
         this.hackathon = hackathon;
-        console.log(
-          '🚀 ~ HackathonControlPanelStatsComponent ~ this.hackathonService.showHackathon ~  this.hackathon:',
-          this.hackathon,
-        );
       });
       this.getGenderDistributionChart();
       this.getHackathonTeamStats();

@@ -28,12 +28,6 @@ p {
           }
         }
 
-        .expert-icon {
-          height: 12px;
-          margin-left: $space-4;
-          width: 12px;
-        }
-
         .time {
           @apply com-flex com-text-xs com-font-normal com-text-gray-500 com-ml-2;
         }
