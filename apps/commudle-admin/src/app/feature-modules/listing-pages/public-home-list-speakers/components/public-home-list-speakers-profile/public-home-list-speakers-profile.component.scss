@@ -44,3 +44,7 @@
 .heading {
   @apply md:com-font-bold com-font-semibold md:com-text-2xl com-text-xl com-text-Yankees-Blue com-my-6 md:com-mx-0 com-mx-4;
 }
+
+.speakers-mobile {
+  @apply com-grid md:com-grid-cols-3 com-grid-cols-1 md:com-gap-x-6 com-gap-y-6 md:com-gap-y-10 md:com-my-8 com-mt-12 com-m-0 com-mx-4 md:com-mx-0;
+}

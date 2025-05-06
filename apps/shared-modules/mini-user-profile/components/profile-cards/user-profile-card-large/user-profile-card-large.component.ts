@@ -24,6 +24,8 @@ export class UserProfileCardLargeComponent implements OnInit {
   @Input() showHiringLookingTags = true;
   @Input() appearanceOfFollowButton: NbButtonAppearance = 'filled';
   @Input() alignSpeakerCountToRight = false;
+  @Input() showFollowersCount = false;
+  @Input() showLeaderBadge = false;
   @Output() componentClicked = new EventEmitter();
 
   constructor(private userChatsService: UserChatsService) {}

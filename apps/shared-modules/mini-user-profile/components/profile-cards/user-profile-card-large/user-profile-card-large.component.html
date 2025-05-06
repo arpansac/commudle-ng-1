@@ -52,19 +52,34 @@
         >
           {{ user.designation || '--' }}
         </p>
-        <div
-          *ngIf="showSpeakersCount && !alignSpeakerCountToRight"
-          class="speaker-count"
-          [ngClass]="{ 'desktop-speaker-count': !alignSpeakerCountToRight }"
-        >
-          <app-badge
-            *ngIf="user.speaker_events_count > 0"
-            [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
-            [fontColor]="'com-text-tAuro-Metal-Saurus'"
-            [fontSize]="'x-small'"
-            [borderRadius]="'round'"
-            [color]="'com-bg-Bright-Gray-opacity-60'"
-          ></app-badge>
+        <p *ngIf="user.followers_count > 0 && showFollowersCount" class="followers-count">
+          <span>{{ user.followers_count }}</span> Follower{{ user.followers_count > 1 ? 's' : '' }}
+        </p>
+        <div *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadge" class="talks-leader">
+          <button
+            *ngIf="showLeaderBadge && user.is_community_leader"
+            nbButton
+            shape="round"
+            size="tiny"
+            outline
+            class="leader"
+          >
+            Leader
+          </button>
+          <div
+            *ngIf="showSpeakersCount && !alignSpeakerCountToRight"
+            class="speaker-count"
+            [ngClass]="{ 'desktop-speaker-count': !alignSpeakerCountToRight }"
+          >
+            <app-badge
+              *ngIf="user.speaker_events_count > 0"
+              [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'xx-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-opacity-60'"
+            ></app-badge>
+          </div>
         </div>
         <div *ngIf="showSocialLinks" class="social com-mt-2 com-flex com-gap-3">
           <a *ngIf="user.linkedin" [href]="user.linkedin | completeurl : 'linkedin'" target="_blank">

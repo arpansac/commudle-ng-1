@@ -30,6 +30,7 @@ import { AppSharedComponentsModule } from '../../../app-shared-components/app-sh
 import { SpeakerSlidesComponent } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/components/speaker-slides/speaker-slides.component';
 import { SpeakerCfpComponent } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/speaker-cfp/speaker-cfp.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
     NbInputModule,
     NbFormFieldModule,
     ListingPageHeaderComponent,
+    MiniUserProfileModule,
   ],
   exports: [PublicHomeListSpeakersContentComponent, EmptyStateComponent, PublicHomeListSpeakersUpcomingComponent],
 })
