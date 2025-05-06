@@ -1,3 +1,4 @@
+import { IHackathonTeam } from './hackathon-team.model';
 import { IHackathonTrack } from './hackathon-track.model';
 import { IUser } from './user.model';
 
@@ -22,4 +23,9 @@ export enum EInvitationStatus {
   REJECTED = 'rejected',
   APPLICATION_COMPLETE = 'application_complete',
   INCOMPLETE_APPLICATION = 'incomplete_application',
+}
+
+export interface IHackathonUserResponsesGroupByTeam {
+  hackathon_team: IHackathonTeam;
+  hackathon_user_responses: IHackathonUserResponse[];
 }
