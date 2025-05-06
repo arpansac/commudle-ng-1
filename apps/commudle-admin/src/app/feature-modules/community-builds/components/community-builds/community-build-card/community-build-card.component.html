@@ -4,10 +4,12 @@
       <div class="image-badge-wrapper">
         <commudle-banner-image
           [headerImagePath]="
-            communityBuild.thumbnail_image
-              ? communityBuild.thumbnail_image?.i320
-              : staticAssets.community_build_empty_state
-          "
+        communityBuild.thumbnail_image
+          ? communityBuild.thumbnail_image.i320
+          : communityBuild.images?.[0]
+          ? communityBuild.images[0].url
+          : staticAssets.community_build_empty_state
+      "
           [name]="communityBuild.name"
           [topRightCurve]="false"
           [topLeftCurve]="false"
