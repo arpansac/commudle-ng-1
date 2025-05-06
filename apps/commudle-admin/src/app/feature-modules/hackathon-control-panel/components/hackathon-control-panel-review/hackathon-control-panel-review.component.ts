@@ -1,10 +1,10 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import * as moment from 'moment';
-import { RoundService, ToastrService, NoteService } from '@commudle/shared-services';
+import { RoundService, ToastrService, NoteService, EmailerPreviewService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import {
   EDbModels,
@@ -24,6 +24,7 @@ import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/servi
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -69,6 +70,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   selectedTrackForFilter = '';
   showOnlyWinnerEntry = false;
 
+  dialogReference: NbDialogRef<any>;
+  sendEmailDialogRef: NbDialogRef<any>;
+  confirmSendEmailDialogRef: NbDialogRef<any>;
+
   tinyMCE = {
     height: 200,
     menubar: false,
@@ -112,6 +117,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     private noteService: NoteService,
     private fb: FormBuilder,
     private hurService: HackathonUserResponsesService,
+    private hackathonEmailPreview: EmailerPreviewService,
+    private router: Router,
   ) {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
@@ -346,5 +353,45 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         hackathonTeam: hackathonTeam,
       },
     });
+  }
+
+  openSendApplicationStatusEmailsDialogBox(dialogBox) {
+    this.sendEmailDialogRef = this.nbDialogService.open(dialogBox);
+  }
+
+  hackathonSendTeamStatusEmailByFilterEmailPreview(hackathonTeamRegistrationStatus: EHackathonRegistrationStatus) {
+    this.hackathonEmailPreview
+      .hackathonSendTeamStatusEmailByFilterEmailPreview(this.hackathon.id, hackathonTeamRegistrationStatus)
+      .subscribe((data) => {
+        this.openEmailPreviewTemplate(data.preview);
+      });
+  }
+
+  hackathonSendTeamStatusEmailByFilter(hackathonTeamRegistrationStatus: EHackathonRegistrationStatus) {
+    this.hackathonService
+      .hackathonSendTeamStatusEmailByFilter(this.hackathon.id, hackathonTeamRegistrationStatus)
+      .subscribe((data) => {
+        if (data) {
+          this.toastrService.successDialog('Emails are being sent!');
+          this.sendEmailDialogRef.close();
+          this.confirmSendEmailDialogRef.close();
+        }
+      });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
+  }
+
+  openConfirmSendApplicationEmailPopup(dialogBox, hackathonTeamRegistrationStatus) {
+    this.confirmSendEmailDialogRef = this.nbDialogService.open(dialogBox, {
+      context: { hackathonTeamRegistrationStatus: hackathonTeamRegistrationStatus },
+    });
+  }
+
+  goToEmails() {
+    this.router.navigate(['../emails'], { relativeTo: this.activatedRoute });
   }
 }

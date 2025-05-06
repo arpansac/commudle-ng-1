@@ -50,6 +50,13 @@ export class StatsHackathonService {
     });
   }
 
+  hackathonUserLocations(hackathonId: number | string): Observable<any> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.HACKATHONS.USER_LOCATIONS), {
+      params,
+    });
+  }
+
   hackathonEmailStats(hackathonId: number | string, page = 1, count = 10): Observable<IPaginationCount<IFixedEmail>> {
     const params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
     return this.http.get<IPaginationCount<IFixedEmail>>(

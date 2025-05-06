@@ -4,6 +4,7 @@ import { IHackathon, EParticipateTypes } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { StatsHackathonService } from 'apps/commudle-admin/src/app/services/stats/hackathons.service';
 import Chart from 'chart.js';
+declare let google: any;
 
 @Component({
   selector: 'commudle-hackathon-control-panel-stats',
@@ -14,7 +15,8 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   private hackathonId: string;
   hackathonTeamStats: any;
   hackathonUserResponsesTags: any;
-  totalUserVisits: number;
+  hackathonUserLocationsForParticipants: any;
+  userVisitStats: any;
   hackathon: IHackathon;
   EParticipateTypes = EParticipateTypes;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
@@ -37,6 +39,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
       this.getHackathonUserResponsesTags();
       this.getHackathonTeamOverTime();
       this.getHackathonUserVisits();
+      this.getHackathonUserLocation();
     });
   }
 
@@ -151,7 +154,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
 
   getHackathonUserVisits() {
     this.statsHackathonService.hackathonUserVisits(this.hackathonId).subscribe((data) => {
-      this.totalUserVisits = data.user_visits.total;
+      this.userVisitStats = data.user_visits;
       const hackathonTeamOverTime = data.user_visits.over_date;
       if (!this.HackathonUserVisitOverDays?.nativeElement || !hackathonTeamOverTime) {
         return;
@@ -222,5 +225,49 @@ export class HackathonControlPanelStatsComponent implements OnInit {
         },
       });
     });
+  }
+
+  getHackathonUserLocation() {
+    this.statsHackathonService.hackathonUserLocations(this.hackathonId).subscribe((data) => {
+      if (data) {
+        this.hackathonUserLocationsForParticipants = data;
+
+        this.initMapChart();
+      }
+    });
+  }
+
+  initMapChart() {
+    google.charts.load('current', {
+      packages: ['geochart'],
+    });
+    google.charts.setOnLoadCallback(this.drawRegionsMap.bind(this));
+  }
+
+  drawRegionsMap() {
+    const data = google.visualization.arrayToDataTable([
+      ['Region', 'Popularity'],
+      ...this.hackathonUserLocationsForParticipants.user_locations.map((location) => [location[0], location[1]]),
+    ]);
+
+    const options = {
+      displayMode: 'markers',
+      region: 'IN', // Focus on India
+      resolution: 'provinces', // Highlights states instead of individual points
+      colorAxis: { colors: ['#70a1ff', '#1e90ff'] }, // Gradient colors
+      backgroundColor: '#f4f4f4', // Light grey background
+      datalessRegionColor: '#dddddd', // Grey for areas with no data
+      defaultColor: '#f00', // Default fill color
+      tooltip: { textStyle: { color: '#333' }, showColorCode: true }, // Better tooltip
+      enableRegionInteractivity: true,
+      explorer: {
+        actions: ['dragToZoom', 'rightClickToReset'], // Enable zoom and pan
+        keepInBounds: true, // Prevent users from panning too far
+        zoomDelta: 1.2, // Zoom step
+      },
+    };
+
+    const chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+    chart.draw(data, options);
   }
 }

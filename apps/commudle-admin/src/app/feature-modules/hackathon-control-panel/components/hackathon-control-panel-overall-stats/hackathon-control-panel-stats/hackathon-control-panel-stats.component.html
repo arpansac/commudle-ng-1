@@ -78,11 +78,29 @@
       </div>
     </div>
 
-    <div class="hackathon-stats-container" *ngIf="totalUserVisits">
+    <div class="hackathon-stats-container" *ngIf="userVisitStats">
       <div class="hackathon-stats-item">
         <div class="hackathon-stats-item-label">Total User Visits</div>
-        <div class="hackathon-stats-item-value">{{ totalUserVisits }}</div>
+        <div class="hackathon-stats-item-value">{{ userVisitStats.total }}</div>
       </div>
+    </div>
+
+    <div *ngIf="userVisitStats?.region_wise_distribution" class="graph-container">
+      <span class="title">Hackathon Views</span>
+      <table>
+        <thead>
+          <tr>
+            <th>Regin</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let userLocations of userVisitStats?.region_wise_distribution | keyvalue">
+            <td>{{ userLocations.key }}</td>
+            <td>{{ userLocations.value }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="graph-container">
       <span class="title">Hackathon Views over days</span>
@@ -97,5 +115,32 @@
     <!-- <canvas #hackathonTeamOverTime></canvas> -->
     <!-- </div>
     </div> -->
+
+    <div *ngIf="hackathonUserLocationsForParticipants" class="graph-container">
+      <span class="title">User Registered Distribution</span>
+      <table>
+        <thead>
+          <tr>
+            <th>Regin</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let userLocations of hackathonUserLocationsForParticipants.user_locations">
+            <td>{{ userLocations[0] }}</td>
+            <td>{{ userLocations[1] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <div class="map">
+      <div class="graph-container">
+        <span class="title">Map Wise User Registered Distribution</span>
+        <div class="chart-container">
+          <div id="regions_div"></div>
+        </div>
+      </div>
+    </div>
   </nb-card-body>
 </nb-card>

@@ -37,6 +37,17 @@
         *ngIf="userResponses && userResponses.length > 0"
         nbButton
         status="primary"
+        (click)="openSendApplicationStatusEmailsDialogBox(sendApplicationStatusEmails)"
+        class="com-w-max"
+        size="small"
+      >
+        Send Application Status Emails
+      </button>
+
+      <button
+        *ngIf="userResponses && userResponses.length > 0"
+        nbButton
+        status="primary"
         (click)="sendTeamDetailsCsv()"
         class="com-w-max"
         size="small"
@@ -600,5 +611,106 @@
         </div>
       </div>
     </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #sendApplicationStatusEmails let-ref="dialogRef" let-data>
+  <nb-card class="send-application-status-dialog-box">
+    <nb-card-header>
+      <span>Send Application Status Emails</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="email-buttons-actions">
+        <div class="email-buttons">
+          <button
+            nbButton
+            status="primary"
+            (click)="
+              openConfirmSendApplicationEmailPopup(confirmSendApplicationEmail, EHackathonRegistrationStatus.ACCEPTED)
+            "
+          >
+            Send All Acceptance Emails
+          </button>
+          <button
+            nbButton
+            status="success"
+            (click)="hackathonSendTeamStatusEmailByFilterEmailPreview(EHackathonRegistrationStatus.ACCEPTED)"
+          >
+            Acceptance Email Preview
+          </button>
+        </div>
+        <div class="email-buttons">
+          <button
+            nbButton
+            status="primary"
+            (click)="
+              openConfirmSendApplicationEmailPopup(confirmSendApplicationEmail, EHackathonRegistrationStatus.REJECTED)
+            "
+          >
+            Send All Rejection Emails
+          </button>
+          <button
+            nbButton
+            status="success"
+            (click)="hackathonSendTeamStatusEmailByFilterEmailPreview(EHackathonRegistrationStatus.REJECTED)"
+          >
+            Rejection Email Preview
+          </button>
+        </div>
+        <div class="email-buttons">
+          <button
+            nbButton
+            status="primary"
+            (click)="
+              openConfirmSendApplicationEmailPopup(confirmSendApplicationEmail, EHackathonRegistrationStatus.WAITLISTED)
+            "
+          >
+            Send All Waitlist Emails
+          </button>
+          <button
+            nbButton
+            status="success"
+            (click)="hackathonSendTeamStatusEmailByFilterEmailPreview(EHackathonRegistrationStatus.WAITLISTED)"
+          >
+            Waitlist Email Preview
+          </button>
+        </div>
+        <div class="email-buttons">
+          <button nbButton status="primary" (click)="goToEmails(); ref.close()">More Emails</button>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #confirmSendApplicationEmail let-ref="dialogRef" let-data>
+  <nb-card class="send-application-status-dialog-box">
+    <nb-card-header>
+      <span>Are you sure?</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div>
+        <p>
+          Are you sure, You want to send email to all
+          <strong>{{ data.hackathonTeamRegistrationStatus | titlecase }}</strong> Team Members
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        (click)="hackathonSendTeamStatusEmailByFilter(data.hackathonTeamRegistrationStatus)"
+      >
+        Send
+      </button>
+      <button nbButton status="danger">Cancel</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

@@ -441,6 +441,8 @@ export const API_ROUTES = {
         'api/v2/email_previews/hackathon_emails/overall_round_selection_update_email',
       HACKATHON_TEAM_INDIVIDUAL_GENERAL_EMAIL:
         'api/v2/email_previews/hackathon_emails/hackathon_team_individual_general_email',
+      HACKATHON_SEND_TEAM_STATUS_EMAIL_BY_FILTER:
+        'api/v2/email_previews/hackathon_emails/send_team_status_email_by_filter',
     },
   },
 
@@ -696,6 +698,7 @@ export const API_ROUTES = {
       USER_TAGS: 'api/v2/stats/hackathons/user_tags',
       TEAM_REGISTRATIONS_OVER_TIME: 'api/v2/stats/hackathons/team_registrations_over_time',
       HACKATHON_USER_VISITS: 'api/v2/stats/hackathons/user_visits',
+      USER_LOCATIONS: 'api/v2/stats/hackathons/user_locations',
       EMAILS: 'api/v2/stats/hackathons/emails',
     },
   },
@@ -866,6 +869,7 @@ export const API_ROUTES = {
     SHOW_USER_RESPONSES_BY_TEAM: 'api/v2/hackathons/show_user_responses_by_team', //GET
     CHANGE_TEAM_REGISTRATION_STATUS: 'api/v2/hackathons/change_team_registration_status', //PUT
     GENERATE_TEAM_REGISTRATION_STATUS_NOTIFICATION: 'api/v2/hackathons/generate_team_registration_status_notification', //POST
+    SEND_TEAM_STATUS_EMAIL_BY_FILTER: 'api/v2/hackathons/send_team_status_email_by_filter', //POST
     CHANGE_TEAM_ROUND_STATUS: 'api/v2/hackathons/change_team_round_status', //PUT
     GET_HACKATHON_CURRENT_REGISTRATION_DETAILS: 'api/v2/hackathons/get_hackathon_current_registration_details', //GET
     UPDATE_STATUS: 'api/v2/hackathons/update_status', //PUT

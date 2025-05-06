@@ -333,6 +333,16 @@ export class HackathonService {
     );
   }
 
+  hackathonSendTeamStatusEmailByFilter(hackathonId, registrationStatus): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.SEND_TEAM_STATUS_EMAIL_BY_FILTER),
+      {
+        hackathon_id: hackathonId,
+        team_registration_status: registrationStatus,
+      },
+    );
+  }
+
   changeTeamRound(teamId, roundId): Observable<IHackathonTeam> {
     return this.http.put<IHackathonTeam>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.CHANGE_TEAM_ROUND_STATUS),

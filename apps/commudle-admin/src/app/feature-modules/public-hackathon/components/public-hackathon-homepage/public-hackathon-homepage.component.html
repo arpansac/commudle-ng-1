@@ -100,7 +100,13 @@
               <p class="name">Judges</p>
             </a>
           </div>
-          <div>
+          <div
+            *ngIf="
+              userTeamDetails &&
+              userTeamDetails[0] &&
+              userTeamDetails[0].registration_status === EHackathonRegistrationStatus.ACCEPTED
+            "
+          >
             <a [routerLink]="['channels']" routerLinkActive="active">
               <fa-icon [icon]="icons.faHashtag"></fa-icon>
               <p class="name">Channels</p>
