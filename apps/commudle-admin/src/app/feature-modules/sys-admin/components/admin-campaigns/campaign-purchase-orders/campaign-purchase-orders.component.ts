@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, IPurchaseOrder } from '@commudle/shared-models';
-import { PurchaseOrderService } from '@commudle/shared-services';
+import { PurchaseOrderService, SeoService } from '@commudle/shared-services';
 import moment from 'moment';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -18,7 +18,11 @@ export class CampaignPurchaseOrdersComponent implements OnInit {
   total = 0;
   searchForm: FormGroup;
   moment = moment;
-  constructor(private purchaseOrderService: PurchaseOrderService, private fb: FormBuilder) {
+  constructor(
+    private purchaseOrderService: PurchaseOrderService,
+    private fb: FormBuilder,
+    private seoService: SeoService,
+  ) {
     this.searchForm = this.fb.group({
       search: [''],
     });
@@ -26,6 +30,9 @@ export class CampaignPurchaseOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPaymentDetails();
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
 
     this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.page = 1;

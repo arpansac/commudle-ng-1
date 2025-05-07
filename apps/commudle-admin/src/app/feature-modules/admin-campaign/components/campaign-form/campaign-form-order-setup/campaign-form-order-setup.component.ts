@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
-import { CampaignService, ToastrService } from '@commudle/shared-services';
+import { CampaignService, SeoService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
@@ -33,6 +33,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     private campaignService: CampaignService,
     private toasterService: ToastrService,
     private router: Router,
+    private seoService: SeoService,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -97,6 +98,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       this.campaign = data['campaign'];
       this.patchCampaignForm();
     });
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   ngOnDestroy(): void {

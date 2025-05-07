@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICampaignType } from '@commudle/shared-models';
-import { ToastrService } from '@commudle/shared-services';
+import { SeoService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign.service';
@@ -61,6 +61,7 @@ export class CampaignTypesComponent implements OnInit {
     private fb: FormBuilder,
     private sysAdminCampaignTypesService: SysAdminCampaignService,
     private toasterService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.campaignTypeForm = this.fb.group({
       name: ['', Validators.required],
@@ -77,6 +78,8 @@ export class CampaignTypesComponent implements OnInit {
 
   ngOnInit() {
     this.getCampaignTypes();
+    // FIXME: Complete the SEO service implementation
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   getCampaignTypes() {

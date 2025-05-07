@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign.service';
 
 @Component({
@@ -14,10 +15,13 @@ export class AdminCampaignsListComponent implements OnInit {
   total: number;
   isLoading = true;
 
-  constructor(private campaignService: SysAdminCampaignService) {}
+  constructor(private campaignService: SysAdminCampaignService, private seoService: SeoService) {}
 
   ngOnInit() {
     this.fetchCampaigns();
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   fetchCampaigns() {

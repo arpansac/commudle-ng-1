@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router, NavigationEnd } from '@angular/router';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { SeoService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-campaign-form',
   templateUrl: './campaign-form.component.html',
@@ -31,7 +32,7 @@ export class CampaignFormComponent implements OnInit {
     faFileImage,
   };
 
-  constructor(private router: Router, private footerService: FooterService) {
+  constructor(private router: Router, private footerService: FooterService, private seoService: SeoService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
@@ -43,6 +44,9 @@ export class CampaignFormComponent implements OnInit {
         this.generateSlug();
       }
     });
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   generateSlug() {
