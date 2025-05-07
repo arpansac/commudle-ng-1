@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { ECommunityBuildPublishStatus } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-community-build',
   templateUrl: './community-build.component.html',
   styleUrls: ['./community-build.component.scss'],
 })
-export class CommunityBuildComponent implements OnInit {
+export class CommunityBuildComponent implements OnInit, OnDestroy {
   communityBuild: ICommunityBuild;
   moment = moment;
 
@@ -30,6 +31,11 @@ export class CommunityBuildComponent implements OnInit {
       )
       .subscribe((data: ICommunityBuild) => {
         this.communityBuild = data;
+        if (this.communityBuild.publish_status !== ECommunityBuildPublishStatus.published) {
+          this.seoService.noIndex(true);
+        } else {
+          this.seoService.noIndex(false);
+        }
 
         this.seoService.setTags(
           `${data.name} | By ${data.user.name}`,
@@ -37,5 +43,9 @@ export class CommunityBuildComponent implements OnInit {
           data.images[0]?.url || 'https://commudle.com/assets/images/commudle-logo192.png',
         );
       });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
   }
 }
