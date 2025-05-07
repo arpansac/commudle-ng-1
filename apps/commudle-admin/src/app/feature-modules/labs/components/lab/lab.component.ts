@@ -18,7 +18,7 @@ import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/se
 import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discussions.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
-import { ILab } from 'apps/shared-models/lab.model';
+import { EPublishStatus, ILab } from 'apps/shared-models/lab.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 import { PrismJsHighlightCodeService } from 'apps/shared-services/prismjs-highlight-code.service';
@@ -129,6 +129,7 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   // Called once, before the instance is destroyed.
   ngOnDestroy(): void {
     this.routeSubscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   highlightCodeSnippets() {
@@ -153,6 +154,11 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   getLab(labId) {
     this.labsService.pShow(labId).subscribe((data) => {
       this.lab = data;
+      if (this.lab.publish_status !== EPublishStatus.published) {
+        this.seoService.noIndex(true);
+      } else {
+        this.seoService.noIndex(false);
+      }
       this.setSeoSchema();
       this.setMeta();
       this.labDescription = this.sanitizer.bypassSecurityTrustHtml(this.lab.description);
