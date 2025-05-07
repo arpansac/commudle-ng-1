@@ -3,18 +3,13 @@
     <a [routerLink]="['/builds', build.slug]">
       <div class="build-card-image">
         <commudle-banner-image
-          *ngIf="build.thumbnail_image"
           [headerImagePath]="
-            build.thumbnail_image ? build.thumbnail_image.i320 : staticAssets.community_build_empty_state
-          "
-          [name]="build.name"
-          [bottomRightCurve]="false"
-          [bottomLeftCurve]="false"
-          [aspectRatio]="'4/3'"
-        ></commudle-banner-image>
-        <commudle-banner-image
-          *ngIf="build.images"
-          [headerImagePath]="build.images[0] ? build.images[0]?.url : staticAssets.community_build_empty_state"
+          build.thumbnail_image
+            ? build.thumbnail_image.i320
+            : build.images?.[0]
+            ? build.images[0].url
+            : staticAssets.community_build_empty_state
+        "
           [name]="build.name"
           [bottomRightCurve]="false"
           [bottomLeftCurve]="false"
