@@ -57,6 +57,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params) => {
       const tag = params['tag'];
       if (tag) {
+        console.log(this.showFeaturedBlogsSection);
         this.showFeaturedBlogsSection = false;
         const tag = {
           value: this.slugToText(params['tag']),
