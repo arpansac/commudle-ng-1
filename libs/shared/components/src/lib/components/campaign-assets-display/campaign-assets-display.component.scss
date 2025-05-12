@@ -1,7 +1,7 @@
 .carousel {
   @apply com-overflow-hidden com-w-full com-relative com-h-full;
   .promoted-badge {
-    @apply com-absolute com-right-0 com-top-0 com-rounded-md com-bg-blue-100 com-z-30 com-px-2 com-py-1;
+    @apply com-absolute com-right-0 com-top-0 com-rounded-md com-bg-blue-100 com-z-30 com-p-0.5 com-text-tYankees-Blue com-text-xs com-leading-none;
   }
 
   .container {
