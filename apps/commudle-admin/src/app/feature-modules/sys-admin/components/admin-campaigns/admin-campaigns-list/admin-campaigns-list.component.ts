@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign.service';
@@ -8,7 +8,7 @@ import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-mod
   templateUrl: './admin-campaigns-list.component.html',
   styleUrls: ['./admin-campaigns-list.component.scss'],
 })
-export class AdminCampaignsListComponent implements OnInit {
+export class AdminCampaignsListComponent implements OnInit, OnDestroy {
   campaigns: ICampaign[];
   page = 1;
   count = 10;
@@ -19,9 +19,15 @@ export class AdminCampaignsListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCampaigns();
+    this.seoService.noIndex(true);
+
     // FIXME: Complete the SEO service implementation
 
     this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
   }
 
   fetchCampaigns() {

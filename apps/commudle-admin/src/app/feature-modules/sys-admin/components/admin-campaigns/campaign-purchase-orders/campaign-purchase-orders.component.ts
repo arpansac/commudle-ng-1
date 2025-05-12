@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, IPurchaseOrder } from '@commudle/shared-models';
 import { PurchaseOrderService, SeoService } from '@commudle/shared-services';
@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   templateUrl: './campaign-purchase-orders.component.html',
   styleUrls: ['./campaign-purchase-orders.component.scss'],
 })
-export class CampaignPurchaseOrdersComponent implements OnInit {
+export class CampaignPurchaseOrdersComponent implements OnInit, OnDestroy {
   purchaseOrders: IPurchaseOrder[];
   isLoading = true;
   page = 1;
@@ -30,6 +30,8 @@ export class CampaignPurchaseOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPaymentDetails();
+    this.seoService.noIndex(true);
+
     // FIXME: Complete the SEO service implementation
 
     this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
@@ -38,6 +40,10 @@ export class CampaignPurchaseOrdersComponent implements OnInit {
       this.page = 1;
       this.fetchPaymentDetails();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
   }
 
   fetchPaymentDetails() {

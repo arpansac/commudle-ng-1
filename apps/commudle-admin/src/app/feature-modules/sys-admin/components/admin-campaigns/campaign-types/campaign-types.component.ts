@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICampaignType } from '@commudle/shared-models';
 import { SeoService, ToastrService } from '@commudle/shared-services';
@@ -10,7 +10,7 @@ import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-mod
   templateUrl: './campaign-types.component.html',
   styleUrls: ['./campaign-types.component.scss'],
 })
-export class CampaignTypesComponent implements OnInit {
+export class CampaignTypesComponent implements OnInit, OnDestroy {
   campaignTypeForm: FormGroup;
   campaignTypes: ICampaignType[];
   icons = {
@@ -78,8 +78,13 @@ export class CampaignTypesComponent implements OnInit {
 
   ngOnInit() {
     this.getCampaignTypes();
+    this.seoService.noIndex(true);
     // FIXME: Complete the SEO service implementation
     this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
   }
 
   getCampaignTypes() {
