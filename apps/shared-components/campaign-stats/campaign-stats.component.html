@@ -3,7 +3,7 @@
     <div class="one-column-layout">
       <nb-card>
         <nb-card-header> Campaign Stats </nb-card-header>
-        <nb-card-body>
+        <nb-card-body *ngIf="campaignStats">
           <div class="campaign-stats-number" *ngIf="campaignStats.total_views || campaignStats.total_clicks">
             <nb-card *ngIf="campaignStats.total_views">
               <nb-card-body>
