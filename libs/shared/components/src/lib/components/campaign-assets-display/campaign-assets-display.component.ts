@@ -23,6 +23,9 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   private campaignObserver!: IntersectionObserver;
   private defaultImageObserver!: IntersectionObserver;
 
+  private hasTrackedCampaignView = false;
+  private hasTrackedDefaultImageView = false;
+
   constructor(
     private campaignService: CampaignService,
     private uerService: UserEngagementRecordsService,
@@ -58,36 +61,52 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
     this.campaignObserver = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !this.hasTrackedCampaignView) {
           this.createUserEngagementForCampaign(EUserActivityEventType.USER_VIEW);
+          this.hasTrackedCampaignView = true;
           this.campaignObserver.disconnect(); // Stop observing after first call
         }
       },
-      { threshold: 0.5 }, // Adjust this as needed (e.g., 0.1 for 10% visibility)
+      { threshold: 0.5 },
     );
 
     this.defaultImageObserver = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
           this.createUserEngagementForDefaultImage(EUserActivityEventType.USER_VIEW);
+          this.hasTrackedDefaultImageView = true;
           this.defaultImageObserver.disconnect(); // Stop observing after first call
         }
       },
-      { threshold: 0.5 }, // Adjust this as needed (e.g., 0.1 for 10% visibility)
+      { threshold: 0.5 },
     );
 
     setTimeout(() => {
-      if (this.campaign) {
-        if (this.campaignImageContainerDiv?.nativeElement) {
-          this.campaignObserver.observe(this.campaignImageContainerDiv.nativeElement);
-        }
-      } else {
-        if (this.defaultImageContainerDiv?.nativeElement) {
-          this.campaignObserver.observe(this.defaultImageContainerDiv.nativeElement);
-        }
+      const campaignEl = this.campaignImageContainerDiv?.nativeElement;
+      const defaultEl = this.defaultImageContainerDiv?.nativeElement;
+
+      if (this.campaign && campaignEl) {
+        this.campaignObserver.observe(campaignEl);
+        this.checkAndTriggerIfVisible(campaignEl, this.campaignObserver);
+      } else if (defaultEl) {
+        this.defaultImageObserver.observe(defaultEl);
+        this.checkAndTriggerIfVisible(defaultEl, this.defaultImageObserver);
       }
-    }, 5000); // Delay to ensure the element is rendered
+    }, 500);
+  }
+
+  private checkAndTriggerIfVisible(element: HTMLElement, observer: IntersectionObserver) {
+    const rect = element.getBoundingClientRect();
+    const inViewport =
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+    if (inViewport) {
+      observer.observe(element); // Still required to properly trigger
+    }
   }
 
   ngOnDestroy(): void {
