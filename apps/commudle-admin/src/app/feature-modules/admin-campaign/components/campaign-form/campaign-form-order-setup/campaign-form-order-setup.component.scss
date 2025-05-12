@@ -81,3 +81,7 @@ div {
     }
   }
 }
+
+input[type='file'] {
+  @apply com-bg-transparent;
+}
