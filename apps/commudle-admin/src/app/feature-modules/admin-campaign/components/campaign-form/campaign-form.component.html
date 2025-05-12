@@ -34,29 +34,55 @@
               fragment="user-information"
               routerLinkActive="active"
               class="action-button"
-              [ngClass]="{ active: lastSegment === 'order-setup' }"
+              [ngClass]="{ active: lastSegment === 'order-setup', disabled: !isEditMode }"
             >
               <div class="number">2</div>
               <div class="heading">Order Setup</div>
             </a>
             <div class="sub-headings">
-              <a [routerLink]="['order-setup']" fragment="user-information" class="action-button">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="user-information"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
                 <div class="icon"><fa-icon [icon]="icons.faUser"></fa-icon></div>
                 <div class="heading">User Information</div>
               </a>
-              <a [routerLink]="['order-setup']" fragment="campaign-information" class="action-button">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="campaign-information"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
                 <div class="icon"><fa-icon [icon]="icons.faCircleInfo"></fa-icon></div>
                 <div class="heading">Campaign Information</div>
               </a>
-              <a [routerLink]="['order-setup']" fragment="schedule" class="action-button">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="schedule"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
                 <div class="icon"><fa-icon [icon]="icons.faCalendar"></fa-icon></div>
                 <div class="heading">Schedule</div>
               </a>
-              <a [routerLink]="['order-setup']" fragment="price" class="action-button">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="price"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
                 <div class="icon"><fa-icon [icon]="icons.faSackDollar"></fa-icon></div>
                 <div class="heading">Budget</div>
               </a>
-              <a [routerLink]="['order-setup']" fragment="creative-assets" class="action-button">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="creative-assets"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
                 <div class="icon"><fa-icon [icon]="icons.faFileImage"></fa-icon></div>
                 <div class="heading">Creative Assets</div>
               </a>
@@ -65,7 +91,7 @@
           <a
             [routerLink]="['order-confirmation']"
             routerLinkActive="active"
-            [ngClass]="{ active: lastSegment === 'order-confirmation' }"
+            [ngClass]="{ active: lastSegment === 'order-confirmation', disabled: !isEditMode }"
             class="action-button"
           >
             <div class="number">3</div>

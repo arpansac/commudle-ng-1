@@ -31,12 +31,15 @@ export class CampaignFormComponent implements OnInit {
     faSackDollar,
     faFileImage,
   };
-
+  isEditMode = false;
   constructor(private router: Router, private footerService: FooterService, private seoService: SeoService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
   ngOnInit() {
+    const url = this.router.url;
+
+    this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
     this.router.events.subscribe((event) => {

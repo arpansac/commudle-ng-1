@@ -14,14 +14,14 @@ const routes: Routes = [
     component: CampaignFormComponent,
     children: [
       { path: '', component: CampaignFormSelectCampaignComponent },
-      {
-        path: 'order-setup',
-        component: CampaignFormOrderSetupComponent,
-      },
-      {
-        path: 'order-confirmation',
-        component: CampaignFormOrderConfirmationComponent,
-      },
+      // {
+      //   path: 'order-setup',
+      //   component: CampaignFormOrderSetupComponent,
+      // },
+      // {
+      //   path: 'order-confirmation',
+      //   component: CampaignFormOrderConfirmationComponent,
+      // },
     ],
   },
   {

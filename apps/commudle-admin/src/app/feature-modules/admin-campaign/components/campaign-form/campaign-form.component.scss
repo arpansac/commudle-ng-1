@@ -25,6 +25,9 @@ section {
         &.active {
           @apply com-bg-Bright-Gray com-text-tYankees-Blue;
         }
+        &.disabled {
+          @apply com-pointer-events-none com-cursor-not-allowed;
+        }
         .icon {
           @apply com-text-lg com-text-Cadet-Grey;
         }
