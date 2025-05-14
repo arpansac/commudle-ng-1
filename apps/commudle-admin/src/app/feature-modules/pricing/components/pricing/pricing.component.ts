@@ -1,20 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { Subscription } from 'rxjs';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
 import { ECmsType } from 'apps/shared-models/enums/cms.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { countries_details } from '@commudle/shared-services';
+import { countries_details, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import * as momentTimezone from 'moment-timezone';
 import { IFaq } from '@commudle/shared-models';
 @Component({
-  selector: 'app-pricing',
+  selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss'],
 })
