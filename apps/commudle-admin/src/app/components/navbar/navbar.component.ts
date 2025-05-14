@@ -10,6 +10,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { Subject, takeUntil } from 'rxjs';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
+import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 
 @Component({
   selector: 'app-navbar',
@@ -30,6 +31,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   faMoon = faMoon;
   faMagnifyingGlass = faMagnifyingGlass;
   sidebarEventName = 'MainSidebar';
+  showAdminSidebar = false;
+  EUserRoles = EUserRoles;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -53,6 +57,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
 
       if (this.currentUser) {
+        const adminRoles = [
+          EUserRoles.SYSTEM_ADMINISTRATOR,
+          EUserRoles.PAGE_ADS,
+          EUserRoles.BADGES,
+          EUserRoles.FEATURED_COMMUNITIES,
+          EUserRoles.FEATURED_ITEMS,
+          EUserRoles.STATIC_ASSETS,
+          EUserRoles.COMMUNITY_ADMIN,
+          EUserRoles.AD_CAMPAIGN_ADMIN,
+          EUserRoles.NEWSLETTER,
+          EUserRoles.ORGANIZER,
+          EUserRoles.EVENT_ORGANIZER,
+          EUserRoles.EVENT_VOLUNTEER,
+        ];
+
+        if (adminRoles.some((role) => currentUser.user_roles.includes(role))) {
+          this.showAdminSidebar = true;
+        }
+
         this.setContextMenu();
       }
     });
