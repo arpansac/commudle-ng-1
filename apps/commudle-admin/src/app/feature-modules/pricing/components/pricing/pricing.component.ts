@@ -7,9 +7,9 @@ import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-sol
 import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
 import { ECmsType } from 'apps/shared-models/enums/cms.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { countries_details, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
+import { countries_details, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import * as momentTimezone from 'moment-timezone';
-import { IFaq } from '@commudle/shared-models';
+import { IFaq, IProductPrice } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
@@ -91,6 +91,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     private darkModeService: DarkModeService,
     private cmsService: CmsService,
     private fb: FormBuilder,
+    private productPriceService: ProductPriceService,
   ) {
     const userTimeZone = momentTimezone.tz.guess();
     if (userTimeZone === 'Asia/Calcutta') {
@@ -161,9 +162,15 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   getStartupData(): void {
-    this.cmsService.getDataBySlug('pp-commudle-for-startups').subscribe((value) => {
+    this.cmsService.getDataBySlug('pp-testing-pricing-checkout-page').subscribe((value) => {
       this.startup = value;
-      this.setSchema(this.startup);
+      this.productPriceService.show(this.startup.priceDetails[1].uuid).subscribe((value: IProductPrice) => {
+        this.startup.priceDetails[0].currencyType = value.currency;
+        this.startup.priceDetails[0].price = value.original_price;
+        this.startup.priceDetails[0].price_after_discount = value.final_price;
+        this.startup.priceDetails[0].discount_percentage = value.discount;
+      });
+      // this.setSchema(this.startup);
     });
   }
 

@@ -1036,4 +1036,11 @@ export const API_ROUTES = {
   USER_ENGAGEMENT_RECORDS: {
     CREATE: 'api/v2/uerec',
   },
+
+  PRODUCT_PRICES: {
+    CREATE: 'api/v2/product_prices', //POST
+    UPDATE: 'api/v2/product_prices', //PUT
+    INDEX: 'api/v2/product_prices', //GET
+    SHOW: 'api/v2/product_prices/show', //GET
+  },
 };
