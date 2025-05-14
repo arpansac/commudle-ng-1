@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
-import { CampaignService, ToastrService } from '@commudle/shared-services';
+import { CampaignService, SeoService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
@@ -33,6 +33,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     private campaignService: CampaignService,
     private toasterService: ToastrService,
     private router: Router,
+    private seoService: SeoService,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -97,6 +98,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       this.campaign = data['campaign'];
       this.patchCampaignForm();
     });
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   ngOnDestroy(): void {
@@ -110,8 +114,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         contact_name: this.campaign.contact_name,
         contact_email: this.campaign.contact_email,
         company_name: this.campaign.company_name,
-        start_time: this.campaign.start_time,
-        end_time: this.campaign.end_time,
+        start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
+        end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
         start_date: this.campaign.start_date,
         end_date: this.campaign.end_date,
         budget: this.campaign.budget,
@@ -140,6 +144,20 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         this.campaignForm.patchValue({ budget: data });
       });
     }
+  }
+
+  private convertUtcTimeToLocalString(timeStr: string): string {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+
+    // Create a Date in UTC
+    const utcDate = new Date();
+    utcDate.setUTCHours(hours, minutes, 0, 0);
+
+    // Convert to local time
+    const localHours = utcDate.getHours().toString().padStart(2, '0');
+    const localMinutes = utcDate.getMinutes().toString().padStart(2, '0');
+
+    return `${localHours}:${localMinutes}`;
   }
 
   onFileChange(event: any, index: number) {
@@ -226,8 +244,19 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[contact_name]', formValue.contact_name);
     formData.append('campaign[contact_email]', formValue.contact_email);
     formData.append('campaign[company_name]', formValue.company_name);
-    formData.append('campaign[start_time]', formValue.start_time);
-    formData.append('campaign[end_time]', formValue.end_time);
+
+    const combinedStart = `${formValue.start_date}T${formValue.start_time}:00`; // add seconds
+    const combinedEnd = `${formValue.end_date}T${formValue.end_time}:00`;
+
+    const startTimeUtc = new Date(combinedStart).toISOString();
+    const endTimeUtc = new Date(combinedEnd).toISOString();
+
+    formData.append('campaign[start_time]', startTimeUtc);
+    formData.append('campaign[end_time]', endTimeUtc);
+
+    // formData.append('campaign[start_time]', formValue.start_time);
+    // formData.append('campaign[end_time]', formValue.end_time);
+
     formData.append('campaign[start_date]', formValue.start_date);
     formData.append('campaign[end_date]', formValue.end_date);
     formData.append('campaign[budget]', formValue.budget);

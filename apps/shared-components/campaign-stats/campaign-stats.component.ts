@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CampaignService } from '@commudle/shared-services';
 import { ECampaignStatus, ECampaignTypeSlug, ICampaign, ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
@@ -47,12 +47,14 @@ export class CampaignStatsComponent implements OnInit {
   getCampaignStats() {
     this.campaignService.getStats(this.campaign.id).subscribe((stats: ICampaignStats) => {
       this.campaignStats = stats;
-      this.viewsOverDays();
-      this.clicksOverDays();
-      this.viewsOverTime();
-      this.clicksOverTime();
-      this.genderDistribution();
-      this.initMapChart();
+      setTimeout(() => {
+        this.viewsOverDays();
+        this.clicksOverDays();
+        this.viewsOverTime();
+        this.clicksOverTime();
+        this.genderDistribution();
+        this.initMapChart();
+      }, 0);
     });
   }
 
@@ -331,7 +333,12 @@ export class CampaignStatsComponent implements OnInit {
         ],
 
         // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: ['Male', 'Female', 'Prefer Not Answer', 'NA'],
+        labels: [
+          `Male (${this.campaignStats.user_gender_distribution.male})`,
+          `Female (${this.campaignStats.user_gender_distribution.female})`,
+          `Prefer Not Answer (${this.campaignStats.user_gender_distribution.prefer_not_to_answer})`,
+          `NA (${this.campaignStats.user_gender_distribution.NA})`,
+        ],
       },
       options: {
         responsive: true,

@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
-import { CampaignService } from '@commudle/shared-services';
+import { CampaignService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faEdit, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
@@ -27,6 +27,7 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private campaignService: CampaignService,
     private _dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -36,6 +37,9 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
         this.consent = true;
       }
     });
+    // FIXME: Complete the SEO service implementation
+
+    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   setAnimation() {

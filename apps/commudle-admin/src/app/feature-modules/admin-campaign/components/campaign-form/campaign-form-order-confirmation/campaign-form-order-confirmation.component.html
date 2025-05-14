@@ -21,8 +21,8 @@
         <p class="value">
           From <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span> to
           <span>{{ moment(campaign.end_date).format('MMM Do, YYYY') }}</span> between
-          <span> {{ campaign.start_time }}</span> and
-          <span>{{ campaign.end_time }}</span>
+          <span>{{ moment.utc(campaign.start_time, 'HH:mm').local().format('HH:mm') }}</span> and
+          <span>{{ moment.utc(campaign.end_time, 'HH:mm').local().format('HH:mm') }}</span>
         </p>
       </div>
       <div>
