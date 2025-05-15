@@ -6,4 +6,5 @@ export interface IProductPrice {
   discount: number;
   currency: string;
   min_quantity: number;
+  uuid: string;
 }

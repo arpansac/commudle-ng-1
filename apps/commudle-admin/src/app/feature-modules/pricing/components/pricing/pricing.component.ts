@@ -130,7 +130,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(false);
   }
 
-  gtmDatalayerPush(event) {
+  gtmDataLayerPush(event) {
     this.gtm.dataLayerPushEvent('click-pricing-plan', { com_plan_type: event });
   }
 
@@ -167,12 +167,15 @@ export class PricingComponent implements OnInit, OnDestroy {
 
       [0, 1].forEach((index) => {
         if (this.startup.priceDetails[index]) {
-          this.productPriceService.show(this.startup.priceDetails[index].uuid).subscribe((priceData: IProductPrice) => {
-            this.startup.priceDetails[index].currencyType = priceData.currency;
-            this.startup.priceDetails[index].price = priceData.original_price;
-            this.startup.priceDetails[index].price_after_discount = priceData.final_price;
-            this.startup.priceDetails[index].discount_percentage = priceData.discount;
-          });
+          this.productPriceService
+            .show(this.startup.priceDetails[index].uuid)
+            .subscribe((productPrice: IProductPrice) => {
+              this.startup.priceDetails[index].currencyType = productPrice.currency;
+              this.startup.priceDetails[index].price = productPrice.original_price;
+              this.startup.priceDetails[index].price_after_discount = productPrice.final_price;
+              this.startup.priceDetails[index].discount_percentage = productPrice.discount;
+              this.startup.priceDetails[index].uuid = productPrice.uuid;
+            });
         }
       });
 
@@ -278,5 +281,28 @@ export class PricingComponent implements OnInit, OnDestroy {
         answer: 'Yes, our users extend across the world.',
       },
     ];
+  }
+
+  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
+    this.gtmDataLayerPush(gtmPushEventName);
+    switch (planType) {
+      case 'startup': {
+        const productUuid = this.isMonthly ? this.startup.priceDetails[1].uuid : this.startup.priceDetails[0].uuid;
+        console.log('productUuid', productUuid);
+        break;
+      }
+      case 'enterprise': {
+        const productUuid = this.isMonthly
+          ? this.enterprise.priceDetails[1].uuid
+          : this.enterprise.priceDetails[0].uuid;
+        console.log('productUuid', productUuid);
+        break;
+      }
+      case 'devrel': {
+        const productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
+        console.log('productUuid', productUuid);
+        break;
+      }
+    }
   }
 }
