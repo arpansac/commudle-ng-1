@@ -164,22 +164,18 @@ export class PricingComponent implements OnInit, OnDestroy {
   getStartupData(): void {
     this.cmsService.getDataBySlug('pp-testing-pricing-checkout-page').subscribe((value) => {
       this.startup = value;
-      // Handle first pricing detail (index 0)
-      this.productPriceService.show(this.startup.priceDetails[0].uuid).subscribe((value: IProductPrice) => {
-        this.startup.priceDetails[0].currencyType = value.currency;
-        this.startup.priceDetails[0].price = value.original_price;
-        this.startup.priceDetails[0].price_after_discount = value.final_price;
-        this.startup.priceDetails[0].discount_percentage = value.discount;
+
+      [0, 1].forEach((index) => {
+        if (this.startup.priceDetails[index]) {
+          this.productPriceService.show(this.startup.priceDetails[index].uuid).subscribe((priceData: IProductPrice) => {
+            this.startup.priceDetails[index].currencyType = priceData.currency;
+            this.startup.priceDetails[index].price = priceData.original_price;
+            this.startup.priceDetails[index].price_after_discount = priceData.final_price;
+            this.startup.priceDetails[index].discount_percentage = priceData.discount;
+          });
+        }
       });
-      // Handle second pricing detail (index 1)
-      if (this.startup.priceDetails[1]) {
-        this.productPriceService.show(this.startup.priceDetails[1].uuid).subscribe((value: IProductPrice) => {
-          this.startup.priceDetails[1].currencyType = value.currency;
-          this.startup.priceDetails[1].price = value.original_price;
-          this.startup.priceDetails[1].price_after_discount = value.final_price;
-          this.startup.priceDetails[1].discount_percentage = value.discount;
-        });
-      }
+
       // this.setSchema(this.startup);
     });
   }
