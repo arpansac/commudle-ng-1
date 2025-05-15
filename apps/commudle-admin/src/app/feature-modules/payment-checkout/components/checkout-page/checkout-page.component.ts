@@ -7,19 +7,9 @@ import {
   IUser,
   EPurchaseOrderStatus,
   EDbModels,
-  ICampaign,
   IRazorpayPayment,
-  IProductPrice,
 } from '@commudle/shared-models';
-import {
-  AuthService,
-  CampaignService,
-  countries_details,
-  ProductPriceService,
-  PurchaseOrderService,
-  RazorpayService,
-  ToastrService,
-} from '@commudle/shared-services';
+import { AuthService, PurchaseOrderService, RazorpayService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTriangleExclamation, faRotateRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -41,12 +31,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   };
   totalPrice: number;
   totalTaxAmount: number;
-  countryDetails = countries_details;
   EPurchaseOrderStatus = EPurchaseOrderStatus;
-  campaign: ICampaign;
-  productPrice: IProductPrice;
   paymentPaid = false;
   private dialogRef: NbDialogRef<any>;
+  EDbModels = EDbModels;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
   @ViewChild('loadingDialog', { static: true }) loadingDialog: TemplateRef<any>;
@@ -60,8 +48,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private authWatchService: AuthService,
     private dialogService: NbDialogService,
-    private campaignService: CampaignService,
-    private productPriceService: ProductPriceService,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
@@ -95,30 +81,23 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           this.router.navigate(['checkout', this.purchaseOrder.uuid]);
         }
       }
-      this.purchaseOrder.currency_symbol = this.countryDetails.find(
-        (detail) => detail.currency === this.purchaseOrder.currency,
-      ).symbol;
       this.fetchParent();
     });
   }
 
   fetchParent() {
-    switch (this.purchaseOrder.orderable_type) {
-      case EDbModels.CAMPAIGN:
-        this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
-          this.campaign = campaign;
-          this.closeLoadingDialogBox();
-        });
-        break;
-      case EDbModels.PRODUCT_PRICE:
-        this.productPriceService.showById(this.purchaseOrder.orderable_id).subscribe((productPrice) => {
-          this.productPrice = productPrice;
-          this.closeLoadingDialogBox();
-        });
-        break;
-      default:
-        break;
-    }
+    this.closeLoadingDialogBox();
+    // switch (this.purchaseOrder.orderable_type) {
+    //   case EDbModels.CAMPAIGN:
+    //     this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
+    //       this.campaign = campaign;
+    //       this.closeLoadingDialogBox();
+    //     });
+    //     break;
+    //   default:
+    //     this.closeLoadingDialogBox();
+    //     break;
+    // }
   }
 
   fetchCurrentUser() {

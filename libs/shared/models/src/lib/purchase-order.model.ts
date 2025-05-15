@@ -11,7 +11,6 @@ export interface IPurchaseOrder {
   amount: number;
   payment_gateway_fee: number;
   currency: string;
-  currency_symbol: string; //used only to display(not from backend model)
   tax_amount: number;
   orderable_type: string;
   orderable_id: number;

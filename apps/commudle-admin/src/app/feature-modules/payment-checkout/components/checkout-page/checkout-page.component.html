@@ -2,10 +2,20 @@
   <div class="container">
     <div class="two-column-layout medium">
       <div class="main-column">
-        <nb-card *ngIf="campaign">
+        <nb-card *ngIf="purchaseOrder.orderable_type === EDbModels.CAMPAIGN">
           <nb-card-body>
             <div>
               <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card *ngIf="purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE">
+          <nb-card-body>
+            <div>
+              <commudle-product-price-details
+                [productPriceId]="purchaseOrder.orderable_id"
+              ></commudle-product-price-details>
             </div>
           </nb-card-body>
         </nb-card>
@@ -26,8 +36,7 @@
                 <span class="heading">Price </span>
                 <span class="value">
                   <span>
-                    {{ purchaseOrder.currency_symbol }}
-                    {{ purchaseOrder.amount_to_be_paid / 100 }}
+                    {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
                   </span>
                 </span>
               </div>
@@ -36,8 +45,7 @@
               <div class="payment-details">
                 <span class="heading">Total</span>
                 <span class="value">
-                  {{ purchaseOrder.currency_symbol }}
-                  {{ purchaseOrder.amount_to_be_paid / 100 }}
+                  {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
                 </span>
               </div>
 
