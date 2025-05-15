@@ -23,7 +23,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   startup: IPricing;
   devrel: IPricing;
   isMonthly = false;
-  isAnually = true;
+  isAnnually = true;
   faCircleCheck = faCircleCheck;
   pricingFeatures: IPricingFeatures[] = [];
   showAllFeatures = true;
@@ -164,7 +164,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   getStartupData(): void {
     this.cmsService.getDataBySlug('pp-testing-pricing-checkout-page').subscribe((value) => {
       this.startup = value;
-      this.productPriceService.show(this.startup.priceDetails[1].uuid).subscribe((value: IProductPrice) => {
+      this.productPriceService.show(this.startup.priceDetails[0].uuid).subscribe((value: IProductPrice) => {
         this.startup.priceDetails[0].currencyType = value.currency;
         this.startup.priceDetails[0].price = value.original_price;
         this.startup.priceDetails[0].price_after_discount = value.final_price;
@@ -190,7 +190,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   toggleSubscription(value) {
     this.isMonthly = value === 'monthly' ? true : false;
-    this.isAnually = value === 'anually' ? true : false;
+    this.isAnnually = value === 'annually' ? true : false;
   }
 
   toggleShowAllFeatures() {
