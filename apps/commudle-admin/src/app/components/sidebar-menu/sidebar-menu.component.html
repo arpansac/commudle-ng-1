@@ -1,5 +1,5 @@
 <div class="sidebar">
-  <nb-list class="sidebar-common-menu">
+  <!-- <nb-list class="sidebar-common-menu">
     <nb-list-item>
       <a [routerLink]="['/']">
         <fa-icon [icon]="faHouse"></fa-icon>
@@ -63,7 +63,7 @@
     <nb-list-item *ngIf="currentUser && currentUser.user_roles.includes(EUserRoles.NEWSLETTER)">
       <a [routerLink]="['/admin/newsletters']"> Newsletters </a>
     </nb-list-item>
-  </nb-list>
+  </nb-list> -->
 
   <div *ngIf="managedCommunities.length > 0 || managedCommunityGroups.length > 0">
     <nb-accordion class="sidebar-common-menu">
