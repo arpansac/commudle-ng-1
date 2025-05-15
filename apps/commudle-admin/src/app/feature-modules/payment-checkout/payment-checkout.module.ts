@@ -6,6 +6,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NbButtonModule, NbCardModule } from '@commudle/theme';
 import { SharedComponentsModule as NewSharedComponentModule } from '@commudle/shared-components';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     NewSharedComponentModule,
     SharedComponentsModule,
     NbButtonModule,
+    ReactiveFormsModule,
   ],
   declarations: [CheckoutPageComponent],
 })

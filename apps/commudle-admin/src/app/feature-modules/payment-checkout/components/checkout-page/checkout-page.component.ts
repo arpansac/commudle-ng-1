@@ -12,7 +12,14 @@ import {
 import { AuthService, PurchaseOrderService, RazorpayService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faTriangleExclamation, faRotateRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTriangleExclamation,
+  faRotateRight,
+  faCircleCheck,
+  faPlus,
+  faMinus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 declare const Razorpay: any;
 @Component({
   selector: 'commudle-checkout-page',
@@ -28,18 +35,22 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     faTriangleExclamation,
     faRotateRight,
     faCircleCheck,
+    faPlus,
+    faMinus,
   };
   totalPrice: number;
   totalTaxAmount: number;
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   paymentPaid = false;
-  private dialogRef: NbDialogRef<any>;
   EDbModels = EDbModels;
+  checkoutForm: FormGroup;
+  quantity = 1;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
   @ViewChild('loadingDialog', { static: true }) loadingDialog: TemplateRef<any>;
 
   private destroy$ = new Subject<void>();
+  private dialogRef: NbDialogRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -50,7 +61,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.checkoutForm = this.fb.group({
+      address: ['', Validators.required],
+      gst: [''],
+      notes: [''],
+    });
+  }
 
   ngOnInit() {
     this.openLoadingDilaogbox();
@@ -207,5 +225,25 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   closeLoadingDialogBox() {
     if (this.dialogRef) this.dialogRef.close();
+  }
+
+  increaseQuantity() {
+    this.quantity++;
+    this.updateTotalPrice();
+  }
+
+  decreaseQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+      this.updateTotalPrice();
+    }
+  }
+
+  updateTotalPrice() {
+    if (this.purchaseOrder && this.quantity) {
+      // Update the total price based on quantity
+      const basePrice = this.purchaseOrder.amount_to_be_paid / 100;
+      this.totalPrice = basePrice * this.quantity;
+    }
   }
 }

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="two-column-layout medium">
       <div class="main-column">
-        <nb-card *ngIf="purchaseOrder.orderable_type === EDbModels.CAMPAIGN">
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.CAMPAIGN">
           <nb-card-body>
             <div>
               <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
@@ -10,12 +10,71 @@
           </nb-card-body>
         </nb-card>
 
-        <nb-card *ngIf="purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE">
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
           <nb-card-body>
             <div>
               <commudle-product-price-details
                 [productPriceId]="purchaseOrder.orderable_id"
               ></commudle-product-price-details>
+
+              <div class="quantity-selector com-mt-4">
+                <p class="com-font-medium com-mb-2">Quantity</p>
+                <div class="com-flex com-items-center">
+                  <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= 1">
+                    <fa-icon [icon]="icons.faMinus"></fa-icon>
+                  </button>
+                  <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
+                  <button nbButton ghost status="basic" (click)="increaseQuantity()">
+                    <!-- <nb-icon icon="plus-outline"></nb-icon> -->
+                    <fa-icon [icon]="icons.faPlus"></fa-icon>
+                  </button>
+                </div>
+              </div>
+
+              <form [formGroup]="checkoutForm" class="com-mt-4">
+                <div class="com-mb-4">
+                  <label for="address" class="com-block com-mb-2 com-font-medium">Billing Address*</label>
+                  <textarea
+                    nbInput
+                    fullWidth
+                    id="address"
+                    formControlName="address"
+                    placeholder="Enter your complete address"
+                    rows="3"
+                  >
+                  </textarea>
+                  <p
+                    *ngIf="checkoutForm.get('address').invalid && checkoutForm.get('address').touched"
+                    class="com-text-red-500 com-text-sm com-mt-1"
+                  >
+                    Address is required
+                  </p>
+                </div>
+
+                <div class="com-mb-4">
+                  <label for="gst" class="com-block com-mb-2 com-font-medium">GST Number (Optional)</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="gst"
+                    formControlName="gst"
+                    placeholder="Enter GST number if applicable"
+                  />
+                </div>
+
+                <div class="com-mb-4">
+                  <label for="notes" class="com-block com-mb-2 com-font-medium">Additional Notes (Optional)</label>
+                  <textarea
+                    nbInput
+                    fullWidth
+                    id="notes"
+                    formControlName="notes"
+                    placeholder="Any special instructions"
+                    rows="2"
+                  >
+                  </textarea>
+                </div>
+              </form>
             </div>
           </nb-card-body>
         </nb-card>
