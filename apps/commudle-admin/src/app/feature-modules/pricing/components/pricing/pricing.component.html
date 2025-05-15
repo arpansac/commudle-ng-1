@@ -19,12 +19,12 @@
                   Annual
                 </div>
               </div>
-              <form class="select" [formGroup]="countryForm">
+              <!-- <form class="select" [formGroup]="countryForm">
                 <select formControlName="currency" (change)="onCountryChange()">
                   <option [value]="countries[0].currency" selected>{{ countries[0].name }}</option>
                   <option [value]="countries[1].currency">Global</option>
                 </select>
-              </form>
+              </form> -->
             </div>
             <div class="cards">
               <!-- STARTUP -->
@@ -38,20 +38,24 @@
                     <div *ngIf="startup.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
-                        <ng-container *ngFor="let item of startup.priceDetails[1].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                        <ng-container>
+                          <ng-container>
                             <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
+                              (startup.priceDetails[1].price_after_discount
+                                ? startup.priceDetails[1].price_after_discount
+                                : startup.priceDetails[1].price
+                              ) | currency : startup.priceDetails[1].currencyType
                             }}</span>
-                            <ng-container *ngIf="item.price_after_discount">
+
+                            <ng-container *ngIf="startup.priceDetails[1].price_after_discount">
                               <div class="discount">
                                 <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
+                                  {{ startup.priceDetails[1].discount_percentage }}
                                 </p>
                                 <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
+                                  <span class="discount-price">{{
+                                    startup.priceDetails[1].price | currency : startup.priceDetails[1].currencyType
+                                  }}</span>
                                 </div>
                               </div>
                             </ng-container>
