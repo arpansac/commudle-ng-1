@@ -285,24 +285,29 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
     this.gtmDataLayerPush(gtmPushEventName);
+    let productUuid;
+
     switch (planType) {
       case 'startup': {
-        const productUuid = this.isMonthly ? this.startup.priceDetails[1].uuid : this.startup.priceDetails[0].uuid;
-        console.log('productUuid', productUuid);
+        productUuid = this.isMonthly ? this.startup.priceDetails[1].uuid : this.startup.priceDetails[0].uuid;
         break;
       }
       case 'enterprise': {
-        const productUuid = this.isMonthly
-          ? this.enterprise.priceDetails[1].uuid
-          : this.enterprise.priceDetails[0].uuid;
-        console.log('productUuid', productUuid);
+        productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
         break;
       }
       case 'devrel': {
-        const productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
-        console.log('productUuid', productUuid);
+        productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
         break;
       }
+    }
+
+    if (productUuid) {
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe((response) => {
+        if (response && response.uuid) {
+          window.location.href = `/checkout/${response.uuid}`;
+        }
+      });
     }
   }
 }

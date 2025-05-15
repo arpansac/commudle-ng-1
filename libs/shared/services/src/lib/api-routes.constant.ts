@@ -1042,5 +1042,7 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/product_prices', //PUT
     INDEX: 'api/v2/product_prices', //GET
     SHOW: 'api/v2/product_prices/show', //GET
+    SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
+    CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
   },
 };

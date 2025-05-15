@@ -9,16 +9,18 @@ import {
   EDbModels,
   ICampaign,
   IRazorpayPayment,
+  IProductPrice,
 } from '@commudle/shared-models';
 import {
+  AuthService,
   CampaignService,
   countries_details,
+  ProductPriceService,
   PurchaseOrderService,
   RazorpayService,
   ToastrService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faTriangleExclamation, faRotateRight, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 declare const Razorpay: any;
@@ -42,6 +44,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   countryDetails = countries_details;
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   campaign: ICampaign;
+  productPrice: IProductPrice;
   paymentPaid = false;
   private dialogRef: NbDialogRef<any>;
 
@@ -55,9 +58,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private purchaseOrderService: PurchaseOrderService,
     private razorpayService: RazorpayService,
     private toastrService: ToastrService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private dialogService: NbDialogService,
     private campaignService: CampaignService,
+    private productPriceService: ProductPriceService,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
@@ -103,6 +107,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       case EDbModels.CAMPAIGN:
         this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
           this.campaign = campaign;
+          this.closeLoadingDialogBox();
+        });
+        break;
+      case EDbModels.PRODUCT_PRICE:
+        this.productPriceService.showById(this.purchaseOrder.orderable_id).subscribe((productPrice) => {
+          this.productPrice = productPrice;
           this.closeLoadingDialogBox();
         });
         break;
