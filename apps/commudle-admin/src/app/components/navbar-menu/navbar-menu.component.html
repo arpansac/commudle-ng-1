@@ -56,7 +56,7 @@
   </nb-action>
   <nb-action *ngIf="currentUser">
     <a *appBreakpoints="'<=md'" [routerLink]="['users', currentUser.username]" routerLinkActive="active">
-      <fa-icon [icon]="faUser"></fa-icon>
+      <img [alt]="currentUser.name" [src]="currentUser.photo.i32" class="user-profile-image" />
       <span>Profile</span>
     </a>
   </nb-action>
