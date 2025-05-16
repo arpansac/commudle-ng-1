@@ -15,6 +15,7 @@ import {
   countries_details,
   PurchaseOrderService,
   RazorpayService,
+  SeoService,
   ToastrService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -60,6 +61,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private campaignService: CampaignService,
     private router: Router,
     private route: ActivatedRoute,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -104,6 +106,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         this.campaignService.fetchCampaign(this.purchaseOrder.orderable_id).subscribe((campaign) => {
           this.campaign = campaign;
           this.closeLoadingDialogBox();
+          this.seoService.setTags(
+            `Checkout | ${this.campaign.name} Campaign`,
+            `Complete your purchase for ${this.campaign.name} campaign to go live!`,
+            'https://commudle.com/assets/images/commudle-logo192.png',
+          );
         });
         break;
       default:

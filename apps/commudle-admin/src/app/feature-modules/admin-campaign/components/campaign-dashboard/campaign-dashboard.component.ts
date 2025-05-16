@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
-import { CampaignService } from '@commudle/shared-services';
+import { CampaignService, SeoService } from '@commudle/shared-services';
 import moment from 'moment';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 @Component({
@@ -21,7 +21,7 @@ export class CampaignDashboardComponent implements OnInit {
     count: 10,
     total: 0,
   };
-  constructor(private campaignService: CampaignService) {}
+  constructor(private campaignService: CampaignService, private seoService: SeoService) {}
 
   ngOnInit() {
     this.fetchCampaigns();
@@ -33,6 +33,11 @@ export class CampaignDashboardComponent implements OnInit {
       this.pagination.total = res.total;
       this.pagination.page = res.page;
       this.isLoading = false;
+      this.seoService.setTags(
+        'My Campaigns',
+        'A dashboard to track all your campaigns',
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
     });
   }
 }

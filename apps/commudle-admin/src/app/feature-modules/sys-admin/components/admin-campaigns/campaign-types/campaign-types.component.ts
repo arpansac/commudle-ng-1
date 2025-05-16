@@ -79,8 +79,11 @@ export class CampaignTypesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getCampaignTypes();
     this.seoService.noIndex(true);
-    // FIXME: Complete the SEO service implementation
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
+    this.seoService.setTags(
+      'Admin | Campaign Types',
+      'List of all campaign types',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 
   ngOnDestroy(): void {

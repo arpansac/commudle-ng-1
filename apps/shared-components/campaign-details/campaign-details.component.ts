@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ICampaign } from '@commudle/shared-models';
 import { CampaignService } from '@commudle/shared-services';
+import * as moment from 'moment';
 
 @Component({
   selector: 'commudle-campaign-details',
@@ -11,6 +12,8 @@ export class CampaignDetailsComponent implements OnInit {
   @Input() campaignId: number;
   @Input() campaign: ICampaign;
   isLoading = true;
+  // Expose moment to the template
+  moment = moment;
 
   constructor(private campaignService: CampaignService) {}
 

@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { CampaignService } from '@commudle/shared-services';
+import { CampaignService, SeoService } from '@commudle/shared-services';
 import { ECampaignStatus, ECampaignTypeSlug, ICampaign, ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
 declare let google: any;
@@ -20,7 +20,7 @@ export class CampaignStatsComponent implements OnInit {
   @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
 
-  constructor(private route: ActivatedRoute, private campaignService: CampaignService) {}
+  constructor(private campaignService: CampaignService, private seoService: SeoService) {}
 
   ngOnInit() {
     this.fetchCampaigns();
@@ -29,6 +29,11 @@ export class CampaignStatsComponent implements OnInit {
   fetchCampaigns() {
     this.campaignService.fetchCampaign(this.campaignId).subscribe((campaign) => {
       this.campaign = campaign;
+      this.seoService.setTags(
+        `${this.campaign.name} Campaign Stats`,
+        `Stats dashboard for ${this.campaign.name}`,
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
       if (this.campaign.main_newsletter_id && this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
         this.getNewsletterCampaignStats();
       }
