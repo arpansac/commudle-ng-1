@@ -1,0 +1,77 @@
+<div class="user-menu">
+  <div class="section">
+    <h2 class="section-title">Account</h2>
+    <ul class="menu-list">
+      <li *ngIf="currentUser" [routerLink]="['/users', currentUser.username]" class="menu-item">
+        <img [alt]="currentUser.name" [src]="currentUser.photo.i32" class="user-profile-image" />
+        <span class="label">View Profile</span>
+        <span *ngIf="!currentUser.profile_completed" class="incomplete-badge">
+          <app-badge
+            [color]="'com-bg-red-500'"
+            [fontSize]="'small'"
+            [text]="'Incomplete'"
+            [fontColor]="'com-text-tWhite'"
+          ></app-badge>
+        </span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+      <li [routerLink]="['/builds/my-builds']" class="menu-item">
+        <fa-icon [icon]="faLightbulb" class="icon"></fa-icon>
+        <span class="label">My Builds</span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+      <li [routerLink]="['/labs/my-labs']" class="menu-item">
+        <fa-icon [icon]="faFlask" class="icon"></fa-icon>
+        <span class="label">My Labs</span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+      <li [routerLink]="['/jobs/my-applications']" class="menu-item">
+        <fa-icon [icon]="faSuitcase" class="icon"></fa-icon>
+        <span class="label">Job Applications</span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+      <li
+        [routerLink]="['/users', currentUser.username, { outlets: { p: ['settings', 'basic-details'] } }]"
+        class="menu-item"
+      >
+        <fa-icon [icon]="faLink" class="icon"></fa-icon>
+        <span class="label">Update Profile Link</span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Engagement</h2>
+    <ul class="menu-list">
+      <li [routerLink]="['/newsletters']" class="menu-item">
+        <fa-icon [icon]="faNewspaper" class="icon"></fa-icon>
+        <span class="label">Newsletter</span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+      <li [routerLink]="['/campaigns']" class="menu-item">
+        <fa-icon [icon]="faAudioDescription" class="icon"></fa-icon>
+        <span class="label">My Ad Campaigns <small>(Beta)</small></span>
+        <fa-icon [icon]="faChevronRight" class="chevron-icon"></fa-icon>
+      </li>
+    </ul>
+  </div>
+
+  <div class="logout menu-item" (click)="openConfirmDialogBox(logoutDialogBox)">
+    <fa-icon [icon]="faArrowRightFromBracket" class="logout-icon"></fa-icon>
+    <span class="logout-label">Log out</span>
+  </div>
+</div>
+
+<ng-template #logoutDialogBox let-ref="dialogRef">
+  <nb-card class="logout-confirmation">
+    <nb-card-body>
+      <h3>Are you sure?</h3>
+      <p>You’ll be signed out of your account and redirected to the homepage.</p>
+    </nb-card-body>
+    <nb-card-footer class="action-buttons !com-my-0">
+      <button nbButton status="danger" shape="semi-round" fullWidth (click)="logout(); ref.close()">Yes, Logout</button>
+      <button nbButton status="basic" shape="semi-round" fullWidth (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
