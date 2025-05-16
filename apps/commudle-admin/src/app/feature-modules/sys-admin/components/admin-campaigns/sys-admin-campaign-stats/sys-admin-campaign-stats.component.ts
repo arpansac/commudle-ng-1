@@ -16,8 +16,6 @@ export class SysAdminCampaignStatsComponent implements OnInit, OnDestroy {
       this.campaignId = params['campaign_id'];
     });
     this.seoService.noIndex(true);
-    // FIXME: Complete the SEO service implementation
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   ngOnDestroy(): void {

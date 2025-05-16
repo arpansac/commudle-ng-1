@@ -32,7 +32,7 @@ export class CampaignFormComponent implements OnInit {
     faFileImage,
   };
   isEditMode = false;
-  constructor(private router: Router, private footerService: FooterService, private seoService: SeoService) {
+  constructor(private router: Router, private footerService: FooterService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
@@ -47,9 +47,6 @@ export class CampaignFormComponent implements OnInit {
         this.generateSlug();
       }
     });
-    // FIXME: Complete the SEO service implementation
-
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   generateSlug() {

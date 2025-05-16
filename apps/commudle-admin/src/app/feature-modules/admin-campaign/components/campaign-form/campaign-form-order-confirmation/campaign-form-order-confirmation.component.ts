@@ -36,10 +36,12 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
       if (this.campaign.status === ECampaignStatus.SUBMITTED) {
         this.consent = true;
       }
+      this.seoService.setTags(
+        `Review ${this.campaign.name} Campaign Details`,
+        `Review the details of ${this.campaign.name} and submit for approval`,
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
     });
-    // FIXME: Complete the SEO service implementation
-
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   setAnimation() {

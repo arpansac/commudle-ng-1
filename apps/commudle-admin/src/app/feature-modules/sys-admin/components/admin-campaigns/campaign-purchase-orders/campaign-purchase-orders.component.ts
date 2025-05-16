@@ -32,9 +32,11 @@ export class CampaignPurchaseOrdersComponent implements OnInit, OnDestroy {
     this.fetchPaymentDetails();
     this.seoService.noIndex(true);
 
-    // FIXME: Complete the SEO service implementation
-
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
+    this.seoService.setTags(
+      'Admin | Purchase Orders for Campaigns',
+      'List of purchase orders of all campaigns',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
 
     this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.page = 1;

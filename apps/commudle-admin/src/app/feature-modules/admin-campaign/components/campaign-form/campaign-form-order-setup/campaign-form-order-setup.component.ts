@@ -97,10 +97,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
       this.patchCampaignForm();
+      this.seoService.setTags(
+        `Edit ${this.campaign.name} Campaign - Set Time & Budget`,
+        'Set the campaign name, time, budget, tags and other details.',
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
     });
-    // FIXME: Complete the SEO service implementation
-
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
   }
 
   ngOnDestroy(): void {

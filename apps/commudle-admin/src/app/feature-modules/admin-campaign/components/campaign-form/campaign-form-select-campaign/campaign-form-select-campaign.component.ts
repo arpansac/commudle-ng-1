@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignType } from '@commudle/shared-models';
-import { CampaignService, CampaignTypeService } from '@commudle/shared-services';
+import { CampaignService, CampaignTypeService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,6 +25,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -40,6 +41,17 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
           this.campaign = params.campaign;
           this.campaignExists = true;
           this.selectedCampaignTypeId = this.campaign.campaign_type_id;
+          this.seoService.setTags(
+            `Edit ${this.campaign.name} Campaign`,
+            `Edit your campaign ${this.campaign.name}`,
+            'https://commudle.com/assets/images/commudle-logo192.png',
+          );
+        } else {
+          this.seoService.setTags(
+            'Create a Campaign',
+            'Create a new campaign to boost outreach to thousands of developers on Commudle. Choose a campaign type to start',
+            'https://commudle.com/assets/images/commudle-logo192.png',
+          );
         }
       });
     });

@@ -21,9 +21,11 @@ export class AdminCampaignsListComponent implements OnInit, OnDestroy {
     this.fetchCampaigns();
     this.seoService.noIndex(true);
 
-    // FIXME: Complete the SEO service implementation
-
-    this.seoService.setTags('title', 'description', 'https://commudle.com/assets/images/commudle-logo192.png');
+    this.seoService.setTags(
+      'Admin | Campaigns Dashboard',
+      'List of all campaigns created on Commudle',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 
   ngOnDestroy(): void {
