@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faBars, faMagnifyingGlass, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { NbMenuItem, NbSidebarService, NbSidebarState } from '@commudle/theme';
@@ -95,8 +95,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.darkModeService.toggleDarkMode(isDarkMode);
   }
 
-  toggleDropdown(): void {
+  toggleDropdown(event): void {
+    event.stopPropagation();
     this.showUserContextMenu = !this.showUserContextMenu;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent): void {
+    if (!this.showUserContextMenu) return;
+
+    const clickedInside = (event.target as HTMLElement)?.closest('.profile-image');
+
+    if (!clickedInside) {
+      this.showUserContextMenu = false;
+    }
   }
 
   ngOnDestroy(): void {

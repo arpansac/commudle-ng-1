@@ -1,132 +1,64 @@
 .user-profile-dropdown {
-  position: relative;
-  display: inline-block;
-
-  .profile-trigger {
-    cursor: pointer;
-  }
+  @apply com-relative;
 
   .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 280px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    overflow: hidden;
-    margin-top: 8px;
+    @apply com-absolute com-top-[56px] com-right-0 com-w-[280px] com-bg-white com-rounded-lg com-shadow-lg com-z-30 com-overflow-hidden com-mt-10px com-border com-border-solid com-border-Bright-Gray;
 
     .user-info {
-      padding: 16px;
-      display: flex;
-      gap: 12px;
-      border-bottom: 1px solid #eaeaea;
-
-      .profile-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-
-      .user-details {
-        flex: 1;
-
-        .name {
-          font-weight: 600;
-          font-size: 16px;
-          margin-bottom: 2px;
-        }
-
-        .username {
-          color: #666;
-          font-size: 14px;
-          margin-bottom: 2px;
-        }
-
-        .designation,
-        .company {
-          color: #666;
-          font-size: 13px;
-          margin-bottom: 2px;
-        }
-
-        .view-profile-btn {
-          margin-top: 8px;
-          padding: 6px 12px;
-          background-color: #f0f0f0;
-          border: none;
-          border-radius: 4px;
-          font-size: 13px;
-          cursor: pointer;
-          transition: background-color 0.2s;
-
-          &:hover {
-            background-color: #e0e0e0;
-          }
-        }
-      }
+      @apply com-flex com-flex-col com-p-3;
     }
 
-    .menu-items {
-      .menu-item {
-        padding: 12px 16px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        font-size: 14px;
-
-        &:hover {
-          background-color: #f5f5f5;
-        }
-
-        &.logout {
-          color: #e53935;
-          font-weight: 500;
-        }
-      }
+    .profile-image {
+      @apply com-w-[60px] com-h-[60px] com-rounded-full com-object-cover com-mr-3;
     }
-  }
-}
 
-// Dark mode support
-:host-context(.nb-theme-dark) {
-  .dropdown-menu {
-    background-color: #222b45;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
-    .user-info {
-      border-bottom: 1px solid #151a30;
+    .user-profile-header {
+      @apply com-flex com-flex-row;
     }
 
     .user-details {
+      @apply com-flex com-flex-col;
+
       .name {
-        color: #fff;
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue com-m-0;
+      }
+
+      .user-profile-name {
+        @apply com-flex;
       }
 
       .username,
-      .designation,
-      .company {
-        color: #c5cee0;
+      .designation {
+        @apply com-text-gray-500 com-text-xs com-mt-1;
       }
 
-      .view-profile-btn {
-        background-color: #323c5d;
-        color: #fff;
-
-        &:hover {
-          background-color: #394b70;
-        }
+      .company {
+        @apply com-text-gray-500 com-text-xs com-mt-2;
       }
     }
 
-    .menu-items {
-      .menu-item {
-        &:hover {
-          background-color: #323c5d;
-        }
-      }
+    .view-profile-btn {
+      @apply com-mt-4;
+    }
+
+    .section {
+      @apply com-p-3 com-border-0 com-border-solid com-border-t com-border-Bright-Gray;
+    }
+
+    .section-title {
+      @apply com-text-xs com-font-medium com-text-Yankees-Blue com-m-0;
+    }
+
+    .menu-list {
+      @apply com-m-0 com-p-0;
+    }
+
+    .logout {
+      @apply com-m-3;
+    }
+
+    .menu-item {
+      @apply com-flex com-font-normal com-items-center com-text-sm com-text-gray-500 com-px-0 com-pt-2 com-cursor-pointer;
     }
   }
 }

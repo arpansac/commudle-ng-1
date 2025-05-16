@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 
 @Component({
   selector: 'commudle-navbar-user-context-menu',
