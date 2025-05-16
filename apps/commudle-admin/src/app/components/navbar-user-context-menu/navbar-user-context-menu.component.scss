@@ -1,0 +1,132 @@
+.user-profile-dropdown {
+  position: relative;
+  display: inline-block;
+
+  .profile-trigger {
+    cursor: pointer;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 280px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    margin-top: 8px;
+
+    .user-info {
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid #eaeaea;
+
+      .profile-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .user-details {
+        flex: 1;
+
+        .name {
+          font-weight: 600;
+          font-size: 16px;
+          margin-bottom: 2px;
+        }
+
+        .username {
+          color: #666;
+          font-size: 14px;
+          margin-bottom: 2px;
+        }
+
+        .designation,
+        .company {
+          color: #666;
+          font-size: 13px;
+          margin-bottom: 2px;
+        }
+
+        .view-profile-btn {
+          margin-top: 8px;
+          padding: 6px 12px;
+          background-color: #f0f0f0;
+          border: none;
+          border-radius: 4px;
+          font-size: 13px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #e0e0e0;
+          }
+        }
+      }
+    }
+
+    .menu-items {
+      .menu-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 14px;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        &.logout {
+          color: #e53935;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support
+:host-context(.nb-theme-dark) {
+  .dropdown-menu {
+    background-color: #222b45;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    .user-info {
+      border-bottom: 1px solid #151a30;
+    }
+
+    .user-details {
+      .name {
+        color: #fff;
+      }
+
+      .username,
+      .designation,
+      .company {
+        color: #c5cee0;
+      }
+
+      .view-profile-btn {
+        background-color: #323c5d;
+        color: #fff;
+
+        &:hover {
+          background-color: #394b70;
+        }
+      }
+    }
+
+    .menu-items {
+      .menu-item {
+        &:hover {
+          background-color: #323c5d;
+        }
+      }
+    }
+  }
+}

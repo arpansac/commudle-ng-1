@@ -1,0 +1,42 @@
+<div *ngIf="showUserContextMenu" class="user-profile-dropdown">
+  <div class="dropdown-menu">
+    <div class="user-info">
+      <img [src]="currentUser.photo.i64" [alt]="currentUser.name" class="profile-image" />
+      <div class="user-details">
+        <div class="name">{{ currentUser.name }}</div>
+        <div class="username">@{{ currentUser.username }}</div>
+        <div class="designation" *ngIf="currentUser.designation">{{ currentUser.designation }}</div>
+        <div class="company" *ngIf="currentUser.company_name">{{ currentUser.company_name }}</div>
+        <button class="view-profile-btn" (click)="navigateTo('/users/' + currentUser.username)">View Profile</button>
+      </div>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Account</h2>
+      <ul class="menu-list">
+        <li [routerLink]="['/builds/my-builds']" class="menu-item">
+          <span class="label">My Builds</span>
+        </li>
+        <li [routerLink]="['/labs/my-labs']" class="menu-item">
+          <span class="label">My Labs</span>
+        </li>
+        <li [routerLink]="['/jobs/my-applications']" class="menu-item">
+          <span class="label">Job Applications</span>
+        </li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Engagement</h2>
+      <ul class="menu-list">
+        <li [routerLink]="['/newsletters']" class="menu-item">
+          <span class="label">Newsletter</span>
+        </li>
+        <li [routerLink]="['/campaigns']" class="menu-item">
+          <span class="label">My Ad Campaigns <small>(Beta)</small></span>
+        </li>
+      </ul>
+    </div>
+    <button nbButton status="basic" class="logout menu-item" (click)="openConfirmDialogBox(logoutDialogBox)">
+      Log out
+    </button>
+  </div>
+</div>

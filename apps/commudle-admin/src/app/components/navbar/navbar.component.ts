@@ -19,7 +19,6 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
-  userContextMenu: NbMenuItem[] = [{ title: 'Logout', link: '/logout' }];
   sideBarNotifications = false;
   sideBarState: NbSidebarState;
 
@@ -33,6 +32,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   sidebarEventName = 'MainSidebar';
   showAdminSidebar = false;
   EUserRoles = EUserRoles;
+  showUserContextMenu = false;
 
   private destroy$ = new Subject<void>();
 
@@ -75,33 +75,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (adminRoles.some((role) => currentUser.user_roles.includes(role))) {
           this.showAdminSidebar = true;
         }
-
-        this.setContextMenu();
       }
     });
-  }
-
-  setContextMenu() {
-    const truncatePipe = new TruncateTextPipe();
-    if (this.userContextMenu.length <= 1) {
-      this.userContextMenu.unshift({
-        title: `@${truncatePipe.transform(this.currentUser.username, 10)}`,
-        link: `/users/${this.currentUser.username}`,
-        badge: {
-          text: 'Profile',
-          status: 'basic',
-        },
-      });
-    } else {
-      this.userContextMenu[0] = {
-        title: `@${truncatePipe.transform(this.currentUser.username, 10)}`,
-        link: `/users/${this.currentUser.username}`,
-        badge: {
-          text: 'Profile',
-          status: 'basic',
-        },
-      };
-    }
   }
 
   checkNotifications(): void {
@@ -118,6 +93,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleDarkMode(isDarkMode: boolean): void {
     this.darkModeService.toggleDarkMode(isDarkMode);
+  }
+
+  toggleDropdown(): void {
+    this.showUserContextMenu = !this.showUserContextMenu;
   }
 
   ngOnDestroy(): void {

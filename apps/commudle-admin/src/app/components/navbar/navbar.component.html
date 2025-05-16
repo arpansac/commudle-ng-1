@@ -66,11 +66,15 @@
       <div class="profile-container" *appBreakpoints="'>md'">
         <img
           *ngIf="currentUser; else guest"
+          (click)="toggleDropdown()"
           [alt]="currentUser.name"
-          [nbContextMenu]="userContextMenu"
           [src]="currentUser.photo.i64"
           class="com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite"
         />
+        <commudle-navbar-user-context-menu
+          *ngIf="currentUser && showUserContextMenu"
+          [currentUser]="currentUser"
+        ></commudle-navbar-user-context-menu>
         <ng-template #guest>
           <button (click)="login()" *appBreakpoints="'>lg'" nbButton outline size="small" class="profile">
             Login / Signup
