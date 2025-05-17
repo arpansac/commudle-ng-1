@@ -12,16 +12,18 @@
 
         <!-- Product Price Details -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+          <nb-card-header>Product Details</nb-card-header>
           <nb-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
+              (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
 
             <!-- Quantity Selector -->
             <div class="quantity-selector com-mt-4">
               <p class="com-font-medium com-mb-2">Quantity</p>
               <div class="com-flex com-items-center">
-                <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= 1">
+                <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= minQuantity">
                   <fa-icon [icon]="icons.faMinus"></fa-icon>
                 </button>
                 <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
@@ -30,64 +32,83 @@
                 </button>
               </div>
             </div>
-
-            <!-- Checkout Form -->
-            <form [formGroup]="checkoutForm" class="com-mt-4">
-              <!-- Billing Address -->
-              <div class="com-mb-4">
-                <label for="address" class="com-block com-mb-2 com-font-medium">Billing Address*</label>
-                <textarea
-                  nbInput
-                  fullWidth
-                  id="address"
-                  formControlName="address"
-                  placeholder="Enter your complete address"
-                  rows="3"
-                ></textarea>
-                <p
-                  *ngIf="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched"
-                  class="com-text-red-500 com-text-sm com-mt-1"
-                >
-                  Address is required
-                </p>
-              </div>
-
-              <!-- GST Number -->
-              <div class="com-mb-4">
-                <label for="gst" class="com-block com-mb-2 com-font-medium">GST Number (Optional)</label>
-                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
-              </div>
-
-              <!-- Additional Notes -->
-              <div class="com-mb-4">
-                <label for="notes" class="com-block com-mb-2 com-font-medium">Additional Notes (Optional)</label>
-                <textarea
-                  nbInput
-                  fullWidth
-                  id="notes"
-                  formControlName="notes"
-                  placeholder="Any special instructions"
-                  rows="2"
-                ></textarea>
-              </div>
-            </form>
           </nb-card-body>
         </nb-card>
       </div>
 
       <!-- Right Column - Payment Summary -->
       <div class="right-column">
+        <!-- Company Details Card -->
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
+          <nb-card-header>Company Details</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="checkoutForm" class="company-form-container">
+              <!-- Company Name -->
+              <div>
+                <label for="companyName">Company Name <span class="required"> *</span></label>
+                <input
+                  nbInput
+                  fullWidth
+                  id="companyName"
+                  formControlName="companyName"
+                  placeholder="Enter company name"
+                />
+                <commudle-alert
+                  [error]="checkoutForm.get('companyName')?.invalid && checkoutForm.get('companyName')?.touched"
+                  errorMessage="Company name is required"
+                >
+                </commudle-alert>
+              </div>
+
+              <!-- GST Number -->
+              <div>
+                <label for="gst">GST Number (Optional)</label>
+                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
+              </div>
+
+              <!-- Company Address -->
+              <div>
+                <label for="companyAddress">Company Address <span class="required"> *</span></label>
+                <textarea
+                  nbInput
+                  fullWidth
+                  id="companyAddress"
+                  formControlName="companyAddress"
+                  placeholder="Enter company address"
+                  rows="3"
+                ></textarea>
+                <commudle-alert
+                  [error]="checkoutForm.get('companyAddress')?.invalid && checkoutForm.get('companyAddress')?.touched"
+                  errorMessage="Company address is required"
+                >
+                </commudle-alert>
+              </div>
+
+              <!-- Pin Code -->
+              <div>
+                <label for="pinCode">Pin Code <span class="required"> *</span></label>
+                <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
+
+                <commudle-alert
+                  [error]="checkoutForm.get('pinCode')?.invalid && checkoutForm.get('pinCode')?.touched"
+                  errorMessage="Pin code is required"
+                >
+                </commudle-alert>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+
+        <!-- Payment Summary Card -->
         <div class="payment-details-section" *ngIf="purchaseOrder">
           <nb-card>
+            <nb-card-header>Payment Summary</nb-card-header>
             <nb-card-body>
               <!-- Payment Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                 <p class="message">Payment Successful!</p>
               </div>
-
-              <!-- Order Summary -->
-              <div class="order-summary-message">Order Summary</div>
 
               <!-- Price -->
               <div class="payment-details">

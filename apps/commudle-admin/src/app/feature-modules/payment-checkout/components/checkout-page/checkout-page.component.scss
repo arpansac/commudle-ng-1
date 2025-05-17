@@ -89,3 +89,18 @@
     }
   }
 }
+
+.right-column {
+  .company-details-card {
+    @apply com-mb-4;
+    .company-form-container {
+      @apply com-mt-2;
+      div {
+        @apply com-mb-2;
+        .required {
+          @apply com-text-red-500;
+        }
+      }
+    }
+  }
+}
