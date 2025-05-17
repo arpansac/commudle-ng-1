@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
@@ -10,12 +10,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { countries_details, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import * as momentTimezone from 'moment-timezone';
 import { IFaq, IProductPrice } from '@commudle/shared-models';
+import { NbDialogService } from '@commudle/theme';
 @Component({
   selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss'],
 })
 export class PricingComponent implements OnInit, OnDestroy {
+  @ViewChild('loadingTemplate') loadingTemplate: TemplateRef<any>;
+
   staticAssets = staticAssets;
   isMobileView = false;
   isDarkMode = false;
@@ -34,6 +37,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   countryForm: FormGroup;
   countries = countries_details;
   faqs: IFaq[] = [];
+  isFullPageLoading = false;
 
   logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
@@ -92,6 +96,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     private cmsService: CmsService,
     private fb: FormBuilder,
     private productPriceService: ProductPriceService,
+    private nbDialogService: NbDialogService,
   ) {
     const userTimeZone = momentTimezone.tz.guess();
     if (userTimeZone === 'Asia/Calcutta') {
@@ -154,33 +159,32 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEnterpriseData(): void {
-    this.cmsService.getDataBySlug('pp-commudle-for-enterprises').subscribe((value) => {
-      this.enterprise = value;
-      this.setSchema(this.enterprise);
-    });
-  }
-
-  getStartupData(): void {
-    this.cmsService.getDataBySlug('pp-testing-pricing-checkout-page').subscribe((value) => {
-      this.startup = value;
+  private fetchPricingData(type: 'enterprise' | 'startup', slug: string): void {
+    this.cmsService.getDataBySlug(slug).subscribe((value) => {
+      this[type] = value;
 
       [0, 1].forEach((index) => {
-        if (this.startup.priceDetails[index]) {
+        if (this[type].priceDetails[index]) {
           this.productPriceService
-            .show(this.startup.priceDetails[index].uuid)
+            .show(this[type].priceDetails[index].uuid)
             .subscribe((productPrice: IProductPrice) => {
-              this.startup.priceDetails[index].currencyType = productPrice.currency;
-              this.startup.priceDetails[index].price = productPrice.original_price;
-              this.startup.priceDetails[index].price_after_discount = productPrice.final_price;
-              this.startup.priceDetails[index].discount_percentage = productPrice.discount;
-              this.startup.priceDetails[index].uuid = productPrice.uuid;
+              this[type].priceDetails[index].currencyType = productPrice.currency;
+              this[type].priceDetails[index].price = productPrice.original_price;
+              this[type].priceDetails[index].price_after_discount = productPrice.final_price;
+              this[type].priceDetails[index].discount_percentage = productPrice.discount;
+              this[type].priceDetails[index].uuid = productPrice.uuid;
             });
         }
       });
-
-      // this.setSchema(this.startup);
     });
+  }
+
+  getEnterpriseData(): void {
+    this.fetchPricingData('enterprise', 'pp-testing-pricing-checkout-page');
+  }
+
+  getStartupData(): void {
+    this.fetchPricingData('startup', 'pp-testing-pricing-checkout-page');
   }
 
   getDevrelData(): void {
@@ -294,20 +298,39 @@ export class PricingComponent implements OnInit, OnDestroy {
       }
       case 'enterprise': {
         productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
+        console.log('🚀 ~ PricingComponent ~ createPurchaseOrderForPrice ~ productUuid:', productUuid);
         break;
       }
-      case 'devrel': {
-        productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
-        break;
-      }
+      // Not needed for now
+      // case 'devrel': {
+      //   productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
+      //   break;
+      // }
     }
 
+    // Show loading dialog
+    this.isFullPageLoading = true;
+    const dialogRef = this.nbDialogService.open(this.loadingTemplate, {
+      hasBackdrop: true,
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      hasScroll: false,
+      context: {},
+    });
+
     if (productUuid) {
-      this.productPriceService.createPurchaseOrder(productUuid).subscribe((response) => {
-        if (response && response.uuid) {
-          window.location.href = `/checkout/${response.uuid}`;
-        }
-      });
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+        (response) => {
+          this.isFullPageLoading = false;
+          if (response && response.uuid) {
+            window.location.href = `/checkout/${response.uuid}`;
+          }
+        },
+        (error) => {
+          this.isFullPageLoading = false;
+          console.error('Error creating purchase order:', error);
+        },
+      );
     }
   }
 }
