@@ -52,7 +52,7 @@ img {
 }
 
 .logout-confirmation {
-  @apply com-w-full md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full com-m-0;
+  @apply com-h-full com-m-0;
   nb-card-footer {
     @apply com-flex com-flex-col com-gap-4 com-justify-between com-items-center;
   }
