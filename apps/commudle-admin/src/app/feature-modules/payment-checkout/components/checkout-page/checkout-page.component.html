@@ -1,106 +1,103 @@
 <div class="base-layout">
   <div class="container">
     <div class="two-column-layout medium">
+      <!-- Left Column - Order Details -->
       <div class="main-column">
+        <!-- Campaign Details -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.CAMPAIGN">
           <nb-card-body>
-            <div>
-              <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
-            </div>
+            <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
           </nb-card-body>
         </nb-card>
 
+        <!-- Product Price Details -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
           <nb-card-body>
-            <div>
-              <commudle-product-price-details
-                [productPriceId]="purchaseOrder.orderable_id"
-              ></commudle-product-price-details>
+            <commudle-product-price-details
+              [productPriceId]="purchaseOrder.orderable_id"
+            ></commudle-product-price-details>
 
-              <div class="quantity-selector com-mt-4">
-                <p class="com-font-medium com-mb-2">Quantity</p>
-                <div class="com-flex com-items-center">
-                  <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= 1">
-                    <fa-icon [icon]="icons.faMinus"></fa-icon>
-                  </button>
-                  <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
-                  <button nbButton ghost status="basic" (click)="increaseQuantity()">
-                    <!-- <nb-icon icon="plus-outline"></nb-icon> -->
-                    <fa-icon [icon]="icons.faPlus"></fa-icon>
-                  </button>
-                </div>
+            <!-- Quantity Selector -->
+            <div class="quantity-selector com-mt-4">
+              <p class="com-font-medium com-mb-2">Quantity</p>
+              <div class="com-flex com-items-center">
+                <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= 1">
+                  <fa-icon [icon]="icons.faMinus"></fa-icon>
+                </button>
+                <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
+                <button nbButton ghost status="basic" (click)="increaseQuantity()">
+                  <fa-icon [icon]="icons.faPlus"></fa-icon>
+                </button>
+              </div>
+            </div>
+
+            <!-- Checkout Form -->
+            <form [formGroup]="checkoutForm" class="com-mt-4">
+              <!-- Billing Address -->
+              <div class="com-mb-4">
+                <label for="address" class="com-block com-mb-2 com-font-medium">Billing Address*</label>
+                <textarea
+                  nbInput
+                  fullWidth
+                  id="address"
+                  formControlName="address"
+                  placeholder="Enter your complete address"
+                  rows="3"
+                ></textarea>
+                <p
+                  *ngIf="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched"
+                  class="com-text-red-500 com-text-sm com-mt-1"
+                >
+                  Address is required
+                </p>
               </div>
 
-              <form [formGroup]="checkoutForm" class="com-mt-4">
-                <div class="com-mb-4">
-                  <label for="address" class="com-block com-mb-2 com-font-medium">Billing Address*</label>
-                  <textarea
-                    nbInput
-                    fullWidth
-                    id="address"
-                    formControlName="address"
-                    placeholder="Enter your complete address"
-                    rows="3"
-                  >
-                  </textarea>
-                  <p
-                    *ngIf="checkoutForm.get('address').invalid && checkoutForm.get('address').touched"
-                    class="com-text-red-500 com-text-sm com-mt-1"
-                  >
-                    Address is required
-                  </p>
-                </div>
+              <!-- GST Number -->
+              <div class="com-mb-4">
+                <label for="gst" class="com-block com-mb-2 com-font-medium">GST Number (Optional)</label>
+                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
+              </div>
 
-                <div class="com-mb-4">
-                  <label for="gst" class="com-block com-mb-2 com-font-medium">GST Number (Optional)</label>
-                  <input
-                    nbInput
-                    fullWidth
-                    id="gst"
-                    formControlName="gst"
-                    placeholder="Enter GST number if applicable"
-                  />
-                </div>
-
-                <div class="com-mb-4">
-                  <label for="notes" class="com-block com-mb-2 com-font-medium">Additional Notes (Optional)</label>
-                  <textarea
-                    nbInput
-                    fullWidth
-                    id="notes"
-                    formControlName="notes"
-                    placeholder="Any special instructions"
-                    rows="2"
-                  >
-                  </textarea>
-                </div>
-              </form>
-            </div>
+              <!-- Additional Notes -->
+              <div class="com-mb-4">
+                <label for="notes" class="com-block com-mb-2 com-font-medium">Additional Notes (Optional)</label>
+                <textarea
+                  nbInput
+                  fullWidth
+                  id="notes"
+                  formControlName="notes"
+                  placeholder="Any special instructions"
+                  rows="2"
+                ></textarea>
+              </div>
+            </form>
           </nb-card-body>
         </nb-card>
       </div>
 
+      <!-- Right Column - Payment Summary -->
       <div class="right-column">
         <div class="payment-details-section" *ngIf="purchaseOrder">
           <nb-card>
             <nb-card-body>
+              <!-- Payment Success Message -->
               <div *ngIf="paymentPaid" class="paid-message-container">
                 <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
                 <p class="message">Payment Successful!</p>
               </div>
 
-              <!-- price -->
+              <!-- Order Summary -->
               <div class="order-summary-message">Order Summary</div>
+
+              <!-- Price -->
               <div class="payment-details">
-                <span class="heading">Price </span>
+                <span class="heading">Price</span>
                 <span class="value">
-                  <span>
-                    {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
-                  </span>
+                  {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
                 </span>
               </div>
 
-              <!-- total -->
+              <!-- Total -->
               <div class="payment-details">
                 <span class="heading">Total</span>
                 <span class="value">
@@ -108,18 +105,20 @@
                 </span>
               </div>
 
+              <!-- Recipient Details -->
               <div class="recipient">
                 <div class="heading">Recipient</div>
                 <div class="recipient-details">
-                  <div class="name">{{ purchaseOrder.user.name | titlecase }}</div>
-                  <span class="email">{{ purchaseOrder.user.email }}</span>
-                  <br />
-                  <span class="phone">{{ purchaseOrder.user.phone }}</span>
+                  <div class="name">{{ purchaseOrder.user?.name | titlecase }}</div>
+                  <span class="email">{{ purchaseOrder.user?.email }}</span>
+                  <br *ngIf="purchaseOrder.user?.phone" />
+                  <span class="phone" *ngIf="purchaseOrder.user?.phone">{{ purchaseOrder.user.phone }}</span>
                 </div>
               </div>
             </nb-card-body>
           </nb-card>
 
+          <!-- Support Information -->
           <div class="info-container">
             <commudle-alert [info]="true">
               <div infoContent>
@@ -129,16 +128,25 @@
             </commudle-alert>
           </div>
 
+          <!-- Refund Policy -->
           <div class="info-container">
             <commudle-alert
               [info]="true"
-              message="  For any refund related queries please reach out to the event organizers, Commudle is not responsible for
-                any refund or disputes between the ticket purchasing party and the ticket seller."
-            >
-            </commudle-alert>
+              message="For any refund related queries please reach out to the event organizers, Commudle is not responsible for any refund or disputes between the ticket purchasing party and the ticket seller."
+            ></commudle-alert>
           </div>
+
+          <!-- Pay Button -->
           <div class="com-px-2" *ngIf="!paymentPaid">
-            <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
+            <button
+              nbButton
+              status="primary"
+              fullWidth
+              (click)="Pay()"
+              [disabled]="isLoadingPayment || checkoutForm.invalid"
+            >
+              Pay Now
+            </button>
           </div>
         </div>
       </div>
@@ -146,25 +154,24 @@
   </div>
 </div>
 
-<!-- paymentErrorDialog -->
+<!-- Payment Error Dialog -->
 <ng-template #paymentErrorDialog let-data let-ref="dialogRef">
   <nb-card class="payment-error-dialog">
     <nb-card-body>
       <div class="exclamation-container">
-        <div>
-          <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
-        </div>
+        <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
       </div>
       <p class="primary-text">Seems like there is a problem with payment</p>
       <p (click)="reload(); ref.close()" class="reload-button">
-        <fa-icon [icon]="icons.faRotateRight"></fa-icon>Refresh to retry payment
+        <fa-icon [icon]="icons.faRotateRight"></fa-icon>
+        Refresh to retry payment
       </p>
       <p class="secondary-text">If money was deducted from your account, please reach out to our support</p>
     </nb-card-body>
   </nb-card>
 </ng-template>
 
-<!-- fullPageLoadingDialog -->
-<ng-template #loadingDialog let-data let-ref="dialogRef">
+<!-- Loading Dialog -->
+<ng-template #loadingDialog>
   <app-loading-spinner></app-loading-spinner>
 </ng-template>
