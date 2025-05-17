@@ -8,10 +8,7 @@
             <p class="name">
               {{ currentUser.name }}
             </p>
-            <!-- <commudle-user-expert-tick *ngIf="currentUser.is_expert"></commudle-user-expert-tick>
-          <commudle-user-personal-connect
-            [userConnect]="currentUser.distance_from_current_user"
-          ></commudle-user-personal-connect> -->
+            <commudle-user-expert-tick *ngIf="currentUser.is_expert"></commudle-user-expert-tick>
           </div>
           <div class="username">@{{ currentUser.username }}</div>
           <div class="designation" *ngIf="currentUser.designation">{{ currentUser.designation }}</div>
