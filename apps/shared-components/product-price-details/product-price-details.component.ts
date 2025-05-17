@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IProductPrice } from '@commudle/shared-models';
 import { ProductPriceService } from '@commudle/shared-services';
 
@@ -9,8 +9,9 @@ import { ProductPriceService } from '@commudle/shared-services';
 })
 export class ProductPriceDetailsComponent implements OnInit {
   @Input() productPriceId: number;
-  productPrice: IProductPrice;
+  @Output() productPriceLoaded = new EventEmitter<IProductPrice>();
 
+  productPrice: IProductPrice;
   hasDiscount = false;
 
   constructor(private productPriceService: ProductPriceService) {}
@@ -22,6 +23,7 @@ export class ProductPriceDetailsComponent implements OnInit {
   fetchProductPrice(): void {
     this.productPriceService.showById(this.productPriceId).subscribe((data: IProductPrice) => {
       this.productPrice = data;
+      this.productPriceLoaded.emit(this.productPrice);
       this.hasDiscount = this.productPrice.discount > 0;
     });
   }

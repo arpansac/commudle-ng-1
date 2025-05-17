@@ -1,25 +1,23 @@
-<div class="com-p-4 com-mb-4" *ngIf="productPrice">
-  <div class="com-mb-4">
-    <h3 class="com-text-xl com-font-semibold com-m-0 com-mb-1">{{ productPrice.product_name }}</h3>
-    <p class="com-text-sm com-text-gray-600 com-m-0">{{ productPrice.plan_name }}</p>
+<div class="product-price-container" *ngIf="productPrice">
+  <!-- Product and Plan Details -->
+  <div class="product-price-details">
+    <h3 class="">{{ productPrice.product_name }}</h3>
+    <p class="">{{ productPrice.plan_name }}</p>
   </div>
 
-  <div class="com-mb-4">
-    <div class="com-flex com-items-baseline">
-      <span class="com-text-base com-font-medium com-mr-1">{{ productPrice.currency === 'USD' ? '$' : '₹' }}</span>
-      <span class="com-text-2xl com-font-bold">{{ productPrice.final_price }}</span>
-    </div>
+  <!-- Pricing Details -->
+  <div class="pricing-details">
+    <span class="final-price">{{ productPrice.final_price | currency : productPrice.currency }}</span>
+    <span class="community-text">per community</span>
 
-    <div class="com-flex com-items-center com-mt-2" *ngIf="hasDiscount">
-      <span class="com-text-sm com-mr-0.5">{{ productPrice.currency === 'USD' ? '$' : '₹' }}</span>
-      <span class="com-text-sm com-text-gray-500 com-line-through">{{ productPrice.original_price }}</span>
-      <span class="com-ml-3 com-bg-red-600 com-text-white com-px-2 com-py-1 com-rounded com-text-xs com-font-semibold"
-        >{{ productPrice.discount }}% OFF</span
-      >
+    <div class="discount-container" *ngIf="hasDiscount">
+      <span class="original-price">{{ productPrice.original_price | currency : productPrice.currency }}</span>
+      <span class="discount-price"> {{ productPrice.discount }} OFF </span>
     </div>
   </div>
 
-  <div class="com-text-sm com-text-gray-600" *ngIf="productPrice.min_quantity > 1">
-    <p class="com-m-0">Minimum quantity: {{ productPrice.min_quantity }}</p>
+  <!-- Quantity Requirements -->
+  <div class="min-quantity-container">
+    <p class="min-quantity">Minimum quantity: {{ productPrice.min_quantity }}</p>
   </div>
 </div>

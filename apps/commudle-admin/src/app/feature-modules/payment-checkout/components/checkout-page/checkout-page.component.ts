@@ -34,6 +34,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   purchaseOrder: IPurchaseOrder;
   currentUser: IUser;
   checkoutForm: FormGroup;
+  productPrice: any;
 
   readonly icons = {
     faTriangleExclamation,
@@ -49,6 +50,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   isLoadingPayment = false;
   paymentPaid = false;
   quantity = 1;
+  minQuantity = 1;
   totalPrice: number;
 
   private destroy$ = new Subject<void>();
@@ -71,9 +73,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private initCheckoutForm(): void {
     this.checkoutForm = this.fb.group({
-      address: ['', Validators.required],
+      companyName: ['', Validators.required],
       gst: [''],
-      notes: [''],
+      companyAddress: ['', Validators.required],
+      pinCode: ['', Validators.required],
     });
   }
 
@@ -123,7 +126,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   Pay(): void {
-    if (!this.purchaseOrder?.id) return;
+    if (!this.purchaseOrder?.id || this.checkoutForm.invalid) return;
 
     this.isLoadingPayment = true;
     this.createRazorpayOrder(this.purchaseOrder.id);
@@ -216,8 +219,17 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   decreaseQuantity(): void {
-    if (this.quantity > 1) {
+    if (this.quantity > this.minQuantity) {
       this.quantity--;
+      this.updateTotalPrice();
+    }
+  }
+
+  onProductPriceLoaded(productPrice: any): void {
+    if (productPrice) {
+      this.productPrice = productPrice;
+      this.minQuantity = productPrice.min_quantity || 1;
+      this.quantity = Math.max(this.minQuantity, this.quantity);
       this.updateTotalPrice();
     }
   }
