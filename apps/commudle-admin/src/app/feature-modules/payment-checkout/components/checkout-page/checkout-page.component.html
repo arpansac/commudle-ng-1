@@ -159,15 +159,7 @@
 
           <!-- Pay Button -->
           <div class="com-px-2" *ngIf="!paymentPaid">
-            <button
-              nbButton
-              status="primary"
-              fullWidth
-              (click)="Pay()"
-              [disabled]="isLoadingPayment || checkoutForm.invalid"
-            >
-              Pay Now
-            </button>
+            <button nbButton status="primary" fullWidth (click)="Pay()" [disabled]="isLoadingPayment">Pay Now</button>
           </div>
         </div>
       </div>

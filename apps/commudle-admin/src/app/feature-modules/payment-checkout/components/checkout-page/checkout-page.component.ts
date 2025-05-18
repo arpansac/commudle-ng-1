@@ -12,6 +12,7 @@ import { environment } from '@commudle/shared-environments';
 import {
   EDbModels,
   EPurchaseOrderStatus,
+  IProductPrice,
   IPurchaseOrder,
   IRazorpayOrder,
   IRazorpayPayment,
@@ -19,7 +20,7 @@ import {
 } from '@commudle/shared-models';
 import { AuthService, PurchaseOrderService, RazorpayService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 declare const Razorpay: any;
 
 @Component({
@@ -34,7 +35,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   purchaseOrder: IPurchaseOrder;
   currentUser: IUser;
   checkoutForm: FormGroup;
-  productPrice: any;
+  productPrice: IProductPrice;
+
+  isLoadingPayment = false;
+  paymentPaid = false;
+  quantity = 1;
+  minQuantity = 1;
+  totalPrice: number;
 
   readonly icons = {
     faTriangleExclamation,
@@ -43,19 +50,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     faPlus,
     faMinus,
   };
-
   readonly EPurchaseOrderStatus = EPurchaseOrderStatus;
   readonly EDbModels = EDbModels;
 
-  isLoadingPayment = false;
-  paymentPaid = false;
-  quantity = 1;
-  minQuantity = 1;
-  totalPrice: number;
-
   private destroy$ = new Subject<void>();
   private dialogRef: NbDialogRef<any>;
-  private subscriptions: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -126,11 +125,25 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   Pay(): void {
-    if (!this.purchaseOrder?.id || this.checkoutForm.invalid) return;
+    if (!this.purchaseOrder?.id) return;
+
+    if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
+      if (this.checkoutForm.invalid) {
+        this.checkoutForm.markAllAsTouched();
+        this.toastrService.errorDialog('Please fill all the required fields');
+        return;
+      }
+    }
 
     this.isLoadingPayment = true;
-    this.createRazorpayOrder(this.purchaseOrder.id);
+    if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
+      this.createOrUpdateContactInfo();
+    } else {
+      this.createRazorpayOrder(this.purchaseOrder.id);
+    }
   }
+
+  createOrUpdateContactInfo() {}
 
   private createRazorpayOrder(purchaseOrderId: number): void {
     const orderDetails = {
@@ -225,7 +238,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  onProductPriceLoaded(productPrice: any): void {
+  onProductPriceLoaded(productPrice: IProductPrice): void {
     if (productPrice) {
       this.productPrice = productPrice;
       this.minQuantity = productPrice.min_quantity || 1;
