@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
   faArrowRightFromBracket,
@@ -39,12 +40,14 @@ export class UserAccountMenuComponent implements OnInit {
     private router: Router,
     private authWatchService: LibAuthwatchService,
     private footerService: FooterService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
         this.currentUser = data;
+        this.setMeta();
       }
     });
     this.footerService.changeMiniFooterStatus(false);
@@ -56,5 +59,13 @@ export class UserAccountMenuComponent implements OnInit {
 
   logout() {
     this.router.navigate(['/logout']);
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      `User Account Menu | ${this.currentUser.name}`,
+      `Account menu for ${this.currentUser.name}`,
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 }
