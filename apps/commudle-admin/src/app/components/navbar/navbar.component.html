@@ -69,7 +69,7 @@
           (click)="toggleDropdown($event)"
           [alt]="currentUser.name"
           [src]="currentUser.photo.i64"
-          class="com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite"
+          class="user-profile-image"
         />
         <commudle-navbar-user-context-menu
           *ngIf="currentUser && showUserContextMenu"

@@ -59,4 +59,8 @@
 
 .profile-container {
   @apply com-flex;
+
+  .user-profile-image {
+    @apply com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite com-cursor-pointer;
+  }
 }

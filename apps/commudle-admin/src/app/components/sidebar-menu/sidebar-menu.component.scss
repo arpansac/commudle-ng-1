@@ -5,15 +5,10 @@
 .sidebar-common-menu {
   @apply com-mb-3;
   a {
-    @apply com-flex com-no-underline;
-    color: grey;
+    @apply com-flex com-no-underline com-text-gray-500;
 
     fa-icon {
       @apply com-h-20px com-w-20px com-mr-2;
-    }
-
-    span {
-      font-size: 0.9735rem;
     }
   }
 }
@@ -74,7 +69,7 @@ nb-accordion-item-header {
 nb-accordion-item-body {
   ::ng-deep {
     .item-body {
-      @apply com-px-0 com-py-10px com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+      @apply com-px-0 com-py-10px com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-text-gray-500;
     }
   }
 }
