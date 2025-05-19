@@ -12,6 +12,7 @@ import { environment } from '@commudle/shared-environments';
 import {
   EDbModels,
   EPurchaseOrderStatus,
+  IContactInfo,
   IProductPrice,
   IPurchaseOrder,
   IRazorpayOrder,
@@ -103,10 +104,26 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         next: (data: IPurchaseOrder) => {
           this.purchaseOrder = data;
           this.handleOrderStatus(lastSegment);
+
+          // Prefill form if contact info exists
+          if (this.purchaseOrder.contact_info) {
+            this.prefillContactForm(this.purchaseOrder.contact_info);
+          }
           this.closeLoadingDialog();
         },
         error: () => this.closeLoadingDialog(),
       });
+  }
+
+  private prefillContactForm(contactInfo: IContactInfo): void {
+    if (!contactInfo) return;
+
+    this.contactInfoForm.patchValue({
+      companyName: contactInfo.address?.company_name || '',
+      gst: contactInfo.tax_info?.gst || '',
+      companyAddress: contactInfo.address?.address || '',
+      pinCode: contactInfo.address?.pin_code || '',
+    });
   }
 
   private handleOrderStatus(lastSegment: string): void {
@@ -142,7 +159,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
     this.isLoadingPayment = true;
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
-      this.createOrUpdateContactInfo();
+      if (this.purchaseOrder.contact_info) {
+        this.createRazorpayOrder(this.purchaseOrder.id);
+      } else {
+        this.createOrUpdateContactInfo();
+      }
     } else {
       this.createRazorpayOrder(this.purchaseOrder.id);
     }
@@ -163,7 +184,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo).subscribe(
       (data) => {
         if (data) {
-          // this.createRazorpayOrder(this.purchaseOrder.id);
+          this.createRazorpayOrder(this.purchaseOrder.id);
         } else {
           this.isLoadingPayment = false;
           this.toastrService.errorDialog('Failed to save contact information');
