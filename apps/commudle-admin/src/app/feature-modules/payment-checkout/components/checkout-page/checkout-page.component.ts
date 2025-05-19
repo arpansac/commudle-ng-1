@@ -103,6 +103,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: IPurchaseOrder) => {
           this.purchaseOrder = data;
+          this.quantity = this.purchaseOrder.quantity || 1;
           this.handleOrderStatus(lastSegment);
 
           // Prefill form if contact info exists
@@ -205,6 +206,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       amount: Math.round(totalAmount),
       currency: this.purchaseOrder.currency,
     };
+
+    this.purchaseOrderService
+      .updatePurchaseOrder(this.purchaseOrder.uuid, {
+        quantity: this.quantity,
+      })
+      .subscribe();
 
     this.razorpayService
       .createOrFindOrder(orderDetails, { po_id: purchaseOrderId })
