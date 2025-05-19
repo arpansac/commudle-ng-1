@@ -9,7 +9,9 @@
               src="{{ speaker.profile_banner_image?.i906 || '/assets/images/User-Profile-Cover-Default.png' }}"
               title="{{ speaker.name }} Profile Banner"
             />
-            <!-- <button nbButton shape="rectangle" size="tiny" class="upcoming-events">Upcoming Talk</button> -->
+            <button *ngIf="speaker.has_upcoming_talk" nbButton shape="rectangle" size="tiny" class="upcoming-events">
+              Upcoming Talk
+            </button>
           </div>
 
           <div class="user-image">

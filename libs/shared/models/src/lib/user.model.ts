@@ -58,6 +58,7 @@ export interface IUser {
   instagram: string;
   distance_from_current_user: number;
   company_name: string;
+  has_upcoming_talk: boolean;
 }
 
 export interface IUserSearch extends IUser {
