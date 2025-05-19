@@ -102,7 +102,7 @@
               <div class="payment-details">
                 <span class="heading">Price</span>
                 <span class="value">
-                  {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
+                  {{ purchaseOrder.amount / 100 | currency : purchaseOrder.currency }}
                 </span>
               </div>
 
