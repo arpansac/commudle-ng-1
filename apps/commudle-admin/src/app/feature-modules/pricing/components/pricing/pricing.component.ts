@@ -298,7 +298,6 @@ export class PricingComponent implements OnInit, OnDestroy {
       }
       case 'enterprise': {
         productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
-        console.log('🚀 ~ PricingComponent ~ createPurchaseOrderForPrice ~ productUuid:', productUuid);
         break;
       }
       // Not needed for now

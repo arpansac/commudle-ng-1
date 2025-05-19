@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EDbModels, IPaginationCount, IPurchaseOrder } from '@commudle/shared-models';
+import { EDbModels, IContactInfo, IPaginationCount, IPurchaseOrder } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -30,5 +30,12 @@ export class PurchaseOrderService {
       this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.INDEX_BY_ORDERABLE_TYPE),
       { params },
     );
+  }
+
+  createContactInfo(purchaseOrderUuid: string, formData): Observable<IContactInfo> {
+    return this.http.post<IContactInfo>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.CONTACT_INFO), {
+      contact_info: formData,
+      purchase_order_uuid: purchaseOrderUuid,
+    });
   }
 }

@@ -2,6 +2,7 @@ import { IDiscountCode } from './discount-code.model';
 import { ICampaign } from './campaign.model';
 import { IUser } from './user.model';
 import { IRazorpayOrder } from './razorpay-order.model';
+import { IContactInfo } from './contact-info.model';
 
 export interface IPurchaseOrder {
   id: number;
@@ -23,6 +24,8 @@ export interface IPurchaseOrder {
   discount_code: IDiscountCode;
   created_at: Date;
   razorpay_order?: IRazorpayOrder;
+  quantity: number;
+  contact_info: IContactInfo;
 }
 
 export enum EPurchaseOrderStatus {

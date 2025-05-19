@@ -18,20 +18,6 @@
               [productPriceId]="purchaseOrder.orderable_id"
               (productPriceLoaded)="onProductPriceLoaded($event)"
             ></commudle-product-price-details>
-
-            <!-- Quantity Selector -->
-            <div class="quantity-selector com-mt-4">
-              <p class="com-font-medium com-mb-2">Quantity</p>
-              <div class="com-flex com-items-center">
-                <button nbButton ghost status="basic" (click)="decreaseQuantity()" [disabled]="quantity <= minQuantity">
-                  <fa-icon [icon]="icons.faMinus"></fa-icon>
-                </button>
-                <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
-                <button nbButton ghost status="basic" (click)="increaseQuantity()">
-                  <fa-icon [icon]="icons.faPlus"></fa-icon>
-                </button>
-              </div>
-            </div>
           </nb-card-body>
         </nb-card>
       </div>
@@ -42,7 +28,7 @@
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
           <nb-card-header>Company Details</nb-card-header>
           <nb-card-body>
-            <form [formGroup]="checkoutForm" class="company-form-container">
+            <form [formGroup]="contactInfoForm" class="company-form-container">
               <!-- Company Name -->
               <div>
                 <label for="companyName">Company Name <span class="required"> *</span></label>
@@ -54,7 +40,7 @@
                   placeholder="Enter company name"
                 />
                 <commudle-alert
-                  [error]="checkoutForm.get('companyName')?.invalid && checkoutForm.get('companyName')?.touched"
+                  [error]="contactInfoForm.get('companyName')?.invalid && contactInfoForm.get('companyName')?.touched"
                   errorMessage="Company name is required"
                 >
                 </commudle-alert>
@@ -78,7 +64,9 @@
                   rows="3"
                 ></textarea>
                 <commudle-alert
-                  [error]="checkoutForm.get('companyAddress')?.invalid && checkoutForm.get('companyAddress')?.touched"
+                  [error]="
+                    contactInfoForm.get('companyAddress')?.invalid && contactInfoForm.get('companyAddress')?.touched
+                  "
                   errorMessage="Company address is required"
                 >
                 </commudle-alert>
@@ -90,7 +78,7 @@
                 <input nbInput fullWidth id="pinCode" formControlName="pinCode" placeholder="Enter pin code" />
 
                 <commudle-alert
-                  [error]="checkoutForm.get('pinCode')?.invalid && checkoutForm.get('pinCode')?.touched"
+                  [error]="contactInfoForm.get('pinCode')?.invalid && contactInfoForm.get('pinCode')?.touched"
                   errorMessage="Pin code is required"
                 >
                 </commudle-alert>
@@ -118,11 +106,35 @@
                 </span>
               </div>
 
+              <!-- Quantity Selector -->
+              <div class="payment-details" *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
+                <span class="heading">Quantity</span>
+                <div class="value com-flex com-items-center" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
+                  <button
+                    nbButton
+                    ghost
+                    size="small"
+                    status="basic"
+                    (click)="decreaseQuantity()"
+                    [disabled]="quantity <= minQuantity"
+                  >
+                    <fa-icon [icon]="icons.faMinus"></fa-icon>
+                  </button>
+                  <span class="com-mx-4 com-font-medium">{{ quantity }}</span>
+                  <button nbButton ghost size="small" status="basic" (click)="increaseQuantity()">
+                    <fa-icon [icon]="icons.faPlus"></fa-icon>
+                  </button>
+                </div>
+                <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+                  {{ purchaseOrder.quantity }}
+                </span>
+              </div>
+
               <!-- Total -->
               <div class="payment-details">
                 <span class="heading">Total</span>
-                <span class="value">
-                  {{ purchaseOrder.amount_to_be_paid / 100 | currency : purchaseOrder.currency }}
+                <span class="value com-font-bold">
+                  {{ totalPrice | currency : purchaseOrder.currency }}
                 </span>
               </div>
 

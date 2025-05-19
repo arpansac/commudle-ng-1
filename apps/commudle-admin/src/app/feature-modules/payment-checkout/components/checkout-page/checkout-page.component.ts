@@ -34,7 +34,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   purchaseOrder: IPurchaseOrder;
   currentUser: IUser;
-  checkoutForm: FormGroup;
+  contactInfoForm: FormGroup;
   productPrice: IProductPrice;
 
   isLoadingPayment = false;
@@ -71,7 +71,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private initCheckoutForm(): void {
-    this.checkoutForm = this.fb.group({
+    this.contactInfoForm = this.fb.group({
       companyName: ['', Validators.required],
       gst: [''],
       companyAddress: ['', Validators.required],
@@ -128,9 +128,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     if (!this.purchaseOrder?.id) return;
 
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
-      if (this.checkoutForm.invalid) {
-        this.checkoutForm.markAllAsTouched();
+      if (this.contactInfoForm.invalid) {
+        this.contactInfoForm.markAllAsTouched();
         this.toastrService.errorDialog('Please fill all the required fields');
+        return;
+      }
+
+      if (this.quantity < this.minQuantity) {
+        this.toastrService.errorDialog(`Minimum quantity required is ${this.minQuantity}`);
         return;
       }
     }
@@ -143,11 +148,40 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  createOrUpdateContactInfo() {}
+  createOrUpdateContactInfo() {
+    const contactInfo = {
+      tax_info: {
+        gst: this.contactInfoForm.get('gst').value,
+      },
+      address: {
+        address: this.contactInfoForm.get('companyAddress').value,
+        company_name: this.contactInfoForm.get('companyName').value,
+        pin_code: this.contactInfoForm.get('pinCode').value,
+      },
+    };
+
+    this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo).subscribe(
+      (data) => {
+        if (data) {
+          // this.createRazorpayOrder(this.purchaseOrder.id);
+        } else {
+          this.isLoadingPayment = false;
+          this.toastrService.errorDialog('Failed to save contact information');
+        }
+      },
+      (error) => {
+        this.isLoadingPayment = false;
+        this.toastrService.errorDialog('Failed to save contact information', error);
+      },
+    );
+  }
 
   private createRazorpayOrder(purchaseOrderId: number): void {
+    // Calculate total amount based on quantity
+    const totalAmount = this.purchaseOrder.amount_to_be_paid * this.quantity;
+
     const orderDetails = {
-      amount: Math.round(this.purchaseOrder.amount_to_be_paid),
+      amount: Math.round(totalAmount),
       currency: this.purchaseOrder.currency,
     };
 
