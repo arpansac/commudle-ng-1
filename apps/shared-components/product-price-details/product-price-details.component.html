@@ -1,4 +1,6 @@
-<div class="product-price-container" *ngIf="productPrice">
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div class="product-price-container" *ngIf="productPrice && !isLoading">
   <!-- Product and Plan Details -->
   <div class="product-price-details">
     <h3 class="product-price-name">{{ productPrice.product_name }}</h3>

@@ -13,6 +13,7 @@ export class ProductPriceDetailsComponent implements OnInit {
 
   productPrice: IProductPrice;
   hasDiscount = false;
+  isLoading = true;
 
   constructor(private productPriceService: ProductPriceService) {}
 
@@ -23,6 +24,7 @@ export class ProductPriceDetailsComponent implements OnInit {
   fetchProductPrice(): void {
     this.productPriceService.showById(this.productPriceId).subscribe((data: IProductPrice) => {
       this.productPrice = data;
+      this.isLoading = false;
       this.productPriceLoaded.emit(this.productPrice);
       this.hasDiscount = this.productPrice.discount_percentage > 0;
       // this.hasDiscount = this.productPrice.discount_amount > 0;
