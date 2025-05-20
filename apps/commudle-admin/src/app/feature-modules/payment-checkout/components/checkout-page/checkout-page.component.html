@@ -26,7 +26,13 @@
       <div class="right-column">
         <!-- Company Details Card -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
-          <nb-card-header>Company Details</nb-card-header>
+          <nb-card-header>
+            <span> Company Details </span>
+            <commudle-alert
+              [info]="true"
+              message="In case of a business, please add company details, else add personal details if you are purchasing as an individual"
+            ></commudle-alert>
+          </nb-card-header>
           <nb-card-body>
             <form
               [formGroup]="contactInfoForm"
@@ -48,12 +54,6 @@
                   errorMessage="Company name is required"
                 >
                 </commudle-alert>
-              </div>
-
-              <!-- GST Number -->
-              <div>
-                <label for="gst">GST Number (Optional)</label>
-                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
               </div>
 
               <!-- Company Address -->
@@ -87,6 +87,13 @@
                 >
                 </commudle-alert>
               </div>
+
+              <!-- GST Number -->
+              <div>
+                <label for="gst">GST Number (Optional)</label>
+                <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
+              </div>
+              <commudle-alert [info]="true" message="This will help us share a GST Invoice with you"></commudle-alert>
             </form>
             <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="company-details">
               <div class="company-name">
@@ -101,17 +108,19 @@
                   {{ purchaseOrder.contact_info.address?.address }}
                 </span>
               </div>
-              <div class="tax-info" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
-                <span class="heading">GST Number</span>
-                <span class="value">
-                  {{ purchaseOrder.contact_info.tax_info?.gst }}
-                </span>
-              </div>
+
               <div class="pin-code">
                 <span class="heading">Pin Code</span>
                 <span class="value">
                   {{ purchaseOrder.contact_info.address?.pin_code }}
                 </span>
+              </div>
+              <div class="tax-info" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
+                <span class="heading">GST Number</span>
+                <span class="value">
+                  {{ purchaseOrder.contact_info.tax_info?.gst }}
+                </span>
+                <commudle-alert [info]="true" message="This will help us share a GST Invoice with you"></commudle-alert>
               </div>
             </div>
           </nb-card-body>
