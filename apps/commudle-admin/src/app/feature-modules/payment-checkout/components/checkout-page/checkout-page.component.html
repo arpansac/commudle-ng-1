@@ -27,10 +27,6 @@
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
           <nb-card-header>
             <span> Company Details </span>
-            <commudle-alert
-              [info]="true"
-              message="In case of a business, please add company details, else add personal details if you are purchasing as an individual"
-            ></commudle-alert>
           </nb-card-header>
           <nb-card-body>
             <form
@@ -38,6 +34,10 @@
               class="company-form-container"
               *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
             >
+              <commudle-alert
+                [info]="true"
+                message="In case of a business, please add company details, else add personal details if you are purchasing as an individual"
+              ></commudle-alert>
               <!-- Company Name -->
               <div>
                 <label for="companyName">Company Name <span class="required"> *</span></label>
