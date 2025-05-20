@@ -1,8 +1,8 @@
 <div class="product-price-container" *ngIf="productPrice">
   <!-- Product and Plan Details -->
   <div class="product-price-details">
-    <h3 class="">{{ productPrice.product_name }}</h3>
-    <p class="">{{ productPrice.plan_name }}</p>
+    <h3 class="product-price-name">{{ productPrice.product_name }}</h3>
+    <p class="product-price-plan-name">{{ productPrice.plan_name }}</p>
   </div>
 
   <!-- Pricing Details -->
@@ -12,7 +12,10 @@
 
     <div class="discount-container" *ngIf="hasDiscount">
       <span class="original-price">{{ productPrice.original_price | currency : productPrice.currency }}</span>
-      <span class="discount-price"> {{ productPrice.discount }} OFF </span>
+      <span class="discount-price" *ngIf="productPrice.discount_percentage">
+        {{ productPrice.discount_percentage }}% OFF
+      </span>
+      <span class="discount-price" *ngIf="productPrice.discount_amount"> {{ productPrice.discount_amount }} OFF </span>
     </div>
   </div>
 

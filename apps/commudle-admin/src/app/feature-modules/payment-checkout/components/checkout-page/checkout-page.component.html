@@ -12,7 +12,6 @@
 
         <!-- Product Price Details -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE">
-          <nb-card-header>Product Details</nb-card-header>
           <nb-card-body>
             <commudle-product-price-details
               [productPriceId]="purchaseOrder.orderable_id"
@@ -90,7 +89,7 @@
 
               <!-- GST Number -->
               <div>
-                <label for="gst">GST Number (Optional)</label>
+                <label for="gst">GST Number</label>
                 <input nbInput fullWidth id="gst" formControlName="gst" placeholder="Enter GST number if applicable" />
               </div>
               <commudle-alert [info]="true" message="This will help us share a GST Invoice with you"></commudle-alert>

@@ -24,7 +24,8 @@ export class ProductPriceDetailsComponent implements OnInit {
     this.productPriceService.showById(this.productPriceId).subscribe((data: IProductPrice) => {
       this.productPrice = data;
       this.productPriceLoaded.emit(this.productPrice);
-      this.hasDiscount = this.productPrice.discount > 0;
+      this.hasDiscount = this.productPrice.discount_percentage > 0;
+      // this.hasDiscount = this.productPrice.discount_amount > 0;
     });
   }
 }

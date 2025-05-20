@@ -43,9 +43,7 @@
 
                             <ng-container *ngIf="startup.priceDetails[1].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ startup.priceDetails[1].discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ startup.priceDetails[1].discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{
                                     startup.priceDetails[1].price | currency : startup.priceDetails[1].currencyType
@@ -70,9 +68,7 @@
 
                             <ng-container *ngIf="startup.priceDetails[0].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ startup.priceDetails[0].discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ startup.priceDetails[0].discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{
                                     startup.priceDetails[0].price | currency : startup.priceDetails[0].currencyType
@@ -128,9 +124,7 @@
                             }}</span>
                             <ng-container *ngIf="enterprise.priceDetails[1].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ enterprise.priceDetails[1].discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ enterprise.priceDetails[1].discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{
                                     enterprise.priceDetails[1].price
@@ -156,9 +150,7 @@
 
                             <ng-container *ngIf="enterprise.priceDetails[0].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ enterprise.priceDetails[0].discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ enterprise.priceDetails[0].discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{
                                     enterprise.priceDetails[0].price
@@ -213,9 +205,7 @@
                             }}</span>
                             <ng-container *ngIf="item.price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ item.discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
                                   <span class="discount-price">{{ item.price }}</span>
@@ -235,9 +225,7 @@
                             }}</span>
                             <ng-container *ngIf="item.price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ item.discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{ item.price }}</span>
                                 </div>
