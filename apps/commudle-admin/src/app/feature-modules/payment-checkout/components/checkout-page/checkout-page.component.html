@@ -221,7 +221,9 @@
   <nb-card class="payment-error-dialog">
     <nb-card-body>
       <div class="exclamation-container">
-        <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
+        <div>
+          <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
+        </div>
       </div>
       <p class="primary-text">Seems like there is a problem with payment</p>
       <p (click)="reload(); ref.close()" class="reload-button">
