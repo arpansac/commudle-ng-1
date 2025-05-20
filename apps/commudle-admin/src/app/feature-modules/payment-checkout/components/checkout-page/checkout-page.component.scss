@@ -102,5 +102,28 @@
         }
       }
     }
+
+    .company-details {
+      .company-name,
+      .address,
+      .tax-info,
+      .pin-code {
+        @apply com-flex com-justify-between  com-py-2 com-px-4;
+        span {
+          @apply com-text-base com-font-medium;
+        }
+        .heading {
+          @apply com-text-gray-500;
+        }
+        .value {
+          @apply com-text-right;
+        }
+      }
+      .company-name,
+      .address,
+      .tax-info {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+      }
+    }
   }
 }

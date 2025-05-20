@@ -28,7 +28,11 @@
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE" class="company-details-card">
           <nb-card-header>Company Details</nb-card-header>
           <nb-card-body>
-            <form [formGroup]="contactInfoForm" class="company-form-container">
+            <form
+              [formGroup]="contactInfoForm"
+              class="company-form-container"
+              *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID"
+            >
               <!-- Company Name -->
               <div>
                 <label for="companyName">Company Name <span class="required"> *</span></label>
@@ -84,6 +88,32 @@
                 </commudle-alert>
               </div>
             </form>
+            <div *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID" class="company-details">
+              <div class="company-name">
+                <span class="heading">Company Name</span>
+                <span class="value">
+                  {{ purchaseOrder.contact_info.address?.company_name | titlecase }}
+                </span>
+              </div>
+              <div class="address">
+                <span class="heading">Address</span>
+                <span class="value">
+                  {{ purchaseOrder.contact_info.address?.address }}
+                </span>
+              </div>
+              <div class="tax-info" *ngIf="purchaseOrder.contact_info.tax_info?.gst">
+                <span class="heading">GST Number</span>
+                <span class="value">
+                  {{ purchaseOrder.contact_info.tax_info?.gst }}
+                </span>
+              </div>
+              <div class="pin-code">
+                <span class="heading">Pin Code</span>
+                <span class="value">
+                  {{ purchaseOrder.contact_info.address?.pin_code }}
+                </span>
+              </div>
+            </div>
           </nb-card-body>
         </nb-card>
 
