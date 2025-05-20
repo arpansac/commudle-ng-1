@@ -1,24 +1,24 @@
 nb-card {
-  @apply com-overflow-hidden com-w-[276px] md:com-h-[403px] com-h-auto com-transition-all com-duration-500 com-cursor-pointer hover:com-shadow-Card com-m-0;
+  @apply com-overflow-hidden com-transition-all com-duration-500 com-cursor-pointer hover:com-shadow-Card com-m-0 com-h-full;
   &.fullWidth {
     @apply com-w-full;
   }
 
   nb-card-body {
-    @apply com-p-0 com-m-0 com-overflow-hidden;
+    @apply com-p-0 com-m-0 com-overflow-hidden com-h-full;
 
     .user-card {
       @apply com-overflow-hidden;
 
       .banner-image {
-        @apply com-h-[92px] com-overflow-hidden com-w-full;
+        @apply com-h-[94px] com-overflow-hidden com-w-full;
 
         img {
           @apply com-h-full com-object-cover com-object-center com-w-full;
         }
 
         .upcoming-events {
-          @apply com-absolute com-right-3 com-top-3 com-bg-American-Orange com-text-tWhite com-border-0;
+          @apply com-absolute com-right-3 com-top-3 com-bg-tWhite com-text-xs com-text-tYankees-Blue com-border-0;
         }
       }
 
@@ -31,7 +31,7 @@ nb-card {
       }
 
       .user-image {
-        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-20 com-ml-10px com-mt-[52px] com-overflow-hidden com-w-20 com-bg-Azureish-White;
+        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[58px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
 
         img {
           @apply com-h-full com-object-cover com-w-full;
@@ -42,15 +42,14 @@ nb-card {
         @apply com-flex com-absolute com-right-3 com-top-[92px] com-mt-3 md:com-mb-0 com-mx-0;
 
         button {
-          @apply com-mr-2 com-text-American-Orange com-border-American-Orange com-bg-white;
+          @apply com-mr-3 com-text-orange-500 com-border-0 com-bg-orange-50;
         }
       }
       .user-details {
         @apply md:com-mx-3 md:com-mt-3 md:com-mb-3 com-m-4;
 
         a {
-          @apply com-h-[157px];
-          text-decoration: none;
+          @apply com-h-full com-no-underline;
 
           .text-details {
             p {
@@ -58,42 +57,52 @@ nb-card {
             }
 
             .hiring-looking-works-tags {
-              @apply com-mb-2 com-m-0;
+              @apply com-m-0 com-flex com-shrink-0;
             }
 
             .user-name {
-              @apply com-m-0 com-mb-1 com-text-base com-font-medium com-text-black com-flex com-items-center com-line-clamp-1;
+              @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-center com-line-clamp-1 com-h-[34px];
             }
 
             .username {
-              @apply com-text-sm com-font-normal com-text-Quartz com-m-0 com-mb-1;
+              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mb-1;
             }
 
             .designation {
-              @apply com-text-sm com-font-normal com-text-Dark-Jungle-Green com-m-0 com-line-clamp-2 com-h-10;
+              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2 com-h-8;
             }
           }
 
           .count-and-location {
             @apply com-flex com-items-center com-m-0 com-h-[18px] com-mt-3 com-overflow-hidden;
             .followers-count {
-              @apply com-text-sm com-font-medium com-text-Auro-Metal-Saurus com-m-0 com-mr-2 com-flex-shrink-0;
+              @apply com-text-xs com-font-medium com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0;
               span {
-                @apply com-text-black;
+                @apply com-text-Yankees-Blue;
               }
             }
 
             .location {
-              @apply com-flex com-text-sm com-font-normal com-text-Azure com-flex-shrink-0;
+              @apply com-flex com-text-xs com-font-normal  com-flex-shrink-0;
+
+              nb-icon {
+                @apply com-w-[14px] com-mr-1 com-text-Azure;
+              }
 
               p {
-                @apply com-m-0 com-text-Yankees-Blue;
+                @apply com-m-0 com-text-Azure;
               }
             }
           }
         }
         .tags {
-          @apply com-overflow-hidden com-h-8 com-gap-3 com-m-0 com-p-0 com-mt-4;
+          @apply com-overflow-hidden com-h-8 com-gap-3 com-m-0 com-p-0 com-mt-3;
+
+          ::ng-deep {
+            .tag {
+              @apply com-border com-border-solid com-rounded-2xl com-border-gray-200;
+            }
+          }
         }
 
         .user-follow-button {
@@ -102,4 +111,8 @@ nb-card {
       }
     }
   }
+}
+
+.user-name-header {
+  @apply com-flex com-items-center com-flex-row com-gap-2 com-m-0 com-mb-1;
 }

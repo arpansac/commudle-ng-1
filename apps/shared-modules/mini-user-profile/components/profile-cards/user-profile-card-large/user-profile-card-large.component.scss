@@ -44,7 +44,7 @@ p {
     }
 
     .speaker-count {
-      @apply md:com-h-auto com-h-6 com-flex-shrink-0;
+      @apply com-h-full com-flex-shrink-0;
     }
 
     .social {
@@ -83,5 +83,20 @@ app-badge {
 }
 
 .desktop-speaker-count {
-  @apply com-mt-3 com-mb-2 com-mx-0;
+  @apply com-m-0;
+}
+
+.followers-count {
+  @apply com-text-xs com-font-medium com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0 com-mt-2;
+  span {
+    @apply com-text-Yankees-Blue;
+  }
+}
+
+.leader {
+  @apply com-text-orange-500 com-border-0 com-bg-orange-50 com-h-full #{!important};
+}
+
+.talks-leader {
+  @apply com-flex com-flex-row com-items-center com-gap-2 com-mt-2;
 }

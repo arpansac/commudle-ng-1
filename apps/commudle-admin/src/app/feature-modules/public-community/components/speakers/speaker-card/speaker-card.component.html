@@ -9,7 +9,9 @@
               src="{{ speaker.profile_banner_image?.i906 || '/assets/images/User-Profile-Cover-Default.png' }}"
               title="{{ speaker.name }} Profile Banner"
             />
-            <!-- <button nbButton shape="rectangle" size="tiny" class="upcoming-events">Upcoming Talk</button> -->
+            <button *ngIf="speaker.has_upcoming_talk" nbButton shape="rectangle" size="tiny" class="upcoming-events">
+              Upcoming Talk
+            </button>
           </div>
 
           <div class="user-image">
@@ -21,7 +23,7 @@
               *ngIf="speaker.speaker_events_count > 0"
               [text]="speaker.speaker_events_count + (speaker.speaker_events_count > 1 ? ' Talks' : ' Talk')"
               [fontColor]="'com-text-tAuro-Metal-Saurus'"
-              [fontSize]="'small'"
+              [fontSize]="'x-small'"
               [borderRadius]="'round'"
               [color]="'com-bg-Bright-Gray-opacity-60'"
             ></app-badge>
@@ -31,16 +33,18 @@
       <div class="user-details d-flex flex-column justify-content-space-between">
         <a [routerLink]="['/users', speaker.username]" class="clickable">
           <div class="text-details">
-            <div *ngIf="speaker.hiring || speaker.looking_for_work" class="hiring-looking-works-tags">
-              <app-hiring-looking-works-tags [user]="speaker"></app-hiring-looking-works-tags>
+            <div class="user-name-header">
+              <p class="user-name">
+                {{ speaker.name }}
+                <commudle-user-expert-tick *ngIf="speaker.is_expert"></commudle-user-expert-tick>
+                <commudle-user-personal-connect
+                  [userConnect]="speaker.distance_from_current_user"
+                ></commudle-user-personal-connect>
+              </p>
+              <div *ngIf="speaker.hiring || speaker.looking_for_work" class="hiring-looking-works-tags">
+                <app-hiring-looking-works-tags [user]="speaker"></app-hiring-looking-works-tags>
+              </div>
             </div>
-            <p class="user-name">
-              {{ speaker.name }}
-              <commudle-user-expert-tick *ngIf="speaker.is_expert"></commudle-user-expert-tick>
-              <commudle-user-personal-connect
-                [userConnect]="speaker.distance_from_current_user"
-              ></commudle-user-personal-connect>
-            </p>
             <p *ngIf="speaker.username" class="username">@{{ speaker.username | truncatetext : maxUserNameLength }}</p>
             <p class="designation">
               {{ speaker.designation || '--' }}
@@ -60,9 +64,9 @@
           <app-tag
             *ngIf="speakersTagsLength > 0"
             [tags]="getTagNames()"
-            [backgroundColor]="'com-bg-Azure-opacity-10'"
+            [backgroundColor]="'com-bg-gray-50'"
             [size]="'tiny'"
-            [fontColor]="'com-text-Dark-Jungle-Green'"
+            [fontColor]="'com-text-gray-500'"
             [maximumTag]="3"
           ></app-tag>
         </div>
@@ -72,6 +76,7 @@
             [name]="speaker.name"
             [userId]="speaker.id"
             [isMobileWidthFull]="true"
+            [appearance]="'outline'"
           ></app-user-follow>
         </div>
       </div>

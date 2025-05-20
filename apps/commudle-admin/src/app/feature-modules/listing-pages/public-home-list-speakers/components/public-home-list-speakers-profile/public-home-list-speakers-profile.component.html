@@ -1,3 +1,4 @@
+<h2 class="heading">Popular Speakers</h2>
 <div class="search-filters">
   <form [formGroup]="searchForm">
     <div class="search">
@@ -71,7 +72,19 @@
   <div *appBreakpoints="'<=lg'">
     <div class="speakers">
       <div *ngFor="let speaker of speakers.slice(0, 3)" class="speakers-card">
-        <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25" [isMobileWidthFull]="true"></app-speaker-card>
+        <app-user-profile-card-large
+          [showFollowButton]="true"
+          [alignFollowToRight]="true"
+          [showAbout]="true"
+          [user]="speaker"
+          [showSpeakersCount]="true"
+          [maxUserNameLength]="15"
+          [showHiringLookingTags]="false"
+          [appearanceOfFollowButton]="'outline'"
+          [showHiringLookingTags]="false"
+          [showFollowersCount]="true"
+          [showLeaderBadge]="true"
+        ></app-user-profile-card-large>
       </div>
     </div>
     <div class="speakers-upcoming">
@@ -88,9 +101,21 @@
         [parentType]="'communities'"
       ></commudle-public-home-list-speakers-content>
     </div>
-    <div class="speakers">
+    <div class="speakers-mobile">
       <div *ngFor="let speaker of speakers.slice(3)" class="speakers-card">
-        <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25" [isMobileWidthFull]="true"></app-speaker-card>
+        <app-user-profile-card-large
+          [showFollowButton]="true"
+          [alignFollowToRight]="true"
+          [showAbout]="true"
+          [user]="speaker"
+          [showSpeakersCount]="true"
+          [maxUserNameLength]="15"
+          [showHiringLookingTags]="false"
+          [appearanceOfFollowButton]="'outline'"
+          [showHiringLookingTags]="false"
+          [showFollowersCount]="true"
+          [showLeaderBadge]="true"
+        ></app-user-profile-card-large>
       </div>
     </div>
     <app-loading-spinner *ngIf="loading" class="com-mt-4"></app-loading-spinner>
