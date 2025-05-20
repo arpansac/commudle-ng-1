@@ -207,12 +207,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       currency: this.purchaseOrder.currency,
     };
 
-    this.purchaseOrderService
-      .updatePurchaseOrder(this.purchaseOrder.uuid, {
-        quantity: this.quantity,
-      })
-      .subscribe();
-
     this.razorpayService
       .createOrFindOrder(orderDetails, { po_id: purchaseOrderId })
       .pipe(takeUntil(this.destroy$))
@@ -290,13 +284,27 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   increaseQuantity(): void {
     this.quantity++;
-    this.updateTotalPrice();
+    this.purchaseOrderService
+      .updatePurchaseOrder(this.purchaseOrder.uuid, {
+        quantity: this.quantity,
+      })
+      .subscribe((po: IPurchaseOrder) => {
+        this.purchaseOrder = po;
+        this.updateTotalPrice();
+      });
   }
 
   decreaseQuantity(): void {
     if (this.quantity > this.minQuantity) {
       this.quantity--;
-      this.updateTotalPrice();
+      this.purchaseOrderService
+        .updatePurchaseOrder(this.purchaseOrder.uuid, {
+          quantity: this.quantity,
+        })
+        .subscribe((po: IPurchaseOrder) => {
+          this.purchaseOrder = po;
+          this.updateTotalPrice();
+        });
     }
   }
 
@@ -312,8 +320,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private updateTotalPrice(): void {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
 
-    const basePrice = this.purchaseOrder.amount_to_be_paid / 100;
-    this.totalPrice = basePrice * this.quantity;
+    this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
   }
 
   private openLoadingDialog(): void {
