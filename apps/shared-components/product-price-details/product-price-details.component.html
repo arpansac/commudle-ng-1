@@ -3,6 +3,7 @@
   <div class="product-price-details">
     <h3 class="product-price-name">{{ productPrice.product_name }}</h3>
     <p class="product-price-plan-name">{{ productPrice.plan_name }}</p>
+    <p class="product-price-description" *ngIf="productPrice.description">{{ productPrice.description }}</p>
   </div>
 
   <!-- Pricing Details -->

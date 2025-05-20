@@ -8,4 +8,5 @@ export interface IProductPrice {
   currency: string;
   min_quantity: number;
   uuid: string;
+  description: string;
 }
