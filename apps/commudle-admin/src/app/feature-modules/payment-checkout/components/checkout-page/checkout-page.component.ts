@@ -109,6 +109,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           // Prefill form if contact info exists
           if (this.purchaseOrder.contact_info) {
             this.prefillContactForm(this.purchaseOrder.contact_info);
+          } else {
+            this.updateTotalPrice();
           }
           this.closeLoadingDialog();
         },
