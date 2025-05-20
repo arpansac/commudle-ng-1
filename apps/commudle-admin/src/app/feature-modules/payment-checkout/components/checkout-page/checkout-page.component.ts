@@ -200,7 +200,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private createRazorpayOrder(purchaseOrderId: number): void {
     // Calculate total amount based on quantity
-    const totalAmount = this.purchaseOrder.amount_to_be_paid * this.quantity;
+    const totalAmount = this.purchaseOrder.amount * this.quantity;
 
     const orderDetails = {
       amount: Math.round(totalAmount),
