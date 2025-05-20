@@ -108,7 +108,7 @@
       .address,
       .tax-info,
       .pin-code {
-        @apply com-flex com-justify-between  com-py-2 com-px-4;
+        @apply com-flex com-justify-between  com-py-2 com-px-4  com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
         span {
           @apply com-text-base com-font-medium;
         }
@@ -118,11 +118,6 @@
         .value {
           @apply com-text-right;
         }
-      }
-      .company-name,
-      .address,
-      .tax-info {
-        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
       }
     }
   }
