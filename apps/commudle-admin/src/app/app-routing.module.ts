@@ -12,6 +12,7 @@ import { SpeakerResourceFormComponent } from './components/speaker-resource-form
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
+import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 
 const routes: Routes = [
   // TODO: discuss in future for order of paths
@@ -281,6 +282,7 @@ const routes: Routes = [
       },
     ],
   },
+  { path: 'account-menu', component: UserAccountMenuComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'error', component: LibErrorHandlerComponent },
   { path: '404', component: Error404PageComponent },

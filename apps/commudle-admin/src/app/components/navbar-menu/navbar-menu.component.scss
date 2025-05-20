@@ -43,3 +43,7 @@ nb-actions {
 .menu-item a .menu-title {
   @apply com-flex-none;
 }
+
+.user-profile-image-mobile {
+  @apply com-w-6 com-h-6 com-object-cover com-rounded-full com-bg-tWhite;
+}

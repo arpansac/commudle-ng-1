@@ -122,6 +122,8 @@ import { UsersModule } from './feature-modules/users/users.module';
 import { AppInitService } from './services/app-init.service';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
+import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -166,6 +168,8 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     LoginConsentPopupComponent,
     FillDataFormPaidComponent,
     CheckFillDataFormComponent,
+    UserAccountMenuComponent,
+    NavbarUserContextMenuComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
