@@ -30,14 +30,22 @@ export class DiscountCodesService {
     currentDiscountCodes.push(discountCode);
     this.discountCodes.next(currentDiscountCodes);
   }
-  createDiscountCode(discount_code: any, eventId?: number | string): Observable<any> {
+
+  createDiscountCode(
+    discountCodeFormData: { discount_code: IDiscountCode },
+    eventId?: number | string,
+  ): Observable<IDiscountCode> {
     let params = new HttpParams();
     if (eventId) {
       params = params.set('event_id', eventId);
     }
-    return this.http.post<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CREATE), discount_code, {
-      params,
-    });
+    return this.http.post<IDiscountCode>(
+      this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CREATE),
+      discountCodeFormData,
+      {
+        params,
+      },
+    );
   }
 
   indexByParentOrObject(id: number, type: EDbModels, isParent = true): Observable<IDiscountCode[]> {
@@ -54,9 +62,9 @@ export class DiscountCodesService {
     });
   }
 
-  updateDiscountCodes(discount_code: any, discountCodeId): Observable<any> {
+  updateDiscountCodes(discount_code: { discount_code: IDiscountCode }, discountCodeId): Observable<IDiscountCode> {
     const params = new HttpParams().set('discount_code_id', discountCodeId);
-    return this.http.put<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.UPDATE), discount_code, {
+    return this.http.put<IDiscountCode>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.UPDATE), discount_code, {
       params,
     });
   }

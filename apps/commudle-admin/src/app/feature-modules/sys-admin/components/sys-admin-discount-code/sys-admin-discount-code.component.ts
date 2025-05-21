@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EDbModels, IDiscountCode, EDiscountType } from '@commudle/shared-models';
-import { DiscountCodesService } from '@commudle/shared-services';
+import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
 import { faAdd, faEdit, faTrash, faTicket } from '@fortawesome/free-solid-svg-icons';
-import { NbDialogService, NbToastrService } from '@commudle/theme';
-import { Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { NbDialogService } from '@commudle/theme';
+import { finalize } from 'rxjs/operators';
+import { DiscountCodeFormComponent } from './discount-code-form/discount-code-form.component';
 
 @Component({
   selector: 'commudle-sys-admin-discount-code',
   templateUrl: './sys-admin-discount-code.component.html',
   styleUrls: ['./sys-admin-discount-code.component.scss'],
 })
-export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
+export class SysAdminDiscountCodeComponent implements OnInit {
   discountCodes: IDiscountCode[] = [];
   isLoading = false;
   selectedModelType: EDbModels = EDbModels.CAMPAIGN;
@@ -28,22 +28,14 @@ export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
     faTicket,
   };
 
-  // Destroy subject for unsubscribing
-  private destroy$ = new Subject<void>();
-
   constructor(
     private discountCodesService: DiscountCodesService,
     private dialogService: NbDialogService,
-    private toastrService: NbToastrService,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
     this.getDiscountCodes();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onModelTypeChange(): void {
@@ -55,31 +47,54 @@ export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
 
     this.discountCodesService
       .indexByParentOrObject(0, this.selectedModelType, false)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.isLoading = false)),
-      )
-      .subscribe({
-        next: (data) => {
-          this.discountCodes = data;
-        },
-        error: (error) => {
-          console.error('Error fetching discount codes:', error);
-          this.discountCodes = [];
-          this.toastrService.danger('Unable to load discount codes. Please try again.', 'Error');
-        },
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((data) => {
+        this.discountCodes = data;
       });
   }
 
   openCreateForm(): void {
-    // TODO: Implement dialog form opening logic
+    this.dialogService
+      .open(DiscountCodeFormComponent, {
+        context: {
+          modelType: this.selectedModelType,
+        },
+        closeOnBackdropClick: false,
+        closeOnEsc: true,
+      })
+      .onClose.subscribe((discountCode) => {
+        if (discountCode) {
+          this.discountCodes.unshift(discountCode);
+        }
+      });
   }
 
-  editDiscountCode(code: IDiscountCode): void {
-    // TODO: Implement edit dialog logic
+  editDiscountCode(code: IDiscountCode, index): void {
+    this.dialogService
+      .open(DiscountCodeFormComponent, {
+        context: {
+          discountCode: code,
+          modelType: this.selectedModelType,
+          isEdit: true,
+        },
+        closeOnBackdropClick: false,
+        closeOnEsc: true,
+      })
+      .onClose.subscribe((discountCode) => {
+        if (discountCode) {
+          this.discountCodes[index] = discountCode;
+        }
+      });
   }
 
-  deleteDiscountCode(id: number): void {
-    // TODO: Implement confirmation dialog and delete logic
+  deleteDiscountCode(id: number, index): void {
+    if (confirm('Are you sure you want to delete this discount code? This action cannot be undone.')) {
+      this.discountCodesService.destroy(id).subscribe((data) => {
+        if (data) {
+          this.discountCodes.splice(index, 1);
+          this.toastrService.successDialog('Discount code deleted successfully');
+        }
+      });
+    }
   }
 }

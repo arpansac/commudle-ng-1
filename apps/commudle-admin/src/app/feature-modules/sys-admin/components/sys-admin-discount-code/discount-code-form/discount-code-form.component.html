@@ -1,0 +1,118 @@
+<nb-card class="discount-code-form">
+  <nb-card-header>
+    <h5>{{ isEdit ? 'Edit' : 'Create' }} Discount Code</h5>
+    <button nbButton ghost shape="round" (click)="closeDialog()">
+      <fa-icon [icon]="icons.faClose"></fa-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="discountCodeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="code">Code <span class="required">*</span></label>
+        <input nbInput fullWidth id="code" formControlName="code" placeholder="Enter discount code" />
+      </div>
+
+      <div class="form-group-container">
+        <div class="form-group">
+          <label for="discount_type">Discount Type*</label>
+          <div class="select">
+            <select id="discount_type" formControlName="discount_type">
+              <option [value]="EDiscountType.PERCENTAGE">Percentage</option>
+              <option [value]="EDiscountType.FIXED_AMOUNT">Fixed Amount</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="discount_value"
+            >{{
+              discountCodeForm.get('discount_type').value === EDiscountType.PERCENTAGE
+                ? 'Discount Percentage'
+                : 'Discount Value'
+            }}<span class="required">*</span></label
+          >
+          <input
+            nbInput
+            fullWidth
+            type="number"
+            id="discount_value"
+            formControlName="discount_value"
+            [placeholder]="
+              discountCodeForm.get('discount_type').value === EDiscountType.PERCENTAGE
+                ? 'Enter Percentage'
+                : 'Enter Value'
+            "
+          />
+        </div>
+      </div>
+
+      <div class="form-group-container">
+        <div class="form-group">
+          <label for="object_type">Apply To <span class="required">*</span></label>
+          <div class="select">
+            <select id="object_type" formControlName="object_type">
+              <option [value]="EDbModels.CAMPAIGN">Campaigns</option>
+              <!-- <option [value]="EDbModels.EVENT">Events</option> -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="expires_at">Expiry Date</label>
+          <input nbInput fullWidth type="datetime-local" id="expires_at" formControlName="expires_at" />
+        </div>
+      </div>
+      <!-- <div class="form-group checkbox-group">
+        <nb-checkbox formControlName="is_limited">Limit usage count</nb-checkbox>
+      </div>
+
+      <div class="form-group" *ngIf="discountCodeForm.get('is_limited')?.value">
+        <label for="max_limit">Maximum Usage Limit <span class="required">*</span></label>
+        <input
+          nbInput
+          fullWidth
+          type="number"
+          id="max_limit"
+          formControlName="max_limit"
+          placeholder="Enter max usage limit"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="min_users_count">Minimum Users Count</label>
+        <input
+          nbInput
+          fullWidth
+          type="number"
+          id="min_users_count"
+          formControlName="min_users_count"
+          placeholder="Enter minimum users"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="max_users_count">Maximum Users Count</label>
+        <input
+          nbInput
+          fullWidth
+          type="number"
+          id="max_users_count"
+          formControlName="max_users_count"
+          placeholder="Enter maximum users"
+        />
+      </div> -->
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="basic" type="button" (click)="closeDialog()">Cancel</button>
+    <button
+      nbButton
+      status="primary"
+      type="submit"
+      (click)="onSubmit()"
+      [disabled]="discountCodeForm.invalid || isSubmitting"
+    >
+      {{ isSubmitting ? 'Saving...' : isEdit ? 'Update' : 'Create' }}
+    </button>
+  </nb-card-footer>
+</nb-card>

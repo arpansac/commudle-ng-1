@@ -38,7 +38,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let code of discountCodes">
+                <tr *ngFor="let code of discountCodes; let i = index">
                   <td class="code-cell">{{ code.code }}</td>
                   <td>{{ code.discount_value }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}</td>
                   <td>{{ code.expires_at ? (code.expires_at | date : 'medium') : 'No Expiry' }}</td>
@@ -50,7 +50,7 @@
                       size="small"
                       status="info"
                       class="action-btn"
-                      (click)="editDiscountCode(code)"
+                      (click)="editDiscountCode(code, i)"
                       nbTooltip="Edit"
                     >
                       <fa-icon [icon]="icons.faEdit"></fa-icon>
@@ -60,7 +60,7 @@
                       size="small"
                       status="danger"
                       class="action-btn"
-                      (click)="deleteDiscountCode(code.id)"
+                      (click)="deleteDiscountCode(code.id, i)"
                       nbTooltip="Delete"
                     >
                       <fa-icon [icon]="icons.faTrash"></fa-icon>
