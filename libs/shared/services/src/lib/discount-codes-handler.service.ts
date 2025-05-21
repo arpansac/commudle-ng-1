@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IDiscountCode } from '@commudle/shared-models';
+import { EDbModels, IDiscountCode } from '@commudle/shared-models';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -34,6 +34,20 @@ export class DiscountCodesService {
   createDiscountCode(discount_code: any, eventId): Observable<any> {
     const params = new HttpParams().set('event_id', eventId);
     return this.http.post<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CREATE), discount_code, {
+      params,
+    });
+  }
+
+  indexByParentOrObject(id: number, type: EDbModels, isParent = true): Observable<IDiscountCode[]> {
+    let params = new HttpParams();
+
+    if (isParent) {
+      params = params.set('parent_id', id).set('parent_type', type);
+    } else {
+      params = params.set('object_type', type);
+    }
+
+    return this.http.get<IDiscountCode[]>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.INDEX_BY_TYPE), {
       params,
     });
   }

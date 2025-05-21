@@ -781,6 +781,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/discount_codes',
     UPDATE: 'api/v2/discount_codes',
     INDEX: 'api/v2/discount_codes',
+    INDEX_BY_TYPE: 'api/v2/discount_codes/index_by_type',
     DELETE: 'api/v2/discount_codes',
     CAN_BE_APPLIED: 'api/v2/discount_codes/can_be_applied',
   },

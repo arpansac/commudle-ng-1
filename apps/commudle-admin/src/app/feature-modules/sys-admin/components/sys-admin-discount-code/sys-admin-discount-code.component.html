@@ -1,45 +1,68 @@
 <div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
-      <nb-card>
+      <nb-card class="discount-code-container">
         <nb-card-header>
           <h4>Discount Codes Management</h4>
         </nb-card-header>
         <nb-card-body>
-          <!-- Add your discount code management UI here -->
-          <p>Manage discount codes for your platform here.</p>
-
-          <!-- Example table for discount codes -->
-          <table>
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Discount %</th>
-                <th>Valid Until</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Sample data, replace with actual data binding -->
-              <tr>
-                <td>WELCOME10</td>
-                <td>10%</td>
-                <td>2023-12-31</td>
-                <td>Active</td>
-                <td>
-                  <button nbButton size="small" status="info">Edit</button>
-                  <button nbButton size="small" status="danger">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="mt-4">
-            <button nbButton status="primary">
-              <nb-icon icon="plus"></nb-icon>
-              Add New Discount Code
+          <div class="button-filter">
+            <button nbButton status="primary" (click)="openCreateForm()" shape="semi-round">
+              <fa-icon [icon]="icons.faAdd"></fa-icon> &nbsp; Add New Discount Code
             </button>
+            <div class="filter-container">
+              <label>Filter by:</label>
+              <div class="select">
+                <select
+                  placeholder="Select model type"
+                  [(ngModel)]="selectedModelType"
+                  (onChange)="onModelTypeChange()"
+                >
+                  <option [value]="EDbModels.CAMPAIGN">Campaigns</option>
+                  <option [value]="EDbModels.EVENT">Events</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+
+          <div *ngIf="!isLoading">
+            <table *ngIf="discountCodes.length > 0" class="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Discount</th>
+                  <th>Valid Until</th>
+                  <th>discount_applied_count</th>
+                  <th>discount_used_count</th>
+                  <!-- <th>Actions</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let code of discountCodes">
+                  <td>{{ code.code }}</td>
+                  <td>{{ code.discount_value }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}</td>
+                  <td>{{ code.expires_at ? moment(code.expires_at).format() : 'NA' }}</td>
+                  <td>{{ code.discount_applied_count }}</td>
+                  <td>{{ code.discount_used_count }}</td>
+                  <td>
+                    <!-- <button nbButton size="small" status="info" class="mr-2" (click)="editDiscountCode(code)">
+                      Edit
+                    </button>
+                    <button nbButton size="small" status="danger" (click)="deleteDiscountCode(code.id)">
+                      Delete
+                    </button> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="discountCodes.length === 0" class="text-center p-8 text-gray-500">
+              No discount codes found for the selected filter. Create one to get started.
+            </div>
           </div>
         </nb-card-body>
       </nb-card>
