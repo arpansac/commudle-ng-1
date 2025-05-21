@@ -30,9 +30,11 @@ export class DiscountCodesService {
     currentDiscountCodes.push(discountCode);
     this.discountCodes.next(currentDiscountCodes);
   }
-
-  createDiscountCode(discount_code: any, eventId): Observable<any> {
-    const params = new HttpParams().set('event_id', eventId);
+  createDiscountCode(discount_code: any, eventId?: number | string): Observable<any> {
+    let params = new HttpParams();
+    if (eventId) {
+      params = params.set('event_id', eventId);
+    }
     return this.http.post<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CREATE), discount_code, {
       params,
     });
@@ -69,5 +71,10 @@ export class DiscountCodesService {
     return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CAN_BE_APPLIED), {
       params,
     });
+  }
+
+  destroy(discountCodeId: number): Observable<boolean> {
+    const params = new HttpParams().set('discount_code_id', discountCodeId);
+    return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.DELETE), { params });
   }
 }
