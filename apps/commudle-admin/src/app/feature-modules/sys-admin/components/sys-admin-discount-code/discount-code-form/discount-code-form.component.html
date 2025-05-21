@@ -10,6 +10,15 @@
       <div class="form-group">
         <label for="code">Code <span class="required">*</span></label>
         <input nbInput fullWidth id="code" formControlName="code" placeholder="Enter discount code" />
+        <div
+          *ngIf="
+            discountCodeForm.get('code').invalid &&
+            (discountCodeForm.get('code').dirty || discountCodeForm.get('code').touched)
+          "
+          class="error-message"
+        >
+          <commudle-alert [error]="true" [errorMessage]="'Code is required'"></commudle-alert>
+        </div>
       </div>
 
       <div class="form-group-container">
@@ -43,6 +52,38 @@
                 : 'Enter Value'
             "
           />
+          <div class="error-message">
+            <div
+              *ngIf="
+                discountCodeForm.get('discount_value').invalid &&
+                (discountCodeForm.get('discount_value').dirty || discountCodeForm.get('discount_value').touched)
+              "
+            >
+              <div *ngIf="discountCodeForm.get('discount_value').errors?.['required']">
+                <commudle-alert [error]="true" [errorMessage]="'Discount value is required'"></commudle-alert>
+              </div>
+              <div *ngIf="discountCodeForm.get('discount_value').errors?.['min']">
+                <commudle-alert
+                  [error]="true"
+                  [errorMessage]="'Discount value must be greater than 0'"
+                ></commudle-alert>
+              </div>
+              <div *ngIf="discountCodeForm.get('discount_value').errors?.['max']">
+                <commudle-alert
+                  [error]="true"
+                  [errorMessage]="'Percentage cannot be greater than 100'"
+                ></commudle-alert>
+              </div>
+            </div>
+            <div
+              *ngIf="
+                discountCodeForm.get('discount_type').value === EDiscountType.PERCENTAGE &&
+                discountCodeForm.get('discount_value').value > 100
+              "
+            >
+              <commudle-alert [error]="true" [errorMessage]="'Percentage cannot be greater than 100'"></commudle-alert>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -54,6 +95,18 @@
               <option [value]="EDbModels.CAMPAIGN">Campaigns</option>
               <!-- <option [value]="EDbModels.EVENT">Events</option> -->
             </select>
+          </div>
+          <div
+            *ngIf="
+              discountCodeForm.get('object_type').invalid &&
+              (discountCodeForm.get('object_type').dirty || discountCodeForm.get('object_type').touched)
+            "
+            class="error-message"
+          >
+            <commudle-alert
+              [error]="true"
+              [errorMessage]="'Please select where to apply the discount'"
+            ></commudle-alert>
           </div>
         </div>
 
