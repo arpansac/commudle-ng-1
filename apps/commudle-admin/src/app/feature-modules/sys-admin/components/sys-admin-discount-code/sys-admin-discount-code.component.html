@@ -13,11 +13,7 @@
             <div class="filter-container">
               <label>Filter by:</label>
               <div class="select">
-                <select
-                  placeholder="Select model type"
-                  [(ngModel)]="selectedModelType"
-                  (onChange)="onModelTypeChange()"
-                >
+                <select [(ngModel)]="selectedModelType" (change)="onModelTypeChange()">
                   <option [value]="EDbModels.CAMPAIGN">Campaigns</option>
                   <option [value]="EDbModels.EVENT">Events</option>
                 </select>
@@ -25,43 +21,58 @@
             </div>
           </div>
 
-          <div *ngIf="isLoading">
+          <div *ngIf="isLoading" class="loading-container">
             <app-loading-spinner></app-loading-spinner>
           </div>
 
-          <div *ngIf="!isLoading">
-            <table *ngIf="discountCodes.length > 0" class="w-full border-collapse">
+          <div *ngIf="!isLoading" class="table-container">
+            <table *ngIf="discountCodes.length > 0">
               <thead>
                 <tr>
                   <th>Code</th>
                   <th>Discount</th>
                   <th>Valid Until</th>
-                  <th>discount_applied_count</th>
-                  <th>discount_used_count</th>
-                  <!-- <th>Actions</th> -->
+                  <th>Applied</th>
+                  <th>Used</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let code of discountCodes">
-                  <td>{{ code.code }}</td>
+                  <td class="code-cell">{{ code.code }}</td>
                   <td>{{ code.discount_value }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}</td>
-                  <td>{{ code.expires_at ? moment(code.expires_at).format() : 'NA' }}</td>
+                  <td>{{ code.expires_at ? (code.expires_at | date : 'medium') : 'No Expiry' }}</td>
                   <td>{{ code.discount_applied_count }}</td>
                   <td>{{ code.discount_used_count }}</td>
-                  <td>
-                    <!-- <button nbButton size="small" status="info" class="mr-2" (click)="editDiscountCode(code)">
-                      Edit
+                  <td class="actions-cell">
+                    <button
+                      nbButton
+                      size="small"
+                      status="info"
+                      class="action-btn"
+                      (click)="editDiscountCode(code)"
+                      nbTooltip="Edit"
+                    >
+                      <fa-icon [icon]="icons.faEdit"></fa-icon>
                     </button>
-                    <button nbButton size="small" status="danger" (click)="deleteDiscountCode(code.id)">
-                      Delete
-                    </button> -->
+                    <button
+                      nbButton
+                      size="small"
+                      status="danger"
+                      class="action-btn"
+                      (click)="deleteDiscountCode(code.id)"
+                      nbTooltip="Delete"
+                    >
+                      <fa-icon [icon]="icons.faTrash"></fa-icon>
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <div *ngIf="discountCodes.length === 0" class="text-center p-8 text-gray-500">
-              No discount codes found for the selected filter. Create one to get started.
+            <div *ngIf="discountCodes.length === 0" class="empty-state">
+              <fa-icon [icon]="icons.faTicket" size="3x" class="empty-icon"></fa-icon>
+              <p>No discount codes found for the selected filter.</p>
             </div>
           </div>
         </nb-card-body>

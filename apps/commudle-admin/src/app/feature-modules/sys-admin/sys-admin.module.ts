@@ -17,6 +17,8 @@ import {
   NbToggleModule,
   NbWindowModule,
   NbFormFieldModule,
+  NbTooltipModule,
+  NbToastrModule,
 } from '@commudle/theme';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
@@ -125,6 +127,8 @@ import { SysAdminDiscountCodeComponent } from './components/sys-admin-discount-c
     NbRouteTabsetModule,
     NbDialogModule.forChild(),
     NbFormFieldModule,
+    NbTooltipModule,
+    NbToastrModule,
     EditorModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],

@@ -1,62 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EDbModels, IDiscountCode, EDiscountType } from '@commudle/shared-models';
 import { DiscountCodesService } from '@commudle/shared-services';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
+import { faAdd, faEdit, faTrash, faTicket } from '@fortawesome/free-solid-svg-icons';
+import { NbDialogService, NbToastrService } from '@commudle/theme';
+import { Subject } from 'rxjs';
+import { takeUntil, finalize } from 'rxjs/operators';
+
 @Component({
   selector: 'commudle-sys-admin-discount-code',
   templateUrl: './sys-admin-discount-code.component.html',
   styleUrls: ['./sys-admin-discount-code.component.scss'],
 })
-export class SysAdminDiscountCodeComponent implements OnInit {
+export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
   discountCodes: IDiscountCode[] = [];
   isLoading = false;
   selectedModelType: EDbModels = EDbModels.CAMPAIGN;
-  EDbModels = EDbModels;
-  icons = {
+
+  // Constants and enums
+  readonly EDbModels = EDbModels;
+  readonly EDiscountType = EDiscountType;
+
+  // Icons
+  readonly icons = {
     faAdd,
+    faEdit,
+    faTrash,
+    faTicket,
   };
-  EDiscountType = EDiscountType;
-  moment = moment;
-  constructor(private discountCodesService: DiscountCodesService) {}
+
+  // Destroy subject for unsubscribing
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private discountCodesService: DiscountCodesService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService,
+  ) {}
 
   ngOnInit(): void {
     this.getDiscountCodes();
   }
 
-  onModelTypeChange() {
-    console.log('Model type changed:', this.selectedModelType);
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onModelTypeChange(): void {
     this.getDiscountCodes();
   }
 
-  getDiscountCodes() {
+  getDiscountCodes(): void {
     this.isLoading = true;
 
-    this.discountCodesService.indexByParentOrObject(0, this.selectedModelType, false).subscribe({
-      next: (data) => {
-        this.discountCodes = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching discount codes:', error);
-        this.isLoading = false;
-        this.discountCodes = [];
-      },
-    });
+    this.discountCodesService
+      .indexByParentOrObject(0, this.selectedModelType, false)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => (this.isLoading = false)),
+      )
+      .subscribe({
+        next: (data) => {
+          this.discountCodes = data;
+        },
+        error: (error) => {
+          console.error('Error fetching discount codes:', error);
+          this.discountCodes = [];
+          this.toastrService.danger('Unable to load discount codes. Please try again.', 'Error');
+        },
+      });
   }
 
-  openCreateForm() {
-    // Implement form opening logic
-    console.log('Open create form');
+  openCreateForm(): void {
+    // TODO: Implement dialog form opening logic
   }
 
-  editDiscountCode(code: IDiscountCode) {
-    // Implement edit logic
-    console.log('Edit discount code', code);
+  editDiscountCode(code: IDiscountCode): void {
+    // TODO: Implement edit dialog logic
   }
 
-  deleteDiscountCode(id: number) {
-    // Implement delete logic
-    console.log('Delete discount code', id);
+  deleteDiscountCode(id: number): void {
+    // TODO: Implement confirmation dialog and delete logic
   }
 }

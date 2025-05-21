@@ -1,14 +1,14 @@
 .discount-code-container {
   .button-filter {
-    @apply com-flex com-justify-between com-items-center com-mb-4;
+    @apply com-flex com-justify-between com-items-center com-mb-6;
 
     .filter-container {
-      @apply com-flex com-items-center;
+      @apply com-flex com-items-center com-gap-2;
       label {
-        @apply com-mr-2;
+        @apply com-font-medium com-mr-2;
       }
       .select {
-        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max;
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-border com-border-solid com-border-[#E4E9F2] com-w-max;
         select {
           @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
         }
@@ -16,16 +16,55 @@
     }
   }
 
-  table {
-    @apply com-border-collapse com-w-full;
+  .loading-container {
+    @apply com-flex com-justify-center com-py-8;
   }
 
-  td,
+  .table-container {
+    @apply com-overflow-x-auto;
+  }
+
+  table {
+    @apply com-border-collapse com-w-full com-text-sm;
+  }
+
   th {
-    @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-2;
+    @apply com-bg-[#f7f9fc] com-font-medium com-text-left com-p-3 com-border com-border-solid com-border-Bright-Gray;
+  }
+
+  td {
+    @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-3;
+  }
+
+  tr {
+    @apply hover:com-bg-[#f7f9fc]/50 com-transition-colors;
   }
 
   tr:nth-child(even) {
-    @apply com-bg-Bright-Gray;
+    @apply com-bg-[#f7f9fc]/30;
+  }
+
+  .code-cell {
+    @apply com-font-mono com-font-medium;
+  }
+
+  .actions-cell {
+    @apply com-whitespace-nowrap;
+  }
+
+  .action-btn {
+    @apply com-mr-2 com-inline-flex com-items-center com-justify-center;
+  }
+
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-text-center;
+
+    .empty-icon {
+      @apply com-text-gray-400 com-mb-4;
+    }
+
+    p {
+      @apply com-text-gray-500 com-mb-4;
+    }
   }
 }
