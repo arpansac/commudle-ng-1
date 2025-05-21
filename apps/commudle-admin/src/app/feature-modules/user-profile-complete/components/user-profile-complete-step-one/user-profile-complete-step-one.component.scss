@@ -1,0 +1,52 @@
+.container {
+  @apply com-py-6;
+}
+
+.step-number {
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 com-mb-6;
+}
+
+.welcome-text {
+  @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-m-0 com-mb-1;
+}
+
+.sub-text {
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 com-mb-10;
+}
+
+.goals-heading {
+  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
+
+  span {
+    @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
+  }
+}
+
+.goals-container {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-4;
+}
+
+.goals-card {
+  @apply com-border com-border-solid com-rounded-xl com-p-4 com-cursor-pointer com-border-gray-200 com-bg-white com-text-gray-400 com-text-center com-text-xs com-font-semibold com-uppercase;
+}
+
+.active-goal {
+  @apply com-text-blue-500 com-bg-blue-50 com-border-blue-500;
+}
+
+.skills-container,
+.goals-section {
+  @apply com-mb-6;
+}
+
+.skills-heading,
+.experience-heading {
+  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
+}
+.experience-level-section {
+  @apply com-mb-10;
+}
+
+.experience-select {
+  @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium com-text-gray-400;
+}

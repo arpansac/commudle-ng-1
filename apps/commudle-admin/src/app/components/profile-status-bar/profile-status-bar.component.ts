@@ -37,7 +37,7 @@ export class ProfileStatusBarComponent implements OnInit {
 
   showStepper() {
     this.router.navigate(['/user-profile-complete/step-one']);
-    this.stepperService.showStepper();
+    // this.stepperService.showStepper();
     this.gtm.dataLayerPushEvent('click_open_complete_profile_popup', {});
   }
 }

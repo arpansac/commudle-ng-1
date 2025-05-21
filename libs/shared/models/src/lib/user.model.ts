@@ -74,3 +74,12 @@ export interface IUsers {
   page: number;
   total: number;
 }
+
+export enum EExperienceLevel {
+  getting_started = 'Getting Started - Student (<1 year)',
+  arrived = 'I have Arrived (1 Year)',
+  finding_expertise = 'Finding My Expertise (2-3 Years)',
+  seasoned = 'Seasoned (4-5 Years)',
+  senior = 'Senior (6-10 Years)',
+  expert = 'Seen It All (10+ Years)',
+}
