@@ -14,7 +14,7 @@ export class DiscountCodesService {
 
   constructor(private baseApiService: BaseApiService, private http: HttpClient) {}
 
-  indexDiscountCodes(eventId) {
+  indexDiscountCodesByEvent(eventId) {
     const params = new HttpParams().set('event_id', eventId);
     this.http
       .get<IDiscountCode[]>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.INDEX), {

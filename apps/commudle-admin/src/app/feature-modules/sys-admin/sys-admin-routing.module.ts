@@ -16,6 +16,7 @@ import { CommunityBuildsComponent } from './components/community-builds/communit
 import { CommunityControlsComponent } from './components/community-controls/community-controls.component';
 import { LabsComponent } from './components/labs/labs.component';
 import { SysAdminComponent } from './sys-admin.component';
+import { SysAdminDiscountCodeComponent } from './components/sys-admin-discount-code/sys-admin-discount-code.component';
 import { AdminFeaturedComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-featured/admin-featured.component';
 import { FeaturedCommunityBuildsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-featured/featured-community-builds/featured-community-builds.component';
 import { AdminFeaturedLabsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-featured/admin-featured-labs/admin-featured-labs.component';
@@ -144,6 +145,10 @@ const routes = [
       {
         path: 'profanity',
         component: AdminProfanityComponent,
+      },
+      {
+        path: 'discount-codes',
+        component: SysAdminDiscountCodeComponent,
       },
       {
         path: 'campaigns',
