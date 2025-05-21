@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EDbModels } from '@commudle/shared-models';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
 import { ICustomPage } from 'apps/shared-models/custom-page.model';
+import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
@@ -14,7 +15,11 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   page: ICustomPage;
 
-  constructor(private activatedRoute: ActivatedRoute, private customPageService: CustomPageService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private customPageService: CustomPageService,
+    private seoService: SeoService,
+  ) {}
 
   ngOnInit() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.parent.data]).subscribe(([params, data]) => {
@@ -28,7 +33,16 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.customPageService.getPShow(pageSlug, communityId, EDbModels.KOMMUNITY).subscribe((data) => {
         this.page = data;
+        this.setMeta();
       }),
+    );
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      this.page.title,
+      this.seoService.removeHtmlTags(this.page.description),
+      'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
 
