@@ -180,11 +180,11 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   getEnterpriseData(): void {
-    this.fetchPricingData('enterprise', 'pp-testing-pricing-checkout-page');
+    this.fetchPricingData('enterprise', 'pp-commudle-for-enterprises');
   }
 
   getStartupData(): void {
-    this.fetchPricingData('startup', 'pp-testing-pricing-checkout-page');
+    this.fetchPricingData('startup', 'pp-commudle-for-startups');
   }
 
   getDevrelData(): void {
