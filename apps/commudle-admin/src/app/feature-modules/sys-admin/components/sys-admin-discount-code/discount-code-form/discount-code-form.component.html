@@ -9,7 +9,14 @@
     <form [formGroup]="discountCodeForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="code">Code <span class="required">*</span></label>
-        <input nbInput fullWidth id="code" formControlName="code" placeholder="Enter discount code" />
+        <input
+          nbInput
+          fullWidth
+          id="code"
+          formControlName="code"
+          placeholder="Enter discount code"
+          (input)="convertToUppercase($event)"
+        />
         <div
           *ngIf="
             discountCodeForm.get('code').invalid &&

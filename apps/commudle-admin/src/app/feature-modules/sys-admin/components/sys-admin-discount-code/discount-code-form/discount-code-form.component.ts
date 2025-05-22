@@ -113,6 +113,12 @@ export class DiscountCodeFormComponent implements OnInit {
   onSubmit(): void {
     if (this.discountCodeForm.invalid) return;
 
+    // Ensure code is uppercase before submitting
+    const codeControl = this.discountCodeForm.get('code');
+    if (codeControl && codeControl.value) {
+      codeControl.setValue(codeControl.value.toUpperCase());
+    }
+
     this.isSubmitting = true;
 
     if (this.isEdit && this.discountCode) {
@@ -146,6 +152,12 @@ export class DiscountCodeFormComponent implements OnInit {
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  convertToUppercase(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.toUpperCase();
+    this.discountCodeForm.get('code').setValue(value, { emitEvent: false });
   }
 
   closeDialog(): void {
