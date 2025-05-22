@@ -167,6 +167,36 @@
                 </span>
               </div>
 
+              <!-- Subscription Duration Selector -->
+              <div
+                class="payment-details"
+                *ngIf="
+                  purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
+                  productPrice?.min_subscription_duration_months
+                "
+              >
+                <span class="heading">Duration (Months)</span>
+                <div class="value com-flex com-items-center" *ngIf="purchaseOrder.status !== EPurchaseOrderStatus.PAID">
+                  <button
+                    nbButton
+                    ghost
+                    size="small"
+                    status="basic"
+                    (click)="decreaseMonths()"
+                    [disabled]="subscriptionMonths <= productPrice.min_subscription_duration_months"
+                  >
+                    <fa-icon [icon]="icons.faMinus"></fa-icon>
+                  </button>
+                  <span class="com-mx-4 com-font-medium">{{ subscriptionMonths }}</span>
+                  <button nbButton ghost size="small" status="basic" (click)="increaseMonths()">
+                    <fa-icon [icon]="icons.faPlus"></fa-icon>
+                  </button>
+                </div>
+                <span class="value" *ngIf="purchaseOrder.status === EPurchaseOrderStatus.PAID">
+                  {{ productPrice?.min_subscription_duration_months }}
+                </span>
+              </div>
+
               <!-- Total -->
               <div class="payment-details">
                 <span class="heading">Total</span>

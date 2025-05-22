@@ -26,6 +26,9 @@ export interface IPurchaseOrder {
   razorpay_order?: IRazorpayOrder;
   quantity: number;
   contact_info: IContactInfo;
+  notes: {
+    subscription_months: number;
+  };
 }
 
 export enum EPurchaseOrderStatus {

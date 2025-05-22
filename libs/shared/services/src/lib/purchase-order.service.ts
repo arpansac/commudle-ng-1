@@ -39,7 +39,10 @@ export class PurchaseOrderService {
     });
   }
 
-  updatePurchaseOrder(purchaseOrderUuid: string, data: { quantity?: number }): Observable<IPurchaseOrder> {
+  updatePurchaseOrder(
+    purchaseOrderUuid: string,
+    data: { quantity?: number; subscription_months?: number },
+  ): Observable<IPurchaseOrder> {
     return this.http.put<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.UPDATE), {
       purchase_order_uuid: purchaseOrderUuid,
       ...data,
