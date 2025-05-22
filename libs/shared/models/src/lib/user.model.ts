@@ -59,6 +59,9 @@ export interface IUser {
   distance_from_current_user: number;
   company_name: string;
   has_upcoming_talk: boolean;
+  experience_level: string;
+  domain: string;
+  goals: string[];
 }
 
 export interface IUserSearch extends IUser {

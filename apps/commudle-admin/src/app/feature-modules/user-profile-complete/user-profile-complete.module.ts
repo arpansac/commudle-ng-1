@@ -5,9 +5,9 @@ import { UserProfileCompleteStepOneComponent } from 'apps/commudle-admin/src/app
 import { UserProfileCompleteStepTwoComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-two/user-profile-complete-step-two.component';
 import { UserProfileCompleteStepThreeComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-three/user-profile-complete-step-three.component';
 import { UserProfileCompleteRoutingModule } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/user-profile-complete-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
-import { SharedComponentsModule } from '../../../../../shared-components/shared-components.module';
+import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { SharedComponentsModule } from '../../../../../shared-components/shared-
     FormsModule,
     SharedPipesModule,
     SharedComponentsModule,
+    ReactiveFormsModule,
   ],
 })
 export class UserProfileCompleteModule {}

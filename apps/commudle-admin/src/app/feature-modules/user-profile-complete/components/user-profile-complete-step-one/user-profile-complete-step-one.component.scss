@@ -15,9 +15,9 @@
 }
 
 .goals-heading {
-  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
+  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue com-flex com-items-center;
 
-  span {
+  .select-atleast {
     @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
   }
 }
@@ -35,7 +35,8 @@
 }
 
 .skills-container,
-.goals-section {
+.goals-section,
+.experience-level-section {
   @apply com-mb-6;
 }
 
@@ -43,10 +44,19 @@
 .experience-heading {
   @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
 }
-.experience-level-section {
-  @apply com-mb-10;
-}
+
+// .experience-level-section {
+//   @apply com-mb-10;
+// }
 
 .experience-select {
   @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium com-text-gray-400;
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}
+
+.continue-btn {
+  @apply com-mt-4;
 }

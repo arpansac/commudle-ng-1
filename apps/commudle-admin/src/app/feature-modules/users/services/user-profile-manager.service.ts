@@ -23,6 +23,7 @@ export class UserProfileManagerService {
   public user$ = this.user.asObservable();
 
   userProfileForm;
+  userGoals: string[] = [];
 
   uploadedProfilePictureFile: File;
 
@@ -40,12 +41,12 @@ export class UserProfileManagerService {
       name: ['', Validators.required],
       about_me: ['', [Validators.required, Validators.maxLength(1000)]],
       designation: ['', [Validators.required, Validators.maxLength(100)]],
+      experience_level: ['', Validators.required],
       location: [''],
       gender: [''],
       personal_website: [''],
       github: [''],
       linkedin: [''],
-      twitter: [''],
       dribbble: [''],
       behance: [''],
       medium: [''],
@@ -61,7 +62,12 @@ export class UserProfileManagerService {
     this.updateUsername.next(value);
   }
 
+  setUserGoals(goals: string[]) {
+    this.userGoals = goals;
+  }
+
   updateUserDetails(showToast: boolean, currentUser?: IUser) {
+    // console.log(this.userProfileForm.value, 'userProfileForm');
     const formData: any = new FormData();
     //removing extra new lines from the about_me input
     this.userProfileForm.patchValue({
@@ -74,12 +80,19 @@ export class UserProfileManagerService {
       !(userFormData[key] == null) ? formData.append(`user[${key}]`, userFormData[key]) : '',
     );
 
+    console.log(this.userGoals, 'userFormData.goals');
+    if (this.userGoals && this.userGoals.length > 0) {
+      this.userGoals.forEach((goal) => {
+        formData.append(`user[goals][]`, goal);
+      });
+    }
+
     if (this.uploadedProfilePictureFile != null) {
       formData.append('user[profile_image]', this.uploadedProfilePictureFile);
     }
 
     this.usersService.updateUserProfile(formData).subscribe((data) => {
-      if (currentUser.profile_completed === false && data.profile_completed === true) {
+      if (currentUser && currentUser.profile_completed === false && data.profile_completed === true) {
         this.gtm.dataLayerPushEvent('profile-completed', {});
       } else {
         this.gtm.dataLayerPushEvent('profile-updated', {});
