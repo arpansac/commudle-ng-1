@@ -197,7 +197,40 @@
                 </span>
               </div>
 
-              <!-- Total -->
+              <div class="payment-details discount-code" *ngIf="discountCodeApplied">
+                <span class="heading">Discount Code</span>
+                <span class="value">
+                  <span *ngIf="purchaseOrder.discount_code">
+                    {{ purchaseOrder.discount_code }}
+                  </span>
+                  <span *ngIf="!purchaseOrder.discount_code">No discount code applied</span>
+                </span>
+              </div>
+
+              <div class="payment-details" *ngIf="!paymentPaid">
+                <span class="heading">Discount Code</span>
+                <div class="value com-flex com-items-center">
+                  <input
+                    nbInput
+                    fullWidth
+                    [(ngModel)]="discountCode"
+                    placeholder="Enter discount code"
+                    [disabled]="discountCodeApplied"
+                  />
+                  <button
+                    nbButton
+                    size="small"
+                    status="primary"
+                    class="com-ml-2"
+                    (click)="applyDiscountCode()"
+                    [disabled]="!discountCode || discountCodeApplied"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+
+              <!-- total -->
               <div class="payment-details">
                 <span class="heading">Total</span>
                 <span class="value com-font-bold">

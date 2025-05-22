@@ -121,7 +121,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         next: (data: IPurchaseOrder) => {
           this.purchaseOrder = data;
           this.quantity = this.purchaseOrder.quantity || 1;
-          this.subscriptionMonths = this.purchaseOrder.notes.subscription_months;
+          if (this.purchaseOrder.notes?.subscription_months) {
+            this.subscriptionMonths = this.purchaseOrder.notes.subscription_months;
+          }
           this.handleOrderStatus(lastSegment);
 
           // Prefill form if contact info exists
@@ -412,7 +414,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         eventId: null,
         objectType: EDbModels.CAMPAIGN,
       })
-      .subscribe((data) => {});
+      .subscribe({
+        next: (result) => {},
+        error: () => {
+          this.discountCodeApplied = false;
+          this.discountCode = '';
+        },
+      });
   }
 
   removePromoCode() {
