@@ -170,7 +170,8 @@ export class PricingComponent implements OnInit, OnDestroy {
             .subscribe((productPrice: IProductPrice) => {
               this[type].priceDetails[index].currencyType = productPrice.currency;
               this[type].priceDetails[index].price = productPrice.original_price;
-              this[type].priceDetails[index].price_after_discount = productPrice.final_price;
+              this[type].priceDetails[index].price_after_discount =
+                productPrice.final_price - productPrice.original_price ? productPrice.final_price : null;
               this[type].priceDetails[index].discount_percentage = productPrice.discount_percentage;
               this[type].priceDetails[index].uuid = productPrice.uuid;
             });

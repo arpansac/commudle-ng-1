@@ -54,6 +54,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   quantity = 1;
   minQuantity = 1;
+  subscriptionMonths = 1;
 
   // discount codes
   discountCode: string;
@@ -120,6 +121,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         next: (data: IPurchaseOrder) => {
           this.purchaseOrder = data;
           this.quantity = this.purchaseOrder.quantity || 1;
+          this.subscriptionMonths = this.purchaseOrder.notes.subscription_months;
           this.handleOrderStatus(lastSegment);
 
           // Prefill form if contact info exists
@@ -217,12 +219,18 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private createRazorpayOrder(purchaseOrderId: number): void {
-    // Calculate total amount based on quantity
-    const totalAmount = this.purchaseOrder.amount * this.quantity;
+    // Calculate total amount based on quantity and subscription months
+    let totalAmount = this.purchaseOrder.amount * this.quantity;
+
+    // If subscription months is applicable, multiply by it
+    if (this.productPrice?.min_subscription_duration_months && this.subscriptionMonths) {
+      totalAmount = totalAmount * (this.subscriptionMonths / this.productPrice.min_subscription_duration_months);
+    }
 
     const orderDetails = {
       amount: Math.round(totalAmount),
       currency: this.purchaseOrder.currency,
+      subscription_months: this.subscriptionMonths,
     };
 
     this.razorpayService
@@ -333,6 +341,41 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       this.quantity = Math.max(this.minQuantity, this.quantity);
       this.updateTotalPrice();
     }
+  }
+
+  increaseMonths(): void {
+    if (!this.productPrice?.min_subscription_duration_months) return;
+
+    // Increase by the minimum subscription duration
+    this.subscriptionMonths += this.productPrice.min_subscription_duration_months;
+
+    this.purchaseOrderService
+      .updatePurchaseOrder(this.purchaseOrder.uuid, {
+        subscription_months: this.subscriptionMonths,
+      })
+      .subscribe((po: IPurchaseOrder) => {
+        this.purchaseOrder = po;
+        this.updateTotalPrice();
+      });
+  }
+
+  decreaseMonths(): void {
+    if (!this.productPrice?.min_subscription_duration_months) return;
+
+    // Don't go below the minimum subscription duration
+    if (this.subscriptionMonths <= this.productPrice.min_subscription_duration_months) return;
+
+    // Decrease by the minimum subscription duration
+    this.subscriptionMonths -= this.productPrice.min_subscription_duration_months;
+
+    this.purchaseOrderService
+      .updatePurchaseOrder(this.purchaseOrder.uuid, {
+        subscription_months: this.subscriptionMonths,
+      })
+      .subscribe((po: IPurchaseOrder) => {
+        this.purchaseOrder = po;
+        this.updateTotalPrice();
+      });
   }
 
   private updateTotalPrice(): void {
