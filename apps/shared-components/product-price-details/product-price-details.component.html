@@ -1,0 +1,29 @@
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div class="product-price-container" *ngIf="productPrice && !isLoading">
+  <!-- Product and Plan Details -->
+  <div class="product-price-details">
+    <h3 class="product-price-name">{{ productPrice.product_name }}</h3>
+    <p class="product-price-plan-name">{{ productPrice.plan_name }}</p>
+    <p class="product-price-description" *ngIf="productPrice.description">{{ productPrice.description }}</p>
+  </div>
+
+  <!-- Pricing Details -->
+  <div class="pricing-details">
+    <span class="final-price">{{ productPrice.final_price | currency : productPrice.currency }}</span>
+    <span class="community-text">per community</span>
+
+    <div class="discount-container" *ngIf="hasDiscount">
+      <span class="original-price">{{ productPrice.original_price | currency : productPrice.currency }}</span>
+      <span class="discount-price" *ngIf="productPrice.discount_percentage">
+        {{ productPrice.discount_percentage }}% OFF
+      </span>
+      <span class="discount-price" *ngIf="productPrice.discount_amount"> {{ productPrice.discount_amount }} OFF </span>
+    </div>
+  </div>
+
+  <!-- Quantity Requirements -->
+  <div class="min-quantity-container">
+    <p class="min-quantity">Minimum quantity: {{ productPrice.min_quantity }}</p>
+  </div>
+</div>

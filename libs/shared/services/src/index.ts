@@ -28,3 +28,4 @@ export * from './lib/purchase-order.service';
 export * from './lib/tag.service';
 export * from './lib/user-engagement-records.service';
 export * from './lib/emailer-preview.service';
+export * from './lib/product-price.service';

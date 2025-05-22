@@ -7,6 +7,8 @@ import { NbButtonModule, NbCardModule, NbInputModule } from '@commudle/theme';
 import { SharedComponentsModule as NewSharedComponentModule } from '@commudle/shared-components';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -19,6 +21,8 @@ import { FormsModule } from '@angular/forms';
     // Theme modules
     NbCardModule,
     NbButtonModule,
+    NbInputModule,
+    ReactiveFormsModule,
     NbInputModule,
   ],
   declarations: [CheckoutPageComponent],
