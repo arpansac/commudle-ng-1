@@ -69,13 +69,29 @@ export class DiscountCodesService {
     });
   }
 
-  canBeApplied(code, edfegId, amount, eventId, usersCount): Observable<any> {
-    const params = new HttpParams()
-      .set('code', code)
-      .set('event_data_form_entity_group_id', edfegId)
-      .set('amount', amount)
-      .set('event_id', eventId)
-      .set('users_count', usersCount);
+  canBeApplied(options: {
+    code: string;
+    amount: number;
+    usersCount: number;
+    edfegId?: number;
+    eventId?: number;
+    objectType?: EDbModels;
+  }): Observable<any> {
+    let params = new HttpParams()
+      .set('code', options.code)
+      .set('amount', options.amount)
+      .set('users_count', options.usersCount);
+
+    if (options.eventId) {
+      params = params.set('event_id', options.eventId);
+    }
+    if (options.edfegId) {
+      params = params.set('event_data_form_entity_group_id', options.edfegId);
+    }
+    if (options.objectType) {
+      params = params.set('object_type', options.objectType);
+    }
+
     return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.DISCOUNT_CODES.CAN_BE_APPLIED), {
       params,
     });

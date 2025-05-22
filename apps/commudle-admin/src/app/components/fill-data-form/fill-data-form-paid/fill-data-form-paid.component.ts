@@ -467,13 +467,13 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   applyPromo() {
     if (!this.ticketPaidAlready) {
       this.discountCodeService
-        .canBeApplied(
-          this.promoCode.toUpperCase(),
-          this.dataFormEntity.entity_id,
-          this.paymentDetails.price,
-          this.event.id,
-          this.forms.length,
-        )
+        .canBeApplied({
+          code: this.promoCode.toUpperCase(),
+          amount: this.paymentDetails.price,
+          usersCount: this.forms.length,
+          edfegId: this.dataFormEntity.entity_id,
+          eventId: this.event.id,
+        })
         .subscribe((data) => {
           if (data.can_be_applied) {
             this.discountAmount = data.discount_amount / 100;

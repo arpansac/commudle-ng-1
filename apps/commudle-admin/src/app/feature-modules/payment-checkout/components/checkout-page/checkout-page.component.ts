@@ -9,6 +9,7 @@ import {
   EDbModels,
   ICampaign,
   IRazorpayPayment,
+  EDiscountType,
 } from '@commudle/shared-models';
 import {
   CampaignService,
@@ -17,6 +18,7 @@ import {
   RazorpayService,
   SeoService,
   ToastrService,
+  DiscountCodesService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -44,6 +46,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   campaign: ICampaign;
   paymentPaid = false;
+
+  // discount codes
+  discountCode: string;
+  discountCodeApplied = false;
+
   private dialogRef: NbDialogRef<any>;
 
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
@@ -62,6 +69,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private seoService: SeoService,
+    private discountCodesService: DiscountCodesService,
   ) {}
 
   ngOnInit() {
@@ -168,7 +176,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                   this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
                 }
               },
-              (error) => {
+              () => {
                 this.isLoadingPayment = false;
               },
             );
@@ -196,7 +204,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       {
         this.razorpayService
           .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
-          .subscribe((data) => {
+          .subscribe(() => {
             this.isLoadingPayment = false;
             const userConfirmed = confirm('Message from Razorpay:' + response.error.description);
             if (userConfirmed) {
@@ -225,5 +233,27 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   closeLoadingDialogBox() {
     if (this.dialogRef) this.dialogRef.close();
+  }
+
+  applyDiscountCode() {
+    console.log(this.discountCode);
+    this.discountCodesService
+      .canBeApplied({
+        code: this.discountCode.toUpperCase(),
+        amount: this.totalPrice,
+        usersCount: 1,
+        edfegId: null,
+        eventId: null,
+        objectType: EDbModels.CAMPAIGN,
+      })
+      .subscribe((data) => {});
+  }
+
+  removePromoCode() {
+    // this.promoCode = '';
+    // this.promoCodeApplied = false;
+    // this.discountAmount = 0;
+    // this.totalPrice = this.basePrice * this.forms.length;
+    // this.calculateTaxAmount();
   }
 }

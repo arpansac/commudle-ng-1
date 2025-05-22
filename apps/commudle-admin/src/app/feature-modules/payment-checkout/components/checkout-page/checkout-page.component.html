@@ -27,8 +27,18 @@
                 <span class="value">
                   <span>
                     {{ purchaseOrder.currency_symbol }}
-                    {{ purchaseOrder.amount_to_be_paid / 100 }}
+                    {{ purchaseOrder.amount / 100 }}
                   </span>
+                </span>
+              </div>
+
+              <div class="payment-details discount-code" *ngIf="discountCodeApplied">
+                <span class="heading">Discount Code</span>
+                <span class="value">
+                  <span *ngIf="purchaseOrder.discount_code">
+                    {{ purchaseOrder.discount_code }}
+                  </span>
+                  <span *ngIf="!purchaseOrder.discount_code">No discount code applied</span>
                 </span>
               </div>
 
@@ -39,6 +49,23 @@
                   {{ purchaseOrder.currency_symbol }}
                   {{ purchaseOrder.amount_to_be_paid / 100 }}
                 </span>
+              </div>
+
+              <div class="discount-container">
+                <div class="discount-code">
+                  <div class="heading">Discount Code</div>
+                  <span class="value">
+                    <input
+                      nbInput
+                      type="text"
+                      fullWidth
+                      placeholder="Enter discount code"
+                      [(ngModel)]="discountCode"
+                      (keyup.enter)="applyDiscountCode()"
+                    />
+                    <button nbButton status="primary" size="medium" (click)="applyDiscountCode()" outline>Apply</button>
+                  </span>
+                </div>
               </div>
 
               <div class="recipient">
