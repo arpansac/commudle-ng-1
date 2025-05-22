@@ -39,9 +39,18 @@
               </thead>
               <tbody>
                 <tr *ngFor="let code of discountCodes; let i = index">
-                  <td class="code-cell">{{ code.code }}</td>
+                  <td class="code-cell">
+                    <span>{{ code.code }}</span>
+                    <fa-icon (click)="copyToClipboard(code.code)" nbTooltip="Copy code" [icon]="icons.faCopy"></fa-icon>
+                  </td>
                   <td>{{ code.discount_value }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}</td>
-                  <td>{{ code.expires_at ? (code.expires_at | date : 'medium') : 'No Expiry' }}</td>
+                  <td>
+                    <div *ngIf="code.expires_at">
+                      {{ code.expires_at | date : 'medium' }}
+                      <span *ngIf="isExpired(code)" class="expired-tag">Expired</span>
+                    </div>
+                    <div *ngIf="!code.expires_at">No Expiry</div>
+                  </td>
                   <td>{{ code.discount_applied_count }}</td>
                   <td>{{ code.discount_used_count }}</td>
                   <td class="actions-cell">

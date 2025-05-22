@@ -29,7 +29,7 @@
   }
 
   th {
-    @apply com-bg-[#f7f9fc] com-font-medium com-text-left com-p-3 com-border com-border-solid com-border-Bright-Gray;
+    @apply com-bg-gray-100 com-font-medium com-text-left com-p-3 com-border com-border-solid com-border-Bright-Gray;
   }
 
   td {
@@ -40,12 +40,11 @@
     @apply hover:com-bg-[#f7f9fc]/50 com-transition-colors;
   }
 
-  tr:nth-child(even) {
-    @apply com-bg-[#f7f9fc]/30;
-  }
-
   .code-cell {
     @apply com-font-mono com-font-medium;
+    fa-icon {
+      @apply com-ml-4 com-cursor-pointer com-text-primary-500 hover:com-text-primary-700 com-transition-colors;
+    }
   }
 
   .actions-cell {
@@ -66,5 +65,9 @@
     p {
       @apply com-text-gray-500 com-mb-4;
     }
+  }
+
+  .expired-tag {
+    @apply com-ml-2 com-text-xs com-bg-red-500 com-text-white com-px-2 com-py-1 com-rounded-md;
   }
 }
