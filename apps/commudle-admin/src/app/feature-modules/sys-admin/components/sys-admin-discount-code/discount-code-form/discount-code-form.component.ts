@@ -4,6 +4,7 @@ import { EDbModels, EDiscountType, IDiscountCode } from '@commudle/shared-models
 import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef } from '@commudle/theme';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 @Component({
   selector: 'commudle-discount-code-form',
@@ -101,7 +102,10 @@ export class DiscountCodeFormComponent implements OnInit {
     this.discountCodeForm.patchValue({
       code: this.discountCode.code,
       discount_type: this.discountCode.discount_type,
-      discount_value: this.discountCode.discount_value,
+      discount_value:
+        this.discountCode.discount_type === EDiscountType.FIXED_AMOUNT
+          ? this.discountCode.discount_value / 100
+          : this.discountCode.discount_value,
       object_type: this.discountCode.object_type || this.modelType,
       max_limit: this.discountCode.max_limit,
       min_users_count: this.discountCode.min_users_count,
@@ -115,8 +119,19 @@ export class DiscountCodeFormComponent implements OnInit {
 
     // Ensure code is uppercase before submitting
     const codeControl = this.discountCodeForm.get('code');
+    const expireAtControl = this.discountCodeForm.get('expires_at');
+    const discountTypeControl = this.discountCodeForm.get('discount_type');
+    const discountValueControl = this.discountCodeForm.get('discount_value');
     if (codeControl && codeControl.value) {
       codeControl.setValue(codeControl.value.toUpperCase());
+    }
+
+    this.discountCodeForm.patchValue({
+      expires_at: moment(expireAtControl.value).local(),
+    });
+
+    if (discountTypeControl && discountTypeControl.value === EDiscountType.FIXED_AMOUNT) {
+      discountValueControl.setValue(discountValueControl.value * 100);
     }
 
     this.isSubmitting = true;

@@ -43,10 +43,14 @@
                     <span>{{ code.code }}</span>
                     <fa-icon (click)="copyToClipboard(code.code)" nbTooltip="Copy code" [icon]="icons.faCopy"></fa-icon>
                   </td>
-                  <td>{{ code.discount_value }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}</td>
+                  <td>
+                    {{
+                      code.discount_type === EDiscountType.PERCENTAGE ? code.discount_value : code.discount_value / 100
+                    }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}
+                  </td>
                   <td>
                     <div *ngIf="code.expires_at">
-                      {{ code.expires_at | date : 'medium' }}
+                      {{ moment(code.expires_at).format('MMM D, YYYY, h:mm A') }}
                       <span *ngIf="isExpired(code)" class="expired-tag">Expired</span>
                     </div>
                     <div *ngIf="!code.expires_at">No Expiry</div>
