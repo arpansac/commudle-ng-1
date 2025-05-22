@@ -9,4 +9,5 @@ export interface IProductPrice {
   min_quantity: number;
   uuid: string;
   description: string;
+  min_subscription_duration_months: number;
 }
