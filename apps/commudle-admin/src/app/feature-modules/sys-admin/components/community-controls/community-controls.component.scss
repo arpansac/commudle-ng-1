@@ -1,0 +1,23 @@
+.admin-controls-grid {
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 md:com-grid-cols-3 com-gap-8 com-mt-4;
+
+  nb-card {
+    nb-card-header {
+      h3 {
+        @apply com-text-lg com-m-0;
+      }
+    }
+
+    nb-card-body {
+      .control-buttons {
+        @apply com-flex com-flex-col com-gap-4;
+
+        button {
+          nb-icon {
+            @apply com-mr-2;
+          }
+        }
+      }
+    }
+  }
+}
