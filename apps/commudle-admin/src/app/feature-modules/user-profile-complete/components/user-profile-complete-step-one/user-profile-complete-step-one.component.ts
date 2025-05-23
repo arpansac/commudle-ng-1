@@ -9,6 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { EExperienceLevel } from '@commudle/shared-models';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-user-profile-complete-step-one',
@@ -24,6 +25,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   showSkillsError = false;
   showExperienceLevelError = false;
   profileStepOneForm;
+  staticAssets = staticAssets;
 
   private destroy$ = new Subject<void>();
 
