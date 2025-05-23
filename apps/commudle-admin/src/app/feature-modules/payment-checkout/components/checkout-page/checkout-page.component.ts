@@ -128,6 +128,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           if (this.purchaseOrder.notes?.subscription_months) {
             this.subscriptionMonths = this.purchaseOrder.notes.subscription_months;
           }
+          if (this.purchaseOrder.discount_code) {
+            this.discountCode = this.purchaseOrder.discount_code.code;
+            this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
+            this.applyDiscountCode();
+          }
           this.handleOrderStatus(lastSegment);
 
           // Prefill form if contact info exists
@@ -386,6 +391,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             this.discountAmount = result.discount_amount;
             this.discountCodeApplied = true;
             this.discountType = result.discount_type;
+            this.finalDiscountAmount =
+              this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
             this.updatePurchaseOrder();
           } else {
             this.toastrService.warningDialog('Discount code is invalid');
@@ -403,7 +410,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.discountCodeApplied = false;
     this.discountCode = '';
     this.discountAmount = 0;
-    this.updateTotalPrice();
+    this.updatePurchaseOrder();
     if (showRemovePromoCode) {
       this.toastrService.successDialog('Discount code removed successfully');
     }
@@ -411,14 +418,20 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private updateTotalPrice(): void {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
-    this.finalDiscountAmount =
-      this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
-    if (this.finalDiscountAmount > this.totalPrice) {
-      this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
-      this.removePromoCode();
+    if (this.discountCodeApplied) {
+      if (this.finalDiscountAmount > this.totalPrice) {
+        this.calcTotalPrice();
+        this.removePromoCode();
+      } else {
+        this.calcTotalPrice(this.finalDiscountAmount);
+      }
     } else {
-      this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100 - this.finalDiscountAmount;
+      this.calcTotalPrice();
     }
+  }
+
+  private calcTotalPrice(discountAmount = 0) {
+    this.totalPrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths - discountAmount;
   }
 
   private updatePurchaseOrder(): void {
@@ -426,6 +439,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       .updatePurchaseOrder(this.purchaseOrder.uuid, {
         quantity: this.quantity,
         subscription_months: this.subscriptionMonths,
+        discount_code: this.discountCode,
       })
       .subscribe((po: IPurchaseOrder) => {
         this.purchaseOrder = po;
