@@ -86,3 +86,12 @@ export enum EExperienceLevel {
   senior = 'Senior (6-10 Years)',
   expert = 'Seen It All (10+ Years)',
 }
+
+export enum EDomain {
+  web_developemnt = 'Web Developemnt',
+  devops = 'Devops',
+  app_developemnt = 'App developemnt',
+  javascript = 'Javascript',
+  angular = 'Angular',
+  react = 'React',
+}

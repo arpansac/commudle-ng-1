@@ -41,15 +41,17 @@
 }
 
 .skills-heading,
-.experience-heading {
+.experience-heading,
+.domain-heading {
   @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
 }
 
-// .experience-level-section {
-//   @apply com-mb-10;
-// }
+.domain-section {
+  @apply com-mb-10;
+}
 
-.experience-select {
+.experience-select,
+.domain-select {
   @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium com-text-gray-400;
 }
 

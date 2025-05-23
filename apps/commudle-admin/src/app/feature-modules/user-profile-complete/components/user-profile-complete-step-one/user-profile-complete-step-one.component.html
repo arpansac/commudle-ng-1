@@ -78,6 +78,17 @@
             ></commudle-alert>
           </div>
 
+          <div class="domain-section">
+            <h3 class="domain-heading">Select Your domain<span class="mandatory-field">*</span></h3>
+            <select formControlName="domain" class="domain-select">
+              <option value="" selected>Select your domain</option>
+              <option *ngFor="let domain of EDomain | keyvalue" [value]="domain.key">
+                {{ domain.value }}
+              </option>
+            </select>
+            <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+          </div>
+
           <div class="continue-btn">
             <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">Continue</button>
           </div>

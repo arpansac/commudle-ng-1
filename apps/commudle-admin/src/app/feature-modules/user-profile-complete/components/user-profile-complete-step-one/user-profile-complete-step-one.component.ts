@@ -7,7 +7,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { EExperienceLevel } from '@commudle/shared-models';
+import { EDomain, EExperienceLevel } from '@commudle/shared-models';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
@@ -21,9 +21,11 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   goals = [];
   tags = [];
   EExperienceLevel = EExperienceLevel;
+  EDomain = EDomain;
   showGoalsError = false;
   showSkillsError = false;
   showExperienceLevelError = false;
+  showDomainError = false;
   profileStepOneForm;
   staticAssets = staticAssets;
 
