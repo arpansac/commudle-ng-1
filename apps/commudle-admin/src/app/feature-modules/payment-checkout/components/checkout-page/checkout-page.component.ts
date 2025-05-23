@@ -19,6 +19,7 @@ import {
   IRazorpayPayment,
   IUser,
   ICampaign,
+  EDiscountType,
 } from '@commudle/shared-models';
 import {
   AuthService,
@@ -59,6 +60,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   // discount codes
   discountCode: string;
   discountCodeApplied = false;
+  discountAmount = 0;
+  discountType: EDiscountType;
+  finalDiscountAmount = 0;
 
   readonly icons = {
     faTriangleExclamation,
@@ -221,16 +225,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private createRazorpayOrder(purchaseOrderId: number): void {
-    // Calculate total amount based on quantity and subscription months
-    let totalAmount = this.purchaseOrder.amount * this.quantity;
-
-    // If subscription months is applicable, multiply by it
-    if (this.productPrice?.min_subscription_duration_months && this.subscriptionMonths) {
-      totalAmount = totalAmount * (this.subscriptionMonths / this.productPrice.min_subscription_duration_months);
-    }
-
     const orderDetails = {
-      amount: Math.round(totalAmount),
+      amount: Math.round(this.totalPrice * 100),
       currency: this.purchaseOrder.currency,
       subscription_months: this.subscriptionMonths,
     };
@@ -312,27 +308,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   increaseQuantity(): void {
     this.quantity++;
-    this.purchaseOrderService
-      .updatePurchaseOrder(this.purchaseOrder.uuid, {
-        quantity: this.quantity,
-      })
-      .subscribe((po: IPurchaseOrder) => {
-        this.purchaseOrder = po;
-        this.updateTotalPrice();
-      });
+    this.updatePurchaseOrder();
   }
 
   decreaseQuantity(): void {
     if (this.quantity > this.minQuantity) {
       this.quantity--;
-      this.purchaseOrderService
-        .updatePurchaseOrder(this.purchaseOrder.uuid, {
-          quantity: this.quantity,
-        })
-        .subscribe((po: IPurchaseOrder) => {
-          this.purchaseOrder = po;
-          this.updateTotalPrice();
-        });
+      this.updatePurchaseOrder();
     }
   }
 
@@ -351,14 +333,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     // Increase by the minimum subscription duration
     this.subscriptionMonths += this.productPrice.min_subscription_duration_months;
 
-    this.purchaseOrderService
-      .updatePurchaseOrder(this.purchaseOrder.uuid, {
-        subscription_months: this.subscriptionMonths,
-      })
-      .subscribe((po: IPurchaseOrder) => {
-        this.purchaseOrder = po;
-        this.updateTotalPrice();
-      });
+    this.updatePurchaseOrder();
   }
 
   decreaseMonths(): void {
@@ -369,21 +344,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
     // Decrease by the minimum subscription duration
     this.subscriptionMonths -= this.productPrice.min_subscription_duration_months;
-
-    this.purchaseOrderService
-      .updatePurchaseOrder(this.purchaseOrder.uuid, {
-        subscription_months: this.subscriptionMonths,
-      })
-      .subscribe((po: IPurchaseOrder) => {
-        this.purchaseOrder = po;
-        this.updateTotalPrice();
-      });
-  }
-
-  private updateTotalPrice(): void {
-    if (!this.purchaseOrder?.amount_to_be_paid) return;
-
-    this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
+    this.updatePurchaseOrder();
   }
 
   private openLoadingDialog(): void {
@@ -403,8 +364,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDiscountCodeInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.toUpperCase();
+    this.discountCode = value;
+  }
+
   applyDiscountCode() {
-    console.log(this.discountCode);
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
@@ -415,19 +381,55 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         objectType: EDbModels.CAMPAIGN,
       })
       .subscribe({
-        next: (result) => {},
+        next: (result) => {
+          if (result?.can_be_applied) {
+            this.discountAmount = result.discount_amount;
+            this.discountCodeApplied = true;
+            this.discountType = result.discount_type;
+            this.updatePurchaseOrder();
+          } else {
+            this.toastrService.warningDialog('Discount code is invalid');
+            this.removePromoCode();
+          }
+        },
         error: () => {
-          this.discountCodeApplied = false;
-          this.discountCode = '';
+          this.toastrService.warningDialog('Discount code is invalid');
+          this.removePromoCode();
         },
       });
   }
 
-  removePromoCode() {
-    // this.promoCode = '';
-    // this.promoCodeApplied = false;
-    // this.discountAmount = 0;
-    // this.totalPrice = this.basePrice * this.forms.length;
-    // this.calculateTaxAmount();
+  removePromoCode(showRemovePromoCode = false) {
+    this.discountCodeApplied = false;
+    this.discountCode = '';
+    this.discountAmount = 0;
+    this.updateTotalPrice();
+    if (showRemovePromoCode) {
+      this.toastrService.successDialog('Discount code removed successfully');
+    }
+  }
+
+  private updateTotalPrice(): void {
+    if (!this.purchaseOrder?.amount_to_be_paid) return;
+    this.finalDiscountAmount =
+      this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
+    if (this.finalDiscountAmount > this.totalPrice) {
+      this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
+      this.removePromoCode();
+    } else {
+      this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100 - this.finalDiscountAmount;
+    }
+  }
+
+  private updatePurchaseOrder(): void {
+    this.purchaseOrderService
+      .updatePurchaseOrder(this.purchaseOrder.uuid, {
+        quantity: this.quantity,
+        subscription_months: this.subscriptionMonths,
+      })
+      .subscribe((po: IPurchaseOrder) => {
+        this.purchaseOrder = po;
+        this.updateTotalPrice();
+      });
   }
 }

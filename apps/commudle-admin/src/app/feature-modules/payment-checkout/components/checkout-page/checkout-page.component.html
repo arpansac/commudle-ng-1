@@ -200,10 +200,9 @@
               <div class="payment-details discount-code" *ngIf="discountCodeApplied">
                 <span class="heading">Discount Code</span>
                 <span class="value">
-                  <span *ngIf="purchaseOrder.discount_code">
-                    {{ purchaseOrder.discount_code }}
+                  <span *ngIf="purchaseOrder.discount_code || finalDiscountAmount">
+                    {{ finalDiscountAmount | currency : purchaseOrder.currency }}
                   </span>
-                  <span *ngIf="!purchaseOrder.discount_code">No discount code applied</span>
                 </span>
               </div>
 
@@ -214,10 +213,12 @@
                     nbInput
                     fullWidth
                     [(ngModel)]="discountCode"
+                    (input)="onDiscountCodeInput($event)"
                     placeholder="Enter discount code"
                     [disabled]="discountCodeApplied"
                   />
                   <button
+                    *ngIf="!discountCodeApplied"
                     nbButton
                     size="small"
                     status="primary"
@@ -226,6 +227,17 @@
                     [disabled]="!discountCode || discountCodeApplied"
                   >
                     Apply
+                  </button>
+                  <button
+                    *ngIf="discountCodeApplied"
+                    nbButton
+                    size="small"
+                    status="danger"
+                    outline
+                    class="com-ml-2"
+                    (click)="removePromoCode(true)"
+                  >
+                    Remove
                   </button>
                 </div>
               </div>
