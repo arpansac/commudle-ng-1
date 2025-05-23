@@ -148,7 +148,10 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
     const goals = this.profileStepOneForm.get('goals').value || [];
     const experienceLevel = this.profileStepOneForm.get('experience_level').value;
 
-    // Validate form
+    this.showGoalsError = false;
+    this.showSkillsError = false;
+    this.showExperienceLevelError = false;
+
     if (goals.length < 4) {
       this.showGoalsError = true;
       return;

@@ -8,7 +8,8 @@
         <div class="left-column"></div>
         <div [formGroup]="profileStepOneForm">
           <p class="step-number">Step 1 of 3</p>
-          <h2 class="welcome-text">Welcome, {{ currentUser?.name }}</h2>
+          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser?.name }}</h2>
+          <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
           <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
 
           <div class="goals-section">
@@ -26,6 +27,11 @@
               >
                 {{ goal | capitalizeAndRemoveUnderscore }}
               </div>
+              <commudle-alert
+                *ngIf="showGoalsError"
+                [error]="true"
+                [errorMessage]="'Select atleast 4 goals'"
+              ></commudle-alert>
             </div>
           </div>
 
@@ -43,6 +49,7 @@
               [showAutoSuggestDropDown]="true"
               [showSuggestedTags]="true"
             ></app-tag>
+            <commudle-alert *ngIf="showSkillsError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
 
             <!-- <h4 class="com-text-sm com-font-medium com-mb-2">Suggested Skills</h4> -->
             <!-- <div class="com-flex com-flex-wrap com-gap-2">
@@ -64,6 +71,11 @@
                 {{ experienceLevel.value }}
               </option>
             </select>
+            <commudle-alert
+              *ngIf="showExperienceLevelError"
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
           </div>
 
           <div class="continue-btn">
