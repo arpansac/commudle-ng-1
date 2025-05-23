@@ -60,7 +60,7 @@ export interface IUser {
   company_name: string;
   has_upcoming_talk: boolean;
   experience_level: string;
-  domain: string;
+  user_domain: string;
   goals: string[];
 }
 

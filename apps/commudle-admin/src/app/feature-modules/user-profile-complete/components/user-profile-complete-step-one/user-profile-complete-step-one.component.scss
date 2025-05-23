@@ -27,7 +27,7 @@
 }
 
 .goals-card {
-  @apply com-border com-border-solid com-rounded-xl com-p-4 com-cursor-pointer com-border-gray-200 com-bg-white com-text-gray-400 com-text-center com-text-xs com-font-semibold com-uppercase;
+  @apply com-border com-border-solid com-rounded-xl com-p-5 com-cursor-pointer com-border-gray-200 com-bg-white com-text-gray-400 com-text-center com-text-xs com-font-semibold com-uppercase;
 }
 
 .active-goal {
@@ -52,7 +52,7 @@
 
 .experience-select,
 .domain-select {
-  @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium com-text-gray-400;
+  @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium;
 }
 
 .mandatory-field {

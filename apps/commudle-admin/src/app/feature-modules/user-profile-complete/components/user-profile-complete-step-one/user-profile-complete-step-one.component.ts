@@ -41,7 +41,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   ) {
     this.profileStepOneForm = this.fb.group({
       experience_level: ['', Validators.required],
-      domain: ['', Validators.required],
+      user_domain: ['', Validators.required],
       goals: [[]],
     });
   }
@@ -53,7 +53,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
 
         this.profileStepOneForm.patchValue({
           experience_level: data.experience_level || '',
-          domain: data.domain || '',
+          user_domain: data.user_domain || '',
           goals: data.goals || [],
         });
 
@@ -103,11 +103,11 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   submitStepOne() {
     const goals = this.profileStepOneForm.get('goals').value || [];
     const experienceLevel = this.profileStepOneForm.get('experience_level').value;
-    const domain = this.profileStepOneForm.get('domain').value;
+    const domain = this.profileStepOneForm.get('user_domain').value;
 
     this.userProfileManagerService.userProfileForm.patchValue({
       experience_level: experienceLevel,
-      domain: domain,
+      user_domain: domain,
     });
     this.userProfileManagerService.setUserGoals(goals);
 
@@ -149,6 +149,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   goToNextStep() {
     const goals = this.profileStepOneForm.get('goals').value || [];
     const experienceLevel = this.profileStepOneForm.get('experience_level').value;
+    const domain = this.profileStepOneForm.get('user_domain').value;
 
     this.showGoalsError = false;
     this.showSkillsError = false;
@@ -166,6 +167,11 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
 
     if (!experienceLevel) {
       this.showExperienceLevelError = true;
+      return;
+    }
+
+    if (!domain) {
+      this.showDomainError = true;
       return;
     }
 

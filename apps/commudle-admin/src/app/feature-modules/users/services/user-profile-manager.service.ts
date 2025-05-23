@@ -42,6 +42,7 @@ export class UserProfileManagerService {
       about_me: ['', [Validators.required, Validators.maxLength(1000)]],
       designation: ['', [Validators.required, Validators.maxLength(100)]],
       experience_level: ['', Validators.required],
+      user_domain: ['', Validators.required],
       location: [''],
       gender: [''],
       personal_website: [''],
@@ -67,9 +68,7 @@ export class UserProfileManagerService {
   }
 
   updateUserDetails(showToast: boolean, currentUser?: IUser) {
-    // console.log(this.userProfileForm.value, 'userProfileForm');
     const formData: any = new FormData();
-    //removing extra new lines from the about_me input
     this.userProfileForm.patchValue({
       about_me: this.userProfileForm.get('about_me').value
         ? this.userProfileForm.get('about_me').value.replace(/[\n]+/g, '\n').trim()
@@ -80,7 +79,6 @@ export class UserProfileManagerService {
       !(userFormData[key] == null) ? formData.append(`user[${key}]`, userFormData[key]) : '',
     );
 
-    console.log(this.userGoals, 'userFormData.goals');
     if (this.userGoals && this.userGoals.length > 0) {
       this.userGoals.forEach((goal) => {
         formData.append(`user[goals][]`, goal);

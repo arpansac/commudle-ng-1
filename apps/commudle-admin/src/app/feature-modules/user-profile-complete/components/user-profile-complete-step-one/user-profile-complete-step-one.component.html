@@ -4,11 +4,11 @@
 >
   <div class="base-layout">
     <div class="container">
-      <div class="three-column-layout medium">
+      <div class="three-column-layout thin">
         <div class="left-column"></div>
         <div [formGroup]="profileStepOneForm">
           <p class="step-number">Step 1 of 3</p>
-          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser?.name }}</h2>
+          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser.name }}</h2>
           <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
           <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
 
@@ -66,7 +66,7 @@
           <div class="experience-level-section">
             <h3 class="experience-heading">Where are you in your journey?<span class="mandatory-field">*</span></h3>
             <select formControlName="experience_level" class="experience-select">
-              <option value="" selected>Select your experience</option>
+              <option value="" selected disabled>Select your experience</option>
               <option *ngFor="let experienceLevel of EExperienceLevel | keyvalue" [value]="experienceLevel.key">
                 {{ experienceLevel.value }}
               </option>
@@ -80,8 +80,8 @@
 
           <div class="domain-section">
             <h3 class="domain-heading">Select Your domain<span class="mandatory-field">*</span></h3>
-            <select formControlName="domain" class="domain-select">
-              <option value="" selected>Select your domain</option>
+            <select formControlName="user_domain" class="domain-select">
+              <option value="" selected disabled>Select your domain</option>
               <option *ngFor="let domain of EDomain | keyvalue" [value]="domain.key">
                 {{ domain.value }}
               </option>
