@@ -61,6 +61,7 @@ import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feat
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SysAdminDiscountCodeComponent } from './components/sys-admin-discount-code/sys-admin-discount-code.component';
 import { DiscountCodeFormComponent } from './components/sys-admin-discount-code/discount-code-form/discount-code-form.component';
+import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-orders.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { DiscountCodeFormComponent } from './components/sys-admin-discount-code/
     SysAdminCampaignStatsComponent,
     SysAdminDiscountCodeComponent,
     DiscountCodeFormComponent,
+    PurchaseOrdersComponent,
   ],
   imports: [
     CommonModule,
