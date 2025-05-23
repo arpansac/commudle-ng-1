@@ -1,13 +1,37 @@
-<nb-card>
-  <nb-card-header>
-    <h2>Complete Your Profile - Step 2</h2>
-  </nb-card-header>
-  <nb-card-body>
-    <p>This is step two of completing your profile.</p>
-    <!-- Add your form fields here -->
-  </nb-card-body>
-  <nb-card-footer>
-    <button nbButton status="basic" (click)="goToPreviousStep()">Previous</button>
-    <button nbButton status="primary" (click)="goToNextStep()">Next</button>
-  </nb-card-footer>
-</nb-card>
+<div
+  class="background-image"
+  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+>
+  <div class="base-layout">
+    <div class="container">
+      <div class="three-column-layout thin">
+        <div class="left-column"></div>
+        <div [formGroup]="profileStepOneForm">
+          <p class="step-number">Step 1 of 3</p>
+          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser.name }}</h2>
+          <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
+          <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
+          <app-username (usernameValidation)="checkUsername($event)" [showSaveButton]="false"></app-username>
+          <div class="content">
+            <app-basic-info
+              (basicInfoFormValidity)="checkBasicDetailsValidity($event)"
+              (userData)="gtmServiceData($event)"
+            ></app-basic-info>
+          </div>
+          <div class="navigation-buttons">
+            <button outline nbButton nbStepperPrevious status="primary" class="com-mr-4">Prev</button>
+            <button
+              [disabled]="!validBasicDetailsStatus"
+              nbButton
+              nbStepperNext
+              status="primary"
+              (click)="submitStepTwo()"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

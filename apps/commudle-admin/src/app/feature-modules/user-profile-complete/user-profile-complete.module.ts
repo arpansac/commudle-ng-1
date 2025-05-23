@@ -8,6 +8,7 @@ import { UserProfileCompleteRoutingModule } from 'apps/commudle-admin/src/app/fe
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { UsersModule } from 'apps/commudle-admin/src/app/feature-modules/users/users.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     SharedPipesModule,
     SharedComponentsModule,
     ReactiveFormsModule,
+    UsersModule,
   ],
 })
 export class UserProfileCompleteModule {}
