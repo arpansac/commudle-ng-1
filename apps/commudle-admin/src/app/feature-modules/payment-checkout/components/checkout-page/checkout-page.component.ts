@@ -29,7 +29,8 @@ import {
   ToastrService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, finalize, takeUntil } from 'rxjs';
+
 declare const Razorpay: any;
 
 @Component({
@@ -38,30 +39,29 @@ declare const Razorpay: any;
   styleUrls: ['./checkout-page.component.scss'],
 })
 export class CheckoutPageComponent implements OnInit, OnDestroy {
-  @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog: TemplateRef<any>;
-  @ViewChild('loadingDialog', { static: true }) loadingDialog: TemplateRef<any>;
+  @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog!: TemplateRef<unknown>;
+  @ViewChild('loadingDialog', { static: true }) loadingDialog!: TemplateRef<unknown>;
 
-  purchaseOrder: IPurchaseOrder;
-  currentUser: IUser;
+  purchaseOrder!: IPurchaseOrder;
+  currentUser!: IUser;
   contactInfoForm: FormGroup;
-  productPrice: IProductPrice;
+  productPrice?: IProductPrice;
 
   isLoadingPayment = false;
 
-  totalPrice: number;
-  totalTaxAmount: number;
-  campaign: ICampaign;
+  totalPrice = 0;
+  totalTaxAmount = 0;
+  campaign?: ICampaign;
   paymentPaid = false;
 
   quantity = 1;
   minQuantity = 1;
   subscriptionMonths = 1;
 
-  // discount codes
-  discountCode: string;
+  discountCode = '';
   discountCodeApplied = false;
   discountAmount = 0;
-  discountType: EDiscountType;
+  discountType?: EDiscountType;
   finalDiscountAmount = 0;
 
   readonly icons = {
@@ -71,15 +71,15 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     faPlus,
     faMinus,
   };
+
   readonly EPurchaseOrderStatus = EPurchaseOrderStatus;
   readonly EDbModels = EDbModels;
 
   private destroy$ = new Subject<void>();
-  private dialogRef: NbDialogRef<any>;
+  private dialogRef?: NbDialogRef<unknown>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private authWatchService: AuthService,
@@ -89,11 +89,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private discountCodesService: DiscountCodesService,
   ) {
-    this.initCheckoutForm();
+    this.contactInfoForm = this.initCheckoutForm();
   }
 
-  private initCheckoutForm(): void {
-    this.contactInfoForm = this.fb.group({
+  private initCheckoutForm(): FormGroup {
+    return this.fb.group({
       companyName: ['', Validators.required],
       gst: [''],
       companyAddress: ['', Validators.required],
@@ -104,9 +104,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.openLoadingDialog();
     this.fetchCurrentUser();
-    this.activatedRoute.params
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => this.fetchPurchaseOrder(params['purchase_order_uuid']));
+    this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const purchaseOrderUuid = params['purchase_order_uuid'];
+      if (purchaseOrderUuid) {
+        this.fetchPurchaseOrder(purchaseOrderUuid);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -116,34 +119,41 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private fetchPurchaseOrder(purchaseOrderUuid: string): void {
-    const lastSegment = this.route.snapshot.url[this.route.snapshot.url.length - 1]?.path || '';
+    const lastSegment = this.activatedRoute.snapshot.url[this.activatedRoute.snapshot.url.length - 1]?.path || '';
 
     this.purchaseOrderService
       .showPurchaseOrder(purchaseOrderUuid)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.closeLoadingDialog()),
+      )
       .subscribe({
         next: (data: IPurchaseOrder) => {
           this.purchaseOrder = data;
           this.quantity = this.purchaseOrder.quantity || 1;
+
           if (this.purchaseOrder.notes?.subscription_months) {
             this.subscriptionMonths = this.purchaseOrder.notes.subscription_months;
           }
-          if (this.purchaseOrder.discount_code) {
+
+          if (this.purchaseOrder.discount_code?.code) {
             this.discountCode = this.purchaseOrder.discount_code.code;
             this.totalPrice = this.purchaseOrder.amount_to_be_paid / 100;
             this.applyDiscountCode();
           }
+
           this.handleOrderStatus(lastSegment);
 
-          // Prefill form if contact info exists
           if (this.purchaseOrder.contact_info) {
             this.prefillContactForm(this.purchaseOrder.contact_info);
           } else {
             this.updateTotalPrice();
           }
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to fetch purchase order');
           this.closeLoadingDialog();
         },
-        error: () => this.closeLoadingDialog(),
       });
   }
 
@@ -174,7 +184,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   Pay(): void {
-    if (!this.purchaseOrder?.id) return;
+    if (!this.purchaseOrder?.id) {
+      this.toastrService.errorDialog('Invalid purchase order');
+      return;
+    }
 
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
       if (this.contactInfoForm.invalid) {
@@ -190,6 +203,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
 
     this.isLoadingPayment = true;
+
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
       if (this.purchaseOrder.contact_info) {
         this.createRazorpayOrder(this.purchaseOrder.id);
@@ -201,32 +215,44 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  createOrUpdateContactInfo() {
+  private createOrUpdateContactInfo(): void {
+    if (!this.purchaseOrder?.uuid) return;
+
     const contactInfo = {
       tax_info: {
-        gst: this.contactInfoForm.get('gst').value,
+        gst: this.contactInfoForm.get('gst')?.value || '',
       },
       address: {
-        address: this.contactInfoForm.get('companyAddress').value,
-        company_name: this.contactInfoForm.get('companyName').value,
-        pin_code: this.contactInfoForm.get('pinCode').value,
+        address: this.contactInfoForm.get('companyAddress')?.value || '',
+        company_name: this.contactInfoForm.get('companyName')?.value || '',
+        pin_code: this.contactInfoForm.get('pinCode')?.value || '',
       },
     };
 
-    this.purchaseOrderService.createContactInfo(this.purchaseOrder.uuid, contactInfo).subscribe(
-      (data) => {
-        if (data) {
-          this.createRazorpayOrder(this.purchaseOrder.id);
-        } else {
+    this.purchaseOrderService
+      .createContactInfo(this.purchaseOrder.uuid, contactInfo)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          if (!this.purchaseOrder.id) {
+            this.isLoadingPayment = false;
+          }
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          if (data && this.purchaseOrder.id) {
+            this.createRazorpayOrder(this.purchaseOrder.id);
+          } else {
+            this.isLoadingPayment = false;
+            this.toastrService.errorDialog('Failed to save contact information');
+          }
+        },
+        error: (error) => {
           this.isLoadingPayment = false;
-          this.toastrService.errorDialog('Failed to save contact information');
-        }
-      },
-      (error) => {
-        this.isLoadingPayment = false;
-        this.toastrService.errorDialog('Failed to save contact information', error);
-      },
-    );
+          this.toastrService.errorDialog('Failed to save contact information', error);
+        },
+      });
   }
 
   private createRazorpayOrder(purchaseOrderId: number): void {
@@ -238,15 +264,28 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
     this.razorpayService
       .createOrFindOrder(orderDetails, { po_id: purchaseOrderId })
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          if (!this.isLoadingPayment) {
+            this.isLoadingPayment = false;
+          }
+        }),
+      )
       .subscribe({
         next: (data: IRazorpayOrder) => this.razorPaySubmit(data),
-        error: () => (this.isLoadingPayment = false),
+        error: () => {
+          this.isLoadingPayment = false;
+          this.toastrService.errorDialog('Failed to create payment order');
+        },
       });
   }
 
   private razorPaySubmit(order: IRazorpayOrder): void {
-    if (!order?.rzp_order_id) return;
+    if (!order?.rzp_order_id) {
+      this.toastrService.errorDialog('Invalid payment order');
+      return;
+    }
 
     const options = {
       key: environment.razorpay_key,
@@ -255,19 +294,23 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         this.openLoadingDialog();
         this.razorpayService
           .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
-          .pipe(takeUntil(this.destroy$))
+          .pipe(
+            takeUntil(this.destroy$),
+            finalize(() => {
+              this.isLoadingPayment = false;
+              this.closeLoadingDialog();
+            }),
+          )
           .subscribe({
             next: (data: IRazorpayPayment) => {
               if (data) {
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.paymentPaid = true;
-                this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+                void this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
               }
             },
-            error: () => {},
-            complete: () => {
-              this.isLoadingPayment = false;
-              this.closeLoadingDialog();
+            error: () => {
+              this.toastrService.errorDialog('Payment processing failed');
             },
           });
       },
@@ -290,17 +333,21 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
     const rzp = new Razorpay(options);
 
-    rzp.on('payment.failed', (response: any) => {
+    rzp.on('payment.failed', (response: { error: { description: string } }) => {
       this.razorpayService
         .createOrUpdatePayment(response.error, true, order?.razorpay_payment?.rzp_payment_id)
-        .pipe(takeUntil(this.destroy$))
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => (this.isLoadingPayment = false)),
+        )
         .subscribe({
           next: () => {
-            this.isLoadingPayment = false;
             this.toastrService.errorDialog(`Payment failed: ${response.error.description}`);
             this.reload();
           },
-          error: () => (this.isLoadingPayment = false),
+          error: () => {
+            this.toastrService.errorDialog('Failed to process payment failure');
+          },
         });
     });
 
@@ -324,36 +371,32 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   onProductPriceLoaded(productPrice: IProductPrice): void {
-    if (productPrice) {
-      this.productPrice = productPrice;
-      this.minQuantity = productPrice.min_quantity || 1;
-      this.quantity = Math.max(this.minQuantity, this.quantity);
-      this.updateTotalPrice();
-    }
+    if (!productPrice) return;
+
+    this.productPrice = productPrice;
+    this.minQuantity = productPrice.min_quantity || 1;
+    this.quantity = Math.max(this.minQuantity, this.quantity);
+    this.updateTotalPrice();
   }
 
   increaseMonths(): void {
     if (!this.productPrice?.min_subscription_duration_months) return;
 
-    // Increase by the minimum subscription duration
     this.subscriptionMonths += this.productPrice.min_subscription_duration_months;
-
     this.updatePurchaseOrder();
   }
 
   decreaseMonths(): void {
     if (!this.productPrice?.min_subscription_duration_months) return;
 
-    // Don't go below the minimum subscription duration
     if (this.subscriptionMonths <= this.productPrice.min_subscription_duration_months) return;
 
-    // Decrease by the minimum subscription duration
     this.subscriptionMonths -= this.productPrice.min_subscription_duration_months;
     this.updatePurchaseOrder();
   }
 
   private openLoadingDialog(): void {
-    this.closeLoadingDialog(); // Close any existing dialog first
+    this.closeLoadingDialog();
 
     this.dialogRef = this.dialogService.open(this.loadingDialog, {
       closeOnBackdropClick: false,
@@ -365,17 +408,21 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private closeLoadingDialog(): void {
     if (this.dialogRef) {
       this.dialogRef.close();
-      this.dialogRef = null;
+      this.dialogRef = undefined;
     }
   }
 
   onDiscountCodeInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const value = input.value.toUpperCase();
-    this.discountCode = value;
+    this.discountCode = input.value.toUpperCase();
   }
 
-  applyDiscountCode() {
+  applyDiscountCode(): void {
+    if (!this.discountCode || !this.totalPrice) {
+      this.toastrService.warningDialog('Please enter a valid discount code');
+      return;
+    }
+
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
@@ -385,6 +432,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         eventId: null,
         objectType: EDbModels.CAMPAIGN,
       })
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result) => {
           if (result?.can_be_applied) {
@@ -400,17 +448,20 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           }
         },
         error: () => {
-          this.toastrService.warningDialog('Discount code is invalid');
+          this.toastrService.warningDialog('Failed to apply discount code');
           this.removePromoCode();
         },
       });
   }
 
-  removePromoCode(showRemovePromoCode = false) {
+  removePromoCode(showRemovePromoCode = false): void {
     this.discountCodeApplied = false;
     this.discountCode = '';
     this.discountAmount = 0;
+    this.finalDiscountAmount = 0;
+    this.discountType = undefined;
     this.updatePurchaseOrder();
+
     if (showRemovePromoCode) {
       this.toastrService.successDialog('Discount code removed successfully');
     }
@@ -418,32 +469,40 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private updateTotalPrice(): void {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
-    if (this.discountCodeApplied) {
-      if (this.finalDiscountAmount > this.totalPrice) {
-        this.calcTotalPrice();
-        this.removePromoCode();
-      } else {
-        this.calcTotalPrice(this.finalDiscountAmount);
-      }
-    } else {
+
+    if (this.discountCodeApplied && this.finalDiscountAmount > this.totalPrice) {
       this.calcTotalPrice();
+      this.removePromoCode();
+    } else {
+      this.calcTotalPrice(this.discountCodeApplied ? this.finalDiscountAmount : 0);
     }
   }
 
-  private calcTotalPrice(discountAmount = 0) {
-    this.totalPrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths - discountAmount;
+  private calcTotalPrice(discountAmount = 0): void {
+    if (!this.purchaseOrder?.amount) return;
+
+    const basePrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths;
+    this.totalPrice = Math.max(0, basePrice - discountAmount);
   }
 
   private updatePurchaseOrder(): void {
+    if (!this.purchaseOrder?.uuid) return;
+
     this.purchaseOrderService
       .updatePurchaseOrder(this.purchaseOrder.uuid, {
         quantity: this.quantity,
         subscription_months: this.subscriptionMonths,
         discount_code: this.discountCode,
       })
-      .subscribe((po: IPurchaseOrder) => {
-        this.purchaseOrder = po;
-        this.updateTotalPrice();
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (po: IPurchaseOrder) => {
+          this.purchaseOrder = po;
+          this.updateTotalPrice();
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to update purchase order');
+        },
       });
   }
 }
