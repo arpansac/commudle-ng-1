@@ -1,0 +1,19 @@
+.container {
+  @apply com-py-6;
+}
+
+.step-number {
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 com-mb-6;
+}
+
+.welcome-text {
+  @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-m-0 com-mb-1;
+}
+
+.sub-text {
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 com-mb-10;
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}

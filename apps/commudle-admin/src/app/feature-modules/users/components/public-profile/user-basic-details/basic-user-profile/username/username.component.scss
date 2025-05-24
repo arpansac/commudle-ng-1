@@ -1,8 +1,8 @@
 .username {
-  @apply com-mb-4;
+  @apply com-mb-6;
 
   .title {
-    @apply com-text-base;
+    @apply com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
   }
 
   .field-error {
@@ -14,4 +14,8 @@
       @apply com-flex com-mt-2 com-mx-auto com-mb-0;
     }
   }
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
 }

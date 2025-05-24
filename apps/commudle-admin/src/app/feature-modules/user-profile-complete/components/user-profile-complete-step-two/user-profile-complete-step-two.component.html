@@ -7,10 +7,9 @@
       <div class="three-column-layout thin">
         <div class="left-column"></div>
         <div [formGroup]="profileStepOneForm">
-          <p class="step-number">Step 1 of 3</p>
-          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser.name }}</h2>
-          <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
-          <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
+          <p class="step-number">Step 2 of 3</p>
+          <h2 class="welcome-text">Tell us a little about yourself</h2>
+          <p class="sub-text">Set up your profile so others can find and connect with you</p>
           <app-username (usernameValidation)="checkUsername($event)" [showSaveButton]="false"></app-username>
           <div class="content">
             <app-basic-info
