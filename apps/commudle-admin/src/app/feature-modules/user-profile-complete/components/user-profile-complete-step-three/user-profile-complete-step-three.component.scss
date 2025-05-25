@@ -1,0 +1,39 @@
+.container {
+  @apply com-py-6;
+}
+
+.step-number {
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 com-mb-6;
+}
+
+.welcome-text {
+  @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-m-0 com-mb-1;
+}
+
+.sub-text {
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 com-mb-10;
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}
+
+.community-heading,
+.speakers-heading,
+.events-heading {
+  @apply com-text-lg com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
+}
+
+.community-container,
+.speakers-container,
+.events-container {
+  @apply com-grid com-grid-cols-2 com-gap-4 com-mb-8;
+}
+
+.speakers-list-cards {
+  @apply com-bg-white com-p-3 com-rounded-lg;
+}
+
+button {
+  @apply com-border com-border-solid com-border-gray-600 com-p-4 com-bg-blue-50 com-h-12 com-rounded-xl com-m-2;
+}

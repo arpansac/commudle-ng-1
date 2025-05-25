@@ -1,13 +1,59 @@
-<nb-card>
-  <nb-card-header>
-    <h2>Complete Your Profile - Step 3</h2>
-  </nb-card-header>
-  <nb-card-body>
-    <p>This is the final step of completing your profile.</p>
-    <!-- Add your form fields here -->
-  </nb-card-body>
-  <nb-card-footer>
-    <button nbButton status="basic" (click)="goToPreviousStep()">Previous</button>
-    <button nbButton status="success" (click)="finishProcess()">Finish</button>
-  </nb-card-footer>
-</nb-card>
+<div
+  class="background-image"
+  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+>
+  <div class="base-layout">
+    <div class="container">
+      <div class="three-column-layout thin">
+        <div class="left-column"></div>
+        <div>
+          <p class="step-number">Step 2 of 3</p>
+          <h2 class="welcome-text">Build Your Network</h2>
+          <p class="sub-text">Here are your first few steps — join, follow, and engage!</p>
+          <div *ngIf="communities.length > 0">
+            <h2 class="community-heading">Recommended Communities</h2>
+            <div class="community-container">
+              <div class="communities-list-cards">
+                <app-communities-card
+                  *ngFor="let community of communities"
+                  [community]="community"
+                ></app-communities-card>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="speakers.length > 0">
+            <h2 class="speakers-heading">Techies to Follow!</h2>
+            <div class="speakers-container">
+              <div *ngFor="let speaker of speakers" class="speakers-list-cards">
+                <app-user-profile-card-large
+                  [showFollowButton]="true"
+                  [alignFollowToRight]="false"
+                  [showAbout]="true"
+                  [user]="speaker"
+                  [isMobileWidthFull]="true"
+                  [showSpeakersCount]="true"
+                  [maxUserNameLength]="15"
+                  [showHiringLookingTags]="false"
+                  [appearanceOfFollowButton]="'outline'"
+                  [alignSpeakerCountToRight]="true"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="upcomingEvents.length > 0">
+            <h2 class="events-heading">Upcoming Events</h2>
+            <div class="events-container">
+              <div *ngFor="let upcomingEvent of upcomingEvents" class="events-list-cards">
+                <commudle-event-mini-card
+                  [attendedEvent]="upcomingEvent"
+                  [iconSize]="'medium'"
+                  [cardType]="'upcomingEvents'"
+                ></commudle-event-mini-card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { IUser } from 'apps/shared-models/user.model';
 import { IAttachedFile } from 'apps/shared-models/attached-file.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-profile-complete-step-two',
@@ -25,6 +26,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
   fileName: string;
   uploadedResume: IAttachedFile;
   staticAssets = staticAssets;
+  faArrowRight = faArrowRight;
   subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
 
@@ -78,6 +80,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
         com_gender: this.currentUser.gender,
       });
     }
+    this.goToNextStep();
   }
 
   gtmServiceData(userData) {

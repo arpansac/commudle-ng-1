@@ -18,15 +18,26 @@
             ></app-basic-info>
           </div>
           <div class="navigation-buttons">
-            <button outline nbButton nbStepperPrevious status="primary" class="com-mr-4">Prev</button>
+            <button
+              outline
+              nbButton
+              nbStepperPrevious
+              (click)="goToPreviousStep()"
+              shape="semi-round"
+              status="primary"
+              class="com-mr-4"
+            >
+              Back
+            </button>
             <button
               [disabled]="!validBasicDetailsStatus"
               nbButton
               nbStepperNext
+              shape="semi-round"
               status="primary"
               (click)="submitStepTwo()"
             >
-              Next
+              Next &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
             </button>
           </div>
         </div>

@@ -9,6 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { UsersModule } from 'apps/commudle-admin/src/app/feature-modules/users/users.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/communities-card/communities-card.component';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
+import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +30,10 @@ import { UsersModule } from 'apps/commudle-admin/src/app/feature-modules/users/u
     SharedComponentsModule,
     ReactiveFormsModule,
     UsersModule,
+    FontAwesomeModule,
+    CommunitiesCardComponent,
+    MiniUserProfileModule,
+    EventMiniCardComponent,
   ],
 })
 export class UserProfileCompleteModule {}

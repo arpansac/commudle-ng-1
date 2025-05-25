@@ -17,3 +17,11 @@
 .mandatory-field {
   @apply com-text-red-500 com-ml-0.5;
 }
+
+.navigation-buttons {
+  @apply com-flex com-flex-row com-justify-between;
+
+  button {
+    @apply com-w-full;
+  }
+}
