@@ -1,14 +1,15 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
 import { IHomepageAction } from 'apps/commudle-admin/src/app/feature-modules/homepage/models/homepage-action.model';
 import { SearchStatusService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search-status.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Observable, timer } from 'rxjs';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { ITestimonial } from 'apps/shared-models/testimonial.model';
-import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
-import { AwsS3Bucket, staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { Observable, Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -17,16 +18,13 @@ import { AwsS3Bucket, staticAssets } from 'apps/commudle-admin/src/assets/static
 })
 export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
   timer$: Observable<number>;
-  homePageBannerImage;
+  homePageBannerImage: ImageUrlBuilder;
   banner: IListingPageHeader;
   staticAsset = staticAssets;
-
-  @ViewChild('homepageAnimation', { static: false }) homepageAnimationContainer: ElementRef<HTMLDivElement>;
-
   homepageActions: IHomepageAction[] = [];
 
+  // @ViewChild('homepageAnimation', { static: false }) homepageAnimationContainer: ElementRef<HTMLDivElement>;
   testimonials: ITestimonial[];
-
   homepageCallouts: { subtitle: string; title: string }[] = [
     {
       title: 'Are you a Student?',
@@ -41,6 +39,7 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
       subtitle: 'Build your brand with communities & network',
     },
   ];
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private seoService: SeoService,
@@ -70,50 +69,57 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.searchStatusService.setSearchStatus(true);
     this.footerService.changeFooterStatus(false);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   ngAfterViewInit(): void {
-    this.cmsService.getDataBySlug('home').subscribe((data: IListingPageHeader) => {
-      this.banner = data;
-      if (data.header_image) {
-        this.homePageBannerImage = this.cmsService.getImageUrl(data.header_image);
-      }
-      // else {
-      //   if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
-      //     import('lottie-web').then((l) => {
-      //       l.default.loadAnimation({
-      //         container: this.homepageAnimationContainer.nativeElement,
-      //         renderer: 'svg',
-      //         loop: true,
-      //         autoplay: true,
-      //         path: AwsS3Bucket.home_page_animation,
-      //       });
-      //     });
-      //   }
-      // }
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataBySlug('home').subscribe((data: IListingPageHeader) => {
+        this.banner = data;
+        if (data.header_image) {
+          this.homePageBannerImage = this.cmsService.getImageUrl(data.header_image);
+        }
+        // else {
+        //   if (this.isBrowserService.isBrowser() && !this.seoService.isBot) {
+        //     import('lottie-web').then((l) => {
+        //       l.default.loadAnimation({
+        //         container: this.homepageAnimationContainer.nativeElement,
+        //         renderer: 'svg',
+        //         loop: true,
+        //         autoplay: true,
+        //         path: AwsS3Bucket.home_page_animation,
+        //       });
+        //     });
+        //   }
+        // }
+      }),
+    );
   }
 
   getHomepageActions() {
-    this.cmsService.getDataByType('homepageActions').subscribe((value: IHomepageAction[]) => {
-      this.homepageActions = value.sort((a, b) => a.order - b.order);
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataByType('homepageActions').subscribe((value: IHomepageAction[]) => {
+        this.homepageActions = value.sort((a, b) => a.order - b.order);
+      }),
+    );
   }
 
   getTestimonials() {
-    this.cmsService
-      .getDataByTypeWithFilterOrder(
-        'publicTestimonials',
-        'testimonialType[]',
-        'Community_Leader',
-        '_updatedAt desc',
-        10,
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.testimonials = data;
-        }
-      });
+    this.subscriptions.push(
+      this.cmsService
+        .getDataByTypeWithFilterOrder(
+          'publicTestimonials',
+          'testimonialType[]',
+          'Community_Leader',
+          '_updatedAt desc',
+          10,
+        )
+        .subscribe((data) => {
+          if (data) {
+            this.testimonials = data;
+          }
+        }),
+    );
   }
 
   setSchema() {

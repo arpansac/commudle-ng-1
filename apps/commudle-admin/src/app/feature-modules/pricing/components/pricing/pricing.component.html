@@ -15,7 +15,7 @@
                 <div class="monthly" [ngClass]="{ active: isMonthly }" (click)="toggleSubscription('monthly')">
                   Monthly
                 </div>
-                <div class="anually" [ngClass]="{ active: isAnually }" (click)="toggleSubscription('anually')">
+                <div class="anually" [ngClass]="{ active: isAnnually }" (click)="toggleSubscription('annually')">
                   Annual
                 </div>
               </div>
@@ -34,7 +34,7 @@
                   <p class="sub-heading">
                     {{ startup.description }}
                   </p>
-                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                  <div *ngIf="isMonthly || isAnnually" class="subscription">
                     <div *ngIf="startup.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
@@ -60,7 +60,7 @@
                       </ng-container>
 
                       <!-- ANUALLY -->
-                      <ng-container *ngIf="isAnually">
+                      <ng-container *ngIf="isAnnually">
                         <ng-container *ngFor="let item of startup.priceDetails[0].details">
                           <ng-container *ngIf="item.currencyType === selectedCurrency">
                             <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
@@ -117,7 +117,7 @@
                   <p class="sub-heading">
                     {{ enterprise.description }}
                   </p>
-                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                  <div *ngIf="isMonthly || isAnnually" class="subscription">
                     <div *ngIf="enterprise.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
@@ -143,7 +143,7 @@
                       </ng-container>
 
                       <!-- ANUALLY -->
-                      <ng-container *ngIf="isAnually">
+                      <ng-container *ngIf="isAnnually">
                         <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
                           <ng-container *ngIf="item.currencyType === selectedCurrency">
                             <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
@@ -201,7 +201,7 @@
                   <p class="sub-heading">
                     {{ devrel.description }}
                   </p>
-                  <div *ngIf="isMonthly || isAnually" class="subscription">
+                  <div *ngIf="isMonthly || isAnnually" class="subscription">
                     <div *ngIf="devrel.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
@@ -226,7 +226,7 @@
                       </ng-container>
 
                       <!-- ANUALLY -->
-                      <ng-container *ngIf="isAnually">
+                      <ng-container *ngIf="isAnnually">
                         <ng-container *ngFor="let item of devrel.priceDetails[0].details">
                           <ng-container *ngIf="item.currencyType === selectedCurrency">
                             <span class="current-price">{{
@@ -313,7 +313,7 @@
                     </ng-container>
 
                     <!-- ANUALLY -->
-                    <ng-container *ngIf="isAnually">
+                    <ng-container *ngIf="isAnnually">
                       <ng-container *ngFor="let item of startup.priceDetails[0].details">
                         <ng-container *ngIf="item.currencyType === selectedCurrency">
                           <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
@@ -363,7 +363,7 @@
                     </ng-container>
 
                     <!-- ANUALLY -->
-                    <ng-container *ngIf="isAnually">
+                    <ng-container *ngIf="isAnnually">
                       <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
                         <ng-container *ngIf="item.currencyType === selectedCurrency">
                           <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
@@ -413,7 +413,7 @@
                     </ng-container>
 
                     <!-- ANUALLY -->
-                    <ng-container *ngIf="isAnually">
+                    <ng-container *ngIf="isAnnually">
                       <ng-container *ngFor="let item of devrel.priceDetails[0].details">
                         <ng-container *ngIf="item.currencyType === selectedCurrency">
                           <span class="discounted-price">{{

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { CmsService } from 'apps/shared-services/cms.service';
-import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IFaq } from '@commudle/shared-models';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'commudle-experts-program',
   templateUrl: './experts-program.component.html',
@@ -23,6 +24,10 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
     this.setMeta();
     this.getHeaderText();
     this.setFaqs();
+  }
+
+  ngOnDestroy(): void {
+    this.footerService.changeFooterStatus(false);
   }
 
   setMeta() {
@@ -44,10 +49,6 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
         this.richText = this.cmsService.getHtmlFromBlock(data);
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.footerService.changeFooterStatus(false);
   }
 
   setFaqs() {

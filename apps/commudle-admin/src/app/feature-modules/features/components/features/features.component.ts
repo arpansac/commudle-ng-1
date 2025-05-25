@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { IFaq } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
+import { faArrowRightArrowLeft, faArrowUpRightDots, faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { IFeature } from 'apps/shared-models/features.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { ResponsiveService } from 'apps/shared-services/responsive.service';
 import { Subscription } from 'rxjs';
-import { SeoService } from '@commudle/shared-services';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { faArrowRightArrowLeft, faArrowUpRightDots, faChartSimple } from '@fortawesome/free-solid-svg-icons';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { IFaq } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-features',
@@ -44,9 +44,11 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = this.responsiveService.isMobileView();
-    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
-      this.isDarkMode = isDarkMode;
-    });
+    this.subscriptions.push(
+      this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
+        this.isDarkMode = isDarkMode;
+      }),
+    );
     this.getIndex();
     if (this.setMetadata) {
       this.setMeta();
@@ -56,6 +58,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.footerService.changeFooterStatus(false);
   }
 
   getIndex(): void {
@@ -63,8 +66,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.cmsService.getDataByTypeWithFilter('featuredPage', filterType, this.categoryName, 100).subscribe((value) => {
         if (value) {
-          const sortedFeatures = this.sortFeaturesByCategory(value, this.categoryName);
-          this.features = sortedFeatures;
+          this.features = this.sortFeaturesByCategory(value, this.categoryName);
         }
       }),
     );

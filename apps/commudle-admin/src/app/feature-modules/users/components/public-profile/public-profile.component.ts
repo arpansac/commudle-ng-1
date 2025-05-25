@@ -2,16 +2,17 @@ import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
+import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import {
   UserProfileMenuItems,
   UserProfileMenuService,
 } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-menu.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IUser } from 'apps/shared-models/user.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+
 @Component({
   selector: 'app-public-profile',
   templateUrl: './public-profile.component.html',
@@ -70,9 +71,11 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   }
 
   checkFragment() {
-    this.activatedRoute.fragment.subscribe((fragment) => {
-      this.highlight = fragment;
-    });
+    this.subscriptions.push(
+      this.activatedRoute.fragment.subscribe((fragment) => {
+        this.highlight = fragment;
+      }),
+    );
   }
 
   getUser() {

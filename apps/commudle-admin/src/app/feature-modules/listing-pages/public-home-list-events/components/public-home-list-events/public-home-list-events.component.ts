@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'commudle-public-home-list-events',
   templateUrl: './public-home-list-events.component.html',
   styleUrls: ['./public-home-list-events.component.scss'],
 })
-export class PublicHomeListEventsComponent implements OnInit {
+export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
+
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {

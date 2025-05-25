@@ -1,11 +1,11 @@
 <footer>
-  <div *ngIf="showFooter" class="com-bg-white">
+  <div *ngIf="showFooter$ | async" class="com-bg-white">
     <div class="com-container com-mx-auto com-py-12 com-px-4">
       <div class="xl:com-grid xl:com-grid-cols-3 xl:com-gap-8 com-overflow-hidden">
         <div class="com-space-y-8 xl:com-col-span-1">
-          <a [routerLink]="['/']"
-            ><img alt="Commudle" class="com-h-16" src="{{ staticAssets.commudle_logo_128 }}" title="Commudle"
-          /></a>
+          <a [routerLink]="['/']">
+            <img alt="Commudle" class="com-h-16" src="{{ staticAssets.commudle_logo_128 }}" title="Commudle" />
+          </a>
           <div class="com-text-gray-500 com-text-base">Connect with experts and grow with communities.</div>
           <a
             href="https://blog.google/intl/en-in/introducing-the-inaugural-class-of-the-google-for-startups-accelerator-india-women-founders/"
@@ -85,9 +85,9 @@
             <div>
               <ul>
                 <li>
-                  <a class="developer-community-blueprint" [routerLink]="['/developer-ecosystem-blueprint']"
-                    >The Developer Ecosystem Blueprint</a
-                  >
+                  <a class="developer-community-blueprint" [routerLink]="['/developer-ecosystem-blueprint']">
+                    The Developer Ecosystem Blueprint
+                  </a>
                 </li>
                 <li><a [routerLink]="['/devrel-agencies']">For DevRel Agencies</a></li>
                 <li><a [routerLink]="['/experts-program']">Experts Program</a></li>
@@ -120,7 +120,7 @@
     </div>
   </div>
 
-  <div *ngIf="!showFooter && showMiniFooter" class="show-footer">
+  <div *ngIf="(showFooter$ | async) === false && (showMiniFooter$ | async)" class="show-footer">
     <hr />
     <div class="links">
       <ul>

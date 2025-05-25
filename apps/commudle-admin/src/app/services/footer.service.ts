@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FooterService {
-  private footerStatus: Subject<boolean> = new Subject<boolean>();
+  private footerStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public footerStatus$ = this.footerStatus.asObservable();
-  private miniFooterStatus: Subject<boolean> = new Subject<boolean>();
+
+  private miniFooterStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public miniFooterStatus$ = this.miniFooterStatus.asObservable();
 
-  constructor() {}
-
-  changeFooterStatus(value: boolean) {
+  changeFooterStatus(value: boolean): void {
     this.footerStatus.next(value);
   }
 
-  changeMiniFooterStatus(value: boolean) {
+  changeMiniFooterStatus(value: boolean): void {
     this.miniFooterStatus.next(value);
   }
 }

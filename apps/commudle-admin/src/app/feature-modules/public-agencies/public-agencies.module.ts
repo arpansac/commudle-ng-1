@@ -1,18 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { AggenciesComponent } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/components/aggencies/aggencies.component';
-import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
-import { NbButtonModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
+import { NgModule } from '@angular/core';
 import { SharedComponentsModule } from '@commudle/shared-components';
-import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
+import { NbButtonModule, NbInputModule, NbTooltipModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PublicPagesRoutingModule } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/public-agencies-routing.module';
+import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { FeaturesModule } from 'apps/commudle-admin/src/app/feature-modules/features/features.module';
+import { AgenciesComponent } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/components/agencies/agencies.component';
+import { PublicPagesRoutingModule } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/public-agencies-routing.module';
+import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 
 @NgModule({
-  declarations: [AggenciesComponent],
+  declarations: [AgenciesComponent],
   imports: [
     CommonModule,
     PublicPagesRoutingModule,

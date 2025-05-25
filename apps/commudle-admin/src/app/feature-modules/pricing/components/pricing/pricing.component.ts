@@ -1,18 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { Subscription } from 'rxjs';
-import { CmsService } from 'apps/shared-services/cms.service';
-import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
-import { ECmsType } from 'apps/shared-models/enums/cms.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { countries_details } from '@commudle/shared-services';
-import * as momentTimezone from 'moment-timezone';
 import { IFaq } from '@commudle/shared-models';
+import { countries_details } from '@commudle/shared-services';
+import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { ECmsType } from 'apps/shared-models/enums/cms.enum';
+import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+import * as momentTimezone from 'moment-timezone';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-pricing',
   templateUrl: './pricing.component.html',
@@ -26,7 +27,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   startup: IPricing;
   devrel: IPricing;
   isMonthly = false;
-  isAnually = true;
+  isAnnually = true;
   faCircleCheck = faCircleCheck;
   pricingFeatures: IPricingFeatures[] = [];
   showAllFeatures = true;
@@ -37,7 +38,6 @@ export class PricingComponent implements OnInit, OnDestroy {
   countryForm: FormGroup;
   countries = countries_details;
   faqs: IFaq[] = [];
-
   logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
       name: 'Google Developer Groups',
@@ -84,8 +84,8 @@ export class PricingComponent implements OnInit, OnDestroy {
         'https://json.commudle.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaE8vIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--05e1517a8137079260ec3f02571686337815a16e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKZUFXa0NYZ0U2QzJ4dllXUmxjbnNHT2dsd1lXZGxNQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--1b54362eb80bd09837e5bde550bb5151f95283d3/IEEE%20JHSB%20logo%20colored.png',
     },
   ];
-
   answers = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private seoService: SeoService,
@@ -109,9 +109,11 @@ export class PricingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isMobileView = window.innerWidth <= 1024;
     this.footerService.changeFooterStatus(true);
-    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
-      this.isDarkMode = isDarkMode;
-    });
+    this.subscriptions.push(
+      this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
+        this.isDarkMode = isDarkMode;
+      }),
+    );
     this.seoService.setTags(
       'Pricing - Community Subscriptions on Commudle',
       'Choose a pricing plan which is right for your developer community program. Plans include events, hackathons, newsletters, channels, forums etc. We also have a preferred partner network.',
@@ -130,6 +132,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   gtmDatalayerPush(event) {
@@ -157,36 +160,44 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   getEnterpriseData(): void {
-    this.cmsService.getDataBySlug('pp-commudle-for-enterprises').subscribe((value) => {
-      this.enterprise = value;
-      this.setSchema(this.enterprise);
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataBySlug('pp-commudle-for-enterprises').subscribe((value) => {
+        this.enterprise = value;
+        this.setSchema(this.enterprise);
+      }),
+    );
   }
 
   getStartupData(): void {
-    this.cmsService.getDataBySlug('pp-commudle-for-startups').subscribe((value) => {
-      this.startup = value;
-      this.setSchema(this.startup);
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataBySlug('pp-commudle-for-startups').subscribe((value) => {
+        this.startup = value;
+        this.setSchema(this.startup);
+      }),
+    );
   }
 
   getDevrelData(): void {
-    this.cmsService.getDataBySlug('pp-commudle-for-devrel-agencies').subscribe((value) => {
-      this.devrel = value;
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataBySlug('pp-commudle-for-devrel-agencies').subscribe((value) => {
+        this.devrel = value;
+      }),
+    );
   }
 
   getPricingFeatures() {
     const fields = 'name, order, features';
     const order = 'order asc';
-    this.cmsService.getDataByTypeFieldOrder(ECmsType.PRICING_PLAN_FEATURES, fields, order).subscribe((value) => {
-      this.pricingFeatures = value;
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataByTypeFieldOrder(ECmsType.PRICING_PLAN_FEATURES, fields, order).subscribe((value) => {
+        this.pricingFeatures = value;
+      }),
+    );
   }
 
   toggleSubscription(value) {
-    this.isMonthly = value === 'monthly' ? true : false;
-    this.isAnually = value === 'anually' ? true : false;
+    this.isMonthly = value === 'monthly';
+    this.isAnnually = value === 'annually';
   }
 
   toggleShowAllFeatures() {

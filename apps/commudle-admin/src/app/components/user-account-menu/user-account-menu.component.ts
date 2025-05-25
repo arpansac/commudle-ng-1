@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
@@ -23,7 +23,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./user-account-menu.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class UserAccountMenuComponent implements OnInit {
+export class UserAccountMenuComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   faChevronRight = faChevronRight;
   faLightbulb = faLightbulb;
@@ -67,5 +67,11 @@ export class UserAccountMenuComponent implements OnInit {
       `Account menu for ${this.currentUser.name}`,
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.footerService.changeMiniFooterStatus(true);
   }
 }

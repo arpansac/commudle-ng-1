@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
@@ -6,8 +6,9 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
   templateUrl: './communities.component.html',
   styleUrls: ['./communities.component.scss'],
 })
-export class CommunitiesComponent implements OnInit {
+export class CommunitiesComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
+
   constructor(private footerService: FooterService) {}
 
   ngOnInit(): void {
