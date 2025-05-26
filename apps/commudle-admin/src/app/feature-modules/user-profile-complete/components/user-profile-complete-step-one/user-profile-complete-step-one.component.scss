@@ -1,9 +1,9 @@
 .container {
-  @apply com-py-6;
+  @apply md:com-py-6 com-py-5 md:com-px-0 com-px-4;
 }
 
 .step-number {
-  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 com-mb-6;
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 md:com-mb-6 com-mb-4;
 }
 
 .welcome-text {
@@ -11,7 +11,7 @@
 }
 
 .sub-text {
-  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 com-mb-10;
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 md:com-mb-10 com-mb-8;
 }
 
 .goals-heading {
@@ -23,7 +23,7 @@
 }
 
 .goals-container {
-  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-4;
+  @apply com-grid com-grid-cols-2 com-gap-4;
 }
 
 .goals-card {
