@@ -8,6 +8,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { EDomain, EExperienceLevel } from '@commudle/shared-models';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { KeyValue } from '@angular/common';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -72,6 +73,10 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
       }
     });
   }
+
+  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
+  };
 
   getGoals() {
     this.appUsersService.getMyGoals().subscribe((data) => {
