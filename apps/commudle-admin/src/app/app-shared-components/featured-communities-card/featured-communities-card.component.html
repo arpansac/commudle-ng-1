@@ -30,7 +30,10 @@
       </div>
     </div>
   </a>
-  <div class="membership-toggle">
+  <div
+    [ngClass]="[showJoinBtnBottom ? 'follow-btn-bottom-toggle' : 'follow-btn-right-toggle']"
+    class="membership-toggle"
+  >
     <app-membership-toggle
       [community]="featuredCommunity"
       [shapes]="'semi-round'"

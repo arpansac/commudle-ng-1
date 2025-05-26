@@ -22,6 +22,7 @@ export class TagComponent implements OnInit, OnDestroy {
   @Input() minTagLimit = true;
   @Input() showAutoSuggestDropDown = false;
   @Input() showSuggestedTags = false;
+  @Input() showTagsOnLoad = false;
 
   @Output() tagAdd: EventEmitter<string> = new EventEmitter<string>();
   @Output() tagDelete: EventEmitter<string> = new EventEmitter<string>();
@@ -32,6 +33,7 @@ export class TagComponent implements OnInit, OnDestroy {
   query = '';
   suggestedTags: ITag[];
   autoCompleteTags: ITag[];
+  topTags = false;
 
   constructor(private tagService: TagService, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
@@ -52,6 +54,10 @@ export class TagComponent implements OnInit, OnDestroy {
             this.autoCompleteTags = data?.values || [];
           }),
       );
+    }
+    if (this.showTagsOnLoad) {
+      this.topTags = true;
+      this.displayTagsOnLoad();
     }
   }
 
@@ -90,7 +96,17 @@ export class TagComponent implements OnInit, OnDestroy {
   getSuggestedTags(query) {
     if (query) {
       this.subscription.push(
-        this.tagService.suggestedTags(query, true).subscribe((data) => {
+        this.tagService.suggestedTags(query, false, true).subscribe((data) => {
+          this.suggestedTags = data.values.filter((tag) => !this.tags.includes(tag.name));
+        }),
+      );
+    }
+  }
+
+  displayTagsOnLoad() {
+    if (this.topTags) {
+      this.subscription.push(
+        this.tagService.suggestedTags('', this.topTags, true).subscribe((data) => {
           this.suggestedTags = data.values.filter((tag) => !this.tags.includes(tag.name));
         }),
       );
