@@ -202,6 +202,23 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.discountCode && this.discountCodeApplied) {
+      this.validateDiscountCode((isValid) => {
+        if (isValid) {
+          this.proceedWithPayment();
+        } else {
+          this.isLoadingPayment = false;
+          this.dialogService.open(this.paymentErrorDialog, {
+            closeOnBackdropClick: false,
+          });
+        }
+      });
+    } else {
+      this.proceedWithPayment();
+    }
+  }
+
+  private proceedWithPayment(): void {
     this.isLoadingPayment = true;
 
     if (this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE) {
@@ -439,6 +456,10 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.validateDiscountCode();
+  }
+
+  private validateDiscountCode(callback?: (isValid: boolean) => void): void {
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
@@ -458,14 +479,15 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             this.finalDiscountAmount =
               this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
             this.updatePurchaseOrder();
+            if (callback) callback(true);
           } else {
-            this.toastrService.warningDialog('Discount code is invalid');
             this.removePromoCode();
+            if (callback) callback(false);
           }
         },
         error: () => {
-          this.toastrService.warningDialog('Failed to apply discount code');
           this.removePromoCode();
+          if (callback) callback(false);
         },
       });
   }
