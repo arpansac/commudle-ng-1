@@ -3,6 +3,7 @@ import { ICampaign } from './campaign.model';
 import { IUser } from './user.model';
 import { IRazorpayOrder } from './razorpay-order.model';
 import { IContactInfo } from './contact-info.model';
+import { EDbModels } from './db-models.enum';
 
 export interface IPurchaseOrder {
   id: number;
@@ -13,7 +14,7 @@ export interface IPurchaseOrder {
   payment_gateway_fee: number;
   currency: string;
   tax_amount: number;
-  orderable_type: string;
+  orderable_type: EDbModels;
   orderable_id: number;
   discount_code_id: number;
   base_amount: number;

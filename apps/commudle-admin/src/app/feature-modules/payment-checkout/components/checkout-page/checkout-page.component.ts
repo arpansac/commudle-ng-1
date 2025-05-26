@@ -430,7 +430,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         usersCount: 1,
         edfegId: null,
         eventId: null,
-        objectType: EDbModels.CAMPAIGN,
+        objectType: this.purchaseOrder.orderable_type,
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
