@@ -83,12 +83,19 @@ export class AuthService {
     );
   }
 
-  signIn(agent: string, consent_privacy_tnc: boolean, consent_marketing: boolean, token?: string) {
+  signIn(
+    agent: string,
+    consent_privacy_tnc: boolean,
+    consent_marketing: boolean,
+    token?: string,
+    recaptchaToken?: string,
+  ) {
     return this.http.post(this.baseApiService.getRoute(API_ROUTES.VERIFY_AND_LOGIN), {
       agent: agent,
       details: { token },
       consent_privacy_tnc: consent_privacy_tnc,
       consent_marketing: consent_marketing,
+      recaptcha_token: recaptchaToken,
     });
   }
 

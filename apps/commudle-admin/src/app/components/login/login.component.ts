@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from '../login-consent-popup/login-consent-popup.component';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 @Component({
   selector: 'commudle-login',
   templateUrl: './login.component.html',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   consent_privacy_tnc = false;
   consent_marketing = false;
   userFromGoogle;
+  token: string;
 
   private authService: AuthService;
 
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private gtm: GoogleTagManagerService,
     private dialogService: NbDialogService,
+    private recaptchaV3Service: ReCaptchaV3Service,
   ) {
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
@@ -101,33 +104,61 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   sendVerificationEmail(): void {
     this.isLoading = true;
-    this.subscriptions.push(
-      this.emailCodeService.sendVerificationEmail(this.loginForm.value.email).subscribe(
-        (response) => {
-          if (response.new_user) {
-            this.gtm.dataLayerPushEvent('new-user', {});
-          }
-          if (!(response.consent || this.loginForm.value.consent_privacy_tnc)) {
-            this.openDialog('code');
-          } else {
-            this.isEmailSent = true;
-          }
-          this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
-        },
-        () => this.nbToastrService.danger('Error in generating code, try again in a few minutes!', 'Error'),
-        () => (this.isLoading = false),
-      ),
+
+    this.recaptchaV3Service.execute('login').subscribe(
+      (token) => {
+        console.log('🚀 ~ LoginComponent ~ sendVerificationEmail ~ token:', token);
+        this.token = token;
+        this.subscriptions.push(
+          this.emailCodeService.sendVerificationEmail(this.loginForm.value.email, this.token).subscribe(
+            (response) => {
+              if (response.new_user) {
+                this.gtm.dataLayerPushEvent('new-user', {});
+              }
+              if (!(response.consent || this.loginForm.value.consent_privacy_tnc)) {
+                this.openDialog('code');
+              } else {
+                this.isEmailSent = true;
+              }
+              this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
+            },
+            () => this.nbToastrService.danger('Error in generating code, try again in a few minutes!', 'Error'),
+            () => (this.isLoading = false),
+          ),
+        );
+      },
+      (error) => {
+        this.nbToastrService.danger('reCAPTCHA verification failed. Please try again' + error);
+        this.isLoading = false;
+        console.error('reCAPTCHA verification failed', error);
+      },
     );
   }
 
   loginUser(): void {
     this.isLoading = true;
-    this.subscriptions.push(
-      this.emailCodeService.loginUser(this.loginForm.value).subscribe(
-        (data: any) => this.setCookie(data.auth_token, 'otp'),
-        () => this.nbToastrService.danger('Error while trying to log you in, try again in a few minutes!', 'Error'),
-        () => (this.isLoading = false),
-      ),
+
+    this.recaptchaV3Service.execute('login').subscribe(
+      (token) => {
+        this.token = token;
+        const loginData = {
+          ...this.loginForm.value,
+          recaptcha_token: this.token,
+        };
+
+        this.subscriptions.push(
+          this.emailCodeService.loginUser(loginData).subscribe(
+            (data: any) => this.setCookie(data.auth_token, 'otp'),
+            () => this.nbToastrService.danger('Error while trying to log you in, try again in a few minutes!', 'Error'),
+            () => (this.isLoading = false),
+          ),
+        );
+      },
+      (error) => {
+        this.nbToastrService.danger('reCAPTCHA verification failed. Please try again' + error);
+        this.isLoading = false;
+        console.error('reCAPTCHA verification failed', error);
+      },
     );
   }
 
@@ -153,23 +184,42 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginWithGoogle() {
     if (this.userFromGoogle) {
-      this.libAuthWatchService
-        .signIn(
-          this.userFromGoogle.provider.toLowerCase(),
-          this.loginForm.controls['consent_privacy_tnc'].value,
-          this.consent_marketing,
-          this.userFromGoogle.idToken,
-        )
-        .subscribe((data: any) => {
-          if (data.new_user) {
-            this.gtm.dataLayerPushEvent('new-user', {});
-          }
-          if (data.auth_token === null || data.auth_token === '' || data.auth_token === undefined) {
-            this.openDialog('google');
-          } else {
-            this.setCookie(data.auth_token, 'google');
-          }
-        });
+      this.isLoading = true;
+
+      this.recaptchaV3Service.execute('login_google').subscribe(
+        (token) => {
+          this.token = token;
+          this.libAuthWatchService
+            .signIn(
+              this.userFromGoogle.provider.toLowerCase(),
+              this.loginForm.controls['consent_privacy_tnc'].value,
+              this.consent_marketing,
+              this.userFromGoogle.idToken,
+              this.token,
+            )
+            .subscribe(
+              (data: any) => {
+                if (data.new_user) {
+                  this.gtm.dataLayerPushEvent('new-user', {});
+                }
+                // if (data.auth_token === null || data.auth_token === '' || data.auth_token === undefined) {
+                //   this.openDialog('google');
+                // } else {
+                //   this.setCookie(data.auth_token, 'google');
+                // }
+                this.isLoading = false;
+              },
+              (error) => {
+                this.nbToastrService.danger('Error while trying to log you in, try again in a few minutes!', 'Error');
+                this.isLoading = false;
+              },
+            );
+        },
+        (error) => {
+          this.nbToastrService.danger('reCAPTCHA verification failed. Please try again.', 'Error');
+          this.isLoading = false;
+        },
+      );
     }
   }
 }

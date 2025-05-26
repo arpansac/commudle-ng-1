@@ -10,8 +10,11 @@ import { ApiRoutesService } from './api-routes.service';
 export class EmailCodeService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  sendVerificationEmail(email: string): Observable<any> {
-    return this.http.post<any>(this.apiRoutesService.getRoute(API_ROUTES.EMAIL_CODE_AUTH.CREATE), { email });
+  sendVerificationEmail(email: string, recaptchaToken: string): Observable<any> {
+    return this.http.post<any>(this.apiRoutesService.getRoute(API_ROUTES.EMAIL_CODE_AUTH.CREATE), {
+      email,
+      recaptcha_token: recaptchaToken,
+    });
   }
 
   loginUser(formData: {
@@ -19,6 +22,7 @@ export class EmailCodeService {
     code: string;
     consent_privacy_tnc: boolean;
     consent_marketing: boolean;
+    recaptcha_token?: string;
   }): Observable<any> {
     return this.http.post<any>(this.apiRoutesService.getRoute(API_ROUTES.EMAIL_CODE_AUTH.VERIFY), formData);
   }
