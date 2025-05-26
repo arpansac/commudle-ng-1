@@ -7,17 +7,17 @@
       <div class="three-column-layout thin">
         <div class="left-column"></div>
         <div>
-          <p class="step-number">Step 2 of 3</p>
+          <p class="step-number">Step 3 of 3</p>
           <h2 class="welcome-text">Build Your Network</h2>
           <p class="sub-text">Here are your first few steps — join, follow, and engage!</p>
           <div *ngIf="communities.length > 0">
             <h2 class="community-heading">Recommended Communities</h2>
             <div class="community-container">
-              <div class="communities-list-cards">
-                <app-communities-card
-                  *ngFor="let community of communities"
-                  [community]="community"
-                ></app-communities-card>
+              <div *ngFor="let community of communities" class="communities-list-cards">
+                <commudle-featured-communities-card
+                  [featuredCommunity]="community"
+                  [showJoinBtnBottom]="true"
+                ></commudle-featured-communities-card>
               </div>
             </div>
           </div>

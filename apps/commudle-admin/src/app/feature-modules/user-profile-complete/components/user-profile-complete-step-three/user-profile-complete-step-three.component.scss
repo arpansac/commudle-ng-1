@@ -30,10 +30,7 @@
   @apply com-grid com-grid-cols-2 com-gap-4 com-mb-8;
 }
 
-.speakers-list-cards {
-  @apply com-bg-white com-p-3 com-rounded-lg;
-}
-
-button {
-  @apply com-border com-border-solid com-border-gray-600 com-p-4 com-bg-blue-50 com-h-12 com-rounded-xl com-m-2;
+.speakers-list-cards,
+.communities-list-cards {
+  @apply com-bg-white com-p-3 com-rounded-xl;
 }

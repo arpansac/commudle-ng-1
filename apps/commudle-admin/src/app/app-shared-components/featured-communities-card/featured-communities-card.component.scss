@@ -1,5 +1,5 @@
 .container {
-  @apply com-flex com-justify-between;
+  @apply com-flex com-justify-between com-bg-white;
 }
 
 .scroll-container {
@@ -45,5 +45,11 @@ a {
   }
 }
 .membership-toggle {
-  @apply md:com-w-auto com-w-[96%] md:com-ml-auto md:com-my-0 md:com-mr-0 com-m-0;
+  @apply md:com-w-auto com-w-[96%] md:com-my-0 md:com-mr-0 com-m-0;
+  &.follow-right {
+    @apply md:com-ml-auto;
+  }
+  &.follow-bottom {
+    @apply md:com-ml-0 md:com-mt-4;
+  }
 }

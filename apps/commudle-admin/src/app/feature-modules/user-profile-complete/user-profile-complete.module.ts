@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/communities-card/communities-card.component';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
+import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-c
     CommunitiesCardComponent,
     MiniUserProfileModule,
     EventMiniCardComponent,
+    FeaturedCommunitiesCardComponent,
   ],
 })
 export class UserProfileCompleteModule {}

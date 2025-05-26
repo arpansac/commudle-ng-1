@@ -118,34 +118,6 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
     });
   }
 
-  // submitStepOne() {
-  //   this.usersService.updateTags({ tags: this.tags }).subscribe(() => {
-  //     this.authWatchService.updateSignedInUser();
-  //     this.gtm.dataLayerPushEvent('complete_your_profile_step_one', {
-  //       com_skills: this.tagsDialog.toString(),
-  //     });
-  //   });
-  //   //update username
-  //   this.userProfileManagerService.setUpdateUsername(true);
-  // }
-
-  // addSkill() {
-  //   if (this.skillInput.trim() !== '' && !this.selectedSkills.includes(this.skillInput.trim())) {
-  //     this.selectedSkills.push(this.skillInput.trim());
-  //     this.skillInput = '';
-  //   }
-  // }
-
-  // removeSkill(index: number) {
-  //   this.selectedSkills.splice(index, 1);
-  // }
-
-  // addSuggestedSkill(skill: string) {
-  //   if (!this.selectedSkills.includes(skill)) {
-  //     this.selectedSkills.push(skill);
-  //   }
-  // }
-
   goToNextStep() {
     this.profileStepOneForm.markAllAsTouched();
     const goals = this.profileStepOneForm.get('goals').value || [];

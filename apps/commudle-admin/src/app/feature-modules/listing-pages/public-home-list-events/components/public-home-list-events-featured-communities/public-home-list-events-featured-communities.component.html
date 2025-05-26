@@ -29,7 +29,8 @@
     >
       <div class="featured-communities-card" *ngFor="let featuredCommunity of featuredCommunities">
         <commudle-featured-communities-card
-          [featuredCommunity]="featuredCommunity"
+          [featuredCommunity]="featuredCommunity.community"
+          [communityFeaturedReason]="featuredCommunity.reason"
           [horizontalScroll]="isMobileView || showCardsHorizontal"
         ></commudle-featured-communities-card>
       </div>

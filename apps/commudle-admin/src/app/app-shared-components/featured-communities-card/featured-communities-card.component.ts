@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { PublicCommunityModule } from 'apps/commudle-admin/src/app/feature-modules/public-community/public-community.module';
-import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
+import { ICommunity } from 'apps/shared-models/community.model';
 @Component({
   selector: 'commudle-featured-communities-card',
   standalone: true,
@@ -23,8 +23,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
   styleUrls: ['./featured-communities-card.component.scss'],
 })
 export class FeaturedCommunitiesCardComponent implements OnInit {
-  @Input() featuredCommunity: IFeaturedItems;
+  @Input() featuredCommunity: ICommunity;
+  @Input() communityFeaturedReason: string;
   @Input() horizontalScroll = false;
+  @Input() showJoinBtnBottom = false;
   faCheck = faCheck;
   faPlus = faPlus;
   constructor() {}
