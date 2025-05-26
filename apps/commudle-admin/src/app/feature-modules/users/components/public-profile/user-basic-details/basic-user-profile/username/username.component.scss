@@ -19,3 +19,7 @@
 .mandatory-field {
   @apply com-text-red-500 com-ml-0.5;
 }
+
+input:hover {
+  @apply com-bg-gray-50 #{!important};
+}

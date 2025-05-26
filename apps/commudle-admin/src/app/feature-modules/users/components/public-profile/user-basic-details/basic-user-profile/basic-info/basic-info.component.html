@@ -86,6 +86,14 @@
           type="text"
         />
       </label>
+      <span
+        *ngIf="
+          (basicInfoForm['controls'].location.touched || basicInfoForm.get('location').value) &&
+          basicInfoForm['controls'].location.invalid
+        "
+      >
+        <commudle-alert [error]="true" [errorMessage]="'Required field'"></commudle-alert>
+      </span>
     </div>
   </div>
 
@@ -116,13 +124,21 @@
   <div class="row">
     <div class="gender-input">
       <label class="gender">
-        Gender
+        Gender<span class="mandatory-field">*</span>
         <nb-radio-group formControlName="gender" name="gender" class="com-flex">
           <nb-radio value="male" class="!com-flex">Male</nb-radio>
           <nb-radio value="female" class="!com-flex">Female</nb-radio>
           <nb-radio value="prefer_not_to_answer" class="!com-flex">Other/Prefer Not To answer</nb-radio>
         </nb-radio-group>
       </label>
+      <span
+        *ngIf="
+          (basicInfoForm['controls'].gender.touched || basicInfoForm.get('gender').value) &&
+          basicInfoForm['controls'].gender.invalid
+        "
+      >
+        <commudle-alert [error]="true" [errorMessage]="'Required field'"></commudle-alert>
+      </span>
     </div>
   </div>
 </form>
