@@ -360,13 +360,21 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   increaseQuantity(): void {
     this.quantity++;
-    this.updatePurchaseOrder();
+    if (this.discountCodeApplied) {
+      this.applyDiscountCode();
+    } else {
+      this.updatePurchaseOrder();
+    }
   }
 
   decreaseQuantity(): void {
     if (this.quantity > this.minQuantity) {
       this.quantity--;
-      this.updatePurchaseOrder();
+      if (this.discountCodeApplied) {
+        this.applyDiscountCode();
+      } else {
+        this.updatePurchaseOrder();
+      }
     }
   }
 
@@ -383,7 +391,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     if (!this.productPrice?.min_subscription_duration_months) return;
 
     this.subscriptionMonths += this.productPrice.min_subscription_duration_months;
-    this.updatePurchaseOrder();
+    if (this.discountCodeApplied) {
+      this.applyDiscountCode();
+    } else {
+      this.updatePurchaseOrder();
+    }
   }
 
   decreaseMonths(): void {
@@ -392,7 +404,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     if (this.subscriptionMonths <= this.productPrice.min_subscription_duration_months) return;
 
     this.subscriptionMonths -= this.productPrice.min_subscription_duration_months;
-    this.updatePurchaseOrder();
+    if (this.discountCodeApplied) {
+      this.applyDiscountCode();
+    } else {
+      this.updatePurchaseOrder();
+    }
   }
 
   private openLoadingDialog(): void {
@@ -426,7 +442,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
-        amount: this.totalPrice,
+        amount: (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths,
         usersCount: 1,
         edfegId: null,
         eventId: null,
