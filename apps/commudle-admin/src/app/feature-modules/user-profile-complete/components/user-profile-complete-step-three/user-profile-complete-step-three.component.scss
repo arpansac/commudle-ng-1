@@ -1,5 +1,5 @@
 .container {
-  @apply com-py-6;
+  @apply com-py-6 md:com-px-0 com-px-4;
 }
 
 .step-number {
@@ -21,7 +21,7 @@
 .community-heading,
 .speakers-heading,
 .events-heading {
-  @apply com-text-lg com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
+  @apply md:com-text-lg com-text-base com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
 }
 
 .community-container,
