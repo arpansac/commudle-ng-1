@@ -11,6 +11,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { IAttachedFile } from 'apps/shared-models/attached-file.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import * as confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-user-profile-complete-step-two',
@@ -28,6 +29,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   faArrowRight = faArrowRight;
   subscriptions: Subscription[] = [];
+  canvas = <HTMLCanvasElement>document.getElementById('confetti');
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -80,6 +82,14 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
         com_gender: this.currentUser.gender,
       });
     }
+    confetti.create(this.canvas, { resize: true })({
+      shapes: ['square', 'circle', 'star'],
+      particleCount: 1000,
+      spread: 360,
+      zIndex: 9999,
+      disableForReducedMotion: true,
+      ticks: 500,
+    });
     this.goToNextStep();
   }
 

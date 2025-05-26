@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { NbButtonModule, NbToastrService } from '@commudle/theme';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -10,6 +8,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { EDomain, EExperienceLevel } from '@commudle/shared-models';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-user-profile-complete-step-one',
@@ -28,6 +27,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   showDomainError = false;
   profileStepOneForm;
   staticAssets = staticAssets;
+  faArrowRight = faArrowRight;
 
   private destroy$ = new Subject<void>();
 
@@ -147,6 +147,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   // }
 
   goToNextStep() {
+    this.profileStepOneForm.markAllAsTouched();
     const goals = this.profileStepOneForm.get('goals').value || [];
     const experienceLevel = this.profileStepOneForm.get('experience_level').value;
     const domain = this.profileStepOneForm.get('user_domain').value;
@@ -154,75 +155,26 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
     this.showGoalsError = false;
     this.showSkillsError = false;
     this.showExperienceLevelError = false;
+    this.showDomainError = false;
 
     if (goals.length < 4) {
       this.showGoalsError = true;
-      return;
     }
 
     if (this.tags.length === 0) {
       this.showSkillsError = true;
-      return;
     }
 
     if (!experienceLevel) {
       this.showExperienceLevelError = true;
-      return;
     }
 
     if (!domain) {
       this.showDomainError = true;
-      return;
     }
 
-    this.submitStepOne();
+    if (goals.length > 4 && this.tags.length > 0 && experienceLevel && domain) {
+      this.submitStepOne();
+    }
   }
-
-  // submitStepOne() {
-  //   // Get the updated user tags
-  //   this.tags = this.tagsDialog;
-  //   // When the save button is clicked, update the tags
-  //   this.usersService.updateTags({ tags: this.tags }).subscribe(() => {
-  //     this.authWatchService.updateSignedInUser();
-  //     this.gtm.dataLayerPushEvent('complete_your_profile_step_one', {
-  //       com_skills: this.tagsDialog.toString(),
-  //     });
-  //   });
-  //   //update username
-  //   this.userProfileManagerService.setUpdateUsername(true);
-  // }
-
-  // gtmServiceData(userData) {
-  //   this.currentUser = userData;
-  // }
-
-  // submitStepTwo() {
-  //   this.userProfileManagerService.updateUserDetails(false);
-  //   if (this.currentUser) {
-  //     this.gtm.dataLayerPushEvent('complete_your_profile_step_two', {
-  //       com_name: this.currentUser.name,
-  //       com_tagline: this.currentUser.designation,
-  //       com_gender: this.currentUser.gender,
-  //     });
-  //   }
-  // }
-
-  // submitStepThree() {
-  //   this.userProfileManagerService.updateUserDetails(false);
-  //   this.gtm.dataLayerPushEvent('complete_your_profile_step_three', {
-  //     com_profile_completed: true,
-  //   });
-  //   confetti.create(this.canvas, { resize: true })({
-  //     shapes: ['square', 'circle', 'star'],
-  //     particleCount: 1000,
-  //     spread: 360,
-  //     zIndex: 9999,
-  //     disableForReducedMotion: true,
-  //     ticks: 500,
-  //   });
-  // }
-
-  // checkUsername(validUsername) {
-  //   this.validUsername = validUsername;
-  // }
 }

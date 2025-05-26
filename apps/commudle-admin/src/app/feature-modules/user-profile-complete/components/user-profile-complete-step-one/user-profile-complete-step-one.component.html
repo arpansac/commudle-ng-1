@@ -50,17 +50,6 @@
               [showSuggestedTags]="true"
             ></app-tag>
             <commudle-alert *ngIf="showSkillsError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-
-            <!-- <h4 class="com-text-sm com-font-medium com-mb-2">Suggested Skills</h4> -->
-            <!-- <div class="com-flex com-flex-wrap com-gap-2">
-          <div
-            *ngFor="let skill of suggestedSkills"
-            class="com-bg-gray-100 com-px-3 com-py-1 com-rounded-full com-cursor-pointer"
-            (click)="addSuggestedSkill(skill)"
-          >
-            {{ skill }}
-          </div>
-        </div> -->
           </div>
 
           <div class="experience-level-section">
@@ -90,7 +79,9 @@
           </div>
 
           <div class="continue-btn">
-            <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">Continue</button>
+            <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
+              Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
+            </button>
           </div>
         </div>
       </div>
