@@ -29,7 +29,6 @@ export class UserAccountMenuComponent implements OnInit {
   faLightbulb = faLightbulb;
   faFlask = faFlask;
   faSuitcase = faSuitcase;
-  faNewspaper = faNewspaper;
   faAudioDescription = faAudioDescription;
   faArrowRightFromBracket = faArrowRightFromBracket;
   faLink = faLink;
