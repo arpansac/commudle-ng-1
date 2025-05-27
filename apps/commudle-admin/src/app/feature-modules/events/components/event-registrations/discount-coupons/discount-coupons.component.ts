@@ -53,7 +53,7 @@ export class DiscountCouponsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.discountCodesService.indexDiscountCodes(this.event.id);
+    this.discountCodesService.indexDiscountCodesByEvent(this.event.id);
     this.getDiscountCoupons();
   }
 

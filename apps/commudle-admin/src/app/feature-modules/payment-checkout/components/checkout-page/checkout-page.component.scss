@@ -27,6 +27,13 @@
         }
       }
 
+      .discount-container {
+        @apply com-pt-2 com-pb-4 com-px-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        .value {
+          @apply com-flex com-gap-4;
+        }
+      }
+
       .recipient {
         .heading {
           @apply com-px-4 com-py-2 com-text-base com-italic;
@@ -86,6 +93,48 @@
     }
     .secondary-text {
       @apply com-text-xs com-font-normal com-italic;
+    }
+  }
+}
+
+.right-column {
+  .company-details-card {
+    @apply com-mb-4;
+    nb-card-body {
+      @apply com-p-0;
+    }
+    .company-form-container {
+      @apply com-my-4 com-px-4;
+      div {
+        @apply com-mb-2;
+        .required {
+          @apply com-text-red-500;
+        }
+      }
+    }
+
+    .company-details {
+      .company-name,
+      .address,
+      .tax-info,
+      .pin-code {
+        @apply com-flex com-justify-between com-py-2 com-px-4;
+        span {
+          @apply com-text-base com-font-medium;
+        }
+        .heading {
+          @apply com-text-gray-500;
+        }
+        .value {
+          @apply com-text-right;
+        }
+      }
+
+      .address,
+      .tax-info,
+      .pin-code {
+        @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      }
     }
   }
 }

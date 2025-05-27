@@ -1,0 +1,30 @@
+section {
+  .filter-container {
+    @apply com-flex com-gap-4 com-items-center;
+
+    input {
+      @apply com-flex-1;
+    }
+
+    select {
+      @apply com-min-w-48 com-p-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
+    }
+  }
+
+  .table-container {
+    @apply com-overflow-x-auto;
+
+    table {
+      @apply com-w-full com-border-collapse;
+
+      th,
+      td {
+        @apply com-border com-border-solid com-border-Bright-Gray com-p-2 com-text-left;
+      }
+
+      th {
+        @apply com-bg-gray-100;
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { EDbModels } from './db-models.enum';
 import { IUser } from './user.model';
 
 export interface IDiscountCode {
@@ -14,6 +15,7 @@ export interface IDiscountCode {
   max_users_count: number;
   discount_applied_count: number;
   discount_used_count: number;
+  object_type: EDbModels;
 }
 
 export enum EDiscountType {
