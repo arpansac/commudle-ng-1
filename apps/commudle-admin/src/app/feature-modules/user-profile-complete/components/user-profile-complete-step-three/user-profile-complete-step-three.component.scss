@@ -34,3 +34,7 @@
 .communities-list-cards {
   @apply com-bg-white com-p-3 com-rounded-xl;
 }
+
+app-loading-spinner {
+  @apply md:com-mt-6 md:com-mb-10 com-my-5;
+}
