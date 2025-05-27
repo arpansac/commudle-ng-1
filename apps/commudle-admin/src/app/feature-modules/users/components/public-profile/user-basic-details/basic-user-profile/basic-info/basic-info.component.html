@@ -1,23 +1,22 @@
 <form [formGroup]="basicInfoForm">
   <div class="row">
     <div>
-      <div class="com-flex com-mb-4">
+      <div class="profile-upload-container">
         <div *ngIf="uploadedProfilePicture === null" class="uploaded-profile"></div>
         <div *ngIf="uploadedProfilePicture" class="uploaded-profile-image">
           <img alt="Profile Picture" src="{{ uploadedProfilePicture }}" title="Profile Picture" class="center" />
         </div>
         <!-- input for file upload -->
-        <div class="com-w-full">
+        <div class="upload-wrapper">
           <div class="image-text-details">
             <input (change)="displaySelectedProfileImage($event)" type="file" accept="image/*" class="image-input" />
-            <div class="com-text-center com-absolute com-top-8 com-right-0 com-left-0 com-m-auto com-text-gray-400">
-              <fa-icon [icon]="faFileImage" class="com-text-5xl"></fa-icon>
-              <p>
-                Drag file here
-                <br />
-                or<span class="com-text-primary-500"> BROWSE </span>
-              </p>
-            </div>
+            <label class="upload-area">
+              <div class="upload-content">
+                <button nbButton class="upload-picture" size="small" shape="semi-round">Upload Picture</button>
+                <p class="file-info">Accepted file types: JPG, JPEG, PNG</p>
+                <p class="file-info">Max file size 2MB</p>
+              </div>
+            </label>
           </div>
         </div>
       </div>
