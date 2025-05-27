@@ -75,7 +75,7 @@
             <h3 class="domain-heading">Select Your domain<span class="mandatory-field">*</span></h3>
             <select formControlName="user_domain" class="domain-select">
               <option value="" selected disabled>Select your domain</option>
-              <option *ngFor="let domain of EDomain | keyvalue" [value]="domain.key">
+              <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
                 {{ domain.value }}
               </option>
             </select>

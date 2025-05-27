@@ -88,10 +88,14 @@ export enum EExperienceLevel {
 }
 
 export enum EDomain {
-  web_developemnt = 'Web Developemnt',
-  devops = 'Devops',
-  app_developemnt = 'App developemnt',
-  javascript = 'Javascript',
-  angular = 'Angular',
-  react = 'React',
+  software_developemnt = 'Software Development',
+  product_management = 'Product Management',
+  cloud_and_devOps = 'Cloud & DevOps',
+  ui_ux_design = 'UI/UX & Design',
+  data_science_ai = 'Data Science & AI',
+  cybersecurity = 'Cybersecurity',
+  testing = 'Testing',
+  devRel_and_community = 'DevRel & Community',
+  hardware_and_iot = 'Hardware & IoT',
+  other = 'Other',
 }
