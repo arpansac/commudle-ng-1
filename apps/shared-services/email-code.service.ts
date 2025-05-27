@@ -10,10 +10,9 @@ import { ApiRoutesService } from './api-routes.service';
 export class EmailCodeService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  sendVerificationEmail(email: string, recaptchaToken: string): Observable<any> {
+  sendVerificationEmail(email: string): Observable<any> {
     return this.http.post<any>(this.apiRoutesService.getRoute(API_ROUTES.EMAIL_CODE_AUTH.CREATE), {
       email,
-      recaptcha_token: recaptchaToken,
     });
   }
 

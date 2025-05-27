@@ -104,41 +104,28 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   sendVerificationEmail(): void {
     this.isLoading = true;
-
-    this.recaptchaV3Service.execute('login').subscribe(
-      (token) => {
-        console.log('🚀 ~ LoginComponent ~ sendVerificationEmail ~ token:', token);
-        this.token = token;
-        this.subscriptions.push(
-          this.emailCodeService.sendVerificationEmail(this.loginForm.value.email, this.token).subscribe(
-            (response) => {
-              if (response.new_user) {
-                this.gtm.dataLayerPushEvent('new-user', {});
-              }
-              if (!(response.consent || this.loginForm.value.consent_privacy_tnc)) {
-                this.openDialog('code');
-              } else {
-                this.isEmailSent = true;
-              }
-              this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
-            },
-            () => this.nbToastrService.danger('Error in generating code, try again in a few minutes!', 'Error'),
-            () => (this.isLoading = false),
-          ),
-        );
-      },
-      (error) => {
-        this.nbToastrService.danger('reCAPTCHA verification failed. Please try again' + error);
-        this.isLoading = false;
-        console.error('reCAPTCHA verification failed', error);
-      },
+    this.subscriptions.push(
+      this.emailCodeService.sendVerificationEmail(this.loginForm.value.email).subscribe(
+        (response) => {
+          if (response.new_user) {
+            this.gtm.dataLayerPushEvent('new-user', {});
+          }
+          if (!(response.consent || this.loginForm.value.consent_privacy_tnc)) {
+            this.openDialog('code');
+          } else {
+            this.isEmailSent = true;
+          }
+          this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
+        },
+        () => this.nbToastrService.danger('Error in generating code, try again in a few minutes!', 'Error'),
+        () => (this.isLoading = false),
+      ),
     );
   }
 
   loginUser(): void {
     this.isLoading = true;
-
-    this.recaptchaV3Service.execute('login').subscribe(
+    this.recaptchaV3Service.execute('login_email').subscribe(
       (token) => {
         this.token = token;
         const loginData = {
@@ -202,11 +189,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 if (data.new_user) {
                   this.gtm.dataLayerPushEvent('new-user', {});
                 }
-                // if (data.auth_token === null || data.auth_token === '' || data.auth_token === undefined) {
-                //   this.openDialog('google');
-                // } else {
-                //   this.setCookie(data.auth_token, 'google');
-                // }
+                if (data.auth_token === null || data.auth_token === '' || data.auth_token === undefined) {
+                  this.openDialog('google');
+                } else {
+                  this.setCookie(data.auth_token, 'google');
+                }
                 this.isLoading = false;
               },
               (error) => {
