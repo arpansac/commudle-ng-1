@@ -38,7 +38,7 @@ a {
         }
 
         .mini-description {
-          @apply md:com-text-xs com-text-sm com-font-normal com-text-gray-500 com-mt-0 md:com-mb-0 com-mb-4 com-line-clamp-2 md:com-h-auto com-h-[38px];
+          @apply md:com-text-xs com-text-sm com-font-normal com-text-gray-500 com-mt-0 com-mb-3 com-line-clamp-2;
         }
       }
     }
@@ -49,7 +49,7 @@ a {
 }
 
 .follow-btn-bottom-toggle {
-  @apply com-mt-4 md:com-ml-0;
+  @apply com-mt-0 md:com-ml-0;
 }
 
 .follow-btn-right-toggle {

@@ -54,9 +54,9 @@
     }
 
     .featured-communities {
-      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-p-0 md:com-p-4 md:com-pt-0 md:com-block;
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-p-0 md:com-px-4 md:com-py-0 md:com-block;
       .featured-communities-card {
-        @apply com-m-0 md:com-rounded-none com-rounded-xl com-p-0 md:com-py-3;
+        @apply com-m-0 md:com-rounded-none com-rounded-xl com-p-0 md:com-pt-3;
       }
       .featured-communities-card:not(:last-child) {
         @apply com-border-0 md:com-border-b com-border-b-0 com-border-solid com-border-Bright-Gray;
