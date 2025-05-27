@@ -58,7 +58,6 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
           goals: data.goals || [],
         });
 
-        // Set tags from user data
         this.tags = [];
         if (data.tags && data.tags.length > 0) {
           data.tags.forEach((tag) => {
@@ -68,7 +67,6 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
           });
         }
 
-        // Get goals list
         this.getGoals();
       }
     });
