@@ -1,15 +1,25 @@
 .details-section {
-  @apply com-flex com-justify-between com-items-center com-py-0;
+  @apply com-flex com-justify-between com-items-center com-py-4;
   .details {
-    @apply com-flex com-gap-3 com-items-center;
+    @apply com-flex com-flex-col;
     .hackathon-name {
-      @apply com-text-Yankees-Blue com-text-4xl com-font-bold;
+      @apply com-text-Yankees-Blue com-text-4xl com-font-bold com-mt-0 com-mb-4;
     }
-  }
-  .social-links {
-    @apply com-flex com-gap-6 com-items-center;
-    a {
-      @apply com-text-xl com-w-9 com-h-9 com-grid com-items-center com-justify-center com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-text-primary-500 hover:com-shadow;
+    .community-badge-social-links {
+      @apply com-flex;
+
+      .hackathon-badge {
+        @apply com-flex-shrink-0 com-max-w-[235px];
+        ::ng-deep .name {
+          @apply com-max-w-[200px] com-truncate;
+        }
+      }
+      .social-links {
+        @apply com-flex com-gap-4 com-items-center com-ml-4;
+        a {
+          @apply com-text-xl com-w-9 com-h-9 com-grid com-items-center com-justify-center com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-text-primary-500 hover:com-shadow;
+        }
+      }
     }
   }
 }
