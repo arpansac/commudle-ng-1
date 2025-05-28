@@ -124,6 +124,7 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -257,6 +258,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     CommunitiesCardComponent,
     ListingPageHeaderComponent,
     UserExpertTickComponent,
+    RecaptchaV3Module,
   ],
   providers: [
     AppInitService,
@@ -299,6 +301,10 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
           },
         ],
       } as AuthServiceConfig,
+    },
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useValue: environment.recaptcha_site_key,
     },
     {
       provide: ErrorHandler,
