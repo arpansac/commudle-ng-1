@@ -1,0 +1,116 @@
+<section>
+  <div class="sidebar">
+    <commudle-sidebar
+      [expandedWidth]="ESidebarWidth.XL"
+      [eventName]="sidebarEventName"
+      [showExpandedButton]="false"
+      heading="Advertisement Dashboard"
+      [isExpanded]="true"
+      [forWindow]="false"
+      [showExpandedButton]="false"
+    >
+      <div class="action-buttons">
+        <div class="header-icons">
+          <a [routerLink]="['/campaigns']" class="back-admin">
+            <div class="icon">
+              <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
+            </div>
+            <div class="heading">Back to Admin Panel</div>
+          </a>
+        </div>
+        <div class="category">
+          <a
+            class="action-button"
+            [routerLink]="['./']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <div class="number">1</div>
+            <div class="heading">Select Campaign</div>
+          </a>
+          <div>
+            <a
+              [routerLink]="['order-setup']"
+              fragment="user-information"
+              routerLinkActive="active"
+              class="action-button"
+              [ngClass]="{ active: lastSegment === 'order-setup', disabled: !isEditMode }"
+            >
+              <div class="number">2</div>
+              <div class="heading">Order Setup</div>
+            </a>
+            <div class="sub-headings">
+              <a
+                [routerLink]="['order-setup']"
+                fragment="user-information"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
+                <div class="icon"><fa-icon [icon]="icons.faUser"></fa-icon></div>
+                <div class="heading">User Information</div>
+              </a>
+              <a
+                [routerLink]="['order-setup']"
+                fragment="campaign-information"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
+                <div class="icon"><fa-icon [icon]="icons.faCircleInfo"></fa-icon></div>
+                <div class="heading">Campaign Information</div>
+              </a>
+              <a
+                [routerLink]="['order-setup']"
+                fragment="schedule"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
+                <div class="icon"><fa-icon [icon]="icons.faCalendar"></fa-icon></div>
+                <div class="heading">Schedule</div>
+              </a>
+              <a
+                [routerLink]="['order-setup']"
+                fragment="price"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
+                <div class="icon"><fa-icon [icon]="icons.faSackDollar"></fa-icon></div>
+                <div class="heading">Budget</div>
+              </a>
+              <a
+                [routerLink]="['order-setup']"
+                fragment="creative-assets"
+                class="action-button"
+                [ngClass]="{ disabled: !isEditMode }"
+              >
+                <div class="icon"><fa-icon [icon]="icons.faFileImage"></fa-icon></div>
+                <div class="heading">Creative Assets</div>
+              </a>
+            </div>
+          </div>
+          <a
+            [routerLink]="['order-confirmation']"
+            routerLinkActive="active"
+            [ngClass]="{ active: lastSegment === 'order-confirmation', disabled: !isEditMode }"
+            class="action-button"
+          >
+            <div class="number">3</div>
+            <div class="heading">Order Confirmation</div>
+          </a>
+        </div>
+      </div>
+    </commudle-sidebar>
+  </div>
+  <div class="right-section">
+    <div class="header">
+      <span class="step-one">New Order</span>
+      &nbsp;
+      <fa-icon [icon]="icons.faAnglesRight"></fa-icon>
+      &nbsp;
+      <span class="step-two">{{ slug }}</span>
+    </div>
+    <div class="form">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</section>

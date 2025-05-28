@@ -1,0 +1,70 @@
+.container-scroll {
+  @apply com-m-0 com-border-none;
+  nb-card-body {
+    @apply com-p-0;
+    .heading {
+      @apply com-mt-0 md:com-mb-8 com-mb-4 com-mx-0 md:com-p-0 com-px-4 com-py-3 com-flex com-flex-col com-bg-gradient-to-l com-from-gray-100 com-to-white md:com-rounded-t-xl com-rounded-none;
+
+      button {
+        @apply com-bg-white com-text-Yankees-Blue com-mr-3 com-rounded-xl md:com-h-12 md:com-w-12 com-border-none;
+
+        fa-icon {
+          @apply com-text-lg;
+        }
+      }
+
+      div {
+        @apply com-flex com-flex-col;
+        .title {
+          @apply com-flex com-m-0;
+          a {
+            @apply md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+          }
+        }
+        .sub-heading {
+          @apply com-text-sm com-font-normal com-text-gunmetal com-m-0;
+        }
+      }
+    }
+
+    .featured-communities-scroll {
+      @apply com-flex com-flex-nowrap com-overflow-x-auto com-mx-4 com-my-0 com-gap-4 com-mt-3 com-p-0;
+      .featured-communities-card {
+        @apply com-m-0 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-4 md:com-w-[318px] com-w-[304px];
+      }
+    }
+  }
+}
+
+.container {
+  @apply com-m-0;
+  nb-card-body {
+    @apply com-p-0;
+    .heading {
+      @apply com-mt-0 com-mb-4 com-mx-0 md:com-p-4 com-px-4 com-py-3 com-flex com-flex-col com-bg-gradient-to-l com-from-gray-100 com-to-white md:com-rounded-t-xl com-rounded-none;
+      .title {
+        @apply com-flex com-m-0;
+        a {
+          @apply md:com-text-sm com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+        }
+      }
+      .sub-heading {
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
+      }
+    }
+
+    .featured-communities {
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-p-0 md:com-p-4 md:com-pt-0 md:com-block;
+      .featured-communities-card {
+        @apply com-m-0 md:com-rounded-none com-rounded-xl com-p-0 md:com-py-3;
+      }
+      .featured-communities-card:not(:last-child) {
+        @apply com-border-0 md:com-border-b com-border-b-0 com-border-solid com-border-Bright-Gray;
+      }
+    }
+  }
+}
+
+.skeleton-cards {
+  @apply com-p-0 com-px-4;
+}

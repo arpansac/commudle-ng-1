@@ -1,0 +1,79 @@
+<div class="builds" id="latest-builds">
+  <div class="heading-filter">
+    <div class="header-text">
+      <h3 class="title">
+        <a [routerLink]="'.'" fragment="latest-builds">Latest Builds</a>
+      </h3>
+      <h4 class="sub-heading">Explore latest projects and get inspired</h4>
+    </div>
+    <app-tag
+      *ngIf="selectedTags.length > 0"
+      [tags]="selectedTags"
+      [backgroundColor]="'com-bg-[#FCEDE7]'"
+      [size]="'tiny'"
+      [fontColor]="'com-text-[#C05324]'"
+    ></app-tag>
+    <div class="filters">
+      <button
+        nbButton
+        [status]="isAllFilterSelected ? 'primary' : 'basic'"
+        [ngStyle]="{ color: isAllFilterSelected ? 'white' : 'black' }"
+        class="all-filter-button"
+        shape="round"
+        size="tiny"
+        (click)="allFilterSelected()"
+      >
+        All
+      </button>
+      <nb-select
+        placeholder="Most Popular"
+        size="small"
+        shape="round"
+        status="basic"
+        class="most-popular-filter"
+        [(ngModel)]="timePeriod"
+        (selectedChange)="filter()"
+        filled
+        [status]="month || year || allTime ? 'primary' : 'basic'"
+        [ngStyle]="{ color: isAllFilterSelected ? 'black' : 'white' }"
+      >
+        <nb-option value="month"> Highest upvoted this month</nb-option>
+        <nb-option value="year">Highest upvoted this year</nb-option>
+        <nb-option value="all-time">Highest upvoted all time</nb-option>
+      </nb-select>
+    </div>
+  </div>
+  <app-skeleton-cards
+    [cards]="10"
+    [ImageShapeSquare]="true"
+    [ImageShapeCircle]="false"
+    *ngIf="skeletonLoaderCard"
+  ></app-skeleton-cards>
+  <div
+    *appBreakpoints="'>lg'"
+    (scrolled)="getCommunityBuilds()"
+    [infiniteScrollDisabled]="communityBuilds.length >= total"
+    appInfiniteScroll
+  >
+    <div *ngFor="let communityBuild of communityBuilds" class="builds-card">
+      <app-community-build-card [communityBuild]="communityBuild"></app-community-build-card>
+    </div>
+    <app-loading-spinner *ngIf="loading" class="com-mt-4"></app-loading-spinner>
+  </div>
+  <div *appBreakpoints="'<=lg'">
+    <div *ngFor="let communityBuild of communityBuilds" class="builds-card">
+      <app-community-build-card [communityBuild]="communityBuild"></app-community-build-card>
+    </div>
+    <app-loading-spinner *ngIf="loading" class="com-mt-4"></app-loading-spinner>
+    <button
+      (click)="getCommunityBuilds()"
+      *ngIf="page_info?.has_next_page"
+      fullWidth
+      ghost
+      nbButton
+      class="view-more-button"
+    >
+      View More
+    </button>
+  </div>
+</div>

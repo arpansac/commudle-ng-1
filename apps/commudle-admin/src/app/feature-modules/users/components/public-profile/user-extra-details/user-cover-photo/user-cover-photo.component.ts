@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@commudle/theme';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-cover-photo',
   templateUrl: './user-cover-photo.component.html',
   styleUrls: ['./user-cover-photo.component.scss'],
 })
-export class UserCoverPhotoComponent implements OnInit {
+export class UserCoverPhotoComponent implements OnInit, OnDestroy {
   @Input() user: IUser;
 
   @Output() coverImageUpdate: EventEmitter<any> = new EventEmitter<any>();
@@ -22,6 +23,8 @@ export class UserCoverPhotoComponent implements OnInit {
 
   @ViewChild('editCoverImage') editCoverImage: TemplateRef<any>;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private dialogService: NbDialogService,
@@ -30,7 +33,12 @@ export class UserCoverPhotoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data));
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onCoverImageDialogOpen(): void {

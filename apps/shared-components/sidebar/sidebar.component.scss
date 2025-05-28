@@ -1,5 +1,5 @@
 .header {
-  @apply com-h-12;
+  @apply com-h-12 com-sticky com-top-0 com-z-20;
 }
 .toggle {
   fa-icon {
@@ -8,17 +8,50 @@
 }
 .sidebar {
   transition: 0.3s;
-  @apply com-fixed com-left-0 com-top-16 com-pt-2 com-h-full com-w-16 com-z-50 com-shadow-Card com-bg-white com-text-black;
+
+  @apply com-pt-0 com-z-20 com-bg-white com-text-black com-overflow-auto;
+  &.hideFullSidebar {
+    @apply com-w-0;
+  }
+  &.forWindow {
+    @apply com-fixed md:com-h-[calc(100dvh-70px)] com-h-[calc(100dvh-130px)];
+  }
+  &.notForWindow {
+    @apply com-h-full;
+  }
+  &.left {
+    @apply com-left-0;
+  }
+  &.right {
+    @apply com-right-0;
+  }
+  &.showBorder {
+    @apply com-border-y-0 com-border-x com-border-solid com-border-Bright-Gray;
+  }
 
   &.expanded {
-    @apply com-w-40;
+    &.xsmall {
+      @apply com-w-[60px];
+    }
+    &.small {
+      @apply com-w-40;
+    }
+    &.medium {
+      @apply com-w-48;
+    }
+    &.large {
+      @apply com-w-52;
+    }
+    &.extraLarge {
+      @apply com-w-80;
+    }
 
     .header {
       h1 {
-        @apply com-flex com-ml-0 com-cursor-pointer;
+        @apply com-flex com-ml-0 com-cursor-pointer com-justify-center;
       }
       .toggle {
-        @apply com-ml-0;
+        @apply com-ml-auto;
       }
     }
   }

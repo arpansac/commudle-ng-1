@@ -1,0 +1,46 @@
+.round-selection-mailer {
+  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-full;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+
+    span {
+      @apply com-text-base com-font-medium com-text-Yankees-Blue;
+    }
+
+    button {
+      @apply com-border-0 com-bg-transparent;
+    }
+
+    nb-icon {
+      @apply com-text-Yankees-Blue;
+    }
+  }
+
+  .round-select {
+    @apply com-mt-6;
+    select {
+      @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded-lg com-px-2 com-py-2   com-cursor-pointer com-w-full;
+    }
+  }
+
+  .message {
+    @apply com-mt-6;
+  }
+
+  editor,
+  select {
+    @apply com-mt-3;
+  }
+
+  label {
+    @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+  }
+
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center com-gap-6;
+  }
+
+  .mandatory-field {
+    @apply com-text-red-500;
+  }
+}

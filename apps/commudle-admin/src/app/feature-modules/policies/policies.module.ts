@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { PoliciesRoutingModule } from './policies-routing.module';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { NbCardModule } from '@commudle/theme';
-import { TermsAndConditionsComponent } from './terms-and-conditions/terms-and-conditions.component';
-
+import { PoliciesComponent } from './component/policies/policies.component';
+import { MarkdownModule } from 'ngx-markdown';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
-  declarations: [PrivacyPolicyComponent, TermsAndConditionsComponent],
+  declarations: [PoliciesComponent],
   imports: [
     CommonModule,
     PoliciesRoutingModule,
-
     // nebular
-    NbCardModule
-  ]
+    NbCardModule,
+    MarkdownModule.forRoot({ loader: HttpClient }),
+  ],
+  providers: [],
 })
-export class PoliciesModule { }
+export class PoliciesModule {}

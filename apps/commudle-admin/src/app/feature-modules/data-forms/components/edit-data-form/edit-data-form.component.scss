@@ -18,7 +18,6 @@
     .card-body {
       input {
         @apply com-mt-2 com-mb-0;
-        background-color: white;
       }
 
       .description {
@@ -26,7 +25,6 @@
         label {
           textarea {
             @apply com-mt-2;
-            background-color: white;
           }
         }
       }
@@ -61,12 +59,10 @@
 
       textarea {
         @apply com-mb-0 com-mt-1;
-        background-color: white;
       }
 
       input {
         @apply com-mt-2 com-mb-0;
-        background-color: white;
       }
 
       label {
@@ -117,10 +113,10 @@
     }
 
     .question-form-footer {
-      @apply com-flex md:com-flex-row com-text-primary-500  com-gap-3 com-mt-12 com-justify-between com-items-end md:com-items-center;
+      @apply com-flex md:com-flex-row com-text-primary-500 com-gap-3 com-mt-12 com-justify-between com-items-end md:com-items-center;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-pl-0;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -140,7 +136,7 @@
       }
 
       .delete-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-p-0;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -174,4 +170,18 @@
       }
     }
   }
+}
+
+.dropdown {
+  @apply com-w-max com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#eef2f7] com-my-2;
+  select {
+    @apply com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer;
+  }
+  .disable {
+    @apply com-pointer-events-none com-cursor-none;
+  }
+}
+
+.has-response-info {
+  @apply com-my-2;
 }

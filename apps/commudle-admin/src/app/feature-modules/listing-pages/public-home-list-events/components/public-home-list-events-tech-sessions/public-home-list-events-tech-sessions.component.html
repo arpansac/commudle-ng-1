@@ -1,0 +1,33 @@
+<nb-card *ngIf="techSessions.length > 0" id="tech-sessions">
+  <nb-card-body>
+    <div class="heading">
+      <h3 class="title"><a [routerLink]="'.'" fragment="tech-sessions">Latest Tech Talks</a></h3>
+      <h4 class="sub-heading">All the knowledge from event sessions</h4>
+    </div>
+    <app-skeleton-cards *ngIf="showSkeletonCard" [cards]="4" [ImageShapeCircle]="false"></app-skeleton-cards>
+    <div class="tech-sessions custom-scrollbar">
+      <div *ngFor="let session of techSessions" class="tech-sessions-card">
+        <div *appBreakpoints="'>lg'">
+          <commudle-tech-sessions-card [session]="session"></commudle-tech-sessions-card>
+        </div>
+        <div *appBreakpoints="'<=lg'">
+          <commudle-tech-sessions-card [session]="session" [horizontalScroll]="true"></commudle-tech-sessions-card>
+        </div>
+      </div>
+      <div class="load-more">
+        <app-loading-spinner *ngIf="showSpinner && !showSkeletonCard"></app-loading-spinner>
+        <button
+          *ngIf="page_info?.has_next_page"
+          [disabled]="showSpinner"
+          (click)="getTechSessions()"
+          nbButton
+          outline
+          size="small"
+          status="basic"
+        >
+          View More
+        </button>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

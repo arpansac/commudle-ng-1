@@ -1,9 +1,8 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Input, OnInit } from '@angular/core';
-import { NbButtonAppearance } from '@commudle/theme';
+import { NbButtonAppearance, NbComponentStatus } from '@commudle/theme';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
-
 @Component({
   selector: 'app-share-button',
   templateUrl: './share-button.component.html',
@@ -16,11 +15,13 @@ export class ShareButtonComponent implements OnInit {
 
   // Fallback content
   @Input() content: string = '';
+  @Input() disabled = false;
 
   @Input() showText: boolean = true;
   @Input() round: boolean = false;
   @Input() appearance: NbButtonAppearance = 'filled';
   @Input() fullWidth: boolean = false;
+  @Input() status: NbComponentStatus = 'info';
 
   constructor(
     private navigatorShareService: NavigatorShareService,

@@ -10,6 +10,7 @@
 }
 
 .volunteers {
+  @apply com-mx-0 com-my-6;
   table {
     @apply com-w-full md:com-w-3/5;
   }
@@ -33,8 +34,7 @@
 }
 
 h6 {
-  font-weight: 300;
-  margin: 0;
+  @apply com-m-0 com-flex com-items-center;
 }
 
 p {
@@ -48,4 +48,8 @@ table {
 td,
 th {
   @apply com-border com-border-solid com-border-gray-300 com-text-left com-p-2;
+}
+
+nb-option {
+  @apply com-bg-white;
 }

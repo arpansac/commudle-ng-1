@@ -1,20 +1,77 @@
-<div class="base-layout">
-  <div class="container">
-    <div class="one-column-layout">
-      <nb-card class="blog-container">
-        <nb-card-header>
-          <h1>Relating with Developers & Communities</h1>
-          <p>
-            Read and connect with developers, devrels & community managers from their experiences in building
-            communities, helping folks to learn new technologies. From diverse backgrounds, people come together and
-            share how they have built their careers, found opportunities and empowered people around them.
-          </p>
-        </nb-card-header>
-        <nb-card-body>
-          <commudle-blog-card [blogs]="blogs"></commudle-blog-card>
+<div class="blogs-list">
+  <div class="base-layout">
+    <div class="container">
+      <h1 class="main-heading" *ngIf="showFeaturedBlogsSection && page === 1">Blogs from the Developer Ecosystem</h1>
+      <app-loading-spinner *ngIf="isLoadingFeatured"></app-loading-spinner>
+      <div class="two-column-layout medium two-columns" *ngIf="showFeaturedBlogsSection && page === 1">
+        <div class="main-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 0 : 1">
+              <commudle-blog-card
+                [blog]="featuredBlog"
+                [shareButton]="false"
+                [showUserProfile]="true"
+                [fixCardHeight]="false"
+              ></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+        <div class="right-column" *ngIf="!isLoadingFeatured">
+          <div class="featured-blogs-list">
+            <div *ngFor="let featuredBlog of featuredBlogs | slice : 1">
+              <commudle-blog-card
+                [blog]="featuredBlog"
+                [shareButton]="false"
+                [fixCardHeight]="false"
+              ></commudle-blog-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="one-column-layout">
+        <div class="blog-container">
+          <h2 class="header">Relating with Developers & Communities</h2>
+          <div class="tags">
+            <nb-tag-list>
+              <nb-tag
+                [text]="defaultTag.value"
+                appearance="outline"
+                [removable]="activeTag === defaultTag.value"
+                [status]="activeTag === defaultTag.value ? 'primary' : 'basic'"
+                size="small"
+                (click)="setActiveTag(defaultTag)"
+              ></nb-tag>
+              <nb-tag
+                *ngFor="let tag of tags"
+                [text]="tag.value"
+                appearance="outline"
+                [removable]="activeTag === tag.value"
+                [status]="activeTag === tag.value ? 'primary' : 'basic'"
+                size="small"
+                (click)="setActiveTag(tag)"
+              ></nb-tag>
+            </nb-tag-list>
+          </div>
           <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        </nb-card-body>
-      </nb-card>
+          <div class="blog-list" *ngIf="!isLoading">
+            <div *ngFor="let blog of blogs">
+              <commudle-blog-card [blog]="blog" [shareButton]="false"></commudle-blog-card>
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+            </div>
+          </div>
+          <div class="pagination" *ngIf="blogs">
+            <app-pagination
+              (goTo)="page = $event; updatePagesAndCount()"
+              (next)="page = $event; updatePagesAndCount()"
+              (previous)="page = $event; updatePagesAndCount()"
+              *ngIf="total > 0"
+              [count]="15"
+              [current]="page"
+              [total]="total"
+            ></app-pagination>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

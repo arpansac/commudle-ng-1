@@ -17,7 +17,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-resume-card',
@@ -36,6 +36,8 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private userResumeService: UserResumeService,
@@ -46,7 +48,9 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +61,8 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   deleteUserResume() {

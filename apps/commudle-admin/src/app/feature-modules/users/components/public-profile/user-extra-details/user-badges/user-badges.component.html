@@ -1,7 +1,8 @@
 <nb-card *ngIf="badges.length > 0" class="user-badges" id="badges">
   <nb-card-header>
-    <fa-icon [icon]="faAward" class="com-text-Chrome-Yellow"></fa-icon>
-    Badges
+    <a [routerLink]="'.'" fragment="badges"
+      ><fa-icon [icon]="faAward" class="com-text-Chrome-Yellow"></fa-icon>Badges</a
+    >
   </nb-card-header>
   <nb-card-body class="com-space-x-4">
     <img
@@ -10,7 +11,6 @@
       [nbTooltip]="badge.name"
       [src]="badge.image?.url"
       [title]="badge.name"
-      class="com-max-w-[150px]"
     />
   </nb-card-body>
 </nb-card>

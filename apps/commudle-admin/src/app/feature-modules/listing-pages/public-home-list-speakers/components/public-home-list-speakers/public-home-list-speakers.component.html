@@ -1,0 +1,49 @@
+<commudle-listing-pages-layout>
+  <div header>
+    <commudle-listing-page-header [parentType]="'speakers'"></commudle-listing-page-header>
+  </div>
+  <div one-column *ngIf="isMobileView">
+    <div class="tab-links">
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./']" routerLinkActive="active">
+        <span class="title">Speakers</span>
+      </a>
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./speaker-slides']" routerLinkActive="active">
+        <span class="title">Speaker Slides</span>
+      </a>
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./cfp']" routerLinkActive="active">
+        <span class="title">Call For Speakers</span>
+      </a>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+  <div main-column *ngIf="!isMobileView">
+    <div class="tab-links">
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./']" routerLinkActive="active">
+        <span class="title">Speakers</span>
+      </a>
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./speaker-slides']" routerLinkActive="active">
+        <span class="title">Speaker Slides</span>
+      </a>
+      <a [routerLinkActiveOptions]="{ exact: true }" [routerLink]="['./cfp']" routerLinkActive="active">
+        <span class="title">Call For Speakers</span>
+      </a>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+  <div right-column>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="featured-communities">
+      <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
+    </div>
+    <div class="tech-sessions">
+      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers-content">
+      <commudle-public-home-list-speakers-content
+        [parentType]="'communities'"
+      ></commudle-public-home-list-speakers-content>
+    </div>
+  </div>
+</commudle-listing-pages-layout>

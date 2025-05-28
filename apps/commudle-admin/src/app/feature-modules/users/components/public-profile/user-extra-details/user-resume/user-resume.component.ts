@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NbDialogRef, NbDialogService, NbToastrService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UserProfileMenuService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-menu.service';
 import { UserResumeService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-resume.service';
 import { IAttachedFile } from 'apps/shared-models/attached-file.model';
@@ -9,8 +9,9 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-user-resume',
@@ -37,18 +38,21 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private userResumeService: UserResumeService,
     private fb: FormBuilder,
     private nbDialogService: NbDialogService,
-    private nbToastrService: NbToastrService,
     public userProfileMenuService: UserProfileMenuService,
     private route: ActivatedRoute,
     private router: Router,
+    private toasterService: ToastrService,
   ) {
     this.userResumeForm = this.fb.group({
       name: ['', Validators.required],
+      file: [null, Validators.required],
     });
   }
 
@@ -71,7 +75,9 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     if (changes.user) {
       this.userProfileMenuService.addMenuItem('resume', false);
@@ -81,6 +87,8 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getUserResumes() {
@@ -97,7 +105,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   createResume() {
     this.subscriptions.push(
       this.userResumeService.createResume(this.getResumeFormData()).subscribe(() => {
-        this.nbToastrService.success('Resume uploaded successfully', 'Success');
+        this.toasterService.successDialog('Resume uploaded successfully');
         this.onCloseDialog();
         this.getUserResumes();
         if (this.jobId) {
@@ -110,7 +118,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   updateResume(userResumeUuid: string) {
     this.subscriptions.push(
       this.userResumeService.updateResume(userResumeUuid, this.getResumeFormData()).subscribe(() => {
-        this.nbToastrService.success('Resume updated successfully', 'Success');
+        this.toasterService.successDialog('Resume updated successfully');
         this.onCloseDialog();
         this.getUserResumes();
       }),
@@ -136,6 +144,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   onCloseDialog() {
     this.userResumeForm.patchValue({
       name: '',
+      file: '',
     });
     this.dialogRef.close();
     this.isEditing = false;
@@ -145,29 +154,67 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
-      if (event.target.files[0].type !== 'application/pdf') {
-        this.nbToastrService.warning('File must be a pdf', 'Warning');
-        return;
-      }
-
-      if (event.target.files[0].size > 5000000) {
-        this.nbToastrService.warning('File must be less than 5mb', 'Warning');
-        return;
-      }
-
       const file = event.target.files[0];
-      this.uploadedResume = {
-        id: null,
-        file: file,
-        url: null,
-        name: null,
-        type: null,
-      };
 
-      const reader = new FileReader();
-      reader.onload = () => (this.uploadedResumeSrc = <string>reader.result);
-      reader.readAsDataURL(file);
+      if (file.type !== 'application/pdf') {
+        this.toasterService.warningDialog('File must be a PDF');
+        event.target.value = ''; // Reset file input
+        return;
+      }
+
+      if (file.size > 5000000) {
+        this.toasterService.warningDialog('File must be less than 5MB');
+        event.target.value = ''; // Reset file input
+        return;
+      }
+
+      // Read and check the file for XSS
+      this.checkPdfFile(file).then((isSafe) => {
+        if (!isSafe) {
+          this.toasterService.warningDialog("PDF contains unsafe content, You can't upload that file");
+          this.userResumeForm.patchValue({
+            file: '',
+          });
+          event.target.value = ''; // Reset file input
+          this.uploadedResumeSrc = '';
+          return;
+        }
+
+        this.uploadedResume = {
+          id: null,
+          file: file,
+          url: null,
+          name: null,
+          type: null,
+        };
+
+        // If content is safe, set it as the upload source
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.uploadedResumeSrc = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+      });
     }
+  }
+
+  checkPdfFile(file: File): Promise<boolean> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const content = reader.result as string;
+        // Check for XSS patterns in content
+        const isSafe = !this.containsXssContent(content);
+        resolve(isSafe);
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  containsXssContent(content: string): boolean {
+    // Basic patterns for XSS in PDFs
+    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
+    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   getResumeFormData(): FormData {

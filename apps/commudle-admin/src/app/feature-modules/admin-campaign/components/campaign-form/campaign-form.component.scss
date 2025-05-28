@@ -1,0 +1,69 @@
+section {
+  @apply com-w-full com-bg-white com-min-h-screen com-flex;
+  .sidebar {
+    @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
+    a {
+      @apply com-text-inherit com-no-underline;
+    }
+
+    .number {
+      @apply com-flex com-justify-center com-items-center com-w-5 com-h-5 com-bg-gray-300 com-rounded-full com-font-semibold com-text-xs com-text-tblack;
+    }
+    .action-buttons {
+      .back-admin {
+        @apply com-flex com-items-center com-gap-1 com-pl-7 com-my-2;
+        .icon {
+          @apply com-text-Yankees-Blue;
+        }
+        .heading {
+          @apply com-text-sm com-text-Yankees-Blue com-font-medium;
+        }
+      }
+
+      .action-button {
+        @apply com-flex com-gap-2 com-items-center com-cursor-pointer com-pl-7 com-py-3;
+        &.active {
+          @apply com-bg-Bright-Gray com-text-tYankees-Blue;
+        }
+        &.disabled {
+          @apply com-pointer-events-none com-cursor-not-allowed;
+        }
+        .icon {
+          @apply com-text-lg com-text-Cadet-Grey;
+        }
+        .heading {
+          @apply com-text-sm com-text-Yankees-Blue com-font-semibold;
+        }
+      }
+
+      .action-button:hover {
+        @apply com-bg-Bright-Gray com-text-tYankees-Blue;
+      }
+
+      .sub-headings {
+        .action-button {
+          @apply com-py-1;
+          .heading {
+            @apply com-font-medium;
+          }
+        }
+      }
+    }
+  }
+
+  .right-section {
+    @apply com-w-[calc(100%-320px)] com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+    .header {
+      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4;
+      .step-one {
+        @apply com-text-gray-500 com-text-base com-font-medium;
+      }
+      .step-two {
+        @apply com-text-Yankees-Blue com-text-base com-font-medium;
+      }
+    }
+    .form {
+      @apply com-px-6 com-py-4;
+    }
+  }
+}

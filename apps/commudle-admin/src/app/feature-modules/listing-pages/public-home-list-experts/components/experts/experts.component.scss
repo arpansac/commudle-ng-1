@@ -1,0 +1,25 @@
+.heading {
+  @apply com-flex md:com-items-center com-items-start com-m-0 md:com-mb-6 com-mb-2;
+
+  .image {
+    @apply md:com-h-8 md:com-w-8 com-h-6 com-w-6 md:com-mr-3 md:com-mt-1 com-mt-3 com-mr-2;
+    img {
+      @apply com-h-full com-w-full com-object-contain;
+    }
+  }
+
+  .heading-name {
+    @apply com-m-0;
+    a {
+      @apply md:com-text-2xl com-text-xl md:com-font-bold com-font-semibold com-text-Yankees-Blue com-no-underline;
+    }
+  }
+}
+
+.badge-heading {
+  @apply md:com-mx-0 com-mx-4 md:com-my-0 com-mt-6;
+}
+
+.users {
+  @apply md:com-pb-[60px] com-pb-6;
+}

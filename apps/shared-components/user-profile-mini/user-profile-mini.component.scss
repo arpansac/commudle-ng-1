@@ -1,13 +1,10 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .user {
-  align-items: flex-start;
-  display: flex;
-  padding: 0.5rem;
-  position: relative;
+  @apply com-flex com-p-2 com-relative com-items-center;
 
-  &.small {
-    align-items: center;
+  &.align-start {
+    @apply com-items-start;
   }
 
   .online-status {
@@ -29,6 +26,7 @@
   }
 
   .profile-picture {
+    @apply com-bg-tWhite;
     max-width: 50px;
     max-height: 50px;
     border-radius: 50%;
@@ -59,7 +57,7 @@
     text-align: left;
 
     .name {
-      margin: 0;
+      @apply com-flex com-flex-row com-items-center com-m-0;
       .disable-anchor {
         pointer-events: none;
       }
@@ -82,16 +80,10 @@
         font-weight: 300;
         line-height: 14px;
       }
-
-      .expert-icon {
-        margin-left: $space-8;
-        width: 16px;
-        height: 16px;
-      }
     }
 
     .designation {
-      margin: $space-4 0 0;
+      @apply com-mt-1 com-mx-0 com-mb-0;
       font-size: 0.8rem;
       color: grey;
 
@@ -103,6 +95,10 @@
         font-size: 11px;
         line-height: 12px;
       }
+    }
+
+    .active-now {
+      @apply com-text-[10px] com-font-normal com-text-gray-500 com-mt-1 com-mx-0 com-mb-0;
     }
   }
 }

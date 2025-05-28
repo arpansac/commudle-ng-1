@@ -1,3 +1,9 @@
 .heading {
-  @apply com-m-0 com-text-2xl md:com-text-4xl com-font-semibold;
+  a {
+    @apply com-m-0 com-text-2xl md:com-text-4xl com-font-semibold com-text-Yankees-Blue com-no-underline;
+  }
+}
+
+.home-view-all-events {
+  @apply com-w-max com-bg-Azure;
 }

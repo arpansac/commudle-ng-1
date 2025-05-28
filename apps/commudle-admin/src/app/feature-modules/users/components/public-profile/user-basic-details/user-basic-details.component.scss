@@ -4,44 +4,73 @@ p {
 }
 
 .user-details-container {
-  @apply com-mb-0 com-rounded-bl-none com-rounded-br-none;
+  @apply com-m-0 com-rounded-bl-none com-rounded-br-none;
 
   nb-card-body {
     @apply com-p-0;
+
+    .profile-header {
+      @apply com-p-6;
+
+      .action-buttons {
+        @apply com-flex com-flex-col com-items-center md:com-flex-row md:com-justify-between;
+      }
+
+      .action-btn-mobile {
+        @apply com-flex com-gap-3 md:com-mt-0 com-mt-4;
+      }
+
+      .edit-icon {
+        @apply com-text-sm com-font-medium com-bg-transparent;
+
+        fa-icon {
+          @apply com-mr-2;
+        }
+      }
+    }
     .user-avatar {
-      @apply md:com-h-[180px] md:com-w-[180px] com-bg-white com-rounded-full com-relative com-z-50 -com-mt-24;
-      @apply com-relative com-z-50 -com-mt-20 md:-com-mt-24;
+      @apply md:com-h-[140px] md:com-w-[140px] com-rounded-full com-relative com-z-50 -com-mt-20 md:com-mt-[-94px] com-bg-white;
       .avatar {
-        @apply md:com-m-2px com-block com-h-40 com-w-40 md:com-h-44 md:com-w-44 com-rounded-full com-object-cover com-object-center com-mx-auto com-border com-border-solid com-border-gray-300;
+        @apply com-block com-h-40 com-w-40 md:com-h-[140px] md:com-w-[140px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
       }
     }
 
+    .header {
+      @apply com-flex com-flex-col md:com-flex-row com-justify-between;
+    }
+
     .user-info {
-      @apply com-w-full com-mt-8;
+      @apply com-w-full com-mt-4;
 
       .name {
-        @apply com-flex com-items-baseline com-gap-1.5;
-
-        .expert-icon {
-          @apply com-h-3 com-w-3 md:com-h-6 md:com-w-6;
-        }
+        @apply com-flex md:com-flex-row com-flex-col md:com-gap-6px com-gap-0 md:com-items-center;
 
         h1 {
-          @apply com-text-2xl md:com-text-4xl com-font-semibold;
+          @apply com-text-2xl md:com-text-[32px] com-font-semibold com-text-Yankees-Blue com-flex com-items-center;
+        }
+
+        .deactivated-button {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-border-none;
         }
       }
 
       .username {
-        @apply com-text-base com-text-gray-400 com-mt-1;
+        @apply com-text-base com-text-gray-400;
+      }
+
+      .name-username {
+        @apply com-flex com-flex-col md:com-items-start com-items-center com-text-center md:com-text-left;
+      }
+
+      .job-tags {
+        @apply com-flex md:com-items-end com-flex-col com-gap-3 com-mt-3 md:com-mt-0;
       }
 
       .network {
         @apply com-flex com-mt-4 com-gap-2;
 
         a {
-          @apply com-text-base hover:com-underline;
-          color: inherit;
-          text-decoration: none;
+          @apply com-text-base hover:com-underline com-text-Yankees-Blue com-no-underline;
 
           span {
             @apply com-font-semibold;
@@ -49,39 +78,52 @@ p {
         }
       }
 
-      .designation {
-        @apply com-text-base com-flex com-items-center com-gap-2 com-mt-4;
+      .designation-location {
+        @apply com-flex com-items-start com-flex-col;
+      }
 
-        p,
-        nb-icon {
-          @apply com-text-base md:com-text-lg;
+      .designation {
+        @apply com-text-base com-flex md:com-items-center com-items-start com-gap-2 com-mt-4;
+
+        p {
+          @apply com-text-base com-text-Yankees-Blue;
         }
 
         nb-icon {
-          @apply com-text-[#42aaff];
+          @apply com-text-base md:com-text-lg com-text-Azure md:com-mt-0 com-mt-1 com-flex-shrink-0;
         }
       }
 
       .location {
-        @apply com-text-base com-flex com-items-center com-gap-2 com-mt-1;
+        @apply com-text-base com-flex com-items-center com-gap-2 com-mt-2;
 
-        p,
-        nb-icon {
-          @apply com-text-base md:com-text-lg;
+        p {
+          @apply com-text-base com-text-Yankees-Blue;
         }
 
         nb-icon {
-          @apply com-text-[#42aaff];
+          @apply com-text-base md:com-text-lg com-text-Azure;
         }
       }
 
       .tags {
-        @apply com-mt-6;
+        @apply com-mt-5;
 
-        nb-tag {
-          @apply com-text-sm com-font-medium com-border-none;
+        .user-tags {
+          @apply com-text-sm com-font-medium com-border-none com-text-Yankees-Blue com-bg-blue-50;
+        }
+        .add-tag {
+          @apply com-text-sm com-font-medium com-border-none com-text-white com-bg-Azure com-cursor-pointer;
         }
       }
     }
+  }
+}
+
+.toggle-tag {
+  @apply com-w-[188px];
+
+  span {
+    @apply com-text-Yankees-Blue;
   }
 }

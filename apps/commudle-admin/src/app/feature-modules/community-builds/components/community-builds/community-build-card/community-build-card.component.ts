@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CBuildTypeDisplay, ICommunityBuild } from 'apps/shared-models/community-build.model';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import * as moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-community-build-card',
@@ -8,17 +11,18 @@ import { CBuildTypeDisplay, ICommunityBuild } from 'apps/shared-models/community
 })
 export class CommunityBuildCardComponent implements OnInit {
   @Input() communityBuild: ICommunityBuild;
+  staticAssets = staticAssets;
+  moment = moment;
 
   CBuildTypeDisplay = CBuildTypeDisplay;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
-  getDescription(): string {
-    // Get description from html
-    const description = document.createElement('div');
-    description.innerHTML = this.communityBuild.description;
-    return description.textContent || description.innerText;
+  onNavigate() {
+    setTimeout(() => {
+      this.router.navigate(['/builds', this.communityBuild.slug]);
+    }, 100);
   }
 }

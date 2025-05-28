@@ -17,7 +17,7 @@ import { EJobLocationType, EJobStatus, IJob } from 'apps/shared-models/job.model
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import {
   faBuilding,
@@ -62,6 +62,8 @@ export class UserJobCardComponent implements OnInit, OnChanges, OnDestroy {
   faTrash = faTrash;
 
   jobForm;
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private jobService: JobService,
@@ -73,7 +75,9 @@ export class UserJobCardComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,6 +88,8 @@ export class UserJobCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onDeleteJob(): void {

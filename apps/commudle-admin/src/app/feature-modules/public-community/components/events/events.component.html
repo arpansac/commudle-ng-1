@@ -1,11 +1,11 @@
 <nb-card>
   <nb-card-body>
-    <div class="com-my-4">
-      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    </div>
     <div class="events">
       <section *ngIf="upcomingEvents.length >= 1" class="upcoming-events-section">
-        <p class="heading">Upcoming Events</p>
+        <h2 class="heading">
+          <div class="heading-btn"><fa-icon [icon]="faCalendarDays"></fa-icon></div>
+          Upcoming Events
+        </h2>
         <div class="upcoming-events-container">
           <a
             *ngFor="let event of upcomingEvents"
@@ -22,11 +22,14 @@
                     <commudle-banner-image
                       [headerImagePath]="event.header_image_path"
                       [name]="event.name"
+                      [bottomRightCurve]="false"
+                      [bottomLeftCurve]="false"
                     ></commudle-banner-image>
                     <app-badge
                       *ngIf="moment(event.start_time) <= moment() && moment(event.end_time) >= moment()"
-                      [color]="'rgb(255 45 45)'"
+                      [color]="'com-bg-Deep-Carmine-Pink'"
                       [text]="'Live'"
+                      [fontColor]="'com-text-tWhite'"
                     ></app-badge>
                   </div>
                   <div *ngIf="!event.header_image_path" class="no-image-header">
@@ -43,7 +46,40 @@
                             >
                           </p>
                           <p class="event-timing">
-                            {{ moment(event.start_time).format('dddd, MMM Do, YYYY - h:mm a') }} onwards
+                            <span *ngIf="event.end_time !== null">
+                              <!-- {{ moment(event.start_time).format('dddd, MMM Do, YYYY - h:mm a') }} -->
+                              {{
+                                momentTimezone
+                                  .tz(moment.utc(event.start_time), event.timezone)
+                                  .format('dddd, MMM Do, YYYY- h:mm a')
+                              }}
+                              {{ momentTimezone.tz(event.timezone).format('z') }}
+                            </span>
+                            <span
+                              *ngIf="
+                                moment(event.start_time).format('MMM Do, YYYY') !==
+                                moment(event.end_time).format('MMM Do, YYYY')
+                              "
+                            >
+                              to
+                              <span *ngIf="event.end_time !== null">
+                                <!-- {{ moment(event.end_time).format('dddd, MMM Do, YYYY - h:mm a') }} -->
+                                {{
+                                  momentTimezone
+                                    .tz(moment.utc(event.end_time), event.timezone)
+                                    .format('dddd, MMM Do, YYYY- h:mm a')
+                                }}
+                                {{ momentTimezone.tz(event.timezone).format('z') }}
+                              </span>
+                            </span>
+                            <span
+                              *ngIf="
+                                moment(event.start_time).format('MMM Do, YYYY') ===
+                                moment(event.end_time).format('MMM Do, YYYY')
+                              "
+                              >onwards</span
+                            >
+                            <span *ngIf="event.end_time === null">Date and time to be announced soon</span>
                           </p>
                         </div>
                         <button nbButton size="small" class="event_type_button">
@@ -69,10 +105,18 @@
           </a>
         </div>
       </section>
-
+      <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
       <section *ngIf="pastEvents.length >= 1" class="past-events">
-        <h3 class="heading">Past Events</h3>
-        <div class="past-events-container">
+        <h2 class="heading">
+          <div class="heading-btn"><fa-icon [icon]="faCalendarCheck"></fa-icon></div>
+          Past Events
+        </h2>
+        <div *ngIf="isLoadingPastEvents">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <div *ngIf="!isLoadingPastEvents" class="past-events-container">
           <a
             *ngFor="let event of pastEvents"
             [routerLink]="['/communities', event.kommunity_slug, 'events', event.slug]"
@@ -83,6 +127,8 @@
                   <commudle-banner-image
                     [headerImagePath]="event.header_image_path"
                     [name]="event.name"
+                    [bottomRightCurve]="false"
+                    [bottomLeftCurve]="false"
                   ></commudle-banner-image>
                 </div>
                 <div *ngIf="!event.header_image_path" class="no-image-header">
@@ -116,6 +162,15 @@
             </nb-card>
           </a>
         </div>
+        <app-pagination
+          (goTo)="page = $event; getPastEvents()"
+          (next)="page = $event; getPastEvents()"
+          (previous)="page = $event; getPastEvents()"
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
       </section>
     </div>
   </nb-card-body>

@@ -1,0 +1,37 @@
+.action-buttons {
+  @apply com-flex com-items-center com-gap-5 com-my-4;
+}
+nb-card {
+  @apply com-max-h-[90dvh] com-w-full md:com-w-[70dvw];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
+
+.discount-codes {
+  table {
+    @apply com-border-collapse com-w-full;
+    .table-header {
+      @apply com-sticky com-top-0 com-bg-white;
+      .text-help {
+        @apply com-flex com-items-center;
+      }
+    }
+
+    td,
+    th {
+      @apply com-p-4;
+    }
+
+    tr:not(:last-child) {
+      @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+    }
+
+    .discount-code-action-buttons {
+      @apply com-flex com-gap-4;
+      .action-button {
+        @apply com-text-primary-500 com-text-xs com-cursor-pointer com-font-normal;
+      }
+    }
+  }
+}

@@ -1,12 +1,17 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, HostListener } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
 import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discussions.service';
 import { CBuildTypeDisplay, EBuildType, ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { SeoService } from '@commudle/shared-services';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
 @Component({
   selector: 'app-community-build-details',
@@ -23,34 +28,43 @@ export class CommunityBuildDetailsComponent implements OnInit {
   hasIframe = false;
   embedCode: any;
   currImage = null;
+  singleImage: boolean;
+  faArrowUpRightFromSquare = faArrowUpRightFromSquare;
+  currentUser: ICurrentUser;
 
   moment = moment;
 
   environment = environment;
+  private destroy$ = new Subject<void>();
 
   @ViewChild('imageTemplate') imageTemplate: TemplateRef<any>;
 
   constructor(
-    private windowService: NbWindowService,
+    private dialogService: NbDialogService,
     private discussionsService: DiscussionsService,
     private sanitizer: DomSanitizer,
+    private seoService: SeoService,
+    private authWatchService: LibAuthwatchService,
   ) {}
 
   ngOnInit() {
     this.getDiscussionChat();
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
+      this.currentUser = currentUser;
+    });
     this.teammates = this.cBuild.user_roles_users;
-    if (this.cBuild.video_iframe.startsWith('<iframe') && this.cBuild.video_iframe.endsWith('</iframe>')) {
+    if (this.cBuild.video_iframe?.startsWith('<iframe') && this.cBuild.video_iframe?.endsWith('</iframe>')) {
       this.embedCode = this.sanitizer.bypassSecurityTrustHtml(this.cBuild.video_iframe);
     } else {
       this.embedCode = null;
     }
+    this.isSingleImage();
+    this.setSchema();
   }
 
-  openImage(title, image) {
+  openImage(image) {
     this.currImage = image;
-    this.windowService.open(this.imageTemplate, {
-      title,
-    });
+    this.dialogService.open(this.imageTemplate, {});
   }
 
   imageNav(direction) {
@@ -61,8 +75,37 @@ export class CommunityBuildDetailsComponent implements OnInit {
   }
 
   getDiscussionChat() {
-    this.discussionsService
-      .pGetOrCreateForCommunityBuildChat(this.cBuild.id)
-      .subscribe((data) => (this.discussionChat = data));
+    this.discussionsService.pGetOrCreateForCommunityBuildChat(this.cBuild.id).subscribe((data) => {
+      this.discussionChat = data;
+    });
+  }
+
+  isSingleImage() {
+    this.singleImage = this.cBuild.images.length === 1;
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event) {
+    if (event.key === 'ArrowLeft') {
+      this.imageNav(-1);
+    } else if (event.key === 'ArrowRight') {
+      this.imageNav(1);
+    }
+  }
+
+  setSchema() {
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: this.cBuild.name,
+      description: this.cBuild.description,
+      datePublished: this.cBuild.created_at,
+      screenshot: this.cBuild.images.length > 0 ? this.cBuild.images[0].url : '',
+      offers: {
+        '@type': 'Offer',
+        price: 0,
+      },
+      applicationCategory: 'Software Engineering',
+    });
   }
 }

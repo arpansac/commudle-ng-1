@@ -1,10 +1,11 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 
 @Component({
   selector: 'app-community-edit-details',
@@ -20,6 +21,8 @@ export class CommunityEditDetailsComponent implements OnInit {
   tags: string[] = [];
   minimumTags = 5;
 
+  @ViewChild('autocompleteInput', { static: true }) autocompleteInput: ElementRef;
+
   @Output() updateCommunity = new EventEmitter();
 
   communityForm;
@@ -30,13 +33,31 @@ export class CommunityEditDetailsComponent implements OnInit {
     width: '650',
     menubar: false,
     convert_urls: false,
-    skin: 'outside',
-    plugins:
-      'advlist autolink lists link image charmap  preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+    plugins: [
+      'advlist',
+      'autolink',
+      'lists',
+      'link',
+      'image',
+      'charmap',
+      'preview',
+      'anchor',
+      'searchreplace',
+      'visualblocks',
+      'code',
+      'fullscreen',
+      'insertdatetime',
+      'media',
+      'table',
+      'code',
+      'help',
+      'wordcount',
+    ],
     toolbar:
       'undo redo | formatselect | bold italic backcolor | \
     alignleft aligncenter alignright alignjustify | \
     bullist numlist outdent indent | removeformat | help',
+    license_key: 'gpl',
   };
 
   constructor(
@@ -44,6 +65,7 @@ export class CommunityEditDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private communitiesService: CommunitiesService,
     private toastLogService: LibToastLogService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
     @Inject(DOCUMENT) private document: Document,
   ) {
     this.communityForm = this.fb.group({
@@ -58,6 +80,7 @@ export class CommunityEditDetailsComponent implements OnInit {
         github: [''],
         website: [''],
         linkedin: [''],
+        instagram: [''],
         location: ['', Validators.required],
       }),
     });
@@ -67,6 +90,7 @@ export class CommunityEditDetailsComponent implements OnInit {
     this.activatedRoute.parent.params.subscribe((params) => {
       this.getCommunityDetails(params.community_id);
     });
+    this.initAutocomplete();
   }
 
   getCommunityDetails(communityId) {
@@ -85,6 +109,12 @@ export class CommunityEditDetailsComponent implements OnInit {
   displaySelectedLogo(event: any) {
     if (event.target.files && event.target.files[0]) {
       const logoFile = event.target.files[0];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(logoFile.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedLogoFile = logoFile;
       const reader = new FileReader();
       reader.onload = (e: any) => (this.uploadedLogo = reader.result);
@@ -95,6 +125,12 @@ export class CommunityEditDetailsComponent implements OnInit {
   displaySelectedBanner(event: any) {
     if (event.target.files && event.target.files[0]) {
       const bannerFile = event.target.files[0];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(bannerFile.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedBannerFile = bannerFile;
       const reader = new FileReader();
       reader.onload = (e: any) => (this.uploadedBanner = reader.result);
@@ -137,5 +173,16 @@ export class CommunityEditDetailsComponent implements OnInit {
 
   onTagDelete(value: string) {
     this.tags = this.tags.filter((tag) => tag !== value);
+  }
+
+  initAutocomplete() {
+    this.googlePlacesAutocompleteService.initAutocomplete(this.autocompleteInput.nativeElement);
+    this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+      this.onLocationPlaceSelected(place);
+    });
+  }
+
+  onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+    this.communityForm.get('community').get('location').setValue(place.formatted_address);
   }
 }

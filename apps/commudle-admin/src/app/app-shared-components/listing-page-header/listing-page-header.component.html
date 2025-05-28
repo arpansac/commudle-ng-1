@@ -1,0 +1,23 @@
+<div class="header">
+  <div *ngIf="header" [ngStyle]="{ 'background-color': header.background_color.hex }" class="background">
+    <div class="base-layout">
+      <div class="content">
+        <div class="header-text">
+          <p *ngIf="header.pre_heading" class="pre-heading">{{ header.pre_heading }}</p>
+          <h1 *ngIf="header.heading" class="heading">
+            {{ header.heading }}
+          </h1>
+          <p *ngIf="header.sub_heading" class="sub-heading">{{ header.sub_heading }}</p>
+          <div *ngIf="richText" [innerHTML]="richText | safe : 'html'" class="inner-html"></div>
+        </div>
+        <div class="image-wrapper">
+          <commudle-campaign-assets-display
+            [defaultImage]="imageUrl(header.header_image).url()"
+            [defaultImageUrl]="header.image_link"
+            [campaignTypeSlug]="CampaignTypeSlug"
+          ></commudle-campaign-assets-display>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

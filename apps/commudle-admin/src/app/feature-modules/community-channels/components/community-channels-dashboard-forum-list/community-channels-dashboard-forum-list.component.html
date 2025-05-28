@@ -1,0 +1,33 @@
+<nb-card *ngIf="hasForms">
+  <nb-card-header>
+    <p>All Forums</p>
+    <commudle-help-section [helpDictionaryName]="'forums'"></commudle-help-section
+  ></nb-card-header>
+  <nb-card-body>
+    <div class="forums-cards">
+      <div
+        class="container"
+        *ngFor="let chGroup of communityForums | keyvalue"
+        (click)="selectedCommunityChannel(chGroup)"
+      >
+        <div class="header com-bg-gradient-to-b com-from-[#ac94d1] com-to-white"></div>
+        <div class="image">
+          <!-- <img [src]="parent?.logo_image_path?.i64" alt="" /> -->
+        </div>
+        <div class="details">
+          <div class="discussion-name">{{ chGroup.value[0].name | titlecase }}</div>
+          <div class="discussion-category">{{ (chGroup.key | titlecase) || 'General' }}</div>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="!hasForms">
+  <nb-card-body class="empty-state">
+    <div>
+      <p class="heading">No forums Available</p>
+      <p class="sub-heading">You can create one by clicking the “New Topic” button above</p>
+    </div>
+  </nb-card-body>
+</nb-card>

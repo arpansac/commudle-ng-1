@@ -7,12 +7,12 @@
 
       <div class="homepage-expert-overlay"></div>
 
-      <div class="com-z-20 com-p-2 com-absolute com-bottom-0 com-w-full">
+      <div class="com-z-10 com-p-2 com-absolute com-bottom-0 com-w-full">
         <div class="com-flex com-justify-between com-items-end com-gap-4">
           <div>
             <h3 class="homepage-expert-name">
               {{ expert.name }}
-              <img alt="Expert Tick" class="expert-icon" src="/assets/images/Expert-Tick.svg" />
+              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
             </h3>
             <p class="homepage-expert-designation">{{ expert.designation }}</p>
           </div>
@@ -20,6 +20,8 @@
             (click)="$event.stopPropagation(); $event.preventDefault()"
             [showIcon]="false"
             [username]="expert.username"
+            [name]="expert.name"
+            [userId]="expert.id"
           ></app-user-follow>
         </div>
       </div>
@@ -27,7 +29,7 @@
   </li>
 </ul>
 
-<a class="home-become-expert com-mt-6" nbButton routerLink="/fill-form/1093" shape="semi-round" status="info">
-  Get a blue tick
+<a class="home-become-expert com-mt-6" nbButton routerLink="/experts" shape="semi-round" status="info">
+  View All Experts
   <nb-icon icon="arrow-forward"></nb-icon>
 </a>

@@ -1,0 +1,15 @@
+<nb-card [ngClass]="horizontalScroll ? 'com-w-72' : 'com-w-full'">
+  <nb-card-body>
+    <a
+      [routerLink]="
+        session.embedded_content
+          ? ['/speaker-resources', session.id]
+          : ['/communities', session.event.kommunity.id, 'events', session.event.id]
+      "
+    >
+      <p class="session-link">{{ session.title ? session.title : session.event.name }}</p>
+      <p class="event-time">{{ moment(session.event.start_time).format('dddd, MMM Do, YYYY') }}</p>
+      <app-user-profile-card-small [user]="session.user"></app-user-profile-card-small>
+    </a>
+  </nb-card-body>
+</nb-card>

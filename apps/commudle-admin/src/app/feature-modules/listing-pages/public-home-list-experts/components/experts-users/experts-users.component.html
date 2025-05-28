@@ -1,0 +1,15 @@
+<div class="experts">
+  <div *ngIf="!isLoadingExperts">
+    <div *ngIf="experts.length > 0" class="experts-card">
+      <div *ngFor="let expert of experts" class="card">
+        <commudle-featured-experts-card [expert]="expert"></commudle-featured-experts-card>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isLoadingExperts" class="load-more">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <button *ngIf="pageInfo?.has_next_page" (click)="getExperts()" nbButton size="medium" status="basic">
+    View More
+  </button>
+</div>

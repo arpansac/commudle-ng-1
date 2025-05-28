@@ -1,0 +1,140 @@
+.payment-details-section {
+  @apply com-sticky com-top-20;
+  nb-card {
+    nb-card-body {
+      @apply com-p-0;
+      .paid-message-container {
+        @apply com-flex com-flex-col com-justify-center com-my-6;
+        fa-icon {
+          @apply com-text-5xl com-text-Caribbean-Green com-mx-auto;
+        }
+        .message {
+          @apply com-text-xl com-font-semibold com-text-center;
+        }
+      }
+
+      .order-summary-message {
+        @apply com-px-4 com-py-2 com-text-base com-italic;
+      }
+
+      .payment-details {
+        @apply com-flex com-justify-between com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-py-2 com-px-4;
+        span {
+          @apply com-text-base com-font-medium;
+        }
+        .heading {
+          @apply com-text-gray-500;
+        }
+      }
+
+      .discount-container {
+        @apply com-pt-2 com-pb-4 com-px-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        .value {
+          @apply com-flex com-gap-4;
+        }
+      }
+
+      .recipient {
+        .heading {
+          @apply com-px-4 com-py-2 com-text-base com-italic;
+        }
+        .recipient-details {
+          @apply com-gap-2 com-py-2 com-px-4;
+          .name {
+            @apply com-font-semibold;
+          }
+          .email,
+          .phone {
+            @apply com-italic;
+          }
+        }
+      }
+
+      .user-details {
+        @apply com-px-6 com-py-4;
+        form {
+          @apply com-mt-3;
+        }
+        form > div {
+          @apply com-flex com-flex-col com-gap-3;
+        }
+        .add-another-user {
+          @apply com-border-0 com-text-primary-500 com-bg-transparent  com-py-3 com-text-base com-cursor-pointer com-font-semibold;
+        }
+      }
+    }
+  }
+
+  .info-container {
+    @apply com-my-2 com-px-2;
+  }
+}
+
+.payment-error-dialog {
+  @apply com-w-96;
+  nb-card-body {
+    .exclamation-container {
+      @apply com-flex com-justify-center com-my-3;
+      > div {
+        @apply com-flex com-bg-red-100 com-p-1 com-px-2 com-rounded-md;
+        fa-icon {
+          @apply com-text-4xl com-text-red-500 com-mx-auto;
+        }
+      }
+    }
+    .primary-text {
+      @apply com-text-sm com-font-semibold;
+    }
+    .reload-button {
+      @apply com-text-primary-500 com-cursor-pointer com-p-1;
+      fa-icon {
+        @apply com-mr-2;
+      }
+    }
+    .secondary-text {
+      @apply com-text-xs com-font-normal com-italic;
+    }
+  }
+}
+
+.right-column {
+  .company-details-card {
+    @apply com-mb-4;
+    nb-card-body {
+      @apply com-p-0;
+    }
+    .company-form-container {
+      @apply com-my-4 com-px-4;
+      div {
+        @apply com-mb-2;
+        .required {
+          @apply com-text-red-500;
+        }
+      }
+    }
+
+    .company-details {
+      .company-name,
+      .address,
+      .tax-info,
+      .pin-code {
+        @apply com-flex com-justify-between com-py-2 com-px-4;
+        span {
+          @apply com-text-base com-font-medium;
+        }
+        .heading {
+          @apply com-text-gray-500;
+        }
+        .value {
+          @apply com-text-right;
+        }
+      }
+
+      .address,
+      .tax-info,
+      .pin-code {
+        @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+      }
+    }
+  }
+}

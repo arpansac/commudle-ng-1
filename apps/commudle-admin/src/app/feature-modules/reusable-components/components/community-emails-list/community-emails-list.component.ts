@@ -1,4 +1,3 @@
-import { NbWindowService } from '@commudle/theme';
 import {
   Component,
   OnInit,
@@ -11,6 +10,8 @@ import {
 import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
 import { IFixedEmail } from 'apps/shared-models/fixed-email.model';
 import * as moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
+import { NbDialogService } from '@commudle/theme';
 
 @Component({
   selector: 'app-community-emails-list',
@@ -23,28 +24,35 @@ export class CommunityEmailsListComponent implements OnInit {
   @Input() communityId;
   moment = moment;
   emails: IFixedEmail[] = [];
+  isLoading = true;
   constructor(
     private statsCommunitiesService: StatsCommunitiesService,
-    private windowService: NbWindowService,
+    private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
-    this.getEmails();
+    this.activatedRoute.parent.data.subscribe((data) => {
+      if (!this.communityId) this.communityId = data.community.id;
+      this.getEmails();
+    });
   }
 
   getEmails() {
+    this.isLoading = true;
     this.emails = [];
     this.statsCommunitiesService.emails(this.communityId).subscribe((data) => {
       this.emails = data.fixed_emails;
+      this.isLoading = false;
       this.changeDetectorRef.markForCheck();
     });
   }
 
-  openEmailPreview(email: IFixedEmail) {
-    this.windowService.open(this.emailMessageTemplate, {
-      title: email.subject,
+  openEmailPreview(email) {
+    this.dialogService.open(this.emailMessageTemplate, {
       context: {
+        title: email.subject,
         message: email.message,
       },
     });

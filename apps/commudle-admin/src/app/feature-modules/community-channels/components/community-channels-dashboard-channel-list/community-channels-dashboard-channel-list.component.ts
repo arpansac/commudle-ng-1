@@ -1,9 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunityChannelsService } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/community-channels.service';
 import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/community-channel-manager.service';
+import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/community-channels/model/discussion-type.enum';
+import { Subscription } from 'rxjs';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
   selector: 'app-community-channels-dashboard-channel-list',
@@ -11,37 +14,29 @@ import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feat
   styleUrls: ['./community-channels-dashboard-channel-list.component.scss'],
 })
 export class CommunityChannelsDashboardChannelListComponent implements OnInit, OnDestroy {
-  channels: ICommunityChannel[] = [];
-  community: ICommunity;
+  @Input() parent: ICommunity | ICommunityGroup;
+  channels: ICommunityChannel[];
   displayCommunityList = false;
-  subscriptions = [];
+  subscriptions: Subscription[] = [];
+  discussionType = EDiscussionType;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private communityChannelsService: CommunityChannelsService,
-    private communityChannelManagerService: CommunityChannelManagerService,
-  ) {}
+  constructor(private communityChannelManagerService: CommunityChannelManagerService) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.activatedRoute.params.subscribe(() => {
-        this.community = this.activatedRoute.snapshot.data.community;
-        this.getChannels();
-        this.communityChannelManagerService.setCommunityListview(false);
-      }),
-    );
+    this.getChannels();
+    this.communityChannelManagerService.setCommunityListview(false);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   getChannels() {
-    this.subscriptions.push(
-      this.communityChannelsService.index(this.community.id).subscribe((data) => {
-        this.channels = data.community_channels;
-      }),
-    );
+    if (this.communityChannelManagerService.channelsList$) {
+      this.communityChannelManagerService.channelsList$.subscribe((data) => {
+        this.channels = data;
+      });
+    }
   }
 
   toggleCommunityListDisplay() {

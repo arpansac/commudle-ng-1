@@ -1,16 +1,21 @@
-<nb-card>
+<nb-card id="agenda">
   <nb-card-header>
-    <h6>
-      <nb-icon icon="calendar-outline" status="primary"></nb-icon>
-      Agenda
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="agenda"><nb-icon icon="calendar-outline" status="primary"></nb-icon>Agenda</a>
     </h6>
+    <div *ngIf="showShareButton" class="share-btn">
+      <a [routerLink]="['/communities', community.slug, 'events', event.slug, 'agenda']" target="_blank">
+        <span>Share</span>
+        <nb-icon icon="external-link" status="primary"></nb-icon>
+      </a>
+    </div>
   </nb-card-header>
   <nb-card-body>
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    <ng-container *ngIf="getUpcomingEvents().length > 0">
+    <ng-container *ngIf="upcomingEvents.length > 0">
       <h6>Upcoming Sessions</h6>
       <div class="event-upcoming">
-        <nb-card *ngFor="let slot of getUpcomingEvents()">
+        <nb-card *ngFor="let slot of upcomingEvents">
           <nb-card-body>
             <div class="upcoming-session-time">
               <nb-icon icon="clock-outline"></nb-icon>&nbsp;
@@ -47,24 +52,47 @@
         </nb-card>
       </div>
     </ng-container>
-    <h6 *ngIf="eventLocations.length > 1">This Event Is At Multiple Locations!</h6>
-    <nb-tabset *ngIf="eventLocations.length > 0">
-      <nb-tab
-        *ngFor="let el of eventLocations; let i = index"
-        badgePosition="top right"
-        badgeStatus="primary"
-        badgeText="{{ el.event_location_tracks.length > 1 ? el.event_location_tracks.length + ' Tracks' : '' }}"
-        tabIcon="{{ getTabIcon(el) }}"
-        tabTitle="{{ getLocationName(el) }}"
-      >
-        <app-event-location-tracks
-          (updateSessionPreference)="updateSessionPreference($event, i)"
-          *ngIf="el.location || el.embedded_video_stream"
-          [community]="community"
-          [eventLocation]="el"
-          [event]="event"
-        ></app-event-location-tracks>
-      </nb-tab>
-    </nb-tabset>
+    <div *ngIf="eventDatesLocation">
+      <nb-card *ngIf="eventDatesLocation.length > 0" class="event-locations-list">
+        <div class="event-location">
+          <nb-tabset id="tabset" name="tabset" #tabset (changeTab)="onTabChange($event)">
+            <nb-tab
+              *ngFor="let data of eventDatesLocation; let i = index"
+              tabTitle="{{ moment(data.date).format('Do MMMM') }}"
+              class="tab"
+            >
+              <div id="tabset" name="tabset" #tabset class="locations-tracks">
+                <div *ngIf="data?.event_locations" class="com-w-full">
+                  <div class="locations">
+                    <div *ngFor="let el of data.event_locations; let i = index">
+                      <button
+                        *ngIf="el.location"
+                        nbButton
+                        outline
+                        [status]="el === selectedLocation ? 'primary' : 'basic'"
+                        (click)="selectLocation(el)"
+                      >
+                        {{ el.location.name }}
+                      </button>
+                    </div>
+                  </div>
+                  <div *ngIf="selectedLocation" class="event-location-tracks">
+                    <app-event-location-tracks
+                      *ngIf="selectedLocation.location || selectedLocation.embedded_video_stream"
+                      (updateSessionPreference)="updateSessionPreference($event, i)"
+                      (TrackSlotsDetails)="getUpcomingEvents($event)"
+                      [community]="community"
+                      [eventLocation]="selectedLocation"
+                      [event]="event"
+                      [eventLocationDate]="data.date"
+                    ></app-event-location-tracks>
+                  </div>
+                </div>
+              </div>
+            </nb-tab>
+          </nb-tabset>
+        </div>
+      </nb-card>
+    </div>
   </nb-card-body>
 </nb-card>

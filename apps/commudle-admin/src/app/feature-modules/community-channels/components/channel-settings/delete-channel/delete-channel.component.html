@@ -1,0 +1,21 @@
+<nb-card>
+  <nb-card-body>
+    <div class="delete-channel">
+      <p class="heading">Are you sure you want to DELETE this channel?</p>
+      <p class="text-basic">
+        A deleted channel can be recovered for upto 5 days by sending an email to more@commudle.com.
+      </p>
+      <div>
+        <form [formGroup]="deleteForm" (ngSubmit)="submitForm()">
+          <label> Type <strong>yes</strong> in CAPITALS to confirm </label>
+          <br />
+          <br />
+          <input nbInput formControlName="confirmation" type="text" />
+        </form>
+        <button (click)="submitForm()" nbButton [disabled]="!deleteForm.valid" outline status="danger" type="submit">
+          Delete
+        </button>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

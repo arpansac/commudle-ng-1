@@ -1,0 +1,76 @@
+<table class="data" *ngFor="let detail of eto">
+  <tr>
+    <td>Status</td>
+    <td>{{ detail.status | capitalizeAndRemoveUnderscore }}</td>
+  </tr>
+  <tr>
+    <td>Amount</td>
+    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.total_amount / 100 }}</td>
+  </tr>
+
+  <tr *ngIf="detail.tax_amount > 0">
+    <td>Tax Amount</td>
+    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.tax_amount / 100 }}</td>
+  </tr>
+
+  <tr *ngIf="detail.discount_amount > 0">
+    <td>Discount Amount</td>
+    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.discount_amount / 100 }}</td>
+  </tr>
+  <tr *ngIf="detail.discount_amount > 0 && detail.discount_code">
+    <td>Discount code</td>
+    <td>
+      {{ detail.discount_code.code }}
+    </td>
+  </tr>
+  <tr *ngIf="detail.transfer_id">
+    <td>Transfer Id</td>
+    <td>{{ detail.transfer_id }}</td>
+  </tr>
+  <tr *ngFor="let eto of detail.eto_users">
+    <td *ngIf="detail.user.email === eto.email" class="com-italic">Paid By</td>
+    <td *ngIf="detail.user.email === eto.email" class="com-flex com-flex-col">
+      <span class="com-text-xs"
+        ><strong>{{ eto.name }}</strong></span
+      >
+      <span class="com-text-xs">{{ eto.email }}</span>
+      <span class="com-text-xs">{{ eto.phone }}</span>
+    </td>
+  </tr>
+  <tr *ngFor="let eto of detail.eto_users">
+    <td class="com-italic" *ngIf="detail.user.email !== eto.email">Others</td>
+    <td *ngIf="detail.user.email !== eto.email">
+      <div class="com-flex com-flex-col com-mt-1">
+        <span class="com-text-xs"
+          ><strong>{{ eto.name }}</strong></span
+        >
+        <span class="com-text-xs">{{ eto.email }}</span>
+        <span class="com-text-xs">{{ eto.phone }}</span>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <hr />
+    </td>
+    <td>
+      <hr />
+    </td>
+  </tr>
+</table>
+
+<!-- <ng-template #refundDialogBox let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+      <div class="com-font-semibold">Refund Amount: {{ refundAmount / 100 }}</div>
+      <p>Are you sure you want to create refund!</p>
+      <span class="com-italic">This action can't be done once processed</span>
+    </nb-card-body>
+    <nb-card-footer class="com-flex com-justify-between">
+      <button nbButton (click)="createRefund(data); ref.close()" status="primary">Yes</button>
+      <button nbButton status="danger" outline (click)="ref.close()">No</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template> -->

@@ -1,0 +1,107 @@
+<section>
+  <div class="com-flex com-gap-2 com-items-center com-mb-4">
+    <div class="topic" *ngIf="selectedForum">{{ selectedForum[0].group_name | titlecase }}</div>
+    <div *ngIf="currentUser && isCommunityOrganizer">
+      <button
+        (click)="newChannelDialogBox(selectedForum[0].group_name); $event.stopPropagation()"
+        nbButton
+        status="warning"
+        size="small"
+      >
+        <nb-icon icon="plus"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <table style="width: 100%">
+    <tr *ngFor="let forum of selectedForum" class="forum-list">
+      <td (click)="openChat(forum.id)" class="com-w-4/5">
+        <div>
+          <p class="category">{{ forum.name | titlecase }}</p>
+          <div class="com-flex com-space-x-2">
+            <p class="group-name">{{ (forum.description | titlecase) || 'General' }}</p>
+            <div class="readonly badge" *ngIf="forum.is_readonly">
+              <span> <fa-icon [icon]="faEye"></fa-icon>Read Only </span>
+            </div>
+            <div class="private badge" *ngIf="forum.is_private">
+              <span> <fa-icon [icon]="faLock"></fa-icon>Private </span>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td class="com-w-1/5">
+        <div
+          class="icons"
+          *ngIf="
+            channelsRoles[forum.id] &&
+            (channelsRoles[forum.id].includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN) || isCommunityOrganizer)
+          "
+        >
+          <div class="edit pointer" (click)="openDialogBox(editForum, forum)">
+            <fa-icon [icon]="faPen"></fa-icon>
+          </div>
+          <div class="delete pointer" (click)="openDialogBox(deleteForum, forum)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </div>
+          <div class="invite pointer" (click)="openDialogBox(inviteInForm, forum)">
+            <fa-icon [icon]="faUserPlus"></fa-icon>
+          </div>
+          <!-- <div class="pin pointer" (click)="pin()">
+            <fa-icon [icon]="faThumbTack"></fa-icon>
+          </div> -->
+        </div>
+        <!-- <p class="replies">29</p> -->
+      </td>
+    </tr>
+  </table>
+</section>
+
+<ng-template #editForum let-data let-ref="dialogRef">
+  <nb-card class="setting-dialog-box">
+    <nb-card-header>
+      <h4>Edit Forum > {{ data.name }}</h4>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <commudle-edit-channel
+        [discussionType]="discussionType.FORUM"
+        [forum]="data"
+        (updateForm)="closeDialogBox()"
+      ></commudle-edit-channel>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #deleteForum let-data let-ref="dialogRef">
+  <nb-card class="setting-dialog-box">
+    <nb-card-header>
+      <h4>Delete Forum > {{ data.name }}</h4>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <app-delete-channel
+        [channelId]="data.id"
+        [currentUrl]="'communities/' + parent.slug + '/forums'"
+        (updateForm)="closeDialogBox()"
+      ></app-delete-channel>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #inviteInForm let-data let-ref="dialogRef">
+  <nb-card class="setting-dialog-box">
+    <nb-card-header>
+      <h4>Invite > {{ data.name }}</h4>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <app-invite-form [forum]="data" (updateForm)="closeDialogBox()"></app-invite-form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

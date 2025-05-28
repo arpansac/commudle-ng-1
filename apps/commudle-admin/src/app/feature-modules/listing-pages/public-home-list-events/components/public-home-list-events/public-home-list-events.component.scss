@@ -1,0 +1,13 @@
+.featured-communities {
+  @apply com-m-0 md:com-mt-9 com-mt-0;
+}
+
+.right-column {
+  @apply com-sticky com-top-0;
+}
+
+.tech-sessions,
+.speakers,
+.featured-communities {
+  @apply com-m-0 com-mt-8;
+}

@@ -1,13 +1,7 @@
 .community-emails {
   nb-card {
-    @apply com-mx-0 md:com-mx-2 com-my-4;
-    height: 450px;
-
-    nb-card-header {
-      background: #ececec;
-      font-size: 1.2rem;
-      font-weight: 300;
-    }
+    @apply com-m-0;
+    height: 100vh;
 
     nb-list {
       nb-list-item {
@@ -21,6 +15,22 @@
           }
         }
       }
+    }
+  }
+}
+
+.email-template {
+  @apply com-m-0 com-p-0 md:com-w-[600px] com-w-full com-h-full md:com-max-h-[90dvh];
+  img {
+    @apply com-w-full;
+  }
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center com-py-4 com-px-6;
+    h3 {
+      @apply com-m-0  com-text-sm com-font-medium com-text-Yankees-Blue;
+    }
+    button {
+      @apply com-rounded-full;
     }
   }
 }

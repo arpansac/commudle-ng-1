@@ -1,0 +1,42 @@
+nb-card {
+  @apply com-m-0  md:com-p-4 com-p-0 md:com-block com-border-0 md:com-border;
+  nb-card-body {
+    @apply com-p-0;
+    .heading {
+      @apply com-m-0 md:com-mb-5 com-mb-4 com-flex md:com-p-0 com-px-4 com-py-3 com-flex-col com-border-0 md:com-border-b-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      .title {
+        @apply com-flex com-m-0;
+        a {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-1 com-no-underline;
+        }
+      }
+      .sub-heading {
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
+      }
+    }
+
+    .user-profile-card-large {
+      @apply com-flex md:com-block com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-m-0 md:com-mx-0 com-mx-4 com-gap-4 md:com-gap-0 com-items-center;
+      .user-profile-card-large-card {
+        @apply md:com-py-3 com-m-0 com-border com-border-solid md:com-border-0 md:com-border-b com-border-Bright-Gray md:com-p-0 com-p-3 com-h-full md:com-h-auto md:com-rounded-none com-rounded-lg;
+
+        &:last-child {
+          @apply md:com-border-0 #{!important};
+        }
+      }
+    }
+
+    .load-more {
+      @apply com-text-center com-mt-4 com-p-0;
+
+      button {
+        @apply com-text-xs com-font-medium com-text-gray-500 com-border com-border-solid com-border-gray-200 #{!important};
+      }
+    }
+
+    .loading-spinner {
+      @apply com-my-4;
+    }
+  }
+}

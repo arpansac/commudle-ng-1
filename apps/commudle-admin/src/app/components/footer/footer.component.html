@@ -1,7 +1,7 @@
 <footer>
   <div *ngIf="showFooter" class="com-bg-white">
     <div class="com-container com-mx-auto com-py-12 com-px-4">
-      <div class="xl:com-grid xl:com-grid-cols-3 xl:com-gap-8">
+      <div class="xl:com-grid xl:com-grid-cols-3 xl:com-gap-8 com-overflow-hidden">
         <div class="com-space-y-8 xl:com-col-span-1">
           <a [routerLink]="['/']"
             ><img alt="Commudle" class="com-h-16" src="{{ staticAssets.commudle_logo_128 }}" title="Commudle"
@@ -11,6 +11,12 @@
             href="https://blog.google/intl/en-in/introducing-the-inaugural-class-of-the-google-for-startups-accelerator-india-women-founders/"
           >
             <img class="com-h-16" src="{{ staticAssets.google_for_startups_badge }}" alt="Google for Startups 2022" />
+          </a>
+          <a href="https://compliances.commudle.com/">
+            <img class="com-h-16 com-ml-4" src="{{ staticAssets.gdpr_compliance }}" alt="Commudle is gdpr compliant" />
+          </a>
+          <a href="https://compliances.commudle.com/">
+            <img class="com-h-16 com-ml-4" src="{{ staticAssets.iso_27001 }}" alt="Commudle is Iso 27001" />
           </a>
           <div class="footer-social-links com-flex com-space-x-6">
             <a href="https://twitter.com/commudle" target="_blank">
@@ -25,6 +31,9 @@
             <a href="https://github.com/commudle/commudle-ng" target="_blank">
               <nb-icon icon="github"></nb-icon>
             </a>
+            <a href="https://www.youtube.com/@commudle" target="_blank">
+              <fa-icon [icon]="faYoutube"></fa-icon>
+            </a>
           </div>
         </div>
         <div class="footer-links">
@@ -33,6 +42,7 @@
               <ul>
                 <li><a [routerLink]="['/']">Home</a></li>
                 <li><a [routerLink]="['/about']">About</a></li>
+                <li><a [routerLink]="['/features']">Features</a></li>
                 <li><a [routerLink]="['/pricing']">Pricing</a></li>
                 <li><a href="https://documentation.commudle.com/" target="_blank">Documentation</a></li>
                 <li><a [routerLink]="['/student-non-profit-community-support']">Student Community Plan</a></li>
@@ -43,8 +53,28 @@
             <div class="com-mt-12 md:com-mt-0">
               <ul>
                 <li><a [routerLink]="['/communities']">Communities</a></li>
+                <li><a [routerLink]="['/events']">Events</a></li>
+                <li>
+                  <a [routerLink]="['/speakers']">Speakers</a>
+                  <ul class="nested-list">
+                    <li>
+                      <a [routerLink]="['/speakers/cfp']">
+                        <app-badge
+                          text="New"
+                          [fontColor]="'com-text-tWhite'"
+                          [fontSize]="'small'"
+                          [borderRadius]="'round'"
+                          [color]="'com-bg-primary-500'"
+                          [position]="'top right'"
+                        ></app-badge>
+                        Call for Speakers
+                      </a>
+                    </li>
+                  </ul>
+                </li>
                 <li><a [routerLink]="['/labs']">Labs</a></li>
                 <li><a [routerLink]="['/builds']">Builds</a></li>
+                <li><a [routerLink]="['/experts']">Experts</a></li>
                 <li><a [routerLink]="['/newsletters']">Newsletters</a></li>
                 <li><a [routerLink]="['/blogs']">Blogs</a></li>
                 <li><a [routerLink]="['/jobs']">Jobs</a></li>
@@ -54,12 +84,30 @@
           <div class="md:com-grid md:com-grid-cols-2 md:com-gap-8">
             <div>
               <ul>
-                <li><a [routerLink]="['/policies/privacy-policy']">Privacy Policy</a></li>
-                <li><a [routerLink]="['/policies/terms-and-conditions']">Terms and Conditions</a></li>
+                <li>
+                  <a class="developer-community-blueprint" [routerLink]="['/developer-ecosystem-blueprint']"
+                    >The Developer Ecosystem Blueprint</a
+                  >
+                </li>
+                <li><a [routerLink]="['/devrel-agencies']">For DevRel Agencies</a></li>
+                <li><a [routerLink]="['/experts-program']">Experts Program</a></li>
+                <li><a [routerLink]="['/case-studies']">Case Studies</a></li>
               </ul>
             </div>
             <div class="com-mt-12 md:com-mt-0">
-              <ul></ul>
+              <ul>
+                <li><a [routerLink]="['/login']">Login</a></li>
+                <li><a [routerLink]="['/signup']">Create Account</a></li>
+                <li><a [routerLink]="['/policies/privacy-policy']">Privacy Policy</a></li>
+                <li><a [routerLink]="['/policies/terms-and-conditions']">Terms and Conditions</a></li>
+                <li><a [routerLink]="['/policies/contact-us']">Contact Us</a></li>
+                <li><a [routerLink]="['/policies/refund-cancellation-policy']">Refund & Cancellation Policy</a></li>
+                <li><a [routerLink]="['/policies/all-policies']">All Policies</a></li>
+                <li><a href="https://compliances.commudle.com/">Compliances</a></li>
+                <li>
+                  <a [href]="awsS3Bucket.brand_guidelines">Brand Guidelines</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -72,7 +120,7 @@
     </div>
   </div>
 
-  <div *ngIf="!showFooter" class="show-footer">
+  <div *ngIf="!showFooter && showMiniFooter" class="show-footer">
     <hr />
     <div class="links">
       <ul>

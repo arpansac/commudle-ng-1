@@ -34,6 +34,19 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
     { title: 'Delete Question', icon: 'trash-outline' },
   ];
 
+  tinyMCE: any = {
+    placeholder: '(Optional)',
+    min_height: 100,
+    menubar: false,
+    convert_urls: false,
+    statusbar: false,
+    toolbar: false,
+    plugins: ['autoresize'],
+    content_style:
+      "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 14px !important;}",
+    license_key: 'gpl',
+  };
+
   @ViewChild('cdkDrag') cdkDrag: any;
 
   constructor(
@@ -89,6 +102,7 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.seoService.noIndex(false);
   }
+
   // drag and drop function by CDK
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(
@@ -100,13 +114,14 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
 
   initQuestion(): FormGroup {
     return this.fb.group({
-      question_type_id: ['', Validators.required],
+      question_type_id: [1, Validators.required],
       title: ['', Validators.required],
       description: [''],
       required: [false],
       disabled: [false],
       has_responses: [false],
       question_choices: this.fb.array([]),
+      show_description: [false],
     });
   }
 
@@ -141,7 +156,7 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
   }
 
   questionTypeChange(questionType, questionIndex: number) {
-    if (![4, 5].includes(questionType)) {
+    if (![4, 5].includes(questionType.target.value)) {
       const choiceCount = (<FormArray>(
         (<FormArray>this.editDataForm.get('data_form').get('questions')).controls[questionIndex].get('question_choices')
       )).length;
@@ -177,12 +192,13 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
       const exisingQuestionForm = this.fb.group({
         id: q.id,
         question_type_id: [{ value: q.question_type_id, disabled: q.has_responses }],
-        title: [{ value: q.title, disabled: q.has_responses }],
-        description: [{ value: q.description, disabled: q.has_responses }],
+        title: [q.title],
+        description: [q.description],
         required: [q.required],
         disabled: [q.disabled],
         has_responses: q.has_responses,
         question_choices: this.fb.array([this.initQuestionChoice()]),
+        show_description: [q.description ? true : false],
       });
       (exisingQuestionForm as FormGroup).setControl('question_choices', this.setQuestionChoices(q.question_choices));
       formArray.push(exisingQuestionForm);
@@ -196,7 +212,7 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
       formArray.push(
         this.fb.group({
           id: [qc.id],
-          title: [{ value: qc.title, disabled: qc.has_responses }],
+          title: [qc.title],
           has_responses: qc.has_responses,
         }),
       );
@@ -235,7 +251,10 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
   }
 
   toggleDescriptionField(index: number): void {
-    this.questionDescription[index] = !this.questionDescription[index];
+    const questionFormGroup = this.editDataForm.get('data_form').get('questions') as FormArray;
+    const question = questionFormGroup.at(index);
+    const show_description = question?.get('show_description')?.value;
+    question.patchValue({ show_description: !show_description });
   }
 
   setContextIndex(index: number) {

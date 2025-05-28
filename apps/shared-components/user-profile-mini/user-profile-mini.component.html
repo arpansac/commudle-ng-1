@@ -1,5 +1,10 @@
-<div class="user {{ size }}">
-  <app-user-live-status *ngIf="showLiveStatus" [userId]="user.id"></app-user-live-status>
+<div class="user {{ size }}" [ngClass]="{ 'align-start': alignStart }">
+  <app-user-live-status
+    *ngIf="showLiveStatus || showOnlineText"
+    [showLiveStatus]="showLiveStatus"
+    [userId]="user.id"
+    (isOnline)="HandleOnlineStatus($event)"
+  ></app-user-live-status>
   <div class="profile-picture {{ size }}">
     <img alt="{{ user.name }}" src="{{ user.photo.i64 }}" title="{{ user.name }}" />
   </div>
@@ -8,14 +13,10 @@
       <a [routerLink]="['/users', user.username]" target="_blank" [ngClass]="{ 'disable-anchor': disableAnchor }"
         ><strong>{{ user.name }}</strong></a
       >
-      <img
-        *ngIf="user.is_expert"
-        alt="Expert Tick"
-        class="expert-icon"
-        src="/assets/images/Expert-Tick.svg"
-        title="Expert Tick"
-      />
+      <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
+      <commudle-user-personal-connect [userConnect]="user.distance_from_current_user"></commudle-user-personal-connect>
     </p>
+    <p *ngIf="isOnline && showOnlineText" class="active-now">Active Now</p>
     <p *ngIf="designation" class="designation {{ size }}">
       {{ user.designation | slice : 0 : 50 }}
       <span *ngIf="user.designation?.length > 25">...</span>

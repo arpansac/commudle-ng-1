@@ -1,18 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { ICommunity } from 'apps/shared-models/community.model';
-import { IEventLocation } from 'apps/shared-models/event-location.model';
+import { IEventDatesLocation, IEventLocation } from 'apps/shared-models/event-location.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import { SeoService } from 'apps/shared-services/seo.service';
@@ -28,10 +20,13 @@ export class AgendaComponent implements OnInit {
 
   @Input() community: ICommunity;
   @Input() event: IEvent;
+  @Input() showShareButton = true;
 
   eventLocations: IEventLocation[] = [];
-
+  eventDatesLocation: IEventDatesLocation[];
   isLoading = true;
+  selectedLocation;
+  upcomingEvents: Array<ITrackSlot> = [];
 
   constructor(
     private eventLocationsService: EventLocationsService,
@@ -40,38 +35,31 @@ export class AgendaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.event.custom_agenda) {
-      this.getEventLocations();
-    }
-  }
-
-  getEventLocations() {
-    this.eventLocationsService.pGetEventLocations(this.event.id).subscribe((data) => {
-      this.eventLocations = data.event_locations;
-      this.isLoading = false;
-      this.setSchema();
-      this.changeDetectorRef.markForCheck();
-    });
+    this.getDatesEventLocations();
   }
 
   setSchema() {
-    if (this.event.start_time) {
+    if (
+      this.event.start_time &&
+      this.eventDatesLocation.length > 0 &&
+      this.eventDatesLocation[0].event_locations[0].location
+    ) {
       this.seoService.setSchema({
         '@context': 'https://schema.org',
         '@type': 'Event',
         name: this.event.name,
         description: this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_path,
+        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
         startDate: this.event.start_time,
         endDate: this.event.end_time,
         eventStatus: 'https://schema.org/EventScheduled',
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         location: {
           '@type': 'Place',
-          name: this.eventLocations[0].location.address,
+          name: this.eventDatesLocation[0].event_locations[0].location.address,
           address: {
             '@type': 'PostalAddress',
-            streetAddress: this.eventLocations[0].location.address,
+            streetAddress: this.eventDatesLocation[0].event_locations[0].location.address,
             addressCountry: 'IN',
           },
         },
@@ -89,40 +77,58 @@ export class AgendaComponent implements OnInit {
     }
   }
 
-  getLocationName(eventLocation: IEventLocation) {
-    return eventLocation.embedded_video_stream
-      ? 'Video Stream'
-      : eventLocation.location
-      ? eventLocation.location.name
-      : '';
-  }
-
-  getTabIcon(eventLocation: IEventLocation) {
-    return eventLocation.embedded_video_stream ? 'video' : 'pin';
-  }
-
   updateSessionPreference(data, locationIndex) {
     this.eventLocations[locationIndex].event_location_tracks[data.track_index].track_slots[
       data.track_slot_index
     ].user_vote = data.preference;
   }
 
-  getUpcomingEvents() {
+  getUpcomingEvents(data) {
     let allEvents: Array<ITrackSlot> = [];
-    const upcomingEvents: Array<ITrackSlot> = [];
+    this.upcomingEvents = [];
 
-    this.eventLocations.forEach((el) =>
-      el.event_location_tracks.forEach((elt) => elt.track_slots.forEach((slot) => allEvents.push(slot))),
-    );
+    data.forEach((elt) => {
+      elt.track_slots.forEach((slot) => {
+        allEvents.push(slot);
+      });
+    });
 
     allEvents = _.sortBy(allEvents, (slot) => moment(slot.start_time));
 
     allEvents.forEach((slot) => {
       if (moment(slot.start_time).isAfter(moment()) && moment().isAfter(moment(this.event.start_time))) {
-        upcomingEvents.push(slot);
+        this.upcomingEvents.push(slot);
       }
     });
+  }
 
-    return upcomingEvents;
+  getDatesEventLocations() {
+    this.eventLocationsService.getEventDates(this.event.slug).subscribe((data: any) => {
+      if (data) {
+        this.eventDatesLocation = data;
+        if (data.event_locations) {
+          this.selectLocation(data[0].event_locations[0]);
+        }
+        this.setSchema();
+        this.isLoading = false;
+        this.changeDetectorRef.markForCheck();
+      }
+    });
+  }
+
+  selectLocation(eventLocation) {
+    this.selectedLocation = eventLocation;
+  }
+
+  onTabChange(event: any) {
+    const tabIndex = this.eventDatesLocation.findIndex((d) => {
+      const formattedDate = moment(d.date).format('Do MMMM');
+      return formattedDate === event.tabTitle;
+    });
+    if (tabIndex !== -1) {
+      if (this.eventDatesLocation[tabIndex] && this.eventDatesLocation[tabIndex].event_locations.length > 0) {
+        this.selectLocation(this.eventDatesLocation[tabIndex].event_locations[0]);
+      }
+    }
   }
 }

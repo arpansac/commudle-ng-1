@@ -1,15 +1,21 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { InViewportDirective } from '@commudle/in-viewport';
 import { faGrin } from '@fortawesome/free-regular-svg-icons';
-import * as moment from 'moment';
+import { faCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NoWhitespaceValidator } from 'apps/shared-helper-modules/custom-validators.validator';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
+import { IEditorValidator } from '@commudle/editor';
+// import { UserMessageReceiptHandlerService } from '@commudle/shared-services';
+import * as moment from 'moment';
+import { SVotesService } from 'apps/shared-components/services/s-votes.service';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
+  providers: [InViewportDirective],
 })
 export class MessageComponent implements OnInit {
   @Input() canReply: boolean;
@@ -17,38 +23,48 @@ export class MessageComponent implements OnInit {
   @Input() currentUser: ICurrentUser;
   @Input() allActions;
   @Input() permittedActions;
+  @Input() showFlagIcon = true;
+  @Input() showReplyIcon = true;
+  @Input() showFullDateTime = false;
   @Output() sendReply: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendFlag: EventEmitter<number> = new EventEmitter<number>();
   @Output() sendDelete = new EventEmitter();
+  faCircle = faCircle;
+  faTrash = faTrash;
+  showActionButton: boolean[] = [false];
 
   moment = moment;
 
   showReplyForm = false;
   showEmojiPicker = false;
   isVotingBlocked = false;
-
-  replyForm;
+  totalVotesCount: number;
 
   @ViewChild('messageInput') messageInput: ElementRef<HTMLInputElement>;
 
   faGrin = faGrin;
 
-  constructor(private fb: FormBuilder) {
-    this.replyForm = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
-    });
+  constructor(
+    private fb: FormBuilder,
+    // private userMessageReceiptHandlerService: UserMessageReceiptHandlerService,
+    private injector: Injector,
+    private votesService: SVotesService,
+  ) {}
+
+  validators: IEditorValidator = {
+    required: true,
+    minLength: 1,
+    maxLength: 200,
+    noWhitespace: true,
+  };
+
+  ngOnInit(): void {
+    this.getAllVotes();
   }
 
-  ngOnInit(): void {}
-
-  emitReply(): void {
-    if (this.replyForm.valid) {
-      this.sendReply.emit(this.replyForm.value);
-      this.replyForm.reset();
-      this.replyForm.updateValueAndValidity();
-      this.showReplyForm = false;
-      this.showEmojiPicker = false;
-    }
+  emitReply(value): void {
+    this.sendReply.emit({ content: value });
+    this.showReplyForm = false;
   }
 
   emitFlag(messageId: number): void {
@@ -59,10 +75,27 @@ export class MessageComponent implements OnInit {
     this.sendDelete.emit({ messageId, isSelfMessage });
   }
 
-  addEmoji(event): void {
-    this.replyForm.patchValue({
-      content: (this.replyForm.get('content').value || '').concat(`${event.emoji.native}`),
+  markAsRead(messageId: number, { visible }: { visible: boolean }): void {
+    // if (messageId && visible) {
+    //   this.userMessageReceiptHandlerService.addMessageReceipt(messageId, new Date());
+    // }
+  }
+
+  onHoverEnter(id) {
+    this.showActionButton[id] = true;
+  }
+
+  onHoverLeave(id) {
+    this.showActionButton[id] = false;
+  }
+
+  onLongPress(id) {
+    this.showActionButton[id] = true;
+  }
+
+  getAllVotes() {
+    this.votesService.pGetVotesCount('UserMessage', this.message.id).subscribe((data) => {
+      this.totalVotesCount = data.total;
     });
-    this.messageInput.nativeElement.focus();
   }
 }

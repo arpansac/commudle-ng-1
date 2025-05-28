@@ -1,0 +1,15 @@
+<app-loading-spinner *ngIf="isLoading; else campaignList"></app-loading-spinner>
+<ng-template #campaignList>
+  <commudle-campaign-list [campaigns]="campaigns" [isCampaignAdmin]="true"></commudle-campaign-list
+></ng-template>
+<br />
+<br />
+<app-pagination
+  *ngIf="total > 0"
+  (goTo)="page = $event; fetchCampaigns()"
+  (next)="page = $event; fetchCampaigns()"
+  (previous)="page = $event; fetchCampaigns()"
+  [count]="count"
+  [current]="page"
+  [total]="total"
+></app-pagination>

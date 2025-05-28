@@ -15,12 +15,23 @@
                 <app-community-badge [community]="community"></app-community-badge>
               </p>
               <div *ngIf="event" class="event">
-                <div *ngIf="event.header_image_path" class="header-image">
-                  <img alt="{{ event.name }}" src="{{ event.header_image_path }}" title="{{ event.name }}" />
+                <div class="header-image">
+                  <commudle-banner-image
+                    *ngIf="event.header_image_path"
+                    [headerImagePath]="event.header_image_path"
+                    [name]="event.name"
+                  ></commudle-banner-image>
                 </div>
                 <p class="event-name">{{ event.name }}</p>
               </div>
               <p class="form-name">{{ dataFormEntity.name }}</p>
+              <commudle-alert
+                [info]="
+                  dataFormEntity?.event_data_form_entity_group?.is_paid &&
+                  dataFormEntity?.event_data_form_entity_group?.approval_based_payments
+                "
+                message="This is an approval based registration process, if you are shortlisted then you will receive a link to make the payment and complete your registration."
+              ></commudle-alert>
             </nb-card-body>
           </nb-card>
 
@@ -32,12 +43,22 @@
               </div>
             </nb-card-body>
           </nb-card>
+          <nb-card *ngIf="dataFormEntity.user_details">
+            <nb-card-body>
+              <commudle-user-details-form
+                [userFormDetails]="dataFormEntity.user_details"
+                [showActionButtons]="false"
+                (submitUserDetailsEvent)="updateUserDetails($event)"
+              ></commudle-user-details-form>
+            </nb-card-body>
+          </nb-card>
 
           <div class="data-form-fill-body">
             <app-data-form-fill
-              (formSubmitted)="submitForm($event)"
+              (formSubmitted)="updateUserDetailsAndSubmitForm($event)"
               [dataFormId]="dataFormEntity.data_form_id"
               [existingResponses]="selectedFormResponse"
+              [eventId]="event ? event.id : ''"
             >
             </app-data-form-fill>
             <p *ngIf="dataFormEntity.multi_response" class="text-info">
@@ -57,29 +78,39 @@
         <p class="thank-you-icon">
           <nb-icon icon="done-all" status="success"></nb-icon>
         </p>
-        <p>Thank You {{ currentUser.name }} for filling the form!</p>
+        <p class="thank-you-text">Thank You {{ currentUser.name }} for filling the form!</p>
+        <div class="com-my-3 com-mx-2">
+          <commudle-alert
+            [info]="
+              dataFormEntity?.event_data_form_entity_group?.is_paid &&
+              dataFormEntity?.event_data_form_entity_group?.approval_based_payments
+            "
+            message="This is an approval based registration process, if you are shortlisted then you will receive a link to make the payment and complete your registration."
+          ></commudle-alert>
+        </div>
+        <div *appBreakpoints="'>lg'" class="user">
+          <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+          <commudle-userprofile-details
+            [userProfileDetails]="userProfileDetails"
+            [username]="currentUser.username"
+            [completeProfileText]="completeProfileText"
+          ></commudle-userprofile-details>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="user">
+          <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+          <commudle-userprofile-details
+            [userProfileDetails]="userProfileDetails"
+            [username]="currentUser.username"
+            [showLowerCardUserDetails]="false"
+            [completeProfileText]="completeProfileText"
+          ></commudle-userprofile-details>
+        </div>
       </div>
     </nb-card-body>
     <nb-card-footer>
       <p *ngIf="event">
         <a [routerLink]="['/communities', community.slug, 'events', event.slug]">
-          <img alt="{{ event.name }}" src="{{ event.header_image_path }}" title="{{ event.name }}" />
-          <br />
-          {{ event.name }}
-        </a>
-      </p>
-      <p *ngIf="community">
-        <a [routerLink]="['/communities', community.slug]">
-          <img alt="{{ community.name }}" src="{{ community.logo_path }}" title="{{ community.name }}" />
-          <br />
-          {{ community.name }}
-        </a>
-      </p>
-      <p>
-        <a [routerLink]="['/']">
-          <nb-icon icon="home"></nb-icon>
-          <br />
-          Home
+          <p>Go to Event Page &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon></p>
         </a>
       </p>
     </nb-card-footer>

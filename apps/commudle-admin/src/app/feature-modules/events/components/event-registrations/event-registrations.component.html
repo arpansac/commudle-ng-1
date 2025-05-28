@@ -1,0 +1,56 @@
+<nb-card class="registrations">
+  <nb-card-header>
+    <h6>
+      <nb-icon icon="edit-2-outline"></nb-icon>
+      Registrations
+      <commudle-help-section [helpDictionaryName]="'event-registrations'"></commudle-help-section>
+    </h6>
+  </nb-card-header>
+  <nb-card-body>
+    <!-- <div *ngIf="event.editable" class="com-flex com-gap-4">
+      <p>One Click Registration</p>
+      <nb-toggle
+        (checkedChange)="updateRegistrationType($event)"
+        [checked]="event.custom_registration"
+        status="primary"
+      ></nb-toggle>
+      <p>Registration Forms</p>
+    </div> -->
+    <commudle-alert
+      [info]="true"
+      message="We have made registrations much easier, checkout the new interface!"
+    ></commudle-alert>
+    <div *ngIf="event.custom_registration && community.payments_enabled && showDiscountComponent">
+      <commudle-discount-coupons
+        [event]="event"
+        [community]="community"
+        [refundPolicy]="refundPolicy"
+      ></commudle-discount-coupons>
+    </div>
+    <app-form-groups
+      *ngIf="event.custom_registration"
+      [community]="community"
+      [event]="event"
+      [refundPolicy]="refundPolicy"
+      (showDiscountCoupons)="showDiscountComponent = $event"
+    ></app-form-groups>
+    <app-event-simple-registration
+      *ngIf="!event.custom_registration"
+      [community]="community"
+      [event]="event"
+    ></app-event-simple-registration>
+  </nb-card-body>
+</nb-card>
+
+<div class="next-step-section" *ngIf="event.event_status.id !== 5">
+  <a>
+    Next Step
+    <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+  </a>
+  <commudle-next-step-card
+    [nbIcon]="'calendar-outline'"
+    headingText="Setup Location & Agenda"
+    subHeadingText="Add schedule of the event from confirmed speakers"
+    [routerLink]="'/admin' + '/communities/' + community.slug + '/event-dashboard/' + event.slug + '/agenda'"
+  ></commudle-next-step-card>
+</div>

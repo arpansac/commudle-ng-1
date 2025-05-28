@@ -1,0 +1,20 @@
+<nb-card>
+  <nb-card-body>
+    <div class="text">
+      <div class="icon">
+        <fa-icon *ngIf="faIcon" [icon]="faIcon"></fa-icon>
+        <nb-icon *ngIf="nbIcon" [icon]="nbIcon"></nb-icon>
+      </div>
+      <div class="heading">{{ headingText }}</div>
+      <div class="sub-heading">{{ subHeadingText }}</div>
+    </div>
+    <div class="button">
+      <!-- ['/admin', 'communities', communitySlug, 'event-dashboard', eventSlug, routePath] -->
+      <a [routerLink]="routerLink">
+        <button nbButton status="primary" fullWidth size="small">
+          {{ buttonText }}
+        </button>
+      </a>
+    </div>
+  </nb-card-body>
+</nb-card>

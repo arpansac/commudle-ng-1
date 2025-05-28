@@ -1,6 +1,6 @@
 <div>
   <form (ngSubmit)="submitForm()" [formGroup]="communityChannelForm" class="community-channel-form">
-    <div class="logo field">
+    <div class="logo field" *ngIf="discussionType === EDiscussionType.CHANNEL">
       <div *ngIf="uploadedLogoImage || (existingChannel && existingChannel.logo)" class="uploaded-logo">
         <img alt="Profile Picture" src="{{ uploadedLogoImage || existingChannel.logo.url }}" title="Profile Picture" />
       </div>
@@ -43,15 +43,28 @@
 
     <div class="field">
       <label fullWidth>
-        Name*
-        <input fieldSize="tiny" formControlName="name" fullWidth nbInput type="text" />
+        <span>{{ discussionType === EDiscussionType.CHANNEL ? 'Name*' : 'Topic*' }}</span>
+        <input
+          formControlName="name"
+          fullWidth
+          nbInput
+          type="text"
+          [placeholder]="discussionType === EDiscussionType.CHANNEL ? 'Name' : 'Topic'"
+        />
+      </label>
+    </div>
+
+    <div class="field" *ngIf="discussionType === EDiscussionType.FORUM">
+      <label fullWidth>
+        <span>Category Name*</span>
+        <input formControlName="group_name" fullWidth nbInput type="text" placeholder="general" />
       </label>
     </div>
 
     <div class="field">
       <label fullWidth>
         Description*
-        <textarea fieldSize="small" formControlName="description" fullWidth nbInput type="text"></textarea>
+        <textarea formControlName="description" fullWidth nbInput type="text" placeholder="Description"></textarea>
       </label>
     </div>
 
@@ -62,17 +75,38 @@
       <nb-checkbox formControlName="is_readonly" status="basic">
         Readonly: Allow only admins to post in the group
       </nb-checkbox>
+      <nb-checkbox
+        *ngIf="existingChannel && existingChannel.display_type === EDiscussionType.CHANNEL"
+        formControlName="default"
+        status="basic"
+        [disabled]="existingChannel.is_private"
+      >
+        Default
+      </nb-checkbox>
+      <nb-checkbox
+        *ngIf="!existingChannel && discussionType === EDiscussionType.CHANNEL"
+        formControlName="default"
+        status="basic"
+      >
+        Default
+      </nb-checkbox>
+
+      <commudle-alert
+        [info]="existingChannel && existingChannel.is_private"
+        message="Private channels cannot be marked as default"
+      ></commudle-alert>
     </div>
 
-    <div class="field">
+    <div class="field" class="field" *ngIf="discussionType === EDiscussionType.CHANNEL">
       <label fullWidth>
-        Group Name (optional)
-        <input fieldSize="tiny" formControlName="group_name" fullWidth nbInput type="text" />
+        <span>Group Name (optional)</span>
+        <input formControlName="group_name" fullWidth nbInput type="text" />
       </label>
     </div>
-
-    <button [disabled]="!communityChannelForm.valid" nbButton outline size="small" status="success" type="submit">
-      Save
-    </button>
   </form>
+</div>
+<div class="action-button">
+  <button (click)="submitForm()" [disabled]="!communityChannelForm.valid" nbButton status="primary" type="submit">
+    Save
+  </button>
 </div>

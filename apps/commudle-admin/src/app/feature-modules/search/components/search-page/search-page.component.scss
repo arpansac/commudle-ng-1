@@ -1,28 +1,191 @@
 .base-layout {
+  @apply com-px-0 com-py-6;
+
+  .search-input {
+    @apply md:com-m-0 com-mx-4;
+  }
+
+  .query-searched {
+    @apply com-text-base com-font-normal com-text-Dark-Jungle-Green com-mt-6 com-mb-4 md:com-px-0 com-px-4;
+
+    strong {
+      @apply com-text-base com-font-medium com-text-black;
+    }
+  }
+
+  nb-tag-list {
+    @apply com-m-0 com-p-0 md:com-pb-6 com-pb-2 md:com-px-0 com-px-4 com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+    nb-tag {
+      @apply md:com-mb-0 com-mb-4;
+      .selected {
+        @apply com-bg-primary-500;
+      }
+    }
+  }
   .container {
-    .one-column-layout {
-      .search-results {
-        nb-card-body {
-          nb-list {
-            @apply com-mt-4;
+    .three-column-layout {
+      @apply com-pt-4;
 
-            .search-result {
-              @apply com-px-0 com-border-0 com-cursor-pointer;
+      .left-column {
+        @apply md:com-pr-[30px] com-relative md:com-flex com-hidden;
 
-              nb-user {
-                &::ng-deep {
-                  .info-container {
-                    .user-name,
-                    .user-title {
-                      @apply com-line-clamp-1;
-                    }
-                  }
-                }
+        .items-list {
+          @apply com-sticky com-top-[86px] com-w-full;
+        }
+
+        nb-card {
+          @apply com-m-0;
+
+          nb-card-header {
+            @apply com-text-sm com-font-semibold com-text-black com-p-4;
+          }
+
+          nb-card-body {
+            @apply com-p-0;
+
+            .query-results-heading {
+              @apply com-py-2 com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue;
+            }
+          }
+        }
+      }
+    }
+    .main-column {
+      @apply com-p-0 md:com-px-0 com-px-4;
+    }
+    .results-count {
+      @apply com-m-0 com-text-base com-font-semibold com-text-gray-500;
+    }
+
+    .option-name {
+      @apply com-m-0 com-mb-3 com-text-xl com-font-bold com-text-Dark-Jungle-Green;
+    }
+
+    nb-list {
+      nb-list-item {
+        @apply com-p-0 com-flex com-flex-col com-items-start com-border-0;
+
+        &:first-child {
+          @apply com-border-t-0;
+        }
+
+        .query-results-heading {
+          @apply com-m-0 com-mt-4 com-mb-6 com-text-xl com-font-bold com-text-Dark-Jungle-Green com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-w-full;
+
+          &:first-child {
+            @apply com-border-t-0;
+          }
+        }
+
+        .labs-card,
+        .builds-card,
+        .social-resources-card,
+        .newsletters,
+        .events-card,
+        .speaker-resources-card {
+          @apply com-grid md:com-grid-cols-2 com-grid-cols-1 com-gap-4 com-w-full;
+
+          .lab-card,
+          .build-card,
+          .social-resource-card,
+          .newsletters-card,
+          .event-card,
+          .speaker-resource-card {
+            @apply md:com-w-[312px] com-w-full;
+          }
+        }
+
+        .upcoming-cards {
+          @apply com-grid com-grid-cols-1 com-w-full;
+
+          .upcoming-card {
+            @apply com-w-full;
+          }
+        }
+      }
+
+      .search-result {
+        @apply com-px-0 com-pt-3 com-pb-2 com-cursor-pointer com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+        nb-user {
+          &::ng-deep {
+            .info-container {
+              .user-name,
+              .user-title {
+                @apply com-line-clamp-1;
               }
             }
           }
         }
       }
     }
+
+    .right-column {
+      @apply com-p-0 md:com-pl-30px com-pl-0 com-pr-0;
+
+      .advertisement {
+        @apply md:com-flex com-hidden;
+        nb-card {
+          @apply md:com-w-[342px] com-h-[325px] com-m-0 com-border-2 com-border-dashed com-border-Azure md:com-mx-0 com-mx-1;
+
+          nb-card-body {
+            @apply com-flex com-items-center com-justify-center;
+
+            h2 {
+              @apply com-text-base com-font-semibold com-text-Dark-Jungle-Green com-m-0;
+            }
+          }
+        }
+      }
+    }
   }
+
+  .switch-case {
+    @apply com-w-full;
+  }
+
+  commudle-search-details {
+    @apply com-w-full;
+  }
+
+  app-loading-spinner {
+    @apply com-m-0 com-mt-6;
+  }
+
+  .can-load-more-spinner {
+    @apply com-flex com-self-center com-m-0 com-my-4;
+  }
+
+  .results-container {
+    @apply com-flex com-flex-col com-items-center com-w-full;
+  }
+
+  .view-all {
+    @apply com-no-underline com-p-0 com-text-base com-font-normal com-text-Yankees-Blue;
+  }
+
+  nb-tag.appearance-filled.status-primary.selected {
+    @apply com-bg-primary-500 com-text-tWhite;
+  }
+
+  .load-more {
+    @apply com-flex com-self-center com-m-0 com-my-4 com-border com-border-solid com-border-Bright-Gray;
+  }
+
+  .divided-line {
+    @apply com-border com-border-solid com-border-Bright-Gray;
+  }
+}
+
+.active {
+  @apply com-bg-gray-100;
+}
+
+.items-heading {
+  @apply com-px-4 com-py-0;
+}
+
+a {
+  @apply com-no-underline;
 }

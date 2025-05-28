@@ -1,4 +1,4 @@
-<div *ngIf="communityGroup" class="com-mt-4">
+<div *ngIf="communityGroup && communities" class="com-mt-4">
   <button
     nbButton
     status="primary"
@@ -11,11 +11,8 @@
     New Community
   </button>
 </div>
-<div class="com-h-20" *ngIf="isLoading">
-  <app-loading-spinner></app-loading-spinner>
-</div>
-<div class="com-my-4" style="overflow-x: auto" *ngIf="!isLoading">
-  <table>
+<div class="com-my-4" style="overflow-x: auto">
+  <table *ngIf="communities && communities.length > 0">
     <thead>
       <tr class="heading">
         <th class="name">Name</th>
@@ -24,6 +21,8 @@
         <th class="events-count">Events Count</th>
         <th class="channels-count">Channels Count</th>
         <th class="links">Links</th>
+        <th class="toggle">Email Visibility</th>
+        <th class="toggle">Payment Status</th>
       </tr>
     </thead>
     <tbody>
@@ -44,7 +43,7 @@
           <div *ngIf="community.upcoming_events.length === 0">No Upcoming Events</div>
         </td>
         <td valign="top">
-          {{ community.member_count }}
+          {{ community.members_count }}
         </td>
         <td valign="top">
           {{ community.completed_events_count }}
@@ -92,7 +91,43 @@
             </a>
           </div>
         </td>
+        <td valign="top">
+          <div class="">
+            <nb-toggle
+              (click)="toggleEmailVisibility(community.id)"
+              status="basic"
+              [(checked)]="community.emails_visible"
+              labelPosition="right"
+            >
+            </nb-toggle>
+          </div>
+        </td>
+        <td valign="top">
+          <div class="">
+            <nb-toggle
+              (click)="togglePaymentEnable(community.id)"
+              status="basic"
+              [(checked)]="community.payments_enabled"
+              labelPosition="right"
+            >
+            </nb-toggle>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="isLoading" class="loading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <br />
+  <app-pagination
+    (goTo)="page = $event; getCommunities()"
+    (next)="page = $event; getCommunities()"
+    (previous)="page = $event; getCommunities()"
+    *ngIf="total > 0"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
 </div>

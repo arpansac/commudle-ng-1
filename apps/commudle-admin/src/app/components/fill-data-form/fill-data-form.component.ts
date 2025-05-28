@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+/* eslint-disable @nx/enforce-module-boundaries */
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -13,14 +14,24 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
+import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { UserDetailsFormComponent } from 'apps/shared-components/user-details-form/user-details-form.component';
+import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
+import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
+import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
+import { SDataFormsService } from 'apps/shared-components/services/s-data-forms.service';
+
 @Component({
   selector: 'app-fill-data-form',
   templateUrl: './fill-data-form.component.html',
   styleUrls: ['./fill-data-form.component.scss'],
 })
 export class FillDataFormComponent implements OnInit, OnDestroy {
+  @Input() existingResponses;
   dataFormEntity: IDataFormEntity;
   formClosed = false;
   showProfileForm = false;
@@ -30,13 +41,17 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   selectedFormResponse: any;
   currentUser: ICurrentUser;
   dialogRef: NbDialogRef<any>;
-
-  existingResponses;
+  completeProfileText = 'Complete your profile to boost your chances of getting shortlisted';
 
   subscriptions: Subscription[] = [];
   gtmData: any = {};
+  userProfileDetails: IUserStat;
+  faArrowRight = faArrowRight;
+  formAnswers = {};
+  private destroy$ = new Subject<void>();
 
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
+  @ViewChild(UserDetailsFormComponent) userDetailsFormComponent: UserDetailsFormComponent;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,6 +66,9 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private authWatchService: LibAuthwatchService,
     private gtm: GoogleTagManagerService,
+    private appUsersService: AppUsersService,
+    private userProfileManagerService: UserProfileManagerService,
+    private dataFormsService: SDataFormsService,
   ) {}
 
   ngOnInit() {
@@ -69,22 +87,31 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
-        this.gtmData.com_user_id = this.currentUser.id;
+        if (this.currentUser) {
+          this.appUsersService.getProfileStats().subscribe((data) => {
+            this.userProfileDetails = data;
+          });
+          this.gtmData.com_user_id = this.currentUser.id;
+        }
       }),
     );
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-
+    this.destroy$.next();
+    this.destroy$.complete();
     this.dialogRef?.close();
   }
 
   getDataFormEntity(dataFormEntityId) {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data) => {
       this.dataFormEntity = data;
+      if (this.dataFormEntity.form_type) {
+        this.gtmData.com_form_type_name = this.dataFormEntity.form_type.form_type_name;
+      }
       this.gtmData.com_form_parent_type = this.dataFormEntity.entity_type;
       this.seoService.setTags(
         `${this.dataFormEntity.name}`,
@@ -100,13 +127,11 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   }
 
   getExistingResponses() {
-    this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
-      this.existingResponses = data.existing_responses;
-
+    if (this.existingResponses) {
       if (!this.dataFormEntity.multi_response && this.existingResponses.length >= 1) {
         this.selectedFormResponse = this.existingResponses[this.existingResponses.length - 1];
       }
-    });
+    }
   }
 
   getParent() {
@@ -115,6 +140,11 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
         this.getEvent();
         break;
       case 'AdminSurvey':
+        this.showProfileForm = false;
+        this.completeProfileText = 'Complete your profile to grow your developer network';
+        // nothing need to be done here
+        break;
+      case 'Survey':
         this.showProfileForm = false;
         // nothing need to be done here
         break;
@@ -141,7 +171,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       this.community = data;
 
       if (!this.event.header_image_path) {
-        this.seoService.setTag('og:image', this.community.logo_path);
+        this.seoService.setTag('og:image', this.community.logo_image_path.url);
       }
       // if (!this.redirectRoute) {
       //   this.redirectRoute = ['/communities', this.community.slug, 'events', this.event.slug];
@@ -149,12 +179,74 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitForm($event) {
-    this.dataFormEntityResponsesService.submitDataFormEntityResponse(this.dataFormEntity.id, $event).subscribe(() => {
-      this.toastLogService.successDialog('Saved!');
-      this.redirectTo();
-      this.gtm.dataLayerPushEvent('submit-form', this.gtmData);
+  onAcceptRoleButton() {
+    if (this.event.id) {
+      this.dataFormsService.isMemberOfAllCollaboratingCommunities(this.event.id).subscribe((data) => {
+        if (data) {
+          this.submitForm();
+          return;
+        }
+        const dialogRef = this.dialogService.open(UserConsentsComponent, {
+          context: {
+            consentType: ConsentTypesEnum.OneClickRegistrationForm,
+          },
+        });
+        dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+          dialogRef.close();
+          if (result === 'accepted') {
+            this.submitForm();
+          }
+        });
+      });
+    } else {
+      this.submitForm();
+    }
+  }
+
+  updateUserDetailsAndSubmitForm($event) {
+    this.formAnswers = $event;
+    if (this.dataFormEntity.user_details) {
+      this.userDetailsFormComponent.submitUserDetails();
+    } else {
+      if (this.event) {
+        this.onAcceptRoleButton();
+      } else {
+        this.submitForm();
+      }
+    }
+  }
+
+  updateUserDetails(event) {
+    this.userProfileManagerService.userProfileForm.patchValue({
+      name: event.name ? event.name : this.currentUser.name,
+      about_me: event.about_me ? event.about_me : this.currentUser.about_me,
+      designation: event.designation ? event.designation : this.currentUser.designation,
+      location: event.location ? event.location : this.currentUser.location,
+      gender: event.gender ? event.gender : this.currentUser.gender,
+      personal_website: event.personal_website ? event.personal_website : this.currentUser.personal_website,
+      github: event.github ? event.github : this.currentUser.github,
+      linkedin: event.linkedin ? event.linkedin : this.currentUser.linkedin,
+      twitter: event.twitter ? event.twitter : this.currentUser.twitter,
+      dribbble: event.dribbble ? event.dribbble : this.currentUser.dribbble,
+      behance: event.behance ? event.behance : this.currentUser.behance,
+      medium: event.medium ? event.medium : this.currentUser.medium,
+      gitlab: event.gitlab ? event.gitlab : this.currentUser.gitlab,
+      facebook: event.facebook ? event.facebook : this.currentUser.facebook,
+      youtube: event.youtube ? event.youtube : this.currentUser.youtube,
+      phone: event.phone ? event.phone : this.currentUser.phone,
     });
+    this.userProfileManagerService.updateUserDetails(false, this.currentUser);
+    this.onAcceptRoleButton();
+  }
+
+  submitForm() {
+    this.dataFormEntityResponsesService
+      .submitDataFormEntityResponse(this.dataFormEntity.id, this.formAnswers)
+      .subscribe(() => {
+        this.toastLogService.successDialog('Saved!');
+        this.redirectTo();
+        this.gtm.dataLayerPushEvent('submit-form', this.gtmData);
+      });
   }
 
   redirectTo() {

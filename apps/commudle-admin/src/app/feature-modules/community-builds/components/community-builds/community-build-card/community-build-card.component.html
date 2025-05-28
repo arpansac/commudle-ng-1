@@ -1,37 +1,67 @@
-<a [routerLink]="[communityBuild.slug]" class="community-build-card">
-  <img
-    [alt]="communityBuild.name"
-    [src]="communityBuild.images[0]?.url || '/assets/images/commudle-logo192.png'"
-    [title]="communityBuild.name"
-    class="community-build-card-image"
-  />
-  <div class="community-build-card-details">
-    <div class="community-build-card-prefix">
-      <app-badge
-        [color]="CBuildTypeDisplay[communityBuild.build_type].color"
-        [fontSize]="'small'"
-        [nbIcon]="CBuildTypeDisplay[communityBuild.build_type].icon"
-        [text]="communityBuild.build_type | titlecase"
-      ></app-badge>
-      <p class="fs-p4">{{ communityBuild.created_at | date }}</p>
-    </div>
-    <div class="community-build-card-content">
-      <h5 class="community-build-card-title fs-h5">{{ communityBuild.name }}</h5>
-      <p class="community-build-card-description fs-p2">{{ getDescription() }}</p>
-    </div>
-    <div class="community-build-card-suffix">
-      <app-user-profile-card-medium [user]="communityBuild.user"></app-user-profile-card-medium>
-      <div class="community-build-card-interactions">
-        <app-votes-display
-          [icon]="'star'"
-          [votableId]="communityBuild.id"
-          [votableType]="'CommunityBuild'"
-        ></app-votes-display>
-        <div class="community-build-card-comments">
-          <p class="fs-p3">{{ communityBuild.chat_messages_count || 0 }}</p>
-          <nb-icon icon="message-circle-outline"></nb-icon>
+<div class="community-build-card">
+  <a [routerLink]="[communityBuild.slug]">
+    <div class="details">
+      <div class="image-badge-wrapper">
+        <commudle-banner-image
+          [headerImagePath]="
+        communityBuild.thumbnail_image
+          ? communityBuild.thumbnail_image.i320
+          : communityBuild.images?.[0]
+          ? communityBuild.images[0].url
+          : staticAssets.community_build_empty_state
+      "
+          [name]="communityBuild.name"
+          [topRightCurve]="false"
+          [topLeftCurve]="false"
+          [bottomRightCurve]="false"
+          [bottomLeftCurve]="false"
+          [aspectRatio]="'3/2'"
+          class="community-build-card-image"
+        ></commudle-banner-image>
+        <div *appBreakpoints="'<=lg'" class="mobile-hackathon-badge">
+          <app-badge
+            *ngIf="communityBuild.hackathon_team"
+            [text]="'Hackathon'"
+            [fontColor]="'com-text-tChocolate-Traditional'"
+            [fontSize]="'xx-small'"
+            [borderRadius]="'round'"
+            [color]="'com-bg-Seashell'"
+          ></app-badge>
+        </div>
+      </div>
+      <div class="community-build-card-details">
+        <div class="community-build-card-title-time">
+          <p class="time">{{ moment(communityBuild.created_at).format('MMM Do, YYYY') }}</p>
+          <div *appBreakpoints="'>lg'">
+            <app-badge
+              *ngIf="communityBuild.hackathon_team"
+              class="desktop-hackathon-badge"
+              [text]="'Hackathon'"
+              [fontColor]="'com-text-tChocolate-Traditional'"
+              [fontSize]="'small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Seashell'"
+            ></app-badge>
+          </div>
+        </div>
+        <h5 class="title">{{ communityBuild.name }}</h5>
+        <div [innerHTML]="communityBuild.description" class="description"></div>
+        <div *appBreakpoints="'>lg'" class="app-user-profile-card">
+          <app-user-profile-card-medium [user]="communityBuild.user"></app-user-profile-card-medium>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="app-user-profile-card">
+          <app-user-profile-card-small [user]="communityBuild.user"></app-user-profile-card-small>
         </div>
       </div>
     </div>
+  </a>
+  <div class="votes">
+    <app-votes-display
+      [icon]="'star'"
+      [votableId]="communityBuild.id"
+      [votableType]="'CommunityBuild'"
+      [votesDirectionVertical]="true"
+      size="mini"
+    ></app-votes-display>
   </div>
-</a>
+</div>

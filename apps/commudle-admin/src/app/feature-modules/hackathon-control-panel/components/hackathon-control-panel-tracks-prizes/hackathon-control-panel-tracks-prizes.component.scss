@@ -1,0 +1,15 @@
+nb-card {
+  @apply com-mx-0;
+  nb-card-header {
+    @apply com-flex com-items-center;
+  }
+}
+
+.next-step-container {
+  a {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-no-underline hover:com-text-Yankees-Blue;
+  }
+  .next-steps-card {
+    @apply com-flex com-flex-wrap com-gap-3;
+  }
+}

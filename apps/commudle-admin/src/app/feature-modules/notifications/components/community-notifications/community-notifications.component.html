@@ -17,20 +17,25 @@
         *ngIf="notification.sender_type === ENotificationSenderTypes.USER"
         src="{{ notification.sender.photo.i64 }}"
         alt="{{ notification.sender.name }}"
-        class="com-h-10 com-w-10 com-object-contain com-rounded-full com-border com-border-solid com-border-gray-200"
+        class="com-h-10 com-w-10 com-object-contain com-rounded-full com-border com-border-solid com-border-gray-200 com-bg-tWhite"
       />
       <img
         *ngIf="notification.sender_type === ENotificationSenderTypes.KOMMUNITY"
         src="{{ notification.sender.logo_image.i64 }}"
         alt="{{ notification.sender.name }}"
-        class="com-h-10 com-w-10 com-object-contain com-rounded-full com-border com-border-solid com-border-gray-200"
+        class="com-h-10 com-w-10 com-object-contain com-rounded-full com-border com-border-solid com-border-gray-200 com-bg-tWhite"
       />
       <div class="com-ml-2">
         <small class="com-mr-1 com-text-gray-500">{{ moment(notification.created_at).fromNow() }}</small>
         <app-notifications-list-item
           (notificationClicked)="changeStatus(ENotificationStatuses.INTERACTED, notification)"
           (markRead)="changeStatus(ENotificationStatuses.READ, notification)"
-          [notificationMessage]="notification.notification_message"
+          [notificationType]="ENotificationSenderTypes.KOMMUNITY"
+          [notificationMessage]="
+            notification.is_dynamic || notification.message === null
+              ? notification.notification_message
+              : notification.message
+          "
           [ENotificationStatusesUnread]="notification.status === ENotificationStatuses.UNREAD"
         ></app-notifications-list-item>
       </div>

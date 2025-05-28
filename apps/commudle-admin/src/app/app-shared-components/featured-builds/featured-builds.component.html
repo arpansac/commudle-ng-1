@@ -1,0 +1,27 @@
+<div class="featured-projects" id="featured-builds">
+  <div class="header">
+    <div class="image">
+      <img alt="Featured Projects" src="{{ staticAssets.emojis.eye }}" title="Featured Projects" />
+    </div>
+    <div class="header-text">
+      <h3 class="title">
+        <a [routerLink]="'.'" fragment="featured-builds">Featured Projects</a>
+      </h3>
+      <h4 class="sub-heading">Check out amazing projects and get inspired</h4>
+    </div>
+  </div>
+
+  <div class="skeleton-cards">
+    <app-skeleton-cards
+      [cards]="5"
+      [ImageShapeSquare]="false"
+      [ImageShapeCircle]="false"
+      *ngIf="showSpinner"
+    ></app-skeleton-cards>
+  </div>
+  <div class="featured-project-cards">
+    <div class="featured-project-card" *ngFor="let featuredProject of featuredProjects | slice : 0 : 3">
+      <app-user-build-card [build]="featuredProject.community_build"></app-user-build-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+nb-card {
+  @apply com-m-0 com-h-full com-w-full;
+
+  nb-card-body {
+    @apply com-p-3 com-overflow-hidden;
+
+    a {
+      @apply com-no-underline;
+
+      .tags-and-logo {
+        @apply com-flex com-justify-between com-max-h-7 com-overflow-hidden com-flex-nowrap com-items-start;
+
+        img {
+          @apply com-h-5 com-w-5 com-rounded-full com-object-contain com-object-center com-ml-4 com-mt-6px com-bg-tWhite;
+        }
+      }
+
+      .title {
+        @apply com-text-sm com-font-medium com-m-0 com-text-Yankees-Blue md:com-line-clamp-2 com-line-clamp-1 com-mb-1 md:com-max-h-10;
+      }
+      .description {
+        @apply md:com-text-xs com-text-sm com-font-normal com-m-0 com-text-gray-500 com-line-clamp-2 md:com-max-h-8 com-mb-4 md:com-h-auto com-h-10;
+      }
+    }
+  }
+}

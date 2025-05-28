@@ -1,0 +1,33 @@
+nb-card {
+  @apply com-p-0 com-m-0 md:com-border com-border-0;
+  nb-card-body {
+    @apply com-m-0 md:com-p-4 com-px-4 com-py-0;
+    .heading {
+      @apply com-flex com-flex-col md:com-mb-5 com-mb-7;
+
+      .title {
+        @apply com-m-0 com-mb-1 com-leading-[0];
+        a {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-no-underline;
+        }
+      }
+      .sub-heading {
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
+      }
+    }
+
+    .top-experts {
+      @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-m-0 md:com-m-0 com-gap-4 md:com-gap-0 com-mt-4 com-p-0 md:com-pb-0 com-items-center md:com-justify-center;
+      .top-expert-card {
+        @apply com-m-0 com-px-0 com-w-full md:com-py-3 com-p-0 com-rounded-none;
+      }
+      .top-expert-card:not(:last-child) {
+        @apply com-border-0 md:com-border-b md:com-border-solid md:com-border-Bright-Gray;
+      }
+    }
+  }
+
+  .load-more {
+    @apply com-text-center com-m-0 com-pt-4 com-rounded-md;
+  }
+}

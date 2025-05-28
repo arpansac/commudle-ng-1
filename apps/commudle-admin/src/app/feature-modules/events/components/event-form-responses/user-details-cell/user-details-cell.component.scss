@@ -1,4 +1,7 @@
 .user-details-container {
+  .timeago {
+    @apply com-text-gray-400;
+  }
   app-user-profile-card-large {
     &::ng-deep {
       .user-profile-large {
@@ -20,6 +23,10 @@
     a {
       color: black;
       margin: 0 0.5rem;
+
+      fa-icon {
+        @apply com-text-black;
+      }
     }
   }
 }
@@ -63,5 +70,12 @@
       background-color: green;
       color: white;
     }
+  }
+}
+
+.confirm-delete-entry-pass {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
   }
 }

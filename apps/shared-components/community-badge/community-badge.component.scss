@@ -1,48 +1,47 @@
 .community-badge {
-  padding: 6px 12px 6px 6px;
-  cursor: pointer;
-  overflow-x: hidden;
-  width: max-content;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 99em;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
+  @apply com-w-max com-cursor-pointer com-overflow-x-hidden;
 
   a {
-    text-decoration: none;
-    display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    align-items: center;
+    @apply com-flex com-flex-nowrap com-w-max com-items-center com-no-underline;
   }
 
   .logo {
-    width: 30px;
-    height: 30px;
+    @apply com-flex com-justify-center com-items-center com-overflow-hidden com-m-0 com-mr-2 com-bg-tWhite com-border com-border-solid com-border-Bright-Gray;
     border-radius: 50%;
-    overflow: hidden;
-    margin-right: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     img {
-      width: 100%;
+      @apply com-w-full;
     }
-
-    box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
   }
 
   .name {
-    p {
-      margin: 0;
-      color: rgba(0, 0, 0, 0.54);
-    }
+    @apply com-m-0 com-text-xs com-font-medium com-text-gray-500;
   }
 }
 
 .community-badge.bg-white {
-  background: white;
+  @apply com-bg-white;
+}
+
+.community-badge.small {
+  @apply com-p-0;
+
+  .logo {
+    @apply com-w-[20px] com-h-[20px];
+  }
+
+  .name {
+    @apply com-text-xs com-font-medium;
+  }
+}
+
+.community-badge.medium {
+  @apply com-p-0;
+
+  .logo {
+    @apply com-w-[30px] com-h-[30px];
+  }
+
+  .name {
+    @apply com-text-sm com-font-normal;
+  }
 }

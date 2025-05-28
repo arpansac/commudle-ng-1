@@ -1,0 +1,79 @@
+<nb-card>
+  <nb-card-header>
+    Communications <commudle-help-section [helpDictionaryName]="'hackathon-communications'"></commudle-help-section
+  ></nb-card-header>
+  <nb-card-body>
+    <div>
+      <div class="group-name">Registrations</div>
+      <div class="group-values">
+        <button nbButton status="primary" (click)="openDialogBox(SendRegistrationsByMail)">
+          Send Registration Invite
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="group-name">Winner</div>
+      <div class="group-values">
+        <button nbButton status="primary" (click)="openDialogBoxForWinnerAnnouncement(hackathonId)">
+          Send Winner Announcement Email
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="group-name">General Mailer</div>
+      <div class="group-values">
+        <button nbButton status="primary" (click)="openDialogBoxForStatusFilterGeneralEmail(hackathonId)">
+          Status filter general email
+        </button>
+        &nbsp; &nbsp;
+        <button nbButton status="primary" (click)="openDialogBoxForRoundGeneralEmail(hackathonId)">
+          Round general email
+        </button>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #SendRegistrationsByMail let-ref="dialogRef">
+  <nb-card class="mail-popup">
+    <nb-card-header>
+      <span>Registration Invite Email</span>
+      <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <commudle-alert
+        [info]="true"
+        message="This will send a pre-formatted email and a notification to all members of the community"
+      ></commudle-alert>
+      <div class="message-field">
+        <label for="message" class="message">Message (Optional)</label>
+        <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        (click)="previewEmail(hackathonId); showPreviewSpinner = true"
+        nbButton
+        status="primary"
+        shape="semi-round"
+        [nbSpinner]="showPreviewSpinner"
+        type="button"
+      >
+        Preview Email
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        fullWidth
+        (click)="SendRegistrationsMailer()"
+        [nbSpinner]="isLoading"
+        [disabled]="isLoading"
+      >
+        Send
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

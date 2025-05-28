@@ -1,7 +1,6 @@
 <nb-card *ngIf="currentUser?.id === user.id" class="user-resume" id="resume">
   <nb-card-header>
-    <fa-icon [icon]="faClipboard" class="com-text-Azure"></fa-icon>
-    Resume
+    <a [routerLink]="'.'" fragment="resume"><fa-icon [icon]="faClipboard" class="com-text-Azure"></fa-icon>Resume</a>
   </nb-card-header>
   <nb-card-body>
     <button
@@ -46,9 +45,17 @@
         </label>
         <label>
           File* (PDF, max size: 5MB)
-          <input (change)="onFileChange($event)" accept="application/pdf" fullWidth nbInput type="file" />
+          <input
+            formControlName="file"
+            (change)="onFileChange($event)"
+            accept="application/pdf"
+            fullWidth
+            nbInput
+            type="file"
+          />
         </label>
       </form>
+
       <object
         *ngIf="uploadedResumeSrc"
         class="com-mt-6 com-min-w-full md:com-min-w-[50vw] com-min-h-[70vh]"

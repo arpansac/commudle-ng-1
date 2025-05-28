@@ -1,22 +1,38 @@
 .error-text {
   @apply com-text-sm com-flex com-items-center com-font-normal com-align-middle com-text-red-500;
   span {
-    @apply com-flex com-items-center;
+    @apply com-flex com-items-start;
   }
 
   .info-icon {
-    @apply com-text-sm com-mr-1;
+    @apply com-text-sm com-mr-1 com-mt-[3px];
   }
 }
 
 .info {
-  @apply com-mb-0 com-border-solid com-flex com-border-primary-500 com-bg-Alice-Blue com-rounded-md com-py-3 com-pl-6px com-pr-14px com-m-auto com-items-start;
-
+  @apply com-grid com-gap-1;
+  grid-template-columns: max-content auto;
   nb-icon {
-    @apply md:com-text-lg com-text-New-Car com-mr-6px com-text-6xl com-h-auto com-pt-2px com-m-0;
+    @apply com-text-sm com-text-New-Car  com-m-0;
   }
-
   p {
-    @apply com-text-xs com-font-normal com-leading-4 com-text-New-Car com-p-0 com-m-0;
+    @apply com-text-xs com-font-normal com-text-New-Car com-my-0;
+  }
+  &.blue-border {
+    @apply com-border com-border-solid com-border-primary-500 com-bg-Alice-Blue com-rounded-md com-p-2;
+  }
+}
+
+.warning {
+  @apply com-grid com-gap-1;
+  grid-template-columns: max-content auto;
+  fa-icon {
+    @apply com-text-xs com-text-yellow-800  com-m-0;
+  }
+  p {
+    @apply com-text-xs com-font-normal com-text-yellow-800 com-my-0;
+  }
+  &.warning-border {
+    @apply com-border com-border-solid com-border-yellow-800 com-rounded-md com-bg-yellow-50 com-p-2;
   }
 }

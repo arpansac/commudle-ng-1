@@ -1,10 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { faFlask, faNewspaper, faHouse, faSuitcase } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFlask,
+  faNewspaper,
+  faHouse,
+  faSuitcase,
+  faLightbulb,
+  faRectangleAd,
+} from '@fortawesome/free-solid-svg-icons';
 import { NbSidebarService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
-import { ICommunities } from 'apps/shared-models/communities.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunityGroups } from 'apps/shared-models/community-groups.model';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -12,7 +18,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { NotificationsStore } from '../../feature-modules/notifications/store/notifications.store';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -24,6 +30,8 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   faHouse = faHouse;
   faFlask = faFlask;
   faNewspaper = faNewspaper;
+  faLightbulb = faLightbulb;
+  faRectangleAd = faRectangleAd;
   currentUser: ICurrentUser;
   managedCommunities: ICommunity[] = [];
   managedCommunityGroups: ICommunityGroup[] = [];
@@ -34,10 +42,13 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isBadgesAdmin = false;
   isFeaturedCommunitiesAdmin = false;
   isAssetsAdmin = false;
+  isFeaturedItemsAdmin = false;
+  isAdCampaignAdmin = false;
 
   notificationCount = 0;
 
   subscriptions: Subscription[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -55,10 +66,12 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getCurrentUser(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
 
       if (currentUser) {
@@ -87,12 +100,19 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
           this.isFeaturedCommunitiesAdmin = true;
         }
 
+        if (currentUser.user_roles.includes(EUserRoles.FEATURED_ITEMS)) {
+          this.isFeaturedItemsAdmin = true;
+        }
+
         if (currentUser.user_roles.includes(EUserRoles.STATIC_ASSETS)) {
           this.isAssetsAdmin = true;
         }
 
         if (currentUser.user_roles.includes(EUserRoles.COMMUNITY_ADMIN)) {
           this.getManagingCommunityGroups();
+        }
+        if (currentUser.user_roles.includes(EUserRoles.AD_CAMPAIGN_ADMIN)) {
+          this.isAdCampaignAdmin = true;
         }
       }
     });

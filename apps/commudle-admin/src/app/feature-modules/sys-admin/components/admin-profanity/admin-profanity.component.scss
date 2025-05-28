@@ -1,0 +1,16 @@
+nb-card-header,
+nb-card-footer {
+  @apply com-flex com-justify-between com-items-center;
+}
+table {
+  @apply com-border-collapse com-w-full com-mt-4;
+}
+
+td,
+th {
+  @apply com-p-4;
+}
+
+tr:not(:last-child) {
+  @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+}

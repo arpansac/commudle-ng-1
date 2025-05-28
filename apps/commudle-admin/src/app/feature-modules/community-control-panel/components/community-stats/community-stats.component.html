@@ -1,4 +1,4 @@
-<div class="base-layout com-my-8">
+<div class="base-layout">
   <div class="container">
     <div class="one-column-layout community-stats">
       <a [routerLink]="['/admin/communities', community.slug]" class="padding-0" ghost nbButton size="small">
@@ -24,7 +24,7 @@
           <div class="first-section">
             <div class="count">
               <p>
-                {{ this.community.member_count }}
+                {{ this.community.members_count }}
                 <br />
                 Total Members
               </p>

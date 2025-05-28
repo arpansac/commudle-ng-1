@@ -17,7 +17,7 @@ import {
   NbTooltipModule,
   NbUserModule,
 } from '@commudle/theme';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { LinkyModule } from 'ngx-linky';
 import { RecommendationsModule } from 'apps/commudle-admin/src/app/feature-modules/recommendations/recommendations.module';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -35,12 +35,21 @@ import { LabDiscussionComponent } from './components/lab/lab-discussion/lab-disc
 import { LabStepComponent } from './components/lab/lab-step/lab-step.component';
 import { LabComponent } from './components/lab/lab.component';
 import { LabsCardComponent } from './components/labs/labs-card/labs-card.component';
-import { LabsHeaderComponent } from './components/labs/labs-header/labs-header.component';
 import { LabsSearchComponent } from './components/labs/labs-search/labs-search.component';
 import { LabsComponent } from './components/labs/labs.component';
 import { LabListItemComponent } from './components/my-labs/lab-list-item/lab-list-item.component';
 import { MyLabsComponent } from './components/my-labs/my-labs.component';
 import { LabsRoutingModule } from './labs-routing.module';
+import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-pages-layout/listing-pages-layout.component';
+import { SkeletonVerticalCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-vertical-cards/skeleton-vertical-cards.component';
+import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
+import { PublicHomeListSpeakersModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
+import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modules/community-builds/community-builds.module';
+import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +63,6 @@ import { LabsRoutingModule } from './labs-routing.module';
     LabDiscussionComponent,
     LabDiscussionMessageComponent,
     LabDetailsComponent,
-    LabsHeaderComponent,
     LabsSearchComponent,
     LabsCardComponent,
   ],
@@ -76,7 +84,12 @@ import { LabsRoutingModule } from './labs-routing.module';
     InfiniteScrollModule,
     RecommendationsModule,
     MiniUserProfileModule,
-
+    PublicHomeListSpeakersModule,
+    CommunityBuildsModule,
+    AppSharedComponentsModule,
+    HelpSectionComponent,
+    UserPersonalConnectComponent,
+    ListingPageHeaderComponent,
     // Nebular
     NbCardModule,
     NbInputModule,
@@ -89,6 +102,13 @@ import { LabsRoutingModule } from './labs-routing.module';
     NbUserModule,
     NbSidebarModule.forRoot(),
     NbContextMenuModule,
+    ListingPagesLayoutComponent,
+    SkeletonVerticalCardsComponent,
+    SkeletonCardsComponent,
+    UserExpertTickComponent,
   ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
+
+  exports: [LabsCardComponent],
 })
 export class LabsModule {}

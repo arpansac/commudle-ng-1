@@ -1,0 +1,41 @@
+.hackathon-stats-container {
+  @apply com-grid com-grid-cols-1 sm:com-grid-cols-3 lg:com-grid-cols-4 com-gap-4 com-pb-7;
+  .hackathon-stats-item {
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-4 com-bg-gray-50;
+    .hackathon-stats-item-label {
+      @apply com-text-gray-600 com-text-xs com-uppercase;
+    }
+
+    .hackathon-stats-item-value {
+      @apply com-text-Yankees-Blue com-text-xl com-font-bold;
+    }
+  }
+}
+
+.graph-container {
+  .title {
+    @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
+  }
+  .chart-container {
+    @apply com-h-auto com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
+  }
+
+  .chart-time-container {
+    @apply com-h-96 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-p-2 com-mt-3 com-mb-7;
+  }
+}
+
+.graph-container-wrapper {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-5;
+}
+table {
+  @apply com-border-collapse;
+  td,
+  th {
+    @apply com-p-4;
+  }
+
+  tr:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+  }
+}

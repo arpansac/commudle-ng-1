@@ -1,5 +1,5 @@
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ICommunity } from 'apps/shared-models/community.model';
 import {
   NbComponentShape,
@@ -12,13 +12,17 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
+import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
+import { IUserRolesUser } from '@commudle/shared-models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-membership-toggle',
   templateUrl: './membership-toggle.component.html',
   styleUrls: ['./membership-toggle.component.scss'],
 })
-export class MembershipToggleComponent implements OnInit {
+export class MembershipToggleComponent implements OnInit, OnDestroy {
   isMember = false;
   dialogRef;
   selectExit;
@@ -29,6 +33,14 @@ export class MembershipToggleComponent implements OnInit {
   @Input() status: NbComponentStatus = 'basic';
   @Input() size: NbComponentSize = 'small';
   @Input() appearance: NbButtonAppearance = 'filled';
+  @Input() isMobileWidthFull = false;
+
+  joinCommunity = false;
+
+  userRolesUserList: IUserRolesUser[];
+  userRolesUserIds: number[];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private userRolesUsersService: UserRolesUsersService,
@@ -39,10 +51,15 @@ export class MembershipToggleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authWatchService.currentUser$.subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
       this.currentUser = currentUser;
     });
     this.checkMembership();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkMembership() {
@@ -50,19 +67,36 @@ export class MembershipToggleComponent implements OnInit {
   }
 
   toggleMembership() {
-    this.userRolesUsersService.pToggleMembership(this.community.slug).subscribe((data) => {
+    this.userRolesUsersService.pToggleMembership(this.community.slug, this.userRolesUserIds).subscribe((data) => {
       this.isMember = data;
       if (this.isMember) {
         this.toastLogService.successDialog(`You are now a member of ${this.community.name}!`, 2000);
         this.gtmDatalayerPush('join-community-confirm');
       }
-      this.dialogRef.close();
     });
   }
 
   openDialog(dialog: TemplateRef<any>) {
+    this.getUserRolesUser();
     this.dialogRef = this.dialogService.open(dialog, { autoFocus: false });
     this.selectExit = null;
+    this.gtmDatalayerPush('join-community-click');
+  }
+
+  onJoinCommunityClick() {
+    const dialogRef = this.dialogService.open(UserConsentsComponent, {
+      context: {
+        consentType: ConsentTypesEnum.JoinCommunity,
+        communitySlug: this.community.name,
+      },
+    });
+
+    dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+      dialogRef.close();
+      if (result === 'accepted') {
+        this.toggleMembership();
+      }
+    });
     this.gtmDatalayerPush('join-community-click');
   }
 
@@ -70,6 +104,13 @@ export class MembershipToggleComponent implements OnInit {
     this.gtm.dataLayerPushEvent(event, {
       com_user_id: this.currentUser.id,
       com_community_id: this.community.id,
+    });
+  }
+
+  getUserRolesUser() {
+    this.userRolesUsersService.getRoles(this.currentUser.id, this.community.id).subscribe((data) => {
+      this.userRolesUserList = data.user_roles_users;
+      this.userRolesUserIds = data.user_roles_users.map((userRoleUser) => userRoleUser.id);
     });
   }
 }

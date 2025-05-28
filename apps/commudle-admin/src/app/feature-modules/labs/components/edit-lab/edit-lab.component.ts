@@ -26,21 +26,41 @@ export class EditLabComponent implements OnInit, OnDestroy {
   uploadedHeaderImageFile: File;
   imagesList = [];
   tags: string[] = [];
+  showTagsValidation = false;
   headerImageForm;
   labForm: FormGroup;
   faEdit = faEdit;
+
   tinyMCE: any = {
     placeholder:
-      'Add a description with some pictures to help the user get a brief of what you are going to teach them in this tutorial!*',
+      'Add a description with some pictures to help the user get a brief of what you are going to teach them in this tutorial!',
     min_height: 500,
     menubar: false,
     convert_urls: false,
-    skin: 'outside',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 20px !important;}",
-    plugins:
-      'emoticons advlist lists autolink link charmap preview anchor image visualblocks code charmap codesample insertdatetime table code help wordcount autoresize media',
-
+    plugins: [
+      'emoticons',
+      'advlist',
+      'lists',
+      'autolink',
+      'link',
+      'charmap',
+      'preview',
+      'anchor',
+      'image',
+      'visualblocks',
+      'code',
+      'charmap',
+      'codesample',
+      'insertdatetime',
+      'table',
+      'code',
+      'help',
+      'wordcount',
+      'autoresize',
+      'media',
+    ],
     toolbar:
       'formatselect | bold italic backcolor | codesample emoticons| \
       link | alignleft aligncenter alignright alignjustify | \
@@ -65,12 +85,13 @@ export class EditLabComponent implements OnInit, OnDestroy {
     images_upload_handler: this.uploadTextImage.bind(this),
     toolbar_location: 'top',
     toolbar_sticky: true,
+    license_key: 'gpl',
   };
 
   @ViewChild('submitDialog') submitDialog: TemplateRef<any>;
   submitDialogRef: NbDialogRef<any>;
 
-  isBrowser;
+  isBrowser: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -190,10 +211,16 @@ export class EditLabComponent implements OnInit, OnDestroy {
 
   // Header image functionality
   displaySelectedHeaderImage(event: any) {
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const maxSize = 3 * 1024 * 1024; // 3 MB in bytes
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      if (file.size > 2425190) {
-        this.toastLogService.warningDialog('Image should be less than 2 Mb', 3000);
+      if (file.size > maxSize) {
+        this.toastLogService.warningDialog('Image should be less than 3 Mb', 3000);
+        return;
+      }
+      if (!allowedTypes.includes(file.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
         return;
       }
       this.uploadedHeaderImageFile = file;
@@ -240,21 +267,30 @@ export class EditLabComponent implements OnInit, OnDestroy {
   }
 
   updateLab(publishStatus, forceSubmit: boolean = false) {
-    if (this.lab.publish_status !== EPublishStatus.published) {
-      this.labForm.patchValue({
-        publish_status: publishStatus,
-      });
+    if (this.tags.length < 5) {
+      this.showTagsValidation = true;
+      return;
     }
-    if (this.steps.length < 3 && publishStatus === EPublishStatus.submitted && !forceSubmit) {
-      this.submitDialogRef = this.dialogService.open(this.submitDialog);
+    if (this.labForm.invalid) {
+      this.labForm.markAllAsTouched();
+      return;
     } else {
-      this.labsService.updateLab(this.lab.slug, this.labForm.value, false).subscribe((data) => {
-        if (data) {
-          this.lab = data;
-          this.submitTags();
-          this.onSubmitDialogClose();
-        }
-      });
+      if (this.lab.publish_status !== EPublishStatus.published) {
+        this.labForm.patchValue({
+          publish_status: publishStatus,
+        });
+      }
+      if (this.steps.length < 3 && publishStatus === EPublishStatus.submitted && !forceSubmit) {
+        this.submitDialogRef = this.dialogService.open(this.submitDialog);
+      } else {
+        this.labsService.updateLab(this.lab.slug, this.labForm.value, false).subscribe((data) => {
+          if (data) {
+            this.lab = data;
+            this.submitTags();
+            this.onSubmitDialogClose();
+          }
+        });
+      }
     }
   }
 
@@ -298,12 +334,13 @@ export class EditLabComponent implements OnInit, OnDestroy {
   onSubmitDialogClose() {
     this.submitDialogRef?.close();
   }
+
   gtmService() {
     this.gtm.dataLayerPushEvent('submit-lab', {
-      com_name: this.lab.name,
-      com_section_count: this.lab.lab_steps.length,
-      com_tags: this.tags.toString(),
-      com_submit_type: this.lab.publish_status,
+      com_lab_name: this.lab.name,
+      com_lab_section_count: this.lab.lab_steps.length,
+      com_lab_tags: this.tags.toString(),
+      com_lab_submit_type: this.lab.publish_status,
     });
   }
 }

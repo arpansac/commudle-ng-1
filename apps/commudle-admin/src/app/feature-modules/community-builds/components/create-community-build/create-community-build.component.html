@@ -5,7 +5,8 @@
         <nb-card-body>
           <h1>
             <nb-icon icon="bulb-outline" status="warning"></nb-icon>
-            Share Your Build!
+            <span>Share Your Build!</span>
+            <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
           </h1>
           <p>
             We as Software Developers create so many side projects which are really cool, from a simple script to a
@@ -49,9 +50,8 @@
                   communityBuildForm.get('build_type').invalid &&
                   communityBuildForm.get('build_type').errors.required
                 "
-                class="validation-error-text"
               >
-                Required Field
+                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
               </span>
             </div>
 
@@ -62,9 +62,9 @@
                   formControlName="name"
                   fullWidth
                   nbInput
+                  placeholder="Name of your project or course"
                   size="large"
                   type="text"
-                  placeholder="Name of your project or course"
                 />
               </label>
               <span
@@ -73,18 +73,37 @@
                   communityBuildForm.get('name').invalid &&
                   communityBuildForm.get('name').errors.required
                 "
-                class="validation-error-text"
               >
-                Required Field
+                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
               </span>
             </div>
+
+            <div *ngIf="hackathonUserResponses" class="field">
+              <label> Teammates* </label>
+              <div
+                *ngFor="let hackathonUserResponse of hackathonUserResponses.user_responses"
+                class="hackathon-user-response"
+              >
+                <input
+                  *ngIf="currentUser && hackathonUserResponse.user_email !== currentUser.email"
+                  [readonly]="true"
+                  [value]="hackathonUserResponse.user_email"
+                  fullWidth
+                  nbInput
+                  size="large"
+                  type="email"
+                />
+              </div>
+            </div>
+
             <div *ngIf="teammates.length > 0" class="field">
               Teammates
               <div *ngFor="let teammate of teammates; let i = index">
                 <div
                   *ngIf="
                     teammate.status === eUserRolesUserStatus.INVITED ||
-                    teammate.status === eUserRolesUserStatus.ACCEPTED
+                    teammate.status === eUserRolesUserStatus.ACCEPTED ||
+                    teammate.status === eUserRolesUserStatus.AUTO_JOINED
                   "
                   class="d-flex justify-content-space-between align-items-center"
                 >
@@ -97,7 +116,12 @@
                     >
                       Resend
                     </small>
-                    <small (click)="removeTeamMember(teammate, i)" class="option clickable">Remove</small>
+                    <small
+                      (click)="removeTeamMember(teammate, i)"
+                      *ngIf="!hackathonUserResponses"
+                      class="option clickable"
+                      >Remove</small
+                    >
                   </div>
                 </div>
               </div>
@@ -121,15 +145,77 @@
                     emailList.controls[i].get('value').invalid &&
                     emailList.controls[i].get('value').errors.required
                   "
-                  class="validation-error-text"
                 >
-                  Required Field
+                  <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                 </span>
               </div>
-              <button (click)="addTeammate()" class="add-button" nbButton status="primary">
+              <button
+                (click)="addTeammate()"
+                *ngIf="!(parentId && parentType)"
+                class="add-button"
+                nbButton
+                status="primary"
+              >
                 <nb-icon icon="plus"></nb-icon>
                 Add Teammate
               </button>
+            </div>
+
+            <!-- list of entity_updates -->
+            <div
+              *ngIf="
+                hackathonUserResponses &&
+                hackathonUserResponses.user_responses &&
+                cBuild &&
+                cBuild.entity_updates.length > 0
+              "
+            >
+              <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
+                <div class="update-details">
+                  <div [innerHTML]="update.details"></div>
+                  <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+                </div>
+                <nb-icon
+                  (click)="removeEntityUpdate(update.id, i)"
+                  class="clickable"
+                  icon="close-circle"
+                  status="danger"
+                ></nb-icon>
+              </div>
+            </div>
+
+            <!-- to post updates for build -->
+            <div [formGroup]="communityBuildUpdateForm">
+              <div class="field" formArrayName="update">
+                <div
+                  *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
+                  class="build-updates"
+                >
+                  <div [formGroupName]="i" class="build-update">
+                    <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
+                    <nb-icon (click)="removeUpdate(i)" class="clickable" icon="close-circle" status="danger"></nb-icon>
+                  </div>
+                  <span
+                    *ngIf="
+                      updateList.controls[i].get('value').touched &&
+                      updateList.controls[i].get('value').invalid &&
+                      updateList.controls[i].get('value').errors.required
+                    "
+                  >
+                    <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                  </span>
+                </div>
+                <button
+                  (click)="addUpdate()"
+                  *ngIf="parentId && parentType"
+                  class="add-button"
+                  nbButton
+                  status="warning"
+                >
+                  <nb-icon icon="plus"></nb-icon>
+                  Add Update
+                </button>
+              </div>
             </div>
 
             <div class="field">
@@ -147,11 +233,14 @@
                   formControlName="link"
                   fullWidth
                   nbInput
+                  placeholder="Link to Open Source Code"
                   size="large"
                   type="url"
-                  placeholder="Link to Open Source Code"
                 />
               </label>
+              <span *ngIf="communityBuildForm.get('link').invalid">
+                <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+              </span>
             </div>
 
             <div class="field">
@@ -161,23 +250,25 @@
                   formControlName="live_app_link"
                   fullWidth
                   nbInput
+                  placeholder="Link to live project"
                   size="large"
                   type="url"
-                  placeholder="Link to live project"
                 />
               </label>
+              <span *ngIf="communityBuildForm.get('live_app_link').invalid">
+                <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+              </span>
               <span
                 *ngIf="
-                  communityBuildForm.get('link').touched &&
-                  communityBuildForm.get('link').invalid &&
-                  communityBuildForm.get('link').errors.required &&
-                  communityBuildForm.get('live-project').touched &&
-                  communityBuildForm.get('live-project').invalid &&
-                  communityBuildForm.get('live-project').errors.required
+                  linkOrLiveAppLinkValue &&
+                  communityBuildForm.get('link').value.length === 0 &&
+                  communityBuildForm.get('live_app_link').value.length === 0
                 "
-                class="validation-error-text"
               >
-                live project or link to open source one is required
+                <commudle-alert
+                  [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
+                  [error]="true"
+                ></commudle-alert>
               </span>
             </div>
 
@@ -188,11 +279,14 @@
                   formControlName="video_iframe"
                   fullWidth
                   nbInput
+                  placeholder=" Video Demo (Iframe)"
                   size="large"
                   type="url"
-                  placeholder=" Video Demo (Iframe)"
                 />
               </label>
+              <span *ngIf="communityBuildForm.get('video_iframe').invalid">
+                <commudle-alert [errorMessage]="'Please add correct iframe'" [error]="true"></commudle-alert>
+              </span>
             </div>
 
             <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
@@ -202,12 +296,16 @@
             </div>
             <div class="field">
               <label> How is it useful for others?* </label>
-              <editor
-                [init]="tinyMCE"
-                apiKey="e34vgv7ocd6ttka8t6qcd07g7lifas1y9lyve8ze1013nefs"
-                formControlName="description"
+              <span
+                *ngIf="
+                  communityBuildForm.get('description').touched &&
+                  communityBuildForm.get('description').invalid &&
+                  communityBuildForm.get('description').errors.required
+                "
               >
-              </editor>
+                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+              </span>
+              <editor [init]="tinyMCE" formControlName="description"></editor>
             </div>
 
             <div class="field image-upload">
@@ -241,10 +339,15 @@
                 <app-tag
                   (tagAdd)="onTagAdd($event)"
                   (tagDelete)="onTagDelete($event)"
+                  [backgroundColor]="'com-bg-tAnti-Flash'"
                   [editable]="true"
+                  [fontColor]="'com-text-tYankees-Blue'"
                   [tags]="tags"
                 ></app-tag>
               </label>
+              <span *ngIf="showTagsValidation && tags.length < 5">
+                <commudle-alert [errorMessage]="'Minimum 5 tags need to be added'" [error]="true"></commudle-alert>
+              </span>
             </div>
 
             <div>
@@ -266,19 +369,13 @@
                 <nb-icon icon="checkmark"></nb-icon>
                 Submit For Approval
               </button> -->
-              <button
-                (click)="submitForm(EPublishStatus.published)"
-                [disabled]="communityBuildForm.invalid"
-                nbButton
-                status="primary"
-                type="submit"
-              >
+              <button (click)="submitForm(EPublishStatus.published)" nbButton status="primary" type="submit">
                 <nb-icon icon="cloud-upload"></nb-icon>
                 Publish
               </button>
               <button
                 (click)="submitForm(EPublishStatus.draft)"
-                [disabled]="!communityBuildForm.valid"
+                *ngIf="!hackathonUserResponses"
                 nbButton
                 outline
                 status="primary"

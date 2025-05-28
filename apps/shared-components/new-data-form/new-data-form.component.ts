@@ -18,6 +18,8 @@ enum EFormPurposes {
   styleUrls: ['./new-data-form.component.scss'],
 })
 export class NewDataFormComponent implements OnInit {
+  @Input() showDescriptionField = true;
+  @Input() showNameInputField = true;
   EFormPurposes = EFormPurposes;
 
   dataForm: IDataForm;
@@ -26,8 +28,13 @@ export class NewDataFormComponent implements OnInit {
   @Input() maxQuestionCount;
   @Input() minQuestionCount;
   @Input() formPurpose;
+  @Input() stickSubmitButtonBottom = false;
+  @Input() showNameDescriptionFiled = true;
+  @Input() formName: string = '';
+  @Input() showSubmitButton = true;
 
   @Output() newDataForm = new EventEmitter();
+  @Output() invalidFormValue = new EventEmitter();
 
   showNameField = true;
   showQuestionRequiredField = true;
@@ -50,15 +57,29 @@ export class NewDataFormComponent implements OnInit {
   // define the form
   createDataForm: FormGroup;
 
+  tinyMCE: any = {
+    placeholder: '(Optional)',
+    min_height: 100,
+    menubar: false,
+    convert_urls: false,
+    statusbar: false,
+    toolbar: false,
+    plugins: ['autoresize'],
+    content_style:
+      "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
+    license_key: 'gpl',
+  };
+
   initQuestion(): FormGroup {
     return this.fb.group({
-      question_type_id: ['', Validators.required],
+      question_type_id: [1, Validators.required],
       title: ['', Validators.required],
       description: [''],
       required: [this.defaultQuestionRequiredValue()],
       disabled: [false],
       has_responses: [false],
       question_choices: this.fb.array([]),
+      show_description: [false],
     });
   }
   //drag and drop function by CDK
@@ -140,7 +161,7 @@ export class NewDataFormComponent implements OnInit {
   }
 
   questionTypeChange(questionType, questionIndex: number) {
-    if (![4, 5].includes(questionType)) {
+    if (![4, 5].includes(questionType.target.value)) {
       const choiceCount = (
         (this.createDataForm.get('data_form').get('questions') as FormArray).controls[questionIndex].get(
           'question_choices',
@@ -188,7 +209,7 @@ export class NewDataFormComponent implements OnInit {
     this.createDataForm = this.fb.group({
       data_form: this.fb.group({
         id: [''],
-        name: ['', Validators.required],
+        name: [this.formName, Validators.required],
         description: [''],
         questions: this.fb.array([]),
       }),
@@ -214,13 +235,17 @@ export class NewDataFormComponent implements OnInit {
   saveDataForm() {
     if (this.createDataForm.invalid) {
       this.createDataForm.markAllAsTouched();
+      this.invalidFormValue.emit();
       return;
     }
     this.newDataForm.emit(this.createDataForm.get('data_form').value);
   }
 
   toggleDescriptionField(index: number): void {
-    this.questionDescription[index] = !this.questionDescription[index];
+    const questionFormGroup = this.createDataForm.get('data_form').get('questions') as FormArray;
+    const question = questionFormGroup.at(index);
+    const show_description = question?.get('show_description')?.value;
+    question.patchValue({ show_description: !show_description });
   }
 
   setContextIndex(index: number) {

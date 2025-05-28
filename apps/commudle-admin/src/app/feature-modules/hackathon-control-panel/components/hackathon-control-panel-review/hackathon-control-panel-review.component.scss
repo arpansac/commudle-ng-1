@@ -1,0 +1,195 @@
+.review-section {
+  nb-card-header {
+    .header {
+      @apply com-flex com-items-center com-mb-2;
+    }
+
+    .actions {
+      @apply com-flex com-flex-wrap com-gap-3 com-items-center;
+
+      .select {
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max;
+        select {
+          @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+          &.not-active {
+            @apply com-text-[#8E9BB3];
+          }
+        }
+      }
+
+      .clear-filter {
+        @apply com-text-red-500 com-cursor-pointer;
+      }
+    }
+  }
+  nb-card-body {
+    @apply com-flex com-flex-col com-justify-between com-min-h-[680px];
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  .user-response {
+    @apply com-cursor-pointer hover:com-bg-gray-100;
+  }
+
+  .name {
+    @apply com-flex com-gap-4 com-flex-wrap com-justify-between com-mr-5;
+    .team-details {
+      .team-name {
+        @apply com-text-black com-text-base com-font-medium;
+      }
+      .date {
+        @apply com-text-gray-400 com-text-xs com-font-medium;
+      }
+      .project-link {
+        @apply com-text-xs;
+        a {
+          @apply com-no-underline com-text-primary-500;
+        }
+      }
+    }
+  }
+  .round-name {
+    @apply com-bg-primary-500 com-px-3 com-py-2 com-text-white com-h-max com-rounded-2xl com-font-medium com-text-xs com-w-max;
+  }
+}
+
+td,
+th {
+  text-align: left;
+  padding: 8px;
+}
+
+.select-wrapper {
+  @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-28 com-cursor-pointer;
+  select {
+    @apply com-text-white com-px-1 com-py-1 com-border-0 com-w-24 com-font-semibold com-rounded com-cursor-pointer com-text-xs;
+  }
+}
+
+.response-dialog-box {
+  @apply com-w-full com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
+  nb-card-body {
+    @apply com-overflow-x-hidden;
+  }
+  .action-buttons {
+    > div {
+      @apply com-flex com-gap-3;
+    }
+  }
+}
+
+.round-select {
+  @apply com-my-4;
+  select {
+    @apply com-border com-border-solid com-border-[#e4e9f2] com-px-2 com-py-2  com-rounded com-cursor-pointer com-w-full;
+  }
+}
+
+.user-response-details {
+  .user-response-tabs {
+    @apply com-flex com-mb-2 com-flex-row com-items-center com-overflow-x-auto;
+    .user-response-tab {
+      @apply com-px-4 com-py-2;
+      .name {
+        @apply com-font-bold com-text-sm com-cursor-pointer;
+      }
+      &.active {
+        @apply com-border-0 com-border-b-2 com-border-solid com-border-primary-500;
+        .name {
+          @apply com-text-primary-500;
+        }
+      }
+    }
+  }
+  .selected-user-details {
+    @apply com-flex com-flex-col com-gap-3;
+  }
+}
+
+.updates {
+  .details {
+    ::ng-deep {
+      p {
+        @apply com-text-primary-500 com-my-0 com-text-base com-font-medium com-line-clamp-1;
+      }
+    }
+  }
+
+  .timeago {
+    @apply com-text-gray-400 com-text-sm;
+  }
+}
+
+.notes {
+  .details {
+    @apply com-text-xs com-line-clamp-1;
+  }
+
+  .notes-count {
+    @apply com-text-orange-400 com-text-xs com-font-bold;
+  }
+}
+
+.updates {
+  ::ng-deep {
+    p {
+      @apply com-my-0;
+    }
+  }
+}
+
+.notes-form {
+  @apply com-my-3;
+
+  .note-list {
+    @apply com-flex com-flex-col com-gap-0.5;
+    .delete-note {
+      @apply com-text-red-500;
+    }
+  }
+  .note {
+    @apply com-flex com-gap-2 com-items-center com-my-3;
+    .action-button {
+      @apply com-flex com-flex-col com-justify-between com-gap-3;
+    }
+  }
+  button {
+    fa-icon {
+      @apply com-mr-2;
+    }
+  }
+}
+.heading {
+  @apply com-flex com-gap-4 com-items-center;
+  .project-submit {
+    @apply com-text-sm com-font-medium com-bg-teal-700 com-py-2 com-px-3 com-rounded-3xl com-text-white;
+  }
+}
+
+.border-box-text {
+  @apply com-border com-border-solid com-border-Bright-Gray com-rounded-md com-px-2 com-py-3 com-my-1 com-w-full;
+}
+
+.round-selection-mailer {
+  @apply md:com-w-[40dvw] md:com-h-[90dvh] com-w-full;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
+.send-application-status-dialog-box {
+  @apply com-w-full md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  .email-buttons-actions {
+    @apply com-space-y-6;
+    .email-buttons {
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-3;
+    }
+  }
+}

@@ -1,19 +1,39 @@
-<nb-card [routerLink]="['/builds', build.slug]" class="user-build">
+<nb-card class="user-build">
   <nb-card-body>
-    <h4 class="user-build-name">{{ build.name }}</h4>
-    <p class="user-build-description">{{ build.description }}</p>
-    <nb-tag-list *ngIf="build.tags.length > 0" class="user-build-tags com-items-start">
-      <nb-tag *ngFor="let tag of build.tags | slice: 0:4" [text]="tag" size="tiny"></nb-tag>
-    </nb-tag-list>
-    <div class="user-build-interactions">
-      <span>
-        <nb-icon icon="message-circle"></nb-icon>
-        {{ build.chat_messages_count }}
-      </span>
-      <span>
-        <nb-icon icon="heart"></nb-icon>
-        {{ build.votes_count }}
-      </span>
+    <a [routerLink]="['/builds', build.slug]">
+      <div class="build-card-image">
+        <commudle-banner-image
+          [headerImagePath]="
+          build.thumbnail_image
+            ? build.thumbnail_image.i320
+            : build.images?.[0]
+            ? build.images[0].url
+            : staticAssets.community_build_empty_state
+        "
+          [name]="build.name"
+          [bottomRightCurve]="false"
+          [bottomLeftCurve]="false"
+          [aspectRatio]="'4/3'"
+        ></commudle-banner-image>
+      </div>
+    </a>
+    <div class="content">
+      <a [routerLink]="['/builds', build.slug]">
+        <div class="details">
+          <h4 class="user-build-name">{{ build.name }}</h4>
+          <p class="time">{{ moment(build.created_at).format('MMM Do, YYYY') }}</p>
+          <app-user-profile-card-small [user]="build.user"></app-user-profile-card-small>
+        </div>
+      </a>
+      <div class="votes">
+        <app-votes-display
+          [icon]="'star'"
+          [votableId]="build.id"
+          [votableType]="'CommunityBuild'"
+          [votesDirectionVertical]="true"
+          size="mini"
+        ></app-votes-display>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

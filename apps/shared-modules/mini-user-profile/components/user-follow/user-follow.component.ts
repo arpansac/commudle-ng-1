@@ -10,12 +10,13 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { NbButtonAppearance, NbComponentStatus, NbDialogService } from '@commudle/theme';
+import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { IUser } from 'apps/shared-models/user.model';
+import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-follow',
@@ -25,17 +26,22 @@ import { Subscription } from 'rxjs';
 })
 export class UserFollowComponent implements OnChanges, OnDestroy {
   @Input() username: string;
+  @Input() name: string;
+  @Input() userId: number;
   @Input() showIcon = true;
   @Input() appearance: NbButtonAppearance;
   @Input() status: NbComponentStatus;
-
+  @Input() isMobileWidthFull = false;
+  @Input() disabled = false;
+  @Input() round: boolean = false;
   @Output() userFollowed: EventEmitter<any> = new EventEmitter<any>();
-
-  user: IUser;
   currentUser: ICurrentUser;
   isFollowing = false;
+  Following = false;
 
   subscriptions: Subscription[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private appUsersService: AppUsersService,
@@ -46,17 +52,9 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
   ) {}
 
   ngOnChanges(): void {
-    // Get user's data
-    this.subscriptions.push(
-      this.appUsersService.getProfile(this.username).subscribe((data) => {
-        this.user = data;
-        this.changeDetectorRef.markForCheck();
-      }),
-    );
-
     // Get logged in user
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.checkFollowing();
         this.changeDetectorRef.markForCheck();
@@ -66,6 +64,8 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   checkFollowing() {
@@ -84,14 +84,27 @@ export class UserFollowComponent implements OnChanges, OnDestroy {
       this.appUsersService.toggleFollow(this.username).subscribe(() => {
         this.checkFollowing();
         this.userFollowed.emit();
-        this.gtm.dataLayerPushEvent('user-follow-confirm', { com_followee_id: this.user.id });
+        this.gtm.dataLayerPushEvent('user-follow-confirm', { com_followee_id: this.userId });
         this.changeDetectorRef.markForCheck();
       }),
     );
   }
 
-  openDialog(ref: TemplateRef<any>) {
-    this.nbDialogService.open(ref);
-    this.gtm.dataLayerPushEvent('user-follow-initiate', { com_followee_id: this.user.id });
+  onFollowClick() {
+    const dialogRef = this.nbDialogService.open(UserConsentsComponent, {
+      context: {
+        consentType: ConsentTypesEnum.UserFollow,
+        username: this.name,
+      },
+    });
+
+    dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+      dialogRef.close();
+      if (result === 'accepted') {
+        this.isFollowing = true;
+        this.toggleFollow();
+      }
+    });
+    this.gtm.dataLayerPushEvent('user-follow-initiate', { com_followee_id: this.userId });
   }
 }

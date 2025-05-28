@@ -1,27 +1,14 @@
 .sponsors {
+  @apply com-mx-0 com-my-6;
   .event-sponsors {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    @apply com-flex com-items-center com-flex-wrap com-gap-4;
     .event-sponsor {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 250px;
-      margin: 0.5rem;
-      border: 1px dotted lightgrey;
-      border-radius: 5px;
+      @apply com-h-20 com-w-64 com-flex com-gap-2 com-items-center com-border com-border-dotted com-border-Bright-Gray com-rounded-md com-relative;
       .logo {
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
+        @apply com-h-20 com-w-20 com-p-1 com-flex com-items-center com-border-0 com-border-r com-border-dotted com-border-Bright-Gray;
         img {
-          width: 100%;
+          @apply com-w-full;
         }
-      }
-      .details {
-        margin-left: 5px;
       }
 
       .remove-sponsor-button {
@@ -36,10 +23,7 @@
     }
 
     .new-sponsor-button {
-      height: 80px;
-      width: 250px;
-      padding: 5px;
-      margin: 0.5rem;
+      @apply com-mr-2 com-my-2 com-ml-0 com-p-5px com-w-[250px] com-h-[80px];
 
       border: 1px dashed grey;
       display: flex;
@@ -68,7 +52,7 @@ nb-tabset.new-event-sponsor-options {
         position: relative;
         padding: 150px 0;
 
-        >span {
+        > span {
           height: 100%;
           display: flex;
           flex-direction: column;
@@ -81,7 +65,7 @@ nb-tabset.new-event-sponsor-options {
 
           nb-icon {
             font-size: 4rem;
-            margin-bottom: 0.5rem
+            margin-bottom: 0.5rem;
           }
         }
 
@@ -99,7 +83,6 @@ nb-tabset.new-event-sponsor-options {
         height: 75px;
         display: flex;
         flex-wrap: nowrap;
-        align-items: flex-start;
         margin: 0 auto;
         img {
           max-width: 100%;
@@ -134,6 +117,12 @@ nb-tabset.new-event-sponsor-options {
           width: 100%;
         }
       }
+      .logo {
+        @apply com-h-4/5 com-p-1 com-flex com-items-center;
+        img {
+          @apply com-w-full;
+        }
+      }
 
       .name {
         text-align: center;
@@ -143,4 +132,13 @@ nb-tabset.new-event-sponsor-options {
   }
 }
 
+h6 {
+  @apply com-m-0 com-flex com-items-center;
+}
 
+.remove-sponsor-confirmation {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-items-center com-justify-between;
+  }
+}
