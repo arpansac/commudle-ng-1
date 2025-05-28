@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SharedComponentsModule } from '@commudle/shared-components';
 import {
   NbButtonModule,
   NbCardModule,
@@ -11,10 +11,13 @@ import {
   NbInputModule,
   NbPopoverModule,
   NbSelectModule,
+  NbTagModule,
+  NbTooltipModule,
 } from '@commudle/theme';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { RecommendationsModule } from 'apps/commudle-admin/src/app/feature-modules/recommendations/recommendations.module';
-import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { SharedComponentsModule as OldSharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
@@ -29,6 +32,19 @@ import { CreateCommunityBuildComponent } from './components/create-community-bui
 import { BuildListItemComponent } from './components/my-community-builds/build-list-item/build-list-item.component';
 import { MyCommunityBuildsComponent } from './components/my-community-builds/my-community-builds.component';
 import { TeammateInviteConfirmationComponent } from './components/teammate-invite-confirmation/teammate-invite-confirmation.component';
+import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-events/public-home-list-events.module';
+import { FeaturedProjectsCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-projects-card/featured-projects-card.component';
+import { BuildsTopBuildersComponent } from './components/community-builds/builds-top-builders/builds-top-builders.component';
+import { TopBuildersCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/top-builders-card/top-builders-card.component';
+import { ExploreExpertsComponent } from './components/community-builds/explore-experts/explore-experts.component';
+import { BuildsComponent } from './components/community-builds/builds/builds.component';
+import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
+import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-pages-layout/listing-pages-layout.component';
+import { FeaturedProjectsComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-projects/featured-projects.component';
+import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { FeaturedBuildsComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-builds/featured-builds.component';
 
 @NgModule({
   declarations: [
@@ -40,14 +56,19 @@ import { TeammateInviteConfirmationComponent } from './components/teammate-invit
     BuildListItemComponent,
     TeammateInviteConfirmationComponent,
     CommunityBuildCardComponent,
+    BuildsTopBuildersComponent,
+    ExploreExpertsComponent,
+    BuildsComponent,
   ],
+  exports: [BuildsTopBuildersComponent, ExploreExpertsComponent, CommunityBuildCardComponent],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
   imports: [
     CommonModule,
     CommunityBuildsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
-    SharedComponentsModule,
+    OldSharedComponentsModule,
     EditorModule,
     SharedPipesModule,
     SharedDirectivesModule,
@@ -55,7 +76,15 @@ import { TeammateInviteConfirmationComponent } from './components/teammate-invit
     InfiniteScrollModule,
     RecommendationsModule,
     MiniUserProfileModule,
-
+    SharedComponentsModule,
+    PublicHomeListEventsModule,
+    //Standalone
+    FeaturedProjectsCardComponent,
+    TopBuildersCardComponent,
+    SkeletonCardsComponent,
+    ListingPagesLayoutComponent,
+    FeaturedProjectsComponent,
+    HelpSectionComponent,
     // Nebular
     NbCardModule,
     NbSelectModule,
@@ -64,9 +93,13 @@ import { TeammateInviteConfirmationComponent } from './components/teammate-invit
     NbIconModule,
     NbPopoverModule,
     NbCheckboxModule,
-
+    NbTagModule,
+    NbTooltipModule,
     //FontAwesomeModule
     FontAwesomeModule,
+    AppSharedComponentsModule,
+    ListingPageHeaderComponent,
+    FeaturedBuildsComponent,
   ],
 })
 export class CommunityBuildsModule {}

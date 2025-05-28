@@ -8,12 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { EventSponsorsService } from './../../../../services/event-sponsors.service';
+import { ActivatedRoute } from '@angular/router';
+import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
 
 @Component({
   selector: 'app-sponsors',
@@ -40,7 +41,9 @@ export class SponsorsComponent implements OnInit {
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
     private eventSponsorsService: EventSponsorsService,
+    private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: NbDialogService,
   ) {
     this.sponsorForm = this.fb.group({
       logo: ['', Validators.required],
@@ -50,8 +53,11 @@ export class SponsorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllSponsors();
-    this.getPastSponsors();
+    this.activatedRoute.parent.data.subscribe((data) => {
+      this.event = data.event;
+      this.getAllSponsors();
+      this.getPastSponsors();
+    });
   }
 
   getAllSponsors() {
@@ -62,6 +68,8 @@ export class SponsorsComponent implements OnInit {
   }
 
   openForm() {
+    this.sponsorForm.reset();
+    this.uploadedLogoImageFile = null;
     this.windowRef = this.windowService.open(this.sponsorFormTemplate, {
       title: 'Add a Sponsor',
     });
@@ -100,6 +108,7 @@ export class SponsorsComponent implements OnInit {
       this.removeLogo();
       this.sponsorForm.reset();
       this.toastLogService.successDialog(`${data.sponsor.name} added`, 3000);
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -118,6 +127,12 @@ export class SponsorsComponent implements OnInit {
         this.toastLogService.warningDialog('Image should be less than 2 Mb', 3000);
         return;
       }
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        return;
+      }
       this.uploadedLogoImageFile = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -131,5 +146,14 @@ export class SponsorsComponent implements OnInit {
     this.uploadedLogoImage = null;
     this.uploadedLogoImageFile = null;
     this.sponsorForm.get('logo').patchValue('');
+  }
+
+  openConfirmDeleteDialog(confirmDeleteDialogTemplate, sponsor, index) {
+    this.dialogService.open(confirmDeleteDialogTemplate, {
+      context: {
+        sponsor_id: sponsor.id,
+        index: index,
+      },
+    });
   }
 }

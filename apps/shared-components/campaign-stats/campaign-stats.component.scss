@@ -1,0 +1,42 @@
+.campaign-stats-number {
+  @apply com-flex com-flex-wrap com-gap-5;
+  nb-card {
+    @apply com-w-64 com-bg-gray-50;
+    .campaign-stats-item-label {
+      @apply com-uppercase com-mb-3 com-text-gray-600 com-text-xs;
+    }
+    .campaign-stats-item-value {
+      @apply com-text-Yankees-Blue com-text-xl com-font-bold;
+    }
+  }
+}
+
+.graph-container {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-4;
+  .campaign-graph-container {
+    @apply com-p-4 com-rounded-lg com-mb-4;
+  }
+  .title {
+    @apply com-text-Yankees-Blue com-text-lg com-font-semibold  com-mt-6 com-mb-3;
+  }
+
+  .chart-container {
+    @apply com-h-96 com-border com-border-solid com-border-gray-200 com-rounded-lg com-p-5 com-mt-4;
+  }
+}
+
+.map {
+  .campaign-graph-container {
+    @apply com-p-4 com-rounded-lg com-mb-4;
+  }
+  .title {
+    @apply com-text-Yankees-Blue com-text-lg com-font-semibold  com-mt-6 com-mb-3;
+  }
+
+  .chart-container {
+    @apply com-h-96 com-border com-border-solid com-border-gray-200 com-rounded-lg com-p-5 com-mt-4;
+    #regions_div {
+      @apply com-h-full com-w-full;
+    }
+  }
+}

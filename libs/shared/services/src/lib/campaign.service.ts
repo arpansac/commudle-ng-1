@@ -1,0 +1,135 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ECampaignStatus, ICampaign, ICampaignStats, IPaginationCount } from '@commudle/shared-models';
+import { Observable } from 'rxjs';
+import { API_ROUTES } from './api-routes.constant';
+import { BaseApiService } from './base-api.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CampaignService {
+  constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
+
+  createCampaign(campaignTypeId: number): Observable<ICampaign> {
+    return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE), {
+      campaign_type_id: campaignTypeId,
+    });
+  }
+
+  indexCampaigns(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
+    const params = new HttpParams().set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<ICampaign>>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX), {
+      params,
+    });
+  }
+
+  updateCampaign(formData, campaignId: number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE), formData, {
+      params,
+    });
+  }
+
+  fetchCampaign(campaignId: number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
+  }
+
+  campaignAdminUpdateStatus(campaignId: number, campaignStatus: ECampaignStatus): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE), {
+      campaign_id: campaignId,
+      campaign_status: campaignStatus,
+    });
+  }
+
+  updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE_TAGS), {
+      campaign_id: campaignId,
+      tags,
+    });
+  }
+
+  calculateBudget(
+    campaignId: number,
+    startDate = null,
+    endDate = null,
+    startTime = null,
+    endTime = null,
+  ): Observable<ICampaign> {
+    let params = new HttpParams().set('campaign_id', campaignId);
+    if (startDate) {
+      params = params.set('start_date', startDate);
+    }
+    if (endDate) {
+      params = params.set('end_date', endDate);
+    }
+    if (startTime) {
+      params = params.set('start_time', startTime);
+    }
+    if (endTime) {
+      params = params.set('end_time', endTime);
+    }
+    return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CALC_ESTIMATED_PRICE), {
+      params,
+    });
+  }
+
+  getStats(campaignId: number): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS), {
+      params,
+    });
+  }
+
+  getNewsletterStats(campaignId: number): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.MAIN_NEWSLETTER_CAMPAIGN_STATS),
+      {
+        params,
+      },
+    );
+  }
+
+  updateNewsletterWithCampaign(campaignId: number, newsletterId: number): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_UPDATE_NEWSLETTER),
+      {
+        campaign_id: campaignId,
+        newsletter_id: newsletterId,
+      },
+    );
+  }
+
+  resendPaymentLink(campaignId: number): Observable<boolean> {
+    return this.http.post<boolean>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_RESEND_PAYMENT_LINK), {
+      campaign_id: campaignId,
+    });
+  }
+
+  campaignUnapprovedChangesMail(campaignId: number): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_UNAPPROVED_CHANGES_MAIL),
+      {
+        campaign_id: campaignId,
+      },
+    );
+  }
+
+  destroy(campaignId: number): Observable<boolean> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.DESTROY), {
+      params,
+    });
+  }
+
+  //PUBLIC API
+  indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
+    const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);
+    return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.PUBLIC.ONGOING_CAMPAIGN), {
+      params,
+    });
+  }
+}

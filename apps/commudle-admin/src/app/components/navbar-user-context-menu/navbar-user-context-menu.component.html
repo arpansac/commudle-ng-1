@@ -1,0 +1,71 @@
+<div *ngIf="showUserContextMenu" class="user-profile-dropdown">
+  <div class="dropdown-menu">
+    <div class="user-info">
+      <div class="user-profile-header">
+        <img [src]="currentUser.photo.i64" [alt]="currentUser.name" class="profile-image" />
+        <div class="user-details">
+          <div class="user-profile-name">
+            <p class="name">
+              {{ currentUser.name }}
+            </p>
+            <commudle-user-expert-tick *ngIf="currentUser.is_expert"></commudle-user-expert-tick>
+          </div>
+          <div class="username">@{{ currentUser.username }}</div>
+          <div class="designation" *ngIf="currentUser.designation">{{ currentUser.designation }}</div>
+          <div class="company" *ngIf="currentUser.company_name">{{ currentUser.company_name }}</div>
+        </div>
+      </div>
+      <button
+        nbButton
+        outline
+        fullWidth
+        size="small"
+        shape="semi-round"
+        status="info"
+        class="view-profile-btn"
+        [routerLink]="['/users/' + currentUser.username]"
+      >
+        View Profile
+      </button>
+    </div>
+    <div class="section">
+      <h2 class="section-title">ACCOUNT</h2>
+      <ul class="menu-list">
+        <li [routerLink]="['/builds/my-builds']" class="menu-item">My Builds</li>
+        <li [routerLink]="['/labs/my-labs']" class="menu-item">My Labs</li>
+        <li [routerLink]="['/jobs/my-applications']" class="menu-item">Job Applications</li>
+      </ul>
+    </div>
+    <div class="section">
+      <h2 class="section-title">ENGAGEMENT</h2>
+      <ul class="menu-list">
+        <li [routerLink]="['/newsletters']" class="menu-item">Newsletter</li>
+        <li [routerLink]="['/campaigns']" class="menu-item">My Ad Campaigns <small> &nbsp;(Beta)</small></li>
+      </ul>
+    </div>
+    <button
+      nbButton
+      outline
+      size="small"
+      shape="semi-round"
+      status="basic"
+      class="logout"
+      (click)="openConfirmDialogBox(logoutDialogBox)"
+    >
+      Log out
+    </button>
+  </div>
+</div>
+
+<ng-template #logoutDialogBox let-ref="dialogRef">
+  <nb-card class="logout-confirmation">
+    <nb-card-body>
+      <h3>Are you sure?</h3>
+      <p>You’ll be signed out of your account and redirected to the homepage.</p>
+    </nb-card-body>
+    <nb-card-footer class="action-buttons !com-my-0">
+      <button nbButton status="danger" shape="semi-round" fullWidth (click)="logout(); ref.close()">Yes, Logout</button>
+      <button nbButton status="basic" shape="semi-round" fullWidth (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

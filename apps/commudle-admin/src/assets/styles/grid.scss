@@ -12,6 +12,10 @@ HTML Emmet's
     @apply com-max-w-screen-md;
   }
 
+  &.medium {
+    @apply com-max-w-screen-lg;
+  }
+
   .container {
     @apply com-container;
   }
@@ -27,18 +31,34 @@ HTML Emmet's
 1. div.three-column-layout>div*3
  */
 .three-column-layout {
-  @include grid-layout(24);
+  @screen lg {
+    @include grid-layout(24);
 
-  & > *:nth-child(1) {
-    @apply com-col-span-6;
-  }
+    & > *:nth-child(1) {
+      @apply com-col-span-6;
+    }
 
-  & > *:nth-child(2) {
-    @apply com-col-span-12;
-  }
+    & > *:nth-child(2) {
+      @apply com-col-span-12;
+    }
 
-  & > *:nth-child(3) {
-    @apply com-col-span-6;
+    & > *:nth-child(3) {
+      @apply com-col-span-6;
+    }
+
+    &.medium {
+      & > *:nth-child(1) {
+        @apply com-col-span-5;
+      }
+
+      & > *:nth-child(2) {
+        @apply com-col-span-12;
+      }
+
+      & > *:nth-child(3) {
+        @apply com-col-span-7;
+      }
+    }
   }
 }
 
@@ -80,6 +100,17 @@ HTML Emmet's
 
       .main-column {
         @apply com-col-span-20;
+      }
+    }
+
+    &.medium {
+      .left-column,
+      .right-column {
+        @apply com-col-span-7;
+      }
+
+      .main-column {
+        @apply com-col-span-17;
       }
     }
 

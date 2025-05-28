@@ -1,0 +1,44 @@
+<nb-card class="mail-popup">
+  <nb-card-header>
+    <span>Send email to {{ hackathonTeam?.name }}</span>
+    <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="emailForm">
+      <div class="subject">
+        <label for="emailReason">Subject <span class="mandatory-field">*</span></label>
+        <input type="text" placeholder="Subject" nbInput fullWidth formControlName="subject" appAutoFocus />
+      </div>
+      <div class="message-field">
+        <label for="message" class="message">Message <span class="mandatory-field">*</span></label>
+        <editor [init]="tinyMCE" formControlName="body"></editor>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      (click)="previewEmail()"
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [nbSpinner]="isPreviewLoading"
+      type="button"
+      [disabled]="isPreviewLoading || !emailForm.valid"
+    >
+      Preview Email
+    </button>
+    <button
+      nbButton
+      status="primary"
+      shape="semi-round"
+      fullWidth
+      (click)="sendEmailToSpecificTeam()"
+      [nbSpinner]="isLoading"
+      [disabled]="isPreviewLoading || !emailForm.valid"
+    >
+      Send
+    </button>
+  </nb-card-footer>
+</nb-card>

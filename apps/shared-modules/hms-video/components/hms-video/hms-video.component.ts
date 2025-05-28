@@ -8,7 +8,8 @@ import { HmsApiService } from 'apps/shared-modules/hms-video/services/hms-api.se
 import { HmsVideoStateService } from 'apps/shared-modules/hms-video/services/hms-video-state.service';
 import { HmsLiveChannel } from 'apps/shared-modules/hms-video/services/websockets/hms-live.channel';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { HmsStageService } from '../../services/hms-stage.service';
 
 @Component({
   selector: 'app-hms-video',
@@ -28,15 +29,17 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   serverClient: IHmsClient;
   selectedRole: EHmsRoles;
 
-  channelSubscription;
   isInitialConnection = true;
   subscriptions: Subscription[] = [];
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
     private hmsVideoStateService: HmsVideoStateService,
     private hmsApiService: HmsApiService,
     private hmsLiveChannel: HmsLiveChannel,
+    private hmsStageService: HmsStageService,
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +59,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
     if (this.embeddedVideoStream.hms_room_id) {
       // Get current user
       this.subscriptions.push(
-        this.authWatchService.currentUser$.subscribe((value: ICurrentUser) => {
+        this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((value: ICurrentUser) => {
           this.currentUser = value;
           // Get client token
           this.getClient();
@@ -66,9 +69,10 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe all subscriptions
-    this.channelSubscription?.unsubscribe();
+    this.hmsLiveChannel.unsubscribe(this.currentUser?.id);
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getClient(): void {
@@ -82,7 +86,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
 
   connectToChannel(): void {
     // Subscribe to channel
-    this.channelSubscription = this.hmsLiveChannel.subscribe(
+    this.hmsLiveChannel.subscribe(
       this.embeddedVideoStream.hms_room_id,
       this.currentUser.id,
       this.serverClient.token,
@@ -91,26 +95,28 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     // Check if session has ended
-    this.subscriptions.push(
-      this.hmsLiveChannel.channelData$[this.currentUser.id].subscribe((data: any) => {
-        if (data) {
-          switch (data.action) {
-            case this.hmsLiveChannel.ACTIONS.SET_PERMISSIONS: {
-              if (this.isInitialConnection) {
-                if (data.room_ended) {
-                  this.hmsVideoStateService.setState(EHmsStates.ENDED);
-                } else {
-                  this.hmsVideoStateService.setState(EHmsStates.INIT);
-                }
-
-                this.isInitialConnection = false;
+    this.hmsLiveChannel.channelData$[this.currentUser.id].subscribe((data: any) => {
+      if (data) {
+        switch (data.action) {
+          case this.hmsLiveChannel.ACTIONS.SET_PERMISSIONS: {
+            if (this.isInitialConnection) {
+              if (data.room_ended) {
+                this.hmsVideoStateService.setState(EHmsStates.ENDED);
+              } else {
+                this.hmsVideoStateService.setState(EHmsStates.INIT);
               }
-              break;
+
+              Object.entries(data.raised_hands).forEach(([key, value]: any) => {
+                this.hmsStageService.raiseHand({ id: parseInt(key), name: value.name });
+              });
+
+              this.isInitialConnection = false;
             }
+            break;
           }
         }
-      }),
-    );
+      }
+    });
   }
 
   reload() {

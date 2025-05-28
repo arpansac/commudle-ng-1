@@ -1,0 +1,39 @@
+nb-card {
+  @apply com-mx-0 com-m-0 md:com-border com-border-0;
+
+  nb-card-body {
+    @apply com-p-0 md:com-px-3 md:com-py-4;
+    .heading {
+      @apply com-mt-0 md:com-mb-8 com-mb-4 com-mx-0 com-flex com-flex-col md:com-p-0 com-px-4 com-py-3 com-border-0 md:com-border-b-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      .title {
+        @apply com-m-0 com-leading-[0];
+        a {
+          @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+        }
+      }
+      .sub-heading {
+        @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
+      }
+    }
+
+    .content {
+      @apply com-flex com-flex-row md:com-block com-flex-nowrap md:com-flex-wrap com-overflow-x-auto com-mx-4 com-my-0 md:com-m-0 com-gap-4 md:com-gap-0 com-items-center;
+      .content-card {
+        @apply md:com-mb-4 com-m-0 md:com-w-full com-w-[303px];
+      }
+
+      .load-more {
+        @apply com-text-center md:com-mt-4 com-mt-0;
+
+        button {
+          @apply com-text-xs com-font-medium com-text-gray-500 com-border com-border-solid com-border-gray-200 #{!important};
+        }
+
+        app-loading-spinner {
+          @apply com-mb-6;
+        }
+      }
+    }
+  }
+}

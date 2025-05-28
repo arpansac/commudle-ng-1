@@ -63,7 +63,12 @@ import { UsersRoutingModule } from './users-routing.module';
 import { JobsModule } from '../jobs/jobs.module';
 import { CommunicationPreferencesComponent } from './components/public-profile/user-basic-details/communication-preferences/communication-preferences.component';
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
-
+import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
+import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
+import { RecapComponent } from './components/recap-2024/recap-2024.component';
+import { PublicProfileCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/users/components/public-profile/public-profile-campaign/public-profile-campaign.component';
+import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 @NgModule({
   declarations: [
     PublicProfileComponent,
@@ -100,6 +105,9 @@ import { CookiePreferencesComponent } from './components/public-profile/user-bas
     UserJobCardComponent,
     CommunicationPreferencesComponent,
     CookiePreferencesComponent,
+    AccountManagementComponent,
+    RecapComponent,
+    PublicProfileCampaignComponent,
   ],
   imports: [
     CommonModule,
@@ -113,7 +121,8 @@ import { CookiePreferencesComponent } from './components/public-profile/user-bas
     MiniUserProfileModule,
     SharedComponentsModule,
     JobsModule,
-
+    newSharedComponentsModule,
+    EventMiniCardComponent,
     // Nebular
     NbCardModule,
     NbIconModule,
@@ -132,8 +141,16 @@ import { CookiePreferencesComponent } from './components/public-profile/user-bas
     NbRouteTabsetModule,
     NbToggleModule,
     NbSelectModule,
+    UserExpertTickComponent,
   ],
-  exports: [BasicUserProfileComponent, UsernameComponent, BasicInfoComponent, SocialLinksComponent],
+  exports: [
+    BasicUserProfileComponent,
+    UsernameComponent,
+    BasicInfoComponent,
+    SocialLinksComponent,
+    UserCoverPhotoComponent,
+    UserBuildCardComponent,
+  ],
   providers: [UserProfileMenuService],
 })
 export class UsersModule {}

@@ -14,49 +14,37 @@ p {
 
 .user-profile-large {
   .avatar {
-    @apply com-h-14 com-w-14;
-    @apply com-rounded-full com-object-cover com-object-center com-align-middle;
+    @apply com-h-[48px] com-w-[48px] com-rounded-full com-object-cover com-object-center com-align-middle com-bg-tWhite;
   }
 
   .details {
-    margin-left: $space-16;
+    @apply com-ml-3;
 
     .name {
+      @apply com-flex com-items-center;
       p {
-        color: $black;
-        font-size: $fs-18;
-        line-height: 21px;
+        @apply com-font-medium com-text-sm com-text-Yankees-Blue com-line-clamp-1;
         word-break: break-word;
-      }
-
-      img {
-        height: 16px;
-        margin-left: $space-4;
-        width: 16px;
       }
     }
 
     .username {
-      @apply com-text-Quartz com-mt-2px;
-      font-size: $fs-h6;
-      line-height: 12px;
+      @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-1 com-w-max com-mt-1;
       word-break: break-word;
     }
 
     .designation {
-      @apply com-mt-2px;
-      color: $black;
-      font-size: $fs-h5;
-      line-height: 16px;
+      @apply com-mt-1 com-text-xs com-font-normal com-text-gray-500;
       word-break: break-word;
     }
 
     .about {
-      @apply com-mt-2px;
-      color: $black;
-      font-size: $fs-h6;
-      line-height: 16px;
+      @apply com-mt-1 com-text-sm com-font-normal com-text-black;
       word-break: break-word;
+    }
+
+    .speaker-count {
+      @apply com-h-full com-flex-shrink-0;
     }
 
     .social {
@@ -70,9 +58,45 @@ p {
 }
 
 .followers {
-  margin: 0 0 0 $space-72;
+  @apply com-mt-4;
 }
 
 .align-right {
-  margin-left: auto;
+  @apply com-flex com-ml-auto com-m-0;
+}
+
+//TODO deprecate ASAP
+app-badge {
+  &::ng-deep {
+    div {
+      @apply com-bg-Bright-Gray-opacity-60;
+    }
+  }
+}
+
+.name-header {
+  @apply com-flex com-flex-row com-justify-between com-items-center;
+}
+
+.align-right-speaker-count {
+  @apply com-mr-3;
+}
+
+.desktop-speaker-count {
+  @apply com-m-0;
+}
+
+.followers-count {
+  @apply com-text-xs com-font-medium com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0 com-mt-2;
+  span {
+    @apply com-text-Yankees-Blue;
+  }
+}
+
+.leader {
+  @apply com-text-orange-500 com-border-0 com-bg-orange-50 com-h-full #{!important};
+}
+
+.talks-leader {
+  @apply com-flex com-flex-row com-items-center com-gap-2 com-mt-2;
 }

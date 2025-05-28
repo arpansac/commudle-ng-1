@@ -1,0 +1,62 @@
+<nb-card *ngIf="speakers.length > 0" id="speakers">
+  <nb-card-body>
+    <div class="heading">
+      <h3 class="title"><a [routerLink]="'.'" fragment="speakers">Speakers to Follow</a></h3>
+      <h4 class="sub-heading">Network with speakers from events</h4>
+    </div>
+    <div class="user-profile-card-large">
+      <app-skeleton-cards [displayFollowButton]="true" [cards]="4" *ngIf="showSkeletonLoading"></app-skeleton-cards>
+      <div class="user-profile-card-large-card" *ngFor="let speaker of speakers">
+        <div *appBreakpoints="'>lg'">
+          <app-user-profile-card-large
+            [showFollowButton]="true"
+            [alignFollowToRight]="true"
+            [showAbout]="true"
+            [user]="speaker"
+            [showSpeakersCount]="true"
+            [maxUserNameLength]="15"
+            [showHiringLookingTags]="false"
+            [appearanceOfFollowButton]="'outline'"
+          ></app-user-profile-card-large>
+        </div>
+        <div *appBreakpoints="'<=lg'">
+          <app-user-profile-card-large
+            [showFollowButton]="true"
+            [alignFollowToRight]="false"
+            [showAbout]="true"
+            [user]="speaker"
+            [horizontalScroll]="true"
+            [isMobileWidthFull]="true"
+            [showSpeakersCount]="true"
+            [maxUserNameLength]="15"
+            [showHiringLookingTags]="false"
+            [appearanceOfFollowButton]="'outline'"
+            [alignSpeakerCountToRight]="true"
+          ></app-user-profile-card-large>
+        </div>
+      </div>
+      <div class="load-more">
+        <a *ngIf="parentType === 'communities'" [routerLink]="['/speakers']">
+          <button *ngIf="pageInfo?.has_next_page" nbButton outline size="tiny" status="basic">View All</button>
+        </a>
+        <div *ngIf="parentType === 'events'">
+          <div *ngIf="this.isLoadingSpeakers">
+            <app-loading-spinner class="com-mt-4"></app-loading-spinner>
+          </div>
+          <button
+            *ngIf="pageInfo?.has_next_page"
+            (click)="getEventsSpeakersList()"
+            fullWidth
+            ghost
+            nbButton
+            size="small"
+            status="basic"
+            shape="semi-round"
+          >
+            View More
+          </button>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

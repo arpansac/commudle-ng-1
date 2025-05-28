@@ -4,11 +4,14 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { InViewportModule } from '@commudle/in-viewport';
+import { EditorModule } from '@commudle/editor';
 import { NgxDatatableModule } from '@commudle/ngx-datatable';
 import {
   NbAccordionModule,
   NbActionsModule,
   NbAlertModule,
+  NbAutocompleteModule,
   NbBadgeModule,
   NbButtonModule,
   NbCardModule,
@@ -21,23 +24,23 @@ import {
   NbPopoverModule,
   NbRadioModule,
   NbSelectModule,
+  NbSpinnerModule,
   NbTagModule,
-  NbToggleComponent,
+  NbToggleModule,
   NbTooltipModule,
   NbWindowModule,
 } from '@commudle/theme';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MessageComponent } from 'apps/shared-components/messages/messages-list/message/message.component';
-import { MessagesListComponent } from 'apps/shared-components/messages/messages-list/messages-list.component';
-import { MessagesComponent } from 'apps/shared-components/messages/messages.component';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { HmsVideoModule } from 'apps/shared-modules/hms-video/hms-video.module';
 import { MentionModule } from 'apps/shared-modules/mention/mention.module';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { LinkyModule } from 'ngx-linky';
+import { AlertComponent } from './alert/alert.component';
 import { BadgeComponent } from './badge/badge.component';
+import { BannerImageComponent } from './banner-image/banner-image.component';
 import { CommunityBadgeComponent } from './community-badge/community-badge.component';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 import { DataFormFillComponent } from './data-form-fill/data-form-fill.component';
@@ -48,6 +51,9 @@ import { FormResponsesComponent } from './form-responses/form-responses.componen
 import { ResponsesTableComponent } from './form-responses/responses-table/responses-table.component';
 import { UserDetailsCellComponent } from './form-responses/responses-table/user-details-cell/user-details-cell.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { MessageComponent } from './messages/messages-list/message/message.component';
+import { MessagesListComponent } from './messages/messages-list/messages-list.component';
+import { MessagesComponent } from './messages/messages.component';
 import { NewDataFormComponent } from './new-data-form/new-data-form.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PollResultComponent } from './poll-result/poll-result.component';
@@ -69,14 +75,35 @@ import { VideoStreamComponent } from './video-stream/video-stream.component';
 import { VotersComponent } from './votes-display/voters/voters.component';
 import { VotesDisplayComponent } from './votes-display/votes-display.component';
 import { WorkInProgressComponent } from './work-in-progress/work-in-progress.component';
-import { BannerImageComponent } from './banner-image/banner-image.component';
-import { NbToggleModule } from '@commudle/theme';
-import { AlertComponent } from './alert/alert.component';
+import { EntityUpdatesComponent } from './entity-updates/entity-updates.component';
+import { FaqCardComponent } from './faq-card/faq-card.component';
+import { FaqControlPanelComponent } from './faq-control-panel/faq-control-panel.component';
+import { EditorModule as tinyMCEEditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { EditDataFormComponent } from './edit-data-form/edit-data-form.component';
+import { BuildCardComponent } from './build-card/build-card.component';
+import { HackathonLargeCardComponent } from './hackathon-cards/hackathon-large-card/hackathon-large-card.component';
+import { HackathonMediumCardComponent } from './hackathon-cards/hackathon-medium-card/hackathon-medium-card.component';
+import { InterestedMembersComponent } from './interested-members/interested-members.component';
+import { PaidFormListComponent } from './paid-form-list/paid-form-list.component';
+import { PaymentLogEdfegComponent } from './payment-detail/payment-log-edfeg/payment-log-edfeg.component';
+import { PaymentDetailComponent } from 'apps/shared-components/payment-detail/payment-detail.component';
+import { BackButtonComponent } from './back-button/back-button.component';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/user-details-checkbox-form.component';
+import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
+import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { CampaignListComponent } from './campaign-list/campaign-list.component';
+import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
+import { NextStepCardComponent } from './next-step-card/next-step-card.component';
+import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { ProductPriceDetailsComponent } from './product-price-details/product-price-details.component';
+
 @NgModule({
   declarations: [
     WorkInProgressComponent,
     UserProfileHorizontalComponent,
-    BadgeComponent,
     CommunityBadgeComponent,
     VideoStreamComponent,
     PollsComponent,
@@ -111,6 +138,26 @@ import { AlertComponent } from './alert/alert.component';
     LoadingSpinnerComponent,
     BannerImageComponent,
     AlertComponent,
+    MessagesComponent,
+    EntityUpdatesComponent,
+    FaqCardComponent,
+    FaqControlPanelComponent,
+    EditDataFormComponent,
+    BuildCardComponent,
+    HackathonLargeCardComponent,
+    HackathonMediumCardComponent,
+    InterestedMembersComponent,
+    PaidFormListComponent,
+    PaymentDetailComponent,
+    PaymentLogEdfegComponent,
+    UserDetailsCheckboxFormComponent,
+    UserDetailsFormComponent,
+    NewsletterCardComponent,
+    CampaignListComponent,
+    CampaignDetailsComponent,
+    NextStepCardComponent,
+    CampaignStatsComponent,
+    ProductPriceDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -126,7 +173,11 @@ import { AlertComponent } from './alert/alert.component';
     SharedDirectivesModule,
     MentionModule,
     MiniUserProfileModule,
-
+    InViewportModule,
+    EditorModule,
+    BadgeComponent,
+    BackButtonComponent,
+    HelpSectionComponent,
     // Nebular
     NbButtonModule,
     NbIconModule,
@@ -148,9 +199,13 @@ import { AlertComponent } from './alert/alert.component';
     FontAwesomeModule,
     NbToggleModule,
     NbContextMenuModule,
-
+    NbSpinnerModule,
+    NbAutocompleteModule,
     //cdk
     DragDropModule,
+    tinyMCEEditorModule,
+    UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
   exports: [
     WorkInProgressComponent,
@@ -179,6 +234,27 @@ import { AlertComponent } from './alert/alert.component';
     LoadingSpinnerComponent,
     BannerImageComponent,
     AlertComponent,
+    MessagesComponent,
+    EntityUpdatesComponent,
+    FaqCardComponent,
+    FaqControlPanelComponent,
+    EditDataFormComponent,
+    BuildCardComponent,
+    HackathonLargeCardComponent,
+    HackathonMediumCardComponent,
+    InterestedMembersComponent,
+    PaidFormListComponent,
+    PaymentLogEdfegComponent,
+    PaymentDetailComponent,
+    UserDetailsCheckboxFormComponent,
+    UserDetailsFormComponent,
+    NewsletterCardComponent,
+    CampaignListComponent,
+    CampaignDetailsComponent,
+    NextStepCardComponent,
+    CampaignStatsComponent,
+    ProductPriceDetailsComponent,
   ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
 export class SharedComponentsModule {}

@@ -3,7 +3,10 @@
     <app-chats-list
       (getChat)="openChat($event)"
       (moveUserToTop)="liveUpdates($event)"
+      (getPersonalChats)="getPersonalChat()"
+      [loadingChat]="isLoadingChat"
       [allPersonalChatUsers]="allPersonalChatUsers"
+      [totalChats]="total"
       [currentUser]="currentUser"
     ></app-chats-list>
   </div>

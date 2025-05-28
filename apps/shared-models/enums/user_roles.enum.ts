@@ -12,4 +12,6 @@ export enum EUserRoles {
   BADGES = 'badges',
   FEATURED_COMMUNITIES = 'featured_communities',
   STATIC_ASSETS = 'static_assets',
+  FEATURED_ITEMS = 'featured_items',
+  AD_CAMPAIGN_ADMIN = 'ad_campaign_admin',
 }

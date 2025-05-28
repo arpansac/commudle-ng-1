@@ -5,13 +5,14 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { AuthGuard } from 'apps/shared-services/lib-authwatch.guard';
 import { AboutComponent } from './components/about/about.component';
 import { CommunitiesComponent } from './components/communities/communities.component';
-import { FillDataFormComponent } from './components/fill-data-form/fill-data-form.component';
+import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { SpeakerResourceFormComponent } from './components/speaker-resource-form/speaker-resource-form.component';
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
+import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 
 const routes: Routes = [
   // TODO: discuss in future for order of paths
@@ -20,9 +21,57 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'signup',
+    component: LoginComponent,
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./feature-modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  {
+    path: 'campaigns',
+    loadChildren: () =>
+      import('./feature-modules/admin-campaign/admin-campaign.module').then((m) => m.AdminCampaignModule),
+  },
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./feature-modules/payment-checkout/payment-checkout.module').then((m) => m.PaymentCheckoutModule),
+  },
+  {
     path: 'notifications',
     loadChildren: () =>
       import('./feature-modules/notifications/notifications.module').then((m) => m.NotificationsModule),
+  },
+  {
+    path: 'events',
+    loadChildren: () =>
+      import('./feature-modules/listing-pages/public-home-list-events/public-home-list-events.module').then(
+        (m) => m.PublicHomeListEventsModule,
+      ),
+  },
+  {
+    path: 'speakers',
+    loadChildren: () =>
+      import('./feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module').then(
+        (m) => m.PublicHomeListSpeakersModule,
+      ),
+  },
+  {
+    path: 'experts',
+    loadChildren: () =>
+      import('./feature-modules/listing-pages/public-home-list-experts/public-home-list-experts.module').then(
+        (m) => m.PublicHomeListExpertsModule,
+      ),
+  },
+  {
+    path: 'newsletters',
+    loadChildren: () =>
+      import('./feature-modules/public-newsletters/public-newsletters.module').then((m) => m.PublicNewslettersModule),
+  },
+  {
+    path: 'newsletters/:main_newsletter_id',
+    component: MainNewsletterComponent,
   },
   {
     path: '',
@@ -38,6 +87,34 @@ const routes: Routes = [
       import('./feature-modules/student-non-profit-support/student-non-profit-support.module').then(
         (m) => m.StudentNonProfitSupportModule,
       ),
+  },
+  {
+    path: 'experts-program',
+    loadChildren: () =>
+      import('./feature-modules/expert-program/expert-program.module').then((m) => m.ExpertProgramModule),
+  },
+  {
+    path: 'devrel-agencies',
+    loadChildren: () =>
+      import('./feature-modules/public-agencies/public-agencies.module').then((m) => m.PublicAgenciesModule),
+  },
+  {
+    path: 'developer-ecosystem-blueprint',
+    loadChildren: () =>
+      import('./feature-modules/public-book-page/public-book-page.module').then((m) => m.PublicBookPageModule),
+  },
+  {
+    path: 'developer-ecosystem-blueprint/book',
+    loadChildren: () =>
+      import('./feature-modules/public-reading-book/public-reading-book.module').then((m) => m.PublicReadingBookModule),
+  },
+  {
+    path: 'features',
+    loadChildren: () => import('./feature-modules/features/features.module').then((m) => m.FeaturesModule),
+  },
+  {
+    path: 'case-studies',
+    loadChildren: () => import('./feature-modules/case-study/case-study.module').then((m) => m.CaseStudyModule),
   },
   // {
   //   path: 'features',
@@ -72,6 +149,11 @@ const routes: Routes = [
       import('./feature-modules/public-events/public-events.module').then((m) => m.PublicEventsModule),
   },
   {
+    path: 'communities/:community_id/hackathons/:hackathon_id',
+    loadChildren: () =>
+      import('./feature-modules/public-hackathon/public-hackathon.module').then((m) => m.PublicHackathonModule),
+  },
+  {
     path: 'communities/:community_id/channels',
     loadChildren: () =>
       import('./feature-modules/community-channels/community-channels.module').then((m) => m.CommunityChannelsModule),
@@ -85,7 +167,7 @@ const routes: Routes = [
   },
   {
     path: 'fill-form/:data_form_entity_id',
-    component: FillDataFormComponent,
+    component: CheckFillDataFormComponent,
     canActivate: [AuthGuard],
   },
   {
@@ -141,21 +223,16 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/policies/policies.module').then((m) => m.PoliciesModule),
   },
   {
-    path: 'newsletters/:main_newsletter_id',
-    component: MainNewsletterComponent,
-  },
-  {
-    path: 'newsletters',
-    loadChildren: () =>
-      import('./feature-modules/public-newsletters/public-newsletters.module').then((m) => m.PublicNewslettersModule),
-  },
-  {
     path: 'blogs',
     loadChildren: () => import('./feature-modules/public-blogs/public-blogs.module').then((m) => m.PublicBlogsModule),
   },
   {
     path: 'search',
     loadChildren: () => import('./feature-modules/search/search.module').then((m) => m.SearchModule),
+  },
+  {
+    path: 'exa-drive',
+    loadChildren: () => import('./feature-modules/exa-drive/exa-drive.module').then((m) => m.ExaDriveModule),
   },
   {
     path: 'admin',
@@ -171,6 +248,13 @@ const routes: Routes = [
         path: 'newsletters',
         loadChildren: () =>
           import('./feature-modules/main-newsletters/main-newsletters.module').then((m) => m.MainNewslettersModule),
+      },
+      {
+        path: 'communities/:community_id/hackathon-dashboard',
+        loadChildren: () =>
+          import('./feature-modules/hackathon-control-panel/hackathon-control-panel.module').then(
+            (m) => m.HackathonControlPanelModule,
+          ),
       },
       {
         path: 'communities',
@@ -198,10 +282,7 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: 'public',
-    loadChildren: () => import('./feature-modules/public-pages/public-pages.module').then((m) => m.PublicPagesModule),
-  },
+  { path: 'account-menu', component: UserAccountMenuComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'error', component: LibErrorHandlerComponent },
   { path: '404', component: Error404PageComponent },
@@ -211,8 +292,6 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      // TODO: modify the below to use the new option
-      relativeLinkResolution: 'legacy',
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled',
       scrollOffset: [0, 68],

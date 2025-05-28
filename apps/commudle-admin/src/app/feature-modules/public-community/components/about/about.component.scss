@@ -9,11 +9,10 @@ p {
     @apply com-h-max com-mt-4 com-mx-0 com-mb-0;
 
     nb-card-body {
-      @apply com-p-4;
-      @apply md:com-py-10 md:com-px-8;
+      @apply com-p-4 md:com-p-6;
 
       .heading {
-        @apply com-m-0 com-text-2xl com-font-semibold com-mb-8;
+        @apply com-m-0 com-text-2xl com-font-semibold com-mb-8 com-text-Yankees-Blue;
       }
     }
   }
@@ -29,6 +28,50 @@ p {
           }
         }
       }
+    }
+  }
+}
+
+.title {
+  @apply com-text-2xl com-font-semibold com-text-Yankees-Blue md:com-mb-6 md:com-mt-0 com-mb-4 com-mt-0;
+}
+
+.event-horizontal-card {
+  @apply com-flex com-flex-col com-gap-4;
+}
+
+.main-column {
+  @apply lg:com-col-span-2;
+}
+
+app-loading-spinner {
+  @apply com-my-4;
+}
+
+.default-channel-container {
+  @apply com-border-primary-500 com-overflow-hidden;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+    .name-count {
+      @apply com-flex com-items-center com-gap-4;
+      .channel-name {
+        @apply com-font-semibold com-text-Auro-Metal-Saurus com-text-base;
+      }
+      .members-count {
+        @apply com-bg-Bright-Gray com-rounded-3xl com-px-3 com-py-1;
+      }
+    }
+  }
+  nb-card-body {
+    @apply com-p-0 #{!important};
+    .description-container {
+      @apply com-bg-blue-50 com-h-14 com-flex com-items-center com-px-4;
+      .description {
+        @apply com-line-clamp-1 com-text-Yankees-Blue;
+      }
+    }
+    commudle-channel-discussion {
+      @apply com-pb-1.5 com-h-500px com-bg-white;
     }
   }
 }

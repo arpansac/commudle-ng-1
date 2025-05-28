@@ -6,6 +6,7 @@ import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-my-community-builds',
@@ -16,6 +17,8 @@ export class MyCommunityBuildsComponent implements OnInit, OnDestroy {
   moment = moment;
   cBuilds: ICommunityBuild[] = [];
   incompleteProfile = false;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -30,7 +33,7 @@ export class MyCommunityBuildsComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
     this.getAllBuilds();
 
-    this.authWatchService.currentUser$.subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data && !data.profile_completed) {
         this.incompleteProfile = true;
       }
@@ -39,6 +42,8 @@ export class MyCommunityBuildsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getAllBuilds() {

@@ -18,7 +18,7 @@
       <div
         [innerHTML]="
           message.content
-            | linky: { sanitizeHtml: false, mention: 'twitter', replaceFn: highlightUserMentions }
+            | linky : { sanitizeHtml: false, mention: 'twitter', replaceFn: highlightUserMentions }
             | safeHtml
         "
         class="content"
@@ -31,7 +31,7 @@
           </a>
           <div *ngIf="!file.type.includes('image')" class="file-preview">
             <p class="name">
-              <small>{{ file.name | slice: 0:20 }}</small>
+              <small>{{ file.name | slice : 0 : 20 }}</small>
             </p>
             <p class="extension">
               <small>{{ file.name.split('.').reverse()[0] }}</small>

@@ -8,6 +8,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home-communities',
@@ -20,7 +21,7 @@ export class HomeCommunitiesComponent implements OnInit, OnDestroy {
 
   subscriptions = [];
   currentUser: ICurrentUser;
-
+  private destroy$ = new Subject<void>();
   @ViewChild('joinCommunityDialog') joinCommunityDialog: TemplateRef<any>;
   @ViewChild('leaveCommunityDialog') leaveCommunityDialog: TemplateRef<any>;
 
@@ -42,12 +43,18 @@ export class HomeCommunitiesComponent implements OnInit, OnDestroy {
     if (this.isBrowser) {
       this.getCommunities();
 
-      this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+      this.subscriptions.push(
+        this.authWatchService.currentUser$
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data) => (this.currentUser = data)),
+      );
     }
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getCommunities(): void {

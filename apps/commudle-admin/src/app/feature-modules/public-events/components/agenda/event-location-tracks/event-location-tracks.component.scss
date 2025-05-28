@@ -1,5 +1,16 @@
 .event-location-tracks {
-  max-width: 719px;
+  @apply com-mx-4;
+  .map-location {
+    .link-to-map {
+      @apply com-mt-10px com-mb-6 com-mx-0;
+      a {
+        @apply com-no-underline;
+      }
+    }
+    .address {
+      @apply com-mt-5 com-mb-0 com-mx-0;
+    }
+  }
 
   .track-container {
     nb-action {
@@ -12,54 +23,51 @@
     }
 
     nb-accordion-item-header {
-      padding: 0.5rem;
-      background-color: #ffaa00;
-      @apply com-border-0 com-rounded-xl;
+      @apply com-border-0 com-rounded-[4px] com-p-2 com-bg-zinc-100;
 
       .track-name {
-        display: inline-block;
-        margin: 0;
-        font-size: 1.1rem;
+        @apply com-text-base com-font-semibold com-m-0 com-text-tYankees-Blue;
+      }
+      ::ng-deep {
+        nb-icon {
+          @apply com-text-tblack;
+        }
       }
     }
 
     nb-accordion-item-body {
       padding: 0;
-      @apply com-border com-border-t-0 com-border-solid com-border-gray-100;
 
       nb-list {
         nb-list-item {
-          display: flex;
+          @apply com-flex com-px-0 com-py-3 com-border-0 com-border-b com-border-Bright-Gray;
 
           .session-time {
-            width: 60px;
-            padding-right: 1rem;
-            border-right: 3px solid lightgrey;
+            @apply com-items-center com-pr-1 md:com-pr-2 md:com-flex com-gap-2 md:com-w-[108px] com-pt-px;
+
+            fa-icon {
+              @apply com-text-xs;
+            }
 
             p {
               margin: 0;
               text-align: right;
             }
 
-            p:nth-of-type(1) {
-              font-size: 1.2rem;
+            .start-time {
+              @apply com-text-base md:com-text-sm;
             }
-
-            p:nth-of-type(2) {
-              margin-top: 0.2rem;
-              font-size: 0.9rem;
+            .end-time {
+              @apply com-text-xs md:com-text-sm;
             }
           }
 
           .session-details {
-            width: 80%;
-            padding-left: 0.5rem;
+            @apply com-pl-3 com-w-[78%] com-border-0 com-border-l-2 com-border-solid com-border-Bright-Gray;
 
             .session-title {
               p:nth-of-type(1) {
-                font-size: 1.2rem;
-                font-weight: normal;
-                margin: 0 0 0.3rem;
+                @apply com-text-base com-font-normal com-text-Yankees-Blue com-m-0;
               }
 
               app-badge {
@@ -67,65 +75,20 @@
                 margin-bottom: 0.3rem;
               }
             }
+
+            .session-speaker {
+              @apply com-flex com-gap-3 com-flex-wrap;
+              div {
+                @apply com-m-0 com-mt-1;
+              }
+            }
           }
         }
       }
     }
-
-    // @media all and (max-width: 767px) {
-    //   .track-name {
-    //     font-size: 1.1rem;
-    //   }
-    // }
-
-    // .session-time {
-    //   p {
-    //     margin: 0;
-    //     text-align: right;
-    //   }
-
-    //   p:nth-of-type(1) {
-    //     font-size: 1.2rem;
-    //   }
-
-    //   p:nth-of-type(2) {
-    //     margin-top: 0.2rem;
-    //     font-size: 0.9rem;
-    //   }
-
-    //   @media all and (max-width: 767px) {
-    //     p:nth-of-type(1) {
-    //       font-size: 1rem;
-    //     }
-
-    //     p:nth-of-type(2) {
-    //       font-size: 0.8rem;
-    //     }
-    //   }
-    // }
-
-    // .session-title {
-    //   min-width: max-content;
-
-    //   p:nth-of-type(1) {
-    //     font-size: 1.2rem;
-    //     font-weight: normal;
-    //     width: 500px;
-    //     margin: 0 0 0.3rem;
-    //   }
-
-    //   app-badge {
-    //     margin-right: 0.3rem;
-    //     margin-bottom: 0.3rem;
-    //   }
-    // }
-
-    // @media all and (max-width: 767px) {
-    //   .session-title {
-    //     p:nth-of-type(1) {
-    //       font-size: 1rem;
-    //     }
-    //   }
-    // }
   }
+}
+
+.tags {
+  @apply com-flex com-m-0 com-mt-2;
 }

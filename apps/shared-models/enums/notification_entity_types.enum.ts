@@ -3,4 +3,6 @@ export enum ENotificationEntityTypes {
   COMMUNITY_BUILD = 'CommunityBuild',
   USER_MESSAGE = 'UserMessage',
   KOMMUNITY = 'kommunity',
+  COMMUNITY_CHANNEL = 'CommunityChannel',
+  HACKATHON = 'Hackathon',
 }

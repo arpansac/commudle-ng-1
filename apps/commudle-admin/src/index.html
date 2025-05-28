@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- To detect bots -->
+    <script>
+      const isBot = false;
+    </script>
     <!-- Google Tag Manager -->
     <script>
       const host = window.location.hostname;
@@ -25,7 +29,6 @@
         })(window, document, 'script', 'dataLayer', 'GTM-KD65MLP');
       }
     </script>
-
     <!-- End Google Tag Manager -->
     <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control" />
     <meta content="no-cache" http-equiv="Pragma" />
@@ -33,7 +36,7 @@
     <meta charset="utf-8" />
     <title>Commudle - Connect & Learn With Software Developers</title>
     <base href="/" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="https://commudle.com/assets/images/commudle-logo192.png" name="og:image" />
     <meta content="https://commudle.com/assets/images/commudle-logo192.png" name="og:image:secure_url" />
     <meta content="@commudlers" name="twitter:site" />
@@ -47,6 +50,10 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANzmAUzVp_QMcmw37Oi5KEqzPycmFT2lw&libraries=places"
+    ></script>
   </head>
   <body>
     <commudle-root></commudle-root>
@@ -59,6 +66,9 @@
         width="0"
       ></iframe>
     </noscript>
+    <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script defer src="https://www.youtube.com/iframe_api"></script>
+    <script defer src="https://js.stripe.com/v3/"></script>
+    <script defer src="https://www.gstatic.com/charts/loader.js"></script>
   </body>
 </html>

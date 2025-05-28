@@ -1,0 +1,17 @@
+<div class="user {{ size }}">
+  <div class="profile-picture {{ size }}">
+    <img alt="{{ user.name }}" src="{{ user.photo.i64 }}" title="{{ user.name }}" />
+  </div>
+  <div class="profile-info">
+    <p class="name {{ size }} d-flex">
+      <a [routerLink]="['/users', user.username]" target="_blank" [ngClass]="{ 'disable-anchor': disableAnchor }"
+        ><strong>{{ user.name }}</strong></a
+      >
+      <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
+    </p>
+    <p *ngIf="designation" class="designation {{ size }}">
+      {{ user.designation | slice : 0 : 50 }}
+      <span *ngIf="user.designation?.length > 25">...</span>
+    </p>
+  </div>
+</div>

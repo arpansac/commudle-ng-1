@@ -13,33 +13,19 @@ p {
 }
 
 .user-profile-medium {
-  background-color: $white;
-
   .avatar {
-    @apply com-h-8 com-w-8;
-    @apply com-rounded-full com-object-cover com-object-center;
-    @apply com-mr-2;
+    @apply com-h-7 com-w-7 com-rounded-full com-object-cover com-object-center com-mr-1 com-bg-tWhite;
   }
 
   .details {
     color: $black;
 
     .name {
-      font-size: $fs-h6;
-      line-height: 14px;
-      @apply com-text-black;
-
-      img {
-        height: 10px;
-        margin-left: $space-4;
-        width: 10px;
-      }
+      @apply com-text-xs com-font-medium com-text-Dark-Jungle-Green;
     }
 
     .designation {
-      font-size: $fs-h7;
-      font-weight: $fw-600;
-      line-height: 12px;
+      @apply com-text-10px com-font-normal com-text-Auro-Metal-Saurus;
     }
   }
 }

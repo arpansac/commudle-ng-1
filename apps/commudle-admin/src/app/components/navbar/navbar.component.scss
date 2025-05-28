@@ -3,18 +3,64 @@
 }
 
 .home-navbar {
-  @apply com-w-full com-grid com-grid-cols-4 md:com-grid-cols-3 com-items-center com-gap-2;
+  @apply com-w-full com-grid com-grid-cols-5 md:com-grid-cols-3 com-items-center com-gap-2;
 
-  div > button {
+  .profile {
     @apply com-p-2 com-h-10;
   }
 }
 
 .home-sidebar {
-  @apply com-w-12 com-h-12 com-flex com-justify-end com-items-center com-cursor-pointer;
+  @apply com-w-11 com-h-12 com-flex com-justify-end com-items-center com-cursor-pointer;
 
   fa-icon,
   nb-icon {
-    @apply com-text-xl;
+    @apply com-text-Yankees-Blue com-text-xl;
+  }
+}
+
+.logged-out-search {
+  @apply com-col-span-4 com-flex com-justify-center com-items-center com-justify-self-end com-text-Yankees-Blue com-cursor-pointer;
+
+  fa-icon {
+    @apply com-text-xl com-w-6;
+  }
+}
+
+.user-login {
+  @apply com-flex com-justify-self-end com-gap-4 com-items-center;
+}
+
+.toggle-dark-mode {
+  @apply com-cursor-pointer;
+
+  .toggle-btn-moon {
+    @apply com-bg-gray-200 com-rounded-full com-w-9 com-h-9 com-flex com-justify-center com-items-center #{!important};
+
+    fa-icon {
+      @apply com-text-xl;
+    }
+    img {
+      @apply com-w-full;
+    }
+  }
+
+  .toggle-btn-sun {
+    @apply com-bg-gray-200 com-rounded-full com-w-9 com-h-9 com-flex com-justify-center com-items-center #{!important};
+
+    fa-icon {
+      @apply com-text-xl;
+    }
+    img {
+      @apply com-w-5 com-h-5;
+    }
+  }
+}
+
+.profile-container {
+  @apply com-flex;
+
+  .user-profile-image {
+    @apply com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite com-cursor-pointer;
   }
 }

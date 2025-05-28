@@ -1,56 +1,178 @@
-.blog {
-  @apply com-pb-8;
-  button {
-    @apply com-mt-3 com-mb-5;
+.blog-container {
+  @apply com-bg-white com-pb-10 md:com-px-0 com-px-4;
+
+  .content {
+    ::ng-deep {
+      p {
+        font-size: initial;
+        color: initial;
+      }
+      a {
+        color: blue !important;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: unset !important;
+      }
+      img {
+        @apply com-max-w-full com-rounded-2xl com-my-3;
+      }
+    }
   }
+
+  .two-column-layout {
+    @apply com-pt-10 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .main-column {
+    .blog {
+      @apply com-pb-8 md:com-pr-[30px] com-pr-0;
+
+      .header {
+        @apply com-flex com-flex-col md:com-items-start com-items-center;
+
+        .date {
+          @apply com-flex com-flex-row com-items-center com-text-xs com-font-semibold com-text-gray-500 com-m-0 com-mb-3;
+
+          fa-icon {
+            @apply com-mr-2 com-text-lg;
+          }
+        }
+
+        .blog-title {
+          @apply md:com-text-[32px] md:com-leading-10 com-leading-8 com-text-xl md:com-font-bold com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-6 com-mb-3 md:com-text-left com-text-center;
+        }
+      }
+
+      .image-content {
+        @apply com-flex com-flex-col;
+
+        .image {
+          @apply com-mb-3;
+
+          img {
+            @apply com-w-full com-h-full com-rounded-lg;
+          }
+        }
+
+        article {
+          div {
+            ::ng-deep {
+              p {
+                @apply com-text-black #{!important};
+                strong {
+                  @apply com-text-black #{!important};
+                }
+              }
+
+              h1,
+              h2,
+              h3,
+              h4,
+              h5,
+              h6,
+              span {
+                @apply com-text-gray-700 #{!important};
+                strong {
+                  @apply com-text-gray-700 #{!important};
+                }
+              }
+              ol {
+                li {
+                  strong {
+                    @apply com-text-gray-700 #{!important};
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .similar-blogs {
+    @apply com-flex com-flex-col com-pb-8;
+    .similar-blogs-heading {
+      @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-my-8;
+    }
+    .similar-blogs-list {
+      @apply com-grid md:com-grid-cols-3 com-grid-cols-1 md:com-gap-5 com-gap-10;
+    }
+  }
+
+  app-loading-spinner {
+    @apply com-flex com-justify-center com-mt-28;
+  }
+
+  .user-profile-large {
+    @apply com-flex md:com-flex-row com-flex-col md:com-justify-between com-justify-center com-items-center md:com-items-end com-mb-5;
+
+    .action-buttons {
+      @apply com-flex com-flex-row com-gap-4 md:com-mt-0 com-mt-4;
+      .rss-button {
+        fa-icon {
+          @apply com-text-[32px] com-text-orange-500 com-rounded-lg;
+        }
+      }
+    }
+  }
+
+  .back-btn {
+    @apply com-w-max com-p-0;
+  }
+
+  .right-column {
+    .latest-blog {
+      @apply com-bg-gray-50 com-p-3 com-m-0 com-border-0;
+      .heading {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-pb-4;
+      }
+
+      .latest-blog-cards {
+        @apply com-flex com-flex-col com-gap-3;
+        .latest-blog-card {
+          @apply com-p-4 com-m-0 com-border-0;
+          .blog-card {
+            @apply com-bg-white com-p-0;
+
+            .latest-blog-title {
+              @apply com-flex com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-pb-3 com-line-clamp-2;
+            }
+            .published-on {
+              @apply com-text-xs com-font-medium com-text-gray-500 com-m-0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+a {
+  @apply com-no-underline;
+}
+
+.blog-faq {
+  @apply com-mt-5 com-mb-0 com-mx-0;
 
   nb-card-body {
-    .profile {
-      @apply com-pb-7 com-cursor-pointer;
-    }
-  }
-}
+    @apply com-p-4;
 
-.content {
-  ::ng-deep {
-    p {
-      font-size: initial;
-      color: initial;
+    h2 {
+      @apply com-m-0;
     }
-    a {
-      color: blue !important;
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: unset !important;
-    }
-    img {
-      @apply com-max-w-full;
-    }
-  }
-}
 
-app-loading-spinner {
-  @apply com-flex com-justify-center com-mt-28;
-}
-
-app-share-button {
-  ::ng-deep {
-    button {
-      @apply com-rounded-lg com-text-base #{!important};
+    ul {
+      @apply com-list-none com-pl-0 com-my-5;
     }
-  }
-}
-.action-buttons {
-  @apply com-flex com-mt-2 md:com-mt-0;
-  .rss-button {
-    @apply com-ml-4;
-    fa-icon {
-      @apply com-text-[32px] com-text-Azure com-rounded-lg;
+
+    .question {
+      @apply com-text-xl com-font-bold com-pb-2;
     }
   }
 }

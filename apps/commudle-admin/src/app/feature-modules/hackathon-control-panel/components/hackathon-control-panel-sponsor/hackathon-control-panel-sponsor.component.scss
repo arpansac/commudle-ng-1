@@ -1,0 +1,33 @@
+.sponsors-container {
+  nb-card-body {
+    .sponsors-cards-container {
+      h6 {
+        @apply com-mb-0 com-mt-2;
+      }
+      .sponsors-cards {
+        @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-5;
+      }
+    }
+  }
+}
+
+.sponsor-form-dialog-box {
+  @apply com-w-500px com-max-h-[90dvh];
+  form {
+    @apply com-flex com-flex-col com-gap-3;
+    .select {
+      @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+      select {
+        @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+      }
+    }
+  }
+}
+
+.actions {
+  @apply com-flex com-justify-between;
+}
+
+nb-card-header {
+  @apply com-flex com-items-center;
+}

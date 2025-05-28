@@ -1,16 +1,60 @@
-<div class="base-layout com-my-5">
+<div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
-      <div class="com-flex com-justify-center com-gap-4">
-        <button [routerLink]="['/admin/orgs/create']" nbButton status="primary">
-          <nb-icon icon="plus"></nb-icon>
-          Create Community Group
-        </button>
+      <h2 class="com-text-center com-mb-4">System Administration</h2>
+      <div class="admin-controls-grid">
+        <!-- Community Management -->
+        <nb-card>
+          <nb-card-header>
+            <h3>Community Management</h3>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="control-buttons">
+              <button [routerLink]="['/admin/communities/new']" nbButton status="primary" fullWidth>
+                <nb-icon icon="globe-outline"></nb-icon>
+                Create Community
+              </button>
+              <button [routerLink]="['/admin/orgs/create']" nbButton status="primary" fullWidth>
+                <nb-icon icon="people-outline"></nb-icon>
+                Create Community Group
+              </button>
+            </div>
+          </nb-card-body>
+        </nb-card>
 
-        <button [routerLink]="['/admin/communities/new']" nbButton status="primary">
-          <nb-icon icon="plus"></nb-icon>
-          Create Community
-        </button>
+        <!-- Content Management -->
+        <nb-card>
+          <nb-card-header>
+            <h3>Content Management</h3>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="control-buttons">
+              <button [routerLink]="['profanity']" nbButton status="primary" fullWidth>
+                <nb-icon icon="shield-outline"></nb-icon>
+                Profanity Filter
+              </button>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <!-- Payment & Orders -->
+        <nb-card>
+          <nb-card-header>
+            <h3>Payment & Orders</h3>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="control-buttons">
+              <button [routerLink]="['discount-codes']" nbButton status="primary" fullWidth>
+                <nb-icon icon="pricetags-outline"></nb-icon>
+                Discount Codes
+              </button>
+              <button [routerLink]="['purchase-orders']" nbButton status="primary" fullWidth>
+                <nb-icon icon="shopping-cart-outline"></nb-icon>
+                Purchase Orders
+              </button>
+            </div>
+          </nb-card-body>
+        </nb-card>
       </div>
     </div>
   </div>

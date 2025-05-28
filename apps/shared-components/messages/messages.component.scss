@@ -1,10 +1,11 @@
 .messages-container {
   height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
 
   .no-messages {
     align-items: center;
     display: flex;
-    height: calc(100% - 40px);
     justify-content: center;
 
     p {
@@ -13,8 +14,7 @@
   }
 
   .send-message {
-    bottom: 0;
-    position: sticky;
+    @apply com-overflow-auto;
 
     emoji-mart {
       bottom: 40px;
@@ -26,13 +26,9 @@
         display: initial;
       }
     }
+  }
 
-    form {
-      nb-form-field {
-        .emoji-picker {
-          @apply com-p-2.5;
-        }
-      }
-    }
+  .discussion-closed {
+    @apply com-px-3 com-pb-2;
   }
 }

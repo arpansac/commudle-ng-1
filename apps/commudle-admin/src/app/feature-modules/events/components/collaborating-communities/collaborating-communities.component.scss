@@ -1,4 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
+.collaborations {
+  @apply com-mx-0 com-my-6;
+}
 
 .actions {
   a {
@@ -16,7 +19,9 @@
     height: 160px;
     border: 0.5px solid lightgrey;
     padding: 0.5rem;
+    @apply com-rounded-md;
     .logo {
+      @apply com-bg-tWhite;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -55,4 +60,20 @@
       }
     }
   }
+}
+
+.confirmation-dialog-box {
+  @apply md:com-w-[40dvw] com-w-full;
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-items-center com-justify-between;
+  }
+}
+
+.disabled {
+  @apply com-pointer-events-none com-opacity-50 com-cursor-not-allowed;
+}
+
+.rejected {
+  @apply com-uppercase com-text-red-500 com-mt-2;
 }

@@ -1,0 +1,31 @@
+<nb-card>
+  <nb-card-header>
+    {{ round.name }}
+  </nb-card-header>
+  <nb-card-body>
+    <div class="date">{{ moment(round.date).format('DD MMM YYYY') }}</div>
+    <div class="description">{{ round.description }}</div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton ghost status="primary" (click)="editRound(round)">Edit</button>
+    <button nbButton ghost status="danger" (click)="destroyRound(round.id)">Delete</button>
+    <button nbButton ghost status="info" (click)="createChannel()" *ngIf="!round.channel_id">
+      <fa-icon [icon]="icons.faHashtag"></fa-icon>
+      &nbsp; Create Channel
+    </button>
+    <a
+      *ngIf="round.channel_id"
+      [routerLink]="[
+        '/admin',
+        'communities',
+        communitySlug,
+        'hackathon-dashboard',
+        hackathonSlug,
+        'channels',
+        round.channel_id
+      ]"
+    >
+      <button nbButton ghost status="info"><fa-icon [icon]="icons.faHashtag"></fa-icon>&nbsp; Go To Channel</button>
+    </a>
+  </nb-card-footer>
+</nb-card>

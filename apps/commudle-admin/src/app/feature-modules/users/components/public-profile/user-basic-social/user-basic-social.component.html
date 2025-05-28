@@ -1,7 +1,8 @@
 <nb-card class="user-basic-social-container" id="about">
   <nb-card-header>
-    <fa-icon [icon]="faExclamationCircle" class="com-text-primary-500"></fa-icon>
-    About
+    <a [routerLink]="'.'" fragment="about"
+      ><fa-icon [icon]="faExclamationCircle" class="com-text-primary-500"></fa-icon>About</a
+    >
   </nb-card-header>
   <nb-card-body>
     <div *ngIf="user.about_me" class="about">
@@ -44,6 +45,9 @@
       </a>
       <a *ngIf="isValid(user.facebook)" href="{{ user.facebook | completeurl : 'facebook' }}" target="_blank">
         <nb-icon icon="facebook" status="primary"></nb-icon>
+      </a>
+      <a *ngIf="isValid(user.instagram)" href="{{ user.instagram | completeurl : 'instagram' }}" target="_blank">
+        <fa-icon [icon]="faInstagram"></fa-icon>
       </a>
     </div>
   </nb-card-body>

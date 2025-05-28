@@ -1,18 +1,22 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { CommunityChannelManagerService } from '../../services/community-channel-manager.service';
-import { CommunityChannelsService } from '../../services/community-channels.service';
+import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/community-channels/model/discussion-type.enum';
+import { Subscription } from 'rxjs';
+import { CommunityChannelManagerService, CommunityChannelsService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-channel-form',
+  selector: 'commudle-community-channel-form',
   templateUrl: './community-channel-form.component.html',
   styleUrls: ['./community-channel-form.component.scss'],
 })
 export class CommunityChannelFormComponent implements OnInit {
   @Input() existingChannel: ICommunityChannel;
   @Input() presetGroupName;
+  @Input() discussionType: string;
+  EDiscussionType = EDiscussionType;
 
   @Output() saved = new EventEmitter();
 
@@ -22,10 +26,10 @@ export class CommunityChannelFormComponent implements OnInit {
   // community channel form
   communityChannelForm;
 
-  subscriptions = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
-    private communityChannelManagerService: CommunityChannelManagerService,
+    private cmService: CommunityChannelManagerService,
     private communityChannelsService: CommunityChannelsService,
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
@@ -34,9 +38,11 @@ export class CommunityChannelFormComponent implements OnInit {
       logo: [''],
       name: ['', Validators.required],
       description: ['', Validators.required],
-      group_name: [''],
+      group_name: ['General', this.discussionType === 'forum' ? Validators.required : ''],
       is_private: [false, Validators.required],
       is_readonly: [false, Validators.required],
+      display_type: [this.discussionType],
+      default: [false],
     });
   }
 
@@ -44,6 +50,11 @@ export class CommunityChannelFormComponent implements OnInit {
     if (this.presetGroupName) {
       this.communityChannelForm.patchValue({
         group_name: this.presetGroupName,
+      });
+    }
+    if (this.discussionType) {
+      this.communityChannelForm.patchValue({
+        display_type: this.discussionType,
       });
     }
 
@@ -54,6 +65,7 @@ export class CommunityChannelFormComponent implements OnInit {
         group_name: this.existingChannel.group_name,
         is_private: this.existingChannel.is_private,
         is_readonly: this.existingChannel.is_readonly,
+        default: this.existingChannel.default,
       });
     }
   }
@@ -75,10 +87,26 @@ export class CommunityChannelFormComponent implements OnInit {
     if (this.existingChannel) {
       this.updateChannel(formData);
     } else {
-      this.communityChannelManagerService.createChannel(formData);
+      if (this.discussionType === EDiscussionType.FORUM) {
+        this.createForum(formData);
+      } else if (this.discussionType === EDiscussionType.CHANNEL) {
+        this.createChannel(formData);
+      }
     }
+  }
 
-    this.saved.emit();
+  async createChannel(formData) {
+    const isCreated = await this.cmService.createChannel(formData);
+    if (isCreated) {
+      this.saved.emit(); //help to close the popup
+    }
+  }
+
+  async createForum(formData) {
+    const isCreated = await this.cmService.createChannel(formData);
+    if (isCreated) {
+      this.saved.emit(); //help to close the popup
+    }
   }
 
   displaySelectedLogo(event: any) {
@@ -104,20 +132,24 @@ export class CommunityChannelFormComponent implements OnInit {
 
     // if we are editing the community channel here, then send a request to the server to remove the logo
     if (this.existingChannel && this.existingChannel.logo) {
-      this.communityChannelsService.deleteLogo(this.existingChannel.id).subscribe((data) => {
+      this.communityChannelsService.deleteChannelForumLogo(this.existingChannel.id).subscribe((data) => {
         if (data) {
           this.existingChannel.logo = null;
-          this.communityChannelManagerService.findAndUpdateChannel(this.existingChannel);
+          this.cmService.findAndUpdateChannel(this.existingChannel);
         }
       });
     }
   }
 
   updateChannel(formData) {
-    this.communityChannelsService.update(this.existingChannel.id, formData).subscribe((data) => {
-      this.existingChannel = data;
-      this.communityChannelManagerService.findAndUpdateChannel(data);
-      this.toastLogService.successDialog('Updated', 3000);
+    this.communityChannelsService.updateChannelForum(this.existingChannel.id, formData).subscribe((data) => {
+      if (data) {
+        this.existingChannel = data;
+        this.cmService.findAndUpdateChannel(data);
+        this.cmService.updateChannel(data);
+        this.toastLogService.successDialog('Updated');
+        this.saved.emit(); //help to close the popup
+      }
     });
   }
 }

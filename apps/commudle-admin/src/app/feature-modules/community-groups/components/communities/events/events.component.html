@@ -1,8 +1,5 @@
-<div *ngIf="isLoading" class="com-mt-3">
-  <app-loading-spinner></app-loading-spinner>
-</div>
-<div class="com-my-4" style="overflow-x: auto" *ngIf="!isLoading">
-  <table>
+<div class="com-my-4" style="overflow-x: auto">
+  <table *ngIf="events && events.length > 0">
     <thead>
       <tr class="heading">
         <th class="com-w-[350px]">Basic Details</th>
@@ -15,10 +12,14 @@
     <tbody>
       <tr *ngFor="let event of events">
         <td valign="top">
+          <app-community-badge [community]="event.kommunity" size="small"></app-community-badge>
           <a [routerLink]="['/communities', event.kommunity_id, 'events', event.slug]" target="_blank">
             {{ event.name }}
             <nb-icon icon="external-link"></nb-icon>
           </a>
+          <p class="time" *ngIf="event.start_time">
+            {{ moment(event.start_time).format('MMM Do, YYYY') }} - {{ moment(event.end_time).format('MMM Do, YYYY') }}
+          </p>
         </td>
         <td valign="top">{{ event.registrations_count }}</td>
         <td valign="top">{{ event.attended_members_count }}</td>
@@ -64,4 +65,18 @@
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="isLoading" class="loading">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+  <br />
+  <app-pagination
+    (goTo)="page = $event; getEvents()"
+    (next)="page = $event; getEvents()"
+    (previous)="page = $event; getEvents()"
+    *ngIf="total > 0"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
 </div>

@@ -5,11 +5,13 @@ import { EmailConfirmationsRoutingModule } from './email-confirmations-routing.m
 import { RsvpComponent } from './components/rsvp/rsvp.component';
 import { CollaborationCommunityComponent } from './components/collaboration-community/collaboration-community.component';
 import { UserRoleConfirmationComponent } from './components/user-role-confirmation/user-role-confirmation.component';
-import { NbIconModule, NbCardModule, NbSpinnerModule, NbToggleModule } from '@commudle/theme';
+import { NbIconModule, NbCardModule, NbSpinnerModule, NbToggleModule, NbButtonModule } from '@commudle/theme';
 import { EmailUnsubscribeComponent } from './components/email-unsubscribe/email-unsubscribe.component';
 import { FormsModule } from '@angular/forms';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { HackathonJudgeConfirmationComponent } from './components/hackathon-judge-confirmation/hackathon-judge-confirmation.component';
+import { HackathonTeamConfirmationComponent } from './components/hackathon-team-confirmation/hackathon-team-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
     CollaborationCommunityComponent,
     UserRoleConfirmationComponent,
     EmailUnsubscribeComponent,
+    HackathonJudgeConfirmationComponent,
+    HackathonTeamConfirmationComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +34,7 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
     NbCardModule,
     NbSpinnerModule,
     NbToggleModule,
+    NbButtonModule,
   ],
 })
 export class EmailConfirmationsModule {}

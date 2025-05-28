@@ -4,66 +4,58 @@ p {
   margin: 0;
 }
 
+a {
+  @apply md:com-w-auto com-w-full;
+}
+
 .user-social-card {
-  border: 1px solid $platinum;
-  border-radius: $border-5;
-  margin: $space-12 0;
+  @apply com-m-0 com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
 
   nb-card-body {
-    flex-direction: row;
-    padding: $space-16;
-    width: 100%;
+    @apply com-flex com-flex-row com-p-4 com-w-full;
 
     .user-social-card-image {
-      height: 120px;
-      overflow: hidden;
-      text-decoration: none;
-      width: 250px;
+      @apply md:com-w-[196px] md:com-h-[124px] com-h-[142px] com-w-full com-flex com-justify-center com-items-center;
 
       img {
-        width: 100%;
+        @apply com-w-full;
       }
     }
 
     .user-social-card-details {
-      margin-left: $space-16;
-      text-decoration: none;
-      width: 100%;
+      @apply com-flex com-flex-col com-ml-4 com-no-underline com-w-full;
 
       .user-social-card-tags {
-        flex-wrap: wrap;
-        gap: $space-4;
-        margin-bottom: $space-12;
+        @apply com-flex com-flex-wrap com-gap-1;
 
         .user-social-card-tag {
-          background-color: $lavender;
-          border-radius: $border-20;
-          color: $neon-blue;
-          font-size: $fs-h6;
-          padding: 0 $space-8;
+          @apply com-bg-blue-50 com-rounded-3xl com-text-Azure com-text-xs com-font-medium com-px-3 com-py-1;
         }
       }
 
+      .tags-favicon {
+        @apply com-flex com-justify-between com-mb-4;
+      }
+
       .user-social-card-title {
-        color: $gunmetal;
-        font-size: $fs-h4;
-        font-weight: $fw-600;
-        line-height: 19px;
+        @apply com-text-Yankees-Blue com-text-base com-font-medium com-mb-2;
       }
 
       .user-social-card-description {
-        color: $spanish-gray;
-        font-size: $fs-h6;
-        font-style: italic;
-        line-height: 14px;
-        margin-top: $space-4;
+        @apply com-text-sm com-font-normal com-text-gray-500;
       }
 
       .user-social-card-favicon {
-        border-radius: 50%;
-        margin-top: $space-12;
-        max-width: 20px;
+        @apply com-bg-tWhite com-ml-5 com-rounded-full com-max-w-5 com-max-h-5 com-flex-shrink-0;
       }
+    }
+
+    .content {
+      @apply com-flex com-flex-col;
+    }
+
+    .content-button {
+      @apply com-flex com-flex-row;
     }
 
     .user-social-card-delete {
@@ -82,7 +74,6 @@ p {
 
       .user-social-card-image {
         margin-bottom: $space-16;
-        width: 100%;
       }
 
       .user-social-card-details {

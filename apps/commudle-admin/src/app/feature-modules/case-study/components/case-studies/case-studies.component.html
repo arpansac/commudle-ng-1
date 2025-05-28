@@ -1,0 +1,20 @@
+<div class="case-studies">
+  <commudle-case-studies-header></commudle-case-studies-header>
+  <div class="base-layout">
+    <div class="container">
+      <div class="case-studies-heading">
+        <h1>Case Studies - Successful Developer Programs</h1>
+        <h2>
+          Commudle helps you achieve your DevRel goals with amplified reach & engagements and a seamless interface.
+          Explore how different businesses and leaders have used Commudle to drive successful Developer Programs.
+        </h2>
+      </div>
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      <div class="case-studies-cards">
+        <div *ngFor="let caseStudy of caseStudies">
+          <commudle-case-study-card [caseStudy]="caseStudy"></commudle-case-study-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

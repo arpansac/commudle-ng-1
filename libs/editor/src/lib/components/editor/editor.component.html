@@ -1,0 +1,30 @@
+<div class="commudle-editor">
+  <button *ngIf="editable" [tp]="emojiTemplate" class="emoji-button" nbButton tpVariation="popper">
+    <p>😃</p>
+    <!-- <nb-icon icon="smiling-face-outline"></nb-icon> -->
+  </button>
+  <button *ngIf="addAttachment && editable" class="image-button" nbButton (click)="fileInput.click()">
+    <p>📎</p>
+  </button>
+  <commudle-editor-menu *ngIf="showMenu && editable" [editor]="editor"></commudle-editor-menu>
+  <tiptap [editor]="editor" [ngClass]="{ editable: editable, 'two-line-clamp': twoLineClamp }"></tiptap>
+
+  <button
+    (click)="onClick()"
+    *ngIf="editable"
+    [disabled]="!isValid"
+    class="submit-button"
+    nbButton
+    [status]="status"
+    [appearance]="appearance"
+  >
+    <nb-icon icon="paper-plane"></nb-icon>
+  </button>
+</div>
+
+<ng-template #emojiTemplate>
+  <!-- TODO: Replace emoji mart with inbuilt emoji picker -->
+  <emoji-mart (emojiSelect)="onEmojiSelect($event)" set="twitter" title="Select an emoji!"></emoji-mart>
+</ng-template>
+
+<input #fileInput type="file" style="display: none" multiple (change)="uploadAttachment($event)" />

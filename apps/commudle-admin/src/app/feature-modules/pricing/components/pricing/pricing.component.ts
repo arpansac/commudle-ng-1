@@ -1,143 +1,336 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
+import { ECmsType } from 'apps/shared-models/enums/cms.enum';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { countries_details, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
+import * as momentTimezone from 'moment-timezone';
+import { IFaq, IProductPrice } from '@commudle/shared-models';
+import { NbDialogService } from '@commudle/theme';
 @Component({
-  selector: 'app-pricing',
+  selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss'],
 })
 export class PricingComponent implements OnInit, OnDestroy {
-  logoCloud: { image: string; name: string; slug: string }[] = [
+  @ViewChild('loadingTemplate') loadingTemplate: TemplateRef<any>;
+
+  staticAssets = staticAssets;
+  isMobileView = false;
+  isDarkMode = false;
+  enterprise: IPricing;
+  startup: IPricing;
+  devrel: IPricing;
+  isMonthly = false;
+  isAnnually = true;
+  faCircleCheck = faCircleCheck;
+  pricingFeatures: IPricingFeatures[] = [];
+  showAllFeatures = true;
+  faArrowDown = faArrowDown;
+  faCircleXmark = faCircleXmark;
+  ECmsType = ECmsType;
+  selectedCurrency = '';
+  countryForm: FormGroup;
+  countries = countries_details;
+  faqs: IFaq[] = [];
+  isFullPageLoading = false;
+
+  logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
-      name: 'GDG New Delhi',
-      slug: 'gdg-new-delhi',
+      name: 'Google Developer Groups',
+      slug: 'gdg',
+      description:
+        'GDG New Delhi, Noida, Cloud, Siliguri and many more communities from the Google Developers ecosystem.',
       image:
         'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbmNlIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1931d8ac25e32d52949f7069bfa3ceaf01db6524/gdg_new_delhi.png',
     },
     {
       name: 'Women Who Code Delhi',
-      slug: 'women-who-code-delhi',
+      slug: 'women who code',
+      description:
+        'WWC Delhi is the one of the largest and most active community of engineers for inspiring women in tech.',
       image:
         'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbmdlIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--0eea224f77b91c395fe673164ee631209119061b/women_who_code_delhi.jpg',
     },
     {
-      name: '#VoiceFirst India',
-      slug: 'voicefirst',
+      name: 'Microsoft Learn Student Ambassador',
+      slug: 'microsoft',
+      description: 'From Student Partner Communities to Ambassador and MVP communities, a flourishing ecosystem.',
       image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbmtlIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--91fa65611243731b0634dde7543ce281bc0efcc0/voice_first_india.png',
+        "https://json.commudle.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbTZ6IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4f526e73c5364dd74efad7dfba8608f1a0309395/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKZUFXa0NYZ0U2QzJ4dllXUmxjbnNHT2dsd1lXZGxNQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--1b54362eb80bd09837e5bde550bb5151f95283d3/Microsoft%20Learn%20Student%20Ambassadors'%20Chapter.png",
     },
     {
-      name: 'AWS User Group Punjab',
-      slug: 'aws-user-group-punjab',
+      name: 'Tensor Flow User Groups',
+      slug: 'tensorflow',
+      description: 'The most active machine learning communities in the world.',
       image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbm9lIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--eb88ade542fb4c46b4e706041a558052b04e4221/aws_user_group_punjab.png',
+        'https://json.commudle.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdEVPIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--19a346d2585fbd6fd86b2a193ede2a9be1d4c7b6/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKZUFXa0NYZ0U2QzJ4dllXUmxjbnNHT2dsd1lXZGxNQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--1b54362eb80bd09837e5bde550bb5151f95283d3/TF_FullColor_Stacked.png',
     },
     {
-      name: 'Aeologic - Building Innovators',
-      slug: 'aeologic-building-innovators',
+      name: 'Robotex India',
+      slug: 'robotex',
+      description: 'One of the largest robotics communities which is empowering students to build unique solutions',
       image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbnNlIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5bcee4c04c89e3a69bc3cf14341b272d746fd560/aeologic.png',
+        'https://json.commudle.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNU0yQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bc2e10c5f6c0d0601d382add9cae31c7258fc941/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKZUFXa0NYZ0U2QzJ4dllXUmxjbnNHT2dsd1lXZGxNQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--1b54362eb80bd09837e5bde550bb5151f95283d3/Robotex_India.png',
     },
     {
-      name: 'CodeChef SRM Chennai',
-      slug: 'codechef-srm-chennai',
+      name: 'IEEE',
+      slug: 'ieee',
+      description: 'The largest communities of engineers across the world.',
       image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbndlIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d397a7bbae81d16d5da6e8a7574573d7ad90602b/codechef_srm_chennai.png',
-    },
-    {
-      name: 'Code Warriors',
-      slug: 'code-warriors',
-      image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZ1VmIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--cabf8b38a9a79bb33d3163c4f9cda70a85e19e47/code_warriors.png',
-    },
-    {
-      name: 'CDN Commudle Developer Network',
-      slug: 'cdn-commudle-developer-network',
-      image:
-        'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZ1lmIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d1aab5e1bd61349d5582ec309b13ea60f75dbfa3/cdn_commudle_developer_network.png',
+        'https://json.commudle.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaE8vIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--05e1517a8137079260ec3f02571686337815a16e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKZUFXa0NYZ0U2QzJ4dllXUmxjbnNHT2dsd1lXZGxNQT09IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--1b54362eb80bd09837e5bde550bb5151f95283d3/IEEE%20JHSB%20logo%20colored.png',
     },
   ];
+
+  answers = [];
 
   constructor(
     private seoService: SeoService,
     private gtm: GoogleTagManagerService,
     private footerService: FooterService,
-  ) {}
-
-  ngOnInit(): void {
-    this.footerService.changeFooterStatus(true);
-    this.seoService.setTags(
-      'Pricing: Students, DevRels, Startups',
-      'Host all your developer community activities from events, member profiles, 1:1 communications, forums, channels and more, all at one place on Commudle',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
-    this.setSchema();
+    private darkModeService: DarkModeService,
+    private cmsService: CmsService,
+    private fb: FormBuilder,
+    private productPriceService: ProductPriceService,
+    private nbDialogService: NbDialogService,
+  ) {
+    const userTimeZone = momentTimezone.tz.guess();
+    if (userTimeZone === 'Asia/Calcutta') {
+      this.selectedCurrency = this.countries[0].currency;
+    } else {
+      this.selectedCurrency = this.countries[1].currency;
+    }
+    this.countryForm = this.fb.group({
+      currency: [this.selectedCurrency, Validators.required],
+    });
   }
 
-  setSchema() {
-    this.seoService.setSchema({
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question',
-          name: 'Do I need to purchase any other platform when I setup a Community on Commudle?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "We don't think so, the Developer Communities on Commudle are able to manage all their activities here.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How many Communities can I host on Commudle?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "You can host your complete Developer Ecosystem with 100's of Communities on Commudle. We have an organization page too. You have access to all the data and stats you need.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: "I'm looking to build a career in DevRel, how can Commudle be useful in that?",
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: " As a DevRel, it's important to have an experience of building and growing your own Developer Community. Some folks are at leading DevRel positions who started by building their own Community here.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'I want to display activities from Commudle on my website, is it possible?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "Yes! From Startup plan and upwards you get access to our API's which can be used to display summary of your communities' activities on your own web page.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Will you help me migrate from other platforms?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: "Yes! And it's very easy.",
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'I lead a Design Community, is Commudle for me?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Absolutely, a few Design Communities are already using Commudle.',
-          },
-        },
-      ],
+  ngOnInit(): void {
+    this.isMobileView = window.innerWidth <= 1024;
+    this.footerService.changeFooterStatus(true);
+    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
+      this.isDarkMode = isDarkMode;
     });
+    this.seoService.setTags(
+      'Pricing - Community Subscriptions on Commudle',
+      'Choose a pricing plan which is right for your developer community program. Plans include events, hackathons, newsletters, channels, forums etc. We also have a preferred partner network.',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+    this.getEnterpriseData();
+    this.getStartupData();
+    this.getDevrelData();
+    this.getPricingFeatures();
+    if (this.isMobileView) {
+      this.showAllFeatures = false;
+    }
+
+    this.setFaqs();
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
   }
 
-  gtmDatalayerPush(event) {
+  gtmDataLayerPush(event) {
     this.gtm.dataLayerPushEvent('click-pricing-plan', { com_plan_type: event });
+  }
+
+  getUseCaseCardsUrl() {
+    if (!this.isDarkMode) {
+      if (this.isMobileView) {
+        return "url('" + staticAssets.pricing_usecase_cards_mobile + "')";
+      } else {
+        return "url('" + staticAssets.pricing_usecase_cards_desktop + "')";
+      }
+    }
+  }
+
+  getCommunityLogoCardsUrl() {
+    if (!this.isDarkMode) {
+      if (this.isMobileView) {
+        return "url('" + staticAssets.pricing_community_logo_mobile + "')";
+      } else {
+        return "url('" + staticAssets.pricing_community_logo_desktop + "')";
+      }
+    }
+  }
+
+  private fetchPricingData(type: 'enterprise' | 'startup', slug: string): void {
+    this.cmsService.getDataBySlug(slug).subscribe((value) => {
+      this[type] = value;
+
+      [0, 1].forEach((index) => {
+        if (this[type].priceDetails[index]) {
+          this.productPriceService
+            .show(this[type].priceDetails[index].uuid)
+            .subscribe((productPrice: IProductPrice) => {
+              this[type].priceDetails[index].currencyType = productPrice.currency;
+              this[type].priceDetails[index].price = productPrice.original_price;
+              this[type].priceDetails[index].price_after_discount =
+                productPrice.final_price - productPrice.original_price ? productPrice.final_price : null;
+              this[type].priceDetails[index].discount_percentage = productPrice.discount_percentage;
+              this[type].priceDetails[index].uuid = productPrice.uuid;
+            });
+        }
+      });
+    });
+  }
+
+  getEnterpriseData(): void {
+    this.fetchPricingData('enterprise', 'pp-commudle-for-enterprises');
+  }
+
+  getStartupData(): void {
+    this.fetchPricingData('startup', 'pp-commudle-for-startups');
+  }
+
+  getDevrelData(): void {
+    this.cmsService.getDataBySlug('pp-commudle-for-devrel-agencies').subscribe((value) => {
+      this.devrel = value;
+    });
+  }
+
+  getPricingFeatures() {
+    const fields = 'name, order, features';
+    const order = 'order asc';
+    this.cmsService.getDataByTypeFieldOrder(ECmsType.PRICING_PLAN_FEATURES, fields, order).subscribe((value) => {
+      this.pricingFeatures = value;
+    });
+  }
+
+  toggleSubscription(value) {
+    this.isMonthly = value === 'monthly' ? true : false;
+    this.isAnnually = value === 'annually' ? true : false;
+  }
+
+  toggleShowAllFeatures() {
+    this.showAllFeatures = !this.showAllFeatures;
+  }
+
+  onCountryChange() {
+    this.selectedCurrency = this.countryForm.get('currency').value;
+  }
+
+  setSchema(planType) {
+    const priceDetails = this.isMonthly ? planType.priceDetails[1] : planType.priceDetails[0];
+
+    const selectedPriceDetail = priceDetails.details.find((item) => item.currencyType === this.selectedCurrency);
+
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: planType.name,
+      image: 'https://www.commudle.com/assets/images/commudle-logo-full.png',
+      description: planType.description,
+      brand: 'Commudle',
+      offers: {
+        '@type': 'Offer',
+        url: 'https://www.commudle.com/pricing',
+        price: selectedPriceDetail?.price_after_discount || selectedPriceDetail?.price,
+        priceCurrency: selectedPriceDetail?.currencyType === 'USD' ? 'USD' : 'INR',
+      },
+    });
+  }
+
+  setFaqs() {
+    this.faqs = [
+      {
+        question: 'Do I need to purchase any other platform when I setup a Community on Commudle?',
+        answer:
+          "We don't think so, the Developer Communities on Commudle are able to manage all their activities here.",
+      },
+      {
+        question: 'How many Communities can I host on Commudle?',
+        answer:
+          "You can host your complete Developer Ecosystem with 100's of Communities on Commudle. We have an organization page too. You have access to all the data and stats you need.",
+      },
+      {
+        question: "I'm looking to build a career in DevRel, how can Commudle be useful in that?",
+        answer:
+          "As a DevRel, it's important to have an experience of building and growing your own Developer Community. Some folks are at leading DevRel positions who started by building their own Community here.",
+      },
+      {
+        question: 'I want to display activities from Commudle on my website, is it possible?',
+        answer:
+          "Yes! From Startup plan and upwards you get access to our API's which can be used to display summary of your communities' activities on your own web page.",
+      },
+      {
+        question: 'Will you help me migrate from other platforms?',
+        answer: "Yes! And it's very easy.",
+      },
+      {
+        question: 'I lead a Design Community, is Commudle for me?',
+        answer: 'Absolutely, a few Design Communities are already using Commudle.',
+      },
+      {
+        question: 'Does Commudle support paid ticket events?',
+        answer:
+          'Yes, Commudle supports paid tickets in events. Community organizers can access this feature from their community admin dashboard.',
+      },
+      {
+        question: 'What are the charges for payments received through payment gateway on Commudle?',
+        answer:
+          "We use Stripe which has standard payment rates for payments made through different countries defined on this link: https://stripe.com/en-in/pricing. Commudle charges a standard platform fee. Depending on the plan purchased by you this fee can be a part of the annual subscription as a business so that your community leaders don't have to pay for it.",
+      },
+      {
+        question: 'Will I get access to new features which are rolled out after I pay for my subscription?',
+        answer:
+          "Yes, unless it's a premium feature, it will be a part of your existing subscription, we will notify you in advance.",
+      },
+      {
+        question: 'Is Commudle the right platform for my global community members?',
+        answer: 'Yes, our users extend across the world.',
+      },
+    ];
+  }
+
+  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
+    this.gtmDataLayerPush(gtmPushEventName);
+    let productUuid;
+
+    switch (planType) {
+      case 'startup': {
+        productUuid = this.isMonthly ? this.startup.priceDetails[1].uuid : this.startup.priceDetails[0].uuid;
+        break;
+      }
+      case 'enterprise': {
+        productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
+        break;
+      }
+      // Not needed for now
+      // case 'devrel': {
+      //   productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
+      //   break;
+      // }
+    }
+
+    // Show loading dialog
+    this.isFullPageLoading = true;
+    const dialogRef = this.nbDialogService.open(this.loadingTemplate, {
+      hasBackdrop: true,
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      hasScroll: false,
+      context: {},
+    });
+
+    if (productUuid) {
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+        (response) => {
+          this.isFullPageLoading = false;
+          if (response && response.uuid) {
+            window.location.href = `/checkout/${response.uuid}`;
+          }
+        },
+        (error) => {
+          this.isFullPageLoading = false;
+          console.error('Error creating purchase order:', error);
+        },
+      );
+    }
   }
 }

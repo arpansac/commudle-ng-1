@@ -1,16 +1,46 @@
-.blog-container {
-  @apply com-min-h-screen;
+.blogs-list {
+  @apply com-bg-white md:com-pt-12 com-pt-8 md:com-px-0 com-px-4;
 
-  nb-card-header {
-    h1 {
-      @apply com-pt-10;
-    }
-    p {
-      @apply com-text-base;
-    }
+  app-loading-spinner {
+    @apply com-flex com-justify-center;
   }
 }
 
+.blog-container {
+  @apply com-min-h-screen;
+
+  .header {
+    @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-mt-0 com-mb-6;
+  }
+}
+
+.blog-list {
+  @apply com-grid md:com-grid-cols-3 com-grid-cols-1 com-gap-8;
+}
+
+.two-columns {
+  @apply com-gap-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-pb-6 com-pb-4 md:com-mb-6 com-mb-4;
+}
+
 app-loading-spinner {
-  @apply com-flex com-justify-center;
+  @apply com-my-4;
+}
+
+.featured-blogs-list {
+  @apply com-flex com-flex-col com-gap-8;
+}
+
+.main-heading {
+  @apply md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-10 com-mb-8 md:com-text-left com-text-center;
+}
+
+.tags {
+  @apply com-mb-8;
+  nb-tag {
+    @apply com-lowercase com-cursor-pointer;
+  }
+}
+
+.pagination {
+  @apply com-my-8;
 }

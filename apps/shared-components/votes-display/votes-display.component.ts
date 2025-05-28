@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { SVotesService } from '../services/s-votes.service';
 import { VoteChannel } from '../services/websockets/vote.channel';
 import { VotersComponent } from './voters/voters.component';
+import { GoogleTagManagerService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-votes-display',
@@ -20,12 +21,17 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
   @Input() icon: string;
   @Input() size;
   @Input() canVote: boolean = true;
+  @Input() votesDirectionVertical = false;
+  @Input() textAlignment = 'before'; // Can be either before or after
 
   @Output() isBlocked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() votesCount: EventEmitter<number> = new EventEmitter<number>();
 
   uuid = uuidv4();
 
   VotersComponent = VotersComponent;
+
+  private destroy$ = new Subject<void>();
 
   userSubscription;
   votesChannelSubscription;
@@ -45,10 +51,11 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
     private voteChannel: VoteChannel,
     private votesService: SVotesService,
     private toastLogService: LibToastLogService,
+    private gtm: GoogleTagManagerService,
   ) {}
 
   ngOnInit() {
-    this.userSubscription = this.authWatchService.currentUser$.subscribe((data) => {
+    this.userSubscription = this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       this.initData();
     });
@@ -60,6 +67,8 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
       this.votesChannelDataSubscription.unsubscribe();
     }
     this.voteChannel.unsubscribe(this.votableType, this.votableId, this.uuid);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   initData() {
@@ -75,6 +84,7 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
   getAllVotes() {
     this.votesService.pGetVotesCount(this.votableType, this.votableId).subscribe((data) => {
       this.totalVotes = data.total;
+      this.votesCount.emit(this.totalVotes);
       this.myVote = data.voted;
     });
   }
@@ -89,6 +99,9 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
           this.voteChannel.ACTIONS.TOGGLE_VOTE,
           {},
         );
+        if (!this.myVote) {
+          this.gtmService();
+        }
       } else {
         this.authWatchService.logInUser();
       }
@@ -114,6 +127,7 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
               case this.voteChannel.ACTIONS.TOGGLE_VOTE: {
                 data.increment ? (this.totalVotes += 1) : (this.totalVotes -= 1);
                 this.myVote = data.increment && data.user_id === this.currentUser.id;
+                this.votesCount.emit(this.totalVotes);
                 break;
               }
               case this.voteChannel.ACTIONS.ERROR: {
@@ -123,6 +137,13 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
           }
         });
       }
+    });
+  }
+
+  gtmService() {
+    this.gtm.dataLayerPushEvent('vote-created', {
+      com_vote_id: this.votableId,
+      com_voteable_type: this.votableType,
     });
   }
 }

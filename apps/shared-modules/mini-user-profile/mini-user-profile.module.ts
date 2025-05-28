@@ -10,6 +10,9 @@ import { UserProfileCardSmallComponent } from './components/profile-cards/user-p
 import { UserFollowComponent } from './components/user-follow/user-follow.component';
 import { MiniUserProfileDirective } from './directives/mini-user-profile.directive';
 import { HiringLookingWorksTagsComponent } from './components/hiring-looking-works-tags/hiring-looking-works-tags.component';
+import { BadgeComponent } from '../../shared-components/badge/badge.component';
+import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +28,14 @@ import { HiringLookingWorksTagsComponent } from './components/hiring-looking-wor
     CommonModule,
     SharedPipesModule,
     RouterModule,
-
+    BadgeComponent,
     //Nebular
     NbCardModule,
     NbTagModule,
     NbIconModule,
     NbButtonModule,
+    UserPersonalConnectComponent,
+    UserExpertTickComponent,
   ],
 
   exports: [

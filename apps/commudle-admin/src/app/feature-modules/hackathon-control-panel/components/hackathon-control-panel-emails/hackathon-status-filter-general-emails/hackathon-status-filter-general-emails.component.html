@@ -1,0 +1,82 @@
+<nb-card class="mail-popup">
+  <nb-card-header>
+    <span>Status Filter General email</span>
+    <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <commudle-alert [info]="true" message="This will send a pre-formatted email "></commudle-alert>
+
+    <div class="select-recipient">
+      <label for="mailType">To</label>
+      <div class="all-filter">
+        <input
+          type="radio"
+          name="recipient"
+          id="All"
+          [(ngModel)]="selectedRecipient"
+          value="all"
+          class="radio-btn"
+          (change)="onRecipientChange()"
+        />
+        <label for="All">All</label>
+      </div>
+      <div class="selected-filter">
+        <input
+          type="radio"
+          name="recipient"
+          id="SelectedRegistrationOption"
+          [(ngModel)]="selectedRecipient"
+          value="Selected Registration Option"
+          class="radio-btn"
+        />
+        <label for="SelectedRegistrationOption">Selected Registration Option</label>
+      </div>
+      <select
+        name=""
+        id=""
+        *ngIf="selectedRecipient === 'Selected Registration Option'"
+        [(ngModel)]="selectedStatus"
+        class="selected-status"
+      >
+        <option disabled selected value="">Select Status</option>
+        <option *ngFor="let InvitationStatus of EInvitationStatus | keyvalue" [value]="InvitationStatus.value">
+          {{ InvitationStatus.value | capitalizeAndRemoveUnderscore }}
+        </option>
+      </select>
+    </div>
+    <div class="subject">
+      <label for="emailReason">Subject<span class="mandatory-field">*</span></label>
+      <input type="text" placeholder="Subject" [(ngModel)]="subject" nbInput fullWidth />
+    </div>
+    <div class="message-field">
+      <label for="message" class="message">Message (Optional)</label>
+      <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      (click)="previewEmail(hackathonId); showPreviewSpinner = true"
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [nbSpinner]="showPreviewSpinner"
+      type="button"
+      [disabled]="showPreviewSpinner || subject.length === 0"
+    >
+      Preview Email
+    </button>
+    <button
+      nbButton
+      status="primary"
+      shape="semi-round"
+      fullWidth
+      (click)="SendStatusFilterGeneralMailer()"
+      [nbSpinner]="isLoading"
+      [disabled]="isLoading || subject.length === 0"
+    >
+      Send
+    </button>
+  </nb-card-footer>
+</nb-card>

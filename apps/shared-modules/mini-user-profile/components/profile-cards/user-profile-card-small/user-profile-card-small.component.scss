@@ -9,13 +9,11 @@ a:active {
 }
 
 .user-profile-small {
-  background-color: $white;
+  @apply com-bg-transparent;
 
   .avatar {
+    @apply com-h-6 com-w-6 com-overflow-hidden com-bg-tWhite;
     border-radius: 50%;
-    height: 16px;
-    overflow: hidden;
-    width: 16px;
 
     img {
       width: 100%;
@@ -23,16 +21,6 @@ a:active {
   }
 
   .name {
-    font-size: $fs-h6;
-    line-height: 14px;
-    margin-left: $space-4;
-    padding-top: $space-2;
-    @apply com-text-gray-400;
-
-    img {
-      height: 12px;
-      margin-left: $space-4;
-      width: 12px;
-    }
+    @apply com-text-sm com-font-medium com-text-Auro-Metal-Saurus com-ml-2;
   }
 }

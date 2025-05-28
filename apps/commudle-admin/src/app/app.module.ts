@@ -1,14 +1,16 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AuthModule, AuthService, AuthServiceConfig, GoogleLoginProvider } from '@commudle/auth';
+import { AuthModule, AuthService, AuthServiceConfig, GoogleLoginProvider, YoutubeLoginProvider } from '@commudle/auth';
 import { NbEvaIconsModule } from '@commudle/eva-icons';
 import {
   NbAccordionModule,
   NbActionsModule,
+  NbAutocompleteModule,
   NbBadgeModule,
   NbButtonModule,
   NbCardModule,
@@ -41,30 +43,39 @@ import {
   NbWindowModule,
 } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { createErrorHandler, TraceService } from '@sentry/angular-ivy';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Angular2SmartTableModule } from 'angular2-smart-table';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerModule } from 'apps/lib-error-handler/src/public-api';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import { ApiParserResponseInterceptor } from 'apps/shared-interceptors/api-parser-response.interceptor';
 import { AuthTokenInterceptor } from 'apps/shared-interceptors/lib-authwatch-token.interceptor';
+import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { PageAdsModule } from 'apps/shared-modules/page-ads/page-ads.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { PrismJsHighlightCodeService } from 'apps/shared-services/prismjs-highlight-code.service';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxStripeModule } from 'ngx-stripe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppSharedComponentsModule } from './app-shared-components/app-shared-components.module';
+import { CommunitiesCardComponent } from './app-shared-components/communities-card/communities-card.component';
+import { ListingPagesLayoutComponent } from './app-shared-components/listing-pages-layout/listing-pages-layout.component';
+import { UserProfileComponent } from './app-shared-components/user-profile/user-profile.component';
 import { AppComponent } from './app.component';
 import { AboutOldComponent } from './components/about-old/about-old.component';
 import { AboutComponent } from './components/about/about.component';
-import { CommunitiesAboutComponent } from './components/communities/communities-about/communities-about.component';
 import { CommunitiesFeaturedComponent } from './components/communities/communities-featured/communities-featured.component';
 import { CommunitiesListComponent } from './components/communities/communities-list/communities-list.component';
 import { CommunitiesPostsComponent } from './components/communities/communities-posts/communities-posts.component';
 import { CommunitiesComponent } from './components/communities/communities.component';
+import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
+import { FillDataFormPaidComponent } from './components/fill-data-form/fill-data-form-paid/fill-data-form-paid.component';
 import { FillDataFormComponent } from './components/fill-data-form/fill-data-form.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeBuildsCardComponent } from './components/home/components/home-builds/home-builds-card/home-builds-card.component';
@@ -79,6 +90,7 @@ import { HomeLabsComponent } from './components/home/components/home-labs/home-l
 import { HomePromotionsComponent } from './components/home/components/home-promotions/home-promotions.component';
 import { FeaturesComponent } from './components/home/features/features.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginConsentPopupComponent } from './components/login-consent-popup/login-consent-popup.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
@@ -93,19 +105,25 @@ import { SpeakerResourceFormComponent } from './components/speaker-resource-form
 import { StepperComponent } from './components/stepper/stepper.component';
 import { SwUpdateComponent } from './components/sw-update/sw-update.component';
 import { CommunityChannelsModule } from './feature-modules/community-channels/community-channels.module';
+import { UserprofileDetailsComponent } from './feature-modules/homepage/components/homepage-dashboard/userprofile-details/userprofile-details.component';
 import { LabsModule } from './feature-modules/labs/labs.module';
+import { PublicHomeListEventsModule } from './feature-modules/listing-pages/public-home-list-events/public-home-list-events.module';
+import { PublicHomeListSpeakersModule } from './feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
 import { MainNewslettersModule } from './feature-modules/main-newsletters/main-newsletters.module';
 import { NotificationsModule } from './feature-modules/notifications/notifications.module';
 import { PublicCommunityModule } from './feature-modules/public-community/public-community.module';
 import { RecommendationsModule } from './feature-modules/recommendations/recommendations.module';
 import { ReusableComponentsModule } from './feature-modules/reusable-components/reusable-components.module';
 import { SearchModule } from './feature-modules/search/search.module';
+import { SkeletonVerticalCardsComponent } from './feature-modules/skeleton-screens/components/skeleton-vertical-cards/skeleton-vertical-cards.component';
 import { SkeletonScreensModule } from './feature-modules/skeleton-screens/skeleton-screens.module';
 import { UserChatsModule } from './feature-modules/user-chats/user-chats.module';
 import { UsersModule } from './feature-modules/users/users.module';
 import { AppInitService } from './services/app-init.service';
-import { CommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/communities-card/communities-card.component';
-import { LoginConsentPopupComponent } from './components/login-consent-popup/login-consent-popup.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
+import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -116,7 +134,6 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     AppComponent,
     OrganizerCommunitiesListComponent,
     CommunityComponent,
-    CommunitiesAboutComponent,
     CommunitiesListComponent,
     CommunitiesPostsComponent,
     CommunitiesFeaturedComponent,
@@ -149,7 +166,12 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     PushNotificationComponent,
     LoginComponent,
     LoginConsentPopupComponent,
+    FillDataFormPaidComponent,
+    CheckFillDataFormComponent,
+    UserAccountMenuComponent,
+    NavbarUserContextMenuComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -182,11 +204,18 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     RecommendationsModule,
     SearchModule,
     MiniUserProfileModule,
-
+    ListingPagesLayoutComponent,
+    PublicHomeListSpeakersModule,
+    PublicHomeListEventsModule,
+    SkeletonVerticalCardsComponent,
+    InfiniteScrollModule,
+    UserProfileComponent,
+    UserprofileDetailsComponent,
+    SidebarComponent,
+    HelpSectionComponent,
     // external service modules
     LibErrorHandlerModule,
     AuthModule,
-
     // Nebula modules
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
@@ -220,18 +249,14 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     NbTagModule,
     NbPopoverModule,
     NbToggleModule,
-
+    NbAutocompleteModule,
     // Other external npm modules
     Angular2SmartTableModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-
-    //standalone component
+    NgxStripeModule.forRoot(environment.stripe),
+    // standalone components
     CommunitiesCardComponent,
+    ListingPageHeaderComponent,
+    UserExpertTickComponent,
   ],
   providers: [
     AppInitService,
@@ -262,16 +287,36 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     {
       provide: 'AuthServiceConfig',
       useValue: {
-        autoLogin: true,
+        autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(environment.google_client_id),
           },
+          {
+            id: YoutubeLoginProvider.PROVIDER_ID,
+            provider: new YoutubeLoginProvider(environment.google_client_id),
+          },
         ],
       } as AuthServiceConfig,
     },
+    {
+      provide: ErrorHandler,
+      useValue: createErrorHandler({
+        showDialog: false,
+      }),
+    },
+    {
+      provide: TraceService,
+      deps: [Router],
+    },
+    // TODO: there are two providers with same provide key, check if that causes error?
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [TraceService],
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

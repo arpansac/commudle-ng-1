@@ -1,0 +1,203 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SeoService } from '@commudle/shared-services';
+import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
+import { ICommunityBuild } from 'apps/shared-models/community-build.model';
+import { IPageInfo } from 'apps/shared-models/page-info.model';
+import { IPagination } from 'apps/shared-models/pagination.model';
+
+@Component({
+  selector: 'commudle-builds',
+  templateUrl: './builds.component.html',
+  styleUrls: ['./builds.component.scss'],
+})
+export class BuildsComponent implements OnInit {
+  communityBuilds: ICommunityBuild[] = [];
+  timePeriod: string;
+  month = false;
+  year = false;
+  allTime = false;
+  order_by: string;
+  queryParams = {};
+  page_info: IPageInfo;
+  loading = false;
+  total: number;
+  isAllFilterSelected = false;
+  limit = 5;
+  skeletonLoaderCard = true;
+  loadingCommunityBuilds = false;
+  heading = 'Builds by techies around you';
+  selectedTags = [];
+  schemaForBuild = [];
+
+  constructor(
+    private communityBuildsService: CommunityBuildsService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private seoService: SeoService,
+  ) {}
+
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (Object.keys(params).length > 0) {
+        if (params['month']) {
+          this.timePeriod = 'month';
+          this.month = true;
+          this.year = false;
+          this.allTime = false;
+          this.isAllFilterSelected = false;
+          this.order_by = 'votes_count';
+        }
+        if (params['year']) {
+          this.timePeriod = 'year';
+          this.month = false;
+          this.year = true;
+          this.allTime = false;
+          this.isAllFilterSelected = false;
+          this.order_by = 'votes_count';
+        }
+        if (params['all-time']) {
+          this.timePeriod = 'all-time';
+          this.month = false;
+          this.year = false;
+          this.allTime = true;
+          this.isAllFilterSelected = false;
+          this.order_by = 'votes_count';
+        }
+        if (this.selectedTags.length > 0) {
+          this.isAllFilterSelected = false;
+          this.month = false;
+          this.year = false;
+          this.allTime = false;
+        }
+        this.communityBuilds = [];
+        this.getCommunityBuilds();
+      } else {
+        this.communityBuilds = [];
+        this.isAllFilterSelected = true;
+        this.getCommunityBuilds();
+      }
+      this.setMeta();
+    });
+  }
+
+  setMeta() {
+    let tags = '';
+    if (this.selectedTags.length > 0) {
+      tags = this.selectedTags.join(', ');
+    }
+    const tagsTitle = 'Projects in ' + tags;
+    const title = 'Builds - Projects & Side Hustle Sharing Platform for Developers ';
+    const tagsDescription =
+      'Find ' +
+      tags +
+      ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
+    const description =
+      'Projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
+    this.seoService.setTags(
+      this.selectedTags.length > 0 ? tagsTitle : title,
+      this.selectedTags.length > 0 ? tagsDescription : description,
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+  }
+
+  filter() {
+    this.isAllFilterSelected = false;
+    if (this.timePeriod === 'month') {
+      this.month = true;
+      this.year = false;
+      this.allTime = false;
+      this.order_by = 'votes_count';
+      this.queryParams = {
+        month: true,
+      };
+    }
+    if (this.timePeriod === 'year') {
+      this.month = false;
+      this.year = true;
+      this.allTime = false;
+      this.order_by = 'votes_count';
+      this.queryParams = {
+        year: true,
+      };
+    }
+    if (this.timePeriod === 'all-time') {
+      this.month = false;
+      this.year = false;
+      this.allTime = true;
+      this.order_by = 'votes_count';
+      this.queryParams = {
+        'all-time': true,
+      };
+    }
+    this.communityBuilds = [];
+    this.page_info = null;
+    this.router.navigate([], { queryParams: this.queryParams });
+  }
+
+  allFilterSelected() {
+    this.isAllFilterSelected = true;
+    this.month = false;
+    this.year = false;
+    this.allTime = false;
+    this.order_by = '';
+    this.timePeriod = null;
+    this.communityBuilds = [];
+    this.queryParams = {};
+    this.page_info = null;
+    this.router.navigate([], { queryParams: this.queryParams });
+  }
+
+  getCommunityBuilds() {
+    if (this.loadingCommunityBuilds) {
+      return;
+    }
+    this.loadingCommunityBuilds = true;
+    this.loading = true;
+    if (!this.page_info?.end_cursor) {
+      this.communityBuilds = [];
+    }
+    this.selectedTags = this.activatedRoute.snapshot.queryParams['tags[]']
+      ? this.activatedRoute.snapshot.queryParams['tags[]']
+      : [];
+    this.selectedTags = Array.isArray(this.selectedTags) ? this.selectedTags : [this.selectedTags];
+    this.communityBuildsService
+      .pGetAll(
+        this.page_info?.end_cursor,
+        this.limit,
+        this.order_by,
+        this.month,
+        this.year,
+        this.allTime,
+        this.selectedTags,
+      )
+      .subscribe((data: IPagination<ICommunityBuild>) => {
+        this.communityBuilds = this.communityBuilds.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+        this.total = data.total;
+        this.page_info = data.page_info;
+        this.loadingCommunityBuilds = false;
+        this.skeletonLoaderCard = false;
+        this.loading = false;
+        this.setSchema();
+      });
+  }
+
+  setSchema() {
+    for (const build of this.communityBuilds) {
+      this.schemaForBuild.push({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: build.name,
+        description: build.description,
+        datePublished: build.created_at,
+        screenshot: build.images?.length > 0 ? build.images[0].url : '',
+        offers: {
+          '@type': 'Offer',
+          price: 0,
+        },
+        applicationCategory: 'Software Engineering',
+      });
+    }
+    this.seoService.setSchema(this.schemaForBuild);
+  }
+}

@@ -4,28 +4,50 @@
       <div>
         <p class="margin0 fontw-300">
           <nb-icon icon="people" status="basic"></nb-icon>
-          Members ({{allUsers.length}})
+          Members
+          <span *ngIf="totalOrganizers || totalMembers"> ({{ totalOrganizers + totalMembers }}) </span>
         </p>
       </div>
-      <span [routerLink]="['../']" class="clickable">
+      <span (click)="close()" class="clickable">
         <small>
           <nb-icon icon="close-circle" status="basic"></nb-icon>
         </small>
       </span>
     </nb-card-header>
-    <nb-list>
-      <nb-list-item *ngFor="let u of allUsers; let i=index">
-        <div>
+    <nb-card-body>
+      <div class="search">
+        <form [formGroup]="channelForm">
+          <input
+            nbInput
+            type="text"
+            formControlName="q"
+            fieldSize="small"
+            placeholder="search with user's name or designation"
+            fullWidth
+          />
+        </form>
+      </div>
+      <div class="members-list">
+        <div *ngFor="let u of admins; let i = index" class="com-my-3">
           <app-member
             (exitChannel)="leaveChannel(i)"
-            (makeAdmin)="toggleAdmin(i)"
-            (removeAdmin)="toggleAdmin(i)"
+            (removeAdmin)="removeAdmin(i, u.id)"
             (removeFromChannel)="removeFromChannel(i)"
-            [currentUserIsAdmin]="currentUserIsAdmin"
+            [currentUserIsAdmin]="currentUserIsAdmin || isSuperAdmin"
             [userRolesUser]="u"
           ></app-member>
         </div>
-      </nb-list-item>
-    </nb-list>
+        <div *ngFor="let u of channelMembers; let i = index" #memberDiv class="com-my-3">
+          <app-member
+            (exitChannel)="leaveChannel(i)"
+            (makeAdmin)="addAdmin(i, u.id)"
+            (removeFromChannel)="removeFromChannel(i)"
+            [currentUserIsAdmin]="currentUserIsAdmin || isSuperAdmin"
+            [userRolesUser]="u"
+          ></app-member>
+        </div>
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      </div>
+    </nb-card-body>
   </nb-card>
 </div>

@@ -5,8 +5,15 @@ p {
 }
 
 .user-social {
+  @apply com-m-0 com-mb-4;
   nb-card-header {
-    @apply com-text-lg com-font-medium;
+    @apply com-bg-gray-50;
+    a {
+      @apply com-flex com-m-0 com-text-lg com-font-medium com-text-Yankees-Blue com-no-underline com-items-center;
+      fa-icon {
+        @apply com-h-6 com-w-6 com-flex com-items-center com-justify-center com-mr-1;
+      }
+    }
   }
 
   .user-social-add {
@@ -34,6 +41,7 @@ p {
   }
 
   .user-social-cards {
+    @apply com-flex com-gap-4;
     nb-list-item {
       border: none;
       padding: 0;
@@ -83,9 +91,6 @@ p {
 }
 
 // Drag and drop animations
-.cdk-drag {
-  background-color: $white;
-}
 
 .cdk-drag-preview {
   border-radius: $border-10;
@@ -107,4 +112,8 @@ nb-list-item:last-child {
 
 nb-list.cdk-drop-list-dragging nb-list-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+nb-card-body {
+  @apply com-p-6;
 }

@@ -1,10 +1,10 @@
-<div class="base-layout com-mb-8">
+<div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
       <div *ngIf="community" class="home-component">
-        <nb-card class="!com-m-0 md:!com-mx-2">
+        <nb-card class="!com-m-0 md:!com-mx-2" [ngClass]="{ miniHeader: showMiniHeader }">
           <nb-card-body class="!com-p-0 com-overflow-hidden">
-            <div class="banner">
+            <div class="banner" *ngIf="!showMiniHeader">
               <img
                 *ngIf="community.banner_image"
                 src="{{ community.banner_image.url }}"
@@ -19,12 +19,12 @@
                 </button>
               </div>
             </div>
-            <div class="page-header d-flex flex-column">
+            <div class="page-header d-flex flex-column" *ngIf="!showMiniHeader">
               <div class="logo-section">
                 <img
                   alt="{{ community.name }}"
                   class="logo"
-                  src="{{ community.logo_path }}"
+                  src="{{ community.logo_image_path?.i320 }}"
                   title="{{ community.name }}"
                 />
                 <app-share-button
@@ -42,7 +42,7 @@
                   class="com-flex com-justify-between md:com-items-center com-flex-col com-my-2 md:com-flex-row md:com-m-0"
                 >
                   <div class="com-grid com-grid-cols-1 com-items-start md:com-grid-cols-2 md:com-items-center">
-                    <h1>{{ community.name }}</h1>
+                    <h1 class="com-text-Yankees-Blue">{{ community.name }}</h1>
                     <app-share-button
                       *appBreakpoints="'>md'"
                       [content]="environment.app_url + '/communities/' + community.slug"
@@ -58,7 +58,7 @@
                   <p class="member-count">
                     <a [routerLink]="['members']">
                       <nb-icon icon="people" status="basic"></nb-icon>
-                      {{ community.member_count }} Community Members
+                      {{ community.members_count }} Community Members
                     </a>
                   </p>
                   <div class="community-social-links d-flex align-items-center">
@@ -77,6 +77,14 @@
                       target="_blank"
                     >
                       <nb-icon icon="linkedin" status="info"></nb-icon>
+                    </a>
+                    <a
+                      *ngIf="community.instagram"
+                      href="{{ community.instagram | completeurl : 'instagram' }}"
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      <fa-icon [icon]="faInstagram"></fa-icon>
                     </a>
                     <a
                       *ngIf="community.twitter"
@@ -107,6 +115,15 @@
               </div>
               <div class="membership-toggle">
                 <div class="com-flex md:com-justify-end">
+                  <a
+                    *ngIf="community.community_group"
+                    [routerLink]="['/orgs', community.community_group.slug]"
+                    class="organization-details"
+                    [title]="community.community_group.name"
+                  >
+                    <fa-icon [icon]="faBuilding"></fa-icon>
+                    <span>{{ community.community_group.name }} ({{ community.community_group.member_count }})</span>
+                  </a>
                   <app-membership-toggle
                     [community]="community"
                     [shapes]="'semi-round'"
@@ -128,6 +145,57 @@
                 </div>
               </div>
             </div>
+            <div class="mini-header" *ngIf="showMiniHeader">
+              <div class="community-details">
+                <div class="mini-logo-section">
+                  <img
+                    alt="{{ community.name }}"
+                    src="{{ community.logo_image_path?.i64 }}"
+                    title="{{ community.name }}"
+                    class="mini-logo"
+                  />
+                </div>
+                <div class="details">
+                  <p class="name">{{ community.name }}</p>
+                  <p class="members-count">{{ community.members_count }} Members</p>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <app-membership-toggle
+                  [community]="community"
+                  [shapes]="'semi-round'"
+                  [size]="'small'"
+                  [status]="'info'"
+                ></app-membership-toggle>
+                <div *appBreakpoints="'>md'">
+                  <div *ngIf="isOrganizer">
+                    <button
+                      nbButton
+                      status="danger"
+                      outline
+                      [routerLink]="['/admin', 'communities', community.slug]"
+                      target="_blank"
+                      shape="semi-round"
+                      class="control-panel"
+                      size="small"
+                    >
+                      <nb-icon icon="edit-outline"></nb-icon>
+                      Admin Panel
+                    </button>
+                  </div>
+                </div>
+                <app-share-button
+                  *appBreakpoints="'>md'"
+                  [content]="environment.app_url + '/communities/' + community.slug"
+                  [title]="community.name"
+                  [url]="environment.app_url + '/communities/' + community.slug"
+                  [showText]="true"
+                  [appearance]="'outline'"
+                ></app-share-button>
+              </div>
+            </div>
+          </nb-card-body>
+          <nb-card-footer class="menu-items-footer">
             <div class="page-menu">
               <div class="menu-items d-flex">
                 <a
@@ -135,13 +203,52 @@
                   [routerLink]="['/communities', community.slug]"
                   class="d-flex"
                   routerLinkActive="active"
+                  [ngClass]="{ active: !showMiniHeader }"
                 >
                   <nb-icon icon="info" status="basic"></nb-icon>
                   <span class="title">About</span>
                 </a>
-                <a [routerLink]="['events']" class="d-flex" routerLinkActive="active">
+                <a [routerLink]="['events']" class="d-flex com-relative" routerLinkActive="active">
+                  <app-badge
+                    *ngIf="community.upcoming_events_count > 0"
+                    class="-com-mt-4"
+                    text="{{ community.upcoming_events_count }} New"
+                    [fontColor]="'com-text-tWhite'"
+                    [fontSize]="'small'"
+                    [borderRadius]="'round'"
+                    [color]="'com-bg-orange-500'"
+                    [position]="'top right'"
+                  ></app-badge>
                   <nb-icon icon="calendar" status="info"></nb-icon>
                   <span class="title">Events</span>
+                </a>
+                <a
+                  [routerLink]="['hackathons']"
+                  class="d-flex com-relative"
+                  routerLinkActive="active"
+                  *ngIf="community.hackathon_enabled"
+                >
+                  <app-badge
+                    *ngIf="community.upcoming_hackathons_count > 0"
+                    class="-com-mt-4"
+                    text="{{ community.upcoming_hackathons_count }} New"
+                    [fontColor]="'com-text-tWhite'"
+                    [fontSize]="'small'"
+                    [borderRadius]="'round'"
+                    [color]="'com-bg-orange-500'"
+                    [position]="'top right'"
+                  ></app-badge>
+                  <img
+                    [src]="
+                      isHackathonActive
+                        ? environment.base_url + '/icons/hackathon-icon-primary.svg'
+                        : darkMode
+                        ? environment.base_url + '/icons/hackathon-icon-white.svg'
+                        : environment.base_url + '/icons/hackathon-icon-gray.svg'
+                    "
+                    alt="Hackathon Icon"
+                  />
+                  <span class="title">Hackathons</span>
                 </a>
                 <!-- <a [routerLink]="['resources']" routerLinkActive="active">
                   <nb-icon icon="award" status="info"></nb-icon>
@@ -155,25 +262,36 @@
                   <nb-icon icon="people" status="success"></nb-icon>
                   <span class="title">Members</span>
                 </a>
-                <a [routerLink]="['public-channels']" class="d-flex" routerLinkActive="active">
+                <a [routerLink]="['channels']" class="d-flex" routerLinkActive="active">
                   <nb-icon icon="hash" status="success"></nb-icon>
                   <span class="title">Channels</span>
                 </a>
-                <div *ngIf="isOrganizer" class="com-relative">
+                <a [routerLink]="['forums']" class="d-flex" routerLinkActive="active">
+                  <fa-icon [icon]="faMessage" class="com-text-2xl com-leading-none"></fa-icon>
+                  <span class="title">Forums</span>
+                </a>
+                <div *ngIf="isOrganizer" class="com-relative" (click)="gtmService()">
                   <a [routerLink]="['notifications']" class="d-flex" routerLinkActive="active">
                     <nb-badge
                       *ngIf="notificationCount > 0"
                       [text]="notificationCount.toString()"
                       status="danger"
                     ></nb-badge>
-
                     <nb-icon icon="bell" status="success"></nb-icon>
                     <span class="title">Activity</span>
                   </a>
                 </div>
+                <a *ngIf="showNewslettersTab" [routerLink]="['newsletters']" class="d-flex" routerLinkActive="active">
+                  <fa-icon [icon]="faNewspaper" class="com-text-2xl com-leading-none"></fa-icon>
+                  <span class="title">Newsletters</span>
+                </a>
+                <a class="d-flex" [nbContextMenu]="items" nbContextMenuTrigger="hover" *ngIf="items.length > 0">
+                  <fa-icon [icon]="faCaretDown" class="com-text-2xl com-leading-none"></fa-icon>
+                  <span class="title">More</span>
+                </a>
               </div>
             </div>
-          </nb-card-body>
+          </nb-card-footer>
         </nb-card>
         <div class="router-outlet">
           <router-outlet></router-outlet>

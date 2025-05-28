@@ -1,11 +1,18 @@
-<a [routerLink]="['/users', user.username]">
+<a [routerLink]="['/users', user.username]" [ngClass]="{ 'com-pointer-events-none': disableAnchor }">
   <div class="user-profile-small d-flex align-items-center">
     <div class="avatar">
-      <img [alt]="user.name" [src]="user.photo.i32" [title]="user.name" [username]="user.username" appMiniUserProfile />
+      <img
+        [alt]="user.name"
+        [src]="user.photo?.i32 || user.avatar"
+        [title]="user.name"
+        [username]="user.username"
+        appMiniUserProfile
+      />
     </div>
     <div [username]="user.username" appMiniUserProfile class="name d-flex align-items-center">
-      {{ user.name | truncatetext: maxNameLength }}
-      <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
+      {{ user.name | truncatetext : maxNameLength }}
+      <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
+      <commudle-user-personal-connect [userConnect]="user.distance_from_current_user"></commudle-user-personal-connect>
       <!-- <app-hiring-looking-works-tags [user]="user" [fontSize]="'12px'"></app-hiring-looking-works-tags> -->
     </div>
   </div>

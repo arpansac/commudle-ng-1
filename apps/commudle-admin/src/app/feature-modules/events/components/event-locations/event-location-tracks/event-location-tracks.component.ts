@@ -1,21 +1,31 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
+  OnChanges,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import { NbTagComponent, NbTagInputAddEvent, NbWindowService } from '@commudle/theme';
-import { faClock, faInfo, faPen, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NbDialogService, NbTagComponent, NbTagInputAddEvent, NbWindowService } from '@commudle/theme';
+import {
+  faClock,
+  faInfo,
+  faPen,
+  faPlusCircle,
+  faTrash,
+  faXmark,
+  faChevronRight,
+  faPaperclip,
+  faArrowUpRightFromSquare,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { TrackSlotFormComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-locations/event-location-tracks/track-slot-form/track-slot-form.component';
 import { EventLocationTracksService } from 'apps/commudle-admin/src/app/services/event-location-tracks.service';
 import { TrackSlotsService } from 'apps/commudle-admin/src/app/services/track_slots.service';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -23,7 +33,6 @@ import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_v
 import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
 import { EEventType, IEventLocation } from 'apps/shared-models/event-location.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -32,22 +41,16 @@ import * as moment from 'moment';
   selector: 'app-event-location-tracks',
   templateUrl: './event-location-tracks.component.html',
   styleUrls: ['./event-location-tracks.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventLocationTracksComponent implements OnInit, AfterViewInit {
+export class EventLocationTracksComponent implements OnInit, OnChanges {
   @Input() eventLocations: IEventLocation[] = [];
-  @Input() eventLocationTracks: IEventLocationTrack[] = [];
+  @Input() eventLocationDate: Date;
   @Input() event: IEvent;
   @Input() community: ICommunity;
-  @Input() eventLocationId;
+  @Input() eventLocation: IEventLocation;
   @Input() eventSpeakers;
-  @Output() addTrack = new EventEmitter();
-  @Output() updateTrack = new EventEmitter();
-  @Output() removeTrack = new EventEmitter();
-  @Output() addSession = new EventEmitter();
-  @Output() updateSession = new EventEmitter();
-  @Output() removeSession = new EventEmitter();
 
+  eventLocationTracks: IEventLocationTrack[] = [];
   windowRef;
   eventStartTimePicker;
   eventEndTimePicker;
@@ -56,10 +59,15 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   faPlusCircle = faPlusCircle;
   faTrash = faTrash;
   faPen = faPen;
+  faXmark = faXmark;
+  faChevronRight = faChevronRight;
+  faPaperclip = faPaperclip;
+  faArrowUpRightFromSquare = faArrowUpRightFromSquare;
+  faPlus = faPlus;
   EEventType = EEventType;
-  eventLocation: IEventLocation;
   EEmbeddedVideoStreamSources = EEmbeddedVideoStreamSources;
   tags: string[] = [];
+  isLoading = true;
 
   moment = moment;
   minSlotDate;
@@ -68,6 +76,7 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   timeBlocks = [];
   eventLocationTrackForm;
   trackSlotForm;
+  dialogRef;
 
   trackSlotVisibility = {};
   sortedTrackSlots = {};
@@ -76,6 +85,7 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   @ViewChild('trackSlotFormTemplate') trackSlotFormTemplate: TemplateRef<any>;
   @ViewChild('deleteTrackSlotTemplate') deleteTrackSlotTemplate: TemplateRef<any>;
   @ViewChild('tracksContainer') private tracksContainer: ElementRef;
+  @ViewChild('embeddedVideoTemplate') embeddedVideoTemplate: TemplateRef<any>;
 
   constructor(
     private windowService: NbWindowService,
@@ -83,13 +93,18 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
     private toastLogService: LibToastLogService,
     private eventLocationTracksService: EventLocationTracksService,
     private trackSlotsService: TrackSlotsService,
-    private sanitizer: DomSanitizer,
-    private _ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: NbDialogService,
   ) {
     this.eventLocationTrackForm = this.fb.group({
       event_location_track: this.fb.group({
         name: ['', Validators.required],
+      }),
+      embedded_video_stream: this.fb.group({
+        source: [''],
+        embed_code: [''],
+        zoom_host_email: ['', Validators.email],
+        zoom_password: [''],
       }),
     });
     this.trackSlotForm = this.fb.group({
@@ -100,23 +115,19 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
         end_time: [new Date(), Validators.required],
         session_title: ['', Validators.required],
         tags_list: [''],
-        speaker_registration_id: [''],
+        track_slot_speaker_registration_ids: this.fb.array([]),
       }),
     });
   }
 
   ngOnInit() {
     this.setTrackVisibility();
-
-    const visibility = this.eventLocationTracks.length <= 2;
-    for (const event_location_track of this.eventLocationTracks) {
-      this.trackSlotVisibility[event_location_track.id] = visibility;
-      this.sortedTrackSlots[event_location_track.id] = this.sortTrackSlots(event_location_track.track_slots);
-    }
     this.minSlotDate = moment(this.event.start_time).toDate();
   }
 
-  ngAfterViewInit(): void {}
+  ngOnChanges() {
+    this.getLocationTracks();
+  }
 
   scrollFromTop() {
     if (
@@ -129,151 +140,96 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
     }
   }
 
-  showAddSlotForm(eventLocationTrack, startTime, eventLocTrack) {
+  showAddSlotForm(eventLocationTrack, startTime, eventLocTrack, eventLocationDate, index?) {
     this.trackSlotForm.reset();
-    for (const event_location_track of this.eventLocationTracks) {
-      this.sortedTrackSlots[event_location_track.id] = this.sortTrackSlots(event_location_track.track_slots);
-    }
-    this._ngZone.runOutsideAngular(() => {
-      const time = new Date(startTime);
-      const endTime = new Date(time.getTime() + 30 * 60000);
-
-      this.tags = [];
-      this.trackSlotForm.get('track_slot').patchValue({
-        event_location_track_id: eventLocTrack.id,
-        date: this.minSlotDate,
-        start_time: time,
-        end_time: endTime,
-      });
-      this.windowRef = this.windowService.open(this.trackSlotFormTemplate, {
-        title: 'Add a session',
-        context: { operationType: 'create' },
-      });
+    const dialogRef = this.dialogService.open(TrackSlotFormComponent, {
+      context: {
+        operationType: 'create',
+        eventLocationTracks: this.eventLocationTracks,
+        startTime: startTime,
+        eventLocTrack: eventLocTrack,
+        minSlotDate: this.minSlotDate,
+        event: this.event,
+        community: this.community,
+        selectedLocationDate: eventLocationDate,
+      },
+    });
+    dialogRef.componentRef.instance.createFormOutput.subscribe((data) => {
+      this.addSlot(data, index);
+      dialogRef.close();
     });
   }
 
-  addSlot() {
-    this.windowRef.close();
-    const newSlot = this.trackSlotForm.get('track_slot').value;
-    const tagsAsString = this.tags.map((tag) => `${tag}`).join(' ');
-    newSlot.tags_list = tagsAsString;
-    const startTime = moment({
-      years: newSlot.date.getFullYear(),
-      months: newSlot.date.getMonth(),
-      date: newSlot.date.getDate(),
-    });
-
-    delete newSlot['date'];
-    const sTime = newSlot['start_time'];
-    newSlot['start_time'] = startTime.set({ hour: sTime.getHours(), minute: sTime.getMinutes() }).toDate();
-
-    const eTime = newSlot['end_time'];
-    newSlot['end_time'] = startTime.set({ hour: eTime.getHours(), minute: eTime.getMinutes() }).toDate();
-
-    if (newSlot['start_time'] >= newSlot['end_time']) {
-      this.toastLogService.warningDialog('End time should be greater than Start time!');
-      return;
-    }
-
-    this.trackSlotsService.createTrackSlot(newSlot).subscribe((data) => {
+  addSlot(data, index) {
+    if (moment(data.start_time).format('YYYY-MM-DD') === moment(this.eventLocationDate).format('YYYY-MM-DD')) {
       this.sortedTrackSlots[data.event_location_track_id].push(data);
       this.sortedTrackSlots[data.event_location_track_id] = this.sortTrackSlots(
         this.sortedTrackSlots[data.event_location_track_id],
       );
+    }
 
-      this.trackSlotForm.reset();
-      this.toastLogService.successDialog('Slot Added!');
-      this.changeDetectorRef.markForCheck();
-      this.addSession.emit(data);
-    });
-  }
-
-  showEditSlotForm(trackSlot) {
     this.trackSlotForm.reset();
-    const sTime = trackSlot['start_time'];
-    const eTime = trackSlot['end_time'];
-    const sTimeArr = sTime.split('T')[1].split(':');
-    const eTimeArr = eTime.split('T')[1].split(':');
-    const sTimeHour = parseInt(sTimeArr[0]);
-    const sTimeMinute = parseInt(sTimeArr[1]);
-    const eTimeHour = parseInt(eTimeArr[0]);
-    const eTimeMinute = parseInt(eTimeArr[1]);
+    this.toastLogService.successDialog('Slot Added!');
 
-    const sTimeNew = new Date();
-    const eTimeNew = new Date();
-    sTimeNew.setHours(sTimeHour);
-    sTimeNew.setMinutes(sTimeMinute);
+    this.eventLocationTracks[index].track_slots.push(data);
+  }
 
-    eTimeNew.setHours(eTimeHour);
-    eTimeNew.setMinutes(eTimeMinute);
-
-    const trackDate = moment(trackSlot.start_time).toDate();
-    const tags = trackSlot.tags_list ? trackSlot.tags_list.split(' ') : [];
-    this.tags = tags;
-
-    this.trackSlotForm.get('track_slot').patchValue({
-      event_location_track_id: trackSlot.event_location_track_id,
-      // @ts-ignore
-      date: trackDate,
-      // @ts-ignore
-      start_time: sTimeNew,
-      // @ts-ignore
-      end_time: eTimeNew,
-      session_title: trackSlot.session_title,
-      speaker_registration_id: trackSlot.speaker_registration_id,
+  showEditSlotForm(trackSlot, eltIndex, slotIndex) {
+    const dialogRef = this.dialogService.open(TrackSlotFormComponent, {
+      context: {
+        operationType: 'edit',
+        eventLocationTracks: this.eventLocationTracks,
+        minSlotDate: this.minSlotDate,
+        trackSlot: trackSlot,
+        event: this.event,
+      },
     });
-
-    if (trackSlot.embedded_video_stream) {
-      this.trackSlotForm.get('track_slot').patchValue({
-        // @ts-ignore
-        embedded_video_stream: trackSlot.embedded_video_stream,
-      });
-    }
-    this.windowRef = this.windowService.open(this.trackSlotFormTemplate, {
-      title: 'Edit Session',
-      context: { operationType: 'edit', trackSlotId: trackSlot.id },
+    dialogRef.componentRef.instance.editFormOutput.subscribe((data) => {
+      this.editSlot(data, trackSlot.id, eltIndex, slotIndex);
+      dialogRef.close();
     });
   }
 
-  editSlot(trackSlotId) {
-    this.windowRef.close();
-    const slot = this.trackSlotForm.get('track_slot').value;
-    const tagsAsString = this.tags.map((tag) => `${tag}`).join(' ');
-    slot.tags_list = tagsAsString;
-    const startTime = moment({
-      years: slot.date.getFullYear(),
-      months: slot.date.getMonth(),
-      date: slot.date.getDate(),
-    });
+  editSlot(data, trackSlotId, eltIndex, slotIndex) {
+    const newDate = moment(data.start_time).format('YYYY-MM-DD');
+    const currentDate = moment(this.eventLocationDate).format('YYYY-MM-DD');
 
-    delete slot['date'];
-    const sTimeNew = slot['start_time'];
-    slot['start_time'] = startTime.set({ hour: sTimeNew.getHours(), minute: sTimeNew.getMinutes() }).toDate();
+    if (newDate === currentDate) {
+      if (data.event_location_track_id != this.eventLocationTracks[eltIndex].id) {
+        this.eventLocationTracks[eltIndex].track_slots.splice(slotIndex, 1);
+        this.sortedTrackSlots[this.eventLocationTracks[eltIndex].id] = this.sortedTrackSlots[
+          this.eventLocationTracks[eltIndex].id
+        ].filter((slot) => slot.id !== trackSlotId);
 
-    const eTimeNew = slot['end_time'];
-    slot['end_time'] = startTime.set({ hour: eTimeNew.getHours(), minute: eTimeNew.getMinutes() }).toDate();
-
-    if (slot['start_time'] >= slot['end_time']) {
-      this.toastLogService.warningDialog('End time should be greater than Start time!');
-      return;
+        const newTrackIndex = this.eventLocationTracks.findIndex((track) => track.id === data.event_location_track_id);
+        if (newTrackIndex !== -1) {
+          this.eventLocationTracks[newTrackIndex].track_slots.push(data);
+        }
+        this.sortedTrackSlots[data.event_location_track_id].push(data);
+        this.sortedTrackSlots[data.event_location_track_id] = this.sortTrackSlots(
+          this.sortedTrackSlots[data.event_location_track_id],
+        );
+      } else {
+        const eventLocationTrack = this.eventLocationTracks.find((track) =>
+          track.track_slots.some((slot) => slot.id === trackSlotId),
+        );
+        if (eventLocationTrack) {
+          eventLocationTrack.track_slots = eventLocationTrack.track_slots.map((slot) => {
+            return slot.id === trackSlotId ? data : slot;
+          });
+          this.sortedTrackSlots[eventLocationTrack.id] = this.sortTrackSlots(eventLocationTrack.track_slots);
+        }
+      }
+    } else {
+      this.eventLocationTracks[eltIndex].track_slots.splice(slotIndex, 1);
+      this.sortedTrackSlots[this.eventLocationTracks[eltIndex].id] = this.sortedTrackSlots[
+        this.eventLocationTracks[eltIndex].id
+      ].filter((slot) => slot.id !== trackSlotId);
     }
 
-    this.trackSlotsService.updateTrackSlot(slot, trackSlotId).subscribe((data) => {
-      const eventLocationTrack = this.eventLocationTracks.find((track) =>
-        track.track_slots.some((slot) => slot.id === trackSlotId),
-      );
-      if (eventLocationTrack) {
-        eventLocationTrack.track_slots = eventLocationTrack.track_slots.map((slot) => {
-          return slot.id === trackSlotId ? data : slot;
-        });
-        this.sortedTrackSlots[eventLocationTrack.id] = this.sortTrackSlots(eventLocationTrack.track_slots);
-        this.changeDetectorRef.markForCheck();
-      }
-      this.updateSession.emit(data);
-      this.toastLogService.successDialog('Slot Updated!');
-      this.trackSlotForm.reset();
-      this.changeDetectorRef.markForCheck();
-    });
+    this.toastLogService.successDialog('Slot Updated!');
+    this.trackSlotForm.reset();
+    this.changeDetectorRef.detectChanges();
   }
 
   confirmDeleteSlot(trackSlot) {
@@ -286,8 +242,17 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   deleteSlot(deleteConf, trackSlot) {
     if (deleteConf) {
       this.trackSlotsService.deleteTrackSlot(trackSlot.id).subscribe((data) => {
-        this.removeSession.emit(trackSlot);
-        this.toastLogService.successDialog('Deleted');
+        const trackIndex = this.eventLocationTracks.findIndex(
+          (track) => track.id === trackSlot.event_location_track_id,
+        );
+        if (trackIndex !== -1) {
+          const slotIndex = this.eventLocationTracks[trackIndex].track_slots.findIndex(
+            (slot) => slot.id === trackSlot.id,
+          );
+          if (slotIndex !== -1) {
+            this.eventLocationTracks[trackIndex].track_slots.splice(slotIndex, 1);
+          }
+        }
         this.sortedTrackSlots[trackSlot.event_location_track_id] = this.sortedTrackSlots[
           trackSlot.event_location_track_id
         ].filter((slot) => slot.id !== trackSlot.id);
@@ -306,21 +271,21 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   }
 
   createTrack() {
-    this.windowRef.close();
-
     this.eventLocationTracksService
       .createEventLocationTrack(
         this.event.id,
-        this.eventLocationId,
+        this.eventLocation.id,
         this.eventLocationTrackForm.get('event_location_track').value,
       )
       .subscribe((data) => {
-        this.addTrack.emit(data);
+        this.eventLocationTracks.push(data);
+        this.changeDetectorRef.markForCheck();
         this.setTrackVisibility();
         this.toastLogService.successDialog('New Track Added!');
         this.eventLocationTrackForm.reset();
         this.changeDetectorRef.markForCheck();
       });
+    this.windowRef.close();
   }
 
   showEditTrackForm(eventLocationTrack) {
@@ -328,7 +293,6 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
     this.eventLocationTrackForm.get('event_location_track').patchValue({
       name: eventLocationTrack.name,
     });
-
     if (eventLocationTrack.embedded_video_stream) {
       this.eventLocationTrackForm.get('event_location_track').patchValue({
         // @ts-ignore
@@ -337,16 +301,25 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
     }
     this.windowRef = this.windowService.open(this.eventLocationTrackFormTemplate, {
       title: `Edit ${eventLocationTrack.name}`,
-      context: { operationType: 'edit', eventLocationTrackId: eventLocationTrack.id },
+      context: {
+        operationType: 'edit',
+        eventLocationTrackId: eventLocationTrack.id,
+        eventLocationTrack: eventLocationTrack,
+      },
     });
   }
 
-  editTrack(eventLocationTrackId) {
-    this.windowRef.close();
+  editTrack(eventLocationTrackId, embeddedFormData, eventLocationTrack) {
     this.eventLocationTracksService
-      .updateEventLocationTrack(eventLocationTrackId, this.eventLocationTrackForm.get('event_location_track').value)
+      .updateEventLocationTrack(
+        eventLocationTrackId,
+        this.eventLocationTrackForm.get('event_location_track').value,
+        embeddedFormData,
+      )
       .subscribe((data) => {
-        this.updateTrack.emit(data);
+        const trackPosition = this.eventLocationTracks.findIndex((k) => k.id === eventLocationTrackId);
+        this.eventLocationTracks[trackPosition] = data;
+        this.windowRef?.close();
         this.toastLogService.successDialog(`Updated to ${data.name}`);
         this.eventLocationTrackForm.reset();
         this.changeDetectorRef.markForCheck();
@@ -363,7 +336,8 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   deleteTrack(deleteConf, eventLocationTrackId) {
     if (deleteConf) {
       this.eventLocationTracksService.deleteEventLocationTrack(eventLocationTrackId).subscribe((data) => {
-        this.removeTrack.emit(eventLocationTrackId);
+        const trackPosition = this.eventLocationTracks.findIndex((k) => k.id === eventLocationTrackId);
+        this.eventLocationTracks.splice(trackPosition, 1);
         this.toastLogService.successDialog('Deleted');
         this.changeDetectorRef.markForCheck();
       });
@@ -372,7 +346,7 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
   }
 
   findLocation() {
-    const location = this.eventLocations.find((el) => el.id === this.eventLocationId);
+    const location = this.eventLocations.find((el) => el.id === this.eventLocation.id);
     if (location.event_type === EEventType.ONLINE_ONLY) {
       (this.eventLocationTrackForm.controls.event_location_track as FormGroup).addControl(
         'embedded_video_stream',
@@ -504,5 +478,83 @@ export class EventLocationTracksComponent implements OnInit, AfterViewInit {
 
   onTagRemove(tagToRemove: NbTagComponent): void {
     this.tags = this.tags.filter((tag) => tag !== tagToRemove.text);
+  }
+
+  speakerSelected(event, index) {
+    const selectedSpeakerId = Number(event.target.value);
+    const speakerIdsArray = this.trackSlotForm.get('track_slot.track_slot_speaker_registration_ids') as FormArray;
+    speakerIdsArray.at(index).setValue(selectedSpeakerId);
+  }
+
+  addSpeakerDropdown() {
+    const speakerControl = this.fb.control('');
+    const speakerIdsArray = this.trackSlotForm.get('track_slot.track_slot_speaker_registration_ids') as FormArray;
+    speakerIdsArray.push(speakerControl);
+  }
+
+  addSpeakerToDropdown(value) {
+    const speakerIdsArray = this.trackSlotForm.get('track_slot.track_slot_speaker_registration_ids') as FormArray;
+    speakerIdsArray.push(this.fb.control(value));
+  }
+
+  removeSpeakerDropdown(index: number) {
+    const speakerIdsArray = this.trackSlotForm.get('track_slot.track_slot_speaker_registration_ids') as FormArray;
+
+    // Check if the index is valid before attempting to remove the control.
+    if (index >= 0 && index < speakerIdsArray.length) {
+      speakerIdsArray.removeAt(index);
+    }
+  }
+
+  removeAllDropdowns() {
+    const speakerIdsArray = this.trackSlotForm.get('track_slot.track_slot_speaker_registration_ids') as FormArray;
+    while (speakerIdsArray.length > 0) {
+      speakerIdsArray.removeAt(0);
+    }
+  }
+
+  getLocationTracks() {
+    this.isLoading = true;
+    this.trackSlotsService
+      .getTrackSlots(this.eventLocation.location.id, this.eventLocationDate)
+      .subscribe((data: any) => {
+        this.eventLocationTracks = data;
+        this.isLoading = false;
+        const visibility = this.eventLocationTracks.length <= 2;
+        for (const event_location_track of this.eventLocationTracks) {
+          this.trackSlotVisibility[event_location_track.id] = visibility;
+          this.sortedTrackSlots[event_location_track.id] = this.sortTrackSlots(event_location_track.track_slots);
+        }
+      });
+  }
+
+  openEmbeddedLink(eventLocationTrack, elti) {
+    this.eventLocationTrackForm.get('event_location_track').patchValue({
+      name: eventLocationTrack.name,
+    });
+    if (eventLocationTrack.embedded_video_stream) {
+      this.eventLocationTrackForm.get('event_location_track').patchValue({
+        embedded_video_stream: eventLocationTrack.embedded_video_stream,
+      });
+    }
+    this.dialogRef = this.dialogService.open(this.embeddedVideoTemplate, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      context: {
+        eventLocationTrack: eventLocationTrack,
+        elti: elti,
+        embeddedVideoStream: eventLocationTrack.embedded_video_stream,
+      },
+    });
+  }
+
+  updateEmbededContent(embeddedFormData, eventLocationTrack, elti) {
+    this.eventLocationTracks[elti].embedded_video_stream = embeddedFormData;
+    this.dialogRef.close();
+    this.editTrack(eventLocationTrack.id, embeddedFormData, eventLocationTrack);
+  }
+
+  splitTags(tag: string): string[] {
+    return tag ? tag.split(/[\s\n]+/) : [];
   }
 }

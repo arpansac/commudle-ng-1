@@ -1,127 +1,194 @@
-<div class="emailer-component">
-  <form [formGroup]="eMailForm" (ngSubmit)="submitForm()">
-    <div class="fieldset">
-      <p>{{ community.name }}</p>
-      <nb-radio-group name="members" formControlName="members" (valueChange)="toggleEventSpecificEmail($event)">
-        <nb-radio value="{{ EemailTypes.GENERAL_ALL }}"> General Email (to All or a Specific Member) </nb-radio>
-        <nb-radio value="event"> Event Specific Emails </nb-radio>
-      </nb-radio-group>
-    </div>
+<div class="emailer-component custom-scrollbar">
+  <form [formGroup]="eMailForm">
+    <div *ngIf="showEmailFilters" class="filters">
+      <div class="filter">
+        <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($any($event.target).value)">
+          <option value="" disabled>Filter Emails</option>
+          <option selected value="{{ EemailTypes.GENERAL_ALL }}">
+            General Email (To All or a Specific Member)
+            <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
+          </option>
+          <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
+          <option value="event">
+            Event Specific Emails
+            <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section>
+          </option>
+        </select>
+      </div>
 
-    <div class="fieldset" *ngIf="isEventSpecificEmail">
-      <nb-select
-        placeholder="Select Event"
-        formControlName="event_id"
-        (selectedChange)="getEventDataFormEntityGroups($event)"
-        filled
-        status="primary"
-      >
-        <nb-option *ngFor="let event of events" [value]="event.id">
-          {{ event.name }}
-        </nb-option>
-      </nb-select>
+      <div *ngIf="isEventSpecificEmail" class="filters">
+        <select (change)="getEventDataFormEntityGroups($any($event.target).value)" formControlName="event_id">
+          <option value="null" selected disabled>Select Event</option>
+          <option *ngFor="let event of events" [value]="event.id">
+            {{ event.name }}
+          </option>
+        </select>
 
-      <div class="fieldset" class="form-mail-type-selection">
-        <div class="fieldset" *ngIf="eventDataFormEntityGroups.length > 0">
-          <p>Source?</p>
-          <nb-radio-group
-            name="event_data_form_entity_group_id"
-            formControlName="event_data_form_entity_group_id"
-            (valueChange)="toggleEventDataFormEntityGroupType($event)"
-          >
-            <nb-radio *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
-              {{ edfeg.name }}
-            </nb-radio>
-          </nb-radio-group>
-        </div>
-        <div class="fieldset" *ngIf="eventSimpleRegistration">
-          <p>Single Click Registration</p>
-        </div>
+        <div class="form-mail-type-selection filters">
+          <div *ngIf="eventDataFormEntityGroups.length > 0" class="filter">
+            <select
+              (change)="toggleEventDataFormEntityGroupType($any($event.target).value)"
+              formControlName="event_data_form_entity_group_id"
+              name="event_data_form_entity_group_id"
+            >
+              <option value="null" selected disabled>Select Form</option>
+              <option *ngFor="let edfeg of eventDataFormEntityGroups" [value]="edfeg.id">
+                {{ edfeg.name }}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="eventSimpleRegistration">
+            <p>Single Click Registration</p>
+          </div>
 
-        <div class="fieldset" *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration">
-          <p>Let's Be Specific!</p>
-          <nb-radio-group
-            *ngIf="selectedEventDataFormEntityGroup"
-            name="registration_selection_type"
-            formControlName="registration_selection_type"
-            (valueChange)="toggleEmailBodyValidation($event)"
-          >
-            <nb-radio *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
-              {{ reg.display }}
-            </nb-radio>
-          </nb-radio-group>
+          <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration" class="filter">
+            <select
+              *ngIf="selectedEventDataFormEntityGroup && selectedFormRegistrationType.length > 0"
+              (change)="toggleEmailBodyValidation($any($event.target).value)"
+              formControlName="registration_selection_type"
+            >
+              <option value="" disabled selected>Let's Be Specific!</option>
+              <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
+                {{ reg.display }}
+              </option>
+            </select>
 
-          <nb-radio-group
-            *ngIf="eventSimpleRegistration"
-            name="registration_selection_type"
-            formControlName="registration_selection_type"
-            (valueChange)="toggleEmailBodyValidation($event)"
-          >
-            <nb-radio *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
-              {{ reg.display }}
-            </nb-radio>
-          </nb-radio-group>
+            <select
+              *ngIf="eventSimpleRegistration && selectedFormRegistrationType.length > 0"
+              (change)="toggleEmailBodyValidation($any($event.target).value)"
+              formControlName="registration_selection_type"
+              name="registration_selection_type"
+            >
+              <option value="" selected disabled>Let's Be Specific!</option>
+              <option *ngFor="let reg of selectedFormRegistrationType" [value]="reg.value">
+                {{ reg.display }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
     <div
-      class="fieldset"
       *ngIf="
         [EemailTypes.GENERAL_ALL, EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes(
           selectedEmailType
         ) == true
       "
+      class="fieldset"
     >
       <div>
-        <label>
+        <label *ngIf="recipientUsername" class="label">
           To
-          <input
-            type="text"
-            nbInput
-            fullWidth
-            formControlName="recipient_email"
-            placeholder="Enter 1 email addresses or leave blank for all matching members"
-          />
+          <br />
+          <b>Selected Username</b>: <u>{{ recipientUsername }}</u>
         </label>
+        <label *ngIf="!recipientUsername" for="recipient_email" class="label">To</label>
+        <input
+          *ngIf="!recipientUsername"
+          formControlName="recipient_email"
+          fullWidth
+          nbInput
+          placeholder="Enter 1 email addresses or leave blank for all matching members"
+          type="text"
+          fieldSize="small"
+        />
       </div>
-      <div>
-        <nb-checkbox status="basic" formControlName="resend"> Resend (if already sent) </nb-checkbox>
+      <div class="resend-mail">
+        <nb-checkbox formControlName="resend" status="basic"> Resend (if already sent)</nb-checkbox>
       </div>
     </div>
     <div class="fieldset">
-      <label>
-        Subject*
-        <input type="text" nbInput fullWidth formControlName="subject" />
-      </label>
+      <label for="subject" class="label"> Subject<span class="mandatory-field">*</span></label>
+      <input
+        formControlName="subject"
+        fullWidth
+        fieldSize="small"
+        nbInput
+        type="text"
+        placeholder="Add Your Subject Line"
+      />
       <span
         *ngIf="
           eMailForm['controls'].subject.touched &&
           eMailForm['controls'].subject.invalid &&
           eMailForm['controls'].subject.errors.required
         "
-        class="validation-error-text"
       >
-        Required Field
+        <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
       </span>
     </div>
     <div class="fieldset">
-      <label> Message From Organizers </label>
-      <span
-        *ngIf="
-          eMailForm['controls'].body.touched &&
-          eMailForm['controls'].body.invalid &&
-          eMailForm['controls'].body.errors.required
-        "
-        class="validation-error-text"
+      <label class="label"
+        >Message From Organizers<span *ngIf="!isEventSpecificEmail" class="mandatory-field">*</span></label
       >
-        Required Field
-      </span>
-      <editor formControlName="body" apiKey="e34vgv7ocd6ttka8t6qcd07g7lifas1y9lyve8ze1013nefs" [init]="tinyMCE">
-      </editor>
+      <editor [init]="tinyMCE" formControlName="body"> </editor>
     </div>
-
-    <div class="submit-button">
-      <button [disabled]="!eMailForm.valid" fullWidth nbButton status="primary" type="submit">Send Mail</button>
+    <div class="action-btns">
+      <button
+        (click)="previewEmail(); $event.stopPropagation()"
+        [disabled]="
+          !eMailForm.valid ||
+          isEmailSending ||
+          (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
+          (eventDataFormEntityGroups.length > 0 &&
+            !eMailForm.get('event_data_form_entity_group_id').value &&
+            isEventSpecificEmail) ||
+          ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
+            !eMailForm.get('registration_selection_type').value &&
+            isEventSpecificEmail)
+        "
+        nbButton
+        status="primary"
+        shape="semi-round"
+        type="button"
+      >
+        Preview Email
+      </button>
+      <button
+        (click)="submitForm()"
+        [disabled]="
+          !eMailForm.valid ||
+          isEmailSending ||
+          (isEventSpecificEmail && !eMailForm.get('event_id').value) ||
+          (!eMailForm.get('event_data_form_entity_group_id').value && isEventSpecificEmail) ||
+          ((selectedEventDataFormEntityGroup || eventSimpleRegistration) &&
+            !eMailForm.get('registration_selection_type').value &&
+            isEventSpecificEmail)
+        "
+        fullWidth
+        nbButton
+        status="primary"
+        type="submit"
+        class="submit-button"
+        shape="semi-round"
+      >
+        Send Mail
+      </button>
     </div>
   </form>
 </div>
+<ng-template #emailPreview let-ref="dialogRef">
+  <nb-card class="template-card">
+    <nb-card-header
+      ><h3>Email Preview</h3>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon></button
+    ></nb-card-header>
+    <nb-card-body>
+      <p class="sample-preview">This is a preview of your email</p>
+      <div class="info-message">
+        <commudle-alert
+          [info]="true"
+          message="This preview might contain some dummy values, please ignore them. The email being sent to the user will be with actual values."
+        ></commudle-alert>
+      </div>
+      <div class="warning-message">
+        <commudle-alert warning="This feature is in beta"> </commudle-alert>
+      </div>
+      <div [innerHTML]="previewData | safe : 'html'" class="inner-html"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" shape="semi-round" (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

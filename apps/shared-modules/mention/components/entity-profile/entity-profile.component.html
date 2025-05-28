@@ -34,23 +34,17 @@
   </div>
   <div class="profile-info">
     <p class="name {{ size }} d-flex">
-      <strong>{{ entity.name | truncatetext: 25 }}</strong>
-      <img
-        *ngIf="entity.is_expert"
-        alt="Expert Tick"
-        class="expert-icon"
-        src="/assets/images/Expert-Tick.svg"
-        title="Expert Tick"
-      />
+      <strong>{{ entity.name | truncatetext : 25 }}</strong>
+      <commudle-user-expert-tick *ngIf="entity.is_expert"></commudle-user-expert-tick>
     </p>
 
     <p *ngIf="entity.type === 'users'" class="description {{ size }}">
-      {{ entity.username | truncatetext: 30 }}
+      {{ entity.username | truncatetext : 30 }}
     </p>
 
     <p *ngIf="entity.type === 'communities'" class="description {{ size }}">(community)</p>
     <p *ngIf="entity.type !== 'users' && entity.type !== 'communities'" class="description {{ size }}">
-      ({{ entity.type | slice: 0:-1 }})
+      ({{ entity.type | slice : 0 : -1 }})
     </p>
   </div>
 </div>

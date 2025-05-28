@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'com-flex': alignFollowToRight }">
+<div [ngClass]="{ 'align-right': alignFollowToRight, 'com-w-72': horizontalScroll }">
   <a (click)="profileClicked()" [routerLink]="['/users', user.username]" target="_blank">
     <div class="user-profile-large d-flex align-items-start">
       <div>
@@ -14,24 +14,73 @@
         />
       </div>
       <div class="details">
-        <div class="name d-flex align-items-center">
-          <p
-            [activateMiniProfileDirective]="activateMiniProfileDirective"
-            [username]="user.username"
-            appMiniUserProfile
-            class="com-line-clamp-1"
-          >
-            {{ user.name }}
-          </p>
-          <img *ngIf="user.is_expert" alt="Expert Tick" src="/assets/images/Expert-Tick.svg" title="Expert Tick" />
+        <div class="name-header">
+          <div class="name" [ngClass]="{ 'align-right-speaker-count': alignSpeakerCountToRight }">
+            <p
+              [activateMiniProfileDirective]="activateMiniProfileDirective"
+              [username]="user.username"
+              appMiniUserProfile
+            >
+              {{ user.name }}
+            </p>
+            <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
+            <commudle-user-personal-connect
+              [userConnect]="user.distance_from_current_user"
+            ></commudle-user-personal-connect>
+          </div>
+          <div *ngIf="showSpeakersCount && alignSpeakerCountToRight" class="speaker-count">
+            <app-badge
+              *ngIf="user.speaker_events_count > 0"
+              [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'x-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-opacity-60'"
+            ></app-badge>
+          </div>
         </div>
-        <p class="username com-line-clamp-1 com-w-max com-mt-1" title="{{ user.username }}">
-          @{{ user.username | truncatetext : maxUserNameLength }}
-        </p>
-        <app-hiring-looking-works-tags [user]="user" [size]="'small'"></app-hiring-looking-works-tags>
-        <p [ngClass]="{ 'com-line-clamp-3': truncateDesignation }" class="designation" title="{{ user.designation }}">
+        <p class="username" title="{{ user.username }}">@{{ user.username | truncatetext : maxUserNameLength }}</p>
+        <app-hiring-looking-works-tags
+          *ngIf="showHiringLookingTags"
+          [user]="user"
+          [size]="'small'"
+        ></app-hiring-looking-works-tags>
+        <p
+          [ngClass]="{ 'com-line-clamp-2': truncateDesignation, 'com-h-12': horizontalScroll }"
+          class="designation"
+          title="{{ user.designation }}"
+        >
           {{ user.designation || '--' }}
         </p>
+        <p *ngIf="user.followers_count > 0 && showFollowersCount" class="followers-count">
+          <span>{{ user.followers_count }}</span> Follower{{ user.followers_count > 1 ? 's' : '' }}
+        </p>
+        <div *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadge" class="talks-leader">
+          <button
+            *ngIf="showLeaderBadge && user.is_community_leader"
+            nbButton
+            shape="round"
+            size="tiny"
+            outline
+            class="leader"
+          >
+            Leader
+          </button>
+          <div
+            *ngIf="showSpeakersCount && !alignSpeakerCountToRight"
+            class="speaker-count"
+            [ngClass]="{ 'desktop-speaker-count': !alignSpeakerCountToRight }"
+          >
+            <app-badge
+              *ngIf="user.speaker_events_count > 0"
+              [text]="user.speaker_events_count + (user.speaker_events_count > 1 ? ' Talks Given' : ' Talk Given')"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'xx-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-opacity-60'"
+            ></app-badge>
+          </div>
+        </div>
         <div *ngIf="showSocialLinks" class="social com-mt-2 com-flex com-gap-3">
           <a *ngIf="user.linkedin" [href]="user.linkedin | completeurl : 'linkedin'" target="_blank">
             <nb-icon icon="linkedin" status="primary"></nb-icon>
@@ -53,7 +102,18 @@
       </div>
     </div>
   </a>
-  <div *ngIf="showFollowButton" [ngClass]="{ 'align-right': alignFollowToRight }" class="followers">
-    <app-user-follow [username]="user.username" class="follow-btn"></app-user-follow>
+  <div
+    *ngIf="showFollowButton"
+    [ngClass]="{ 'align-right': alignFollowToRight, 'com-mt-4': !alignFollowToRight }"
+    class="followers"
+  >
+    <app-user-follow
+      [username]="user.username"
+      [name]="user.name"
+      [userId]="user.id"
+      [isMobileWidthFull]="isMobileWidthFull"
+      [appearance]="appearanceOfFollowButton"
+      class="follow-btn"
+    ></app-user-follow>
   </div>
 </div>

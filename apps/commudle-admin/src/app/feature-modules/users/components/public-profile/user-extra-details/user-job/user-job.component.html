@@ -1,7 +1,6 @@
 <nb-card accent="primary" class="user-job" id="jobs">
   <nb-card-header>
-    <fa-icon [icon]="faBriefcase" class="com-text-primary-500"></fa-icon>
-    Jobs
+    <a [routerLink]="'.'" fragment="jobs"><fa-icon [icon]="faBriefcase" class="com-text-primary-500"></fa-icon> Jobs</a>
   </nb-card-header>
   <nb-card-body>
     <div *ngIf="jobs.length === 0" class="com-text-2xl com-text-gray-400">No Jobs Posted</div>
@@ -138,8 +137,8 @@
             </nb-select>
           </label>
           <label class="com-col-span-2">
-            Location<span *ngIf="jobForm['controls'].location_type.value === 'office'">*</span>
-            <input formControlName="location" fullWidth nbInput type="text" />
+            Location*
+            <input formControlName="location" fullWidth nbInput type="text" id="addressInput" />
           </label>
         </div>
         <label *ngIf="isEditing">
@@ -151,7 +150,7 @@
           </nb-select>
         </label>
         <label>
-          Responsibilities & Perks
+          Responsibilities & Perks*
           <textarea formControlName="description" fullWidth nbInput type="text" commudleTextareaAutoresize></textarea>
         </label>
         <label>

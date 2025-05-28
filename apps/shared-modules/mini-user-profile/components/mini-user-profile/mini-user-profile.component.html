@@ -8,7 +8,7 @@
     ></app-user-profile-card-large>
     <div *ngIf="miniUser.tags.length > 0" class="user-tags">
       <nb-tag-list>
-        <nb-tag *ngFor="let tag of miniUser.tags" [text]="tag.name"></nb-tag>
+        <nb-tag *ngFor="let tag of miniUser.tags.slice(0, 5)" [text]="tag.name"></nb-tag>
       </nb-tag-list>
     </div>
     <div class="user-statistics-container">
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div (click)="closePopup()" class="buttons-container">
-      <app-user-follow [username]="miniUser.username"></app-user-follow>
+      <app-user-follow [username]="miniUser.username" [name]="miniUser.name" [userId]="miniUser.id"></app-user-follow>
       <button (click)="openChatWithUser()" class="anim-shadow" nbButton size="small">
         <nb-icon icon="paper-plane"></nb-icon>
         Message

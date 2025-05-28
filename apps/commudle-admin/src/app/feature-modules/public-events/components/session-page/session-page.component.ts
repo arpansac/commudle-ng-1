@@ -21,7 +21,7 @@ import { IUser } from 'apps/shared-models/user.model';
 import { hmsActions, hmsStore } from 'apps/shared-modules/hms-video/stores/hms.store';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-session-page',
@@ -58,6 +58,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   EUserRoles = EUserRoles;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private trackSlotsService: TrackSlotsService,
@@ -78,7 +80,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       `${this.event.name} | Live`,
       this.event.description.replace(/<[^>]*>/g, ''),
-      this.event.header_image_path ? this.event.header_image_path : this.community.logo_path,
+      this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
     );
   }
 
@@ -86,7 +88,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     this.resolveData();
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         this.getMyRoles();
       }),
@@ -95,6 +97,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((value) => value.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
 
     // Show Footer
   }
@@ -116,9 +120,13 @@ export class SessionPageComponent implements OnInit, OnDestroy {
         this.endTime = this.event.end_time;
         if (this.event.custom_agenda) {
           this.activatedRoute.queryParams.subscribe((params) => {
-            this.getTrackSlot(params.track_slot_id);
-            this.pollableId = params.track_slot_id;
-            this.pollableType = 'TrackSlot';
+            if (params.event_location_track_id) {
+              this.getEventEmbeddedVideoStream('EventLocationTrack', params.event_location_track_id);
+            } else if (params.track_slot_id) {
+              this.getTrackSlot(params.track_slot_id);
+              this.pollableId = params.track_slot_id;
+              this.pollableType = 'TrackSlot';
+            }
           });
         } else {
           this.getEventEmbeddedVideoStream();
@@ -175,8 +183,8 @@ export class SessionPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEventEmbeddedVideoStream() {
-    this.embeddedVideoStreamsService.pGet('Event', this.event.id).subscribe((data) => {
+  getEventEmbeddedVideoStream(streamable_type = 'Event', streamable_id = this.event.id) {
+    this.embeddedVideoStreamsService.pGet(streamable_type, streamable_id).subscribe((data) => {
       if (data) {
         this.embeddedVideoStream = data;
         this.markUserObjectVisit('EmbeddedVideoStream', this.embeddedVideoStream.id);

@@ -10,16 +10,17 @@
       (sendReply)="emitReply(message.id, $event)"
       *ngFor="let message of messages"
       [allActions]="allActions"
-      [canReply]="true"
+      [canReply]="true && discussionOpen"
       [currentUser]="currentUser"
       [message]="message"
       [permittedActions]="permittedActions"
+      [showFullDateTime]="true"
     ></app-message>
   </div>
   <button
     (click)="scrollToBottom()"
     *ngIf="messageContainer && !isUserNearBottom()"
-    class="new-message-btn"
+    class="scroll-to-bottom"
     nbButton
     shape="round"
     size="small"

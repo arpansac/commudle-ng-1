@@ -3,7 +3,7 @@ hr {
 }
 
 .student-no-profit {
-  @apply com-px-6 com-mx-auto com-pb-24 md:com-px-72px;
+  @apply com-px-6 md:com-mx-auto com-pb-24 md:com-px-72px;
 
   div {
     @apply com-flex md:com-flex-row com-justify-between com-m-0 com-p-0 com-flex-col-reverse com-gap-x-28;
@@ -12,17 +12,17 @@ hr {
       @apply com-mx-4 com-flex com-flex-col com-my-0;
 
       h1 {
-        @apply com-mb-0 com-p-0 md:com-mt-16;
+        @apply com-mb-0 com-p-0 md:com-mt-16 com-text-Yankees-Blue;
       }
       .subheading {
-        @apply com-mt-8 com-text-2xl com-mb-0;
+        @apply com-mt-8 com-text-2xl com-mb-0 com-text-Yankees-Blue;
       }
       .sub-heading {
         @apply com-mt-8 com-mb-0 com-text-base com-text-gray-500;
       }
     }
     .image {
-      @apply com-ml-4 com-my-0 com-p-0 com-mr-16 com-mt-12;
+      @apply md:com-ml-4 com-my-0 com-p-0 md:com-mr-16 md:com-mt-12 com-mx-0;
     }
   }
 }
@@ -34,7 +34,7 @@ hr {
     @apply com-max-w-3xl com-mx-4;
 
     h2 {
-      @apply com-mb-0 com-p-0 md:com-mt-12;
+      @apply com-mb-0 com-p-0 md:com-mt-12 com-text-Yankees-Blue;
     }
     div {
       p {
@@ -53,17 +53,20 @@ hr {
   @apply com-px-6 com-mx-auto com-pb-24 md:com-px-72px;
 
   div {
-    @apply com-flex md:com-flex-row com-mt-12 com-mb-0 com-p-0 com-flex-col com-gap-x-28;
+    @apply com-flex md:com-flex-row com-mt-12 com-mb-0 com-p-0 com-flex-col md:com-gap-x-28 com-overflow-x-hidden;
 
     .image {
-      @apply com-mx-4 com-my-0 com-p-0;
+      @apply md:com-mx-4 com-my-0 com-p-0 com-mx-0 com-w-full;
+      img {
+        @apply com-w-full;
+      }
     }
 
     .content {
       @apply com-flex com-flex-col;
 
       .subheading {
-        @apply com-text-2xl com-my-0;
+        @apply com-text-2xl com-my-0 com-text-Yankees-Blue;
       }
 
       a {
@@ -83,7 +86,7 @@ hr {
     @apply com-max-w-3xl com-mx-4;
 
     h2 {
-      @apply com-my-0 com-pt-12 com-p-0;
+      @apply com-my-0 com-pt-12 com-p-0 com-text-Yankees-Blue;
     }
 
     ol {
@@ -95,29 +98,6 @@ hr {
 
     p {
       @apply com-mt-8 com-text-base com-text-gray-500;
-    }
-  }
-}
-
-.faq {
-  @apply com-max-w-2xl com-mx-auto com-py-16 com-px-4;
-  @apply sm:com-py-24 sm:com-px-6 lg:com-max-w-7xl lg:com-px-8;
-
-  .heading {
-    @apply com-my-0 com-text-3xl com-tracking-tight com-text-white;
-    @apply sm:com-text-4xl;
-  }
-
-  .questions {
-    @apply com-space-y-10;
-    @apply lg:com-space-y-0 lg:com-grid lg:com-gap-x-8 lg:com-gap-y-10;
-
-    .question {
-      @apply com-text-white com-text-base;
-    }
-
-    .answer {
-      @apply com-mt-3 com-ml-0 com-text-gray-400 com-text-base;
     }
   }
 }

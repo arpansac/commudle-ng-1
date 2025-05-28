@@ -1,0 +1,29 @@
+section {
+  @apply com-px-6 com-py-4 com-overflow-hidden;
+  .back-button {
+    @apply com-cursor-pointer com-w-max com-text-[#8f9bb3] com-mb-5;
+  }
+
+  .edfeg-name {
+    @apply com-text-base com-mb-3;
+  }
+  .table-container {
+    @apply com-overflow-y-auto;
+  }
+  table {
+    @apply com-w-full com-border-collapse;
+  }
+
+  td,
+  th {
+    @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-2;
+  }
+
+  th {
+    @apply com-bg-Bright-Gray;
+  }
+
+  tr {
+    @apply hover:com-bg-gray-50;
+  }
+}

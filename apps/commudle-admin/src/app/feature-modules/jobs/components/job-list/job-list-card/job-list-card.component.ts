@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef } from '@angular/core';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EJobLocationType, EJobStatus, IJob } from 'apps/shared-models/job.model';
 import { IUserResume } from 'apps/shared-models/user_resume.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import {
   faBuilding,
   faMoneyBills,
@@ -31,7 +31,7 @@ import { IUser } from 'apps/shared-models/user.model';
   templateUrl: './job-list-card.component.html',
   styleUrls: ['./job-list-card.component.scss'],
 })
-export class JobListCardComponent implements OnInit {
+export class JobListCardComponent implements OnInit, OnDestroy {
   @Input() job: IJob;
   @Input() applyButton = true;
   @Input() applicationsCount = true;
@@ -67,6 +67,8 @@ export class JobListCardComponent implements OnInit {
   faEye = faEye;
   faTrash = faTrash;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private nbToastrService: NbToastrService,
@@ -77,15 +79,21 @@ export class JobListCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
-    this.jobLink = `${environment.app_url}/jobs/${this.job.id}`;
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+        this.currentUser = data;
+      }),
+    );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  copyTextToClipboard(id): void {
+  copyTextToClipboard(id: number): void {
+    this.jobLink = `${environment.app_url}/jobs/${id}`;
     if (!this.navigatorShareService.canShare()) {
       if (this.clipboard.copy(this.jobLink)) {
         this.nbToastrService.success('Copied job link to clipboard!', 'Success');

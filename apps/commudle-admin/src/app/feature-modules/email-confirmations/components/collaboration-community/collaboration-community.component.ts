@@ -2,7 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventCollaborationCommunitiesService } from 'apps/commudle-admin/src/app/services/event-collaboration-communities.service';
 import { ICommunity } from 'apps/shared-models/community.model';
-import { IEventCollaborationCommunity } from 'apps/shared-models/event_collaboration_community.model';
+import {
+  IEventCollaborationCommunity,
+  EEventCollaborationCommunityStatus,
+} from 'apps/shared-models/event_collaboration_community.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -12,7 +15,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 })
 export class CollaborationCommunityComponent implements OnInit, OnDestroy {
   eventCollaboration: IEventCollaborationCommunity;
+  EEventCollaborationCommunityStatus = EEventCollaborationCommunityStatus;
   community: ICommunity;
+  collaborationToken: string;
+  status: EEventCollaborationCommunityStatus;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -21,7 +27,16 @@ export class CollaborationCommunityComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((data) => this.confirmCollaboration(data.token));
+    this.activatedRoute.queryParams.subscribe((data) => {
+      // this.confirmCollaboration(data.token);
+      this.collaborationToken = data.token;
+      this.status = data.status;
+      if (this.status) {
+        this.updateStatus();
+      } else {
+        this.confirmCollaboration();
+      }
+    });
 
     this.seoService.setTitle('Confirm Collaboration');
     this.seoService.noIndex(true);
@@ -31,8 +46,15 @@ export class CollaborationCommunityComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(false);
   }
 
-  confirmCollaboration(token) {
-    this.eventCollaborationCommunitiesService.confirmCollaboration(token).subscribe((data) => {
+  confirmCollaboration() {
+    this.eventCollaborationCommunitiesService.confirmCollaboration(this.collaborationToken).subscribe((data) => {
+      this.eventCollaboration = data.event_collaboration_community;
+      this.community = data.community;
+    });
+  }
+
+  updateStatus() {
+    this.eventCollaborationCommunitiesService.updateStatus(this.collaborationToken, this.status).subscribe((data) => {
       this.eventCollaboration = data.event_collaboration_community;
       this.community = data.community;
     });

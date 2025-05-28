@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { faRectangleAd } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-community-controls',
@@ -7,6 +8,9 @@ import { SeoService } from 'apps/shared-services/seo.service';
   styleUrls: ['./community-controls.component.scss'],
 })
 export class CommunityControlsComponent implements OnInit {
+  icons = {
+    faRectangleAd,
+  };
   constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {

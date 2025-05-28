@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faInfo } from '@fortawesome/free-solid-svg-icons';
-import { NbWindowService } from '@commudle/theme';
+import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { EventEntryPassesService } from 'apps/commudle-admin/src/app/services/event-entry-passes.service';
@@ -13,6 +13,7 @@ import { IRegistrationStatus } from 'apps/shared-models/registration_status.mode
 import { IRegistrationType } from 'apps/shared-models/registration_type.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-user-details-cell',
@@ -35,12 +36,16 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
 
   @Output() updatedRegistrationStatus = new EventEmitter();
   @Output() updateEntryPass = new EventEmitter();
+  moment = moment;
+
+  @ViewChild('confirmDeleteEntryPassDialog') confirmDeleteEntryPassDialog: TemplateRef<any>;
 
   constructor(
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private toastLogService: LibToastLogService,
     private eventEntryPassesService: EventEntryPassesService,
     private windowService: NbWindowService,
+    private nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -55,7 +60,11 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     this.dataFormEntityResponseGroupsService
       .updateEventRegistrationStatus(registrationStatusId, this.userResponse.id)
       .subscribe((data) => {
-        this.updatedRegistrationStatus.emit(data);
+        if (data.entry_pass) {
+          this.userResponse.entry_pass = data.entry_pass;
+        }
+        this.updatedRegistrationStatus.emit(data.registration_status);
+        this.updateEntryPass.emit(data.entry_pass);
         this.toastLogService.successDialog('Updated!');
       });
   }
@@ -87,7 +96,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
       context: {
         community: this.community,
         mailType: EemailTypes.GENERAL_ALL,
-        recipientEmail: this.user.email,
+        recipientUsername: this.user.username,
       },
     });
   }
@@ -100,7 +109,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroupId,
         mailType: EemailTypes.RSVP,
-        recipientEmail: this.user.email,
+        recipientUsername: this.user.username,
       },
     });
   }
@@ -113,8 +122,20 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
         event: this.event,
         eventDataFormEntityGroupId: this.eventDataFormEntityGroupId,
         mailType: EemailTypes.ENTRY_PASS,
-        recipientEmail: this.user.email,
+        recipientUsername: this.user.username,
       },
     });
+  }
+
+  openConfirmationDialogBox(registrationStatusId) {
+    if (registrationStatusId !== 4 && this.userResponse.entry_pass) {
+      this.nbDialogService.open(this.confirmDeleteEntryPassDialog, {
+        context: {
+          registrationStatusId: registrationStatusId,
+        },
+      });
+    } else {
+      this.updateRegistrationStatus(registrationStatusId);
+    }
   }
 }

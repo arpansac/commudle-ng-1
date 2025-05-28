@@ -1,0 +1,55 @@
+a {
+  @apply com-no-underline;
+}
+
+nb-card {
+  @apply com-m-0 com-overflow-hidden com-h-auto md:com-border-0 com-border md:com-w-full com-w-[313px];
+
+  nb-card-body {
+    @apply md:com-p-0 com-p-3 com-overflow-hidden com-flex-row;
+
+    .content {
+      @apply com-flex com-flex-row;
+      .user-profile-image {
+        @apply com-w-[60px] com-h-[60px] com-mr-3 md:com-mb-0 com-mb-4 com-flex-shrink-0 com-overflow-hidden com-bg-zinc-100;
+        border-radius: 50%;
+
+        img {
+          @apply com-w-full com-h-auto com-object-cover com-bg-tWhite;
+        }
+      }
+
+      .text {
+        @apply com-flex com-flex-row com-m-0 com-w-full;
+
+        a {
+          @apply com-w-full com-mr-2;
+        }
+
+        .name {
+          @apply com-flex com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-line-clamp-1 com-items-center;
+        }
+
+        .username {
+          @apply com-text-xs com-font-normal com-line-clamp-1 com-text-gray-500 com-m-0 com-mt-1;
+        }
+
+        .votes {
+          @apply com-text-10px com-font-medium com-m-0 com-mt-3 com-text-gray-500 com-flex com-gap-x-3;
+
+          span {
+            @apply com-rounded-[20px] com-px-2 com-py-1 com-border com-border-solid com-border-gray-200;
+          }
+        }
+
+        .designation {
+          @apply com-text-xs com-font-normal com-mt-1 com-m-0 com-text-gray-500 com-line-clamp-2 md:com-h-auto com-h-8;
+        }
+      }
+    }
+
+    .follow-button {
+      @apply com-mt-4 md:com-mt-3;
+    }
+  }
+}

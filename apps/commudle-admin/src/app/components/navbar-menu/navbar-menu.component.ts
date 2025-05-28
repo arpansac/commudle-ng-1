@@ -1,10 +1,23 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { faBell, faFlask, faLightbulb, faUser, faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import { NbPopoverDirective } from '@commudle/theme';
+import {
+  faInfoCircle,
+  faUserFriends,
+  faFlask,
+  faLightbulb,
+  faBell,
+  faEllipsisV,
+  faHandHoldingDollar,
+  faUser,
+  faCalendarDays,
+  faBriefcase,
+} from '@fortawesome/free-solid-svg-icons';
+import { NbMenuService, NbPopoverDirective } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
+import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
   selector: 'app-navbar-menu',
@@ -18,19 +31,47 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
   faFlask = faFlask;
   faUserFriends = faUserFriends;
   faBell = faBell;
+  faInfoCircle = faInfoCircle;
+  faEllipsisV = faEllipsisV;
+  faHandHoldingDollar = faHandHoldingDollar;
   faUser = faUser;
+  faCalendarDays = faCalendarDays;
+  faBriefcase = faBriefcase;
 
   notificationCount = 0;
+  ENotificationSenderTypes = ENotificationSenderTypes;
+
   notificationIconHighlight = false;
 
+  contextMenuItems = [
+    { title: 'Labs', link: '/labs' },
+    { title: 'Jobs', link: '/jobs' },
+    { title: 'Newsletters', link: '/newsletters' },
+    { title: 'Blogs', link: '/blogs' },
+    {
+      title: 'Documentation',
+      url: 'https://documentation.commudle.com/',
+      externalLink: true,
+      target: '_blank',
+    },
+    { title: 'Events', link: '/events' },
+  ];
+
   subscriptions: Subscription[] = [];
+  showContextMenu = false;
 
   @ViewChildren(NbPopoverDirective) popovers: QueryList<NbPopoverDirective>;
+  private destroy$ = new Subject<void>();
 
-  constructor(private authwatchService: LibAuthwatchService, private notificationsStore: NotificationsStore) {}
+  constructor(
+    private authwatchService: LibAuthwatchService,
+    private notificationsStore: NotificationsStore,
+    private menuService: NbMenuService,
+    private gtm: GoogleTagManagerService,
+  ) {}
 
   ngOnInit(): void {
-    this.authwatchService.currentUser$.subscribe((currentUser) => {
+    this.authwatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       this.currentUser = currentUser;
 
       if (currentUser) {
@@ -42,6 +83,8 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getUnreadNotificationsCount() {
@@ -53,5 +96,11 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
 
   closePopover() {
     this.popovers.find((popover) => popover.context === 'notificationsPopover').hide();
+  }
+
+  gtmService() {
+    this.gtm.dataLayerPushEvent('click-notification-bell-icon', {
+      com_notification_type: this.ENotificationSenderTypes.USER,
+    });
   }
 }

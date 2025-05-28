@@ -162,6 +162,7 @@
       <app-session-page-chat
         (newMessage)="newMessage = getInteractionWindowStatus(2)"
         [chat]="chat"
+        [parentData]="event"
       ></app-session-page-chat>
     </div>
     <div #interactionWindow class="session-page-window" [ngClass]="{ 'not-embedded-video': !embeddedVideoStream }">

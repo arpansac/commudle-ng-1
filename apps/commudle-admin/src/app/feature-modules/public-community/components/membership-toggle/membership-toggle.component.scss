@@ -1,3 +1,36 @@
 .confirmation-dialog {
   @apply com-w-500px com-max-w-[100vw];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  nb-card-footer {
+    @apply com-space-x-5;
+  }
+}
+
+.plus-icon {
+  @apply com-text-white #{!important};
+}
+
+.fullWidth {
+  @apply com-w-full;
+}
+
+.join-community {
+  @apply md:com-w-[92px] com-w-full;
+}
+
+nb-option {
+  @apply com-text-Yankees-Blue;
+}
+
+nb-select {
+  ::ng-deep {
+    button {
+      span,
+      nb-icon {
+        @apply com-text-Azure #{!important};
+      }
+    }
+  }
 }

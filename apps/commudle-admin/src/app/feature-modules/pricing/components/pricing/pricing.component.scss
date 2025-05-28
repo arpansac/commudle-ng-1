@@ -2,287 +2,350 @@ p {
   @apply com-my-0;
 }
 
+.base-layout {
+  @apply com-min-h-full;
+}
+
 .pricing-container {
-  @apply com-bg-gray-50;
-
   .pricing-header {
-    @apply com-relative com-max-w-2xl com-mx-auto com-pt-16 com-px-4 com-text-center;
-
-    @screen sm {
-      @apply com-pt-32 com-px-6;
-    }
-
-    @screen lg {
-      @apply com-max-w-7xl com-px-8;
-    }
+    @apply com-relative com-mx-auto md:com-pt-[100px] com-pt-[60px] md:com-px-4 com-px-3 com-text-center;
 
     .heading {
-      @apply com-my-0 com-text-4xl com-font-extrabold com-tracking-tight com-text-gray-900 sm:com-text-6xl;
+      @apply com-m-0 com-my-0 md:com-text-[52px] com-text-3xl com-font-extrabold com-tracking-tight com-text-gray-900 sm:com-text-6xl;
+
+      //TODO: Convert style css to tailwindCss
+      span {
+        background: linear-gradient(90deg, #3b82f6 0%, #a855f7 51.39%, #1d4ed8 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        // @apply com-w-full com-text-transparent com-bg-clip-text com-bg-gradient-to-r com-from-blue-500 com-via-purple-500 com-to-blue-700 md:com-inline com-block;
+      }
     }
 
     .subheading {
-      @apply com-mt-4 com-mb-0 com-text-xl com-text-gray-600 com-font-normal;
+      @apply com-mt-4 md:com-mb-[60px] com-mb-12 md:com-text-xl com-text-base com-text-gray-500 com-font-normal;
     }
   }
 
-  .pricing-toggle {
-    @apply com-relative com-mt-12 com-flex com-justify-center com-items-center com-gap-4 sm:com-mt-16;
+  .background-container {
+    @apply com-overflow-hidden com-bg-no-repeat com-w-full com-h-full com-bg-contain;
 
-    label {
-      @apply com-text-[#57c3b9];
+    .background {
+      @apply com-mx-auto lg:com-w-full com-w-auto com-z-0 com-bg-cover com-bg-center com-h-full com-bg-no-repeat;
     }
-  }
-
-  .pricing-cards {
-    @apply com-relative com-mt-8 com-max-w-2xl com-mx-auto com-px-4 com-pb-8;
-    @apply sm:com-mt-24 sm:com-px-6 lg:com-max-w-7xl lg:com-px-8 lg:com-pb-0 lg:com-flex lg:com-justify-center;
-
-    .pricing-card-light {
-      @apply com-bg-[#3aa49a] com-pt-6 com-px-6 com-pb-4 com-rounded-r-lg com-rounded-l-lg;
-      @apply lg:com-px-8 lg:com-pt-12 lg:com-my-4 lg:com-rounded-l-none;
-      .name {
-        @apply com-text-white com-text-base com-font-semibold com-uppercase com-tracking-wide;
+    .cards {
+      @apply com-flex md:com-flex-row com-flex-col com-w-full com-m-0 md:com-pt-10 com-pt-10 md:com-gap-x-6 md:com-gap-y-0 com-gap-x-0 com-gap-y-4;
+      .enterprise-card,
+      .startup-card,
+      .devrel-card {
+        @apply md:com-w-[410px] com-w-auto com-rounded-[20px] com-bg-white com-m-0 md:com-mx-0 com-mx-3 com-shadow-md md:com-p-6 com-px-4 com-pb-4 com-pt-6 com-border com-border-solid com-border-Bright-Gray;
       }
 
-      .pricing {
-        @apply com-flex com-flex-col com-items-start;
-        @apply sm:com-flex-row sm:com-items-center sm:com-justify-between lg:com-flex-col lg:com-items-start;
-
-        .amount {
-          @apply com-text-white com-text-4xl com-font-extrabold com-tracking-tight;
+      .title-cards {
+        @apply com-p-0 md:com-pb-4 com-pb-3 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-flex com-flex-col com-items-start;
+        .heading {
+          @apply com-m-0 md:com-text-2xl com-text-xl com-font-semibold md:com-mb-3 com-mb-2 com-text-Yankees-Blue com-tracking-[-1px];
+        }
+        .sub-heading {
+          @apply com-text-sm md:com-font-normal com-font-medium md:com-pb-6 com-pb-4 com-text-gray-500 com-line-clamp-3;
         }
 
-        .buy-btn {
-          text-decoration: none;
-          @apply com-bg-white com-text-[#3aa49a] hover:com-bg-green-50 com-mt-6 com-w-full com-inline-block com-py-2 com-px-8 com-rounded-md com-shadow-sm com-text-center com-text-base com-font-medium;
-          @apply sm:com-mt-0 sm:com-w-auto lg:com-mt-6 lg:com-w-full;
+        .subscription {
+          @apply com-flex com-flex-col com-items-start com-flex-shrink-0;
+
+          .price {
+            @apply com-flex com-flex-row com-items-center com-min-h-10;
+
+            .current-price {
+              @apply md:com-text-[40px] com-text-[28px] com-font-bold com-text-Yankees-Blue com-m-0 com-mr-2;
+            }
+
+            .currency-symbol {
+              @apply md:com-text-[40px] com-text-[28px] com-font-bold com-text-Yankees-Blue com-m-0;
+            }
+
+            .discount {
+              @apply com-flex com-flex-col;
+
+              .discount-percentage {
+                @apply md:com-text-sm com-text-xs com-font-semibold com-text-primary-500;
+              }
+
+              .discount-price {
+                @apply md:com-text-sm com-text-xs com-font-semibold com-text-gray-500 com-line-through;
+              }
+            }
+          }
+          .monthly-yearly {
+            @apply com-m-0 com-mt-2 md:com-text-sm com-text-xs md:com-font-normal com-font-medium com-text-gray-500;
+          }
         }
       }
 
       .features {
-        @apply com-mt-7 com-pl-2;
+        @apply md:com-mt-4 com-mt-3 md:com-mb-3 com-mb-4;
 
-        li {
-          @apply com-py-3 com-flex com-items-center;
+        .features-heading {
+          @apply md:com-text-base com-text-sm com-font-semibold com-text-Yankees-Blue com-mb-4;
+        }
 
-          nb-icon {
-            @apply com-text-white com-w-5 com-h-5 com-flex-shrink-0;
-          }
-
-          .feature {
-            @apply com-text-white com-ml-4 com-text-base com-font-medium;
+        ul {
+          @apply com-m-0 com-p-0 com-h-full;
+          li {
+            @apply com-flex com-list-none md:com-pb-3 com-pb-2;
+            nb-icon {
+              @apply md:com-h-6 md:com-w-6 com-h-5 com-w-5 com-text-primary-500 md:com-mr-3 com-mr-2 com-flex-shrink-0;
+            }
+            span {
+              @apply md:com-text-sm com-text-sm com-font-medium com-text-gray-700;
+            }
           }
         }
       }
     }
 
-    .pricing-card-dark {
-      @apply com-bg-white com-ring-2 com-ring-[#3aa49a] com-shadow-md com-pt-6 com-px-6 com-pb-3 com-rounded-lg;
-      @apply lg:com-px-8 lg:com-pt-12;
-      .name {
-        @apply com-text-[#3aa49a] com-text-base com-font-semibold com-uppercase com-tracking-wide;
-      }
+    .pricing-quotes {
+      @apply com-bg-white-opacity-40 com-overflow-hidden md:com-py-10 com-py-4 com-px-8 com-m-0 com-mt-10 md:com-mt-[124px] md:com-mb-0 com-mb-6;
 
-      .pricing {
-        @apply com-flex com-flex-col com-items-start;
-        @apply sm:com-flex-row sm:com-items-center sm:com-justify-between lg:com-flex-col lg:com-items-start;
-
-        .amount {
-          @apply com-text-[#3aa49a] com-text-4xl com-font-extrabold com-tracking-tight;
-        }
-
-        .buy-btn {
-          text-decoration: none;
-          @apply com-bg-[#3aa49a] com-text-white hover:com-bg-green-500 com-mt-6 com-w-full com-inline-block com-py-2 com-px-8 com-rounded-md com-shadow-sm com-text-center com-text-base com-font-medium;
-          @apply sm:com-mt-0 sm:com-w-auto lg:com-mt-6 lg:com-w-full;
-        }
-      }
-
-      .features {
-        @apply com-mt-7 com-pl-2;
-
-        li {
-          @apply com-py-3 com-flex com-items-center;
-
-          nb-icon {
-            @apply com-text-[#3aa49a] com-w-5 com-h-5 com-flex-shrink-0;
-          }
-
-          .feature {
-            @apply com-text-gray-600 com-ml-4 com-text-base com-font-medium;
-          }
-        }
+      .quote {
+        @apply com-max-w-[1150px] com-mx-auto com-text-center md:com-text-2xl com-text-base md:com-font-medium com-font-normal com-text-Yankees-Blue com-tracking-[-0.36px] com-italic;
       }
     }
   }
 
   .pricing-features {
-    @apply com-overflow-x-auto;
+    @apply com-flex com-flex-col com-justify-center md:com-pt-20 com-pt-10 md:com-mx-auto md:com-px-[130px] md:com-m-0 com-px-3 md:com-bg-transparent com-bg-white;
 
-    .pricing-feature-headings {
-      @apply com-w-full com-flex com-items-stretch;
+    .pricing-features-heading {
+      @apply md:com-text-4xl com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 com-mb-4 com-text-center;
+    }
 
-      &.sticky {
-        @apply com-sticky com-top-16 com-bg-gray-50 com-z-10;
+    .pricing-features-subheading {
+      @apply md:com-text-xl com-text-sm com-font-normal com-text-gray-500 com-m-0 md:com-mb-[60px] com-mb-0 com-text-center;
+    }
+
+    .subscription-container {
+      @apply com-grid  md:com-grid-cols-[1.2fr_1fr_1fr_1fr] com-grid-cols-[2.2fr_1fr_1fr_1fr];
+    }
+
+    .subscription-header {
+      @apply com-flex com-flex-col com-w-max com-justify-self-center com-text-center;
+      .heading {
+        @apply com-text-base com-font-semibold com-text-Yankees-Blue com-mb-3;
       }
+
+      .header-price {
+        @apply com-flex com-flex-row com-mb-3 com-justify-center;
+        .earlier-price {
+          @apply com-text-lg com-font-normal com-text-gray-500 com-line-through;
+        }
+
+        .discounted-price {
+          @apply com-text-lg com-font-semibold com-text-black;
+        }
+      }
+    }
+
+    .header-section {
+      @apply com-flex com-flex-col com-mt-0;
 
       .title {
-        @apply com-my-0 com-text-gray-900 com-text-xl com-font-bold;
+        @apply com-text-black com-text-base com-font-semibold md:com-pt-7 com-pt-8 com-px-0 com-pb-2;
       }
 
-      .subtitle {
-        @apply com-mt-2 com-text-base com-text-gray-500 com-font-medium;
+      .enterprise-title,
+      .startup-title,
+      .devrel-title {
+        @apply com-flex com-justify-center com-text-sm com-font-normal com-text-gray-500 md:com-pt-7 com-pt-8 com-px-0 com-pb-2 com-text-center;
       }
 
-      .buy-btn {
-        text-decoration: none;
-        @apply com-mt-6 com-w-full com-inline-block com-py-2 com-px-8 com-rounded-md com-shadow-sm com-text-center com-text-base com-font-medium;
-        @apply sm:com-mt-0 sm:com-w-auto lg:com-mt-6 lg:com-w-full;
+      .sub-features {
+        @apply com-grid md:com-grid-cols-[1.2fr_1fr_1fr_1fr] com-grid-cols-[2.2fr_1fr_1fr_1fr] com-border-0 com-border-b com-border-Bright-Gray com-border-solid com-items-center;
 
-        &.light {
-          @apply com-bg-white com-text-[#3aa49a] hover:com-bg-green-50;
+        .feature-name {
+          @apply com-text-sm com-font-medium com-text-gray-500 md:com-py-4 com-py-2 md:com-pl-6 com-pl-0 com-pr-2;
         }
 
-        &.dark {
-          @apply com-bg-[#3aa49a] com-text-white hover:com-bg-green-500;
+        .check-mark {
+          @apply com-flex com-justify-center com-items-center com-text-xl com-text-Azure md:com-py-4 com-py-2 md:com-px-0 com-px-6px;
         }
-      }
-    }
 
-    .pricing-feature-subheadings {
-      @apply com-mt-10 com-text-base com-font-bold com-text-gray-900;
-    }
-
-    .pricing-feature-table {
-      @apply com-relative com-w-3/4 com-my-1;
-
-      .heading {
-        @apply com-w-1/4 com-py-3 com-pr-4 com-text-left com-text-base com-font-medium com-text-gray-600;
-
-        &.w-full {
-          @apply com-w-full;
+        .cross-mark {
+          @apply com-flex com-justify-center com-items-center com-text-xl com-text-gray-400 md:com-py-4 com-py-2 md:com-px-0 com-px-6px;
         }
-      }
 
-      .description {
-        @apply com-px-4 com-relative com-w-1/4 com-py-0 com-text-center;
+        .enterprise-highlight {
+          @apply com-bg-blue-50 com-h-full com-flex com-items-center com-justify-center;
+        }
 
-        .item {
-          @apply com-relative com-w-full com-h-full com-py-3;
-
-          nb-icon {
-            @apply com-text-2xl;
-
-            &.light {
-              @apply com-text-gray-400;
-            }
-
-            &.dark {
-              @apply com-text-[#57c3b9];
-            }
-          }
-
-          span {
-            &.light {
-              @apply com-text-gray-900 com-text-base com-font-medium;
-            }
-
-            &.dark {
-              @apply com-text-[#57c3b9] com-text-base com-font-medium;
-            }
-          }
+        .description {
+          @apply com-flex com-justify-center com-text-sm com-font-medium com-text-Yankees-Blue md:com-py-4 md:com-px-0 com-py-2 com-px-6px com-break-all;
         }
       }
     }
   }
 
   .avenues {
-    @apply md:com-mx-20 com-m-0 com-px-8 com-mb-16;
+    @apply md:com-mt-[120px] com-mt-20 com-m-0 md:com-px-8 com-px-4 com-py-0 md:com-mb-10 com-mb-20 com-text-center;
     .heading {
-      @apply com-mt-10 com-text-base com-font-bold com-text-gray-900;
+      @apply md:com-text-4xl com-text-2xl com-font-bold com-text-gray-900;
     }
     .sub-heading {
-      p {
-        @apply com-text-base com-text-gray-600;
-      }
+      @apply md:com-mt-8 com-mt-4 com-m-0 md:com-text-xl com-text-sm com-font-normal com-text-gray-500;
     }
   }
+}
 
-  .non-profit {
-    @apply com-px-6 md:com-my-12 md:com-mx-72px com-mx-auto;
+.background-container-community {
+  @apply com-overflow-hidden com-bg-no-repeat com-w-full com-bg-contain;
 
-    div {
-      @apply com-flex md:com-flex-row com-m-0 com-p-0 com-flex-col-reverse com-gap-x-28;
-
-      .content {
-        @apply com-mt-12 com-mx-4 com-flex com-flex-col;
-
-        h1 {
-          @apply com-mb-4 com-p-0 com-font-extrabold com-mt-0;
-        }
-        .subheading {
-          @apply com-mb-5 com-text-lg com-font-normal;
-        }
-        .button {
-          @apply com-py-3 com-px-5 com-m-0 com-bg-black com-rounded-3xl com-text-white com-w-fit com-text-sm com-border-black;
-        }
-      }
-      .image {
-        @apply com-m-0 com-p-0 md:com-w-[550px] md:com-h-[400px] com-w-full com-h-full;
-      }
-    }
+  .background {
+    @apply com-mx-auto com-my-0 lg:com-w-full com-w-full com-z-0 com-bg-cover com-bg-center com-bg-no-repeat com-h-full;
   }
-
-  .pricing-quotes {
-    @apply com-bg-gray-50 com-overflow-hidden com-py-8 md:com-py-12 lg:com-py-16 com-mt-8 md:com-mt-12 lg:com-mt-16;
-
-    .quote {
-      @apply com-max-w-3xl com-mx-auto com-text-center com-text-2xl com-leading-9 com-font-medium com-text-gray-900;
-    }
-  }
-
   .pricing-logo-cloud {
-    @apply com-max-w-2xl com-mx-auto com-py-12 com-px-4;
-    @apply sm:com-px-6 lg:com-max-w-7xl lg:com-py-32 lg:com-px-8;
+    @apply md:com-mx-auto com-my-0 com-p-0 md:com-pt-20 com-pt-10 md:com-w-auto com-w-full;
 
     .subheading {
-      @apply com-text-center com-text-base com-mb-8 com-text-gray-400 com-font-medium com-tracking-wider com-uppercase;
+      @apply com-text-center md:com-text-2xl com-text-base md:com-mb-16 com-mb-12 com-text-gray-500 com-font-semibold com-uppercase;
     }
 
-    .logo {
-      text-decoration: none;
-      @apply com-col-span-1 com-flex com-justify-center md:com-col-span-2 lg:com-col-span-1;
+    .communities {
+      @apply com-grid com-grid-cols-1 com-gap-4 sm:com-grid-cols-2 sm:com-gap-6 md:com-grid-cols-3 md:com-gap-[60px] md:com-mb-24 com-mb-28;
 
-      img {
-        @apply com-h-24;
+      a {
+        @apply com-flex com-justify-center md:com-justify-normal com-no-underline;
+        .communities-card {
+          @apply com-flex com-flex-row md:com-w-[385px] md:com-h-[120px] com-h-[100px] com-w-[254px] com-border com-border-solid com-border-white com-rounded-[20px] com-bg-white md:com-p-4 com-p-3;
+          .logo {
+            @apply com-flex com-items-center md:com-w-[88px] md:com-h-[88px] com-w-[66px] com-h-[66px] com-object-cover com-m-0 md:com-mr-4 com-mr-3 com-flex-shrink-0 com-bg-tWhite com-rounded-md;
+
+            img {
+              @apply com-w-full com-h-auto com-rounded-lg;
+            }
+          }
+          .communities-card-text {
+            @apply com-flex com-flex-col;
+            .name {
+              @apply com-m-0 com-mb-1 com-line-clamp-1 md:com-text-base com-text-xs com-font-semibold com-text-Yankees-Blue;
+            }
+            .description {
+              @apply com-m-0 com-line-clamp-3 md:com-text-sm com-text-10px com-font-normal com-text-gray-500;
+            }
+          }
+        }
       }
     }
   }
+}
 
-  .pricing-faq {
-    @apply com-max-w-2xl com-mx-auto com-py-16 com-px-4;
-    @apply sm:com-py-24 sm:com-px-6 lg:com-max-w-7xl lg:com-px-8;
+.faq {
+  @apply com-m-0 com-mb-[138px] md:com-mt-32 com-mt-0 com-mx-3 md:com-mx-0;
+}
+
+.loading {
+  @apply com-flex com-justify-center com-items-center com-min-h-screen com-w-full;
+}
+
+.toggle-btn {
+  @apply com-flex com-flex-row com-items-center com-gap-5;
+}
+
+.toggle-btn-month-annual {
+  @apply com-flex com-justify-center com-p-1 com-bg-white com-w-fit com-rounded-[30px] com-cursor-pointer;
+
+  .monthly,
+  .anually {
+    @apply com-text-Yankees-Blue com-text-base com-font-semibold com-rounded-[30px] com-py-2 com-px-3;
+  }
+
+  .active {
+    @apply com-bg-primary-500 com-text-white;
+  }
+}
+
+.select {
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-rounded-[30px] com-cursor-pointer com-bg-[#F6F9FC]  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+  select {
+    @apply com-bg-[#F6F9FC] com-text-tYankees-Blue com-text-base com-font-semibold com-cursor-pointer com-border-0 com-w-full;
+  }
+}
+
+.subscription-cards {
+  @apply com-flex com-flex-col com-justify-center com-items-center;
+}
+
+.active-border {
+  @apply com-border-3 com-border-solid com-border-primary-500 #{!important};
+}
+
+.enterprise-btn {
+  @apply com-bg-gradient-to-r com-from-primary-500 com-to-blue-700 com-text-white #{!important};
+}
+
+.student-section {
+  @apply com-flex md:com-mt-20 com-mt-10 md:com-flex-row com-flex-col-reverse com-rounded-[32px] com-shadow-md com-border com-border-solid com-border-Bright-Gray md:com-mx-0 com-mx-4;
+
+  .student-section-details {
+    @apply com-flex com-flex-col md:com-py-8 com-p-4 md:com-pl-8 md:com-pr-10 md:com-w-[616px] com-w-full com-flex-shrink-0;
 
     .heading {
-      @apply com-my-0 com-text-3xl com-font-extrabold com-tracking-tight com-text-white;
-      @apply sm:com-text-4xl;
+      @apply com-m-0 md:com-text-2xl com-text-xl com-font-semibold com-text-Yankees-Blue md:com-mb-3 com-mb-2;
     }
 
-    .subheading {
-      @apply com-mt-4 com-text-gray-400;
+    .sub-heading {
+      @apply com-m-0 md:com-text-sm com-text-xs com-font-normal com-text-gray-500 md:com-mb-8 com-mb-4;
     }
 
-    .questions {
-      @apply com-space-y-10;
-      @apply lg:com-space-y-0 lg:com-grid lg:com-gap-x-8 lg:com-gap-y-10;
+    .features-heading-students {
+      @apply md:com-text-base com-text-sm com-font-semibold com-text-Yankees-Blue com-mb-4;
+    }
 
-      .question {
-        @apply com-font-semibold com-text-white com-text-base;
+    .student-features-list {
+      @apply com-m-0 com-grid md:com-grid-cols-2 com-grid-cols-1 com-px-0;
+    }
+
+    li {
+      @apply com-flex md:com-mb-3 com-mb-2 com-list-none;
+
+      nb-icon {
+        @apply com-h-6 com-w-6 md:com-mr-3 com-mr-2 com-text-primary-500 com-flex-shrink-0;
       }
 
-      .answer {
-        @apply com-mt-3 com-ml-0 com-text-gray-400 com-text-base;
+      .feature {
+        @apply md:com-text-sm com-text-xs com-font-medium com-text-gray-700 md:com-mt-0 com-mt-1;
       }
     }
+  }
+}
+
+.student-startup-iamge {
+  @apply md:com-w-[664px] md:com-h-[476px] com-w-full com-h-full;
+  img {
+    @apply com-w-full com-h-full com-rounded-none md:com-rounded-tr-[32px] md:com-rounded-br-[32px] com-rounded-br-none com-rounded-tr-[32px] com-rounded-tl-[32px] md:com-rounded-tl-none com-object-fill;
+  }
+}
+
+.action-title {
+  @apply com-flex com-justify-self-start com-text-black com-text-base com-font-semibold md:com-pl-6 com-pl-0;
+}
+
+.action-sub-features {
+  @apply com-grid md:com-grid-cols-[1.2fr_1fr_1fr_1fr] com-grid-cols-[2.2fr_1fr_1fr_1fr] com-justify-items-center com-pt-8;
+}
+
+.hide-all-features {
+  @apply com-h-[1000px] com-overflow-hidden;
+}
+
+.show-all-features-btn {
+  @apply com-flex com-justify-center com-items-end com-w-full com-text-base com-font-semibold com-my-12;
+
+  p {
+    @apply com-flex com-justify-center com-items-center com-text-white com-font-semibold;
+  }
+
+  fa-icon {
+    @apply com-ml-2 com-h-4 com-w-4;
   }
 }

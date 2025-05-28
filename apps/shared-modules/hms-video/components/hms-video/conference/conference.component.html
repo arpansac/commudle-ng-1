@@ -20,7 +20,7 @@
       (click)="toggleStreaming()"
       *ngIf="
         (localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER) &&
-        embeddedVideoStream?.rtmp_url.length > 0
+        embeddedVideoStream?.rtmp_url?.length > 0
       "
       [nbTooltip]="isStreaming ? 'Stop Streaming' : 'Start Streaming'"
       ghost
@@ -62,6 +62,27 @@
       shape="round"
     >
       <nb-icon [status]="isLocalScreenSharing ? 'success' : ''" icon="monitor"></nb-icon>
+    </button>
+    <!-- Raise hand -->
+    <button
+      (click)="toggleRaiseHand()"
+      [nbTooltip]="isHandRaised ? 'Lower Hand' : 'Raise Hand'"
+      ghost
+      nbButton
+      shape="round"
+    >
+      <fa-icon [icon]="faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
+    </button>
+    <!-- Blur background -->
+    <button
+      (click)="toggleBackgroundBlur()"
+      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
+      [nbTooltip]="isBackgroundBlurred ? 'Unblur Background' : 'Blur Background'"
+      ghost
+      nbButton
+      shape="round"
+    >
+      <nb-icon [status]="isBackgroundBlurred ? 'success' : ''" icon="image-outline"></nb-icon>
     </button>
     <!-- Settings -->
     <button

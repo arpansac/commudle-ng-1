@@ -8,6 +8,9 @@ import { CommunityGroupActivityComponent } from './components/community-group-ac
 import { CommunityGroupHomeComponent } from './components/community-group-home/community-group-home.component';
 import { CommunityGroupTeamComponent } from './components/community-group-team/community-group-team.component';
 import { CommunityGroupDetailsResolver } from './resolvers/community-group-details.resolver';
+import { CommunityGroupCustomPageComponent } from './components/community-group-custom-page/community-group-custom-page.component';
+import { CommunitiesChannelsComponent } from './components/community-group-channels/communities-channels/communities-channels.component';
+import { OrgChannelsComponent } from './components/community-group-channels/org-channels/org-channels.component';
 
 const routes = [
   {
@@ -36,10 +39,54 @@ const routes = [
       {
         path: 'channels',
         component: CommunityGroupChannelsComponent,
+        children: [
+          {
+            path: 'community-channels',
+            component: CommunitiesChannelsComponent,
+          },
+          {
+            path: '',
+            component: OrgChannelsComponent,
+          },
+          {
+            path: ':community_channel_id',
+            component: OrgChannelsComponent,
+          },
+          {
+            path: 'join/:token',
+            component: OrgChannelsComponent,
+          },
+        ],
       },
       {
-        path: 'team',
+        path: 'forums',
+        component: CommunityGroupChannelsComponent,
+        children: [
+          {
+            path: 'community-channels',
+            component: CommunitiesChannelsComponent,
+          },
+          {
+            path: '',
+            component: OrgChannelsComponent,
+          },
+          {
+            path: ':community_channel_id',
+            component: OrgChannelsComponent,
+          },
+          {
+            path: 'join/:token',
+            component: OrgChannelsComponent,
+          },
+        ],
+      },
+      {
+        path: 'leaders',
         component: CommunityGroupTeamComponent,
+      },
+      {
+        path: 'p/:page_slug',
+        component: CommunityGroupCustomPageComponent,
       },
     ],
   },

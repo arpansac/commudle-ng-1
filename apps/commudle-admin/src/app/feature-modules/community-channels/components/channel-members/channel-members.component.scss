@@ -5,11 +5,16 @@
 
   nb-card {
     height: 100%;
+    @apply com-m-0;
 
     nb-card-header {
       display: flex;
       justify-content: space-between;
       padding: 0.5rem;
+    }
+
+    nb-card-body {
+      overscroll-behavior: contain;
     }
 
     nb-list {

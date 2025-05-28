@@ -1,14 +1,21 @@
-// .sidebar {
-//   // transition: width 0.05;
-// }
+.sidebar {
+  @apply com-p-4;
+}
 
 .sidebar-common-menu {
+  @apply com-mb-3;
   a {
-    text-decoration: none;
-    color: grey;
+    @apply com-flex com-no-underline com-text-gray-500;
+
+    fa-icon {
+      @apply com-h-20px com-w-20px com-mr-2;
+    }
   }
 }
 
+nb-list-item:first-child {
+  @apply com-border-0;
+}
 
 .router-link-active {
   color: #3366ff !important;
@@ -22,28 +29,47 @@ a.profile-edit-link {
   .incomplete-badge {
     margin-left: 0.5rem;
   }
-
 }
 
 nb-user {
   ::ng-deep {
     .user-picture.image {
+      @apply com-h-6 com-w-6;
       background-size: contain !important;
       background-position: center;
     }
+    .info-container {
+      @apply com-ml-10px #{!important};
+    }
     .user-name {
-      font-size: 0.9735rem !important;
-      color: grey;
+      @apply com-text-sm com-text-gray-500;
     }
   }
 }
-
-
-
-
 
 nb-accordion {
   box-shadow: none;
 }
 
+nb-accordion-item {
+  @apply com-bg-white;
+}
 
+nb-accordion-item-header {
+  @apply com-text-sm com-font-medium com-text-Yankees-Blue com-px-0 com-py-10px;
+}
+
+.disable {
+  @apply com-opacity-85 com-relative;
+  a {
+    @apply com-cursor-not-allowed;
+  }
+}
+
+nb-accordion-item-body {
+  ::ng-deep {
+    .item-body {
+      @apply com-px-0 com-py-10px com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-text-gray-500;
+    }
+  }
+}

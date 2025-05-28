@@ -16,9 +16,16 @@ export class DataFormFillComponent implements OnInit, OnChanges {
 
   @Input() existingResponses;
   @Input() dataFormId;
+  @Input() eventId;
+  @Input() submitButtonText: string = 'Submit';
+  @Input() showSubmitButton: boolean = true;
   dataForm: IDataForm;
   formCreated = false;
   enabledQuestions: IQuestion[] = [];
+  isFormSubmitting = false;
+
+  footerText = 'View More';
+  showFullDescription = false;
 
   message =
     'Never enter any personal or sensitive information which can be misused (including but not limited to passwords) in on Commudle. If you find something inappropriately asked, please report it to more@commudle.com immediately.';
@@ -110,10 +117,42 @@ export class DataFormFillComponent implements OnInit, OnChanges {
   }
 
   submitForm() {
+    this.isFormSubmitting = true;
     if (this.dataFormEntityResponseForm.invalid) {
       this.dataFormEntityResponseForm.markAllAsTouched();
+      this.isFormSubmitting = false;
       return;
     }
     this.formSubmitted.emit(this.dataFormEntityResponseForm.value);
+    this.isFormSubmitting = false;
+  }
+
+  // onAcceptRoleButton() {
+  //   this.dataFormsService.isMemberOfAllCollaboratingCommunities(this.eventId).subscribe((data) => {
+  //     if (data) {
+  //       this.submitForm();
+  //       return;
+  //     }
+  //     const dialogRef = this.nbDialogService.open(UserConsentsComponent, {
+  //       context: {
+  //         consentType: ConsentTypesEnum.OneClickRegistrationForm,
+  //       },
+  //     });
+  //     dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
+  //       dialogRef.close();
+  //       if (result === 'accepted') {
+  //         this.submitForm();
+  //       }
+  //     });
+  //   });
+  // }
+
+  viewMore() {
+    this.showFullDescription = !this.showFullDescription;
+    if (!this.showFullDescription) {
+      this.footerText = `View More`;
+    } else {
+      this.footerText = `View Less`;
+    }
   }
 }

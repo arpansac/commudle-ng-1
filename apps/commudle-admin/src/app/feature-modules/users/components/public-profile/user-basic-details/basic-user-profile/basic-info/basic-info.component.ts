@@ -1,17 +1,22 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-basic-info',
   templateUrl: './basic-info.component.html',
   styleUrls: ['./basic-info.component.scss'],
 })
-export class BasicInfoComponent implements OnInit {
+export class BasicInfoComponent implements OnInit, OnDestroy {
+  @ViewChild('autocompleteInput', { static: true })
+  autocompleteInput: ElementRef;
+
   @Output() basicInfoFormValidity: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() userData: EventEmitter<ICurrentUser> = new EventEmitter<ICurrentUser>();
 
@@ -23,11 +28,14 @@ export class BasicInfoComponent implements OnInit {
 
   basicInfoForm;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private fb: FormBuilder,
     private authWatchService: LibAuthwatchService,
     private toastLogService: LibToastLogService,
     private userProfileManagerService: UserProfileManagerService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
   ) {
     this.basicInfoForm = this.fb.group({
       name: ['', Validators.required],
@@ -39,7 +47,7 @@ export class BasicInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.currentUser = currentUser;
         this.basicInfoForm.patchValue(this.currentUser);
@@ -55,6 +63,13 @@ export class BasicInfoComponent implements OnInit {
       this.userData.emit(value);
       this.basicInfoFormValidity.emit(this.basicInfoForm.valid); // whenever form value changes check validity
     });
+
+    this.initAutocomplete();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   displaySelectedProfileImage(event: any) {
@@ -62,6 +77,13 @@ export class BasicInfoComponent implements OnInit {
       const file = event.target.files[0];
       if (file.size > 2425190) {
         this.toastLogService.warningDialog('Image should be less than 2 Mb', 3000);
+        return;
+      }
+
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+
+      if (!allowedTypes.includes(file.type)) {
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
         return;
       }
       this.uploadedProfilePictureFile = file;
@@ -74,5 +96,16 @@ export class BasicInfoComponent implements OnInit {
       reader.onload = () => (this.uploadedProfilePicture = reader.result);
       reader.readAsDataURL(file);
     }
+  }
+
+  initAutocomplete() {
+    this.googlePlacesAutocompleteService.initAutocomplete(this.autocompleteInput.nativeElement);
+    this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+      this.onLocationPlaceSelected(place);
+    });
+  }
+
+  onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+    this.basicInfoForm.patchValue({ location: place.formatted_address });
   }
 }

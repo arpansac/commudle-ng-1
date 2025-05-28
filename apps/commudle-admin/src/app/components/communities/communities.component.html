@@ -1,27 +1,65 @@
-<div class="base-layout com-mb-8">
-  <div class="container">
-    <div *appBreakpoints="'>lg'" class="two-column-layout thin">
-      <div class="main-column">
-        <app-communities-about></app-communities-about>
-        <app-communities-featured></app-communities-featured>
-        <app-communities-list></app-communities-list>
-      </div>
-      <div class="right-column">
-        <app-pa-slots [showContent]="true" [showTitle]="true" slot="slot_2"></app-pa-slots>
-        <app-pa-slots [showContent]="true" [showTitle]="true" slot="slot_3"></app-pa-slots>
-        <app-recommended-communities></app-recommended-communities>
-      </div>
+<commudle-listing-pages-layout>
+  <div header>
+    <commudle-listing-page-header [parentType]="'communities'"></commudle-listing-page-header>
+  </div>
+  <div one-column *ngIf="isMobileView">
+    <div class="publish-community-button">
+      <a [routerLink]="['/pricing']" nbButton size="giant" class="button">
+        <nb-icon icon="plus"></nb-icon>
+        Start your community
+      </a>
     </div>
-
-    <div *appBreakpoints="'<=lg'" class="one-column-layout">
-      <app-communities-about></app-communities-about>
-      <div class="com-grid com-grid-cols-2">
-        <app-pa-slots [showContent]="true" [showTitle]="true" slot="slot_2"></app-pa-slots>
-        <app-pa-slots [showContent]="true" [showTitle]="true" slot="slot_3"></app-pa-slots>
-      </div>
-      <app-communities-featured></app-communities-featured>
-      <app-communities-list></app-communities-list>
-      <app-recommended-communities></app-recommended-communities>
+    <app-communities-featured></app-communities-featured>
+    <div class="hackathons-upcoming">
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
+    </div>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="speakers">
+      <commudle-public-home-list-events-speakers
+        [parentType]="'communities'"
+      ></commudle-public-home-list-events-speakers>
+    </div>
+    <app-communities-list></app-communities-list>
+    <div class="tech-sessions">
+      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers-content">
+      <commudle-public-home-list-speakers-content
+        [parentType]="'communities'"
+      ></commudle-public-home-list-speakers-content>
     </div>
   </div>
-</div>
+  <div main-column *ngIf="!isMobileView">
+    <app-communities-featured></app-communities-featured>
+    <app-communities-list></app-communities-list>
+  </div>
+  <div right-column>
+    <div class="publish-community-button">
+      <a [routerLink]="['/pricing']" target="_blank" nbButton size="giant" class="button">
+        <nb-icon icon="plus"></nb-icon>
+        Start your community
+      </a>
+    </div>
+    <div class="hackathons-upcoming">
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
+    </div>
+    <div class="speakers-upcoming">
+      <commudle-public-home-list-speakers-upcoming></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="tech-sessions">
+      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div class="speakers">
+      <commudle-public-home-list-events-speakers
+        [parentType]="'communities'"
+      ></commudle-public-home-list-events-speakers>
+    </div>
+    <div class="speakers-content">
+      <commudle-public-home-list-speakers-content
+        [parentType]="'communities'"
+      ></commudle-public-home-list-speakers-content>
+    </div>
+  </div>
+</commudle-listing-pages-layout>

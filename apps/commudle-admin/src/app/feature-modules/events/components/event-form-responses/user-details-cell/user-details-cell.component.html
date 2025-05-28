@@ -1,20 +1,24 @@
 <div>
   <div class="user-details-container">
+    <p class="timeago" title="{{ moment(userResponse.created_at).format('dddd Do MMM, YYYY h:mm A') }}">
+      {{ moment(userResponse.created_at).fromNow() }}
+    </p>
     <app-user-profile-card-large [user]="user"></app-user-profile-card-large>
     <p class="contact-details">
-      <small>{{ user.email }}</small>
+      <small>{{ user.email === 'Not Visible' ? 'Email: Not Visible' : user.email }}</small>
+      <small *ngIf="user.phone"> / {{ user.phone === 'Not Visible' ? 'Phone: Not Visible' : user.phone }}</small>
     </p>
     <div class="social-links">
-      <a *ngIf="user.github" href="{{ user.github }}" target="_blank">
+      <a *ngIf="user.github" href="{{ user.github | completeurl : 'github' }}" target="_blank">
         <fa-icon [icon]="faGithub"></fa-icon>
       </a>
-      <a *ngIf="user.twitter" href="{{ user.twitter }}" target="_blank">
+      <a *ngIf="user.twitter" href="{{ user.twitter | completeurl : 'twitter' }}" target="_blank">
         <fa-icon [icon]="faTwitter"></fa-icon>
       </a>
-      <a *ngIf="user.linkedin" href="{{ user.linkedin }}" target="_blank">
+      <a *ngIf="user.linkedin" href="{{ user.linkedin | completeurl : 'linkedin' }}" target="_blank">
         <fa-icon [icon]="faLinkedin"></fa-icon>
       </a>
-      <a *ngIf="user.personal_website" href="{{ user.personal_website }}" target="_blank">
+      <a *ngIf="user.personal_website" href="{{ user.personal_website | completeurl }}" target="_blank">
         <fa-icon [icon]="faInfo"></fa-icon>
       </a>
     </div>
@@ -22,7 +26,7 @@
   <div class="registration-status-details">
     <div *ngIf="['speaker', 'attendee'].includes(registrationType.name)">
       <div class="registration-status-list">
-        <div (click)="event.editable && updateRegistrationStatus(rs.id)" *ngFor="let rs of registrationStatuses">
+        <div (click)="event.editable && openConfirmationDialogBox(rs.id)" *ngFor="let rs of registrationStatuses">
           <p [ngClass]="{ 'selected-status': rs.id == userResponse.registration_status.id, disabled: !event.editable }">
             {{ rs.name }}
           </p>
@@ -72,3 +76,24 @@
     </div>
   </div>
 </div>
+
+<ng-template #confirmDeleteEntryPassDialog let-data let-ref="dialogRef">
+  <nb-card class="confirm-delete-entry-pass">
+    <nb-card-header>
+      <div>Are You Sure?</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div>This user already has an entry pass, are you sure you want to change the status?</div>
+      <em>Changing the status will delete the entry pass.</em>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="updateRegistrationStatus(data.registrationStatusId); ref.close()">
+        Confirm
+      </button>
+      <button nbButton status="danger" (click)="ref.close()">cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

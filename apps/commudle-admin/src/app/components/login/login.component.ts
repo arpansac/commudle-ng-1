@@ -1,7 +1,7 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '@commudle/auth';
+import { AuthService, GoogleLoginProvider } from '@commudle/auth';
 import { NbToastrService } from '@commudle/theme';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (this.libAuthWatchService.getAuthCookie() === null) {
       this.authService = this.injector.get(AuthService);
+      this.authService.initialize_one(GoogleLoginProvider.PROVIDER_ID);
 
       this.subscriptions.push(
         this.authService.authState.subscribe((user) => {
@@ -104,14 +105,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.emailCodeService.sendVerificationEmail(this.loginForm.value.email).subscribe(
         (response) => {
           if (response.new_user) {
-            this.gtm.dataLayerPushEvent('new_user', { com_new_user: response.new_user });
+            this.gtm.dataLayerPushEvent('new-user', {});
           }
           if (!(response.consent || this.loginForm.value.consent_privacy_tnc)) {
             this.openDialog('code');
           } else {
             this.isEmailSent = true;
-            this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
           }
+          this.nbToastrService.success(`Verification code sent to ${this.loginForm.value.email}`, 'Success');
         },
         () => this.nbToastrService.danger('Error in generating code, try again in a few minutes!', 'Error'),
         () => (this.isLoading = false),
@@ -140,10 +141,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.consent_marketing = consent.consent_marketing;
       this.loginForm.controls['consent_privacy_tnc'].setValue(consent.consent_privacy_tnc);
       this.loginForm.controls['consent_marketing'].setValue(consent.consent_marketing);
-      if (loginType === 'code') {
-        this.sendVerificationEmail();
-      } else if (loginType === 'google' && this.consent_privacy_tnc) {
+      if (loginType === 'google' && this.consent_privacy_tnc) {
         this.loginWithGoogle();
+      } else if (loginType === 'code' && this.consent_privacy_tnc) {
+        this.isEmailSent = true;
       }
 
       dialogRef.close();
@@ -161,7 +162,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         )
         .subscribe((data: any) => {
           if (data.new_user) {
-            this.gtm.dataLayerPushEvent('new_user', { com_new_user: data.new_user });
+            this.gtm.dataLayerPushEvent('new-user', {});
           }
           if (data.auth_token === null || data.auth_token === '' || data.auth_token === undefined) {
             this.openDialog('google');

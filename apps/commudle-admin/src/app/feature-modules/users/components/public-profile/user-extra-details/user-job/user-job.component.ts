@@ -19,13 +19,17 @@ import {
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { SeoService } from '@commudle/shared-services';
+import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
 
 @Component({
   selector: 'app-user-job',
   templateUrl: './user-job.component.html',
   styleUrls: ['./user-job.component.scss'],
+  providers: [EnumFormatPipe],
 })
 export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -59,9 +63,12 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   faBriefcase = faBriefcase;
+  schemaForJobs = [];
 
   @ViewChild('jobDialog', { static: true }) jobDialog: TemplateRef<any>;
   @ViewChild('deleteJobDialog', { static: true }) deleteJobDialog: TemplateRef<any>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -73,6 +80,9 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
     private userProfileManagerService: UserProfileManagerService,
     private route: ActivatedRoute,
     private gtm: GoogleTagManagerService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private seoService: SeoService,
+    private enumFormatPipe: EnumFormatPipe,
   ) {
     this.jobForm = this.fb.group(
       {
@@ -85,10 +95,10 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
         salary_type: [EJobSalaryType.MONTHLY, Validators.required],
         salary_currency: [EJobSalaryCurrency.INR, Validators.required],
         location_type: [EJobLocationType.REMOTE, Validators.required],
-        location: [''],
+        location: ['', Validators.required],
         job_type: [EJobType.FULL_TIME, Validators.required],
         status: [EJobStatus.OPEN, Validators.required],
-        description: [''],
+        description: ['', Validators.required],
         tags: [''],
       },
       {
@@ -129,7 +139,9 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data)),
+    );
 
     if (changes.user) {
       this.jobs = [];
@@ -146,6 +158,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getJobs() {
@@ -157,6 +171,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
           this.jobs = this.jobs.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
           this.page_info = data.page_info;
           this.isLoading = false;
+          this.setSchemaData();
         }),
     );
   }
@@ -238,6 +253,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   onOpenDialog(templateRef: TemplateRef<any>) {
     this.dialogRef = this.nbDialogService.open(templateRef, { closeOnEsc: false, closeOnBackdropClick: false });
+    this.initAutocomplete();
     this.gtmService('click-add-job', {
       com_user_id: this.currentUser.id,
       com_profile_complete: this.currentUser.profile_completed,
@@ -272,5 +288,80 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   gtmService(event, data) {
     this.gtm.dataLayerPushEvent(event, data);
+  }
+
+  //Using native element javascript because the form input element on which  location is need to be applied is not getting rendered
+  initAutocomplete() {
+    const addressInput = document.getElementById('addressInput') as HTMLInputElement;
+    this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
+    this.googlePlacesAutocompleteService.placeChanged.subscribe((place) => {
+      this.onLocationPlaceSelected(place);
+    });
+  }
+
+  onLocationPlaceSelected(place) {
+    this.jobForm.patchValue({ location: place.formatted_address });
+  }
+
+  setSchemaData() {
+    const schemaArray: any[] = [];
+
+    for (const job of this.jobs) {
+      const jobLocation = job.location.split(',');
+      const datePosted = job.created_at;
+      const validThrough = job.expired_at;
+      const employmentType = this.enumFormatPipe.transform(job.job_type);
+
+      // Common schema data
+      const schemaData: any = {
+        '@context': 'https://schema.org/',
+        '@type': 'JobPosting',
+        title: job.position,
+        description: job.description ? job.description : 'NA',
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: job.company,
+        },
+        employmentType: employmentType,
+        datePosted: datePosted,
+        validThrough: validThrough,
+      };
+
+      // Schema data for base salary under job
+      if (job.min_salary !== 0) {
+        schemaData.baseSalary = {
+          '@type': 'MonetaryAmount',
+          currency: job.salary_currency,
+          value: {
+            '@type': 'QuantitativeValue',
+            minValue: job.min_salary,
+            maxValue: job.max_salary,
+            unitText: job.salary_type,
+          },
+        };
+      }
+      // schema data for remote job
+      if (job.location_type === EJobLocationType.REMOTE) {
+        schemaData.applicantLocationRequirements = {
+          '@type': 'Country',
+          name: jobLocation[jobLocation.length - 1],
+        };
+        schemaData.jobLocationType = 'TELECOMMUTE';
+      } else {
+        // schema data for non-remote location job
+        schemaData.jobLocation = {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: jobLocation[0],
+            addressCountry: jobLocation[jobLocation.length - 1],
+          },
+        };
+      }
+
+      schemaArray.push(schemaData);
+    }
+
+    this.seoService.setSchema(schemaArray);
   }
 }

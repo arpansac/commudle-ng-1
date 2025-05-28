@@ -24,7 +24,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
@@ -42,9 +42,9 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
   @Input() permittedActions;
   @Input() allActions;
   @Input() currentUser: ICurrentUser;
-  @Input() lineClamp: boolean = false;
-  @Input() showMessageControls: boolean = true;
-  @Input() showPin: boolean = true;
+  @Input() lineClamp = false;
+  @Input() showMessageControls = true;
+  @Input() showPin = true;
   @Output() sendReply = new EventEmitter();
   @Output() sendAttachmentReply = new EventEmitter();
   @Output() sendUpdatedReply = new EventEmitter();
@@ -73,6 +73,8 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
 
   faThumbtack = faThumbtack;
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authWatchService: LibAuthwatchService,
     private menuService: NbMenuService,
@@ -92,7 +94,7 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
 
     this.subscriptions.push(
-      this.authWatchService.currentUser$.subscribe((data) => {
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.currentUser = data;
         if (this.currentUser) {
           if (this.roles) {
@@ -139,6 +141,8 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   login(): boolean {
@@ -209,7 +213,7 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
               break;
             }
             case 'Pin Message': {
-              let channelId = this.activatedRoute.snapshot.params.community_channel_id;
+              const channelId = this.activatedRoute.snapshot.params.community_channel_id;
               this.subscriptions.push(
                 this.communityChannelsService.pinMessage(this.message.id, channelId).subscribe(() => {
                   this.libToastLogService.successDialog('Pinned Message Successfully!');
@@ -218,7 +222,7 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
               break;
             }
             case 'Unpin Message': {
-              let channelId = this.activatedRoute.snapshot.params.community_channel_id;
+              const channelId = this.activatedRoute.snapshot.params.community_channel_id;
               this.subscriptions.push(
                 this.communityChannelsService.unpinMessage(this.message.id, channelId).subscribe(() => {
                   this.libToastLogService.successDialog('Unpinned Message Successfully!');

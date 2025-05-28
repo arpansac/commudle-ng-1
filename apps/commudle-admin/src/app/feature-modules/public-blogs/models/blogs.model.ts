@@ -10,6 +10,7 @@ export interface IBlog {
   meta_description: string;
   content: [];
   similarBlogs: string[];
+  tags: { value: string }[];
   faq: [
     {
       question: string;

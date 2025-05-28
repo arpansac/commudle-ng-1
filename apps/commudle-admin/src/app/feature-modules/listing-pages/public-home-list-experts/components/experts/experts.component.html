@@ -1,0 +1,24 @@
+<div *ngIf="showSpinner && filteredExpertBadges.length === 0" class="skeleton-cards">
+  <commudle-skeleton-vertical-cards [displayFollowButton]="true" [cards]="3"></commudle-skeleton-vertical-cards>
+</div>
+<div *ngIf="filteredExpertBadges.length > 0" class="badge-heading">
+  <div
+    *ngFor="let expertBadge of filteredExpertBadges | slice : startSlice : endSlice as badges"
+    id="{{ expertBadge.name | replaceSpace }}"
+    class="users"
+  >
+    <ng-container>
+      <div class="heading">
+        <div *ngIf="expertBadge.image" class="image">
+          <img [src]="expertBadge.image.i64 || expertBadge.image.url" />
+        </div>
+        <h2 class="heading-name">
+          <a [routerLink]="'.'" fragment="{{ expertBadge.name | replaceSpace }}">{{ expertBadge.name }}</a>
+        </h2>
+      </div>
+      <div>
+        <commudle-experts-users [BadgeId]="expertBadge.id"></commudle-experts-users>
+      </div>
+    </ng-container>
+  </div>
+</div>

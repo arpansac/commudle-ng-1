@@ -22,16 +22,21 @@ table {
       @apply com-w-72;
     }
     .members-count {
-      @apply com-w-40;
+      @apply com-w-32;
     }
     .events-count {
-      @apply com-w-40;
+      @apply com-w-32;
     }
     .channels-count {
-      @apply com-w-40;
+      @apply com-w-32;
     }
     .links {
       @apply com-w-60;
     }
   }
+}
+
+.loading,
+.view-more-button {
+  @apply com-my-4;
 }

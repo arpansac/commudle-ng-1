@@ -1,24 +1,42 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { LibErrorHandlerService } from 'apps/lib-error-handler/src/lib/lib-error-handler.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, takeUntil } from 'rxjs';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-user-basic-details',
   templateUrl: './user-basic-details.component.html',
   styleUrls: ['./user-basic-details.component.scss'],
 })
-export class UserBasicDetailsComponent implements OnInit, OnChanges {
+export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   user: IUser;
   @Output() updateProfile: EventEmitter<any> = new EventEmitter<any>();
 
   currentUser: ICurrentUser;
+  faExclamationTriangle = faExclamationTriangle;
+  faPenToSquare = faPenToSquare;
+  staticAssets = staticAssets;
 
   // The updated tags
   tagsDialog: string[] = [];
@@ -34,9 +52,13 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges {
   hiringDialog: NbDialogRef<any>;
   enableHiringDialog: NbDialogRef<any>;
 
+  disabled = false;
+
   @ViewChild('editTags') editTags: TemplateRef<any>;
   @ViewChild('hiringDialogBox') hiringDialogBox: TemplateRef<any>;
   @ViewChild('enableHiring', { static: true }) enableHiring: TemplateRef<any>;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -47,10 +69,11 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges {
     private router: Router,
     private route: ActivatedRoute,
     private userProfileManagerService: UserProfileManagerService,
+    private errorHandler: LibErrorHandlerService,
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data));
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
     this.userProfileManagerService.user$.subscribe((data: IUser) => {
       this.user = data;
       this.getUserTags();
@@ -61,6 +84,11 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges {
         this.openEnableHiring();
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openEnableHiring() {
@@ -134,6 +162,14 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges {
   // Open a chat with the particular user
   openChatWithUser(): void {
     this.userChatsService.changeFollowerId(this.user.id);
+  }
+
+  checkCurrentUser() {
+    if (this.currentUser) {
+      this.openChatWithUser();
+    } else {
+      this.errorHandler.handleError(401, 'Login to message');
+    }
   }
 
   openForWork() {
