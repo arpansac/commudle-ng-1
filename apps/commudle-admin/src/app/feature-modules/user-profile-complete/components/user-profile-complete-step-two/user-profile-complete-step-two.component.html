@@ -1,0 +1,47 @@
+<div
+  class="background-image"
+  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+>
+  <div class="base-layout">
+    <div class="container">
+      <div class="three-column-layout thin">
+        <div class="left-column"></div>
+        <div [formGroup]="profileStepOneForm">
+          <p class="step-number">Step 2 of 3</p>
+          <h2 class="welcome-text">Tell us a little about yourself</h2>
+          <p class="sub-text">Set up your profile so others can find and connect with you</p>
+          <app-username (usernameValidation)="checkUsername($event)" [showSaveButton]="false"></app-username>
+          <div class="content">
+            <app-basic-info
+              (basicInfoFormValidity)="checkBasicDetailsValidity($event)"
+              (userData)="gtmServiceData($event)"
+            ></app-basic-info>
+          </div>
+          <div class="navigation-buttons">
+            <button
+              outline
+              nbButton
+              nbStepperPrevious
+              (click)="goToPreviousStep()"
+              shape="semi-round"
+              status="primary"
+              class="com-mr-4"
+            >
+              Back
+            </button>
+            <button
+              [disabled]="!validBasicDetailsStatus"
+              nbButton
+              nbStepperNext
+              shape="semi-round"
+              status="primary"
+              (click)="submitStepTwo()"
+            >
+              Next &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

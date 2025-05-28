@@ -2,7 +2,7 @@
   <form (ngSubmit)="confirmSubmissionDialogueOpen()" [formGroup]="usernameForm">
     <div>
       <label>
-        <p class="title">Choose a username for your public profile*</p>
+        <p class="title">Choose a username<span class="mandatory-field">*</span></p>
         <nb-form-field>
           <nb-icon icon="at-outline" nbPrefix></nb-icon>
           <input
@@ -11,7 +11,8 @@
             formControlName="username"
             nbInput
             fullWidth
-            status="primary"
+            shape="semi-round"
+            status="basic"
             type="text"
             class="username-input"
           />

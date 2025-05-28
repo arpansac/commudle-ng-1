@@ -1,8 +1,5 @@
 .row {
-  @apply com-mb-3;
-  label {
-    @apply com-text-base;
-  }
+  @apply com-mb-6;
 
   .info {
     @apply com-bg-[#EDF5FF] com-rounded-lg com-items-center com-my-2;
@@ -17,13 +14,67 @@
 }
 
 .uploaded-profile {
-  @apply com-h-36 com-max-w-xs com-overflow-hidden com-relative com-my-0 com-mx-auto com-bg-gray-300;
+  @apply com-h-20 com-w-20 com-overflow-hidden com-relative com-m-0 com-bg-gray-300;
 }
 
 .uploaded-profile-image {
-  @apply com-w-36 com-overflow-hidden com-my-auto com-ml-4 com-mr-8 com-text-center;
+  @apply com-h-20 com-w-20 com-flex com-flex-shrink-0 com-overflow-hidden com-m-0 com-mr-4 com-rounded-full;
 
   img {
-    @apply com-block com-mx-auto com-w-full;
+    @apply com-rounded-full com-w-full com-h-auto com-object-cover com-object-center com-bg-tWhite;
   }
+}
+
+.image-text-details {
+  @apply com-relative;
+}
+
+.image-input {
+  @apply com-cursor-pointer com-absolute com-block com-opacity-0 com-w-full com-h-full com-z-50 com-border-0;
+}
+
+.name,
+.tagline,
+.about,
+.location,
+.gender {
+  @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+
+  input,
+  textarea {
+    @apply com-mt-4;
+  }
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}
+
+input:hover,
+textarea:hover {
+  @apply com-bg-gray-50 #{!important};
+}
+
+.upload-picture {
+  @apply com-flex com-px-3 com-py-2 com-justify-center com-rounded-lg com-bg-gray-200 com-mb-2 com-text-Yankees-Blue com-w-max #{!important};
+}
+
+.profile-upload-container {
+  @apply com-flex com-mb-2 com-relative;
+}
+
+.upload-wrapper {
+  @apply com-relative com-w-full;
+}
+
+.upload-area {
+  @apply com-block com-cursor-pointer com-p-0;
+}
+
+.upload-content {
+  @apply com-flex com-flex-col;
+}
+
+.file-info {
+  @apply com-text-xs com-font-medium com-text-gray-400 com-m-0 com-mb-2;
 }

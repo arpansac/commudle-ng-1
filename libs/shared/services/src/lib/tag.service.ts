@@ -24,10 +24,16 @@ export class TagService {
     );
   }
 
-  suggestedTags(search: string, ai_corrected?: boolean): Observable<IPaginationCount<ITag>> {
-    let params = new HttpParams().set('q', search);
+  suggestedTags(search?: string, top_tags?: boolean, ai_corrected?: boolean): Observable<IPaginationCount<ITag>> {
+    let params = new HttpParams();
+    if (search) {
+      params = params.set('q', search);
+    }
     if (ai_corrected) {
       params = params.set('ai_corrected', ai_corrected);
+    }
+    if (top_tags) {
+      params = params.set('top_tags', top_tags);
     }
     return this.http.get<IPaginationCount<ITag>>(this.baseApiService.getRoute(API_ROUTES.TAGS.PUBLIC.SUGGESTED_TAGS), {
       params,

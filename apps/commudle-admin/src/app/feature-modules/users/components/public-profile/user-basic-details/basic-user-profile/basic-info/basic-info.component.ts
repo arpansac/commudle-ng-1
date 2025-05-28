@@ -41,8 +41,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       about_me: ['', [Validators.required, Validators.maxLength(1000)]],
       designation: ['', [Validators.required, Validators.maxLength(100)]],
-      location: [''],
-      gender: [''],
+      location: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
     });
   }
 

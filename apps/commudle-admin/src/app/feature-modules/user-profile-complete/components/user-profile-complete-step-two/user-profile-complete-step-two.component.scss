@@ -1,0 +1,27 @@
+.container {
+  @apply md:com-py-6 com-py-5 md:com-px-0 com-px-4;
+}
+
+.step-number {
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 md:com-mb-6 com-mb-4;
+}
+
+.welcome-text {
+  @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-m-0 com-mb-1;
+}
+
+.sub-text {
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 md:com-mb-10 com-mb-8;
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}
+
+.navigation-buttons {
+  @apply com-flex com-flex-row com-justify-between md:com-mt-10;
+
+  button {
+    @apply com-w-full;
+  }
+}

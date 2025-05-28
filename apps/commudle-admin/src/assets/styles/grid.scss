@@ -59,6 +59,20 @@ HTML Emmet's
         @apply com-col-span-7;
       }
     }
+
+    &.thin {
+      & > *:nth-child(1) {
+        @apply com-col-span-7;
+      }
+
+      & > *:nth-child(2) {
+        @apply com-col-span-9;
+      }
+
+      & > *:nth-child(3) {
+        @apply com-col-span-8;
+      }
+    }
   }
 }
 
