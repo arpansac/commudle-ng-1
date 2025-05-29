@@ -10,36 +10,34 @@
             <h1 class="hackathon-name">
               {{ hackathon.name }}
             </h1>
-            <div class="community-badge-social-links">
-              <app-community-badge [community]="community" class="hackathon-badge"></app-community-badge>
-              <div class="social-links" *ngIf="contactInfo">
-                <ng-container *ngIf="contactInfo.website">
-                  <a [href]="contactInfo.website">
-                    <fa-icon [icon]="icons.faGlobe"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.facebook">
-                  <a [href]="contactInfo.facebook">
-                    <fa-icon [icon]="icons.faFacebookF"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.twitter">
-                  <a [href]="contactInfo.twitter">
-                    <fa-icon [icon]="icons.faTwitter"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.github">
-                  <a [href]="contactInfo.github">
-                    <fa-icon [icon]="icons.faGithub"></fa-icon>
-                  </a>
-                </ng-container>
-                <ng-container *ngIf="contactInfo.linkedIn">
-                  <a [href]="contactInfo.linkedIn">
-                    <fa-icon [icon]="icons.faLinkedinIn"></fa-icon>
-                  </a>
-                </ng-container>
-              </div>
-            </div>
+            <app-community-badge [community]="community" class="hackathon-badge"></app-community-badge>
+          </div>
+          <div class="social-links" *ngIf="contactInfo">
+            <ng-container *ngIf="contactInfo.website">
+              <a [href]="contactInfo.website">
+                <fa-icon [icon]="icons.faGlobe"></fa-icon>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="contactInfo.facebook">
+              <a [href]="contactInfo.facebook">
+                <fa-icon [icon]="icons.faFacebookF"></fa-icon>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="contactInfo.twitter">
+              <a [href]="contactInfo.twitter">
+                <fa-icon [icon]="icons.faTwitter"></fa-icon>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="contactInfo.github">
+              <a [href]="contactInfo.github">
+                <fa-icon [icon]="icons.faGithub"></fa-icon>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="contactInfo.linkedIn">
+              <a [href]="contactInfo.linkedIn">
+                <fa-icon [icon]="icons.faLinkedinIn"></fa-icon>
+              </a>
+            </ng-container>
           </div>
         </nb-card-body>
       </nb-card>
