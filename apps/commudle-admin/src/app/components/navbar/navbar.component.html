@@ -101,7 +101,7 @@
     </div>
   </div>
   <div *appBreakpoints="'<=lg'">
-    <div *ngIf="currentUser" (click)="toggleSidebar()" class="home-sidebar">
+    <div *ngIf="showAdminSidebar" (click)="toggleSidebar()" class="home-sidebar">
       <fa-icon [icon]="faBars"></fa-icon>
     </div>
     <button
