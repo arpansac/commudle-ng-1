@@ -31,6 +31,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
   userTeamDetails: IHackathonTeam[];
+  selectedTeamIndex = 0;
   hrgId: number;
   EDbModels: EDbModels;
   EDiscussionType = EDiscussionType;
