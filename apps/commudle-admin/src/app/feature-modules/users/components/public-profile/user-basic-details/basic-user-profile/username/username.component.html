@@ -6,34 +6,22 @@
         <nb-form-field>
           <nb-icon icon="at-outline" nbPrefix></nb-icon>
           <input
-            (change)="checkUsername()"
             fieldSize="medium"
             formControlName="username"
             nbInput
             fullWidth
-            status="primary"
+            [status]="getInputStatus()"
             type="text"
             class="username-input"
           />
           <nb-icon
-            [icon]="validUsername || currentUser.username === currentUsername ? 'checkmark-outline' : 'close-outline'"
-            [status]="validUsername || currentUser.username === currentUsername ? 'success' : 'danger'"
+            [icon]="validUsername || currentUser?.username === currentUsername ? 'checkmark-outline' : 'close-outline'"
+            [status]="validUsername || currentUser?.username === currentUsername ? 'success' : 'danger'"
             nbSuffix
           ></nb-icon>
         </nb-form-field>
       </label>
-      <p *ngIf="usernameForm.controls.username.errors" class="field-error">
-        <commudle-alert
-          [error]="true"
-          [errorMessage]="'Username cannot contain spaces & special characters'"
-        ></commudle-alert>
-      </p>
-      <p
-        *ngIf="!validUsername && currentUsername !== currentUser.username && !usernameForm.controls.username.errors"
-        class="field-error"
-      >
-        <commudle-alert [error]="true" [errorMessage]="'*Username already taken'"></commudle-alert>
-      </p>
+      <commudle-alert [error]="!validUsername" [errorMessage]="validationError"></commudle-alert>
     </div>
     <div *ngIf="showSaveButton">
       <button

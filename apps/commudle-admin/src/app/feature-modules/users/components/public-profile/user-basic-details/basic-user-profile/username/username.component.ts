@@ -11,8 +11,8 @@ import {
 } from 'apps/shared-helper-modules/custom-validators.validator';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subject, takeUntil } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { of, Subject, Subscription, takeUntil } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-username',
@@ -31,10 +31,12 @@ export class UsernameComponent implements OnInit, OnDestroy {
   reloadPage = true;
 
   usernameForm;
+  validationError: string;
 
   @ViewChild('confirmChangeUsername') confirmChangeUsername: TemplateRef<any>;
 
   private destroy$ = new Subject<void>();
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -58,10 +60,14 @@ export class UsernameComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.currentUsername = this.lastUsername = this.currentUser.username;
         this.usernameForm.patchValue({ username: this.currentUser.username });
+        if (this.lastUsername === this.currentUser.username) {
+          this.validUsername = true;
+        }
+        this.checkChanged();
       }
     });
 
-    this.userProfileManagerService.updateUsername$.subscribe((value) => {
+    this.userProfileManagerService.updateUsername$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       if (value) {
         if (!this.router.url.includes('/users/' + this.lastUsername)) {
           this.reloadPage = false;
@@ -72,50 +78,80 @@ export class UsernameComponent implements OnInit, OnDestroy {
         this.userProfileManagerService.setUpdateUsername(false);
       }
     });
+  }
 
-    this.checkUsername();
+  getInputStatus(): string {
+    if (!this.currentUsername) return 'basic';
+    return this.validUsername || this.currentUsername === this.lastUsername ? 'success' : 'danger';
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
-  checkUsername() {
-    this.usernameForm.valueChanges
-      .pipe(
-        debounceTime(800),
-        switchMap(() => {
-          this.checkingUsername = true;
-          this.currentUsername = this.usernameForm.get('username').value;
-          return this.usersService.checkUsername(this.currentUsername);
+  checkChanged() {
+    this.subscriptions.push(
+      this.usernameForm
+        .get('username')
+        .valueChanges.pipe(
+          debounceTime(800),
+          distinctUntilChanged(),
+          switchMap(() => {
+            this.checkingUsername = true;
+            this.currentUsername = this.usernameForm.get('username').value;
+            return this.usersService.checkUsername(this.currentUsername).pipe(
+              catchError((error) => {
+                this.checkingUsername = false;
+                this.validUsername = false;
+                this.validationError = error?.error?.message;
+                this.usernameValidation.emit(this.validUsername);
+                return of(null); // prevent the stream from breaking
+              }),
+            );
+          }),
+        )
+        .subscribe((data) => {
+          if (data) {
+            this.validUsername = true;
+            this.checkingUsername = false;
+            if (this.currentUsername === this.lastUsername) {
+              this.usernameValidation.emit(true);
+            } else {
+              this.usernameValidation.emit(this.validUsername);
+            }
+          }
         }),
-      )
-      .subscribe((data) => {
-        this.validUsername = data === true;
-        this.checkingUsername = false;
-        if (this.currentUsername === this.lastUsername) {
-          this.usernameValidation.emit(true);
-        } else {
-          this.usernameValidation.emit(this.validUsername);
-        }
-      });
+    );
   }
 
   setUsername() {
     const newUsername = this.usernameForm.get('username').value;
-    this.usersService.setUsername(newUsername).subscribe((data) => {
-      if (data) {
-        // this.toastLogService.successDialog('Updated!');
-        this.lastUsername = newUsername;
-        if (this.reloadPage) {
-          this.router.navigate(['/users', newUsername]).then(() => location.reload());
-        }
-        this.reloadPage = true;
-        // get the user again from the server
-        this.authWatchService.checkAlreadySignedIn().subscribe();
-      }
-    });
+
+    if (!newUsername || newUsername === this.lastUsername) {
+      return;
+    }
+
+    this.usersService
+      .setUsername(newUsername)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            this.lastUsername = newUsername;
+            if (this.reloadPage) {
+              this.router.navigate(['/users', newUsername]).then(() => location.reload());
+            }
+            this.reloadPage = true;
+            this.authWatchService.checkAlreadySignedIn().subscribe();
+          }
+        },
+        error: () => {
+          this.validUsername = false;
+          this.usernameValidation.emit(false);
+        },
+      });
   }
 
   confirmSubmissionDialogueOpen() {
