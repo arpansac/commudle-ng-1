@@ -9,14 +9,23 @@ nb-card {
     }
 
     .speakers-container {
-      @apply com-mt-3 com-mb-5 com-p-0;
+      @apply com-mt-3 com-mb-5 com-p-0 com-relative;
+      &:hover {
+        .scroll-button {
+          @apply com-opacity-80;
+
+          &:hover {
+            @apply com-opacity-100;
+          }
+        }
+      }
 
       .header-text {
         @apply com-max-w-fit com-mt-0 com-mx-0 com-mb-6 com-text-2xl com-font-medium com-text-Dark-Jungle-Green;
       }
 
       .speakers-list {
-        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-4 com-mx-4 com-mb-20 com-items-center;
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-4 com-mx-4 com-mb-20 com-items-center com-scroll-smooth;
 
         .load-more {
           @apply com-text-center md:com-mt-6 com-mt-0;
@@ -47,5 +56,21 @@ nb-card {
         }
       }
     }
+  }
+}
+.scroll-button {
+  @apply com-absolute com-top-1/2 -com-translate-y-1/2 com-rounded-[50%] com-w-10 com-h-10 com-flex com-items-center com-justify-center com-shadow-md com-opacity-0 com-transition-opacity;
+
+  &.left {
+    @apply com-left-3;
+  }
+
+  &.right {
+    @apply com-right-3;
+  }
+
+  &:disabled {
+    opacity: 0 !important;
+    @apply com-cursor-default com-opacity-0;
   }
 }
