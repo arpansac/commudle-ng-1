@@ -1,18 +1,136 @@
 <div class="community-events-list">
   <div class="page-actions">
-    <a
-      nbButton
-      outline
-      size="small"
-      status="primary"
-      [routerLink]="['/admin/communities', communityId, 'event-dashboard', 'new']"
-    >
+    <a nbButton status="primary" [routerLink]="['/admin/communities', communityId, 'event-dashboard', 'new']">
       <fa-icon [icon]="faPlusSquare"></fa-icon>
       &nbsp; Create New Event
     </a>
   </div>
 
-  <div>
-    <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table>
+  <!--  <div> -->
+  <!-- <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> -->
+  <!-- </div> -->
+
+  <form [formGroup]="searchForm">
+    <div class="name-filter">
+      <nb-form-field>
+        <nb-icon icon="search" nbPrefix></nb-icon>
+        <input
+          [disabled]="isLoading"
+          fieldSize="small"
+          formControlName="name"
+          fullWidth
+          nbInput
+          placeholder="Search by Event.."
+          type="text"
+        />
+      </nb-form-field>
+    </div>
+  </form>
+
+  <div class="status-filter">
+    <nb-tag-list
+      >com-flex-wrap;
+      <nb-tag
+        appearance="outline"
+        [text]="options[0]"
+        status="primary"
+        [removable]="open ? 'true' : 'false'"
+        [ngClass]="{ activeTag: open }"
+        (click)="filterByTags(options[0])"
+      ></nb-tag>
+      <nb-tag
+        appearance="outline"
+        [text]="options[1]"
+        status="primary"
+        [removable]="draft ? 'true' : 'false'"
+        [ngClass]="{ activeTag: draft }"
+        (click)="filterByTags(options[1])"
+      ></nb-tag>
+      <nb-tag
+        appearance="outline"
+        [text]="options[2]"
+        status="primary"
+        [removable]="completed ? 'true' : 'false'"
+        [ngClass]="{ activeTag: completed }"
+        (click)="filterByTags(options[2])"
+      ></nb-tag>
+      <nb-tag
+        appearance="outline"
+        [text]="options[3]"
+        status="primary"
+        [removable]="cancelled ? 'true' : 'false'"
+        [ngClass]="{ activeTag: cancelled }"
+        (click)="filterByTags(options[3])"
+      ></nb-tag>
+    </nb-tag-list>
   </div>
+
+  <section>
+    <table *ngIf="events && events.length > 0">
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+        <th>Public Page</th>
+      </tr>
+      <tr *ngFor="let event of events">
+        <td>{{ event.name }}</td>
+        <td>
+          <small>{{ moment(event.start_time).format('dddd, MMM Do, YYYY hA z') }}</small>
+          <!-- <br />
+        <small>Application Start At: {{ moment(hackathon.application_start_date).format('dddd, MMM Do, YYYY') }}</small> -->
+        </td>
+        <td>{{ event.status | titlecase }}</td>
+        <td class="action-buttons">
+          <a [routerLink]="['/admin', 'communities', communityId, 'event-dashboard', event.slug]">
+            <button nbButton status="primary" size="tiny">Dashboard</button>
+          </a>
+          <button (click)="openCloneEventWindow(cloneEvent, event)" outline nbButton status="info" size="tiny">
+            Clone
+          </button>
+        </td>
+        <td class="public-page-buttons">
+          <a [routerLink]="['/communities', communityId, 'events', event.slug]" target="_blank">
+            <button nbButton status="primary" size="tiny">
+              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Public Page
+            </button>
+          </a>
+          <a
+            [routerLink]="['/admin', 'communities', communityId, 'event-dashboard', event.slug, 'stats']"
+            target="_blank"
+          >
+            <button nbButton status="success" size="tiny">
+              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Stats
+            </button>
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <app-pagination
+      class="pagination"
+      (goTo)="page = $event; getCommunityEvents()"
+      (next)="page = $event; getCommunityEvents()"
+      (previous)="page = $event; getCommunityEvents()"
+      *ngIf="total > 0"
+      [count]="count"
+      [current]="page"
+      [total]="total"
+    ></app-pagination>
+  </section>
+
+  <ng-template #cloneEvent let-data let-ref="dialogRef">
+    <nb-card class="clone-event">
+      <nb-card-header>
+        <div>Clone of {{ selectedEvent?.name }}</div>
+        <button ghost nbButton size="small" (click)="ref.close()">
+          <nb-icon icon="close"></nb-icon>
+        </button>
+      </nb-card-header>
+      <nb-card-body>
+        <app-edit-event [eventId]="selectedEvent?.id" type="clone"></app-edit-event>
+      </nb-card-body>
+    </nb-card>
+  </ng-template>
 </div>

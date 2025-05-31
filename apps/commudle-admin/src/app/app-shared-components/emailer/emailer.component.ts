@@ -276,7 +276,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.eventsService.communityEventsForEmail(this.community.id).subscribe((data) => {
-      this.events = data.events;
+      this.events = data.values;
       if (this.event) {
         this.prefillForm('event_id');
       } else {

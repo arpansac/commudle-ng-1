@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Settings } from 'angular2-smart-table';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IEvent } from 'apps/shared-models/event.model';
@@ -8,6 +9,10 @@ import { CommunityEventsListActionsComponent } from './community-events-list-act
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { Cell } from 'angular2-smart-table'; // Ensure this is imported
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { NbDialogService } from '@commudle/theme';
+
+import moment from 'moment';
 
 @Component({
   selector: 'app-community-events-list',
@@ -15,60 +20,93 @@ import { Cell } from 'angular2-smart-table'; // Ensure this is imported
   styleUrls: ['./community-events-list.component.scss'],
 })
 export class CommunityEventsListComponent implements OnInit {
+  selectedEvent: IEvent;
   faPlusSquare = faPlusSquare;
   communityId;
+  isLoading = true;
   events: IEvent[];
 
-  tableSettings: Settings = {
-    actions: false,
-    pager: {
-      perPage: 10,
-    },
-    columns: {
-      name: {
-        title: 'Name',
-      },
-      date: {
-        title: 'Date',
-        isFilterable: false,
-        type: 'custom',
-        renderComponent: CommunityEventsListDateComponent,
-        componentInitFunction: (instance: CommunityEventsListDateComponent, cell: Cell) => {
-          const rowData: IEvent = cell.getRow().getData();
-          instance.rowData = rowData;
-        },
-      },
-      status: {
-        title: 'Status',
-        isFilterable: false,
-      },
-      actions: {
-        title: 'Actions',
-        isFilterable: false,
-        type: 'custom',
-        renderComponent: CommunityEventsListActionsComponent,
-        isSortable: false,
-        componentInitFunction: (instance: CommunityEventsListActionsComponent, cell: Cell) => {
-          const rowData: IEvent = cell.getRow().getData();
-          instance.rowData = rowData;
-        },
-      },
-      public_page: {
-        title: 'Public Page',
-        isFilterable: false,
-        type: 'custom',
-        renderComponent: CommunityEventsListPublicPageComponent,
-        isSortable: false,
-        componentInitFunction: (instance: CommunityEventsListPublicPageComponent, cell: Cell) => {
-          const rowData: IEvent = cell.getRow().getData();
-          instance.rowData = rowData;
-        },
-      },
-    },
-    rowClassFunction: () => 'clickable',
+  moment = moment;
+  query = '';
+
+  icons = {
+    faPlus,
+    faArrowUpRightFromSquare,
   };
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private eventsService: EventsService) {}
+  total = 0;
+  count = 10;
+  page = 1;
+  options;
+
+  open = false;
+  draft = false;
+  completed = false;
+  cancelled = false;
+
+  searchForm;
+
+  // tableSettings: Settings = {
+  //   actions: false,
+  //   pager: {
+  //     perPage: 10,
+  //   },
+  //   columns: {
+  //     name: {
+  //       title: 'Name',
+  //     },
+  //     date: {
+  //       title: 'Date',
+  //       isFilterable: false,
+  //       type: 'custom',
+  //       renderComponent: CommunityEventsListDateComponent,
+  //       componentInitFunction: (instance: CommunityEventsListDateComponent, cell: Cell) => {
+  //         const rowData: IEvent = cell.getRow().getData();
+  //         instance.rowData = rowData;
+  //       },
+  //     },
+  //     status: {
+  //       title: 'Status',
+  //       isFilterable: false,
+  //     },
+  //     actions: {
+  //       title: 'Actions',
+  //       isFilterable: false,
+  //       type: 'custom',
+  //       renderComponent: CommunityEventsListActionsComponent,
+  //       isSortable: false,
+  //       componentInitFunction: (instance: CommunityEventsListActionsComponent, cell: Cell) => {
+  //         const rowData: IEvent = cell.getRow().getData();
+  //         instance.rowData = rowData;
+  //       },
+  //     },
+  //     public_page: {
+  //       title: 'Public Page',
+  //       isFilterable: false,
+  //       type: 'custom',
+  //       renderComponent: CommunityEventsListPublicPageComponent,
+  //       isSortable: false,
+  //       componentInitFunction: (instance: CommunityEventsListPublicPageComponent, cell: Cell) => {
+  //         const rowData: IEvent = cell.getRow().getData();
+  //         instance.rowData = rowData;
+  //       },
+  //     },
+  //   },
+  //   rowClassFunction: () => 'clickable',
+  // };
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private eventsService: EventsService,
+    private fb: FormBuilder,
+    private dialogBoxService: NbDialogService,
+  ) {
+    this.searchForm = this.fb.group({
+      name: [''],
+    });
+    this.options = ['open', 'draft', 'completed', 'cancelled'];
+  }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -77,9 +115,75 @@ export class CommunityEventsListComponent implements OnInit {
     });
   }
 
+  openCloneEventWindow(dialogBox, event) {
+    this.selectedEvent = event;
+
+    this.dialogBoxService.open(dialogBox);
+  }
+
   getCommunityEvents() {
-    this.eventsService.communityEventsForEmail(this.communityId).subscribe((data) => {
-      this.events = data.events;
-    });
+    this.eventsService
+      .communityEventsForEmail(
+        this.communityId,
+        this.query,
+        this.page,
+        this.count,
+        this.open,
+        this.draft,
+        this.completed,
+        this.cancelled,
+      )
+      .subscribe((data) => {
+        this.events = data.values;
+        this.total = data.total;
+        this.page = data.page;
+        this.isLoading = false;
+      });
+  }
+
+  search() {
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(800),
+        switchMap(() => {
+          this.page = 1;
+          this.isLoading = true;
+          this.query = this.searchForm.get('name').value;
+          return this.eventsService.communityEventsForEmail(
+            this.communityId,
+            this.query,
+            this.page,
+            this.count,
+            this.open,
+            this.draft,
+            this.completed,
+            this.cancelled,
+          );
+        }),
+      )
+      .subscribe((data) => {
+        this.events = data.values;
+        this.total = data.total;
+        this.page = data.page;
+        this.isLoading = false;
+      });
+  }
+
+  filterByTags(event) {
+    if (event === this.options[0]) {
+      this.open = !this.open;
+    }
+    if (event === this.options[1]) {
+      this.draft = !this.draft;
+    }
+    if (event === this.options[2]) {
+      this.completed = !this.completed;
+    }
+    if (event === this.options[3]) {
+      this.cancelled = !this.cancelled;
+    }
+    this.total = 0;
+    this.page = 1;
+    this.getCommunityEvents();
   }
 }

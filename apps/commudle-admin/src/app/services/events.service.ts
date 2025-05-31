@@ -49,11 +49,35 @@ export class EventsService {
     });
   }
 
-  communityEventsForEmail(communityId): Observable<IEvents> {
-    const params = new HttpParams().set('community_id', communityId);
-    return this.http.get<IEvents>(this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL), {
-      params,
-    });
+  communityEventsForEmail(
+    communityId,
+    query?,
+    page?: number,
+    count?: number,
+    open?: boolean,
+    draft?: boolean,
+    completed?: boolean,
+    cancelled?: boolean,
+  ): Observable<IPaginationCount<IEvent>> {
+    let params = new HttpParams().set('community_id', communityId);
+    if (query) params = params.set('query', query);
+    if (page) {
+      params = params.set('page', page);
+    }
+    if (count) {
+      params = params.set('count', count);
+    }
+    if (open) params = params.set('open', open);
+    if (draft) params = params.set('draft', draft);
+    if (completed) params = params.set('completed', completed);
+    if (cancelled) params = params.set('cancelled', cancelled);
+
+    return this.http.get<IPaginationCount<IEvent>>(
+      this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL),
+      {
+        params,
+      },
+    );
   }
 
   getEvent(eventId): Observable<IEvent> {
@@ -116,13 +140,16 @@ export class EventsService {
     });
   }
 
-  pGetUpcomingEvents(): Observable<IEvents> {
-    return this.http.get<IEvents>(this.apiRoutesService.getRoute(API_ROUTES.EVENTS.PUBLIC.UPCOMING));
+  pGetUpcomingEvents(): Observable<IPaginationCount<IEvent>> {
+    return this.http.get<IPaginationCount<IEvent>>(this.apiRoutesService.getRoute(API_ROUTES.EVENTS.PUBLIC.UPCOMING));
   }
 
-  pGetRandomPastEvents(count): Observable<IEvents> {
+  pGetRandomPastEvents(count): Observable<IPaginationCount<IEvent>> {
     const params = new HttpParams().set('count', count);
-    return this.http.get<IEvents>(this.apiRoutesService.getRoute(API_ROUTES.EVENTS.PUBLIC.RANDOM_PAST), { params });
+    return this.http.get<IPaginationCount<IEvent>>(
+      this.apiRoutesService.getRoute(API_ROUTES.EVENTS.PUBLIC.RANDOM_PAST),
+      { params },
+    );
   }
 
   pGetCommunityEvents(when, communityId, page?: number, count?: number): Observable<IPaginationCount<IEvent>> {
