@@ -6,19 +6,16 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-community-events-list-date',
   templateUrl: './community-events-list-date.component.html',
-  styleUrls: ['./community-events-list-date.component.scss']
+  styleUrls: ['./community-events-list-date.component.scss'],
 })
 export class CommunityEventsListDateComponent implements OnInit {
   @Input() value: string | number;
   @Input() rowData: IEvent;
-
   EEventStatuses = EEventStatuses;
 
   moment = moment;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit(): void {}
 }

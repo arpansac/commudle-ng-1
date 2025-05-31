@@ -28,38 +28,37 @@
   </form>
 
   <div class="status-filter">
-    <nb-tag-list
-      >com-flex-wrap;
+    <nb-tag-list>
       <nb-tag
         appearance="outline"
         [text]="options[0]"
         status="primary"
-        [removable]="open ? 'true' : 'false'"
-        [ngClass]="{ activeTag: open }"
+        [removable]="isStatusSelected(options[0]) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: isStatusSelected(options[0]) }"
         (click)="filterByTags(options[0])"
       ></nb-tag>
       <nb-tag
         appearance="outline"
         [text]="options[1]"
         status="primary"
-        [removable]="draft ? 'true' : 'false'"
-        [ngClass]="{ activeTag: draft }"
+        [removable]="isStatusSelected(options[1]) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: isStatusSelected(options[1]) }"
         (click)="filterByTags(options[1])"
       ></nb-tag>
       <nb-tag
         appearance="outline"
         [text]="options[2]"
         status="primary"
-        [removable]="completed ? 'true' : 'false'"
-        [ngClass]="{ activeTag: completed }"
+        [removable]="isStatusSelected(options[2]) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: isStatusSelected(options[2]) }"
         (click)="filterByTags(options[2])"
       ></nb-tag>
       <nb-tag
         appearance="outline"
         [text]="options[3]"
         status="primary"
-        [removable]="cancelled ? 'true' : 'false'"
-        [ngClass]="{ activeTag: cancelled }"
+        [removable]="isStatusSelected(options[3]) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: isStatusSelected(options[3]) }"
         (click)="filterByTags(options[3])"
       ></nb-tag>
     </nb-tag-list>
@@ -77,33 +76,15 @@
       <tr *ngFor="let event of events">
         <td>{{ event.name }}</td>
         <td>
-          <small>{{ moment(event.start_time).format('dddd, MMM Do, YYYY hA z') }}</small>
-          <!-- <br />
-        <small>Application Start At: {{ moment(hackathon.application_start_date).format('dddd, MMM Do, YYYY') }}</small> -->
+          <app-community-events-list-date [rowData]="event"></app-community-events-list-date>
         </td>
+
         <td>{{ event.status | titlecase }}</td>
         <td class="action-buttons">
-          <a [routerLink]="['/admin', 'communities', communityId, 'event-dashboard', event.slug]">
-            <button nbButton status="primary" size="tiny">Dashboard</button>
-          </a>
-          <button (click)="openCloneEventWindow(cloneEvent, event)" outline nbButton status="info" size="tiny">
-            Clone
-          </button>
+          <commudle-community-events-list-actions [rowData]="event"> </commudle-community-events-list-actions>
         </td>
         <td class="public-page-buttons">
-          <a [routerLink]="['/communities', communityId, 'events', event.slug]" target="_blank">
-            <button nbButton status="primary" size="tiny">
-              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Public Page
-            </button>
-          </a>
-          <a
-            [routerLink]="['/admin', 'communities', communityId, 'event-dashboard', event.slug, 'stats']"
-            target="_blank"
-          >
-            <button nbButton status="success" size="tiny">
-              <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Stats
-            </button>
-          </a>
+          <commudle-community-events-list-public-page [rowData]="event"> </commudle-community-events-list-public-page>
         </td>
       </tr>
     </table>

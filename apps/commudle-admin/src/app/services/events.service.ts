@@ -51,31 +51,33 @@ export class EventsService {
 
   communityEventsForEmail(
     communityId,
-    query?,
     page?: number,
     count?: number,
-    open?: boolean,
-    draft?: boolean,
-    completed?: boolean,
-    cancelled?: boolean,
+    query?,
+    eventStatus?: string[],
   ): Observable<IPaginationCount<IEvent>> {
     let params = new HttpParams().set('community_id', communityId);
-    if (query) params = params.set('query', query);
     if (page) {
       params = params.set('page', page);
     }
     if (count) {
       params = params.set('count', count);
     }
-    if (open) params = params.set('open', open);
-    if (draft) params = params.set('draft', draft);
-    if (completed) params = params.set('completed', completed);
-    if (cancelled) params = params.set('cancelled', cancelled);
+    if (query) params = params.set('query', query);
+
+    if (eventStatus && eventStatus.length > 0) {
+      eventStatus.forEach((status) => {
+        params = params.append(`event_status[]`, status);
+      });
+    }
+
+    console.log('params', params.toString());
 
     return this.http.get<IPaginationCount<IEvent>>(
       this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL),
       {
         params,
+        // body: body,
       },
     );
   }

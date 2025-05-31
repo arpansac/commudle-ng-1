@@ -2,13 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { Settings } from 'angular2-smart-table';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IEvent } from 'apps/shared-models/event.model';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { Cell } from 'angular2-smart-table'; // Ensure this is imported
+import { Settings } from 'angular2-smart-table';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { NbDialogService } from '@commudle/theme';
 
@@ -26,7 +26,6 @@ export class CommunityEventsListComponent implements OnInit {
   isLoading = true;
   events: IEvent[];
 
-  moment = moment;
   query = '';
 
   icons = {
@@ -34,15 +33,14 @@ export class CommunityEventsListComponent implements OnInit {
     faArrowUpRightFromSquare,
   };
 
+  moment = moment;
+
   total = 0;
   count = 10;
   page = 1;
   options;
 
-  open = false;
-  draft = false;
-  completed = false;
-  cancelled = false;
+  eventStatus: string[] = [];
 
   searchForm;
 
@@ -102,6 +100,7 @@ export class CommunityEventsListComponent implements OnInit {
     private fb: FormBuilder,
     private dialogBoxService: NbDialogService,
   ) {
+    this.eventStatus = [];
     this.searchForm = this.fb.group({
       name: [''],
     });
@@ -111,28 +110,20 @@ export class CommunityEventsListComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.communityId = params.community_id;
+
       this.getCommunityEvents();
     });
+    this.search();
   }
 
   openCloneEventWindow(dialogBox, event) {
     this.selectedEvent = event;
-
     this.dialogBoxService.open(dialogBox);
   }
 
   getCommunityEvents() {
     this.eventsService
-      .communityEventsForEmail(
-        this.communityId,
-        this.query,
-        this.page,
-        this.count,
-        this.open,
-        this.draft,
-        this.completed,
-        this.cancelled,
-      )
+      .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.eventStatus)
       .subscribe((data) => {
         this.events = data.values;
         this.total = data.total;
@@ -151,13 +142,10 @@ export class CommunityEventsListComponent implements OnInit {
           this.query = this.searchForm.get('name').value;
           return this.eventsService.communityEventsForEmail(
             this.communityId,
-            this.query,
             this.page,
             this.count,
-            this.open,
-            this.draft,
-            this.completed,
-            this.cancelled,
+            this.query,
+            this.eventStatus,
           );
         }),
       )
@@ -169,21 +157,21 @@ export class CommunityEventsListComponent implements OnInit {
       });
   }
 
-  filterByTags(event) {
-    if (event === this.options[0]) {
-      this.open = !this.open;
-    }
-    if (event === this.options[1]) {
-      this.draft = !this.draft;
-    }
-    if (event === this.options[2]) {
-      this.completed = !this.completed;
-    }
-    if (event === this.options[3]) {
-      this.cancelled = !this.cancelled;
+  filterByTags(status: string) {
+    const index = this.eventStatus.indexOf(status);
+    if (index > -1) {
+      // Remove if already selecteds
+      this.eventStatus.splice(index, 1);
+    } else {
+      // Add if not selected
+      this.eventStatus.push(status);
     }
     this.total = 0;
     this.page = 1;
     this.getCommunityEvents();
+  }
+
+  isStatusSelected(status: string): boolean {
+    return this.eventStatus && this.eventStatus.includes(status); // ✅ Returns boolean
   }
 }
