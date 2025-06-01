@@ -37,6 +37,8 @@ export class MembersComponent implements OnInit, OnDestroy {
   isLoadingSpeakers = false;
   isLoadingMembers = false;
   showSpinner = false;
+  isLeftScrollDisabled = true;
+  isRightScrollDisabled = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -88,11 +90,26 @@ export class MembersComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.speakers = this.speakers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
         this.total = data.total;
+        this.isRightScrollDisabled = false;
         this.page_info = data.page_info;
         this.skeletonLoaderCard = false;
         this.isLoadingSpeakers = false;
         this.canLoadMoreSpeakers = false;
       });
+  }
+
+  scrollSpeakers(direction: 'left' | 'right') {
+    const speakersContainer = document.querySelector('.speakers-list') as HTMLElement;
+    if (speakersContainer) {
+      const scrollAmount = direction === 'left' ? -300 : 300;
+      speakersContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
+
+  checkScrollPosition(event: Event) {
+    const target = event.target as HTMLElement;
+    this.isLeftScrollDisabled = target.scrollLeft <= 0;
+    this.isRightScrollDisabled = target.scrollLeft + target.clientWidth >= target.scrollWidth - 5;
   }
 
   getMembers(): void {
