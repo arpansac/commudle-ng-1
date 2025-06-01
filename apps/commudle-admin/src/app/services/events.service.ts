@@ -71,13 +71,10 @@ export class EventsService {
       });
     }
 
-    console.log('params', params.toString());
-
     return this.http.get<IPaginationCount<IEvent>>(
       this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL),
       {
         params,
-        // body: body,
       },
     );
   }

@@ -8,7 +8,6 @@ import { CommunityEventsListActionsComponent } from './community-events-list-act
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { Cell } from 'angular2-smart-table'; // Ensure this is imported
-import { Settings } from 'angular2-smart-table';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { NbDialogService } from '@commudle/theme';
 
