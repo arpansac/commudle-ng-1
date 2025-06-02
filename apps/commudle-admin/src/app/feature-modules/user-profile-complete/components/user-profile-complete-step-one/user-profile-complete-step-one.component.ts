@@ -148,7 +148,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
       this.showDomainError = true;
     }
 
-    if (goals.length > 4 && this.tags.length > 0 && experienceLevel && domain) {
+    if (goals.length >= 4 && this.tags.length > 0 && experienceLevel && domain) {
       this.submitStepOne();
     }
   }
