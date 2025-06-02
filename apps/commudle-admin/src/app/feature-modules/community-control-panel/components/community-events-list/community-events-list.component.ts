@@ -33,7 +33,7 @@ export class CommunityEventsListComponent implements OnInit {
   page = 1;
   //replace this with the enum EEventStatuses
 
-  eventStatuses: string[] = [];
+  eventStatuses = Object.values(EEventStatuses);
   activeEventStatuses: string[] = [];
 
   searchForm;
@@ -99,7 +99,6 @@ export class CommunityEventsListComponent implements OnInit {
     this.searchForm = this.fb.group({
       name: [''],
     });
-    this.eventStatuses = Object.values(EEventStatuses);
   }
 
   ngOnInit() {
