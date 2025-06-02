@@ -4,14 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IEvent } from 'apps/shared-models/event.model';
+import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
-import { Cell } from 'angular2-smart-table'; // Ensure this is imported
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { NbDialogService } from '@commudle/theme';
-
-import moment from 'moment';
 
 @Component({
   selector: 'app-community-events-list',
@@ -19,29 +16,29 @@ import moment from 'moment';
   styleUrls: ['./community-events-list.component.scss'],
 })
 export class CommunityEventsListComponent implements OnInit {
-  selectedEvent: IEvent;
-  faPlusSquare = faPlusSquare;
   communityId;
   isLoading = true;
   events: IEvent[];
+  EEventStatuses = EEventStatuses;
 
   query = '';
-
+  faPlusSquare = faPlusSquare;
   icons = {
     faPlus,
     faArrowUpRightFromSquare,
   };
 
-  moment = moment;
-
   total = 0;
   count = 10;
   page = 1;
-  options;
+  //replace this with the enum EEventStatuses
 
-  eventStatus: string[] = [];
+  eventStatuses: string[] = [];
+  activeEventStatuses: string[] = [];
 
   searchForm;
+
+  //angular2 smart-table, not being used anymore (kept for reference)
 
   // tableSettings: Settings = {
   //   actions: false,
@@ -97,13 +94,12 @@ export class CommunityEventsListComponent implements OnInit {
     private router: Router,
     private eventsService: EventsService,
     private fb: FormBuilder,
-    private dialogBoxService: NbDialogService,
   ) {
-    this.eventStatus = [];
+    this.activeEventStatuses = [];
     this.searchForm = this.fb.group({
       name: [''],
     });
-    this.options = ['open', 'draft', 'completed', 'cancelled'];
+    this.eventStatuses = Object.values(EEventStatuses);
   }
 
   ngOnInit() {
@@ -115,14 +111,9 @@ export class CommunityEventsListComponent implements OnInit {
     this.search();
   }
 
-  openCloneEventWindow(dialogBox, event) {
-    this.selectedEvent = event;
-    this.dialogBoxService.open(dialogBox);
-  }
-
   getCommunityEvents() {
     this.eventsService
-      .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.eventStatus)
+      .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.activeEventStatuses)
       .subscribe((data) => {
         this.events = data.values;
         this.total = data.total;
@@ -144,7 +135,7 @@ export class CommunityEventsListComponent implements OnInit {
             this.page,
             this.count,
             this.query,
-            this.eventStatus,
+            this.activeEventStatuses,
           );
         }),
       )
@@ -157,20 +148,21 @@ export class CommunityEventsListComponent implements OnInit {
   }
 
   filterByTags(status: string) {
-    const index = this.eventStatus.indexOf(status);
+    const index = this.activeEventStatuses.indexOf(status);
     if (index > -1) {
-      // Remove if already selecteds
-      this.eventStatus.splice(index, 1);
+      // Remove if the tag is already selected
+      this.activeEventStatuses.splice(index, 1);
     } else {
-      // Add if not selected
-      this.eventStatus.push(status);
+      // Add if the tag is not selected
+      this.activeEventStatuses.push(status);
     }
     this.total = 0;
     this.page = 1;
     this.getCommunityEvents();
   }
 
-  isStatusSelected(status: string): boolean {
-    return this.eventStatus && this.eventStatus.includes(status); // ✅ Returns boolean
-  }
+  // isStatusSelected(status: string): boolean {
+  //   console.log(status);
+  //   return this.activeEventStatuses && this.activeEventStatuses.includes(status);
+  // }
 }

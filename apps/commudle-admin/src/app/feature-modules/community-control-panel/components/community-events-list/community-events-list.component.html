@@ -6,6 +6,8 @@
     </a>
   </div>
 
+  <!-- angular2 smart table -kept for reference-->
+
   <!--  <div> -->
   <!-- <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> -->
   <!-- </div> -->
@@ -30,36 +32,13 @@
   <div class="status-filter">
     <nb-tag-list>
       <nb-tag
+        *ngFor="let eventStatus of eventStatuses"
         appearance="outline"
-        [text]="options[0]"
+        [text]="eventStatus"
         status="primary"
-        [removable]="isStatusSelected(options[0]) ? 'true' : 'false'"
-        [ngClass]="{ activeTag: isStatusSelected(options[0]) }"
-        (click)="filterByTags(options[0])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[1]"
-        status="primary"
-        [removable]="isStatusSelected(options[1]) ? 'true' : 'false'"
-        [ngClass]="{ activeTag: isStatusSelected(options[1]) }"
-        (click)="filterByTags(options[1])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[2]"
-        status="primary"
-        [removable]="isStatusSelected(options[2]) ? 'true' : 'false'"
-        [ngClass]="{ activeTag: isStatusSelected(options[2]) }"
-        (click)="filterByTags(options[2])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[3]"
-        status="primary"
-        [removable]="isStatusSelected(options[3]) ? 'true' : 'false'"
-        [ngClass]="{ activeTag: isStatusSelected(options[3]) }"
-        (click)="filterByTags(options[3])"
+        [removable]="activeEventStatuses && activeEventStatuses.includes(eventStatus) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: activeEventStatuses && activeEventStatuses.includes(eventStatus) }"
+        (click)="filterByTags(eventStatus)"
       ></nb-tag>
     </nb-tag-list>
   </div>
@@ -76,15 +55,15 @@
       <tr *ngFor="let event of events">
         <td>{{ event.name }}</td>
         <td>
-          <app-community-events-list-date [rowData]="event"></app-community-events-list-date>
+          <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
         </td>
 
         <td>{{ event.status | titlecase }}</td>
         <td class="action-buttons">
-          <commudle-community-events-list-actions [rowData]="event"> </commudle-community-events-list-actions>
+          <commudle-community-events-list-actions [eventData]="event"> </commudle-community-events-list-actions>
         </td>
         <td class="public-page-buttons">
-          <commudle-community-events-list-public-page [rowData]="event"> </commudle-community-events-list-public-page>
+          <commudle-community-events-list-public-page [eventData]="event"> </commudle-community-events-list-public-page>
         </td>
       </tr>
     </table>
@@ -100,18 +79,4 @@
       [total]="total"
     ></app-pagination>
   </section>
-
-  <ng-template #cloneEvent let-data let-ref="dialogRef">
-    <nb-card class="clone-event">
-      <nb-card-header>
-        <div>Clone of {{ selectedEvent?.name }}</div>
-        <button ghost nbButton size="small" (click)="ref.close()">
-          <nb-icon icon="close"></nb-icon>
-        </button>
-      </nb-card-header>
-      <nb-card-body>
-        <app-edit-event [eventId]="selectedEvent?.id" type="clone"></app-edit-event>
-      </nb-card-body>
-    </nb-card>
-  </ng-template>
 </div>
