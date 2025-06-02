@@ -15,7 +15,7 @@
           <div class="goals-section">
             <h3 class="goals-heading">
               What are your goals?<span class="mandatory-field">*</span>&nbsp;<span class="select-atleast"
-                >(Select atleast 4)</span
+                >(Select atleast 2)</span
               >
             </h3>
             <div class="goals-container">
@@ -30,7 +30,7 @@
               <commudle-alert
                 *ngIf="showGoalsError"
                 [error]="true"
-                [errorMessage]="'Select atleast 4 goals'"
+                [errorMessage]="'Select atleast 2 goals'"
               ></commudle-alert>
             </div>
           </div>
