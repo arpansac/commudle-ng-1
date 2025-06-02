@@ -34,7 +34,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   total = 0;
   count = 10;
   page = 1;
-  //replace this with the enum EEventStatuses
 
   eventStatuses = Object.values(EEventStatuses);
   activeEventStatuses: string[] = [];
@@ -114,6 +113,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   }
 
   getCommunityEvents() {
+    this.isLoading = true;
     this.eventsService
       .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.activeEventStatuses)
       .subscribe((data) => {
@@ -128,6 +128,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     this.searchForm.valueChanges
       .pipe(
         debounceTime(800),
+        takeUntil(this.destroy$),
         switchMap(() => {
           this.page = 1;
           this.isLoading = true;
@@ -140,7 +141,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
             this.activeEventStatuses,
           );
         }),
-        takeUntil(this.destroy$),
       )
       .subscribe((data) => {
         this.events = data.values;
