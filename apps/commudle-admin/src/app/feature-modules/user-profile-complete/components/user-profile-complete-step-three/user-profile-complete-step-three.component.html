@@ -55,9 +55,22 @@
               </div>
             </div>
           </div>
-          <button nbButton status="primary" shape="semi-round" fullWidth [routerLink]="'/dashboard'">
-            Go to Dashboard
-          </button>
+          <div class="dashboard-btn">
+            <button
+              outline
+              nbButton
+              (click)="goToPreviousStep()"
+              fullWidth
+              shape="semi-round"
+              status="primary"
+              class="com-mr-4"
+            >
+              Back
+            </button>
+            <button nbButton status="primary" shape="semi-round" fullWidth [routerLink]="'/dashboard'">
+              Go to Dashboard
+            </button>
+          </div>
         </div>
       </div>
     </div>
