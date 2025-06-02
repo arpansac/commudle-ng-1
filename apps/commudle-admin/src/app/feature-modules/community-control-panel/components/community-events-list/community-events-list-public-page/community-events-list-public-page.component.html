@@ -1,6 +1,6 @@
-<div class="actions" *ngIf="rowData">
+<div class="actions" *ngIf="eventData">
   <a
-    [routerLink]="['/communities/', rowData.kommunity_id, 'events', rowData.slug]"
+    [routerLink]="['/communities/', eventData.kommunity_id, 'events', eventData.slug]"
     nbButton
     hero
     status="info"
@@ -11,7 +11,7 @@
   </a>
 
   <a
-    [routerLink]="['/admin/communities/', rowData.kommunity_id, 'event-dashboard', rowData.slug, 'stats']"
+    [routerLink]="['/admin/communities/', eventData.kommunity_id, 'event-dashboard', eventData.slug, 'stats']"
     nbButton
     size="tiny"
     status="success"
