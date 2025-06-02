@@ -1,5 +1,5 @@
 .community-events-list {
-  @apply com-m-6;
+  @apply com-m-6 com-overflow-x-hidden;
   fa-icon {
     @apply com-mr-2;
   }
@@ -22,45 +22,48 @@
     }
   }
 
-  table {
-    @apply com-border-collapse com-w-full com-table-fixed;
+  .event-list-container {
+    @apply com-overflow-x-scroll;
+    table {
+      @apply com-border-collapse com-w-full;
 
-    td,
-    th {
-      @apply com-text-left com-p-2;
+      td,
+      th {
+        @apply com-text-left com-p-2;
+      }
+
+      tr:nth-child(even) {
+        @apply com-bg-Bright-Gray;
+      }
+
+      th:nth-child(1),
+      td:nth-child(1) {
+        @apply com-w-[32%];
+      }
+
+      th:nth-child(2),
+      td:nth-child(2) {
+        @apply com-w-[26%];
+      }
+
+      th:nth-child(3),
+      td:nth-child(3) {
+        @apply com-w-[12%];
+      }
+
+      th:nth-child(4),
+      td:nth-child(4) {
+        @apply com-w-[15%];
+      }
+
+      th:nth-child(5),
+      td:nth-child(5) {
+        @apply com-w-[15%];
+      }
     }
 
-    tr:nth-child(even) {
-      @apply com-bg-Bright-Gray;
+    .pagination {
+      @apply com-mt-4;
     }
-
-    th:nth-child(1),
-    td:nth-child(1) {
-      @apply com-w-[31.25%];
-    }
-
-    th:nth-child(2),
-    td:nth-child(2) {
-      @apply com-w-[26.25%];
-    }
-
-    th:nth-child(3),
-    td:nth-child(3) {
-      @apply com-w-[11.25%];
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-      @apply com-w-[15%];
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-      @apply com-w-[15%];
-    }
-  }
-
-  .pagination {
-    @apply com-mt-4;
   }
 }

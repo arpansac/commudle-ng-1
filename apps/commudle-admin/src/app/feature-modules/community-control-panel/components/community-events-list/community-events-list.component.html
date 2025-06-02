@@ -8,9 +8,9 @@
 
   <!-- angular2 smart table -kept for reference-->
 
-  <!--  <div> -->
-  <!-- <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> -->
-  <!-- </div> -->
+  <!-- <div> 
+  <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> 
+  </div> -->
 
   <form [formGroup]="searchForm">
     <div class="name-filter">
@@ -43,7 +43,7 @@
     </nb-tag-list>
   </div>
 
-  <section>
+  <section class="event-list-container">
     <table *ngIf="events && events.length > 0">
       <tr>
         <th>Name</th>
