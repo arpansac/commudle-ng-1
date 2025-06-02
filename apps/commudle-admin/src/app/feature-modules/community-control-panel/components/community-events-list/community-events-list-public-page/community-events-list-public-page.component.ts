@@ -8,7 +8,7 @@ import { IEvent } from '@commudle/shared-models';
 })
 export class CommunityEventsListPublicPageComponent implements OnInit {
   @Input() value: string | number;
-  @Input() rowData: IEvent;
+  @Input() eventData: IEvent;
 
   constructor() {}
 

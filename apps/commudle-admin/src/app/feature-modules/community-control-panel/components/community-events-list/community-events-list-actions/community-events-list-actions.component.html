@@ -1,7 +1,7 @@
-<div class="event-dashboard-actions" *ngIf="rowData">
-  <a [routerLink]="['event-dashboard', rowData.slug]" nbButton hero status="info" size="tiny"> Dashboard </a>
+<div class="event-dashboard-actions" *ngIf="eventData">
+  <a [routerLink]="['event-dashboard', eventData.slug]" nbButton hero status="info" size="tiny"> Dashboard </a>
   <button
-    *ngIf="rowData.start_time"
+    *ngIf="eventData.start_time"
     (click)="openCloneEventWindow(cloneEvent)"
     outline
     nbButton
@@ -15,13 +15,13 @@
 <ng-template #cloneEvent let-data let-ref="dialogRef">
   <nb-card class="clone-event">
     <nb-card-header>
-      <div>Clone of {{ rowData.name }}</div>
+      <div>Clone of {{ eventData.name }}</div>
       <button ghost nbButton size="small" (click)="ref.close()">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <app-edit-event [eventId]="rowData.id" type="clone"></app-edit-event>
+      <app-edit-event [eventId]="eventData.id" type="clone"></app-edit-event>
     </nb-card-body>
   </nb-card>
 </ng-template>

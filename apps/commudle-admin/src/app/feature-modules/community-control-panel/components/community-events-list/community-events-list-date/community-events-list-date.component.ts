@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class CommunityEventsListDateComponent implements OnInit {
   @Input() value: string | number;
-  @Input() rowData: IEvent;
+  @Input() eventData: IEvent;
   EEventStatuses = EEventStatuses;
 
   moment = moment;
