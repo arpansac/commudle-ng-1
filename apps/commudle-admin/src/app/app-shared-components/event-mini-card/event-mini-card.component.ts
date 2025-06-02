@@ -30,6 +30,7 @@ export class EventMiniCardComponent implements OnInit {
   @Input() attendedEvent: IEvent;
   @Input() cardType: string;
   @Input() iconSize: 'small' | 'medium' = 'small';
+  @Input() showCardHorizontal = false;
   community: ICommunity;
   faCheck = faCheck;
   environment = environment;

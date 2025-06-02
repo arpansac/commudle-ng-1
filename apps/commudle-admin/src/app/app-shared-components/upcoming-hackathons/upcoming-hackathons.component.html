@@ -12,9 +12,17 @@
   <div class="upcoming-hackathons custom-scrollbar">
     <div class="upcoming-hackathons-card" *ngFor="let upcomingHackathon of upcomingHackathons">
       <commudle-event-mini-card
+        *appBreakpoints="'>lg'"
         [attendedEvent]="upcomingHackathon"
         [iconSize]="'medium'"
         [cardType]="'hackathons'"
+      ></commudle-event-mini-card>
+      <commudle-event-mini-card
+        *appBreakpoints="'<=lg'"
+        [attendedEvent]="upcomingHackathon"
+        [iconSize]="'medium'"
+        [cardType]="'hackathons'"
+        [showCardHorizontal]="true"
       ></commudle-event-mini-card>
     </div>
   </div>
