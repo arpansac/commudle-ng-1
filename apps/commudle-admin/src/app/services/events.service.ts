@@ -53,7 +53,7 @@ export class EventsService {
     communityId,
     page?: number,
     count?: number,
-    query?,
+    query?: string,
     eventStatus?: string[],
   ): Observable<IPaginationCount<IEvent>> {
     let params = new HttpParams().set('community_id', communityId);
