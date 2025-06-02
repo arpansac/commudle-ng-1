@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -8,14 +8,17 @@ import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-community-events-list',
   templateUrl: './community-events-list.component.html',
   styleUrls: ['./community-events-list.component.scss'],
 })
-export class CommunityEventsListComponent implements OnInit {
+export class CommunityEventsListComponent implements OnInit, OnDestroy {
+  destroy$ = new Subject<void>();
+
   communityId;
   isLoading = true;
   events: IEvent[];
@@ -137,6 +140,7 @@ export class CommunityEventsListComponent implements OnInit {
             this.activeEventStatuses,
           );
         }),
+        takeUntil(this.destroy$),
       )
       .subscribe((data) => {
         this.events = data.values;
@@ -144,6 +148,11 @@ export class CommunityEventsListComponent implements OnInit {
         this.page = data.page;
         this.isLoading = false;
       });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   filterByTags(status: string) {
@@ -159,9 +168,4 @@ export class CommunityEventsListComponent implements OnInit {
     this.page = 1;
     this.getCommunityEvents();
   }
-
-  // isStatusSelected(status: string): boolean {
-  //   console.log(status);
-  //   return this.activeEventStatuses && this.activeEventStatuses.includes(status);
-  // }
 }
