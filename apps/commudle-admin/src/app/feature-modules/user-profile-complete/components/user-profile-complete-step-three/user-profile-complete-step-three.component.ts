@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICommunity } from '@commudle/shared-models';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -7,13 +7,14 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
+import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 
 @Component({
   selector: 'app-user-profile-complete-step-three',
   templateUrl: './user-profile-complete-step-three.component.html',
   styleUrls: ['./user-profile-complete-step-three.component.scss'],
 })
-export class UserProfileCompleteStepThreeComponent implements OnInit {
+export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   order_by = 'members_count';
   communities: ICommunity[] = [];
@@ -31,12 +32,18 @@ export class UserProfileCompleteStepThreeComponent implements OnInit {
     private router: Router,
     private communitiesService: CommunitiesService,
     private eventsService: EventsService,
+    private profileStatusBarService: ProfileStatusBarService,
   ) {}
 
   ngOnInit() {
+    this.profileStatusBarService.changeProfileBarStatus(false);
     this.getPopularCommunities();
     this.getAllSpeakersList();
     this.getUpcomingEvents();
+  }
+
+  ngOnDestroy() {
+    this.profileStatusBarService.changeProfileBarStatus(true);
   }
 
   finishProcess() {

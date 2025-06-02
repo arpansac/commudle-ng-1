@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -10,13 +10,14 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { KeyValue } from '@angular/common';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 
 @Component({
   selector: 'app-user-profile-complete-step-one',
   templateUrl: './user-profile-complete-step-one.component.html',
   styleUrls: ['./user-profile-complete-step-one.component.scss'],
 })
-export class UserProfileCompleteStepOneComponent implements OnInit {
+export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   goals = [];
   tags = [];
@@ -39,6 +40,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
     private usersService: AppUsersService,
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,
+    private profileStatusBarService: ProfileStatusBarService,
   ) {
     this.profileStepOneForm = this.fb.group({
       experience_level: ['', Validators.required],
@@ -48,6 +50,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.profileStatusBarService.changeProfileBarStatus(false);
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
         this.currentUser = data;
@@ -70,6 +73,12 @@ export class UserProfileCompleteStepOneComponent implements OnInit {
         this.getGoals();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.profileStatusBarService.changeProfileBarStatus(true);
   }
 
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {

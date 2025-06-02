@@ -12,6 +12,7 @@ import { IAttachedFile } from 'apps/shared-models/attached-file.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import * as confetti from 'canvas-confetti';
+import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 
 @Component({
   selector: 'app-user-profile-complete-step-two',
@@ -39,6 +40,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authWatchService: LibAuthwatchService,
     private usersService: AppUsersService,
+    private profileStatusBarService: ProfileStatusBarService,
   ) {
     {
       this.profileStepOneForm = this.fb.group({
@@ -48,6 +50,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.profileStatusBarService.changeProfileBarStatus(false);
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.usersService.getProfile(currentUser.username).subscribe((data) => {
@@ -59,9 +62,10 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.profileStatusBarService.changeProfileBarStatus(true);
   }
 
   checkUsername(validUsername) {
