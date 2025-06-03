@@ -782,6 +782,7 @@ export const API_ROUTES = {
     CREATE: 'api/v2/discount_codes',
     UPDATE: 'api/v2/discount_codes',
     INDEX: 'api/v2/discount_codes',
+    INDEX_BY_TYPE: 'api/v2/discount_codes/index_by_type',
     DELETE: 'api/v2/discount_codes',
     CAN_BE_APPLIED: 'api/v2/discount_codes/can_be_applied',
   },
@@ -1032,9 +1033,20 @@ export const API_ROUTES = {
   PURCHASE_ORDER: {
     SHOW: 'api/v2/purchase_orders/show', //GET
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
+    CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
+    UPDATE: 'api/v2/purchase_orders', //PUT
   },
 
   USER_ENGAGEMENT_RECORDS: {
     CREATE: 'api/v2/uerec',
+  },
+
+  PRODUCT_PRICES: {
+    CREATE: 'api/v2/product_prices', //POST
+    UPDATE: 'api/v2/product_prices', //PUT
+    INDEX: 'api/v2/product_prices', //GET
+    SHOW: 'api/v2/product_prices/show', //GET
+    SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
+    CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
   },
 };

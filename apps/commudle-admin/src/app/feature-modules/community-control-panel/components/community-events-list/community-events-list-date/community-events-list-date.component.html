@@ -1,12 +1,12 @@
-<div *ngIf="rowData && rowData.start_time">
+<div *ngIf="eventData && eventData.start_time">
   <p>
-    {{ moment.tz(rowData.start_time, rowData.timezone).format('Do MMM YYYY h:mm A') }} - ({{
-      moment.tz(rowData.timezone).zoneAbbr()
+    {{ moment.tz(eventData.start_time, eventData.timezone).format('Do MMM YYYY h:mm A') }} - ({{
+      moment.tz(eventData.timezone).zoneAbbr()
     }})
   </p>
-  <div *ngIf="rowData.status === 'open'">
-    <p *ngIf="moment(rowData.start_time) > moment()" class="upcoming">
-      {{ moment(rowData.start_time).fromNow() | titlecase }}
+  <div *ngIf="eventData.status === 'open'">
+    <p *ngIf="moment(eventData.start_time) > moment()" class="upcoming">
+      {{ moment(eventData.start_time).fromNow() | titlecase }}
     </p>
   </div>
 </div>

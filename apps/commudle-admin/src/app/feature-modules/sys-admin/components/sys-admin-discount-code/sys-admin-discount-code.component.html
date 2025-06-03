@@ -1,0 +1,95 @@
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <nb-card class="discount-code-container">
+        <nb-card-header>
+          <h4>Discount Codes Management</h4>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="button-filter">
+            <button nbButton status="primary" (click)="openCreateForm()" shape="semi-round">
+              <fa-icon [icon]="icons.faAdd"></fa-icon> &nbsp; Add New Discount Code
+            </button>
+            <div class="filter-container">
+              <label>Filter by:</label>
+              <div class="select">
+                <select [(ngModel)]="selectedModelType" (change)="onModelTypeChange()">
+                  <option [value]="EDbModels.CAMPAIGN">Campaigns</option>
+                  <option [value]="EDbModels.PRODUCT_PRICE">Product Price</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isLoading" class="loading-container">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+
+          <div *ngIf="!isLoading" class="table-container">
+            <table *ngIf="discountCodes.length > 0">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Discount</th>
+                  <th>Valid Until</th>
+                  <th>Applied</th>
+                  <th>Used</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let code of discountCodes; let i = index">
+                  <td class="code-cell">
+                    <span>{{ code.code }}</span>
+                    <fa-icon (click)="copyToClipboard(code.code)" nbTooltip="Copy code" [icon]="icons.faCopy"></fa-icon>
+                  </td>
+                  <td>
+                    {{
+                      code.discount_type === EDiscountType.PERCENTAGE ? code.discount_value : code.discount_value / 100
+                    }}{{ code.discount_type === EDiscountType.PERCENTAGE ? '%' : '' }}
+                  </td>
+                  <td>
+                    <div *ngIf="code.expires_at">
+                      {{ moment(code.expires_at).format('MMM D, YYYY, h:mm A') }}
+                      <span *ngIf="isExpired(code)" class="expired-tag">Expired</span>
+                    </div>
+                    <div *ngIf="!code.expires_at">No Expiry</div>
+                  </td>
+                  <td>{{ code.discount_applied_count }}</td>
+                  <td>{{ code.discount_used_count }}</td>
+                  <td class="actions-cell">
+                    <button
+                      nbButton
+                      size="small"
+                      status="info"
+                      class="action-btn"
+                      (click)="editDiscountCode(code, i)"
+                      nbTooltip="Edit"
+                    >
+                      <fa-icon [icon]="icons.faEdit"></fa-icon>
+                    </button>
+                    <button
+                      nbButton
+                      size="small"
+                      status="danger"
+                      class="action-btn"
+                      (click)="deleteDiscountCode(code.id, i)"
+                      nbTooltip="Delete"
+                    >
+                      <fa-icon [icon]="icons.faTrash"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="discountCodes.length === 0" class="empty-state">
+              <fa-icon [icon]="icons.faTicket" size="3x" class="empty-icon"></fa-icon>
+              <p>No discount codes found for the selected filter.</p>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

@@ -98,6 +98,8 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
 import { NextStepCardComponent } from './next-step-card/next-step-card.component';
 import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { ProductPriceDetailsComponent } from './product-price-details/product-price-details.component';
+
 @NgModule({
   declarations: [
     WorkInProgressComponent,
@@ -155,6 +157,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     CampaignDetailsComponent,
     NextStepCardComponent,
     CampaignStatsComponent,
+    ProductPriceDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -250,6 +253,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     CampaignDetailsComponent,
     NextStepCardComponent,
     CampaignStatsComponent,
+    ProductPriceDetailsComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

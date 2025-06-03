@@ -10,9 +10,7 @@
             <h1 class="hackathon-name">
               {{ hackathon.name }}
             </h1>
-            <div>
-              <app-community-badge [community]="community"></app-community-badge>
-            </div>
+            <app-community-badge [community]="community" class="hackathon-badge"></app-community-badge>
           </div>
           <div class="social-links" *ngIf="contactInfo">
             <ng-container *ngIf="contactInfo.website">

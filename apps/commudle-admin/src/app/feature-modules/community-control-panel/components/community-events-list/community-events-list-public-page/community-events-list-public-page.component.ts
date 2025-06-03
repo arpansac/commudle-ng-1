@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { IEvent } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-community-events-list-public-page',
@@ -7,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CommunityEventsListPublicPageComponent implements OnInit {
   @Input() value: string | number;
-  @Input() rowData;
+  @Input() eventData: IEvent;
 
   constructor() {}
 

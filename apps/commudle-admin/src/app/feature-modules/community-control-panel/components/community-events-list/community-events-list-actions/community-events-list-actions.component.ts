@@ -9,7 +9,7 @@ import { NbDialogService } from '@commudle/theme';
 })
 export class CommunityEventsListActionsComponent {
   @Input() value: string | number;
-  @Input() rowData: IEvent;
+  @Input() eventData: IEvent;
   constructor(private dialogBoxService: NbDialogService) {}
 
   openCloneEventWindow(dialogBox) {
