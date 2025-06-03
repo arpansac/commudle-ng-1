@@ -62,10 +62,15 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
           user_domain: data.user_domain || '',
           goals: data.goals || [],
         });
-
         if (Object.keys(EDomain).includes(data.user_domain as EDomain)) {
           this.profileStepOneForm.patchValue({
             user_domain: data.user_domain,
+          });
+          this.showOtherDomainInput = false;
+          this.otherDomainValue = '';
+        } else if (data.user_domain === '') {
+          this.profileStepOneForm.patchValue({
+            user_domain: '',
           });
           this.showOtherDomainInput = false;
           this.otherDomainValue = '';
@@ -194,11 +199,17 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
       this.showExperienceLevelError = true;
     }
 
-    if (!domain) {
+    if (!domain || (domain === 'other' && !this.otherDomainValue)) {
       this.showDomainError = true;
     }
 
-    if (goals.length >= 2 && this.tags.length > 0 && experienceLevel && domain) {
+    if (
+      goals.length >= 2 &&
+      this.tags.length > 0 &&
+      experienceLevel &&
+      domain &&
+      !(domain === 'other' && !this.otherDomainValue)
+    ) {
       this.submitStepOne();
     }
   }
