@@ -54,7 +54,6 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
         this.currentUser = data;
-
         this.profileStepOneForm.patchValue({
           experience_level: data.experience_level || '',
           user_domain: data.user_domain || '',
@@ -120,6 +119,11 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.userProfileManagerService.userProfileForm.patchValue({
       experience_level: experienceLevel,
       user_domain: domain,
+      name: this.currentUser.name,
+      about_me: this.currentUser.about_me,
+      designation: this.currentUser.designation,
+      location: this.currentUser.location,
+      gender: this.currentUser.gender,
     });
     this.userProfileManagerService.setUserGoals(goals);
 
