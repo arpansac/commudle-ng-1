@@ -89,6 +89,7 @@
               [value]="otherDomainValue"
               fullWidth
               (input)="onOtherDomainInput($event)"
+              placeholder="Enter your domain"
               class="domain-input"
             />
             <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
