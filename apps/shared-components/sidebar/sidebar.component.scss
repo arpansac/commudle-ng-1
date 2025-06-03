@@ -9,7 +9,7 @@
 .sidebar {
   transition: 0.3s;
 
-  @apply com-pt-0 com-z-20 com-bg-white com-text-black com-overflow-auto;
+  @apply com-pt-0 com-z-20 com-bg-white com-text-black com-overflow-auto com-top-[68px];
   &.hideFullSidebar {
     @apply com-w-0;
   }
