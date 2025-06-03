@@ -97,5 +97,4 @@ export enum EDomain {
   testing = 'Testing',
   devRel_and_community = 'DevRel & Community',
   hardware_and_iot = 'Hardware & IoT',
-  other = 'Other',
 }

@@ -30,6 +30,8 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
   profileStepOneForm;
   staticAssets = staticAssets;
   faArrowRight = faArrowRight;
+  showOtherDomainInput = false;
+  otherDomainValue = '';
 
   private destroy$ = new Subject<void>();
 
@@ -54,11 +56,26 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
         this.currentUser = data;
+
         this.profileStepOneForm.patchValue({
           experience_level: data.experience_level || '',
           user_domain: data.user_domain || '',
           goals: data.goals || [],
         });
+
+        if (Object.keys(EDomain).includes(data.user_domain as EDomain)) {
+          this.profileStepOneForm.patchValue({
+            user_domain: data.user_domain,
+          });
+          this.showOtherDomainInput = false;
+          this.otherDomainValue = '';
+        } else {
+          this.profileStepOneForm.patchValue({
+            user_domain: 'other',
+          });
+          this.showOtherDomainInput = true;
+          this.otherDomainValue = data.user_domain;
+        }
 
         this.tags = [];
         if (data.tags && data.tags.length > 0) {
@@ -78,6 +95,22 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.profileStatusBarService.changeProfileBarStatus(true);
+  }
+
+  onDomainChange(event: any) {
+    const domainValue = event.target.value;
+
+    if (domainValue === 'other') {
+      this.otherDomainValue = '';
+      this.showOtherDomainInput = true;
+    } else {
+      this.showOtherDomainInput = false;
+      this.otherDomainValue = '';
+    }
+  }
+
+  onOtherDomainInput(event: any) {
+    this.otherDomainValue = event.target.value;
   }
 
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
@@ -114,7 +147,11 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
   submitStepOne() {
     const goals = this.profileStepOneForm.get('goals').value || [];
     const experienceLevel = this.profileStepOneForm.get('experience_level').value;
-    const domain = this.profileStepOneForm.get('user_domain').value;
+    let domain = this.profileStepOneForm.get('user_domain').value;
+
+    if (domain === 'other') {
+      domain = this.otherDomainValue;
+    }
 
     this.userProfileManagerService.userProfileForm.patchValue({
       experience_level: experienceLevel,

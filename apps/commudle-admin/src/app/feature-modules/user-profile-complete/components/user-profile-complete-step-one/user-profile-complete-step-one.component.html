@@ -73,12 +73,24 @@
 
           <div class="domain-section">
             <h3 class="domain-heading">Select Your domain<span class="mandatory-field">*</span></h3>
-            <select formControlName="user_domain" class="domain-select">
+            <select formControlName="user_domain" class="domain-select" (change)="onDomainChange($event)">
               <option value="" selected disabled>Select your domain</option>
               <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
                 {{ domain.value }}
               </option>
+              <option value="other">Other</option>
             </select>
+            <input
+              *ngIf="profileStepOneForm.get('user_domain').value === 'other' || showOtherDomainInput"
+              nbInput
+              size="small"
+              shape="semi-round"
+              type="text"
+              [value]="otherDomainValue"
+              fullWidth
+              (input)="onOtherDomainInput($event)"
+              class="domain-input"
+            />
             <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
           </div>
 
