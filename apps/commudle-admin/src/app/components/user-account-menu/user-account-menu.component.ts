@@ -52,6 +52,7 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.footerService.changeMiniFooterStatus(true);
     this.destroy$.next();
     this.destroy$.complete();
   }
