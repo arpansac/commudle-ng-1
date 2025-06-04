@@ -18,7 +18,7 @@ p {
   }
 
   .details {
-    @apply com-ml-3;
+    @apply com-ml-3 com-w-full;
 
     .name {
       @apply com-flex com-items-center;

@@ -11,7 +11,7 @@ p {
 }
 
 .community-card-container {
-  @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-h-[294px] com-p-3;
+  @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-h-[294px] com-p-3 com-bg-white;
 
   .community-card-prefix {
     @apply com-flex com-items-center;
