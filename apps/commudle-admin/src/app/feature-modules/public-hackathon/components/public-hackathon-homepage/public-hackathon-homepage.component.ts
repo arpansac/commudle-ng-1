@@ -55,6 +55,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   userTeamDetails: IHackathonTeam[];
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   environment = environment;
+  hasDashboardAndChannelAccess = false;
 
   private destroy$ = new Subject<void>();
 
@@ -134,6 +135,11 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
         .subscribe((data: IHackathonTeam[]) => {
           if (data) {
             this.userTeamDetails = data;
+            if (
+              this.userTeamDetails.some((team) => team.registration_status === EHackathonRegistrationStatus.ACCEPTED)
+            ) {
+              this.hasDashboardAndChannelAccess = true;
+            }
           }
         }),
     );
