@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -6,13 +6,16 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'app-community-team',
   templateUrl: './community-team.component.html',
   styleUrls: ['./community-team.component.scss'],
 })
-export class CommunityTeamComponent implements OnInit, OnChanges {
+export class CommunityTeamComponent implements OnInit, OnDestroy {
   communityId;
   EUserRolesUserStatus = EUserRolesUserStatus;
   EUserRoles = EUserRoles;
@@ -22,12 +25,16 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
 
   userRolesUserForm;
 
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
+
   constructor(
     private userRolesUsersService: UserRolesUsersService,
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
     private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {
     this.userRolesUserForm = this.fb.group({
       email: ['', Validators.required],
@@ -36,13 +43,30 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(() => {
-      this.communityId = this.activatedRoute.parent.snapshot.params['community_id'];
-      this.getRoles();
-    });
+    // this.activatedRoute.params.subscribe(() => {
+    //   this.communityId = this.activatedRoute.parent.snapshot.params['community_id'];
+    //   this.getRoles();
+    // });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        if (value.community) {
+          this.community = value.community;
+          this.communityId = value.community.id;
+          this.setMeta();
+        }
+      }),
+    );
   }
 
-  ngOnChanges() {}
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Team | Dashboard | ${this.community.name}`);
+    this.seoService.noIndex(true);
+  }
 
   getRoles() {
     if (this.communityId) {

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
 import { Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'app-community-stats',
@@ -21,7 +22,11 @@ export class CommunityStatsComponent implements OnInit, OnDestroy {
   membersWorkExperience;
   speakers;
 
-  constructor(private statsCommunitiesService: StatsCommunitiesService, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private statsCommunitiesService: StatsCommunitiesService,
+    private activatedRoute: ActivatedRoute,
+    private seoService: SeoService,
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.data.subscribe((data) => {
@@ -34,11 +39,14 @@ export class CommunityStatsComponent implements OnInit, OnDestroy {
       this.getEventAttendanceStats();
       this.getPopularProfileSkillTags();
       this.getMembersWorkExperienceDistribution();
+      this.setMeta();
+      this.seoService.noIndex(true);
     });
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   getMembersDistribution() {
@@ -238,5 +246,10 @@ export class CommunityStatsComponent implements OnInit, OnDestroy {
         });
       }),
     );
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Stats | Dashboard | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

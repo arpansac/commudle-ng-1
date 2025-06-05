@@ -10,6 +10,9 @@ import { CommunityEventsListDateComponent } from './community-events-list-date/c
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'app-community-events-list',
@@ -20,6 +23,8 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
 
   communityId;
+  community: ICommunity;
+
   isLoading = true;
   events: IEvent[];
   EEventStatuses = EEventStatuses;
@@ -36,9 +41,11 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = [];
+  activeEventStatuses: string[] = ['open', 'draft', 'canceled'];
 
   searchForm;
+
+  subscriptions: Subscription[] = [];
 
   //angular2 smart-table, not being used anymore (kept for reference)
 
@@ -96,6 +103,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private router: Router,
     private eventsService: EventsService,
     private fb: FormBuilder,
+    private seoService: SeoService,
   ) {
     this.activeEventStatuses = [];
     this.searchForm = this.fb.group({
@@ -104,11 +112,19 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.communityId = params.community_id;
-
-      this.getCommunityEvents();
-    });
+    // this.activatedRoute.params.subscribe((params) => {
+    //   console.log(params);
+    //   this.communityId = params.community_id;
+    //   this.getCommunityEvents();
+    //   this.setMeta();
+    // });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        this.community = value.community;
+        this.communityId = this.community.id;
+        this.setMeta();
+      }),
+    );
     this.search();
   }
 
@@ -167,5 +183,9 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     this.total = 0;
     this.page = 1;
     this.getCommunityEvents();
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Events | Dashboard | ${this.community.name}`);
   }
 }

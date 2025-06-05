@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
@@ -7,13 +7,16 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'app-community-members',
   templateUrl: './community-members.component.html',
   styleUrls: ['./community-members.component.scss'],
 })
-export class CommunityMembersComponent implements OnInit {
+export class CommunityMembersComponent implements OnInit, OnDestroy {
   communityId;
   page = 1;
   count = 10;
@@ -43,6 +46,9 @@ export class CommunityMembersComponent implements OnInit {
   selectedUserRoles: IUserRolesUser[] = [];
   removeUserForm;
 
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
+
   @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<any>;
   @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<any>;
 
@@ -53,6 +59,7 @@ export class CommunityMembersComponent implements OnInit {
     private dialogService: NbDialogService,
     private toastrService: NbToastrService,
     private menuService: NbMenuService,
+    private seoService: SeoService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -68,10 +75,30 @@ export class CommunityMembersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.communityId = this.activatedRoute.parent.parent.snapshot.params.community_id;
+    // this.communityId = this.activatedRoute.parent.parent.snapshot.params.community_id;
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((value) => {
+        if (value.community) {
+          this.community = value.community;
+          this.communityId = value.community.id;
+          this.setMeta();
+        }
+      }),
+    );
     this.getMembers();
     this.search();
     this.handleContextMenu();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Community Members | Dashboard | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 
   getMembers() {
