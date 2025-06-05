@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
@@ -8,12 +8,14 @@ import { EventsService } from 'apps/commudle-admin/src/app/services/events.servi
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faFileLines } from '@fortawesome/free-regular-svg-icons';
+import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.scss'],
 })
-export class EventDetailsComponent implements OnInit {
+export class EventDetailsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
   @Input() community: ICommunity;
 
@@ -33,6 +35,7 @@ export class EventDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private eventsService: EventsService,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
@@ -40,10 +43,13 @@ export class EventDetailsComponent implements OnInit {
   }
 
   getEventAndCommunityData() {
-    this.activatedRoute.parent.data.subscribe((value) => {
-      this.event = value.event;
-      this.community = value.community;
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        this.event = value.event;
+        this.community = value.community;
+        this.setMeta();
+      }),
+    );
   }
 
   deleteEventHeader() {
@@ -84,5 +90,14 @@ export class EventDetailsComponent implements OnInit {
       this.event = data;
       this.toastLogService.successDialog('Updated!');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Details | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

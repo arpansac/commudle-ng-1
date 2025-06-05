@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewChild,
@@ -20,6 +21,8 @@ import {
   EEventCollaborationCommunityStatus,
 } from 'apps/shared-models/event_collaboration_community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-collaborating-communities',
@@ -27,7 +30,7 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
   styleUrls: ['./collaborating-communities.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
+export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() community: ICommunity;
   @Input() event: IEvent;
 
@@ -42,6 +45,8 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
 
   faInfoCircle = faInfoCircle;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     private eventCollaborationCommunitiesService: EventCollaborationCommunitiesService,
     private toastLogService: LibToastLogService,
@@ -49,6 +54,7 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
     private changeDetectorRef: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
@@ -57,6 +63,7 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
       this.community = data.community;
       this.event = data.event;
       this.getCollaborations();
+      this.setMeta();
     });
   }
 
@@ -121,5 +128,14 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges {
         communityId: communityId,
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Collaborations | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

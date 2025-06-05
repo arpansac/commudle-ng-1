@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunity } from '@commudle/shared-models';
@@ -7,14 +7,16 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { IEvent } from 'apps/shared-models/event.model';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { debounceTime, map, Observable, switchMap } from 'rxjs';
+import { debounceTime, map, Observable, switchMap, Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'app-volunteers',
   templateUrl: './volunteers.component.html',
   styleUrls: ['./volunteers.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VolunteersComponent implements OnInit {
+export class VolunteersComponent implements OnInit, OnDestroy {
   event: IEvent;
   community: ICommunity;
   inputValue: string;
@@ -29,12 +31,15 @@ export class VolunteersComponent implements OnInit {
 
   loadingVolunteers = true;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     private userRolesUsersService: UserRolesUsersService,
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
     private changeDetectorRef: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
+    private seoService: SeoService,
   ) {
     this.userRolesUserForm = this.fb.group({
       email: ['', Validators.required],
@@ -46,10 +51,13 @@ export class VolunteersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.community = data.community;
-      this.event = data.event;
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        this.community = data.community;
+        this.event = data.event;
+        this.setMeta();
+      }),
+    );
     this.roleDesignations = this.userRolesUserForm.get('role_designation').valueChanges.pipe(
       debounceTime(500),
       switchMap((values: string) =>
@@ -96,5 +104,14 @@ export class VolunteersComponent implements OnInit {
       this.userRolesUserForm.controls['role_designation'].reset();
       this.changeDetectorRef.markForCheck();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Team | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

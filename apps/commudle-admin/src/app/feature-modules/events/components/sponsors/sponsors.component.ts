@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild,
@@ -15,6 +16,9 @@ import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { Subscription } from 'rxjs';
+import { ICommunity } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-sponsors',
@@ -22,8 +26,9 @@ import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event
   styleUrls: ['./sponsors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SponsorsComponent implements OnInit {
+export class SponsorsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
+  community: ICommunity;
 
   existingSponsors: ISponsor[] = [];
   sponsors: IEventSponsor[] = [];
@@ -33,6 +38,8 @@ export class SponsorsComponent implements OnInit {
 
   uploadedLogoImageFile: File;
   uploadedLogoImage;
+
+  subscriptions: Subscription[] = [];
 
   @ViewChild('sponsorFormTemplate') sponsorFormTemplate: TemplateRef<any>;
 
@@ -44,6 +51,7 @@ export class SponsorsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {
     this.sponsorForm = this.fb.group({
       logo: ['', Validators.required],
@@ -53,11 +61,15 @@ export class SponsorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.event = data.event;
-      this.getAllSponsors();
-      this.getPastSponsors();
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        this.event = data.event;
+        this.community = data.community;
+        this.setMeta();
+        this.getAllSponsors();
+        this.getPastSponsors();
+      }),
+    );
   }
 
   getAllSponsors() {
@@ -155,5 +167,14 @@ export class SponsorsComponent implements OnInit {
         index: index,
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Sponsors | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

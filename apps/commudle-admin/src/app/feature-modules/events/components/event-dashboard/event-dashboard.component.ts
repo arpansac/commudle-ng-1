@@ -74,7 +74,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe((value) => {
       this.event = value.event;
       this.community = value.community;
-      this.seoService.setTitle(`Admin - ${this.event.name} - ${this.community.name}`);
+      this.seoService.setTitle(`Admin | ${this.event.name} | ${this.community.name}`);
     });
 
     // eslint-disable-next-line no-prototype-builtins
