@@ -35,8 +35,8 @@
 
     &.two-line-clamp {
       ::ng-deep {
-        p {
-          @apply com-line-clamp-2;
+        div {
+          @apply com-line-clamp-2 #{!important};
         }
       }
     }
