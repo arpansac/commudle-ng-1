@@ -55,6 +55,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   getMembers() {
@@ -128,9 +129,10 @@ export class MembersListComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      `Members - Admin - ${this.communityGroup.name}`,
+      `Members | Dashboard | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo?.i350,
     );
+    this.seoService.noIndex(true);
   }
 }

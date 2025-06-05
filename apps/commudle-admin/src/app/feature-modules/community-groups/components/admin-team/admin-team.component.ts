@@ -53,6 +53,7 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   getTeam() {
@@ -89,9 +90,10 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      `Admin Team - Admin - ${this.communityGroup.name}`,
+      `Admin Team | Dashboard | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo?.i350,
     );
+    this.seoService.noIndex(true);
   }
 }

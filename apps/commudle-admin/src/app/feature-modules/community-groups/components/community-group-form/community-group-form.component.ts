@@ -1,23 +1,27 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { toHTML } from '@portabletext/to-html';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-community-group-form',
   templateUrl: './community-group-form.component.html',
   styleUrls: ['./community-group-form.component.scss'],
 })
-export class CommunityGroupFormComponent implements OnInit {
+export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   uploadedLogoImage;
   uploadedLogoImageFile: File;
 
   communityGroupForm;
   themeColor = '#166534';
+
+  subscriptions: Subscription[] = [];
 
   tinyMCE = {
     height: 300,
@@ -75,13 +79,15 @@ export class CommunityGroupFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      if (data.community_group) {
-        this.communityGroup = data.community_group;
-        this.patchFormGroupDetails();
-      }
-      this.setMeta();
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        if (data.community_group) {
+          this.communityGroup = data.community_group;
+          this.patchFormGroupDetails();
+        }
+        this.setMeta();
+      }),
+    );
   }
 
   updateThemeColor(event) {
@@ -161,11 +167,16 @@ export class CommunityGroupFormComponent implements OnInit {
     window.location.reload();
   }
 
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+  }
+
   setMeta() {
     this.seoService.setTags(
-      this.communityGroup ? `Edit - Admin - ${this.communityGroup.name}` : 'New Community Group',
+      this.communityGroup ? `Edit | Dashboard | ${this.communityGroup.name}` : 'New Community Group',
       this.communityGroup ? this.communityGroup.mini_description : '',
-      this.communityGroup ? this.communityGroup.logo.i350 : '',
+      this.communityGroup ? this.communityGroup.logo?.i350 : '',
     );
+    this.seoService.noIndex(true);
   }
 }

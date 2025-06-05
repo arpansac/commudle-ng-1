@@ -1,22 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EDbModels } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-community-group-custom-pages',
   templateUrl: './community-group-custom-pages.component.html',
   styleUrls: ['./community-group-custom-pages.component.scss'],
 })
-export class CommunityGroupCustomPagesComponent implements OnInit {
+export class CommunityGroupCustomPagesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   EDbModels = EDbModels;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  subscriptions: Subscription[] = [];
+
+  constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
-    this.activatedRoute.parent.parent.data.subscribe((data) => {
-      this.communityGroup = data.community_group;
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.communityGroup = data.community_group;
+        this.setMeta();
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      `Pages | Dashboard | ${this.communityGroup.name}`,
+      this.communityGroup.mini_description,
+      this.communityGroup.logo?.i350,
+    );
+    this.seoService.noIndex(true);
   }
 }
