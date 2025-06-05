@@ -21,6 +21,7 @@ import { HackathonControlPanelChannelsComponent } from 'apps/commudle-admin/src/
 import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-stats/hackathon-control-panel-stats.component';
 import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-overall-stats.component';
 import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
+import { CommunityDetailsResolver } from '../../resolvers/community-details.resolver';
 
 const routes: Routes = [
   {
@@ -29,6 +30,9 @@ const routes: Routes = [
   },
   {
     path: ':hackathon_id',
+    resolve: {
+      community: CommunityDetailsResolver,
+    },
     children: [
       {
         path: '',

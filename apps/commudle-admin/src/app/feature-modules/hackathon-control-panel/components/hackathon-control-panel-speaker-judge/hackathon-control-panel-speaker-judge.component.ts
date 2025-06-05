@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUser } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
@@ -7,12 +7,17 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { EHackathonJudgeType, IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { IHackathon } from '@commudle/shared-models';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-speaker-judge',
   templateUrl: './hackathon-control-panel-speaker-judge.component.html',
   styleUrls: ['./hackathon-control-panel-speaker-judge.component.scss'],
 })
-export class HackathonControlPanelSpeakerJudgeComponent implements OnInit {
+export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDestroy {
   fetchSpeakerJudge: FormGroup;
   speakerRegistrationForm: FormGroup;
   imageUrl: string;
@@ -27,12 +32,18 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit {
   profileExist = false;
 
   EHackathonJudgeType = EHackathonJudgeType;
+
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
+  hackathon: IHackathon;
+
   constructor(
     private fb: FormBuilder,
     private hackathonService: HackathonService,
     private dialogService: NbDialogService,
     private appUsersService: AppUsersService,
     private activatedRoute: ActivatedRoute,
+    private seoService: SeoService,
   ) {
     this.fetchSpeakerJudge = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -54,10 +65,27 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      this.indexJudges(params.get('hackathon_id'));
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        this.indexJudges(params.get('hackathon_id'));
+        this.fetchHackathonDetails(params.get('hackathon_id'));
+      }),
+    );
+  }
+
+  fetchHackathonDetails(hackathonId) {
+    this.subscriptions.push(
+      this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        this.hackathon = data;
+        this.setMeta();
+      }),
+    );
   }
 
   urlValidator(control) {
@@ -212,5 +240,16 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit {
     this.hackathonService.destroyJudge(JudgeId).subscribe((data) => {
       if (data) this.judges.splice(index, 1);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Judges, Speakers & Mentors
+| Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

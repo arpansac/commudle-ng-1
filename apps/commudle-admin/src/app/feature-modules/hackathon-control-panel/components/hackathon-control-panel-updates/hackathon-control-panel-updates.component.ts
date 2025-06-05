@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
@@ -7,13 +7,16 @@ import { EDbModels, IEntityUpdate } from '@commudle/shared-models';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ToastrService } from '@commudle/shared-services';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-updates',
   templateUrl: './hackathon-control-panel-updates.component.html',
   styleUrls: ['./hackathon-control-panel-updates.component.scss'],
 })
-export class HackathonControlPanelUpdatesComponent implements OnInit {
+export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy {
   EDbModels = EDbModels;
   moment = moment;
   updates: IEntityUpdate[] = [];
@@ -25,23 +28,36 @@ export class HackathonControlPanelUpdatesComponent implements OnInit {
   };
   isLoading = false;
   hackathon: IHackathon;
+  community: ICommunity;
+
+  subscriptions: Subscription[] = [];
   constructor(
     private activatedRoute: ActivatedRoute,
     private entityUpdatesService: EntityUpdatesService,
     private hackathonService: HackathonService,
     private toasterService: ToastrService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.fetchHackathonDetails(params.get('hackathon_id'));
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.fetchHackathonDetails(params.get('hackathon_id'));
+      }),
+    );
   }
 
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
       this.hackathon = data;
       this.getUpdates();
+      this.setMeta();
     });
   }
 
@@ -113,5 +129,15 @@ export class HackathonControlPanelUpdatesComponent implements OnInit {
   removeImage(index) {
     this.images.splice(index, 1);
     this.selectedImages.splice(index, 1);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Post Updates | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

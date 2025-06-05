@@ -8,6 +8,8 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { DatePipe } from '@angular/common';
 import { ToastrService } from '@commudle/shared-services';
 import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-dates-form',
@@ -20,6 +22,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
 
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
+  community: ICommunity;
 
   allTimeZones;
   userTimeZone;
@@ -38,6 +41,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     private hackathonService: HackathonService,
     private datePipe: DatePipe,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.hackathonDatesForm = this.fb.group({
       start_date: ['', Validators.required],
@@ -50,9 +54,18 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
 
   ngOnInit() {
     this.allTimeZones = momentTimezone.tz.names();
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.fetchHackathonDetails(params.get('hackathon_id'));
-    });
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.fetchHackathonDetails(params.get('hackathon_id'));
+      }),
+    );
   }
 
   ngOnDestroy() {
@@ -63,6 +76,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
+        this.setMeta();
         if (!this.hackathon.timezone) {
           this.hackathonDatesForm.patchValue({
             timezone: momentTimezone.tz.guess(),
@@ -124,5 +138,10 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     } else {
       this.invalidFormFields = false;
     }
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Dates | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IHackathon } from '@commudle/shared-models';
@@ -7,13 +7,15 @@ import { faArrowRight, faCalendarDays, faLink } from '@fortawesome/free-solid-sv
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-contact-details-form',
   templateUrl: './hackathon-control-panel-contact-details-form.component.html',
   styleUrls: ['./hackathon-control-panel-contact-details-form.component.scss'],
 })
-export class HackathonControlPanelContactDetailsFormComponent implements OnInit {
+export class HackathonControlPanelContactDetailsFormComponent implements OnInit, OnDestroy {
   hackathonContactForm: FormGroup;
   subscriptions: Subscription[] = [];
 
@@ -22,6 +24,8 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
   hackathon: IHackathon;
   hackathonSlug = '';
   communitySlug = '';
+
+  community: ICommunity;
 
   icons = {
     faArrowRight,
@@ -34,6 +38,7 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
     private activatedRoute: ActivatedRoute,
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.hackathonContactForm = this.fb.group({
       website: ['', this.urlValidator],
@@ -51,6 +56,12 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
   }
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
       this.communitySlug = params.get('community_id');
@@ -121,7 +132,18 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
+        this.setMeta();
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Contact & Social Links | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

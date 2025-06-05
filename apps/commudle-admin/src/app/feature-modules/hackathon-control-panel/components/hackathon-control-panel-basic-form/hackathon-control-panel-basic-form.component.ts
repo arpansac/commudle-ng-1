@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonLocationType, EParticipateTypes, IHackathon } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
 import { faArrowRight, faFileImage, faLink } from '@fortawesome/free-solid-svg-icons';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-basic-form',
@@ -25,6 +26,8 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   hackathon: IHackathon;
   EParticipateTypes = EParticipateTypes;
   EHackathonLocationType = EHackathonLocationType;
+
+  community: ICommunity;
 
   icons = {
     faFileImage,
@@ -99,37 +102,43 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      if (params.get('community_id')) {
-        this.parentId = params.get('community_id');
-        this.parentType = 'Kommunity';
-      }
-      if (params.get('community_group_id')) {
-        this.parentId = params.get('community_group_id');
-        this.parentType = 'CommunityGroup';
-      }
-      if (this.hackathonSlug) {
-        this.fetchHackathonDetails();
-      } else {
-        this.seoService.setTitle('New Hackathon');
-      }
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        if (params.get('community_id')) {
+          this.parentId = params.get('community_id');
+          this.parentType = 'Kommunity';
+        }
+        if (params.get('community_group_id')) {
+          this.parentId = params.get('community_group_id');
+          this.parentType = 'CommunityGroup';
+        }
+        this;
+        if (this.hackathonSlug) {
+          this.fetchHackathonDetails();
+        } else {
+          this.seoService.setTitle('New Hackathon');
+        }
+      }),
+    );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   fetchHackathonDetails() {
     this.subscriptions.push(
       this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data: IHackathon) => {
         this.hackathon = data;
-        this.seoService.setTags(
-          `Admin | ${this.hackathon.name}`,
-          this.hackathon.tagline,
-          'https://commudle.com/assets/images/commudle-logo192.png',
-        );
+        this.setMeta();
         this.imagePreview = data.banner_image ? data.banner_image.url : '';
         this.hackathonForm.patchValue({
           name: data.name,
@@ -265,5 +274,14 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
         this.isLoading = false;
       },
     );
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      `Basic Information | Dashboard | ${this.hackathon.name} | ${this.community.name}`,
+      this.hackathon.tagline,
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+    this.seoService.noIndex(true);
   }
 }

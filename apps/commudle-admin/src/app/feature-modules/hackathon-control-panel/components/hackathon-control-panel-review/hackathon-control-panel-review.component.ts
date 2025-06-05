@@ -22,9 +22,11 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -74,6 +76,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
 
+  community: ICommunity;
+  subscriptions: Subscription[] = [];
+
   tinyMCE = {
     height: 200,
     menubar: false,
@@ -119,6 +124,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     private hurService: HackathonUserResponsesService,
     private hackathonEmailPreview: EmailerPreviewService,
     private router: Router,
+    private seoService: SeoService,
   ) {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
@@ -133,14 +139,22 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.communityId = params.get('community_id');
-      this.hackathonId = params.get('hackathon_id');
-      this.fetchUserResponses();
-      this.fetchHackathon(params.get('hackathon_id'));
-      this.indexRounds(params.get('hackathon_id'));
-      this.indexTracks(params.get('hackathon_id'));
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.communityId = params.get('community_id');
+        this.hackathonId = params.get('hackathon_id');
+        this.fetchUserResponses();
+        this.fetchHackathon(params.get('hackathon_id'));
+        this.indexRounds(params.get('hackathon_id'));
+        this.indexTracks(params.get('hackathon_id'));
+      }),
+    );
 
     this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.page = 1;
@@ -149,13 +163,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   fetchHackathon(hackathonId) {
-    this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
-      this.hackathon = data;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.dialogRef?.close();
+    this.subscriptions.push(
+      this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
+        this.hackathon = data;
+        if (this.community && this.hackathon) {
+          this.setMeta();
+        }
+      }),
+    );
   }
 
   fetchUserResponses() {
@@ -393,5 +408,16 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   goToEmails() {
     this.router.navigate(['../emails'], { relativeTo: this.activatedRoute });
+  }
+
+  ngOnDestroy(): void {
+    this.dialogRef?.close();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

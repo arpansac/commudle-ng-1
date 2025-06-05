@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -10,12 +10,17 @@ import { ToastrService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
 import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { Subscription } from 'rxjs';
+import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',
   styleUrls: ['./hackathon-control-panel-emails.component.scss'],
 })
-export class HackathonControlPanelEmailsComponent implements OnInit {
+export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   hackathonId: number | string;
   message = '';
   dialogRef: NbDialogRef<any>;
@@ -24,6 +29,10 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   previewEmailForm;
   previewData: string;
   dialogReference: NbDialogRef<any>;
+
+  hackathon: IHackathon;
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
 
   tinyMCE = {
     min_height: 300,
@@ -68,6 +77,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     private toasterService: ToastrService,
     private fb: FormBuilder,
     private emailerPreviewService: EmailerPreviewService,
+    private seoService: SeoService,
   ) {
     this.previewEmailForm = this.fb.group({
       body: [''],
@@ -75,8 +85,24 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonId = params.get('hackathon_id');
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonId = params.get('hackathon_id');
+        this.fetchHackathonDetails(this.hackathonId);
+      }),
+    );
+  }
+
+  fetchHackathonDetails(hackathonId) {
+    this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+      this.hackathon = data;
+      this.setMeta();
     });
   }
 
@@ -140,5 +166,15 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
       context: { previewData },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Communications | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }

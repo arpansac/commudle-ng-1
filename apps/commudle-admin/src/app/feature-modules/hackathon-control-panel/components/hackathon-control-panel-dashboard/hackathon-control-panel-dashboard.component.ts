@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, Resolve, ActivatedRoute } from '@angular/router';
 import { ICommunity } from '@commudle/shared-models';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -101,6 +101,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
     this.footerService.changeMiniFooterStatus(true);
   }

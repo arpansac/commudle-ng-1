@@ -15,6 +15,9 @@ import {
   faSackDollar,
 } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { Subscription } from 'rxjs';
+import { ICommunity } from 'apps/shared-models/community.model';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -39,6 +42,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   communitySlug: string;
   dialogRef: any;
 
+  community: ICommunity;
+  subscriptions: Subscription[] = [];
+
   today: string = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
 
   constructor(
@@ -49,6 +55,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
     private toastrService: ToastrService,
     private datePipe: DatePipe,
     private hackathonService: HackathonService,
+    private seoService: SeoService,
   ) {
     this.roundForm = this.fb.group({
       name: ['', Validators.required],
@@ -59,12 +66,20 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      this.communitySlug = params.get('community_id');
-      this.fetchHackathon();
-      this.indexRounds(params.get('hackathon_id'));
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((data) => {
+        this.community = data.community;
+      }),
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        this.communitySlug = params.get('community_id');
+        this.fetchHackathon();
+        this.indexRounds(params.get('hackathon_id'));
+      }),
+    );
   }
 
   indexRounds(hackathonId) {
@@ -76,6 +91,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   fetchHackathon() {
     this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data) => {
       this.hackathon = data;
+      this.setMeta();
     });
   }
 
@@ -151,5 +167,15 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.noIndex(true);
   }
 }
