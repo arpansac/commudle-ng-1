@@ -7,10 +7,18 @@ import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-sol
 import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
 import { ECmsType } from 'apps/shared-models/enums/cms.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { countries_details, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
+import {
+  AuthService,
+  countries_details,
+  GoogleTagManagerService,
+  ProductPriceService,
+  SeoService,
+} from '@commudle/shared-services';
 import * as momentTimezone from 'moment-timezone';
 import { IFaq, IProductPrice } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
+import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
@@ -88,6 +96,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   answers = [];
 
+  private destroy$ = new Subject<void>();
+
   constructor(
     private seoService: SeoService,
     private gtm: GoogleTagManagerService,
@@ -97,6 +107,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private productPriceService: ProductPriceService,
     private nbDialogService: NbDialogService,
+    private errorHandler: LibErrorHandlerService,
+    private authService: AuthService,
   ) {
     const userTimeZone = momentTimezone.tz.guess();
     if (userTimeZone === 'Asia/Calcutta') {
@@ -133,6 +145,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   gtmDataLayerPush(event) {
@@ -318,19 +332,27 @@ export class PricingComponent implements OnInit, OnDestroy {
       context: {},
     });
 
-    if (productUuid) {
-      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
-        (response) => {
-          this.isFullPageLoading = false;
-          if (response && response.uuid) {
-            window.location.href = `/checkout/${response.uuid}`;
-          }
-        },
-        (error) => {
-          this.isFullPageLoading = false;
-          console.error('Error creating purchase order:', error);
-        },
-      );
-    }
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      if (data) {
+        if (productUuid) {
+          this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+            (response) => {
+              this.isFullPageLoading = false;
+              if (response && response.uuid) {
+                window.location.href = `/checkout/${response.uuid}`;
+              }
+            },
+            (error) => {
+              this.isFullPageLoading = false;
+              console.error('Error creating purchase order:', error);
+            },
+          );
+        }
+      } else {
+        this.isFullPageLoading = false;
+        dialogRef.close();
+        this.errorHandler.handleError(401, 'Login to apply');
+      }
+    });
   }
 }
