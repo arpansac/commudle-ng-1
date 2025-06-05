@@ -35,7 +35,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = ['open', 'draft', 'completed'];
+  activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.COMPLETED];
 
   searchForm;
 
