@@ -1,11 +1,11 @@
 .community-events-list {
   @apply com-m-6 com-overflow-x-hidden;
-  fa-icon {
-    @apply com-mr-2;
-  }
 
   .page-actions {
     @apply com-p-0 com-pb-4;
+    fa-icon {
+      @apply com-mr-2;
+    }
   }
 
   .activeTag {

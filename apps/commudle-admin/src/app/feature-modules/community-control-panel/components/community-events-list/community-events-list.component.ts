@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IEvent } from 'apps/shared-models/event.model';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
@@ -25,7 +25,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   EEventStatuses = EEventStatuses;
 
   query = '';
-  faPlusSquare = faPlusSquare;
   icons = {
     faPlus,
     faArrowUpRightFromSquare,
@@ -36,7 +35,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = [];
+  activeEventStatuses: string[] = ['open', 'draft', 'completed'];
 
   searchForm;
 
@@ -97,7 +96,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private eventsService: EventsService,
     private fb: FormBuilder,
   ) {
-    this.activeEventStatuses = [];
     this.searchForm = this.fb.group({
       name: [''],
     });
