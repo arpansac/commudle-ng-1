@@ -54,6 +54,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { LinkyModule } from 'ngx-linky';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
+import { EventRegisteredCardComponent } from './event-cards/event-registered-card/event-registered-card.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
     CallForSpeakerCardComponent,
     EventHackathonRegistrationsComponent,
     EmailPreviewComponent,
+    EventRegisteredCardComponent,
   ],
   exports: [
     EmailerComponent,
@@ -103,6 +105,7 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
     CallForSpeakerCardComponent,
     EventHackathonRegistrationsComponent,
     EmailPreviewComponent,
+    EventRegisteredCardComponent,
   ],
   imports: [
     CommonModule,

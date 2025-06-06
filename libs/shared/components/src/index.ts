@@ -15,5 +15,4 @@ export * from './lib/components/public-faqs/public-faqs.component';
 export * from './lib/components/input/input.component';
 
 export * from './lib/components/campaign-assets-display/campaign-assets-display.component';
-
-export * from './lib/components/event-cards/event-card/event-card.component';
+export * from './lib/components/interested-members/interested-members.component';
