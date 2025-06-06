@@ -1,0 +1,23 @@
+<div class="event-details" *ngIf="event">
+  <div class="event-start-date">
+    <nb-icon icon="calendar-outline"></nb-icon>
+    <span>{{ moment(event.start_date).format('MMM DD, YYYY') }}</span>
+  </div>
+
+  <div class="event-location" *ngIf="event?.event_locations[0]">
+    <nb-icon icon="pin-outline"></nb-icon>
+    <a [href]="event.event_locations[0].map_link">{{ event.event_locations[0].name }}</a>
+  </div>
+
+  <div class="intrested-members">
+    <!-- <commudle-interested-members></commudle-interested-members> -->
+  </div>
+
+  <div class="actions">
+    <button nbButton status="primary" fullWidth shape="semi-round">
+      <nb-icon icon="calendar-add-outline"></nb-icon>
+      Add to Calendar
+    </button>
+    <button nbButton outline fullWidth shape="semi-round">View Event Details</button>
+  </div>
+</div>

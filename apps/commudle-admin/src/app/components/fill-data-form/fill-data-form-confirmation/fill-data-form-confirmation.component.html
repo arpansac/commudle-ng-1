@@ -1,0 +1,16 @@
+<div class="com-bg-white">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <div class="confirmation-card">
+          <div class="confirmation-header">
+            <div class="check-icon">🤩</div>
+            <h1 class="title">Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}</h1>
+          </div>
+          <h2 class="event-name">Event Details</h2>
+          <commudle-event-card [event]="event"></commudle-event-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

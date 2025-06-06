@@ -30,6 +30,7 @@ import { InputComponent } from './components/input/input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignAssetsDisplayComponent } from './components/campaign-assets-display/campaign-assets-display.component';
 import { UserExpertTickComponent } from './components/user/user-expert-tick/user-expert-tick.component';
+import { EventCardComponent } from './components/event-cards/event-card/event-card.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { UserExpertTickComponent } from './components/user/user-expert-tick/user
     InputComponent,
     CampaignAssetsDisplayComponent,
     UserExpertTickComponent,
+    EventCardComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +77,7 @@ import { UserExpertTickComponent } from './components/user/user-expert-tick/user
     PublicFaqsComponent,
     InputComponent,
     CampaignAssetsDisplayComponent,
+    EventCardComponent,
   ],
   providers: [InViewportDirective],
 })
