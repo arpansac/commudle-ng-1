@@ -1,18 +1,82 @@
 <div class="community-events-list">
   <div class="page-actions">
-    <a
-      nbButton
-      outline
-      size="small"
-      status="primary"
-      [routerLink]="['/admin/communities', communityId, 'event-dashboard', 'new']"
-    >
+    <a nbButton status="primary" [routerLink]="['/admin/communities', communityId, 'event-dashboard', 'new']">
       <fa-icon [icon]="faPlusSquare"></fa-icon>
       &nbsp; Create New Event
     </a>
   </div>
 
-  <div>
-    <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table>
+  <!-- angular2 smart table -kept for reference-->
+
+  <!-- <div> 
+  <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> 
+  </div> -->
+
+  <form [formGroup]="searchForm">
+    <div class="name-filter">
+      <nb-form-field>
+        <nb-icon icon="search" nbPrefix></nb-icon>
+        <input
+          [disabled]="isLoading"
+          fieldSize="small"
+          formControlName="name"
+          fullWidth
+          nbInput
+          placeholder="Search by Event.."
+          type="text"
+        />
+      </nb-form-field>
+    </div>
+  </form>
+
+  <div class="status-filter">
+    <nb-tag-list>
+      <nb-tag
+        *ngFor="let eventStatus of eventStatuses"
+        appearance="outline"
+        [text]="eventStatus"
+        status="primary"
+        [removable]="activeEventStatuses && activeEventStatuses.includes(eventStatus) ? 'true' : 'false'"
+        [ngClass]="{ activeTag: activeEventStatuses && activeEventStatuses.includes(eventStatus) }"
+        (click)="filterByTags(eventStatus)"
+      ></nb-tag>
+    </nb-tag-list>
   </div>
+
+  <section class="event-list-container">
+    <table *ngIf="events && events.length > 0">
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+        <th>Public Page</th>
+      </tr>
+      <tr *ngFor="let event of events">
+        <td>{{ event.name }}</td>
+        <td>
+          <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
+        </td>
+
+        <td>{{ event.status | titlecase }}</td>
+        <td class="action-buttons">
+          <commudle-community-events-list-actions [eventData]="event"> </commudle-community-events-list-actions>
+        </td>
+        <td class="public-page-buttons">
+          <commudle-community-events-list-public-page [eventData]="event"> </commudle-community-events-list-public-page>
+        </td>
+      </tr>
+    </table>
+
+    <app-pagination
+      class="pagination"
+      (goTo)="page = $event; getCommunityEvents()"
+      (next)="page = $event; getCommunityEvents()"
+      (previous)="page = $event; getCommunityEvents()"
+      *ngIf="total > 0"
+      [count]="count"
+      [current]="page"
+      [total]="total"
+    ></app-pagination>
+  </section>
 </div>

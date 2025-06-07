@@ -23,12 +23,18 @@ export interface IPricing {
 
 export interface IPricingPlanByMonthlyYearly {
   name: string;
+  uuid: string;
   details: IPricingPlan[];
+  price_after_discount?: number;
+  price: number;
+  discount_percentage?: number;
+  currencyType: string;
+  country: string;
 }
 export interface IPricingPlan {
-  price_after_discount?: string;
-  price: string;
-  discount_percentage?: string;
+  price_after_discount?: number;
+  price: number;
+  discount_percentage?: number;
   url: string;
   currencyType: string;
   country: string;

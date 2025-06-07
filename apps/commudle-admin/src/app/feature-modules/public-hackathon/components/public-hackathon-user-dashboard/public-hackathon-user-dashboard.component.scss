@@ -72,3 +72,13 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+
+.team-selector {
+  @apply com-mt-4;
+  .select {
+    @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-10 com-cursor-pointer com-bg-white hover:com-bg-white-opacity-40  com-border com-border-solid com-border-Bright-Gray  com-w-full com-text-Yankees-Blue;
+    select {
+      @apply com-bg-white hover:com-bg-white-opacity-40  com-cursor-pointer com-border-0 com-w-full com-text-Yankees-Blue;
+    }
+  }
+}

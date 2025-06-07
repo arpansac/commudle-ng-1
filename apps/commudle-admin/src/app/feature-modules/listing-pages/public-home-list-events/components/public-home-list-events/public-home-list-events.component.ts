@@ -16,7 +16,7 @@ export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
     this.seoService.setTags(
-      'Events - Online, Offline & Hybrid Events by Dev Communities',
+      'Tech Events - Find Workshops, Hackathons & Meetups Near You',
       'Register and attend tech events on web development, devops, design, machine learning, AI, app development and more by developer communities. Find and network with tech experts.',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );

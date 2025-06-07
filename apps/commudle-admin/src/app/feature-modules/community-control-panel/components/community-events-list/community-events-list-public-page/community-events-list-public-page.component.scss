@@ -1,7 +1,3 @@
 .actions {
-  @apply com-flex com-flex-wrap;
-
-  a {
-    @apply com-my-2 com-mx-auto;
-  }
+  @apply com-flex com-gap-4;
 }

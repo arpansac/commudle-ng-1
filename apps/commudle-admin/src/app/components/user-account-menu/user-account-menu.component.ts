@@ -9,7 +9,6 @@ import {
   faFlask,
   faLightbulb,
   faLink,
-  faNewspaper,
   faSuitcase,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
@@ -29,7 +28,6 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
   faLightbulb = faLightbulb;
   faFlask = faFlask;
   faSuitcase = faSuitcase;
-  faNewspaper = faNewspaper;
   faAudioDescription = faAudioDescription;
   faArrowRightFromBracket = faArrowRightFromBracket;
   faLink = faLink;
@@ -53,6 +51,12 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
     this.footerService.changeMiniFooterStatus(false);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.footerService.changeMiniFooterStatus(true);
+  }
+
   openConfirmDialogBox(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog);
   }
@@ -67,11 +71,5 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
       `Account menu for ${this.currentUser.name}`,
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.footerService.changeMiniFooterStatus(true);
   }
 }

@@ -49,11 +49,34 @@ export class EventsService {
     });
   }
 
-  communityEventsForEmail(communityId): Observable<IEvents> {
-    const params = new HttpParams().set('community_id', communityId);
-    return this.http.get<IEvents>(this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL), {
-      params,
-    });
+  communityEventsForEmail(
+    communityId,
+    page?: number,
+    count?: number,
+    query?: string,
+    eventStatus?: string[],
+  ): Observable<IPaginationCount<IEvent>> {
+    let params = new HttpParams().set('community_id', communityId);
+    if (page) {
+      params = params.set('page', page);
+    }
+    if (count) {
+      params = params.set('count', count);
+    }
+    if (query) params = params.set('query', query);
+
+    if (eventStatus && eventStatus.length > 0) {
+      eventStatus.forEach((status) => {
+        params = params.append(`event_status[]`, status);
+      });
+    }
+
+    return this.http.get<IPaginationCount<IEvent>>(
+      this.apiRoutesService.getRoute(API_ROUTES.EVENTS.COMMUNITY_EVENTS_FOR_EMAIL),
+      {
+        params,
+      },
+    );
   }
 
   getEvent(eventId): Observable<IEvent> {

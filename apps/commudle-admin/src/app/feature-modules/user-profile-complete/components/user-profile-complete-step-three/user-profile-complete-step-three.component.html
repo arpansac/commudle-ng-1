@@ -1,0 +1,78 @@
+<div
+  class="background-image"
+  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+>
+  <div class="base-layout">
+    <div class="container">
+      <div class="three-column-layout thin">
+        <div class="left-column"></div>
+        <div>
+          <p class="step-number">Step 3 of 3</p>
+          <h2 class="welcome-text">Build Your Network</h2>
+          <p class="sub-text">Here are your first few steps — join, follow, and engage!</p>
+          <div>
+            <h2 class="community-heading">Recommended Communities</h2>
+            <app-loading-spinner *ngIf="communities.length === 0 && showSpinnerCommunities"></app-loading-spinner>
+            <div *ngIf="communities.length > 0 && !showSpinnerCommunities" class="community-container">
+              <div *ngFor="let community of communities" class="communities-list-cards">
+                <commudle-featured-communities-card
+                  [featuredCommunity]="community"
+                  [showJoinBtnBottom]="true"
+                ></commudle-featured-communities-card>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2 class="speakers-heading">Techies to Follow!</h2>
+            <app-loading-spinner *ngIf="speakers.length === 0 && isLoadingSpeakers"></app-loading-spinner>
+            <div *ngIf="speakers.length > 0 && !isLoadingSpeakers" class="speakers-container">
+              <div *ngFor="let speaker of speakers" class="speakers-list-cards">
+                <app-user-profile-card-large
+                  [showFollowButton]="true"
+                  [alignFollowToRight]="false"
+                  [showAbout]="true"
+                  [user]="speaker"
+                  [isMobileWidthFull]="true"
+                  [showSpeakersCount]="true"
+                  [maxUserNameLength]="15"
+                  [showHiringLookingTags]="false"
+                  [appearanceOfFollowButton]="'outline'"
+                  [alignSpeakerCountToRight]="true"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2 *ngIf="upcomingEvents.length > 0 || showSpinnerEvents" class="events-heading">Upcoming Events</h2>
+            <app-loading-spinner *ngIf="upcomingEvents.length === 0 && showSpinnerEvents"></app-loading-spinner>
+            <div *ngIf="upcomingEvents.length > 0 && !showSpinnerEvents" class="events-container">
+              <div *ngFor="let upcomingEvent of upcomingEvents" class="events-list-cards">
+                <commudle-event-mini-card
+                  [attendedEvent]="upcomingEvent"
+                  [iconSize]="'medium'"
+                  [cardType]="'upcomingEvents'"
+                ></commudle-event-mini-card>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-btn">
+            <button
+              outline
+              nbButton
+              (click)="goToPreviousStep()"
+              fullWidth
+              shape="semi-round"
+              status="primary"
+              class="com-mr-4"
+            >
+              Back
+            </button>
+            <button nbButton status="primary" shape="semi-round" fullWidth [routerLink]="'/dashboard'">
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
-  selector: 'app-community-builds',
+  selector: 'commudle-community-builds',
   templateUrl: './community-builds.component.html',
   styleUrls: ['./community-builds.component.scss'],
 })

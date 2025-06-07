@@ -182,6 +182,9 @@ module.exports = {
         Card: '0 5px 15px #dae0ff',
         'Chat-box': '0 7px 29px 0 #64646f33 ',
       },
+      borderRadius: {
+        10: '10px',
+      }
     },
     container: {
       center: true,

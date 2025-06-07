@@ -243,6 +243,10 @@ p {
   @apply com-m-0 com-mb-[138px] md:com-mt-32 com-mt-0 com-mx-3 md:com-mx-0;
 }
 
+.loading {
+  @apply com-flex com-justify-center com-items-center com-min-h-screen com-w-full;
+}
+
 .toggle-btn {
   @apply com-flex com-flex-row com-items-center com-gap-5;
 }

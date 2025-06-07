@@ -44,7 +44,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isAssetsAdmin = false;
   isFeaturedItemsAdmin = false;
   isAdCampaignAdmin = false;
-
+  isNewsletterAdmin = false;
   notificationCount = 0;
 
   subscriptions: Subscription[] = [];
@@ -113,6 +113,9 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         }
         if (currentUser.user_roles.includes(EUserRoles.AD_CAMPAIGN_ADMIN)) {
           this.isAdCampaignAdmin = true;
+        }
+        if (currentUser.user_roles.includes(EUserRoles.NEWSLETTER)) {
+          this.isNewsletterAdmin = true;
         }
       }
     });

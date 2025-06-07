@@ -234,6 +234,9 @@ export const staticAssets = {
   // id: 187
   homepage_static_image:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUx0QXc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--029162e4417a62f9e0aa8d40e28465a52e26886a/Homepage%20Image.png',
+
+  user_profile_complete_background:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeU5UQkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0ad2b184b06f46199101a81f75680f8d08bffc3c/BG%20Account%20Setup%20(1).png',
 };
 
 export const AwsS3Bucket = {

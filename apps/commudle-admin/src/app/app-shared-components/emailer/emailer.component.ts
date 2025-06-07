@@ -275,22 +275,58 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.eventsService.communityEventsForEmail(this.community.id).subscribe((data) => {
-      this.events = data.events;
-      if (this.event) {
-        this.prefillForm('event_id');
-      } else {
-        this.prefillForm('general_all');
-      }
+    this.getAllEvents()
+      .then(() => {
+        this.setupFormAfterEvents();
+      })
+      .catch((error) => {
+        console.error('Error loading events:', error);
+      });
+  }
 
-      if (this.recipientEmail) {
-        this.prefillForm('recipient_email');
-      }
+  getAllEvents(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let page = 1;
+      const allEvents = [];
 
-      if (this.recipientUsername) {
-        this.prefillForm('recipient_username');
-      }
+      const getNextPage = () => {
+        this.eventsService.communityEventsForEmail(this.community.id, page, 10).subscribe(
+          (data) => {
+            allEvents.push(...data.values);
+
+            if (allEvents.length < data.total && data.values.length === 10) {
+              page++;
+              getNextPage();
+            } else {
+              this.events = allEvents;
+              resolve();
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+        );
+      };
+
+      getNextPage();
     });
+  }
+
+  setupFormAfterEvents(): void {
+    console.log('All events loaded:', this.events.length);
+    if (this.event) {
+      this.prefillForm('event_id');
+    } else {
+      this.prefillForm('general_all');
+    }
+
+    if (this.recipientEmail) {
+      this.prefillForm('recipient_email');
+    }
+
+    if (this.recipientUsername) {
+      this.prefillForm('recipient_username');
+    }
   }
 
   ngOnDestroy() {

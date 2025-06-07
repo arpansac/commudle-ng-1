@@ -1,5 +1,6 @@
 nb-card {
-  @apply com-overflow-hidden com-transition-all com-duration-500 com-cursor-pointer hover:com-shadow-Card com-m-0 com-h-full;
+  @apply com-overflow-hidden com-transition-all com-duration-500 com-cursor-pointer hover:com-shadow-Card com-m-0 com-h-full
+  com-w-[280px];
   &.fullWidth {
     @apply com-w-full;
   }

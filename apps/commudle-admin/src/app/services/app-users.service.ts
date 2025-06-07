@@ -209,4 +209,8 @@ export class AppUsersService {
       { params },
     );
   }
+
+  getMyGoals(): Observable<any> {
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.USERS.VALID_GOALS));
+  }
 }

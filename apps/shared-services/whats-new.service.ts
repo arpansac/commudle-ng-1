@@ -20,6 +20,10 @@ export class WhatsNewService {
     this.cookieService.set(cookieName, creationTime, 365, '/');
   }
 
+  deleteCookie(cookieName) {
+    this.cookieService.delete(cookieName, '/');
+  }
+
   getNewUpdates(date) {
     return this.cmsService.getDataByTypeFilterWithDate('whatNew', date, 'date desc');
   }

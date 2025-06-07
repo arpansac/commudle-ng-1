@@ -235,6 +235,13 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/exa-drive/exa-drive.module').then((m) => m.ExaDriveModule),
   },
   {
+    path: 'user-profile-complete',
+    loadChildren: () =>
+      import('./feature-modules/user-profile-complete/user-profile-complete.module').then(
+        (m) => m.UserProfileCompleteModule,
+      ),
+  },
+  {
     path: 'admin',
     children: [
       // {

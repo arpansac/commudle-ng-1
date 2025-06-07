@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IFaq } from '@commudle/shared-models';
-import { countries_details } from '@commudle/shared-services';
+import { IFaq, IProductPrice } from '@commudle/shared-models';
+import { countries_details, ProductPriceService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
 import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
@@ -13,13 +14,14 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import * as momentTimezone from 'moment-timezone';
 import { Subscription } from 'rxjs';
-
 @Component({
-  selector: 'app-pricing',
+  selector: 'commudle-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss'],
 })
 export class PricingComponent implements OnInit, OnDestroy {
+  @ViewChild('loadingTemplate') loadingTemplate: TemplateRef<any>;
+
   staticAssets = staticAssets;
   isMobileView = false;
   isDarkMode = false;
@@ -38,6 +40,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   countryForm: FormGroup;
   countries = countries_details;
   faqs: IFaq[] = [];
+  isFullPageLoading = false;
+
   logoCloud: { image: string; name: string; slug: string; description: string }[] = [
     {
       name: 'Google Developer Groups',
@@ -94,6 +98,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     private darkModeService: DarkModeService,
     private cmsService: CmsService,
     private fb: FormBuilder,
+    private productPriceService: ProductPriceService,
+    private nbDialogService: NbDialogService,
   ) {
     const userTimeZone = momentTimezone.tz.guess();
     if (userTimeZone === 'Asia/Calcutta') {
@@ -135,7 +141,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  gtmDatalayerPush(event) {
+  gtmDataLayerPush(event) {
     this.gtm.dataLayerPushEvent('click-pricing-plan', { com_plan_type: event });
   }
 
@@ -159,22 +165,33 @@ export class PricingComponent implements OnInit, OnDestroy {
     }
   }
 
+  private fetchPricingData(type: 'enterprise' | 'startup', slug: string): void {
+    this.cmsService.getDataBySlug(slug).subscribe((value) => {
+      this[type] = value;
+
+      [0, 1].forEach((index) => {
+        if (this[type].priceDetails[index]) {
+          this.productPriceService
+            .show(this[type].priceDetails[index].uuid)
+            .subscribe((productPrice: IProductPrice) => {
+              this[type].priceDetails[index].currencyType = productPrice.currency;
+              this[type].priceDetails[index].price = productPrice.original_price;
+              this[type].priceDetails[index].price_after_discount =
+                productPrice.final_price - productPrice.original_price ? productPrice.final_price : null;
+              this[type].priceDetails[index].discount_percentage = productPrice.discount_percentage;
+              this[type].priceDetails[index].uuid = productPrice.uuid;
+            });
+        }
+      });
+    });
+  }
+
   getEnterpriseData(): void {
-    this.subscriptions.push(
-      this.cmsService.getDataBySlug('pp-commudle-for-enterprises').subscribe((value) => {
-        this.enterprise = value;
-        this.setSchema(this.enterprise);
-      }),
-    );
+    this.fetchPricingData('enterprise', 'pp-commudle-for-enterprises');
   }
 
   getStartupData(): void {
-    this.subscriptions.push(
-      this.cmsService.getDataBySlug('pp-commudle-for-startups').subscribe((value) => {
-        this.startup = value;
-        this.setSchema(this.startup);
-      }),
-    );
+    this.fetchPricingData('startup', 'pp-commudle-for-startups');
   }
 
   getDevrelData(): void {
@@ -279,5 +296,51 @@ export class PricingComponent implements OnInit, OnDestroy {
         answer: 'Yes, our users extend across the world.',
       },
     ];
+  }
+
+  createPurchaseOrderForPrice(gtmPushEventName: string, planType: string) {
+    this.gtmDataLayerPush(gtmPushEventName);
+    let productUuid;
+
+    switch (planType) {
+      case 'startup': {
+        productUuid = this.isMonthly ? this.startup.priceDetails[1].uuid : this.startup.priceDetails[0].uuid;
+        break;
+      }
+      case 'enterprise': {
+        productUuid = this.isMonthly ? this.enterprise.priceDetails[1].uuid : this.enterprise.priceDetails[0].uuid;
+        break;
+      }
+      // Not needed for now
+      // case 'devrel': {
+      //   productUuid = this.isMonthly ? this.devrel.priceDetails[1].uuid : this.devrel.priceDetails[0].uuid;
+      //   break;
+      // }
+    }
+
+    // Show loading dialog
+    this.isFullPageLoading = true;
+    const dialogRef = this.nbDialogService.open(this.loadingTemplate, {
+      hasBackdrop: true,
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      hasScroll: false,
+      context: {},
+    });
+
+    if (productUuid) {
+      this.productPriceService.createPurchaseOrder(productUuid).subscribe(
+        (response) => {
+          this.isFullPageLoading = false;
+          if (response && response.uuid) {
+            window.location.href = `/checkout/${response.uuid}`;
+          }
+        },
+        (error) => {
+          this.isFullPageLoading = false;
+          console.error('Error creating purchase order:', error);
+        },
+      );
+    }
   }
 }

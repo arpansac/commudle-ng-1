@@ -70,9 +70,13 @@
     </div>
     <div
       *ngIf="
-        [EemailTypes.GENERAL_ALL, EemailTypes.ENTRY_PASS, EemailTypes.SEND_LINK, EemailTypes.RSVP].includes(
-          selectedEmailType
-        ) == true
+        [
+          EemailTypes.GENERAL_ALL,
+          EemailTypes.ENTRY_PASS,
+          EemailTypes.SEND_LINK,
+          EemailTypes.RSVP,
+          EemailTypes.CANCELED
+        ].includes(selectedEmailType) === true
       "
       class="fieldset"
     >

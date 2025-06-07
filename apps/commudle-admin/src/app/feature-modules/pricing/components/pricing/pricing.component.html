@@ -19,12 +19,6 @@
                   Annual
                 </div>
               </div>
-              <form class="select" [formGroup]="countryForm">
-                <select formControlName="currency" (change)="onCountryChange()">
-                  <option [value]="countries[0].currency" selected>{{ countries[0].name }}</option>
-                  <option [value]="countries[1].currency">Global</option>
-                </select>
-              </form>
             </div>
             <div class="cards">
               <!-- STARTUP -->
@@ -38,20 +32,22 @@
                     <div *ngIf="startup.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
-                        <ng-container *ngFor="let item of startup.priceDetails[1].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                        <ng-container>
+                          <ng-container>
                             <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
+                              (startup.priceDetails[1].price_after_discount
+                                ? startup.priceDetails[1].price_after_discount
+                                : startup.priceDetails[1].price
+                              ) | currency : startup.priceDetails[1].currencyType
                             }}</span>
-                            <ng-container *ngIf="item.price_after_discount">
+
+                            <ng-container *ngIf="startup.priceDetails[1].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ startup.priceDetails[1].discount_percentage }}%</p>
                                 <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
+                                  <span class="discount-price">{{
+                                    startup.priceDetails[1].price | currency : startup.priceDetails[1].currencyType
+                                  }}</span>
                                 </div>
                               </div>
                             </ng-container>
@@ -59,23 +55,24 @@
                         </ng-container>
                       </ng-container>
 
-                      <!-- ANUALLY -->
+                      <!-- ANNUALLY -->
                       <ng-container *ngIf="isAnnually">
-                        <ng-container *ngFor="let item of startup.priceDetails[0].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                        <ng-container>
+                          <ng-container>
                             <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
+                              (startup.priceDetails[0].price_after_discount
+                                ? startup.priceDetails[0].price_after_discount
+                                : startup.priceDetails[0].price
+                              ) | currency : startup.priceDetails[0].currencyType
                             }}</span>
 
-                            <ng-container *ngIf="item.price_after_discount">
+                            <ng-container *ngIf="startup.priceDetails[0].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ startup.priceDetails[0].discount_percentage }}%</p>
                                 <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
+                                  <span class="discount-price">{{
+                                    startup.priceDetails[0].price | currency : startup.priceDetails[0].currencyType
+                                  }}</span>
                                 </div>
                               </div>
                             </ng-container>
@@ -97,12 +94,8 @@
                     </li>
                   </ul>
                 </div>
-                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup')">
                     <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
                       {{ startup.button_text }}
                     </button>
@@ -121,20 +114,22 @@
                     <div *ngIf="enterprise.priceDetails" class="price">
                       <!-- MONTHLY  -->
                       <ng-container *ngIf="isMonthly">
-                        <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                        <ng-container>
+                          <ng-container>
                             <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
+                              (enterprise.priceDetails[1].price_after_discount
+                                ? enterprise.priceDetails[1].price_after_discount
+                                : enterprise.priceDetails[1].price
+                              ) | currency : enterprise.priceDetails[1].currencyType
                             }}</span>
-                            <ng-container *ngIf="item.price_after_discount">
+                            <ng-container *ngIf="enterprise.priceDetails[1].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ enterprise.priceDetails[1].discount_percentage }}%</p>
                                 <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
+                                  <span class="discount-price">{{
+                                    enterprise.priceDetails[1].price
+                                      | currency : enterprise.priceDetails[1].currencyType
+                                  }}</span>
                                 </div>
                               </div>
                             </ng-container>
@@ -142,23 +137,25 @@
                         </ng-container>
                       </ng-container>
 
-                      <!-- ANUALLY -->
+                      <!-- ANNUALLY -->
                       <ng-container *ngIf="isAnnually">
-                        <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
-                          <ng-container *ngIf="item.currencyType === selectedCurrency">
-                            <span class="currency-symbol">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                        <ng-container>
+                          <ng-container>
                             <span class="current-price">{{
-                              item.price_after_discount ? item.price_after_discount : item.price
+                              (enterprise.priceDetails[0].price_after_discount
+                                ? enterprise.priceDetails[0].price_after_discount
+                                : enterprise.priceDetails[0].price
+                              ) | currency : enterprise.priceDetails[0].currencyType
                             }}</span>
 
-                            <ng-container *ngIf="item.price_after_discount">
+                            <ng-container *ngIf="enterprise.priceDetails[0].price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ enterprise.priceDetails[0].discount_percentage }}%</p>
                                 <div>
-                                  <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                                  <span class="discount-price">{{ item.price }}</span>
+                                  <span class="discount-price">{{
+                                    enterprise.priceDetails[0].price
+                                      | currency : enterprise.priceDetails[0].currencyType
+                                  }}</span>
                                 </div>
                               </div>
                             </ng-container>
@@ -181,14 +178,10 @@
                     </li>
                   </ul>
                 </div>
-                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise')">
                     <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
-                      {{ enterprise.button_text }}
+                      {{ startup?.button_text }}
                     </button>
                   </a>
                 </ng-container>
@@ -212,9 +205,7 @@
                             }}</span>
                             <ng-container *ngIf="item.price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ item.discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
                                   <span class="discount-price">{{ item.price }}</span>
@@ -234,9 +225,7 @@
                             }}</span>
                             <ng-container *ngIf="item.price_after_discount">
                               <div class="discount">
-                                <p class="discount-percentage">
-                                  {{ item.discount_percentage }}
-                                </p>
+                                <p class="discount-percentage">{{ item.discount_percentage }}%</p>
                                 <div>
                                   <span class="discount-price">{{ item.price }}</span>
                                 </div>
@@ -262,7 +251,7 @@
                   <a
                     *ngIf="item.currencyType === selectedCurrency"
                     [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                    (click)="gtmDataLayerPush('pricing_plan_devrel_agency')"
                   >
                     <button nbButton fullWidth shape="semi-round" class="enterprise-btn">
                       {{ devrel.button_text }}
@@ -297,45 +286,47 @@
                   <span *ngIf="startup?.priceDetails">
                     <!-- MONTHLY  -->
                     <ng-container *ngIf="isMonthly">
-                      <ng-container *ngFor="let item of startup.priceDetails[1].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                      <ng-container>
+                        <ng-container>
                           <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
+                            (startup.priceDetails[1].price_after_discount
+                              ? startup.priceDetails[1].price_after_discount
+                              : startup.priceDetails[1].price
+                            ) | currency : startup.priceDetails[1].currencyType
                           }}</span>
 
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
+                          <ng-container *ngIf="startup.priceDetails[1].price_after_discount">
+                            <span class="earlier-price com-ml-2">{{
+                              startup.priceDetails[1].price | currency : startup.priceDetails[1].currencyType
+                            }}</span>
                           </ng-container>
                         </ng-container>
                       </ng-container>
                     </ng-container>
 
-                    <!-- ANUALLY -->
+                    <!-- ANNUALLY -->
                     <ng-container *ngIf="isAnnually">
-                      <ng-container *ngFor="let item of startup.priceDetails[0].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                      <ng-container>
+                        <ng-container>
                           <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
+                            (startup.priceDetails[0].price_after_discount
+                              ? startup.priceDetails[0].price_after_discount
+                              : startup.priceDetails[0].price
+                            ) | currency : startup.priceDetails[0].currencyType
                           }}</span>
 
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
+                          <ng-container *ngIf="startup.priceDetails[0].price_after_discount">
+                            <span class="earlier-price com-ml-2">{{
+                              startup.priceDetails[0].price | currency : startup.priceDetails[0].currencyType
+                            }}</span>
                           </ng-container>
                         </ng-container>
                       </ng-container>
                     </ng-container>
                   </span>
                 </div>
-                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup')">
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ startup?.button_text }}
                     </button>
@@ -348,15 +339,18 @@
                   <span *ngIf="enterprise?.priceDetails">
                     <!-- MONTHLY  -->
                     <ng-container *ngIf="isMonthly">
-                      <ng-container *ngFor="let item of enterprise.priceDetails[1].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                      <ng-container>
+                        <ng-container>
                           <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
+                            (enterprise.priceDetails[1].price_after_discount
+                              ? enterprise.priceDetails[1].price_after_discount
+                              : enterprise.priceDetails[1].price
+                            ) | currency : enterprise.priceDetails[1].currencyType
                           }}</span>
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
+                          <ng-container *ngIf="enterprise.priceDetails[1].price_after_discount">
+                            <span class="earlier-price com-ml-2">{{
+                              enterprise.priceDetails[1].price | currency : enterprise.priceDetails[1].currencyType
+                            }}</span>
                           </ng-container>
                         </ng-container>
                       </ng-container>
@@ -364,28 +358,26 @@
 
                     <!-- ANUALLY -->
                     <ng-container *ngIf="isAnnually">
-                      <ng-container *ngFor="let item of enterprise.priceDetails[0].details">
-                        <ng-container *ngIf="item.currencyType === selectedCurrency">
-                          <span class="discounted-price">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
+                      <ng-container>
+                        <ng-container>
                           <span class="discounted-price">{{
-                            item.price_after_discount ? item.price_after_discount : item.price
+                            (enterprise.priceDetails[0].price_after_discount
+                              ? enterprise.priceDetails[0].price_after_discount
+                              : enterprise.priceDetails[0].price
+                            ) | currency : enterprise.priceDetails[0].currencyType
                           }}</span>
-
-                          <ng-container *ngIf="item.price_after_discount">
-                            <span class="earlier-price com-ml-2">{{ item.currencyType === 'USD' ? '$' : '₹' }}</span>
-                            <span class="earlier-price">{{ item.price }}</span>
+                          <ng-container *ngIf="enterprise.priceDetails[0].price_after_discount">
+                            <span class="earlier-price com-ml-2">{{
+                              enterprise.priceDetails[0].price | currency : enterprise.priceDetails[0].currencyType
+                            }}</span>
                           </ng-container>
                         </ng-container>
                       </ng-container>
                     </ng-container>
                   </span>
                 </div>
-                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise')">
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ enterprise?.button_text }}
                     </button>
@@ -432,7 +424,7 @@
                   <a
                     *ngIf="item.currencyType === selectedCurrency"
                     [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                    (click)="gtmDataLayerPush('pricing_plan_devrel_agency')"
                   >
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ devrel?.button_text }}
@@ -489,23 +481,15 @@
               </div>
               <div *ngIf="enterprise && startup && devrel" class="action-sub-features">
                 <p class="action-title">Choose a Plan</p>
-                <ng-container *ngFor="let item of startup.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_startup')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_startup', 'startup')">
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ startup?.button_text }}
                     </button>
                   </a>
                 </ng-container>
-                <ng-container *ngFor="let item of enterprise.priceDetails[isMonthly ? 1 : 0].details">
-                  <a
-                    *ngIf="item.currencyType === selectedCurrency"
-                    [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_enterprise')"
-                  >
+                <ng-container>
+                  <a (click)="createPurchaseOrderForPrice('pricing_plan_enterprise', 'enterprise')">
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ enterprise?.button_text }}
                     </button>
@@ -515,7 +499,7 @@
                   <a
                     *ngIf="item.currencyType === selectedCurrency"
                     [href]="item.url"
-                    (click)="gtmDatalayerPush('pricing_plan_devrel_agency')"
+                    (click)="gtmDataLayerPush('pricing_plan_devrel_agency')"
                   >
                     <button nbButton status="primary" size="tiny" shape="round">
                       {{ devrel?.button_text }}
@@ -581,7 +565,7 @@
               </ul>
               <a
                 [routerLink]="['/student-non-profit-community-support']"
-                (click)="gtmDatalayerPush('pricing_plan_non_profit')"
+                (click)="gtmDataLayerPush('pricing_plan_non_profit')"
                 ><button
                   nbButton
                   fullWidth
@@ -639,3 +623,11 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingTemplate>
+  <div class="base-layout com-min-h-full">
+    <div class="loading">
+      <commudle-loading-spinner></commudle-loading-spinner>
+    </div>
+  </div>
+</ng-template>
