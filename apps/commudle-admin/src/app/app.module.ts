@@ -47,6 +47,10 @@ import { createErrorHandler, TraceService } from '@sentry/angular-ivy';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Angular2SmartTableModule } from 'angular2-smart-table';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
+import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
+import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerModule } from 'apps/lib-error-handler/src/public-api';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -60,6 +64,7 @@ import { PageAdsModule } from 'apps/shared-modules/page-ads/page-ads.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { PrismJsHighlightCodeService } from 'apps/shared-services/prismjs-highlight-code.service';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxStripeModule } from 'ngx-stripe';
 import { AppRoutingModule } from './app-routing.module';
@@ -70,10 +75,7 @@ import { UserProfileComponent } from './app-shared-components/user-profile/user-
 import { AppComponent } from './app.component';
 import { AboutOldComponent } from './components/about-old/about-old.component';
 import { AboutComponent } from './components/about/about.component';
-import { CommunitiesFeaturedComponent } from './components/communities/communities-featured/communities-featured.component';
-import { CommunitiesListComponent } from './components/communities/communities-list/communities-list.component';
 import { CommunitiesPostsComponent } from './components/communities/communities-posts/communities-posts.component';
-import { CommunitiesComponent } from './components/communities/communities.component';
 import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
 import { FillDataFormPaidComponent } from './components/fill-data-form/fill-data-form-paid/fill-data-form-paid.component';
 import { FillDataFormComponent } from './components/fill-data-form/fill-data-form.component';
@@ -120,11 +122,6 @@ import { SkeletonScreensModule } from './feature-modules/skeleton-screens/skelet
 import { UserChatsModule } from './feature-modules/user-chats/user-chats.module';
 import { UsersModule } from './feature-modules/users/users.module';
 import { AppInitService } from './services/app-init.service';
-import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
-import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
-import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
-import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -135,9 +132,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     AppComponent,
     OrganizerCommunitiesListComponent,
     CommunityComponent,
-    CommunitiesListComponent,
     CommunitiesPostsComponent,
-    CommunitiesFeaturedComponent,
     HomeComponent,
     FillDataFormComponent,
     LogoutComponent,
@@ -146,7 +141,6 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     AboutComponent,
     AboutOldComponent,
     FeaturesComponent,
-    CommunitiesComponent,
     SwUpdateComponent,
     HomeEventsComponent,
     HomeEventsCardComponent,

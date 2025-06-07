@@ -1,18 +1,41 @@
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IPageInfo } from 'apps/shared-models/page-info.model';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { InfiniteScrollModule } from '@commudle/infinite-scroll';
+import { NbFormFieldModule, NbIconModule, NbInputModule, NbTagModule } from '@commudle/theme';
+import { SharedDirectivesModule } from '../../../../../../shared-directives/shared-directives.module';
+import { ICommunity } from '@commudle/shared-models';
+import { IPageInfo } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Location } from '@angular/common';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SharedComponentsModule } from '../../../../../../shared-components/shared-components.module';
+import { CommunitiesCardComponent } from '../../../app-shared-components/communities-card/communities-card.component';
+import { PublicHomeListSpeakersModule } from '../../../feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
+import { SkeletonVerticalCardsComponent } from '../../../feature-modules/skeleton-screens/components/skeleton-vertical-cards/skeleton-vertical-cards.component';
+import { CommunitiesService } from '../../../services/communities.service';
 
 @Component({
-  selector: 'app-communities-list',
+  selector: 'commudle-communities-list',
   templateUrl: './communities-list.component.html',
   styleUrls: ['./communities-list.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    NbIconModule,
+    NbFormFieldModule,
+    NbInputModule,
+    NbTagModule,
+    SkeletonVerticalCardsComponent,
+    PublicHomeListSpeakersModule,
+    InfiniteScrollModule,
+    SharedDirectivesModule,
+    CommunitiesCardComponent,
+    SharedComponentsModule,
+  ],
 })
 export class CommunitiesListComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];
@@ -29,7 +52,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   queryParamsString = '';
   searchForm;
   pageInfo: IPageInfo;
-  order_by: string;
+  order_by: string | undefined;
   isLoading = false;
   canLoadMore = true;
   seoTitle: string;
@@ -126,16 +149,18 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
 
   search() {
     this.query = '';
-    this.searchForm.valueChanges.pipe(debounceTime(800), distinctUntilChanged()).subscribe(() => {
-      if (this.loadingData) {
-        return;
-      }
-      this.communities = [];
-      this.pageInfo = null;
-      this.loadingData = true;
-      this.query = this.searchForm.get('name').value;
-      this.generateParams(this.newest_communities, this.members_count, this.completed_events_count, this.query);
-    });
+    this.subscriptions.push(
+      this.searchForm.valueChanges.pipe(debounceTime(800), distinctUntilChanged()).subscribe(() => {
+        if (this.loadingData) {
+          return;
+        }
+        this.communities = [];
+        this.pageInfo = null;
+        this.loadingData = true;
+        this.query = this.searchForm.get('name').value;
+        this.generateParams(this.newest_communities, this.members_count, this.completed_events_count, this.query);
+      }),
+    );
   }
 
   filterByTags(event) {
@@ -168,16 +193,16 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
 
   generateParams(newest_communities, members_count, completed_events_count, query) {
     this.skeletonLoaderCard = true;
-    const queryParams: { [key: string]: any } = {};
+    const queryParams: { [key: string]: string } = {};
     if (newest_communities) {
-      queryParams.newest_communities = true;
+      queryParams.newest_communities = 'true';
     }
     if (members_count) {
-      queryParams.members_count = true;
+      queryParams.members_count = 'true';
     }
 
     if (completed_events_count) {
-      queryParams.completed_events_count = true;
+      queryParams.completed_events_count = 'true';
     }
 
     if (query) {

@@ -130,7 +130,7 @@ const routes: Routes = [
   },
   {
     path: 'communities',
-    component: CommunitiesComponent,
+    loadComponent: () => import('./components/communities/communities.component').then((c) => c.CommunitiesComponent),
   },
   {
     path: 'my-profile',
