@@ -112,7 +112,7 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
     //set sidebar expanded state
     // eslint-disable-next-line no-prototype-builtins
     if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
-      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+      this.sidebarService.setSidebar$[this.sidebarEventName].pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.sidebarExpanded = data;
       });
     }

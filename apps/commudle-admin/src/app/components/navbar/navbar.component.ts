@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getUser();
     this.checkNotifications();
-    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
+    this.darkModeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
     });
   }
@@ -80,7 +80,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   checkNotifications(): void {
-    this.appCentralNotificationService.sidebarNotifications$.subscribe((data) => (this.sideBarNotifications = data));
+    this.appCentralNotificationService.sidebarNotifications$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => (this.sideBarNotifications = data));
   }
 
   toggleSidebar(): void {

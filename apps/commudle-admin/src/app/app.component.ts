@@ -1,26 +1,26 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { CableService } from '@commudle/shared-services';
-import { NbSidebarService, NbSidebarState, NbThemeService } from '@commudle/theme';
+import { NbSidebarState, NbThemeService } from '@commudle/theme';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { Subject, takeUntil } from 'rxjs';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { ProfileStatusBarService } from './services/profile-status-bar.service';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
-import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 @Component({
   selector: 'commudle-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   sideBarState: NbSidebarState = 'collapsed';
   currentUser: ICurrentUser;
   cookieAccepted = false;
@@ -34,7 +34,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   sidebarEventName = 'MainSidebar';
 
-  private isDarkModeSubscription: Subscription;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -76,6 +75,11 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         }
       }
     });
+
+    this.profileStatusBarService.profileBarStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => (this.profileBarStatus = value));
+
     if (this.cookieConsentService.isCookieConsentAccepted()) {
       this.cookieAccepted = true;
     }
@@ -88,14 +92,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.helpSidebarService.setSidebarVisibility('helpSection', false, true, ESidebarPosition.RIGHT);
   }
 
-  ngAfterViewChecked(): void {
-    this.profileStatusBarService.profileBarStatus$.subscribe((value) => (this.profileBarStatus = value));
-    this.cdr.detectChanges();
-  }
-
   ngOnDestroy(): void {
     // this.notificationsService.unsubscribeFromNotifications();
-    this.isDarkModeSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -104,7 +102,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
    * remove the ld+json on route change
    */
   removeSchemaOnRouteChange(): void {
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.seoService.removeSchema();
       }
@@ -112,7 +110,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   closeSidebarOnRouteChange(): void {
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         const isVisible = this.helpSidebarService.getSidebarVisibility('helpSection');
         const isMainSidebarVisible = this.helpSidebarService.getSidebarVisibility(this.sidebarEventName);
@@ -128,7 +126,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   themeCheck() {
-    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
+    this.darkModeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
       document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
     });
