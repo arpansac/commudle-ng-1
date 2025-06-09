@@ -7,6 +7,16 @@
             <div class="check-icon">🤩</div>
             <h1 class="title">Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}</h1>
           </div>
+          <div class="profile-card" *ngIf="currentUser">
+            <div class="profile-preview-card">
+              <div class="card-heading">Profile Card Preview</div>
+              <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+            </div>
+            <div class="profile-completion-card">
+              <div class="card-heading">Profile’s Progress</div>
+              <commudle-profile-completion-progress></commudle-profile-completion-progress>
+            </div>
+          </div>
           <div *ngIf="event">
             <h2 class="event-card-heading">Event Details</h2>
             <commudle-event-registered-card [event]="event"></commudle-event-registered-card>

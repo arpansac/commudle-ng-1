@@ -12,8 +12,8 @@ import { SpeakerResourceFormComponent } from './components/speaker-resource-form
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
-import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
-import { FillDataFormConfirmationComponent } from 'apps/commudle-admin/src/app/components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
+import { UserAccountMenuComponent } from './components/user-account-menu/user-account-menu.component';
+import { FillDataFormConfirmationComponent } from './components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
 
 const routes: Routes = [
   // TODO: discuss in future for order of paths

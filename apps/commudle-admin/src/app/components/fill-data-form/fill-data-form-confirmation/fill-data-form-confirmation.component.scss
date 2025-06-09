@@ -1,12 +1,24 @@
 .confirmation-card {
   @apply com-mt-20;
   .confirmation-header {
-    @apply com-text-center;
+    @apply com-text-center com-mb-14;
     .check-icon {
       @apply com-text-6xl com-mb-8;
     }
     .title {
       @apply com-text-Yankees-Blue com-text-3xl com-font-semibold;
+    }
+  }
+  .profile-card {
+    @apply com-grid com-grid-cols-2;
+    .profile-completion-card {
+      @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-pl-3;
+    }
+    .profile-preview-card,
+    .profile-completion-card {
+      .card-heading {
+        @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-4;
+      }
     }
   }
   .event-card-heading {

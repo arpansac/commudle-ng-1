@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
-import { IUserRecapStats } from '@commudle/shared-models';
+import { IProfileCompletionStatus, IUserRecapStats } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +21,11 @@ export class AppUsersService {
     return this.http.get<IUserRecapStats>(this.baseApiService.getRoute(API_ROUTES.USERS.RECAP_STATS), {
       params,
     });
+  }
+
+  getCurrentUserProfileCompletionStatus(): Observable<IProfileCompletionStatus> {
+    return this.http.get<IProfileCompletionStatus>(
+      this.baseApiService.getRoute(API_ROUTES.USERS.PROFILE_COMPLETION_STATUS),
+    );
   }
 }

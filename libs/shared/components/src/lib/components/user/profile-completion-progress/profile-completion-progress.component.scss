@@ -1,0 +1,15 @@
+.profile-progress-container {
+  .percentage-text {
+    @apply com-text-xl com-font-semibold;
+  }
+  .progress-bar-wrapper {
+    @apply com-w-full com-h-2 com-bg-gray-200 com-rounded-md com-overflow-hidden com-mt-4 com-mb-3;
+    .progress-bar {
+      @apply com-h-full com-transition-all;
+    }
+  }
+
+  .info-text {
+    @apply com-text-gray-500 com-text-base com-font-medium;
+  }
+}
