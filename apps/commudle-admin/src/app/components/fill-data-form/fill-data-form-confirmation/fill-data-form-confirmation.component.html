@@ -8,7 +8,7 @@
             <h1 class="title">Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}</h1>
           </div>
           <div *ngIf="event">
-            <h2 class="event-name">Event Details</h2>
+            <h2 class="event-card-heading">Event Details</h2>
             <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
           </div>
         </div>

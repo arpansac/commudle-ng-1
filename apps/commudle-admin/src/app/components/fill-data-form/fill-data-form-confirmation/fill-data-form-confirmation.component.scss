@@ -6,7 +6,10 @@
       @apply com-text-6xl com-mb-8;
     }
     .title {
-      @apply com-text-Yankees-Blue com-text-3xl;
+      @apply com-text-Yankees-Blue com-text-3xl com-font-semibold;
     }
+  }
+  .event-card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-8;
   }
 }
