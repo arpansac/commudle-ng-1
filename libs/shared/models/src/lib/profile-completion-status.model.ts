@@ -2,6 +2,7 @@ export interface IProfileCompletionStatus {
   completion_percentage: number;
   missing_fields: string[];
   weights: Weights;
+  completed: boolean;
 }
 
 export interface Weights {
