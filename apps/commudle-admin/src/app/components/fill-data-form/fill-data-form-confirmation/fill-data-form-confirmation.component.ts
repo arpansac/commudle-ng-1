@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EDbModels, IEvent, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
@@ -12,13 +12,13 @@ import * as moment from 'moment';
   templateUrl: './fill-data-form-confirmation.component.html',
   styleUrls: ['./fill-data-form-confirmation.component.scss'],
 })
-export class FillDataFormConfirmationComponent implements OnInit {
+export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   currentUser: IUser;
   event: IEvent;
   isProfileCompleted = false;
 
   moment = moment;
-  private subscriptions: Subscription[] = [];
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -35,6 +35,11 @@ export class FillDataFormConfirmationComponent implements OnInit {
     this.fetchDataFormEntity();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   fetchCurrentUserDetails() {
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
@@ -43,32 +48,30 @@ export class FillDataFormConfirmationComponent implements OnInit {
   }
 
   private getProfileCompletionStatus() {
-    this.appUsersService.profileCompletionStatus$.subscribe((status: IProfileCompletionStatus) => {
-      if (status) {
-        this.isProfileCompleted = !status.completed;
-      }
-    });
+    this.appUsersService.profileCompletionStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: IProfileCompletionStatus) => {
+        if (status) {
+          this.isProfileCompleted = !status.completed;
+        }
+      });
   }
 
   fetchDataFormEntity() {
-    this.subscriptions.push(
-      this.route.params.subscribe((params) => {
-        this.getDataFormEntity(params.data_form_entity_id);
-      }),
-    );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.getDataFormEntity(params.data_form_entity_id);
+    });
   }
 
   getDataFormEntity(dataFormEntityId) {
-    this.subscriptions.push(
-      this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
-        this.seoService.setTags(
-          `${data.name} | Completed`,
-          `Fill the form for ${data.name}`,
-          'https://commudle.com/assets/images/commudle-logo192.png',
-        );
-        this.getParent(data);
-      }),
-    );
+    this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
+      this.seoService.setTags(
+        `${data.name} | Completed`,
+        `Fill the form for ${data.name}`,
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
+      this.getParent(data);
+    });
   }
 
   //get form entityType
@@ -91,10 +94,8 @@ export class FillDataFormConfirmationComponent implements OnInit {
   }
 
   getEvent(dataFormEntity) {
-    this.subscriptions.push(
-      this.eventsService.pGetEvent(dataFormEntity.redirectable_entity_id).subscribe((data: IEvent) => {
-        this.event = data;
-      }),
-    );
+    this.eventsService.pGetEvent(dataFormEntity.redirectable_entity_id).subscribe((data: IEvent) => {
+      this.event = data;
+    });
   }
 }

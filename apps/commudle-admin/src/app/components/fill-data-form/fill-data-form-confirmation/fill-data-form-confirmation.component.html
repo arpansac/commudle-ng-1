@@ -7,23 +7,29 @@
             <div class="check-icon">🤩</div>
             <h1 class="title">Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}</h1>
           </div>
-          <div class="profile-card" *ngIf="currentUser">
-            <div class="profile-preview-card">
-              <div class="card-heading">Profile Card Preview</div>
-              <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+
+          <ng-container *ngIf="currentUser">
+            <div class="profile-card">
+              <div class="profile-preview-card">
+                <div class="card-heading">Profile Card Preview</div>
+                <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+              </div>
+
+              <div class="profile-completion-card" *ngIf="isProfileCompleted">
+                <div class="card-heading">Profile's Progress</div>
+                <commudle-profile-completion-progress></commudle-profile-completion-progress>
+              </div>
             </div>
-            <div class="profile-completion-card" *ngIf="isProfileCompleted">
-              <div class="card-heading">Profile’s Progress</div>
-              <commudle-profile-completion-progress></commudle-profile-completion-progress>
+
+            <div class="missing-field-card" *ngIf="isProfileCompleted">
+              <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
             </div>
-          </div>
-          <div class="missing-field-card" *ngIf="isProfileCompleted">
-            <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
-          </div>
-          <div *ngIf="event">
+          </ng-container>
+
+          <ng-container *ngIf="event">
             <h2 class="event-card-heading">Event Details</h2>
             <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
-          </div>
+          </ng-container>
         </div>
       </div>
     </div>
