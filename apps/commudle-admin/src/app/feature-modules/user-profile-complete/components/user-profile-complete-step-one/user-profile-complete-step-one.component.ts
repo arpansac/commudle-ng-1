@@ -1,24 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { EDomain, EExperienceLevel } from '@commudle/shared-models';
+import { EDomain, EExperienceLevel, IUser } from '@commudle/shared-models';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { KeyValue } from '@angular/common';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
+import { AuthService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-user-profile-complete-step-one',
+  selector: 'commudle-user-profile-complete-step-one',
   templateUrl: './user-profile-complete-step-one.component.html',
   styleUrls: ['./user-profile-complete-step-one.component.scss'],
 })
 export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   goals = [];
   tags = [];
   EExperienceLevel = EExperienceLevel;
@@ -37,7 +36,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private appUsersService: AppUsersService,
     private usersService: AppUsersService,
     private userProfileManagerService: UserProfileManagerService,
@@ -56,7 +55,7 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
         this.currentUser = data;
-
+        this.userProfileManagerService.patchFormValues(this.currentUser);
         this.profileStepOneForm.patchValue({
           experience_level: data.experience_level || '',
           user_domain: data.user_domain || '',
