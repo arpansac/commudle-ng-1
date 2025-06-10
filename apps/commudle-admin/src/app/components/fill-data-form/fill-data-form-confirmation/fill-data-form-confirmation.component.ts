@@ -46,7 +46,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  fetchCurrentUserDetails() {
+  private fetchCurrentUserDetails() {
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
       this.getProfileCompletionStatus();
@@ -63,25 +63,29 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchDataFormEntity() {
+  private fetchDataFormEntity() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.getDataFormEntity(params.data_form_entity_id);
     });
   }
 
-  getDataFormEntity(dataFormEntityId) {
+  private getDataFormEntity(dataFormEntityId) {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
-      this.seoService.setTags(
-        `${data.name} | Completed`,
-        `Fill the form for ${data.name}`,
-        'https://commudle.com/assets/images/commudle-logo192.png',
-      );
       this.getParent(data);
+      this.seoTags(data);
     });
   }
 
+  private seoTags(data) {
+    this.seoService.setTags(
+      `${data.name} | Completed`,
+      `Fill the form for ${data.name}`,
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+  }
+
   //get form entityType
-  getParent(dataFormEntity) {
+  private getParent(dataFormEntity) {
     switch (dataFormEntity.redirectable_entity_type) {
       case EDbModels.EVENT:
         this.getEvent(dataFormEntity);
@@ -99,7 +103,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     }
   }
 
-  getEvent(dataFormEntity) {
+  private getEvent(dataFormEntity) {
     this.eventsService.pGetEvent(dataFormEntity.redirectable_entity_id).subscribe((data: IEvent) => {
       this.event = data;
       this.getSpeakers();
@@ -107,13 +111,13 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSpeakers() {
+  private getSpeakers() {
     this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
       this.speakers = data.data_form_entity_response_groups;
     });
   }
 
-  getVolunteers() {
+  private getVolunteers() {
     this.eventsService.pGetEventVolunteers(this.event.slug, this.count, this.pageInfo?.end_cursor).subscribe((data) => {
       this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.pageInfo = data.page_info;
