@@ -4,8 +4,14 @@
       <div class="one-column-layout">
         <div class="confirmation-card">
           <div class="confirmation-header">
-            <div class="check-icon">🤩</div>
-            <h1 class="title">Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}</h1>
+            <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
+            <h1 class="title" *ngIf="!formIsPaid">
+              Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
+            </h1>
+            <h1 *ngIf="formIsPaid" class="title paid-form">Your Purchase is Successful! for {{ event?.name }}</h1>
+            <h3 *ngIf="formIsPaid" class="sub-heading">
+              We’ve saved your spot — and you’ll receive your entry pass shortly via email.
+            </h3>
           </div>
 
           <ng-container *ngIf="currentUser">

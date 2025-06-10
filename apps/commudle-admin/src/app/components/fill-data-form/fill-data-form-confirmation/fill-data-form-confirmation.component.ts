@@ -20,10 +20,12 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   isProfileCompleted = false;
   volunteers: IUser[] = [];
 
+  dataFormEntity: IDataFormEntity;
   moment = moment;
   pageInfo: IPageInfo;
   count = 10;
   speakers: IDataFormEntityResponseGroup[] = [];
+  formIsPaid = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -71,6 +73,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
 
   private getDataFormEntity(dataFormEntityId) {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
+      this.dataFormEntity = data;
+      this.formIsPaid = this.dataFormEntity.event_data_form_entity_group.is_paid;
       this.getParent(data);
       this.seoTags(data);
     });
