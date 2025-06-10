@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EDbModels, IEvent, IUser } from '@commudle/shared-models';
-import { AuthService, SeoService } from '@commudle/shared-services';
+import { EDbModels, IEvent, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
+import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
@@ -15,6 +15,7 @@ import * as moment from 'moment';
 export class FillDataFormConfirmationComponent implements OnInit {
   currentUser: IUser;
   event: IEvent;
+  isProfileCompleted = false;
 
   moment = moment;
   private subscriptions: Subscription[] = [];
@@ -26,6 +27,7 @@ export class FillDataFormConfirmationComponent implements OnInit {
     private dataFormEntitiesService: DataFormEntitiesService,
     private seoService: SeoService,
     private eventsService: EventsService,
+    private appUsersService: AppUsersService,
   ) {}
 
   ngOnInit() {
@@ -36,6 +38,15 @@ export class FillDataFormConfirmationComponent implements OnInit {
   fetchCurrentUserDetails() {
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
+      this.getProfileCompletionStatus();
+    });
+  }
+
+  private getProfileCompletionStatus() {
+    this.appUsersService.profileCompletionStatus$.subscribe((status: IProfileCompletionStatus) => {
+      if (status) {
+        this.isProfileCompleted = !status.completed;
+      }
     });
   }
 
