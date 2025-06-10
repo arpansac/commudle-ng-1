@@ -26,10 +26,35 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="event">
-            <h2 class="event-card-heading">Event Details</h2>
+          <div *ngIf="event" class="event-card">
+            <h2 class="card-heading">Event Details</h2>
             <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
-          </ng-container>
+          </div>
+
+          <div *ngIf="speakers && speakers.length > 0" class="speakers-card">
+            <h2 class="card-heading">Follow Event Speakers</h2>
+            <div *ngFor="let speaker of speakers | sortBy : ['speaker.user.name'] : ['asc']" class="speaker">
+              <app-user-profile-card-large
+                [alignFollowToRight]="true"
+                [showFollowButton]="true"
+                [showSpeakersCount]="true"
+                [user]="speaker.user"
+                appearanceOfFollowButton="outline"
+              ></app-user-profile-card-large>
+            </div>
+          </div>
+
+          <div *ngIf="volunteers && volunteers.length > 0" class="volunteers-card">
+            <h2 class="card-heading">Follow Event Volunteers</h2>
+            <div *ngFor="let user of volunteers" class="volunteer">
+              <app-user-profile-card-large
+                [alignFollowToRight]="true"
+                [showFollowButton]="true"
+                [user]="user"
+                appearanceOfFollowButton="outline"
+              ></app-user-profile-card-large>
+            </div>
+          </div>
         </div>
       </div>
     </div>

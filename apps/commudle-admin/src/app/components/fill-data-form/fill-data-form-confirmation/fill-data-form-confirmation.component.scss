@@ -30,7 +30,21 @@
   .missing-field-card {
     @apply com-mt-6 com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
-  .event-card-heading {
-    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-8;
+  .card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-6;
+  }
+
+  .speakers-card,
+  .event-card {
+    @apply com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .volunteers-card {
+    @apply com-pb-12;
+  }
+
+  .speaker:not(:last-child),
+  .volunteer:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
   }
 }

@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EDbModels, IEvent, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
+import { EDbModels, IEvent, IPageInfo, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
 import { Subject, takeUntil } from 'rxjs';
 import * as moment from 'moment';
+import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
+import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 @Component({
   selector: 'commudle-fill-data-form-confirmation',
   templateUrl: './fill-data-form-confirmation.component.html',
@@ -16,9 +18,12 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   currentUser: IUser;
   event: IEvent;
   isProfileCompleted = false;
+  volunteers: IUser[] = [];
 
   moment = moment;
-
+  pageInfo: IPageInfo;
+  count = 10;
+  speakers: IDataFormEntityResponseGroup[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -28,6 +33,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private eventsService: EventsService,
     private appUsersService: AppUsersService,
+    private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
   ) {}
 
   ngOnInit() {
@@ -96,6 +102,21 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   getEvent(dataFormEntity) {
     this.eventsService.pGetEvent(dataFormEntity.redirectable_entity_id).subscribe((data: IEvent) => {
       this.event = data;
+      this.getSpeakers();
+      this.getVolunteers();
+    });
+  }
+
+  getSpeakers() {
+    this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
+      this.speakers = data.data_form_entity_response_groups;
+    });
+  }
+
+  getVolunteers() {
+    this.eventsService.pGetEventVolunteers(this.event.slug, this.count, this.pageInfo?.end_cursor).subscribe((data) => {
+      this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+      this.pageInfo = data.page_info;
     });
   }
 }
