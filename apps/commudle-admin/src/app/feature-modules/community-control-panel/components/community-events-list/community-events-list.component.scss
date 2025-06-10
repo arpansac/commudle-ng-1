@@ -27,7 +27,7 @@
       @apply com-overflow-x-auto;
 
       table {
-        @apply com-border-collapse com-w-full com-overflow-x-auto;
+        @apply com-border-collapse com-w-full;
 
         td,
         th {
@@ -40,12 +40,12 @@
 
         th:nth-child(1),
         td:nth-child(1) {
-          @apply com-w-[32%];
+          @apply com-w-[32%] com-min-w-[160px];
         }
 
         th:nth-child(2),
         td:nth-child(2) {
-          @apply com-w-[26%];
+          @apply com-w-[26%] com-min-w-[120px];
         }
 
         th:nth-child(3),
