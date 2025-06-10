@@ -50,7 +50,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
         if (value) {
-          // this.redirect();
+          this.redirect();
         }
       }),
     );

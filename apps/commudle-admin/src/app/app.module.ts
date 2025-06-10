@@ -125,7 +125,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
 import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
-import { LoginSignupComponent } from 'apps/commudle-admin/src/app/login-signup/login-signup.component';
+import { LoginSignupComponent } from 'apps/commudle-admin/src/app/components/login-signup/login-signup.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();

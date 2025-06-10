@@ -11,7 +11,7 @@ import { BaseApiService } from './base-api.service';
 import { GoogleTagManagerService } from './google-tag-manager.service';
 import { AuthService as authService } from '@commudle/auth';
 import { NbDialogService } from '@commudle/theme';
-import { LoginSignupComponent } from 'apps/commudle-admin/src/app/login-signup/login-signup.component';
+import { LoginSignupComponent } from 'apps/commudle-admin/src/app/components/login-signup/login-signup.component';
 @Injectable({
   providedIn: 'root',
 })
