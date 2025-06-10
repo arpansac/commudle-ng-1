@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IPaginationCount, IUserRolesUser, IUser, IAttachedFile, IEvent, IPagination } from '@commudle/shared-models';
+import { IPaginationCount, IUserRolesUser, IUser, IAttachedFile, IPagination } from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { IEventStatus } from 'apps/shared-models/event_status.model';
+import { IEvents } from 'apps/shared-models/events.model';
 import { ILabs } from 'apps/shared-models/labs.model';
 import { IPost } from 'apps/shared-models/post.model';
 import { IPosts } from 'apps/shared-models/posts.model';
@@ -111,9 +112,9 @@ export class AppUsersService {
     );
   }
 
-  getAttendedEvents(id: number): Observable<IEvent[]> {
+  getAttendedEvents(id: number): Observable<IEvents> {
     const params = new HttpParams().set('user_id', id);
-    return this.http.get<IEvent[]>(this.baseApiService.getRoute(API_ROUTES.USERS.EVENTS_ATTENDED), {
+    return this.http.get<IEvents>(this.baseApiService.getRoute(API_ROUTES.USERS.EVENTS_ATTENDED), {
       params,
     });
   }
