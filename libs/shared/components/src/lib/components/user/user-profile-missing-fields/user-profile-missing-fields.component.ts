@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IProfileCompletionStatus } from '@commudle/shared-models';
 import { AppUsersService } from '@commudle/shared-services';
+import { Subject, takeUntil } from 'rxjs';
 
 interface MissingField {
   name: string;
@@ -15,12 +16,12 @@ interface MissingField {
   templateUrl: './user-profile-missing-fields.component.html',
   styleUrls: ['./user-profile-missing-fields.component.scss'],
 })
-export class UserProfileMissingFieldsComponent implements OnInit {
+export class UserProfileMissingFieldsComponent implements OnInit, OnDestroy {
   userProfileMissingFields: string[] = [];
   missingFieldsData: MissingField[] = [];
 
   // Map field names to display names and routes
-  private fieldMappings: { [key: string]: MissingField } = {
+  private readonly fieldMappings: { [key: string]: MissingField } = {
     avatar: {
       name: 'avatar',
       route: '/user-profile-complete/step-two',
@@ -100,15 +101,24 @@ export class UserProfileMissingFieldsComponent implements OnInit {
     },
   };
 
+  private destroy$ = new Subject<void>();
+
   constructor(private appUsersService: AppUsersService) {}
 
   ngOnInit(): void {
-    this.appUsersService.profileCompletionStatus$.subscribe((status: IProfileCompletionStatus) => {
-      if (status) {
-        this.userProfileMissingFields = status.missing_fields;
-        this.mapMissingFields();
-      }
-    });
+    this.appUsersService.profileCompletionStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: IProfileCompletionStatus) => {
+        if (status) {
+          this.userProfileMissingFields = status.missing_fields;
+          this.mapMissingFields();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   mapMissingFields(): void {

@@ -5,7 +5,7 @@ import { AppUsersService, AuthService, SeoService } from '@commudle/shared-servi
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import * as moment from 'moment';
 @Component({
   selector: 'commudle-fill-data-form-confirmation',
