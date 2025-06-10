@@ -2,6 +2,7 @@
   .percentage-text {
     @apply com-text-xl com-font-semibold;
   }
+
   .progress-bar-wrapper {
     @apply com-w-full com-h-2 com-bg-gray-200 com-rounded-md com-overflow-hidden com-mt-4 com-mb-3;
     .progress-bar {
