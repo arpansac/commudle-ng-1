@@ -10,6 +10,8 @@ import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 import { GoogleTagManagerService } from './google-tag-manager.service';
 import { AuthService as authService } from '@commudle/auth';
+import { NbDialogService } from '@commudle/theme';
+import { LoginSignupComponent } from 'apps/commudle-admin/src/app/login-signup/login-signup.component';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +30,7 @@ export class AuthService {
     private cookieService: CookieService,
     private gtm: GoogleTagManagerService,
     private injector: Injector,
+    private nbDialogService: NbDialogService,
   ) {}
 
   // to check if cookie exists
@@ -125,5 +128,9 @@ export class AuthService {
         }
       }),
     );
+  }
+
+  openLoginSignupTemplate() {
+    this.nbDialogService.open(LoginSignupComponent);
   }
 }
