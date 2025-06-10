@@ -287,14 +287,15 @@ export class EmailerComponent implements OnInit, OnDestroy {
   getAllEvents(): Promise<void> {
     return new Promise((resolve, reject) => {
       let page = 1;
+      const count = 10;
       const allEvents = [];
 
       const getNextPage = () => {
-        this.eventsService.communityEventsForEmail(this.community.id, page, 10, '', [], true).subscribe(
+        this.eventsService.communityEventsForEmail(this.community.id, page, count, '', [], true).subscribe(
           (data) => {
             allEvents.push(...data.values);
 
-            if (allEvents.length < data.total && data.values.length === 10) {
+            if (allEvents.length < data.total && data.values.length === count) {
               page++;
               getNextPage();
             } else {
