@@ -30,6 +30,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   isLoading = true;
   isFormFilled = true;
   etoUuid: string;
+  approvalBased = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -90,9 +91,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
       this.dataFormEntity = data;
       this.getExistingResponses();
-      this.formIsPaid =
-        this.dataFormEntity.event_data_form_entity_group.is_paid &&
-        !this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
+      this.formIsPaid = this.dataFormEntity.event_data_form_entity_group.is_paid;
+      this.approvalBased = this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
       this.getParent(data);
       this.seoTags(data);
       this.isLoading = false;

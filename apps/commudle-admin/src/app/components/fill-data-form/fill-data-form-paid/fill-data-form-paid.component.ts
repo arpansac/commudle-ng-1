@@ -532,6 +532,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       )
       .subscribe(
         (data) => {
+          this.eventTicketOrders[0] = data;
           if (data.bank_ac_type === EDbModels.STRIPE_CONNECT_ACCOUNT) {
             this.elementsOptions.clientSecret = data.stripe_payment_intent.details.client_secret;
             this.stripePaymentIntendId = data.stripe_payment_intent.stripe_pi_id;

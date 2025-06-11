@@ -7,17 +7,16 @@
           <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
             <div class="confirmation-header">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
-              <h1 class="title" *ngIf="!formIsPaid">
+              <h1 class="title" *ngIf="!formIsPaid || !etoUuid">
                 Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
               </h1>
-              <h1 *ngIf="formIsPaid" class="title paid-form">Your Purchase is Successful! for {{ event?.name }}</h1>
-              <h3 *ngIf="formIsPaid" class="sub-heading">
+              <h1 *ngIf="formIsPaid && etoUuid" class="title paid-form">
+                Your Purchase is Successful! for {{ event?.name }}
+              </h1>
+              <h3 *ngIf="formIsPaid && etoUuid" class="sub-heading">
                 We’ve saved your spot — and you’ll receive your entry pass shortly via email.
               </h3>
-              <h3
-                *ngIf="dataFormEntity.event_data_form_entity_group.approval_based_payments && !etoUuid"
-                class="sub-heading"
-              >
+              <h3 *ngIf="approvalBased && !etoUuid" class="sub-heading">
                 Your submission requires approval. You'll receive a payment link once your application is shortlisted.
               </h3>
             </div>
