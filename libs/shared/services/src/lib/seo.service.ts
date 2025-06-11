@@ -90,17 +90,13 @@ export class SeoService {
     this.meta.removeTag(`name="${tag}"`);
   }
 
-  setTags(title: string, description: string, image?: string, contentType = 'website') {
+  setTags(title: string, description: string, image: string, contentType = 'website') {
     this.setTitle(title);
     this.setTag('description', description);
-
-    if (image) {
-      this.setTag('image', image);
-      this.setTag('og:image', image);
-      this.setTag('og:image:secure_url', image);
-      this.setTag('twitter:image', image);
-    }
-
+    this.setTag('image', image);
+    this.setTag('og:image', image);
+    this.setTag('og:image:secure_url', image);
+    this.setTag('twitter:image', image);
     this.setTag('og:title', title);
     this.setTag('og:description', description);
     this.setTag('twitter:title', title);

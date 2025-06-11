@@ -39,7 +39,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.CANCELED];
+  activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.COMPLETED];
 
   searchForm;
   //angular2 smart-table, not being used anymore (kept for reference)

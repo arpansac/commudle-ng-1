@@ -277,10 +277,11 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   setMeta() {
+    console.log(this.hackathon);
     this.seoService.setTags(
       `Basic Information | Dashboard | ${this.hackathon.name} | ${this.community.name}`,
       this.hackathon.tagline,
-      'https://commudle.com/assets/images/commudle-logo192.png',
+      this.hackathon.banner_image?.i320,
     );
     this.seoService.noIndex(true);
   }

@@ -5,7 +5,6 @@ import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/com
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { toHTML } from '@portabletext/to-html';
 import { Subscription } from 'rxjs';
 
 @Component({
