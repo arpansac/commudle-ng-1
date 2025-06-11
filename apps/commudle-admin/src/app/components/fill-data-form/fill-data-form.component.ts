@@ -235,6 +235,8 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       youtube: event.youtube ? event.youtube : this.currentUser.youtube,
       phone: event.phone ? event.phone : this.currentUser.phone,
       instagram: event.instagram ? event.instagram : this.currentUser.instagram,
+      experience_level: event.experience_level ? event.experience_level : this.currentUser.experience_level,
+      user_domain: event.user_domain ? event.user_domain : this.currentUser.user_domain,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
     this.onAcceptRoleButton();
