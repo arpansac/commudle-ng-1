@@ -18,13 +18,15 @@ export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      if (data.community_group) {
-        this.communityGroup = data.community_group;
-        this.parentId = data.community_group.slug;
-      }
-      this.setMeta();
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        if (data.community_group) {
+          this.communityGroup = data.community_group;
+          this.parentId = data.community_group.slug;
+        }
+        this.setMeta();
+      }),
+    );
   }
 
   ngOnDestroy(): void {

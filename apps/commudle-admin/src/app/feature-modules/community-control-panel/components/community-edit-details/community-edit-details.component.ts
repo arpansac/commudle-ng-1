@@ -92,9 +92,12 @@ export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.params.subscribe((params) => {
-      this.getCommunityDetails(params.community_id);
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.params.subscribe((params) => {
+        this.getCommunityDetails(params.community_id);
+      }),
+    );
     this.initAutocomplete();
   }
 
@@ -105,7 +108,6 @@ export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Community Profile | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 
   getCommunityDetails(communityId) {

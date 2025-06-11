@@ -11,7 +11,6 @@ import { CommunityEventsListPublicPageComponent } from './community-events-list-
 import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
-import { Subscription } from 'rxjs';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -22,7 +21,6 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class CommunityEventsListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
 
-  communityId;
   community: ICommunity;
 
   isLoading = true;
@@ -41,12 +39,9 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = ['open', 'draft', 'canceled'];
+  activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.CANCELED];
 
   searchForm;
-
-  subscriptions: Subscription[] = [];
-
   //angular2 smart-table, not being used anymore (kept for reference)
 
   // tableSettings: Settings = {
@@ -105,33 +100,26 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private seoService: SeoService,
   ) {
-    this.activeEventStatuses = [];
     this.searchForm = this.fb.group({
       name: [''],
     });
   }
 
   ngOnInit() {
-    // this.activatedRoute.params.subscribe((params) => {
-    //   console.log(params);
-    //   this.communityId = params.community_id;
-    //   this.getCommunityEvents();
-    //   this.setMeta();
-    // });
-    this.subscriptions.push(
-      this.activatedRoute.parent.data.subscribe((value) => {
-        this.community = value.community;
-        this.communityId = this.community.id;
-        this.setMeta();
-      }),
-    );
-    this.search();
+    this.seoService.noIndex(true);
+    this.activatedRoute.parent.data.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.community = value.community;
+      this.setMeta();
+      this.getCommunityEvents();
+      this.search();
+    });
   }
 
   getCommunityEvents() {
     this.isLoading = true;
     this.eventsService
-      .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.activeEventStatuses)
+      .communityEventsForEmail(this.community.id, this.page, this.count, this.query, this.activeEventStatuses)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.events = data.values;
         this.total = data.total;
@@ -150,7 +138,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
           return this.eventsService.communityEventsForEmail(
-            this.communityId,
+            this.community.id,
             this.page,
             this.count,
             this.query,
@@ -167,6 +155,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -16,7 +16,6 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class CommunityAdminNotificationsComponent implements OnInit, OnDestroy {
   community: ICommunity;
   notificationCount: number;
-  communityId;
 
   trackMarkAllAsRead = false;
   ENotificationSenderTypes = ENotificationSenderTypes;
@@ -32,21 +31,10 @@ export class CommunityAdminNotificationsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.subscriptions.push(
-    //   this.activatedRoute.params.subscribe(() => {
-    //     this.communityId = this.activatedRoute.parent.snapshot.params['community_id'];
-    //   }),
-    // );
-    // this.communitiesService.getCommunityDetails(this.communityId).subscribe((data) => {
-    //   this.community = data;
-    //   this.setMeta();
-    //   this.notificationsCount(this.community.id);
-    // });
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((value) => {
         this.community = value.community;
-        this.communityId = this.community.id;
         this.setMeta();
         this.notificationsCount(this.community.id);
       }),
@@ -83,6 +71,5 @@ export class CommunityAdminNotificationsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Notifications | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 }

@@ -169,6 +169,7 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
