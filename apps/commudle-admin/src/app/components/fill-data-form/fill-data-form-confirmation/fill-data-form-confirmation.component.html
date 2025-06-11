@@ -4,7 +4,7 @@
       <div class="one-column-layout">
         <commudle-loading-spinner *ngIf="isLoading; else container"></commudle-loading-spinner>
         <ng-template #container>
-          <div class="confirmation-card">
+          <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
             <div class="confirmation-header">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
               <h1 class="title" *ngIf="!formIsPaid">
@@ -13,6 +13,12 @@
               <h1 *ngIf="formIsPaid" class="title paid-form">Your Purchase is Successful! for {{ event?.name }}</h1>
               <h3 *ngIf="formIsPaid" class="sub-heading">
                 We’ve saved your spot — and you’ll receive your entry pass shortly via email.
+              </h3>
+              <h3
+                *ngIf="dataFormEntity.event_data_form_entity_group.approval_based_payments && !etoUuid"
+                class="sub-heading"
+              >
+                Your submission requires approval. You'll receive a payment link once your application is shortlisted.
               </h3>
             </div>
 
@@ -64,6 +70,13 @@
               </div>
             </div>
           </div>
+          <ng-template #redirecting>
+            <div class="redirecting-container">
+              <commudle-loading-spinner></commudle-loading-spinner>
+              <span>Redirecting to ... </span>
+              <a [routerLink]="['/fill-form', dataFormEntity.id]">Form filling page</a>
+            </div>
+          </ng-template>
         </ng-template>
       </div>
     </div>

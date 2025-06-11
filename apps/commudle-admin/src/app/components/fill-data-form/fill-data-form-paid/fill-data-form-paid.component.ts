@@ -251,9 +251,14 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   // check event ticket order
-  checkEventTicketOrder(edfegId) {
+  checkEventTicketOrder(edfegId, redirect = false) {
     this.eventTicketOrderService.showEventTicketOrder(edfegId).subscribe((data) => {
       this.eventTicketOrders = data.event_ticket_orders;
+      if (redirect) {
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+          queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+        });
+      }
       if (this.eventTicketOrders.length === 0) {
         this.createCurrentUserForm();
       } else {
@@ -502,7 +507,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     } else {
       this.saveUserDetails();
       if (this.ticketPaidAlready) {
-        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+          queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+        });
       } else if (!this.ticketPaidAlready) {
         if (this.eventTicketOrders.length > 0 && this.showEventTicketOrder !== undefined) {
           this.updateTickerOrder();
@@ -613,8 +620,11 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
             this.isLoadingPayment = false;
             this.paymentDialogRef.close();
             this.toastLogService.successDialog('Your Payment Was Received Successfully', 3000);
-            this.eventTicketOrderService.checkPayment(this.stripePaymentIntendId).subscribe((data) => {});
-            this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+            this.eventTicketOrderService.checkPayment(this.stripePaymentIntendId).subscribe();
+
+            this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+              queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+            });
           }
         }
       });
@@ -641,10 +651,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       },
     };
     if (orderDetails.amount === 0) {
-      this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
-        closeOnBackdropClick: false,
+      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+        queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
       });
-      this.checkEventTicketOrder(this.dataFormEntity.entity_id);
       return;
     }
     this.razorpayService.createOrFindOrder(orderDetails, { eto_id: etoId }).subscribe(
@@ -677,13 +686,10 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
             .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
             .subscribe((data) => {
               this.fetchPaidTicketingData();
-              this.checkEventTicketOrder(this.dataFormEntity.entity_id);
               this.ticketPaidAlready = true;
               this.toastLogService.successDialog('Your Payment Was Received Successfully');
               this.isLoadingPayment = false;
-              this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
-                closeOnBackdropClick: false,
-              });
+              this.checkEventTicketOrder(this.dataFormEntity.entity_id, true);
             });
         }
       },
@@ -753,6 +759,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       facebook: event.facebook ? event.facebook : this.currentUser.facebook,
       youtube: event.youtube ? event.youtube : this.currentUser.youtube,
       phone: event.phone ? event.phone : this.currentUser.phone,
+      instagram: event.instagram ? event.instagram : this.currentUser.instagram,
+      stackoverflow: event.stackoverflow ? event.stackoverflow : this.currentUser.stackoverflow,
+      profile_picture: event.profile_picture ? event.profile_picture : this.currentUser.profile_picture,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
     this.submitForm();

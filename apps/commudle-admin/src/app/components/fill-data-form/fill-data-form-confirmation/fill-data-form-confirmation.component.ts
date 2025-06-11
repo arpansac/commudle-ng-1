@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EDbModels, IEvent, IPageInfo, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
@@ -9,6 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
 import * as moment from 'moment';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
+import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 @Component({
   selector: 'commudle-fill-data-form-confirmation',
   templateUrl: './fill-data-form-confirmation.component.html',
@@ -27,6 +28,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   speakers: IDataFormEntityResponseGroup[] = [];
   formIsPaid = false;
   isLoading = true;
+  isFormFilled = true;
+  etoUuid: string;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -37,16 +40,27 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private eventsService: EventsService,
     private appUsersService: AppUsersService,
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
+    private dataFormEntityResponsesService: DataFormEntityResponsesService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.fetchCurrentUserDetails();
     this.fetchDataFormEntity();
+    this.fetchQueryParams();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private fetchQueryParams() {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      if (params && params['eto_uuid']) {
+        this.etoUuid = params['eto_uuid'];
+      }
+    });
   }
 
   private fetchCurrentUserDetails() {
@@ -69,16 +83,28 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private fetchDataFormEntity() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.getDataFormEntity(params.data_form_entity_id);
-      this.isLoading = false;
     });
   }
 
   private getDataFormEntity(dataFormEntityId) {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
       this.dataFormEntity = data;
-      this.formIsPaid = this.dataFormEntity.event_data_form_entity_group.is_paid;
+      this.getExistingResponses();
+      this.formIsPaid =
+        this.dataFormEntity.event_data_form_entity_group.is_paid &&
+        !this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
       this.getParent(data);
       this.seoTags(data);
+      this.isLoading = false;
+    });
+  }
+
+  private getExistingResponses() {
+    this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
+      this.isFormFilled = data.data_form_entity_response_group?.id ? true : false;
+      if (!this.isFormFilled) {
+        this.router.navigate(['/fill-form', this.dataFormEntity.id]);
+      }
     });
   }
 
