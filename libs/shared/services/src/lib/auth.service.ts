@@ -132,7 +132,9 @@ export class AuthService {
   }
 
   openLoginSignupTemplate() {
+    const currentUrl = this.router.url;
     this.nbDialogService.open(LoginSignupComponent, {
+      context: { redirectUrl: currentUrl },
       closeOnBackdropClick: false,
       closeOnEsc: false,
       hasScroll: true,

@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, GoogleLoginProvider } from '@commudle/auth';
@@ -20,6 +20,7 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
   styleUrls: ['./login-signup.component.scss'],
 })
 export class LoginSignupComponent implements OnInit, OnDestroy {
+  @Input() redirectUrl: string;
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;
@@ -98,9 +99,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   }
 
   redirect(): void {
-    window.location.href = this.activatedRoute.snapshot.queryParams.redirect
-      ? window.location.origin + this.activatedRoute.snapshot.queryParams.redirect
-      : window.location.origin || '/';
+    window.location.href = this.redirectUrl ? window.location.origin + this.redirectUrl : window.location.origin || '/';
   }
 
   sendVerificationEmail(): void {
