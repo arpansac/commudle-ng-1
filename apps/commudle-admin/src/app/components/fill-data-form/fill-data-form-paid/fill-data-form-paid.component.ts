@@ -760,8 +760,6 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       youtube: event.youtube ? event.youtube : this.currentUser.youtube,
       phone: event.phone ? event.phone : this.currentUser.phone,
       instagram: event.instagram ? event.instagram : this.currentUser.instagram,
-      stackoverflow: event.stackoverflow ? event.stackoverflow : this.currentUser.stackoverflow,
-      profile_picture: event.profile_picture ? event.profile_picture : this.currentUser.profile_picture,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
     this.submitForm();
