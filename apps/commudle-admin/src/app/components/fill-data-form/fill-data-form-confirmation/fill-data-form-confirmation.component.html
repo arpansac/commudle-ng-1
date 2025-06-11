@@ -1,11 +1,11 @@
-<div class="com-bg-white">
+<div class="com-bg-white com-mb-10">
   <div class="base-layout thin">
     <div class="container">
       <div class="one-column-layout">
         <commudle-loading-spinner *ngIf="isLoading; else container"></commudle-loading-spinner>
         <ng-template #container>
           <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
-            <div class="confirmation-header">
+            <div class="confirmation-header" *ngIf="event">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
               <h1 class="title" *ngIf="!formIsPaid || !etoUuid">
                 Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
@@ -19,6 +19,10 @@
               <h3 *ngIf="approvalBased && !etoUuid" class="sub-heading">
                 Your submission requires approval. You'll receive a payment link once your application is shortlisted.
               </h3>
+            </div>
+            <div class="confirmation-header" *ngIf="!event">
+              <div class="check-icon">😃</div>
+              <h1 class="title">Thank you we have saved your response</h1>
             </div>
 
             <ng-container *ngIf="currentUser">
@@ -60,6 +64,17 @@
             <div *ngIf="volunteers && volunteers.length > 0" class="volunteers-card">
               <h2 class="card-heading">Follow Event Volunteers</h2>
               <div *ngFor="let user of volunteers" class="volunteer">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+            <div *ngIf="communityLeaders && communityLeaders.length > 0" class="leaders-card">
+              <h2 class="card-heading">Follow Community Leaders</h2>
+              <div *ngFor="let user of communityLeaders" class="leader">
                 <app-user-profile-card-large
                   [alignFollowToRight]="true"
                   [showFollowButton]="true"

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EDbModels, IEvent, IPageInfo, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
+import { EDbModels, EUserRoles, IEvent, IPageInfo, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
+import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
+
 @Component({
   selector: 'commudle-fill-data-form-confirmation',
   templateUrl: './fill-data-form-confirmation.component.html',
@@ -31,6 +33,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   isFormFilled = true;
   etoUuid: string;
   approvalBased = false;
+  communityLeaders: IUser[];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -43,6 +46,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private dataFormEntityResponsesService: DataFormEntityResponsesService,
     private router: Router,
+    private uruService: UserRolesUsersService,
   ) {}
 
   ngOnInit() {
@@ -91,11 +95,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.dataFormEntitiesService.getDataFormEntity(dataFormEntityId).subscribe((data: IDataFormEntity) => {
       this.dataFormEntity = data;
       this.getExistingResponses();
-      this.formIsPaid = this.dataFormEntity.event_data_form_entity_group.is_paid;
-      this.approvalBased = this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
       this.getParent(data);
       this.seoTags(data);
-      this.isLoading = false;
     });
   }
 
@@ -127,8 +128,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
         // nothing need to be done here
         break;
       case 'Survey':
-        // this.showProfileForm = false;
-        // nothing need to be done here
+        this.fetchCommunityDetails();
         break;
       default:
       // this.errorHandler.handleError(404, 'You cannot fill this form');
@@ -138,8 +138,11 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private getEvent(dataFormEntity) {
     this.eventsService.pGetEvent(dataFormEntity.redirectable_entity_id).subscribe((data: IEvent) => {
       this.event = data;
+      this.formIsPaid = this.dataFormEntity.event_data_form_entity_group.is_paid;
+      this.approvalBased = this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
       this.getSpeakers();
       this.getVolunteers();
+      this.isLoading = false;
     });
   }
 
@@ -154,5 +157,14 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.pageInfo = data.page_info;
     });
+  }
+
+  private fetchCommunityDetails() {
+    this.uruService
+      .pGetCommunityLeadersByRole(this.dataFormEntity.community.id, EUserRoles.ORGANIZER)
+      .subscribe((data) => {
+        this.communityLeaders = data.users;
+        this.isLoading = false;
+      });
   }
 }

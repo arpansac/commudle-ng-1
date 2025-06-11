@@ -45,12 +45,13 @@
     @apply com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
 
-  .volunteers-card {
-    @apply com-pb-12;
+  .leaders-card {
+    @apply com-mt-4 com-pb-8 com-border-0 com-border-b com-border-t com-border-solid com-border-Bright-Gray;
   }
 
   .speaker:not(:last-child),
-  .volunteer:not(:last-child) {
+  .volunteer:not(:last-child),
+  .leader:not(:last-child) {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
   }
 }
