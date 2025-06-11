@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from '@commudle/shared-services';
 import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
 
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
 
   allTimeZones;
   userTimeZone;
@@ -53,13 +54,8 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.allTimeZones = momentTimezone.tz.names();
-
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
 
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -76,6 +72,10 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.setMeta();
         if (!this.hackathon.timezone) {
           this.hackathonDatesForm.patchValue({
@@ -141,7 +141,6 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
   }
 
   setMeta() {
-    this.seoService.setTitle(`Dates | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Dates | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

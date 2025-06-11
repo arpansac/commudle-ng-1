@@ -12,6 +12,7 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { faArrowRight, faCircleQuestion, faMicrophone, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -26,7 +27,6 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   EDbModels = EDbModels;
   dataFormId: number;
   hackathonResponseGroupDetails: IHackathonResponseGroup;
-  communityId: string | number;
   filled_by_only_team_lead = true;
   icons = {
     faUpRightFromSquare,
@@ -36,7 +36,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   };
 
   subscriptions: Subscription[] = [];
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
 
   isFormInclude = false;
   constructor(
@@ -72,16 +72,11 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
+    this.seoService.noIndex(true);
 
     this.subscriptions.push(
       this.activatedRoute.parent.params.subscribe((params) => {
         this.fetchHackathonDetails(params['hackathon_id']);
-        this.communityId = params['community_id'];
       }),
     );
   }
@@ -89,6 +84,10 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
       this.hackathon = data;
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
       this.setMeta();
       this.fetchHackathonResponseGroup();
     });
@@ -193,7 +192,6 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   }
 
   setMeta() {
-    this.seoService.setTitle(`Registration Form | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Registration Form | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

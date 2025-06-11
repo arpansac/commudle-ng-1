@@ -6,6 +6,7 @@ import { faArrowRight, faGamepad, faMicrophone, faRectangleList } from '@fortawe
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -15,7 +16,6 @@ import { SeoService } from 'apps/shared-services/seo.service';
 })
 export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
-  community: ICommunity;
   tabs: NbRouteTab[] = [
     {
       title: 'Tracks',
@@ -27,6 +27,9 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
     },
   ];
   subscriptions: Subscription[] = [];
+
+  parent: ICommunity | ICommunityGroup;
+
   icons = {
     faArrowRight,
     faGamepad,
@@ -41,12 +44,7 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
   ) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.fetchHackathonDetails(params.get('hackathon_id'));
@@ -57,6 +55,10 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.hackathon = data;
         this.setMeta();
       }),
@@ -69,7 +71,6 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
   }
 
   setMeta() {
-    this.seoService.setTitle(`Tracks & Prizes | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Tracks & Prizes | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

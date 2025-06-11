@@ -9,6 +9,7 @@ import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { IHackathon } from '@commudle/shared-models';
 
@@ -34,7 +35,8 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
   EHackathonJudgeType = EHackathonJudgeType;
 
   subscriptions: Subscription[] = [];
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
+
   hackathon: IHackathon;
 
   constructor(
@@ -65,11 +67,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.parent.paramMap.subscribe((params) => {
         this.hackathonSlug = params.get('hackathon_id');
@@ -83,6 +81,10 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.setMeta();
       }),
     );
@@ -249,7 +251,6 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
 
   setMeta() {
     this.seoService.setTitle(`Judges, Speakers & Mentors
-| Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+| Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

@@ -4,6 +4,7 @@ import { EDbModels } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { IHackathon } from '@commudle/shared-models';
 
@@ -16,7 +17,7 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
   hackathonSlug = '';
   parentType = EDbModels.HACKATHON;
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
 
@@ -27,11 +28,7 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
+    this.seoService.noIndex(true);
 
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -43,6 +40,10 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.hackathon = data;
         this.setMeta();
       }),
@@ -55,7 +56,6 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
   }
 
   setMeta() {
-    this.seoService.setTitle(`FAQs | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`FAQs | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

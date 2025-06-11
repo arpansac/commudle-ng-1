@@ -9,6 +9,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { ToastrService } from '@commudle/shared-services';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { ICommunity } from '@commudle/shared-models';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -28,8 +29,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
   };
   isLoading = false;
   hackathon: IHackathon;
-  community: ICommunity;
-
+  parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -40,12 +40,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
   ) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.fetchHackathonDetails(params.get('hackathon_id'));
@@ -55,6 +50,10 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
 
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
       this.hackathon = data;
       this.getUpdates();
       this.setMeta();
@@ -137,7 +136,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
   }
 
   setMeta() {
-    this.seoService.setTitle(`Post Updates | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.setTitle(`Post Updates | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
     this.seoService.noIndex(true);
   }
 }

@@ -106,7 +106,7 @@ export class EditDataFormComponent implements OnInit, OnChanges {
     // set the dataForm
     this.dataFormsService.getDataFormDetails(this.dataFormId).subscribe((dataForm) => {
       this.dataForm = dataForm;
-      this.seoService.setTitle(`Edit ${this.dataForm.name} Form`);
+      this.seoService.setTitle(`Edit ${this.dataForm.name}`);
       this.fillExistingDataForm();
     });
   }

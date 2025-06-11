@@ -17,6 +17,7 @@ import {
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -39,10 +40,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   };
 
   hackathonSlug = '';
-  communitySlug: string;
   dialogRef: any;
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
 
   today: string = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
@@ -66,16 +66,11 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
+    this.seoService.noIndex(true);
 
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.hackathonSlug = params.get('hackathon_id');
-        this.communitySlug = params.get('community_id');
         this.fetchHackathon();
         this.indexRounds(params.get('hackathon_id'));
       }),
@@ -90,6 +85,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
 
   fetchHackathon() {
     this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data) => {
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
       this.hackathon = data;
       this.setMeta();
     });
@@ -175,7 +174,6 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   }
 
   setMeta() {
-    this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

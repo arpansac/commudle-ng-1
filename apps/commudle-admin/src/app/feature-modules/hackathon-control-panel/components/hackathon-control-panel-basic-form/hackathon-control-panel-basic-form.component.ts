@@ -6,6 +6,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { EHackathonLocationType, EParticipateTypes, IHackathon } from 'apps/shared-models/hackathon.model';
 import { faArrowRight, faFileImage, faLink } from '@fortawesome/free-solid-svg-icons';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,7 +19,6 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   hackathonForm: FormGroup;
   locationForm: FormGroup;
   hackathonSlug = '';
-  parentId = '';
   parentType = '';
   imagePreview = '';
 
@@ -27,7 +27,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   EParticipateTypes = EParticipateTypes;
   EHackathonLocationType = EHackathonLocationType;
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
 
   icons = {
     faFileImage,
@@ -102,24 +102,16 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.hackathonSlug = params.get('hackathon_id');
         if (params.get('community_id')) {
-          this.parentId = params.get('community_id');
           this.parentType = 'Kommunity';
         }
         if (params.get('community_group_id')) {
-          this.parentId = params.get('community_group_id');
           this.parentType = 'CommunityGroup';
         }
-        this;
         if (this.hackathonSlug) {
           this.fetchHackathonDetails();
         } else {
@@ -138,6 +130,10 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
     this.subscriptions.push(
       this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data: IHackathon) => {
         this.hackathon = data;
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.setMeta();
         this.imagePreview = data.banner_image ? data.banner_image.url : '';
         this.hackathonForm.patchValue({
@@ -231,10 +227,10 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
     if (this.locationForm.get('map_link').value)
       formData.append('location[map_link]', this.locationForm.get('map_link').value);
 
-    this.hackathonService.createHackathon(formData, this.parentId, this.parentType).subscribe(
+    this.hackathonService.createHackathon(formData, this.parent.id, this.parentType).subscribe(
       (data) => {
         if (data)
-          this.router.navigate(['/admin', 'communities', this.parentId, 'hackathon-dashboard', data.slug, 'dates']);
+          this.router.navigate(['/admin', 'communities', this.parent.id, 'hackathon-dashboard', data.slug, 'dates']);
         this.isLoading = false;
       },
       () => {
@@ -277,12 +273,10 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   setMeta() {
-    console.log(this.hackathon);
     this.seoService.setTags(
-      `Basic Information | Dashboard | ${this.hackathon.name} | ${this.community.name}`,
+      `Basic Information | Dashboard | ${this.hackathon.name} | ${this.parent.name}`,
       this.hackathon.tagline,
       this.hackathon.banner_image?.i320,
     );
-    this.seoService.noIndex(true);
   }
 }

@@ -9,6 +9,7 @@ import { ToastrService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { IHackathon } from '@commudle/shared-models';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 @Component({
   selector: 'commudle-hackathon-control-panel-sponsor',
@@ -25,7 +26,7 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
   };
   imagePreview: string;
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
 
@@ -49,12 +50,7 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.hackathonSlug = params.get('hackathon_id');
@@ -67,6 +63,10 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
         this.hackathon = data;
         this.setMeta();
       }),
@@ -249,7 +249,6 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
   }
 
   setMeta() {
-    this.seoService.setTitle(`Sponsors | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Sponsors | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

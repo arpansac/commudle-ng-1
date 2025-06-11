@@ -27,6 +27,7 @@ import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/a
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { ICommunity } from '@commudle/shared-models';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -57,7 +58,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   message = '';
   selectedTeamDetails: IHackathonTeam;
   selectedUserResponsesDetails: IHackathonUserResponse[];
-  communityId: string | number;
   EInvitationStatus = EInvitationStatus;
   selectedResponse;
   isLoading = false;
@@ -76,7 +76,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
 
   tinyMCE = {
@@ -139,15 +139,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
-        this.communityId = params.get('community_id');
         this.hackathonId = params.get('hackathon_id');
         this.fetchUserResponses();
         this.fetchHackathon(params.get('hackathon_id'));
@@ -166,7 +160,11 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
         this.hackathon = data;
-        if (this.community && this.hackathon) {
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
+        if (this.parent && this.hackathon) {
           this.setMeta();
         }
       }),
@@ -417,7 +415,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   setMeta() {
-    this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
     this.seoService.noIndex(true);
   }
 }

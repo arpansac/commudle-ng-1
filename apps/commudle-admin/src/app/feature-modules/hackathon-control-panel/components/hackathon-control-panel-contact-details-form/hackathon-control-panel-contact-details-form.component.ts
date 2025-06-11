@@ -8,6 +8,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
@@ -23,9 +24,8 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
   contactInfo: IContactInfo;
   hackathon: IHackathon;
   hackathonSlug = '';
-  communitySlug = '';
 
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
 
   icons = {
     faArrowRight,
@@ -56,15 +56,10 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
+    this.seoService.noIndex(true);
 
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
-      this.communitySlug = params.get('community_id');
       this.fetchHackathonDetails(params.get('hackathon_id'));
       this.fetchHackathonContactDetails(params.get('hackathon_id'));
     });
@@ -97,7 +92,7 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
           });
         } else {
           this.hackathonContactForm.patchValue({
-            website: 'https://www.commudle.com/communities/' + this.communitySlug + '/hackathons/' + this.hackathonSlug,
+            website: 'https://www.commudle.com/communities/' + this.parent.slug + '/hackathons/' + this.hackathonSlug,
           });
         }
       }),
@@ -131,7 +126,9 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
         this.hackathon = data;
+        this.parent = data.community;
         this.setMeta();
       }),
     );
@@ -143,7 +140,6 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
   }
 
   setMeta() {
-    this.seoService.setTitle(`Contact & Social Links | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
-    this.seoService.noIndex(true);
+    this.seoService.setTitle(`Contact & Social Links | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

@@ -12,6 +12,7 @@ import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 import { SeoService } from 'apps/shared-services/seo.service';
 
@@ -32,7 +33,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
 
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
-  community: ICommunity;
+  parent: ICommunity | ICommunityGroup;
 
   tinyMCE = {
     min_height: 300,
@@ -85,12 +86,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.activatedRoute.parent.parent.data.subscribe((data) => {
-        this.community = data.community;
-      }),
-    );
-
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
         this.hackathonId = params.get('hackathon_id');
@@ -101,6 +97,10 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
 
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
       this.hackathon = data;
       this.setMeta();
     });
@@ -174,7 +174,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   }
 
   setMeta() {
-    this.seoService.setTitle(`Communications | Dashboard | ${this.hackathon.name} | ${this.community.name}`);
+    this.seoService.setTitle(`Communications | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
     this.seoService.noIndex(true);
   }
 }
