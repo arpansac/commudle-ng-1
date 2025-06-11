@@ -1,6 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EDbModels, EUserRoles, IEvent, IPageInfo, IProfileCompletionStatus, IUser } from '@commudle/shared-models';
+import {
+  EDbModels,
+  EUserRoles,
+  ICommunity,
+  IEvent,
+  IPageInfo,
+  IProfileCompletionStatus,
+  IUser,
+  IUserRolesUser,
+} from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
@@ -11,6 +20,7 @@ import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entit
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
+import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 
 @Component({
   selector: 'commudle-fill-data-form-confirmation',
@@ -34,6 +44,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   etoUuid: string;
   approvalBased = false;
   communityLeaders: IUser[];
+  communities: ICommunity[] = [];
+  communityGroupLeaders: IUserRolesUser[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -47,6 +59,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private dataFormEntityResponsesService: DataFormEntityResponsesService,
     private router: Router,
     private uruService: UserRolesUsersService,
+    private communityGroupService: CommunityGroupsService,
   ) {}
 
   ngOnInit() {
@@ -128,7 +141,12 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
         // nothing need to be done here
         break;
       case 'Survey':
-        this.fetchCommunityDetails();
+        if (this.dataFormEntity.community) {
+          this.fetchCommunityDetails();
+        }
+        if (this.dataFormEntity.community_group) {
+          this.fetchCommunityGroupDetails();
+        }
         break;
       default:
       // this.errorHandler.handleError(404, 'You cannot fill this form');
@@ -166,5 +184,19 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
         this.communityLeaders = data.users;
         this.isLoading = false;
       });
+  }
+
+  private fetchCommunityGroupDetails() {
+    this.communityGroupService.pCommunities(this.dataFormEntity.community_group.id, 10).subscribe((data) => {
+      this.communities = this.communities.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+      this.isLoading = false;
+    });
+    this.uruService.pGetCommunityGroupLeaders(this.dataFormEntity.community_group.id).subscribe((data) => {
+      this.communityGroupLeaders = data.user_roles_users;
+      console.log(
+        '🚀 ~ FillDataFormConfirmationComponent ~ this.uruService.pGetCommunityGroupLeaders ~  this.communityGroupLeaders:',
+        this.communityGroupLeaders,
+      );
+    });
   }
 }
