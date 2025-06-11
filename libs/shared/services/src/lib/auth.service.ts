@@ -115,7 +115,8 @@ export class AuthService {
   }
 
   logInUser() {
-    this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
+    this.openLoginSignupTemplate();
+    // this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
   }
 
   getUserData(): Observable<{ consent_privacy_tnc: boolean; consent_marketing: boolean }> {
@@ -131,6 +132,10 @@ export class AuthService {
   }
 
   openLoginSignupTemplate() {
-    this.nbDialogService.open(LoginSignupComponent);
+    this.nbDialogService.open(LoginSignupComponent, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      hasScroll: true,
+    });
   }
 }

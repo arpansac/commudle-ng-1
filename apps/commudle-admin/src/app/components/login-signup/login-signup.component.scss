@@ -10,25 +10,44 @@
     }
   }
 
+  nb-card-body {
+    @apply com-p-6;
+  }
+
   .login-form {
     @apply com-flex com-flex-col;
 
-    &::before {
-      color: rgb(151, 160, 175);
-      content: 'or';
-      display: block;
-      font-size: 11px;
-      line-height: 1;
-      margin-bottom: 16px;
-      text-align: center;
-      text-transform: uppercase;
+    .email-input,
+    .otp-input {
+      @apply com-mb-6 com-rounded-lg;
     }
-    input {
-      @apply com-mb-4;
+
+    .email-label {
+      @apply com-text-gray-500 com-text-xs com-font-medium com-mb-1;
     }
-    button {
-      @apply com-mt-6;
-      @apply com-mb-8;
-    }
+  }
+
+  .separator {
+    @apply com-flex com-flex-row com-items-center com-text-center com-w-full com-my-6;
+  }
+
+  .or-seprator {
+    @apply com-border-0 com-border-t com-border-solid com-border-gray-200 com-w-full;
+  }
+
+  .or-seprator-text {
+    @apply com-mx-3 com-my-0 com-text-sm com-font-normal com-text-gray-500;
+  }
+
+  .google-signin-button {
+    @apply com-flex com-justify-center;
+  }
+
+  .mandatory-field {
+    @apply com-text-red-500;
+  }
+
+  input {
+    @apply com-bg-transparent #{!important};
   }
 }
