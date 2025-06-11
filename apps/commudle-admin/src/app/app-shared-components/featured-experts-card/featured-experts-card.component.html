@@ -1,39 +1,37 @@
-<nb-card *ngIf="expert">
-  <nb-card-body>
-    <div class="expert-card">
-      <a [routerLink]="['/users', expert.username]">
-        <div *ngIf="expert.photo" class="expert-image">
-          <img src="{{ expert.photo.i320 }}" alt="{{ expert.name }}" />
-        </div>
-      </a>
-      <div class="details">
-        <div class="name-header">
-          <a [routerLink]="['/users', expert.username]">
-            <div class="expert-name">
-              <p class="name">{{ expert.name }}</p>
-              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
-              <commudle-user-personal-connect
-                [userConnect]="expert.distance_from_current_user"
-              ></commudle-user-personal-connect>
-            </div>
-          </a>
-          <app-user-follow
-            [username]="expert.username"
-            [name]="expert.name"
-            [isMobileWidthFull]="true"
-            [userId]="expert.id"
-            [appearance]="'outline'"
-          ></app-user-follow>
-        </div>
+<div *ngIf="expert" class="expert-container">
+  <div class="expert-card">
+    <a [routerLink]="['/users', expert.username]">
+      <div *ngIf="expert.photo" class="expert-image">
+        <img src="{{ expert.photo.i320 }}" alt="{{ expert.name }}" />
+      </div>
+    </a>
+    <div class="details">
+      <div class="name-header">
         <a [routerLink]="['/users', expert.username]">
-          <p class="expert-username">@{{ expert.username }}</p>
-          <p class="expert-designation">{{ expert.designation }}</p>
-          <div *ngIf="expert.company_name" class="expert-company">
-            <fa-icon class="expert-company-icon" [icon]="faBriefcase"></fa-icon>
-            <p class="expert-company-name">{{ expert.company_name }}</p>
+          <div class="expert-name">
+            <p class="name">{{ expert.name }}</p>
+            <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
+            <commudle-user-personal-connect
+              [userConnect]="expert.distance_from_current_user"
+            ></commudle-user-personal-connect>
           </div>
         </a>
+        <app-user-follow
+          [username]="expert.username"
+          [name]="expert.name"
+          [isMobileWidthFull]="true"
+          [userId]="expert.id"
+          [appearance]="'outline'"
+        ></app-user-follow>
       </div>
+      <a [routerLink]="['/users', expert.username]">
+        <p class="expert-username">@{{ expert.username }}</p>
+        <p class="expert-designation">{{ expert.designation }}</p>
+        <div *ngIf="expert.company_name" class="expert-company">
+          <fa-icon class="expert-company-icon" [icon]="faBriefcase"></fa-icon>
+          <p class="expert-company-name">{{ expert.company_name }}</p>
+        </div>
+      </a>
     </div>
-  </nb-card-body>
-</nb-card>
+  </div>
+</div>

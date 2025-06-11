@@ -1,16 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, IEvent, IPageInfo, IUser } from '@commudle/shared-models';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { IEvent } from 'apps/shared-models/event.model';
-import { IPageInfo } from 'apps/shared-models/page-info.model';
-import { IUser } from 'apps/shared-models/user.model';
 import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 
 @Component({
-  selector: 'app-user-profile-complete-step-three',
+  selector: 'commudle-user-profile-complete-step-three',
   templateUrl: './user-profile-complete-step-three.component.html',
   styleUrls: ['./user-profile-complete-step-three.component.scss'],
 })
