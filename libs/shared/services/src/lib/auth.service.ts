@@ -116,7 +116,6 @@ export class AuthService {
 
   logInUser() {
     this.openLoginSignupTemplate();
-    // this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
   }
 
   getUserData(): Observable<{ consent_privacy_tnc: boolean; consent_marketing: boolean }> {
