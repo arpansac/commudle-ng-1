@@ -26,6 +26,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   count = 10;
   speakers: IDataFormEntityResponseGroup[] = [];
   formIsPaid = false;
+  isLoading = true;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -68,6 +69,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private fetchDataFormEntity() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.getDataFormEntity(params.data_form_entity_id);
+      this.isLoading = false;
     });
   }
 

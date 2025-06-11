@@ -2,66 +2,69 @@
   <div class="base-layout thin">
     <div class="container">
       <div class="one-column-layout">
-        <div class="confirmation-card">
-          <div class="confirmation-header">
-            <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
-            <h1 class="title" *ngIf="!formIsPaid">
-              Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
-            </h1>
-            <h1 *ngIf="formIsPaid" class="title paid-form">Your Purchase is Successful! for {{ event?.name }}</h1>
-            <h3 *ngIf="formIsPaid" class="sub-heading">
-              We’ve saved your spot — and you’ll receive your entry pass shortly via email.
-            </h3>
-          </div>
+        <commudle-loading-spinner *ngIf="isLoading; else container"></commudle-loading-spinner>
+        <ng-template #container>
+          <div class="confirmation-card">
+            <div class="confirmation-header">
+              <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
+              <h1 class="title" *ngIf="!formIsPaid">
+                Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
+              </h1>
+              <h1 *ngIf="formIsPaid" class="title paid-form">Your Purchase is Successful! for {{ event?.name }}</h1>
+              <h3 *ngIf="formIsPaid" class="sub-heading">
+                We’ve saved your spot — and you’ll receive your entry pass shortly via email.
+              </h3>
+            </div>
 
-          <ng-container *ngIf="currentUser">
-            <div class="profile-card">
-              <div class="profile-preview-card">
-                <div class="card-heading">Profile Card Preview</div>
-                <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+            <ng-container *ngIf="currentUser">
+              <div class="profile-card">
+                <div class="profile-preview-card">
+                  <div class="card-heading">Profile Card Preview</div>
+                  <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+                </div>
+
+                <div class="profile-completion-card" *ngIf="isProfileCompleted">
+                  <div class="card-heading">Profile's Progress</div>
+                  <commudle-profile-completion-progress></commudle-profile-completion-progress>
+                </div>
               </div>
 
-              <div class="profile-completion-card" *ngIf="isProfileCompleted">
-                <div class="card-heading">Profile's Progress</div>
-                <commudle-profile-completion-progress></commudle-profile-completion-progress>
+              <div class="missing-field-card" *ngIf="isProfileCompleted">
+                <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+              </div>
+            </ng-container>
+
+            <div *ngIf="event" class="event-card">
+              <h2 class="card-heading">Event Details</h2>
+              <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
+            </div>
+
+            <div *ngIf="speakers && speakers.length > 0" class="speakers-card">
+              <h2 class="card-heading">Follow Event Speakers</h2>
+              <div *ngFor="let speaker of speakers | sortBy : ['speaker.user.name'] : ['asc']" class="speaker">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [showSpeakersCount]="true"
+                  [user]="speaker.user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
               </div>
             </div>
 
-            <div class="missing-field-card" *ngIf="isProfileCompleted">
-              <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
-            </div>
-          </ng-container>
-
-          <div *ngIf="event" class="event-card">
-            <h2 class="card-heading">Event Details</h2>
-            <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
-          </div>
-
-          <div *ngIf="speakers && speakers.length > 0" class="speakers-card">
-            <h2 class="card-heading">Follow Event Speakers</h2>
-            <div *ngFor="let speaker of speakers | sortBy : ['speaker.user.name'] : ['asc']" class="speaker">
-              <app-user-profile-card-large
-                [alignFollowToRight]="true"
-                [showFollowButton]="true"
-                [showSpeakersCount]="true"
-                [user]="speaker.user"
-                appearanceOfFollowButton="outline"
-              ></app-user-profile-card-large>
+            <div *ngIf="volunteers && volunteers.length > 0" class="volunteers-card">
+              <h2 class="card-heading">Follow Event Volunteers</h2>
+              <div *ngFor="let user of volunteers" class="volunteer">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
             </div>
           </div>
-
-          <div *ngIf="volunteers && volunteers.length > 0" class="volunteers-card">
-            <h2 class="card-heading">Follow Event Volunteers</h2>
-            <div *ngFor="let user of volunteers" class="volunteer">
-              <app-user-profile-card-large
-                [alignFollowToRight]="true"
-                [showFollowButton]="true"
-                [user]="user"
-                appearanceOfFollowButton="outline"
-              ></app-user-profile-card-large>
-            </div>
-          </div>
-        </div>
+        </ng-template>
       </div>
     </div>
   </div>
