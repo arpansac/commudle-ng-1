@@ -314,7 +314,6 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   setupFormAfterEvents(): void {
-    console.log('All events loaded:', this.events.length);
     if (this.event) {
       this.prefillForm('event_id');
     } else {
