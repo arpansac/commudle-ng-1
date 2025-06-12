@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { IEvent } from 'apps/shared-models/event.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import {
   faUpRightFromSquare,
@@ -24,6 +23,7 @@ import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-event-dashboard',
@@ -55,6 +55,8 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   sidebarEventName = 'eventDashboard';
   sidebarExpanded = true;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private seoService: SeoService,
@@ -71,11 +73,13 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     this.footerService.changeMiniFooterStatus(false);
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
 
-    this.activatedRoute.data.subscribe((value) => {
-      this.event = value.event;
-      this.community = value.community;
-      this.seoService.setTitle(`Admin - ${this.event.name} - ${this.community.name}`);
-    });
+    this.subscriptions.push(
+      this.activatedRoute.data.subscribe((value) => {
+        this.event = value.event;
+        this.community = value.community;
+        this.seoService.setTitle(`Admin | ${this.event.name} | ${this.community.name}`);
+      }),
+    );
 
     // eslint-disable-next-line no-prototype-builtins
     if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
@@ -88,6 +92,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.seoService.noIndex(false);
     this.footerService.changeMiniFooterStatus(true);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   copyTextToClipboard(): void {

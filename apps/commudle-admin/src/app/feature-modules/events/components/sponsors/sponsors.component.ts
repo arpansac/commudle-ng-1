@@ -3,18 +3,21 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NbDialogService, NbWindowService } from '@commudle/theme';
-import { IEvent } from 'apps/shared-models/event.model';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
+import { Subscription } from 'rxjs';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-sponsors',
@@ -22,8 +25,9 @@ import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event
   styleUrls: ['./sponsors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SponsorsComponent implements OnInit {
+export class SponsorsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
+  community: ICommunity;
 
   existingSponsors: ISponsor[] = [];
   sponsors: IEventSponsor[] = [];
@@ -33,6 +37,8 @@ export class SponsorsComponent implements OnInit {
 
   uploadedLogoImageFile: File;
   uploadedLogoImage;
+
+  subscriptions: Subscription[] = [];
 
   @ViewChild('sponsorFormTemplate') sponsorFormTemplate: TemplateRef<any>;
 
@@ -44,6 +50,7 @@ export class SponsorsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {
     this.sponsorForm = this.fb.group({
       logo: ['', Validators.required],
@@ -53,11 +60,21 @@ export class SponsorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.event = data.event;
-      this.getAllSponsors();
-      this.getPastSponsors();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        this.event = data.event;
+        this.community = data.community;
+        this.setMeta();
+        this.getAllSponsors();
+        this.getPastSponsors();
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getAllSponsors() {
@@ -155,5 +172,9 @@ export class SponsorsComponent implements OnInit {
         index: index,
       },
     });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Sponsors | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

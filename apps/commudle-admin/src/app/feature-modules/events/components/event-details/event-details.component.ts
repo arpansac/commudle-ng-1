@@ -1,19 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IEvent } from 'apps/shared-models/event.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faFileLines } from '@fortawesome/free-regular-svg-icons';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
+
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.scss'],
 })
-export class EventDetailsComponent implements OnInit {
+export class EventDetailsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
   @Input() community: ICommunity;
 
@@ -33,17 +34,27 @@ export class EventDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private eventsService: EventsService,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.getEventAndCommunityData();
   }
 
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   getEventAndCommunityData() {
-    this.activatedRoute.parent.data.subscribe((value) => {
-      this.event = value.event;
-      this.community = value.community;
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        this.event = value.event;
+        this.community = value.community;
+        this.setMeta();
+      }),
+    );
   }
 
   deleteEventHeader() {
@@ -84,5 +95,9 @@ export class EventDetailsComponent implements OnInit {
       this.event = data;
       this.toastLogService.successDialog('Updated!');
     });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Details | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

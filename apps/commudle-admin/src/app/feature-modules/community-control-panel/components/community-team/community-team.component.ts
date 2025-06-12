@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -6,14 +6,16 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { Subscription } from 'rxjs';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-team',
   templateUrl: './community-team.component.html',
   styleUrls: ['./community-team.component.scss'],
 })
-export class CommunityTeamComponent implements OnInit, OnChanges {
-  communityId;
+export class CommunityTeamComponent implements OnInit, OnDestroy {
   EUserRolesUserStatus = EUserRolesUserStatus;
   EUserRoles = EUserRoles;
 
@@ -22,12 +24,16 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
 
   userRolesUserForm;
 
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
+
   constructor(
     private userRolesUsersService: UserRolesUsersService,
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
     private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
   ) {
     this.userRolesUserForm = this.fb.group({
       email: ['', Validators.required],
@@ -36,22 +42,34 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(() => {
-      this.communityId = this.activatedRoute.parent.snapshot.params['community_id'];
-      this.getRoles();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        if (value.community) {
+          this.community = value.community;
+          this.setMeta();
+        }
+      }),
+    );
   }
 
-  ngOnChanges() {}
+  ngOnDestroy() {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Team | Dashboard | ${this.community.name}`);
+  }
 
   getRoles() {
-    if (this.communityId) {
+    if (this.community.id) {
       this.userRolesUsersService
-        .getCommunityUsersByRole(this.communityId, EUserRoles.ORGANIZER)
+        .getCommunityUsersByRole(this.community.id, EUserRoles.ORGANIZER)
         .subscribe((data) => (this.organizers = data.user_roles_users));
 
       this.userRolesUsersService
-        .getCommunityUsersByRole(this.communityId, EUserRoles.EVENT_ORGANIZER)
+        .getCommunityUsersByRole(this.community.id, EUserRoles.EVENT_ORGANIZER)
         .subscribe((data) => (this.eventOrganizers = data.user_roles_users));
     }
   }
@@ -79,7 +97,7 @@ export class CommunityTeamComponent implements OnInit, OnChanges {
       .createUserRolesUser({
         ...this.userRolesUserForm.value,
         parent_type: 'Kommunity',
-        parent_id: this.communityId,
+        parent_id: this.community.id,
       })
       .subscribe((data) => {
         this.organizers.push(data);

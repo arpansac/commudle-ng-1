@@ -1,9 +1,14 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from '@commudle/shared-services';
-import { RazorpayService, StripeHandlerService, countries_details } from '@commudle/shared-services';
+import {
+  RazorpayService,
+  StripeHandlerService,
+  countries_details,
+  SeoService,
+  ToastrService,
+} from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
 import { faArrowUpRightFromSquare, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -29,9 +34,11 @@ import {
   LogisticsSubcategory,
   ToursAndTravelSubcategory,
   TransportSubcategory,
+  ICommunity,
+  EDbModels,
 } from '@commudle/shared-models';
-import { EDbModels } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+
 @Component({
   selector: 'commudle-community-bank-details',
   templateUrl: './community-bank-details.component.html',
@@ -39,7 +46,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 })
 export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   isLoading = false;
-  communityId: number;
+  community: ICommunity;
   ac: string;
   stripeAccounts = [];
   subscriptions: Subscription[] = [];
@@ -89,6 +96,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private razorPayService: RazorpayService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.countryForm = this.fb.group({
       country: ['', Validators.required],
@@ -142,7 +150,15 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.communityId = this.activatedRoute.parent.parent.snapshot.params['community_id'];
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((value) => {
+        if (value.community) {
+          this.community = value.community;
+          this.setMeta();
+        }
+      }),
+    );
     this.getStripeAccounts();
     this.getRazorpayAccounts();
     this.businessTypeChanged();
@@ -153,8 +169,13 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
     this.dialogRef?.close();
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Bank Details | Dashboard | ${this.community.name}`);
   }
 
   openDialogBox(StripeConnectAccount: TemplateRef<any>) {
@@ -166,7 +187,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.subscriptions.push(
       this.stripeHandlerService
-        .connectStripeAccount(this.stripeConnectAccountForm, currentUrl, this.communityId)
+        .connectStripeAccount(this.stripeConnectAccountForm, currentUrl, this.community.id)
         .subscribe(
           (data) => {
             this.isLoading = false;
@@ -183,7 +204,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
 
   getStripeAccounts() {
     this.subscriptions.push(
-      this.stripeHandlerService.indexStripeAccount(this.communityId).subscribe((data) => {
+      this.stripeHandlerService.indexStripeAccount(this.community.id).subscribe((data) => {
         this.stripeAccounts = this.stripeAccounts.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       }),
     );
@@ -191,7 +212,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
 
   getRazorpayAccounts() {
     this.subscriptions.push(
-      this.razorPayService.indexRazorpayAccounts(this.communityId).subscribe((data) => {
+      this.razorPayService.indexRazorpayAccounts(this.community.id).subscribe((data) => {
         this.razorpayAccounts = this.razorpayAccounts.concat(
           data.page.reduce((acc, value) => [...acc, value.data], []),
         );
@@ -231,7 +252,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.razorPayService
       .createRazorpayAccount(
-        this.communityId,
+        this.community.id,
         EDbModels.KOMMUNITY,
         this.razorpayAccountForm.value,
         this.settlementDetailsForm.value,

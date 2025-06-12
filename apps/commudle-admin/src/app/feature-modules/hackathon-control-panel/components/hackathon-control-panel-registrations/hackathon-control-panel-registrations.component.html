@@ -4,11 +4,11 @@
       >Registration<commudle-help-section [helpDictionaryName]="'hackathon-registrations'"></commudle-help-section
     ></span>
     <a
-      *ngIf="communityId && hackathon && hackathonResponseGroupDetails"
+      *ngIf="parent.id && hackathon && hackathonResponseGroupDetails"
       target="_blank"
       [routerLink]="[
         '/communities',
-        communityId,
+        parent.id,
         'hackathons',
         hackathon.slug,
         'fill-form',

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathon } from '@commudle/shared-models';
-import { ToastrService, countries_details } from '@commudle/shared-services';
+import { IHackathon, ICommunity, IContactInfo } from '@commudle/shared-models';
+import { ToastrService, countries_details, SeoService } from '@commudle/shared-services';
 import { faArrowRight, faCalendarDays, faLink } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-contact-details-form',
   templateUrl: './hackathon-control-panel-contact-details-form.component.html',
   styleUrls: ['./hackathon-control-panel-contact-details-form.component.scss'],
 })
-export class HackathonControlPanelContactDetailsFormComponent implements OnInit {
+export class HackathonControlPanelContactDetailsFormComponent implements OnInit, OnDestroy {
   hackathonContactForm: FormGroup;
   subscriptions: Subscription[] = [];
 
@@ -21,7 +21,8 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
   contactInfo: IContactInfo;
   hackathon: IHackathon;
   hackathonSlug = '';
-  communitySlug = '';
+
+  parent: ICommunity | ICommunityGroup;
 
   icons = {
     faArrowRight,
@@ -34,6 +35,7 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
     private activatedRoute: ActivatedRoute,
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.hackathonContactForm = this.fb.group({
       website: ['', this.urlValidator],
@@ -51,12 +53,18 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
+
     this.activatedRoute.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
-      this.communitySlug = params.get('community_id');
       this.fetchHackathonDetails(params.get('hackathon_id'));
       this.fetchHackathonContactDetails(params.get('hackathon_id'));
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   urlValidator(control) {
@@ -86,7 +94,7 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
           });
         } else {
           this.hackathonContactForm.patchValue({
-            website: 'https://www.commudle.com/communities/' + this.communitySlug + '/hackathons/' + this.hackathonSlug,
+            website: 'https://www.commudle.com/communities/' + this.parent.slug + '/hackathons/' + this.hackathonSlug,
           });
         }
       }),
@@ -120,8 +128,15 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit 
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
         this.hackathon = data;
+        this.parent = data.community;
+        this.setMeta();
       }),
     );
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Contact & Social Links | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

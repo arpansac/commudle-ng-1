@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 import * as momentTimezone from 'moment-timezone';
 import { ActivatedRoute } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-dates-form',
@@ -20,6 +21,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
 
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
+  parent: ICommunity | ICommunityGroup;
 
   allTimeZones;
   userTimeZone;
@@ -38,6 +40,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     private hackathonService: HackathonService,
     private datePipe: DatePipe,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.hackathonDatesForm = this.fb.group({
       start_date: ['', Validators.required],
@@ -49,13 +52,18 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.allTimeZones = momentTimezone.tz.names();
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.fetchHackathonDetails(params.get('hackathon_id'));
-    });
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.fetchHackathonDetails(params.get('hackathon_id'));
+      }),
+    );
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
@@ -63,6 +71,11 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
+        this.setMeta();
         if (!this.hackathon.timezone) {
           this.hackathonDatesForm.patchValue({
             timezone: momentTimezone.tz.guess(),
@@ -124,5 +137,9 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
     } else {
       this.invalidFormFields = false;
     }
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Dates | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

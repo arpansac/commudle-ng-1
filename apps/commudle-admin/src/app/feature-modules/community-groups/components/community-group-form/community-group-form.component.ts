@@ -1,23 +1,26 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { Subscription } from 'rxjs';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-group-form',
   templateUrl: './community-group-form.component.html',
   styleUrls: ['./community-group-form.component.scss'],
 })
-export class CommunityGroupFormComponent implements OnInit {
+export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   uploadedLogoImage;
   uploadedLogoImageFile: File;
 
   communityGroupForm;
   themeColor = '#166534';
+
+  subscriptions: Subscription[] = [];
 
   tinyMCE = {
     height: 300,
@@ -75,13 +78,21 @@ export class CommunityGroupFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      if (data.community_group) {
-        this.communityGroup = data.community_group;
-        this.patchFormGroupDetails();
-      }
-      this.setMeta();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        if (data.community_group) {
+          this.communityGroup = data.community_group;
+          this.patchFormGroupDetails();
+        }
+        this.setMeta();
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   updateThemeColor(event) {
@@ -163,9 +174,9 @@ export class CommunityGroupFormComponent implements OnInit {
 
   setMeta() {
     this.seoService.setTags(
-      this.communityGroup ? `Edit - Admin - ${this.communityGroup.name}` : 'New Community Group',
+      this.communityGroup ? `Edit | Dashboard | ${this.communityGroup.name}` : 'New Community Group',
       this.communityGroup ? this.communityGroup.mini_description : '',
-      this.communityGroup ? this.communityGroup.logo.i350 : '',
+      this.communityGroup ? this.communityGroup.logo?.i350 : '',
     );
   }
 }
