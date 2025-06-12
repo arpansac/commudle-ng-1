@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
@@ -27,7 +27,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   EEventStatuses = EEventStatuses;
 
   query = '';
-  faPlusSquare = faPlusSquare;
   icons = {
     faPlus,
     faArrowUpRightFromSquare,

@@ -1,32 +1,44 @@
-<div [ngClass]="horizontalScroll ? 'scroll-container' : 'container'">
-  <a [routerLink]="['/communities', featuredCommunity.community.slug]" target="_blank">
+<div
+  [ngClass]="[horizontalScroll ? 'scroll-container' : 'container', showJoinBtnBottom ? 'com-flex-col' : 'com-flex-row']"
+>
+  <a [routerLink]="['/communities', featuredCommunity.slug]" target="_blank">
     <div class="featured-community">
       <div>
-        <div *ngIf="featuredCommunity.community.logo_image?.url" class="image">
+        <div *ngIf="featuredCommunity.logo_image || featuredCommunity.logo_image_path" class="image">
           <img
-            [alt]="featuredCommunity.community.name"
-            [src]="featuredCommunity.community.logo_image.i64"
-            [title]="featuredCommunity.community.name"
+            [alt]="featuredCommunity.name"
+            [src]="
+              featuredCommunity.logo_image_path
+                ? featuredCommunity.logo_image_path.i64
+                : featuredCommunity.logo_image.i64
+            "
+            [title]="featuredCommunity.name"
             class="avatar"
           />
         </div>
-        <div *ngIf="!featuredCommunity.community.logo_image?.url" class="no-image-header">
+        <div *ngIf="!featuredCommunity.logo_image?.url && !featuredCommunity.logo_image_path" class="no-image-header">
           <nb-icon icon="link" status="primary"></nb-icon>
         </div>
       </div>
       <div class="featured-communities-details">
         <div class="details">
-          <p class="community-name">{{ featuredCommunity.community.name }}</p>
-          <p class="mini-description">
-            {{ featuredCommunity.reason }}
+          <p class="community-name">{{ featuredCommunity.name }}</p>
+          <p
+            [ngClass]="[showJoinBtnBottom ? 'com-h-[36px] md:com-h-[34px]' : 'com-h-[34px] md:com-h-auto']"
+            class="mini-description"
+          >
+            {{ communityFeaturedReason ? communityFeaturedReason : featuredCommunity.mini_description }}
           </p>
         </div>
       </div>
     </div>
   </a>
-  <div class="membership-toggle">
+  <div
+    [ngClass]="[showJoinBtnBottom ? 'follow-btn-bottom-toggle' : 'follow-btn-right-toggle']"
+    class="membership-toggle"
+  >
     <app-membership-toggle
-      [community]="featuredCommunity.community"
+      [community]="featuredCommunity"
       [shapes]="'semi-round'"
       [size]="'small'"
       [status]="'info'"

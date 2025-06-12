@@ -55,6 +55,7 @@ export class EventsService {
     count?: number,
     query?: string,
     eventStatus?: string[],
+    all?: boolean,
   ): Observable<IPaginationCount<IEvent>> {
     let params = new HttpParams().set('community_id', communityId);
     if (page) {
@@ -69,6 +70,10 @@ export class EventsService {
       eventStatus.forEach((status) => {
         params = params.append(`event_status[]`, status);
       });
+    }
+
+    if (all) {
+      params = params.set('all', all);
     }
 
     return this.http.get<IPaginationCount<IEvent>>(

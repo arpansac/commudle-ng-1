@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
@@ -9,7 +9,6 @@ import {
   faFlask,
   faLightbulb,
   faLink,
-  faNewspaper,
   faSuitcase,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
@@ -23,13 +22,12 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./user-account-menu.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class UserAccountMenuComponent implements OnInit {
+export class UserAccountMenuComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   faChevronRight = faChevronRight;
   faLightbulb = faLightbulb;
   faFlask = faFlask;
   faSuitcase = faSuitcase;
-  faNewspaper = faNewspaper;
   faAudioDescription = faAudioDescription;
   faArrowRightFromBracket = faArrowRightFromBracket;
   faLink = faLink;
@@ -51,6 +49,12 @@ export class UserAccountMenuComponent implements OnInit {
       }
     });
     this.footerService.changeMiniFooterStatus(false);
+  }
+
+  ngOnDestroy(): void {
+    this.footerService.changeMiniFooterStatus(true);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openConfirmDialogBox(dialog: TemplateRef<any>) {

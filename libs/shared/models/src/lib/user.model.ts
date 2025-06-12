@@ -59,6 +59,9 @@ export interface IUser {
   distance_from_current_user: number;
   company_name: string;
   has_upcoming_talk: boolean;
+  experience_level: string;
+  user_domain: string;
+  goals: string[];
 }
 
 export interface IUserSearch extends IUser {
@@ -73,4 +76,25 @@ export interface IUsers {
   users: IUser[];
   page: number;
   total: number;
+}
+
+export enum EExperienceLevel {
+  getting_started = 'Getting Started - Student (<1 year)',
+  arrived = 'I have Arrived (1 Year)',
+  finding_expertise = 'Finding My Expertise (2-3 Years)',
+  seasoned = 'Seasoned (4-5 Years)',
+  senior = 'Senior (6-10 Years)',
+  expert = 'Seen It All (10+ Years)',
+}
+
+export enum EDomain {
+  software_developemnt = 'Software Development',
+  product_management = 'Product Management',
+  cloud_and_devOps = 'Cloud & DevOps',
+  ui_ux_design = 'UI/UX & Design',
+  data_science_ai = 'Data Science & AI',
+  cybersecurity = 'Cybersecurity',
+  testing = 'Testing',
+  devRel_and_community = 'DevRel & Community',
+  hardware_and_iot = 'Hardware & IoT',
 }

@@ -79,10 +79,10 @@ export class StepperService {
   }
 
   showStepper() {
-    this.dialogRef = this.dialogService.open(StepperComponent, {
-      hasScroll: false,
-      closeOnBackdropClick: false,
-      closeOnEsc: false,
-    });
+    // this.dialogRef = this.dialogService.open(StepperComponent, {
+    //   hasScroll: false,
+    //   closeOnBackdropClick: false,
+    //   closeOnEsc: false,
+    // });
   }
 }

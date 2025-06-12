@@ -1,0 +1,107 @@
+<div
+  class="background-image"
+  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+>
+  <div class="base-layout">
+    <div class="container">
+      <div class="three-column-layout thin">
+        <div class="left-column"></div>
+        <div [formGroup]="profileStepOneForm">
+          <p class="step-number">Step 1 of 3</p>
+          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser.name }}</h2>
+          <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
+          <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
+
+          <div class="goals-section">
+            <h3 class="goals-heading">
+              What are your goals?<span class="mandatory-field">*</span>&nbsp;<span class="select-atleast"
+                >(Select atleast 2)</span
+              >
+            </h3>
+            <div class="goals-container">
+              <div
+                *ngFor="let goal of goals"
+                class="goals-card"
+                [ngClass]="{ 'active-goal': profileStepOneForm.get('goals').value.includes(goal) }"
+                (click)="toggleGoal(goal)"
+              >
+                {{ goal | capitalizeAndRemoveUnderscore }}
+              </div>
+              <commudle-alert
+                *ngIf="showGoalsError"
+                [error]="true"
+                [errorMessage]="'Select atleast 2 goals'"
+              ></commudle-alert>
+            </div>
+          </div>
+
+          <div class="skills-container">
+            <h3 class="skills-heading">Skills<span class="mandatory-field">*</span></h3>
+
+            <app-tag
+              (tagAdd)="onTagAdd($event)"
+              (tagDelete)="onTagDelete($event)"
+              [backgroundColor]="'com-bg-tAnti-Flash'"
+              [editable]="true"
+              [fontColor]="'com-text-tYankees-Blue'"
+              [tags]="tags"
+              [minTagLimit]="false"
+              [showAutoSuggestDropDown]="true"
+              [showSuggestedTags]="true"
+              [showTagsOnLoad]="true"
+            ></app-tag>
+            <commudle-alert *ngIf="showSkillsError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+          </div>
+
+          <div class="experience-level-section">
+            <h3 class="experience-heading">Where are you in your journey?<span class="mandatory-field">*</span></h3>
+            <select formControlName="experience_level" class="experience-select">
+              <option value="" selected disabled>Select your experience</option>
+              <option
+                *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder"
+                [value]="experienceLevel.key"
+              >
+                {{ experienceLevel.value }}
+              </option>
+            </select>
+            <commudle-alert
+              *ngIf="showExperienceLevelError"
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
+          </div>
+
+          <div class="domain-section">
+            <h3 class="domain-heading">Select Your domain<span class="mandatory-field">*</span></h3>
+            <select formControlName="user_domain" class="domain-select" (change)="onDomainChange($event)">
+              <option value="" selected disabled>Select your domain</option>
+              <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
+                {{ domain.value }}
+              </option>
+              <option value="other">Other</option>
+            </select>
+            <input
+              *ngIf="profileStepOneForm.get('user_domain').value === 'other' || showOtherDomainInput"
+              nbInput
+              size="small"
+              shape="semi-round"
+              type="text"
+              [value]="otherDomainValue"
+              fullWidth
+              (input)="onOtherDomainInput($event)"
+              placeholder="Enter your domain"
+              class="domain-input"
+            />
+            <commudle-alert *ngIf="showDomainError" [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+          </div>
+
+          <div class="continue-btn">
+            <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
+              Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

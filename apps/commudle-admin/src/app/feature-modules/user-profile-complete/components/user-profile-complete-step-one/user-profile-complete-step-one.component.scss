@@ -1,0 +1,68 @@
+.container {
+  @apply md:com-py-6 com-pt-5 com-pb-0 com-px-0;
+}
+
+.step-number {
+  @apply com-text-blue-500 com-text-base com-font-semibold com-m-0 md:com-mb-6 com-mb-4 md:com-px-0 com-px-4;
+}
+
+.welcome-text {
+  @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-m-0 com-mb-1 md:com-px-0 com-px-4;
+}
+
+.sub-text {
+  @apply com-text-gray-500 com-text-sm com-font-medium com-m-0 md:com-mb-10 com-mb-8 md:com-px-0 com-px-4;
+}
+
+.goals-heading {
+  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue com-flex com-items-center;
+
+  .select-atleast {
+    @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
+  }
+}
+
+.goals-container {
+  @apply com-grid com-grid-cols-2 com-gap-4;
+}
+
+.goals-card {
+  @apply com-flex com-items-center com-justify-center com-border com-border-solid com-rounded-xl com-p-5 com-cursor-pointer com-border-gray-200 com-bg-white com-text-gray-400 com-text-center com-text-xs com-font-semibold com-uppercase com-h-[70px];
+}
+
+.active-goal {
+  @apply com-text-blue-500 com-bg-blue-50 com-border-blue-500;
+}
+
+.skills-container,
+.goals-section,
+.experience-level-section {
+  @apply com-mb-6 md:com-px-0 com-px-4;
+}
+
+.skills-heading,
+.experience-heading,
+.domain-heading {
+  @apply com-text-sm com-font-medium com-m-0 com-mb-4 com-text-Yankees-Blue;
+}
+
+.domain-section {
+  @apply com-mb-10 md:com-px-0 com-px-4;
+}
+
+.experience-select,
+.domain-select {
+  @apply com-w-full com-px-4 com-py-10px com-rounded-lg com-border com-border-solid com-border-gray-200 com-text-xs com-font-medium;
+}
+
+.mandatory-field {
+  @apply com-text-red-500 com-ml-0.5;
+}
+
+.continue-btn {
+  @apply com-mt-4 md:com-static md:com-bottom-0 com-sticky com-bottom-[68px] com-left-0 com-right-0 md:com-p-0 com-p-4 md:com-bg-transparent com-bg-white com-z-10 md:com-shadow-none com-shadow-md;
+}
+
+.domain-input {
+  @apply com-mt-4;
+}

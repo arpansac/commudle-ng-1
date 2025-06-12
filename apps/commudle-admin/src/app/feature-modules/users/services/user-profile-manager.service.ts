@@ -23,6 +23,7 @@ export class UserProfileManagerService {
   public user$ = this.user.asObservable();
 
   userProfileForm;
+  userGoals: string[] = [];
 
   uploadedProfilePictureFile: File;
 
@@ -40,12 +41,13 @@ export class UserProfileManagerService {
       name: ['', Validators.required],
       about_me: ['', [Validators.required, Validators.maxLength(1000)]],
       designation: ['', [Validators.required, Validators.maxLength(100)]],
+      experience_level: ['', Validators.required],
+      user_domain: ['', Validators.required],
       location: [''],
       gender: [''],
       personal_website: [''],
       github: [''],
       linkedin: [''],
-      twitter: [''],
       dribbble: [''],
       behance: [''],
       medium: [''],
@@ -61,9 +63,12 @@ export class UserProfileManagerService {
     this.updateUsername.next(value);
   }
 
+  setUserGoals(goals: string[]) {
+    this.userGoals = goals;
+  }
+
   updateUserDetails(showToast: boolean, currentUser?: IUser) {
     const formData: any = new FormData();
-    //removing extra new lines from the about_me input
     this.userProfileForm.patchValue({
       about_me: this.userProfileForm.get('about_me').value
         ? this.userProfileForm.get('about_me').value.replace(/[\n]+/g, '\n').trim()
@@ -74,12 +79,18 @@ export class UserProfileManagerService {
       !(userFormData[key] == null) ? formData.append(`user[${key}]`, userFormData[key]) : '',
     );
 
+    if (this.userGoals && this.userGoals.length > 0) {
+      this.userGoals.forEach((goal) => {
+        formData.append(`user[goals][]`, goal);
+      });
+    }
+
     if (this.uploadedProfilePictureFile != null) {
       formData.append('user[profile_image]', this.uploadedProfilePictureFile);
     }
 
     this.usersService.updateUserProfile(formData).subscribe((data) => {
-      if (currentUser.profile_completed === false && data.profile_completed === true) {
+      if (currentUser && currentUser.profile_completed === false && data.profile_completed === true) {
         this.gtm.dataLayerPushEvent('profile-completed', {});
       } else {
         this.gtm.dataLayerPushEvent('profile-updated', {});
@@ -109,6 +120,29 @@ export class UserProfileManagerService {
   getProfile(username) {
     this.usersService.getProfile(username).subscribe((data) => {
       this.user.next(data);
+    });
+  }
+
+  patchFormValues(currentUser: IUser) {
+    this.userProfileForm.patchValue({
+      name: currentUser.name,
+      about_me: currentUser.about_me,
+      designation: currentUser.designation,
+      experience_level: currentUser.experience_level,
+      user_domain: currentUser.user_domain,
+      location: currentUser.location,
+      gender: currentUser.gender,
+      personal_website: currentUser.personal_website,
+      github: currentUser.github,
+      linkedin: currentUser.linkedin,
+      dribbble: currentUser.dribbble,
+      behance: currentUser.behance,
+      medium: currentUser.medium,
+      gitlab: currentUser.gitlab,
+      facebook: currentUser.facebook,
+      youtube: currentUser.youtube,
+      phone: currentUser.phone,
+      instagram: currentUser.instagram,
     });
   }
 }

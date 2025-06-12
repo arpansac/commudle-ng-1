@@ -161,7 +161,10 @@ a {
   }
 
   .partners-and-vendors-heading {
-    @apply com-flex com-justify-center com-text-center com-text-4xl com-font-bold com-m-0 com-mb-4 md:com-px-0 com-mx-4;
+    @apply com-m-0;
+    a {
+      @apply com-flex com-justify-center com-text-center com-text-4xl com-font-bold com-m-0 com-mb-4 md:com-px-0 com-mx-4 com-text-Yankees-Blue;
+    }
   }
 
   .partners-and-vendors-subheading {

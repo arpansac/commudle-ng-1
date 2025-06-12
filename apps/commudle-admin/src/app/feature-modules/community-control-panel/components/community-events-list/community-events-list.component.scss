@@ -1,11 +1,11 @@
 .community-events-list {
-  @apply com-m-6 com-overflow-x-hidden;
-  fa-icon {
-    @apply com-mr-2;
-  }
+  @apply com-m-6;
 
   .page-actions {
     @apply com-p-0 com-pb-4;
+    fa-icon {
+      @apply com-mr-2;
+    }
   }
 
   .activeTag {
@@ -23,42 +23,45 @@
   }
 
   .event-list-container {
-    @apply com-overflow-x-scroll;
-    table {
-      @apply com-border-collapse com-w-full;
+    .table-wrapper {
+      @apply com-overflow-x-auto;
 
-      td,
-      th {
-        @apply com-text-left com-p-2;
-      }
+      table {
+        @apply com-border-collapse com-w-full;
 
-      tr:nth-child(even) {
-        @apply com-bg-Bright-Gray;
-      }
+        td,
+        th {
+          @apply com-text-left com-p-2;
+        }
 
-      th:nth-child(1),
-      td:nth-child(1) {
-        @apply com-w-[32%];
-      }
+        tr:nth-child(even) {
+          @apply com-bg-Bright-Gray;
+        }
 
-      th:nth-child(2),
-      td:nth-child(2) {
-        @apply com-w-[26%];
-      }
+        th:nth-child(1),
+        td:nth-child(1) {
+          @apply com-w-[32%] com-min-w-[160px];
+        }
 
-      th:nth-child(3),
-      td:nth-child(3) {
-        @apply com-w-[12%];
-      }
+        th:nth-child(2),
+        td:nth-child(2) {
+          @apply com-w-[26%] com-min-w-[120px];
+        }
 
-      th:nth-child(4),
-      td:nth-child(4) {
-        @apply com-w-[15%];
-      }
+        th:nth-child(3),
+        td:nth-child(3) {
+          @apply com-w-[12%];
+        }
 
-      th:nth-child(5),
-      td:nth-child(5) {
-        @apply com-w-[15%];
+        th:nth-child(4),
+        td:nth-child(4) {
+          @apply com-w-[15%];
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+          @apply com-w-[15%];
+        }
       }
     }
 

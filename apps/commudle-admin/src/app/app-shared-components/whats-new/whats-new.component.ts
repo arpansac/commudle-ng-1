@@ -44,11 +44,19 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
         this.newUpdates = [];
         const currentDate = new Date();
         this.cookieCreationTime = this.whatsNewService.getCookieByName(this.cookieName);
+
+        if (this.cookieCreationTime) {
+          const targetDate = '2025-05-01T06:01:58.330Z';
+          const targetFormattedDate = new Date(targetDate).toISOString();
+          if (this.cookieCreationTime < targetFormattedDate) {
+            this.whatsNewService.deleteCookie(this.cookieName);
+            this.cookieCreationTime = null;
+          }
+        }
+
         currentDate.setMonth(currentDate.getMonth() - 2);
         const formattedPastTime = currentDate.toISOString();
-        const date = this.whatsNewService.getCookieByName(this.cookieName)
-          ? this.cookieCreationTime
-          : formattedPastTime;
+        const date = this.cookieCreationTime ? this.cookieCreationTime : formattedPastTime;
         this.whatsNewService.getNewUpdates(date).subscribe((data) => {
           if (data.length > 0) {
             this.newUpdates = data;
