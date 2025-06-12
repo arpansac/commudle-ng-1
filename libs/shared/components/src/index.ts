@@ -15,3 +15,7 @@ export * from './lib/components/public-faqs/public-faqs.component';
 export * from './lib/components/input/input.component';
 
 export * from './lib/components/campaign-assets-display/campaign-assets-display.component';
+
+export * from './lib/components/interested-members/interested-members.component';
+
+export * from './lib/components/user/profile-completion-progress/profile-completion-progress.component';

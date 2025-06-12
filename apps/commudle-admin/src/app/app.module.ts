@@ -125,6 +125,9 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
 import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { FillDataFormConfirmationComponent } from 'apps/commudle-admin/src/app/components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
+import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
+import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
 
 export function initApp(appInitService: AppInitService): () => Promise<any> {
   return () => appInitService.initializeApp();
@@ -171,6 +174,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     CheckFillDataFormComponent,
     UserAccountMenuComponent,
     NavbarUserContextMenuComponent,
+    FillDataFormConfirmationComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -190,6 +194,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     EditorModule,
     AppSharedComponentsModule,
     SharedComponentsModule,
+    newSharedComponentsModule,
     ReusableComponentsModule,
     SharedPipesModule,
     UserChatsModule,
@@ -214,6 +219,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     UserprofileDetailsComponent,
     SidebarComponent,
     HelpSectionComponent,
+    FeaturedCommunitiesCardComponent,
     // external service modules
     LibErrorHandlerModule,
     AuthModule,

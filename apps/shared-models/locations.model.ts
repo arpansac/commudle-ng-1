@@ -1,4 +1,4 @@
-import { ILocation } from './location.model';
+import { ILocation } from '@commudle/shared-models';
 
 export interface ILocations {
   locations: ILocation[];

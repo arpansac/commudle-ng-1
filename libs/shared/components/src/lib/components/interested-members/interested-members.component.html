@@ -1,7 +1,7 @@
 <div *ngIf="users && users.length > 0" class="interested-members">
-  <div class="heading" *ngIf="showHeading">Interested Members!</div>
+  <div class="heading">Interested Members!</div>
   <div class="users">
-    <div *ngFor="let user of users" class="user" nbTooltip="{{ user.name }}">
+    <div *ngFor="let user of users" class="user">
       <div class="profile-picture">
         <img alt="{{ user.name }}" src="{{ user.photo.i64 }}" title="{{ user.name }}" />
       </div>

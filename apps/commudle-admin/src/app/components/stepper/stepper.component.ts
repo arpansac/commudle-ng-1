@@ -186,7 +186,7 @@ export class StepperComponent implements OnInit, OnDestroy {
   }
 
   closeStepper() {
-    this.stepperService.dialogRef.close();
+    // this.stepperService.dialogRef.close();
   }
 
   openForWork() {
