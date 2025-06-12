@@ -10,7 +10,6 @@ import { SeoService } from '@commudle/shared-services';
   styleUrls: ['./community-newsletter.component.scss'],
 })
 export class CommunityNewsletterComponent implements OnInit, OnDestroy {
-  parentId: string;
   subscriptions: Subscription[] = [];
   community: ICommunity;
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
@@ -20,7 +19,6 @@ export class CommunityNewsletterComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
-          this.parentId = value.community.id;
           this.setMeta();
         }
       }),

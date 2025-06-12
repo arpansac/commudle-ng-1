@@ -11,7 +11,6 @@ import { SeoService } from '@commudle/shared-services';
 })
 export class CommunityMailsSentStatsComponent implements OnInit, OnDestroy {
   community: ICommunity;
-  communityId;
 
   subscriptions: Subscription[] = [];
 
@@ -21,7 +20,6 @@ export class CommunityMailsSentStatsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((value) => {
         this.community = value.community;
-        this.communityId = this.community.id;
         this.setMeta();
       }),
     );
