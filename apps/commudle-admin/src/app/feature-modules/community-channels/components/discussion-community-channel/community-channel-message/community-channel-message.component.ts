@@ -26,6 +26,7 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-community-channel-message',
@@ -86,6 +87,7 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
     private navigatorShareService: NavigatorShareService,
     private clipboard: Clipboard,
     private router: Router,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   ngOnInit(): void {}
@@ -147,7 +149,7 @@ export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDe
 
   login(): boolean {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }
