@@ -10,8 +10,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./community-groups-surveys.component.scss'],
 })
 export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
-  parentId;
-
   subscriptions: Subscription[] = [];
   communityGroup: ICommunityGroup;
 
@@ -23,7 +21,6 @@ export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((data) => {
         if (data.community_group) {
           this.communityGroup = data.community_group;
-          this.parentId = data.community_group.slug;
         }
         this.setMeta();
       }),

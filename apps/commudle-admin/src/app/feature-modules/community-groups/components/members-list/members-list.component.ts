@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { IUser } from 'apps/shared-models/user.model';
+import { IUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';

@@ -29,8 +29,8 @@ export class CommunityGroupCustomPagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {

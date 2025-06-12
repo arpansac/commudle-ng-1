@@ -90,6 +90,11 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   updateThemeColor(event) {
     this.communityGroup.theme_color = event.target.value;
     this.themeColor = event.target.value;
@@ -165,11 +170,6 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   redirect() {
     this.toastLogService.successDialog('Saved!');
     window.location.reload();
-  }
-
-  ngOnDestroy(): void {
-    this.seoService.noIndex(false);
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
