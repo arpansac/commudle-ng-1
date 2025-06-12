@@ -18,4 +18,8 @@ export class LoginAuthService {
       hasScroll: true,
     });
   }
+
+  openLoginPage() {
+    this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
+  }
 }

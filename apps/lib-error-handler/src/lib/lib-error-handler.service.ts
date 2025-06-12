@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbToastrService } from '@commudle/theme';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,14 +10,18 @@ export class LibErrorHandlerService {
   errorCode: string;
   errorMessage: string;
 
-  constructor(private toastrService: NbToastrService, private router: Router) {}
+  constructor(
+    private toastrService: NbToastrService,
+    private router: Router,
+    private loginAuthService: LoginAuthService,
+  ) {}
 
   handleError(errorCode, errorMessage) {
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
     switch (errorCode) {
       case 401:
-        this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
+        this.loginAuthService.openLoginSignupTemplate();
         break;
       case 403:
         // redirect to unauthorized page
