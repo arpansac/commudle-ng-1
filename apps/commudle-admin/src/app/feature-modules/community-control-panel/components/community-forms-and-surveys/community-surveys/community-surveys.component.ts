@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-community-surveys',

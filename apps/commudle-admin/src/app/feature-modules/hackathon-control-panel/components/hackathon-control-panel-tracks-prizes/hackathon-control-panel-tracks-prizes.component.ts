@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathon } from '@commudle/shared-models';
+import { IHackathon, ICommunity } from '@commudle/shared-models';
 import { NbRouteTab } from '@commudle/theme';
 import { faArrowRight, faGamepad, faMicrophone, faRectangleList } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-tracks-prizes',
@@ -52,6 +51,11 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
     );
   }
 
+  ngOnDestroy() {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
@@ -63,11 +67,6 @@ export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDes
         this.setMeta();
       }),
     );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

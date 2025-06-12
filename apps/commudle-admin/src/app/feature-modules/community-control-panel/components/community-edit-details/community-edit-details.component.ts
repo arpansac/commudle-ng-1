@@ -5,9 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-edit-details',

@@ -11,10 +11,10 @@ import { FormBuilder } from '@angular/forms';
 import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
+import { ICommunity } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
@@ -95,6 +95,11 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
       // TODO: Add Community Group in Future
@@ -166,11 +171,6 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
     this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
       context: { previewData },
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

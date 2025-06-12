@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import * as moment from 'moment';
-import { RoundService, ToastrService, NoteService, EmailerPreviewService } from '@commudle/shared-services';
+import { RoundService, ToastrService, NoteService, EmailerPreviewService, SeoService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import {
   EDbModels,
@@ -16,6 +16,7 @@ import {
   IHackathonUserResponse,
   INote,
   IRound,
+  ICommunity,
 } from '@commudle/shared-models';
 import { faXmark, faPlus, faCheck, faUpRightFromSquare, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -25,8 +26,6 @@ import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudl
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { ICommunity } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
@@ -154,6 +153,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.page = 1;
       this.fetchUserResponses();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.dialogRef?.close();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   fetchHackathon(hackathonId) {
@@ -406,12 +411,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   goToEmails() {
     this.router.navigate(['../emails'], { relativeTo: this.activatedRoute });
-  }
-
-  ngOnDestroy(): void {
-    this.dialogRef?.close();
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

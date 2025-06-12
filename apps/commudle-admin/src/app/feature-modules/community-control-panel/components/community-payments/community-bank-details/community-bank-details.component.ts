@@ -32,8 +32,8 @@ import {
 } from '@commudle/shared-models';
 import { EDbModels } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-community-bank-details',
@@ -42,7 +42,6 @@ import { SeoService } from 'apps/shared-services/seo.service';
 })
 export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   isLoading = false;
-  communityId: number;
   community: ICommunity;
   ac: string;
   stripeAccounts = [];
@@ -147,12 +146,11 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.communityId = this.activatedRoute.parent.parent.snapshot.params['community_id'];
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
-          this.communityId = value.community.id;
           this.setMeta();
         }
       }),
@@ -174,7 +172,6 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Bank Details | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 
   openDialogBox(StripeConnectAccount: TemplateRef<any>) {
@@ -186,7 +183,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.subscriptions.push(
       this.stripeHandlerService
-        .connectStripeAccount(this.stripeConnectAccountForm, currentUrl, this.communityId)
+        .connectStripeAccount(this.stripeConnectAccountForm, currentUrl, this.community.id)
         .subscribe(
           (data) => {
             this.isLoading = false;
@@ -203,7 +200,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
 
   getStripeAccounts() {
     this.subscriptions.push(
-      this.stripeHandlerService.indexStripeAccount(this.communityId).subscribe((data) => {
+      this.stripeHandlerService.indexStripeAccount(this.community.id).subscribe((data) => {
         this.stripeAccounts = this.stripeAccounts.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       }),
     );
@@ -211,7 +208,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
 
   getRazorpayAccounts() {
     this.subscriptions.push(
-      this.razorPayService.indexRazorpayAccounts(this.communityId).subscribe((data) => {
+      this.razorPayService.indexRazorpayAccounts(this.community.id).subscribe((data) => {
         this.razorpayAccounts = this.razorpayAccounts.concat(
           data.page.reduce((acc, value) => [...acc, value.data], []),
         );
@@ -251,7 +248,7 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.razorPayService
       .createRazorpayAccount(
-        this.communityId,
+        this.community.id,
         EDbModels.KOMMUNITY,
         this.razorpayAccountForm.value,
         this.settlementDetailsForm.value,

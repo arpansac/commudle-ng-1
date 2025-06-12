@@ -10,8 +10,8 @@ import { CommunityEventsListDateComponent } from './community-events-list-date/c
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-events-list',

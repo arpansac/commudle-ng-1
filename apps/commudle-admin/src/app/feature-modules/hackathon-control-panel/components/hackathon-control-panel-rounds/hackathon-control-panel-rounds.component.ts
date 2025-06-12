@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels, IHackathon } from '@commudle/shared-models';
-import { RoundService, ToastrService } from '@commudle/shared-services';
+import { IRound, EDbModels, IHackathon, ICommunity } from '@commudle/shared-models';
+import { RoundService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
   faPlus,
@@ -16,9 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -75,6 +73,11 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
         this.indexRounds(params.get('hackathon_id'));
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   indexRounds(hackathonId) {
@@ -166,11 +169,6 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

@@ -3,12 +3,9 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { EntityUpdatesService } from 'apps/commudle-admin/src/app/services/entity-updates.service';
-import { EDbModels, IEntityUpdate } from '@commudle/shared-models';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
+import { EDbModels, IEntityUpdate, IHackathon, ICommunity } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { ToastrService } from '@commudle/shared-services';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { ICommunity } from '@commudle/shared-models';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 
@@ -46,6 +43,11 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
         this.fetchHackathonDetails(params.get('hackathon_id'));
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails(hackathonId) {
@@ -130,13 +132,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
     this.selectedImages.splice(index, 1);
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
-  }
-
   setMeta() {
     this.seoService.setTitle(`Post Updates | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
-    this.seoService.noIndex(true);
   }
 }

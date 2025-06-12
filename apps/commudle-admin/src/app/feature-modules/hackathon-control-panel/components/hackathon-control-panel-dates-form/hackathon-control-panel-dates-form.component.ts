@@ -8,9 +8,9 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { DatePipe } from '@angular/common';
 import { ToastrService } from '@commudle/shared-services';
 import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
+import { ICommunity } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-dates-form',
@@ -65,6 +65,7 @@ export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 

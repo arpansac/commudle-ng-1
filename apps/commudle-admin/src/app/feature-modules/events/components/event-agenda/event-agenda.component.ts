@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IEvent, ICommunity } from '@commudle/shared-models';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { faArrowRight, faTag } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -29,11 +29,14 @@ export class EventAgendaComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.community = data.community;
-      this.event = data.event;
-      this.setMeta();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        this.community = data.community;
+        this.event = data.event;
+        this.setMeta();
+      }),
+    );
   }
   updateAgendaType(value) {
     this.eventsService.updateCustomAgenda(this.event.id, value).subscribe((data) => {
@@ -42,8 +45,8 @@ export class EventAgendaComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {

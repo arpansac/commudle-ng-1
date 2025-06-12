@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonLocationType, EParticipateTypes, IHackathon } from 'apps/shared-models/hackathon.model';
 import { faArrowRight, faFileImage, faLink } from '@fortawesome/free-solid-svg-icons';
-import { ICommunity } from 'apps/shared-models/community.model';
+import { ICommunity } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 
@@ -122,8 +122,8 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails() {

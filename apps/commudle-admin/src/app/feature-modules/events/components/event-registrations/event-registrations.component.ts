@@ -6,7 +6,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { ICustomPage } from 'apps/shared-models/custom-page.model';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,6 +34,7 @@ export class EventRegistrationsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.community = data.community;
@@ -42,6 +43,11 @@ export class EventRegistrationsComponent implements OnInit, OnDestroy {
         this.setMeta();
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   updateRegistrationType(value) {
@@ -57,11 +63,6 @@ export class EventRegistrationsComponent implements OnInit, OnDestroy {
         this.refundPolicy = data;
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

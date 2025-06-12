@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventUpdatesService } from 'apps/commudle-admin/src/app/services/event-updates.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { IEvent } from 'apps/shared-models/event.model';
 import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import * as moment from 'moment';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '@commudle/shared-services';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-event-updates',
@@ -41,6 +40,7 @@ export class EventUpdatesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((value) => {
         this.event = value.event;
@@ -49,6 +49,11 @@ export class EventUpdatesComponent implements OnInit {
         this.getEventUpdates();
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getEventUpdates() {
@@ -119,11 +124,6 @@ export class EventUpdatesComponent implements OnInit {
   removeImage(index) {
     this.images.splice(index, 1);
     this.selectedImages.splice(index, 1);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

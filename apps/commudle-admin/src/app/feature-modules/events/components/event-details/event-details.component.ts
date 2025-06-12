@@ -1,14 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IEvent } from 'apps/shared-models/event.model';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faFileLines } from '@fortawesome/free-regular-svg-icons';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-event-details',
@@ -39,7 +38,13 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.getEventAndCommunityData();
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getEventAndCommunityData() {
@@ -90,11 +95,6 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
       this.event = data;
       this.toastLogService.successDialog('Updated!');
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

@@ -4,11 +4,11 @@ import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { Cell, Settings } from 'angular2-smart-table';
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { IDataForm } from 'apps/shared-models/data_form.model';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunityFormsListActionsComponent } from './community-forms-list-actions/community-forms-list-actions.component';
 import { CommunityFormsListStatsComponent } from './community-forms-list-stats/community-forms-list-stats.component';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-forms-list',

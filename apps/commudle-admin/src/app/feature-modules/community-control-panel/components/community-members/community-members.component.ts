@@ -7,9 +7,9 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { Subject, takeUntil, Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-members',

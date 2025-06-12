@@ -4,8 +4,8 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-group-form',
@@ -78,6 +78,7 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         if (data.community_group) {
@@ -177,6 +178,5 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
       this.communityGroup ? this.communityGroup.mini_description : '',
       this.communityGroup ? this.communityGroup.logo?.i350 : '',
     );
-    this.seoService.noIndex(true);
   }
 }

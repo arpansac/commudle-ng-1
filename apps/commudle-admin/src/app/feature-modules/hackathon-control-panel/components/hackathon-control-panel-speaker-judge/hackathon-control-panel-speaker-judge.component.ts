@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '@commudle/shared-models';
+import { IUser, ICommunity, IHackathon } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -8,10 +8,8 @@ import { EHackathonJudgeType, IHackathonJudge } from 'apps/shared-models/hackath
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { IHackathon } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-speaker-judge',
@@ -75,6 +73,11 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
         this.fetchHackathonDetails(params.get('hackathon_id'));
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   fetchHackathonDetails(hackathonId) {
@@ -242,11 +245,6 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     this.hackathonService.destroyJudge(JudgeId).subscribe((data) => {
       if (data) this.judges.splice(index, 1);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

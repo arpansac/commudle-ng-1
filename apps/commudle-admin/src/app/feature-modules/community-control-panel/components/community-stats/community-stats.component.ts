@@ -1,10 +1,10 @@
 import { Chart } from 'chart.js';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-stats',
@@ -29,19 +29,21 @@ export class CommunityStatsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.data.subscribe((data) => {
-      this.community = data.community;
-      this.getMembersDistribution();
-      this.getMembersTimeLine();
-      this.getEventsTimeline();
-      this.getSpeakersDistribution();
-      this.getMembersContentCreators();
-      this.getEventAttendanceStats();
-      this.getPopularProfileSkillTags();
-      this.getMembersWorkExperienceDistribution();
-      this.setMeta();
-      this.seoService.noIndex(true);
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.data.subscribe((data) => {
+        this.community = data.community;
+        this.getMembersDistribution();
+        this.getMembersTimeLine();
+        this.getEventsTimeline();
+        this.getSpeakersDistribution();
+        this.getMembersContentCreators();
+        this.getEventAttendanceStats();
+        this.getPopularProfileSkillTags();
+        this.getMembersWorkExperienceDistribution();
+        this.setMeta();
+      }),
+    );
   }
 
   ngOnDestroy() {
@@ -250,6 +252,5 @@ export class CommunityStatsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Stats | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 }

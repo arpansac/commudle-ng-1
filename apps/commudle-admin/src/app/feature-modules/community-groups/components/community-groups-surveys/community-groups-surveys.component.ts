@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,6 +18,7 @@ export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         if (data.community_group) {
@@ -30,8 +31,8 @@ export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
@@ -40,6 +41,5 @@ export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
       this.communityGroup.mini_description,
       this.communityGroup.logo?.i350,
     );
-    this.seoService.noIndex(true);
   }
 }

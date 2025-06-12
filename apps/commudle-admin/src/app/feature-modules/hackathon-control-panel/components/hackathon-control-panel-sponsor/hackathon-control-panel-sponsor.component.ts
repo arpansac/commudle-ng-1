@@ -5,12 +5,11 @@ import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
-import { IHackathon } from '@commudle/shared-models';
-import { ICommunity } from 'apps/shared-models/community.model';
+import { IHackathon, ICommunity } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-sponsor',
   templateUrl: './hackathon-control-panel-sponsor.component.html',
@@ -58,6 +57,11 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
         this.fetchHackathonDetails(params.get('hackathon_id'));
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails(hackathonId) {
@@ -241,11 +245,6 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
       link: '',
       tier_priority: 1,
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

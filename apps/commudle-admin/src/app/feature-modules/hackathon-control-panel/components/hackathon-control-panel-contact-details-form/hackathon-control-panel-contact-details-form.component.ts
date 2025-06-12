@@ -7,9 +7,9 @@ import { faArrowRight, faCalendarDays, faLink } from '@fortawesome/free-solid-sv
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-contact-details-form',
@@ -63,6 +63,11 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
       this.fetchHackathonDetails(params.get('hackathon_id'));
       this.fetchHackathonContactDetails(params.get('hackathon_id'));
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   urlValidator(control) {
@@ -132,11 +137,6 @@ export class HackathonControlPanelContactDetailsFormComponent implements OnInit,
         this.setMeta();
       }),
     );
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

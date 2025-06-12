@@ -1,19 +1,16 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, ICommunity, IHackathon } from '@commudle/shared-models';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { faArrowRight, faCircleQuestion, faMicrophone, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-registrations',
@@ -79,6 +76,11 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
         this.fetchHackathonDetails(params['hackathon_id']);
       }),
     );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails(hackathonId) {
@@ -184,11 +186,6 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
           this.toastrService.successDialog('Information Updated');
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

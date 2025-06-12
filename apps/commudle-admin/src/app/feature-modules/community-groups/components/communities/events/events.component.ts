@@ -51,7 +51,7 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       `Events - Admin - ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo.i320,
     );
   }
 

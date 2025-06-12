@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EDbModels } from '@commudle/shared-models';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,6 +19,7 @@ export class CommunityGroupCustomPagesComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
@@ -38,6 +39,5 @@ export class CommunityGroupCustomPagesComponent implements OnInit, OnDestroy {
       this.communityGroup.mini_description,
       this.communityGroup.logo?.i350,
     );
-    this.seoService.noIndex(true);
   }
 }

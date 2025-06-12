@@ -14,14 +14,14 @@ import { NbDialogService } from '@commudle/theme';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventCollaborationCommunitiesService } from 'apps/commudle-admin/src/app/services/event-collaboration-communities.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IEvent } from 'apps/shared-models/event.model';
 import {
   IEventCollaborationCommunity,
   EEventCollaborationCommunityStatus,
 } from 'apps/shared-models/event_collaboration_community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
+import { ICommunity } from '@commudle/shared-models';
+import { IEvent } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -59,12 +59,14 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
 
   ngOnInit() {
     this.communities = [];
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.community = data.community;
-      this.event = data.event;
-      this.getCollaborations();
-      this.setMeta();
-    });
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((data) => {
+        this.community = data.community;
+        this.event = data.event;
+        this.getCollaborations();
+        this.setMeta();
+      }),
+    );
   }
 
   onSelectionChange($event) {
@@ -131,8 +133,8 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {

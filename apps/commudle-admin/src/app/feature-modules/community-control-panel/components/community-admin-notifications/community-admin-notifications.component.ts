@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { NbToastrService } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-admin-notifications',

@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ICommunity } from '@commudle/shared-models';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IEvent } from 'apps/shared-models/event.model';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { debounceTime, map, Observable, switchMap, Subscription } from 'rxjs';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-volunteers',
@@ -51,6 +50,7 @@ export class VolunteersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.community = data.community;
@@ -70,6 +70,11 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     this.userRolesUserForm.patchValue({
       parent_id: this.event.id,
     });
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getVolunteers() {
@@ -104,11 +109,6 @@ export class VolunteersComponent implements OnInit, OnDestroy {
       this.userRolesUserForm.controls['role_designation'].reset();
       this.changeDetectorRef.markForCheck();
     });
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

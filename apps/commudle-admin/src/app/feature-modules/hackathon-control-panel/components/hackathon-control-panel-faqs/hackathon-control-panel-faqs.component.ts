@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EDbModels } from '@commudle/shared-models';
+import { ICommunity, IHackathon, EDbModels } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { IHackathon } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-faqs',
@@ -37,6 +35,12 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
   fetchHackathonDetails(hackathonId) {
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
@@ -48,11 +52,6 @@ export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
         this.setMeta();
       }),
     );
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

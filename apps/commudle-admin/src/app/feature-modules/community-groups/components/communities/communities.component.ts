@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-communities',
@@ -11,6 +12,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class CommunitiesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
 
+  subscriptions: Subscription[] = [];
   tabs = [
     {
       route: './',
@@ -32,10 +34,13 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data) => {
-      this.communityGroup = data.community_group;
-      this.setMeta();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.data.subscribe((data) => {
+        this.communityGroup = data.community_group;
+        this.setMeta();
+      }),
+    );
   }
 
   ngOnDestroy(): void {
@@ -48,6 +53,5 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
       this.communityGroup.mini_description,
       this.communityGroup.logo?.i350,
     );
-    this.seoService.noIndex(true);
   }
 }
