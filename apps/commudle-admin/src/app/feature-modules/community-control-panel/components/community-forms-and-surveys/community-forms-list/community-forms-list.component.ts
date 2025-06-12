@@ -75,6 +75,11 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
   getDataForms() {
     this.subscriptions.push(
       this.dataFormsService.getCommunityDataForms(this.community.id).subscribe((data) => {
@@ -82,11 +87,6 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }),
     );
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

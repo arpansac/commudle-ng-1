@@ -15,6 +15,7 @@ export class CommunityNewsletterComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
@@ -26,12 +27,11 @@ export class CommunityNewsletterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
     this.seoService.setTitle(`Newsletters | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 }

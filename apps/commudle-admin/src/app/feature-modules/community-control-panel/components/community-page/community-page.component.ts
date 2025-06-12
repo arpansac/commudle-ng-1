@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, ICommunity } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
-import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
@@ -19,6 +18,7 @@ export class CommunityPageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
@@ -30,12 +30,11 @@ export class CommunityPageComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
     this.seoService.setTitle(`Page Builder | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 }

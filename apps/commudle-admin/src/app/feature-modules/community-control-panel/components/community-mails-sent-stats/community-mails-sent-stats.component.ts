@@ -17,6 +17,7 @@ export class CommunityMailsSentStatsComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((value) => {
         this.community = value.community;
@@ -26,12 +27,11 @@ export class CommunityMailsSentStatsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
     this.seoService.setTitle(`Mails Sent Stats | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 }

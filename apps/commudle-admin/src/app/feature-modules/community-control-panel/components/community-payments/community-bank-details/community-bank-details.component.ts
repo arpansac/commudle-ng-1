@@ -2,8 +2,13 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from '@commudle/shared-services';
-import { RazorpayService, StripeHandlerService, countries_details } from '@commudle/shared-services';
+import {
+  RazorpayService,
+  StripeHandlerService,
+  countries_details,
+  SeoService,
+  ToastrService,
+} from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { Subscription } from 'rxjs';
 import { faArrowUpRightFromSquare, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
@@ -29,11 +34,10 @@ import {
   LogisticsSubcategory,
   ToursAndTravelSubcategory,
   TransportSubcategory,
+  ICommunity,
+  EDbModels,
 } from '@commudle/shared-models';
-import { EDbModels } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { ICommunity } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-community-bank-details',
@@ -165,8 +169,8 @@ export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
     this.dialogRef?.close();
   }
 

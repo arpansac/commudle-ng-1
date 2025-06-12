@@ -27,8 +27,8 @@ export class CommunitySurveysComponent implements OnInit, OnDestroy {
     );
   }
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {

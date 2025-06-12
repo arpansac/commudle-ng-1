@@ -4,11 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IUser } from 'apps/shared-models/user.model';
-import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription } from 'rxjs';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
@@ -91,11 +89,11 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     // destroy$ used in the search method
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    this.seoService.noIndex(false);
   }
 
   setMeta() {

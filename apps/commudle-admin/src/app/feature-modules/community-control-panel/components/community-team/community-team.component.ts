@@ -42,6 +42,7 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((value) => {
         if (value.community) {
@@ -53,13 +54,12 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
     this.seoService.setTitle(`Team | Dashboard | ${this.community.name}`);
-    this.seoService.noIndex(true);
   }
 
   getRoles() {
