@@ -5,10 +5,9 @@ import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import * as moment from 'moment';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { IEvent, ICommunity } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-event-updates',

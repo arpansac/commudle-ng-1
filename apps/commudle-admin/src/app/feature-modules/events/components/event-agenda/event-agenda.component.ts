@@ -38,15 +38,16 @@ export class EventAgendaComponent implements OnInit, OnDestroy {
       }),
     );
   }
-  updateAgendaType(value) {
-    this.eventsService.updateCustomAgenda(this.event.id, value).subscribe((data) => {
-      this.event = data;
-    });
-  }
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  updateAgendaType(value) {
+    this.eventsService.updateCustomAgenda(this.event.id, value).subscribe((data) => {
+      this.event = data;
+    });
   }
 
   setMeta() {

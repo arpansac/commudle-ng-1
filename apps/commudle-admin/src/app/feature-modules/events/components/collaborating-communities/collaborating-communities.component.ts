@@ -20,8 +20,7 @@ import {
 } from 'apps/shared-models/event_collaboration_community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from '@commudle/shared-services';
-import { ICommunity } from '@commudle/shared-models';
-import { IEvent } from '@commudle/shared-models';
+import { ICommunity, IEvent } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -58,6 +57,7 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
   ) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.communities = [];
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
@@ -69,18 +69,23 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.community && this.event) {
+      this.getCollaborations();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   onSelectionChange($event) {
     this.openConfirmationBox($event.id);
     // this.createCollaboration($event.id);
     this.selectedCommunity = '';
     this.input.nativeElement.value = '';
     this.communities = [];
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.community && this.event) {
-      this.getCollaborations();
-    }
   }
 
   onChange() {
@@ -130,11 +135,6 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
         communityId: communityId,
       },
     });
-  }
-
-  ngOnDestroy(): void {
-    this.seoService.noIndex(false);
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
