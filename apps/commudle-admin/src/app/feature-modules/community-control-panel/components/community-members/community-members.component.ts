@@ -102,25 +102,23 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   getMembers() {
     this.isLoading = true;
-    this.subscriptions.push(
-      this.userRolesUsersService
-        .getCommunityMembers(
-          this.query,
-          this.community.id,
-          this.count,
-          this.page,
-          this.employer,
-          this.employee,
-          this.contentCreator,
-          this.speaker,
-        )
-        .subscribe((data) => {
-          this.isLoading = false;
-          this.userRolesUsers = data.user_roles_users;
-          this.page = +data.page;
-          this.total = data.total;
-        }),
-    );
+    this.userRolesUsersService
+      .getCommunityMembers(
+        this.query,
+        this.community.id,
+        this.count,
+        this.page,
+        this.employer,
+        this.employee,
+        this.contentCreator,
+        this.speaker,
+      )
+      .subscribe((data) => {
+        this.isLoading = false;
+        this.userRolesUsers = data.user_roles_users;
+        this.page = +data.page;
+        this.total = data.total;
+      });
   }
 
   search() {
@@ -162,45 +160,39 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   handleContextMenu(): void {
-    this.subscriptions.push(
-      this.menuService
-        .onItemClick()
-        .pipe(
-          filter(({ tag }) => tag === 'community-member-context-menu'),
-          map(({ item: title }) => title),
-        )
-        .subscribe((menuItem) => {
-          switch (menuItem.title) {
-            case 'Remove':
-              this.getUserRoles(this.activeContextMenuUser.id, this.community.id);
-              this.openDialog(this.removeUserDialog, this.activeContextMenuUser);
-              break;
-            case 'Remove & Block':
-              this.openDialog(this.blockUserDialog, this.activeContextMenuUser);
-              break;
-          }
-        }),
-    );
+    this.menuService
+      .onItemClick()
+      .pipe(
+        filter(({ tag }) => tag === 'community-member-context-menu'),
+        map(({ item: title }) => title),
+      )
+      .subscribe((menuItem) => {
+        switch (menuItem.title) {
+          case 'Remove':
+            this.getUserRoles(this.activeContextMenuUser.id, this.community.id);
+            this.openDialog(this.removeUserDialog, this.activeContextMenuUser);
+            break;
+          case 'Remove & Block':
+            this.openDialog(this.blockUserDialog, this.activeContextMenuUser);
+            break;
+        }
+      });
   }
 
   removeUser() {
-    this.subscriptions.push(
-      this.userRolesUsersService.removeUser(this.removeUserForm.value, this.community.id).subscribe(() => {
-        this.toastrService.success('User removed from community', 'Success');
-        this.getMembers();
-      }),
-    );
+    this.userRolesUsersService.removeUser(this.removeUserForm.value, this.community.id).subscribe(() => {
+      this.toastrService.success('User removed from community', 'Success');
+      this.getMembers();
+    });
   }
 
   getUserRoles(userId, communityId) {
-    this.subscriptions.push(
-      this.userRolesUsersService.getRoles(userId, communityId).subscribe((value) => {
-        this.selectedUserRoles = value.user_roles_users;
-        this.selectedUserRoles.forEach((userRole) => {
-          this.userRolesUserIds.push(this.fb.control(userRole.id));
-        });
-      }),
-    );
+    this.userRolesUsersService.getRoles(userId, communityId).subscribe((value) => {
+      this.selectedUserRoles = value.user_roles_users;
+      this.selectedUserRoles.forEach((userRole) => {
+        this.userRolesUserIds.push(this.fb.control(userRole.id));
+      });
+    });
   }
 
   toggleUserRole(userRoleId) {
@@ -213,12 +205,10 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   blockUser(userId) {
-    this.subscriptions.push(
-      this.userRolesUsersService.blockUser(userId, this.community.id).subscribe(() => {
-        this.toastrService.success('User blocked from community', 'Success');
-        this.getMembers();
-      }),
-    );
+    this.userRolesUsersService.blockUser(userId, this.community.id).subscribe(() => {
+      this.toastrService.success('User blocked from community', 'Success');
+      this.getMembers();
+    });
   }
 
   filterByTags(event) {
