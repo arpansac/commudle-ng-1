@@ -537,6 +537,7 @@ export const API_ROUTES = {
     MY_REGISTRATIONS: 'api/v2/users/my_registrations',
     RECAP_STATS: 'api/v2/users/recap_stats',
     VALID_GOALS: 'api/v2/users/valid_goals',
+    PROFILE_COMPLETION_STATUS: 'api/v2/users/profile_completion_status',
   },
 
   SPEAKER_RESOURCES: {

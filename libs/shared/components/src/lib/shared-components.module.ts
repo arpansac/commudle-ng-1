@@ -30,6 +30,8 @@ import { InputComponent } from './components/input/input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignAssetsDisplayComponent } from './components/campaign-assets-display/campaign-assets-display.component';
 import { UserExpertTickComponent } from './components/user/user-expert-tick/user-expert-tick.component';
+import { ProfileCompletionProgressComponent } from './components/user/profile-completion-progress/profile-completion-progress.component';
+import { UserProfileMissingFieldsComponent } from './components/user/user-profile-missing-fields/user-profile-missing-fields.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { UserExpertTickComponent } from './components/user/user-expert-tick/user
     InputComponent,
     CampaignAssetsDisplayComponent,
     UserExpertTickComponent,
+    ProfileCompletionProgressComponent,
+    UserProfileMissingFieldsComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +79,8 @@ import { UserExpertTickComponent } from './components/user/user-expert-tick/user
     PublicFaqsComponent,
     InputComponent,
     CampaignAssetsDisplayComponent,
+    ProfileCompletionProgressComponent,
+    UserProfileMissingFieldsComponent,
   ],
   providers: [InViewportDirective],
 })

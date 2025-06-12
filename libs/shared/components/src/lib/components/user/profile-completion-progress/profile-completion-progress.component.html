@@ -1,0 +1,24 @@
+<div class="profile-progress-container">
+  <div
+    class="percentage-text"
+    [ngClass]="{
+      'com-text-red-600': profileCompletionPercentage <= 40,
+      'com-text-yellow-600': profileCompletionPercentage > 40 && profileCompletionPercentage <= 80,
+      'com-text-green-600': profileCompletionPercentage > 80
+    }"
+  >
+    {{ profileCompletionPercentage }}% Completed
+  </div>
+  <div class="progress-bar-wrapper">
+    <div
+      class="progress-bar"
+      [ngClass]="{
+        'com-bg-red-600': profileCompletionPercentage <= 40,
+        'com-bg-yellow-600': profileCompletionPercentage > 40 && profileCompletionPercentage <= 80,
+        'com-bg-green-600': profileCompletionPercentage > 80
+      }"
+      [style.width.%]="profileCompletionPercentage"
+    ></div>
+  </div>
+  <div class="info-text">Complete the remaining steps to reach 100%</div>
+</div>

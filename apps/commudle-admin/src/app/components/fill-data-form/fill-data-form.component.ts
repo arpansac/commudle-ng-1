@@ -234,6 +234,9 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       facebook: event.facebook ? event.facebook : this.currentUser.facebook,
       youtube: event.youtube ? event.youtube : this.currentUser.youtube,
       phone: event.phone ? event.phone : this.currentUser.phone,
+      instagram: event.instagram ? event.instagram : this.currentUser.instagram,
+      experience_level: event.experience_level ? event.experience_level : this.currentUser.experience_level,
+      user_domain: event.user_domain ? event.user_domain : this.currentUser.user_domain,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
     this.onAcceptRoleButton();
@@ -253,7 +256,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     if (this.redirectRoute) {
       this.router.navigate(this.redirectRoute);
     } else {
-      this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed']);
     }
   }
 }

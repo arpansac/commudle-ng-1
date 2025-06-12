@@ -251,9 +251,14 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   // check event ticket order
-  checkEventTicketOrder(edfegId) {
+  checkEventTicketOrder(edfegId, redirect = false) {
     this.eventTicketOrderService.showEventTicketOrder(edfegId).subscribe((data) => {
       this.eventTicketOrders = data.event_ticket_orders;
+      if (redirect) {
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+          queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+        });
+      }
       if (this.eventTicketOrders.length === 0) {
         this.createCurrentUserForm();
       } else {
@@ -502,7 +507,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     } else {
       this.saveUserDetails();
       if (this.ticketPaidAlready) {
-        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+          queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+        });
       } else if (!this.ticketPaidAlready) {
         if (this.eventTicketOrders.length > 0 && this.showEventTicketOrder !== undefined) {
           this.updateTickerOrder();
@@ -525,6 +532,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       )
       .subscribe(
         (data) => {
+          this.eventTicketOrders[0] = data;
           if (data.bank_ac_type === EDbModels.STRIPE_CONNECT_ACCOUNT) {
             this.elementsOptions.clientSecret = data.stripe_payment_intent.details.client_secret;
             this.stripePaymentIntendId = data.stripe_payment_intent.stripe_pi_id;
@@ -613,8 +621,11 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
             this.isLoadingPayment = false;
             this.paymentDialogRef.close();
             this.toastLogService.successDialog('Your Payment Was Received Successfully', 3000);
-            this.eventTicketOrderService.checkPayment(this.stripePaymentIntendId).subscribe((data) => {});
-            this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+            this.eventTicketOrderService.checkPayment(this.stripePaymentIntendId).subscribe();
+
+            this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+              queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
+            });
           }
         }
       });
@@ -641,10 +652,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       },
     };
     if (orderDetails.amount === 0) {
-      this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
-        closeOnBackdropClick: false,
+      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+        queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
       });
-      this.checkEventTicketOrder(this.dataFormEntity.entity_id);
       return;
     }
     this.razorpayService.createOrFindOrder(orderDetails, { eto_id: etoId }).subscribe(
@@ -677,13 +687,10 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
             .createOrUpdatePayment(response, false, order?.razorpay_payment?.rzp_payment_id)
             .subscribe((data) => {
               this.fetchPaidTicketingData();
-              this.checkEventTicketOrder(this.dataFormEntity.entity_id);
               this.ticketPaidAlready = true;
               this.toastLogService.successDialog('Your Payment Was Received Successfully');
               this.isLoadingPayment = false;
-              this.dialogRef = this.dialogService.open(this.formConfirmationDialog, {
-                closeOnBackdropClick: false,
-              });
+              this.checkEventTicketOrder(this.dataFormEntity.entity_id, true);
             });
         }
       },
@@ -753,6 +760,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       facebook: event.facebook ? event.facebook : this.currentUser.facebook,
       youtube: event.youtube ? event.youtube : this.currentUser.youtube,
       phone: event.phone ? event.phone : this.currentUser.phone,
+      instagram: event.instagram ? event.instagram : this.currentUser.instagram,
+      experience_level: event.experience_level ? event.experience_level : this.currentUser.experience_level,
+      user_domain: event.user_domain ? event.user_domain : this.currentUser.user_domain,
     });
     this.userProfileManagerService.updateUserDetails(false, this.currentUser);
     this.submitForm();

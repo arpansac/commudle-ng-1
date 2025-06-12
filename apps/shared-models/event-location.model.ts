@@ -1,4 +1,4 @@
-import { ILocation } from './location.model';
+import { ILocation } from '@commudle/shared-models';
 import { IEventLocationTrack } from './event-location-track.model';
 import { IEmbeddedVideoStream } from './embedded_video_stream.model';
 
