@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { EHackathonStatus, IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 import {
   faArrowLeft,
@@ -27,7 +26,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, EHackathonStatus, IHackathon } from '@commudle/shared-models';
 import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 

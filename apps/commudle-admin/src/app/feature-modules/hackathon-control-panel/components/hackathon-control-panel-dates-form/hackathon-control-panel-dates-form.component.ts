@@ -1,16 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 import * as momentTimezone from 'moment-timezone';
 import { ActivatedRoute } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { DatePipe } from '@angular/common';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { faArrowRight, faAward, faGamepad, faRectangleList } from '@fortawesome/free-solid-svg-icons';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from '@commudle/shared-services';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-dates-form',

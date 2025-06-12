@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathon } from '@commudle/shared-models';
-import { ToastrService, countries_details } from '@commudle/shared-services';
+import { IHackathon, ICommunity, IContactInfo } from '@commudle/shared-models';
+import { ToastrService, countries_details, SeoService } from '@commudle/shared-services';
 import { faArrowRight, faCalendarDays, faLink } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { IContactInfo } from 'apps/shared-models/contact-info.model';
 import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { ICommunity } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-contact-details-form',

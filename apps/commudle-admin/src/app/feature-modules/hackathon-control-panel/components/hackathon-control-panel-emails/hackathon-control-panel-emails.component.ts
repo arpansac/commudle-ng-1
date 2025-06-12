@@ -6,15 +6,12 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-winner-announcement-emailer/hackathon-winner-announcement-emailer.component';
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService, EmailerPreviewService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
-import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
-import { SeoService } from '@commudle/shared-services';
-import { ICommunity } from '@commudle/shared-models';
+import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
@@ -175,6 +172,5 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Communications | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
-    this.seoService.noIndex(true);
   }
 }

@@ -76,8 +76,8 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails(hackathonId) {
