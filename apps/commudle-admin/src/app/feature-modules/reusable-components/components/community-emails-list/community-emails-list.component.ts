@@ -53,6 +53,8 @@ export class CommunityEmailsListComponent implements OnInit, OnDestroy {
         }
         this.getEmails();
         this.setMeta();
+
+        this.changeDetectorRef.markForCheck();
       }),
     );
   }
