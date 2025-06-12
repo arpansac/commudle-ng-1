@@ -2,8 +2,8 @@
   <div class="base-layout thin">
     <div class="container">
       <div class="one-column-layout">
-        <commudle-loading-spinner *ngIf="isLoading; else container"></commudle-loading-spinner>
-        <ng-template #container>
+        <commudle-loading-spinner *ngIf="isLoading; else confirmationContainer"></commudle-loading-spinner>
+        <ng-template #confirmationContainer>
           <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
             <div class="confirmation-header" *ngIf="event">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
@@ -81,6 +81,27 @@
                   [user]="user"
                   appearanceOfFollowButton="outline"
                 ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <div *ngIf="communityGroupLeaders && communityGroupLeaders.length > 0" class="cg-leaders-card">
+              <h2 class="card-heading">Follow Organization Admins</h2>
+              <div *ngFor="let uru of communityGroupLeaders" class="cg-leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="uru.user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <div *ngIf="communities && communities.length > 0" class="communities-card">
+              <h2 class="card-heading">Top Communities from {{ dataFormEntity.community_group.name }}</h2>
+              <div *ngFor="let community of communities" class="community">
+                <commudle-featured-communities-card
+                  [featuredCommunity]="community"
+                ></commudle-featured-communities-card>
               </div>
             </div>
           </div>

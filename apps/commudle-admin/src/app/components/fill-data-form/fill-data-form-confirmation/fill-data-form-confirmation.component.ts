@@ -137,8 +137,6 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
         this.getEvent(dataFormEntity);
         break;
       case 'AdminSurvey':
-        // this.showProfileForm = false;
-        // nothing need to be done here
         break;
       case 'Survey':
         if (this.dataFormEntity.community) {
@@ -148,8 +146,6 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
           this.fetchCommunityGroupDetails();
         }
         break;
-      default:
-      // this.errorHandler.handleError(404, 'You cannot fill this form');
     }
   }
 
@@ -193,10 +189,6 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     });
     this.uruService.pGetCommunityGroupLeaders(this.dataFormEntity.community_group.id).subscribe((data) => {
       this.communityGroupLeaders = data.user_roles_users;
-      console.log(
-        '🚀 ~ FillDataFormConfirmationComponent ~ this.uruService.pGetCommunityGroupLeaders ~  this.communityGroupLeaders:',
-        this.communityGroupLeaders,
-      );
     });
   }
 }
