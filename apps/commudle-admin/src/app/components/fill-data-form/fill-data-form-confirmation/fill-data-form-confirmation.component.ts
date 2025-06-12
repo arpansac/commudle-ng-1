@@ -46,6 +46,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   communityLeaders: IUser[];
   communities: ICommunity[] = [];
   communityGroupLeaders: IUserRolesUser[] = [];
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -73,18 +74,24 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private fetchCurrentUserDetails() {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
+      this.currentUser = currentUser;
+      this.getProfileCompletionStatus();
+    });
+  }
+
+  private fetchDataFormEntity() {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.getDataFormEntity(params.data_form_entity_id);
+    });
+  }
+
   private fetchQueryParams() {
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       if (params && params['eto_uuid']) {
         this.etoUuid = params['eto_uuid'];
       }
-    });
-  }
-
-  private fetchCurrentUserDetails() {
-    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
-      this.currentUser = currentUser;
-      this.getProfileCompletionStatus();
     });
   }
 
@@ -96,12 +103,6 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
           this.isProfileCompleted = !status.completed;
         }
       });
-  }
-
-  private fetchDataFormEntity() {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.getDataFormEntity(params.data_form_entity_id);
-    });
   }
 
   private getDataFormEntity(dataFormEntityId) {
@@ -137,6 +138,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
         this.getEvent(dataFormEntity);
         break;
       case 'AdminSurvey':
+        this.isLoading = false;
         break;
       case 'Survey':
         if (this.dataFormEntity.community) {
@@ -189,6 +191,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     });
     this.uruService.pGetCommunityGroupLeaders(this.dataFormEntity.community_group.id).subscribe((data) => {
       this.communityGroupLeaders = data.user_roles_users;
+      this.isLoading = false;
     });
   }
 }

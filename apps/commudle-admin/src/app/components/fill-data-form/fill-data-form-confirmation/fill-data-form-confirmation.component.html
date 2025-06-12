@@ -5,6 +5,7 @@
         <commudle-loading-spinner *ngIf="isLoading; else confirmationContainer"></commudle-loading-spinner>
         <ng-template #confirmationContainer>
           <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
+            <!-- Event or general confirmation header -->
             <div class="confirmation-header" *ngIf="event">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
               <h1 class="title" *ngIf="!formIsPaid || !etoUuid">
@@ -14,7 +15,7 @@
                 Your Purchase is Successful! for {{ event?.name }}
               </h1>
               <h3 *ngIf="formIsPaid && etoUuid" class="sub-heading">
-                We’ve saved your spot — and you’ll receive your entry pass shortly via email.
+                We've saved your spot — and you'll receive your entry pass shortly via email.
               </h3>
               <h3 *ngIf="approvalBased && !etoUuid" class="sub-heading">
                 Your submission requires approval. You'll receive a payment link once your application is shortlisted.
@@ -25,6 +26,7 @@
               <h1 class="title">Thank you we have saved your response</h1>
             </div>
 
+            <!-- User profile section -->
             <ng-container *ngIf="currentUser">
               <div class="profile-card">
                 <div class="profile-preview-card">
@@ -43,12 +45,14 @@
               </div>
             </ng-container>
 
+            <!-- Event details -->
             <div *ngIf="event" class="event-card">
               <h2 class="card-heading">Event Details</h2>
               <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
             </div>
 
-            <div *ngIf="speakers && speakers.length > 0" class="speakers-card">
+            <!-- Speakers section -->
+            <div *ngIf="speakers?.length" class="speakers-card">
               <h2 class="card-heading">Follow Event Speakers</h2>
               <div *ngFor="let speaker of speakers | sortBy : ['speaker.user.name'] : ['asc']" class="speaker">
                 <app-user-profile-card-large
@@ -61,7 +65,8 @@
               </div>
             </div>
 
-            <div *ngIf="volunteers && volunteers.length > 0" class="volunteers-card">
+            <!-- Volunteers section -->
+            <div *ngIf="volunteers?.length" class="volunteers-card">
               <h2 class="card-heading">Follow Event Volunteers</h2>
               <div *ngFor="let user of volunteers" class="volunteer">
                 <app-user-profile-card-large
@@ -72,7 +77,9 @@
                 ></app-user-profile-card-large>
               </div>
             </div>
-            <div *ngIf="communityLeaders && communityLeaders.length > 0" class="leaders-card">
+
+            <!-- Community leaders section -->
+            <div *ngIf="communityLeaders?.length" class="leaders-card">
               <h2 class="card-heading">Follow Community Leaders</h2>
               <div *ngFor="let user of communityLeaders" class="leader">
                 <app-user-profile-card-large
@@ -84,7 +91,8 @@
               </div>
             </div>
 
-            <div *ngIf="communityGroupLeaders && communityGroupLeaders.length > 0" class="cg-leaders-card">
+            <!-- Community group leaders section -->
+            <div *ngIf="communityGroupLeaders?.length" class="cg-leaders-card">
               <h2 class="card-heading">Follow Organization Admins</h2>
               <div *ngFor="let uru of communityGroupLeaders" class="cg-leader">
                 <app-user-profile-card-large
@@ -96,7 +104,8 @@
               </div>
             </div>
 
-            <div *ngIf="communities && communities.length > 0" class="communities-card">
+            <!-- Communities section -->
+            <div *ngIf="communities?.length" class="communities-card">
               <h2 class="card-heading">Top Communities from {{ dataFormEntity.community_group.name }}</h2>
               <div *ngFor="let community of communities" class="community">
                 <commudle-featured-communities-card
