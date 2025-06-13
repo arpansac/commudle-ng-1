@@ -8,6 +8,7 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  Input,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
@@ -30,6 +31,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
   styleUrls: ['./user-basic-details.component.scss'],
 })
 export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() noMenuItems = false;
   user: IUser;
   @Output() updateProfile: EventEmitter<any> = new EventEmitter<any>();
 
