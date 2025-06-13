@@ -5,24 +5,24 @@
   <nb-card-body>
     <div class="calendar-buttons">
       <button class="calendar-button google" nbButton status="basic" (click)="addToGoogle()">
-        <span class="icon"></span>
+        <fa-icon [icon]="icons.faGoogle" size="lg"></fa-icon>
         Google Calendar
       </button>
       <button class="calendar-button apple" nbButton status="basic" (click)="addToApple()">
-        <span class="icon"></span>
+        <fa-icon [icon]="icons.faApple" size="lg"></fa-icon>
         Apple Calendar
       </button>
       <button class="calendar-button outlook" nbButton status="basic" (click)="addToOutlook()">
-        <span class="icon"></span>
+        <fa-icon [icon]="icons.faCalendarPlus" size="lg"></fa-icon>
         Outlook
       </button>
       <button class="calendar-button microsoft" nbButton status="basic" (click)="addToMicrosoft()">
-        <span class="icon"></span>
+        <fa-icon [icon]="icons.faMicrosoft" size="lg"></fa-icon>
         Microsoft
       </button>
 
       <button class="calendar-button ics" nbButton status="basic" (click)="downloadIcsFile()">
-        <span class="icon"></span>
+        <fa-icon [icon]="icons.faFileDownload" size="lg"></fa-icon>
         Download ICS
       </button>
     </div>

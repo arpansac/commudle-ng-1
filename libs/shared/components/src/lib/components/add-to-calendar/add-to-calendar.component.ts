@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AddToCalenderService } from '@commudle/shared-services';
+import { NbDialogRef } from '@commudle/theme';
+import { faGoogle, faApple, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faCalendarPlus, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-add-to-calendar',
@@ -13,7 +16,18 @@ export class AddToCalendarComponent implements OnInit {
   @Input() location: string;
   @Input() details: string;
 
-  constructor(private addToCalendarService: AddToCalenderService) {}
+  icons = {
+    faGoogle,
+    faApple,
+    faMicrosoft,
+    faCalendarPlus,
+    faFileDownload,
+  };
+
+  constructor(
+    private addToCalendarService: AddToCalenderService,
+    private dialogRef: NbDialogRef<AddToCalendarComponent>,
+  ) {}
 
   ngOnInit(): void {}
 
@@ -25,11 +39,13 @@ export class AddToCalendarComponent implements OnInit {
       this.location,
       this.details,
     );
+    if (this.dialogRef) this.dialogRef.close();
     window.open(url, '_blank');
   }
 
   addToApple(): void {
     this.addToCalendarService.addToAppleCalendar(this.startDate, this.endDate, this.title, this.location, this.details);
+    if (this.dialogRef) this.dialogRef.close();
   }
 
   addToOutlook(): void {
@@ -40,6 +56,7 @@ export class AddToCalendarComponent implements OnInit {
       this.location,
       this.details,
     );
+    if (this.dialogRef) this.dialogRef.close();
     window.open(url, '_blank');
   }
 
@@ -51,10 +68,12 @@ export class AddToCalendarComponent implements OnInit {
       this.location,
       this.details,
     );
+    if (this.dialogRef) this.dialogRef.close();
     window.open(url, '_blank');
   }
 
   downloadIcsFile(): void {
     this.addToCalendarService.downloadIcsFile(this.startDate, this.endDate, this.title, this.location, this.details);
+    if (this.dialogRef) this.dialogRef.close();
   }
 }
