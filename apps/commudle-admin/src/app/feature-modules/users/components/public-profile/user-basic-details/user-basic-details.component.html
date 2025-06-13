@@ -1,4 +1,4 @@
-<nb-card class="user-details-container" [ngClass]="{ 'no-menu-items': noMenuItems === true }">
+<nb-card class="user-details-container" [ngClass]="{ 'no-menu-items': noMenuItems }">
   <nb-card-body *ngIf="user">
     <app-user-cover-photo [user]="user" (coverImageUpdate)="updateProfile.emit()"></app-user-cover-photo>
     <div class="profile-header">

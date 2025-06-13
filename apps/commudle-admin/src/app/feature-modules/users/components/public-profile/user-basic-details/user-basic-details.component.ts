@@ -31,6 +31,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
   styleUrls: ['./user-basic-details.component.scss'],
 })
 export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
+  // this variable is set to true whenever the user has no active menu items
   @Input() noMenuItems = false;
   user: IUser;
   @Output() updateProfile: EventEmitter<any> = new EventEmitter<any>();
@@ -88,6 +89,10 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  ngOnChanges() {
+    this.userProfileManagerService.getProfile(this.user.username);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -98,10 +103,6 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
       closeOnEsc: false,
       closeOnBackdropClick: false,
     });
-  }
-
-  ngOnChanges() {
-    this.userProfileManagerService.getProfile(this.user.username);
   }
 
   getUserTags() {
