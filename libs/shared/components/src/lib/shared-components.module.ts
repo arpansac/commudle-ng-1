@@ -32,6 +32,7 @@ import { CampaignAssetsDisplayComponent } from './components/campaign-assets-dis
 import { UserExpertTickComponent } from './components/user/user-expert-tick/user-expert-tick.component';
 import { ProfileCompletionProgressComponent } from './components/user/profile-completion-progress/profile-completion-progress.component';
 import { UserProfileMissingFieldsComponent } from './components/user/user-profile-missing-fields/user-profile-missing-fields.component';
+import { AddToCalendarComponent } from './components/add-to-calendar/add-to-calendar.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { UserProfileMissingFieldsComponent } from './components/user/user-profil
     UserExpertTickComponent,
     ProfileCompletionProgressComponent,
     UserProfileMissingFieldsComponent,
+    AddToCalendarComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +83,7 @@ import { UserProfileMissingFieldsComponent } from './components/user/user-profil
     CampaignAssetsDisplayComponent,
     ProfileCompletionProgressComponent,
     UserProfileMissingFieldsComponent,
+    AddToCalendarComponent,
   ],
   providers: [InViewportDirective],
 })

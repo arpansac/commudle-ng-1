@@ -14,6 +14,8 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 import { NbDialogService } from '@commudle/theme';
+import { AddToCalendarComponent } from '@commudle/shared-components';
+// import { AddToCalendarComponent } from '@commudle/shared-components';
 
 @Component({
   selector: 'commudle-event-registered-card',
@@ -63,74 +65,14 @@ export class EventRegisteredCardComponent implements OnInit {
   }
 
   addToCalendar() {
-    this.showCalendarOptions = !this.showCalendarOptions;
-  }
-
-  addToGoogleCalendar() {
-    const startDate = moment(this.event.start_date).format('YYYYMMDDTHHmmss');
-    const endDate = moment(moment(this.event.start_date).add(1, 'hours')).format('YYYYMMDDTHHmmss');
-    const eventName = encodeURIComponent(this.event.name);
-    const location = this.event.event_locations?.[0]?.name
-      ? encodeURIComponent(this.event.event_locations[0].name)
-      : '';
-    const details = encodeURIComponent(this.event.description || `Event by ${this.event.kommunity.name}`);
-
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventName}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
-    window.open(url, '_blank');
-  }
-
-  addToAppleCalendar() {
-    const startDate = moment(this.event.start_date).format('YYYY-MM-DDTHH:mm:ss');
-    const endDate = moment(moment(this.event.start_date).add(1, 'hours')).format('YYYY-MM-DDTHH:mm:ss');
-    const eventName = this.event.name;
-    const location = this.event.event_locations?.[0]?.name || '';
-    const details = this.event.description || `Event by ${this.event.kommunity.name}`;
-
-    const icsContent = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'BEGIN:VEVENT',
-      `DTSTART:${startDate.replace(/[-:]/g, '')}`,
-      `DTEND:${endDate.replace(/[-:]/g, '')}`,
-      `SUMMARY:${eventName}`,
-      `DESCRIPTION:${details}`,
-      `LOCATION:${location}`,
-      'END:VEVENT',
-      'END:VCALENDAR',
-    ].join('\n');
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', `${eventName}.ics`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  addToOutlookCalendar() {
-    const startDate = moment(this.event.start_date).format('YYYY-MM-DDTHH:mm:ss');
-    const endDate = moment(moment(this.event.start_date).add(1, 'hours')).format('YYYY-MM-DDTHH:mm:ss');
-    const eventName = encodeURIComponent(this.event.name);
-    const location = this.event.event_locations?.[0]?.name
-      ? encodeURIComponent(this.event.event_locations[0].name)
-      : '';
-    const details = encodeURIComponent(this.event.description || `Event by ${this.event.kommunity.name}`);
-
-    const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventName}&startdt=${startDate}&enddt=${endDate}&body=${details}&location=${location}`;
-    window.open(url, '_blank');
-  }
-
-  addToYahooCalendar() {
-    const startDate = moment(this.event.start_date).format('YYYYMMDDTHHmmss');
-    const endDate = moment(moment(this.event.start_date).add(1, 'hours')).format('YYYYMMDDTHHmmss');
-    const eventName = encodeURIComponent(this.event.name);
-    const location = this.event.event_locations?.[0]?.name
-      ? encodeURIComponent(this.event.event_locations[0].name)
-      : '';
-    const details = encodeURIComponent(this.event.description || `Event by ${this.event.kommunity.name}`);
-
-    const url = `https://calendar.yahoo.com/?title=${eventName}&st=${startDate}&et=${endDate}&desc=${details}&in_loc=${location}`;
-    window.open(url, '_blank');
+    this.dialogService.open(AddToCalendarComponent, {
+      context: {
+        startDate: this.event.start_date,
+        endDate: this.event.start_date,
+        title: this.event.name,
+        location: this.event.event_locations?.[0]?.name,
+        details: this.event.description,
+      },
+    });
   }
 }

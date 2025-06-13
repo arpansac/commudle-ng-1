@@ -25,7 +25,7 @@
 
   <div class="actions">
     <div class="primary-buttons">
-      <button nbButton status="primary" fullWidth shape="semi-round">
+      <button nbButton status="primary" fullWidth shape="semi-round" (click)="addToCalendar()">
         <fa-icon [icon]="icons.faCalendarPlus"></fa-icon>&nbsp; Add to Calendar
       </button>
       <button status="info" nbButton outline fullWidth shape="semi-round" (click)="shareEvent()">

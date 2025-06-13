@@ -21,3 +21,5 @@ export * from './lib/components/interested-members/interested-members.component'
 export * from './lib/components/user/profile-completion-progress/profile-completion-progress.component';
 
 export * from './lib/components/user/user-profile-missing-fields/user-profile-missing-fields.component';
+
+export * from './lib/components/add-to-calendar/add-to-calendar.component';

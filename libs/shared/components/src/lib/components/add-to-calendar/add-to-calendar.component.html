@@ -1,0 +1,26 @@
+<div class="add-to-calendar-container">
+  <h4 *ngIf="title">Add "{{ title }}" to your calendar</h4>
+  <div class="calendar-buttons">
+    <button class="calendar-button google" (click)="addToGoogle()">
+      <span class="icon">G</span>
+      Google Calendar
+    </button>
+    <button class="calendar-button apple" (click)="addToApple()">
+      <span class="icon">A</span>
+      Apple Calendar
+    </button>
+    <button class="calendar-button outlook" (click)="addToOutlook()">
+      <span class="icon">O</span>
+      Outlook
+    </button>
+    <button class="calendar-button microsoft" (click)="addToMicrosoft()">
+      <span class="icon">M</span>
+      Microsoft
+    </button>
+
+    <button class="calendar-button ics" (click)="downloadIcsFile()">
+      <span class="icon">↓</span>
+      Download ICS
+    </button>
+  </div>
+</div>
