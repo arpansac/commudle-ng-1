@@ -5,27 +5,9 @@
 .calendar-button {
   @apply com-flex com-items-center com-gap-2;
 
-  &.google fa-icon {
-    @apply com-text-primary-600;
-  }
-
-  &.apple fa-icon {
-    @apply com-text-black;
-  }
-
-  &.outlook fa-icon {
-    @apply com-text-primary-400;
-  }
-
-  &.microsoft fa-icon {
-    @apply com-text-indigo-600;
-  }
-
-  &.yahoo fa-icon {
-    @apply com-text-purple-500;
-  }
-
-  &.ics fa-icon {
-    @apply com-text-gray-500;
+  .icon {
+    @apply com-flex com-items-center com-justify-center;
+    width: 24px;
+    height: 24px;
   }
 }

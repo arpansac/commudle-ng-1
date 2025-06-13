@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AddToCalenderService } from '@commudle/shared-services';
 import { NbDialogRef } from '@commudle/theme';
-import { faGoogle, faApple, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
-import { faCalendarPlus, faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-add-to-calendar',
@@ -16,12 +15,8 @@ export class AddToCalendarComponent implements OnInit {
   @Input() location: string;
   @Input() details: string;
 
-  icons = {
-    faGoogle,
-    faApple,
-    faMicrosoft,
-    faCalendarPlus,
-    faFileDownload,
+  readonly icons = {
+    faDownload,
   };
 
   constructor(
