@@ -27,7 +27,6 @@ export class EventRegisteredCardComponent implements OnInit {
   interestedUsers: IUser[];
   interestedUsersCount: number;
   eventUrl: string;
-  showCalendarOptions = false;
 
   readonly icons = {
     faCalendarDays,
@@ -36,8 +35,6 @@ export class EventRegisteredCardComponent implements OnInit {
     faShareNodes,
     faArrowUpRightFromSquare,
     faCircleCheck,
-    faGoogle,
-    faApple,
   };
 
   constructor(
