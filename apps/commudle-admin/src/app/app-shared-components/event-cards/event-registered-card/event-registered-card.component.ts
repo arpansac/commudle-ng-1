@@ -9,9 +9,12 @@ import {
   faLocationDot,
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
+import { faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
+import { NbDialogService } from '@commudle/theme';
+import { AddToCalendarComponent } from '@commudle/shared-components';
 
 @Component({
   selector: 'commudle-event-registered-card',
@@ -24,6 +27,7 @@ export class EventRegisteredCardComponent implements OnInit {
   interestedUsers: IUser[];
   interestedUsersCount: number;
   eventUrl: string;
+
   readonly icons = {
     faCalendarDays,
     faLocationDot,
@@ -32,7 +36,12 @@ export class EventRegisteredCardComponent implements OnInit {
     faArrowUpRightFromSquare,
     faCircleCheck,
   };
-  constructor(private eventService: EventsService, private shareService: ShareService) {}
+
+  constructor(
+    private eventService: EventsService,
+    private shareService: ShareService,
+    private dialogService: NbDialogService,
+  ) {}
 
   ngOnInit(): void {
     this.fetchInterestedMembers();
@@ -49,5 +58,17 @@ export class EventRegisteredCardComponent implements OnInit {
     const eventUrl = `${environment.app_url}/communities/${this.event.kommunity.id}/events/${this.event.slug}`;
     const shareText = `Check out this event: ${this.event.name}`;
     this.shareService.shareContent(eventUrl, this.event.name, shareText, eventUrl);
+  }
+
+  addToCalendar() {
+    this.dialogService.open(AddToCalendarComponent, {
+      context: {
+        startDate: this.event.start_time,
+        endDate: this.event.end_time,
+        title: this.event.name,
+        location: this.event.event_locations?.[0]?.name,
+        details: this.event.description,
+      },
+    });
   }
 }

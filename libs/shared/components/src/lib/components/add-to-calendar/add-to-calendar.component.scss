@@ -1,0 +1,13 @@
+.calendar-buttons {
+  @apply com-flex com-flex-col com-gap-4;
+}
+
+.calendar-button {
+  @apply com-flex com-items-center com-gap-2;
+
+  .icon {
+    @apply com-flex com-items-center com-justify-center;
+    width: 24px;
+    height: 24px;
+  }
+}

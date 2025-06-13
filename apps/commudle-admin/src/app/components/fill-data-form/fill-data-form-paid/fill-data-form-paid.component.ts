@@ -255,7 +255,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     this.eventTicketOrderService.showEventTicketOrder(edfegId).subscribe((data) => {
       this.eventTicketOrders = data.event_ticket_orders;
       if (redirect) {
-        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted'], {
           queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
         });
       }
@@ -507,7 +507,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     } else {
       this.saveUserDetails();
       if (this.ticketPaidAlready) {
-        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+        this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted'], {
           queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
         });
       } else if (!this.ticketPaidAlready) {
@@ -623,7 +623,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
             this.toastLogService.successDialog('Your Payment Was Received Successfully', 3000);
             this.eventTicketOrderService.checkPayment(this.stripePaymentIntendId).subscribe();
 
-            this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+            this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted'], {
               queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
             });
           }
@@ -652,7 +652,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
       },
     };
     if (orderDetails.amount === 0) {
-      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed'], {
+      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted'], {
         queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
       });
       return;

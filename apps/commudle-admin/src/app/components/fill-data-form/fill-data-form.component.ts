@@ -256,7 +256,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
     if (this.redirectRoute) {
       this.router.navigate(this.redirectRoute);
     } else {
-      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'confirmed']);
+      this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted']);
     }
   }
 }

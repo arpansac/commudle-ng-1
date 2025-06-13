@@ -4,10 +4,9 @@
     <div class="missing-field-text">
       <span class="number">{{ i + 1 }}. </span>
       <span class="text">{{ field.text }}</span>
-      <span class="bold-text">{{ field.bold_text }}</span>
     </div>
-    <a [routerLink]="field.route">
-      <button nbButton status="primary" shape="semi-round">{{ field.button_text }}</button>
+    <a [routerLink]="field.route" class="button">
+      <button nbButton status="primary" shape="semi-round" fullWidth size="small">{{ field.button_text }}</button>
     </a>
   </div>
 </div>
