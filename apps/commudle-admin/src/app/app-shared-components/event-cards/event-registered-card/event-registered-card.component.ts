@@ -15,7 +15,6 @@ import { ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 import { NbDialogService } from '@commudle/theme';
 import { AddToCalendarComponent } from '@commudle/shared-components';
-// import { AddToCalendarComponent } from '@commudle/shared-components';
 
 @Component({
   selector: 'commudle-event-registered-card',
@@ -67,8 +66,8 @@ export class EventRegisteredCardComponent implements OnInit {
   addToCalendar() {
     this.dialogService.open(AddToCalendarComponent, {
       context: {
-        startDate: this.event.start_date,
-        endDate: this.event.start_date,
+        startDate: this.event.start_time,
+        endDate: this.event.end_time,
         title: this.event.name,
         location: this.event.event_locations?.[0]?.name,
         details: this.event.description,

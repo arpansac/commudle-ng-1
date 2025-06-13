@@ -9,7 +9,7 @@ export class AddToCalenderService {
 
   addToGoogleCalendar(sDate, eDate, title, location, details) {
     const startDate = moment(sDate).format('YYYYMMDDTHHmmss');
-    const endDate = moment(eDate).add(1, 'hours').format('YYYYMMDDTHHmmss');
+    const endDate = moment(eDate).format('YYYYMMDDTHHmmss');
     const eventName = encodeURIComponent(title);
     const encodedLocation = location ? encodeURIComponent(location) : '';
     const encodedDetails = encodeURIComponent(details);
@@ -22,18 +22,30 @@ export class AddToCalenderService {
   }
 
   addToOutlookCalendar(sDate, eDate, title, location, details) {
-    const startDate = moment(sDate).format('YYYYMMDDTHHmmss');
-    const endDate = moment(eDate).add(1, 'hours').format('YYYYMMDDTHHmmss');
-    const eventName = encodeURIComponent(title);
-    const encodedLocation = location ? encodeURIComponent(location) : '';
-    const encodedDetails = encodeURIComponent(details);
+    // "2025-06-13T14:00:00.000Z"
+    const startDate = moment(sDate).toISOString();
+    const endDate = moment(eDate).toISOString();
 
-    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventName}&startdt=${startDate}&enddt=${endDate}&body=${encodedDetails}&location=${encodedLocation}`;
+    const plainDetails = details
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>\s*<p>/gi, '\n\n')
+      .replace(/<\/?[^>]+(>|$)/g, '')
+      .trim();
+
+    const encodedDetails = encodeURIComponent(plainDetails);
+
+    const url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(
+      title,
+    )}&body=${encodeURIComponent(encodedDetails)}&startdt=${encodeURIComponent(startDate)}&enddt=${encodeURIComponent(
+      endDate,
+    )}&location=${encodeURIComponent(location || '')}`;
+
+    return url;
   }
 
   addToMicrosoftCalendar(sDate, eDate, title, location, details) {
     const startDate = moment(sDate).format('YYYY-MM-DDTHH:mm:ss');
-    const endDate = moment(eDate).add(1, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    const endDate = moment(eDate).format('YYYY-MM-DDTHH:mm:ss');
     const eventName = encodeURIComponent(title);
     const encodedLocation = location ? encodeURIComponent(location) : '';
     const encodedDetails = encodeURIComponent(details);
@@ -43,10 +55,10 @@ export class AddToCalenderService {
 
   downloadIcsFile(sDate, eDate, title, location, details) {
     const startDate = moment(sDate).format('YYYY-MM-DDTHH:mm:ss');
-    const endDate = moment(eDate).add(1, 'hours').format('YYYY-MM-DDTHH:mm:ss');
-    const eventName = encodeURIComponent(title);
+    const endDate = moment(eDate).format('YYYY-MM-DDTHH:mm:ss');
+    const eventName = title;
     const encodedLocation = location ? encodeURIComponent(location) : '';
-    const encodedDetails = encodeURIComponent(details);
+    const plainDetails = details.replace(/<\/?[^>]+(>|$)/g, '').replace(/\r?\n|\r/g, '\\n');
 
     const icsContent = [
       'BEGIN:VCALENDAR',
@@ -55,7 +67,7 @@ export class AddToCalenderService {
       `DTSTART:${startDate.replace(/[-:]/g, '')}`,
       `DTEND:${endDate.replace(/[-:]/g, '')}`,
       `SUMMARY:${eventName}`,
-      `DESCRIPTION:${encodedDetails}`,
+      `DESCRIPTION:${plainDetails}`,
       `LOCATION:${encodedLocation}`,
       'END:VEVENT',
       'END:VCALENDAR',

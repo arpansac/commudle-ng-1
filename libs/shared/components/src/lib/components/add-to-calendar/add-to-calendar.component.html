@@ -1,26 +1,30 @@
-<div class="add-to-calendar-container">
-  <h4 *ngIf="title">Add "{{ title }}" to your calendar</h4>
-  <div class="calendar-buttons">
-    <button class="calendar-button google" (click)="addToGoogle()">
-      <span class="icon">G</span>
-      Google Calendar
-    </button>
-    <button class="calendar-button apple" (click)="addToApple()">
-      <span class="icon">A</span>
-      Apple Calendar
-    </button>
-    <button class="calendar-button outlook" (click)="addToOutlook()">
-      <span class="icon">O</span>
-      Outlook
-    </button>
-    <button class="calendar-button microsoft" (click)="addToMicrosoft()">
-      <span class="icon">M</span>
-      Microsoft
-    </button>
+<nb-card>
+  <nb-card-header
+    >Add <strong>{{ title }}</strong> to your calendar</nb-card-header
+  >
+  <nb-card-body>
+    <div class="calendar-buttons">
+      <button class="calendar-button google" nbButton status="basic" (click)="addToGoogle()">
+        <span class="icon"></span>
+        Google Calendar
+      </button>
+      <button class="calendar-button apple" nbButton status="basic" (click)="addToApple()">
+        <span class="icon"></span>
+        Apple Calendar
+      </button>
+      <button class="calendar-button outlook" nbButton status="basic" (click)="addToOutlook()">
+        <span class="icon"></span>
+        Outlook
+      </button>
+      <button class="calendar-button microsoft" nbButton status="basic" (click)="addToMicrosoft()">
+        <span class="icon"></span>
+        Microsoft
+      </button>
 
-    <button class="calendar-button ics" (click)="downloadIcsFile()">
-      <span class="icon">↓</span>
-      Download ICS
-    </button>
-  </div>
-</div>
+      <button class="calendar-button ics" nbButton status="basic" (click)="downloadIcsFile()">
+        <span class="icon"></span>
+        Download ICS
+      </button>
+    </div>
+  </nb-card-body>
+</nb-card>
