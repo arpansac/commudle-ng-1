@@ -10,14 +10,11 @@
       <div class="com-z-10 com-p-2 com-absolute com-bottom-0 com-w-full">
         <div class="com-flex com-justify-between com-items-end com-gap-4">
           <div>
-            <div class="com-flex com-flex-row">
+            <div class="homepage-expert-badge">
               <h3 class="homepage-expert-name">
                 {{ expert.name }}
               </h3>
-              <commudle-user-expert-tick
-                *ngIf="expert.is_expert"
-                class="com-flex com-items-center com-justify-center"
-              ></commudle-user-expert-tick>
+              <commudle-user-expert-tick *ngIf="expert.is_expert"></commudle-user-expert-tick>
             </div>
             <p class="homepage-expert-designation">{{ expert.designation }}</p>
           </div>
