@@ -124,11 +124,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   }
 
   private seoTags(data) {
-    this.seoService.setTags(
-      `${data.name} | Completed`,
-      `Fill the form for ${data.name}`,
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.seoService.setTitle(` Submitted | ${data.name}`);
   }
 
   //get form entityType
@@ -137,10 +133,10 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       case EDbModels.EVENT:
         this.getEvent(dataFormEntity);
         break;
-      case 'AdminSurvey':
+      case EDbModels.ADMIN_SURVEY:
         this.isLoading = false;
         break;
-      case 'Survey':
+      case EDbModels.SURVEY:
         if (this.dataFormEntity.community) {
           this.fetchCommunityDetails();
         }
