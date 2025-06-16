@@ -10,6 +10,6 @@ export class LoginComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.redirectUrl = this.activatedRoute.snapshot.queryParams.redirect;
+    this.redirectUrl = this.activatedRoute.snapshot.queryParams?.redirect || '/';
   }
 }
