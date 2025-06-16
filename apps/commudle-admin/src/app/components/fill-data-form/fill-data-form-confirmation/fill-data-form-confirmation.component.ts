@@ -9,6 +9,7 @@ import {
   IProfileCompletionStatus,
   IUser,
   IUserRolesUser,
+  IUserStat,
 } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
@@ -46,7 +47,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   communityLeaders: IUser[];
   communities: ICommunity[] = [];
   communityGroupLeaders: IUserRolesUser[] = [];
-
+  userProfileDetails: IUserStat;
+  readonly EDbModels = EDbModels;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -61,6 +63,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private router: Router,
     private uruService: UserRolesUsersService,
     private communityGroupService: CommunityGroupsService,
+    private AppUsersService: AppUsersService,
   ) {}
 
   ngOnInit() {
@@ -77,7 +80,14 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private fetchCurrentUserDetails() {
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
+      this.fetchUserStats();
       this.getProfileCompletionStatus();
+    });
+  }
+
+  private fetchUserStats() {
+    this.appUsersService.getProfileStats().subscribe((data) => {
+      this.userProfileDetails = data;
     });
   }
 
