@@ -15,25 +15,24 @@
   <div class="labs-card-content">
     <a class="clickable" [routerLink]="['/labs', lab.slug]">
       <div class="labs-card-content-prefix">
-        <div class="heading">
-          <div class="labs-card-title">
-            <h4 class="title">{{ lab.name }}</h4>
-            <p class="steps">
-              <span>{{ lab.lab_steps?.length || lab.lab_steps_count }}</span
-              >&nbsp;<span>STEP{{ lab.lab_steps?.length > 1 ? 'S' : '' }}</span>
-            </p>
-          </div>
-          <div *ngIf="lab.tags?.length > 0" class="tags">
-            <app-tag
-              [tags]="lab.tags"
-              [backgroundColor]="'com-bg-Azure-opacity-10'"
-              [size]="'tiny'"
-              [fontColor]="'com-text-Azure'"
-              [maximumTag]="2"
-            ></app-tag>
-          </div>
+        <div class="labs-card-title">
+          <h4 class="title">{{ lab.name }}</h4>
+          <p class="steps">
+            <span>{{ lab.lab_steps?.length || lab.lab_steps_count }}</span
+            >&nbsp;<span>STEP{{ lab.lab_steps?.length > 1 ? 'S' : '' }}</span>
+          </p>
         </div>
         <p class="labs-card-date">{{ lab.published_at | date }}</p>
+        <div *ngIf="lab.tags?.length > 0" class="tags">
+          <app-tag
+            *appBreakpoints="'>lg'"
+            [tags]="lab.tags"
+            [backgroundColor]="'com-bg-gray-100'"
+            [size]="'tiny'"
+            [fontColor]="'com-text-gray-500'"
+            [maximumTag]="4"
+          ></app-tag>
+        </div>
       </div>
     </a>
 

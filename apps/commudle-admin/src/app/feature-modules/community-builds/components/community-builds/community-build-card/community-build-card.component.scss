@@ -41,7 +41,7 @@ p {
         }
 
         .description {
-          @apply com-text-xs md:com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-2 com-hidden md:com-flex com-line-clamp-1;
+          @apply com-text-xs md:com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-4 com-hidden md:com-flex com-line-clamp-1;
         }
       }
     }
@@ -49,4 +49,14 @@ p {
 }
 .votes {
   @apply md:com-ml-[68px] com-ml-2 md:com-border com-border-0 com-border-Bright-Gray com-border-l com-border-solid com-px-[18px] md:com-py-3 com-py-1 md:com-rounded-lg com-rounded-none md:com-h-fit;
+}
+
+.tags {
+  @apply com-mb-4;
+
+  ::ng-deep {
+    .tag-list {
+      @apply com-flex-nowrap com-line-clamp-1 #{!important};
+    }
+  }
 }
