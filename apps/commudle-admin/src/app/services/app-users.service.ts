@@ -1,6 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IPaginationCount, IUserRolesUser, IUser, IAttachedFile, IPagination } from '@commudle/shared-models';
+import {
+  IPaginationCount,
+  IUserRolesUser,
+  IUser,
+  IAttachedFile,
+  IPagination,
+  IUserStat,
+} from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
@@ -13,7 +20,6 @@ import { IPosts } from 'apps/shared-models/posts.model';
 import { ISocialResources } from 'apps/shared-models/social_resources.model';
 import { ISpeakerResources } from 'apps/shared-models/speaker_resources.model';
 import { ITags } from 'apps/shared-models/tags.model';
-import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { Observable } from 'rxjs';
 
 @Injectable({

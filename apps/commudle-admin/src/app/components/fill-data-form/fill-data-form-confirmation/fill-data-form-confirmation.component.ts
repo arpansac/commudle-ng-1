@@ -9,6 +9,7 @@ import {
   IProfileCompletionStatus,
   IUser,
   IUserRolesUser,
+  IUserStat,
 } from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
@@ -46,7 +47,8 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   communityLeaders: IUser[];
   communities: ICommunity[] = [];
   communityGroupLeaders: IUserRolesUser[] = [];
-
+  userProfileDetails: IUserStat;
+  readonly EDbModels = EDbModels;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -61,6 +63,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     private router: Router,
     private uruService: UserRolesUsersService,
     private communityGroupService: CommunityGroupsService,
+    private AppUsersService: AppUsersService,
   ) {}
 
   ngOnInit() {
@@ -77,7 +80,14 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   private fetchCurrentUserDetails() {
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
+      this.fetchUserStats();
       this.getProfileCompletionStatus();
+    });
+  }
+
+  private fetchUserStats() {
+    this.appUsersService.getProfileStats().subscribe((data) => {
+      this.userProfileDetails = data;
     });
   }
 
@@ -124,11 +134,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   }
 
   private seoTags(data) {
-    this.seoService.setTags(
-      `${data.name} | Completed`,
-      `Fill the form for ${data.name}`,
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.seoService.setTitle(` Submitted | ${data.name}`);
   }
 
   //get form entityType
@@ -137,10 +143,10 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       case EDbModels.EVENT:
         this.getEvent(dataFormEntity);
         break;
-      case 'AdminSurvey':
+      case EDbModels.ADMIN_SURVEY:
         this.isLoading = false;
         break;
-      case 'Survey':
+      case EDbModels.SURVEY:
         if (this.dataFormEntity.community) {
           this.fetchCommunityDetails();
         }
