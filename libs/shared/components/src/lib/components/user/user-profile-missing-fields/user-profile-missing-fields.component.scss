@@ -16,4 +16,7 @@
       @apply com-w-1/4;
     }
   }
+  .missing-field-item:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2;
+  }
 }
