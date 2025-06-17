@@ -1,0 +1,8 @@
+<div *ngIf="builds.length > 0" class="builds-card com-border-t-0">
+  <h3 class="heading">More Builds by {{ user.name }}</h3>
+  <div *ngFor="let build of builds" class="other-builds">
+    <div class="build-card">
+      <commudle-featured-projects-card [communityBuild]="build"></commudle-featured-projects-card>
+    </div>
+  </div>
+</div>

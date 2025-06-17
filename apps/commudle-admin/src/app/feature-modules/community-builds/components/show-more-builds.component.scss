@@ -1,0 +1,12 @@
+.builds-card {
+  @apply com-bg-gray-50 com-p-3 com-m-0 com-border-0;
+  .heading {
+    @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0 com-pb-4;
+  }
+  .other-builds {
+    @apply com-flex com-flex-col com-gap-3;
+    .build-card {
+      @apply com-py-2 com-px-0 com-m-0 com-border-0;
+    }
+  }
+}
