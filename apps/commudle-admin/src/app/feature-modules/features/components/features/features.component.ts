@@ -32,6 +32,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
   faArrowRightArrowLeft = faArrowRightArrowLeft;
   isDarkMode = false;
   faqs: IFaq[];
+  headerImgUrl = staticAssets.features_page_header;
 
   constructor(
     private cmsService: CmsService,
@@ -97,7 +98,7 @@ export class FeaturesComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       'Features',
       "One stop solution for all your developer relations team's needs. Build one community or a global network of communities with multiple engagements.",
-      'https://commudle.com/assets/images/commudle-logo192.png',
+      this.headerImgUrl,
     );
   }
 
