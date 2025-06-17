@@ -11,7 +11,7 @@ import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-notifications-page',
+  selector: 'commudle-notifications-page',
   templateUrl: './notifications-page.component.html',
   styleUrls: ['./notifications-page.component.scss'],
 })
