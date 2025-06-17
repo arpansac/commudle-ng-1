@@ -2,13 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbToastrService } from '@commudle/theme';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { IUser, IUserStat } from '@commudle/shared-models';
+import { AuthService, SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-notifications-page',
@@ -19,7 +17,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
   notificationCount: number;
   trackMarkAllAsRead = false;
   ENotificationSenderTypes = ENotificationSenderTypes;
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   userProfileDetails: IUserStat;
   subscriptions: Subscription[] = [];
 
@@ -30,7 +28,7 @@ export class NotificationsPageComponent implements OnInit, OnDestroy {
     private notificationsStore: NotificationsStore,
     private nbToastrService: NbToastrService,
     private gtm: GoogleTagManagerService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private appUsersService: AppUsersService,
   ) {}
 
