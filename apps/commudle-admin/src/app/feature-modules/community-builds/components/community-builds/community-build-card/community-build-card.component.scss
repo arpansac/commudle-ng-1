@@ -22,7 +22,7 @@ p {
       }
 
       .community-build-card-details {
-        @apply com-w-full md:com-pl-4 com-pl-3 md:com-pr-[74px] com-pt-0;
+        @apply com-w-full md:com-pl-4 com-pl-3 com-pt-0;
 
         .community-build-card-title-time {
           @apply md:com-flex com-block md:com-flex-row com-flex-col com-items-center md:com-mb-2 com-mb-1;
@@ -53,10 +53,4 @@ p {
 
 .tags {
   @apply com-mb-4;
-
-  ::ng-deep {
-    .tag-list {
-      @apply com-flex-nowrap com-line-clamp-1 #{!important};
-    }
-  }
 }

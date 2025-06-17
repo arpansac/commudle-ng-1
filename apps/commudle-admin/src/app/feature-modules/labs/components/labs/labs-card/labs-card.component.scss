@@ -33,15 +33,6 @@ a:active {
 
       .tags {
         @apply com-ml-auto md:com-flex com-hidden md:com-mb-3 com-mb-1;
-        ::ng-deep {
-          .nb-tag-list-tags-wrapper {
-            @apply com-flex-nowrap;
-          }
-
-          .tag-list {
-            @apply com-flex-nowrap com-line-clamp-1 #{!important};
-          }
-        }
       }
 
       .labs-card-date {
