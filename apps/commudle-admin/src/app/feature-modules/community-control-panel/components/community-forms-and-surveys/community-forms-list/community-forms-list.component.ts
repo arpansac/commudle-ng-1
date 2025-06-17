@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { Cell, Settings } from 'angular2-smart-table';
@@ -6,15 +6,18 @@ import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_form
 import { IDataForm } from 'apps/shared-models/data_form.model';
 import { CommunityFormsListActionsComponent } from './community-forms-list-actions/community-forms-list-actions.component';
 import { CommunityFormsListStatsComponent } from './community-forms-list-stats/community-forms-list-stats.component';
+import { Subscription } from 'rxjs';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-forms-list',
   templateUrl: './community-forms-list.component.html',
   styleUrls: ['./community-forms-list.component.scss'],
 })
-export class CommunityFormsListComponent implements OnInit {
+export class CommunityFormsListComponent implements OnInit, OnDestroy {
+  community: ICommunity;
   faPlusSquare = faPlusSquare;
-  newFormParentId;
   dataForms: IDataForm[];
   isLoading = true;
   tableSettings: Settings = {
@@ -51,19 +54,42 @@ export class CommunityFormsListComponent implements OnInit {
     },
   };
 
-  constructor(private dataFormsService: DataFormsService, private activatedRoute: ActivatedRoute) {}
+  subscriptions: Subscription[] = [];
+
+  constructor(
+    private dataFormsService: DataFormsService,
+    private activatedRoute: ActivatedRoute,
+    private seoService: SeoService,
+  ) {}
 
   ngOnInit() {
-    this.newFormParentId = this.activatedRoute.parent.snapshot.params.community_id;
-    if (this.newFormParentId) {
-      this.getDataForms();
-    }
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        this.community = value.community;
+        this.setMeta();
+        if (this.community.id) {
+          this.getDataForms();
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
   }
 
   getDataForms() {
-    this.dataFormsService.getCommunityDataForms(this.newFormParentId).subscribe((data) => {
-      this.dataForms = data.data_forms;
-      this.isLoading = false;
-    });
+    this.subscriptions.push(
+      this.dataFormsService.getCommunityDataForms(this.community.id).subscribe((data) => {
+        this.dataForms = data.data_forms;
+        this.isLoading = false;
+      }),
+    );
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Form Data | Dashboard | ${this.community.name}`);
   }
 }

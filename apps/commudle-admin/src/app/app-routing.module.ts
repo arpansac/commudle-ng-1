@@ -12,7 +12,8 @@ import { SpeakerResourceFormComponent } from './components/speaker-resource-form
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
-import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
+import { UserAccountMenuComponent } from './components/user-account-menu/user-account-menu.component';
+import { FillDataFormConfirmationComponent } from './components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
 
 const routes: Routes = [
   // TODO: discuss in future for order of paths
@@ -168,6 +169,11 @@ const routes: Routes = [
   {
     path: 'fill-form/:data_form_entity_id',
     component: CheckFillDataFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'fill-form/:data_form_entity_id/submitted',
+    component: FillDataFormConfirmationComponent,
     canActivate: [AuthGuard],
   },
   {

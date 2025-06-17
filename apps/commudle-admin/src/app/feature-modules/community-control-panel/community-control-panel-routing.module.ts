@@ -41,6 +41,9 @@ const routes = [
   {
     path: ':community_id',
     component: CommunityControlPanelComponent,
+    resolve: {
+      community: CommunityDetailsResolver,
+    },
     children: [
       {
         path: '',

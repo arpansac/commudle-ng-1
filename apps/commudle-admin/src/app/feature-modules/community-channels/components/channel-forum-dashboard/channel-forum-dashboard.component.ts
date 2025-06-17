@@ -269,7 +269,7 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   // The `setMeta` function sets meta tags for SEO with information related to the selected community.
   setMeta() {
     this.seoService.setTags(
-      `Channels - ${this.parent.name}`,
+      `Channels | ${this.parent.name}`,
       `Interact with members in channels for ${this.parent.name}! Share knowledge, network & grow together!`,
       'https://commudle.com/assets/images/commudle-logo192.png',
     );

@@ -1,3 +1,5 @@
+import { ICommunity, ICommunityGroup } from '@commudle/shared-models';
+
 export interface IDataFormEntity {
   id: number;
   name: number;
@@ -21,6 +23,8 @@ export interface IDataFormEntity {
   };
   auto_close_responses_count: number;
   user_details: any;
+  community: ICommunity;
+  community_group: ICommunityGroup;
 }
 
 export enum Visibility {

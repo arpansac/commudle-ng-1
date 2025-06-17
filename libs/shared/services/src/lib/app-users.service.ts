@@ -1,14 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
-import { IUserRecapStats } from '@commudle/shared-models';
+import { IProfileCompletionStatus, IUserRecapStats } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppUsersService {
+  private profileCompletionStatus = new BehaviorSubject<IProfileCompletionStatus>(null);
+  public profileCompletionStatus$ = this.profileCompletionStatus.asObservable();
+
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
   getMyRoles(parentType, parentId): Observable<[]> {
@@ -21,5 +24,13 @@ export class AppUsersService {
     return this.http.get<IUserRecapStats>(this.baseApiService.getRoute(API_ROUTES.USERS.RECAP_STATS), {
       params,
     });
+  }
+
+  fetchProfileCompletionStatus(): void {
+    this.http
+      .get<IProfileCompletionStatus>(this.baseApiService.getRoute(API_ROUTES.USERS.PROFILE_COMPLETION_STATUS))
+      .subscribe((status) => {
+        this.profileCompletionStatus.next(status);
+      });
   }
 }

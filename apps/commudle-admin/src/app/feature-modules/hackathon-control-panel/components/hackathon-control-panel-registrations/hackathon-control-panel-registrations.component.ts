@@ -1,28 +1,29 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { EDbModels } from '@commudle/shared-models';
-import { Component, OnInit } from '@angular/core';
+import { EDbModels, ICommunity, IHackathon } from '@commudle/shared-models';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
-import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { faArrowRight, faCircleQuestion, faMicrophone, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-registrations',
   templateUrl: './hackathon-control-panel-registrations.component.html',
   styleUrls: ['./hackathon-control-panel-registrations.component.scss'],
 })
-export class HackathonControlPanelRegistrationsComponent implements OnInit {
+export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDestroy {
   userDetailsForm: FormGroup;
   registrationTypeId = 1;
   hackathon: IHackathon;
   EDbModels = EDbModels;
   dataFormId: number;
   hackathonResponseGroupDetails: IHackathonResponseGroup;
-  communityId: string | number;
   filled_by_only_team_lead = true;
   icons = {
     faUpRightFromSquare,
@@ -30,6 +31,9 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
     faMicrophone,
     faCircleQuestion,
   };
+
+  subscriptions: Subscription[] = [];
+  parent: ICommunity | ICommunityGroup;
 
   isFormInclude = false;
   constructor(
@@ -39,6 +43,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
     private hackathonService: HackathonService,
     private dataFormsService: DataFormsService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.userDetailsForm = this.fb.group({
       name: true,
@@ -64,15 +69,28 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.params.subscribe((params) => {
-      this.fetchHackathonDetails(params['hackathon_id']);
-      this.communityId = params['community_id'];
-    });
+    this.seoService.noIndex(true);
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.params.subscribe((params) => {
+        this.fetchHackathonDetails(params['hackathon_id']);
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
       this.hackathon = data;
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
+      this.setMeta();
       this.fetchHackathonResponseGroup();
     });
   }
@@ -168,5 +186,9 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit {
           this.toastrService.successDialog('Information Updated');
         }
       });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Registration Form | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

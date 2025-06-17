@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'commudle-communities',
   templateUrl: './communities.component.html',
   styleUrls: ['./communities.component.scss'],
 })
-export class CommunitiesComponent implements OnInit {
+export class CommunitiesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
 
+  subscriptions: Subscription[] = [];
   tabs = [
     {
       route: './',
@@ -31,17 +34,25 @@ export class CommunitiesComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.communityGroup = data.community_group;
-      this.setMeta();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.data.subscribe((data) => {
+        this.communityGroup = data.community_group;
+        this.setMeta();
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setMeta() {
     this.seoService.setTags(
-      `Communities - Admin - ${this.communityGroup.name}`,
+      `Communities | Dashboard | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo?.i350,
     );
   }
 }

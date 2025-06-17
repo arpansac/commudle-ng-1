@@ -19,6 +19,9 @@ ul {
     .homepage-expert-overlay {
       @apply com-z-10 com-bg-gradient-to-t com-from-gray-800 com-via-transparent com-w-full com-h-full com-absolute com-left-0 com-top-0 com-m-0;
     }
+    .homepage-expert-badge {
+      @apply com-flex com-flex-row com-items-center com-justify-center;
+    }
 
     .homepage-expert-name {
       @apply com-text-lg com-font-semibold com-text-tWhite com-my-0;

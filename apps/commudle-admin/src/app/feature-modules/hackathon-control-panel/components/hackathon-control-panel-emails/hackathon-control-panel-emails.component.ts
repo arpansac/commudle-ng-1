@@ -1,21 +1,24 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-winner-announcement-emailer/hackathon-winner-announcement-emailer.component';
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
 import { HackathonRoundGeneralMailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-round-general-mailer/hackathon-round-general-mailer.component';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService, EmailerPreviewService } from '@commudle/shared-services';
 import { FormBuilder } from '@angular/forms';
-import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { Subscription } from 'rxjs';
+import { ICommunity, IHackathon } from '@commudle/shared-models';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
   templateUrl: './hackathon-control-panel-emails.component.html',
   styleUrls: ['./hackathon-control-panel-emails.component.scss'],
 })
-export class HackathonControlPanelEmailsComponent implements OnInit {
+export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   hackathonId: number | string;
   message = '';
   dialogRef: NbDialogRef<any>;
@@ -24,6 +27,10 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   previewEmailForm;
   previewData: string;
   dialogReference: NbDialogRef<any>;
+
+  hackathon: IHackathon;
+  subscriptions: Subscription[] = [];
+  parent: ICommunity | ICommunityGroup;
 
   tinyMCE = {
     min_height: 300,
@@ -68,6 +75,7 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     private toasterService: ToastrService,
     private fb: FormBuilder,
     private emailerPreviewService: EmailerPreviewService,
+    private seoService: SeoService,
   ) {
     this.previewEmailForm = this.fb.group({
       body: [''],
@@ -75,8 +83,28 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonId = params.get('hackathon_id');
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonId = params.get('hackathon_id');
+        this.fetchHackathonDetails(this.hackathonId);
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  fetchHackathonDetails(hackathonId) {
+    this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
+      this.hackathon = data;
+      this.setMeta();
     });
   }
 
@@ -140,5 +168,9 @@ export class HackathonControlPanelEmailsComponent implements OnInit {
     this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
       context: { previewData },
     });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Communications | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

@@ -3,6 +3,7 @@ import { IEventStatus } from './event-status.model';
 import { ICommunity } from './community.model';
 import { ISpeakerResource } from './speaker-resource.model';
 import { ITag } from './tag.model';
+import { ILocation } from './location.model';
 
 export interface IEvent {
   id: number;
@@ -33,7 +34,7 @@ export interface IEvent {
   attended_members_count?: number;
   kommunity?: ICommunity;
   speaker_resource?: ISpeakerResource;
-  event_locations?: object;
+  event_locations?: ILocation[];
   status?: string;
   collaboration_communities: ICommunity[];
   start_date?: Date;

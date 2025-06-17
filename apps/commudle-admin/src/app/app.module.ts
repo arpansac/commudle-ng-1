@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthModule, AuthService, AuthServiceConfig, GoogleLoginProvider, YoutubeLoginProvider } from '@commudle/auth';
 import { NbEvaIconsModule } from '@commudle/eva-icons';
+import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import {
   NbAccordionModule,
   NbActionsModule,
@@ -46,9 +47,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { createErrorHandler, TraceService } from '@sentry/angular-ivy';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Angular2SmartTableModule } from 'angular2-smart-table';
+import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { FillDataFormConfirmationComponent } from 'apps/commudle-admin/src/app/components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
 import { NavbarUserContextMenuComponent } from 'apps/commudle-admin/src/app/components/navbar-user-context-menu/navbar-user-context-menu.component';
 import { UserAccountMenuComponent } from 'apps/commudle-admin/src/app/components/user-account-menu/user-account-menu.component';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
@@ -165,6 +168,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     CheckFillDataFormComponent,
     UserAccountMenuComponent,
     NavbarUserContextMenuComponent,
+    FillDataFormConfirmationComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -184,6 +188,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     EditorModule,
     AppSharedComponentsModule,
     SharedComponentsModule,
+    newSharedComponentsModule,
     ReusableComponentsModule,
     SharedPipesModule,
     UserChatsModule,
@@ -208,6 +213,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     UserprofileDetailsComponent,
     SidebarComponent,
     HelpSectionComponent,
+    FeaturedCommunitiesCardComponent,
     // external service modules
     LibErrorHandlerModule,
     AuthModule,

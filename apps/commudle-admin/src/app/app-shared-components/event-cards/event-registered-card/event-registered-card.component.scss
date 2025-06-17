@@ -1,0 +1,29 @@
+.event-details {
+  .community-badge {
+    @apply com-mb-4;
+  }
+  .date-registered-text {
+    @apply com-flex com-justify-between;
+  }
+  .event-start-date,
+  .event-location {
+    @apply com-mb-3 com-text-gray-500 com-text-base com-font-medium;
+  }
+
+  .registered-text {
+    @apply com-text-Yankees-Blue com-text-base com-font-medium;
+  }
+
+  .interested-members {
+    @apply com-mt-6 com-mb-8;
+  }
+
+  .actions {
+    .primary-buttons {
+      @apply com-flex com-justify-between com-gap-5 com-mb-5;
+    }
+    .take-event-button {
+      @apply com-text-Yankees-Blue;
+    }
+  }
+}

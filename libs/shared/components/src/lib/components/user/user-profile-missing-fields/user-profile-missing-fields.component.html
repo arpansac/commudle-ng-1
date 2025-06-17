@@ -1,0 +1,12 @@
+<div class="missing-fields-container" *ngIf="missingFieldsData.length > 0">
+  <h3 class="missing-fields-title">Complete your profile</h3>
+  <div class="missing-field-item" *ngFor="let field of missingFieldsData; let i = index">
+    <div class="missing-field-text">
+      <span class="number">{{ i + 1 }}. </span>
+      <span class="text">{{ field.text }}</span>
+    </div>
+    <a [routerLink]="field.route" class="button">
+      <button nbButton status="primary" shape="semi-round" fullWidth size="small">{{ field.button_text }}</button>
+    </a>
+  </div>
+</div>

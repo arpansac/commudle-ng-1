@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonLocationType, EParticipateTypes, IHackathon } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
 import { faArrowRight, faFileImage, faLink } from '@fortawesome/free-solid-svg-icons';
+import { ICommunity } from '@commudle/shared-models';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-basic-form',
@@ -25,6 +27,8 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   hackathon: IHackathon;
   EParticipateTypes = EParticipateTypes;
   EHackathonLocationType = EHackathonLocationType;
+
+  parent: ICommunity | ICommunityGroup;
 
   icons = {
     faFileImage,
@@ -99,58 +103,60 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      if (params.get('community_id')) {
-        this.parentId = params.get('community_id');
-        this.parentType = 'Kommunity';
-      }
-      if (params.get('community_group_id')) {
-        this.parentId = params.get('community_group_id');
-        this.parentType = 'CommunityGroup';
-      }
-      if (this.hackathonSlug) {
-        this.fetchHackathonDetails();
-      } else {
-        this.seoService.setTitle('New Hackathon');
-      }
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        if (params.get('community_id')) {
+          this.parentId = params.get('community_id');
+          this.parentType = 'Kommunity';
+        }
+        if (params.get('community_group_id')) {
+          this.parentId = params.get('community_group_id');
+          this.parentType = 'CommunityGroup';
+        }
+        if (this.hackathonSlug) {
+          this.fetchHackathonDetails();
+        } else {
+          this.seoService.setTitle('New Hackathon');
+        }
+      }),
+    );
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails() {
-    this.subscriptions.push(
-      this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data: IHackathon) => {
-        this.hackathon = data;
-        this.seoService.setTags(
-          `Admin | ${this.hackathon.name}`,
-          this.hackathon.tagline,
-          'https://commudle.com/assets/images/commudle-logo192.png',
-        );
-        this.imagePreview = data.banner_image ? data.banner_image.url : '';
-        this.hackathonForm.patchValue({
-          name: data.name,
-          tagline: data.tagline,
-          description: data.description,
-          hackathon_theme: data.hackathon_theme,
-          number_of_participants: data.number_of_participants,
-          participate_types: data.participate_types,
-          hackathon_location_type: data.hackathon_location_type,
-          min_number_of_teammates: data.min_number_of_teammates,
-          max_number_of_teammates: data.max_number_of_teammates,
+    this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data: IHackathon) => {
+      this.hackathon = data;
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
+      this.setMeta();
+      this.imagePreview = data.banner_image ? data.banner_image.url : '';
+      this.hackathonForm.patchValue({
+        name: data.name,
+        tagline: data.tagline,
+        description: data.description,
+        hackathon_theme: data.hackathon_theme,
+        number_of_participants: data.number_of_participants,
+        participate_types: data.participate_types,
+        hackathon_location_type: data.hackathon_location_type,
+        min_number_of_teammates: data.min_number_of_teammates,
+        max_number_of_teammates: data.max_number_of_teammates,
+      });
+      if (this.hackathon.location_name) {
+        this.locationForm.patchValue({
+          name: this.hackathon.location_name,
+          address: this.hackathon.location_address,
+          map_link: this.hackathon.location_map_link,
         });
-        if (this.hackathon.location_name) {
-          this.locationForm.patchValue({
-            name: this.hackathon.location_name,
-            address: this.hackathon.location_address,
-            map_link: this.hackathon.location_map_link,
-          });
-        }
-      }),
-    );
+      }
+    });
   }
 
   onFileChange(event) {
@@ -264,6 +270,14 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       () => {
         this.isLoading = false;
       },
+    );
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      `Basic Information | Dashboard | ${this.hackathon.name} | ${this.parent.name}`,
+      this.hackathon.tagline,
+      this.hackathon.banner_image?.i320,
     );
   }
 }

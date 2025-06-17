@@ -3,8 +3,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { IUser } from 'apps/shared-models/user.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IUser } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -43,6 +43,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
@@ -54,6 +55,7 @@ export class MembersListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
@@ -128,9 +130,9 @@ export class MembersListComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      `Members - Admin - ${this.communityGroup.name}`,
+      `Members | Dashboard | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo?.i350,
     );
   }
 }

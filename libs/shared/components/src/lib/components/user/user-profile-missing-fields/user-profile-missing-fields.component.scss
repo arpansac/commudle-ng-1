@@ -1,0 +1,19 @@
+.missing-fields-container {
+  .missing-fields-title {
+    @apply com-text-lg com-font-semibold com-leading-6;
+  }
+
+  .missing-field-item {
+    @apply com-my-3 com-flex com-justify-between com-items-center;
+
+    .missing-field-text {
+      @apply com-text-gray-500 com-text-sm com-font-medium;
+      .bold-text {
+        @apply com-text-Yankees-Blue;
+      }
+    }
+    .button {
+      @apply com-w-1/4;
+    }
+  }
+}
