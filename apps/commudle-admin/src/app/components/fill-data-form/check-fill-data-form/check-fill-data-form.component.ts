@@ -4,12 +4,14 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/c
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { IDataFormEntity } from 'apps/shared-models/data_form_entity.model';
-import { Subscription, interval } from 'rxjs';
+import { Subject, Subscription, interval, takeUntil } from 'rxjs';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, IUser } from '@commudle/shared-models';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 @Component({
   selector: 'commudle-check-fill-data-form',
   templateUrl: './check-fill-data-form.component.html',
@@ -23,9 +25,11 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   faTriangleExclamation = faTriangleExclamation;
   event_slug: string;
   kommunity_slug: string;
-  openPaidForm: boolean;
+  openPaidForm = false;
   existingResponses;
   dialogRef: NbDialogRef<any>;
+  private destroy$ = new Subject<void>();
+  currentUser: IUser;
 
   @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
   @ViewChild('alreadyExistDfe', { static: true }) alreadyExistDfe: TemplateRef<any>;
@@ -36,24 +40,35 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private router: Router,
     private dataFormEntityResponsesService: DataFormEntityResponsesService,
+    private authWatchService: LibAuthwatchService,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   ngOnInit(): void {
     this.subscriptions.push(
+      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
+        this.currentUser = currentUser;
+        if (!this.currentUser) {
+          this.loginAuthService.openLoginSignupTemplate();
+        }
+      }),
       this.activatedRoute.params.subscribe((params) => {
         this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
           this.dataFormEntity = data;
-          this.getExistingResponses();
+          if (this.currentUser) {
+            this.getExistingResponses();
+          }
           this.formClosed = !this.dataFormEntity.user_can_fill_form; // this will always return true for organizers
           if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
             if (
-              this.dataFormEntity.form_type.form_type_name === 'attendee' ||
-              this.dataFormEntity.form_type.form_type_name === 'speaker'
+              (this.dataFormEntity.form_type.form_type_name === 'attendee' ||
+                this.dataFormEntity.form_type.form_type_name === 'speaker') &&
+              this.currentUser
             ) {
               this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
             }
           }
-          if (!this.formClosed) {
+          if (!this.formClosed && this.currentUser) {
             this.checkFormStatus(params.data_form_entity_id);
           }
         });

@@ -120,7 +120,9 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       );
       this.formClosed = !this.dataFormEntity.user_can_fill_form;
       if (!this.formClosed) {
-        this.getExistingResponses();
+        if (this.currentUser) {
+          this.getExistingResponses();
+        }
         this.getParent();
       }
     });

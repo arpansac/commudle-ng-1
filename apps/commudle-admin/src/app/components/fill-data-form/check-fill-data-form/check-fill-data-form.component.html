@@ -6,7 +6,7 @@
   <commudle-fill-data-form-paid [existingResponses]="existingResponses"></commudle-fill-data-form-paid>
 </div>
 <div *ngIf="openPaidForm === false && !formClosed">
-  <app-fill-data-form [existingResponses]="existingResponses.existing_responses"></app-fill-data-form>
+  <app-fill-data-form [existingResponses]="existingResponses?.existing_responses"></app-fill-data-form>
 </div>
 
 <ng-template #formClosedDialog let-data let-ref="dialogRef">
