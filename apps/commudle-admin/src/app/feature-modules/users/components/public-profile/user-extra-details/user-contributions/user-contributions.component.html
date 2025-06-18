@@ -1,3 +1,32 @@
+<nb-card *ngIf="builds?.length > 0" id="builds">
+  <nb-card-header>
+    <a [routerLink]="'.'" fragment="builds"
+      ><fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>Builds
+      <span *ngIf="builds.length > 4">({{ builds.length }})</span></a
+    >
+  </nb-card-header>
+  <nb-card-body>
+    <div class="grid">
+      <app-user-build-card *ngFor="let build of builds" [build]="build"></app-user-build-card>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="labs?.length > 0" id="labs">
+  <nb-card-header>
+    <a [routerLink]="'.'" fragment="labs"
+      ><fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
+      Labs
+      <span *ngIf="labs.length > 4">({{ labs.length }})</span></a
+    >
+  </nb-card-header>
+  <nb-card-body>
+    <div class="grid">
+      <app-user-lab-card *ngFor="let lab of labs" [lab]="lab"></app-user-lab-card>
+    </div>
+  </nb-card-body>
+</nb-card>
+
 <nb-card *ngIf="pastEvents?.length > 0" id="talks-at-events">
   <nb-card-header>
     <a [routerLink]="'.'" fragment="talks-at-events"
@@ -71,33 +100,4 @@
       <nb-icon icon="arrow-ios-downward-outline"></nb-icon>
     </div>
   </nb-card-footer>
-</nb-card>
-
-<nb-card *ngIf="builds?.length > 0" id="builds">
-  <nb-card-header>
-    <a [routerLink]="'.'" fragment="builds"
-      ><fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>Builds
-      <span *ngIf="builds.length > 4">({{ builds.length }})</span></a
-    >
-  </nb-card-header>
-  <nb-card-body>
-    <div class="grid">
-      <app-user-build-card *ngFor="let build of builds" [build]="build"></app-user-build-card>
-    </div>
-  </nb-card-body>
-</nb-card>
-
-<nb-card *ngIf="labs?.length > 0" id="labs">
-  <nb-card-header>
-    <a [routerLink]="'.'" fragment="labs"
-      ><fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
-      Labs
-      <span *ngIf="labs.length > 4">({{ labs.length }})</span></a
-    >
-  </nb-card-header>
-  <nb-card-body>
-    <div class="grid">
-      <app-user-lab-card *ngFor="let lab of labs" [lab]="lab"></app-user-lab-card>
-    </div>
-  </nb-card-body>
 </nb-card>
