@@ -46,6 +46,16 @@
         </div>
         <h5 class="title">{{ communityBuild.name }}</h5>
         <div [innerHTML]="communityBuild.description" class="description"></div>
+        <div *ngIf="communityBuild.tags?.length > 0" class="tags">
+          <app-tag
+            *appBreakpoints="'>lg'"
+            [tags]="communityBuild.tags"
+            [backgroundColor]="'com-bg-gray-100'"
+            [size]="'tiny'"
+            [fontColor]="'com-text-gray-500'"
+            [maximumTag]="4"
+          ></app-tag>
+        </div>
         <div *appBreakpoints="'>lg'" class="app-user-profile-card">
           <app-user-profile-card-medium [user]="communityBuild.user"></app-user-profile-card-medium>
         </div>

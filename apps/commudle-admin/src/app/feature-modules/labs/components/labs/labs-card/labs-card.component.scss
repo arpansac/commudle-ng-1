@@ -21,29 +21,18 @@ a:active {
     @apply com-flex com-flex-col com-justify-between com-overflow-hidden com-w-full;
 
     .labs-card-content-prefix {
-      .heading {
-        @apply com-flex com-flex-row com-justify-between md:com-mb-2 com-mb-1 com-h-7;
-        .labs-card-title {
-          @apply com-flex com-items-center md:com-mr-10 com-m-0 com-justify-between md:com-justify-normal com-w-full md:com-w-auto;
-          .title {
-            @apply md:com-text-base com-text-sm com-text-Dark-Jungle-Green com-font-semibold com-line-clamp-1 com-mr-2;
-          }
-          .steps {
-            @apply com-flex com-text-xs com-font-medium com-text-Azure;
-          }
+      .labs-card-title {
+        @apply com-flex com-items-center md:com-mr-10 com-m-0 com-justify-between md:com-justify-normal com-w-full md:com-w-auto md:com-mb-2 com-mb-1;
+        .title {
+          @apply md:com-text-base com-text-sm com-text-Dark-Jungle-Green com-font-semibold com-line-clamp-1 com-mr-2;
         }
-        .tags {
-          @apply com-ml-auto md:com-flex com-hidden;
-          ::ng-deep {
-            .nb-tag-list-tags-wrapper {
-              @apply com-flex-nowrap;
-            }
+        .steps {
+          @apply com-flex com-text-xs com-font-medium com-text-Azure;
+        }
+      }
 
-            .tag-list {
-              @apply com-flex-nowrap;
-            }
-          }
-        }
+      .tags {
+        @apply com-ml-auto md:com-flex com-hidden md:com-mb-3 com-mb-1;
       }
 
       .labs-card-date {
