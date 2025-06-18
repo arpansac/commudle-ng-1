@@ -14,6 +14,9 @@
     <p class="query-searched">
       You searched for <strong>{{ query }}</strong>
     </p>
+    <div *appBreakpoints="'<=md'">
+      <commudle-search-page-campaign></commudle-search-page-campaign>
+    </div>
     <div>
       <nb-tag-list>
         <nb-tag
@@ -505,7 +508,7 @@
               </nb-list>
             </div>
           </div>
-          <div class="right-column">
+          <div class="right-column" *appBreakpoints="'>md'">
             <commudle-search-page-campaign></commudle-search-page-campaign>
           </div>
         </div>
