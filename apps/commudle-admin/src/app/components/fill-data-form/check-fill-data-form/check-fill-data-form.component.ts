@@ -28,8 +28,9 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   openPaidForm = false;
   existingResponses;
   dialogRef: NbDialogRef<any>;
-  private destroy$ = new Subject<void>();
   currentUser: IUser;
+  userLogin: boolean;
+  private destroy$ = new Subject<void>();
 
   @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
   @ViewChild('alreadyExistDfe', { static: true }) alreadyExistDfe: TemplateRef<any>;
@@ -44,20 +45,29 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     private loginAuthService: LoginAuthService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
+      this.userLogin = this.currentUser ? true : false;
+    });
+    this.checkLoginPop();
+    this.getDataFormEntity();
+  }
 
-      if (!this.currentUser) {
+  checkLoginPop() {
+    setTimeout(() => {
+      if (this.userLogin === false) {
         this.loginAuthService.openLoginSignupTemplate();
       }
-    });
+    }, 500);
+  }
 
+  getDataFormEntity() {
     this.subscriptions.push(
       this.activatedRoute.params.subscribe((params) => {
-        if (this.currentUser) {
-          this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
-            this.dataFormEntity = data;
+        this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
+          this.dataFormEntity = data;
+          if (this.currentUser) {
             this.getExistingResponses();
             this.formClosed = !this.dataFormEntity.user_can_fill_form;
             if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
@@ -71,8 +81,8 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
             if (!this.formClosed) {
               this.checkFormStatus(params.data_form_entity_id);
             }
-          });
-        }
+          }
+        });
       }),
     );
   }
