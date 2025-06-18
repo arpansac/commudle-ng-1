@@ -7,9 +7,8 @@ describe('CommunitiesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommunitiesListComponent]
-    })
-      .compileComponents();
+      declarations: [CommunitiesListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

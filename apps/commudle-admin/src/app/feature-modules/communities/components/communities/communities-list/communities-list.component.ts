@@ -1,41 +1,17 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { InfiniteScrollModule } from '@commudle/infinite-scroll';
-import { NbFormFieldModule, NbIconModule, NbInputModule, NbTagModule } from '@commudle/theme';
-import { SharedDirectivesModule } from '../../../../../../shared-directives/shared-directives.module';
-import { ICommunity } from '@commudle/shared-models';
-import { IPageInfo } from '@commudle/shared-models';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ICommunity, IPageInfo } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { SharedComponentsModule } from '../../../../../../shared-components/shared-components.module';
-import { CommunitiesCardComponent } from '../../../app-shared-components/communities-card/communities-card.component';
-import { PublicHomeListSpeakersModule } from '../../../feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
-import { SkeletonVerticalCardsComponent } from '../../../feature-modules/skeleton-screens/components/skeleton-vertical-cards/skeleton-vertical-cards.component';
-import { CommunitiesService } from '../../../services/communities.service';
 
 @Component({
   selector: 'commudle-communities-list',
   templateUrl: './communities-list.component.html',
   styleUrls: ['./communities-list.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    NbIconModule,
-    NbFormFieldModule,
-    NbInputModule,
-    NbTagModule,
-    SkeletonVerticalCardsComponent,
-    PublicHomeListSpeakersModule,
-    InfiniteScrollModule,
-    SharedDirectivesModule,
-    CommunitiesCardComponent,
-    SharedComponentsModule,
-  ],
 })
 export class CommunitiesListComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];
@@ -49,7 +25,6 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   members_count = false;
   subscriptions: Subscription[] = [];
   limit = 0;
-  queryParamsString = '';
   searchForm;
   pageInfo: IPageInfo;
   order_by: string | undefined;

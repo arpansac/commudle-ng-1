@@ -4,16 +4,15 @@ import { Error404PageComponent, LibErrorHandlerComponent } from 'apps/lib-error-
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { AuthGuard } from 'apps/shared-services/lib-authwatch.guard';
 import { AboutComponent } from './components/about/about.component';
-import { CommunitiesComponent } from './components/communities/communities.component';
 import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
+import { FillDataFormConfirmationComponent } from './components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { SpeakerResourceFormComponent } from './components/speaker-resource-form/speaker-resource-form.component';
+import { UserAccountMenuComponent } from './components/user-account-menu/user-account-menu.component';
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
-import { UserAccountMenuComponent } from './components/user-account-menu/user-account-menu.component';
-import { FillDataFormConfirmationComponent } from './components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
 
 const routes: Routes = [
   // TODO: discuss in future for order of paths
@@ -131,7 +130,7 @@ const routes: Routes = [
   },
   {
     path: 'communities',
-    loadComponent: () => import('./components/communities/communities.component').then((c) => c.CommunitiesComponent),
+    loadChildren: () => import('./feature-modules/communities/communities.module').then((m) => m.CommunitiesModule),
   },
   {
     path: 'my-profile',

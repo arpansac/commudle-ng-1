@@ -78,7 +78,6 @@ import { UserProfileComponent } from './app-shared-components/user-profile/user-
 import { AppComponent } from './app.component';
 import { AboutOldComponent } from './components/about-old/about-old.component';
 import { AboutComponent } from './components/about/about.component';
-import { CommunitiesPostsComponent } from './components/communities/communities-posts/communities-posts.component';
 import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
 import { FillDataFormPaidComponent } from './components/fill-data-form/fill-data-form-paid/fill-data-form-paid.component';
 import { FillDataFormComponent } from './components/fill-data-form/fill-data-form.component';
@@ -135,7 +134,6 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     AppComponent,
     OrganizerCommunitiesListComponent,
     CommunityComponent,
-    CommunitiesPostsComponent,
     HomeComponent,
     FillDataFormComponent,
     LogoutComponent,

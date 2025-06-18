@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CommunitiesFeaturedComponent } from './communities-featured.component';
 
 describe('CommunitiesFeaturedComponent', () => {
