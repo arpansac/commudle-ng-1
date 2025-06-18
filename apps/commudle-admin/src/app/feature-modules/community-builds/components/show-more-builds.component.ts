@@ -30,7 +30,7 @@ export class ShowMoreBuildsComponent implements OnInit, OnDestroy {
   getBuilds(): void {
     this.subscriptions.push(
       this.appUsersService.communityBuilds(this.user.username).subscribe((value) => {
-        this.builds = value.community_builds.filter((build) => build.id !== this.curBuild.id);
+        this.builds = value.community_builds.filter((build) => build.id !== this.curBuild.id).reverse();
       }),
     );
   }
