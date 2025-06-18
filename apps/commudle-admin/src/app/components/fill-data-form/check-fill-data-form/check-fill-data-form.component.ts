@@ -45,33 +45,34 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
+      this.currentUser = currentUser;
+
+      if (!this.currentUser) {
+        this.loginAuthService.openLoginSignupTemplate();
+      }
+    });
+
     this.subscriptions.push(
-      this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
-        this.currentUser = currentUser;
-        if (!this.currentUser) {
-          this.loginAuthService.openLoginSignupTemplate();
-        }
-      }),
       this.activatedRoute.params.subscribe((params) => {
-        this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
-          this.dataFormEntity = data;
-          if (this.currentUser) {
+        if (this.currentUser) {
+          this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
+            this.dataFormEntity = data;
             this.getExistingResponses();
-          }
-          this.formClosed = !this.dataFormEntity.user_can_fill_form; // this will always return true for organizers
-          if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
-            if (
-              (this.dataFormEntity.form_type.form_type_name === 'attendee' ||
-                this.dataFormEntity.form_type.form_type_name === 'speaker') &&
-              this.currentUser
-            ) {
-              this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
+            this.formClosed = !this.dataFormEntity.user_can_fill_form;
+            if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
+              if (
+                this.dataFormEntity.form_type.form_type_name === 'attendee' ||
+                this.dataFormEntity.form_type.form_type_name === 'speaker'
+              ) {
+                this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
+              }
             }
-          }
-          if (!this.formClosed && this.currentUser) {
-            this.checkFormStatus(params.data_form_entity_id);
-          }
-        });
+            if (!this.formClosed) {
+              this.checkFormStatus(params.data_form_entity_id);
+            }
+          });
+        }
       }),
     );
   }
