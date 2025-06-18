@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AgenciesComponent } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/components/agencies/agencies.component';
+import { AgenciesComponent } from './agencies.component';
 
 describe('AgenciesComponent', () => {
   let component: AgenciesComponent;

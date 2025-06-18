@@ -5,10 +5,10 @@ import { NbButtonModule, NbInputModule, NbTooltipModule } from '@commudle/theme'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { FeaturesModule } from 'apps/commudle-admin/src/app/feature-modules/features/features.module';
-import { AgenciesComponent } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/components/agencies/agencies.component';
-import { PublicPagesRoutingModule } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/public-agencies-routing.module';
 import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { AgenciesComponent } from './components/agencies/agencies.component';
+import { PublicPagesRoutingModule } from './public-agencies-routing.module';
 
 @NgModule({
   declarations: [AgenciesComponent],
