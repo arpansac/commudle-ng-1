@@ -25,7 +25,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   faTriangleExclamation = faTriangleExclamation;
   event_slug: string;
   kommunity_slug: string;
-  openPaidForm = false;
+  openPaidForm: boolean;
   existingResponses;
   dialogRef: NbDialogRef<any>;
   currentUser: IUser;
@@ -69,18 +69,18 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
           this.dataFormEntity = data;
           if (this.currentUser) {
             this.getExistingResponses();
-            this.formClosed = !this.dataFormEntity.user_can_fill_form;
-            if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
-              if (
-                this.dataFormEntity.form_type.form_type_name === 'attendee' ||
-                this.dataFormEntity.form_type.form_type_name === 'speaker'
-              ) {
-                this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
-              }
+          }
+          this.formClosed = !this.dataFormEntity.user_can_fill_form;
+          if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP && this.currentUser) {
+            if (
+              this.dataFormEntity.form_type.form_type_name === 'attendee' ||
+              this.dataFormEntity.form_type.form_type_name === 'speaker'
+            ) {
+              this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
             }
-            if (!this.formClosed) {
-              this.checkFormStatus(params.data_form_entity_id);
-            }
+          }
+          if (!this.formClosed && this.currentUser) {
+            this.checkFormStatus(params.data_form_entity_id);
           }
         });
       }),
