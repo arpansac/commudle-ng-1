@@ -5,7 +5,7 @@
     medium: size === 'medium'
   }"
 >
-  <a [routerLink]="['/communities', community.slug]">
+  <a [routerLink]="['/communities', community.slug ? community.slug : community.id]">
     <div class="logo">
       <img
         alt="{{ community.name }}"
