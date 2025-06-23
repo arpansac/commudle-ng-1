@@ -30,6 +30,8 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
   currentUser: IUser;
   userLogin: boolean;
+  loading = true;
+
   private destroy$ = new Subject<void>();
 
   @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
@@ -49,9 +51,9 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
       this.userLogin = this.currentUser ? true : false;
+      this.getDataFormEntity();
     });
     this.checkLoginPop();
-    this.getDataFormEntity();
   }
 
   checkLoginPop() {
@@ -103,6 +105,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   }
 
   getExistingResponses() {
+    this.loading = true;
     this.dataFormEntityResponsesService.getExistingResponse(this.dataFormEntity.id).subscribe((data) => {
       this.existingResponses = data;
       if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP) {
@@ -110,6 +113,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
       } else {
         this.openPaidForm = false;
       }
+      this.loading = false;
     });
   }
 
