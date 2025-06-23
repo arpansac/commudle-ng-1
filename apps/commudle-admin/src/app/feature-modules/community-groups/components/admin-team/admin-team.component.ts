@@ -6,8 +6,8 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-admin-team',
@@ -39,6 +39,7 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.communityGroup = data.community_group;
@@ -52,6 +53,7 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
@@ -89,9 +91,9 @@ export class AdminTeamComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      `Admin Team - Admin - ${this.communityGroup.name}`,
+      `Admin Team | Dashboard | ${this.communityGroup.name}`,
       this.communityGroup.mini_description,
-      this.communityGroup.logo.i350,
+      this.communityGroup.logo?.i350,
     );
   }
 }

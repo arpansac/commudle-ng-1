@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventUpdatesService } from 'apps/commudle-admin/src/app/services/event-updates.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { IEvent } from 'apps/shared-models/event.model';
 import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import * as moment from 'moment';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
+import { Subscription } from 'rxjs';
+import { IEvent, ICommunity } from '@commudle/shared-models';
+
 @Component({
   selector: 'app-event-updates',
   templateUrl: './event-updates.component.html',
@@ -14,6 +16,7 @@ import { ToastrService } from '@commudle/shared-services';
 })
 export class EventUpdatesComponent implements OnInit {
   event: IEvent;
+  community: ICommunity;
   moment = moment;
   EEventStatuses = EEventStatuses;
 
@@ -25,18 +28,31 @@ export class EventUpdatesComponent implements OnInit {
     faXmark,
   };
 
+  subscriptions: Subscription[] = [];
+
   isLoading = false;
   constructor(
     private eventUpdatesService: EventUpdatesService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToastrService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.parent.data.subscribe((value) => {
-      this.event = value.event;
-      this.getEventUpdates();
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.data.subscribe((value) => {
+        this.event = value.event;
+        this.community = value.community;
+        this.setMeta();
+        this.getEventUpdates();
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getEventUpdates() {
@@ -107,5 +123,9 @@ export class EventUpdatesComponent implements OnInit {
   removeImage(index) {
     this.images.splice(index, 1);
     this.selectedImages.splice(index, 1);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Send Updates | Dashboard | ${this.event.name} | ${this.community.name}`);
   }
 }

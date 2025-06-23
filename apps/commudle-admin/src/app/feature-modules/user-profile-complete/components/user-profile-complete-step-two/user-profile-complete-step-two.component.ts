@@ -1,21 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GoogleTagManagerService } from '@commudle/shared-services';
+import { AuthService, GoogleTagManagerService } from '@commudle/shared-services';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { IUser } from 'apps/shared-models/user.model';
-import { IAttachedFile } from 'apps/shared-models/attached-file.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import * as confetti from 'canvas-confetti';
 import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
+import { IAttachedFile, IUser } from '@commudle/shared-models';
+import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
 @Component({
-  selector: 'app-user-profile-complete-step-two',
+  selector: 'commudle-user-profile-complete-step-two',
   templateUrl: './user-profile-complete-step-two.component.html',
   styleUrls: ['./user-profile-complete-step-two.component.scss'],
 })
@@ -23,7 +21,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
   validBasicDetailsStatus: boolean;
   validUsername = true;
   currentUser: ICurrentUser;
-  profileStepOneForm;
+  profileStepOneForm: FormGroup;
   user: IUser;
   fileName: string;
   uploadedResume: IAttachedFile;
@@ -38,7 +36,7 @@ export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
     private userProfileManagerService: UserProfileManagerService,
     private gtm: GoogleTagManagerService,
     private fb: FormBuilder,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private usersService: AppUsersService,
     private profileStatusBarService: ProfileStatusBarService,
   ) {

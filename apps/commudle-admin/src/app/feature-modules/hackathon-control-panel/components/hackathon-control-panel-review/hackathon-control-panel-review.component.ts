@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import * as moment from 'moment';
-import { RoundService, ToastrService, NoteService, EmailerPreviewService } from '@commudle/shared-services';
+import { RoundService, ToastrService, NoteService, EmailerPreviewService, SeoService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import {
   EDbModels,
@@ -16,15 +16,17 @@ import {
   IHackathonUserResponse,
   INote,
   IRound,
+  ICommunity,
 } from '@commudle/shared-models';
 import { faXmark, faPlus, faCheck, faUpRightFromSquare, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonOverallRoundSelectionUpdateEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-overall-round-selection-update-email/hackathon-overall-round-selection-update-email.component';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -55,7 +57,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   message = '';
   selectedTeamDetails: IHackathonTeam;
   selectedUserResponsesDetails: IHackathonUserResponse[];
-  communityId: string | number;
   EInvitationStatus = EInvitationStatus;
   selectedResponse;
   isLoading = false;
@@ -73,6 +74,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   dialogReference: NbDialogRef<any>;
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
+
+  parent: ICommunity | ICommunityGroup;
+  subscriptions: Subscription[] = [];
 
   tinyMCE = {
     height: 200,
@@ -119,6 +123,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     private hurService: HackathonUserResponsesService,
     private hackathonEmailPreview: EmailerPreviewService,
     private router: Router,
+    private seoService: SeoService,
   ) {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
@@ -133,14 +138,16 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.communityId = params.get('community_id');
-      this.hackathonId = params.get('hackathon_id');
-      this.fetchUserResponses();
-      this.fetchHackathon(params.get('hackathon_id'));
-      this.indexRounds(params.get('hackathon_id'));
-      this.indexTracks(params.get('hackathon_id'));
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonId = params.get('hackathon_id');
+        this.fetchUserResponses();
+        this.fetchHackathon(params.get('hackathon_id'));
+        this.indexRounds(params.get('hackathon_id'));
+        this.indexTracks(params.get('hackathon_id'));
+      }),
+    );
 
     this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
       this.page = 1;
@@ -148,14 +155,25 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetchHackathon(hackathonId) {
-    this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
-      this.hackathon = data;
-    });
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.dialogRef?.close();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  ngOnDestroy(): void {
-    this.dialogRef?.close();
+  fetchHackathon(hackathonId) {
+    this.subscriptions.push(
+      this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
+        this.hackathon = data;
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
+        if (this.parent && this.hackathon) {
+          this.setMeta();
+        }
+      }),
+    );
   }
 
   fetchUserResponses() {
@@ -393,5 +411,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   goToEmails() {
     this.router.navigate(['../emails'], { relativeTo: this.activatedRoute });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
+    this.seoService.noIndex(true);
   }
 }

@@ -22,7 +22,7 @@ p {
       }
 
       .community-build-card-details {
-        @apply com-w-full md:com-pl-4 com-pl-3 md:com-pr-[74px] com-pt-0;
+        @apply com-w-full md:com-pl-4 com-pl-3 com-pt-0;
 
         .community-build-card-title-time {
           @apply md:com-flex com-block md:com-flex-row com-flex-col com-items-center md:com-mb-2 com-mb-1;
@@ -41,7 +41,7 @@ p {
         }
 
         .description {
-          @apply com-text-xs md:com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-2 com-hidden md:com-flex com-line-clamp-1;
+          @apply com-text-xs md:com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-4 com-hidden md:com-flex com-line-clamp-1;
         }
       }
     }
@@ -49,4 +49,8 @@ p {
 }
 .votes {
   @apply md:com-ml-[68px] com-ml-2 md:com-border com-border-0 com-border-Bright-Gray com-border-l com-border-solid com-px-[18px] md:com-py-3 com-py-1 md:com-rounded-lg com-rounded-none md:com-h-fit;
+}
+
+.tags {
+  @apply com-mb-4;
 }

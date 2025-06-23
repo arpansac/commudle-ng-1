@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels, IHackathon } from '@commudle/shared-models';
-import { RoundService, ToastrService } from '@commudle/shared-services';
+import { IRound, EDbModels, IHackathon, ICommunity } from '@commudle/shared-models';
+import { RoundService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
   faPlus,
@@ -15,6 +15,8 @@ import {
   faSackDollar,
 } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { Subscription } from 'rxjs';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -36,8 +38,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   };
 
   hackathonSlug = '';
-  communitySlug: string;
   dialogRef: any;
+
+  parent: ICommunity | ICommunityGroup;
+  subscriptions: Subscription[] = [];
 
   today: string = new Date().toISOString().split('T')[0]; // Get today's date in 'YYYY-MM-DD' format
 
@@ -49,6 +53,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
     private toastrService: ToastrService,
     private datePipe: DatePipe,
     private hackathonService: HackathonService,
+    private seoService: SeoService,
   ) {
     this.roundForm = this.fb.group({
       name: ['', Validators.required],
@@ -59,12 +64,20 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      this.communitySlug = params.get('community_id');
-      this.fetchHackathon();
-      this.indexRounds(params.get('hackathon_id'));
-    });
+    this.seoService.noIndex(true);
+
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        this.fetchHackathon();
+        this.indexRounds(params.get('hackathon_id'));
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   indexRounds(hackathonId) {
@@ -75,7 +88,12 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
 
   fetchHackathon() {
     this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data) => {
+      // TODO: Add Community Group in Future
+      if (data.community) {
+        this.parent = data.community;
+      }
       this.hackathon = data;
+      this.setMeta();
     });
   }
 
@@ -151,5 +169,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
     });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }

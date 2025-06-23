@@ -10,6 +10,7 @@ import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 import { GoogleTagManagerService } from './google-tag-manager.service';
 import { AuthService as authService } from '@commudle/auth';
+import { AppUsersService } from './app-users.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +29,7 @@ export class AuthService {
     private cookieService: CookieService,
     private gtm: GoogleTagManagerService,
     private injector: Injector,
+    private appUsersService: AppUsersService,
   ) {}
 
   // to check if cookie exists
@@ -75,6 +77,7 @@ export class AuthService {
             com_profile_completed: data.user.profile_completed,
             com_user_tags: data.user.tags.map((tag) => tag.name),
           });
+          this.appUsersService.fetchProfileCompletionStatus();
         } else {
           this.currentUserVerified.next(false);
           this.cookieService.delete(environment.auth_cookie_name, '/', environment.production ? '.commudle.com' : '');

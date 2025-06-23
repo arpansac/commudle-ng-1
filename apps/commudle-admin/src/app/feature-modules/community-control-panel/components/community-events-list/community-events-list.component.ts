@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlus, faPlusSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
-import { IEvent } from 'apps/shared-models/event.model';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
 import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
 import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ICommunity, IEvent } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-events-list',
@@ -19,13 +20,13 @@ import { Subject } from 'rxjs';
 export class CommunityEventsListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
 
-  communityId;
+  community: ICommunity;
+
   isLoading = true;
   events: IEvent[];
   EEventStatuses = EEventStatuses;
 
   query = '';
-  faPlusSquare = faPlusSquare;
   icons = {
     faPlus,
     faArrowUpRightFromSquare,
@@ -36,10 +37,9 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   page = 1;
 
   eventStatuses = Object.values(EEventStatuses);
-  activeEventStatuses: string[] = [];
+  activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.COMPLETED];
 
   searchForm;
-
   //angular2 smart-table, not being used anymore (kept for reference)
 
   // tableSettings: Settings = {
@@ -96,26 +96,28 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private router: Router,
     private eventsService: EventsService,
     private fb: FormBuilder,
+    private seoService: SeoService,
   ) {
-    this.activeEventStatuses = [];
     this.searchForm = this.fb.group({
       name: [''],
     });
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.communityId = params.community_id;
-
+    this.seoService.noIndex(true);
+    this.activatedRoute.parent.data.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.community = value.community;
+      this.setMeta();
       this.getCommunityEvents();
+      this.search();
     });
-    this.search();
   }
 
   getCommunityEvents() {
     this.isLoading = true;
     this.eventsService
-      .communityEventsForEmail(this.communityId, this.page, this.count, this.query, this.activeEventStatuses)
+      .communityEventsForEmail(this.community.id, this.page, this.count, this.query, this.activeEventStatuses)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.events = data.values;
         this.total = data.total;
@@ -134,7 +136,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
           return this.eventsService.communityEventsForEmail(
-            this.communityId,
+            this.community.id,
             this.page,
             this.count,
             this.query,
@@ -151,6 +153,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.seoService.noIndex(false);
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -167,5 +170,9 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     this.total = 0;
     this.page = 1;
     this.getCommunityEvents();
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Events | Dashboard | ${this.community.name}`);
   }
 }

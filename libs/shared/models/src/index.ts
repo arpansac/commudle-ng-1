@@ -50,3 +50,6 @@ export * from './lib/user-activity-event-type.enum';
 export * from './lib/campaign-stats.model';
 export * from './lib/product-price.model';
 export * from './lib/contact-info.model';
+export * from './lib/location.model';
+export * from './lib/profile-completion-status.model';
+export * from './lib/user-stats.model';

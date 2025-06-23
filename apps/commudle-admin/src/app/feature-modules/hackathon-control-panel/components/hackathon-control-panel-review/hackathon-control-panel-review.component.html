@@ -4,11 +4,11 @@
       Applications & Projects
       <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
       <a
-        *ngIf="communityId && hackathon && hackathon.hackathon_response_group"
+        *ngIf="parent.id && hackathon && hackathon.hackathon_response_group"
         target="_blank"
         [routerLink]="[
           '/communities',
-          communityId,
+          parent.id,
           'hackathons',
           hackathon.slug,
           'fill-form',
@@ -57,7 +57,7 @@
 
       <a
         *ngIf="hackathon && userResponses && userResponses.length > 0"
-        [routerLink]="['/admin', 'communities', communityId, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
+        [routerLink]="['/admin', 'communities', parent.id, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
       >
         <button nbButton status="primary" class="com-w-max" size="small">Select Winner</button>
       </a>

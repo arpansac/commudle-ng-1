@@ -1,18 +1,20 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { ICommunity } from 'apps/shared-models/community.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { Subscription } from 'rxjs';
+import { ICommunity } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-edit-details',
   templateUrl: './community-edit-details.component.html',
   styleUrls: ['./community-edit-details.component.scss'],
 })
-export class CommunityEditDetailsComponent implements OnInit {
+export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
   community: ICommunity;
   uploadedLogo: any;
   uploadedBanner: any;
@@ -26,6 +28,8 @@ export class CommunityEditDetailsComponent implements OnInit {
   @Output() updateCommunity = new EventEmitter();
 
   communityForm;
+
+  subscriptions: Subscription[] = [];
 
   tinyMCE = {
     placeholder: 'Start typing here...*',
@@ -66,6 +70,7 @@ export class CommunityEditDetailsComponent implements OnInit {
     private communitiesService: CommunitiesService,
     private toastLogService: LibToastLogService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private seoService: SeoService,
     @Inject(DOCUMENT) private document: Document,
   ) {
     this.communityForm = this.fb.group({
@@ -87,10 +92,22 @@ export class CommunityEditDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.params.subscribe((params) => {
-      this.getCommunityDetails(params.community_id);
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.params.subscribe((params) => {
+        this.getCommunityDetails(params.community_id);
+      }),
+    );
     this.initAutocomplete();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.seoService.noIndex(false);
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Community Profile | Dashboard | ${this.community.name}`);
   }
 
   getCommunityDetails(communityId) {
@@ -103,6 +120,8 @@ export class CommunityEditDetailsComponent implements OnInit {
       if (this.community.banner_image) {
         this.uploadedBanner = this.community.banner_image.url;
       }
+
+      this.setMeta();
     });
   }
 

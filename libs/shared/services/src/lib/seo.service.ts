@@ -94,13 +94,13 @@ export class SeoService {
     this.setTitle(title);
     this.setTag('description', description);
     this.setTag('image', image);
-    this.setTag('og:title', title);
-    this.setTag('og:description', description);
     this.setTag('og:image', image);
     this.setTag('og:image:secure_url', image);
+    this.setTag('twitter:image', image);
+    this.setTag('og:title', title);
+    this.setTag('og:description', description);
     this.setTag('twitter:title', title);
     this.setTag('twitter:description', description);
-    this.setTag('twitter:image', image);
     this.setTag('og:type', contentType);
   }
 

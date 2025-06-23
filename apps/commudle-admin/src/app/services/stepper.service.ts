@@ -1,88 +1,58 @@
-import { Injectable } from '@angular/core';
-import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { BehaviorSubject } from 'rxjs';
-import { StepperComponent } from 'apps/commudle-admin/src/app/components/stepper/stepper.component';
+import { Injectable, OnDestroy } from '@angular/core';
+import { IUser } from '@commudle/shared-models';
+import { AuthService } from '@commudle/shared-services';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StepperService {
+export class StepperService implements OnDestroy {
   private profileWeights: Record<string, number> = {
-    username: 5,
+    goals: 15,
+    skills: 10,
+    experience_level: 10,
     avatar: 10,
     name: 5,
-    designation: 20,
-    about_me: 15,
-    location: 10,
-    gender: 10,
-    skills: 25,
-    // socialLinks: 10,
+    designation: 10,
+    location: 5,
+    about_me: 10,
+    gender: 5,
+    username: 10,
+    user_domain: 10,
   };
 
-  // private socialLinks = [
-  //   'personal_website',
-  //   'github',
-  //   'linkedin',
-  //   'twitter',
-  //   'youtube',
-  //   'medium',
-  //   'dribble',
-  //   'behance',
-  //   'gitlab',
-  //   'facebook',
-  // ];
-
-  currentUser: ICurrentUser;
-  dialogRef: NbDialogRef<any>;
-
-  private profileCompletePercentage: BehaviorSubject<number> = new BehaviorSubject(0);
+  private profileCompletePercentage = new BehaviorSubject<number>(0);
   public profileCompletePercentage$ = this.profileCompletePercentage.asObservable();
 
-  constructor(private dialogService: NbDialogService, private authWatchService: LibAuthwatchService) {}
+  private destroy$ = new Subject<void>();
 
-  getProfilePercentage() {
-    this.authWatchService.currentUser$.subscribe((currentUser) => {
-      this.currentUser = currentUser;
-      if (this.currentUser) {
-        this.calculateProfilePercentage();
-      }
+  constructor(private authService: AuthService) {}
+
+  getProfilePercentage(): void {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      this.calculateProfilePercentage(user);
     });
   }
 
-  calculateProfilePercentage() {
+  calculateProfilePercentage(user: IUser): void {
     let profilePercentage = 0;
 
-    if (this.currentUser.tags.length >= 1) {
-      profilePercentage += this.profileWeights['skills'];
+    // Check tags for skills
+    if (user.tags?.length >= 1) {
+      profilePercentage += this.profileWeights.skills;
     }
 
-    // let socialLinksPresent = 0;
-
-    // for (const link of this.socialLinks) {
-    //   if (this.currentUser[link]) {
-    //     socialLinksPresent += 1;
-    //   }
-    // }
-
-    // if (socialLinksPresent >= 3) {
-    //   profilePercentage += this.profileWeights['socialLinks'];
-    // }
-
-    for (const field in this.profileWeights) {
-      if (this.currentUser[field]) {
-        profilePercentage += this.profileWeights[field];
+    // Check all other fields
+    for (const [field, weight] of Object.entries(this.profileWeights)) {
+      if (field !== 'skills' && user[field]) {
+        profilePercentage += weight;
       }
     }
     this.profileCompletePercentage.next(profilePercentage);
   }
 
-  showStepper() {
-    // this.dialogRef = this.dialogService.open(StepperComponent, {
-    //   hasScroll: false,
-    //   closeOnBackdropClick: false,
-    //   closeOnEsc: false,
-    // });
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

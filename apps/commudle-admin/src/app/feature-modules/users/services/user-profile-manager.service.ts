@@ -122,4 +122,27 @@ export class UserProfileManagerService {
       this.user.next(data);
     });
   }
+
+  patchFormValues(currentUser: IUser) {
+    this.userProfileForm.patchValue({
+      name: currentUser.name,
+      about_me: currentUser.about_me,
+      designation: currentUser.designation,
+      experience_level: currentUser.experience_level,
+      user_domain: currentUser.user_domain,
+      location: currentUser.location,
+      gender: currentUser.gender,
+      personal_website: currentUser.personal_website,
+      github: currentUser.github,
+      linkedin: currentUser.linkedin,
+      dribbble: currentUser.dribbble,
+      behance: currentUser.behance,
+      medium: currentUser.medium,
+      gitlab: currentUser.gitlab,
+      facebook: currentUser.facebook,
+      youtube: currentUser.youtube,
+      phone: currentUser.phone,
+      instagram: currentUser.instagram,
+    });
+  }
 }

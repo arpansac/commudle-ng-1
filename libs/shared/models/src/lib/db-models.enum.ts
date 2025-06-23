@@ -18,4 +18,6 @@ export enum EDbModels {
   CAMPAIGN = 'Campaign',
   PURCHASE_ORDER = 'PurchaseOrder',
   PRODUCT_PRICE = 'ProductPrice',
+  ADMIN_SURVEY = 'AdminSurvey',
+  SURVEY = 'Survey',
 }

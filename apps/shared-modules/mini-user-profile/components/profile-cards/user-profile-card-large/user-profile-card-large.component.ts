@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NbButtonAppearance } from '@commudle/theme';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
-import { IUser } from 'apps/shared-models/user.model';
-
+import { IUser } from '@commudle/shared-models';
 @Component({
   selector: 'app-user-profile-card-large',
   templateUrl: './user-profile-card-large.component.html',

@@ -7,7 +7,7 @@
       status="primary"
       size="small"
       [routerLink]="['/forms', 'new']"
-      [queryParams]="{ parent_id: newFormParentId, parent_type: 'Kommunity' }"
+      [queryParams]="{ parent_id: community.id, parent_type: 'Kommunity' }"
     >
       <fa-icon [icon]="faPlusSquare"></fa-icon>
       &nbsp; Create New Form

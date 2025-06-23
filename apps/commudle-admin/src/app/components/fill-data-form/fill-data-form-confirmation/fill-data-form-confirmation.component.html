@@ -1,0 +1,145 @@
+<div class="com-bg-white com-pb-16">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <commudle-loading-spinner *ngIf="isLoading; else confirmationContainer"></commudle-loading-spinner>
+        <ng-template #confirmationContainer>
+          <div *ngIf="isFormFilled; else redirecting" class="confirmation-card">
+            <!-- Event or general confirmation header -->
+            <div class="confirmation-header" *ngIf="event">
+              <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
+              <h1 class="title" *ngIf="!formIsPaid || !etoUuid">
+                Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
+              </h1>
+              <h1 *ngIf="formIsPaid && etoUuid" class="title paid-form">
+                Your Purchase is Successful! for {{ event?.name }}
+              </h1>
+              <h3 *ngIf="formIsPaid && etoUuid" class="sub-heading">
+                We've saved your spot — and you'll receive your entry pass shortly via email.
+              </h3>
+              <h3 *ngIf="approvalBased && !etoUuid" class="sub-heading">
+                Your submission requires approval. You'll receive a payment link once your application is shortlisted.
+              </h3>
+            </div>
+            <div class="confirmation-header" *ngIf="!event">
+              <div class="check-icon">😃</div>
+              <h1 class="title">Thank you we have saved your response for</h1>
+              <span
+                class="community-org-name"
+                *ngIf="
+                  dataFormEntity?.redirectable_entity_type === EDbModels.SURVEY &&
+                  (dataFormEntity?.community || dataFormEntity?.community_group)
+                "
+              >
+                {{ dataFormEntity.community?.name || dataFormEntity.community_group?.name }}
+              </span>
+            </div>
+
+            <!-- User profile section -->
+            <ng-container *ngIf="currentUser && isProfileCompleted">
+              <div class="profile-card">
+                <div class="profile-preview-card">
+                  <div class="card-heading">Profile Card Preview</div>
+                  <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+                </div>
+
+                <div class="profile-completion-card">
+                  <div class="card-heading">Profile's Progress</div>
+                  <commudle-profile-completion-progress></commudle-profile-completion-progress>
+                </div>
+              </div>
+
+              <div class="missing-field-card">
+                <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="currentUser && !isProfileCompleted">
+              <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+              <commudle-userprofile-details
+                [userProfileDetails]="userProfileDetails"
+                [username]="currentUser.username"
+              ></commudle-userprofile-details>
+            </ng-container>
+
+            <!-- Event details -->
+            <div *ngIf="event" class="event-card">
+              <h2 class="card-heading">Event Details</h2>
+              <commudle-event-registered-card [event]="event"></commudle-event-registered-card>
+            </div>
+
+            <!-- Speakers section -->
+            <div *ngIf="speakers?.length" class="speakers-card">
+              <h2 class="card-heading">Follow Event Speakers</h2>
+              <div *ngFor="let speaker of speakers | sortBy : ['speaker.user.name'] : ['asc']" class="speaker">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [showSpeakersCount]="true"
+                  [user]="speaker.user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Volunteers section -->
+            <div *ngIf="volunteers?.length" class="volunteers-card">
+              <h2 class="card-heading">Follow Event Volunteers</h2>
+              <div *ngFor="let user of volunteers" class="volunteer">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Community leaders section -->
+            <div *ngIf="communityLeaders?.length" class="leaders-card">
+              <h2 class="card-heading">Follow Community Leaders</h2>
+              <div *ngFor="let user of communityLeaders" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Community group leaders section -->
+            <div *ngIf="communityGroupLeaders?.length" class="cg-leaders-card">
+              <h2 class="card-heading">Follow Organization Admins</h2>
+              <div *ngFor="let uru of communityGroupLeaders" class="cg-leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="uru.user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Communities section -->
+            <div *ngIf="communities?.length" class="communities-card">
+              <h2 class="card-heading">Top Communities from {{ dataFormEntity.community_group.name }}</h2>
+              <div *ngFor="let community of communities" class="community">
+                <commudle-featured-communities-card
+                  [featuredCommunity]="community"
+                ></commudle-featured-communities-card>
+              </div>
+            </div>
+          </div>
+          <ng-template #redirecting>
+            <div class="redirecting-container">
+              <commudle-loading-spinner></commudle-loading-spinner>
+              <span>Redirecting to ... </span>
+              <a [routerLink]="['/fill-form', dataFormEntity.id]">Form filling page</a>
+            </div>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

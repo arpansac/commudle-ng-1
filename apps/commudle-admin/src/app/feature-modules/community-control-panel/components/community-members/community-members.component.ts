@@ -1,20 +1,20 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IUser } from 'apps/shared-models/user.model';
-import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { Subject, takeUntil, Subscription } from 'rxjs';
+import { ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-members',
   templateUrl: './community-members.component.html',
   styleUrls: ['./community-members.component.scss'],
 })
-export class CommunityMembersComponent implements OnInit {
-  communityId;
+export class CommunityMembersComponent implements OnInit, OnDestroy {
   page = 1;
   count = 10;
   total = 0;
@@ -43,6 +43,11 @@ export class CommunityMembersComponent implements OnInit {
   selectedUserRoles: IUserRolesUser[] = [];
   removeUserForm;
 
+  subscriptions: Subscription[] = [];
+  community: ICommunity;
+
+  private destroy$ = new Subject<void>();
+
   @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<any>;
   @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<any>;
 
@@ -53,6 +58,7 @@ export class CommunityMembersComponent implements OnInit {
     private dialogService: NbDialogService,
     private toastrService: NbToastrService,
     private menuService: NbMenuService,
+    private seoService: SeoService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -68,10 +74,30 @@ export class CommunityMembersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.communityId = this.activatedRoute.parent.parent.snapshot.params.community_id;
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.parent.data.subscribe((value) => {
+        if (value.community) {
+          this.community = value.community;
+          this.setMeta();
+        }
+      }),
+    );
     this.getMembers();
     this.search();
     this.handleContextMenu();
+  }
+
+  ngOnDestroy() {
+    this.seoService.noIndex(false);
+    // destroy$ used in the search method
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Community Members | Dashboard | ${this.community.name}`);
   }
 
   getMembers() {
@@ -79,7 +105,7 @@ export class CommunityMembersComponent implements OnInit {
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
-        this.communityId,
+        this.community.id,
         this.count,
         this.page,
         this.employer,
@@ -99,13 +125,14 @@ export class CommunityMembersComponent implements OnInit {
     this.searchForm.valueChanges
       .pipe(
         debounceTime(800),
+        takeUntil(this.destroy$),
         switchMap(() => {
           this.page = 1;
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
           return this.userRolesUsersService.getCommunityMembers(
             this.query,
-            this.communityId,
+            this.community.id,
             this.count,
             this.page,
             this.employer,
@@ -142,7 +169,7 @@ export class CommunityMembersComponent implements OnInit {
       .subscribe((menuItem) => {
         switch (menuItem.title) {
           case 'Remove':
-            this.getUserRoles(this.activeContextMenuUser.id, this.communityId);
+            this.getUserRoles(this.activeContextMenuUser.id, this.community.id);
             this.openDialog(this.removeUserDialog, this.activeContextMenuUser);
             break;
           case 'Remove & Block':
@@ -153,7 +180,7 @@ export class CommunityMembersComponent implements OnInit {
   }
 
   removeUser() {
-    this.userRolesUsersService.removeUser(this.removeUserForm.value, this.communityId).subscribe(() => {
+    this.userRolesUsersService.removeUser(this.removeUserForm.value, this.community.id).subscribe(() => {
       this.toastrService.success('User removed from community', 'Success');
       this.getMembers();
     });
@@ -178,7 +205,7 @@ export class CommunityMembersComponent implements OnInit {
   }
 
   blockUser(userId) {
-    this.userRolesUsersService.blockUser(userId, this.communityId).subscribe(() => {
+    this.userRolesUsersService.blockUser(userId, this.community.id).subscribe(() => {
       this.toastrService.success('User blocked from community', 'Success');
       this.getMembers();
     });

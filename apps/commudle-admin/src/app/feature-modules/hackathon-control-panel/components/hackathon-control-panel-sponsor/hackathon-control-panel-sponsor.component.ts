@@ -1,17 +1,21 @@
 import { NbDialogService } from '@commudle/theme';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, SeoService } from '@commudle/shared-services';
+import { Subscription } from 'rxjs';
+import { IHackathon, ICommunity } from '@commudle/shared-models';
+import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+
 @Component({
   selector: 'commudle-hackathon-control-panel-sponsor',
   templateUrl: './hackathon-control-panel-sponsor.component.html',
   styleUrls: ['./hackathon-control-panel-sponsor.component.scss'],
 })
-export class HackathonControlPanelSponsorComponent implements OnInit {
+export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy {
   sponsorForm: FormGroup;
   hackathonSlug = '';
   icons = {
@@ -21,6 +25,10 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
   };
   imagePreview: string;
 
+  parent: ICommunity | ICommunityGroup;
+  subscriptions: Subscription[] = [];
+  hackathon: IHackathon;
+
   hackathonSponsorGroupedByTierName: IHackathonSponsorGroupedByTierName;
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,6 +36,7 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
     private fb: FormBuilder,
     private hackathonService: HackathonService,
     private toasterService: ToastrService,
+    private seoService: SeoService,
   ) {
     this.sponsorForm = this.fb.group({
       name: ['', Validators.required],
@@ -40,10 +49,32 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activatedRoute.parent.paramMap.subscribe((params) => {
-      this.hackathonSlug = params.get('hackathon_id');
-      this.indexSponsors(params.get('hackathon_id'));
-    });
+    this.seoService.noIndex(true);
+    this.subscriptions.push(
+      this.activatedRoute.parent.paramMap.subscribe((params) => {
+        this.hackathonSlug = params.get('hackathon_id');
+        this.indexSponsors(params.get('hackathon_id'));
+        this.fetchHackathonDetails(params.get('hackathon_id'));
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  fetchHackathonDetails(hackathonId) {
+    this.subscriptions.push(
+      this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        // TODO: Add Community Group in Future
+        if (data.community) {
+          this.parent = data.community;
+        }
+        this.hackathon = data;
+        this.setMeta();
+      }),
+    );
   }
 
   urlValidator(control) {
@@ -214,5 +245,9 @@ export class HackathonControlPanelSponsorComponent implements OnInit {
       link: '',
       tier_priority: 1,
     });
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Sponsors | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 }
