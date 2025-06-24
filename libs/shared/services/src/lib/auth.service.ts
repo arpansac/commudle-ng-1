@@ -19,6 +19,8 @@ export class AuthService {
   public currentUserVerified$ = this.currentUserVerified.asObservable();
   private currentUser: BehaviorSubject<IUser> = new BehaviorSubject(null);
   public currentUser$ = this.currentUser.asObservable();
+  private userLogin: BehaviorSubject<boolean> = new BehaviorSubject(null);
+  public userLogin$ = this.userLogin.asObservable();
 
   private appToken;
 
@@ -62,6 +64,7 @@ export class AuthService {
         if (data.user) {
           this.currentUser.next(data.user);
           this.currentUserVerified.next(true);
+          this.checkUserLogin(true);
           this.gtm.dataLayerPushEvent('session-start', {
             com_user_name: data.user.name,
             com_user_id: data.user.id,
@@ -80,6 +83,7 @@ export class AuthService {
           this.appUsersService.fetchProfileCompletionStatus();
         } else {
           this.currentUserVerified.next(false);
+          this.checkUserLogin(false);
           this.cookieService.delete(environment.auth_cookie_name, '/', environment.production ? '.commudle.com' : '');
         }
       }),
@@ -124,5 +128,12 @@ export class AuthService {
         }
       }),
     );
+  }
+
+  checkUserLogin(logined: boolean) {
+    if (this.userLogin.getValue() === logined) {
+      return;
+    }
+    this.userLogin.next(logined);
   }
 }

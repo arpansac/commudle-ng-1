@@ -2,20 +2,20 @@
   <nb-card-body> This form is closed! </nb-card-body>
 </nb-card>
 
-<div *ngIf="currentUser && loading">
+<div *ngIf="userLogin && loading">
   <app-loading-spinner></app-loading-spinner>
 </div>
 
-<div *ngIf="!currentUser && loading">
+<div *ngIf="!userLogin && loading">
   <app-fill-data-form></app-fill-data-form>
 </div>
 
 <ng-container *ngIf="!loading">
-  <div *ngIf="openPaidForm && !formClosed && currentUser">
+  <div *ngIf="openPaidForm && !formClosed && userLogin">
     <commudle-fill-data-form-paid [existingResponses]="existingResponses"></commudle-fill-data-form-paid>
   </div>
 
-  <div *ngIf="!openPaidForm && !formClosed && currentUser">
+  <div *ngIf="!openPaidForm && !formClosed && userLogin">
     <app-fill-data-form [existingResponses]="existingResponses?.existing_responses"></app-fill-data-form>
   </div>
 </ng-container>
