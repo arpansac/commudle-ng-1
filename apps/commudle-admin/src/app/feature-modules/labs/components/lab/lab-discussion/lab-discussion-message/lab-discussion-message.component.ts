@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { NoWhitespaceValidator } from 'apps/shared-helper-modules/custom-validators.validator';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 import * as moment from 'moment';
 
 @Component({
@@ -29,7 +29,7 @@ export class LabDiscussionMessageComponent implements OnInit {
 
   @ViewChild('messageInput') private messageInput: ElementRef;
 
-  constructor(private authWatchService: LibAuthwatchService, private fb: FormBuilder) {
+  constructor(private loginAuthService: LoginAuthService, private fb: FormBuilder) {
     this.userMessageReplyForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1000), NoWhitespaceValidator]],
     });
@@ -39,7 +39,7 @@ export class LabDiscussionMessageComponent implements OnInit {
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }

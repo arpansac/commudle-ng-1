@@ -114,10 +114,6 @@ export class AuthService {
     this.checkAlreadySignedIn().subscribe();
   }
 
-  logInUser() {
-    this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
-  }
-
   getUserData(): Observable<{ consent_privacy_tnc: boolean; consent_marketing: boolean }> {
     return this.http.post<any>(this.baseApiService.getRoute(API_ROUTES.VERIFY_AUTHENTICATION), {}).pipe(
       map((data) => {

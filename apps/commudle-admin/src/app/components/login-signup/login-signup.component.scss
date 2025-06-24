@@ -1,0 +1,53 @@
+:host {
+  display: block;
+}
+
+.login-container {
+  @apply com-m-0 md:com-w-[26dvw] com-w-[90dvw] com-h-full;
+  nb-card-header {
+    h2 {
+      @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
+    }
+  }
+
+  nb-card-body {
+    @apply com-p-6;
+  }
+
+  .login-form {
+    @apply com-flex com-flex-col;
+
+    .email-input,
+    .otp-input {
+      @apply com-mb-6 com-rounded-lg;
+    }
+
+    .email-label {
+      @apply com-text-gray-500 com-text-xs com-font-medium com-mb-1;
+    }
+  }
+
+  .separator {
+    @apply com-flex com-flex-row com-items-center com-text-center com-w-full com-my-6;
+  }
+
+  .or-seprator {
+    @apply com-border-0 com-border-t com-border-solid com-border-gray-200 com-w-full;
+  }
+
+  .or-seprator-text {
+    @apply com-mx-3 com-my-0 com-text-sm com-font-normal com-text-gray-500;
+  }
+
+  .google-signin-button {
+    @apply com-flex com-justify-center;
+  }
+
+  .mandatory-field {
+    @apply com-text-red-500;
+  }
+
+  input {
+    @apply com-bg-transparent #{!important};
+  }
+}

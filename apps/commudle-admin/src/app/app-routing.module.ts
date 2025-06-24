@@ -169,7 +169,7 @@ const routes: Routes = [
   {
     path: 'fill-form/:data_form_entity_id',
     component: CheckFillDataFormComponent,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
   {
     path: 'fill-form/:data_form_entity_id/submitted',
