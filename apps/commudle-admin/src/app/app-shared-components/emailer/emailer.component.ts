@@ -151,12 +151,12 @@ export class EmailerComponent implements OnInit, OnDestroy {
       },
       {
         value: EemailTypes.RSVP,
-        display: 'RSVP (Pre-formatted email)',
+        display: 'Status: Shortlisted - RSVP (Pre-formatted email)',
         preformatted_email: true,
       },
       {
         value: EemailTypes.ENTRY_PASS,
-        display: 'Entry Pass (Pre-formatted email)',
+        display: 'Status: Confirmed - Entry Pass (Pre-formatted email)',
         preformatted_email: true,
       },
       {
