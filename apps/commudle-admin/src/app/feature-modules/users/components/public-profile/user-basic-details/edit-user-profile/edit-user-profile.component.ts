@@ -3,10 +3,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subscription, Subject, takeUntil } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { take } from 'lodash';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -15,9 +16,7 @@ import { filter } from 'rxjs/operators';
 })
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
-  subscriptions: Subscription[] = [];
   currentUser: ICurrentUser;
-  routerSubscription: Subscription;
   username: string;
   routeTitleMap = {
     'basic-details': 'Basic Details',
@@ -41,6 +40,7 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.username = this.activatedRoute.parent?.snapshot.params['username'] || '';
 
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
@@ -49,21 +49,25 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
       .subscribe(() => {
         this.setMeta();
       });
+
     this.setMeta();
     this.openDialog();
-    this.seoService.noIndex(true);
     this.updateProfile();
   }
 
   ngOnDestroy(): void {
-    this.dialogRef.close();
     this.seoService.noIndex(false);
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.dialogRef.close();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openDialog() {
@@ -75,19 +79,16 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   }
 
   updateProfile() {
-    this.subscriptions.push(
-      this.updateProfileService.updateProfile$.subscribe((value) => {
-        if (value) {
-          this.dialogRef.close();
-          this.updateProfileService.setUpdateProfileStatus(false);
-        }
-      }),
-    );
+    this.updateProfileService.updateProfile$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      if (value) {
+        this.dialogRef.close();
+        this.updateProfileService.setUpdateProfileStatus(false);
+      }
+    });
   }
 
   setMeta() {
     const currentRoute = this.activatedRoute.firstChild;
-
     if (currentRoute) {
       const routePath = currentRoute.snapshot.url[0]?.path;
       const tabName = this.routeTitleMap[routePath] || 'Settings';

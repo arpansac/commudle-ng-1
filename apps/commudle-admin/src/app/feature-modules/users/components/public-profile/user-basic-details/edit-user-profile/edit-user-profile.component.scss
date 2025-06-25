@@ -8,7 +8,7 @@
       top: 17px;
       display: flex;
       gap: 20px;
-      @apply com-overflow-scroll;
+      @apply com-overflow-x-auto;
 
       a {
         @apply com-text-gunmetal;
