@@ -1,12 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { ICommunityBuild } from 'apps/shared-models/community-build.model';
-import { IUser } from 'apps/shared-models/user.model';
+import { IUser, ICommunityBuild } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-show-more-builds',
+  selector: 'commudle-show-more-builds',
   templateUrl: './show-more-builds.component.html',
   styleUrls: ['./show-more-builds.component.scss'],
 })
@@ -28,10 +26,10 @@ export class ShowMoreBuildsComponent implements OnInit, OnDestroy {
   }
 
   getBuilds(): void {
-    this.subscriptions.push(
+    if (this.user?.username && this.curBuild?.id) {
       this.appUsersService.communityBuilds(this.user.username).subscribe((value) => {
         this.builds = value.community_builds.filter((build) => build.id !== this.curBuild.id).reverse();
-      }),
-    );
+      });
+    }
   }
 }
