@@ -8,7 +8,7 @@ import {
 } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-menu.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { IUser } from 'apps/shared-models/user.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';

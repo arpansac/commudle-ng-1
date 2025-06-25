@@ -18,7 +18,7 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
   currentUser: ICurrentUser;
   username: string;
-  routeTitleMap = {
+  routeTitleMap: Record<string, string> = {
     'basic-details': 'Basic Details',
     'email-preferences': 'Email Preferences',
     'communication-preferences': 'Communication Preferences',
