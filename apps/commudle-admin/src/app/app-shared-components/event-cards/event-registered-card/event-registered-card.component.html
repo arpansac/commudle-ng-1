@@ -1,6 +1,6 @@
 <div class="event-details" *ngIf="event">
   <div class="community-badge">
-    <app-community-badge [community]="event.kommunity"></app-community-badge>
+    <app-community-badge [community]="event.kommunity ? event.kommunity : community"></app-community-badge>
   </div>
   <div class="date-registered-text">
     <div class="event-start-date">
@@ -10,7 +10,7 @@
     <div class="registered-text"><fa-icon [icon]="icons.faCircleCheck"></fa-icon>&nbsp;You’re Registered</div>
   </div>
 
-  <div class="event-location" *ngIf="event?.event_locations[0]">
+  <div class="event-location" *ngIf="event?.event_locations">
     <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
     <a [href]="event.event_locations[0].map_link">{{ event.event_locations[0].name }}</a>
   </div>
@@ -33,7 +33,9 @@
       </button>
     </div>
     <div class="secondary-button">
-      <a [routerLink]="['/communities', event.kommunity.id, 'events', this.event.slug]">
+      <a
+        [routerLink]="['/communities', event.kommunity ? event.kommunity.id : community.id, 'events', this.event.slug]"
+      >
         <button nbButton fullWidth shape="semi-round" outline class="take-event-button">
           <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>&nbsp; Take me to Event’s Page
         </button>

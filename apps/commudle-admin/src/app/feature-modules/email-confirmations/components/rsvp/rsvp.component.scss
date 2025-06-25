@@ -1,46 +1,58 @@
-.status {
-  .registration-status {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+.confirmation-card {
+  @apply com-mt-20;
 
-    nb-icon {
-      font-size: 4rem;
+  .confirmation-header {
+    @apply com-text-center com-mb-14;
+
+    .check-icon {
+      @apply com-text-6xl com-mb-8;
     }
 
-    p {
-      font-size: 1.5rem;
-      margin-left: 1rem;
-    }
-
-  }
-}
-
-.event-details {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  .event{
-    display: flex;
-    align-items: center;
-    p {
-      margin: 0;
-    }
-  }
-
-  .community {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    .logo {
-      width: 50px;
-      overflow: hidden;
-      margin-right: 1rem;
-      img {
-        width: 100%;
+    .title {
+      @apply com-text-Yankees-Blue com-text-3xl com-font-semibold com-leading-10 com-m-0 com-mb-4;
+      span {
+        @apply com-text-Azure;
       }
     }
+
+    .sub-heading {
+      @apply com-leading-7 com-text-xl com-font-medium com-text-gray-500 com-my-0;
+    }
+  }
+
+  .profile-card {
+    @apply com-grid com-grid-cols-2;
+
+    .profile-completion-card {
+      @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-pl-3;
+    }
+
+    .profile-preview-card,
+    .profile-completion-card {
+      .card-heading {
+        @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-4;
+      }
+    }
+  }
+
+  .missing-field-card {
+    @apply com-my-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-6;
+  }
+
+  .event-card {
+    @apply com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .leaders-card {
+    @apply com-mt-4 com-pb-8 com-border-0 com-border-b com-border-t com-border-solid com-border-Bright-Gray;
+  }
+
+  .volunteer:not(:last-child),
+  .leader:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
   }
 }
