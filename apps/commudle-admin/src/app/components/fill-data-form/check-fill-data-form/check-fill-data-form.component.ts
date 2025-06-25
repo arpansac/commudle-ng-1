@@ -28,7 +28,6 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   openPaidForm: boolean;
   existingResponses;
   dialogRef: NbDialogRef<any>;
-  currentUser: IUser;
   userLogin: boolean;
   loading = true;
 
@@ -48,9 +47,8 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
-      this.currentUser = currentUser;
-      this.userLogin = this.currentUser ? true : false;
+    this.authWatchService.userLogin$.pipe(takeUntil(this.destroy$)).subscribe((userLogin) => {
+      this.userLogin = userLogin;
       this.getDataFormEntity();
     });
     this.checkLoginPop();
@@ -69,11 +67,11 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe((params) => {
         this.dataFormEntitiesService.getDataFormEntity(params.data_form_entity_id).subscribe((data) => {
           this.dataFormEntity = data;
-          if (this.currentUser) {
+          if (this.userLogin) {
             this.getExistingResponses();
           }
           this.formClosed = !this.dataFormEntity.user_can_fill_form;
-          if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP && this.currentUser) {
+          if (this.dataFormEntity.entity_type === EDbModels.EVENT_DATA_FORM_ENTITY_GROUP && this.userLogin) {
             if (
               this.dataFormEntity.form_type.form_type_name === 'attendee' ||
               this.dataFormEntity.form_type.form_type_name === 'speaker'
@@ -81,7 +79,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
               this.checkAlreadyFilledEntryPassForm(params.data_form_entity_id);
             }
           }
-          if (!this.formClosed && this.currentUser) {
+          if (!this.formClosed && this.userLogin) {
             this.checkFormStatus(params.data_form_entity_id);
           }
         });
