@@ -47,6 +47,7 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
+          this.getRoles();
           this.setMeta();
         }
       }),
@@ -63,15 +64,13 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
   }
 
   getRoles() {
-    if (this.community.id) {
-      this.userRolesUsersService
-        .getCommunityUsersByRole(this.community.id, EUserRoles.ORGANIZER)
-        .subscribe((data) => (this.organizers = data.user_roles_users));
+    this.userRolesUsersService
+      .getCommunityUsersByRole(this.community.id, EUserRoles.ORGANIZER)
+      .subscribe((data) => (this.organizers = data.user_roles_users));
 
-      this.userRolesUsersService
-        .getCommunityUsersByRole(this.community.id, EUserRoles.EVENT_ORGANIZER)
-        .subscribe((data) => (this.eventOrganizers = data.user_roles_users));
-    }
+    this.userRolesUsersService
+      .getCommunityUsersByRole(this.community.id, EUserRoles.EVENT_ORGANIZER)
+      .subscribe((data) => (this.eventOrganizers = data.user_roles_users));
   }
 
   resendInvitationMail(userRolesUser) {
