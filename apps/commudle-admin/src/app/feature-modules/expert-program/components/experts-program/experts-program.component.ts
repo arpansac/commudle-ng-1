@@ -26,7 +26,11 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
   }
 
   setMeta() {
-    this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
+    if (this.expertsProgramPageHeader?.header_image) {
+      this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
+    } else {
+      this.headerImgUrl = undefined;
+    }
     this.seoService.setTags(
       'Experts Program',
       'Help software developers, designers and developer communities across the world by joining our experts program. Get recognized with a badge and a blue tick.',
