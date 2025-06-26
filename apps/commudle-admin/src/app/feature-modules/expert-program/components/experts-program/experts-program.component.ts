@@ -41,11 +41,7 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
     this.cmsService.getDataBySlug('expert-program').subscribe((data) => {
       if (data) {
         this.expertsProgramPageHeader = data;
-        if (this.expertsProgramPageHeader?.header_image) {
-          this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
-        } else {
-          this.headerImgUrl = 'https://commudle.com/assets/images/commudle-logo192.png';
-        }
+        this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
         this.setMeta();
         this.richText = this.cmsService.getHtmlFromBlock(data);
       }
