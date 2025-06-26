@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-login-signup',
@@ -32,6 +33,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   consent_marketing = false;
   userFromGoogle;
   token: string;
+  faXmark = faXmark;
 
   private authService: AuthService;
 
