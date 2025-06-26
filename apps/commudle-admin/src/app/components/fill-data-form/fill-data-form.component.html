@@ -43,7 +43,7 @@
               </div>
             </nb-card-body>
           </nb-card>
-          <nb-card *ngIf="dataFormEntity.user_details">
+          <nb-card *ngIf="dataFormEntity.user_details && currentUser">
             <nb-card-body>
               <commudle-user-details-form
                 [userFormDetails]="dataFormEntity.user_details"

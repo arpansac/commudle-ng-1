@@ -5,6 +5,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import * as moment from 'moment';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-user-personal-chat-message',
@@ -28,7 +29,11 @@ export class UserPersonalChatMessageComponent implements OnInit {
 
   userMessageReplyForm;
 
-  constructor(private authWatchService: LibAuthwatchService, private fb: FormBuilder) {
+  constructor(
+    private authWatchService: LibAuthwatchService,
+    private fb: FormBuilder,
+    private loginAuthService: LoginAuthService,
+  ) {
     this.userMessageReplyForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
     });
@@ -38,7 +43,7 @@ export class UserPersonalChatMessageComponent implements OnInit {
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }

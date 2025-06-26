@@ -83,7 +83,7 @@ export class UserProfileMissingFieldsComponent implements OnInit, OnDestroy {
     },
     user_domain: {
       name: 'user_domain',
-      route: 'user-profile-complete/step-one',
+      route: '/user-profile-complete/step-one',
       text: 'Which field are you into?',
       button_text: 'Add Your Domains',
     },

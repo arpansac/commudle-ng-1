@@ -8,6 +8,7 @@ import { SVotesService } from '../services/s-votes.service';
 import { VoteChannel } from '../services/websockets/vote.channel';
 import { VotersComponent } from './voters/voters.component';
 import { GoogleTagManagerService } from '@commudle/shared-services';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-votes-display',
@@ -52,6 +53,7 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
     private votesService: SVotesService,
     private toastLogService: LibToastLogService,
     private gtm: GoogleTagManagerService,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   ngOnInit() {
@@ -103,7 +105,7 @@ export class VotesDisplayComponent implements OnInit, OnDestroy {
           this.gtmService();
         }
       } else {
-        this.authWatchService.logInUser();
+        this.loginAuthService.openLoginSignupTemplate();
       }
     }
   }

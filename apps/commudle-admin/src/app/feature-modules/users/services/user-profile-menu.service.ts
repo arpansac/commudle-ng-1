@@ -46,11 +46,25 @@ export class UserProfileMenuService {
       link: 'about',
       active: false,
     },
-    badges: {
-      name: 'Badges',
-      icon: faAward,
-      active_color: 'com-text-Chrome-Yellow',
-      link: 'badges',
+    content: {
+      name: 'Content',
+      icon: faFileText,
+      active_color: 'com-text-Azure',
+      link: 'content',
+      active: false,
+    },
+    workHistory: {
+      name: 'Work History',
+      icon: faBuilding,
+      active_color: 'com-text-Caribbean-Green',
+      link: 'work-history',
+      active: false,
+    },
+    resume: {
+      name: 'Resume',
+      icon: faClipboard,
+      active_color: 'com-text-Azure',
+      link: 'resume',
       active: false,
     },
     builds: {
@@ -58,6 +72,13 @@ export class UserProfileMenuService {
       icon: faLightbulb,
       active_color: 'com-text-Caribbean-Green',
       link: 'builds',
+      active: false,
+    },
+    labs: {
+      name: 'Labs',
+      icon: faBookOpen,
+      active_color: 'com-text-Infra-Red',
+      link: 'labs',
       active: false,
     },
     talksAtEvents: {
@@ -81,13 +102,14 @@ export class UserProfileMenuService {
       link: 'communities',
       active: false,
     },
-    labs: {
-      name: 'Labs',
-      icon: faBookOpen,
-      active_color: 'com-text-Infra-Red',
-      link: 'labs',
+    badges: {
+      name: 'Badges',
+      icon: faAward,
+      active_color: 'com-text-Chrome-Yellow',
+      link: 'badges',
       active: false,
     },
+
     jobs: {
       name: 'Jobs',
       icon: faBriefcase,
@@ -95,27 +117,7 @@ export class UserProfileMenuService {
       link: 'jobs',
       active: false,
     },
-    resume: {
-      name: 'Resume',
-      icon: faClipboard,
-      active_color: 'com-text-Azure',
-      link: 'resume',
-      active: false,
-    },
-    workHistory: {
-      name: 'Work History',
-      icon: faBuilding,
-      active_color: 'com-text-Caribbean-Green',
-      link: 'work-history',
-      active: false,
-    },
-    content: {
-      name: 'Content',
-      icon: faFileText,
-      active_color: 'com-text-Azure',
-      link: 'content',
-      active: false,
-    },
+
     // feed: {
     //   name: 'Feed',
     //   icon: faChromecast,

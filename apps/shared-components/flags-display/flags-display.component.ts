@@ -6,6 +6,7 @@ import { FlagChannel } from '../services/websockets/flag.channel';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SFlagsService } from '../services/s-flags.service';
 import { v4 as uuidv4 } from 'uuid';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-flags-display',
@@ -40,6 +41,7 @@ export class FlagsDisplayComponent implements OnInit, OnDestroy {
     private flagChannel: FlagChannel,
     private flagsService: SFlagsService,
     private toastLogService: LibToastLogService,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   ngOnInit() {
@@ -85,7 +87,7 @@ export class FlagsDisplayComponent implements OnInit, OnDestroy {
         {},
       );
     } else {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
   }
 
