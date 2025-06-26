@@ -24,6 +24,8 @@ import { AddToCalendarComponent } from '@commudle/shared-components';
 export class EventRegisteredCardComponent implements OnInit {
   @Input() event: IEvent;
   @Input() community: ICommunity;
+  @Input() showRegisteredIcon = true;
+  @Input() showAddToCalendarButton = true;
   moment = moment;
   interestedUsers: IUser[];
   interestedUsersCount: number;

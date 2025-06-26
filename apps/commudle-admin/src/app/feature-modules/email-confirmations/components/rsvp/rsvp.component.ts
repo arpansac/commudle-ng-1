@@ -44,7 +44,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   isProfileCompleted = false;
   volunteers: IUser[] = [];
-  count = 10;
+  count = 15;
   communityLeaders: IUser[];
   communities: ICommunity[] = [];
   communityGroupLeaders: IUserRolesUser[] = [];

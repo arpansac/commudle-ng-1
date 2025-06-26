@@ -11,7 +11,16 @@
             <h1 class="title">
               You're in! Your seat at <span>{{ event?.name }}</span> is confirmed.
             </h1>
-            <h3 class="sub-heading">We’ll email your Entry Pass soon — stay tuned!</h3>
+            <h3 class="sub-heading">We'll email your Entry Pass soon — stay tuned!</h3>
+          </div>
+
+          <div
+            *ngIf="dferg.registration_status.name === ERegistrationStatuses.CANCELLED && event"
+            class="confirmation-header"
+          >
+            <div class="check-icon">❌</div>
+            <h1 class="title">Thanks for letting us know.</h1>
+            <h3 class="sub-heading">We'll see you at another event!</h3>
           </div>
 
           <ng-container *ngIf="currentUser && isProfileCompleted">
@@ -42,7 +51,13 @@
 
           <div *ngIf="event" class="event-card">
             <h2 class="card-heading">Event Details</h2>
-            <commudle-event-registered-card [event]="event" [community]="community"></commudle-event-registered-card>
+            <commudle-event-registered-card
+              [event]="event"
+              [community]="community"
+              [showRegisteredIcon]="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED"
+              [showAddToCalendarButton]="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED"
+            >
+            </commudle-event-registered-card>
           </div>
 
           <div *ngIf="volunteers?.length" class="volunteers-card">
@@ -73,10 +88,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div *ngIf="dferg.registration_status.name === ERegistrationStatuses.CANCELLED" class="status">
-  <div class="registration-status">
-    <nb-icon icon="person-delete-outline" status="danger"></nb-icon>
-    <p>Thanks for letting us know. We'll see you at another event!</p>
-  </div>
-</div> -->

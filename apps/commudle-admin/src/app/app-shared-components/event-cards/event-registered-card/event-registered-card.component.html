@@ -7,7 +7,9 @@
       <fa-icon [icon]="icons.faCalendarDays"></fa-icon>&nbsp;
       <span>{{ moment(event.start_date).format('MMM DD, YYYY') }}</span>
     </div>
-    <div class="registered-text"><fa-icon [icon]="icons.faCircleCheck"></fa-icon>&nbsp;You’re Registered</div>
+    <div class="registered-text" *ngIf="showRegisteredIcon">
+      <fa-icon [icon]="icons.faCircleCheck"></fa-icon>&nbsp;You're Registered
+    </div>
   </div>
 
   <div class="event-location" *ngIf="event?.event_locations">
@@ -25,7 +27,14 @@
 
   <div class="actions">
     <div class="primary-buttons">
-      <button nbButton status="primary" fullWidth shape="semi-round" (click)="addToCalendar()">
+      <button
+        *ngIf="showAddToCalendarButton"
+        nbButton
+        status="primary"
+        fullWidth
+        shape="semi-round"
+        (click)="addToCalendar()"
+      >
         <fa-icon [icon]="icons.faCalendarPlus"></fa-icon>&nbsp; Add to Calendar
       </button>
       <button status="info" nbButton outline fullWidth shape="semi-round" (click)="shareEvent()">
