@@ -26,6 +26,7 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   community: ICommunity;
+  isLoading = true;
 
   constructor(
     private userRolesUsersService: UserRolesUsersService,
@@ -64,9 +65,10 @@ export class CommunityTeamComponent implements OnInit, OnDestroy {
   }
 
   getRoles() {
-    this.userRolesUsersService
-      .getCommunityUsersByRole(this.community.id, EUserRoles.ORGANIZER)
-      .subscribe((data) => (this.organizers = data.user_roles_users));
+    this.userRolesUsersService.getCommunityUsersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
+      this.organizers = data.user_roles_users;
+      this.isLoading = false;
+    });
 
     this.userRolesUsersService
       .getCommunityUsersByRole(this.community.id, EUserRoles.EVENT_ORGANIZER)
