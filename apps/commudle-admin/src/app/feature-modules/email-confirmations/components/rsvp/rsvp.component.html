@@ -1,40 +1,90 @@
-<div class="page-padding">
-  <div *ngIf="community && showConfirmationDialog">
-    <nb-card>
-      <nb-card-body>
-        <div *ngIf="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED" class="status">
-          <div class="registration-status">
-            <nb-icon icon="person-done-outline" status="success"></nb-icon>
-            <p>Congratulations! Your seat is confirmed. We will send you an Entry Pass soon!</p>
+<div class="rsvp-container">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <div *ngIf="community && showConfirmationDialog" class="confirmation-card">
+          <div
+            *ngIf="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED && event"
+            class="confirmation-header"
+          >
+            <div class="check-icon">🎉</div>
+            <h1 class="title">
+              You're in! Your seat at <span>{{ event?.name }}</span> is confirmed.
+            </h1>
+            <h3 class="sub-heading">We'll email your Entry Pass soon — stay tuned!</h3>
           </div>
-          <div></div>
-        </div>
 
-        <div *ngIf="dferg.registration_status.name === ERegistrationStatuses.CANCELLED" class="status">
-          <div class="registration-status">
-            <nb-icon icon="person-delete-outline" status="danger"></nb-icon>
-            <p>Thanks for letting us know. We'll see you at another event!</p>
+          <div
+            *ngIf="dferg.registration_status.name === ERegistrationStatuses.CANCELLED && event"
+            class="confirmation-header"
+          >
+            <div class="check-icon">❌</div>
+            <h1 class="title">Thanks for letting us know.</h1>
+            <h3 class="sub-heading">We'll see you at another event!</h3>
           </div>
-        </div>
 
-        <div class="event-details">
-          <div class="event">
-            <p>
-              <a [routerLink]="['/communities', community.slug, 'events', event.slug]">
-                Go To <strong>{{ event.name }}</strong>
-              </a>
-            </p>
-          </div>
-          <div class="community">
-            <div class="logo">
-              <img alt="{{ community.name }}" src="{{ community.logo_image_path.i64 }}" title="{{ community.name }}" />
+          <ng-container *ngIf="currentUser && isProfileCompleted">
+            <div class="profile-card">
+              <div class="profile-preview-card">
+                <div class="card-heading">Profile Card Preview</div>
+                <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+              </div>
+
+              <div class="profile-completion-card">
+                <div class="card-heading">Profile's Progress</div>
+                <commudle-profile-completion-progress></commudle-profile-completion-progress>
+              </div>
             </div>
-            <p>
-              <a [routerLink]="['/communities', community.slug]">{{ community.name }}</a>
-            </p>
+
+            <div class="missing-field-card">
+              <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="currentUser && !isProfileCompleted">
+            <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+            <commudle-userprofile-details
+              [userProfileDetails]="userProfileDetails"
+              [username]="currentUser.username"
+            ></commudle-userprofile-details>
+          </ng-container>
+
+          <div *ngIf="event" class="event-card">
+            <h2 class="card-heading">Event Details</h2>
+            <commudle-event-registered-card
+              [event]="event"
+              [community]="community"
+              [showRegisteredIcon]="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED"
+              [showAddToCalendarButton]="dferg.registration_status.name === ERegistrationStatuses.CONFIRMED"
+            >
+            </commudle-event-registered-card>
+          </div>
+
+          <div *ngIf="volunteers?.length" class="volunteers-card">
+            <h2 class="card-heading">Follow Event Volunteers</h2>
+            <div *ngFor="let user of volunteers" class="volunteer">
+              <app-user-profile-card-large
+                [alignFollowToRight]="true"
+                [showFollowButton]="true"
+                [user]="user"
+                appearanceOfFollowButton="outline"
+              ></app-user-profile-card-large>
+            </div>
+          </div>
+
+          <div *ngIf="communityLeaders?.length" class="leaders-card">
+            <h2 class="card-heading">Follow Community Leaders</h2>
+            <div *ngFor="let user of communityLeaders" class="leader">
+              <app-user-profile-card-large
+                [alignFollowToRight]="true"
+                [showFollowButton]="true"
+                [user]="user"
+                appearanceOfFollowButton="outline"
+              ></app-user-profile-card-large>
+            </div>
           </div>
         </div>
-      </nb-card-body>
-    </nb-card>
+      </div>
+    </div>
   </div>
 </div>

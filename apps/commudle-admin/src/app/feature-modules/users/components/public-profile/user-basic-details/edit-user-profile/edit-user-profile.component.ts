@@ -41,6 +41,7 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.seoService.noIndex(true);
     this.username = this.activatedRoute.parent?.snapshot.params['username'] || '';
+    this.openDialog();
 
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
@@ -58,7 +59,6 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
       });
 
     this.setMeta();
-    this.openDialog();
     this.updateProfile();
   }
 

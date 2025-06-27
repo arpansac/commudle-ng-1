@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IFaq } from '@commudle/shared-models';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { IFaq } from '@commudle/shared-models';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-student-non-profit-community-support',
@@ -28,6 +28,7 @@ export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDest
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
   }
+
   setFaqs() {
     this.faqs = [
       {

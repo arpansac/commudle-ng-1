@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { IFaq, IProductPrice } from '@commudle/shared-models';
+import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
+import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { CmsService } from 'apps/shared-services/cms.service';
-import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
-import { ECmsType } from 'apps/shared-models/enums/cms.enum';
-import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
-import { IFaq, IProductPrice } from '@commudle/shared-models';
-import { NbDialogService } from '@commudle/theme';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
+import { ECmsType } from 'apps/shared-models/enums/cms.enum';
+import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.model';
+import { CmsService } from 'apps/shared-services/cms.service';
 import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'commudle-pricing',

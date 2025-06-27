@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
   selector: 'app-blogs',

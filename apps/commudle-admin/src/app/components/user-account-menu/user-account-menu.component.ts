@@ -52,9 +52,9 @@ export class UserAccountMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.footerService.changeMiniFooterStatus(true);
     this.destroy$.next();
     this.destroy$.complete();
+    this.footerService.changeMiniFooterStatus(true);
   }
 
   openConfirmDialogBox(dialog: TemplateRef<any>) {

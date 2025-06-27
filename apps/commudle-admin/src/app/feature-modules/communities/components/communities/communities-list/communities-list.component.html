@@ -60,7 +60,7 @@
       *appBreakpoints="'>lg'"
       (scrolled)="getPopularCommunities()"
       [infiniteScrollDisabled]="communities.length >= total"
-      appInfiniteScroll
+      commudleInfiniteScroll
       class="communities-list-cards"
     >
       <app-communities-card *ngFor="let community of communities" [community]="community"></app-communities-card>

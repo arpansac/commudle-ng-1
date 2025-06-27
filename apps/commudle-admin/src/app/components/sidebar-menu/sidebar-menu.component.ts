@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
+import { NbSidebarService } from '@commudle/theme';
 import {
   faFlask,
-  faNewspaper,
   faHouse,
-  faSuitcase,
   faLightbulb,
+  faNewspaper,
   faRectangleAd,
+  faSuitcase,
 } from '@fortawesome/free-solid-svg-icons';
-import { NbSidebarService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
@@ -17,8 +17,8 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { NotificationsStore } from '../../feature-modules/notifications/store/notifications.store';
-import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -45,9 +45,10 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   isFeaturedItemsAdmin = false;
   isAdCampaignAdmin = false;
   isNewsletterAdmin = false;
-  notificationCount = 0;
 
-  subscriptions: Subscription[] = [];
+  // Store notification counts to avoid repeated subscriptions
+  communityNotificationCounts: { [key: string]: number } = {};
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -65,7 +66,6 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -123,32 +123,41 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   getManagingCommunities(userRoles: string[]): void {
     this.managedCommunities = [];
-    for (const role of userRoles) {
-      this.communitiesService.getRoleCommunities(role).subscribe(() => {
+
+    // Create observables for all roles and combine them using forkJoin
+    const roleObservables = userRoles.map((role) => this.communitiesService.getRoleCommunities(role));
+
+    // Use forkJoin to wait for all role requests to complete, then get communities data once
+    forkJoin(roleObservables)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.getCommunitiesData();
       });
-    }
   }
   getCommunitiesData() {
-    this.subscriptions.push(
-      this.communitiesService.userManagedCommunities$.subscribe((data: ICommunity[]) => {
-        this.managedCommunities = data;
-        for (const communities of data) {
-          this.updateUnreadNotificationsCount(communities.id);
-          this.notificationsStore.updateNotifications(communities.id);
-        }
-      }),
-    );
-  }
-
-  getManagingCommunityGroups(): void {
-    this.communityGroupsService.getManagingCommunityGroups().subscribe((data: ICommunityGroups) => {
-      this.managedCommunityGroups = data.community_groups;
+    this.communitiesService.userManagedCommunities$.pipe(takeUntil(this.destroy$)).subscribe((data: ICommunity[]) => {
+      this.managedCommunities = data;
+      // Initialize notifications for all communities at once
+      if (data && data.length > 0) {
+        data.forEach((community) => {
+          this.updateUnreadNotificationsCount(community.id);
+          this.notificationsStore.updateNotifications(community.id);
+        });
+      }
     });
   }
 
+  getManagingCommunityGroups(): void {
+    this.communityGroupsService
+      .getManagingCommunityGroups()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: ICommunityGroups) => {
+        this.managedCommunityGroups = data.community_groups;
+      });
+  }
+
   closeSidebar(): void {
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.sidebarService.collapse('mainMenu');
       }
@@ -157,14 +166,26 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   updateUnreadNotificationsCount(communityId) {
     this.notificationsStore.getCommunityUnreadNotificationsCount(communityId);
+
+    // Subscribe to notification count changes only once per community
+    if (!(communityId in this.communityNotificationCounts)) {
+      this.communityNotificationCounts[communityId] = 0;
+
+      // Check if the observable exists before subscribing
+      if (
+        this.notificationsStore.communityNotificationsCount$ &&
+        this.notificationsStore.communityNotificationsCount$[communityId]
+      ) {
+        this.notificationsStore.communityNotificationsCount$[communityId]
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((count: number) => {
+            this.communityNotificationCounts[communityId] = count || 0;
+          });
+      }
+    }
   }
 
   getUnreadNotificationsCount(communityId): number {
-    this.subscriptions.push(
-      this.notificationsStore.communityNotificationsCount$[communityId].subscribe((count: number) => {
-        this.notificationCount = count;
-      }),
-    );
-    return this.notificationCount;
+    return this.communityNotificationCounts[communityId] || 0;
   }
 }

@@ -21,6 +21,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-lab-discussion',
@@ -57,6 +58,7 @@ export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
     private userMessagesService: UserMessagesService,
     private discussionChatChannel: DiscussionChatChannel,
     private authWatchService: LibAuthwatchService,
+    private loginAuthService: LoginAuthService,
   ) {
     this.chatMessageForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1000), NoWhitespaceValidator]],
@@ -103,7 +105,7 @@ export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }

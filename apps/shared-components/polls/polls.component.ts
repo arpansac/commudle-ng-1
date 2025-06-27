@@ -8,6 +8,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { PollsChannel } from '../services/websockets/polls.channel';
 import { Subject, takeUntil } from 'rxjs';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-polls',
@@ -40,11 +41,12 @@ export class PollsComponent implements OnInit, OnDestroy {
     private windowService: NbWindowService,
     private eventsService: EventsService,
     private trackSlotsService: TrackSlotsService,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }

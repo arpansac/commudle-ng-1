@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicPageFeatureSectionComponent } from './public-page-feature-card.component';
+import { PublicPageFeatureCardComponent } from './public-page-feature-card.component';
 
-describe('PublicPageFeatureSectionComponent', () => {
-  let component: PublicPageFeatureSectionComponent;
-  let fixture: ComponentFixture<PublicPageFeatureSectionComponent>;
+describe('PublicPageFeatureCardComponent', () => {
+  let component: PublicPageFeatureCardComponent;
+  let fixture: ComponentFixture<PublicPageFeatureCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PublicPageFeatureSectionComponent],
+      declarations: [PublicPageFeatureCardComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PublicPageFeatureSectionComponent);
+    fixture = TestBed.createComponent(PublicPageFeatureCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

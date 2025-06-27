@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ExpertsService } from 'apps/commudle-admin/src/app/services/experts.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IBadge } from 'apps/shared-models/badge.model';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
   selector: 'commudle-public-home-list-experts',
@@ -27,6 +27,10 @@ export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
     this.getBadges();
   }
 
+  ngOnDestroy(): void {
+    this.footerService.changeFooterStatus(false);
+  }
+
   getBadges() {
     this.expertsService.getExpertBadges('expert').subscribe((data) => {
       this.expertBadges = data;
@@ -40,9 +44,5 @@ export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
       'Find experts in AI, Web, Design, Cloud, A11Y, Android, iOS, Flutter and so many more technologies. Nominate yourself to be an expert and build a strong network, connect with an expert to get guidance',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
-  }
-
-  ngOnDestroy(): void {
-    this.footerService.changeFooterStatus(false);
   }
 }

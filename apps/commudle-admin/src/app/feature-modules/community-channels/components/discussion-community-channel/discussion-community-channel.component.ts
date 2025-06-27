@@ -31,6 +31,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-discussion-community-channel',
@@ -83,6 +84,7 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
     private gtm: GoogleTagManagerService,
     private router: Router,
     private communitiesService: CommunitiesService,
+    private loginAuthService: LoginAuthService,
   ) {
     this.chatMessageForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
@@ -181,7 +183,7 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }
