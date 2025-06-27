@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IEvent, IUser } from '@commudle/shared-models';
+import { ICommunity, IEvent, IUser } from '@commudle/shared-models';
 import * as moment from 'moment';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import {
@@ -23,6 +23,9 @@ import { AddToCalendarComponent } from '@commudle/shared-components';
 })
 export class EventRegisteredCardComponent implements OnInit {
   @Input() event: IEvent;
+  @Input() community: ICommunity;
+  @Input() showRegisteredIcon = true;
+  @Input() showAddToCalendarButton = true;
   moment = moment;
   interestedUsers: IUser[];
   interestedUsersCount: number;

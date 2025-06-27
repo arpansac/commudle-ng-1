@@ -12,6 +12,11 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { HackathonJudgeConfirmationComponent } from './components/hackathon-judge-confirmation/hackathon-judge-confirmation.component';
 import { HackathonTeamConfirmationComponent } from './components/hackathon-team-confirmation/hackathon-team-confirmation.component';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
+import { SharedComponentsModule } from '@commudle/shared-components';
+import { UserProfileComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-profile/user-profile.component';
+import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
+import { UserprofileDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/homepage-dashboard/userprofile-details/userprofile-details.component';
 
 @NgModule({
   declarations: [
@@ -28,13 +33,17 @@ import { HackathonTeamConfirmationComponent } from './components/hackathon-team-
     FormsModule,
     SharedDirectivesModule,
     SharedPipesModule,
-
     // Nebular
     NbIconModule,
     NbCardModule,
     NbSpinnerModule,
     NbToggleModule,
     NbButtonModule,
+    MiniUserProfileModule,
+    SharedComponentsModule,
+    UserProfileComponent,
+    AppSharedComponentsModule,
+    UserprofileDetailsComponent,
   ],
 })
 export class EmailConfirmationsModule {}
