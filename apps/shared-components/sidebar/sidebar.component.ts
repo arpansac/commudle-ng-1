@@ -1,10 +1,12 @@
-import { ESidebarPosition, ESidebarWidth } from './enum/sidebar.enum';
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCaretLeft, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ESidebarPosition, ESidebarWidth } from './enum/sidebar.enum';
 
 @Component({
   selector: 'commudle-sidebar',
@@ -13,7 +15,7 @@ import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.s
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   @ViewChild('sidebarElement') sidebarElement!: ElementRef;
   @Input() isExpanded: boolean = false;
   @Input() showExpandedButton: boolean = true;
@@ -30,28 +32,49 @@ export class SidebarComponent implements OnInit {
   hideFullSidebar = false;
   expandSidebar = false;
 
+  private destroy$ = new Subject<void>();
+  private documentClickListener?: (event: MouseEvent) => void;
+
   //font-awesome icons
   faCaretLeft = faCaretLeft;
   faBars = faBars;
+
   constructor(private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    if (this.sidebarService.setSidebar$.hasOwnProperty(this.eventName)) {
-      this.sidebarService.setSidebar$[this.eventName].subscribe((data) => {
+    if (this.eventName && this.sidebarService.setSidebar$[this.eventName]) {
+      this.sidebarService.setSidebar$[this.eventName].pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.expandSidebar = data;
       });
     }
 
-    if (this.sidebarService.hideSidebar$.hasOwnProperty(this.eventName)) {
-      this.sidebarService.hideSidebar$[this.eventName].subscribe((data) => {
+    if (this.eventName && this.sidebarService.hideSidebar$[this.eventName]) {
+      this.sidebarService.hideSidebar$[this.eventName].pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.hideFullSidebar = data;
       });
     }
 
-    if (this.sidebarService.sidebarPosition$.hasOwnProperty(this.eventName)) {
-      this.sidebarService.sidebarPosition$[this.eventName].subscribe((data) => {
+    if (this.eventName && this.sidebarService.sidebarPosition$[this.eventName]) {
+      this.sidebarService.sidebarPosition$[this.eventName].pipe(takeUntil(this.destroy$)).subscribe((data) => {
         this.position = data;
       });
+    }
+
+    // Set up document click listener manually for better control
+    if (this.forWindow) {
+      this.documentClickListener = this.onDocumentClick.bind(this);
+      document.addEventListener('click', this.documentClickListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    // Remove document click listener
+    if (this.documentClickListener) {
+      document.removeEventListener('click', this.documentClickListener);
+      this.documentClickListener = undefined;
     }
   }
 
@@ -60,8 +83,7 @@ export class SidebarComponent implements OnInit {
     this.toggleSidebar.emit(!this.isExpanded);
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
+  private onDocumentClick(event: MouseEvent): void {
     if (!this.forWindow) return;
 
     const clickedInside = this.sidebarElement?.nativeElement.contains(event.target);

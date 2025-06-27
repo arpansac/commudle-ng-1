@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { IFaq } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { CmsService } from 'apps/shared-services/cms.service';
-import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { IPreferredPartners } from 'apps/shared-models/preferred-partners.model';
-import { IFaq } from '@commudle/shared-models';
+import { ITestimonial } from 'apps/shared-models/testimonial.model';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+
 @Component({
-  selector: 'commudle-aggencies',
-  templateUrl: './aggencies.component.html',
-  styleUrls: ['./aggencies.component.scss'],
+  selector: 'commudle-agencies',
+  templateUrl: './agencies.component.html',
+  styleUrls: ['./agencies.component.scss'],
 })
-export class AggenciesComponent implements OnInit, OnDestroy {
+export class AgenciesComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   stats: any[] = [
     {

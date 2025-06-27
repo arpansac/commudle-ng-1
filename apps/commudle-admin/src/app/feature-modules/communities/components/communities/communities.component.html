@@ -9,7 +9,7 @@
         Start your community
       </a>
     </div>
-    <app-communities-featured></app-communities-featured>
+    <commudle-communities-featured></commudle-communities-featured>
     <div class="hackathons-upcoming">
       <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
     </div>
@@ -21,7 +21,7 @@
         [parentType]="'communities'"
       ></commudle-public-home-list-events-speakers>
     </div>
-    <app-communities-list></app-communities-list>
+    <commudle-communities-list></commudle-communities-list>
     <div class="tech-sessions">
       <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
     </div>
@@ -32,8 +32,8 @@
     </div>
   </div>
   <div main-column *ngIf="!isMobileView">
-    <app-communities-featured></app-communities-featured>
-    <app-communities-list></app-communities-list>
+    <commudle-communities-featured></commudle-communities-featured>
+    <commudle-communities-list></commudle-communities-list>
   </div>
   <div right-column>
     <div class="publish-community-button">

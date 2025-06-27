@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CmsService } from 'apps/shared-services/cms.service';
+import { SeoService } from '@commudle/shared-services';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ICaseStudy } from 'apps/shared-models/case-study.model';
-import { SeoService } from '@commudle/shared-services';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-case-study',
@@ -15,6 +16,7 @@ export class CaseStudyComponent implements OnInit, OnDestroy {
   richTextChallenges: string;
   richTextSolution: string;
   richTextStats: any[] = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private cmsService: CmsService,
@@ -25,26 +27,31 @@ export class CaseStudyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.activatedRoute.params.subscribe((params) => {
-      const slug = params.slug;
-      this.getCaseStudyText(slug);
-    });
+    this.subscriptions.push(
+      this.activatedRoute.params.subscribe((params) => {
+        const slug = params.slug;
+        this.getCaseStudyText(slug);
+      }),
+    );
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   getCaseStudyText(slug: string) {
-    this.cmsService.getDataBySlug(slug).subscribe((data) => {
-      this.caseStudyPage = data;
-      this.richTextChallenges = this.cmsService.getHtmlFromBlock(data, 'challenge');
-      this.richTextSolution = this.cmsService.getHtmlFromBlock(this.caseStudyPage.solution[0], 'solution');
-      this.caseStudyPage.stats.forEach((stat) => {
-        this.richTextStats.push(this.cmsService.getHtmlFromBlock(stat));
-      });
-      this.setMeta();
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataBySlug(slug).subscribe((data) => {
+        this.caseStudyPage = data;
+        this.richTextChallenges = this.cmsService.getHtmlFromBlock(data, 'challenge');
+        this.richTextSolution = this.cmsService.getHtmlFromBlock(this.caseStudyPage.solution[0], 'solution');
+        this.caseStudyPage.stats.forEach((stat) => {
+          this.richTextStats.push(this.cmsService.getHtmlFromBlock(stat));
+        });
+        this.setMeta();
+      }),
+    );
   }
 
   setMeta(): void {

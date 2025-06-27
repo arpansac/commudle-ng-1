@@ -30,12 +30,12 @@
         <div *ngIf="this.homePageBannerImage">
           <ng-container *ngIf="banner?.image_link">
             <a [href]="banner?.image_link">
-              <img alt="Homepage banner" class="com-w-full" [src]="this.homePageBannerImage" />
+              <img alt="Homepage banner" class="com-w-full" [src]="this.homePageBannerImage.url()" />
             </a>
           </ng-container>
           <ng-container *ngIf="!banner?.image_link">
             <div>
-              <img alt="Homepage banner" class="com-w-full" [src]="this.homePageBannerImage" />
+              <img alt="Homepage banner" class="com-w-full" [src]="this.homePageBannerImage.url()" />
             </div>
           </ng-container>
         </div>

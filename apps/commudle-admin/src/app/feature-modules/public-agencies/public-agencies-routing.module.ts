@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AggenciesComponent } from 'apps/commudle-admin/src/app/feature-modules/public-agencies/components/aggencies/aggencies.component';
+import { AgenciesComponent } from './components/agencies/agencies.component';
 
-const routes: Routes = [{ path: '', component: AggenciesComponent }];
+const routes: Routes = [{ path: '', component: AgenciesComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

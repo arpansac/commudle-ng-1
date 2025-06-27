@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
 
 @Component({
   selector: 'lib-error404-page',

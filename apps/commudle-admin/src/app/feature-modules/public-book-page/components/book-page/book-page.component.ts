@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IFaq } from '@commudle/shared-models';
 import {
   faChartLine,
   faEarthAsia,
@@ -8,10 +9,9 @@ import {
   faShapes,
   faStairs,
 } from '@fortawesome/free-solid-svg-icons';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { IFaq } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-book-page',
@@ -20,42 +20,35 @@ import { IFaq } from '@commudle/shared-models';
 })
 export class BookPageComponent implements OnInit, OnDestroy {
   faqs: IFaq[];
-  constructor(private footerService: FooterService, private seoService: SeoService) {}
-
   staticAssets = staticAssets;
-  faPeopleGroup = faPeopleGroup;
   faSackDollar = faSackDollar;
-  faEarthAsia = faEarthAsia;
-  faStairs = faStairs;
   faShapes = faShapes;
   faHandsHoldingCircle = faHandsHoldingCircle;
   faChartLine = faChartLine;
-
   feature1 = {
     icon: faPeopleGroup,
     heading: 'For DevRels, By DevRels',
     subheading: 'Get the perspective of Developer Relations professionals',
   };
-
   feature2 = {
     icon: faSackDollar,
     heading: 'Calculating ROI',
     subheading:
       'This is a big question and we have dedicated sections for generating a proposal with get you an ROI in the long term.',
   };
-
   feature3 = {
     icon: faEarthAsia,
     heading: 'Real World Examples',
     subheading: 'We have collected both successful and not so successful examples with a strong reasoning behind it.',
   };
-
   feature4 = {
     icon: faStairs,
     heading: 'Step By Step Actionables',
     subheading:
       'This is for you if you are an established enterprise with a running developer ecosystem or just starting out to build one.',
   };
+
+  constructor(private footerService: FooterService, private seoService: SeoService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);

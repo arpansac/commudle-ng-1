@@ -89,7 +89,7 @@ export class NavbarMenuComponent implements OnInit, OnDestroy {
 
   getUnreadNotificationsCount() {
     this.notificationsStore.getUserNotificationsCount();
-    this.notificationsStore.userNotificationCount$.subscribe((count) => {
+    this.notificationsStore.userNotificationCount$.pipe(takeUntil(this.destroy$)).subscribe((count) => {
       this.notificationCount = count;
     });
   }

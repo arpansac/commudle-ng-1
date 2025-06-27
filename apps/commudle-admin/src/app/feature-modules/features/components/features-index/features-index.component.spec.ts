@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeaturesComponent } from './features-index.component';
+import { FeaturesIndexComponent } from './features-index.component';
 
-describe('FeaturesComponent', () => {
-  let component: FeaturesComponent;
-  let fixture: ComponentFixture<FeaturesComponent>;
+describe('FeaturesIndexComponent', () => {
+  let component: FeaturesIndexComponent;
+  let fixture: ComponentFixture<FeaturesIndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FeaturesComponent],
+      declarations: [FeaturesIndexComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FeaturesComponent);
+    fixture = TestBed.createComponent(FeaturesIndexComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

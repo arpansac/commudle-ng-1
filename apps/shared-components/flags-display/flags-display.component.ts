@@ -21,7 +21,6 @@ export class FlagsDisplayComponent implements OnInit, OnDestroy {
 
   uuid = uuidv4();
 
-  userSubscription;
   flagsChannelSubscription;
   flagsChannelListSubscription: Subscription;
   flagsChannelDataSubscription: Subscription;
@@ -46,14 +45,13 @@ export class FlagsDisplayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.userSubscription = this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.currentUser = data;
       this.initData();
     });
   }
 
   ngOnDestroy() {
-    this.userSubscription.unsubscribe();
     if (this.flagsChannelDataSubscription) {
       this.flagsChannelDataSubscription.unsubscribe();
     }

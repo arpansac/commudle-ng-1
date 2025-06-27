@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserSidebarProfileMenuComponent } from './user-account-menu.component';
+import { UserAccountMenuComponent } from './user-account-menu.component';
 
-describe('UserSidebarProfileMenuComponent', () => {
-  let component: UserSidebarProfileMenuComponent;
-  let fixture: ComponentFixture<UserSidebarProfileMenuComponent>;
+describe('UserAccountMenuComponent', () => {
+  let component: UserAccountMenuComponent;
+  let fixture: ComponentFixture<UserAccountMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserSidebarProfileMenuComponent],
+      declarations: [UserAccountMenuComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UserSidebarProfileMenuComponent);
+    fixture = TestBed.createComponent(UserAccountMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
