@@ -5,9 +5,8 @@ import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-module
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { Subscription, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { take } from 'lodash';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -65,7 +64,9 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
-    this.dialogRef.close();
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
