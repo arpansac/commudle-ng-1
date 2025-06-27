@@ -25,7 +25,6 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;
-  dialogRef: NbDialogRef<any>;
 
   subscriptions: Subscription[] = [];
 
@@ -49,6 +48,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private dialogService: NbDialogService,
     private recaptchaV3Service: ReCaptchaV3Service,
+    private dialogRef: NbDialogRef<LoginSignupComponent>,
   ) {
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
@@ -78,13 +78,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.seoService.setTags(
-      'Login or Sign Up',
-      'Enter the world of techies and knowledge, just one step to begin your journey. Login or sign up now!',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
@@ -102,6 +96,12 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
 
   redirect(): void {
     window.location.href = this.redirectUrl ? window.location.origin + this.redirectUrl : window.location.origin || '/';
+  }
+
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   sendVerificationEmail(): void {

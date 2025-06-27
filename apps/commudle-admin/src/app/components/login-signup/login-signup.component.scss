@@ -10,6 +10,10 @@
     h2 {
       @apply com-text-Yankees-Blue com-text-lg com-font-semibold;
     }
+
+    button {
+      @apply com-rounded-full;
+    }
   }
 
   nb-card-body {
