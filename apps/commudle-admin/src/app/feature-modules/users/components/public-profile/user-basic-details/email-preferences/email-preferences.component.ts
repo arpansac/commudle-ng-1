@@ -2,6 +2,10 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { EmailUnsubscribeGroupsService } from 'apps/commudle-admin/src/app/feature-modules/email-confirmations/services/email-unsubscribe-groups.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { SeoService } from '@commudle/shared-services';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { takeUntil } from 'rxjs';
+import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
@@ -14,20 +18,29 @@ export class EmailPreferencesComponent implements OnInit, OnDestroy {
   subscriptionGroups: Record<any, any>;
   subscriptions: Subscription[] = [];
   subscribeAllStatus: boolean;
+  currentUser: ICurrentUser;
 
   constructor(
     private appUsersService: AppUsersService,
     private emailUnsubscribeGroupsService: EmailUnsubscribeGroupsService,
     private cdr: ChangeDetectorRef,
     private toastLogService: LibToastLogService,
+    private seoService: SeoService,
+    private authWatchService: LibAuthwatchService,
   ) {}
 
   ngOnInit(): void {
     this.getAllUserSubscriptions();
+    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.setMeta();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Email Preferences | Edit Profile | ${this.currentUser.name}`);
   }
 
   getAllUserSubscriptions() {

@@ -21,6 +21,7 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/lib/lib-error-handler.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUser } from 'apps/shared-models/user.model';
+import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
@@ -73,14 +74,20 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute,
     private userProfileManagerService: UserProfileManagerService,
     private errorHandler: LibErrorHandlerService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
+      if (currentUser) {
+        this.currentUser = currentUser;
+      }
+    });
     this.userProfileManagerService.user$.subscribe((data: IUser) => {
       this.user = data;
       this.getUserTags();
     });
+    this.setMeta();
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
       this.queryParamIsHiring = true;
       if (!this.user.is_employer) {
@@ -98,6 +105,10 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
+  setMeta() {
+    this.seoService.setTitle(`Basic Details | Edit Profile | ${this.currentUser.name}`);
+  }
+
   openEnableHiring() {
     this.enableHiringDialog = this.dialogService.open(this.enableHiring, {
       closeOnEsc: false,
@@ -107,7 +118,6 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
   getUserTags() {
     this.tags = [];
-
     // Get already available tags of the user
     if (this.user) {
       this.user.tags.forEach((tag) => this.tags.push(tag.name));

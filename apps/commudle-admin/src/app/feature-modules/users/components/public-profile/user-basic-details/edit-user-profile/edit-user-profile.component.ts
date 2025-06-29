@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -17,13 +16,6 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
   currentUser: ICurrentUser;
   username: string;
-  routeTitleMap: Record<string, string> = {
-    'basic-details': 'Basic Details',
-    'email-preferences': 'Email Preferences',
-    'communication-preferences': 'Communication Preferences',
-    'cookie-preferences': 'Cookie Preferences',
-    'account-management': 'Account Management',
-  };
 
   private destroy$ = new Subject<void>();
 
@@ -49,16 +41,6 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(() => {
-        this.setMeta();
-      });
-
-    this.setMeta();
     this.updateProfile();
   }
 
@@ -86,16 +68,5 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
         this.updateProfileService.setUpdateProfileStatus(false);
       }
     });
-  }
-
-  setMeta() {
-    const currentRoute = this.activatedRoute.firstChild;
-    if (currentRoute) {
-      const routePath = currentRoute.snapshot.url[0]?.path;
-      const tabName = this.routeTitleMap[routePath] || 'Settings';
-      const displayName = this.currentUser?.name || this.username;
-      const title = `${tabName} | Edit Profile | ${displayName}`;
-      this.seoService.setTitle(title);
-    }
   }
 }

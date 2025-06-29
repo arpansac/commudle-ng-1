@@ -4,6 +4,9 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
+import { SeoService } from '@commudle/shared-services';
+import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
 @Component({
   selector: 'commudle-communication-preferences',
@@ -17,10 +20,15 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   consent_privacy_tnc = false;
   consent_marketing = false;
+
+  currentUser: ICurrentUser;
+
   constructor(
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
+    private seoService: SeoService,
+    private authWatchService: LibAuthwatchService,
   ) {
     this.loginForm = this.fb.group({
       consent_privacy_tnc: [''],
@@ -28,10 +36,17 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
+    this.setMeta();
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`Communication Preferences | Edit Profile | ${this.currentUser.name}`);
   }
 
   updateCommunicationPreferences(): void {
