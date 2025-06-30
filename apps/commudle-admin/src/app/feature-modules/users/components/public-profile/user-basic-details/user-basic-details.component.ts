@@ -10,7 +10,7 @@ import {
   ViewChild,
   Input,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,7 @@ import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-basic-details',
@@ -87,7 +88,19 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
       this.user = data;
       this.getUserTags();
     });
-    this.setMeta();
+
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(() => {
+        const currentUrl = this.router.url;
+        if (currentUrl.includes('basic-details')) {
+          this.setMeta();
+        }
+      });
+
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
       this.queryParamIsHiring = true;
       if (!this.user.is_employer) {

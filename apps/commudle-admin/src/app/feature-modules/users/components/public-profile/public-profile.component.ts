@@ -66,7 +66,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
         const currentUrl = this.router.url;
-        if (!currentUrl.includes('(p:settings)')) {
+        if (!currentUrl.includes('p:settings')) {
           this.setMeta();
         }
       }),
