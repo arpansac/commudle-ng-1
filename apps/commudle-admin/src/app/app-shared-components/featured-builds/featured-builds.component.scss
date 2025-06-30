@@ -26,9 +26,9 @@
   }
 
   .featured-project-cards {
-    @apply com-w-full com-flex md:com-flex-row com-flex-col com-m-0 com-p-0 com-gap-6;
+    @apply com-w-full com-m-0 com-p-0 com-gap-6 com-grid com-grid-cols-1 md:com-grid-cols-3;
     .featured-project-card {
-      @apply com-m-0 com-p-0 com-w-full;
+      @apply com-m-0 com-p-0;
     }
   }
 }
