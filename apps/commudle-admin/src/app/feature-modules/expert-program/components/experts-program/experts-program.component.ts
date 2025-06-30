@@ -31,11 +31,6 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
   }
 
   setMeta() {
-    if (this.expertsProgramPageHeader?.header_image) {
-      this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
-    } else {
-      this.headerImgUrl = undefined;
-    }
     this.seoService.setTags(
       'Experts Program',
       'Help software developers, designers and developer communities across the world by joining our experts program. Get recognized with a badge and a blue tick.',
@@ -51,6 +46,7 @@ export class ExpertsProgramComponent implements OnInit, OnDestroy {
     this.cmsService.getDataBySlug('expert-program').subscribe((data) => {
       if (data) {
         this.expertsProgramPageHeader = data;
+        this.headerImgUrl = this.imageUrl(this.expertsProgramPageHeader?.header_image).url();
         this.setMeta();
         this.richText = this.cmsService.getHtmlFromBlock(data);
       }
