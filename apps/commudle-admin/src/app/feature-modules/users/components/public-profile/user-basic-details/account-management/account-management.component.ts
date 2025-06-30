@@ -6,9 +6,8 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { ButtonStyle, ButtonText, ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { SeoService } from '@commudle/shared-services';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { SeoService, AuthService } from '@commudle/shared-services';
+import { IUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -21,7 +20,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy {
   closeAccount = false;
   faExclamationTriangle = faExclamationTriangle;
 
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -30,7 +29,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy {
     private appUsersService: AppUsersService,
     private gtm: GoogleTagManagerService,
     private seoService: SeoService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
   ) {}
 
   ngOnInit(): void {

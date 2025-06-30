@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/c
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { SeoService } from '@commudle/shared-services';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { SeoService, AuthService } from '@commudle/shared-services';
+import { IUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -14,8 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
-  currentUser: ICurrentUser;
-  username: string;
+  currentUser: IUser;
 
   private destroy$ = new Subject<void>();
 
@@ -27,12 +25,11 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private updateProfileService: UpdateProfileService,
     private seoService: SeoService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.seoService.noIndex(true);
-    this.username = this.activatedRoute.parent?.snapshot.params['username'] || '';
     this.openDialog();
 
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {

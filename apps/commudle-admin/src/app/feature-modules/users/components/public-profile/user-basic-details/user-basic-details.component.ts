@@ -19,10 +19,8 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/lib/lib-error-handler.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { IUser } from 'apps/shared-models/user.model';
-import { SeoService } from '@commudle/shared-services';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { IUser } from '@commudle/shared-models';
+import { SeoService, AuthService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { filter } from 'rxjs/operators';
@@ -38,7 +36,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   user: IUser;
   @Output() updateProfile: EventEmitter<any> = new EventEmitter<any>();
 
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   faExclamationTriangle = faExclamationTriangle;
   faPenToSquare = faPenToSquare;
   staticAssets = staticAssets;
@@ -66,7 +64,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private dialogService: NbDialogService,
     private appUsersService: AppUsersService,
     private userChatsService: UserChatsService,

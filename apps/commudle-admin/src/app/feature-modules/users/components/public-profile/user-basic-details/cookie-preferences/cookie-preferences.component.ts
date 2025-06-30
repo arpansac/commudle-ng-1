@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SeoService } from '@commudle/shared-services';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { SeoService, AuthService } from '@commudle/shared-services';
+import { IUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -11,11 +10,11 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class CookiePreferencesComponent implements OnInit, OnDestroy {
   showPopup = false;
-  currentUser: ICurrentUser;
+  currentUser: IUser;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private seoService: SeoService, private authWatchService: LibAuthwatchService) {}
+  constructor(private seoService: SeoService, private authWatchService: AuthService) {}
 
   ngOnInit(): void {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));

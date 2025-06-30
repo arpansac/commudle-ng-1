@@ -4,10 +4,8 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
-import { SeoService } from '@commudle/shared-services';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-
+import { SeoService, AuthService } from '@commudle/shared-services';
+import { IUser } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-communication-preferences',
   templateUrl: './communication-preferences.component.html',
@@ -21,14 +19,14 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
   consent_privacy_tnc = false;
   consent_marketing = false;
 
-  currentUser: ICurrentUser;
+  currentUser: IUser;
 
   constructor(
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
     private seoService: SeoService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
   ) {
     this.loginForm = this.fb.group({
       consent_privacy_tnc: [''],
