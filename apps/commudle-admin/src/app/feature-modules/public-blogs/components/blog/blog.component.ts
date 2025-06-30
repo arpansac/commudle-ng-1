@@ -1,15 +1,15 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IUser } from 'apps/shared-models/user.model';
-import { CmsService } from 'apps/shared-services/cms.service';
-import { Subscription } from 'rxjs';
+import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
+import { faRssSquare } from '@fortawesome/free-solid-svg-icons';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { faRssSquare } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
+import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { IUser } from 'apps/shared-models/user.model';
+import { CmsService } from 'apps/shared-services/cms.service';
+import { SeoService } from 'apps/shared-services/seo.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-blog',
@@ -45,11 +45,13 @@ export class BlogComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private footerService: FooterService,
   ) {
-    activatedRoute.params.subscribe(() => {
-      this.getData();
-      this.getBlogs();
-      this.getLatestBlogs();
-    });
+    this.subscriptions.push(
+      this.activatedRoute.params.subscribe(() => {
+        this.getData();
+        this.getBlogs();
+        this.getLatestBlogs();
+      }),
+    );
   }
 
   ngOnInit(): void {
@@ -107,18 +109,22 @@ export class BlogComponent implements OnInit, OnDestroy {
   getBlogs() {
     const fields = '_id,slug,title,publishedAt,meta_description,headerImage';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
-      this.blogs = value;
-      this.isLoading = false;
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataByTypeFieldOrder('blog', fields, order).subscribe((value: IBlog[]) => {
+        this.blogs = value;
+        this.isLoading = false;
+      }),
+    );
   }
 
   getLatestBlogs() {
     const fields = '_id, slug, title, publishedAt';
     const order = 'publishedAt desc';
-    this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 5).subscribe((value: IBlog[]) => {
-      this.latestBlogs = value;
-    });
+    this.subscriptions.push(
+      this.cmsService.getDataByTypeFieldOrderCount('blog', fields, order, 5).subscribe((value: IBlog[]) => {
+        this.latestBlogs = value;
+      }),
+    );
   }
 
   setFaqSchemaData() {

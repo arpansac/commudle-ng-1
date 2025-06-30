@@ -22,16 +22,16 @@ export class LabsHomeService {
     this.labsService.searchTags(value, page, count).subscribe((data) => this.tagSearch.next(data.tags));
   }
 
-  getLabSearchResults(value: string[], page?: number, count?: number) {
-    this.getLabsByTags(value, page || 1, count || 10, true);
-  }
-
-  getLabsByTags(value: string[], page: number, count: number, initialize: boolean = false) {
-    this.labsService.searchLabsByTags(value, page, count).subscribe((data) => {
-      if (data.labs.length > 0) {
-        this.labSearch.next((initialize ? [] : this.labSearch.getValue()).concat(data.labs));
-        // this.getLabsByTags(value, page + 1, count);
-      }
-    });
-  }
+  // getLabSearchResults(value: string[], page?: number, count?: number) {
+  //   this.getLabsByTags(value, page || 1, count || 10, true);
+  // }
+  //
+  // getLabsByTags(value: string[], page: number, count: number, initialize: boolean = false) {
+  //   this.labsService.searchLabsByTags(value, page, count).subscribe((data) => {
+  //     if (data.labs.length > 0) {
+  //       this.labSearch.next((initialize ? [] : this.labSearch.getValue()).concat(data.labs));
+  //       // this.getLabsByTags(value, page + 1, count);
+  //     }
+  //   });
+  // }
 }

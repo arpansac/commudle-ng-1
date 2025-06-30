@@ -1,17 +1,28 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import {
+  IPageInfo,
+  IProfileCompletionStatus,
+  IUser,
+  IUserRolesUser,
+  IUserStat,
+  EUserRoles,
+} from '@commudle/shared-models';
+import { AppUsersService, AuthService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { UserEventRegistrationsService } from 'apps/commudle-admin/src/app/services/user-event-registrations.service';
+import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
 import { IEvent } from 'apps/shared-models/event.model';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-rsvp',
@@ -28,6 +39,16 @@ export class RsvpComponent implements OnInit, OnDestroy {
   customReg: boolean;
   eventId: string;
   showConfirmationDialog = false;
+  private destroy$ = new Subject<void>();
+  currentUser: IUser;
+  userProfileDetails: IUserStat;
+  isProfileCompleted = false;
+  volunteers: IUser[] = [];
+  count = 15;
+  communityLeaders: IUser[];
+  communities: ICommunity[] = [];
+  communityGroupLeaders: IUserRolesUser[] = [];
+  pageInfo: IPageInfo;
 
   constructor(
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
@@ -35,14 +56,17 @@ export class RsvpComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private userEventRegistrationService: UserEventRegistrationsService,
     private nbDialogService: NbDialogService,
-    private router: Router,
     private eventsService: EventsService,
     private communitiesService: CommunitiesService,
+    private authService: AuthService,
+    private appUsersService: AppUsersService,
+    private uruService: UserRolesUsersService,
   ) {}
 
   ngOnInit() {
     this.seoService.setTitle('RSVP');
     this.seoService.noIndex(true);
+    this.fetchCurrentUserDetails();
 
     this.activatedRoute.queryParams.subscribe((data) => {
       this.token = data['token'];
@@ -63,6 +87,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.seoService.noIndex(false);
   }
 
@@ -72,6 +98,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
         this.event = data;
         this.communitiesService.pGetCommunityDetails(this.event.kommunity_id).subscribe((data) => {
           this.community = data;
+          this.fetchCommunityDetails();
+          this.getVolunteers();
           this.onAcceptRoleButton();
         });
       });
@@ -83,6 +111,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
       this.event = data.event;
       this.community = data.community;
       this.dferg = data.data_form_entity_response_group;
+      this.fetchCommunityDetails();
+      this.getVolunteers();
       this.showConfirmationDialog = true;
     });
   }
@@ -92,6 +122,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
       this.community = data.community;
       this.event = data.event;
       this.dferg = data.user_event_registration;
+      this.fetchCommunityDetails();
+      this.getVolunteers();
       this.showConfirmationDialog = true;
     });
   }
@@ -113,6 +145,43 @@ export class RsvpComponent implements OnInit, OnDestroy {
         this.rsvpStatus = 0;
         this.updateCustomRegRSVP(this.token, this.rsvpStatus, this.customReg);
       }
+    });
+  }
+
+  private fetchCurrentUserDetails() {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
+      this.currentUser = currentUser;
+      this.fetchUserStats();
+      this.getProfileCompletionStatus();
+    });
+  }
+
+  private fetchUserStats() {
+    this.appUsersService.getProfileStats().subscribe((data) => {
+      this.userProfileDetails = data;
+    });
+  }
+
+  private getProfileCompletionStatus() {
+    this.appUsersService.profileCompletionStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: IProfileCompletionStatus) => {
+        if (status) {
+          this.isProfileCompleted = !status.completed;
+        }
+      });
+  }
+
+  private getVolunteers() {
+    this.eventsService.pGetEventVolunteers(this.event.slug, this.count, this.pageInfo?.end_cursor).subscribe((data) => {
+      this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+      this.pageInfo = data.page_info;
+    });
+  }
+
+  private fetchCommunityDetails() {
+    this.uruService.pGetCommunityLeadersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
+      this.communityLeaders = data.users;
     });
   }
 }

@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { DiscussionPersonalChatChannel } from '../services/websockets/discussion-personal-chat.channel';
 import { IEditorValidator } from '@commudle/editor';
 import { Subject, takeUntil } from 'rxjs';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-discussion-personal-chat',
@@ -61,6 +62,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     private discussionChatChannel: DiscussionPersonalChatChannel,
     private authWatchService: LibAuthwatchService,
     private gtm: GoogleTagManagerService,
+    private loginAuthService: LoginAuthService,
   ) {
     this.chatMessageForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
@@ -112,7 +114,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
 
   login() {
     if (!this.currentUser) {
-      this.authWatchService.logInUser();
+      this.loginAuthService.openLoginSignupTemplate();
     }
     return true;
   }

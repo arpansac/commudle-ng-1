@@ -70,7 +70,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.checkFragment();
     this.getHackathonAndCommunity();
-    this.router.events.subscribe((event) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.updateHeaderVariation();
       }

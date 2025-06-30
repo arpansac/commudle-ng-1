@@ -11,6 +11,7 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
   selector: 'app-messages',
@@ -52,6 +53,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     private userMessagesService: UserMessagesService,
     private fb: FormBuilder,
     private router: Router,
+    private loginAuthService: LoginAuthService,
   ) {}
 
   ngOnInit(): void {
@@ -177,6 +179,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.router.navigate(['/login'], { queryParams: { redirect: this.router.url } });
+    this.loginAuthService.openLoginSignupTemplate();
   }
 }

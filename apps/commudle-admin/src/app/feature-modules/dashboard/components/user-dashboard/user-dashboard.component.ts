@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { EDbModels, IActivityFeed, ICommunity, IPageInfo, IUpcomingEventHackathon } from '@commudle/shared-models';
+import {
+  EDbModels,
+  IActivityFeed,
+  ICommunity,
+  IPageInfo,
+  IUpcomingEventHackathon,
+  IUser,
+  IUserStat,
+} from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { FeedService } from 'apps/shared-services/feed.service';
+import { AuthService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-user-dashboard',
@@ -14,7 +20,7 @@ import { FeedService } from 'apps/shared-services/feed.service';
   styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit {
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   userProfileDetails: IUserStat;
   managedCommunities: ICommunity[] = [];
   subscriptions: Subscription[] = [];
@@ -35,7 +41,7 @@ export class UserDashboardComponent implements OnInit {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private appUsersService: AppUsersService,
     private communitiesService: CommunitiesService,
     private feedService: FeedService,

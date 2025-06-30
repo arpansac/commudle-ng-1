@@ -8,6 +8,7 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 })
 export class CommunityBuildsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
+
   constructor(private footerService: FooterService) {}
 
   ngOnInit() {

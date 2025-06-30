@@ -2,11 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
 import { SanityImageObject } from '@sanity/image-url/lib/types/types';
 import { ICMSAbout } from 'apps/commudle-admin/src/app/components/about/models/about-cms.model';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 
 @Component({
   selector: 'app-about',
@@ -16,22 +15,13 @@ import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.
 export class AboutComponent implements OnInit, OnDestroy {
   ICmsAbout: ICMSAbout;
   staticAssets = staticAssets;
-  isDarkMode = false;
   imgUrl: string;
 
-  constructor(
-    private cmsService: CmsService,
-    private seoService: SeoService,
-    private footerService: FooterService,
-    private darkModeService: DarkModeService,
-  ) {}
+  constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.getData();
-    this.darkModeService.isDarkMode$.subscribe((isDarkMode) => {
-      this.isDarkMode = isDarkMode;
-    });
   }
 
   ngOnDestroy() {

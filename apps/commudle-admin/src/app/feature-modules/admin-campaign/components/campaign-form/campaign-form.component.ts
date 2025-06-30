@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import {
   faAnglesRight,
   faArrowLeft,
@@ -9,15 +9,16 @@ import {
   faSackDollar,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { Router, NavigationEnd } from '@angular/router';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { SeoService } from '@commudle/shared-services';
+import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'commudle-campaign-form',
   templateUrl: './campaign-form.component.html',
   styleUrls: ['./campaign-form.component.scss'],
 })
-export class CampaignFormComponent implements OnInit {
+export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   sidebarEventName: string;
   lastSegment: string;
@@ -32,6 +33,8 @@ export class CampaignFormComponent implements OnInit {
     faFileImage,
   };
   isEditMode = false;
+  private subscriptions: Subscription[] = [];
+
   constructor(private router: Router, private footerService: FooterService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
@@ -42,11 +45,18 @@ export class CampaignFormComponent implements OnInit {
     this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.generateSlug();
-      }
-    });
+    this.subscriptions.push(
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.generateSlug();
+        }
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.footerService.changeMiniFooterStatus(true);
   }
 
   generateSlug() {

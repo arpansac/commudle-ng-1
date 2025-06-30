@@ -8,7 +8,10 @@
       @apply com-text-6xl com-mb-8;
     }
     .title {
-      @apply com-text-Yankees-Blue com-text-3xl com-font-semibold;
+      @apply com-text-Yankees-Blue com-text-3xl com-font-semibold com-leading-10;
+    }
+    .community-org-name {
+      @apply com-text-Azure com-font-semibold com-text-3xl com-leading-10;
     }
     .paid-form {
       @apply com-text-green-700 com-mb-2;

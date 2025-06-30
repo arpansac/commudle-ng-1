@@ -1,4 +1,4 @@
-<div class="com-bg-white com-mb-10">
+<div class="com-bg-white com-pb-16">
   <div class="base-layout thin">
     <div class="container">
       <div class="one-column-layout">
@@ -23,26 +23,43 @@
             </div>
             <div class="confirmation-header" *ngIf="!event">
               <div class="check-icon">😃</div>
-              <h1 class="title">Thank you we have saved your response</h1>
+              <h1 class="title">Thank you we have saved your response for</h1>
+              <span
+                class="community-org-name"
+                *ngIf="
+                  dataFormEntity?.redirectable_entity_type === EDbModels.SURVEY &&
+                  (dataFormEntity?.community || dataFormEntity?.community_group)
+                "
+              >
+                {{ dataFormEntity.community?.name || dataFormEntity.community_group?.name }}
+              </span>
             </div>
 
             <!-- User profile section -->
-            <ng-container *ngIf="currentUser">
+            <ng-container *ngIf="currentUser && isProfileCompleted">
               <div class="profile-card">
                 <div class="profile-preview-card">
                   <div class="card-heading">Profile Card Preview</div>
                   <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
                 </div>
 
-                <div class="profile-completion-card" *ngIf="isProfileCompleted">
+                <div class="profile-completion-card">
                   <div class="card-heading">Profile's Progress</div>
                   <commudle-profile-completion-progress></commudle-profile-completion-progress>
                 </div>
               </div>
 
-              <div class="missing-field-card" *ngIf="isProfileCompleted">
+              <div class="missing-field-card">
                 <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
               </div>
+            </ng-container>
+
+            <ng-container *ngIf="currentUser && !isProfileCompleted">
+              <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+              <commudle-userprofile-details
+                [userProfileDetails]="userProfileDetails"
+                [username]="currentUser.username"
+              ></commudle-userprofile-details>
             </ng-container>
 
             <!-- Event details -->

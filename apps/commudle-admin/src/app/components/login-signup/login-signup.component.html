@@ -1,0 +1,64 @@
+<nb-card class="login-container">
+  <nb-card-header>
+    <h2>Sign In</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="loginForm" class="login-form">
+      <label class="email-label">EMAIL<span class="mandatory-field">*</span></label>
+      <input
+        formControlName="email"
+        fullWidth
+        nbInput
+        placeholder="Enter Your Email"
+        type="email"
+        class="email-input"
+      />
+      <label class="email-label" *ngIf="isEmailSent">ENTER CODE<span class="mandatory-field">*</span></label>
+      <input
+        *ngIf="isEmailSent"
+        formControlName="code"
+        fullWidth
+        nbInput
+        placeholder="Enter Verification Code"
+        type="password"
+        class="otp-input"
+      />
+      <button
+        (click)="sendVerificationEmail()"
+        *ngIf="!isEmailSent"
+        [disabled]="loginForm.get('email').invalid"
+        [nbSpinner]="isLoading"
+        fullWidth
+        nbButton
+        status="primary"
+        shape="semi-round"
+      >
+        Send Verification Code
+      </button>
+      <button
+        (click)="loginUser()"
+        *ngIf="isEmailSent"
+        [disabled]="loginForm.invalid"
+        [nbSpinner]="isLoading"
+        fullWidth
+        nbButton
+        status="primary"
+        shape="semi-round"
+      >
+        Login
+      </button>
+    </form>
+    <div class="separator">
+      <span class="or-seprator"></span>
+      <p class="or-seprator-text">OR</p>
+      <span class="or-seprator"></span>
+    </div>
+    <div
+      *ngIf="!libAuthWatchService.getAuthCookie()"
+      class="google-signin-button"
+      google-signin-button
+      type="standard"
+      size="large"
+    ></div>
+  </nb-card-body>
+</nb-card>

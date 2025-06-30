@@ -1,28 +1,28 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { environment } from '@commudle/shared-environments';
 import { NbWindowService } from '@commudle/theme';
+import {
+  faBars,
+  faBuildingColumns,
+  faEnvelopeOpen,
+  faFileLines,
+  faMessage,
+  faNewspaper,
+  faScroll,
+} from '@fortawesome/free-solid-svg-icons';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
+import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
+import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunity } from 'apps/shared-models/community.model';
-import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
+import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { faBars, faScroll } from '@fortawesome/free-solid-svg-icons';
-import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
-import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
-import {
-  faBuildingColumns,
-  faFileLines,
-  faNewspaper,
-  faMessage,
-  faEnvelopeOpen,
-} from '@fortawesome/free-solid-svg-icons';
-import { environment } from '@commudle/shared-environments';
-import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
   selector: 'app-community-control-panel',
@@ -70,22 +70,28 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setCommunity();
     this.seoService.noIndex(true);
-    this.darkModeService.isDarkMode$.subscribe((data) => {
-      this.darkMode = data;
-    });
+    this.subscriptions.push(
+      this.darkModeService.isDarkMode$.subscribe((data) => {
+        this.darkMode = data;
+      }),
+    );
     this.isHackathonActive = this.router.url.toString().includes('/hackathons');
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isHackathonActive = this.router.url.toString().includes('/hackathons');
-      }
-    });
+    this.subscriptions.push(
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.isHackathonActive = this.router.url.toString().includes('/hackathons');
+        }
+      }),
+    );
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
 
     // eslint-disable-next-line no-prototype-builtins
     if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
-      this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
-        this.sidebarExpanded = data;
-      });
+      this.subscriptions.push(
+        this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+          this.sidebarExpanded = data;
+        }),
+      );
     }
     this.footerService.changeMiniFooterStatus(false);
   }

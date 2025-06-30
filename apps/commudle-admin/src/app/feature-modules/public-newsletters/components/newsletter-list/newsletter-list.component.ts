@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { environment } from '@commudle/shared-environments';
 import { PublicNewslettersService } from 'apps/commudle-admin/src/app/feature-modules/public-newsletters/services/public-newsletters.service';
+import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IMainNewsletter } from 'apps/shared-models/main-newsletter.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { environment } from '@commudle/shared-environments';
 
 @Component({
   selector: 'app-newsletter-list',
