@@ -15,12 +15,12 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class AboutComponent implements OnInit, OnDestroy {
   ICmsAbout: ICMSAbout;
   staticAssets = staticAssets;
+  imgUrl: string;
 
   constructor(private cmsService: CmsService, private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.setMeta();
     this.getData();
   }
 
@@ -32,13 +32,15 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       'About - Commudle',
       'Commudle helps businesses to build and scale developer programs globally. We are a developer ecosystem where developers can engage, share knowledge, opportunities and grow in their career journeys.',
-      'https://commudle.com/assets/images/commudle-logo192.png',
+      this.imgUrl ? this.imgUrl : 'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
 
   getData(): void {
     this.cmsService.getDataBySlug('about-page').subscribe((value) => {
       this.ICmsAbout = value;
+      this.imgUrl = this.getImageUrl(this.ICmsAbout?.landingImage).url();
+      this.setMeta();
     });
   }
 

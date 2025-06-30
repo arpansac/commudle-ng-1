@@ -14,6 +14,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 })
 export class AgenciesComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;
+  headerImgUrl = staticAssets.agencies_header_image;
   stats: any[] = [
     {
       number: '107+k',
@@ -64,7 +65,7 @@ export class AgenciesComponent implements OnInit, OnDestroy {
     this.seoService.setTags(
       'For DevRel Agencies',
       "Build developer programs using Commudle's developer focused engagement features. Host events, run forums & channels, send newsletters. All at one place!",
-      'https://commudle.com/assets/images/commudle-logo192.png',
+      this.headerImgUrl,
     );
   }
 
