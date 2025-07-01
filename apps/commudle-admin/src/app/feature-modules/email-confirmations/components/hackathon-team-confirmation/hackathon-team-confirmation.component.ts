@@ -32,7 +32,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   hur: IHackathonUserResponse;
   token: string;
   EInvitationStatus = EInvitationStatus;
-  isLoading = false;
+  isLoading = true;
   currentUser: IUser;
   userProfileDetails: IUserStat;
   isProfileCompleted = false;
@@ -65,7 +65,6 @@ export class HackathonTeamConfirmationComponent implements OnInit {
         this.getHackathonCurrentRegistrationDetails();
         this.getJudges();
         this.fetchCommunityDetails();
-        console.log(this.hackathon);
         this.hur = data.hackathon_user_response;
         if (this.hur.invite_status === EInvitationStatus.INVITED || Number(params.status) === 1) {
           this.onAcceptRoleButton();
@@ -82,30 +81,37 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   }
 
   private fetchCurrentUserDetails() {
+    this.isLoading = true;
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
+      this.isLoading = false;
       this.fetchUserStats();
       this.getProfileCompletionStatus();
     });
   }
 
   private fetchUserStats() {
+    this.isLoading = true;
     this.appUsersService.getProfileStats().subscribe((data) => {
       this.userProfileDetails = data;
+      this.isLoading = false;
     });
   }
 
   private getProfileCompletionStatus() {
+    this.isLoading = true;
     this.appUsersService.profileCompletionStatus$
       .pipe(takeUntil(this.destroy$))
       .subscribe((status: IProfileCompletionStatus) => {
         if (status) {
           this.isProfileCompleted = !status.completed;
         }
+        this.isLoading = false;
       });
   }
 
   getJudges() {
+    this.isLoading = true;
     this.subscriptions.push(
       this.hackathonService.pIndexJudge(this.hackathon.id).subscribe((data) => {
         this.hackathonJudges = data;
@@ -141,6 +147,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   }
 
   getHackathonCurrentRegistrationDetails() {
+    this.isLoading = true;
     this.subscriptions.push(
       this.hackathonService
         .getHackathonCurrentRegistrationDetails(this.hackathon.id)
@@ -149,16 +156,17 @@ export class HackathonTeamConfirmationComponent implements OnInit {
             this.userTeamDetails = data;
             this.interestedUsers = this.userTeamDetails[0].hackathon_user_responses.map((response) => response.user);
             this.interestedUsersCount = this.userTeamDetails[0].hackathon_user_responses.length;
-            console.log(this.interestedUsers);
-            console.log(this.interestedUsersCount);
+            this.isLoading = false;
           }
         }),
     );
   }
 
   private fetchCommunityDetails() {
+    this.isLoading = true;
     this.uruService.pGetCommunityLeadersByRole(this.hackathon.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
       this.communityLeaders = data.users;
+      this.isLoading = false;
     });
   }
 }
