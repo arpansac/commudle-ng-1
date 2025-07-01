@@ -1,8 +1,6 @@
-<div class="category-heading">
-  Event Status<commudle-help-section [helpDictionaryName]="'event-status'"></commudle-help-section>
-</div>
+<div class="category-heading">STATUS</div>
 <section *ngIf="event.editable">
-  <nb-button-group
+  <!-- <nb-button-group
     (valueChange)="openConfirmationPopup($event[0])"
     [size]="isMobileView ? 'medium' : 'small'"
     filled
@@ -17,7 +15,14 @@
     >
       {{ i | titlecase }}
     </button>
-  </nb-button-group>
+  </nb-button-group> -->
+  <div class="filter">
+    <select class="select-status" (change)="openConfirmationPopup($any($event.target).value)">
+      <option *ngFor="let i of eventStatuses" [value]="i" [selected]="event.event_status.name === i">
+        {{ i | titlecase }}
+      </option>
+    </select>
+  </div>
 </section>
 
 <section *ngIf="!event.editable">

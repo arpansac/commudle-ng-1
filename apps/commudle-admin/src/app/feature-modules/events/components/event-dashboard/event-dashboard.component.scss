@@ -3,10 +3,6 @@
   .event-name {
     @apply com-m-0 com-text-3xl;
   }
-
-  .text {
-    @apply com-text-base com-m-0 com-mb-2 md:com-mb-0;
-  }
 }
 .header {
   @apply com-bg-white com-h-28 com-border com-border-solid com-border-Bright-Gray com-border-t-0 com-flex;
@@ -15,29 +11,40 @@
 .sidebar {
   @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
+  .text {
+    @apply com-flex com-text-base com-font-semibold com-py-2 com-m-0 com-rounded-md com-gap-2.5;
+  }
+
   a {
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
     @apply com-p-4;
-    .back-admin,
+    .sidebar-heading {
+      @apply com-text-base com-flex com-items-center com-justify-between com-py-2 com-mb-3 com-rounded-md;
+    }
+
+    .back-admin {
+      @apply com-py-1 com-pr-3 com-rounded-md com-mt-2;
+      .heading {
+        @apply com-text-xs com-text-Cadet-Grey com-text-sm;
+      }
+    }
+
     .sidebar-expand-icon {
       .icon {
         @apply com-text-Cadet-Grey;
       }
-      .heading {
-        @apply com-text-xs com-text-Cadet-Grey;
-      }
     }
 
     .category-heading {
-      @apply com-text-sm com-font-semibold com-my-2;
+      @apply com-px-3 com-py-1 com-rounded-md com-text-Caption com-font-semibold com-my-2;
     }
     .divided-line {
       @apply com-border com-border-solid com-border-Bright-Gray;
     }
     .action-button {
-      @apply com-p-1 com-flex com-gap-2 com-items-center com-cursor-pointer;
+      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
       &.active {
         @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
       }
@@ -46,18 +53,6 @@
       }
       .heading {
         @apply com-text-sm com-font-light;
-      }
-      &.public-event-page {
-        @apply com-text-Azure;
-        .icon {
-          @apply com-text-Azure;
-        }
-      }
-      &.stats {
-        @apply com-text-Caribbean-Green;
-        .icon {
-          @apply com-text-Caribbean-Green;
-        }
       }
     }
 
@@ -107,7 +102,7 @@ a {
 }
 
 .header-icons {
-  @apply com-flex;
+  @apply com-flex com-flex-col;
 }
 
 .header-icons-non-expanded {

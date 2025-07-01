@@ -4,7 +4,14 @@
 }
 
 .category-heading {
-  @apply com-text-sm com-font-semibold com-my-2  com-flex com-items-center com-pb-1;
+  @apply com-text-Caption com-font-semibold com-my-2 com-flex com-items-center com-px-3 com-py-1;
+}
+
+// .filter {
+//   @apply com-rounded;
+// }
+.select-status {
+  @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
 }
 
 .action-buttons {
