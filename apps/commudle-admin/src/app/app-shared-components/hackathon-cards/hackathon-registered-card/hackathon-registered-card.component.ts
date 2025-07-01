@@ -51,10 +51,10 @@ export class HackathonRegisteredCardComponent implements OnInit {
   }
 
   fetchInterestedMembers() {
-    // this.hackathonService.pGetHackathonInterestedMembers(this.hackathon.id).subscribe((res) => {
-    //   this.interestedUsers = res.users;
-    //   this.interestedUsersCount = res.total_count;
-    // });
+    this.hackathonService.pInterestedUsers(this.hackathon.id).subscribe((data) => {
+      this.interestedUsers = data.users;
+      this.interestedUsersCount = data.total_count;
+    });
   }
 
   shareHackathon() {

@@ -7,7 +7,11 @@
   }
   .hackathon-start-date,
   .hackathon-location {
-    @apply com-mb-3 com-text-gray-500 com-text-base com-font-medium;
+    @apply com-mb-3 com-text-gray-500 com-text-base com-font-medium com-flex com-items-center;
+
+    a {
+      @apply com-no-underline com-text-gray-500;
+    }
   }
 
   .registered-text {

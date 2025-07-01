@@ -8,6 +8,8 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import {
   EInvitationStatus,
+  EUserRoles,
+  IHackathonTeam,
   IHackathonUserResponse,
   IProfileCompletionStatus,
   IUser,
@@ -15,8 +17,8 @@ import {
 } from '@commudle/shared-models';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 
 @Component({
   selector: 'commudle-hackathon-team-confirmation',
@@ -40,7 +42,9 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   private destroy$ = new Subject<void>();
   subscriptions: Subscription[] = [];
   hackathonJudges = [];
-  // hackathonJudges: IHackathonJudge[];
+  userTeamDetails: IHackathonTeam[];
+  interestedUsers: IUser[];
+  interestedUsersCount: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -50,6 +54,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
     private authService: AuthService,
     private appUsersService: AppUsersService,
     private hackathonService: HackathonService,
+    private uruService: UserRolesUsersService,
   ) {}
 
   ngOnInit() {
@@ -57,6 +62,9 @@ export class HackathonTeamConfirmationComponent implements OnInit {
       this.token = params.token;
       this.hurService.verifyInvitationTokenHur(this.token).subscribe((data) => {
         this.hackathon = data.hackathon;
+        this.getHackathonCurrentRegistrationDetails();
+        this.getJudges();
+        this.fetchCommunityDetails();
         console.log(this.hackathon);
         this.hur = data.hackathon_user_response;
         if (this.hur.invite_status === EInvitationStatus.INVITED || Number(params.status) === 1) {
@@ -129,6 +137,28 @@ export class HackathonTeamConfirmationComponent implements OnInit {
       if (data) {
         this.hur = data;
       }
+    });
+  }
+
+  getHackathonCurrentRegistrationDetails() {
+    this.subscriptions.push(
+      this.hackathonService
+        .getHackathonCurrentRegistrationDetails(this.hackathon.id)
+        .subscribe((data: IHackathonTeam[]) => {
+          if (data) {
+            this.userTeamDetails = data;
+            this.interestedUsers = this.userTeamDetails[0].hackathon_user_responses.map((response) => response.user);
+            this.interestedUsersCount = this.userTeamDetails[0].hackathon_user_responses.length;
+            console.log(this.interestedUsers);
+            console.log(this.interestedUsersCount);
+          }
+        }),
+    );
+  }
+
+  private fetchCommunityDetails() {
+    this.uruService.pGetCommunityLeadersByRole(this.hackathon.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
+      this.communityLeaders = data.users;
     });
   }
 }

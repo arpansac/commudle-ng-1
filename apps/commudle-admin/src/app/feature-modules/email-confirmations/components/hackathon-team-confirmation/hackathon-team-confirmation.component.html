@@ -1,80 +1,10 @@
-<div class="page-padding" *ngIf="this.showPageDetails">
-  <div *ngIf="hur && hur.invite_status === EInvitationStatus.ACCEPTED">
-    <nb-card>
-      <nb-card-body>
-        <div class="status">
-          <div class="role-status">
-            <nb-icon icon="person-add" status="success"></nb-icon>
-            <p>
-              <strong>{{ roleName | titlecase }}</strong
-              >! Welcome To Hackathon
-            </p>
-          </div>
-        </div>
-
-        <div class="details">
-          <div *ngIf="hackathon" class="event">
-            <p>
-              <a [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug]">
-                Go To <strong>{{ hackathon.name }}</strong>
-              </a>
-            </p>
-          </div>
-          <div *ngIf="hackathon.community" class="community">
-            <div class="logo">
-              <img
-                alt="{{ hackathon.community.name }}"
-                src="{{ hackathon.community.logo_path }}"
-                title="{{ hackathon.community.name }}"
-              />
-            </div>
-            <p>
-              <a [routerLink]="['/communities', hackathon.community.slug]">{{ hackathon.community.name }}</a>
-            </p>
-          </div>
-
-          <div *ngIf="hackathon.community_group" class="community">
-            <div class="logo">
-              <img
-                alt="{{ hackathon.community_group.name }}"
-                src="{{ hackathon.community_group.logo }}"
-                title="{{ hackathon.community_group.name }}"
-              />
-            </div>
-            <p>
-              <a [routerLink]="['/orgs', hackathon.community_group.slug]">{{ hackathon.community_group.name }}</a>
-            </p>
-          </div>
-        </div>
-
-        <div class="hur-form">
-          <button
-            nbButton
-            status="primary"
-            [routerLink]="[
-              '/communities',
-              hackathon?.community.slug,
-              'hackathons',
-              hackathon?.slug,
-              'fill-form',
-              hur?.hackathon_response_group_id
-            ]"
-          >
-            Click Here to Complete Your Registration
-          </button>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </div>
-</div>
-
 <div class="hackathon-tem-confirmation-container">
   <div class="base-layout thin">
     <div class="container">
       <div class="one-column-layout">
         <commudle-loading-spinner *ngIf="isLoading; else confirmationContainer"></commudle-loading-spinner>
         <ng-template #confirmationContainer>
-          <div class="confirmation-card">
+          <div *ngIf="this.showPageDetails" class="confirmation-card">
             <div class="confirmation-header" *ngIf="hackathon && hur">
               <div class="check-icon">{{ hur.invite_status === EInvitationStatus.ACCEPTED ? '🎉' : '❌' }}</div>
               <div *ngIf="hur.invite_status === EInvitationStatus.ACCEPTED">
@@ -93,36 +23,42 @@
               <h2 class="card-heading">Team Dashboard</h2>
               <div class="team-name-card">
                 <fa-icon [icon]="faUsers"></fa-icon>&nbsp;
-                <!-- <span>{{ hackathon.team_name }}</span> -->
+                <span>{{ userTeamDetails[0].name }}</span>
               </div>
 
               <div class="interested-members">
                 <!-- <commudle-interested-members
-                  [users]="hackathon.team_members"
-                  [totalCount]="hackathon.team_members.length"
+                  [users]="interestedUsers"
+                  [totalCount]="interestedUsersCount"
                   [showHeading]="false"
                 ></commudle-interested-members> -->
               </div>
 
-              <div class="actions">
-                <a [routerLink]="[]">
-                  <!-- '/communities',
-                hackathon.community.slug,
-                'hackathons',
-                hackathon.slug,
-                'team',
-                hur.hackathon_response_group_id -->
-                  <button nbButton fullWidth shape="semi-round" outline class="take-event-button">
-                    <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>&nbsp; Visit Team Dashboard
-                  </button>
-                </a>
-              </div>
+              <a
+                *ngIf="hur.invite_status === EInvitationStatus.ACCEPTED"
+                [routerLink]="[
+                  '/communities',
+                  hackathon.community.slug,
+                  'hackathons',
+                  hackathon.slug,
+                  'user-dashboard'
+                ]"
+                class="actions"
+              >
+                <button nbButton fullWidth shape="semi-round" outline class="take-dashboard-button">
+                  <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>&nbsp; Visit Team Dashboard
+                </button>
+              </a>
             </div>
 
             <!-- Hackathon details -->
             <div *ngIf="hackathon" class="hackathon-card">
               <h2 class="card-heading">Hackathon Details</h2>
-              <commudle-hackathon-registered-card [hackathon]="hackathon"></commudle-hackathon-registered-card>
+              <commudle-hackathon-registered-card
+                [hackathon]="hackathon"
+                [showRegisteredIcon]="hur.invite_status === EInvitationStatus.ACCEPTED"
+                [showAddToCalendarButton]="hur.invite_status === EInvitationStatus.ACCEPTED"
+              ></commudle-hackathon-registered-card>
             </div>
 
             <!-- User profile section -->

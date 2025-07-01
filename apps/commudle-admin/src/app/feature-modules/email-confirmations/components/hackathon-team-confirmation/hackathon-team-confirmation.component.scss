@@ -116,7 +116,7 @@
   }
 
   .leaders-card {
-    @apply com-mt-4 com-pb-8 com-border-0 com-border-b com-border-t com-border-solid com-border-Bright-Gray;
+    @apply com-mt-4 com-border-0 com-border-b com-border-t com-border-solid com-border-Bright-Gray;
   }
 
   .volunteer:not(:last-child),
@@ -125,7 +125,16 @@
   }
 
   .hackathon-card,
-  .profile-card {
+  .profile-card,
+  .leaders-card {
     @apply com-py-8;
+  }
+
+  .take-dashboard-button {
+    @apply com-text-Yankees-Blue;
+  }
+
+  .interested-members {
+    @apply com-mb-6;
   }
 }

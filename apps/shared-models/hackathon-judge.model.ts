@@ -12,7 +12,7 @@ export interface IHackathonJudge {
   designation: string;
   username: string;
   judge_user_id: number;
-  profile_image?: IAttachedFile;
+  photo?: IAttachedFile;
   invite_status: EInvitationStatus;
   judge_type: EHackathonJudgeType;
 }
