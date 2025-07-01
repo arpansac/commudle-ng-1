@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, GoogleLoginProvider } from '@commudle/auth';
@@ -22,6 +22,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 })
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
+  @Input() showCloseButton = true;
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;
@@ -48,7 +49,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private dialogService: NbDialogService,
     private recaptchaV3Service: ReCaptchaV3Service,
-    private dialogRef: NbDialogRef<LoginSignupComponent>,
+    @Optional() private dialogRef: NbDialogRef<LoginSignupComponent>,
   ) {
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
