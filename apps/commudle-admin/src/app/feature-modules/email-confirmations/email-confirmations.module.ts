@@ -17,6 +17,7 @@ import { SharedComponentsModule } from '@commudle/shared-components';
 import { UserProfileComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-profile/user-profile.component';
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 import { UserprofileDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/homepage-dashboard/userprofile-details/userprofile-details.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { UserprofileDetailsComponent } from 'apps/commudle-admin/src/app/feature
     UserProfileComponent,
     AppSharedComponentsModule,
     UserprofileDetailsComponent,
+    FontAwesomeModule,
   ],
 })
 export class EmailConfirmationsModule {}
