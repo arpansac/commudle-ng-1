@@ -1,75 +1,12 @@
-.status {
-  .role-status {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-
-    nb-icon {
-      font-size: 3.5rem;
-    }
-
-    p {
-      font-size: 1.5rem;
-      line-height: 1.8rem;
-      margin-left: 1rem;
-      span {
-        font-size: 0.8rem;
-      }
-    }
-    ul {
-      @apply com-flex;
-
-      li {
-        @apply com-mr-16 com-list-none;
-
-        a {
-          @apply com-no-underline com-text-black;
-        }
-      }
-    }
-  }
-}
-
-.details {
-  @apply com-flex com-justify-evenly com-flex-wrap;
-
-  .event {
-    display: flex;
-    align-items: center;
-    p {
-      margin: 0;
-    }
-  }
-
-  .community {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    .logo {
-      width: 50px;
-      overflow: hidden;
-      margin-right: 1rem;
-      img {
-        width: 100%;
-      }
-    }
-  }
-}
-
-.hur-form {
-  @apply com-flex com-items-center com-justify-center;
-}
-
 .hackathon-tem-confirmation-container {
   @apply com-bg-white com-pb-16;
 }
 
 .confirmation-card {
-  @apply com-mt-20;
+  @apply md:com-mt-20 com-mt-10 md:com-mx-0 com-mx-3;
 
   .confirmation-header {
-    @apply com-text-center com-mb-14;
+    @apply com-text-center com-mb-6;
 
     .check-icon {
       @apply com-text-6xl com-mb-8;
@@ -116,10 +53,9 @@
   }
 
   .leaders-card {
-    @apply com-mt-4 com-border-0 com-border-b com-border-t com-border-solid com-border-Bright-Gray;
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
   }
 
-  .volunteer:not(:last-child),
   .leader:not(:last-child) {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
   }
