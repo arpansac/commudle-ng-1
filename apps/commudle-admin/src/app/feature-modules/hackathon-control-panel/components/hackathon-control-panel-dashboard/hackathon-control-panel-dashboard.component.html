@@ -205,11 +205,11 @@
                 </div>
                 <div *ngIf="sidebarExpanded" class="action-button-name">Public Page</div>
               </a>
-              <a class="stats" [routerLink]="['stats']" target="_blank">
-                <button nbButton status="success">
+              <a class="action-button" [routerLink]="['stats']" target="_blank">
+                <div class="icon">
                   <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                  &nbsp; Hackathon Stats
-                </button>
+                </div>
+                <div *ngIf="sidebarExpanded" class="action-button-name">Hackathon Stats</div>
               </a>
             </div>
           </div>

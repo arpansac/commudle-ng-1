@@ -21,38 +21,41 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-p-4;
+    @apply com-p-4 com-overflow-x-hidden;
 
-    .back-admin,
-    .sidebar-expand-icon {
-      @apply com-px-4;
-      .icon {
-        @apply com-text-Cadet-Grey;
-      }
+    .sidebar-heading {
+      @apply com-text-base com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
+    }
+
+    .back-admin {
+      @apply com-py-1 com-pr-3 com-rounded-md;
       .heading {
-        @apply com-text-xs com-text-Cadet-Grey;
+        @apply com-text-Cadet-Grey com-text-sm;
       }
     }
 
     .status-buttons {
-      @apply com-flex com-flex-col com-justify-center;
+      @apply com-flex com-flex-col com-justify-center com-mb-6 com-mt-5;
       .border {
         @apply com-border com-border-Bright-Gray com-border-solid com-rounded-md;
       }
-
       section {
-        @apply com-flex com-justify-center com-mb-5;
+        @apply com-flex com-justify-center;
+        .select-status {
+          @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
+        }
       }
     }
+
     .categories {
-      @apply com-flex com-flex-col;
-    }
-    .category-heading {
-      @apply com-text-Caption com-font-semibold com-mb-2 com-flex com-items-center com-px-3 com-py-1;
+      @apply com-flex com-flex-col com-gap-6;
+      .category-setup-manage {
+        @apply com-flex com-flex-col com-gap-6;
+      }
     }
 
-    .select-status {
-      @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
+    .category-heading {
+      @apply com-text-Caption com-font-semibold com-mb-2 com-flex com-items-center com-px-3 com-py-1;
     }
 
     .action-button {
@@ -84,11 +87,11 @@
 }
 
 a {
-  @apply com-flex com-gap-2 com-items-center com-py-1;
+  @apply com-flex com-gap-2 com-items-center;
 }
 
 .router {
-  @apply com-w-full com-my-2 com-mx-4;
+  @apply com-my-4 md:com-mx-4 com-mx-0;
 }
 
 .header-icons {
@@ -101,8 +104,4 @@ a {
 
 .header-icons-expanded {
   @apply com-flex-col com-justify-between com-gap-3;
-}
-
-.stats {
-  @apply com-mx-4;
 }
