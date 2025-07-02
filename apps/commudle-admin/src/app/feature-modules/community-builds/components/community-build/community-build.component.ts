@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
-import { ICommunityBuild } from 'apps/shared-models/community-build.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { ICommunityBuild } from '@commudle/shared-models';
+import { SeoService } from '@commudle/shared-services';
 import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { ECommunityBuildPublishStatus } from '@commudle/shared-models';
