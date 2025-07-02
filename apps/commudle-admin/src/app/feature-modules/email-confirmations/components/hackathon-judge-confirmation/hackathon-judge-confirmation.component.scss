@@ -1,60 +1,63 @@
-.status {
-  .role-status {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-
-    nb-icon {
-      font-size: 3.5rem;
-    }
-
-    p {
-      font-size: 1.5rem;
-      line-height: 1.8rem;
-      margin-left: 1rem;
-      span {
-        font-size: 0.8rem;
-      }
-    }
-    ul {
-      @apply com-flex;
-
-      li {
-        @apply com-mr-16 com-list-none;
-
-        a {
-          @apply com-no-underline com-text-black;
-        }
-      }
-    }
-  }
+.hackathon-team-confirmation-container {
+  @apply com-bg-white com-pb-16;
 }
 
-.details {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+.confirmation-card {
+  @apply md:com-mt-20 com-mt-10 md:com-mx-0 com-mx-3;
 
-  .event {
-    display: flex;
-    align-items: center;
-    p {
-      margin: 0;
+  .confirmation-header {
+    @apply com-text-center com-mb-6;
+
+    .check-icon {
+      @apply com-text-6xl com-mb-8;
+    }
+
+    .title {
+      @apply com-text-Yankees-Blue com-text-3xl com-font-semibold com-leading-10 com-m-0 com-mb-4;
+
+      span {
+        @apply com-text-Azure;
+      }
+    }
+
+    .sub-heading {
+      @apply com-leading-7 com-text-xl com-font-medium com-text-gray-500 com-my-0;
     }
   }
 
-  .community {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    .logo {
-      width: 50px;
-      overflow: hidden;
-      margin-right: 1rem;
-      img {
-        width: 100%;
+  .profile-card {
+    @apply com-grid com-grid-cols-2;
+
+    .profile-completion-card {
+      @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-pl-3;
+    }
+
+    .profile-preview-card,
+    .profile-completion-card {
+      .card-heading {
+        @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-4;
       }
     }
+  }
+
+  .missing-field-card {
+    @apply com-my-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-6;
+  }
+
+  .leaders-card {
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+  }
+
+  .leader:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
+  }
+
+  .profile-card,
+  .leaders-card {
+    @apply com-py-8;
   }
 }
