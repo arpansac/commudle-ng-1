@@ -21,7 +21,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-py-3;
+    @apply com-p-4;
 
     .back-admin,
     .sidebar-expand-icon {
@@ -48,8 +48,13 @@
       @apply com-flex com-flex-col;
     }
     .category-heading {
-      @apply com-text-sm com-font-semibold com-my-2 com-px-4;
+      @apply com-text-Caption com-font-semibold com-mb-2 com-flex com-items-center com-px-3 com-py-1;
     }
+
+    .select-status {
+      @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
+    }
+
     .divided-line {
       @apply com-border com-border-solid com-border-Bright-Gray;
     }
