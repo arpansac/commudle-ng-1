@@ -12,21 +12,27 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDestroy {
   faStar = faStar;
   faqs: IFaq[];
+  imgUrl =
+    'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png';
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.seoService.setTags(
-      'Student & Non Profit Community Support',
-      'Building a community on Commudle is free for students and non profits. All features including events, video stage, QR code, channels, member management, projects, tutorials and more are free',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.setMeta();
     this.setFaqs();
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      'Student & Non Profit Community Support',
+      'Building a community on Commudle is free for students and non profits. All features including events, video stage, QR code, channels, member management, projects, tutorials and more are free',
+      this.imgUrl ? this.imgUrl : 'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 
   setFaqs() {
