@@ -11,17 +11,13 @@
 .sidebar {
   @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
-  .text {
-    @apply com-flex com-text-base com-font-semibold com-py-2 com-m-0 com-rounded-md com-gap-2.5;
-  }
-
   a {
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
     @apply com-p-4;
     .sidebar-heading {
-      @apply com-text-base com-flex com-items-center com-justify-between com-py-2 com-mb-3 com-rounded-md;
+      @apply com-text-base com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
     }
 
     .back-admin {
@@ -38,27 +34,35 @@
     }
 
     .category-heading {
-      @apply com-px-3 com-py-1 com-rounded-md com-text-Caption com-font-semibold com-my-2;
-    }
-    .divided-line {
-      @apply com-border com-border-solid com-border-Bright-Gray;
+      @apply com-px-3 com-py-1 com-rounded-md com-text-Caption com-font-semibold com-mt-2;
     }
     .action-button {
       @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
-      &.active {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+      &.active,
+      &:hover {
+        @apply com-bg-blue-50;
+        .heading {
+          @apply com-font-semibold com-text-Ultramarine-Blue;
+        }
+        .icon {
+          @apply com-text-Ultramarine-Blue;
+        }
       }
       .icon {
-        @apply com-text-lg com-text-Cadet-Grey;
+        @apply com-text-lg com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+
+        // fa-icon {
+        //   @apply com-w-full com-h-full com-max-w-full com-max-h-full  com-object-contain;
+        // }
       }
       .heading {
-        @apply com-text-sm com-font-light;
+        @apply com-text-sm com-font-normal;
       }
     }
 
-    .action-button:hover {
-      @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
-    }
+    // .action-button:hover {
+    //   @apply com-bg-blue-50 com-text-Ultramarine-Blue com-font-semibold;
+    // }
   }
 }
 a {
@@ -110,5 +114,5 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-justify-between;
+  @apply com-flex-col com-justify-between com-gap-3;
 }
