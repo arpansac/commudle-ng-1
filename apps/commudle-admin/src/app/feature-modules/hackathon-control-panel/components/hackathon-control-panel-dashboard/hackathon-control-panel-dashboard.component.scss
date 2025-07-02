@@ -44,7 +44,7 @@
         @apply com-flex com-justify-center com-mb-5;
       }
     }
-    .category {
+    .categories {
       @apply com-flex com-flex-col;
     }
     .category-heading {
@@ -55,26 +55,30 @@
       @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
     }
 
-    .divided-line {
-      @apply com-border com-border-solid com-border-Bright-Gray;
-    }
     .action-button {
-      @apply com-px-5 com-my-1 com-flex com-gap-2 com-items-center com-cursor-pointer;
-      &.active {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
-      }
-      .icon {
-        fa-icon {
-          @apply com-text-lg com-text-Cadet-Grey;
+      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      &.active,
+      &:hover {
+        @apply com-bg-blue-50 com-text-tYankees-Blue;
+        .action-button-name {
+          @apply com-font-semibold com-text-Ultramarine-Blue;
+        }
+        .icon {
+          fa-icon {
+            @apply com-text-Ultramarine-Blue;
+          }
         }
       }
-      .action-button-name {
-        @apply com-text-sm com-font-light;
-      }
-    }
 
-    .action-button:hover {
-      @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+      .icon {
+        fa-icon {
+          @apply com-text-lg com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+        }
+      }
+
+      .action-button-name {
+        @apply com-text-sm com-font-normal;
+      }
     }
   }
 }
@@ -88,7 +92,7 @@ a {
 }
 
 .header-icons {
-  @apply com-flex;
+  @apply com-flex com-flex-col;
 }
 
 .header-icons-non-expanded {
@@ -96,7 +100,7 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-justify-between;
+  @apply com-flex-col com-justify-between com-gap-3;
 }
 
 .stats {
