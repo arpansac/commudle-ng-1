@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
+  faRightLeft,
   faUsers,
-  faBuilding,
+  faUserGroup,
+  faPen,
+  faScroll,
+  faHouse,
   faCalendar,
-  faPenToSquare,
-  faPoll,
-  faFileLines,
   faHashtag,
   faMessage,
-  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
@@ -32,15 +32,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //font-awesome
   icons = {
-    faCalendar,
+    faRightLeft,
     faUsers,
-    faPenToSquare,
-    faBuilding,
-    faPoll,
-    faFileLines,
+    faUserGroup,
+    faPen,
+    faScroll,
+    faHouse,
+    faCalendar,
     faHashtag,
     faMessage,
-    faBars,
   };
   ESidebarWidth = ESidebarWidth;
   sidebarEventName = 'communityGroup';
