@@ -65,7 +65,7 @@
         <div *ngIf="sidebarExpanded" class="status-buttons">
           <div class="category-heading com-flex com-items-center com-pb-1">STATUS</div>
           <section>
-            <nb-button-group (valueChange)="updateStatus($event[0])" filled class="border">
+            <!-- <nb-button-group (valueChange)="updateStatus($event[0])" filled class="border">
               <button
                 *ngFor="let i of hackathonStatuses"
                 [pressed]="hackathon?.status === i"
@@ -75,7 +75,12 @@
               >
                 {{ i | titlecase }}
               </button>
-            </nb-button-group>
+            </nb-button-group> -->
+            <select class="select-status" (change)="updateStatus($any($event.target).value)">
+              <option *ngFor="let i of hackathonStatuses" [value]="i" [selected]="hackathon.status === i">
+                {{ i | titlecase }}
+              </option>
+            </select>
           </section>
         </div>
         <div class="category" [ngClass]="{ '!com-flex-col-reverse': hackathon?.status === EHackathonStatus.OPEN }">
