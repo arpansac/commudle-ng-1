@@ -41,6 +41,15 @@
           class="header-icons"
           [ngClass]="{ 'header-icons-non-expanded': !sidebarExpanded, 'header-icons-expanded': sidebarExpanded }"
         >
+          <div class="sidebar-heading">
+            <div *ngIf="sidebarExpanded" class="heading">Hackathon Dashboard</div>
+            <div (click)="toggleSidebar()" class="sidebar-expand-icon action-button">
+              <div class="icon">
+                <fa-icon class="icon" [icon]="icons.faRightLeft"></fa-icon>
+              </div>
+            </div>
+          </div>
+
           <a
             *ngIf="sidebarExpanded"
             [routerLink]="['/admin', 'communities', community?.slug, 'hackathons']"
@@ -51,15 +60,10 @@
             </div>
             <div class="heading">Back to Admin Panel</div>
           </a>
-          <div (click)="toggleSidebar()" class="sidebar-expand-icon">
-            <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
-          </div>
         </div>
 
         <div *ngIf="sidebarExpanded" class="status-buttons">
-          <div class="category-heading com-flex com-items-center com-pb-1">
-            Hackathon Status<commudle-help-section [helpDictionaryName]="'hackathon-statuses'"></commudle-help-section>
-          </div>
+          <div class="category-heading com-flex com-items-center com-pb-1">STATUS</div>
           <section>
             <nb-button-group (valueChange)="updateStatus($event[0])" filled class="border">
               <button
@@ -76,7 +80,7 @@
         </div>
         <div class="category" [ngClass]="{ '!com-flex-col-reverse': hackathon?.status === EHackathonStatus.OPEN }">
           <div>
-            <div *ngIf="sidebarExpanded" class="category-heading">Hackathon Setup</div>
+            <div *ngIf="sidebarExpanded" class="category-heading">HACKATHON SETUP</div>
             <div>
               <a
                 class="action-button"
@@ -90,14 +94,14 @@
                 <div *ngIf="sidebarExpanded" class="action-button-name">Basic Information</div>
               </a>
               <a class="action-button" [routerLink]="['contact']" routerLinkActive="active">
-                <div class="icon">
+                <div class="ic on">
                   <fa-icon [icon]="icons.faLink"></fa-icon>
                 </div>
                 <div *ngIf="sidebarExpanded" class="action-button-name">Contact & Social Links</div>
               </a>
               <a class="action-button" [routerLink]="['dates']" routerLinkActive="active">
                 <div class="icon">
-                  <fa-icon [icon]="icons.faCalendarDays"></fa-icon>
+                  <fa-icon [icon]="icons.faCalendarDay"></fa-icon>
                 </div>
                 <div *ngIf="sidebarExpanded" class="action-button-name">Hackathon's Dates</div>
               </a>
@@ -141,7 +145,7 @@
           </div>
           <hr class="divided-line" />
           <div>
-            <div *ngIf="sidebarExpanded" class="category-heading">Manage Hackathon</div>
+            <div *ngIf="sidebarExpanded" class="category-heading">MANAGE HACKATHON</div>
             <div>
               <!-- <a class="action-button" [routerLink]="['stats']" routerLinkActive="active">
               <div class="icon">
@@ -178,7 +182,7 @@
         </div>
         <hr class="divided-line" />
         <div>
-          <div class="category-heading" *ngIf="sidebarExpanded">Other Links</div>
+          <div class="category-heading" *ngIf="sidebarExpanded">OTHER LINKS</div>
           <div *ngIf="hackathon && community">
             <a
               class="action-button"
@@ -193,7 +197,7 @@
             <a class="stats" [routerLink]="['stats']" target="_blank">
               <button nbButton status="success">
                 <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                &nbsp; Stats
+                &nbsp; Hackathon Stats
               </button>
             </a>
           </div>
