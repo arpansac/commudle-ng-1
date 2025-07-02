@@ -16,14 +16,19 @@
   }
   .action-buttons {
     @apply com-p-4;
+
+    .categories {
+      @apply com-flex com-flex-col com-gap-6;
+    }
+
     .sidebar-heading {
-      @apply com-text-base com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
+      @apply com-text-base com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
     }
 
     .back-admin {
-      @apply com-py-1 com-pr-3 com-rounded-md com-mt-2;
+      @apply com-py-1 com-pr-3 com-rounded-md;
       .heading {
-        @apply com-text-xs com-text-Cadet-Grey com-text-sm;
+        @apply com-text-Cadet-Grey com-text-sm;
       }
     }
 
@@ -34,7 +39,7 @@
     }
 
     .category-heading {
-      @apply com-px-3 com-py-1 com-rounded-md com-text-Caption com-font-semibold com-mt-2;
+      @apply com-px-3 com-m-0 com-py-1 com-rounded-md com-text-Caption com-font-semibold;
     }
     .action-button {
       @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;

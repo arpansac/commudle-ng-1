@@ -47,9 +47,9 @@
           [ngClass]="{ 'header-icons-non-expanded': !sidebarExpanded, 'header-icons-expanded': sidebarExpanded }"
         >
           <div>
-            <div *ngIf="sidebarExpanded" class="sidebar-heading">
-              <div class="heading">Event Dashboard</div>
-              <div (click)="toggleSidebar()" class="sidebar-expand-icon">
+            <div class="sidebar-heading">
+              <div *ngIf="sidebarExpanded" class="heading">Event Dashboard</div>
+              <div (click)="toggleSidebar()" class="action-button">
                 <div class="icon">
                   <fa-icon [icon]="icons.faRightLeft"></fa-icon>
                 </div>
@@ -66,127 +66,133 @@
             </a>
           </div>
         </div>
-        <div *ngIf="sidebarExpanded" class="!com-px-0 com-my-4">
+        <div *ngIf="sidebarExpanded" class="!com-px-0 com-mt-4 com-mb-6">
           <app-event-status (updatedEventStatus)="event.event_status = $event" [event]="event"></app-event-status>
         </div>
-        <div class="category">
-          <div *ngIf="sidebarExpanded" class="category-heading">
-            <span>EVENT SETUP</span>
-          </div>
-          <a
-            class="action-button"
-            [routerLink]="['./']"
-            [routerLinkActive]="'active'"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <div class="icon">
-              <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+        <div class="categories">
+          <div class="category">
+            <div *ngIf="sidebarExpanded" class="category-heading">
+              <span>EVENT SETUP</span>
             </div>
-            <div *ngIf="sidebarExpanded" class="heading">Details</div>
-          </a>
-          <a [routerLink]="['registrations']" [routerLinkActive]="'active'" class="action-button">
-            <div class="icon">
-              <fa-icon [icon]="icons.faPenNib"></fa-icon>
+            <a
+              class="action-button"
+              [routerLink]="['./']"
+              [routerLinkActive]="'active'"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Details</div>
+            </a>
+            <a [routerLink]="['registrations']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faPenNib"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Registrations</div>
+            </a>
+            <a [routerLink]="['agenda']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faCalendarDay"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Location & Agenda</div>
+            </a>
+          </div>
+          <div class="category">
+            <div *ngIf="sidebarExpanded" class="category-heading">
+              <span>MORE</span>
             </div>
-            <div *ngIf="sidebarExpanded" class="heading">Registrations</div>
-          </a>
-          <a [routerLink]="['agenda']" [routerLinkActive]="'active'" class="action-button">
-            <div class="icon">
-              <fa-icon [icon]="icons.faCalendarDay"></fa-icon>
+            <a
+              *ngIf="event.event_status.name !== EEventStatuses.DRAFT"
+              [routerLink]="['updates']"
+              [routerLinkActive]="'active'"
+              class="action-button"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faStar"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Send Updates</div>
+            </a>
+            <a [routerLink]="['collaborations']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faHandshakeSimple"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Collaborations</div>
+            </a>
+            <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faUsers"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Team</div>
+            </a>
+            <a [routerLink]="['sponsors']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faSackDollar"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Sponsors</div>
+            </a>
+            <a (click)="sendEmails()" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Send Emails</div>
+            </a>
+          </div>
+          <div class="category">
+            <div *ngIf="sidebarExpanded" class="category-heading">
+              <div>LINKS & STATS</div>
             </div>
-            <div *ngIf="sidebarExpanded" class="heading">Location & Agenda</div>
-          </a>
-        </div>
-        <div *ngIf="sidebarExpanded" class="category-heading">
-          <span>MORE</span>
-        </div>
-        <a
-          *ngIf="event.event_status.name !== EEventStatuses.DRAFT"
-          [routerLink]="['updates']"
-          [routerLinkActive]="'active'"
-          class="action-button"
-        >
-          <div class="icon">
-            <fa-icon [icon]="icons.faStar"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Send Updates</div>
-        </a>
-        <a [routerLink]="['collaborations']" [routerLinkActive]="'active'" class="action-button">
-          <div class="icon">
-            <fa-icon [icon]="icons.faHandshakeSimple"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Collaborations</div>
-        </a>
-        <a [routerLink]="['volunteers']" [routerLinkActive]="'active'" class="action-button">
-          <div class="icon">
-            <fa-icon [icon]="icons.faUsers"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Team</div>
-        </a>
-        <a [routerLink]="['sponsors']" [routerLinkActive]="'active'" class="action-button">
-          <div class="icon">
-            <fa-icon [icon]="icons.faSackDollar"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Sponsors</div>
-        </a>
-        <a (click)="sendEmails()" class="action-button">
-          <div class="icon">
-            <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Send Emails</div>
-        </a>
-        <div *ngIf="sidebarExpanded" class="category-heading">
-          <div>LINKS & STATS</div>
-        </div>
-        <a
-          [routerLink]="['/communities', community.slug, 'events', event.slug]"
-          target="_blank"
-          class="action-button public-event-page"
-        >
-          <div class="icon">
-            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
-        </a>
-        <a [routerLink]="['stats']" class="action-button stats" [routerLinkActive]="'active'">
-          <div class="icon">
-            <fa-icon [icon]="icons.faChartPie"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Event Stats</div>
-        </a>
-        <a
-          class="action-button"
-          [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
-          target="_blank"
-        >
-          <div class="icon">
-            <fa-icon [icon]="icons.faListCheck"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Attended Members</div>
-        </a>
-        <a class="action-button" (click)="copyTextToClipboard()">
-          <div class="icon">
-            <fa-icon [icon]="icons.faShare"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Share Event</div>
-        </a>
-        <a
-          [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
-          target="_blank"
-          class="action-button public-event-page"
-        >
-          <div class="icon">
-            <fa-icon [icon]="icons.faExpand"></fa-icon>
-          </div>
-          <div *ngIf="sidebarExpanded" class="heading">Scan Entry Pass</div>
-        </a>
+            <a
+              [routerLink]="['/communities', community.slug, 'events', event.slug]"
+              target="_blank"
+              class="action-button public-event-page"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Public Event Page</div>
+            </a>
+            <a [routerLink]="['stats']" class="action-button stats" [routerLinkActive]="'active'">
+              <div class="icon">
+                <fa-icon [icon]="icons.faChartPie"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Event Stats</div>
+            </a>
+            <a
+              class="action-button"
+              [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
+              target="_blank"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faListCheck"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Attended Members</div>
+            </a>
+            <a class="action-button" (click)="copyTextToClipboard()">
+              <div class="icon">
+                <fa-icon [icon]="icons.faShare"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Share Event</div>
+            </a>
+            <a
+              [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
+              target="_blank"
+              class="action-button public-event-page"
+            >
+              <div class="icon">
+                <fa-icon [icon]="icons.faExpand"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Scan Entry Pass</div>
+            </a>
 
-        <a [routerLink]="['emails']" [routerLinkActive]="'active'" class="action-button">
-          <div class="icon">
-            <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
+            <a [routerLink]="['emails']" [routerLinkActive]="'active'" class="action-button">
+              <div class="icon">
+                <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
+              </div>
+              <div *ngIf="sidebarExpanded" class="heading">Mails Sent Stats</div>
+            </a>
           </div>
-          <div *ngIf="sidebarExpanded" class="heading">Mails Sent Stats</div>
-        </a>
+        </div>
       </div>
     </commudle-sidebar>
   </div>
