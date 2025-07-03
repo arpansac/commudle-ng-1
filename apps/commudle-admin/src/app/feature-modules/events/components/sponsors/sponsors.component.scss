@@ -57,6 +57,9 @@
           @apply com-w-full;
         }
       }
+      input {
+        @apply com-mt-2;
+      }
       .delete-logo-button {
         @apply com-flex com-items-center com-justify-center;
       }
@@ -64,7 +67,10 @@
         @apply com-text-red-500;
       }
       .field {
-        @apply com-my-2;
+        @apply com-my-4;
+        .label-text {
+          @apply com-mb-1;
+        }
       }
       button {
         @apply com-mt-4;
