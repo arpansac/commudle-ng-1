@@ -3,13 +3,23 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '@commudle/shared-environments';
 import { NbWindowService } from '@commudle/theme';
 import {
-  faBars,
-  faBuildingColumns,
-  faEnvelopeOpen,
-  faFileLines,
+  faRightLeft,
+  faCalendarDay,
+  faTrophy,
+  faHashtag,
   faMessage,
-  faNewspaper,
   faScroll,
+  faPaperPlane,
+  faNewspaper,
+  faScrewdriverWrench,
+  faUserGroup,
+  faBell,
+  faListOl,
+  faChartPie,
+  faEnvelopeCircleCheck,
+  faBuildingColumns,
+  faUsersGear,
+  faIdCardClip,
 } from '@fortawesome/free-solid-svg-icons';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
@@ -40,12 +50,23 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   icons = {
-    faBuildingColumns,
-    faFileLines,
-    faNewspaper,
+    faRightLeft,
+    faCalendarDay,
+    faTrophy,
+    faHashtag,
     faMessage,
-    faBars,
-    faEnvelopeOpen,
+    faScroll,
+    faPaperPlane,
+    faNewspaper,
+    faScrewdriverWrench,
+    faUserGroup,
+    faBell,
+    faListOl,
+    faChartPie,
+    faEnvelopeCircleCheck,
+    faBuildingColumns,
+    faUsersGear,
+    faIdCardClip,
   };
   environment = environment;
   darkMode: boolean;
