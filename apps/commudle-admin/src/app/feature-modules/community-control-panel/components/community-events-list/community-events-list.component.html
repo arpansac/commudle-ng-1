@@ -43,7 +43,6 @@
     </nb-tag-list>
   </div>
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-
   <section class="event-list-container">
     <div class="table-wrapper">
       <table *ngIf="events && events.length > 0">
@@ -82,6 +81,5 @@
       [current]="page"
       [total]="total"
     ></app-pagination>
-    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
   </section>
 </div>
