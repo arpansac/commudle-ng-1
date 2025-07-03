@@ -25,24 +25,9 @@
         }
       }
     }
-
-    .new-sponsor-button {
-      @apply com-mr-2 com-my-2 com-ml-0 com-p-5px com-w-[250px] com-h-[80px];
-
-      border: 1px dashed grey;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      p {
-        nb-icon {
-          font-size: 1.2rem;
-        }
-        color: grey;
-        text-align: center;
-      }
-    }
   }
 }
+
 .add-sponsor-container {
   @apply com-w-full md:com-w-[500px] com-max-h-[90dvh];
   nb-card-header {

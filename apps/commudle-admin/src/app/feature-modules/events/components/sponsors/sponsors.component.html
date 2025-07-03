@@ -7,15 +7,11 @@
     </h6>
   </nb-card-header>
   <nb-card-body>
+    <button (click)="openForm(sponsorFormTemplate)" *ngIf="event.editable" nbButton status="primary">
+      <nb-icon icon="plus"></nb-icon> &nbsp; <span>Add Sponsor</span>
+    </button>
     <div class="sponsors">
       <div class="event-sponsors">
-        <div (click)="openForm(sponsorFormTemplate)" *ngIf="event.editable" class="new-sponsor-button clickable">
-          <p>
-            <nb-icon icon="plus"></nb-icon>
-            <br />
-            <span>Add Sponsor</span>
-          </p>
-        </div>
         <!-- list of sponsors -->
         <div *ngFor="let eventSponsor of sponsors; let i = index" class="event-sponsor">
           <div class="logo">
