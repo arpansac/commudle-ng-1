@@ -64,9 +64,14 @@
 
 .confirmation-dialog-box {
   @apply md:com-w-[40dvw] com-w-full;
-  nb-card-header,
-  nb-card-footer {
+  nb-card-header {
     @apply com-flex com-items-center com-justify-between;
+  }
+
+  nb-card-footer {
+    button {
+      @apply com-min-w-[5.25rem] com-text-center;
+    }
   }
 }
 
