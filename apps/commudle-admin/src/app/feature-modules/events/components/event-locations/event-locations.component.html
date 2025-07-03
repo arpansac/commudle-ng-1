@@ -280,8 +280,8 @@
   <div>
     <p class="text-dander">Are you sure you want to delete this location and the associated tracks/slots?</p>
   </div>
-  <div>
-    <button (click)="deleteEventLocation(true, data.eventLocation)" nbButton status="link">Yes</button> &nbsp;
-    <button (click)="deleteEventLocation(false, data.eventLocation)" nbButton status="link">No</button>
+  <div class="delete-buttons">
+    <button (click)="deleteEventLocation(true, data.eventLocation)" nbButton status="success">Yes</button> &nbsp;
+    <button (click)="deleteEventLocation(false, data.eventLocation)" nbButton status="danger">No</button>
   </div>
 </ng-template>

@@ -99,3 +99,9 @@
 .event-location-tracks {
   @apply com-m-0 com-py-0 com-px-6;
 }
+
+.delete-buttons {
+  button {
+    @apply com-min-w-16 com-text-center;
+  }
+}

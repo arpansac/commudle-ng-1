@@ -205,6 +205,12 @@ nb-accordion-item {
   }
 }
 
+.delete-buttons {
+  button {
+    @apply com-min-w-16 com-text-center;
+  }
+}
+
 .tags {
   @apply com-flex com-flex-row com-items-center com-gap-3 com-ml-4 com-mt-2;
 }
