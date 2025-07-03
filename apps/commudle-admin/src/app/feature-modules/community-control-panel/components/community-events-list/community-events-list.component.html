@@ -53,21 +53,28 @@
           <th>Actions</th>
           <th>Public Page</th>
         </tr>
-        <tr *ngFor="let event of events">
-          <td>{{ event.name }}</td>
-          <td>
-            <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
-          </td>
-
-          <td>{{ event.status | titlecase }}</td>
-          <td class="action-buttons">
-            <commudle-community-events-list-actions [eventData]="event"> </commudle-community-events-list-actions>
-          </td>
-          <td class="public-page-buttons">
-            <commudle-community-events-list-public-page [eventData]="event">
-            </commudle-community-events-list-public-page>
+        <tr *ngIf="isLoading">
+          <td colspan="5" style="text-align: center; padding: 1rem">
+            <app-loading-spinner></app-loading-spinner>
           </td>
         </tr>
+        <ng-container *ngIf="!isLoading">
+          <tr *ngFor="let event of events">
+            <td>{{ event.name }}</td>
+            <td>
+              <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
+            </td>
+
+            <td>{{ event.status | titlecase }}</td>
+            <td class="action-buttons">
+              <commudle-community-events-list-actions [eventData]="event"> </commudle-community-events-list-actions>
+            </td>
+            <td class="public-page-buttons">
+              <commudle-community-events-list-public-page [eventData]="event">
+              </commudle-community-events-list-public-page>
+            </td>
+          </tr>
+        </ng-container>
       </table>
     </div>
 
