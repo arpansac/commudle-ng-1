@@ -1,5 +1,9 @@
 .sponsors {
   @apply com-mx-0 com-my-6;
+  h6 {
+    @apply com-m-0 com-flex com-items-center;
+  }
+
   .event-sponsors {
     @apply com-flex com-items-center com-flex-wrap com-gap-4;
     .event-sponsor {
@@ -39,101 +43,49 @@
     }
   }
 }
-
-nb-tabset.new-event-sponsor-options {
-  nb-tab {
-    padding: 0;
+.add-sponsor-container {
+  @apply com-w-full md:com-w-[500px] com-max-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
   }
-  form {
-    .logo {
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      label {
-        position: relative;
-        padding: 150px 0;
-
-        > span {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          font-size: 1.5rem;
-          font-weight: 300;
-          color: grey;
-
-          nb-icon {
-            font-size: 4rem;
-            margin-bottom: 0.5rem;
+  nb-card-body {
+    @apply com-p-0;
+    .existing-sponsors {
+      @apply com-grid com-grid-cols-2 md:com-grid-cols-3 com-gap-3;
+      .sponsor-card {
+        @apply com-h-28 com-m-0 com-cursor-pointer;
+        .sponsor-logo {
+          @apply com-h-4/5 com-p-4 com-flex com-items-center com-bg-gray-100 com-overflow-hidden com-rounded-tl-10 com-rounded-tr-10;
+          img {
+            @apply com-w-full;
           }
         }
-
-        input {
-          display: none;
+        .sponsor-name {
+          @apply com-text-center com-line-clamp-1;
         }
-      }
-
-      .uploaded-logo {
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 75px;
-        height: 75px;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0 auto;
-        img {
-          max-width: 100%;
-        }
-      }
-
-      .delete-logo-button {
-        text-align: center;
       }
     }
-  }
-
-  .existing-sponsors {
-    max-height: 80vh;
-    overflow-x: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .sponsor {
-      width: 120px;
-      height: 100px;
-      background: #d3d3d333;
-      padding: 3px;
-      margin: 0.5rem;
+    .sponsor-form {
       .logo {
-        margin: 0 auto;
-        width: 90%;
-        height: 80%;
-        overflow: hidden;
-        img {
-          width: 100%;
-        }
-      }
-      .logo {
-        @apply com-h-4/5 com-p-1 com-flex com-items-center;
+        @apply com-mb-4;
         img {
           @apply com-w-full;
         }
       }
-
-      .name {
-        text-align: center;
-        margin: 0;
+      .delete-logo-button {
+        @apply com-flex com-items-center com-justify-center;
+      }
+      .required {
+        @apply com-text-red-500;
+      }
+      .field {
+        @apply com-my-2;
+      }
+      button {
+        @apply com-mt-4;
       }
     }
   }
-}
-
-h6 {
-  @apply com-m-0 com-flex com-items-center;
 }
 
 .remove-sponsor-confirmation {
