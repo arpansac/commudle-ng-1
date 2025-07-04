@@ -58,7 +58,10 @@
           </div>
         </div>
         <div *ngIf="sidebarExpanded" class="!com-px-0 com-my-4">
-          <app-event-status (updatedEventStatus)="event.event_status = $event" [event]="event"></app-event-status>
+          <commudle-event-status
+            (updatedEventStatus)="event.event_status = $event"
+            [event]="event"
+          ></commudle-event-status>
         </div>
         <div class="category">
           <div *ngIf="sidebarExpanded" class="category-heading">
