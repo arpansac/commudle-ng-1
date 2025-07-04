@@ -32,7 +32,7 @@
       </button>
     </ng-container>
 
-    <div class="com-flex com-items-center com-h-64" *ngIf="event.editable && !event.header_image_path">
+    <div class="banner-image-container" *ngIf="event.editable && !event.header_image_path">
       <label class="no-image-path">
         <svg class="com-w-8 com-h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -45,28 +45,24 @@
       </label>
     </div>
     <div class="event-details">
-      <div class="md:com-flex com-items-center com-gap-6">
-        <h3 class="com-text-3xl com-my-0">{{ event.name }}</h3>
+      <div class="event-details-header">
+        <h3 class="event-details-title">{{ event.name }}</h3>
         <a *ngIf="event.editable" status="primary" outline nbButton routerLink="edit" size="small" status="primary">
           <nb-icon icon="edit-outline"></nb-icon>
           Edit Details and Time
         </a>
       </div>
-      <p *ngIf="event.start_time">
+      <div class="event-start-time" *ngIf="event.start_time">
         <nb-icon icon="clock-outline"></nb-icon>
         <span>
           {{ moment.tz(event.start_time, event.timezone).format('dddd Do MMM, YYYY h:mm A') }} to
           {{ moment.tz(event.end_time, event.timezone).format('dddd Do MMM, YYYY h:mm A') }}
           {{ moment(event.end_time).format('z') }} - ({{ moment.tz(event.timezone).zoneAbbr() }})
         </span>
-      </p>
-      <div class="com-flex com-gap-2 com-items-baseline">
-        <div class="com-text-xl">
-          <nb-icon icon="info-outline"></nb-icon>
-        </div>
-        <div class="md:com-w-2/3">
-          <div [innerHTML]="event.description | linky : { sanitizeHtml: false }" class="inner-html"></div>
-        </div>
+      </div>
+      <div class="event-description">
+        <nb-icon icon="info-outline"></nb-icon>
+        <div [innerHTML]="event.description | linky : { sanitizeHtml: false }" class="inner-html md:com-w-2/3"></div>
       </div>
     </div>
   </nb-card-body>
