@@ -205,9 +205,15 @@ nb-accordion-item {
   }
 }
 
-.delete-buttons {
-  button {
-    @apply com-min-w-16 com-text-center;
+.confirmation-dialog-box {
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between;
+  }
+
+  nb-card-footer {
+    p {
+      @apply com-mt-0 com-mb-4;
+    }
   }
 }
 

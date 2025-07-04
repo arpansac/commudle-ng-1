@@ -100,6 +100,18 @@
   @apply com-m-0 com-py-0 com-px-6;
 }
 
+.confirmation-dialog-box {
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between;
+  }
+
+  nb-card-footer {
+    p {
+      @apply com-mt-0 com-mb-4;
+    }
+  }
+}
+
 .delete-buttons {
   button {
     @apply com-min-w-16 com-text-center;
