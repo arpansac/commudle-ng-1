@@ -167,6 +167,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
       // Add if the tag is not selected
       this.activeEventStatuses.push(status);
     }
+    this.isLoading = true;
     this.total = 0;
     this.page = 1;
     this.getCommunityEvents();
