@@ -320,7 +320,7 @@
       </button>
     </nb-card-header>
     <nb-card-body>
-      <p>Are you sure you want to delete this track?</p>
+      <p class="confirmation-text">Are you sure you want to delete this track?</p>
     </nb-card-body>
     <nb-card-footer>
       <button (click)="deleteTrack(true, data.eventLocationTrack.id); ref.close()" nbButton status="success">Yes</button
@@ -338,7 +338,7 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body><p>Are you sure you want to delete this slot?</p></nb-card-body>
+    <nb-card-body><p class="confirmation-text">Are you sure you want to delete this slot?</p></nb-card-body>
     <nb-card-footer>
       <button (click)="deleteSlot(true, data.trackSlot); ref.close()" nbButton status="success">Yes</button> &nbsp;
       <button (click)="deleteSlot(false, data.trackSlot); ref.close()" nbButton status="danger">No</button>
