@@ -71,7 +71,7 @@ nb-card {
   @apply com-flex com-items-start com-gap-2 com-m-0 com-mb-4;
 
   nb-icon {
-    @apply com-m-0 md:com-text-xl com-text-2xl com-mt-2px;
+    @apply com-m-0 md:com-text-xl com-text-xl com-flex-shrink-0 com-mt-2px;
   }
 }
 
@@ -79,6 +79,6 @@ nb-card {
   @apply com-flex com-items-start com-gap-2 com-m-0;
 
   nb-icon {
-    @apply com-m-0 md:com-text-xl com-text-2xl com-mt-2px;
+    @apply com-m-0 md:com-text-xl com-text-xl com-mt-2px com-flex-shrink-0;
   }
 }
