@@ -1,5 +1,13 @@
 <div class="event-dashboard-actions" *ngIf="eventData">
-  <a [routerLink]="['event-dashboard', eventData.slug]" nbButton hero status="info" size="tiny"> Dashboard </a>
+  <a
+    [routerLink]="['event-dashboard', eventData.slug, eventData.status === EEventStatuses.OPEN ? 'registrations' : []]"
+    nbButton
+    hero
+    status="info"
+    size="tiny"
+  >
+    Dashboard
+  </a>
   <button
     *ngIf="eventData.start_time"
     (click)="openCloneEventWindow(cloneEvent)"
