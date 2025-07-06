@@ -16,12 +16,4 @@ export class CommunityEventsListActionsComponent {
   openCloneEventWindow(dialogBox) {
     this.dialogBoxService.open(dialogBox);
   }
-  // gotoRegistrations(eventData: any): void{
-  //   if(eventData === EEventStatuses.OPEN){
-  //     this.router.navigate(['event-dashboard-test-sidekiq-registrations',eventData.slug])
-  //   }
-  //   else{
-  //     this.router.navigate(['event-dashboard',eventData.slug])
-  //   }
-  // }
 }
