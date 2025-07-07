@@ -1,9 +1,10 @@
 .header {
   @apply com-h-12 com-sticky com-top-0 com-z-20;
 }
+
 .toggle {
   fa-icon {
-    @apply com-text-xl;
+    @apply com-text-sm;
   }
 }
 .sidebar {
@@ -47,9 +48,14 @@
     }
 
     .header {
-      h1 {
+      .text-base {
+        @apply com-flex com-text-base com-ml-0 com-cursor-pointer com-justify-start;
+      }
+
+      .text-xl {
         @apply com-flex com-ml-0 com-cursor-pointer com-justify-center;
       }
+
       .toggle {
         @apply com-ml-auto;
       }
@@ -57,10 +63,17 @@
   }
 
   .header {
-    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-p-2;
+    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-py-2 com-m-4 com-mb-0;
 
-    h1 {
-      @apply com-hidden com-text-xl com-m-0 com-flex-1;
+    .title {
+      @apply com-hidden com-m-0 com-flex-1;
+    }
+    .text-base {
+      @apply com-text-base;
+    }
+
+    .text-xl {
+      @apply com-text-xl;
     }
   }
 }
