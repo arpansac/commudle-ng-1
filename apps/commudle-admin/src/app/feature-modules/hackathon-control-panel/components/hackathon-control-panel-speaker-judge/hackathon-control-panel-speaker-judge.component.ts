@@ -4,10 +4,12 @@ import { IUser, ICommunity, IHackathon } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
 import { EHackathonJudgeType, IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from '@commudle/shared-services';
 
@@ -27,21 +29,22 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     faXmark,
   };
   hackathonSlug = '';
-  @ViewChild('judgeForm', { static: true }) judgeFormDialog: TemplateRef<any>;
   profileExist = false;
-
+  userSuggestions: IUser[] = [];
+  isSelectingUser = false;
   EHackathonJudgeType = EHackathonJudgeType;
-
   subscriptions: Subscription[] = [];
   parent: ICommunity | ICommunityGroup;
-
   hackathon: IHackathon;
+
+  @ViewChild('judgeForm', { static: true }) judgeFormDialog: TemplateRef<any>;
 
   constructor(
     private fb: FormBuilder,
     private hackathonService: HackathonService,
     private dialogService: NbDialogService,
     private appUsersService: AppUsersService,
+    private searchService: SearchService,
     private activatedRoute: ActivatedRoute,
     private seoService: SeoService,
   ) {
@@ -73,6 +76,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
         this.fetchHackathonDetails(params.get('hackathon_id'));
       }),
     );
+    this.setupUsernameAutocomplete();
   }
 
   ngOnDestroy(): void {
@@ -84,9 +88,11 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     this.subscriptions.push(
       this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
         this.hackathon = data;
-        // TODO: Add Community Group in Future
         if (data.community) {
           this.parent = data.community;
+        }
+        if (data.community_group) {
+          this.parent = data.community_group;
         }
         this.setMeta();
       }),
@@ -108,41 +114,51 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
 
   fetchSpeakerJudgeDetails() {
     this.profileExist = false;
-    this.hackathonService
-      .check_duplicate_judge(this.fetchSpeakerJudge.get('email').value, this.hackathonSlug)
-      .subscribe((data) => {
-        this.appUsersService.getProfileByEmail(data).subscribe((data: IUser) => {
-          const judgeType = this.speakerRegistrationForm.controls['judge_type'].value;
-          if (data) {
-            this.speakerRegistrationForm.reset();
-            this.profileExist = true;
-            if (data.photo.url && (data.photo.url.startsWith('http://') || data.photo.url.startsWith('https://'))) {
-              this.imageUrl = data.photo.url;
-            } else {
-              this.imageUrl = '';
-            }
-            this.speakerRegistrationForm.patchValue({
-              name: data.name,
-              about: data.about_me,
-              email: data.email,
-              designation: data.designation,
-              twitter: data.twitter ? data.twitter : '',
-              linkedin: data.linkedin ? data.linkedin : '',
-              website: data.personal_website ? data.personal_website : '',
-              username: data.username,
-              user_id: data.id,
-              judge_type: judgeType,
-            });
-          } else {
-            this.speakerRegistrationForm.patchValue({
-              email: this.fetchSpeakerJudge.get('email').value,
-              judge_type: judgeType,
-            });
-          }
-          this.dialogService.open(this.judgeFormDialog);
-          this.fetchSpeakerJudge.reset();
-        });
+    const email = this.fetchSpeakerJudge.get('email').value;
+
+    this.hackathonService.check_duplicate_judge(email, this.hackathonSlug).subscribe((data) => {
+      this.appUsersService.getProfileByEmail(data).subscribe((userData: IUser) => {
+        const judgeType = this.speakerRegistrationForm.controls['judge_type'].value;
+
+        if (userData) {
+          this.loadUserProfile(userData, judgeType);
+        } else {
+          this.speakerRegistrationForm.patchValue({
+            email: email,
+            judge_type: judgeType,
+          });
+        }
+        this.dialogService.open(this.judgeFormDialog);
+        this.fetchSpeakerJudge.reset();
       });
+    });
+  }
+
+  loadUserProfile(userData: IUser, judgeType: string) {
+    this.speakerRegistrationForm.reset();
+    this.profileExist = true;
+
+    if (
+      userData.photo?.url &&
+      (userData.photo.url.startsWith('http://') || userData.photo.url.startsWith('https://'))
+    ) {
+      this.imageUrl = userData.photo.url;
+    } else {
+      this.imageUrl = '';
+    }
+
+    this.speakerRegistrationForm.patchValue({
+      name: userData.name,
+      about: userData.about_me,
+      email: userData.email,
+      designation: userData.designation,
+      twitter: userData.twitter || '',
+      linkedin: userData.linkedin || '',
+      website: userData.personal_website || '',
+      username: userData.username,
+      user_id: userData.id,
+      judge_type: judgeType,
+    });
   }
 
   openEditJudgeDialogBox(dialog, judge: IHackathonJudge, index) {
@@ -185,9 +201,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
       if (data) {
         this.judges.unshift(data);
       }
-      this.speakerRegistrationForm.patchValue({
-        judge_type: '',
-      });
+      this.resetSpeakerRegistrationForm();
     });
   }
 
@@ -224,9 +238,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
 
     this.hackathonService.updateJudge(formData, JudgeId).subscribe((data: IHackathonJudge) => {
       this.judges[index] = data;
-      this.speakerRegistrationForm.patchValue({
-        judge_type: '',
-      });
+      this.resetSpeakerRegistrationForm();
     });
   }
 
@@ -247,8 +259,64 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     });
   }
 
+  setupUsernameAutocomplete() {
+    this.subscriptions.push(
+      this.fetchSpeakerJudge
+        .get('email')
+        .valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+        .subscribe((value) => {
+          if (!this.isSelectingUser && value && value.length > 2) {
+            this.searchUsers(value);
+          } else {
+            this.userSuggestions = [];
+          }
+        }),
+    );
+  }
+
+  searchUsers(query: string) {
+    this.searchService.getSearchResultsByScope(query, 1, 5, 'User').subscribe((data) => {
+      this.userSuggestions = (data.results as IUser[]) || [];
+    });
+  }
+
+  selectUser(selectedValue: any) {
+    const email = selectedValue;
+    if (email) {
+      this.userSuggestions = [];
+      this.isSelectingUser = true;
+
+      this.hackathonService.check_duplicate_judge(email, this.hackathonSlug).subscribe((data) => {
+        this.appUsersService.getProfileByEmail(data).subscribe((userData: IUser) => {
+          const judgeType = this.speakerRegistrationForm.controls['judge_type'].value;
+
+          if (userData) {
+            this.loadUserProfile(userData, judgeType);
+          } else {
+            this.speakerRegistrationForm.patchValue({
+              email: email,
+              judge_type: judgeType,
+            });
+          }
+          this.dialogService.open(this.judgeFormDialog);
+          this.isSelectingUser = false;
+        });
+      });
+    }
+  }
+
   setMeta() {
-    this.seoService.setTitle(`Judges, Speakers & Mentors
-| Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
+    this.seoService.setTitle(`Judges, Speakers & Mentors | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
+  }
+
+  resetSpeakerRegistrationForm() {
+    this.speakerRegistrationForm.reset();
+    this.speakerRegistrationForm.patchValue({
+      email: '',
+      judge_type: '',
+    });
+    this.fetchSpeakerJudge.patchValue({
+      email: '',
+    });
   }
 }

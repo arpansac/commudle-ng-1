@@ -35,7 +35,7 @@ Your branches should be named with a prefix for their purpose, viz.
 #### Git Commit
 - `chmod ug+x .husky/*`
 - `git add CONTRIBUTING.md`
-- `git commit &nbsp; -m "docs(contributing): update contributing.md for git commit"`
+- `git commit -m "docs(contributing): update contributing.md for git commit"`
   
 In general the commit pattern mostly looks like this:
 - type(scope?): subject  #scope is optional; multiple scopes are supported (current delimiter options: "/", "\" and ",")

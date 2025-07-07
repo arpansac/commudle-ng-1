@@ -1,6 +1,11 @@
 <div class="community-events-list">
   <div class="page-actions">
-    <a nbButton status="primary" [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']">
+    <a
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+    >
       <fa-icon [icon]="icons.faPlus"></fa-icon>
       &nbsp; Create New Event
     </a>
@@ -42,7 +47,6 @@
       ></nb-tag>
     </nb-tag-list>
   </div>
-
   <section class="event-list-container">
     <div class="table-wrapper">
       <table *ngIf="events && events.length > 0">

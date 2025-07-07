@@ -33,8 +33,10 @@
               </span>
             </div>
           </div>
+          <div class="alert">
+            <commudle-alert [info]="true" message="Timings (Leave empty if you are yet to decide)"></commudle-alert>
+          </div>
 
-          <span>Timings (Leave empty if you are yet to decide)</span>
           <div class="event-date-details">
             <label>Start Date</label>
             <div>
@@ -80,7 +82,6 @@
             >
               <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
             </span>
-            <br />
           </div>
 
           <div role="individual">
@@ -99,8 +100,8 @@
 
           <div role="group">
             <div>
-              <label fullWidth>
-                Tags*
+              <label fullWidth>Tags*</label>
+              <div class="tag">
                 <app-tag
                   (tagAdd)="onTagAdd($event)"
                   (tagDelete)="onTagDelete($event)"
@@ -110,7 +111,7 @@
                   [minimumTags]="minimumTags"
                   [tags]="tags"
                 ></app-tag>
-              </label>
+              </div>
             </div>
           </div>
         </div>

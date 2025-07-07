@@ -80,7 +80,6 @@
             >
               <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
             </span>
-            <br />
           </div>
 
           <div role="individual">
@@ -106,17 +105,19 @@
             <div>
               <label fullWidth>
                 Tags*
-                <app-tag
-                  (tagAdd)="onTagAdd($event)"
-                  (tagDelete)="onTagDelete($event)"
-                  [editable]="true"
-                  [tags]="tags"
-                  [minimumTags]="minimumTags"
-                  [backgroundColor]="'com-bg-tAnti-Flash'"
-                  [fontColor]="'com-text-tYankees-Blue'"
-                  [minimumTags]="minimumTags"
-                  [tags]="tags"
-                ></app-tag>
+                <div class="tag">
+                  <app-tag
+                    (tagAdd)="onTagAdd($event)"
+                    (tagDelete)="onTagDelete($event)"
+                    [editable]="true"
+                    [tags]="tags"
+                    [minimumTags]="minimumTags"
+                    [backgroundColor]="'com-bg-tAnti-Flash'"
+                    [fontColor]="'com-text-tYankees-Blue'"
+                    [minimumTags]="minimumTags"
+                    [tags]="tags"
+                  ></app-tag>
+                </div>
               </label>
             </div>
           </div>
