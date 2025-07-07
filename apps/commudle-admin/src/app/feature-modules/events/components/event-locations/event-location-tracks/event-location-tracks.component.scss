@@ -205,6 +205,18 @@ nb-accordion-item {
   }
 }
 
+.confirmation-dialog-box {
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between;
+    .confirmation-heading {
+      @apply com-text-base;
+    }
+  }
+  .confirmation-text {
+    @apply com-m-0;
+  }
+}
+
 .tags {
   @apply com-flex com-flex-row com-items-center com-gap-3 com-ml-4 com-mt-2;
 }

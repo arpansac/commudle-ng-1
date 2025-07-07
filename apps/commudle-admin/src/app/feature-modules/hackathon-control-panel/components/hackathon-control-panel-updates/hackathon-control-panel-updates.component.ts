@@ -8,6 +8,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { ToastrService, SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
+import { NbDialogService } from '@commudle/theme';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-updates',
@@ -34,6 +35,7 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
     private hackathonService: HackathonService,
     private toasterService: ToastrService,
     private seoService: SeoService,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -63,8 +65,10 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
   }
 
   getUpdates() {
+    this.isLoading = true;
     this.entityUpdatesService.getEntityUpdates(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
       this.updates = data;
+      this.isLoading = false;
     });
   }
 
@@ -89,9 +93,21 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
     });
   }
 
-  deleteEventUpdate(eventUpdateId, index) {
+  confirmDeleteEventUpdate(dialogRef, eventUpdateId, index) {
+    this.dialogService.open(dialogRef, {
+      context: {
+        entityUpdateId: eventUpdateId,
+        index: index,
+      },
+    });
+  }
+
+  deleteEventUpdate(eventUpdateId: number, index: number) {
     this.entityUpdatesService.deleteEntityUpdate(eventUpdateId).subscribe((data) => {
-      if (data) this.updates.splice(index, 1);
+      if (data) {
+        this.toasterService.successDialog('Event Update deleted successfully');
+        this.updates.splice(index, 1);
+      }
     });
   }
 
