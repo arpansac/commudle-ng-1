@@ -1,11 +1,6 @@
 <div class="community-events-list">
   <div class="page-actions">
-    <a
-      nbButton
-      status="primary"
-      shape="semi-round"
-      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
-    >
+    <a nbButton status="primary" [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']">
       <fa-icon [icon]="icons.faPlus"></fa-icon>
       &nbsp; Create New Event
     </a>
