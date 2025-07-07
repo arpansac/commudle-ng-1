@@ -1,6 +1,10 @@
 <div class="event-dashboard-actions" *ngIf="eventData">
   <a
-    [routerLink]="['event-dashboard', eventData.slug, eventData.status === EEventStatuses.OPEN ? 'registrations' : []]"
+    [routerLink]="
+      eventData.status === EEventStatuses.OPEN
+        ? ['event-dashboard', eventData.slug, 'registrations']
+        : ['event-dashboard', eventData.slug]
+    "
     nbButton
     hero
     status="info"
