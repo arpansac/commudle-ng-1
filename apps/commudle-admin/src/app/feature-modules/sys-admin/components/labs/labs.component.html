@@ -11,6 +11,12 @@
           </div>
         </nb-card-header>
         <nb-card-body>
+          <div *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+          <div *ngIf="!isLoading && labs.length === 0">
+            <p>No labs found</p>
+          </div>
           <div *ngFor="let lab of labs" class="lab">
             <div class="content">
               <p>

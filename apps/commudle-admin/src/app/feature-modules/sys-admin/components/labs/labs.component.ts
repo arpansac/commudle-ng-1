@@ -19,8 +19,8 @@ export class LabsComponent implements OnInit {
   loading = true;
   total = 0;
   labs: ILab[];
-
   selectedStatus = EPublishStatus.submitted;
+  isLoading = true;
 
   constructor(private toastLogService: ToastrService, private labsService: SysAdminLabsService) {}
 
@@ -29,10 +29,12 @@ export class LabsComponent implements OnInit {
   }
 
   getLabs() {
+    this.isLoading = true;
     this.labsService.getAll(this.page, this.count, this.selectedStatus).subscribe((data) => {
       this.labs = data.values;
       this.page = data.page;
       this.total = data.total;
+      this.isLoading = false;
     });
   }
 
