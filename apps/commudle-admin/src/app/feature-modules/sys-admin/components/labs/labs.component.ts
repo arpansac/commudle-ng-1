@@ -18,46 +18,38 @@ export class LabsComponent implements OnInit {
   count = 10;
   loading = true;
   total = 0;
-  // labs = {
-  //   draft: [] as ILab[],
-  //   submitted: [] as ILab[],
-  //   published: [] as ILab[],
-  //   flagged: [] as ILab[],
-  //   removed: [] as ILab[],
-  // };
   labs: ILab[];
 
-  selectedStatus = 'published';
+  selectedStatus = EPublishStatus.submitted;
 
   constructor(private toastLogService: ToastrService, private labsService: SysAdminLabsService) {}
 
   ngOnInit() {
-    this.getAllLabs();
+    this.getLabs();
   }
 
-  getAllLabs() {
-    this.labsService.getAll(this.page, this.count, EPublishStatus.published).subscribe((data) => {
+  getLabs() {
+    this.labsService.getAll(this.page, this.count, this.selectedStatus).subscribe((data) => {
       this.labs = data.values;
-      console.log('🚀 ~ LabsComponent ~ this.labsService.getAll ~ this.labs:', this.labs);
       this.page = data.page;
       this.total = data.total;
     });
   }
 
   updatePublishStatus(publishStatus: ELabPublishStatus, labId: number) {
-    this.labsService.updatePublishStatus(labId, publishStatus).subscribe(() => {
+    this.labsService.updatePublishStatus(labId, publishStatus).subscribe((data) => {
       this.toastLogService.successDialog(`Status Updated!`);
     });
   }
 
-  onStatusChange(status: string) {
-    this.selectedStatus = status;
+  onStatusChange(event) {
+    this.selectedStatus = event.target.value as ELabPublishStatus;
     this.page = 1;
-    this.getAllLabs();
+    this.getLabs();
   }
 
   onPageChange(page: number) {
     this.page = page;
-    this.getAllLabs();
+    this.getLabs();
   }
 }

@@ -1,21 +1,20 @@
 <div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
-      <h4>Labs</h4>
-      <div class="com-mb-4">
-        <label for="labStatusSelect">Lab Status:</label>
-        <select id="labStatusSelect" [(ngModel)]="selectedStatus">
-          <option *ngFor="let status of publishStatuses" [value]="status">{{ EPublishStatus[status] }}</option>
-        </select>
-      </div>
       <nb-card class="labs">
+        <nb-card-header>
+          <h4>Labs</h4>
+          <div class="select">
+            <select id="labStatusSelect" [(ngModel)]="selectedStatus" (change)="onStatusChange($event)">
+              <option *ngFor="let status of publishStatuses" [value]="status">{{ EPublishStatus[status] }}</option>
+            </select>
+          </div>
+        </nb-card-header>
         <nb-card-body>
           <div *ngFor="let lab of labs" class="lab">
             <div class="content">
               <p>
-                <small>
-                  {{ lab.createdSince }}
-                </small>
+                <small> {{ lab.created_since }} ago </small>
               </p>
               <h5>
                 {{ lab.name }}
@@ -23,7 +22,8 @@
                   <nb-icon icon="external-link" status="primary"></nb-icon>
                 </a>
               </h5>
-              <p>{{ lab.user.name }} &lt;{{ lab.user.email }}&gt;</p>
+              <!-- <p>{{ lab.user.name }} &lt;{{ lab.user.email }}&gt;</p> -->
+              <app-user-profile-card-small [user]="lab.user"></app-user-profile-card-small>
             </div>
             <div class="stats">
               <div>
@@ -61,14 +61,17 @@
           </div>
         </nb-card-body>
       </nb-card>
-      <app-pagination
-        [current]="page"
-        [count]="count"
-        [total]="labs[selectedStatus]?.length || 0"
-        (goTo)="onPageChange($event)"
-        (next)="onPageChange(page + 1)"
-        (previous)="onPageChange(page - 1)"
-      ></app-pagination>
+      <div class="pagination">
+        <app-pagination
+          (goTo)="page = $event; getLabs()"
+          (next)="page = $event; getLabs()"
+          (previous)="page = $event; getLabs()"
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
+      </div>
     </div>
   </div>
 </div>
