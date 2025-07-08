@@ -52,7 +52,7 @@
     @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-6;
   }
 
-  .hackathon-card {
+  .details-card-container {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
 
@@ -68,9 +68,10 @@
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
   }
 
-  .hackathon-card,
+  .details-card-container,
   .profile-card,
-  .leaders-card {
+  .leaders-card,
+  .profile-card-container {
     @apply com-py-8;
   }
 

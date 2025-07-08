@@ -26,7 +26,7 @@
                 hackathon.start_date &&
                 hackathon.end_date
               "
-              class="hackathon-card"
+              class="details-card-container"
             >
               <p class="create-team-title">Don't want to join other team?</p>
               <div class="title-team-card">
@@ -54,7 +54,7 @@
               </a>
             </div>
 
-            <div *ngIf="hackathon && hur.invite_status === EInvitationStatus.ACCEPTED" class="hackathon-card">
+            <div *ngIf="hackathon && hur.invite_status === EInvitationStatus.ACCEPTED" class="details-card-container">
               <h2 class="card-heading">Team Dashboard</h2>
               <div *ngIf="userTeamDetails[0]" class="team-name-card">
                 <fa-icon [icon]="faUsers"></fa-icon>&nbsp;
@@ -86,7 +86,7 @@
             </div>
 
             <!-- Hackathon details -->
-            <div *ngIf="hackathon" class="hackathon-card">
+            <div *ngIf="hackathon" class="details-card-container">
               <h2 class="card-heading">Hackathon Details</h2>
               <commudle-hackathon-registered-card
                 [hackathon]="hackathon"
@@ -96,7 +96,7 @@
             </div>
 
             <!-- User profile section -->
-            <div *ngIf="hackathon" class="profile-card">
+            <div *ngIf="hackathon" class="profile-card-container">
               <ng-container *ngIf="currentUser && isProfileCompleted">
                 <div class="profile-card">
                   <div class="profile-preview-card">
