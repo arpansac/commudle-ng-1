@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { EPublishStatus, ICommunityBuild } from 'apps/shared-models/community-build.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { ToastrService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-community-builds',
@@ -18,7 +18,7 @@ export class CommunityBuildsComponent implements OnInit {
   page = 1;
   isLoading = false;
 
-  constructor(private toastLogService: LibToastLogService, private communityBuildsService: CommunityBuildsService) {}
+  constructor(private toastLogService: ToastrService, private communityBuildsService: CommunityBuildsService) {}
 
   ngOnInit() {
     this.getAllBuilds();
@@ -34,8 +34,8 @@ export class CommunityBuildsComponent implements OnInit {
     });
   }
 
-  updatePublishStatus(event, communityBuildId) {
-    this.communityBuildsService.updatePublishStatus(communityBuildId, event).subscribe(() => {
+  updatePublishStatus(publishStatus, communityBuildId) {
+    this.communityBuildsService.updatePublishStatus(communityBuildId, publishStatus).subscribe(() => {
       this.toastLogService.successDialog(`Status Updated!`);
     });
   }
