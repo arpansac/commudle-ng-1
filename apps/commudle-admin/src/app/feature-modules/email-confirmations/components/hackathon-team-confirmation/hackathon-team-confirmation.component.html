@@ -6,36 +6,70 @@
         <ng-template #confirmationContainer>
           <div *ngIf="this.showPageDetails" class="confirmation-card">
             <div class="confirmation-header" *ngIf="hackathon && hur">
-              <div class="check-icon">{{ hur.invite_status === EInvitationStatus.ACCEPTED ? '🎉' : '❌' }}</div>
+              <div class="check-icon">{{ hur.invite_status === EInvitationStatus.ACCEPTED ? '🎉' : '🙁' }}</div>
               <div *ngIf="hur.invite_status === EInvitationStatus.ACCEPTED">
-                <h1 class="title">You’ve accepted the hackathon teammate invite</h1>
+                <h1 class="title accepted">You've accepted the hackathon teammate invite</h1>
                 <h3 class="sub-heading">Welcome to {{ hackathon.name }}</h3>
               </div>
               <div *ngIf="hur.invite_status === EInvitationStatus.REJECTED">
-                <h1 class="title">You’ve declined the hackathon teammate invite</h1>
+                <h1 class="title rejected">You've declined the hackathon teammate invite</h1>
                 <h3 class="sub-heading">
                   If you did this by mistake, please contact the person who sent you the invite
                 </h3>
               </div>
             </div>
 
-            <div *ngIf="hackathon" class="hackathon-card">
+            <div
+              *ngIf="
+                hackathon &&
+                hur.invite_status === EInvitationStatus.REJECTED &&
+                hackathon.start_date &&
+                hackathon.end_date
+              "
+              class="hackathon-card"
+            >
+              <p class="create-team-title">Don't want to join other team?</p>
+              <div class="title-team-card">
+                <span class="icon">
+                  <fa-icon [icon]="faUsers"></fa-icon>
+                </span>
+                <span class="title-team">Create your own team</span>
+              </div>
+              <div class="description-team">
+                If you have a group of friends that are interested, you can join with them
+              </div>
+              <a
+                class="cta-link"
+                [routerLink]="[
+                  '/communities',
+                  hackathon.community.slug,
+                  'hackathons',
+                  hackathon.slug,
+                  'fill-form',
+                  hrgId
+                ]"
+              >
+                Create Your Team Now
+                <fa-icon class="arrow" [icon]="faArrowRight"></fa-icon>
+              </a>
+            </div>
+
+            <div *ngIf="hackathon && hur.invite_status === EInvitationStatus.ACCEPTED" class="hackathon-card">
               <h2 class="card-heading">Team Dashboard</h2>
-              <div class="team-name-card">
+              <div *ngIf="userTeamDetails[0]" class="team-name-card">
                 <fa-icon [icon]="faUsers"></fa-icon>&nbsp;
                 <span>{{ userTeamDetails[0].name }}</span>
               </div>
 
               <div class="interested-members">
-                <!-- <commudle-interested-members
+                <commudle-interested-members
                   [users]="interestedUsers"
                   [totalCount]="interestedUsersCount"
                   [showHeading]="false"
-                ></commudle-interested-members> -->
+                ></commudle-interested-members>
               </div>
 
               <a
-                *ngIf="hur.invite_status === EInvitationStatus.ACCEPTED"
                 [routerLink]="[
                   '/communities',
                   hackathon.community.slug,

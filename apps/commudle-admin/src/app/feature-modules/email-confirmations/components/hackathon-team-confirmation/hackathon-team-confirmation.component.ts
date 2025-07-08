@@ -16,9 +16,10 @@ import {
   IUserStat,
 } from '@commudle/shared-models';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
+import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 
 @Component({
   selector: 'commudle-hackathon-team-confirmation',
@@ -39,12 +40,14 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   communityLeaders: IUser[];
   faUsers = faUsers;
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
+  faArrowRight = faArrowRight;
   private destroy$ = new Subject<void>();
   subscriptions: Subscription[] = [];
   hackathonJudges = [];
   userTeamDetails: IHackathonTeam[];
   interestedUsers: IUser[];
   interestedUsersCount: number;
+  hrgId: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -55,6 +58,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
     private appUsersService: AppUsersService,
     private hackathonService: HackathonService,
     private uruService: UserRolesUsersService,
+    private hrgService: HackathonResponseGroupService,
   ) {}
 
   ngOnInit() {
@@ -65,6 +69,7 @@ export class HackathonTeamConfirmationComponent implements OnInit {
         this.getHackathonCurrentRegistrationDetails();
         this.getJudges();
         this.fetchCommunityDetails();
+        this.getHackathonResponseGroup();
         this.hur = data.hackathon_user_response;
         if (this.hur.invite_status === EInvitationStatus.INVITED || Number(params.status) === 1) {
           this.onAcceptRoleButton();
@@ -108,6 +113,12 @@ export class HackathonTeamConfirmationComponent implements OnInit {
         }
         this.isLoading = false;
       });
+  }
+
+  getHackathonResponseGroup() {
+    this.hrgService.pShowHackathonResponseGroup(this.hackathon.id).subscribe((data) => {
+      if (data) this.hrgId = data.id;
+    });
   }
 
   getJudges() {
