@@ -2,11 +2,6 @@
   @apply com-h-12 com-sticky com-top-0 com-z-20;
 }
 
-.toggle {
-  fa-icon {
-    @apply com-text-xl;
-  }
-}
 .sidebar {
   transition: 0.3s;
 
@@ -75,9 +70,24 @@
 
   .header {
     @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-p-2;
-
     h1 {
       @apply com-hidden com-text-xl com-m-0 com-flex-1;
+    }
+  }
+
+  .header-medium {
+    .toggle {
+      fa-icon {
+        @apply com-text-sm;
+      }
+    }
+  }
+
+  .header-xl {
+    .toggle {
+      fa-icon {
+        @apply com-text-xl;
+      }
     }
   }
 }

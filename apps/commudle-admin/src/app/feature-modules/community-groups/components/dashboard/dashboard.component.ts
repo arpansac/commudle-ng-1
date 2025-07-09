@@ -15,7 +15,7 @@ import {
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     faMessage,
   };
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'communityGroup';
 
   constructor(

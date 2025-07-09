@@ -5,20 +5,13 @@
   }
 
   .action-buttons {
-    @apply com-flex com-flex-col com-p-4 com-cursor-pointer com-gap-6;
+    @apply com-flex com-flex-col com-p-4 com-pt-0 com-cursor-pointer com-gap-6;
 
     .header {
       @apply com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
       .community-name {
         @apply com-text-base com-m-0 com-flex-1 com-font-semibold;
       }
-
-      // .sidebar-expand-icon {
-      //   @apply com-p-0;
-      //   .icon {
-      //     @apply com-text-Cadet-Grey;
-      //   }
-      // }
     }
 
     .category-heading {
@@ -26,7 +19,7 @@
     }
 
     .action-button {
-      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      @apply com-p-2 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
       &.active,
       &:hover {
         @apply com-bg-blue-50;
@@ -38,7 +31,7 @@
         }
       }
       .icon {
-        @apply com-text-sm com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+        @apply com-text-sm com-text-Cadet-Grey com-flex com-items-center com-justify-center com-w-5 com-h-5;
       }
       .heading {
         @apply com-text-sm com-font-normal;

@@ -4,25 +4,12 @@
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [eventName]="sidebarEventName"
       [forWindow]="false"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
+      [textSize]="ESidebarHeading.MEDIUM"
+      [heading]="communityGroup.name"
     >
       <div class="action-buttons">
-        <div class="header action-button">
-          <p *ngIf="sidebarExpanded" class="community-name">{{ communityGroup.name }}</p>
-          <div
-            (click)="toggleSidebar()"
-            class="sidebar-expand-icon a"
-            [ngClass]="sidebarExpanded ? 'expanded-sidebar' : 'collapsed-sidebar'"
-          >
-            <div class="icon">
-              <fa-icon [icon]="icons.faRightLeft"></fa-icon>
-            </div>
-          </div>
-        </div>
         <div class="category">
-          <!-- <div class="category-heading">
-            <span>Event Setup</span>
-          </div> -->
           <a
             class="action-button"
             [routerLink]="['./']"
