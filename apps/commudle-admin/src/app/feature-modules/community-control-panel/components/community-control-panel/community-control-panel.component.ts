@@ -27,7 +27,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
@@ -73,6 +73,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   isHackathonActive = false;
   sidebarExpanded = true;
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'community';
 
   constructor(
