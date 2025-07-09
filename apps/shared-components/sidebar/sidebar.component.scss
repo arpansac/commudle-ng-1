@@ -4,7 +4,7 @@
 
 .toggle {
   fa-icon {
-    @apply com-text-sm;
+    @apply com-text-xl;
   }
 }
 .sidebar {
@@ -46,34 +46,38 @@
     &.extraLarge {
       @apply com-w-80;
     }
-
     .header {
-      .text-base {
-        @apply com-flex com-text-base com-ml-0 com-cursor-pointer com-justify-start;
+      h1 {
+        @apply com-flex com-ml-0 com-cursor-pointer;
       }
-
-      .text-xl {
-        @apply com-flex com-ml-0 com-cursor-pointer com-justify-center;
-      }
-
       .toggle {
         @apply com-ml-auto;
+      }
+    }
+
+    .header-medium {
+      @apply com-m-4 com-mb-6 com-p-0;
+      h1 {
+        @apply com-text-base com-justify-start com-py-2;
+      }
+      fa-icon {
+        @apply com-text-sm;
+      }
+    }
+
+    .header-large {
+      h1,
+      fa-icon {
+        @apply com-text-xl com-justify-center;
       }
     }
   }
 
   .header {
-    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-py-2 com-m-4 com-mb-0;
+    @apply com-bg-white com-text-black com-flex com-items-center com-justify-center com-p-2;
 
-    .title {
-      @apply com-hidden com-m-0 com-flex-1;
-    }
-    .text-base {
-      @apply com-text-base;
-    }
-
-    .text-xl {
-      @apply com-text-xl;
+    h1 {
+      @apply com-hidden com-text-xl com-m-0 com-flex-1;
     }
   }
 }
