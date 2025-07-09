@@ -111,8 +111,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-flex com-flex-col com-px-4 com-pb-4;
-    .back-admin,
+    @apply com-flex com-flex-col com-px-4 com-pb-4 com-gap-6;
     .sidebar-expand-icon {
       .icon {
         @apply com-text-Cadet-Grey com-cursor-pointer;
@@ -123,28 +122,28 @@
     }
 
     .category-heading {
-      @apply com-text-sm com-font-semibold com-my-2;
+      @apply com-px-3 com-m-0 com-py-1 com-rounded-md com-text-Caption com-font-semibold com-mb-2;
     }
-    .divided-line {
-      @apply com-border com-border-solid com-border-Bright-Gray com-w-full;
-    }
-    .action-button {
-      @apply com-p-1 com-flex com-items-center com-w-full com-cursor-pointer;
-      &.active {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
-      }
-      .icon {
-        @apply com-h-8 com-w-8 com-text-Cadet-Grey com-flex com-items-center com-justify-center com-flex-shrink-0;
 
-        fa-icon,
-        nb-icon,
-        img {
-          @apply com-text-xl com-flex;
+    .action-button {
+      @apply com-p-2 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      &.active,
+      &:hover {
+        @apply com-bg-Azure-opacity-10;
+        .heading {
+          @apply com-font-semibold com-text-Ultramarine-Blue;
+        }
+        .icon {
+          @apply com-text-Ultramarine-Blue;
         }
       }
-      .heading {
-        @apply com-text-sm com-font-light com-ml-2;
+      .icon {
+        @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
       }
+      .heading {
+        @apply com-text-sm com-font-normal;
+      }
+
       &.public-event-page {
         @apply com-text-Azure;
         .icon {
@@ -157,10 +156,6 @@
           @apply com-text-Caribbean-Green;
         }
       }
-    }
-
-    .action-button:hover {
-      @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
     }
   }
 }
