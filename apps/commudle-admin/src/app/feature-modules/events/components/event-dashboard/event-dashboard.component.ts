@@ -5,13 +5,8 @@ import { IEvent, ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import {
-  faUpRightFromSquare,
-  faShareNodes,
   faCircleInfo,
-  faChartLine,
   faArrowLeft,
-  faRightLeft,
-  faBars,
   faPenNib,
   faCalendarDay,
   faStar,
@@ -26,7 +21,6 @@ import {
   faExpand,
   faEnvelopeCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { faClipboard, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -54,16 +48,8 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   icons = {
-    faUpRightFromSquare,
-    faClipboard,
-    faChartLine,
-    faShareNodes,
     faCircleInfo,
     faArrowLeft,
-    faEnvelopeOpen,
-    faEnvelope,
-    faBars,
-    faRightLeft,
     faPenNib,
     faCalendarDay,
     faStar,
