@@ -15,7 +15,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-p-4;
+    @apply com-p-4 com-pt-0;
 
     .categories {
       @apply com-flex com-flex-col com-gap-6;
@@ -28,7 +28,7 @@
     .back-admin {
       @apply com-py-1 com-pr-3 com-rounded-md;
       .heading {
-        @apply com-text-Cadet-Grey com-text-sm;
+        @apply com-text-Cadet-Grey com-text-sm com-font-medium;
       }
     }
 
@@ -42,32 +42,26 @@
       @apply com-px-3 com-m-0 com-py-1 com-rounded-md com-text-Caption com-font-semibold;
     }
     .action-button {
-      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      @apply com-p-2 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
       &.active,
       &:hover {
-        @apply com-bg-blue-50;
+        @apply com-bg-Azure-opacity-10;
         .heading {
-          @apply com-font-semibold com-text-Ultramarine-Blue;
+          @apply com-font-semibold com-text-Azure;
         }
         .icon {
-          @apply com-text-Ultramarine-Blue;
+          @apply com-text-Azure;
         }
       }
       .icon {
-        @apply com-text-lg com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
-
-        // fa-icon {
-        //   @apply com-w-full com-h-full com-max-w-full com-max-h-full  com-object-contain;
-        // }
+        fa-icon {
+          @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center;
+        }
       }
       .heading {
         @apply com-text-sm com-font-normal;
       }
     }
-
-    // .action-button:hover {
-    //   @apply com-bg-blue-50 com-text-Ultramarine-Blue com-font-semibold;
-    // }
   }
 }
 a {

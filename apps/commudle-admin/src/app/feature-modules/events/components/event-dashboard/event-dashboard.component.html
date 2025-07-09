@@ -39,24 +39,15 @@
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [forWindow]="false"
       [eventName]="sidebarEventName"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
+      [heading]="'Event Dashboard'"
+      [textSize]="ESidebarHeading.MEDIUM"
     >
       <div class="action-buttons">
         <div
           class="header-icons"
           [ngClass]="{ 'header-icons-non-expanded': !sidebarExpanded, 'header-icons-expanded': sidebarExpanded }"
         >
-          <div>
-            <div class="sidebar-heading">
-              <div *ngIf="sidebarExpanded" class="heading">Event Dashboard</div>
-              <div (click)="toggleSidebar()" class="action-button">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faRightLeft"></fa-icon>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div>
             <a *ngIf="sidebarExpanded" [routerLink]="['/admin', 'communities', community.slug]" class="back-admin">
               <div class="icon">
