@@ -5,41 +5,43 @@
   }
 
   .action-buttons {
-    @apply com-flex com-flex-col com-p-4 com-cursor-pointer;
+    @apply com-flex com-flex-col com-p-4 com-cursor-pointer com-gap-6;
 
     .header {
-      @apply com-text-black com-flex com-items-center com-justify-center com-pb-2;
-
+      @apply com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
       .community-name {
-        @apply com-text-xl com-m-0 com-flex-1 com-font-semibold;
+        @apply com-text-base com-m-0 com-flex-1 com-font-semibold;
       }
 
-      .sidebar-expand-icon {
-        .icon {
-          @apply com-text-Cadet-Grey;
-        }
-        .heading {
-          @apply com-text-xs com-text-Cadet-Grey;
-        }
-      }
+      // .sidebar-expand-icon {
+      //   @apply com-p-0;
+      //   .icon {
+      //     @apply com-text-Cadet-Grey;
+      //   }
+      // }
     }
 
     .category-heading {
       @apply com-text-sm com-font-semibold com-my-2;
     }
-    .divided-line {
-      @apply com-border com-border-solid com-border-Bright-Gray;
-    }
+
     .action-button {
-      @apply com-p-1 com-flex com-gap-2 com-items-center com-cursor-pointer;
-      &.active {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      &.active,
+      &:hover {
+        @apply com-bg-blue-50;
+        .heading {
+          @apply com-font-semibold com-text-Ultramarine-Blue;
+        }
+        .icon {
+          @apply com-text-Ultramarine-Blue;
+        }
       }
       .icon {
-        @apply com-text-lg com-text-Cadet-Grey;
+        @apply com-text-sm com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
       }
       .heading {
-        @apply com-text-sm com-font-light;
+        @apply com-text-sm com-font-normal;
       }
       &.public-event-page {
         @apply com-text-Azure;
@@ -54,10 +56,6 @@
         }
       }
     }
-
-    .action-button:hover {
-      @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
-    }
   }
 }
 
@@ -69,9 +67,9 @@
 }
 
 .expanded-sidebar {
-  @apply com-flex com-justify-end com-mb-2;
+  @apply com-flex-col com-justify-between com-gap-3;
 }
 
 .collapsed-sidebar {
-  @apply com-flex com-justify-center com-mb-2;
+  @apply com-justify-center;
 }
