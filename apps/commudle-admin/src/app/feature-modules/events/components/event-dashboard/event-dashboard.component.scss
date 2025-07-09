@@ -54,9 +54,7 @@
         }
       }
       .icon {
-        fa-icon {
-          @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center;
-        }
+        @apply com-h-5 com-w-5 com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center;
       }
       .heading {
         @apply com-text-sm com-font-normal;
