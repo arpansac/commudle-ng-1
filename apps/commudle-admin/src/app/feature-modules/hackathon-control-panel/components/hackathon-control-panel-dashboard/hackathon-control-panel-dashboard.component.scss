@@ -21,7 +21,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-p-4 com-overflow-x-hidden;
+    @apply com-p-4 com-pt-0 com-overflow-x-hidden;
 
     .sidebar-heading {
       @apply com-text-base com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
@@ -30,7 +30,7 @@
     .back-admin {
       @apply com-py-1 com-pr-3 com-rounded-md;
       .heading {
-        @apply com-text-Cadet-Grey com-text-sm;
+        @apply com-text-Cadet-Grey com-text-sm com-font-medium;
       }
     }
 
@@ -40,9 +40,12 @@
         @apply com-border com-border-Bright-Gray com-border-solid com-rounded-md;
       }
       section {
-        @apply com-flex com-justify-center;
+        @apply com-flex com-justify-center com-font-medium;
         .select-status {
-          @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-bg-blue-500;
+          @apply com-w-full com-p-2 com-rounded com-text-sm com-text-white com-font-medium com-bg-Azure;
+          option {
+            @apply com-bg-white com-text-black com-font-medium;
+          }
         }
       }
     }
@@ -62,20 +65,20 @@
       @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
       &.active,
       &:hover {
-        @apply com-bg-blue-50 com-text-tYankees-Blue;
+        @apply com-bg-Azure-opacity-10 com-text-tYankees-Blue;
         .action-button-name {
-          @apply com-font-semibold com-text-Ultramarine-Blue;
+          @apply com-font-semibold com-text-Azure;
         }
         .icon {
           fa-icon {
-            @apply com-text-Ultramarine-Blue;
+            @apply com-text-Azure;
           }
         }
       }
 
       .icon {
         fa-icon {
-          @apply com-text-lg com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+          @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
         }
       }
 

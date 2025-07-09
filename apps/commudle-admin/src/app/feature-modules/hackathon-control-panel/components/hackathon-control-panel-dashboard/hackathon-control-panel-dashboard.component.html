@@ -30,26 +30,18 @@
 <section class="com-flex">
   <div class="sidebar">
     <commudle-sidebar
-      [isExpanded]="true"
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [forWindow]="false"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
       [eventName]="sidebarEventName"
+      [heading]="'Hackathon Dashboard'"
+      [textSize]="ESidebarHeading.MEDIUM"
     >
       <div class="action-buttons">
         <div
           class="header-icons"
           [ngClass]="{ 'header-icons-non-expanded': !sidebarExpanded, 'header-icons-expanded': sidebarExpanded }"
         >
-          <div class="sidebar-heading">
-            <div *ngIf="sidebarExpanded" class="heading">Hackathon Dashboard</div>
-            <div (click)="toggleSidebar()" class="sidebar-expand-icon action-button">
-              <div class="icon">
-                <fa-icon class="icon" [icon]="icons.faRightLeft"></fa-icon>
-              </div>
-            </div>
-          </div>
-
           <a
             *ngIf="sidebarExpanded"
             [routerLink]="['/admin', 'communities', community?.slug, 'hackathons']"

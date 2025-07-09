@@ -25,7 +25,7 @@ import {
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
 import { ICommunity, EHackathonStatus, IHackathon } from '@commudle/shared-models';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
@@ -59,6 +59,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   hackathonStatuses: string[] = Object.values(EHackathonStatus);
   EHackathonStatus = EHackathonStatus;
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'hackathonDashboard';
   sidebarExpanded = true;
 
