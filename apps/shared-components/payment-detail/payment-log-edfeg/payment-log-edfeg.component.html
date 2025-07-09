@@ -4,7 +4,10 @@
     Back to list
   </div>
   <div *ngIf="eventDataFormEntityGroup" class="edfeg-name">
-    <strong>{{ eventDataFormEntityGroup.name }}</strong>
+    <strong title="Community Name | Event Name | Event Data Form Entity Group Name">
+      {{ eventDataFormEntityGroup.event.kommunity.name }} || {{ eventDataFormEntityGroup.event.name }} ||
+      {{ eventDataFormEntityGroup.name }}
+    </strong>
   </div>
 
   <form [formGroup]="searchForm">
@@ -66,6 +69,8 @@
           </td>
           <td>
             {{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$' }}{{ rpd?.order.orderable.discount_amount / 100 }}
+            <br />
+            {{ rpd?.order.orderable.discount_code?.code }}
           </td>
           <td>{{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$' }}{{ rpd?.order.orderable.tax_amount / 100 }}</td>
           <td>
