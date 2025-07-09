@@ -2,6 +2,10 @@
   @apply com-h-12 com-sticky com-top-0 com-z-20;
 }
 
+.toggle {
+  @apply com-flex com-items-center com-justify-center;
+}
+
 .sidebar {
   transition: 0.3s;
 
@@ -51,7 +55,6 @@
     }
 
     .header-medium {
-      @apply com-m-4 com-mb-6 com-p-0;
       h1 {
         @apply com-text-base com-justify-start com-py-2;
       }
@@ -61,9 +64,14 @@
     }
 
     .header-large {
-      h1,
-      fa-icon {
+      h1 {
         @apply com-text-xl com-justify-center;
+      }
+
+      .toggle {
+        fa-icon {
+          @apply com-text-xl;
+        }
       }
     }
   }
@@ -76,6 +84,7 @@
   }
 
   .header-medium {
+    @apply com-m-4 com-mb-6 com-p-0;
     .toggle {
       fa-icon {
         @apply com-text-sm;
