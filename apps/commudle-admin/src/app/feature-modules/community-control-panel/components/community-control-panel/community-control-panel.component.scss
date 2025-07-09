@@ -126,10 +126,10 @@
     }
 
     .action-button {
-      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      @apply com-p-2 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
       &.active,
       &:hover {
-        @apply com-bg-blue-50;
+        @apply com-bg-Azure-opacity-10;
         .heading {
           @apply com-font-semibold com-text-Ultramarine-Blue;
         }
