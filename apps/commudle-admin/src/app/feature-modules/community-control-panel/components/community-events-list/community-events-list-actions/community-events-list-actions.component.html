@@ -3,6 +3,8 @@
     [routerLink]="
       eventData.status === EEventStatuses.OPEN
         ? ['event-dashboard', eventData.slug, 'registrations']
+        : eventData.status === EEventStatuses.COMPLETED
+        ? ['event-dashboard', eventData.slug, 'stats']
         : ['event-dashboard', eventData.slug]
     "
     nbButton
