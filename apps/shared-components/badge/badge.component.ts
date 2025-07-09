@@ -11,12 +11,12 @@ import { NbIconModule } from '@commudle/theme';
 })
 export class BadgeComponent implements OnInit {
   @Input() text;
-  @Input() fontSize; //can be 'small or regular'
-  @Input() color = 'com-bg-Bright-Gray';
+  @Input() fontSize: 'small' | 'x-small' | 'xx-small' = 'x-small'; //can be 'small or regular'
+  @Input() color = 'com-bg-Red';
   @Input() fontColor = 'com-text-tWhite';
   @Input() nbIcon;
   @Input() dotMode;
-  @Input() position;
+  @Input() position: string = '';
   @Input() borderRadius: 'rectangle' | 'semi-round' | 'round' = 'rectangle';
 
   // bg;

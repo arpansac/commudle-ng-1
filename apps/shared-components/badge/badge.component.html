@@ -1,20 +1,16 @@
-<div
-  [ngClass]="{
-    dotmode: dotMode === true,
-    rectangle: borderRadius === 'rectangle',
-    'semi-round': borderRadius === 'semi-round',
-    round: borderRadius === 'round'
-  }"
-  class="{{ position }} {{ color }}"
->
+<div [ngClass]="[color, borderRadius, position, dotMode === true ? 'dotmode' : '']">
   <div>
     <p
-      [ngClass]="{
-        'small-text': fontSize == 'small',
-        'x-small-text': fontSize == 'x-small',
-        'xx-small-text': fontSize == 'xx-small'
-      }"
-      class="{{ fontColor }}"
+      [ngClass]="[
+        fontColor,
+        fontSize === 'small'
+          ? 'small-text'
+          : fontSize === 'x-small'
+          ? 'x-small-text'
+          : fontSize === 'xx-small'
+          ? 'xx-small-text'
+          : ''
+      ]"
     >
       <nb-icon *ngIf="nbIcon" icon="{{ nbIcon }}"></nb-icon>
       {{ text }}

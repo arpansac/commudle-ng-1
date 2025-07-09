@@ -9,7 +9,7 @@
           </div>
         </div>
         <p>
-          {{ lab.name | slice: 0:55 }} <span *ngIf="lab.name.length > 55">...</span>
+          {{ lab.name | slice : 0 : 55 }} <span *ngIf="lab.name.length > 55">...</span>
           <br />
           <small>Published {{ moment(lab.published_at).format('Do MMM YYYY') }}</small>
         </p>
@@ -21,9 +21,9 @@
           </div>
           <div class="author">
             <p>
-              {{ lab.user.name | slice: 0:30 }}
+              {{ lab.user.name | slice : 0 : 30 }}
               <br />
-              <small>{{ lab.user.designation | slice: 0:40 }}</small>
+              <small>{{ lab.user.designation | slice : 0 : 40 }}</small>
             </p>
           </div>
         </div>

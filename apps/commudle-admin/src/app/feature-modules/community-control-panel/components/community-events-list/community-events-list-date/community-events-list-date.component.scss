@@ -1,9 +1,18 @@
-.upcoming {
+// .upcoming {
+//   color: white;
+//   background: #ff4343;
+//   width: fit-content;
+//   padding:2px;
+//   margin: 0;
+//   border-radius: 999px;
+//   font-size: 0.8rem;
+// }
+.badge-pill-red {
+  background-color: #ff4343;
   color: white;
-  background: #ff4343;
-  width: fit-content;
-  padding: 3px;
-  margin: 0;
-  /* border-radius: 10px; */
+  border-radius: 999px;
+  padding: 4px 8px;
   font-size: 0.8rem;
+  width: fit-content;
+  display: inline-block;
 }
