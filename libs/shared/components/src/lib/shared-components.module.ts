@@ -33,6 +33,7 @@ import { UserExpertTickComponent } from './components/user/user-expert-tick/user
 import { ProfileCompletionProgressComponent } from './components/user/profile-completion-progress/profile-completion-progress.component';
 import { UserProfileMissingFieldsComponent } from './components/user/user-profile-missing-fields/user-profile-missing-fields.component';
 import { AddToCalendarComponent } from './components/add-to-calendar/add-to-calendar.component';
+import { InterestedMembersComponent } from './components/interested-members/interested-members.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { AddToCalendarComponent } from './components/add-to-calendar/add-to-cale
     ProfileCompletionProgressComponent,
     UserProfileMissingFieldsComponent,
     AddToCalendarComponent,
+    InterestedMembersComponent,
   ],
   imports: [
     CommonModule,
@@ -84,6 +86,7 @@ import { AddToCalendarComponent } from './components/add-to-calendar/add-to-cale
     ProfileCompletionProgressComponent,
     UserProfileMissingFieldsComponent,
     AddToCalendarComponent,
+    InterestedMembersComponent,
   ],
   providers: [InViewportDirective],
 })
