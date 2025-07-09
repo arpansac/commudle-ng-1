@@ -111,7 +111,7 @@
     @apply com-text-inherit com-no-underline;
   }
   .action-buttons {
-    @apply com-flex com-flex-col com-px-4 com-pb-4 com-gap-6;
+    @apply com-flex com-flex-col com-p-4 com-pt-3 com-gap-6;
     .sidebar-expand-icon {
       .icon {
         @apply com-text-Cadet-Grey com-cursor-pointer;

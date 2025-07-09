@@ -5,7 +5,7 @@
   }
 
   .action-buttons {
-    @apply com-flex com-flex-col com-p-4 com-pt-0 com-cursor-pointer com-gap-6;
+    @apply com-flex com-flex-col com-p-4 com-pt-3 com-cursor-pointer com-gap-6;
 
     .header {
       @apply com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
