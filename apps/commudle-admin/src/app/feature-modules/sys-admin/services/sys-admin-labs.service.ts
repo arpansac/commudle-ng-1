@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
-import { ILab } from 'apps/shared-models/lab.model';
-import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
-import { IAttachedFile } from 'apps/shared-models/attached-file.model';
-import { ILabs } from 'apps/shared-models/labs.model';
+import { ELabPublishStatus, ILab, IPaginationCount } from '@commudle/shared-models';
+import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SysAdminLabsService {
+  constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
 
-  constructor(
-    private http: HttpClient,
-    private apiRoutesService: ApiRoutesService
-  ) { }
-
-  getAll(page?, count?): Observable<ILabs> {
+  getAll(page?: number, count?: number, labStatus?: ELabPublishStatus): Observable<IPaginationCount<ILab>> {
     let params = new HttpParams();
     if (page) {
       params = params.append('page', page);
@@ -27,18 +20,19 @@ export class SysAdminLabsService {
       params = params.append('count', count);
     }
 
-    return this.http.get<ILabs>(
-      this.apiRoutesService.getRoute(API_ROUTES.LABS.ADMIN.INDEX), {params}
-    );
+    if (labStatus) {
+      params = params.append('lab_status', labStatus);
+    }
+
+    return this.http.get<IPaginationCount<ILab>>(this.apiRoutesService.getRoute(API_ROUTES.LABS.ADMIN.INDEX), {
+      params,
+    });
   }
 
   updatePublishStatus(labId, publishStatus): Observable<boolean> {
-    return this.http.put<boolean>(
-      this.apiRoutesService.getRoute(API_ROUTES.LABS.ADMIN.UPDATE_PUBLISH_STATUS), {
-        lab_id: labId,
-        publish_status: publishStatus
-      }
-    );
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.LABS.ADMIN.UPDATE_PUBLISH_STATUS), {
+      lab_id: labId,
+      publish_status: publishStatus,
+    });
   }
-
 }
