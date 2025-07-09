@@ -6,7 +6,7 @@ import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ESidebarPosition, ESidebarWidth } from './enum/sidebar.enum';
+import { ESidebarPosition, ESidebarWidth, ESidebarHeading } from './enum/sidebar.enum';
 
 @Component({
   selector: 'commudle-sidebar',
@@ -26,11 +26,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() eventName: string;
   @Input() showBorder = false;
-  // small- sm, medium - base, large -xl
-  @Input() textSize;
+  // text-size correspinding to the propery => medium - base, XL -xl
+  @Input() textSize: ESidebarHeading = ESidebarHeading.XL;
 
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   hideFullSidebar = false;
   expandSidebar = false;
 
