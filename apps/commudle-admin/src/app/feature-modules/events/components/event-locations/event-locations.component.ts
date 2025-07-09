@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NbTabComponent, NbTabsetComponent, NbWindowService } from '@commudle/theme';
+import { NbTabComponent, NbTabsetComponent, NbWindowService, NbDialogService } from '@commudle/theme';
 import {
   faLink,
   faLocationDot,
@@ -29,7 +29,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { TrackSlotsService } from 'apps/commudle-admin/src/app/services/track_slots.service';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-event-locations',
@@ -60,6 +60,7 @@ export class EventLocationsComponent implements OnInit {
   isLoading = true;
   eventDatesLocation: IEventDatesLocation[];
   admin = true;
+  dialogRef;
 
   eventLocationForm;
   selectedEventType = EEventType.OFFLINE_ONLY;
@@ -82,6 +83,7 @@ export class EventLocationsComponent implements OnInit {
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
     private changeDetectorRef: ChangeDetectorRef,
     private trackSlotsService: TrackSlotsService,
+    private dialogService: NbDialogService,
   ) {
     this.eventLocationForm = this.fb.group({
       location: this.fb.group({
@@ -270,8 +272,7 @@ export class EventLocationsComponent implements OnInit {
   }
 
   confirmDeleteEventLocation(eventLocation) {
-    this.windowRef = this.windowService.open(this.deleteEventLocationTemplate, {
-      title: `Delete this location?`,
+    this.dialogRef = this.dialogService.open(this.deleteEventLocationTemplate, {
       context: { eventLocation },
     });
   }
@@ -296,7 +297,7 @@ export class EventLocationsComponent implements OnInit {
       this.selectLocation(this.eventDatesLocation[0].event_locations[0]);
     }
 
-    this.windowRef.close();
+    this.dialogRef.close();
     this.activateTabAdd();
   }
 

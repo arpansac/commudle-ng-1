@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { IFaq } from '@commudle/shared-models';
+import { NbDialogService } from '@commudle/theme';
 import { faAdd, faMinus, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -17,17 +18,23 @@ export class FaqCardComponent implements OnInit {
 
   showAnswer = false;
 
-  constructor() {}
+  constructor(private dialogService: NbDialogService) {}
 
   ngOnInit() {}
 
   toggleShowAnswers() {
     this.showAnswer = !this.showAnswer;
   }
-  deleteFaq(faq) {
+
+  deleteFaq(faq: IFaq) {
     this.destroyFaqEvent.emit(faq);
   }
-  editFaq(faq) {
+
+  editFaq(faq: IFaq) {
     this.editFaqEvent.emit(faq);
+  }
+
+  openConfirmDialogBox(faq: IFaq, dialog: TemplateRef<any>) {
+    this.dialogService.open(dialog, { context: { faq } });
   }
 }

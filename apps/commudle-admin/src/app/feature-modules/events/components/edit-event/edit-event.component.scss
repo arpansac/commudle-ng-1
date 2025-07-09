@@ -10,8 +10,9 @@
     margin: 1.5rem 0 0 0;
   }
 
-  div[role='group'] {
-    margin: 1rem 0;
+  div[role='group'],
+  div[role='individual'] {
+    @apply com-mb-5;
   }
 
   nb-alert {
@@ -21,7 +22,7 @@
   }
 
   .event-date-details {
-    margin: 1rem 0 0 0;
+    @apply com-mb-5;
     > div {
       display: flex;
       flex-wrap: wrap;
@@ -50,10 +51,18 @@ nb-card {
 }
 
 .event-type {
+  @apply com-mb-5;
   > div {
-    @apply com-mt-1;
+    @apply com-mt-2;
     > div {
       @apply com-flex com-gap-2 com-items-center;
     }
   }
+}
+
+input,
+.tox-editor-container,
+editor,
+.tag {
+  @apply com-mt-2;
 }
