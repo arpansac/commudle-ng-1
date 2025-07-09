@@ -5,24 +5,22 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
 import {
+  faRightLeft,
   faArrowLeft,
-  faPenToSquare,
   faCircleInfo,
   faLink,
-  faCalendarDays,
+  faCalendarDay,
   faAward,
-  faSackDollar,
-  faMicrophone,
-  faStar,
-  faCircleQuestion,
-  faEye,
-  faChartPie,
-  faHashtag,
-  faEnvelope,
   faGamepad,
   faRectangleList,
+  faSackDollar,
+  faMicrophone,
+  faCircleQuestion,
+  faEye,
+  faStar,
+  faHashtag,
+  faEnvelope,
   faArrowUpRightFromSquare,
-  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
@@ -40,24 +38,22 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   community: ICommunity;
   subscriptions: Subscription[] = [];
   icons = {
+    faRightLeft,
     faArrowLeft,
-    faPenToSquare,
     faCircleInfo,
     faLink,
-    faCalendarDays,
+    faCalendarDay,
     faAward,
-    faMicrophone,
-    faSackDollar,
-    faStar,
-    faCircleQuestion,
-    faEye,
-    faChartPie,
-    faHashtag,
-    faEnvelope,
     faGamepad,
     faRectangleList,
+    faSackDollar,
+    faMicrophone,
+    faCircleQuestion,
+    faEye,
+    faStar,
+    faHashtag,
+    faEnvelope,
     faArrowUpRightFromSquare,
-    faBars,
   };
 
   hackathonStatuses: string[] = Object.values(EHackathonStatus);
