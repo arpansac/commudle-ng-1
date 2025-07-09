@@ -32,6 +32,7 @@ export class EventStatusComponent implements OnInit {
   @ViewChild('confirmOpenEventStatusDialogBox') confirmOpenEventStatusDialogBox: TemplateRef<any>;
 
   eventStatuses: string[] = Object.values(EEventStatuses);
+  selectedItem = this.eventStatuses[1];
 
   constructor(
     private eventsService: EventsService,

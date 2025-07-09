@@ -10,7 +10,21 @@ import {
   faCircleInfo,
   faChartLine,
   faArrowLeft,
+  faRightLeft,
   faBars,
+  faPenNib,
+  faCalendarDay,
+  faStar,
+  faHandshakeSimple,
+  faUsers,
+  faSackDollar,
+  faPaperPlane,
+  faArrowUpRightFromSquare,
+  faChartPie,
+  faListCheck,
+  faShare,
+  faExpand,
+  faEnvelopeCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { faClipboard, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
@@ -49,6 +63,20 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     faEnvelopeOpen,
     faEnvelope,
     faBars,
+    faRightLeft,
+    faPenNib,
+    faCalendarDay,
+    faStar,
+    faHandshakeSimple,
+    faUsers,
+    faSackDollar,
+    faPaperPlane,
+    faArrowUpRightFromSquare,
+    faChartPie,
+    faListCheck,
+    faShare,
+    faExpand,
+    faEnvelopeCircleCheck,
   };
 
   ESidebarWidth = ESidebarWidth;

@@ -3,10 +3,6 @@
   .event-name {
     @apply com-m-0 com-text-3xl;
   }
-
-  .text {
-    @apply com-text-base com-m-0 com-mb-2 md:com-mb-0;
-  }
 }
 .header {
   @apply com-bg-white com-h-28 com-border com-border-solid com-border-Bright-Gray com-border-t-0 com-flex;
@@ -20,50 +16,58 @@
   }
   .action-buttons {
     @apply com-p-4;
-    .back-admin,
+
+    .categories {
+      @apply com-flex com-flex-col com-gap-6;
+    }
+
+    .sidebar-heading {
+      @apply com-text-base com-font-semibold com-flex com-items-center com-justify-between com-py-2 com-rounded-md;
+    }
+
+    .back-admin {
+      @apply com-py-1 com-pr-3 com-rounded-md;
+      .heading {
+        @apply com-text-Cadet-Grey com-text-sm;
+      }
+    }
+
     .sidebar-expand-icon {
       .icon {
         @apply com-text-Cadet-Grey;
       }
-      .heading {
-        @apply com-text-xs com-text-Cadet-Grey;
-      }
     }
 
     .category-heading {
-      @apply com-text-sm com-font-semibold com-my-2;
-    }
-    .divided-line {
-      @apply com-border com-border-solid com-border-Bright-Gray;
+      @apply com-px-3 com-m-0 com-py-1 com-rounded-md com-text-Caption com-font-semibold;
     }
     .action-button {
-      @apply com-p-1 com-flex com-gap-2 com-items-center com-cursor-pointer;
-      &.active {
-        @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
+      @apply com-p-2 com-pr-3 com-rounded-lg com-flex com-gap-2 com-items-center com-cursor-pointer;
+      &.active,
+      &:hover {
+        @apply com-bg-blue-50;
+        .heading {
+          @apply com-font-semibold com-text-Ultramarine-Blue;
+        }
+        .icon {
+          @apply com-text-Ultramarine-Blue;
+        }
       }
       .icon {
-        @apply com-text-lg com-text-Cadet-Grey;
+        @apply com-text-lg com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+
+        // fa-icon {
+        //   @apply com-w-full com-h-full com-max-w-full com-max-h-full  com-object-contain;
+        // }
       }
       .heading {
-        @apply com-text-sm com-font-light;
-      }
-      &.public-event-page {
-        @apply com-text-Azure;
-        .icon {
-          @apply com-text-Azure;
-        }
-      }
-      &.stats {
-        @apply com-text-Caribbean-Green;
-        .icon {
-          @apply com-text-Caribbean-Green;
-        }
+        @apply com-text-sm com-font-normal;
       }
     }
 
-    .action-button:hover {
-      @apply com-bg-Bright-Gray-Light com-text-tYankees-Blue;
-    }
+    // .action-button:hover {
+    //   @apply com-bg-blue-50 com-text-Ultramarine-Blue com-font-semibold;
+    // }
   }
 }
 a {
@@ -107,7 +111,7 @@ a {
 }
 
 .header-icons {
-  @apply com-flex;
+  @apply com-flex com-flex-col;
 }
 
 .header-icons-non-expanded {
@@ -115,5 +119,5 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-justify-between;
+  @apply com-flex-col com-justify-between com-gap-3;
 }
