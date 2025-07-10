@@ -1,4 +1,6 @@
-<div class="category-heading">STATUS</div>
+<div class="category-heading">
+  STATUS <commudle-help-section [helpDictionaryName]="'event-status'"></commudle-help-section>
+</div>
 <section *ngIf="event.editable">
   <select class="select-status" (change)="openConfirmationPopup($any($event.target).value)">
     <option *ngFor="let i of eventStatuses" [value]="i" [selected]="event.event_status.name === i">

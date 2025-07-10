@@ -55,7 +55,9 @@
         </div>
 
         <div *ngIf="sidebarExpanded" class="status-buttons">
-          <div class="category-heading">STATUS</div>
+          <div class="category-heading">
+            STATUS <commudle-help-section [helpDictionaryName]="'event-status'"></commudle-help-section>
+          </div>
           <section>
             <select class="select-status" (change)="updateStatus($any($event.target).value)">
               <option *ngFor="let i of hackathonStatuses" [value]="i" [selected]="hackathon.status === i">
