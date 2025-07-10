@@ -10,6 +10,7 @@ import { faChevronLeft, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import grapesjs from 'grapesjs';
 import plugin from 'grapesjs-preset-newsletter';
 import { NbDialogService } from '@commudle/theme';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'commudle-newsletter-form',
@@ -79,6 +80,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
     private location: Location,
     private toastrService: ToastrService,
     private dialogService: NbDialogService,
+    private router: Router,
   ) {
     this.newsletterForm = this.fb.group({
       title: ['', Validators.required],
@@ -153,6 +155,17 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
         }
       }),
     );
+  }
+  redirectTo(slug) {
+    let pathSegments: string[] = [];
+
+    if (this.parentType === 'Kommunity') {
+      pathSegments = ['communities', String(this.parentId), 'newsletters', slug];
+    } else if (this.parentType === 'CommunityGroup') {
+      pathSegments = ['orgs', String(this.parentId), 'newsletters', slug];
+    }
+
+    this.router.navigate(pathSegments);
   }
 
   initEditor() {
