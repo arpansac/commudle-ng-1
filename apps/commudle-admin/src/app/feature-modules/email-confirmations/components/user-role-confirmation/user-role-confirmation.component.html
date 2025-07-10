@@ -8,10 +8,18 @@
             <div class="confirmation-header">
               <div class="check-icon">{{ userRolesUser.active ? '🎉' : '❌' }}</div>
               <div *ngIf="userRolesUser.active">
-                <div *ngIf="userRolesUser.user_role.name === EUserRoles.ORGANIZER">
-                  <h1 class="title accepted">You’re now an Organizer for {{ community.name }}</h1>
+                <div
+                  *ngIf="
+                    userRolesUser.user_role.name === EUserRoles.ORGANIZER ||
+                    userRolesUser.user_role.name === EUserRoles.COMMUNITY_ADMIN
+                  "
+                >
+                  <h1 class="title accepted">
+                    You’re now an Organizer for
+                    {{ userRolesUser.user_role.name === EUserRoles.ORGANIZER ? community.name : communityGroup.name }}
+                  </h1>
                   <h3 class="sub-heading">
-                    Welcome aboard! You now have full control over managing and shaping this event.
+                    Welcome aboard! You now have full control over managing and shaping this community.
                   </h3>
                 </div>
                 <div *ngIf="userRolesUser.user_role.name === EUserRoles.EVENT_VOLUNTEER">
@@ -53,6 +61,37 @@
               </div>
 
               <a [routerLink]="['/admin/communities', community.slug]" class="actions">
+                <button nbButton fullWidth shape="semi-round" status="primary" class="take-dashboard-button">
+                  <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>&nbsp; Go to admin panel
+                </button>
+              </a>
+            </div>
+
+            <div
+              *ngIf="
+                communityGroup && userRolesUser.active && userRolesUser.user_role.name === EUserRoles.COMMUNITY_ADMIN
+              "
+              class="details-card-container"
+            >
+              <h2 class="card-heading">
+                <img
+                  alt="{{ communityGroup.name }}"
+                  class="community-card-logo"
+                  src="{{ communityGroup.logo.i64 }}"
+                  title="{{ communityGroup.name }}"
+                />
+                {{ communityGroup.name }}
+              </h2>
+
+              <div *ngIf="leadersOrg" class="interested-members">
+                <commudle-interested-members
+                  [users]="leadersOrg"
+                  [totalCount]="leadersOrg.length"
+                  [showHeading]="false"
+                ></commudle-interested-members>
+              </div>
+
+              <a [routerLink]="['/admin/orgs', communityGroup.slug]" class="actions">
                 <button nbButton fullWidth shape="semi-round" status="primary" class="take-dashboard-button">
                   <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>&nbsp; Go to admin panel
                 </button>

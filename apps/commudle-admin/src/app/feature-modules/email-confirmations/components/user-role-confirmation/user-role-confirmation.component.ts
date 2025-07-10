@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IProfileCompletionStatus, IUser, IUserStat } from '@commudle/shared-models';
+import { IPageInfo, IProfileCompletionStatus, IUser, IUserStat } from '@commudle/shared-models';
 import { AppUsersService, AuthService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
+import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity } from 'apps/shared-models/community.model';
@@ -40,6 +41,9 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   currentUser: IUser;
   userProfileDetails: IUserStat;
   isProfileCompleted = false;
+  limit = 20;
+  IPageInfo: IPageInfo;
+  leadersOrg: IUser[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -51,6 +55,7 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
     private uruService: UserRolesUsersService,
     private authService: AuthService,
     private appUsersService: AppUsersService,
+    private communityGroupsService: CommunityGroupsService,
   ) {}
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -79,6 +84,21 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
       this.interestedUsers = data.users;
       this.isLoading = false;
     });
+  }
+
+  private getCommunityOrgsTeam() {
+    this.isLoading = true;
+    this.subscriptions.push(
+      this.communityGroupsService
+        .pGetOrganizersAllCommunities(this.communityGroup.slug, this.limit, this.IPageInfo?.end_cursor)
+        .subscribe((data) => {
+          if (data) {
+            this.leadersOrg = this.leadersOrg.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+            this.IPageInfo = data.page_info;
+            this.isLoading = false;
+          }
+        }),
+    );
   }
 
   private fetchCurrentUserDetails() {
@@ -119,7 +139,12 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
       this.community = data.community;
       this.event = data.event;
       this.communityGroup = data.community_group;
-      this.fetchCommunityDetails();
+      if (this.community) {
+        this.fetchCommunityDetails();
+      }
+      if (this.communityGroup) {
+        this.getCommunityOrgsTeam();
+      }
       this.fetchCurrentUserDetails();
     });
   }
