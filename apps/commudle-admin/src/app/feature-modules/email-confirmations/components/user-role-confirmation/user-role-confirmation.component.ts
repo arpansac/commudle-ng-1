@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IProfileCompletionStatus, IUser, IUserStat } from '@commudle/shared-models';
+import { AppUsersService, AuthService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
@@ -10,7 +13,7 @@ import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-role-confirmation',
@@ -31,6 +34,13 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   eventName;
   subscriptions: Subscription[] = [];
   roleRejected: boolean;
+  interestedUsers: IUser[];
+  isLoading = false;
+  faArrowUpRightFromSquare = faArrowUpRightFromSquare;
+  currentUser: IUser;
+  userProfileDetails: IUserStat;
+  isProfileCompleted = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +48,9 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private nbDialogService: NbDialogService,
     private router: Router,
+    private uruService: UserRolesUsersService,
+    private authService: AuthService,
+    private appUsersService: AppUsersService,
   ) {}
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -60,12 +73,54 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(false);
   }
 
+  private fetchCommunityDetails() {
+    this.isLoading = true;
+    this.uruService.pGetCommunityLeadersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
+      this.interestedUsers = data.users;
+      this.isLoading = false;
+    });
+  }
+
+  private fetchCurrentUserDetails() {
+    this.isLoading = true;
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
+      this.currentUser = currentUser;
+      this.isLoading = false;
+      this.fetchUserStats();
+      this.getProfileCompletionStatus();
+    });
+  }
+
+  private fetchUserStats() {
+    this.isLoading = true;
+    this.appUsersService.getProfileStats().subscribe((data) => {
+      if (data) {
+        this.userProfileDetails = data;
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private getProfileCompletionStatus() {
+    this.isLoading = true;
+    this.appUsersService.profileCompletionStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((status: IProfileCompletionStatus) => {
+        if (status) {
+          this.isProfileCompleted = !status.completed;
+        }
+        this.isLoading = false;
+      });
+  }
+
   activateRole(token, decline?: boolean) {
     this.userRolesUsersService.confirmCommunityRole(token, decline).subscribe((data) => {
       this.userRolesUser = data.user_roles_user;
       this.community = data.community;
       this.event = data.event;
       this.communityGroup = data.community_group;
+      this.fetchCommunityDetails();
+      this.fetchCurrentUserDetails();
     });
   }
 
