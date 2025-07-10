@@ -135,10 +135,16 @@
         }
         .icon {
           @apply com-text-Azure;
+          img {
+            @apply com-text-Azure;
+          }
         }
       }
       .icon {
         @apply com-text-sm com-flex com-text-Cadet-Grey com-items-center com-justify-center com-w-5 com-h-5;
+        img {
+          @apply com-w-full com-h-full com-object-contain;
+        }
       }
       .heading {
         @apply com-text-sm com-font-normal;
