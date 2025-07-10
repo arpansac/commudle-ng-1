@@ -228,10 +228,10 @@
               <img
                 [src]="
                   isHackathonActive
-                    ? environment.base_url + '/icons/hackathon-icon-primary.svg'
+                    ? staticIcons.hackathons.primary
                     : darkMode
-                    ? environment.base_url + '/icons/hackathon-icon-white.svg'
-                    : environment.base_url + '/icons/hackathon-icon-gray.svg'
+                    ? staticIcons.hackathons.white
+                    : staticIcons.hackathons.gray
                 "
                 alt="Hackathon Icon"
               />

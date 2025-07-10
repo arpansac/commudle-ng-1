@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { environment } from '@commudle/shared-environments';
 import { NbWindowService } from '@commudle/theme';
 import {
   faRightLeft,
@@ -33,6 +32,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { staticIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
 
 @Component({
   selector: 'app-community-control-panel',
@@ -68,7 +68,6 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
     faUsersGear,
     faIdCardClip,
   };
-  environment = environment;
   darkMode: boolean;
   isHackathonActive = false;
   isHackathonHovered = false;
@@ -76,6 +75,8 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'community';
+
+  staticIcons = staticIcons;
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -178,9 +179,9 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
 
   getHackathonIconImagePath(): string {
     if (this.isHackathonHovered || this.isHackathonActive) {
-      return environment.base_url + '/icons/hackathon-icon-primary.svg';
+      return staticIcons.hackathons.primary;
     } else {
-      return environment.base_url + '/icons/hackathon-icon-cadet-grey.svg';
+      return staticIcons.hackathons.cadetGrey;
     }
   }
 
