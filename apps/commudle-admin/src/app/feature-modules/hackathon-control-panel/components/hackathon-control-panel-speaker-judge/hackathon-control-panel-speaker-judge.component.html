@@ -36,7 +36,7 @@
               nbInput
               fullWidth
               formControlName="email"
-              placeholder="xyz@example.com"
+              placeholder="Enter username or email"
               [nbAutocomplete]="userAutocomplete"
             />
             <nb-autocomplete #userAutocomplete (selectedChange)="selectUser($event)">
@@ -51,10 +51,6 @@
           ></commudle-alert>
         </div>
       </div>
-      <commudle-alert
-        [error]="true"
-        errorMessage="Use real email id's only, if the user is present on Commudle, the details of their profile will be fetched automatically"
-      ></commudle-alert>
       <button
         [disabled]="fetchSpeakerJudge.invalid || speakerRegistrationForm.controls['judge_type'].value === ''"
         class="com-w-max com-mt-3"
