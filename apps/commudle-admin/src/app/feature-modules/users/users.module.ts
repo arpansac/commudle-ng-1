@@ -69,6 +69,7 @@ import { RecapComponent } from './components/recap-2024/recap-2024.component';
 import { PublicProfileCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/users/components/public-profile/public-profile-campaign/public-profile-campaign.component';
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 @NgModule({
   declarations: [
     PublicProfileComponent,
@@ -142,6 +143,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     NbToggleModule,
     NbSelectModule,
     UserExpertTickComponent,
+    RecaptchaModule,
   ],
   exports: [
     BasicUserProfileComponent,
