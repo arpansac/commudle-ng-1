@@ -1,58 +1,62 @@
-.base-layout {
-  h4 {
-    @apply com-mx-4 com-mb-4;
-  }
-}
-
 .community-builds {
+  nb-card-header {
+    @apply com-flex com-gap-4;
+    .select {
+      @apply com-w-max #{!important};
+    }
+  }
   .community-build {
-    border-bottom: 1px solid lightgrey;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0;
+    @apply com-flex com-flex-col com-py-6;
 
     .content {
-      > h5,
-      > p {
-        margin: 0;
+      h5,
+      p {
+        @apply com-m-0;
       }
     }
 
     .creator {
-      max-width: 100%;
+      @apply com-max-w-full;
     }
 
     .stats {
       .tags {
-        display: flex;
-        flex-wrap: wrap;
-
+        @apply com-flex com-flex-wrap;
         app-badge {
-          margin: 3px;
+          @apply com-m-1;
         }
       }
     }
 
     .actions {
       > div {
-        margin: 0.5rem 0;
+        @apply com-my-2;
       }
     }
 
-    @media (min-width: 800px) {
-      flex-direction: row;
-
+    @screen md {
+      @apply com-flex-row;
       .content {
-        width: 60%;
+        @apply com-w-3/5;
       }
-
       .creator {
-        width: 15%;
+        @apply com-w-2/12;
       }
-
       .stats {
-        width: 10%;
+        @apply com-w-1/12;
       }
     }
+  }
+
+  .community-build:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-gray-300;
+  }
+}
+
+// TODO: shift hex code to tailwind.preset.js
+.select {
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+  select {
+    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
   }
 }
