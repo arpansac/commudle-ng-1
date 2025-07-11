@@ -42,7 +42,7 @@
       section {
         @apply com-flex com-justify-center com-font-medium;
         .select-status {
-          @apply com-w-full com-p-2 com-rounded com-text-sm com-font-medium com-text-tWhite  com-bg-Azure;
+          @apply com-w-full com-p-2 com-rounded com-text-sm com-font-medium com-text-tWhite com-bg-primary-500;
           option {
             @apply com-bg-white com-text-black com-font-medium;
           }
@@ -67,11 +67,11 @@
       &:hover {
         @apply com-bg-Azure-opacity-10 com-text-tYankees-Blue;
         .action-button-name {
-          @apply com-font-semibold com-text-Azure;
+          @apply com-font-semibold com-text-primary-500;
         }
         .icon {
           fa-icon {
-            @apply com-text-Azure;
+            @apply com-text-primary-500;
           }
         }
       }

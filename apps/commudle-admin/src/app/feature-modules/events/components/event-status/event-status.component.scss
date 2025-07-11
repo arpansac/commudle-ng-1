@@ -8,7 +8,7 @@
 }
 
 .select-status {
-  @apply com-w-full com-p-2 com-rounded com-font-medium com-text-sm com-text-tWhite com-bg-Azure;
+  @apply com-w-full com-p-2 com-rounded com-font-medium com-text-sm com-text-tWhite com-bg-primary-500;
   option {
     @apply com-bg-white com-text-black com-font-medium;
   }

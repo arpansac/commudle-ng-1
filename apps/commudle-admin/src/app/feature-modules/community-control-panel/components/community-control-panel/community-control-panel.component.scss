@@ -131,13 +131,10 @@
       &:hover {
         @apply com-bg-Azure-opacity-10;
         .heading {
-          @apply com-font-semibold com-text-Azure;
+          @apply com-font-semibold com-text-primary-500;
         }
         .icon {
-          @apply com-text-Azure;
-          img {
-            @apply com-text-Azure;
-          }
+          @apply com-text-primary-500;
         }
       }
       .icon {
