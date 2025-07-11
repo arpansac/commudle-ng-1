@@ -279,6 +279,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       if (data) {
         this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
           com_campaign_id: this.campaign.id,
+          com_campaign_type_name: this.campaign.campaign_type.name,
         });
         this.submitTags();
       }

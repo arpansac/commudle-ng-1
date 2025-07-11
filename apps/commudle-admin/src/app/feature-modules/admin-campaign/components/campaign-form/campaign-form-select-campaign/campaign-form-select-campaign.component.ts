@@ -66,9 +66,10 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   }
 
   createCampaign() {
-    this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res) => {
+    this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res: ICampaign) => {
       this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
         com_campaign_id: res.id,
+        com_campaign_type_name: res.campaign_type.name,
       });
       this.router.navigate(['campaigns', 'edit', res.id, 'order-setup']);
     });

@@ -62,10 +62,11 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
       .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
       .subscribe((data) => {
         if (data) {
+          this.campaign = data;
           this.gtmDataLayerPushEvent('new-campaign-created', {
             com_campaign_id: this.campaign.id,
+            com_campaign_type_name: this.campaign.campaign_type.name,
           });
-          this.campaign = data;
           this.openDialog(this.submissionCampaignDialog);
           this.setAnimation();
         }
