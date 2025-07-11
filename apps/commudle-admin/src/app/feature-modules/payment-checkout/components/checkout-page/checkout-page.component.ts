@@ -323,14 +323,26 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (data: IRazorpayPayment) => {
               if (data) {
-                this.gtmDataLayerPushEvent('community-subscription-po-completed');
+                if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+                  this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+                    com_purchase_order: this.purchaseOrder.uuid,
+                    com_product_price_plan_name: this.productPrice.plan_name,
+                    com_product_price_product_name: this.productPrice.product_name,
+                  });
+                }
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.paymentPaid = true;
-                void this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+                this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
               }
             },
             error: () => {
-              this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
+              if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+                this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+                  com_purchase_order: this.purchaseOrder.uuid,
+                  com_product_price_plan_name: this.productPrice.plan_name,
+                  com_product_price_product_name: this.productPrice.product_name,
+                });
+              }
               this.toastrService.errorDialog('Payment processing failed');
             },
           });
@@ -345,7 +357,13 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         reload: false,
         ondismiss: () => {
           this.isLoadingPayment = false;
-          this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
+          if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+            this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+              com_purchase_order: this.purchaseOrder.uuid,
+              com_product_price_plan_name: this.productPrice.plan_name,
+              com_product_price_product_name: this.productPrice.product_name,
+            });
+          }
           this.dialogService.open(this.paymentErrorDialog, {
             closeOnBackdropClick: false,
           });
@@ -364,12 +382,24 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: () => {
-            this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
+            if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+              this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+                com_purchase_order: this.purchaseOrder.uuid,
+                com_product_price_plan_name: this.productPrice.plan_name,
+                com_product_price_product_name: this.productPrice.product_name,
+              });
+            }
             this.toastrService.errorDialog(`Payment failed: ${response.error.description}`);
             this.reload();
           },
           error: () => {
-            this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
+            if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+              this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+                com_purchase_order: this.purchaseOrder.uuid,
+                com_product_price_plan_name: this.productPrice.plan_name,
+                com_product_price_product_name: this.productPrice.product_name,
+              });
+            }
             this.toastrService.errorDialog('Failed to process payment failure');
           },
         });
