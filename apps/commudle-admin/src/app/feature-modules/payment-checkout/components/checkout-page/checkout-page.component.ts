@@ -24,6 +24,7 @@ import {
 import {
   AuthService,
   DiscountCodesService,
+  GoogleTagManagerService,
   PurchaseOrderService,
   RazorpayService,
   ToastrService,
@@ -88,6 +89,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private dialogService: NbDialogService,
     private discountCodesService: DiscountCodesService,
+    private gtm: GoogleTagManagerService,
   ) {
     this.contactInfoForm = this.initCheckoutForm();
   }
@@ -321,12 +323,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (data: IRazorpayPayment) => {
               if (data) {
+                this.gtmDataLayerPushEvent('community-subscription-po-completed');
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.paymentPaid = true;
                 void this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
               }
             },
             error: () => {
+              this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
               this.toastrService.errorDialog('Payment processing failed');
             },
           });
@@ -341,6 +345,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         reload: false,
         ondismiss: () => {
           this.isLoadingPayment = false;
+          this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
           this.dialogService.open(this.paymentErrorDialog, {
             closeOnBackdropClick: false,
           });
@@ -359,10 +364,12 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: () => {
+            this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
             this.toastrService.errorDialog(`Payment failed: ${response.error.description}`);
             this.reload();
           },
           error: () => {
+            this.gtmDataLayerPushEvent('community-subscription-po-payment-failed');
             this.toastrService.errorDialog('Failed to process payment failure');
           },
         });
@@ -542,5 +549,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           this.toastrService.errorDialog('Failed to update purchase order');
         },
       });
+  }
+
+  private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string> = {}): void {
+    this.gtm.dataLayerPushEvent(eventName, eventData);
   }
 }

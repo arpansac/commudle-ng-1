@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignType } from '@commudle/shared-models';
-import { CampaignService, CampaignTypeService, SeoService } from '@commudle/shared-services';
+import { CampaignService, CampaignTypeService, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -26,6 +26,7 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
     private seoService: SeoService,
+    private gtm: GoogleTagManagerService,
   ) {}
 
   ngOnInit() {
@@ -66,6 +67,9 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
 
   createCampaign() {
     this.campaignService.createCampaign(this.selectedCampaignTypeId).subscribe((res) => {
+      this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
+        com_campaign_id: res.id,
+      });
       this.router.navigate(['campaigns', 'edit', res.id, 'order-setup']);
     });
   }
@@ -94,5 +98,9 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
         campaignType: campaignType,
       },
     });
+  }
+
+  private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
+    this.gtm.dataLayerPushEvent(eventName, eventData);
   }
 }
