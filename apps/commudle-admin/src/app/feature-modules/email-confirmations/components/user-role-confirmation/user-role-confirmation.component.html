@@ -52,10 +52,10 @@
                 {{ community.name }}
               </h2>
 
-              <div *ngIf="interestedUsers" class="interested-members">
+              <div *ngIf="communityLeaders" class="interested-members">
                 <commudle-interested-members
-                  [users]="interestedUsers"
-                  [totalCount]="interestedUsers.length"
+                  [users]="communityLeaders"
+                  [totalCount]="communityLeaders.length"
                   [showHeading]="false"
                 ></commudle-interested-members>
               </div>
@@ -125,6 +125,35 @@
                   [username]="currentUser.username"
                 ></commudle-userprofile-details>
               </ng-container>
+            </div>
+
+            <!-- Speakers section -->
+            <div *ngIf="speakers && userRolesUser.user_role.name === EUserRoles.EVENT_VOLUNTEER" class="leaders-card">
+              <h2 class="card-heading">Follow Event Speakers</h2>
+              <div *ngFor="let speaker of speakers" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="speaker.user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Community leaders section -->
+            <div
+              *ngIf="communityLeaders?.length && userRolesUser.user_role.name === EUserRoles.EVENT_VOLUNTEER"
+              class="leaders-card"
+            >
+              <h2 class="card-heading">Follow Community Leaders</h2>
+              <div *ngFor="let user of communityLeaders" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
             </div>
           </div>
         </ng-template>

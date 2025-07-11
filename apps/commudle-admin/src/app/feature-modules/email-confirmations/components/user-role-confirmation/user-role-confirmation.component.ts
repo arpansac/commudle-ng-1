@@ -6,9 +6,11 @@ import { NbDialogService } from '@commudle/theme';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
+import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity } from 'apps/shared-models/community.model';
+import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { IEvent } from 'apps/shared-models/event.model';
@@ -35,15 +37,17 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   eventName;
   subscriptions: Subscription[] = [];
   roleRejected: boolean;
-  interestedUsers: IUser[];
+  communityLeaders: IUser[];
   isLoading = false;
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
   currentUser: IUser;
   userProfileDetails: IUserStat;
   isProfileCompleted = false;
   limit = 20;
-  IPageInfo: IPageInfo;
+  IPageInfoTeam: IPageInfo;
+  IPageInfoSpeaker: IPageInfo;
   leadersOrg: IUser[] = [];
+  speakers: IDataFormEntityResponseGroup[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -56,6 +60,7 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private appUsersService: AppUsersService,
     private communityGroupsService: CommunityGroupsService,
+    private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
   ) {}
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -81,7 +86,7 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   private fetchCommunityDetails() {
     this.isLoading = true;
     this.uruService.pGetCommunityLeadersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
-      this.interestedUsers = data.users;
+      this.communityLeaders = data.users;
       this.isLoading = false;
     });
   }
@@ -90,11 +95,11 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.subscriptions.push(
       this.communityGroupsService
-        .pGetOrganizersAllCommunities(this.communityGroup.slug, this.limit, this.IPageInfo?.end_cursor)
+        .pGetOrganizersAllCommunities(this.communityGroup.slug, this.limit, this.IPageInfoTeam?.end_cursor)
         .subscribe((data) => {
           if (data) {
             this.leadersOrg = this.leadersOrg.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-            this.IPageInfo = data.page_info;
+            this.IPageInfoTeam = data.page_info;
             this.isLoading = false;
           }
         }),
@@ -108,6 +113,13 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.fetchUserStats();
       this.getProfileCompletionStatus();
+    });
+  }
+
+  getEventSpeakers() {
+    this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
+      this.speakers = data.data_form_entity_response_groups;
+      this.isLoading = false;
     });
   }
 
@@ -141,6 +153,9 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
       this.communityGroup = data.community_group;
       if (this.community) {
         this.fetchCommunityDetails();
+      }
+      if (this.event) {
+        this.getEventSpeakers();
       }
       if (this.communityGroup) {
         this.getCommunityOrgsTeam();

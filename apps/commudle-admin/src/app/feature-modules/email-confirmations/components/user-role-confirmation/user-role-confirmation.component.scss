@@ -13,7 +13,7 @@
     }
 
     .title {
-      @apply com-text-3xl com-font-semibold com-leading-10 com-m-0 com-mb-4;
+      @apply com-text-3xl com-font-semibold com-leading-10 com-m-0 com-mb-4 com-break-words;
     }
 
     .rejected {
@@ -45,7 +45,7 @@
   }
 
   .missing-field-card {
-    @apply com-my-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    @apply com-mt-8;
   }
 
   .card-heading {
@@ -69,4 +69,16 @@
   .interested-members {
     @apply com-mb-6;
   }
+}
+
+.card-heading {
+  @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-6;
+}
+
+.leaders-card {
+  @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-py-8;
+}
+
+.leader:not(:last-child) {
+  @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
 }
