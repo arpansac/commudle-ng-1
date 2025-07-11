@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
-import { CampaignService, SeoService } from '@commudle/shared-services';
+import { CampaignService, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faEdit, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
@@ -28,6 +28,7 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
     private campaignService: CampaignService,
     private _dialogService: NbDialogService,
     private seoService: SeoService,
+    private gtm: GoogleTagManagerService,
   ) {}
 
   ngOnInit() {
@@ -62,6 +63,10 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
       .subscribe((data) => {
         if (data) {
           this.campaign = data;
+          this.gtmDataLayerPushEvent('new-campaign-created', {
+            com_campaign_id: this.campaign.id,
+            com_campaign_type_name: this.campaign.campaign_type.name,
+          });
           this.openDialog(this.submissionCampaignDialog);
           this.setAnimation();
         }
@@ -74,5 +79,9 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
       closeOnBackdropClick: false,
       hasScroll: false,
     });
+  }
+
+  private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
+    this.gtm.dataLayerPushEvent(eventName, eventData);
   }
 }

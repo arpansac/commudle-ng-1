@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
-import { CampaignService, SeoService, ToastrService } from '@commudle/shared-services';
+import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
 import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
@@ -34,6 +34,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     private toasterService: ToastrService,
     private router: Router,
     private seoService: SeoService,
+    private gtm: GoogleTagManagerService,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -276,6 +277,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       if (data) {
+        this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
+          com_campaign_id: this.campaign.id,
+          com_campaign_type_name: this.campaign.campaign_type.name,
+        });
         this.submitTags();
       }
     });
@@ -364,5 +369,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         budget: data,
       });
     });
+  }
+
+  private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
+    this.gtm.dataLayerPushEvent(eventName, eventData);
   }
 }
