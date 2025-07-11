@@ -32,7 +32,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_sender_types.enum';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
-import { staticIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
+import { commudleIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
 
 @Component({
   selector: 'app-community-control-panel',
@@ -76,7 +76,7 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'community';
 
-  staticIcons = staticIcons;
+  commudleIcons = commudleIcons;
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -179,9 +179,9 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
 
   getHackathonIconImagePath(): string {
     if (this.isHackathonHovered || this.isHackathonActive) {
-      return staticIcons.hackathons.primary;
+      return commudleIcons.hackathons.primary;
     } else {
-      return staticIcons.hackathons.cadetGrey;
+      return commudleIcons.hackathons.cadetGrey;
     }
   }
 
