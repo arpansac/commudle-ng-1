@@ -156,13 +156,14 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
       }),
     );
   }
-  redirectTo(slug) {
+
+  redirectTo() {
     let pathSegments: string[] = [];
 
     if (this.parentType === 'Kommunity') {
-      pathSegments = ['communities', String(this.parentId), 'newsletters', slug];
+      pathSegments = ['communities', String(this.parentId), 'newsletters', this.pageSlug];
     } else if (this.parentType === 'CommunityGroup') {
-      pathSegments = ['orgs', String(this.parentId), 'newsletters', slug];
+      pathSegments = ['orgs', String(this.parentId), 'newsletters', this.pageSlug];
     }
 
     this.router.navigate(pathSegments);
