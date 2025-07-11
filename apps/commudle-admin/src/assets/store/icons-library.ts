@@ -2,7 +2,7 @@ import { environment } from '@commudle/shared-environments';
 
 const env = environment;
 
-export const staticIcons = {
+export const commudleIcons = {
   hackathons: {
     primary: env.base_url + '/icons/hackathon-icon-primary.svg',
     cadetGrey: env.base_url + '/icons/hackathon-icon-cadet-grey.svg',
@@ -11,7 +11,7 @@ export const staticIcons = {
     white: env.base_url + '/icons/hackathon-icon-white.svg',
   },
 
-  banner: env.base_url + '/icons/add-banner-icon.svg',
+  add_banner_icon: env.base_url + '/icons/add-banner-icon.svg',
 
-  darkModeSun: env.base_url + '/icons/dark-mode-sun-icon.svg',
+  dark_mode_sun: env.base_url + '/icons/dark-mode-sun-icon.svg',
 };
