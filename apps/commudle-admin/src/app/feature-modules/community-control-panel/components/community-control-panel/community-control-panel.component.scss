@@ -210,3 +210,7 @@ a {
 .header-icons-expanded {
   @apply com-justify-between com-items-center;
 }
+
+nb-badge {
+  @apply md:com-top-[10px] com-top-[-8px] #{!important};
+}

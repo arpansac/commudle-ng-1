@@ -174,7 +174,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
       company: judge.company,
       judge_type: judge.judge_type,
     });
-    this.imageUrl = judge.profile_image?.url;
+    this.imageUrl = judge.photo?.url;
 
     this.dialogService.open(dialog, {
       context: { index: index, judge: judge },

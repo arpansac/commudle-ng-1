@@ -1,62 +1,111 @@
-.status {
-  .role-status {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+.hackathon-tem-confirmation-container {
+  @apply com-bg-white com-pb-16;
+}
 
-    nb-icon {
-      font-size: 3.5rem;
+.confirmation-card {
+  @apply md:com-mt-20 com-mt-10 md:com-mx-0 com-mx-3;
+
+  .confirmation-header {
+    @apply com-text-center com-mb-6;
+
+    .check-icon {
+      @apply com-text-6xl com-mb-8;
     }
 
-    p {
-      font-size: 1.5rem;
-      line-height: 1.8rem;
-      margin-left: 1rem;
-      span {
-        font-size: 0.8rem;
+    .title {
+      @apply com-text-3xl com-font-semibold com-leading-10 com-m-0 com-mb-4;
+    }
+
+    .rejected {
+      @apply com-text-red-500;
+    }
+
+    .accepted {
+      @apply com-text-green-700;
+    }
+
+    .sub-heading {
+      @apply com-leading-7 com-text-xl com-font-medium com-text-gray-500 com-my-0;
+    }
+  }
+
+  .profile-card {
+    @apply com-grid com-grid-cols-2;
+
+    .profile-completion-card {
+      @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-pl-3;
+    }
+
+    .profile-preview-card,
+    .profile-completion-card {
+      .card-heading {
+        @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-4;
       }
     }
-    ul {
-      @apply com-flex;
+  }
 
-      li {
-        @apply com-mr-16 com-list-none;
+  .missing-field-card {
+    @apply com-my-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
 
-        a {
-          @apply com-no-underline com-text-black;
-        }
-      }
-    }
+  .card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-6;
+  }
+
+  .details-card-container {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
+
+  .team-name-card {
+    @apply com-mb-6 com-text-gray-500 com-text-base com-font-medium;
+  }
+
+  .leaders-card {
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+  }
+
+  .leader:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
+  }
+
+  .details-card-container,
+  .profile-card,
+  .leaders-card,
+  .profile-card-container {
+    @apply com-py-8;
+  }
+
+  .take-dashboard-button {
+    @apply com-text-Yankees-Blue;
+  }
+
+  .interested-members {
+    @apply com-mb-6;
   }
 }
 
-.details {
-  @apply com-flex com-justify-evenly com-flex-wrap;
+.create-team-title {
+  @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-6;
+}
 
-  .event {
-    display: flex;
-    align-items: center;
-    p {
-      margin: 0;
-    }
+.title-team-card {
+  @apply com-flex com-items-center com-mb-2;
+
+  .icon {
+    @apply com-flex com-items-center com-justify-center com-text-primary-500 com-mr-3 com-w-8 com-h-8;
   }
-
-  .community {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    .logo {
-      width: 50px;
-      overflow: hidden;
-      margin-right: 1rem;
-      img {
-        width: 100%;
-      }
-    }
+  .title-team {
+    @apply com-text-xl com-font-medium com-text-Yankees-Blue;
   }
 }
 
-.hur-form {
-  @apply com-flex com-items-center com-justify-center;
+.description-team {
+  @apply com-text-gray-500 com-text-base com-mb-8;
+}
+
+.cta-link {
+  @apply com-no-underline com-text-base com-text-primary-500 com-font-semibold;
+  .arrow {
+    @apply com-ml-3 com-w-5 com-h-5;
+  }
 }

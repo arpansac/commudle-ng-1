@@ -369,6 +369,13 @@
                 <nb-icon icon="checkmark"></nb-icon>
                 Submit For Approval
               </button> -->
+              <re-captcha
+                #captchaRef
+                [size]="'invisible'"
+                (resolved)="onCaptchaResolved($event)"
+                [siteKey]="environment.recaptcha_site_key_v2"
+              >
+              </re-captcha>
               <button (click)="submitForm(EPublishStatus.published)" nbButton status="primary" type="submit">
                 <nb-icon icon="cloud-upload"></nb-icon>
                 Publish
