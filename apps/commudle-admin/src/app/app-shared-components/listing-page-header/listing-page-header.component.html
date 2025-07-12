@@ -10,9 +10,9 @@
           <p *ngIf="header.sub_heading" class="sub-heading">{{ header.sub_heading }}</p>
           <div *ngIf="richText" [innerHTML]="richText | safe : 'html'" class="inner-html"></div>
         </div>
-        <div class="image-wrapper">
+        <div class="image-wrapper" *ngIf="headerImgUrl">
           <commudle-campaign-assets-display
-            [defaultImage]="imageUrl(header.header_image).url()"
+            [defaultImage]="headerImgUrl"
             [defaultImageUrl]="header.image_link"
             [campaignTypeSlug]="CampaignTypeSlug"
           ></commudle-campaign-assets-display>

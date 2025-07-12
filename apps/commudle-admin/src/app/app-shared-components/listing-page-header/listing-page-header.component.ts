@@ -5,6 +5,7 @@ import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model
 import { SharedComponentsModule } from '@commudle/shared-components';
 import { ECampaignTypeSlug, EDbModels } from '@commudle/shared-models';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-listing-page-header',
@@ -16,10 +17,11 @@ import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 export class ListingPageHeaderComponent implements OnInit {
   @Input() parentType: string;
   header: IListingPageHeader;
+  headerImgUrl: string;
   richText: string;
   CampaignTypeSlug: string;
 
-  constructor(private cmsService: CmsService) {}
+  constructor(private cmsService: CmsService, private seoService: SeoService) {}
 
   ngOnInit(): void {
     this.getHeaderText(this.parentType);
@@ -49,6 +51,7 @@ export class ListingPageHeaderComponent implements OnInit {
   getHeaderText(parentType) {
     this.cmsService.getDataBySlug(parentType).subscribe((data) => {
       this.header = data;
+      this.headerImgUrl = this.imageUrl(this.header.header_image).url();
       this.richText = this.cmsService.getHtmlFromBlock(data);
     });
   }
