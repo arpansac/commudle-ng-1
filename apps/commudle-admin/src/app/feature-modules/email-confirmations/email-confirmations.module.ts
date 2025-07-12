@@ -34,6 +34,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     SharedDirectivesModule,
     SharedPipesModule,
+    FontAwesomeModule,
     // Nebular
     NbIconModule,
     NbCardModule,
