@@ -70,7 +70,6 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   };
   darkMode: boolean;
   isHackathonActive = false;
-  isHackathonHovered = false;
   sidebarExpanded = true;
   ESidebarWidth = ESidebarWidth;
   ESidebarHeading = ESidebarHeading;
@@ -175,21 +174,5 @@ export class CommunityControlPanelComponent implements OnInit, OnDestroy {
     this.gtm.dataLayerPushEvent('click-notification-bell-icon', {
       com_notification_type: this.ENotificationSenderTypes.KOMMUNITY,
     });
-  }
-
-  getHackathonIconImagePath(): string {
-    if (this.isHackathonHovered || this.isHackathonActive) {
-      return commudleIcons.hackathons.primary;
-    } else {
-      return commudleIcons.hackathons.cadetGrey;
-    }
-  }
-
-  onHackathonHover() {
-    this.isHackathonHovered = true;
-  }
-
-  onHackathonLeave() {
-    this.isHackathonHovered = false;
   }
 }

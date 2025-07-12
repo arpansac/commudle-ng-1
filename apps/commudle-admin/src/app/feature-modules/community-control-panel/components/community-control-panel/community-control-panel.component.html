@@ -74,11 +74,9 @@
             [routerLink]="['hackathons']"
             class="action-button com-relative com-flex"
             routerLinkActive="active"
-            (mouseenter)="onHackathonHover()"
-            (mouseleave)="onHackathonLeave()"
           >
             <div class="icon">
-              <img [src]="getHackathonIconImagePath()" alt="Hackathon Icon" />
+              <fa-icon [icon]="icons.faTrophy"></fa-icon>
             </div>
             <span *ngIf="sidebarExpanded" class="heading">Hackathons</span>
           </a>
