@@ -15,6 +15,7 @@ export class NewsletterListComponent implements OnInit, OnDestroy {
   newsletters: IMainNewsletter[] = [];
   subscriptions: Subscription[] = [];
   schemaForNewsletter = [];
+  headerImage;
 
   constructor(
     private publicNewslettersService: PublicNewslettersService,
@@ -24,11 +25,6 @@ export class NewsletterListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.seoService.setTags(
-      'Commudle IDE: Newsletters from the Community',
-      'We publish every month from different activities, events, channels, projects, tutorials and more from the techies, developers & designers around you!',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
     this.getPublishedNewsletters();
   }
 
@@ -41,8 +37,19 @@ export class NewsletterListComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.publicNewslettersService.publicIndex().subscribe((data) => {
         this.newsletters = data.main_newsletters;
+        this.headerImage =
+          this.newsletters[0].header_image?.url || 'https://commudle.com/assets/images/commudle-logo192.png';
+        this.setMeta();
         this.setSchema();
       }),
+    );
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      'Commudle IDE: Newsletters from the Community',
+      'We publish every month from different activities, events, channels, projects, tutorials and more from the techies, developers & designers around you!',
+      this.headerImage,
     );
   }
 

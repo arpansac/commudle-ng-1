@@ -45,7 +45,8 @@ import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-share
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { FeaturedBuildsComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-builds/featured-builds.component';
-
+import { ShowMoreBuildsComponent } from './components/show-more-builds.component';
+import { RecaptchaModule } from 'ng-recaptcha';
 @NgModule({
   declarations: [
     CreateCommunityBuildComponent,
@@ -59,6 +60,7 @@ import { FeaturedBuildsComponent } from 'apps/commudle-admin/src/app/app-shared-
     BuildsTopBuildersComponent,
     ExploreExpertsComponent,
     BuildsComponent,
+    ShowMoreBuildsComponent,
   ],
   exports: [BuildsTopBuildersComponent, ExploreExpertsComponent, CommunityBuildCardComponent],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
@@ -78,6 +80,7 @@ import { FeaturedBuildsComponent } from 'apps/commudle-admin/src/app/app-shared-
     MiniUserProfileModule,
     SharedComponentsModule,
     PublicHomeListEventsModule,
+    RecaptchaModule,
     //Standalone
     FeaturedProjectsCardComponent,
     TopBuildersCardComponent,

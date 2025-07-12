@@ -20,7 +20,7 @@ export interface ILab {
   visits?: number;
   votes_count?: number;
   total_visitors?: number;
-  createdSince?: string;
+  created_since?: string;
   lab_steps_count?: number;
 }
 

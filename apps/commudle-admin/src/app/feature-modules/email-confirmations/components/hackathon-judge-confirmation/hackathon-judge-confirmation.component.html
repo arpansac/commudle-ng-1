@@ -1,73 +1,85 @@
-<div class="page-padding" *ngIf="this.showPageDetails">
-  <div *ngIf="judge && judge.invite_status === EInvitationStatus.ACCEPTED">
-    <nb-card>
-      <nb-card-body>
-        <div class="status">
-          <div class="role-status">
-            <nb-icon icon="person-add" status="success"></nb-icon>
-            <p>
-              <strong>{{ roleName | titlecase }}</strong
-              >! Welcome To Hackathon
-            </p>
-          </div>
-        </div>
-
-        <div class="details">
-          <div *ngIf="hackathon" class="event">
-            <p>
-              <a [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug]">
-                Go To <strong>{{ hackathon.name }}</strong>
-              </a>
-            </p>
-          </div>
-          <div *ngIf="hackathon.community" class="community">
-            <div class="logo">
-              <img
-                alt="{{ hackathon.community.name }}"
-                src="{{ hackathon.community.logo_path }}"
-                title="{{ hackathon.community.name }}"
-              />
+<div class="hackathon-team-confirmation-container">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <commudle-loading-spinner *ngIf="isLoading; else confirmationContainer"></commudle-loading-spinner>
+        <ng-template #confirmationContainer>
+          <div *ngIf="this.showPageDetails" class="confirmation-card">
+            <div class="confirmation-header" *ngIf="judge">
+              <div class="check-icon">{{ judge.invite_status === EInvitationStatus.ACCEPTED ? '🎉' : '❌' }}</div>
+              <div *ngIf="judge.invite_status === EInvitationStatus.ACCEPTED">
+                <h1 class="title">
+                  You’re officially a judge at <span>{{ judge.name }}</span>
+                </h1>
+                <h3 class="sub-heading">
+                  We’re excited to have your expertise onboard. Here's everything you need to prepare.
+                </h3>
+              </div>
+              <div *ngIf="judge.invite_status === EInvitationStatus.REJECTED">
+                <h1 class="title">You have declined the invitation</h1>
+                <h3 class="sub-heading">
+                  If you did this by mistake, please contact the person who sent you the invite
+                </h3>
+              </div>
             </div>
-            <p>
-              <a [routerLink]="['/communities', hackathon.community.slug]">{{ hackathon.community.name }}</a>
-            </p>
-          </div>
 
-          <div *ngIf="hackathon.community_group" class="community">
-            <div class="logo">
-              <img
-                alt="{{ hackathon.community_group.name }}"
-                src="{{ hackathon.community_group.logo }}"
-                title="{{ hackathon.community_group.name }}"
-              />
+            <!-- User profile section -->
+            <div class="profile-card-container">
+              <ng-container *ngIf="currentUser && isProfileCompleted">
+                <div class="profile-card">
+                  <div class="profile-preview-card">
+                    <div class="card-heading">Profile Card Preview</div>
+                    <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+                  </div>
+
+                  <div class="profile-completion-card">
+                    <div class="card-heading">Profile's Progress</div>
+                    <commudle-profile-completion-progress></commudle-profile-completion-progress>
+                  </div>
+                </div>
+
+                <div class="missing-field-card">
+                  <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="currentUser && !isProfileCompleted">
+                <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+                <commudle-userprofile-details
+                  [userProfileDetails]="userProfileDetails"
+                  [username]="currentUser.username"
+                ></commudle-userprofile-details>
+              </ng-container>
             </div>
-            <p>
-              <a [routerLink]="['/orgs', hackathon.community_group.slug]">{{ hackathon.community_group.name }}</a>
-            </p>
-          </div>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </div>
 
-  <div *ngIf="judge && judge.invite_status === EInvitationStatus.REJECTED">
-    <nb-card>
-      <nb-card-body>
-        <div class="status">
-          <div class="role-status">
-            <nb-icon icon="person-delete" status="danger"></nb-icon>&nbsp;
-            <h3>You have declined the invitation</h3>
-            <p class="com-mt-0">If you did this by mistake, please contact the person who sent you the invite</p>
-            <ul>
-              <li><a [routerLink]="['/']">Home Page</a></li>
-              <li><a [routerLink]="['/about']">About</a></li>
-              <li><a [routerLink]="['/jobs']">Jobs</a></li>
-              <li><a [routerLink]="['/communities']">Communities</a></li>
-            </ul>
-            <a></a>
+            <!-- Hackathon judges section -->
+            <div *ngIf="hackathon.judges_count" class="leaders-card">
+              <h2 class="card-heading">Follow Hackathon Judges</h2>
+              <div *ngFor="let user of hackathonJudges" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
+
+            <!-- Community leaders section -->
+            <div *ngIf="communityLeaders?.length" class="leaders-card">
+              <h2 class="card-heading">Follow Community Leaders</h2>
+              <div *ngFor="let user of communityLeaders" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </div>
           </div>
-        </div>
-      </nb-card-body>
-    </nb-card>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>

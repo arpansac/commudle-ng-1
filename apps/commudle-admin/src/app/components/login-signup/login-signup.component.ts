@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, GoogleLoginProvider } from '@commudle/auth';
@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-login-signup',
@@ -21,10 +22,10 @@ import { ReCaptchaV3Service } from 'ng-recaptcha';
 })
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
+  @Input() showCloseButton = false;
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;
-  dialogRef: NbDialogRef<any>;
 
   subscriptions: Subscription[] = [];
 
@@ -32,6 +33,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   consent_marketing = false;
   userFromGoogle;
   token: string;
+  faXmark = faXmark;
 
   private authService: AuthService;
 
@@ -47,6 +49,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     private gtm: GoogleTagManagerService,
     private dialogService: NbDialogService,
     private recaptchaV3Service: ReCaptchaV3Service,
+    @Optional() private dialogRef: NbDialogRef<LoginSignupComponent>,
   ) {
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
@@ -76,13 +79,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.seoService.setTags(
-      'Login or Sign Up',
-      'Enter the world of techies and knowledge, just one step to begin your journey. Login or sign up now!',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
@@ -100,6 +97,12 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
 
   redirect(): void {
     window.location.href = this.redirectUrl ? window.location.origin + this.redirectUrl : window.location.origin || '/';
+  }
+
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   sendVerificationEmail(): void {

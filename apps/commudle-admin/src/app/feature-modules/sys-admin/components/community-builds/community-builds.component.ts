@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
-import { EPublishStatus, ICommunityBuild } from 'apps/shared-models/community-build.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { ToastrService } from '@commudle/shared-services';
+import { SysAdminCommunityBuildService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-community-builds.service';
+import { EPublishStatus, ICommunityBuild } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-community-builds',
+  selector: 'commudle-community-builds',
   templateUrl: './community-builds.component.html',
   styleUrls: ['./community-builds.component.scss'],
 })
@@ -14,29 +14,37 @@ export class CommunityBuildsComponent implements OnInit {
   cBuilds: ICommunityBuild[] = [];
   EPublishStatus = EPublishStatus;
   publishStatuses = Object.keys(EPublishStatus);
+  selectedBuildStatus: EPublishStatus = EPublishStatus.submitted;
   total = 0;
   page = 1;
+  count = 10;
   isLoading = false;
 
-  constructor(private toastLogService: LibToastLogService, private communityBuildsService: CommunityBuildsService) {}
+  constructor(private toastLogService: ToastrService, private communityBuildsService: SysAdminCommunityBuildService) {}
 
   ngOnInit() {
-    this.getAllBuilds();
+    this.getBuilds();
   }
 
-  getAllBuilds() {
+  getBuilds() {
     this.isLoading = true;
-    this.communityBuildsService.getAll(this.page).subscribe((data) => {
-      this.cBuilds = this.cBuilds.concat(data.community_builds);
+    this.communityBuildsService.getAll(this.page, this.count, this.selectedBuildStatus).subscribe((data) => {
+      this.cBuilds = data.values;
       this.total = data.total;
-      this.page += 1;
+      this.page = data.page;
       this.isLoading = false;
     });
   }
 
-  updatePublishStatus(event, communityBuildId) {
-    this.communityBuildsService.updatePublishStatus(communityBuildId, event).subscribe(() => {
+  updatePublishStatus(publishStatus, communityBuildId) {
+    this.communityBuildsService.updatePublishStatus(communityBuildId, publishStatus).subscribe(() => {
       this.toastLogService.successDialog(`Status Updated!`);
     });
+  }
+
+  fetchBuildsByStatus(cbStatus: EPublishStatus) {
+    this.selectedBuildStatus = cbStatus;
+    this.page = 1;
+    this.getBuilds();
   }
 }

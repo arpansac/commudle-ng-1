@@ -1,7 +1,8 @@
 <div class="community-team">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
   <div *ngIf="organizers.length > 0">
     <h6 class="heading">Community Organizers</h6>
-    <div class="organizers">
+    <div class="organizers" *ngIf="!isLoading">
       <div class="user-profile" *ngFor="let org of organizers; let i = index">
         <div class="user-details">
           <app-user-profile-horizontal
@@ -11,7 +12,7 @@
           ></app-user-profile-horizontal>
         </div>
         <div class="actions">
-          <a class="clickable" *ngIf="org.status == EUserRolesUserStatus.INVITED" (click)="resendInvitationMail(org)">
+          <a class="clickable" *ngIf="org.status === EUserRolesUserStatus.INVITED" (click)="resendInvitationMail(org)">
             <small>Resend Invite</small>
           </a>
           <br />

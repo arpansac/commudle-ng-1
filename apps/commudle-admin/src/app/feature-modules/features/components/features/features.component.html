@@ -12,12 +12,12 @@
           [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.features_page_header_background + '\')' }"
         >
           <div class="header-image">
-            <img [src]="staticAssets.features_page_header" />
+            <img [src]="headerImgUrl" />
           </div>
         </div>
         <div *ngIf="isDarkMode" class="background-image">
           <div class="header-image">
-            <img [src]="staticAssets.features_page_header" />
+            <img [src]="headerImgUrl" />
           </div>
         </div>
         <h2 *ngIf="showHeading" class="features-heading">

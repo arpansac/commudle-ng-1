@@ -11,34 +11,40 @@ import {
 } from '@angular/core';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { IEvent } from 'apps/shared-models/event.model';
-import { IEventStatus } from 'apps/shared-models/event_status.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NbDialogService } from '@commudle/theme';
+import { ToastrService } from '@commudle/shared-services';
+import { IEvent, IEventStatus } from '@commudle/shared-models';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-event-status',
+  selector: 'commudle-event-status',
   templateUrl: './event-status.component.html',
   styleUrls: ['./event-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventStatusComponent implements OnInit {
-  @ViewChild('completeStatusConfirmationPopup') completeStatusConfirmationPopup: TemplateRef<any>;
   @Input() event: IEvent;
-  isMobileView = false;
   @Output() updatedEventStatus: EventEmitter<IEventStatus> = new EventEmitter<IEventStatus>();
+  isMobileView = false;
+  eventDataFormCounts = 0;
+  @ViewChild('completeStatusConfirmationPopup') completeStatusConfirmationPopup: TemplateRef<any>;
+  @ViewChild('confirmOpenEventStatusDialogBox') confirmOpenEventStatusDialogBox: TemplateRef<any>;
 
   eventStatuses: string[] = Object.values(EEventStatuses);
 
   constructor(
     private eventsService: EventsService,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: NbDialogService,
+    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.isMobileView = window.innerWidth <= 640;
+    this.getEventDataFormEntityGroups();
   }
 
   openConfirmationPopup(status: string) {
@@ -60,6 +66,33 @@ export class EventStatusComponent implements OnInit {
             this.changeDetectorRef.markForCheck();
           }
         });
+    } else if (status === EEventStatuses.OPEN) {
+      if (this.eventDataFormCounts === 0) {
+        this.dialogService
+          .open(this.confirmOpenEventStatusDialogBox, { context: { status } })
+          .onClose.subscribe((buttonStatus: number) => {
+            if (buttonStatus === 1) {
+              this.updateStatus(status);
+            } else if (buttonStatus === 0) {
+              this.event.event_status.name = previousStatus;
+              this.router.navigate([
+                '/admin',
+                'communities',
+                this.event.kommunity.slug,
+                'event-dashboard',
+                this.event.slug,
+                'registrations',
+              ]);
+              this.changeDetectorRef.markForCheck();
+            } else {
+              this.event.event_status.name = previousStatus;
+              this.changeDetectorRef.markForCheck();
+            }
+          });
+        this.changeDetectorRef.markForCheck();
+      } else {
+        this.updateStatus(status);
+      }
     } else {
       this.updateStatus(status);
     }
@@ -69,6 +102,13 @@ export class EventStatusComponent implements OnInit {
     this.eventsService.updateStatus(this.event.id, status).subscribe((value: IEventStatus) => {
       this.updatedEventStatus.emit(value);
       this.toastLogService.successDialog('Status Updated!');
+      this.changeDetectorRef.markForCheck();
+    });
+  }
+
+  getEventDataFormEntityGroups() {
+    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
+      this.eventDataFormCounts = data.event_data_form_entity_groups.length;
       this.changeDetectorRef.markForCheck();
     });
   }

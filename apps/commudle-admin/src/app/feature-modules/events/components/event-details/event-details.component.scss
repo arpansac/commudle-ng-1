@@ -22,7 +22,7 @@ nb-card {
       @apply com-block com-mt-2;
     }
     .event-details {
-      @apply com-px-0 com-py-4;
+      @apply com-p-0 com-mb-2;
     }
 
     .no-image-path {
@@ -41,10 +41,44 @@ nb-card {
 
 .inner-html {
   word-break: break-word;
+
+  ::ng-deep {
+    p {
+      @apply com-m-0;
+    }
+  }
 }
 
 .next-step-section {
   a {
     @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-no-underline hover:com-text-Yankees-Blue com-ml-3 md:com-ml-0;
+  }
+}
+
+.banner-image-container {
+  @apply com-flex com-items-center com-h-64 com-mb-5;
+}
+
+.event-details-header {
+  @apply com-flex com-items-center com-gap-6 com-mb-4;
+}
+
+.event-details-title {
+  @apply com-flex com-items-center com-m-0 com-text-3xl #{!important};
+}
+
+.event-start-time {
+  @apply com-flex com-items-start com-gap-2 com-m-0 com-mb-4;
+
+  nb-icon {
+    @apply com-m-0 md:com-text-xl com-text-xl com-flex-shrink-0;
+  }
+}
+
+.event-description {
+  @apply com-flex com-items-start com-gap-2 com-m-0;
+
+  nb-icon {
+    @apply com-m-0 md:com-text-xl com-text-xl com-flex-shrink-0;
   }
 }

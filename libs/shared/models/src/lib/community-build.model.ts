@@ -41,7 +41,7 @@ export enum EBuildType {
   // other = 'other'
 }
 
-enum EPublishStatus {
+export enum EPublishStatus {
   draft = 'draft',
   submitted = 'submitted',
   published = 'published',
