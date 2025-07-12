@@ -23,6 +23,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
   @Input() showCloseButton = false;
+  @Input() heading = 'Sign In';
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;
@@ -34,7 +35,6 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   userFromGoogle;
   token: string;
   faXmark = faXmark;
-  currentUrl: string;
 
   private authService: AuthService;
 
@@ -59,8 +59,6 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
         }
       }),
     );
-
-    this.currentUrl = this.activatedRoute.snapshot.url[0]?.path || '';
 
     if (this.libAuthWatchService.getAuthCookie() === null) {
       this.authService = this.injector.get(AuthService);

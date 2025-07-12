@@ -1,6 +1,6 @@
 <nb-card class="login-container">
   <nb-card-header>
-    <h2>{{ currentUrl === 'login' ? 'Welcome Back!' : 'Sign In' }}</h2>
+    <h2>{{ heading }}</h2>
     <button *ngIf="showCloseButton" nbButton ghost (click)="closeDialog()">
       <fa-icon [icon]="faXmark" class="cross-icon"></fa-icon>
     </button>

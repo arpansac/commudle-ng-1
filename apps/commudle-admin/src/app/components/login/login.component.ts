@@ -9,12 +9,14 @@ import { SeoService } from '@commudle/shared-services';
 export class LoginComponent implements OnInit {
   redirectUrl: string;
   currentUrl: string;
+  heading: string;
 
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
     this.redirectUrl = this.activatedRoute.snapshot.queryParams?.redirect || '/';
     this.currentUrl = this.activatedRoute.snapshot.url[0]?.path || '';
+    this.heading = this.currentUrl === 'signup' ? 'Sign In' : 'Welcome Back!';
     this.setMeta();
   }
 
