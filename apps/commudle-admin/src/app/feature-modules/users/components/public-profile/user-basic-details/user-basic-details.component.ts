@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
@@ -30,7 +29,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './user-basic-details.component.html',
   styleUrls: ['./user-basic-details.component.scss'],
 })
-export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
+export class UserBasicDetailsComponent implements OnInit, OnDestroy {
   // this variable is set to true whenever the user has no active menu items
   @Input() noMenuItems = false;
   user: IUser;
@@ -77,11 +76,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
-      if (currentUser) {
-        this.currentUser = currentUser;
-      }
-    });
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
     this.userProfileManagerService.user$.subscribe((data: IUser) => {
       this.user = data;
       this.getUserTags();
@@ -90,13 +85,11 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        filter((event: NavigationEnd) => event.url.includes('basic-details')),
         takeUntil(this.destroy$),
       )
       .subscribe(() => {
-        const currentUrl = this.router.url;
-        if (currentUrl.includes('basic-details')) {
-          this.setMeta();
-        }
+        this.setMeta();
       });
 
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
@@ -105,10 +98,6 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
         this.openEnableHiring();
       }
     }
-  }
-
-  ngOnChanges() {
-    this.userProfileManagerService.getProfile(this.user.username);
   }
 
   ngOnDestroy(): void {
