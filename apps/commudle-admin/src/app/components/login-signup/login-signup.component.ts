@@ -34,6 +34,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   userFromGoogle;
   token: string;
   faXmark = faXmark;
+  currentUrl: string;
 
   private authService: AuthService;
 
@@ -58,6 +59,8 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    this.currentUrl = this.activatedRoute.snapshot.url[0]?.path || '';
 
     if (this.libAuthWatchService.getAuthCookie() === null) {
       this.authService = this.injector.get(AuthService);
