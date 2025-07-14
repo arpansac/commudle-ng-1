@@ -10,6 +10,7 @@
 - ( ) Hotfix
 - ( ) Merge
 - ( ) Revamp
+- ( ) Chore
 
 ## Description
 
