@@ -15,7 +15,7 @@ p {
     @apply com-grid md:com-grid-cols-3 com-grid-cols-1 md:com-gap-6 com-gap-y-6 com-gap-x-0;
 
     .featured-community-card {
-      @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg md:com-w-[276px] com-h-[296px] com-w-full com-flex-shrink-0 com-overflow-hidden;
+      @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-h-[296px] com-w-full com-flex-shrink-0 com-overflow-hidden;
 
       a {
         @apply com-no-underline;
