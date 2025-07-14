@@ -27,6 +27,7 @@ import {
   GoogleTagManagerService,
   PurchaseOrderService,
   RazorpayService,
+  SeoService,
   ToastrService,
 } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -90,6 +91,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private discountCodesService: DiscountCodesService,
     private gtm: GoogleTagManagerService,
+    private seoService: SeoService,
   ) {
     this.contactInfoForm = this.initCheckoutForm();
   }
@@ -104,6 +106,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
     this.openLoadingDialog();
     this.fetchCurrentUser();
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
@@ -118,6 +121,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.closeLoadingDialog();
+    this.seoService.noIndex(false);
   }
 
   private fetchPurchaseOrder(purchaseOrderUuid: string): void {
@@ -434,6 +438,8 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   onProductPriceLoaded(productPrice: IProductPrice): void {
     if (!productPrice) return;
+
+    this.seoService.setTitle(`Checkout | ${productPrice.product_name} - ${productPrice.plan_name} | Commudle`);
 
     this.productPrice = productPrice;
     this.minQuantity = productPrice.min_quantity || 1;
