@@ -9,6 +9,7 @@
 - (X) Feat
 - ( ) Hotfix
 - ( ) Merge
+- ( ) Revamp
 
 ## Description
 
