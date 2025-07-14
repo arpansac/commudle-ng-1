@@ -35,7 +35,7 @@ export class AppUsersService {
 
   fetchProfile(username: string): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.FETCH_PROFILE), { params });
+    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.PROFILE_DETAILS), { params });
   }
 
   updateUserProfile(userProfileData): Observable<IUser> {
