@@ -8,4 +8,5 @@ import { IUser } from '@commudle/shared-models';
 export class InterestedMembersComponent {
   @Input() users: IUser[];
   @Input() totalCount: number;
+  @Input() showHeading = true;
 }

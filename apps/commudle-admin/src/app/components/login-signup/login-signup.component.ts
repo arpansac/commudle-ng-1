@@ -23,6 +23,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;
   @Input() showCloseButton = false;
+  @Input() heading = 'Sign In';
   loginForm: FormGroup;
   isEmailSent = false;
   isLoading = false;

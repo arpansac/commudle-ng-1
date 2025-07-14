@@ -16,17 +16,26 @@
     showBorder: showBorder,
   }"
 >
-  <div class="header" *ngIf="heading || showExpandedButton">
+  <div
+    class="header"
+    *ngIf="heading || showExpandedButton"
+    [ngClass]="{
+      'header-medium': textSize === ESidebarHeading.MEDIUM,
+      'header-large': textSize === ESidebarHeading.XL,
+    }"
+  >
     <h1
       *ngIf="heading"
       class="title"
       (click)="handleSidebarToggle()"
-      [ngClass]="{ 'com-pointer-events-none': !showExpandedButton }"
+      [ngClass]="{
+        'com-pointer-events-none': !showExpandedButton,
+      }"
     >
       {{ heading }}
     </h1>
     <div *ngIf="showExpandedButton" class="toggle" (click)="handleSidebarToggle()">
-      <fa-icon [icon]="expandSidebar || isExpanded ? faCaretLeft : faBars" class="com-cursor-pointer"></fa-icon>
+      <fa-icon [icon]="faRightLeft" class="com-cursor-pointer"></fa-icon>
     </div>
   </div>
   <ng-content></ng-content>

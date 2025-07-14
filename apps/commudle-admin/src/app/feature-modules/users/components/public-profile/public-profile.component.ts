@@ -81,7 +81,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   getUser() {
     this.userProfileManagerService.getProfile(this.activatedRoute.snapshot.params.username);
     this.subscriptions.push(
-      this.usersService.getProfile(this.activatedRoute.snapshot.params.username).subscribe((data) => {
+      this.usersService.fetchProfile(this.activatedRoute.snapshot.params.username).subscribe((data) => {
         this.user = data;
         this.setSchema();
         if (!this.user.profile_completed || this.user.deactivated) {

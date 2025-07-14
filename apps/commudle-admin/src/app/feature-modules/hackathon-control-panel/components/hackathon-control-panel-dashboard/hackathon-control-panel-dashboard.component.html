@@ -30,11 +30,12 @@
 <section class="com-flex">
   <div class="sidebar">
     <commudle-sidebar
-      [isExpanded]="true"
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [forWindow]="false"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
       [eventName]="sidebarEventName"
+      [heading]="'Hackathon Dashboard'"
+      [textSize]="ESidebarHeading.MEDIUM"
     >
       <div class="action-buttons">
         <div
@@ -51,151 +52,143 @@
             </div>
             <div class="heading">Back to Admin Panel</div>
           </a>
-          <div (click)="toggleSidebar()" class="sidebar-expand-icon">
-            <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
-          </div>
         </div>
 
         <div *ngIf="sidebarExpanded" class="status-buttons">
-          <div class="category-heading com-flex com-items-center com-pb-1">
-            Hackathon Status<commudle-help-section [helpDictionaryName]="'hackathon-statuses'"></commudle-help-section>
+          <div class="category-heading">
+            STATUS <commudle-help-section [helpDictionaryName]="'event-status'"></commudle-help-section>
           </div>
           <section>
-            <nb-button-group (valueChange)="updateStatus($event[0])" filled class="border">
-              <button
-                *ngFor="let i of hackathonStatuses"
-                [pressed]="hackathon?.status === i"
-                [value]="i"
-                nbButtonToggle
-                class="md:!com-px-2"
-              >
+            <select class="select-status" (change)="updateStatus($any($event.target).value)">
+              <option *ngFor="let i of hackathonStatuses" [value]="i" [selected]="hackathon.status === i">
                 {{ i | titlecase }}
-              </button>
-            </nb-button-group>
+              </option>
+            </select>
           </section>
         </div>
-        <div class="category" [ngClass]="{ '!com-flex-col-reverse': hackathon?.status === EHackathonStatus.OPEN }">
-          <div>
-            <div *ngIf="sidebarExpanded" class="category-heading">Hackathon Setup</div>
-            <div>
+        <div class="categories">
+          <div
+            class="category-setup-manage"
+            [ngClass]="{ '!com-flex-col-reverse': hackathon?.status === EHackathonStatus.OPEN }"
+          >
+            <div class="category">
+              <div>
+                <div *ngIf="sidebarExpanded" class="category-heading">HACKATHON SETUP</div>
+                <div>
+                  <a
+                    class="action-button"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    [routerLink]="['./']"
+                    routerLinkActive="active"
+                  >
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Basic Information</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['contact']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faLink"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Contact & Social Links</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['dates']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faCalendarDay"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Hackathon's Dates</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['tracks']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faAward"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Tracks & Prizes</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['rounds']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faGamepad"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Rounds</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['registrations']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faRectangleList"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Registration Form</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['sponsors']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faSackDollar"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Sponsors</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['speakers']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faMicrophone"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Judges, Speakers & Mentors</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['faqs']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faCircleQuestion"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">FAQ's</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="category">
+              <div>
+                <div *ngIf="sidebarExpanded" class="category-heading">MANAGE HACKATHON</div>
+                <div>
+                  <a class="action-button" [routerLink]="['applications-dashboard']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faEye"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Applications & Projects</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['updates']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faStar"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Post Updates</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['channels']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faHashtag"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Channels</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['emails']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Communications</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="category">
+            <div class="category-heading" *ngIf="sidebarExpanded">OTHER LINKS</div>
+            <div *ngIf="hackathon && community">
               <a
                 class="action-button"
-                [routerLinkActiveOptions]="{ exact: true }"
-                [routerLink]="['./']"
-                routerLinkActive="active"
+                [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug]"
+                target="_blank"
               >
                 <div class="icon">
-                  <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+                  <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Basic Information</div>
+                <div *ngIf="sidebarExpanded" class="action-button-name">Public Page</div>
               </a>
-              <a class="action-button" [routerLink]="['contact']" routerLinkActive="active">
+              <a class="action-button" [routerLink]="['stats']" target="_blank">
                 <div class="icon">
-                  <fa-icon [icon]="icons.faLink"></fa-icon>
+                  <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Contact & Social Links</div>
-              </a>
-              <a class="action-button" [routerLink]="['dates']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faCalendarDays"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Hackathon's Dates</div>
-              </a>
-              <a class="action-button" [routerLink]="['tracks']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faAward"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Tracks & Prizes</div>
-              </a>
-              <a class="action-button" [routerLink]="['rounds']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faGamepad"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Rounds</div>
-              </a>
-              <a class="action-button" [routerLink]="['registrations']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faRectangleList"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Registration Form</div>
-              </a>
-              <a class="action-button" [routerLink]="['sponsors']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faSackDollar"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Sponsors</div>
-              </a>
-              <a class="action-button" [routerLink]="['speakers']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faMicrophone"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Judges, Speakers & Mentors</div>
-              </a>
-              <a class="action-button" [routerLink]="['faqs']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faCircleQuestion"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">FAQ's</div>
+                <div *ngIf="sidebarExpanded" class="action-button-name">Hackathon Stats</div>
               </a>
             </div>
-          </div>
-          <hr class="divided-line" />
-          <div>
-            <div *ngIf="sidebarExpanded" class="category-heading">Manage Hackathon</div>
-            <div>
-              <!-- <a class="action-button" [routerLink]="['stats']" routerLinkActive="active">
-              <div class="icon">
-                <fa-icon [icon]="icons.faChartPie"></fa-icon>
-              </div>
-              <div class="action-button-name">Stats</div>
-            </a> -->
-              <a class="action-button" [routerLink]="['applications-dashboard']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faEye"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Applications & Projects</div>
-              </a>
-              <a class="action-button" [routerLink]="['updates']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faStar"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Post Updates</div>
-              </a>
-              <a class="action-button" [routerLink]="['channels']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faHashtag"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Channels</div>
-              </a>
-              <a class="action-button" [routerLink]="['emails']" routerLinkActive="active">
-                <div class="icon">
-                  <fa-icon [icon]="icons.faEnvelope"></fa-icon>
-                </div>
-                <div *ngIf="sidebarExpanded" class="action-button-name">Communications</div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <hr class="divided-line" />
-        <div>
-          <div class="category-heading" *ngIf="sidebarExpanded">Other Links</div>
-          <div *ngIf="hackathon && community">
-            <a
-              class="action-button"
-              [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug]"
-              target="_blank"
-            >
-              <div class="icon">
-                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-              </div>
-              <div *ngIf="sidebarExpanded" class="action-button-name">Public Page</div>
-            </a>
-            <a class="stats" [routerLink]="['stats']" target="_blank">
-              <button nbButton status="success">
-                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                &nbsp; Stats
-              </button>
-            </a>
           </div>
         </div>
       </div>

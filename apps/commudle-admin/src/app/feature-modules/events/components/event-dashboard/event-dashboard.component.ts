@@ -5,14 +5,22 @@ import { IEvent, ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import {
-  faUpRightFromSquare,
-  faShareNodes,
   faCircleInfo,
-  faChartLine,
   faArrowLeft,
-  faBars,
+  faPenNib,
+  faCalendarDay,
+  faStar,
+  faHandshakeSimple,
+  faUsers,
+  faSackDollar,
+  faPaperPlane,
+  faArrowUpRightFromSquare,
+  faChartPie,
+  faListCheck,
+  faShare,
+  faExpand,
+  faEnvelopeCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { faClipboard, faEnvelopeOpen, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -21,7 +29,7 @@ import { NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { Subscription } from 'rxjs';
 
@@ -40,18 +48,25 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   icons = {
-    faUpRightFromSquare,
-    faClipboard,
-    faChartLine,
-    faShareNodes,
     faCircleInfo,
     faArrowLeft,
-    faEnvelopeOpen,
-    faEnvelope,
-    faBars,
+    faPenNib,
+    faCalendarDay,
+    faStar,
+    faHandshakeSimple,
+    faUsers,
+    faSackDollar,
+    faPaperPlane,
+    faArrowUpRightFromSquare,
+    faChartPie,
+    faListCheck,
+    faShare,
+    faExpand,
+    faEnvelopeCircleCheck,
   };
 
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'eventDashboard';
   sidebarExpanded = true;
 

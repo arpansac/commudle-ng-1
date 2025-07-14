@@ -51,13 +51,11 @@ export const API_ROUTES = {
 
   // community_builds
   COMMUNITY_BUILDS: {
-    INDEX: 'api/v2/community_builds',
     SHOW: 'api/v2/community_builds/show',
     CREATE: 'api/v2/community_builds',
     UPDATE: 'api/v2/community_builds',
     DELETE: 'api/v2/community_builds',
     UPDATE_TAGS: 'api/v2/community_builds/update_tags',
-    UPDATE_PUBLISH_STATUS: 'api/v2/community_builds/update_publish_status',
     CONFIRM_TEAMMATE_INVITE: 'api/v2/community_builds/confirm_teammate_invite',
     RESEND_TEAMMATE_INVITE: 'api/v2/community_builds/resend_teammate_invite',
     REMOVE_TEAMMATE: 'api/v2/community_builds/remove_teammate',
@@ -68,6 +66,10 @@ export const API_ROUTES = {
       SHOW: 'api/v2/community_builds/public/show',
       TOGGLE_VOTE: 'api/v2/community_builds/public/toggle_vote',
       TOP_BUILDERS: 'api/v2/community_builds/public/top_builders',
+    },
+    SYS_ADMIN: {
+      INDEX: 'api/v2/community_builds/sys_admin',
+      UPDATE_PUBLISH_STATUS: 'api/v2/community_builds/sys_admin/update_publish_status',
     },
   },
 
@@ -501,6 +503,7 @@ export const API_ROUTES = {
 
   USERS: {
     GET_PROFILE: 'api/v2/users',
+    FETCH_PROFILE: 'api/v2/users/fetch_user',
     UPDATE_PROFILE: 'api/v2/users/update_profile',
     CHECK_USERNAME: 'api/v2/users/check_username',
     SET_USERNAME: 'api/v2/users/set_username',

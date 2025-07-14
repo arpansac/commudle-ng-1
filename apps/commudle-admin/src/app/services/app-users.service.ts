@@ -33,6 +33,11 @@ export class AppUsersService {
     return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), { params });
   }
 
+  fetchProfile(username: string): Observable<IUser> {
+    const params = new HttpParams().set('username', username);
+    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.FETCH_PROFILE), { params });
+  }
+
   updateUserProfile(userProfileData): Observable<IUser> {
     return this.http.put<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.UPDATE_PROFILE), userProfileData);
   }

@@ -4,11 +4,11 @@
       <a [routerLink]="['/users', judge.username]">
         <div class="image-name">
           <div class="image">
-            <img [src]="judge.profile_image?.url" [alt]="judge.name" />
+            <img [src]="judge.photo?.i64" [alt]="judge.name" />
           </div>
           <div>
             <div class="name">{{ judge.name }}</div>
-            <div class="username">@{{ judge.username }}</div>
+            <div class="username">&#64;{{ judge.username }}</div>
             <div class="judge-type">
               <app-badge
                 [text]="judge.judge_type | titlecase"
