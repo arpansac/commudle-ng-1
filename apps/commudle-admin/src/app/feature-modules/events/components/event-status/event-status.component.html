@@ -35,3 +35,22 @@
     </nb-card-footer>
   </nb-card>
 </ng-template>
+
+<ng-template #confirmOpenEventStatusDialogBox let-ref="dialogRef" let-data>
+  <nb-card class="confirm-open-event-status-dialog-box">
+    <nb-card-header>
+      <div>Are you sure?</div>
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div>You have not yet created any registration form.</div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button (click)="ref.close(0)" nbButton status="primary">Create Form</button>
+      <button (click)="ref.close(1)" nbButton status="info" outline>Open Anyway</button>
+      <button (click)="ref.close(2)" nbButton status="danger" outline>Don't open</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

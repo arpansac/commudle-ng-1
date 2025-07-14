@@ -13,6 +13,7 @@ type Environment = {
   sentry_dsn: string;
   razorpay_key: string;
   recaptcha_site_key: string;
+  recaptcha_site_key_v2: string;
 };
 
 const environments: { [type: string]: Environment } = {
@@ -32,11 +33,12 @@ const environments: { [type: string]: Environment } = {
     sentry_dsn: 'https://008ea5f833883ac6e933856b26757b7e@o566989.ingest.sentry.io/4506098297405440',
     razorpay_key: 'rzp_test_AQ8emxZcsJoKdl',
     recaptcha_site_key: '6Le6j0krAAAAAM2Pv8W052wTJ9g-cs6si8txa1wj',
+    recaptcha_site_key_v2: '6Lf-73wrAAAAAG4Bjbwit2SKMJ1d2xysl1Yjd_H8',
   },
   test: {
     production: false,
     session_cookie_name: 'cmdle_sess',
-    app_url: 'https://t.commudle.com',
+    app_url: 'https://test.commudle.com',
     base_url: 'https://t.commudle.com',
     action_cable_url: 'https://t.commudle.com/live',
     anycable_url: 'wss://wst.commudle.com/cable',
@@ -49,11 +51,12 @@ const environments: { [type: string]: Environment } = {
     sentry_dsn: 'https://008ea5f833883ac6e933856b26757b7e@o566989.ingest.sentry.io/4506098297405440',
     razorpay_key: 'rzp_test_AQ8emxZcsJoKdl',
     recaptcha_site_key: '6Le6j0krAAAAAM2Pv8W052wTJ9g-cs6si8txa1wj',
+    recaptcha_site_key_v2: '6Lf-73wrAAAAAG4Bjbwit2SKMJ1d2xysl1Yjd_H8',
   },
   staging: {
     production: false,
     session_cookie_name: 'cmdle_sess',
-    app_url: 'https://www.commudle.com',
+    app_url: 'http://localhost:4200',
     base_url: 'https://json.commudle.com',
     action_cable_url: 'https://json.commudle.com/live',
     anycable_url: 'wss://ws.commudle.com/cable',
@@ -66,6 +69,7 @@ const environments: { [type: string]: Environment } = {
     sentry_dsn: 'https://008ea5f833883ac6e933856b26757b7e@o566989.ingest.sentry.io/4506098297405440',
     razorpay_key: 'rzp_live_nqGSJl7Jt6bsZx',
     recaptcha_site_key: '6Le6j0krAAAAAM2Pv8W052wTJ9g-cs6si8txa1wj',
+    recaptcha_site_key_v2: '6Lf-73wrAAAAAG4Bjbwit2SKMJ1d2xysl1Yjd_H8',
   },
   production: {
     production: true,
@@ -83,6 +87,7 @@ const environments: { [type: string]: Environment } = {
     sentry_dsn: 'https://008ea5f833883ac6e933856b26757b7e@o566989.ingest.sentry.io/4506098297405440',
     razorpay_key: 'rzp_live_nqGSJl7Jt6bsZx',
     recaptcha_site_key: '6Le6j0krAAAAAM2Pv8W052wTJ9g-cs6si8txa1wj',
+    recaptcha_site_key_v2: '6Lf-73wrAAAAAG4Bjbwit2SKMJ1d2xysl1Yjd_H8',
   },
 };
 

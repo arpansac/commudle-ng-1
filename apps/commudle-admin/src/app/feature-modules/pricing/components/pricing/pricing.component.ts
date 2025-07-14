@@ -163,11 +163,12 @@ export class PricingComponent implements OnInit, OnDestroy {
       context: {},
     });
 
-    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      if (data) {
+    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if (user) {
         if (productUuid) {
           this.productPriceService.createPurchaseOrder(productUuid).subscribe(
             (response) => {
+              this.gtm.dataLayerPushEvent('community-subscription-po-created', {});
               this.isFullPageLoading = false;
               if (response && response.uuid) {
                 window.location.href = `/checkout/${response.uuid}`;

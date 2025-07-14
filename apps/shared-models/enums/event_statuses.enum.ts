@@ -1,6 +1,6 @@
 export enum EEventStatuses {
-  OPEN = 'open',
   DRAFT = 'draft',
+  OPEN = 'open',
   COMPLETED = 'completed',
   CANCELED = 'canceled',
 }

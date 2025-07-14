@@ -22,6 +22,7 @@
             </ng-container>
           </nb-card-body>
         </nb-card>
+        <commudle-show-more-builds [user]="communityBuild.user" [curBuild]="communityBuild"></commudle-show-more-builds>
         <nb-card class="updates" *ngIf="communityBuild.entity_updates.length > 0">
           <nb-card-header>Updates</nb-card-header>
           <nb-card-body>
@@ -54,6 +55,7 @@
         </nb-card-body>
       </nb-card>
       <app-community-build-details [cBuild]="communityBuild"></app-community-build-details>
+      <commudle-show-more-builds [user]="communityBuild.user" [curBuild]="communityBuild"></commudle-show-more-builds>
     </div>
   </div>
 </div>

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { IEventDataFormEntityGroups } from 'apps/shared-models/event_data_form_entity_groups.model';
-import { IPagination } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',

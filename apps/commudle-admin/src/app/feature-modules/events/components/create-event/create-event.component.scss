@@ -14,12 +14,13 @@
     margin: 1.5rem 0 0 0;
   }
 
-  div[role='group'] {
-    margin: 1rem 0;
+  div[role='group'],
+  div[role='individual'] {
+    @apply com-mb-5;
   }
 
   .event-date-details {
-    margin: 1rem 0 0 0;
+    @apply com-mb-5;
     > div {
       display: flex;
       flex-wrap: wrap;
@@ -49,10 +50,21 @@
 }
 
 .event-type {
+  @apply com-mb-5;
   > div {
-    @apply com-mt-1;
+    @apply com-mt-2;
     > div {
       @apply com-flex com-gap-2 com-items-center;
     }
   }
+}
+
+input,
+editor,
+.tag {
+  @apply com-mt-2 #{!important};
+}
+
+.alert {
+  @apply com-mb-4;
 }

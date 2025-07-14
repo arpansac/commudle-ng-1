@@ -233,9 +233,10 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
   }
 
   confirmDeleteSlot(trackSlot) {
-    this.windowRef = this.windowService.open(this.deleteTrackSlotTemplate, {
-      title: `Delete ${trackSlot.session_title}`,
-      context: { trackSlot },
+    this.dialogRef = this.dialogService.open(this.deleteTrackSlotTemplate, {
+      context: {
+        trackSlot,
+      },
     });
   }
 
@@ -259,7 +260,7 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
       });
     }
-    this.windowRef.close();
+    this.dialogRef.close();
   }
 
   showAddTrackForm() {
@@ -327,9 +328,8 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
   }
 
   confirmDeleteTrack(eventLocationTrack) {
-    this.windowRef = this.windowService.open(this.deleteEventLocationTrackTemplate, {
-      title: `Delete ${eventLocationTrack.name}`,
-      context: { eventLocationTrackId: eventLocationTrack.id },
+    this.dialogRef = this.dialogService.open(this.deleteEventLocationTrackTemplate, {
+      context: { eventLocationTrack },
     });
   }
 
@@ -342,7 +342,7 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
       });
     }
-    this.windowRef.close();
+    this.dialogRef.close();
   }
 
   findLocation() {

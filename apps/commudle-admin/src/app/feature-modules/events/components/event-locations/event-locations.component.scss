@@ -99,3 +99,22 @@
 .event-location-tracks {
   @apply com-m-0 com-py-0 com-px-6;
 }
+
+.confirmation-dialog-box {
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between;
+    .confirmation-heading {
+      @apply com-text-base;
+    }
+  }
+
+  .confirmation-text {
+    @apply com-m-0;
+  }
+}
+
+.delete-buttons {
+  button {
+    @apply com-min-w-16 com-text-center;
+  }
+}
