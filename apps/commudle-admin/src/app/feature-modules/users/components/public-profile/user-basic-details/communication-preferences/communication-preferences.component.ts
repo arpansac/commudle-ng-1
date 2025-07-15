@@ -4,7 +4,7 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
-import { SeoService, AuthService } from '@commudle/shared-services';
+import { AuthService } from '@commudle/shared-services';
 import { IUser } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-communication-preferences',
@@ -25,7 +25,6 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
-    private seoService: SeoService,
     private authWatchService: AuthService,
   ) {
     this.loginForm = this.fb.group({
@@ -36,15 +35,10 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
-    // this.setMeta();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
-  }
-
-  setMeta() {
-    this.seoService.setTitle(`Communication Preferences | Edit Profile | ${this.currentUser.name}`);
   }
 
   updateCommunicationPreferences(): void {

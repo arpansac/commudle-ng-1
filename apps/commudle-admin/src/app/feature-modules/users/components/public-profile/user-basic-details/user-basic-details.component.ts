@@ -19,7 +19,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/lib/lib-error-handler.service';
 import { IUser } from '@commudle/shared-models';
-import { SeoService, AuthService } from '@commudle/shared-services';
+import { AuthService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { filter } from 'rxjs/operators';
@@ -72,7 +72,6 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userProfileManagerService: UserProfileManagerService,
     private errorHandler: LibErrorHandlerService,
-    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
@@ -81,16 +80,6 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy {
       this.user = data;
       this.getUserTags();
     });
-
-    // this.router.events
-    //   .pipe(
-    //     filter((event) => event instanceof NavigationEnd),
-    //     filter((event: NavigationEnd) => event.url.includes('basic-details')),
-    //     takeUntil(this.destroy$),
-    //   )
-    //   .subscribe(() => {
-    //     this.setMeta();
-    //   });
 
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
       this.queryParamIsHiring = true;
@@ -103,10 +92,6 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  setMeta() {
-    this.seoService.setTitle(`Basic Details | Edit Profile | ${this.currentUser.name}`);
   }
 
   openEnableHiring() {
