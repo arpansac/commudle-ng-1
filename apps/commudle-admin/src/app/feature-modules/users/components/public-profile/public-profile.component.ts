@@ -63,14 +63,14 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
       }),
     );
 
-    // this.subscriptions.push(
-    //   this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-    //     const currentUrl = this.router.url;
-    //     if (!currentUrl.includes('p:settings')) {
-    //       this.setMeta();
-    //     }
-    //   }),
-    // );
+    this.subscriptions.push(
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+        const currentUrl = this.router.url;
+        if (!currentUrl.includes('p:settings')) {
+          this.setMeta();
+        }
+      }),
+    );
     this.checkRecapParams();
   }
 
@@ -151,8 +151,6 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   checkRecapParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      console.log(params);
-      console.log(this.activatedRoute.snapshot.params);
       if (params['recap2024']) {
         const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2024';
         this.router.navigate([url]);

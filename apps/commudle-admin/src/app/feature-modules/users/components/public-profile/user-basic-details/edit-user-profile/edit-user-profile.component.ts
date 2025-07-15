@@ -36,6 +36,7 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
       if (currentUser) {
         this.currentUser = currentUser;
+        this.setTitleForActiveRoute(this.router.url);
       }
     });
 
@@ -47,11 +48,6 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
       .subscribe((event: NavigationEnd) => {
         this.setTitleForActiveRoute(event.urlAfterRedirects);
       });
-
-    // this.activatedRoute.firstChild?.url.pipe(takeUntil(this.destroy$)).subscribe(() => {
-    //   // Get the current URL and set title
-    //   this.setTitleForActiveRoute(this.router.url);
-    // });
 
     this.updateProfile();
   }
@@ -96,14 +92,11 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
       this.title = 'Cookie Preferences';
     } else if (url.includes('account-management')) {
       this.title = 'Account Management';
-    } else {
-      this.title = 'Edit Profile';
     }
     this.setMeta();
   }
 
   setMeta() {
-    console.log(`${this.title} set from Edit User Profile`);
     this.seoService.setTitle(`${this.title} | Edit Profile | ${this.currentUser.name}`);
   }
 }
