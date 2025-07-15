@@ -1,6 +1,9 @@
 <commudle-listing-pages-layout>
   <div header>
-    <commudle-listing-page-header [parentType]="'labs'"></commudle-listing-page-header>
+    <commudle-listing-page-header
+      (previewImageEvent)="handlePreviewImage($event)"
+      [parentType]="'labs'"
+    ></commudle-listing-page-header>
   </div>
   <div one-column *ngIf="isMobileView">
     <div class="publish-lab-button">
@@ -10,7 +13,7 @@
       </a>
       <commudle-help-section [helpDictionaryName]="'lab-what'"></commudle-help-section>
     </div>
-    <app-labs-search></app-labs-search>
+    <app-labs-search (titleEvent)="handleTitle($event)"></app-labs-search>
   </div>
   <div main-column *ngIf="!isMobileView">
     <app-labs-search></app-labs-search>

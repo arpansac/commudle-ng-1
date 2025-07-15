@@ -8,6 +8,8 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from '@commudle/shared-environments';
+import { Output, EventEmitter } from '@angular/core';
+
 @Component({
   selector: 'app-labs-search',
   templateUrl: './labs-search.component.html',
@@ -29,6 +31,8 @@ export class LabsSearchComponent implements OnInit {
   count = 10;
   totalSearch = 0;
   seoTitle: string;
+
+  @Output() titleEvent = new EventEmitter<string>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -63,11 +67,7 @@ export class LabsSearchComponent implements OnInit {
       ? `${this.query} - Guided Tutorials by Software Developers & Designers`
       : 'Guided Tutorials by Software Developers & Designers';
 
-    this.seoService.setTags(
-      this.seoTitle,
-      'Labs are guided hands-on tutorials published by software developers. They teach you algorithms, help you create  apps & projects and cover topics including Web, Flutter, Android, iOS, Data Structures, ML & AI.',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.titleEvent.emit(this.seoTitle);
   }
 
   search() {
