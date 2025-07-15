@@ -1,17 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
-import { AuthService } from '@commudle/shared-services';
-import { IUser } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-communication-preferences',
   templateUrl: './communication-preferences.component.html',
   styleUrls: ['./communication-preferences.component.scss'],
 })
-export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
+export class CommunicationPreferencesComponent implements OnInit {
   loginForm: FormGroup;
   showPopup = false;
 
@@ -19,13 +17,10 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
   consent_privacy_tnc = false;
   consent_marketing = false;
 
-  currentUser: IUser;
-
   constructor(
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,
     private dialogService: NbDialogService,
-    private authWatchService: AuthService,
   ) {
     this.loginForm = this.fb.group({
       consent_privacy_tnc: [''],
@@ -33,13 +28,7 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((value) => value.unsubscribe());
-  }
+  ngOnInit(): void {}
 
   updateCommunicationPreferences(): void {
     this.subscriptions.push(

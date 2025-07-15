@@ -9,7 +9,7 @@ import {
   ViewChild,
   Input,
 } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +22,6 @@ import { IUser } from '@commudle/shared-models';
 import { AuthService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-basic-details',
