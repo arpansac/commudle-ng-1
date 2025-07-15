@@ -7,6 +7,7 @@ import { SeoService } from '@commudle/shared-services';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'commudle-communities-list',
@@ -34,6 +35,8 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   newest_communities = true;
   loadingData = false;
   loadingCommunities = false;
+
+  @Output() titleEvent = new EventEmitter<string>();
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -90,12 +93,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
 
   updateSeoTitle() {
     this.seoTitle = this.query ? `${this.query} - Developer Communities` : 'Developer Communities';
-
-    this.seoService.setTags(
-      this.seoTitle,
-      'Discover and join top developer communities on Commudle. Connect with peers, participate in events, hackathons, share knowledge & projects, and advance your career. Start building your network today!',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.titleEvent.emit(this.seoTitle);
   }
 
   getPopularCommunities(): void {
