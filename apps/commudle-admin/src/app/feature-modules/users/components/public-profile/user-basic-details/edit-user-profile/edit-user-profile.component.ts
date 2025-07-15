@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
 import { SeoService, AuthService } from '@commudle/shared-services';
 import { IUser } from '@commudle/shared-models';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
   currentUser: IUser;
+  title: string;
 
   private destroy$ = new Subject<void>();
 
@@ -37,6 +38,20 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
       }
     });
+
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.setTitleForActiveRoute(event.urlAfterRedirects);
+      });
+
+    // this.activatedRoute.firstChild?.url.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    //   // Get the current URL and set title
+    //   this.setTitleForActiveRoute(this.router.url);
+    // });
 
     this.updateProfile();
   }
@@ -65,5 +80,30 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
         this.updateProfileService.setUpdateProfileStatus(false);
       }
     });
+  }
+
+  setTitleForActiveRoute(url: string): void {
+    if (!this.currentUser) {
+      return;
+    }
+    if (url.includes('basic-details')) {
+      this.title = 'Basic Details';
+    } else if (url.includes('email-preferences')) {
+      this.title = 'Email Preferences';
+    } else if (url.includes('communication-preferences')) {
+      this.title = 'Communication Preferences';
+    } else if (url.includes('cookie-preferences')) {
+      this.title = 'Cookie Preferences';
+    } else if (url.includes('account-management')) {
+      this.title = 'Account Management';
+    } else {
+      this.title = 'Edit Profile';
+    }
+    this.setMeta();
+  }
+
+  setMeta() {
+    console.log(`${this.title} set from Edit User Profile`);
+    this.seoService.setTitle(`${this.title} | Edit Profile | ${this.currentUser.name}`);
   }
 }

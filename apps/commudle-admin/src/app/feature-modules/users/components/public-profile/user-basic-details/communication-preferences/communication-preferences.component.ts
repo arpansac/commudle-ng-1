@@ -36,7 +36,7 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(this.authWatchService.currentUser$.subscribe((data) => (this.currentUser = data)));
-    this.setMeta();
+    // this.setMeta();
   }
 
   ngOnDestroy(): void {

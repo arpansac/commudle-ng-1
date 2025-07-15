@@ -82,15 +82,15 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy {
       this.getUserTags();
     });
 
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        filter((event: NavigationEnd) => event.url.includes('basic-details')),
-        takeUntil(this.destroy$),
-      )
-      .subscribe(() => {
-        this.setMeta();
-      });
+    // this.router.events
+    //   .pipe(
+    //     filter((event) => event instanceof NavigationEnd),
+    //     filter((event: NavigationEnd) => event.url.includes('basic-details')),
+    //     takeUntil(this.destroy$),
+    //   )
+    //   .subscribe(() => {
+    //     this.setMeta();
+    //   });
 
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
       this.queryParamIsHiring = true;

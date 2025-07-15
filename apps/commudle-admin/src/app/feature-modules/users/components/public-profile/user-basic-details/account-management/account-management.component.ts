@@ -38,7 +38,7 @@ export class AccountManagementComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
       }
     });
-    this.setMeta();
+    // this.setMeta();
   }
 
   ngOnDestroy(): void {

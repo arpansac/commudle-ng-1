@@ -18,7 +18,7 @@ export class CookiePreferencesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => (this.currentUser = data));
-    this.setMeta();
+    // this.setMeta();
   }
 
   ngOnDestroy(): void {
