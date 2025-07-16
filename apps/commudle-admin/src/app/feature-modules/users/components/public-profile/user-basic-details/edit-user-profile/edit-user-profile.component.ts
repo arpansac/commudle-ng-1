@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { SeoService, AuthService } from '@commudle/shared-services';
+import { IUser } from '@commudle/shared-models';
+import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
   selector: 'app-edit-user-profile',
@@ -12,7 +13,10 @@ import { Subscription } from 'rxjs';
 })
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;
-  subscriptions: Subscription[] = [];
+  currentUser: IUser;
+  title: string;
+
+  private destroy$ = new Subject<void>();
 
   @ViewChild('editProfile', { static: true }) editProfile: TemplateRef<any>;
 
@@ -22,18 +26,39 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private updateProfileService: UpdateProfileService,
     private seoService: SeoService,
+    private authWatchService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.openDialog();
     this.seoService.noIndex(true);
+    this.openDialog();
+
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
+      if (currentUser) {
+        this.currentUser = currentUser;
+        this.setTitleForActiveRoute(this.router.url);
+      }
+    });
+
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.setTitleForActiveRoute(event.urlAfterRedirects);
+      });
+
     this.updateProfile();
   }
 
   ngOnDestroy(): void {
-    this.dialogRef.close();
     this.seoService.noIndex(false);
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openDialog() {
@@ -45,13 +70,33 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
   }
 
   updateProfile() {
-    this.subscriptions.push(
-      this.updateProfileService.updateProfile$.subscribe((value) => {
-        if (value) {
-          this.dialogRef.close();
-          this.updateProfileService.setUpdateProfileStatus(false);
-        }
-      }),
-    );
+    this.updateProfileService.updateProfile$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      if (value) {
+        this.dialogRef.close();
+        this.updateProfileService.setUpdateProfileStatus(false);
+      }
+    });
+  }
+
+  setTitleForActiveRoute(url: string): void {
+    if (!this.currentUser) {
+      return;
+    }
+    if (url.includes('basic-details')) {
+      this.title = 'Basic Details';
+    } else if (url.includes('email-preferences')) {
+      this.title = 'Email Preferences';
+    } else if (url.includes('communication-preferences')) {
+      this.title = 'Communication Preferences';
+    } else if (url.includes('cookie-preferences')) {
+      this.title = 'Cookie Preferences';
+    } else if (url.includes('account-management')) {
+      this.title = 'Account Management';
+    }
+    this.setMeta();
+  }
+
+  setMeta() {
+    this.seoService.setTitle(`${this.title} | Edit Profile | ${this.currentUser.name}`);
   }
 }
