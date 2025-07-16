@@ -23,12 +23,20 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(false);
   }
 
-  handleTitle(title: string) {
-    this.seoTitle = title;
+  handleTitle($event: string) {
+    this.seoTitle = $event;
+    this.trySetMeta();
   }
 
   handlePreviewImage(img: string) {
     this.seoPreviewImage = img;
+    this.trySetMeta();
+  }
+
+  trySetMeta() {
+    if (this.seoTitle && this.seoPreviewImage) {
+      this.setMeta();
+    }
   }
 
   setMeta() {

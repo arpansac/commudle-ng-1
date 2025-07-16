@@ -36,7 +36,7 @@
   </div>
   <div main-column *ngIf="!isMobileView">
     <commudle-communities-featured></commudle-communities-featured>
-    <commudle-communities-list></commudle-communities-list>
+    <commudle-communities-list (titleEvent)="handleTitle($event)"></commudle-communities-list>
   </div>
   <div right-column>
     <div class="publish-community-button">
