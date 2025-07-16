@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UpdateProfileService } from 'apps/commudle-admin/src/app/feature-modules/users/services/update-profile.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import {
@@ -10,8 +10,9 @@ import {
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IUser } from 'apps/shared-models/user.model';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-profile',
@@ -59,6 +60,15 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
           }
           return acc;
         }, {});
+      }),
+    );
+
+    this.subscriptions.push(
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+        const currentUrl = this.router.url;
+        if (!currentUrl.includes('p:settings')) {
+          this.setMeta();
+        }
       }),
     );
     this.checkRecapParams();

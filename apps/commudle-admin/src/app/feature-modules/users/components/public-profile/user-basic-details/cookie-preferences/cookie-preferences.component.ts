@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CookiePreferencesComponent implements OnInit {
   showPopup = false;
-
   constructor() {}
-
   ngOnInit(): void {}
 }
