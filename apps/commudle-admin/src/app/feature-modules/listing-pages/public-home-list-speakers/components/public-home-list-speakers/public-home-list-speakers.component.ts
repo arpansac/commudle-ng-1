@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'commudle-public-home-list-speakers',
@@ -11,12 +14,27 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
   seoPreviewImage: string;
   seoTitle: string;
+  seoDesc =
+    'All the tech speakers from developer communities at one place, from web development, android to ML and AI, find a speaker for your next event or connect with them to learn the latest updates in tech.';
+  routeSubscription: Subscription;
 
-  constructor(private footerService: FooterService, private seoService: SeoService) {}
+  constructor(
+    private footerService: FooterService,
+    private seoService: SeoService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
+
+    this.routeSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.setTitle();
+      });
+    this.setTitle();
   }
 
   ngOnDestroy(): void {
@@ -25,9 +43,47 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   handlePreviewImage(img) {
     this.seoPreviewImage = img;
+    this.trySetMeta();
   }
 
   handleTitle(title) {
     this.seoTitle = title;
+    this.trySetMeta();
+  }
+
+  trySetMeta() {
+    if (this.seoTitle && this.seoPreviewImage) {
+      this.setMeta();
+    }
+  }
+
+  setTitle() {
+    const currentUrl = this.router.url;
+    console.log(currentUrl);
+    if (currentUrl.includes('/cfp')) {
+      this.seoTitle = 'Call for Speakers - Apply to Speak at an Event';
+      this.seoDesc =
+        'Here is a list of all the events which are looking for a speaker for their upcoming event. Apply to show your interest at any of these events';
+    } else if (currentUrl.includes('/speaker-slides')) {
+      this.seoTitle = 'Tech Speaker Content - Slides, CodeLabs, Designs, Tutorials';
+      this.seoDesc =
+        'Find all the talks of speakers from different events at one place on Commudle. It can be slides, tutorials, videos, designs, etc. Learn from the best folks in tech or prepare your next slides by getting inspired';
+    }
+    this.trySetMeta();
+  }
+  setMeta() {
+    this.seoService.setTags(
+      this.seoTitle,
+      this.seoDesc,
+      this.seoPreviewImage ? this.seoPreviewImage : 'https://commudle.com/assets/images/commudle-logo192.png',
+    );
+  }
+
+  onActivate(instance) {
+    if (instance.titleEvent) {
+      instance.titleEvent.subscribe((title: string) => {
+        this.handleTitle(title);
+      });
+    }
   }
 }
