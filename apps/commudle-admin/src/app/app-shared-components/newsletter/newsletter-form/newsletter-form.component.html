@@ -147,16 +147,12 @@
         Save & Send Test Emails
       </button>
       <a
-        *ngIf="parentType === 'Kommunity'"
-        [routerLink]="['/communities', parentId, 'newsletters', pageSlug]"
-        nbButton
-        status="primary"
-      >
-        Preview Newsletter
-      </a>
-      <a
-        *ngIf="parentType === 'CommunityGroup'"
-        [routerLink]="['/orgs', parentId, 'newsletters', pageSlug]"
+        *ngIf="parentType === 'Kommunity' || parentType === 'CommunityGroup'"
+        [routerLink]="
+          parentType === 'Kommunity'
+            ? ['/communities', parentId, 'newsletters', pageSlug]
+            : ['/orgs', parentId, 'newsletters', pageSlug]
+        "
         nbButton
         status="primary"
       >
