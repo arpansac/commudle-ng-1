@@ -146,7 +146,22 @@
       >
         Save & Send Test Emails
       </button>
-      <button nbButton status="primary" (click)="redirectTo()">Preview Newsletter</button>
+      <a
+        *ngIf="parentType === 'Kommunity'"
+        [routerLink]="['/communities', parentId, 'newsletters', pageSlug]"
+        nbButton
+        status="primary"
+      >
+        Preview Newsletter
+      </a>
+      <a
+        *ngIf="parentType === 'CommunityGroup'"
+        [routerLink]="['/orgs', parentId, 'newsletters', pageSlug]"
+        nbButton
+        status="primary"
+      >
+        Preview Newsletter
+      </a>
     </div>
     <div class="back-button" (click)="backPage()">
       <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon> Back to list of newsletter
