@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div class="event-location" *ngIf="event?.event_locations">
+  <div class="event-location" *ngIf="event?.event_locations?.length > 0">
     <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
     <a [href]="event.event_locations[0].map_link">{{ event.event_locations[0].name }}</a>
   </div>
