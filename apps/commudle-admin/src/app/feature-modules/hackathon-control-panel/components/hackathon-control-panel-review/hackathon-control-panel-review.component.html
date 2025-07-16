@@ -4,7 +4,7 @@
       Applications & Projects
       <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
       <a
-        *ngIf="parent.id && hackathon && hackathon.hackathon_response_group"
+        *ngIf="parent && parent.id && hackathon && hackathon.hackathon_response_group"
         target="_blank"
         [routerLink]="[
           '/communities',
