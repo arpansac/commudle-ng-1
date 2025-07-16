@@ -22,15 +22,22 @@ export class LabsComponent implements OnInit, OnDestroy {
   handleTitle(title: string) {
     this.seoTitle = title;
     console.log(this.seoTitle);
-    this.setMeta();
+    this.trySetMeta();
   }
 
   handlePreviewImage(img: string) {
     this.seoPreviewImage = img;
+    this.trySetMeta();
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+  }
+
+  trySetMeta() {
+    if (this.seoTitle && this.seoPreviewImage) {
+      this.setMeta();
+    }
   }
 
   setMeta() {

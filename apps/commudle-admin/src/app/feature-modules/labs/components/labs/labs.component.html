@@ -16,7 +16,7 @@
     <app-labs-search (titleEvent)="handleTitle($event)"></app-labs-search>
   </div>
   <div main-column *ngIf="!isMobileView">
-    <app-labs-search></app-labs-search>
+    <app-labs-search (titleEvent)="handleTitle($event)"></app-labs-search>
   </div>
   <div right-column>
     <div class="publish-lab-button">
