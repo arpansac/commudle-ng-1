@@ -91,9 +91,11 @@
         <div (click)="removeBannerImage()" class="delete-image">
           <button nbButton status="danger" outline size="small">Delete</button>
         </div>
-        <commudle-banner-image
-          [headerImagePath]="imagePreview || newsletterForm.controls['banner_image'].value"
-        ></commudle-banner-image>
+        <div class="banner-image-wrapper">
+          <commudle-banner-image
+            [headerImagePath]="imagePreview || newsletterForm.controls['banner_image'].value"
+          ></commudle-banner-image>
+        </div>
       </div>
     </div>
 
