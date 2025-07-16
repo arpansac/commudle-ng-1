@@ -1,18 +1,12 @@
-// .upcoming {
-//   color: white;
-//   background: #ff4343;
-//   width: fit-content;
-//   padding:2px;
-//   margin: 0;
-//   border-radius: 999px;
-//   font-size: 0.8rem;
-// }
-.badge-pill-red {
-  background-color: #ff4343;
+.upcoming {
   color: white;
-  border-radius: 999px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
+  background: #ff4343;
   width: fit-content;
-  display: inline-block;
+  padding: 3px;
+  margin: 0;
+  // border-radius: 10px;
+  font-size: 0.8rem;
+}
+::ng-deep app-badge p {
+  background-color: #ff4343;
 }
