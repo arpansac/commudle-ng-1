@@ -92,11 +92,11 @@ a {
 }
 
 .router {
-  @apply com-my-4 md:com-mx-4 com-mx-0;
+  @apply com-w-full com-my-2 com-mx-4;
 }
 
 .header-icons {
-  @apply com-flex com-flex-col;
+  @apply com-flex;
 }
 
 .header-icons-non-expanded {
@@ -104,5 +104,5 @@ a {
 }
 
 .header-icons-expanded {
-  @apply com-flex-col com-justify-between com-gap-3;
+  @apply com-justify-between com-gap-3;
 }
