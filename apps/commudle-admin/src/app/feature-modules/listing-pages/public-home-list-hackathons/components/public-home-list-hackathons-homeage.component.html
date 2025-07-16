@@ -1,1 +1,49 @@
-<p>public-home-list-hackathons-homeage works!</p>
+<commudle-listing-pages-layout>
+  <div header>
+    <commudle-listing-page-header [parentType]="'event-listing-page'"></commudle-listing-page-header>
+  </div>
+  <div one-column *ngIf="isMobileView">
+    <div *ngIf="upcomingHackathons.length > 0">
+      <div *ngFor="let upcomingHackathon of upcomingHackathons">
+        <!-- <commudle-hackathon-horizontal-card [hackathon]="upcomingHackathon"></commudle-hackathon-horizontal-card> -->
+      </div>
+    </div>
+    <div class="featured-communities">
+      <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
+    </div>
+    <div class="explore-experts">
+      <commudle-explore-experts></commudle-explore-experts>
+    </div>
+    <div class="tech-sessions">
+      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+    </div>
+    <div ngIf="pastHackathons.length > 0" class="past-hackathons">
+      <div *ngFor="let hackathon of pastHackathons">
+        <commudle-hackathon-medium-card [hackathon]="hackathon"></commudle-hackathon-medium-card>
+      </div>
+    </div>
+  </div>
+  <div main-column *ngIf="!isMobileView">
+    <div *ngIf="upcomingHackathons.length > 0">
+      <div *ngFor="let upcomingHackathon of upcomingHackathons">
+        <!-- <commudle-hackathon-horizontal-card [hackathon]="upcomingHackathon"></commudle-hackathon-horizontal-card> -->
+      </div>
+    </div>
+    <div *ngIf="pastHackathons.length > 0" class="past-hackathons">
+      <div *ngFor="let hackathon of pastHackathons">
+        <commudle-hackathon-medium-card [hackathon]="hackathon"></commudle-hackathon-medium-card>
+      </div>
+    </div>
+  </div>
+  <div right-column class="right-column">
+    <div class="featured-communities">
+      <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
+    </div>
+    <div class="explore-experts">
+      <commudle-explore-experts></commudle-explore-experts>
+    </div>
+    <div class="tech-sessions">
+      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
+    </div>
+  </div>
+</commudle-listing-pages-layout>
