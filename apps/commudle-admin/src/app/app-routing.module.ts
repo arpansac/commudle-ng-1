@@ -51,6 +51,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'hackathons',
+    loadChildren: () =>
+      import('./feature-modules/listing-pages/public-home-list-hackathons/public-home-list-hackathons.module').then(
+        (m) => m.PublicHomeListHackathonsModule,
+      ),
+  },
+  {
     path: 'speakers',
     loadChildren: () =>
       import('./feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module').then(
