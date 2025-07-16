@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-public-home-list-speakers',
@@ -8,8 +9,10 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 })
 export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
+  seoPreviewImage: string;
+  seoTitle: string;
 
-  constructor(private footerService: FooterService) {}
+  constructor(private footerService: FooterService, private seoService: SeoService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
@@ -18,5 +21,13 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+  }
+
+  handlePreviewImage(img) {
+    this.seoPreviewImage = img;
+  }
+
+  handleTitle(title) {
+    this.seoTitle = title;
   }
 }
