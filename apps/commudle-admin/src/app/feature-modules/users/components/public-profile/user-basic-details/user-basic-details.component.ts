@@ -90,7 +90,9 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.userProfileManagerService.getProfile(this.user.username);
+    if (this.user) {
+      this.userProfileManagerService.getProfile(this.user.username);
+    }
   }
 
   ngOnDestroy(): void {
