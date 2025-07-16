@@ -8,6 +8,7 @@ import {
   TemplateRef,
   ViewChild,
   Input,
+  OnChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
@@ -28,7 +29,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
   templateUrl: './user-basic-details.component.html',
   styleUrls: ['./user-basic-details.component.scss'],
 })
-export class UserBasicDetailsComponent implements OnInit, OnDestroy {
+export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   // this variable is set to true whenever the user has no active menu items
   @Input() noMenuItems = false;
   user: IUser;
@@ -91,6 +92,10 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  ngOnChanges() {
+    this.userProfileManagerService.getProfile(this.user.username);
   }
 
   openEnableHiring() {
