@@ -58,13 +58,15 @@
           <div class="category-heading">
             STATUS <commudle-help-section [helpDictionaryName]="'event-status'"></commudle-help-section>
           </div>
+          @if (hackathon) {
           <section>
-            <select class="select-status" (change)="updateStatus($any($event.target).value)">
+            <select class="select-status" (change)="updateStatus($event.target)">
               <option *ngFor="let i of hackathonStatuses" [value]="i" [selected]="hackathon.status === i">
                 {{ i | titlecase }}
               </option>
             </select>
           </section>
+          }
         </div>
         <div class="categories">
           <div
