@@ -16,8 +16,6 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class ListingPageHeaderComponent implements OnInit {
   @Input() parentType: string;
-  @Input() pageTitle: string;
-  @Input() previewImage: string;
   header: IListingPageHeader;
   headerImgUrl: string;
   richText: string;
