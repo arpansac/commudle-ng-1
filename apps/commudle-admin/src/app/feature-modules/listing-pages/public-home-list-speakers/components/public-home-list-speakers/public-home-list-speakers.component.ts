@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'commudle-public-home-list-speakers',
@@ -16,7 +16,8 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   seoTitle: string;
   seoDesc =
     'All the tech speakers from developer communities at one place, from web development, android to ML and AI, find a speaker for your next event or connect with them to learn the latest updates in tech.';
-  routeSubscription: Subscription;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private footerService: FooterService,
@@ -29,8 +30,11 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
 
-    this.routeSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
       .subscribe(() => {
         this.setTitle();
       });
@@ -39,6 +43,8 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   handlePreviewImage(img) {
@@ -81,7 +87,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   onActivate(instance) {
     if (instance.titleEvent) {
-      instance.titleEvent.subscribe((title: string) => {
+      instance.titleEvent.pipe(takeUntil(this.destroy$)).subscribe((title: string) => {
         this.handleTitle(title);
       });
     }
