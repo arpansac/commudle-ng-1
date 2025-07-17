@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunity, IPageInfo } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -43,7 +42,6 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    private seoService: SeoService,
   ) {
     this.options = ['Newest', 'Most Events', 'Most Members'];
     this.searchForm = this.fb.group({
