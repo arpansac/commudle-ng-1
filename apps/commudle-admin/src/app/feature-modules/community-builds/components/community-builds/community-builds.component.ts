@@ -18,6 +18,7 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
+    this.setMeta();
   }
 
   handleTitle(title: string) {

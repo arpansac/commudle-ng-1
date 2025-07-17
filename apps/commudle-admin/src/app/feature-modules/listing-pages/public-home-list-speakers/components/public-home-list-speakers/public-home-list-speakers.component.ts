@@ -39,6 +39,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
         this.setTitle();
       });
     this.setTitle();
+    this.setMeta();
   }
 
   ngOnDestroy(): void {

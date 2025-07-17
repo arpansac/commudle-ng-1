@@ -24,6 +24,7 @@ export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
     this.getBadges();
+    this.setMeta();
   }
 
   ngOnDestroy(): void {
