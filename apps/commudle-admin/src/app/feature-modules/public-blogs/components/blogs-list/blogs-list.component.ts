@@ -218,7 +218,11 @@ export class BlogsListComponent implements OnInit, OnDestroy {
     });
 
     if (loadBlogs) {
-      this.getBlogs();
+      if (this.activeTag === this.defaultTag.value) {
+        this.getBlogs(); // Unfiltered
+      } else {
+        this.getTagFilterBlogs(this.activeTag); // Filtered
+      }
     }
   }
 }
