@@ -2,14 +2,17 @@
   <form [formGroup]="eMailForm">
     <div *ngIf="showEmailFilters" class="filters">
       <div class="filter">
+        <label for="members">Filter Emails By:</label>
         <select name="members" formControlName="members" (change)="toggleEventSpecificEmail($any($event.target).value)">
           <option value="" disabled>Filter Emails</option>
-          <option selected value="{{ EemailTypes.GENERAL_ALL }}">
+          <option selected value="{{ EemailTypes.GENERAL_ALL }}" title="General Email (To All or a Specific Member)">
             General Email (To All or a Specific Member)
             <commudle-help-section [helpDictionaryName]="'community-general-email'"></commudle-help-section>
           </option>
-          <option value="{{ EemailTypes.EVENT_SPEAKER }}">To All Speakers</option>
-          <option value="event">
+          <option value="{{ EemailTypes.EVENT_SPEAKER }}" title="Send email only to speakers of the event">
+            To All Speakers
+          </option>
+          <option value="event" title="Send email to a specific event's participants">
             Event Specific Emails
             <commudle-help-section [helpDictionaryName]="'event-specific-mails'"></commudle-help-section>
           </option>
@@ -17,15 +20,19 @@
       </div>
 
       <div *ngIf="isEventSpecificEmail" class="filters">
-        <select (change)="getEventDataFormEntityGroups($any($event.target).value)" formControlName="event_id">
-          <option value="null" selected disabled>Select Event</option>
-          <option *ngFor="let event of events" [value]="event.id">
-            {{ event.name }}
-          </option>
-        </select>
+        <div class="filter">
+          <label for="form-select">Select Event:</label>
+          <select (change)="getEventDataFormEntityGroups($any($event.target).value)" formControlName="event_id">
+            <option value="null" selected disabled>Select Event</option>
+            <option *ngFor="let event of events" [value]="event.id">
+              {{ event.name }}
+            </option>
+          </select>
+        </div>
 
         <div class="form-mail-type-selection filters">
           <div *ngIf="eventDataFormEntityGroups.length > 0" class="filter">
+            <label for="form-select">Select Form Type:</label>
             <select
               (change)="toggleEventDataFormEntityGroupType($any($event.target).value)"
               formControlName="event_data_form_entity_group_id"
@@ -42,6 +49,7 @@
           </div>
 
           <div *ngIf="selectedEventDataFormEntityGroup || eventSimpleRegistration" class="filter">
+            <label for="form-select">Send Form To:</label>
             <select
               *ngIf="selectedEventDataFormEntityGroup && selectedFormRegistrationType.length > 0"
               (change)="toggleEmailBodyValidation($any($event.target).value)"
