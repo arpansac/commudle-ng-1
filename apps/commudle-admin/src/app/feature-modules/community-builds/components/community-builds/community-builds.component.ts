@@ -45,7 +45,6 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
     }
   }
   setMeta() {
-    console.log(this.seoPreviewImage);
     this.seoService.setTags(
       this.seoTitle,
       this.seoDescription,

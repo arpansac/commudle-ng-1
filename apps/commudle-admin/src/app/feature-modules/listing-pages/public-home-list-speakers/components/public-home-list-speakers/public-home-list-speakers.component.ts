@@ -65,7 +65,6 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   setTitle() {
     const currentUrl = this.router.url;
-    console.log(currentUrl);
     if (currentUrl.includes('/cfp')) {
       this.seoTitle = 'Call for Speakers - Apply to Speak at an Event';
       this.seoDesc =

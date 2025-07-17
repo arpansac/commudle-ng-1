@@ -21,7 +21,6 @@ export class LabsComponent implements OnInit, OnDestroy {
 
   handleTitle(title: string) {
     this.seoTitle = title;
-    console.log(this.seoTitle);
     this.trySetMeta();
   }
 
