@@ -4,7 +4,6 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
-
 @Component({
   selector: 'commudle-communication-preferences',
   templateUrl: './communication-preferences.component.html',
@@ -17,6 +16,7 @@ export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   consent_privacy_tnc = false;
   consent_marketing = false;
+
   constructor(
     private userProfileManagerService: UserProfileManagerService,
     private fb: FormBuilder,

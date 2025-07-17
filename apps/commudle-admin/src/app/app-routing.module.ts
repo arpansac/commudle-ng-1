@@ -298,6 +298,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'error', component: LibErrorHandlerComponent },
   { path: '404', component: Error404PageComponent },
+  { path: '410', component: Error404PageComponent },
   { path: '**', component: Error404PageComponent },
 ];
 

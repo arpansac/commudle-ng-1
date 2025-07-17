@@ -12,7 +12,19 @@ const distFolder = path.join(process.cwd(), 'commudle-admin');
 
 app.use(cookieParser());
 const blacklistedUserAgents = ['AhrefsBot', 'AhrefsSiteAudit'];
-prerender.crawlerUserAgents = prerender.crawlerUserAgents.filter((ua) => !blacklistedUserAgents.includes(ua));
+const whitelistedUserAgents = [
+  'GPTBot',
+  'Claude-User',
+  'Claude-SearchBot',
+  'ClaudeBot',
+  'anthropic-ai',
+  'Claude-Web',
+  'Google‑Extended',
+];
+prerender.crawlerUserAgents = [
+  ...prerender.crawlerUserAgents.filter((ua) => !blacklistedUserAgents.includes(ua)),
+  ...whitelistedUserAgents,
+];
 app.use(prerender.set('prerenderServiceUrl', prerenderUrl).set('forwardHeaders', true));
 
 app.get('*.*', expressStaticGzip(distFolder, { enableBrotli: true, serveStatic: { maxAge: '1y' } }));

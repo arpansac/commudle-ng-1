@@ -38,3 +38,7 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+
+.banner-image-wrapper {
+  @apply com-max-w-full md:com-max-w-[90dvw] com-mx-auto;
+}

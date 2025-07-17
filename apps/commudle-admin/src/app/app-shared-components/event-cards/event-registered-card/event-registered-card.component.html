@@ -5,14 +5,14 @@
   <div class="date-registered-text">
     <div class="event-start-date">
       <fa-icon [icon]="icons.faCalendarDays"></fa-icon>&nbsp;
-      <span>{{ moment(event.start_date).format('MMM DD, YYYY') }}</span>
+      <span>{{ moment(event.start_time).format('MMM DD, YYYY') }}</span>
     </div>
     <div class="registered-text" *ngIf="showRegisteredIcon">
       <fa-icon [icon]="icons.faCircleCheck"></fa-icon>&nbsp;You're Registered
     </div>
   </div>
 
-  <div class="event-location" *ngIf="event?.event_locations">
+  <div class="event-location" *ngIf="event?.event_locations?.length > 0">
     <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
     <a [href]="event.event_locations[0].map_link">{{ event.event_locations[0].name }}</a>
   </div>

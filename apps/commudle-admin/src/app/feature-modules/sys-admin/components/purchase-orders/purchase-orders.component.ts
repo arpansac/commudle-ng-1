@@ -36,7 +36,7 @@ export class PurchaseOrdersComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
 
     this.seoService.setTags(
-      'Admin | Purchase Orders',
+      'Purchase Orders logs | Commudle',
       'List of all purchase orders',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
