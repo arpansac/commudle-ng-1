@@ -14,7 +14,7 @@ export class CommunityBuildsComponent implements OnInit {
   cBuilds: ICommunityBuild[] = [];
   EPublishStatus = EPublishStatus;
   publishStatuses = Object.keys(EPublishStatus);
-  selectedBuildStatus: EPublishStatus = EPublishStatus.submitted;
+  selectedBuildStatus: EPublishStatus = EPublishStatus.published;
   total = 0;
   page = 1;
   count = 10;
