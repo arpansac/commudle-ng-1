@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { IFaq, IProductPrice } from '@commudle/shared-models';
+import { IFaq, IProductPrice, IPurchaseOrder } from '@commudle/shared-models';
 import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faArrowDown, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -167,9 +167,11 @@ export class PricingComponent implements OnInit, OnDestroy {
       if (user) {
         if (productUuid) {
           this.productPriceService.createPurchaseOrder(productUuid).subscribe(
-            (response) => {
+            (response: IPurchaseOrder) => {
               this.gtm.dataLayerPushEvent('community-subscription-po-created', {
                 com_purchase_order: response.uuid,
+                com_purchase_order_quantity: response.quantity,
+                com_purchase_order_subscription_months: response.notes.subscription_months,
               });
               this.isFullPageLoading = false;
               if (response && response.uuid) {
