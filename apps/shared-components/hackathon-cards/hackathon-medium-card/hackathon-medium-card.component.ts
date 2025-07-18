@@ -20,6 +20,7 @@ export class HackathonMediumCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    console.log(this.hackathon);
     if (this.hackathon.total_prize_amount) {
       this.totalPrizesByCurrency = Object.keys(this.hackathon.total_prize_amount).map((currency) => ({
         currency: this.countryDetails.find((detail) => detail.currency === currency),

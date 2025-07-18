@@ -10,8 +10,7 @@
             <commudle-banner-image
               [headerImagePath]="hackathon.banner_image.i320"
               [name]="hackathon.name"
-              [topRightCurve]="false"
-              [bottomRightCurve]="false"
+              [aspectRatio]="'8/3'"
             ></commudle-banner-image>
             <app-badge
               class="hackathon-badge"
@@ -59,19 +58,24 @@
                 ></app-badge>
               </div>
             </div>
-            <p class="time">{{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }}</p>
+            <p class="time">
+              Starts - {{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }} |
+              <span>{{ hackathon.hackathon_location_type | titlecase }}</span>
+            </p>
           </div>
           <div class="badge-register-prize-buttons">
-            <div *ngIf="hackathon.community" class="community-badge">
-              <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
+            <div *ngIf="hackathon.community">
+              <div class="community-badge">
+                <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
+              </div>
             </div>
             <div class="prize-register-btn">
-              <div *ngIf="totalPrizes.length > 0" class="prize-money">
+              <div *ngIf="totalPrizes?.length > 0" class="prize-money">
                 <fa-icon [icon]="faSackDollar"></fa-icon>
                 <span>{{ totalPrizes[0].currency.symbol }}</span>
                 <span>{{ totalPrizes[0].amount }}</span>
               </div>
-              <button nbButton status="info" shape="rectangle" size="medium" outline class="register-button">
+              <button nbButton status="info" shape="semi-round" size="large" outline class="register-button">
                 Register
               </button>
             </div>

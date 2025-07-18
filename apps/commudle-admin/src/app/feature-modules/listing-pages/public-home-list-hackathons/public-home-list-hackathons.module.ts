@@ -8,6 +8,7 @@ import { HackathonHorizontalCardComponent } from 'apps/commudle-admin/src/app/ap
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modules/community-builds/community-builds.module';
 import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-events/public-home-list-events.module';
+import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 
 @NgModule({
   declarations: [PublicHomeListHackathonsHomeageComponent],
@@ -20,6 +21,7 @@ import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-
     CommunityBuildsModule,
     SharedComponentsModule,
     PublicHomeListEventsModule,
+    SkeletonCardsComponent,
   ],
   exports: [PublicHomeListHackathonsHomeageComponent],
 })

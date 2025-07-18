@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IHackathon, IPageInfo } from '@commudle/shared-models';
+import { IHackathon } from 'apps/shared-models/hackathon.model';
+import { IPageInfo } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -12,10 +13,8 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestroy {
   showSpinnerUpcoming = true;
   showSpinnerPast = true;
-  upcomingHackathons = [];
-  pastHackathons = [];
-  // upcomingHackathons: IHackathon[] = [];
-  // pastHackathons: IHackathon[] = [];
+  upcomingHackathons: IHackathon[] = [];
+  pastHackathons: IHackathon[] = [];
   total = 0;
   pageInfo: IPageInfo;
   limit = 20;
@@ -46,6 +45,7 @@ export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestr
         this.upcomingHackathons = this.upcomingHackathons.concat(
           data.page.reduce((acc, value) => [...acc, value.data], []),
         );
+        console.log(this.upcomingHackathons, 'upcoming');
         this.total = data.total;
         this.pageInfo = data.page_info;
         this.showSpinnerUpcoming = false;
