@@ -173,7 +173,7 @@
       <div *ngIf="!isEditing">
         <re-captcha
           #captchaRef
-          [size]="'invisible'"
+          [size]="'normal'"
           (resolved)="onCaptchaResolved($event)"
           [siteKey]="environment.recaptcha_site_key_v2"
         ></re-captcha>

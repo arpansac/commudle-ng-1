@@ -384,20 +384,28 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   createCommunityBuild(publishStatus: EPublishStatus) {
     if (this.isSubmitting) return;
+
     if (!this.recaptchaToken) {
-      this.captchaRef.execute(); // Trigger invisible reCAPTCHA
+      this.isSubmitting = false;
+      this.toastLogService.errorDialog('Please complete the reCAPTCHA before submitting.');
       return;
     }
     this.isSubmitting = true;
-    this.communityBuildsService
-      .create(this.buildFormData(publishStatus), this.parentId, this.parentType)
-      .subscribe((data: ICommunityBuild) => {
+    this.communityBuildsService.create(this.buildFormData(publishStatus), this.parentId, this.parentType).subscribe(
+      (data: ICommunityBuild) => {
         this.cBuild = data;
         this.submitTags();
         if (this.communityBuildUpdateForm.value) {
           this.saveUpdates(this.cBuild);
         }
-      });
+        this.isSubmitting = false;
+      },
+      (error) => {
+        this.isSubmitting = false;
+        this.recaptchaToken = null;
+        this.toastLogService.errorDialog('Submission failed. Please try again.');
+      },
+    );
   }
 
   updateCommunityBuild(publishStatus: EPublishStatus) {
@@ -478,10 +486,6 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   onCaptchaResolved(token: string | null) {
     if (typeof token === 'string' && token.length > 0) {
       this.recaptchaToken = token;
-      // Only call createLab if not already submitting
-      if (!this.isSubmitting) {
-        this.createCommunityBuild(EPublishStatus.published);
-      }
     } else {
       this.recaptchaToken = null;
     }
