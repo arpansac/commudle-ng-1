@@ -13,6 +13,9 @@
           </div>
         </nb-card-header>
         <nb-card-body>
+          @if (isLoading) {
+          <app-loading-spinner></app-loading-spinner>
+          } @else {
           <div *ngFor="let cb of cBuilds" class="community-build">
             <div class="content">
               <p>
@@ -69,6 +72,7 @@
               </div>
             </div>
           </div>
+          }
         </nb-card-body>
         <nb-card-footer
           ><div class="pagination">
