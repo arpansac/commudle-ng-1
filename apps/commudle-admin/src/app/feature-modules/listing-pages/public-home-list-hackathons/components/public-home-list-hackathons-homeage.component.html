@@ -72,7 +72,10 @@
         >
       </h2>
       <div *ngFor="let upcomingHackathon of upcomingHackathons" class="event-horizontal-card" id="upcoming-hackathons">
-        <commudle-hackathon-horizontal-card [hackathon]="upcomingHackathon"></commudle-hackathon-horizontal-card>
+        <commudle-hackathon-horizontal-card
+          [hackathon]="upcomingHackathon"
+          [showHackathonBadge]="false"
+        ></commudle-hackathon-horizontal-card>
       </div>
     </div>
     <div *ngIf="pastHackathons.length > 0 && !showSpinnerPast" class="past-hackathons-container">

@@ -45,7 +45,6 @@ export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestr
         this.upcomingHackathons = this.upcomingHackathons.concat(
           data.page.reduce((acc, value) => [...acc, value.data], []),
         );
-        console.log(this.upcomingHackathons, 'upcoming');
         this.total = data.total;
         this.pageInfo = data.page_info;
         this.showSpinnerUpcoming = false;

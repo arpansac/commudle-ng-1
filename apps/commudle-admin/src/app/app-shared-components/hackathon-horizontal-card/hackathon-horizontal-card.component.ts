@@ -28,6 +28,7 @@ import { IHackathon, ICommunity } from '@commudle/shared-models';
 })
 export class HackathonHorizontalCardComponent implements OnInit {
   @Input() hackathon: IHackathon;
+  @Input() showHackathonBadge = true;
   community: ICommunity;
   moment = moment;
   faSackDollar = faSackDollar;
