@@ -11,7 +11,7 @@ import { NbIconModule } from '@commudle/theme';
 })
 export class BadgeComponent implements OnInit {
   @Input() text;
-  @Input() fontSize;
+  @Input() fontSize; //can be 'small or regular'
   @Input() color = 'com-bg-Bright-Gray';
   @Input() fontColor = 'com-text-tWhite';
   @Input() nbIcon;
