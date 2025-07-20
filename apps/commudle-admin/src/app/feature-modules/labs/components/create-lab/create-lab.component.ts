@@ -5,7 +5,7 @@ import { faFlask } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/services/labs.service';
-import { SeoService } from '@commudle/shared-services';
+import { SeoService, ToastrService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-create-lab',
@@ -28,6 +28,7 @@ export class CreateLabComponent implements OnInit {
     private labsService: LabsService,
     private router: Router,
     private seoService: SeoService,
+    private toasterService: ToastrService,
   ) {
     this.labForm = this.fb.group({
       name: ['', Validators.required],
@@ -41,31 +42,31 @@ export class CreateLabComponent implements OnInit {
   onCaptchaResolved(token: string | null) {
     if (typeof token === 'string' && token.length > 0) {
       this.recaptchaToken = token;
-      this.recaptchaError = null;
-      // Only call createLab if not already submitting
-      if (!this.isSubmitting) {
-        this.createLab();
-      }
     } else {
       this.recaptchaToken = null;
-      this.recaptchaError = 'reCAPTCHA failed. Please try again.';
+      this.toasterService.errorDialog('reCAPTCHA validation failed. Please try again.');
     }
   }
 
   createLab() {
     if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
     if (!this.recaptchaToken) {
-      this.captchaRef.execute(); // Trigger invisible reCAPTCHA
+      this.isSubmitting = false;
+      this.toasterService.errorDialog('Please complete the reCAPTCHA before submitting.');
       return;
     }
-    this.isSubmitting = true;
+
     this.labsService.createLab(this.labForm.get('name').value).subscribe({
       next: (data) => {
         this.isSubmitting = false;
+        this.recaptchaToken = null;
         this.router.navigate(['/labs', data.slug, 'edit']);
       },
       error: (err) => {
         this.isSubmitting = false;
+        this.recaptchaToken = null;
       },
     });
   }

@@ -356,7 +356,14 @@
                 any changes, we'll reach out on your email!
               </p> -->
             </div>
-
+            <br />
+            <re-captcha
+              #captchaRef
+              [size]="'normal'"
+              (resolved)="onCaptchaResolved($event)"
+              [siteKey]="environment.recaptcha_site_key_v2"
+            >
+            </re-captcha>
             <div class="field actions">
               <!-- <button
                 (click)="submitForm(EPublishStatus.submitted)"
@@ -369,13 +376,7 @@
                 <nb-icon icon="checkmark"></nb-icon>
                 Submit For Approval
               </button> -->
-              <re-captcha
-                #captchaRef
-                [size]="'invisible'"
-                (resolved)="onCaptchaResolved($event)"
-                [siteKey]="environment.recaptcha_site_key_v2"
-              >
-              </re-captcha>
+
               <button (click)="submitForm(EPublishStatus.published)" nbButton status="primary" type="submit">
                 <nb-icon icon="cloud-upload"></nb-icon>
                 Publish
