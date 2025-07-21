@@ -13,6 +13,7 @@
         <commudle-alert
           [info]="true"
           [message]="'Team can only access the attendance page (which is applicable only for offline events)'"
+          class="com-block com-mb-5"
         >
         </commudle-alert>
         <form (ngSubmit)="createUserRolesUser()" [formGroup]="userRolesUserForm" class="user-roles-user-form">
@@ -26,7 +27,7 @@
                 nbInput
                 placeholder="Enter Teammate Email"
                 type="email"
-                class="email"
+                class="input-full-width"
               />
             </label>
             <br />
@@ -49,9 +50,10 @@
                 fieldSize="small"
                 formControlName="role_designation"
                 nbInput
-                placeholder="Role Designation"
+                placeholder="Enter Designation"
                 type="text"
                 [nbAutocomplete]="autoComplete"
+                class="input-full-width"
               />
             </label>
             <br />
