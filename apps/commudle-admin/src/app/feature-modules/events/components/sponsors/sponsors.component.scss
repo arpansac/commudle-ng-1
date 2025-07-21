@@ -1,5 +1,5 @@
 .sponsors {
-  @apply com-mx-0 com-my-6;
+  @apply com-mx-0;
   h6 {
     @apply com-m-0 com-flex com-items-center;
   }
@@ -29,7 +29,7 @@
 }
 
 .add-sponsor-container {
-  @apply com-w-full md:com-w-800px com-max-h-[90dvh];
+  @apply com-w-full md:com-w-800px com-max-h-[90dvh] com-mx-0;
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
@@ -51,10 +51,34 @@
       }
     }
     .sponsor-form {
-      .logo {
-        @apply com-mb-4 com-h-28 com-aspect-1;
-        img {
-          @apply com-w-full;
+      .logo-image-uploader-container {
+        @apply com-pt-5 com-flex com-items-center com-justify-center com-flex-col;
+        > span {
+          @apply com-flex com-flex-col com-items-center com-justify-center com-space-y-2;
+        }
+        fa-icon {
+          @apply com-text-7xl com-text-Cadet-Grey;
+        }
+        .label-text {
+          @apply com-text-gray-500 com-text-center com-text-sm com-font-medium;
+        }
+        input[type='file'] {
+          @apply com-hidden;
+        }
+      }
+      .logo-image-uploader-container:hover {
+        .label-text {
+          @apply com-text-gray-400;
+        }
+      }
+
+      .uploaded-logo-container {
+        @apply com-w-full com-flex com-items-center com-justify-center;
+        .uploaded-logo {
+          @apply com-mb-4 com-h-28 com-aspect-1 com-flex com-items-center com-justify-center;
+          img {
+            @apply com-w-full;
+          }
         }
       }
       input {
@@ -68,12 +92,9 @@
       }
       .field {
         @apply com-my-4;
-        .label-text {
-          @apply com-mb-1;
+        label {
+          @apply com-mb-3;
         }
-      }
-      button {
-        @apply com-mt-4;
       }
     }
   }

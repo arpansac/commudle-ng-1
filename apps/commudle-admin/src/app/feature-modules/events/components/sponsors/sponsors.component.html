@@ -1,8 +1,7 @@
 <nb-card class="sponsors">
   <nb-card-header>
     <h6>
-      <nb-icon icon="briefcase-outline"></nb-icon>
-      Sponsors
+      <nb-icon icon="briefcase-outline"></nb-icon> &nbsp; Sponsors
       <commudle-help-section [helpDictionaryName]="'event-sponsors'"></commudle-help-section>
     </h6>
   </nb-card-header>
@@ -78,8 +77,10 @@
         <nb-tab [active]="!loadingExistingSponsors && existingSponsors.length === 0" tabTitle="Add New">
           <form (ngSubmit)="createSponsor()" [formGroup]="sponsorForm" class="sponsor-form">
             <div class="logo">
-              <div *ngIf="uploadedLogoImage" class="uploaded-logo">
-                <img alt="Profile Picture" src="{{ uploadedLogoImage }}" title="Profile Picture" />
+              <div class="uploaded-logo-container">
+                <div *ngIf="uploadedLogoImage" class="uploaded-logo">
+                  <img alt="Profile Picture" src="{{ uploadedLogoImage }}" title="Profile Picture" />
+                </div>
               </div>
 
               <div class="delete-logo-button">
@@ -89,12 +90,10 @@
                 </button>
               </div>
 
-              <label [ngClass]="{ hidden: uploadedLogoImage }" class="clickable">
+              <label *ngIf="!uploadedLogoImage" class="clickable logo-image-uploader-container">
                 <span>
-                  <span>
-                    <nb-icon icon="image-outline"></nb-icon>
-                  </span>
-                  <span> Click to upload a Logo <small>(200x200)</small><span class="required">*</span></span>
+                  <fa-icon [icon]="icons.faImage"></fa-icon>
+                  <span class="label-text"> Click to upload a logo (200x200)</span>
                 </span>
                 <input
                   (change)="displaySelectedLogo($event)"
@@ -108,17 +107,13 @@
             </div>
 
             <div class="field">
-              <label fullWidth>
-                Name <span class="required">*</span>
-                <input formControlName="name" fullWidth nbInput type="text" placeholder="Sponsor's name" />
-              </label>
+              <label> Name <span class="required">*</span> </label>
+              <input formControlName="name" fullWidth nbInput type="text" placeholder="Sponsor's name" />
             </div>
 
             <div class="field">
-              <label fullWidth>
-                Link
-                <input formControlName="link" fullWidth nbInput type="text" placeholder="https://..." />
-              </label>
+              <label> Link </label>
+              <input formControlName="link" fullWidth nbInput type="text" placeholder="https://..." />
             </div>
 
             <button [disabled]="!sponsorForm.valid" nbButton status="primary" fullWidth type="submit">Submit</button>

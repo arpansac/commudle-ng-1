@@ -16,6 +16,7 @@ import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event
 import { Subscription } from 'rxjs';
 import { IEvent, ICommunity } from '@commudle/shared-models';
 import { SeoService, ToastrService } from '@commudle/shared-services';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-sponsors',
@@ -36,6 +37,10 @@ export class SponsorsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   loadingExistingSponsors = false;
+
+  readonly icons = {
+    faImage,
+  };
 
   constructor(
     private fb: FormBuilder,
