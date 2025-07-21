@@ -22,23 +22,17 @@
             />
           </div>
           <div class="details">
-            <p>
-              {{ eventSponsor.sponsor.name }}
+            <p class="name-link">
+              <span>{{ eventSponsor.sponsor.name }}</span>
               <br />
-              <small>
-                <a href="{{ eventSponsor.sponsor.link }}" target="_blank">{{ eventSponsor.sponsor.link }}</a>
-              </small>
+              <a [href]="eventSponsor.sponsor.link" target="_blank">{{ eventSponsor.sponsor.link }}</a>
             </p>
             <a
               (click)="openConfirmDeleteDialog(removeSponsorTemplate, eventSponsor, i)"
               *ngIf="event.editable"
               class="remove-sponsor-button clickable"
             >
-              <p>
-                <small>
-                  <nb-icon icon="close-circle-outline" status="danger"></nb-icon>
-                </small>
-              </p>
+              <nb-icon icon="close-circle-outline" status="danger"></nb-icon>
             </a>
           </div>
         </div>
@@ -134,10 +128,8 @@
     </nb-card-header>
     <nb-card-body> Are you sure you want to remove this sponsor? </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="removeSponsor(data.sponsor_id, data.index); ref.close()">
-        Remove
-      </button>
-      <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
+      <button nbButton status="danger" (click)="removeSponsor(data.sponsor_id, data.index); ref.close()">Remove</button>
+      <button nbButton status="primary" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

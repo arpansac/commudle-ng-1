@@ -5,24 +5,29 @@
   }
 
   .event-sponsors {
-    @apply com-flex com-items-center com-flex-wrap com-gap-4;
+    @apply com-grid com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3 xl:com-grid-cols-4 com-gap-3 com-mt-6;
     .event-sponsor {
-      @apply com-h-20 com-w-64 com-flex com-gap-2 com-items-center com-border com-border-dotted com-border-Bright-Gray com-rounded-md com-relative;
+      @apply com-h-48 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-relative com-overflow-hidden;
       .logo {
-        @apply com-h-20 com-w-20 com-p-1 com-flex com-items-center com-border-0 com-border-r com-border-dotted com-border-Bright-Gray;
+        @apply com-h-28 com-w-full com-bg-gray-100 com-flex com-justify-center com-items-center;
         img {
-          @apply com-w-full;
+          @apply com-w-full com-h-full com-object-contain com-p-2;
         }
       }
-
-      .remove-sponsor-button {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-
-        p {
-          margin: 0;
+      .details {
+        @apply com-p-4;
+        .name-link {
+          @apply com-my-0;
+          span {
+            @apply com-text-Yankees-Blue com-text-base com-font-semibold com-pb-2;
+          }
+          a {
+            @apply com-no-underline;
+          }
         }
+      }
+      .remove-sponsor-button {
+        @apply com-absolute com-top-1 com-right-1;
       }
     }
   }
