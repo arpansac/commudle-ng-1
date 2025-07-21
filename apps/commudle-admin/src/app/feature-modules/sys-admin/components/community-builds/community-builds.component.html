@@ -1,9 +1,21 @@
 <div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
-      <h4>Community Builds</h4>
       <nb-card class="community-builds">
+        <nb-card-header>
+          <h4>Community Builds</h4>
+          <div class="select">
+            <select [ngModel]="selectedBuildStatus" (ngModelChange)="fetchBuildsByStatus($event)">
+              <option *ngFor="let ps of publishStatuses" [value]="EPublishStatus[ps]">
+                {{ EPublishStatus[ps] | titlecase }}
+              </option>
+            </select>
+          </div>
+        </nb-card-header>
         <nb-card-body>
+          @if (isLoading) {
+          <app-loading-spinner></app-loading-spinner>
+          } @else {
           <div *ngFor="let cb of cBuilds" class="community-build">
             <div class="content">
               <p>
@@ -46,18 +58,12 @@
               </div>
             </div>
             <div class="actions">
-              <div class="status-update">
-                <nb-select
-                  (selectedChange)="updatePublishStatus($event, cb.id)"
-                  [selected]="cb.publish_status"
-                  placeholder="Select Status"
-                  size="small"
-                  status="primary"
-                >
-                  <nb-option *ngFor="let ps of publishStatuses" [value]="EPublishStatus[ps]">
+              <div class="select">
+                <select [ngModel]="cb.publish_status" (ngModelChange)="updatePublishStatus($event, cb.id)">
+                  <option *ngFor="let ps of publishStatuses" [value]="EPublishStatus[ps]">
                     {{ EPublishStatus[ps] | titlecase }}
-                  </nb-option>
-                </nb-select>
+                  </option>
+                </select>
               </div>
               <div>
                 <button [routerLink]="['/builds', cb.slug, 'edit']" nbButton outline size="tiny" status="info">
@@ -66,19 +72,21 @@
               </div>
             </div>
           </div>
+          }
         </nb-card-body>
+        <nb-card-footer
+          ><div class="pagination">
+            <app-pagination
+              (goTo)="page = $event; getBuilds()"
+              (next)="page = $event; getBuilds()"
+              (previous)="page = $event; getBuilds()"
+              *ngIf="total > 0"
+              [count]="count"
+              [current]="page"
+              [total]="total"
+            ></app-pagination></div
+        ></nb-card-footer>
       </nb-card>
-      <button
-        (click)="getAllBuilds()"
-        *ngIf="cBuilds.length < total && cBuilds.length > 0"
-        [disabled]="isLoading"
-        class="com-mx-2"
-        nbButton
-        size="small"
-        status="primary"
-      >
-        Load More
-      </button>
     </div>
   </div>
 </div>

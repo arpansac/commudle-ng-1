@@ -30,6 +30,13 @@ export class LibErrorHandlerService {
       case 404:
         this.router.navigate([`/404/?ref=${encodeURIComponent(window.location.href)}`]);
         break;
+      case 410:
+        this.toastrService.show(errorCode, errorMessage, {
+          icon: '',
+          status: 'danger',
+        });
+        this.router.navigate([`/410/?ref=${encodeURIComponent(window.location.href)}`]);
+        break;
       default:
         // show a toastr
         this.toastrService.show(errorCode, errorMessage, {

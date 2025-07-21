@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { SeoService } from 'apps/shared-services/seo.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SeoService } from '@commudle/shared-services';
 import { faRectangleAd } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-community-controls',
+  selector: 'commudle-community-controls',
   templateUrl: './community-controls.component.html',
   styleUrls: ['./community-controls.component.scss'],
 })
-export class CommunityControlsComponent implements OnInit {
+export class CommunityControlsComponent implements OnInit, OnDestroy {
   icons = {
     faRectangleAd,
   };
   constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.seoService.setTitle('Admin: Community Controls');
+    this.seoService.noIndex(true);
+    this.seoService.setTitle('System Administration | Commudle');
+  }
+
+  ngOnDestroy() {
+    this.seoService.noIndex(false);
   }
 }

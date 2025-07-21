@@ -1,4 +1,4 @@
-<div [ngClass]="{ 'align-right': alignFollowToRight, 'com-w-72': horizontalScroll }" class="com-bg-white">
+<div [ngClass]="{ 'align-right': alignFollowToRight, 'com-w-72': horizontalScroll }">
   <a (click)="profileClicked()" [routerLink]="['/users', user.username]" target="_blank">
     <div class="user-profile-large d-flex align-items-start">
       <div>
@@ -39,7 +39,7 @@
             ></app-badge>
           </div>
         </div>
-        <p class="username" title="{{ user.username }}">@{{ user.username | truncatetext : maxUserNameLength }}</p>
+        <p class="username" title="{{ user.username }}">&#64;{{ user.username | truncatetext : maxUserNameLength }}</p>
         <app-hiring-looking-works-tags
           *ngIf="showHiringLookingTags"
           [user]="user"

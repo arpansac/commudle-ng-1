@@ -5,19 +5,22 @@
   }
 }
 
-table {
-  @apply com-border-collapse com-w-full;
+section {
+  @apply com-overflow-x-scroll;
+  table {
+    @apply com-border-collapse com-w-full;
 
-  td,
-  th {
-    @apply com-text-left com-p-2;
-  }
+    td,
+    th {
+      @apply com-text-left com-p-2;
+    }
 
-  tr:nth-child(even) {
-    @apply com-bg-Bright-Gray;
-  }
+    tr:nth-child(even) {
+      @apply com-bg-Bright-Gray;
+    }
 
-  .action-buttons {
-    @apply com-flex com-justify-evenly com-flex-wrap;
+    .action-buttons {
+      @apply com-flex com-justify-evenly com-flex-wrap;
+    }
   }
 }

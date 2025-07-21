@@ -170,6 +170,18 @@
           </nb-tag-list>
         </label>
       </form>
+      <div *ngIf="!isEditing">
+        <br />
+        <re-captcha
+          #captchaRef
+          [size]="'normal'"
+          (resolved)="onCaptchaResolved($event)"
+          [siteKey]="environment.recaptcha_site_key_v2"
+        ></re-captcha>
+        <div *ngIf="recaptchaError" class="recaptcha-error">
+          <commudle-alert [error]="true" [errorMessage]="recaptchaError"></commudle-alert>
+        </div>
+      </div>
     </nb-card-body>
     <nb-card-footer>
       <div class="com-flex com-justify-center">

@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EDbModels, IDiscountCode, EDiscountType } from '@commudle/shared-models';
-import { DiscountCodesService, ToastrService } from '@commudle/shared-services';
+import { DiscountCodesService, SeoService, ToastrService } from '@commudle/shared-services';
 import { faAdd, faEdit, faTrash, faTicket, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { finalize } from 'rxjs/operators';
 import { DiscountCodeFormComponent } from './discount-code-form/discount-code-form.component';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'commudle-sys-admin-discount-code',
   templateUrl: './sys-admin-discount-code.component.html',
   styleUrls: ['./sys-admin-discount-code.component.scss'],
 })
-export class SysAdminDiscountCodeComponent implements OnInit {
+export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
   discountCodes: IDiscountCode[] = [];
   isLoading = false;
   selectedModelType: EDbModels = EDbModels.CAMPAIGN;
@@ -36,10 +36,17 @@ export class SysAdminDiscountCodeComponent implements OnInit {
     private discountCodesService: DiscountCodesService,
     private dialogService: NbDialogService,
     private toastrService: ToastrService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
+    this.seoService.noIndex(true);
+    this.seoService.setTitle('Discount Codes Management | Commudle');
     this.getDiscountCodes();
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.noIndex(false);
   }
 
   onModelTypeChange(): void {

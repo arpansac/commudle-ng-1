@@ -30,7 +30,20 @@
         <div class="com-w-3/4">
           <div>
             <label for="email">Enter Email*</label>
-            <input type="email" id="email" nbInput fullWidth formControlName="email" placeholder="xyz@example.com" />
+            <input
+              type="email"
+              id="email"
+              nbInput
+              fullWidth
+              formControlName="email"
+              placeholder="Enter username or email"
+              [nbAutocomplete]="userAutocomplete"
+            />
+            <nb-autocomplete #userAutocomplete (selectedChange)="selectUser($event)">
+              <nb-option *ngFor="let user of userSuggestions" [value]="user.email">
+                <app-user-profile-mini [user]="user" [designation]="true" [size]="'small'"></app-user-profile-mini>
+              </nb-option>
+            </nb-autocomplete>
           </div>
           <commudle-alert
             [error]="fetchSpeakerJudge.controls['email'].hasError('email')"
@@ -38,10 +51,6 @@
           ></commudle-alert>
         </div>
       </div>
-      <commudle-alert
-        [error]="true"
-        errorMessage="Use real email id's only, if the user is present on Commudle, the details of their profile will be fetched automatically"
-      ></commudle-alert>
       <button
         [disabled]="fetchSpeakerJudge.invalid || speakerRegistrationForm.controls['judge_type'].value === ''"
         class="com-w-max com-mt-3"
@@ -69,7 +78,7 @@
   <nb-card class="speaker-form">
     <nb-card-header class="actions">
       <span> Add New {{ speakerRegistrationForm.controls['judge_type'].value | titlecase }}</span>
-      <button nbButton ghost shape="round" size="tiny" (click)="ref.close(); speakerRegistrationForm.reset()">
+      <button nbButton ghost shape="round" size="tiny" (click)="ref.close(); resetSpeakerRegistrationForm()">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
     </nb-card-header>

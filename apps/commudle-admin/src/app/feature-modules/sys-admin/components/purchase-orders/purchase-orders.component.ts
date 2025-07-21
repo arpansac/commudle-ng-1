@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, IPurchaseOrder } from '@commudle/shared-models';
 import { PurchaseOrderService, SeoService } from '@commudle/shared-services';
-import moment from 'moment';
+import * as moment from 'moment';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
@@ -36,7 +36,7 @@ export class PurchaseOrdersComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
 
     this.seoService.setTags(
-      'Admin | Purchase Orders',
+      'Purchase Orders logs | Commudle',
       'List of all purchase orders',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );

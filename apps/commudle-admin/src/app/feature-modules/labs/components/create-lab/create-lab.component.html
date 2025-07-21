@@ -45,6 +45,14 @@
               </div>
 
               <div class="submit-button">
+                <re-captcha
+                  #captchaRef
+                  [size]="'normal'"
+                  (resolved)="onCaptchaResolved($event)"
+                  [siteKey]="environment.recaptcha_site_key_v2"
+                >
+                </re-captcha>
+                <br />
                 <button nbButton [disabled]="!labForm.valid" type="submit" status="primary">Let's Start</button>
               </div>
             </form>

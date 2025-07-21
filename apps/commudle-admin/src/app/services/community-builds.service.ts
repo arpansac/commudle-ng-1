@@ -14,20 +14,6 @@ import { Observable } from 'rxjs';
 export class CommunityBuildsService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  getAll(page?, count?): Observable<ICommunityBuilds> {
-    let params = new HttpParams();
-    if (page) {
-      params = params.append('page', page);
-    }
-
-    if (count) {
-      params = params.append('count', count);
-    }
-    return this.http.get<ICommunityBuilds>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_BUILDS.INDEX), {
-      params,
-    });
-  }
-
   show(communityBuildId): Observable<ICommunityBuild> {
     const params = new HttpParams().set('community_build_id', communityBuildId);
     return this.http.get<ICommunityBuild>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_BUILDS.SHOW), { params });
@@ -67,13 +53,6 @@ export class CommunityBuildsService {
       { tags },
       { params },
     );
-  }
-
-  updatePublishStatus(communityBuildId, publishStatus): Observable<boolean> {
-    return this.http.put<any>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_BUILDS.UPDATE_PUBLISH_STATUS), {
-      community_build_id: communityBuildId,
-      publish_status: publishStatus,
-    });
   }
 
   destroy(communityBuildId): Observable<ICommunityBuild> {

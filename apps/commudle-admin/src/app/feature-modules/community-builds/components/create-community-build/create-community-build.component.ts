@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -11,24 +11,29 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
-import { IAttachedFile } from 'apps/shared-models/attached-file.model';
-import { EBuildType, EPublishStatus, ICommunityBuild } from 'apps/shared-models/community-build.model';
-import { EUserRolesUserStatus, IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
-import { EDbModels } from '@commudle/shared-models';
+import {
+  EBuildType,
+  EDbModels,
+  EPublishStatus,
+  EUserRolesUserStatus,
+  IAttachedFile,
+  ICommunityBuild,
+  IUser,
+  IUserRolesUser,
+} from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EntityUpdatesService } from 'apps/commudle-admin/src/app/services/entity-updates.service';
-import moment from 'moment';
+import * as moment from 'moment';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { AuthService, SeoService, ToastrService } from '@commudle/shared-services';
+import { environment } from '@commudle/shared-environments';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
-  selector: 'app-create-community-build',
+  selector: 'commudle-create-community-build',
   templateUrl: './create-community-build.component.html',
   styleUrls: ['./create-community-build.component.scss'],
 })
@@ -109,7 +114,13 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   parentId: number;
   parentType: EDbModels;
   hackathonUserResponses: IHackathonUserResponses;
-  currentUser: ICurrentUser;
+  currentUser: IUser;
+
+  environment = environment;
+  recaptchaToken: string | null = null;
+  isSubmitting = false;
+
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
 
   private destroy$ = new Subject<void>();
 
@@ -120,11 +131,11 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private communityBuildsService: CommunityBuildsService,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private gtm: GoogleTagManagerService,
     private hackathonService: HackathonService,
     private entityUpdatesService: EntityUpdatesService,
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
   ) {
     this.communityBuildForm = this.fb.group({
       name: ['', Validators.required],
@@ -165,7 +176,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUser() {
-    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: ICurrentUser) => {
+    this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser: IUser) => {
       this.currentUser = currentUser;
     });
   }
@@ -372,15 +383,29 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   }
 
   createCommunityBuild(publishStatus: EPublishStatus) {
-    this.communityBuildsService
-      .create(this.buildFormData(publishStatus), this.parentId, this.parentType)
-      .subscribe((data: ICommunityBuild) => {
+    if (this.isSubmitting) return;
+
+    if (!this.recaptchaToken) {
+      this.isSubmitting = false;
+      this.toastLogService.errorDialog('Please complete the reCAPTCHA before submitting.');
+      return;
+    }
+    this.isSubmitting = true;
+    this.communityBuildsService.create(this.buildFormData(publishStatus), this.parentId, this.parentType).subscribe(
+      (data: ICommunityBuild) => {
         this.cBuild = data;
         this.submitTags();
         if (this.communityBuildUpdateForm.value) {
           this.saveUpdates(this.cBuild);
         }
-      });
+        this.isSubmitting = false;
+      },
+      (error) => {
+        this.isSubmitting = false;
+        this.recaptchaToken = null;
+        this.toastLogService.errorDialog('Submission failed. Please try again.');
+      },
+    );
   }
 
   updateCommunityBuild(publishStatus: EPublishStatus) {
@@ -456,5 +481,13 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     this.entityUpdatesService.deleteEntityUpdate(updateId).subscribe((data) => {
       if (data) this.hackathonUserResponses.team.entity_updates.splice(index, 1);
     });
+  }
+
+  onCaptchaResolved(token: string | null) {
+    if (typeof token === 'string' && token.length > 0) {
+      this.recaptchaToken = token;
+    } else {
+      this.recaptchaToken = null;
+    }
   }
 }

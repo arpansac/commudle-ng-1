@@ -24,6 +24,8 @@ import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SeoService } from '@commudle/shared-services';
 import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
+import { environment } from '@commudle/shared-environments';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-user-job',
@@ -64,6 +66,11 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
 
   faBriefcase = faBriefcase;
   schemaForJobs = [];
+
+  environment = environment;
+  recaptchaToken: string | null = null;
+  recaptchaError: string | null = null;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
 
   @ViewChild('jobDialog', { static: true }) jobDialog: TemplateRef<any>;
   @ViewChild('deleteJobDialog', { static: true }) deleteJobDialog: TemplateRef<any>;
@@ -190,26 +197,49 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createJob() {
+    if (this.formSubmitLoading) return;
+
+    if (!this.recaptchaToken) {
+      this.formSubmitLoading = false;
+      this.nbToastrService.danger('Please complete the reCAPTCHA.', 'Error');
+      return;
+    }
     this.formSubmitLoading = true;
     // @ts-ignore
     this.jobForm.controls['tags'].setValue(this.tags);
     this.subscriptions.push(
       // @ts-ignore
-      this.jobService.createJob(this.jobForm.value).subscribe((data) => {
-        this.nbToastrService.success('Job created successfully', 'Success');
-        this.onCloseDialog();
-        this.formSubmitLoading = false;
-        this.jobs.unshift(data);
-        this.gtmService('submit-add-job', {
-          com_user_id: this.currentUser.id,
-          com_job_type: data.job_type,
-          com_position: data.position,
-          com_min_experience: data.experience,
-          com_location_type: data.location_type,
-          com_tags: data.tags.toString(),
-        });
-      }),
+      this.jobService.createJob(this.jobForm.value).subscribe(
+        (data) => {
+          this.nbToastrService.success('Job created successfully', 'Success');
+          this.onCloseDialog();
+          this.formSubmitLoading = false;
+          this.jobs.unshift(data);
+          this.gtmService('submit-add-job', {
+            com_user_id: this.currentUser.id,
+            com_job_type: data.job_type,
+            com_position: data.position,
+            com_min_experience: data.experience,
+            com_location_type: data.location_type,
+            com_tags: data.tags.toString(),
+          });
+          this.recaptchaToken = null;
+        },
+        (err) => {
+          this.formSubmitLoading = false;
+          this.recaptchaToken = null;
+          this.recaptchaError = 'Submission failed. Please try again.';
+        },
+      ),
     );
+  }
+
+  onCaptchaResolved(token: string | null) {
+    if (typeof token === 'string' && token.length > 0) {
+      this.recaptchaToken = token;
+    } else {
+      this.recaptchaToken = null;
+    }
   }
 
   restrictComma(event) {
@@ -252,12 +282,15 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onOpenDialog(templateRef: TemplateRef<any>) {
+    this.isEditing = false;
     this.dialogRef = this.nbDialogService.open(templateRef, { closeOnEsc: false, closeOnBackdropClick: false });
     this.initAutocomplete();
     this.gtmService('click-add-job', {
       com_user_id: this.currentUser.id,
       com_profile_complete: this.currentUser.profile_completed,
     });
+    this.recaptchaToken = null;
+    this.recaptchaError = null;
   }
 
   onOpenEditJobDialog(templateRef: TemplateRef<any>, job: IJob) {

@@ -3,13 +3,14 @@ nb-card {
   .updates {
     @apply com-py-2 com-flex com-flex-col;
   }
+  .updates:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  }
 }
 
 .delete-event-update {
   fa-icon {
-    color: red;
-    font-size: 1rem;
-    margin-right: 0.5rem;
+    @apply com-text-red-500 com-text-base com-mr-2;
   }
 }
 
@@ -52,4 +53,11 @@ nb-card {
 
 h6 {
   @apply com-flex com-flex-row com-items-center;
+}
+
+.delete-event-update-dialog {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
 }

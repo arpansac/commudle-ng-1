@@ -4,9 +4,26 @@
 }
 
 .category-heading {
-  @apply com-text-sm com-font-semibold com-my-2  com-flex com-items-center com-pb-1;
+  @apply com-text-Caption com-font-semibold com-mb-2 com-flex com-items-center com-px-3 com-py-1;
+}
+
+.select-status {
+  @apply com-w-full com-p-2 com-rounded com-font-medium com-text-sm com-text-tWhite com-bg-primary-500;
+  option {
+    @apply com-bg-white com-text-black com-font-medium;
+  }
 }
 
 .action-buttons {
   @apply com-flex com-justify-between com-my-0;
+}
+
+.confirm-open-event-status-dialog-box {
+  @apply com-w-full md:com-w-[500px];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  nb-card-footer {
+    @apply com-flex com-justify-around com-flex-wrap;
+  }
 }

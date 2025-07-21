@@ -2,13 +2,13 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
   Input,
+  OnChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
@@ -19,9 +19,8 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/lib/lib-error-handler.service';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { IUser } from 'apps/shared-models/user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
+import { IUser } from '@commudle/shared-models';
+import { AuthService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
@@ -30,13 +29,13 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
   templateUrl: './user-basic-details.component.html',
   styleUrls: ['./user-basic-details.component.scss'],
 })
-export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
+export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   // this variable is set to true whenever the user has no active menu items
   @Input() noMenuItems = false;
   user: IUser;
   @Output() updateProfile: EventEmitter<any> = new EventEmitter<any>();
 
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   faExclamationTriangle = faExclamationTriangle;
   faPenToSquare = faPenToSquare;
   staticAssets = staticAssets;
@@ -64,7 +63,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authWatchService: LibAuthwatchService,
+    private authWatchService: AuthService,
     private dialogService: NbDialogService,
     private appUsersService: AppUsersService,
     private userChatsService: UserChatsService,
@@ -81,6 +80,7 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
       this.user = data;
       this.getUserTags();
     });
+
     if (this.route.snapshot.queryParams['hiring'] === 'true' && this.user) {
       this.queryParamIsHiring = true;
       if (!this.user.is_employer) {
@@ -90,7 +90,9 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.userProfileManagerService.getProfile(this.user.username);
+    if (this.user) {
+      this.userProfileManagerService.getProfile(this.user.username);
+    }
   }
 
   ngOnDestroy(): void {
@@ -107,7 +109,6 @@ export class UserBasicDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
   getUserTags() {
     this.tags = [];
-
     // Get already available tags of the user
     if (this.user) {
       this.user.tags.forEach((tag) => this.tags.push(tag.name));

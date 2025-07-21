@@ -2,20 +2,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
+  faRightLeft,
   faUsers,
-  faBuilding,
+  faUserGroup,
+  faPen,
+  faScroll,
+  faHouse,
   faCalendar,
-  faPenToSquare,
-  faPoll,
-  faFileLines,
   faHashtag,
   faMessage,
-  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ICommunityGroup } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
-import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
@@ -32,17 +32,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //font-awesome
   icons = {
-    faCalendar,
+    faRightLeft,
     faUsers,
-    faPenToSquare,
-    faBuilding,
-    faPoll,
-    faFileLines,
+    faUserGroup,
+    faPen,
+    faScroll,
+    faHouse,
+    faCalendar,
     faHashtag,
     faMessage,
-    faBars,
   };
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'communityGroup';
 
   constructor(

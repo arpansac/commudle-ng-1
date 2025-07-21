@@ -4,23 +4,12 @@
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
       [eventName]="sidebarEventName"
       [forWindow]="false"
-      [showExpandedButton]="false"
+      [showExpandedButton]="true"
+      [textSize]="ESidebarHeading.MEDIUM"
+      [heading]="communityGroup.name"
     >
       <div class="action-buttons">
-        <div class="header">
-          <p *ngIf="sidebarExpanded" class="community-name">{{ communityGroup.name }}</p>
-          <div
-            (click)="toggleSidebar()"
-            class="sidebar-expand-icon"
-            [ngClass]="sidebarExpanded ? 'expanded-sidebar' : 'collapsed-sidebar'"
-          >
-            <fa-icon class="icon" [icon]="icons.faBars"></fa-icon>
-          </div>
-        </div>
         <div class="category">
-          <!-- <div class="category-heading">
-            <span>Event Setup</span>
-          </div> -->
           <a
             class="action-button"
             [routerLink]="['./']"
@@ -40,25 +29,25 @@
           </a>
           <a class="action-button" [routerLink]="['admin-team']" [routerLinkActive]="'active'">
             <div class="icon">
-              <fa-icon [icon]="icons.faBuilding"></fa-icon>
+              <fa-icon [icon]="icons.faUserGroup"></fa-icon>
             </div>
             <div *ngIf="sidebarExpanded" class="heading">Admin Team</div>
           </a>
           <a class="action-button" [routerLink]="['edit']" [routerLinkActive]="'active'">
             <div class="icon">
-              <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
+              <fa-icon [icon]="icons.faPen"></fa-icon>
             </div>
             <div *ngIf="sidebarExpanded" class="heading">Edit Details</div>
           </a>
           <a class="action-button" [routerLink]="['surveys']" [routerLinkActive]="'active'">
             <div class="icon">
-              <fa-icon [icon]="icons.faPoll"></fa-icon>
+              <fa-icon [icon]="icons.faScroll"></fa-icon>
             </div>
             <div *ngIf="sidebarExpanded" class="heading">Surveys</div>
           </a>
           <a class="action-button" [routerLink]="['pages']" [routerLinkActive]="'active'">
             <div class="icon">
-              <fa-icon [icon]="icons.faFileLines"></fa-icon>
+              <fa-icon [icon]="icons.faHouse"></fa-icon>
             </div>
             <div *ngIf="sidebarExpanded" class="heading">Pages</div>
           </a>
@@ -72,7 +61,7 @@
             <div class="icon">
               <fa-icon [icon]="icons.faMessage"></fa-icon>
             </div>
-            <div *ngIf="sidebarExpanded" class="heading">forums</div>
+            <div *ngIf="sidebarExpanded" class="heading">Forums</div>
           </a>
         </div>
       </div>

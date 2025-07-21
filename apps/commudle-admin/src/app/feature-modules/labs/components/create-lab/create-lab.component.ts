@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faFlask } from '@fortawesome/free-solid-svg-icons';
-import { SeoService } from 'apps/shared-services/seo.service';
-import { LabsService } from '../../services/labs.service';
+import { environment } from '@commudle/shared-environments';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/services/labs.service';
+import { SeoService, ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-create-lab',
+  selector: 'commudle-create-lab',
   templateUrl: './create-lab.component.html',
   styleUrls: ['./create-lab.component.scss'],
 })
@@ -14,12 +16,19 @@ export class CreateLabComponent implements OnInit {
   faFlask = faFlask;
 
   labForm;
+  environment = environment;
+  recaptchaToken: string | null = null;
+  recaptchaError: string | null = null;
+  isSubmitting = false;
+
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
 
   constructor(
     private fb: FormBuilder,
     private labsService: LabsService,
     private router: Router,
     private seoService: SeoService,
+    private toasterService: ToastrService,
   ) {
     this.labForm = this.fb.group({
       name: ['', Validators.required],
@@ -30,9 +39,35 @@ export class CreateLabComponent implements OnInit {
     this.setMeta();
   }
 
+  onCaptchaResolved(token: string | null) {
+    if (typeof token === 'string' && token.length > 0) {
+      this.recaptchaToken = token;
+    } else {
+      this.recaptchaToken = null;
+      this.toasterService.errorDialog('reCAPTCHA validation failed. Please try again.');
+    }
+  }
+
   createLab() {
-    this.labsService.createLab(this.labForm.get('name').value).subscribe((data) => {
-      this.router.navigate(['/labs', data.slug, 'edit']);
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+
+    if (!this.recaptchaToken) {
+      this.isSubmitting = false;
+      this.toasterService.errorDialog('Please complete the reCAPTCHA before submitting.');
+      return;
+    }
+
+    this.labsService.createLab(this.labForm.get('name').value).subscribe({
+      next: (data) => {
+        this.isSubmitting = false;
+        this.recaptchaToken = null;
+        this.router.navigate(['/labs', data.slug, 'edit']);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.recaptchaToken = null;
+      },
     });
   }
 

@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBars, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ESidebarPosition, ESidebarWidth } from './enum/sidebar.enum';
+import { ESidebarPosition, ESidebarWidth, ESidebarHeading } from './enum/sidebar.enum';
 
 @Component({
   selector: 'commudle-sidebar',
@@ -26,9 +26,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() eventName: string;
   @Input() showBorder = false;
+  // text-size correspinding to the propery => medium - base, XL -xl
+  @Input() textSize: ESidebarHeading = ESidebarHeading.XL;
 
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
+  ESidebarHeading = ESidebarHeading;
   hideFullSidebar = false;
   expandSidebar = false;
 
@@ -36,8 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private documentClickListener?: (event: MouseEvent) => void;
 
   //font-awesome icons
-  faCaretLeft = faCaretLeft;
-  faBars = faBars;
+  faRightLeft = faRightLeft;
 
   constructor(private sidebarService: SidebarService) {}
 
