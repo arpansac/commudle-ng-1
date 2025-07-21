@@ -29,16 +29,16 @@
 }
 
 .add-sponsor-container {
-  @apply com-w-full md:com-w-[500px] com-max-h-[90dvh];
+  @apply com-w-full md:com-w-800px com-max-h-[90dvh];
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }
   nb-card-body {
     @apply com-p-0;
     .existing-sponsors {
-      @apply com-grid com-grid-cols-2 md:com-grid-cols-3 com-gap-3;
+      @apply com-grid com-grid-cols-2 md:com-grid-cols-3 lg:com-grid-cols-4 com-gap-3;
       .sponsor-card {
-        @apply com-h-28 com-m-0 com-cursor-pointer;
+        @apply com-h-36 com-m-0 com-cursor-pointer;
         .sponsor-logo {
           @apply com-h-4/5 com-p-4 com-flex com-items-center com-bg-gray-100 com-overflow-hidden com-rounded-tl-10 com-rounded-tr-10;
           img {
@@ -46,13 +46,13 @@
           }
         }
         .sponsor-name {
-          @apply com-text-center com-line-clamp-1;
+          @apply com-text-center com-line-clamp-1 com-text-xs com-font-semibold com-content-center com-text-Yankees-Blue com-h-1/5;
         }
       }
     }
     .sponsor-form {
       .logo {
-        @apply com-mb-4;
+        @apply com-mb-4 com-h-28 com-aspect-1;
         img {
           @apply com-w-full;
         }
