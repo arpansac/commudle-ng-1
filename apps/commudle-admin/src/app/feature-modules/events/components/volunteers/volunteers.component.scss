@@ -34,11 +34,23 @@
 }
 
 h6 {
-  @apply com-m-0 com-flex com-items-center;
+  @apply com-font-bold com-text-[18px] com-leading-7 com-h-7;
 }
 
-p {
-  margin: 0;
+// p {
+//   @apply com-rounded-lg com-h-8 com-p-2 com-border-[1px] com-border-solid com-border-blue-500 com-bg-blue-500/[0.105];
+// }
+small {
+  display: flex;
+  height: 16px;
+  color: #3366ff;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+}
+.info {
+  height: 14px;
+  width: 14px;
 }
 
 table {
@@ -52,4 +64,13 @@ th {
 
 nb-option {
   @apply com-bg-white;
+}
+nb-card-body {
+  @apply com-h-[380px] com-border-[1px] com-rounded-[10px];
+}
+.star {
+  @apply com-text-[#FF3D71];
+}
+.email {
+  @apply com-h-[40px] com-rounded-lg com-border-[1px] com-py-1 com-px-1 com-w-[1092px];
 }

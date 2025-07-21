@@ -1,24 +1,33 @@
 <nb-card class="volunteers">
-  <nb-card-header>
+  <!-- <nb-card-header>
     <h6>
       <nb-icon icon="headphones-outline"></nb-icon>
       Team
       <commudle-help-section [helpDictionaryName]="'event-volunteer'"></commudle-help-section>
     </h6>
-  </nb-card-header>
+  </nb-card-header> -->
   <nb-card-body>
     <div>
       <div *ngIf="event.editable" class="com-mb-6">
         <h6>Add a Teammate</h6>
-        <p>
-          <small> *Team can only access the attendance page (which is applicable only for offline events) </small>
-        </p>
+        <commudle-alert
+          [info]="true"
+          [message]="'Team can only access the attendance page (which is applicable only for offline events)'"
+        >
+        </commudle-alert>
         <form (ngSubmit)="createUserRolesUser()" [formGroup]="userRolesUserForm" class="user-roles-user-form">
           <div>
             <label>
-              Email*
+              Enter Email <span class="star">*</span>
               <br />
-              <input fieldSize="small" formControlName="email" nbInput placeholder="Google/Gmail Email" type="email" />
+              <input
+                fieldSize="small"
+                formControlName="email"
+                nbInput
+                placeholder="Enter Teammate Email"
+                type="email"
+                class="email"
+              />
             </label>
             <br />
             <span
@@ -34,7 +43,7 @@
 
           <div class="designation">
             <label>
-              Designation*
+              Designation <span class="star">*</span>
               <br />
               <input
                 fieldSize="small"
