@@ -33,6 +33,8 @@ export class UserDetailsCheckboxFormComponent implements OnInit, OnChanges {
       github: false,
       facebook: false,
       tshirt_size: false,
+      experience_level: false,
+      user_domain: false,
     });
   }
 
