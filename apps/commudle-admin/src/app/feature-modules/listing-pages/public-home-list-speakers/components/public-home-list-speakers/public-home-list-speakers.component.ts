@@ -49,18 +49,12 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
 
   handlePreviewImage(img) {
     this.seoPreviewImage = img;
-    this.trySetMeta();
+    this.setMeta();
   }
 
   handleTitle(title) {
     this.seoTitle = title;
-    this.trySetMeta();
-  }
-
-  trySetMeta() {
-    if (this.seoTitle && this.seoPreviewImage) {
-      this.setMeta();
-    }
+    this.setMeta();
   }
 
   setTitle() {
@@ -74,7 +68,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
       this.seoDesc =
         'Find all the talks of speakers from different events at one place on Commudle. It can be slides, tutorials, videos, designs, etc. Learn from the best folks in tech or prepare your next slides by getting inspired';
     }
-    this.trySetMeta();
+    this.setMeta();
   }
   setMeta() {
     this.seoService.setTags(

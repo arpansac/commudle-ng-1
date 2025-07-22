@@ -26,18 +26,12 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
 
   handleTitle($event: string) {
     this.seoTitle = $event;
-    this.trySetMeta();
+    this.setMeta();
   }
 
   handlePreviewImage(img: string) {
     this.seoPreviewImage = img;
-    this.trySetMeta();
-  }
-
-  trySetMeta() {
-    if (this.seoTitle && this.seoPreviewImage) {
-      this.setMeta();
-    }
+    this.setMeta();
   }
 
   setMeta() {

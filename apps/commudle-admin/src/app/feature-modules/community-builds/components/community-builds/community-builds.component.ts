@@ -20,16 +20,6 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  // handleTitle(title: string) {
-  //   this.seoTitle = title;
-  //   this.trySetMeta();
-  // }
-
-  // handleDesc(desc: string) {
-  //   this.seoDescription = desc;
-  //   this.trySetMeta();
-  // }
-
   handleTitleandDesc(titleandDesc: object) {
     this.seoTitleandDesc = titleandDesc;
     this.setMeta();
