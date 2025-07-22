@@ -33,10 +33,9 @@
   }
 }
 
-.Teammate {
-  @apply com-font-bold com-text-lg com-leading-7 com-h-7 com-m-0 com-mb-4;
+.teammate {
+  @apply com-font-bold com-text-lg com-h-7 com-m-0 com-mb-4;
 }
-
 table {
   @apply com-border-collapse com-w-3/5;
 }
@@ -49,17 +48,17 @@ th {
 nb-option {
   @apply com-bg-white;
 }
-nb-card-body {
-  @apply com-h-[380px] com-border-[1px] com-rounded-[10px];
-}
-.star {
-  @apply com-text-pink-500;
+
+.emailAsterisk {
+  @apply com-text-red-500;
 }
 
-input[fieldSize='small'] {
-  margin-top: 12px;
-  margin-bottom: 12px;
+input[fieldSize='medium'] {
+  @apply com-my-3;
 }
 label {
   @apply com-w-full com-font-medium;
+}
+.alert {
+  @apply com-block com-mb-5;
 }

@@ -1,34 +1,34 @@
 <nb-card class="volunteers">
-  <!-- <nb-card-header>
-    <h6>
+  <!-- <nb-card-header> -->
+  <!-- <h6>
       <nb-icon icon="headphones-outline"></nb-icon>
       Team
       <commudle-help-section [helpDictionaryName]="'event-volunteer'"></commudle-help-section>
-    </h6>
-  </nb-card-header> -->
+    </h6> -->
+  <!-- </nb-card-header> -->
   <nb-card-body>
     <div>
       <div *ngIf="event.editable" class="com-mb-6">
-        <h6 class="Teammate">Add a Teammate</h6>
+        <h6 class="teammate">Add a Teammate</h6>
         <commudle-alert
           [info]="true"
           [message]="'Team can only access the attendance page (which is applicable only for offline events)'"
-          class="com-block com-mb-5"
+          class="alert"
         >
         </commudle-alert>
         <form (ngSubmit)="createUserRolesUser()" [formGroup]="userRolesUserForm" class="user-roles-user-form">
           <div>
             <label>
-              Enter Email <span class="star">*</span>
+              Enter Email <span class="emailAsterisk">*</span>
               <br />
               <input
                 fieldSize="small"
                 formControlName="email"
                 nbInput
-                size="medium"
+                fieldSize="medium"
+                fullWidth
                 placeholder="Enter Teammate Email"
                 type="email"
-                class="input-full-width"
               />
             </label>
             <br />
@@ -45,17 +45,17 @@
 
           <div class="designation">
             <label>
-              Designation <span class="star">*</span>
+              Designation <span class="emailAsterisk">*</span>
               <br />
               <input
                 fieldSize="small"
                 formControlName="role_designation"
                 nbInput
-                size="medium"
+                fieldSize="medium"
+                fullWidth
                 placeholder="Enter Designation"
                 type="text"
                 [nbAutocomplete]="autoComplete"
-                class="input-full-width"
               />
             </label>
             <br />
