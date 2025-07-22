@@ -197,8 +197,11 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createJob() {
+    if (this.formSubmitLoading) return;
+
     if (!this.recaptchaToken) {
-      this.captchaRef.execute();
+      this.formSubmitLoading = false;
+      this.nbToastrService.danger('Please complete the reCAPTCHA.', 'Error');
       return;
     }
     this.formSubmitLoading = true;
@@ -225,7 +228,7 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
         (err) => {
           this.formSubmitLoading = false;
           this.recaptchaToken = null;
-          this.recaptchaError = 'reCAPTCHA failed. Please try again.';
+          this.recaptchaError = 'Submission failed. Please try again.';
         },
       ),
     );
@@ -234,13 +237,8 @@ export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   onCaptchaResolved(token: string | null) {
     if (typeof token === 'string' && token.length > 0) {
       this.recaptchaToken = token;
-      this.recaptchaError = null;
-      if (!this.isEditing) {
-        this.createJob();
-      }
     } else {
       this.recaptchaToken = null;
-      this.recaptchaError = 'reCAPTCHA failed. Please try again.';
     }
   }
 
