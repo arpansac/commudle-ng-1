@@ -9,7 +9,7 @@
   <nb-card-body>
     <div>
       <div *ngIf="event.editable" class="com-mb-6">
-        <h6>Add a Teammate</h6>
+        <h6 class="Teammate">Add a Teammate</h6>
         <commudle-alert
           [info]="true"
           [message]="'Team can only access the attendance page (which is applicable only for offline events)'"
@@ -74,7 +74,16 @@
           </nb-autocomplete>
 
           <div class="save-button-bottom">
-            <button [disabled]="!userRolesUserForm.valid" nbButton outline size="tiny" status="primary" type="submit">
+            <button
+              [disabled]="!userRolesUserForm.valid"
+              nbButton
+              outline
+              size="medium"
+              shape="semi-round"
+              fullWidth
+              status="primary"
+              type="submit"
+            >
               Save
             </button>
           </div>

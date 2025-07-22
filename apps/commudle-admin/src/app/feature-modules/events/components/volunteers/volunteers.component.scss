@@ -33,14 +33,9 @@
   }
 }
 
-h6 {
+.Teammate {
   @apply com-font-bold com-text-lg com-leading-7 com-h-7 com-m-0 com-mb-4;
 }
-
-// .info {
-//   height: 14px;
-//   width: 14px;
-// }
 
 table {
   @apply com-border-collapse com-w-3/5;
@@ -60,20 +55,11 @@ nb-card-body {
 .star {
   @apply com-text-pink-500;
 }
-// .email {
-//   @apply com-h-[40px] com-rounded-lg com-border-[1px] com-py-1 com-px-1 com-w-[1092px];
-// }
+
 input[fieldSize='small'] {
   margin-top: 12px;
-  // border-radius: 8px;
+  margin-bottom: 12px;
 }
 label {
   @apply com-w-full com-font-medium;
-}
-button[type='submit'] {
-  height: 40px;
-  width: 100%;
-  font-size: 14px;
-  // border-radius: 8px;
-  margin-top: 12px;
 }
