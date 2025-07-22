@@ -48,9 +48,9 @@
           <div>
             <div class="title-interested-members">
               <p class="title">{{ hackathon.name }}</p>
-              <div class="interested-members" *ngIf="hackathon.interested_members_count > 0">
+              <div class="interested-members" *ngIf="hackathon.number_of_participants > 0">
                 <app-badge
-                  [text]="hackathon.interested_members_count"
+                  [text]="hackathon.number_of_participants"
                   [fontColor]="'com-text-tAuro-Metal-Saurus'"
                   [nbIcon]="'people-outline'"
                   [fontSize]="'small'"
@@ -65,10 +65,8 @@
             </p>
           </div>
           <div class="badge-register-prize-buttons">
-            <div *ngIf="hackathon.community">
-              <div class="community-badge">
-                <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
-              </div>
+            <div *ngIf="hackathon.community" class="community-badge">
+              <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
             </div>
             <div class="prize-register-btn">
               <div *ngIf="totalPrizes?.length > 0" class="prize-money">

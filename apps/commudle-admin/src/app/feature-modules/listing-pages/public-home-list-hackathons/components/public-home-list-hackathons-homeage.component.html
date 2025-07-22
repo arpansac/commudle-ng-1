@@ -9,7 +9,7 @@
       [ImageShapeSquare]="true"
       [cards]="4"
     ></app-skeleton-cards>
-    <div *ngIf="upcomingHackathons.length > 0">
+    <div *ngIf="upcomingHackathons.length > 0 && !showSpinnerUpcoming" id="upcoming-events" class="upcoming-events">
       <h2 class="title">
         <a [routerLink]="'.'" fragment="upcoming-hackathons">
           <div class="heading-subheading">
@@ -18,40 +18,11 @@
           </div></a
         >
       </h2>
-      <div *ngIf="!showSpinnerUpcoming">
-        <div *ngFor="let upcomingHackathon of upcomingHackathons" id="upcoming-hackathons">
-          <commudle-hackathon-horizontal-card [hackathon]="upcomingHackathon"></commudle-hackathon-horizontal-card>
-        </div>
-      </div>
-    </div>
-    <div class="featured-communities">
-      <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
-    </div>
-    <div class="explore-experts">
-      <commudle-explore-experts></commudle-explore-experts>
-    </div>
-    <div class="tech-sessions">
-      <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
-    </div>
-    <app-skeleton-cards
-      *ngIf="showSpinnerPast"
-      [ImageShapeCircle]="false"
-      [ImageShapeSquare]="true"
-      [cards]="4"
-    ></app-skeleton-cards>
-    <div ngIf="pastHackathons.length > 0">
-      <h2 class="title">
-        <a [routerLink]="'.'" fragment="past-hackathons">
-          <div class="heading-subheading">
-            <span class="title">Past Hackathons</span
-            ><span class="sub-heading">Explore latest & exciting hackathons</span>
-          </div></a
-        >
-      </h2>
-      <div *ngIf="!showSpinnerUpcoming" class="past-hackathons">
-        <div *ngFor="let hackathon of pastHackathons" id="past-hackathons">
-          <commudle-hackathon-medium-card [hackathon]="hackathon"></commudle-hackathon-medium-card>
-        </div>
+      <div *ngFor="let upcomingHackathon of upcomingHackathons" class="event-horizontal-card" id="upcoming-hackathons">
+        <commudle-hackathon-horizontal-card
+          [hackathon]="upcomingHackathon"
+          [showHackathonBadge]="false"
+        ></commudle-hackathon-horizontal-card>
       </div>
     </div>
   </div>

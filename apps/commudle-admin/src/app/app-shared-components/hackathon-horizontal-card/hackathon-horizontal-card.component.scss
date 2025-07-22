@@ -41,12 +41,12 @@ nb-card {
                 }
               }
               .title {
-                @apply md:com-text-base com-text-lg com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-2 com-line-clamp-1 com-mr-3;
+                @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-2 com-line-clamp-1 com-mr-3;
               }
             }
 
             .time {
-              @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
+              @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500;
             }
           }
 
@@ -63,7 +63,7 @@ nb-card {
           }
 
           .prize-money {
-            @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1;
+            @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-Seashell;
             fa-icon {
               @apply com-text-sm com-text-yellow-700 com-mr-1;
             }
