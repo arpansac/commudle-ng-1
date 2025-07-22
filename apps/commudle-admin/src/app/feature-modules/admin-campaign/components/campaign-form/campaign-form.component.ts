@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './campaign-form.component.html',
   styleUrls: ['./campaign-form.component.scss'],
 })
-export class CampaignFormComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
   @ViewChild(SidebarComponent) sidebarRef!: SidebarComponent;
   isExpanded = false;
@@ -60,7 +60,6 @@ export class CampaignFormComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {}
   toggleSidebarFromParent() {
     this.isExpanded = !this.isExpanded;
     if (this.sidebarRef) {
