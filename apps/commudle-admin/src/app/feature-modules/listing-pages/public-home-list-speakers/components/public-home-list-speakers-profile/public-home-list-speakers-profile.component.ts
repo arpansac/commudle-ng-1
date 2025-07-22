@@ -92,9 +92,9 @@ export class PublicHomeListSpeakersProfileComponent implements OnInit {
   }
 
   updateSeoTitle() {
-    this.seoTitle = this.query
-      ? `${this.query} - Speakers for your community events`
-      : 'Speakers - Find & Connect With Tech & Design Speakers';
+    if (this.query) {
+      this.seoTitle = `${this.query} - Speakers for your community events`;
+    }
     this.titleEvent.emit(this.seoTitle);
   }
 

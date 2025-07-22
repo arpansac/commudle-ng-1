@@ -63,10 +63,9 @@ export class LabsSearchComponent implements OnInit {
   }
 
   updateSeoTitle() {
-    this.seoTitle = this.query
-      ? `${this.query} - Guided Tutorials by Software Developers & Designers`
-      : 'Guided Tutorials by Software Developers & Designers';
-
+    if (this.query) {
+      this.seoTitle = `${this.query} - Guided Tutorials by Software Developers & Designers`;
+    }
     this.titleEvent.emit(this.seoTitle);
   }
 

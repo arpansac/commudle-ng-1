@@ -15,7 +15,7 @@
         <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
       </div>
       <commudle-featured-builds></commudle-featured-builds>
-      <commudle-builds (titleEvent)="handleTitle($event)" (descEvent)="handleDesc($event)"></commudle-builds>
+      <commudle-builds (titleandDescEvent)="handleTitleandDesc($event)"></commudle-builds>
       <div class="top-builders">
         <commudle-builds-top-builders
           [heading]="'POPULAR BUILDERS'"
@@ -29,7 +29,7 @@
     </div>
     <div main-column *ngIf="!isMobileView" class="main-column">
       <commudle-featured-builds></commudle-featured-builds>
-      <commudle-builds (titleEvent)="handleTitle($event)" (descEvent)="handleDesc($event)"></commudle-builds>
+      <commudle-builds (titleandDescEvent)="handleTitleandDesc($event)"></commudle-builds>
     </div>
     <div right-column class="right-column">
       <div class="publish-build-button">

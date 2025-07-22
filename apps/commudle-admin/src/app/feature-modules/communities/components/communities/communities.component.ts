@@ -42,7 +42,7 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.seoTitle,
+      this.seoTitle ? this.seoTitle : 'Developer Communities',
       'Discover and join top developer communities on Commudle. Connect with peers, participate in events, hackathons, share knowledge & projects, and advance your career. Start building your network today!',
       this.seoPreviewImage ? this.seoPreviewImage : 'https://commudle.com/assets/images/commudle-logo192.png',
     );

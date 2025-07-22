@@ -9,9 +9,8 @@ import { SeoService } from '@commudle/shared-services';
 })
 export class CommunityBuildsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
-  seoTitle: string;
-  seoDescription: string;
   seoPreviewImage: string;
+  seoTitleandDesc;
 
   constructor(private footerService: FooterService, private seoService: SeoService) {}
 
@@ -21,34 +20,38 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handleTitle(title: string) {
-    this.seoTitle = title;
-    this.trySetMeta();
-  }
+  // handleTitle(title: string) {
+  //   this.seoTitle = title;
+  //   this.trySetMeta();
+  // }
 
-  handleDesc(desc: string) {
-    this.seoDescription = desc;
-    this.trySetMeta();
+  // handleDesc(desc: string) {
+  //   this.seoDescription = desc;
+  //   this.trySetMeta();
+  // }
+
+  handleTitleandDesc(titleandDesc: object) {
+    this.seoTitleandDesc = titleandDesc;
+    this.setMeta();
   }
 
   handlePreviewImage(img: string) {
     this.seoPreviewImage = img;
-    this.trySetMeta();
+    this.setMeta();
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
   }
 
-  trySetMeta() {
-    if (this.seoTitle && this.seoDescription && this.seoPreviewImage) {
-      this.setMeta();
-    }
-  }
   setMeta() {
     this.seoService.setTags(
-      this.seoTitle,
-      this.seoDescription,
+      this.seoTitleandDesc?.title
+        ? this.seoTitleandDesc.title
+        : 'Builds - Projects & Side Hustle Sharing Platform for Developers ',
+      this.seoTitleandDesc?.desc
+        ? this.seoTitleandDesc.desc
+        : 'Projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others',
       this.seoPreviewImage ? this.seoPreviewImage : 'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }

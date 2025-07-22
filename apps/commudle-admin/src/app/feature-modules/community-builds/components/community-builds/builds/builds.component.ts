@@ -31,8 +31,7 @@ export class BuildsComponent implements OnInit {
   selectedTags = [];
   schemaForBuild = [];
 
-  @Output() titleEvent = new EventEmitter<string>();
-  @Output() descEvent = new EventEmitter<string>();
+  @Output() titleandDescEvent = new EventEmitter<object>();
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -87,21 +86,19 @@ export class BuildsComponent implements OnInit {
 
   setMeta() {
     let tags = '';
+    const tagsTitleandDesc = {
+      title: '',
+      desc: '',
+    };
     if (this.selectedTags.length > 0) {
       tags = this.selectedTags.join(', ');
+      tagsTitleandDesc.title = 'Projects in ' + tags;
+      tagsTitleandDesc.desc =
+        'Find ' +
+        tags +
+        ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
     }
-    const tagsTitle = 'Projects in ' + tags;
-    const title = 'Builds - Projects & Side Hustle Sharing Platform for Developers ';
-    const tagsDescription =
-      'Find ' +
-      tags +
-      ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
-    const description =
-      'Projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
-    const seoTitle = this.selectedTags.length > 0 ? tagsTitle : title;
-    const seoDescription = this.selectedTags.length > 0 ? tagsDescription : description;
-    this.titleEvent.emit(seoTitle);
-    this.descEvent.emit(seoDescription);
+    this.titleandDescEvent.emit(tagsTitleandDesc);
   }
 
   filter() {
