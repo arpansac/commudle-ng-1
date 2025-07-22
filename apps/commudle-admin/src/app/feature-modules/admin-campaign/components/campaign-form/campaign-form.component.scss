@@ -2,8 +2,7 @@
   @apply com-w-0;
 }
 
-::ng-deep
-  .sidebar.custom-scrollbar.notForWindow.left.extraLarge.expanded.sidebar.custom-scrollbar.notForWindow.left.extraLarge {
+::ng-deep .sidebar.custom-scrollbar.notForWindow.left.extraLarge.expanded {
   @apply com-w-80;
 }
 ::ng-deep .sidebar.custom-scrollbar.notForWindow.left.extraLarge.showBorder {
