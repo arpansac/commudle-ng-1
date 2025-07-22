@@ -38,7 +38,7 @@ export class PublicHomeListSpeakersProfileComponent implements OnInit {
   seoTitle: string;
   listingPagesFilterTypes = ListingPagesFilterTypes;
 
-  @Output() titleEvent = new EventEmitter<string>();
+  @Output() seoTitleChange = new EventEmitter<string>();
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -95,7 +95,7 @@ export class PublicHomeListSpeakersProfileComponent implements OnInit {
     if (this.query) {
       this.seoTitle = `${this.query} - Speakers for your community events`;
     }
-    this.titleEvent.emit(this.seoTitle);
+    this.seoTitleChange.emit(this.seoTitle);
   }
 
   updateFilter() {

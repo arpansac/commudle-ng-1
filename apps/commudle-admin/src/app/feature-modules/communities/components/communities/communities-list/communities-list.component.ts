@@ -35,7 +35,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   loadingData = false;
   loadingCommunities = false;
 
-  @Output() titleEvent = new EventEmitter<string>();
+  @Output() seoTitleChange = new EventEmitter<string>();
 
   constructor(
     private communitiesService: CommunitiesService,
@@ -93,7 +93,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
     if (this.query) {
       this.seoTitle = `${this.query} - Developer Communities`;
     }
-    this.titleEvent.emit(this.seoTitle);
+    this.seoTitleChange.emit(this.seoTitle);
   }
 
   getPopularCommunities(): void {

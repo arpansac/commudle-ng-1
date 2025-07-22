@@ -21,7 +21,7 @@ export class ListingPageHeaderComponent implements OnInit {
   richText: string;
   CampaignTypeSlug: string;
 
-  @Output() previewImageEvent = new EventEmitter<string>();
+  @Output() seoPreviewImage = new EventEmitter<string>();
 
   constructor(private cmsService: CmsService) {}
 
@@ -54,7 +54,7 @@ export class ListingPageHeaderComponent implements OnInit {
     this.cmsService.getDataBySlug(parentType).subscribe((data) => {
       this.header = data;
       this.headerImgUrl = this.imageUrl(this.header.header_image).url();
-      this.previewImageEvent.emit(this.headerImgUrl);
+      this.seoPreviewImage.emit(this.headerImgUrl);
       this.richText = this.cmsService.getHtmlFromBlock(data);
     });
   }

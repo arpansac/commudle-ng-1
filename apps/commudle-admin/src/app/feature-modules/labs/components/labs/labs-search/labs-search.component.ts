@@ -32,7 +32,7 @@ export class LabsSearchComponent implements OnInit {
   totalSearch = 0;
   seoTitle: string;
 
-  @Output() titleEvent = new EventEmitter<string>();
+  @Output() seoTitleChange = new EventEmitter<string>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -66,7 +66,7 @@ export class LabsSearchComponent implements OnInit {
     if (this.query) {
       this.seoTitle = `${this.query} - Guided Tutorials by Software Developers & Designers`;
     }
-    this.titleEvent.emit(this.seoTitle);
+    this.seoTitleChange.emit(this.seoTitle);
   }
 
   search() {

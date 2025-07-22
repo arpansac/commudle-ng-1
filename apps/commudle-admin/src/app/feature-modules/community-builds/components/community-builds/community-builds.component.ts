@@ -10,7 +10,7 @@ import { SeoService } from '@commudle/shared-services';
 export class CommunityBuildsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
   seoPreviewImage: string;
-  seoTitleandDesc;
+  seoMetadata;
 
   constructor(private footerService: FooterService, private seoService: SeoService) {}
 
@@ -20,8 +20,8 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handleTitleandDesc(titleandDesc: object) {
-    this.seoTitleandDesc = titleandDesc;
+  onSeoMetadataChange(metadata: object) {
+    this.seoMetadata = metadata;
     this.setMeta();
   }
 
@@ -36,11 +36,11 @@ export class CommunityBuildsComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.seoTitleandDesc?.title
-        ? this.seoTitleandDesc.title
+      this.seoMetadata?.title
+        ? this.seoMetadata.title
         : 'Builds - Projects & Side Hustle Sharing Platform for Developers ',
-      this.seoTitleandDesc?.desc
-        ? this.seoTitleandDesc.desc
+      this.seoMetadata?.desc
+        ? this.seoMetadata.desc
         : 'Projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others',
       this.seoPreviewImage ? this.seoPreviewImage : 'https://commudle.com/assets/images/commudle-logo192.png',
     );

@@ -31,7 +31,7 @@ export class BuildsComponent implements OnInit {
   selectedTags = [];
   schemaForBuild = [];
 
-  @Output() titleandDescEvent = new EventEmitter<object>();
+  @Output() seoMetadataChange = new EventEmitter<object>();
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -98,7 +98,7 @@ export class BuildsComponent implements OnInit {
         tags +
         ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
     }
-    this.titleandDescEvent.emit(tagsTitleandDesc);
+    this.seoMetadataChange.emit(tagsTitleandDesc);
   }
 
   filter() {

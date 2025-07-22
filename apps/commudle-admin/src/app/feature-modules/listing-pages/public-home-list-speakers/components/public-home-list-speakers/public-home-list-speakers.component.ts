@@ -52,7 +52,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handleTitle(title) {
+  onSeoTitleChange(title) {
     this.seoTitle = title;
     this.setMeta();
   }
@@ -81,9 +81,9 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   }
 
   onActivate(instance) {
-    if (instance.titleEvent) {
-      instance.titleEvent.pipe(takeUntil(this.destroy$)).subscribe((title: string) => {
-        this.handleTitle(title);
+    if (instance.seoTitleChange) {
+      instance.seoTitleChange.pipe(takeUntil(this.destroy$)).subscribe((title: string) => {
+        this.onSeoTitleChange(title);
       });
     }
   }

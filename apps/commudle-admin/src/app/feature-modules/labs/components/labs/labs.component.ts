@@ -20,7 +20,7 @@ export class LabsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handleTitle(title: string) {
+  onSeoTitleChange(title: string) {
     this.seoTitle = title;
     this.setMeta();
   }

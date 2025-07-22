@@ -24,7 +24,7 @@ export class CommunitiesComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(false);
   }
 
-  handleTitle($event: string) {
+  onSeoTitleChange($event: string) {
     this.seoTitle = $event;
     this.setMeta();
   }
