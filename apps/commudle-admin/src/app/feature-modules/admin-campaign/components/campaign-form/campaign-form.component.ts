@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import {
   faAnglesRight,
   faArrowLeft,
+  faRightLeft,
   faCalendar,
   faCircleInfo,
   faFileImage,
@@ -18,13 +21,16 @@ import { Subscription } from 'rxjs';
   templateUrl: './campaign-form.component.html',
   styleUrls: ['./campaign-form.component.scss'],
 })
-export class CampaignFormComponent implements OnInit, OnDestroy {
+export class CampaignFormComponent implements OnInit, OnDestroy, AfterViewInit {
   ESidebarWidth = ESidebarWidth;
+  @ViewChild(SidebarComponent) sidebarRef!: SidebarComponent;
+  isExpanded = false;
   sidebarEventName: string;
   lastSegment: string;
   slug: string;
   icons = {
     faAnglesRight,
+    faRightLeft,
     faArrowLeft,
     faUser,
     faCircleInfo,
@@ -52,6 +58,14 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
         }
       }),
     );
+  }
+
+  ngAfterViewInit(): void {}
+  toggleSidebarFromParent() {
+    this.isExpanded = !this.isExpanded;
+    if (this.sidebarRef) {
+      this.sidebarRef.expandSidebar = this.isExpanded;
+    }
   }
 
   ngOnDestroy(): void {

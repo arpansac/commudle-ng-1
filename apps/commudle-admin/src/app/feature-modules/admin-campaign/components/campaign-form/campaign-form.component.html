@@ -1,11 +1,11 @@
 <section>
   <div class="sidebar">
     <commudle-sidebar
+      #sidebarRef
       [expandedWidth]="ESidebarWidth.XL"
       [eventName]="sidebarEventName"
       [showExpandedButton]="false"
       heading="Advertisement Dashboard"
-      [isExpanded]="true"
       [forWindow]="false"
       [showExpandedButton]="false"
     >
@@ -100,6 +100,9 @@
         </div>
       </div>
     </commudle-sidebar>
+  </div>
+  <div class="toggle" (click)="toggleSidebarFromParent()">
+    <fa-icon [icon]="icons.faRightLeft" class="com-cursor-pointer"></fa-icon>
   </div>
   <div class="right-section">
     <div class="header">
