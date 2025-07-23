@@ -5,10 +5,12 @@
         [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug]"
         class="upcoming-card-link"
       >
-        <div *ngIf="hackathon.banner_image">
+        <div>
           <div *appBreakpoints="'>lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="hackathon.banner_image.i320"
+              [headerImagePath]="
+                hackathon.banner_image ? hackathon.banner_image.i320 : staticAssets.hackathon_empty_state
+              "
               [name]="hackathon.name"
               [aspectRatio]="'8/3'"
             ></commudle-banner-image>
@@ -25,7 +27,9 @@
           </div>
           <div *appBreakpoints="'<=lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="hackathon.banner_image.i320"
+              [headerImagePath]="
+                hackathon.banner_image ? hackathon.banner_image.i320 : staticAssets.hackathon_empty_state
+              "
               [name]="hackathon.name"
               [bottomRightCurve]="false"
               [bottomLeftCurve]="false"
@@ -40,9 +44,6 @@
               [color]="'com-bg-Seashell'"
             ></app-badge>
           </div>
-        </div>
-        <div *ngIf="!hackathon.banner_image" class="no-image-header">
-          <nb-icon icon="link" status="primary"></nb-icon>
         </div>
         <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div>
