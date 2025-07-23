@@ -49,9 +49,9 @@
           <div>
             <div class="title-interested-members">
               <p class="title">{{ hackathon.name }}</p>
-              <div class="interested-members" *ngIf="hackathon.number_of_participants > 0">
+              <div class="interested-members" *ngIf="hackathon.interested_members_count > 0">
                 <app-badge
-                  [text]="hackathon.number_of_participants"
+                  [text]="hackathon.interested_members_count"
                   [fontColor]="'com-text-tAuro-Metal-Saurus'"
                   [nbIcon]="'people-outline'"
                   [fontSize]="'small'"
@@ -90,9 +90,9 @@
             </div>
           </div>
           <div class="interested-members-container">
-            <div class="interested-members" *ngIf="hackathon.number_of_participants > 0">
+            <div class="interested-members" *ngIf="hackathon.interested_members_count > 0">
               <app-badge
-                [text]="hackathon.number_of_participants"
+                [text]="hackathon.interested_members_count"
                 [fontColor]="'com-text-tAuro-Metal-Saurus'"
                 [nbIcon]="'people-outline'"
                 [fontSize]="'small'"
