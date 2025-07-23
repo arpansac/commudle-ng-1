@@ -1,11 +1,11 @@
 <nb-card class="volunteers">
-  <!-- <nb-card-header> -->
-  <!-- <h6>
-      <nb-icon icon="headphones-outline"></nb-icon>
-      Team
-      <commudle-help-section [helpDictionaryName]="'event-volunteer'"></commudle-help-section>
-    </h6> -->
-  <!-- </nb-card-header> -->
+  <nb-card-header>
+    <h6 class="header">
+      <nb-icon icon="headphones-outline" status="basic"></nb-icon>&nbsp; Team<commudle-help-section
+        [helpDictionaryName]="'event-volunteer'"
+      ></commudle-help-section>
+    </h6>
+  </nb-card-header>
   <nb-card-body>
     <div>
       <div *ngIf="event.editable" class="com-mb-6">
