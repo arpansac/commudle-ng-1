@@ -13,6 +13,10 @@ import { ProfanityService } from 'apps/commudle-admin/src/app/feature-modules/sy
 export class AdminProfanityComponent implements OnInit, OnDestroy {
   profanityTerms: IProfanity[];
   profanityTermForm: FormGroup;
+  showAllResults = '';
+  page = 1;
+  count = 10;
+  total = 0;
   constructor(
     private profanityService: ProfanityService,
     private dialogService: NbDialogService,
@@ -33,9 +37,17 @@ export class AdminProfanityComponent implements OnInit, OnDestroy {
   }
 
   getProfanityTerms() {
-    this.profanityService.indexProfanity().subscribe((res) => {
-      this.profanityTerms = res;
+    this.profanityService.indexProfanity(this.showAllResults, this.page, this.count).subscribe((res) => {
+      this.profanityTerms = res.values;
+      this.total = res.total;
+      this.page = res.page;
+      this.count = res.count;
     });
+  }
+
+  changeProfanityType() {
+    this.page = 1;
+    this.getProfanityTerms();
   }
 
   openDialog(dialog) {

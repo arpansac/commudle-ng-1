@@ -4,14 +4,19 @@
       <nb-card>
         <nb-card-header>
           <span>Profanity Words and domains</span>
-          <div>
-            <button (click)="openDialog(profanityTermFormDialog)" ghost nbButton shape="round" size="small">
-              <nb-icon icon="plus"></nb-icon>
-              Create New Profanity Term
-            </button>
-          </div>
+          <button (click)="openDialog(profanityTermFormDialog)" ghost nbButton shape="round" size="small">
+            <nb-icon icon="plus"></nb-icon>
+            Create New Profanity Term
+          </button>
         </nb-card-header>
         <nb-card-body>
+          <div class="select">
+            <select placeholder="Filter by" [(ngModel)]="showAllResults" (ngModelChange)="changeProfanityType()">
+              <option value="">All</option>
+              <option value="true">Words</option>
+              <option value="false">Domains</option>
+            </select>
+          </div>
           <table>
             <tr>
               <th>Word</th>
@@ -25,6 +30,19 @@
             </tr>
           </table>
         </nb-card-body>
+        <nb-card-footer>
+          <div class="pagination">
+            <app-pagination
+              (goTo)="page = $event; getProfanityTerms()"
+              (next)="page = $event; getProfanityTerms()"
+              (previous)="page = $event; getProfanityTerms()"
+              *ngIf="total > 0"
+              [count]="count"
+              [current]="page"
+              [total]="total"
+            ></app-pagination>
+          </div>
+        </nb-card-footer>
       </nb-card>
     </div>
   </div>
