@@ -260,6 +260,15 @@
                           >
                             <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
                           </span>
+                          <span
+                            *ngIf="
+                              form.get('additional_users').get('email').touched &&
+                              form.get('additional_users').get('email').invalid &&
+                              form.get('additional_users').get('email').errors.email
+                            "
+                          >
+                            <commudle-alert [error]="true" [errorMessage]="'Invalid Email Format'"></commudle-alert>
+                          </span>
                         </label>
 
                         <!-- phone number -->

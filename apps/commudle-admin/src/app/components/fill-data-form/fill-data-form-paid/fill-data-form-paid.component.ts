@@ -432,8 +432,11 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     const newForm = this.fb.group({
       additional_users: this.fb.group({
         name: ['', Validators.required],
-        email: ['', Validators.required],
-        phone_country_code: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phone_country_code: [
+          this.forms.length > 0 ? this.forms[0].get('additional_users.phone_country_code').value : '',
+          Validators.required,
+        ],
         phone_number: ['', Validators.required],
       }),
     });
@@ -466,6 +469,18 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   submitFormAndPay() {
+    let allFormsValid = true;
+    this.forms.forEach((form) => {
+      if (form.invalid) {
+        form.markAllAsTouched();
+        allFormsValid = false;
+      }
+    });
+
+    if (!allFormsValid) {
+      this.toastLogService.warningDialog('Please fill in all required fields for all recipients.');
+      return;
+    }
     this.dataFormFillComponent.submitForm();
   }
 
