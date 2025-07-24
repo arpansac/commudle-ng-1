@@ -6,6 +6,11 @@ form {
   .action-buttons {
     @apply com-flex com-items-center com-justify-between;
   }
+  label {
+    .required {
+      @apply com-text-red-500;
+    }
+  }
 }
 
 .uploaded-profile {

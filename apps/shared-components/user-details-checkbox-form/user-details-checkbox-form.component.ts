@@ -33,6 +33,8 @@ export class UserDetailsCheckboxFormComponent implements OnInit, OnChanges {
       github: false,
       facebook: false,
       tshirt_size: false,
+      experience_level: false,
+      user_domain: false,
     });
   }
 
@@ -60,6 +62,8 @@ export class UserDetailsCheckboxFormComponent implements OnInit, OnChanges {
         github: this.userDetails.github,
         facebook: this.userDetails.facebook,
         tshirt_size: this.userDetails.tshirt_size,
+        user_domain: this.userDetails.user_domain,
+        experience_level: this.userDetails.experience_level,
       });
     }
   }
