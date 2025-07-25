@@ -14,7 +14,7 @@ export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDest
   faStar = faStar;
   faqs: IFaq[];
   staticAssets = staticAssets;
-  imgUrl = staticAssets.student_non_profit_community_support;
+  studentNonProfitCommunitySupportHeaderImageUrl = staticAssets.student_non_profit_community_support;
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
@@ -32,7 +32,9 @@ export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDest
     this.seoService.setTags(
       'Student & Non Profit Community Support',
       'Building a community on Commudle is free for students and non profits. All features including events, video stage, QR code, channels, member management, projects, tutorials and more are free',
-      this.imgUrl ? this.imgUrl : 'https://commudle.com/assets/images/commudle-logo192.png',
+      this.studentNonProfitCommunitySupportHeaderImageUrl
+        ? this.studentNonProfitCommunitySupportHeaderImageUrl
+        : 'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
 
