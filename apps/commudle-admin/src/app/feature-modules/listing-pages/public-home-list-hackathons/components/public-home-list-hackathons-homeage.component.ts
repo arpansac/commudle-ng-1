@@ -32,8 +32,8 @@ export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestr
     this.getUpcomingHackathons();
     this.getPastHackathons();
     this.seoService.setTags(
-      'Tech Events - Find Workshops, Hackathons & Meetups Near You',
-      'Register and attend tech events on web development, devops, design, machine learning, AI, app development and more by developer communities. Find and network with tech experts.',
+      'Hackathons - Host or Participate',
+      'Find the latest hackathons in the developer ecosystem, host your own hackathon or participate in existing ones!',
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
