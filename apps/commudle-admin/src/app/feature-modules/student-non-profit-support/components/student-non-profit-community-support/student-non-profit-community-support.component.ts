@@ -13,7 +13,6 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDestroy {
   faStar = faStar;
   faqs: IFaq[];
-  staticAssets = staticAssets;
   studentNonProfitCommunitySupportHeaderImageUrl = staticAssets.student_non_profit_community_support;
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
