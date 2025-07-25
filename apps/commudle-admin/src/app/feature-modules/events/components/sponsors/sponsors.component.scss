@@ -1,139 +1,108 @@
 .sponsors {
-  @apply com-mx-0 com-my-6;
+  @apply com-mx-0;
+  h6 {
+    @apply com-m-0 com-flex com-items-center;
+  }
+
   .event-sponsors {
-    @apply com-flex com-items-center com-flex-wrap com-gap-4;
+    @apply com-grid com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3 xl:com-grid-cols-4 com-gap-3 com-mt-6;
     .event-sponsor {
-      @apply com-h-20 com-w-64 com-flex com-gap-2 com-items-center com-border com-border-dotted com-border-Bright-Gray com-rounded-md com-relative;
+      @apply com-h-48 com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-relative com-overflow-hidden;
       .logo {
-        @apply com-h-20 com-w-20 com-p-1 com-flex com-items-center com-border-0 com-border-r com-border-dotted com-border-Bright-Gray;
+        @apply com-h-28 com-w-full com-bg-gray-100 com-flex com-justify-center com-items-center;
         img {
-          @apply com-w-full;
+          @apply com-w-full com-h-full com-object-contain com-p-2;
         }
       }
-
-      .remove-sponsor-button {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-
-        p {
-          margin: 0;
-        }
-      }
-    }
-
-    .new-sponsor-button {
-      @apply com-mr-2 com-my-2 com-ml-0 com-p-5px com-w-[250px] com-h-[80px];
-
-      border: 1px dashed grey;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      p {
-        nb-icon {
-          font-size: 1.2rem;
-        }
-        color: grey;
-        text-align: center;
-      }
-    }
-  }
-}
-
-nb-tabset.new-event-sponsor-options {
-  nb-tab {
-    padding: 0;
-  }
-  form {
-    .logo {
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      label {
-        position: relative;
-        padding: 150px 0;
-
-        > span {
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          font-size: 1.5rem;
-          font-weight: 300;
-          color: grey;
-
-          nb-icon {
-            font-size: 4rem;
-            margin-bottom: 0.5rem;
+      .details {
+        @apply com-p-4;
+        .name-link {
+          @apply com-my-0;
+          span {
+            @apply com-text-Yankees-Blue com-text-base com-font-semibold com-pb-2;
+          }
+          a {
+            @apply com-no-underline;
           }
         }
-
-        input {
-          display: none;
-        }
       }
-
-      .uploaded-logo {
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 75px;
-        height: 75px;
-        display: flex;
-        flex-wrap: nowrap;
-        margin: 0 auto;
-        img {
-          max-width: 100%;
-        }
-      }
-
-      .delete-logo-button {
-        text-align: center;
-      }
-    }
-  }
-
-  .existing-sponsors {
-    max-height: 80vh;
-    overflow-x: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    .sponsor {
-      width: 120px;
-      height: 100px;
-      background: #d3d3d333;
-      padding: 3px;
-      margin: 0.5rem;
-      .logo {
-        margin: 0 auto;
-        width: 90%;
-        height: 80%;
-        overflow: hidden;
-        img {
-          width: 100%;
-        }
-      }
-      .logo {
-        @apply com-h-4/5 com-p-1 com-flex com-items-center;
-        img {
-          @apply com-w-full;
-        }
-      }
-
-      .name {
-        text-align: center;
-        margin: 0;
+      .remove-sponsor-button {
+        @apply com-absolute com-top-1 com-right-1;
       }
     }
   }
 }
 
-h6 {
-  @apply com-m-0 com-flex com-items-center;
+.add-sponsor-container {
+  @apply com-w-full md:com-w-800px com-max-h-[90dvh] com-mx-0;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  nb-card-body {
+    @apply com-p-0;
+    .existing-sponsors {
+      @apply com-grid com-grid-cols-2 md:com-grid-cols-3 lg:com-grid-cols-4 com-gap-3;
+      .sponsor-card {
+        @apply com-h-36 com-m-0 com-cursor-pointer;
+        .sponsor-logo {
+          @apply com-h-4/5 com-p-4 com-flex com-items-center com-bg-gray-100 com-overflow-hidden com-rounded-tl-10 com-rounded-tr-10;
+          img {
+            @apply com-w-full;
+          }
+        }
+        .sponsor-name {
+          @apply com-text-center com-line-clamp-1 com-text-xs com-font-semibold com-content-center com-text-Yankees-Blue com-h-1/5;
+        }
+      }
+    }
+    .sponsor-form {
+      .logo-image-uploader-container {
+        @apply com-pt-5 com-flex com-items-center com-justify-center com-flex-col;
+        > span {
+          @apply com-flex com-flex-col com-items-center com-justify-center com-space-y-2;
+        }
+        fa-icon {
+          @apply com-text-7xl com-text-Cadet-Grey;
+        }
+        .label-text {
+          @apply com-text-gray-500 com-text-center com-text-sm com-font-medium;
+        }
+        input[type='file'] {
+          @apply com-hidden;
+        }
+      }
+      .logo-image-uploader-container:hover {
+        .label-text {
+          @apply com-text-gray-400;
+        }
+      }
+
+      .uploaded-logo-container {
+        @apply com-w-full com-flex com-items-center com-justify-center;
+        .uploaded-logo {
+          @apply com-mb-4 com-h-28 com-aspect-1 com-flex com-items-center com-justify-center;
+          img {
+            @apply com-w-full;
+          }
+        }
+      }
+      input {
+        @apply com-mt-2;
+      }
+      .delete-logo-button {
+        @apply com-flex com-items-center com-justify-center;
+      }
+      .required {
+        @apply com-text-red-500;
+      }
+      .field {
+        @apply com-my-4;
+        label {
+          @apply com-mb-3;
+        }
+      }
+    }
+  }
 }
 
 .remove-sponsor-confirmation {

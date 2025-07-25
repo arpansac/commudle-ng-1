@@ -1,8 +1,9 @@
 nb-card {
-  @apply com-m-0;
+  @apply com-m-0 md:com-border-0 com-border com-border-solid com-border-Bright-Gray;
   nb-card-body {
     @apply com-p-0;
     .upcoming-card {
+      @apply com-p-0;
       .upcoming-card-link {
         @apply com-flex com-w-full com-no-underline md:com-flex-row com-flex-col;
 
@@ -19,33 +20,13 @@ nb-card {
         }
 
         .upcoming-card-details-desktop {
-          @apply md:com-p-3 com-px-4 com-py-5 com-overflow-hidden com-flex com-flex-col com-justify-between;
+          @apply md:com-pl-4 md:com-py-3 md:com-pr-0 com-px-4 com-py-5 com-overflow-hidden com-flex com-flex-col com-justify-between;
           flex: 1;
           div {
             @apply com-flex com-flex-col;
 
             .title-interested-members {
               @apply com-flex com-flex-row com-justify-between com-items-center;
-
-              .interested-members {
-                button {
-                  @apply com-py-1 com-px-2 com-w-max;
-                  nb-icon {
-                    @apply com-mr-2 com-text-Dark-Jungle-Green com-h-[16px] com-shrink-0;
-                  }
-
-                  span {
-                    @apply com-text-xs com-font-normal com-text-Auro-Metal-Saurus;
-                  }
-                }
-              }
-              .title {
-                @apply md:com-text-xl com-text-lg com-font-semibold com-text-Dark-Jungle-Green com-mt-0 com-mb-1 com-line-clamp-1 com-mr-3;
-              }
-            }
-
-            .time {
-              @apply com-text-xs com-font-medium com-m-0 com-text-Auro-Metal-Saurus;
             }
           }
 
@@ -53,27 +34,23 @@ nb-card {
             @apply com-flex com-flex-row com-justify-between com-items-center;
           }
 
-          .community-badge {
-            @apply com-m-0 md:com-my-0 com-mb-6;
-          }
-
           .register-button {
             @apply com-border com-m-0 com-bg-transparent com-py-5px com-flex md:com-ml-auto com-ml-0 com-px-6px;
           }
 
           .prize-money {
-            @apply com-flex com-flex-row com-items-center;
+            @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-gray-50  com-text-American-Orange;
             fa-icon {
-              @apply com-text-sm com-text-gray-400 com-mr-1;
+              @apply com-text-sm com-mr-1;
             }
 
             span {
-              @apply com-text-xs com-font-semibold com-text-Yankees-Blue;
+              @apply com-text-xs com-font-semibold;
             }
           }
 
           .prize-register-btn {
-            @apply com-flex com-flex-row com-items-center com-gap-3 com-ml-auto;
+            @apply com-flex com-flex-row com-items-center com-ml-auto;
           }
         }
 
@@ -81,6 +58,39 @@ nb-card {
           @apply com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
         }
       }
+    }
+  }
+}
+
+.upcoming-card-details-mobile {
+  @apply com-overflow-hidden com-flex com-flex-col;
+  flex: 1;
+}
+
+.title {
+  @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-2 com-line-clamp-1 com-mr-3 md:com-px-0 com-px-3 md:com-pt-0 com-pt-3;
+}
+
+.time-community-badge {
+  @apply com-flex com-flex-row com-items-center com-justify-between com-mb-2 md:com-px-0 com-px-3;
+}
+
+.interested-members-container {
+  @apply com-flex com-flex-row com-items-center com-mb-2 com-gap-2 md:com-px-0 com-px-3;
+}
+
+.time {
+  @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500;
+}
+
+.prize-money-mobile-section {
+  @apply com-flex com-flex-row com-items-center com-bg-gray-50 com-py-2 md:com-px-0 com-px-3 com-rounded-10;
+
+  p {
+    @apply com-m-0 com-text-gray-500 com-text-xs com-font-medium;
+
+    span {
+      @apply com-font-semibold com-text-American-Orange;
     }
   }
 }

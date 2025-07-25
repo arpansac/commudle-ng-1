@@ -1,12 +1,10 @@
+import { KeyValue } from '@angular/common';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IHackathonUserResponse } from '@commudle/shared-models';
+import { EDomain, EExperienceLevel, IHackathonUserResponse, IUser } from '@commudle/shared-models';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subject, takeUntil } from 'rxjs';
-
+import { AuthService, ToastrService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-user-details-form',
   templateUrl: './user-details-form.component.html',
@@ -19,19 +17,16 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   @Input() submitButtonText = 'Next';
   @Output() submitUserDetailsEvent = new EventEmitter<any>();
 
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   userForm: FormGroup;
   uploadedProfilePictureFile: File;
   uploadedProfilePicture: any;
   faFileImage = faFileImage;
-
+  EExperienceLevel = EExperienceLevel;
+  EDomain = EDomain;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private authWatchService: LibAuthwatchService,
-    private fb: FormBuilder,
-    private toastLogService: LibToastLogService,
-  ) {}
+  constructor(private authWatchService: AuthService, private fb: FormBuilder, private toastLogService: ToastrService) {}
 
   ngOnInit(): void {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -114,4 +109,8 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(file);
     }
   }
+
+  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
+  };
 }

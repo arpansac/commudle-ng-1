@@ -90,7 +90,7 @@ a {
 }
 
 .event-horizontal-card {
-  @apply com-mb-4;
+  @apply com-border-solid com-border-0 com-border-b md:com-py-4 com-pb-3 com-pt-6 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
 }
 
 .two-column {

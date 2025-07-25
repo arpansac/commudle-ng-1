@@ -5,8 +5,13 @@
     }})
   </p>
   <div *ngIf="eventData.status === 'open'">
-    <p *ngIf="moment(eventData.start_time) > moment()" class="upcoming">
-      {{ moment(eventData.start_time).fromNow() | titlecase }}
-    </p>
+    <app-badge
+      *ngIf="moment(eventData.start_time) > moment()"
+      [text]="moment(eventData.start_time).fromNow() | titlecase"
+      [fontSize]="'small'"
+      [borderRadius]="'round'"
+      [color]="'com-bg-red-500'"
+      [fontColor]="'com-text-tWhite'"
+    ></app-badge>
   </div>
 </div>

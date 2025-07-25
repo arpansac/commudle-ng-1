@@ -1,0 +1,44 @@
+.tech-sessions,
+.explore-experts,
+.featured-communities {
+  @apply com-m-0 com-mt-8;
+}
+
+.past-hackathons {
+  @apply com-grid com-gap-6 md:com-grid-cols-3 com-grid-cols-1 com-mt-4;
+}
+
+.past-hackathons-container {
+  @apply com-m-0 md:com-px-0 com-px-4 com-mt-10;
+}
+
+.title {
+  @apply md:com-mb-2 md:com-mt-6 com-my-6;
+
+  a {
+    @apply com-flex com-flex-row com-no-underline;
+    .title {
+      @apply md:com-text-2xl com-text-xl com-m-0 md:com-font-bold com-font-semibold com-text-Dark-Jungle-Green com-mb-2;
+    }
+
+    .sub-heading {
+      @apply com-text-sm com-m-0 com-font-medium com-text-gray-500;
+    }
+  }
+
+  .heading-subheading {
+    @apply com-flex com-flex-col com-m-0 com-p-0;
+  }
+}
+
+.upcoming-events {
+  @apply com-m-0 md:com-px-0 com-px-4;
+
+  .event-horizontal-card {
+    @apply com-border-solid com-border-0 com-border-b md:com-py-4 com-py-6 com-p-0 md:com-px-0 com-mx-0 com-border-Bright-Gray;
+  }
+}
+
+app-skeleton-cards {
+  @apply com-my-4;
+}
