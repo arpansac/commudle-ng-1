@@ -25,7 +25,7 @@ export class LabsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handlePreviewImage(img: string) {
+  onSeoPreviewImageRetrieved(img: string) {
     this.seoPreviewImage = img;
     this.setMeta();
   }

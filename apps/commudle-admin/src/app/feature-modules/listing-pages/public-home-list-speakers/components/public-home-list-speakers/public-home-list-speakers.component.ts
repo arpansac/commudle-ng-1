@@ -29,6 +29,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
 
+    this.setTitle();
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -37,8 +38,6 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.setTitle();
       });
-    this.setTitle();
-    this.setMeta();
   }
 
   ngOnDestroy(): void {
@@ -47,7 +46,7 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  handlePreviewImage(img) {
+  onSeoPreviewImageRetrieved(img) {
     this.seoPreviewImage = img;
     this.setMeta();
   }

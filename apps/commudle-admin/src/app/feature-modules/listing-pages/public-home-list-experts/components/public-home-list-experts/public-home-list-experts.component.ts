@@ -38,7 +38,7 @@ export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
     });
   }
 
-  handlePreviewImage(img) {
+  onSeoPreviewImageRetrieved(img) {
     this.seoPreviewImage = img;
     this.setMeta();
   }

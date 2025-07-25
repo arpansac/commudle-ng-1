@@ -1,7 +1,7 @@
 <commudle-listing-pages-layout>
   <div header>
     <commudle-listing-page-header
-      (seoPreviewImage)="handlePreviewImage($event)"
+      (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
       [parentType]="'communities'"
     ></commudle-listing-page-header>
   </div>

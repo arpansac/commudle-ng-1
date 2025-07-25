@@ -2,7 +2,7 @@
   <commudle-listing-pages-layout>
     <div header class="header">
       <commudle-listing-page-header
-        (seoPreviewImage)="handlePreviewImage($event)"
+        (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
         [parentType]="'builds'"
       ></commudle-listing-page-header>
     </div>

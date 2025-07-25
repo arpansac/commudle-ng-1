@@ -19,7 +19,7 @@ export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
     this.setMeta();
   }
 
-  handlePreviewImage(image) {
+  onSeoPreviewImageRetrieved(image) {
     this.seoPreviewImage = image;
     this.setMeta();
   }
