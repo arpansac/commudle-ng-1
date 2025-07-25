@@ -34,7 +34,7 @@
 }
 
 .teammate {
-  @apply com-font-bold com-text-lg com-h-7 com-m-0 com-mb-4;
+  @apply com-font-bold com-text-lg com-m-0 com-mb-4;
 }
 table {
   @apply com-border-collapse com-w-3/5;
@@ -49,7 +49,7 @@ nb-option {
   @apply com-bg-white;
 }
 
-.required {
+.required-field {
   @apply com-text-red-500;
 }
 
