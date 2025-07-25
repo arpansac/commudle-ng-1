@@ -9,6 +9,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { faSackDollar } from '@fortawesome/free-solid-svg-icons';
 import { countries_details } from '@commudle/shared-services';
 import { IHackathon, ICommunity } from '@commudle/shared-models';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-hackathon-horizontal-card',
@@ -28,11 +29,13 @@ import { IHackathon, ICommunity } from '@commudle/shared-models';
 })
 export class HackathonHorizontalCardComponent implements OnInit {
   @Input() hackathon: IHackathon;
+  @Input() showHackathonBadge = true;
   community: ICommunity;
   moment = moment;
   faSackDollar = faSackDollar;
   countryDetails = countries_details;
   totalPrizes: { currency: any; amount: number }[];
+  staticAssets = staticAssets;
 
   constructor() {}
 

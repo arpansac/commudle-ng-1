@@ -2,7 +2,7 @@ nb-card {
   @apply com-mx-0 md:com-border com-border-0 com-m-0;
 
   nb-card-body {
-    @apply com-p-0 md:com-p-4;
+    @apply com-m-0 md:com-p-4 com-px-4 com-py-0;
     .heading {
       @apply com-mt-0 md:com-mb-8 com-mb-4 com-mx-0 com-flex com-flex-col md:com-p-0 com-px-4 com-py-3 com-border-0 md:com-border-b-0 com-border-b com-border-solid com-border-Bright-Gray;
 

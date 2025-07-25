@@ -5,15 +5,17 @@
         [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug]"
         class="upcoming-card-link"
       >
-        <div *ngIf="hackathon.banner_image">
+        <div>
           <div *appBreakpoints="'>lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="hackathon.banner_image.i320"
+              [headerImagePath]="
+                hackathon.banner_image ? hackathon.banner_image.i320 : staticAssets.hackathon_empty_state
+              "
               [name]="hackathon.name"
-              [topRightCurve]="false"
-              [bottomRightCurve]="false"
+              [aspectRatio]="'8/3'"
             ></commudle-banner-image>
             <app-badge
+              *ngIf="showHackathonBadge"
               class="hackathon-badge"
               [text]="'Hackathon'"
               [fontColor]="'com-text-tChocolate-Traditional'"
@@ -25,7 +27,9 @@
           </div>
           <div *appBreakpoints="'<=lg'" class="upcoming-card-image">
             <commudle-banner-image
-              [headerImagePath]="hackathon.banner_image.i320"
+              [headerImagePath]="
+                hackathon.banner_image ? hackathon.banner_image.i320 : staticAssets.hackathon_empty_state
+              "
               [name]="hackathon.name"
               [bottomRightCurve]="false"
               [bottomLeftCurve]="false"
@@ -41,10 +45,7 @@
             ></app-badge>
           </div>
         </div>
-        <div *ngIf="!hackathon.banner_image" class="no-image-header">
-          <nb-icon icon="link" status="primary"></nb-icon>
-        </div>
-        <div class="upcoming-card-details-desktop">
+        <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div>
             <div class="title-interested-members">
               <p class="title">{{ hackathon.name }}</p>
@@ -59,22 +60,58 @@
                 ></app-badge>
               </div>
             </div>
-            <p class="time">{{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }}</p>
+            <p class="time">
+              Starts - {{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }} |
+              <span>{{ hackathon.hackathon_location_type | titlecase }}</span>
+            </p>
           </div>
           <div class="badge-register-prize-buttons">
             <div *ngIf="hackathon.community" class="community-badge">
               <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
             </div>
             <div class="prize-register-btn">
-              <div *ngIf="totalPrizes.length > 0" class="prize-money">
+              <div *ngIf="totalPrizes?.length > 0" class="prize-money">
                 <fa-icon [icon]="faSackDollar"></fa-icon>
                 <span>{{ totalPrizes[0].currency.symbol }}</span>
                 <span>{{ totalPrizes[0].amount }}</span>
               </div>
-              <button nbButton status="info" shape="rectangle" size="medium" outline class="register-button">
+              <button nbButton status="info" shape="semi-round" size="large" outline class="register-button">
                 Register
               </button>
             </div>
+          </div>
+        </div>
+        <div *appBreakpoints="'<=lg'" class="upcoming-card-details-mobile">
+          <p class="title">{{ hackathon.name }}</p>
+          <div class="time-community-badge">
+            <p class="time">Starts - {{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }}</p>
+            <div *ngIf="hackathon.community" class="community-badge">
+              <app-community-badge [community]="hackathon.community" [size]="'small'"></app-community-badge>
+            </div>
+          </div>
+          <div class="interested-members-container">
+            <div class="interested-members" *ngIf="hackathon.interested_members_count > 0">
+              <app-badge
+                [text]="hackathon.interested_members_count"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [nbIcon]="'people-outline'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+            </div>
+            <app-badge
+              [text]="hackathon.hackathon_location_type | titlecase"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-Light'"
+            ></app-badge>
+          </div>
+          <div *ngIf="totalPrizes?.length > 0" class="prize-money-mobile-section">
+            <p>
+              🏆 Prize Pool - <span>{{ totalPrizes[0].currency.symbol }}{{ totalPrizes[0].amount }}</span>
+            </p>
           </div>
         </div>
       </a>
