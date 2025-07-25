@@ -15,7 +15,6 @@ export class SpeakerSlidesComponent implements OnInit {
   count = 9;
   page = 1;
   total = 0;
-  title: string;
 
   constructor(
     private speakerResourcesService: SpeakerResourcesService,

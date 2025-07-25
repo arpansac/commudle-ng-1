@@ -3,6 +3,7 @@ import { IFaq } from '@commudle/shared-models';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-student-non-profit-community-support',
@@ -12,8 +13,8 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDestroy {
   faStar = faStar;
   faqs: IFaq[];
-  imgUrl =
-    'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png';
+  staticAssets = staticAssets;
+  imgUrl = staticAssets.student_non_profit_community_support;
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
