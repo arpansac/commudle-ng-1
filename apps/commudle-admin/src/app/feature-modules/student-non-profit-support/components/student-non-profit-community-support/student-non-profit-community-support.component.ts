@@ -3,6 +3,7 @@ import { IFaq } from '@commudle/shared-models';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-student-non-profit-community-support',
@@ -12,21 +13,28 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDestroy {
   faStar = faStar;
   faqs: IFaq[];
+  studentNonProfitCommunitySupportHeaderImageUrl = staticAssets.student_non_profit_community_support;
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.seoService.setTags(
-      'Student & Non Profit Community Support',
-      'Building a community on Commudle is free for students and non profits. All features including events, video stage, QR code, channels, member management, projects, tutorials and more are free',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.setMeta();
     this.setFaqs();
   }
 
   ngOnDestroy(): void {
     this.footerService.changeFooterStatus(false);
+  }
+
+  setMeta() {
+    this.seoService.setTags(
+      'Student & Non Profit Community Support',
+      'Building a community on Commudle is free for students and non profits. All features including events, video stage, QR code, channels, member management, projects, tutorials and more are free',
+      this.studentNonProfitCommunitySupportHeaderImageUrl
+        ? this.studentNonProfitCommunitySupportHeaderImageUrl
+        : 'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 
   setFaqs() {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SeoService } from '@commudle/shared-services';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IPagination } from 'apps/shared-models/pagination.model';
+import { Output, EventEmitter } from '@angular/core';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-builds',
@@ -29,6 +30,8 @@ export class BuildsComponent implements OnInit {
   heading = 'Builds by techies around you';
   selectedTags = [];
   schemaForBuild = [];
+
+  @Output() seoMetadataChange = new EventEmitter<object>();
 
   constructor(
     private communityBuildsService: CommunityBuildsService,
@@ -83,22 +86,19 @@ export class BuildsComponent implements OnInit {
 
   setMeta() {
     let tags = '';
+    const tagsTitleandDesc = {
+      title: '',
+      desc: '',
+    };
     if (this.selectedTags.length > 0) {
       tags = this.selectedTags.join(', ');
+      tagsTitleandDesc.title = 'Projects in ' + tags;
+      tagsTitleandDesc.desc =
+        'Find ' +
+        tags +
+        ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
     }
-    const tagsTitle = 'Projects in ' + tags;
-    const title = 'Builds - Projects & Side Hustle Sharing Platform for Developers ';
-    const tagsDescription =
-      'Find ' +
-      tags +
-      ' projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
-    const description =
-      'Projects built by techies in the developer communities around you. Share your own open source projects in Web, Android, iOS, AI, ML and inspire others';
-    this.seoService.setTags(
-      this.selectedTags.length > 0 ? tagsTitle : title,
-      this.selectedTags.length > 0 ? tagsDescription : description,
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    this.seoMetadataChange.emit(tagsTitleandDesc);
   }
 
   filter() {

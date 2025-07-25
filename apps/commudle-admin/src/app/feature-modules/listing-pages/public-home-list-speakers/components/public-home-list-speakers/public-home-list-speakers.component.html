@@ -1,6 +1,9 @@
 <commudle-listing-pages-layout>
   <div header>
-    <commudle-listing-page-header [parentType]="'speakers'"></commudle-listing-page-header>
+    <commudle-listing-page-header
+      (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
+      [parentType]="'speakers'"
+    ></commudle-listing-page-header>
   </div>
   <div one-column *ngIf="isMobileView">
     <div class="tab-links">
@@ -14,7 +17,7 @@
         <span class="title">Call For Speakers</span>
       </a>
     </div>
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
   <div main-column *ngIf="!isMobileView">
     <div class="tab-links">
@@ -28,7 +31,7 @@
         <span class="title">Call For Speakers</span>
       </a>
     </div>
-    <router-outlet></router-outlet>
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </div>
   <div right-column>
     <div class="speakers-upcoming">

@@ -1,7 +1,10 @@
 <div class="experts-page">
   <commudle-listing-pages-layout>
     <div header>
-      <commudle-listing-page-header [parentType]="'experts'"></commudle-listing-page-header>
+      <commudle-listing-page-header
+        (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
+        [parentType]="'experts'"
+      ></commudle-listing-page-header>
     </div>
     <div one-column *ngIf="isMobileView">
       <div class="apply-expert">

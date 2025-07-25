@@ -237,6 +237,9 @@ export const staticAssets = {
 
   user_profile_complete_background:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeU5UQkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0ad2b184b06f46199101a81f75680f8d08bffc3c/BG%20Account%20Setup%20(1).png',
+
+  student_non_profit_community_support:
+    'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png',
 };
 
 export const AwsS3Bucket = {

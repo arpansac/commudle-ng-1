@@ -1,7 +1,10 @@
 <div>
   <commudle-listing-pages-layout>
     <div header class="header">
-      <commudle-listing-page-header [parentType]="'builds'"></commudle-listing-page-header>
+      <commudle-listing-page-header
+        (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
+        [parentType]="'builds'"
+      ></commudle-listing-page-header>
     </div>
     <div one-column *ngIf="isMobileView">
       <div class="publish-build-button">
@@ -12,7 +15,7 @@
         <commudle-help-section [helpDictionaryName]="'build-publish'"></commudle-help-section>
       </div>
       <commudle-featured-builds></commudle-featured-builds>
-      <commudle-builds></commudle-builds>
+      <commudle-builds (seoMetadataChange)="onSeoMetadataChange($event)"></commudle-builds>
       <div class="top-builders">
         <commudle-builds-top-builders
           [heading]="'POPULAR BUILDERS'"
@@ -26,7 +29,7 @@
     </div>
     <div main-column *ngIf="!isMobileView" class="main-column">
       <commudle-featured-builds></commudle-featured-builds>
-      <commudle-builds></commudle-builds>
+      <commudle-builds (seoMetadataChange)="onSeoMetadataChange($event)"></commudle-builds>
     </div>
     <div right-column class="right-column">
       <div class="publish-build-button">
