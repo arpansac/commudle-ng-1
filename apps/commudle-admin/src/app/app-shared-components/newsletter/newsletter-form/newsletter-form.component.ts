@@ -10,6 +10,7 @@ import { faChevronLeft, faFileImage } from '@fortawesome/free-solid-svg-icons';
 import grapesjs from 'grapesjs';
 import plugin from 'grapesjs-preset-newsletter';
 import { NbDialogService } from '@commudle/theme';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-newsletter-form',
@@ -24,7 +25,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
   subscriptions: Subscription[] = [];
   imagePreview;
   testEmailsForms: FormGroup;
-
+  EDbModels = EDbModels;
   icons = {
     faChevronLeft,
     faFileImage,
