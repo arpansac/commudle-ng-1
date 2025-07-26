@@ -150,9 +150,7 @@
         [routerLink]="
           parentType === EDbModels.KOMMUNITY
             ? ['/communities', parentId, 'newsletters', pageSlug]
-            : parentType === EDbModels.COMMUNITY_GROUP
-            ? ['/orgs', parentId, 'newsletters', pageSlug]
-            : []
+            : ['/orgs', parentId, 'newsletters', pageSlug]
         "
         nbButton
         status="primary"
