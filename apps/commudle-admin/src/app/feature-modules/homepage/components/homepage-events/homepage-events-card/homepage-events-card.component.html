@@ -3,12 +3,12 @@
   [routerLink]="['/communities', community.slug, 'events', event.slug]"
   class="home-events-card-container"
 >
-  <div class="com-aspect-w-16 com-aspect-h-9 com-relative">
+  <div>
     <div [ngClass]="{ old: moment(event.start_time) < moment() }" class="home-events-card-image-overlay"></div>
     <commudle-banner-image
       [headerImagePath]="event.header_image?.i350 || community.logo_image_path.i320"
       [name]="event.name"
-      [aspectRatio]="'9/5'"
+      [aspectRatio]="'16/9'"
     ></commudle-banner-image>
   </div>
   <div
