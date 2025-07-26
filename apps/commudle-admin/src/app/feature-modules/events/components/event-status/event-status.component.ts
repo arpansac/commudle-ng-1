@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   TemplateRef,
@@ -16,6 +17,7 @@ import { ToastrService } from '@commudle/shared-services';
 import { IEvent, IEventStatus } from '@commudle/shared-models';
 import { Router } from '@angular/router';
 import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feature-modules/events/store/event-data-form-entity-groups.store';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-event-status',
@@ -23,7 +25,7 @@ import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feat
   styleUrls: ['./event-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventStatusComponent implements OnInit {
+export class EventStatusComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
   @Output() updatedEventStatus: EventEmitter<IEventStatus> = new EventEmitter<IEventStatus>();
   isMobileView = false;
@@ -32,6 +34,8 @@ export class EventStatusComponent implements OnInit {
   @ViewChild('confirmOpenEventStatusDialogBox') confirmOpenEventStatusDialogBox: TemplateRef<any>;
 
   eventStatuses: string[] = Object.values(EEventStatuses);
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private eventsService: EventsService,
@@ -98,6 +102,11 @@ export class EventStatusComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   updateStatus(status: string) {
     this.eventsService.updateStatus(this.event.id, status).subscribe((value: IEventStatus) => {
       this.updatedEventStatus.emit(value);
@@ -107,9 +116,11 @@ export class EventStatusComponent implements OnInit {
   }
 
   getEventDataFormEntityGroupsCount() {
-    this.eventDataFormEntityGroupsStore.eventDataFormEntityGroupCount$.subscribe((count) => {
-      this.eventDataFormCounts = count;
-      this.changeDetectorRef.markForCheck();
-    });
+    this.eventDataFormEntityGroupsStore.eventDataFormEntityGroupCount$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((count) => {
+        this.eventDataFormCounts = count;
+        this.changeDetectorRef.markForCheck();
+      });
   }
 }
