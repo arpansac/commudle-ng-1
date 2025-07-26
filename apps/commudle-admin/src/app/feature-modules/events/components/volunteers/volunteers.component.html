@@ -1,24 +1,35 @@
 <nb-card class="volunteers">
   <nb-card-header>
-    <h6>
-      <nb-icon icon="headphones-outline"></nb-icon>
-      Team
-      <commudle-help-section [helpDictionaryName]="'event-volunteer'"></commudle-help-section>
+    <h6 class="header">
+      <nb-icon icon="headphones-outline" status="basic"></nb-icon>&nbsp; Team<commudle-help-section
+        [helpDictionaryName]="'event-volunteer'"
+      ></commudle-help-section>
     </h6>
   </nb-card-header>
   <nb-card-body>
     <div>
       <div *ngIf="event.editable" class="com-mb-6">
-        <h6>Add a Teammate</h6>
-        <p>
-          <small> *Team can only access the attendance page (which is applicable only for offline events) </small>
-        </p>
+        <h6 class="teammate">Add a Teammate</h6>
+        <commudle-alert
+          [info]="true"
+          [message]="'Team can only access the attendance page (which is applicable only for offline events)'"
+          class="alert"
+        >
+        </commudle-alert>
         <form (ngSubmit)="createUserRolesUser()" [formGroup]="userRolesUserForm" class="user-roles-user-form">
           <div>
             <label>
-              Email*
+              Enter Email <span class="required-field">*</span>
               <br />
-              <input fieldSize="small" formControlName="email" nbInput placeholder="Google/Gmail Email" type="email" />
+              <input
+                fieldSize="small"
+                formControlName="email"
+                nbInput
+                fieldSize="medium"
+                fullWidth
+                placeholder="Enter Teammate Email"
+                type="email"
+              />
             </label>
             <br />
             <span
@@ -34,13 +45,15 @@
 
           <div class="designation">
             <label>
-              Designation*
+              Designation <span class="required-field">*</span>
               <br />
               <input
                 fieldSize="small"
                 formControlName="role_designation"
                 nbInput
-                placeholder="Role Designation"
+                fieldSize="medium"
+                fullWidth
+                placeholder="Enter Designation"
                 type="text"
                 [nbAutocomplete]="autoComplete"
               />
@@ -63,7 +76,15 @@
           </nb-autocomplete>
 
           <div class="save-button-bottom">
-            <button [disabled]="!userRolesUserForm.valid" nbButton outline size="tiny" status="primary" type="submit">
+            <button
+              [disabled]="!userRolesUserForm.valid"
+              nbButton
+              outline
+              size="medium"
+              fullWidth
+              status="primary"
+              type="submit"
+            >
               Save
             </button>
           </div>
