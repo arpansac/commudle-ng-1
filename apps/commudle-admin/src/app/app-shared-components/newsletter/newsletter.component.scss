@@ -9,7 +9,7 @@
       @apply com-px-4;
     }
     .title {
-      @apply com-flex com-gap-3 com-items-center com-my-2;
+      @apply com-flex com-gap-3 com-items-center com-my-2 com-flex-wrap;
     }
     .published {
       @apply com-flex com-items-center com-gap-8;
@@ -58,4 +58,7 @@ nb-card {
       }
     }
   }
+}
+.newsletters {
+  @apply com-overflow-x-auto md:com-overflow-x-hidden;
 }
