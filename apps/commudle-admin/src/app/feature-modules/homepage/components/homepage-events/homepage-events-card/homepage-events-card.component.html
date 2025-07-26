@@ -5,12 +5,11 @@
 >
   <div class="com-aspect-w-16 com-aspect-h-9 com-relative">
     <div [ngClass]="{ old: moment(event.start_time) < moment() }" class="home-events-card-image-overlay"></div>
-    <img
-      alt="{{ event.name }}"
-      class="com-object-cover com-object-center"
-      src="{{ event.header_image?.i350 || community.logo_image_path.i64 }}"
-      title="{{ event.name }}"
-    />
+    <commudle-banner-image
+      [headerImagePath]="event.header_image?.i350 || community.logo_image_path.i320"
+      [name]="event.name"
+      [aspectRatio]="'9/5'"
+    ></commudle-banner-image>
   </div>
   <div
     *ngIf="event.start_time"
