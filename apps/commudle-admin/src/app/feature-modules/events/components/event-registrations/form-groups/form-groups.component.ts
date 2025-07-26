@@ -16,6 +16,7 @@ import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { faCopy, faEnvelope, faTimesCircle, faUsers, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { NewFormAttachGroupsComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-registrations/form-groups/new-form-attach-groups/new-form-attach-groups.component';
+import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feature-modules/events/store/event-data-form-entity-groups.store';
 import { DataFormEntitiesService } from 'apps/commudle-admin/src/app/services/data-form-entities.service';
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
@@ -83,6 +84,7 @@ export class FormGroupsComponent implements OnInit {
     private stripeHandlerService: StripeHandlerService,
     private razorpayService: RazorpayService,
     private paymentSettingService: PaymentSettingService,
+    private edfegStore: EventDataFormEntityGroupsStore,
   ) {
     this.eventDataFormEntityGroupForm = this.fb.group({
       data_form_entity_group: this.fb.group({
@@ -116,6 +118,7 @@ export class FormGroupsComponent implements OnInit {
   getEventDataFormEntityGroups() {
     this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
       this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
+      this.edfegStore.setEventDataFormEntityGroups(this.eventDataFormEntityGroups);
       this.checkDiscountCode();
       this.changeDetectorRef.markForCheck();
     });
@@ -196,6 +199,7 @@ export class FormGroupsComponent implements OnInit {
 
   updateEdfegList(edfeg) {
     this.eventDataFormEntityGroups = [...this.eventDataFormEntityGroups, edfeg];
+    this.edfegStore.addEventDataFormEntityGroup(edfeg);
   }
 
   deleteEventDataFormEntityGroup(eventDataFormEntityGroupId, index) {
@@ -204,6 +208,7 @@ export class FormGroupsComponent implements OnInit {
       .subscribe((data) => {
         this.toastLogService.successDialog('Deleted');
         if (index !== -1) {
+          this.edfegStore.removeEventDataFormEntityGroup(eventDataFormEntityGroupId);
           this.eventDataFormEntityGroups.splice(index, 1);
           this.eventDataFormEntityGroups = [...this.eventDataFormEntityGroups]; // Trigger change detection
           this.changeDetectorRef.markForCheck();

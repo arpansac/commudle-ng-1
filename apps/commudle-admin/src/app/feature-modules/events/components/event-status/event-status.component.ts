@@ -14,8 +14,8 @@ import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { NbDialogService } from '@commudle/theme';
 import { ToastrService } from '@commudle/shared-services';
 import { IEvent, IEventStatus } from '@commudle/shared-models';
-import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { Router } from '@angular/router';
+import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feature-modules/events/store/event-data-form-entity-groups.store';
 
 @Component({
   selector: 'commudle-event-status',
@@ -38,13 +38,13 @@ export class EventStatusComponent implements OnInit {
     private toastLogService: ToastrService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialogService: NbDialogService,
-    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private router: Router,
+    private eventDataFormEntityGroupsStore: EventDataFormEntityGroupsStore,
   ) {}
 
   ngOnInit() {
     this.isMobileView = window.innerWidth <= 640;
-    this.getEventDataFormEntityGroups();
+    this.getEventDataFormEntityGroupsCount();
   }
 
   openConfirmationPopup(status: string) {
@@ -106,9 +106,9 @@ export class EventStatusComponent implements OnInit {
     });
   }
 
-  getEventDataFormEntityGroups() {
-    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
-      this.eventDataFormCounts = data.event_data_form_entity_groups.length;
+  getEventDataFormEntityGroupsCount() {
+    this.eventDataFormEntityGroupsStore.eventDataFormEntityGroupCount$.subscribe((count) => {
+      this.eventDataFormCounts = count;
       this.changeDetectorRef.markForCheck();
     });
   }
