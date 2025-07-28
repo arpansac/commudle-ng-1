@@ -89,6 +89,16 @@
 
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
+        <div *ngIf="moment() < moment(event.end_time)" class="registrations-buttons">
+          <div class="registration-form">
+            <app-highlighted-links
+              (hasOpenForms)="hasOpenForms = $event"
+              *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+              [community]="community"
+              [event]="event"
+            ></app-highlighted-links>
+          </div>
+        </div>
         <app-live-sessions [community]="community" [event]="event"></app-live-sessions>
         <div #updatesSection id="updates">
           <app-event-updates
@@ -197,27 +207,17 @@
                 [event]="event"
               ></app-attending-members>
             </div>
-            <button
-              *ngIf="moment() >= moment(event.start_time)"
-              [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
-              class="view-attended-members-button"
-              fullWidth
-              nbButton
-              outline
-              size="small"
-              status="info"
-            >
-              View attended members
-            </button>
-            <div *ngIf="moment() < moment(event.end_time)" class="registrations-buttons">
-              <div class="registration-form">
-                <app-highlighted-links
-                  (hasOpenForms)="hasOpenForms = $event"
-                  *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
-                  [community]="community"
-                  [event]="event"
-                ></app-highlighted-links>
-              </div>
+            <div *ngIf="moment() >= moment(event.start_time)" class="view-attended-members-button">
+              <button
+                [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
+                fullWidth
+                nbButton
+                outline
+                size="small"
+                status="info"
+              >
+                View attended members
+              </button>
             </div>
           </nb-card-body>
         </nb-card>

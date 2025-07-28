@@ -1,4 +1,6 @@
 .open-forms {
+  @apply com-mt-4;
+
   @media screen and (min-width: 800px) {
     flex-direction: column;
   }
@@ -12,13 +14,43 @@
   }
 
   .form-link {
-    @apply com-mt-4;
+    @apply com-m-0 com-mb-2 com-h-max;
 
-    a {
-      @apply com-w-full com-overflow-hidden;
-      span {
-        @apply com-truncate;
+    nb-card-body {
+      @apply com-flex com-items-center com-justify-between com-w-full com-py-4 com-px-6 com-text-start com-text-sm com-font-medium com-text-Yankees-Blue com-gap-4;
+
+      .form-icon {
+        @apply com-flex com-items-center com-justify-center com-h-4 com-w-4 com-flex-shrink-0 com-mr-4;
       }
+    }
+
+    .form-name-container,
+    .register-now-container {
+      @apply com-flex com-items-center;
+
+      span {
+        @apply com-flex com-items-center com-flex-shrink-0;
+      }
+    }
+
+    .price {
+      @apply com-mr-6 com-text-base com-font-bold com-text-Yankees-Blue;
+    }
+
+    .form-name {
+      @apply com-truncate;
+    }
+
+    .paid-form {
+      @apply com-ml-4 com-text-xs com-font-semibold com-text-Azure com-rounded-md com-bg-Azure-opacity-10 com-px-3 com-py-2px;
+    }
+
+    .arrow-icon {
+      @apply com-ml-2 com-text-sm com-text-Yankees-Blue com-flex-shrink-0;
+    }
+
+    .arrow-text {
+      @apply com-ml-2 com-text-lg com-font-bold com-text-Yankees-Blue com-flex-shrink-0;
     }
 
     @media screen and (min-width: 800px) {

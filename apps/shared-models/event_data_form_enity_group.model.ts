@@ -19,5 +19,5 @@ export interface IEventDataFormEntityGroup {
   user_details: any;
   allow_cancellation: boolean;
   approval_based_payments: boolean;
-  paid_ticket_settings: IPaymentDetail;
+  paid_ticket_setting: IPaymentDetail;
 }
