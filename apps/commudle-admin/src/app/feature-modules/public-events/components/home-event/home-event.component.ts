@@ -14,7 +14,7 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { DiscussionService } from '@commudle/shared-services';
 import { NbMenuService } from '@commudle/theme';
 import { map } from 'rxjs';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home-event',
@@ -48,6 +48,9 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   isOrganizer = false;
   isLoading = true;
   faEllipsisVertical = faEllipsisVertical;
+  faCalendar = faCalendar;
+  faClockFour = faClockFour;
+  faGlobe = faGlobe;
 
   items: [{ title: string }];
   @ViewChild('updatesSection', { static: false }) updatesSectionRef: ElementRef<HTMLDivElement>;

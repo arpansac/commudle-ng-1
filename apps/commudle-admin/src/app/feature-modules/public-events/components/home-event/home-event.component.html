@@ -165,7 +165,7 @@
           </a>
         </div>
         <nb-card *ngIf="event.start_time && event.end_time">
-          <nb-card-body>
+          <nb-card-body class="event-date-time-container">
             <div
               class="event-date-time"
               *ngIf="
@@ -174,19 +174,23 @@
               "
             >
               <div class="event-date">
-                <nb-icon icon="calendar-outline"></nb-icon>
-                <p>
-                  <span>
-                    {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
-                  </span>
-                </p>
+                <fa-icon [icon]="faCalendar" class="event-date-icon"></fa-icon>
+                <span class="event-date-text">
+                  {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
+                </span>
               </div>
               <div *ngIf="event.timezone" class="event-timing">
-                <nb-icon icon="clock-outline"></nb-icon>
-                <p *ngIf="event.end_time.getDate === event.start_time.getDate">
+                <fa-icon [icon]="faClockFour" class="event-timing-icon"></fa-icon>
+                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-timing-text">
                   {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm A') }} -
                   {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('h:mm A') }}
                   {{ momentTimezone.tz(event.timezone).format('z') }}
+                </p>
+              </div>
+              <div *ngIf="event.event_type" class="event-type">
+                <fa-icon [icon]="faGlobe" class="event-type-icon"></fa-icon>
+                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-type-text">
+                  {{ event.event_type }}
                 </p>
               </div>
             </div>

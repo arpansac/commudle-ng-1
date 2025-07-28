@@ -78,20 +78,16 @@
       nb-card {
         @apply com-mb-0 com-mx-0 md:com-ml-4 com-ml-0 md:com-rounded-[10px] com-rounded-none com-flex md:com-sticky md:com-top-32;
         .event-date-time {
-          @apply com-p-0 com-pb-4;
+          @apply com-p-0;
           .event-date,
-          .event-timing {
-            @apply com-flex com-flex-row;
-            nb-icon {
-              @apply com-text-lg com-mr-2;
-            }
-            p {
-              @apply com-font-semibold com-m-0;
-            }
+          .event-timing,
+          .event-type {
+            @apply com-flex com-flex-row com-m-0 com-pb-4 com-items-center;
           }
 
-          .event-timing {
-            @apply com-mt-2;
+          .event-timing,
+          .event-type {
+            @apply com-pt-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
           }
         }
 
@@ -109,4 +105,20 @@
       }
     }
   }
+}
+
+.event-date-time-container {
+  @apply com-p-6;
+}
+
+.event-date-icon,
+.event-timing-icon,
+.event-type-icon {
+  @apply com-flex com-items-center com-justify-center com-h-6 com-w-6 com-flex-shrink-0 com-mr-3 com-text-Cadet-Grey;
+}
+
+.event-date-text,
+.event-timing-text,
+.event-type-text {
+  @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0;
 }
