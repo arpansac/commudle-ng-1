@@ -122,3 +122,7 @@
 .event-type-text {
   @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0;
 }
+
+.mobile-register-button {
+  @apply com-fixed com-bottom-[68px] com-left-0 com-right-0 com-p-4 com-bg-white com-border-t com-border-solid com-border-Bright-Gray com-z-50 md:com-hidden com-shadow-md;
+}
