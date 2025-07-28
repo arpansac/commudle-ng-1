@@ -1,0 +1,13 @@
+<div *ngIf="isOpen" class="bottom-sheet-overlay" (click)="onBackdropClick($event)">
+  <div class="bottom-sheet">
+    <!-- <div class="bottom-sheet-header">
+      <h4>{{ title }}</h4>
+      <button nbButton ghost size="small" (click)="onClose()">
+        <nb-icon icon="close-outline"></nb-icon>
+      </button>
+    </div> -->
+    <div class="bottom-sheet-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

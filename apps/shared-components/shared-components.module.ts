@@ -99,6 +99,7 @@ import { NextStepCardComponent } from './next-step-card/next-step-card.component
 import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { ProductPriceDetailsComponent } from './product-price-details/product-price-details.component';
+import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -158,6 +159,7 @@ import { ProductPriceDetailsComponent } from './product-price-details/product-pr
     NextStepCardComponent,
     CampaignStatsComponent,
     ProductPriceDetailsComponent,
+    BottomSheetComponent,
   ],
   imports: [
     CommonModule,
@@ -254,6 +256,7 @@ import { ProductPriceDetailsComponent } from './product-price-details/product-pr
     NextStepCardComponent,
     CampaignStatsComponent,
     ProductPriceDetailsComponent,
+    BottomSheetComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

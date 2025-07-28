@@ -243,6 +243,15 @@
   </div>
 
   <div *ngIf="hasOpenForms && moment() < moment(event.end_time)" class="mobile-register-button">
-    <button nbButton status="primary" size="large" fullWidth>Register Now</button>
+    <button nbButton status="primary" size="large" fullWidth (click)="openBottomSheet()">Register Now</button>
   </div>
+
+  <commudle-bottom-sheet [isOpen]="isBottomSheetOpen" title="Register for Event" (close)="closeBottomSheet()">
+    <app-highlighted-links
+      *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+      (hasOpenForms)="hasOpenForms = $event"
+      [community]="community"
+      [event]="event"
+    ></app-highlighted-links>
+  </commudle-bottom-sheet>
 </div>

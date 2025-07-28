@@ -38,6 +38,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   hasOpenForms = false;
   hasInterestedMembers = false;
   hasSponsors = false;
+  isBottomSheetOpen = false;
 
   environment = environment;
 
@@ -188,5 +189,13 @@ export class HomeEventComponent implements OnInit, OnDestroy {
 
   updateContextMenu() {
     this.items = [{ title: this.discussionChat.open ? 'Turn OFF Comments' : 'Turn ON Comments' }];
+  }
+
+  openBottomSheet() {
+    this.isBottomSheetOpen = true;
+  }
+
+  closeBottomSheet() {
+    this.isBottomSheetOpen = false;
   }
 }
