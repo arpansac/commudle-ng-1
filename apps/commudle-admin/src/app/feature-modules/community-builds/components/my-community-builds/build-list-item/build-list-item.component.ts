@@ -1,13 +1,17 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { NbWindowService } from '@commudle/theme';
-import { ICommunityBuild, EPublishStatus, EPublishStatusColors } from 'apps/shared-models/community-build.model';
 import { Component, OnInit, Input, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { StatsCommunityBuildsService } from 'apps/commudle-admin/src/app/services/stats/stats-community-builds.service';
-import { EDbModels } from '@commudle/shared-models';
+import {
+  EDbModels,
+  EPublishStatus,
+  EPublishStatusColors,
+  ICommunityBuild,
+  ICommunityBuildStats,
+} from '@commudle/shared-models';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'app-build-list-item',
+  selector: 'commudle-build-list-item',
   templateUrl: './build-list-item.component.html',
   styleUrls: ['./build-list-item.component.scss'],
 })
@@ -19,13 +23,13 @@ export class BuildListItemComponent implements OnInit {
   EPublishStatus = EPublishStatus;
   EPublishStatusColors = EPublishStatusColors;
   moment = moment;
-  windowRef;
-  stats;
+  stats: ICommunityBuildStats;
   EDbModels = EDbModels;
 
+  dialogRef: NbDialogRef<any>;
   constructor(
-    private windowService: NbWindowService,
     private statsCommunityBuildsService: StatsCommunityBuildsService,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -33,19 +37,18 @@ export class BuildListItemComponent implements OnInit {
   }
 
   openDeleteConfirmation(cBuild) {
-    this.windowRef = this.windowService.open(this.confirmDeleteTemplate, {
-      title: `Are you sure you want to delete ${cBuild.name}?`,
+    this.dialogRef = this.dialogService.open(this.confirmDeleteTemplate, {
       context: { cb: cBuild },
     });
   }
 
   destroyBuild(buildId) {
     this.deleteBuild.emit(buildId);
-    this.windowRef.close();
+    this.dialogRef.close();
   }
 
   getStats() {
-    this.statsCommunityBuildsService.userEngagement(this.cb.id).subscribe((data) => {
+    this.statsCommunityBuildsService.userEngagement(this.cb.id).subscribe((data: ICommunityBuildStats) => {
       this.stats = data;
     });
   }

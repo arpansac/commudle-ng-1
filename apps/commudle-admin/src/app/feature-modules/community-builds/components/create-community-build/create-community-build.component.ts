@@ -138,7 +138,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     private authWatchService: AuthService,
   ) {
     this.communityBuildForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(100), this.noLinkValidator()]],
       build_type: ['', Validators.required],
       description: ['', Validators.required],
       publish_status: [EPublishStatus.draft, Validators.required],
@@ -147,6 +147,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
       video_iframe: ['', [this.embedded()]],
       team: this.fb.array([]),
     });
+
     this.communityBuildUpdateForm = this.fb.group({
       update: this.fb.array([]),
     });
@@ -158,6 +159,14 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   get updateList() {
     return this.communityBuildUpdateForm.get('update') as FormArray;
+  }
+
+  private noLinkValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value: string = control.value || '';
+      const urlPattern = /(https?:\/\/|www\.)\S+/i;
+      return urlPattern.test(value) ? { containsLink: true } : null;
+    };
   }
 
   ngOnInit() {
