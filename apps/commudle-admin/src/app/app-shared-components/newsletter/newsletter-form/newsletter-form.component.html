@@ -150,9 +150,7 @@
         [href]="
           parentType === EDbModels.KOMMUNITY
             ? '/communities/' + parentId + '/newsletters/' + pageSlug
-            : parentType === EDbModels.COMMUNITY_GROUP
-            ? '/orgs/' + parentId + '/newsletters/' + pageSlug
-            : null
+            : '/orgs/' + parentId + '/newsletters/' + pageSlug
         "
         target="_blank"
         nbButton
