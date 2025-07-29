@@ -1,17 +1,7 @@
-::ng-deep .sidebar.custom-scrollbar.notForWindow.left.extraLarge {
-  @apply com-w-0;
-}
-
-::ng-deep .sidebar.custom-scrollbar.notForWindow.left.extraLarge.expanded {
-  @apply com-w-80;
-}
-::ng-deep .sidebar.custom-scrollbar.notForWindow.left.extraLarge.showBorder {
-  @apply com-border-y-0 com-border-x com-border-solid com-border-Bright-Gray;
-}
 section {
   @apply com-w-full com-bg-white com-min-h-screen com-flex;
   .sidebar {
-    @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
+    @apply com-sticky com-top-16 com-h-[calc(100vh-70px)] com-w-0 md:com-w-[320px];
     a {
       @apply com-text-inherit com-no-underline;
     }
@@ -62,9 +52,9 @@ section {
   }
 
   .right-section {
-    @apply com-w-auto com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+    @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-flex-1;
     .header {
-      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4;
+      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4 com-flex com-items-center com-gap-2;
       .step-one {
         @apply com-text-gray-500 com-text-base com-font-medium;
       }

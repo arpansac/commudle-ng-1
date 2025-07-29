@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import {
   faAnglesRight,
@@ -23,7 +22,6 @@ import { Subscription } from 'rxjs';
 })
 export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
-  @ViewChild(SidebarComponent) sidebarRef!: SidebarComponent;
   isExpanded = false;
   sidebarEventName: string;
   lastSegment: string;
@@ -41,7 +39,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   isEditMode = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router, private footerService: FooterService) {
+  constructor(private router: Router, private footerService: FooterService, public sidebarService: SidebarService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
@@ -51,6 +49,15 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, false);
+
+    if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
+      this.subscriptions.push(
+        this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
+          this.isExpanded = data;
+        }),
+      );
+    }
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
@@ -59,12 +66,8 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
       }),
     );
   }
-
-  toggleSidebarFromParent() {
-    this.isExpanded = !this.isExpanded;
-    if (this.sidebarRef) {
-      this.sidebarRef.expandSidebar = this.isExpanded;
-    }
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
   ngOnDestroy(): void {
