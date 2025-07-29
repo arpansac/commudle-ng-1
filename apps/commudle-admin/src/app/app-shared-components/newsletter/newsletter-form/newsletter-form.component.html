@@ -146,10 +146,21 @@
       >
         Save & Send Test Emails
       </button>
-      <button nbButton status="primary" (click)="redirectTo()">
+      <a
+        [href]="
+          parentType === EDbModels.KOMMUNITY
+            ? '/communities/' + parentId + '/newsletters/' + pageSlug
+            : parentType === EDbModels.COMMUNITY_GROUP
+            ? '/orgs/' + parentId + '/newsletters/' + pageSlug
+            : null
+        "
+        target="_blank"
+        nbButton
+        status="primary"
+      >
         Preview Newsletter
         <nb-icon icon="external-link" class="com-text-base ml-2"></nb-icon>
-      </button>
+      </a>
     </div>
     <div class="back-button" (click)="backPage()">
       <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon> Back to list of newsletter
