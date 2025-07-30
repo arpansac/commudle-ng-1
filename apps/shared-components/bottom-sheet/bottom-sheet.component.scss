@@ -1,32 +1,13 @@
 .bottom-sheet-overlay {
-  @apply com-fixed com-inset-0 com-z-50 com-flex com-items-end;
+  @apply com-fixed com-inset-0 com-bottom-[68px] com-z-50 com-flex com-items-end com-bg-[#36445566] com-bg-opacity-100;
+  // #364455
 }
 
-// com-max-h-[244px]
 .bottom-sheet {
-  @apply com-bg-white com-rounded-t-xl com-overflow-hidden;
-  transition: 0.3s;
-  // animation: slideUp 0.3s ease-out;
+  @apply com-bg-white com-rounded-t-xl com-overflow-y-auto com-max-h-[90dvh] com-w-full;
+  animation: slideUp 0.3s ease-out;
 }
 
-// .bottom-sheet-header {
-//   @apply com-flex com-justify-between com-items-center com-p-4 com-border-b com-border-solid com-border-Bright-Gray;
-
-//   h4 {
-//     @apply com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
-//   }
-// }
-
-// com-max-h-[calc(80vh-60px)]
-.bottom-sheet-content {
-  @apply com-overflow-y-auto;
+hr {
+  @apply com-border-t com-border-gray-300 com-my-4 com-w-12 com-h-1 com-flex-shrink-0 com-rounded-sm;
 }
-
-// @keyframes slideUp {
-//   from {
-//     transform: translateY(100%);
-//   }
-//   to {
-//     transform: translateY(0);
-//   }
-// }

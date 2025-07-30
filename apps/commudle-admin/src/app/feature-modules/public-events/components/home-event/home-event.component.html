@@ -89,8 +89,8 @@
 
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
-        <div *ngIf="moment() < moment(event.end_time)" class="registrations-buttons">
-          <div class="registration-form">
+        <div *appBreakpoints="'>lg'" class="registrations-buttons">
+          <div *ngIf="moment() < moment(event.end_time)" class="registration-form">
             <app-highlighted-links
               (hasOpenForms)="hasOpenForms = $event"
               *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
@@ -242,8 +242,12 @@
     </div>
   </div>
 
-  <div *ngIf="hasOpenForms && moment() < moment(event.end_time)" class="mobile-register-button">
-    <button nbButton status="primary" size="large" fullWidth (click)="openBottomSheet()">Register Now</button>
+  <div *appBreakpoints="'<=lg'">
+    <div *ngIf="hasOpenForms && moment() < moment(event.end_time)" class="mobile-register-button">
+      <button nbButton status="info" size="large" shape="semi-round" fullWidth (click)="openBottomSheet()">
+        Register Now
+      </button>
+    </div>
   </div>
 
   <commudle-bottom-sheet [isOpen]="isBottomSheetOpen" title="Register for Event" (close)="closeBottomSheet()">

@@ -14,13 +14,13 @@
   }
 
   .form-link {
-    @apply com-m-0 com-mb-2 com-h-max;
+    @apply com-m-0 com-mb-2 com-h-max md:com-border com-border-0 com-border-b com-border-solid com-border-Bright-Gray md:com-rounded-10 com-rounded-none;
 
     nb-card-body {
-      @apply com-flex com-items-center com-justify-between com-w-full com-py-4 com-px-6 com-text-start com-text-sm com-font-medium com-text-Yankees-Blue com-gap-4;
+      @apply com-flex com-items-center com-justify-between com-w-full md:com-py-4 md:com-px-6 com-p-4 com-text-start com-text-sm com-font-medium com-text-Yankees-Blue com-gap-5;
 
       .form-icon {
-        @apply com-flex com-items-center com-justify-center com-h-4 com-w-4 com-flex-shrink-0 com-mr-4 com-text-Cadet-Grey;
+        @apply com-flex com-items-center com-justify-center com-h-4 com-w-4 com-flex-shrink-0 md:com-mr-4 com-mr-2 com-text-Cadet-Grey;
       }
     }
 
@@ -34,15 +34,15 @@
     }
 
     .price {
-      @apply com-mr-6 com-text-base com-font-bold com-text-Yankees-Blue;
+      @apply md:com-mr-6 com-mr-4 com-text-base com-font-bold com-text-Yankees-Blue;
     }
 
     .form-name {
-      @apply com-truncate;
+      @apply com-truncate com-text-sm com-font-medium com-text-Yankees-Blue;
     }
 
     .paid-form {
-      @apply com-ml-4 com-text-xs com-font-semibold com-text-Azure com-rounded-md com-bg-Azure-opacity-10 com-px-3 com-py-2px;
+      @apply md:com-ml-4 com-ml-2 com-text-xs com-font-semibold com-text-Azure com-rounded-full com-bg-Azure-opacity-10 com-px-3 com-py-2px;
     }
 
     .arrow-icon {
@@ -52,6 +52,10 @@
     .arrow-text {
       @apply com-ml-2 com-text-lg com-font-bold com-text-Yankees-Blue com-flex-shrink-0;
     }
+
+    // .register-now-text {
+    //   @apply com-hidden md:com-flex;
+    // }
 
     @media screen and (min-width: 800px) {
       a {

@@ -38,7 +38,7 @@
           <span *ngIf="form.is_paid" class="price">{{
             form.paid_ticket_setting.price / 100 | currency : form.paid_ticket_setting.currency
           }}</span>
-          <span>{{
+          <span *appBreakpoints="'>md'" class="register-now-text">{{
             form.registration_type.name === ERegistationTypes.FEEDBACK
               ? 'Give Feedback'
               : form.registration_type.name === ERegistationTypes.COMMUNICATION
