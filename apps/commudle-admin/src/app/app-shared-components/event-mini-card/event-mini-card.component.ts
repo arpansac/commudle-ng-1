@@ -43,8 +43,10 @@ export class EventMiniCardComponent implements OnInit {
   }
 
   getCommunity() {
-    this.communitiesService.pGetCommunityDetails(this.attendedEvent.kommunity_id).subscribe((data) => {
-      this.community = data;
-    });
+    if (this.attendedEvent && this.attendedEvent.community) {
+      this.communitiesService.pGetCommunityDetails(this.attendedEvent.community.slug).subscribe((data) => {
+        this.community = data;
+      });
+    }
   }
 }
