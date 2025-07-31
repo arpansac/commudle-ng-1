@@ -148,6 +148,19 @@
       >
         Save & Send Test Emails
       </button>
+      <a
+        [routerLink]="
+          parentType === EDbModels.KOMMUNITY
+            ? '/communities/' + parentId + '/newsletters/' + pageSlug
+            : '/orgs/' + parentId + '/newsletters/' + pageSlug
+        "
+        target="_blank"
+        nbButton
+        status="primary"
+      >
+        Preview Newsletter
+        <nb-icon icon="external-link"></nb-icon>
+      </a>
     </div>
     <div class="back-button" (click)="backPage()">
       <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon> Back to list of newsletter
