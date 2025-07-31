@@ -294,6 +294,22 @@
         </form>
       </div>
 
+      <div class="tags">
+        <div>
+          <label fullWidth>
+            Tags*
+            <app-tag
+              (tagAdd)="onTagAdd($event)"
+              (tagDelete)="onTagDelete($event)"
+              [backgroundColor]="'com-bg-tAnti-Flash'"
+              [editable]="true"
+              [fontColor]="'com-text-tYankees-Blue'"
+              [tags]="tags"
+            ></app-tag>
+          </label>
+        </div>
+      </div>
+
       <button
         (click)="createOrUpdate()"
         [disabled]="hackathonForm.invalid || isLoading"
