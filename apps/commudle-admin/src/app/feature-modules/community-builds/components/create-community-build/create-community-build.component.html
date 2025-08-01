@@ -67,15 +67,25 @@
                   type="text"
                 />
               </label>
-              <span
-                *ngIf="
-                  communityBuildForm.get('name').touched &&
-                  communityBuildForm.get('name').invalid &&
-                  communityBuildForm.get('name').errors.required
-                "
-              >
-                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+              <span *ngIf="communityBuildForm.get('name').touched && communityBuildForm.get('name').invalid">
+                <commudle-alert
+                  *ngIf="communityBuildForm.get('name').errors?.required"
+                  [errorMessage]="'Required Field'"
+                  [error]="true"
+                ></commudle-alert>
+                <commudle-alert
+                  *ngIf="communityBuildForm.get('name').errors?.maxlength"
+                  [errorMessage]="'Maximum 100 characters allowed'"
+                  [error]="true"
+                ></commudle-alert>
               </span>
+              <commudle-alert
+                *ngIf="
+                  communityBuildForm.get('name').touched && communityBuildForm.get('name').hasError('containsLink')
+                "
+                [errorMessage]="'Name cannot be a link'"
+                [error]="true"
+              ></commudle-alert>
             </div>
 
             <div *ngIf="hackathonUserResponses" class="field">
@@ -356,7 +366,14 @@
                 any changes, we'll reach out on your email!
               </p> -->
             </div>
-
+            <br />
+            <re-captcha
+              #captchaRef
+              [size]="'normal'"
+              (resolved)="onCaptchaResolved($event)"
+              [siteKey]="environment.recaptcha_site_key_v2"
+            >
+            </re-captcha>
             <div class="field actions">
               <!-- <button
                 (click)="submitForm(EPublishStatus.submitted)"
@@ -369,13 +386,7 @@
                 <nb-icon icon="checkmark"></nb-icon>
                 Submit For Approval
               </button> -->
-              <re-captcha
-                #captchaRef
-                [size]="'invisible'"
-                (resolved)="onCaptchaResolved($event)"
-                [siteKey]="environment.recaptcha_site_key_v2"
-              >
-              </re-captcha>
+
               <button (click)="submitForm(EPublishStatus.published)" nbButton status="primary" type="submit">
                 <nb-icon icon="cloud-upload"></nb-icon>
                 Publish

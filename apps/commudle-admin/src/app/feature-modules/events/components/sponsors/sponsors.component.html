@@ -1,21 +1,16 @@
 <nb-card class="sponsors">
   <nb-card-header>
     <h6>
-      <nb-icon icon="briefcase-outline"></nb-icon>
-      Sponsors
+      <nb-icon icon="briefcase-outline"></nb-icon> &nbsp; Sponsors
       <commudle-help-section [helpDictionaryName]="'event-sponsors'"></commudle-help-section>
     </h6>
   </nb-card-header>
   <nb-card-body>
+    <button (click)="openForm(sponsorFormTemplate)" *ngIf="event.editable" nbButton status="primary">
+      <nb-icon icon="plus"></nb-icon> &nbsp; <span>Add Sponsor</span>
+    </button>
     <div class="sponsors">
       <div class="event-sponsors">
-        <div (click)="openForm()" *ngIf="event.editable" class="new-sponsor-button clickable">
-          <p>
-            <nb-icon icon="plus"></nb-icon>
-            <br />
-            <span>Add Sponsor</span>
-          </p>
-        </div>
         <!-- list of sponsors -->
         <div *ngFor="let eventSponsor of sponsors; let i = index" class="event-sponsor">
           <div class="logo">
@@ -27,23 +22,17 @@
             />
           </div>
           <div class="details">
-            <p>
-              {{ eventSponsor.sponsor.name }}
+            <p class="name-link">
+              <span>{{ eventSponsor.sponsor.name }}</span>
               <br />
-              <small>
-                <a href="{{ eventSponsor.sponsor.link }}" target="_blank">{{ eventSponsor.sponsor.link }}</a>
-              </small>
+              <a [href]="eventSponsor.sponsor.link" target="_blank">{{ eventSponsor.sponsor.link }}</a>
             </p>
             <a
-              (click)="openConfirmDeleteDialog(sponsorFormTemplate, eventSponsor, i)"
+              (click)="openConfirmDeleteDialog(removeSponsorTemplate, eventSponsor, i)"
               *ngIf="event.editable"
               class="remove-sponsor-button clickable"
             >
-              <p>
-                <small>
-                  <nb-icon icon="close-circle-outline" status="danger"></nb-icon>
-                </small>
-              </p>
+              <nb-icon icon="close-circle-outline" status="danger"></nb-icon>
             </a>
           </div>
         </div>
@@ -52,90 +41,95 @@
   </nb-card-body>
 </nb-card>
 
-<ng-template #sponsorFormTemplate *ngIf="event.editable">
-  <nb-tabset class="new-event-sponsor-options">
-    <nb-tab tabTitle="Choose">
-      <div class="existing-sponsors">
-        <div
-          (click)="addExistingSponsor(sponsor.id)"
-          *ngFor="let sponsor of existingSponsors"
-          class="sponsor clickable"
-        >
-          <div class="logo">
-            <img alt="{{ sponsor.name }}" src="{{ sponsor.logo.url }}" title="{{ sponsor.name }}" />
+<ng-template #sponsorFormTemplate let-data let-ref="dialogRef">
+  <nb-card class="add-sponsor-container">
+    <nb-card-header>
+      <span class="heading">Add a sponsor</span>
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-tabset class="new-event-sponsor-options">
+        <nb-tab tabTitle="Choose">
+          <app-loading-spinner *ngIf="loadingExistingSponsors"></app-loading-spinner>
+          <div class="existing-sponsors" *ngIf="!loadingExistingSponsors">
+            <nb-card
+              (click)="addExistingSponsor(sponsor.id)"
+              *ngFor="let sponsor of existingSponsors"
+              class="sponsor-card"
+            >
+              <nb-card-body>
+                <div class="sponsor-logo">
+                  <img [alt]="sponsor.name" [src]="sponsor.logo.url" [title]="sponsor.name" />
+                </div>
+                <div class="sponsor-name" [title]="sponsor.name">{{ sponsor.name }}</div>
+              </nb-card-body>
+            </nb-card>
           </div>
-          <p class="name" nbTooltip="sponsor.link">
-            <small class="com-line-clamp-1">{{ sponsor.name }}</small>
-          </p>
-        </div>
-      </div>
-    </nb-tab>
-    <nb-tab [active]="existingSponsors.length === 0" tabTitle="Add New">
-      <form (ngSubmit)="createSponsor()" [formGroup]="sponsorForm">
-        <div class="logo field">
-          <div *ngIf="uploadedLogoImage" class="uploaded-logo">
-            <img alt="Profile Picture" src="{{ uploadedLogoImage }}" title="Profile Picture" />
-          </div>
+        </nb-tab>
+        <nb-tab [active]="!loadingExistingSponsors && existingSponsors.length === 0" tabTitle="Add New">
+          <form (ngSubmit)="createSponsor()" [formGroup]="sponsorForm" class="sponsor-form">
+            <div class="logo">
+              <div class="uploaded-logo-container">
+                <div *ngIf="uploadedLogoImage" class="uploaded-logo">
+                  <img alt="Profile Picture" src="{{ uploadedLogoImage }}" title="Profile Picture" />
+                </div>
+              </div>
 
-          <div class="delete-logo-button">
-            <button (click)="removeLogo()" *ngIf="uploadedLogoImage" nbButton outline size="tiny" status="danger">
-              <nb-icon icon="close-circle"></nb-icon>
-              Remove Logo
-            </button>
-          </div>
+              <div class="delete-logo-button">
+                <button (click)="removeLogo()" *ngIf="uploadedLogoImage" nbButton outline size="tiny" status="danger">
+                  <nb-icon icon="close-circle"></nb-icon>
+                  Remove Logo
+                </button>
+              </div>
 
-          <label [ngClass]="{ hidden: uploadedLogoImage }" class="clickable">
-            <span>
-              <span>
-                <nb-icon icon="image-outline"></nb-icon>
-              </span>
-              <span> Click to upload a Logo <small>(200x200)</small>* </span>
-            </span>
-            <input
-              (change)="displaySelectedLogo($event)"
-              accept="image/*"
-              formControlName="logo"
-              fullWidth
-              nbInput
-              type="file"
-            />
-          </label>
-        </div>
+              <label *ngIf="!uploadedLogoImage" class="clickable logo-image-uploader-container">
+                <span>
+                  <fa-icon [icon]="icons.faImage"></fa-icon>
+                  <span class="label-text"> Click to upload a logo (200x200)</span>
+                </span>
+                <input
+                  (change)="displaySelectedLogo($event)"
+                  accept="image/*"
+                  formControlName="logo"
+                  fullWidth
+                  nbInput
+                  type="file"
+                />
+              </label>
+            </div>
 
-        <div class="field">
-          <label fullWidth>
-            Name*
-            <input formControlName="name" fullWidth nbInput type="text" />
-          </label>
-        </div>
+            <div class="field">
+              <label> Name <span class="required">*</span> </label>
+              <input formControlName="name" fullWidth nbInput type="text" placeholder="Sponsor's name" />
+            </div>
 
-        <div class="field">
-          <label fullWidth>
-            Link
-            <input formControlName="link" fullWidth nbInput type="text" />
-          </label>
-        </div>
+            <div class="field">
+              <label> Link </label>
+              <input formControlName="link" fullWidth nbInput type="text" placeholder="https://..." />
+            </div>
 
-        <button [disabled]="!sponsorForm.valid" nbButton status="primary" type="submit">Submit</button>
-      </form>
-    </nb-tab>
-  </nb-tabset>
+            <button [disabled]="!sponsorForm.valid" nbButton status="primary" fullWidth type="submit">Submit</button>
+          </form>
+        </nb-tab>
+      </nb-tabset>
+    </nb-card-body>
+  </nb-card>
 </ng-template>
 
-<ng-template #sponsorFormTemplate let-ref="dialogRef" let-data>
+<ng-template #removeSponsorTemplate let-ref="dialogRef" let-data>
   <nb-card class="remove-sponsor-confirmation">
     <nb-card-header>
       <div>Remove Sponsor</div>
-      <button ghost nbButton size="small" (click)="ref.close()">
+      <button ghost nbButton size="small" shape="round" (click)="ref.close()">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body> Are you sure you want to remove this sponsor? </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="removeSponsor(data.sponsor_id, data.index); ref.close()">
-        Remove
-      </button>
-      <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
+      <button nbButton status="danger" (click)="removeSponsor(data.sponsor_id, data.index); ref.close()">Remove</button>
+      <button nbButton status="primary" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

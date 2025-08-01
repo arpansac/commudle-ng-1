@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
-import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, takeUntil } from 'rxjs';
+import { SeoService, ToastrService } from '@commudle/shared-services';
+import { ICommunityBuild } from '@commudle/shared-models';
+import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
-  selector: 'app-my-community-builds',
+  selector: 'commudle-my-community-builds',
   templateUrl: './my-community-builds.component.html',
   styleUrls: ['./my-community-builds.component.scss'],
 })
@@ -23,7 +22,7 @@ export class MyCommunityBuildsComponent implements OnInit, OnDestroy {
   constructor(
     private communityBuildsService: CommunityBuildsService,
     private seoService: SeoService,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private authWatchService: LibAuthwatchService,
     private appUsersService: AppUsersService,
   ) {}

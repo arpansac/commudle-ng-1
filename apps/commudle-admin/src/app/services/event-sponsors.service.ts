@@ -1,68 +1,54 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
-import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
-import { IEventUpdates } from 'apps/shared-models/event_updates.model';
-import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsors } from 'apps/shared-models/sponsors.model';
-import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { IEventSponsors } from 'apps/shared-models/event_sponsors.model';
+import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventSponsorsService {
-
-  constructor(
-    private http: HttpClient,
-    private apiRoutesService: ApiRoutesService
-  ) { }
-
+  constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
 
   index(eventId): Observable<IEventSponsors> {
-    let params = new HttpParams().set('event_id', eventId);
-    return this.http.get<IEventSponsors>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.INDEX), {params}
-    );
+    const params = new HttpParams().set('event_id', eventId);
+    return this.http.get<IEventSponsors>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.INDEX), { params });
   }
 
   create(eventId, formData): Observable<IEventSponsor> {
-    let params = new HttpParams().set('event_id', eventId);
-    return this.http.post<IEventSponsor>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.CREATE), formData, {params}
-    );
+    const params = new HttpParams().set('event_id', eventId);
+    return this.http.post<IEventSponsor>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.CREATE), formData, {
+      params,
+    });
   }
 
   addExistingSponsor(eventId, sponsorId): Observable<IEventSponsor> {
-    let params = new HttpParams().set('event_id', eventId).set('sponsor_id', sponsorId);
+    const params = new HttpParams().set('event_id', eventId).set('sponsor_id', sponsorId);
     return this.http.post<IEventSponsor>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.ADD_EXISTING_SPONSOR), {}, {params}
+      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.ADD_EXISTING_SPONSOR),
+      {},
+      { params },
     );
   }
 
   destroy(eventSponsorId): Observable<any> {
-    let params = new HttpParams().set('event_sponsor_id', eventSponsorId);
-    return this.http.delete<any>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.DESTROY), {params}
-    );
+    const params = new HttpParams().set('event_sponsor_id', eventSponsorId);
+    return this.http.delete<any>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.DESTROY), { params });
   }
-
 
   getExistingSponsors(eventId): Observable<ISponsors> {
-    let params = new HttpParams().set('event_id', eventId);
-    return this.http.get<ISponsors>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.EXISTING_SPONSORS), {params}
-    );
+    const params = new HttpParams().set('event_id', eventId);
+    return this.http.get<ISponsors>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.EXISTING_SPONSORS), {
+      params,
+    });
   }
-
 
   pIndex(eventId): Observable<IEventSponsors> {
-    let params = new HttpParams().set('event_id', eventId);
-    return this.http.get<IEventSponsors>(
-      this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.PUBLIC.INDEX), {params}
-    );
+    const params = new HttpParams().set('event_id', eventId);
+    return this.http.get<IEventSponsors>(this.apiRoutesService.getRoute(API_ROUTES.EVENT_SPONSORS.PUBLIC.INDEX), {
+      params,
+    });
   }
-
 }

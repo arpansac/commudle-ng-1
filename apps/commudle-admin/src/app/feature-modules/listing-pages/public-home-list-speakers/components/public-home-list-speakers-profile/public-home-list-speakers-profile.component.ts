@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ListingPagesFilterTypes } from 'apps/shared-models/enums/listing-pages-filter-types';
+import { Output, EventEmitter } from '@angular/core';
+
 @Component({
   selector: 'commudle-public-home-list-speakers-profile',
   templateUrl: './public-home-list-speakers-profile.component.html',
@@ -37,12 +38,13 @@ export class PublicHomeListSpeakersProfileComponent implements OnInit {
   seoTitle: string;
   listingPagesFilterTypes = ListingPagesFilterTypes;
 
+  @Output() seoTitleChange = new EventEmitter<string>();
+
   constructor(
     private communitiesService: CommunitiesService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location,
-    private seoService: SeoService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -90,15 +92,10 @@ export class PublicHomeListSpeakersProfileComponent implements OnInit {
   }
 
   updateSeoTitle() {
-    this.seoTitle = this.query
-      ? `${this.query} - Speakers for your community events`
-      : 'Speakers - Find & Connect With Tech & Design Speakers';
-
-    this.seoService.setTags(
-      this.seoTitle,
-      'All the tech speakers from developer communities at one place, from web development, android to ML and AI, find a speaker for your next event or connect with them to learn the latest updates in tech.',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    if (this.query) {
+      this.seoTitle = `${this.query} - Speakers for your community events`;
+    }
+    this.seoTitleChange.emit(this.seoTitle);
   }
 
   updateFilter() {

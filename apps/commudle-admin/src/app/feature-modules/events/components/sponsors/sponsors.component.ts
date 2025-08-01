@@ -6,46 +6,45 @@ import {
   OnDestroy,
   OnInit,
   TemplateRef,
-  ViewChild,
 } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { NbDialogService, NbWindowService } from '@commudle/theme';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsor } from 'apps/shared-models/sponsor.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { ActivatedRoute } from '@angular/router';
 import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
 import { Subscription } from 'rxjs';
 import { IEvent, ICommunity } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
+import { SeoService, ToastrService } from '@commudle/shared-services';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-sponsors',
+  selector: 'commudle-sponsors',
   templateUrl: './sponsors.component.html',
   styleUrls: ['./sponsors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SponsorsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
-  community: ICommunity;
 
+  community: ICommunity;
   existingSponsors: ISponsor[] = [];
   sponsors: IEventSponsor[] = [];
-  windowRef;
-
-  sponsorForm;
-
+  dialogRef: NbDialogRef<any>;
+  sponsorForm: FormGroup;
   uploadedLogoImageFile: File;
   uploadedLogoImage;
 
   subscriptions: Subscription[] = [];
+  loadingExistingSponsors = false;
 
-  @ViewChild('sponsorFormTemplate') sponsorFormTemplate: TemplateRef<any>;
+  readonly icons = {
+    faImage,
+  };
 
   constructor(
-    private windowService: NbWindowService,
     private fb: FormBuilder,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private eventSponsorsService: EventSponsorsService,
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
@@ -67,7 +66,6 @@ export class SponsorsComponent implements OnInit, OnDestroy {
         this.community = data.community;
         this.setMeta();
         this.getAllSponsors();
-        this.getPastSponsors();
       }),
     );
   }
@@ -84,17 +82,19 @@ export class SponsorsComponent implements OnInit, OnDestroy {
     });
   }
 
-  openForm() {
+  openForm(dialogRefTemplate: TemplateRef<any>) {
     this.sponsorForm.reset();
     this.uploadedLogoImageFile = null;
-    this.windowRef = this.windowService.open(this.sponsorFormTemplate, {
-      title: 'Add a Sponsor',
-    });
+    this.loadingExistingSponsors = true;
+    this.dialogRef = this.dialogService.open(dialogRefTemplate);
+    this.getPastSponsors();
   }
 
   getPastSponsors() {
+    this.loadingExistingSponsors = true;
     this.eventSponsorsService.getExistingSponsors(this.event.slug).subscribe((data) => {
       this.existingSponsors = data.sponsors;
+      this.loadingExistingSponsors = false;
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -102,7 +102,7 @@ export class SponsorsComponent implements OnInit, OnDestroy {
   addExistingSponsor(sponsorId) {
     this.eventSponsorsService.addExistingSponsor(this.event.slug, sponsorId).subscribe((data) => {
       this.sponsors.push(data);
-      this.windowRef.close();
+      this.dialogRef.close();
       this.toastLogService.successDialog(`${data.sponsor.name} added`, 3000);
       this.changeDetectorRef.markForCheck();
     });
@@ -121,7 +121,7 @@ export class SponsorsComponent implements OnInit, OnDestroy {
     }
     this.eventSponsorsService.create(this.event.slug, formData).subscribe((data) => {
       this.sponsors.push(data);
-      this.windowRef.close();
+      this.dialogRef.close();
       this.removeLogo();
       this.sponsorForm.reset();
       this.toastLogService.successDialog(`${data.sponsor.name} added`, 3000);

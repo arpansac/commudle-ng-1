@@ -3,10 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunity, IPageInfo } from '@commudle/shared-models';
-import { SeoService } from '@commudle/shared-services';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'commudle-communities-list',
@@ -35,12 +35,13 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   loadingData = false;
   loadingCommunities = false;
 
+  @Output() seoTitleChange = new EventEmitter<string>();
+
   constructor(
     private communitiesService: CommunitiesService,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    private seoService: SeoService,
   ) {
     this.options = ['Newest', 'Most Events', 'Most Members'];
     this.searchForm = this.fb.group({
@@ -89,13 +90,10 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   }
 
   updateSeoTitle() {
-    this.seoTitle = this.query ? `${this.query} - Developer Communities` : 'Developer Communities';
-
-    this.seoService.setTags(
-      this.seoTitle,
-      'Discover and join top developer communities on Commudle. Connect with peers, participate in events, hackathons, share knowledge & projects, and advance your career. Start building your network today!',
-      'https://commudle.com/assets/images/commudle-logo192.png',
-    );
+    if (this.query) {
+      this.seoTitle = `${this.query} - Developer Communities`;
+    }
+    this.seoTitleChange.emit(this.seoTitle);
   }
 
   getPopularCommunities(): void {

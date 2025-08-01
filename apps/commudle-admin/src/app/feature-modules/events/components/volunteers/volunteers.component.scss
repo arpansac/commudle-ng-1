@@ -33,14 +33,9 @@
   }
 }
 
-h6 {
-  @apply com-m-0 com-flex com-items-center;
+.teammate {
+  @apply com-font-bold com-text-lg com-m-0 com-mb-4;
 }
-
-p {
-  margin: 0;
-}
-
 table {
   @apply com-border-collapse com-w-3/5;
 }
@@ -52,4 +47,21 @@ th {
 
 nb-option {
   @apply com-bg-white;
+}
+
+.required-field {
+  @apply com-text-red-500;
+}
+
+input[fieldSize='medium'] {
+  @apply com-my-3;
+}
+label {
+  @apply com-w-full com-font-medium;
+}
+.alert {
+  @apply com-block com-mb-5;
+}
+.header {
+  @apply com-flex com-items-center;
 }

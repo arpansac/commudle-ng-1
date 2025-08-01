@@ -49,7 +49,7 @@ export class UpcomingHackathonsComponent implements OnInit {
 
   setSchema() {
     for (const upcomingHackathon of this.upcomingHackathons) {
-      this.communitiesService.getCommunityDetails(upcomingHackathon.kommunity_slug).subscribe((data) => {
+      this.communitiesService.getCommunityDetails(upcomingHackathon.community.slug).subscribe((data) => {
         this.community = data;
       });
       if (upcomingHackathon.start_date) {
@@ -67,7 +67,7 @@ export class UpcomingHackathonsComponent implements OnInit {
             url:
               environment.app_url +
               '/communities/' +
-              upcomingHackathon.kommunity_slug +
+              upcomingHackathon.community.slug +
               '/hackathons/' +
               upcomingHackathon.slug,
           };
@@ -89,7 +89,7 @@ export class UpcomingHackathonsComponent implements OnInit {
           organizer: {
             '@type': 'Organization',
             name: upcomingHackathon.name,
-            url: environment.app_url + '/communities/' + upcomingHackathon.kommunity_slug,
+            url: environment.app_url + '/communities/' + upcomingHackathon.community.slug,
           },
         });
       }

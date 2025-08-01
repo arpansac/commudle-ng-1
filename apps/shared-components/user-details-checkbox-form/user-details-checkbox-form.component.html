@@ -36,6 +36,16 @@
           <span class="checkmark"></span>
           Location
         </label>
+        <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('experience_level').value }">
+          <input type="checkbox" formControlName="experience_level" />
+          <span class="checkmark"></span>
+          Experience Level
+        </label>
+        <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('user_domain').value }">
+          <input type="checkbox" formControlName="user_domain" />
+          <span class="checkmark"></span>
+          User Domain
+        </label>
       </div>
     </div>
 

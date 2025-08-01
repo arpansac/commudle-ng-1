@@ -89,13 +89,15 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  ngOnChanges() {
+    if (this.user) {
+      this.userProfileManagerService.getProfile(this.user.username);
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  ngOnChanges() {
-    this.userProfileManagerService.getProfile(this.user.username);
   }
 
   openEnableHiring() {

@@ -102,8 +102,8 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
     this.footerService.changeMiniFooterStatus(true);
   }
 
-  updateStatus(value) {
-    this.hackathonService.updateHackathonStatus(this.hackathon.id, value).subscribe((data) => {
+  updateStatus(hackathonStatus) {
+    this.hackathonService.updateHackathonStatus(this.hackathon.id, hackathonStatus.value).subscribe((data) => {
       if (data) {
         this.hackathon.status = data.status;
       }

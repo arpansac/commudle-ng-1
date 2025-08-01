@@ -1,6 +1,9 @@
 <commudle-listing-pages-layout>
   <div header>
-    <commudle-listing-page-header [parentType]="'communities'"></commudle-listing-page-header>
+    <commudle-listing-page-header
+      (seoPreviewImageRetrieved)="onSeoPreviewImageRetrieved($event)"
+      [parentType]="'communities'"
+    ></commudle-listing-page-header>
   </div>
   <div one-column *ngIf="isMobileView">
     <div class="publish-community-button">
@@ -21,7 +24,7 @@
         [parentType]="'communities'"
       ></commudle-public-home-list-events-speakers>
     </div>
-    <commudle-communities-list></commudle-communities-list>
+    <commudle-communities-list (seoTitleChange)="onSeoTitleChange($event)"></commudle-communities-list>
     <div class="tech-sessions">
       <commudle-public-home-list-events-tech-sessions></commudle-public-home-list-events-tech-sessions>
     </div>
@@ -33,7 +36,7 @@
   </div>
   <div main-column *ngIf="!isMobileView">
     <commudle-communities-featured></commudle-communities-featured>
-    <commudle-communities-list></commudle-communities-list>
+    <commudle-communities-list (seoTitleChange)="onSeoTitleChange($event)"></commudle-communities-list>
   </div>
   <div right-column>
     <div class="publish-community-button">

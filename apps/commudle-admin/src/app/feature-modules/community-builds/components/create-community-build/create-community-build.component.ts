@@ -138,7 +138,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     private authWatchService: AuthService,
   ) {
     this.communityBuildForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(100), this.noLinkValidator()]],
       build_type: ['', Validators.required],
       description: ['', Validators.required],
       publish_status: [EPublishStatus.draft, Validators.required],
@@ -147,6 +147,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
       video_iframe: ['', [this.embedded()]],
       team: this.fb.array([]),
     });
+
     this.communityBuildUpdateForm = this.fb.group({
       update: this.fb.array([]),
     });
@@ -158,6 +159,14 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   get updateList() {
     return this.communityBuildUpdateForm.get('update') as FormArray;
+  }
+
+  private noLinkValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const value: string = control.value || '';
+      const urlPattern = /(https?:\/\/|www\.)\S+/i;
+      return urlPattern.test(value) ? { containsLink: true } : null;
+    };
   }
 
   ngOnInit() {
@@ -384,20 +393,28 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   createCommunityBuild(publishStatus: EPublishStatus) {
     if (this.isSubmitting) return;
+
     if (!this.recaptchaToken) {
-      this.captchaRef.execute(); // Trigger invisible reCAPTCHA
+      this.isSubmitting = false;
+      this.toastLogService.errorDialog('Please complete the reCAPTCHA before submitting.');
       return;
     }
     this.isSubmitting = true;
-    this.communityBuildsService
-      .create(this.buildFormData(publishStatus), this.parentId, this.parentType)
-      .subscribe((data: ICommunityBuild) => {
+    this.communityBuildsService.create(this.buildFormData(publishStatus), this.parentId, this.parentType).subscribe(
+      (data: ICommunityBuild) => {
         this.cBuild = data;
         this.submitTags();
         if (this.communityBuildUpdateForm.value) {
           this.saveUpdates(this.cBuild);
         }
-      });
+        this.isSubmitting = false;
+      },
+      (error) => {
+        this.isSubmitting = false;
+        this.recaptchaToken = null;
+        this.toastLogService.errorDialog('Submission failed. Please try again.');
+      },
+    );
   }
 
   updateCommunityBuild(publishStatus: EPublishStatus) {
@@ -478,10 +495,6 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   onCaptchaResolved(token: string | null) {
     if (typeof token === 'string' && token.length > 0) {
       this.recaptchaToken = token;
-      // Only call createLab if not already submitting
-      if (!this.isSubmitting) {
-        this.createCommunityBuild(EPublishStatus.published);
-      }
     } else {
       this.recaptchaToken = null;
     }

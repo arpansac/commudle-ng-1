@@ -5,7 +5,7 @@
   <div class="date-registered-text">
     <div class="event-start-date">
       <fa-icon [icon]="icons.faCalendarDays"></fa-icon>&nbsp;
-      <span>{{ moment(event.start_date).format('MMM DD, YYYY') }}</span>
+      <span>{{ moment(event.start_time).format('MMM DD, YYYY') }}</span>
     </div>
     <div class="registered-text" *ngIf="showRegisteredIcon">
       <fa-icon [icon]="icons.faCircleCheck"></fa-icon>&nbsp;You're Registered

@@ -33,6 +33,13 @@ export interface ICommunityBuildSearch extends ICommunityBuild {
   type: string;
 }
 
+export interface ICommunityBuildStats {
+  unique_visitors: number;
+  total_visitors: number;
+  total_votes: number;
+  total_comments: number;
+}
+
 export enum EBuildType {
   project = 'project',
   // product = 'product',
@@ -51,11 +58,12 @@ export enum EPublishStatus {
 
 export { EPublishStatus as ECommunityBuildPublishStatus };
 
-enum EPublishStatusColors {
+export enum EPublishStatusColors {
   draft = 'com-bg-orange-500',
   submitted = 'com-bg-primary-500',
   published = 'com-bg-lime-300',
   flagged = 'com-bg-red-500',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   removed = 'com-bg-red-500',
 }
 

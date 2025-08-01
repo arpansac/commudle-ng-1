@@ -32,6 +32,7 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { Subscription } from 'rxjs';
+import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feature-modules/events/store/event-data-form-entity-groups.store';
 
 @Component({
   selector: 'app-event-dashboard',
@@ -81,6 +82,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     private windowService: NbWindowService,
     private footerService: FooterService,
     public sidebarService: SidebarService,
+    private edfegStore: EventDataFormEntityGroupsStore,
   ) {}
 
   ngOnInit() {
@@ -108,6 +110,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(false);
     this.footerService.changeMiniFooterStatus(true);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.edfegStore.clearEventDataFormEntityGroups();
   }
 
   copyTextToClipboard(): void {

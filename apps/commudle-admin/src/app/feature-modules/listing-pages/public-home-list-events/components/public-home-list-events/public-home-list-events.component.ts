@@ -9,16 +9,26 @@ import { SeoService } from 'apps/shared-services/seo.service';
 })
 export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
+  seoPreviewImage: string;
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
     this.isMobileView = window.innerWidth <= 640;
+    this.setMeta();
+  }
+
+  onSeoPreviewImageRetrieved(image) {
+    this.seoPreviewImage = image;
+    this.setMeta();
+  }
+
+  setMeta() {
     this.seoService.setTags(
       'Tech Events - Find Workshops, Hackathons & Meetups Near You',
       'Register and attend tech events on web development, devops, design, machine learning, AI, app development and more by developer communities. Find and network with tech experts.',
-      'https://commudle.com/assets/images/commudle-logo192.png',
+      this.seoPreviewImage ? this.seoPreviewImage : 'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }
 
