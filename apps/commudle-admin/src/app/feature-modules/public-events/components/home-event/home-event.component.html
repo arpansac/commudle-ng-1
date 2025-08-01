@@ -204,12 +204,12 @@
                 {{ momentTimezone.tz(event.timezone).format('z') }}
               </strong>
             </ng-template>
-            <div *ngIf="event.interested_members_count" class="attending-members">
-              <app-attending-members
-                (hasInterestedMembers)="hasInterestedMembers = $event"
-                [community]="community"
-                [event]="event"
-              ></app-attending-members>
+            <div *ngIf="interestedUsersCount" class="attending-members">
+              <commudle-interested-members
+                [users]="interestedUsers"
+                [totalCount]="interestedUsersCount"
+                [showHeading]="false"
+              ></commudle-interested-members>
             </div>
             <div *ngIf="moment() >= moment(event.start_time)" class="view-attended-members-button">
               <button
