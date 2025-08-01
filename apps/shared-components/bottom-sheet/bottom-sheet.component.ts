@@ -15,8 +15,8 @@ export class BottomSheetComponent {
   }
 
   onBackdropClick(event: Event) {
-    // if (event.target === event.currentTarget) {
-    //   this.onClose();
-    // }
+    if (event.target === event.currentTarget) {
+      this.onClose();
+    }
   }
 }
