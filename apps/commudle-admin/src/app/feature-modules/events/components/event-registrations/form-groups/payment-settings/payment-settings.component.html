@@ -23,7 +23,7 @@
     <table>
       <tr>
         <td>Price</td>
-        <td>{{ paymentData.currency === 'inr' ? '₹' : '$' }} {{ paymentData.price / 100 }}</td>
+        <td>{{ paymentData.price / 100 | currency : paymentData.currency }}</td>
       </tr>
       <tr>
         <td>Account</td>
@@ -72,7 +72,7 @@
                   }"
                 >
                   <!-- <option value="" disabled>Currency</option> -->
-                  <option value="inr">INR</option>
+                  <option value="INR">INR</option>
                   <!-- <option value="usd">USD</option> -->
                 </select>
               </div>
@@ -152,7 +152,7 @@
               [info]="true"
               [message]="
                 'Commudle fees for this ticket will be 1% + GST' +
-                ((paidTicketingForm.controls.paid_ticket_setting.get('currency').value === 'inr' ? '₹' : '$') +
+                ((paidTicketingForm.controls.paid_ticket_setting.get('currency').value === 'INR' ? '₹' : '$') +
                   this.commudleFeeAmount)
               "
             ></commudle-alert>

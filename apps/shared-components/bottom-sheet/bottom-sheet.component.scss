@@ -1,6 +1,6 @@
 .bottom-sheet-overlay {
-  @apply com-fixed com-inset-0 com-bottom-[68px] com-z-50 com-flex com-items-end com-bg-[#36445566] com-bg-opacity-100;
-  // #364455
+  @apply com-fixed com-inset-0 com-bottom-[68px] com-z-50 com-flex com-items-end com-bg-[#364455] com-bg-opacity-100;
+  // #364455 #36445566
 }
 
 .bottom-sheet {
@@ -9,5 +9,5 @@
 }
 
 hr {
-  @apply com-border-t com-border-gray-300 com-my-4 com-w-12 com-h-1 com-flex-shrink-0 com-rounded-sm;
+  @apply com-border-t-3 com-border-gray-200 com-my-4 com-w-12 com-flex-shrink-0 com-rounded-sm;
 }

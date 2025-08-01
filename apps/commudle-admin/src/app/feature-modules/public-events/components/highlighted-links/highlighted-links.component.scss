@@ -24,9 +24,16 @@
       }
     }
 
-    .form-name-container,
-    .register-now-container {
+    .form-name-container {
       @apply com-flex com-items-center;
+
+      span {
+        @apply com-flex com-items-center;
+      }
+    }
+
+    .register-now-container {
+      @apply com-flex com-items-center com-flex-shrink-0;
 
       span {
         @apply com-flex com-items-center com-flex-shrink-0;
@@ -38,7 +45,7 @@
     }
 
     .form-name {
-      @apply com-truncate com-text-sm com-font-medium com-text-Yankees-Blue;
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-text-wrap;
     }
 
     .paid-form {
