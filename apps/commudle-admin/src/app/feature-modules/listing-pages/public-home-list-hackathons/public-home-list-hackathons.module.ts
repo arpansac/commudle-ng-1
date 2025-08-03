@@ -9,6 +9,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { CommunityBuildsModule } from 'apps/commudle-admin/src/app/feature-modules/community-builds/community-builds.module';
 import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-events/public-home-list-events.module';
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
+import { PublicHomeListSpeakersModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
 
 @NgModule({
   declarations: [PublicHomeListHackathonsHomeageComponent],
@@ -22,6 +23,7 @@ import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modu
     SharedComponentsModule,
     PublicHomeListEventsModule,
     SkeletonCardsComponent,
+    PublicHomeListSpeakersModule,
   ],
   exports: [PublicHomeListHackathonsHomeageComponent],
 })

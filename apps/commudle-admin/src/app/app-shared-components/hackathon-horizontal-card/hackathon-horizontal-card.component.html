@@ -72,8 +72,7 @@
             <div class="prize-register-btn">
               <div *ngIf="totalPrizes?.length > 0" class="prize-money">
                 <fa-icon [icon]="faSackDollar"></fa-icon>
-                <span>{{ totalPrizes[0].currency.symbol }}</span>
-                <span>{{ totalPrizes[0].amount }}</span>
+                <span>{{ totalPrizes[0].amount | currency : totalPrizes[0].currency.symbol }}</span>
               </div>
               <button nbButton status="info" shape="semi-round" size="large" outline class="register-button">
                 Register
