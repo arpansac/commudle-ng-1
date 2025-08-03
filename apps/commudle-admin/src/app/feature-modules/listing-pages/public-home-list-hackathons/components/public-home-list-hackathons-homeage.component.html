@@ -3,6 +3,12 @@
     <commudle-listing-page-header [parentType]="'hackathons'"></commudle-listing-page-header>
   </div>
   <div one-column *ngIf="isMobileView">
+    <div class="publish-hackathon-button">
+      <a [routerLink]="['/pricing']" nbButton size="giant" class="button">
+        <nb-icon icon="plus"></nb-icon>
+        Start your hackathon
+      </a>
+    </div>
     <app-skeleton-cards
       *ngIf="showSpinnerUpcoming"
       [ImageShapeCircle]="false"
@@ -105,6 +111,12 @@
     </div>
   </div>
   <div right-column class="right-column">
+    <div class="publish-hackathon-button">
+      <a [routerLink]="['/pricing']" nbButton size="giant" class="button">
+        <nb-icon icon="plus"></nb-icon>
+        Start your hackathon
+      </a>
+    </div>
     <div class="featured-communities">
       <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
     </div>
