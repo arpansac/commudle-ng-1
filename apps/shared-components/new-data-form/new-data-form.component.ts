@@ -48,6 +48,11 @@ export class NewDataFormComponent implements OnInit {
 
   menuItem = [
     {
+      title: 'Add Description',
+      icon: 'file-text-outline',
+      // data: { action: 'addDescription' },
+    },
+    {
       title: 'Add Question Below',
       icon: 'plus-circle-outline',
     },
@@ -260,6 +265,9 @@ export class NewDataFormComponent implements OnInit {
       )
       .subscribe((menu) => {
         switch (menu.title) {
+          case 'Add Description':
+            this.toggleDescriptionField(this.questionContextMenuIndex);
+            break;
           case 'Add Question Below':
             this.addQuestionButtonClick(this.questionContextMenuIndex + 1);
             break;

@@ -66,28 +66,6 @@
         @apply com-mt-1 com-mb-0;
       }
 
-      .add-description-button {
-        @apply com-mt-3 com-mb-0 com-p-0 com-text-sm com-justify-start;
-        width: max-content;
-
-        nb-icon {
-          @apply com-mr-1;
-        }
-      }
-
-      .description-textbox {
-        @apply com-m-0;
-      }
-
-      .question-settings {
-        @apply com-flex com-flex-col com-font-semibold com-text-xl com-justify-start com-flex-wrap;
-
-        label {
-          @apply com-flex com-flex-col com-font-semibold com-text-xl com-mb-4;
-          margin-right: 1.5rem;
-        }
-      }
-
       .choices-container {
         @apply com-flex com-flex-col com-font-semibold com-text-xl com-justify-start;
 
@@ -111,7 +89,7 @@
       @apply com-flex com-space-x-2 com-items-center com-mt-12 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-text-black com-relative com-right-2;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -119,10 +97,10 @@
       }
 
       .toggle {
-        @apply md:com-border-l com-border-Bright-Gray com-border-solid md:com-pl-3 com-border-y-0 com-border-r-0 com-text-primary-500
-        com-text-sm com-font-medium com-border-0 com-pl-0;
+        @apply md:com-border-l com-border-Bright-Gray com-border-solid md:com-pl-3 com-border-y-0 com-border-r-0
+        com-text-sm com-font-medium com-border-0 com-pl-0 com-flex md:com--ml-2;
         span {
-          @apply com-text-primary-500;
+          @apply com-text-black;
         }
       }
 
@@ -154,14 +132,47 @@
         .context-menu {
           @apply com-flex;
         }
+        .dropdown {
+          @apply com-w-80;
+        }
       }
     }
   }
 }
 
-.dropdown {
-  @apply com-w-max com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-rounded-md com-cursor-pointer com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-my-2;
-  select {
-    @apply com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer;
+.required-text {
+  @apply com-text-black;
+}
+.description-textbox {
+  @apply com-mt-3 com-w-full;
+}
+.field {
+  @apply com-flex com-gap-x-4 com-mt-4;
+
+  .add-description-button {
+    @apply com-bg-white com-text-black md:com-flex com-hidden;
+    nb-icon {
+      @apply com-mr-1;
+    }
   }
+
+  .question-settings {
+    @apply com-font-semibold com-text-xl com-justify-start;
+
+    .dropdown {
+      @apply com-flex com-items-center com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded hover:com-bg-[#eef2f7]/50;
+      select {
+        @apply com-border-0 com-bg-white hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-text-xs;
+      }
+    }
+  }
+}
+.required-choice {
+  @apply com-mt-5 com-w-full com-flex;
+}
+.required-cross {
+  @apply com-ml-2 com-mt-4 com-text-red-500 com-size-6;
+}
+.add-choice-button {
+  @apply com-mt-3;
 }
