@@ -177,7 +177,7 @@
                         class="choices-container"
                         formArrayName="question_choices"
                       >
-                        <div class="choice-container com-flex com-items-center">
+                        <div class="required-title">
                           <div [formGroupName]="chi" class="required-choice">
                             <input
                               formControlName="title"
@@ -224,7 +224,7 @@
                 </div>
 
                 <div class="question-form-footer">
-                  <div class="com-align-middle com-flex com-relative com-right-4">
+                  <div class="required-below">
                     <button
                       (click)="addQuestionButtonClick(i + 1)"
                       class="footer-icons add-question-footer"
