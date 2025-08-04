@@ -1,29 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
-import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
-import { IFixedEmails } from 'apps/shared-models/fixed-emails.model';
-
-
+import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
+import { ICommunityBuildStats } from '@commudle/shared-models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StatsCommunityBuildsService {
+  constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
 
-  constructor(
-    private http: HttpClient,
-    private apiRoutesService: ApiRoutesService
-  ) { }
-
-
-
-  userEngagement(communityBuildId): Observable<any> {
-    let params = new HttpParams().set('community_build_id', communityBuildId);
-    return this.http.get<any>(
-      this.apiRoutesService.getRoute(API_ROUTES.STATS.COMMUNITY_BUILDS.USER_ENGAGEMENT), { params }
+  userEngagement(communityBuildId): Observable<ICommunityBuildStats> {
+    const params = new HttpParams().set('community_build_id', communityBuildId);
+    return this.http.get<ICommunityBuildStats>(
+      this.apiRoutesService.getRoute(API_ROUTES.STATS.COMMUNITY_BUILDS.USER_ENGAGEMENT),
+      {
+        params,
+      },
     );
   }
-
 }

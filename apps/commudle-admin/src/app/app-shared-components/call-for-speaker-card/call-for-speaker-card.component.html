@@ -3,14 +3,14 @@
     <div *ngIf="item.event.header_image_path">
       <div *appBreakpoints="'>lg'" class="cfp-card-image">
         <commudle-banner-image
-          [headerImagePath]="item.event.header_image_path"
+          [headerImagePath]="item.event.header_image?.i320"
           [name]="item.name"
           [aspectRatio]="'2/1'"
         ></commudle-banner-image>
       </div>
       <div *appBreakpoints="'<=lg'" class="cfp-card-image">
         <commudle-banner-image
-          [headerImagePath]="item.event.header_image_path"
+          [headerImagePath]="item.event.header_image?.i320"
           [name]="item.name"
           [bottomRightCurve]="false"
           [bottomLeftCurve]="false"

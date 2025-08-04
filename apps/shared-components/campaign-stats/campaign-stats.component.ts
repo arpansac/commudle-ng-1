@@ -366,8 +366,7 @@ export class CampaignStatsComponent implements OnInit {
 
     const options = {
       displayMode: 'markers',
-      region: 'IN', // Focus on India
-      resolution: 'provinces', // Highlights states instead of individual points
+      resolution: 'countries', // Show countries instead of provinces
       colorAxis: { colors: ['#70a1ff', '#1e90ff'] }, // Gradient colors
       backgroundColor: '#f4f4f4', // Light grey background
       datalessRegionColor: '#dddddd', // Grey for areas with no data
@@ -377,7 +376,7 @@ export class CampaignStatsComponent implements OnInit {
       explorer: {
         actions: ['dragToZoom', 'rightClickToReset'], // Enable zoom and pan
         keepInBounds: true, // Prevent users from panning too far
-        zoomDelta: 1.2, // Zoom step
+        zoomDelta: 2, // Zoom step
       },
     };
 
