@@ -1,78 +1,73 @@
-nb-card {
-  @apply com-m-0 md:com-border-0 com-border com-border-solid com-border-Bright-Gray;
-  nb-card-body {
-    @apply com-p-0;
-    .upcoming-card {
-      @apply com-p-0;
-      .upcoming-card-link {
-        @apply com-flex com-w-full com-no-underline md:com-flex-row com-flex-col;
+.upcoming-card {
+  @apply com-m-0 md:com-border-0 com-border com-border-solid com-border-Bright-Gray com-p-0 com-rounded-md;
 
-        .upcoming-card-image {
-          @apply com-border-r-gray-200 com-flex com-justify-center com-items-center com-overflow-hidden md:com-w-[310px] md:com-h-[116px] com-w-full com-h-full;
-        }
+  .upcoming-card-link {
+    @apply com-flex com-w-full com-no-underline md:com-flex-row com-flex-col;
 
-        .no-image-header {
-          @apply md:com-w-[310px] md:com-h-[116px] com-w-full com-h-[145px] com-flex com-items-center com-justify-center;
+    .upcoming-card-image {
+      @apply com-border-r-gray-200 com-flex com-justify-center com-items-center com-overflow-hidden md:com-w-[310px] md:com-h-[116px] com-w-full com-h-full;
+    }
 
-          nb-icon {
-            @apply com-text-5xl;
-          }
-        }
+    .no-image-header {
+      @apply md:com-w-[310px] md:com-h-[116px] com-w-full com-h-[145px] com-flex com-items-center com-justify-center;
 
-        .upcoming-card-details-desktop {
-          @apply md:com-pl-4 md:com-py-3 md:com-pr-0 com-px-4 com-py-5 com-overflow-hidden com-flex com-flex-col com-justify-between;
-          flex: 1;
-          div {
-            @apply com-flex com-flex-col;
+      nb-icon {
+        @apply com-text-5xl;
+      }
+    }
 
-            .title-interested-members {
-              @apply com-flex com-flex-row com-justify-between com-items-center;
-            }
-          }
+    .upcoming-card-details-desktop {
+      @apply md:com-pl-4 md:com-py-3 md:com-pr-0 com-px-4 com-py-5 com-overflow-hidden com-flex com-flex-col com-justify-between;
+      flex: 1;
+      div {
+        @apply com-flex com-flex-col;
 
-          .badge-register-prize-buttons {
-            @apply com-flex com-flex-row com-justify-between com-items-center;
-          }
-
-          .register-button {
-            @apply com-border com-m-0 com-bg-transparent com-py-5px com-flex md:com-ml-auto com-ml-0 com-px-6px;
-          }
-
-          .prize-money {
-            @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-gray-50  com-text-American-Orange;
-            fa-icon {
-              @apply com-text-sm com-mr-1;
-            }
-
-            span {
-              @apply com-text-xs com-font-semibold;
-            }
-          }
-
-          .prize-register-btn {
-            @apply com-flex com-flex-row com-items-center com-ml-auto;
-          }
-        }
-
-        .hackathon-badge {
-          @apply com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
+        .title-interested-members {
+          @apply com-flex com-flex-row com-justify-between com-items-center;
         }
       }
+
+      .badge-register-prize-buttons {
+        @apply com-flex com-flex-row com-justify-between com-items-center;
+      }
+
+      .register-button {
+        @apply com-border com-m-0 com-bg-transparent com-py-5px com-flex md:com-ml-auto com-ml-0 com-px-6px;
+      }
+
+      .prize-money {
+        @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-gray-50  com-text-American-Orange;
+        fa-icon {
+          @apply com-text-sm com-mr-1;
+        }
+
+        span {
+          @apply com-text-xs com-font-semibold;
+        }
+      }
+
+      .prize-register-btn {
+        @apply com-flex com-flex-row com-items-center com-ml-auto;
+      }
+    }
+
+    .hackathon-badge {
+      @apply com-absolute com-top-4 com-border com-left-6px com-border-solid com-border-tChocolate-Traditional com-rounded-3xl;
     }
   }
 }
 
 .upcoming-card-details-mobile {
-  @apply com-overflow-hidden com-flex com-flex-col;
+  @apply com-overflow-hidden com-flex com-flex-col com-pt-3;
   flex: 1;
 }
 
 .title {
-  @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-2 com-line-clamp-1 com-mr-3 md:com-px-0 com-px-3 md:com-pt-0 com-pt-3;
+  @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-2 com-line-clamp-1 com-mr-3 md:com-px-0 com-px-3 com-pt-0;
 }
 
 .time-community-badge {
-  @apply com-flex com-flex-row com-items-center com-justify-between com-mb-2 md:com-px-0 com-px-3;
+  @apply com-flex com-flex-row com-items-center com-justify-between com-mb-2 md:com-px-0 com-px-3 com-gap-2;
 }
 
 .interested-members-container {
@@ -80,7 +75,7 @@ nb-card {
 }
 
 .time {
-  @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500;
+  @apply md:com-text-sm com-text-xs com-font-medium com-m-0 com-text-gray-500  com-flex-shrink-0;
 }
 
 .prize-money-mobile-section {
