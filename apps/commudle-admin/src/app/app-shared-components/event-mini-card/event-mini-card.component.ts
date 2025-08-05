@@ -35,17 +35,18 @@ export class EventMiniCardComponent implements OnInit {
   faCheck = faCheck;
   environment = environment;
   moment = moment;
+  communitySlug: string | number;
 
   constructor(private communitiesService: CommunitiesService) {}
 
   ngOnInit(): void {
+    this.communitySlug =
+      this.attendedEvent.community?.slug || this.attendedEvent.kommunity_slug || this.attendedEvent.kommunity_id;
     this.getCommunity();
   }
 
   getCommunity() {
-    const communitySlug =
-      this.attendedEvent.community?.slug || this.attendedEvent.kommunity_id || this.attendedEvent.kommunity_slug;
-    this.communitiesService.pGetCommunityDetails(communitySlug).subscribe((data) => {
+    this.communitiesService.pGetCommunityDetails(this.communitySlug).subscribe((data) => {
       this.community = data;
     });
   }
