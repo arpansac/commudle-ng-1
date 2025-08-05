@@ -89,7 +89,7 @@
       @apply com-flex com-space-x-2 com-items-center com-mt-12 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium com-text-black com-relative com-right-2;
+        @apply com-text-sm com-font-medium com-text-black;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -132,12 +132,6 @@
         .context-menu {
           @apply com-flex;
         }
-        // .dropdown {
-        //   @apply com-w-auto;
-        // }
-        // .select{
-        //   @apply com-w-auto;
-        // }
       }
     }
   }
@@ -173,15 +167,15 @@
 .required-choice {
   @apply com-mt-5 com-w-full com-flex;
 }
-.required-cross {
-  @apply com-ml-2 com-mt-5 com-text-red-500 com-size-6;
+.close-circle-outline {
+  @apply com-ml-2 com-mt-5 com-text-red-500 com-text-2xl;
 }
 .add-choice-button {
   @apply com-mt-3;
 }
 .required-below {
-  @apply com-align-middle com-flex com-relative com-right-2;
+  @apply com-align-middle com-flex;
 }
 .required-title {
-  @apply choice-container com-flex com-items-center;
+  @apply com-flex com-items-center;
 }

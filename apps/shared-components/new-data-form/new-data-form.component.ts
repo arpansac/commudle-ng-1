@@ -50,7 +50,6 @@ export class NewDataFormComponent implements OnInit {
     {
       title: 'Add Description',
       icon: 'file-text-outline',
-      // data: { action: 'addDescription' },
     },
     {
       title: 'Add Question Below',
