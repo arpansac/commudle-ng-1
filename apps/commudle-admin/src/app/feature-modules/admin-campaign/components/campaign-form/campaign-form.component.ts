@@ -39,7 +39,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   isEditMode = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router, private footerService: FooterService, public sidebarService: SidebarService) {
+  constructor(private router: Router, private footerService: FooterService, private sidebarService: SidebarService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
@@ -49,7 +49,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
-    this.sidebarService.setSidebarVisibility(this.sidebarEventName, false);
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
 
     if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
       this.subscriptions.push(

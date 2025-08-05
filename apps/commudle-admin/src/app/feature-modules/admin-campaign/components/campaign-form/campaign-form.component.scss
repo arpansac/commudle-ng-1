@@ -1,7 +1,7 @@
 section {
   @apply com-w-full com-bg-white com-min-h-screen com-flex;
   .sidebar {
-    @apply com-sticky com-top-16 com-h-[calc(100vh-70px)] com-w-0 md:com-w-[320px];
+    @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
     a {
       @apply com-text-inherit com-no-underline;
     }
