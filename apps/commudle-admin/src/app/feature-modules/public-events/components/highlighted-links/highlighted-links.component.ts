@@ -17,6 +17,15 @@ import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
+import {
+  faCommentDots,
+  faComments,
+  faMicrophone,
+  faPencil,
+  faUser,
+  faArrowRight,
+  faArrowUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-highlighted-links',
@@ -37,6 +46,17 @@ export class HighlightedLinksComponent implements OnInit {
   eventSimpleRegistration: IEventSimpleRegistration;
   userEventRegistration: IUserEventRegistration;
   currentRoute;
+  faUser = faUser;
+  faMicrophone = faMicrophone;
+  faCommentDots = faCommentDots;
+  faPencil = faPencil;
+  faComments = faComments;
+  faArrowRight = faArrowRight;
+
+  icons = {
+    faArrowRight,
+    faArrowUpRightFromSquare,
+  };
 
   constructor(
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
