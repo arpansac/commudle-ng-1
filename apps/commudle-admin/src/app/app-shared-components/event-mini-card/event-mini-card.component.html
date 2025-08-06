@@ -3,7 +3,7 @@
     <a
       [routerLink]="[
         '/communities',
-        attendedEvent.kommunity_slug,
+        community?.slug,
         cardType === 'hackathons' ? 'hackathons' : 'events',
         attendedEvent.slug
       ]"
