@@ -101,14 +101,13 @@
         [showExpandedButton]="false"
         heading="Advertisement Dashboard"
         [forWindow]="false"
-        [isExpanded]="true"
       >
         <ng-container *ngTemplateOutlet="sidebarContent"></ng-container>
       </commudle-sidebar>
     </div>
     <div class="mobile-view" *appBreakpoints="'<=md'">
       <commudle-sidebar
-        [expandedWidth]="ESidebarWidth.LARGE"
+        [expandedWidth]="ESidebarWidth.XL"
         [eventName]="sidebarEventName"
         [showExpandedButton]="false"
         heading="Advertisement Dashboard"
