@@ -1,1 +1,22 @@
-<p>forums-categories works!</p>
+<div class="categories-page">
+  <div class="categories-header">
+    <h1 class="categories-title">Categories</h1>
+    <button class="new-topic-btn" nbButton status="primary" (click)="openDialogBox()">
+      <nb-icon icon="plus"></nb-icon>
+      New Topic
+    </button>
+  </div>
+
+  <div class="forums-grid">
+    <div class="forum-card" *ngFor="let forum of forums$ | async">
+      <div class="forum-card-header">
+        <h3 class="forum-card-title">{{ forum.name }}</h3>
+        <nb-icon class="forum-card-arrow" icon="arrow-forward"></nb-icon>
+      </div>
+      <p class="forum-card-category">{{ forum.category }}</p>
+      <p class="forum-card-description">
+        {{ forum.description }}
+      </p>
+    </div>
+  </div>
+</div>

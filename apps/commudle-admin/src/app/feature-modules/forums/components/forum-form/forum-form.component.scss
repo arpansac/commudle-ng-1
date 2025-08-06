@@ -1,0 +1,8 @@
+nb-card {
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+  .form-field-container {
+    @apply com-my-6;
+  }
+}

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ForumStore, Forum, ForumCategory } from '../store';
 import { Observable } from 'rxjs';
+import { IForum } from '@commudle/shared-models';
+import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { NbDialogService } from '@commudle/theme';
+import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 
 @Component({
   selector: 'commudle-forums-categories',
@@ -8,17 +11,24 @@ import { Observable } from 'rxjs';
   styleUrls: ['./forums-categories.component.scss'],
 })
 export class ForumsCategoriesComponent implements OnInit {
-  categories$: Observable<ForumCategory[]>;
-  forums$: Observable<Forum[]>;
+  forums$: Observable<IForum[]>;
+  showNewTopicForm = false;
 
-  constructor(private forumStore: ForumStore) {}
+  constructor(private forumsStore: ForumsStore, private dialogService: NbDialogService) {}
 
   ngOnInit() {
-    this.categories$ = this.forumStore.categories$;
-    this.forums$ = this.forumStore.forums$;
+    this.forums$ = this.forumsStore.forums$;
   }
 
-  getForumsByCategory(categoryId: string): Forum[] {
-    return this.forumStore.getForumsByCategory(categoryId);
+  // openNewTopicForm() {
+  //   this.showNewTopicForm = true;
+  // }
+
+  // closeNewTopicForm() {
+  //   this.showNewTopicForm = false;
+  // }
+
+  openDialogBox() {
+    this.dialogService.open(ForumFormComponent);
   }
 }

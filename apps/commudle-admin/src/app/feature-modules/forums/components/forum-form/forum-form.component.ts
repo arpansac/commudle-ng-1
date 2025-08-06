@@ -1,43 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Forum, ForumCategory, ForumStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forum.store';
-import { Observable } from 'rxjs';
+import { NbDialogRef } from '@commudle/theme';
+import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 
 @Component({
   selector: 'commudle-forum-form',
   templateUrl: './forum-form.component.html',
-  styleUrls: ['./forum-form.component.css'],
+  styleUrls: ['./forum-form.component.scss'],
 })
 export class ForumFormComponent implements OnInit {
-  forumForm: FormGroup;
-  categories$: Observable<ForumCategory[]>;
-  loading$: Observable<boolean>;
+  @Output() formClosed = new EventEmitter<void>();
 
-  constructor(private fb: FormBuilder, private forumStore: ForumStore) {
-    this.forumForm = this.fb.group({
-      title: ['', Validators.required],
+  topicForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private forumsStore: ForumsStore,
+    private dialogRef: NbDialogRef<ForumFormComponent>,
+  ) {
+    this.topicForm = this.fb.group({
+      name: ['', Validators.required],
+      category: ['', Validators.required],
       description: ['', Validators.required],
-      categoryId: ['', Validators.required],
+      isPrivate: [false],
+      isReadonly: [false],
     });
   }
 
-  ngOnInit() {
-    this.categories$ = this.forumStore.categories$;
-    this.loading$ = this.forumStore.loading$;
-  }
+  ngOnInit() {}
 
   onSubmit() {
-    if (this.forumForm.valid) {
-      const forum: Forum = {
-        id: Date.now().toString(),
-        ...this.forumForm.value,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        postsCount: 0,
-        isActive: true,
+    if (this.topicForm.valid) {
+      const topicData = {
+        id: Date.now(),
+        name: this.topicForm.value.name,
+        description: this.topicForm.value.description,
+        category: this.topicForm.value.category,
+        is_private: this.topicForm.value.isPrivate,
+        is_readonly: this.topicForm.value.isReadonly,
+        created_at: new Date(),
+        posts_count: 0,
       };
-      this.forumStore.addForum(forum);
-      this.forumForm.reset();
+
+      this.forumsStore.addForum(topicData as any);
+      this.closeForm();
     }
+  }
+
+  addNewCategory() {
+    console.log('Add new category clicked');
+  }
+
+  closeForm() {
+    this.topicForm.reset();
+    this.dialogRef.close();
   }
 }
