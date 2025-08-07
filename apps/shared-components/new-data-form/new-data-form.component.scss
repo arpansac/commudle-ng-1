@@ -89,7 +89,7 @@
       @apply com-flex com-space-x-2 com-items-center com-mt-12 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium com-text-black;
+        @apply com-text-sm com-font-medium com-text-black com-pl-px com-mr-2;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -97,8 +97,8 @@
       }
 
       .toggle {
-        @apply md:com-border-l com-border-Bright-Gray com-border-solid md:com-pl-3 com-border-y-0 com-border-r-0
-        com-text-sm com-font-medium com-border-0 com-pl-0 com-flex md:com--ml-2;
+        @apply md:com-border-l com-border-Bright-Gray com-border-solid com-border-y-0 com-border-r-0
+        com-text-sm com-font-medium com-border-0 md:com-pl-4 com-pl-0 com-flex md:com--ml-2;
         span {
           @apply com-text-black;
         }
@@ -168,7 +168,7 @@
   @apply com-mt-5 com-w-full com-flex;
 }
 .close-circle-outline {
-  @apply com-ml-2 com-mt-5 com-text-red-500 com-text-2xl;
+  @apply com-ml-2 com-mt-5 com-text-red-500 com-h-5 com-w-5;
 }
 .add-choice-button {
   @apply com-mt-3;

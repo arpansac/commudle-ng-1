@@ -236,21 +236,12 @@
                       &nbsp; Add Question Below
                     </button>
                     <div class="toggles">
-                      <nb-checkbox
-                        class="md:com-pl-3 toggle"
-                        formControlName="required"
-                        labelPosition="right"
-                        size="tiny"
-                      >
+                      <nb-checkbox class="toggle" formControlName="required" labelPosition="right" size="tiny">
                         <span class="required-text">Required</span>
                       </nb-checkbox>
-                      <nb-checkbox
-                        class="toggle toggle-disable"
-                        formControlName="disabled"
-                        labelPosition="right"
-                        size="tiny"
-                      >
-                        <span> Disable this question </span>
+                      <nb-checkbox class="toggle-disable" formControlName="disabled" labelPosition="right" size="tiny">
+                        <span class="required-disable-laptop"> Disable this question </span>
+                        <span class="required-disable-mobile"> Disable question </span>
                       </nb-checkbox>
                     </div>
                   </div>
