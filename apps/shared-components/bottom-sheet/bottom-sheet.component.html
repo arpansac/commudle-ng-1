@@ -1,6 +1,6 @@
 <div *ngIf="isOpen" class="bottom-sheet-overlay" (click)="onBackdropClick($event)">
   <div class="bottom-sheet">
-    <hr />
+    <hr (click)="onClose()" />
     <ng-content></ng-content>
   </div>
 </div>
