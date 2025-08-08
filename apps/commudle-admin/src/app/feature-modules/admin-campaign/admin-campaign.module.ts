@@ -15,7 +15,6 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { LinkyModule } from 'ngx-linky';
 import { AdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/admin-campaign/components/admin-campaign-stats/admin-campaign-stats.component';
-import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 
 @NgModule({
   imports: [
@@ -28,7 +27,6 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
     NewSharedComponentsModule,
     SharedPipesModule,
     LinkyModule,
-    SharedDirectivesModule,
 
     //Standalone components
     SidebarComponent,
