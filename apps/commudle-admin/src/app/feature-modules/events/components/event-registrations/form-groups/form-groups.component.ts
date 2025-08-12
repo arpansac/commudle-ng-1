@@ -116,9 +116,8 @@ export class FormGroupsComponent implements OnInit {
   }
 
   getEventDataFormEntityGroups() {
-    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
-      this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
-      this.edfegStore.setEventDataFormEntityGroups(this.eventDataFormEntityGroups);
+    this.edfegStore.eventDataFormEntityGroups$.subscribe((edfegs) => {
+      this.eventDataFormEntityGroups = edfegs;
       this.checkDiscountCode();
       this.changeDetectorRef.markForCheck();
     });
