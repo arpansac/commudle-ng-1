@@ -49,8 +49,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
-    const screenWidth = window.innerWidth;
-    this.isExpanded = screenWidth > 768;
+    this.isExpanded = window.innerWidth > 768;
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, this.isExpanded, true);
 
     this.subscriptions.push(
