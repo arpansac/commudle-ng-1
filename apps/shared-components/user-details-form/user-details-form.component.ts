@@ -27,8 +27,6 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   EDomain = EDomain;
   private destroy$ = new Subject<void>();
 
-  @ViewChild('autocompleteInput', { static: true }) autocompleteInput: ElementRef;
-
   constructor(
     private authWatchService: AuthService,
     private fb: FormBuilder,

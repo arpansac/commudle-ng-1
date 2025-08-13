@@ -20,7 +20,6 @@ import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
-import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 
 @Component({
   selector: 'commudle-public-hackathon-form',
@@ -71,7 +70,6 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
     private authWatchService: LibAuthwatchService,
     private appUsersService: AppUsersService,
     private dialogService: NbDialogService,
-    private userProfileManagerService: UserProfileManagerService,
   ) {}
 
   ngOnInit() {
