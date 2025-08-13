@@ -127,11 +127,15 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   };
 
   initAutocomplete() {
-    const addressInput = document.getElementById('addressInput') as HTMLInputElement;
-    this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
-    this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
-      this.onLocationPlaceSelected(place);
-    });
+    if (this.userForm && this.userForm.get('location')) {
+      const addressInput = document.getElementById('addressInput') as HTMLInputElement;
+      if (addressInput) {
+        this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
+        this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+          this.onLocationPlaceSelected(place);
+        });
+      }
+    }
   }
 
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {

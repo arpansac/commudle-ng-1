@@ -147,31 +147,6 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   }
 
   UpdateOrSubmitResponse(formData) {
-    if (this.currentUser) {
-      this.userProfileManagerService.userProfileForm.patchValue({
-        name: formData.name ? formData.name : this.currentUser.name,
-        about_me: formData.about_me ? formData.about_me : this.currentUser.about_me,
-        designation: formData.designation ? formData.designation : this.currentUser.designation,
-        location: formData.location ? formData.location : this.currentUser.location,
-        gender: formData.gender ? formData.gender : this.currentUser.gender,
-        personal_website: formData.personal_website ? formData.personal_website : this.currentUser.personal_website,
-        github: formData.github ? formData.github : this.currentUser.github,
-        linkedin: formData.linkedin ? formData.linkedin : this.currentUser.linkedin,
-        twitter: formData.twitter ? formData.twitter : this.currentUser.twitter,
-        dribbble: formData.dribbble ? formData.dribbble : this.currentUser.dribbble,
-        behance: formData.behance ? formData.behance : this.currentUser.behance,
-        medium: formData.medium ? formData.medium : this.currentUser.medium,
-        gitlab: formData.gitlab ? formData.gitlab : this.currentUser.gitlab,
-        facebook: formData.facebook ? formData.facebook : this.currentUser.facebook,
-        youtube: formData.youtube ? formData.youtube : this.currentUser.youtube,
-        phone: formData.phone ? formData.phone : this.currentUser.phone,
-        instagram: formData.instagram ? formData.instagram : this.currentUser.instagram,
-        experience_level: formData.experience_level ? formData.experience_level : this.currentUser.experience_level,
-        user_domain: formData.user_domain ? formData.user_domain : this.currentUser.user_domain,
-      });
-      this.userProfileManagerService.updateUserDetails(false, this.currentUser);
-    }
-
     this.hackathonService.pCheckParentMember(this.hackathon.id).subscribe((data) => {
       if (data) {
         if (this.hackathonUserResponse) {
