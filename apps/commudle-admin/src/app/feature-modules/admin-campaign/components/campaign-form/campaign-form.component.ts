@@ -53,13 +53,6 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.isExpanded = screenWidth > 768;
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, this.isExpanded, true);
 
-    if (Object.prototype.hasOwnProperty.call(this.sidebarService.setSidebar$, this.sidebarEventName)) {
-      this.subscriptions.push(
-        this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
-          this.isExpanded = data;
-        }),
-      );
-    }
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
