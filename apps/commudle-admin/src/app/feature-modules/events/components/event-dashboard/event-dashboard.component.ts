@@ -33,6 +33,7 @@ import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/e
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { Subscription } from 'rxjs';
 import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feature-modules/events/store/event-data-form-entity-groups.store';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 
 @Component({
   selector: 'app-event-dashboard',
@@ -82,6 +83,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     private windowService: NbWindowService,
     private footerService: FooterService,
     public sidebarService: SidebarService,
+    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private edfegStore: EventDataFormEntityGroupsStore,
   ) {}
 
@@ -93,6 +95,7 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.activatedRoute.data.subscribe((value) => {
         this.event = value.event;
+        this.fetchEventDataFormEntityGroup();
         this.community = value.community;
         this.seoService.setTitle(`Admin | ${this.event.name} | ${this.community.name}`);
       }),
@@ -104,6 +107,13 @@ export class EventDashboardComponent implements OnInit, OnDestroy {
         this.sidebarExpanded = data;
       });
     }
+  }
+
+  private fetchEventDataFormEntityGroup() {
+    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
+      const edfeg = data.event_data_form_entity_groups;
+      this.edfegStore.setEventDataFormEntityGroups(edfeg);
+    });
   }
 
   ngOnDestroy() {
