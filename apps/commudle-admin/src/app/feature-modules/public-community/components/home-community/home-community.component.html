@@ -34,7 +34,7 @@
                   [url]="environment.app_url + '/communities/' + community.slug"
                   [showText]="true"
                   [appearance]="'outline'"
-                  class="com-pl-12 com-pb-3"
+                  class="com-pl-4"
                 ></app-share-button>
               </div>
               <div class="details">
@@ -55,12 +55,19 @@
                   </div>
                 </div>
                 <div class="membership d-flex flex-column">
-                  <p class="member-count">
-                    <a [routerLink]="['members']">
-                      <nb-icon icon="people" status="basic"></nb-icon>
-                      {{ community.members_count }} Community Members
-                    </a>
-                  </p>
+                  <div class="member-location">
+                    <p class="member-count">
+                      <a [routerLink]="['members']">
+                        <nb-icon icon="people" status="basic"></nb-icon>
+                        {{ community.members_count }} Members
+                      </a>
+                    </p>
+                    <div class="vertical-divider"></div>
+                    <div *ngIf="community.location" class="location">
+                      <nb-icon icon="pin" status="basic"></nb-icon>
+                      <span>{{ community.location }}</span>
+                    </div>
+                  </div>
                   <div class="community-social-links d-flex align-items-center">
                     <a
                       *ngIf="community.facebook"
