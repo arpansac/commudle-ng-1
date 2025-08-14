@@ -44,8 +44,8 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
       });
   }
 
-  create() {
-    console.log('create');
+  createSpamDetector() {
+    console.log('createSpamDetector');
   }
 
   changeSpamDetectorType(data) {

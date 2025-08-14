@@ -26,6 +26,7 @@
               <th>Is Spam</th>
               <th>Score</th>
               <th>Is Spam Decision</th>
+              <th>Action</th>
             </tr>
             <tr *ngFor="let spamDetector of spamDetectors">
               <td>{{ moment(spamDetector.created_at).format('ddd, MMM Do, YYYY') }}</td>
@@ -36,6 +37,13 @@
               <td>{{ spamDetector.is_spam }}</td>
               <td>{{ spamDetector.score }}</td>
               <td>{{ spamDetector.is_spam_decision }}</td>
+              <td>
+                <select (change)="openDialog(spamDetectorFormDialog)">
+                  <option value="">Select Action</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </td>
             </tr>
           </table>
         </nb-card-body>
@@ -57,16 +65,16 @@
   </div>
 </div>
 
-<ng-template #profanityTermFormDialog let-data let-ref="dialogRef">
+<ng-template #spamDetectorFormDialog let-data let-ref="dialogRef">
   <nb-card>
     <nb-card-header>
-      <div>Are you sure</div>
+      <div>Are you sure you want to change the spam detector ?</div>
       <button ghost nbButton size="small" (click)="ref.close()">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="create(); ref.close()">Yes</button>
+      <button nbButton status="primary" (click)="createSpamDetector(); ref.close()">Yes</button>
       <button nbButton status="danger" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
