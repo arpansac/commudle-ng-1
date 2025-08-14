@@ -22,11 +22,15 @@
   }
 
   .inner-html {
-    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center com-mt-6  com-overflow-x-scroll;
+    @apply com-p-4 com-rounded-lg com-bg-gray-50 com-flex com-justify-start md:com-justify-center com-mt-6;
 
     ::ng-deep {
       table {
         @apply com-bg-white #{!important};
+
+        table {
+          @apply com-w-full #{!important};
+        }
       }
     }
   }
