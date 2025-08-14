@@ -89,6 +89,16 @@
 
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
+        <div *appBreakpoints="'>lg'" class="registrations-buttons">
+          <div *ngIf="moment() < moment(event.end_time)" class="registration-form">
+            <app-highlighted-links
+              (hasOpenForms)="hasOpenForms = $event"
+              *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+              [community]="community"
+              [event]="event"
+            ></app-highlighted-links>
+          </div>
+        </div>
         <app-live-sessions [community]="community" [event]="event"></app-live-sessions>
         <div #updatesSection id="updates">
           <app-event-updates
@@ -155,7 +165,7 @@
           </a>
         </div>
         <nb-card *ngIf="event.start_time && event.end_time">
-          <nb-card-body>
+          <nb-card-body class="event-date-time-container">
             <div
               class="event-date-time"
               *ngIf="
@@ -164,19 +174,23 @@
               "
             >
               <div class="event-date">
-                <nb-icon icon="calendar-outline"></nb-icon>
-                <p>
-                  <span>
-                    {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
-                  </span>
-                </p>
+                <fa-icon [icon]="faCalendar" class="event-date-icon"></fa-icon>
+                <span class="event-date-text">
+                  {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
+                </span>
               </div>
               <div *ngIf="event.timezone" class="event-timing">
-                <nb-icon icon="clock-outline"></nb-icon>
-                <p *ngIf="event.end_time.getDate === event.start_time.getDate">
+                <fa-icon [icon]="faClockFour" class="event-timing-icon"></fa-icon>
+                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-timing-text">
                   {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm A') }} -
                   {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('h:mm A') }}
                   {{ momentTimezone.tz(event.timezone).format('z') }}
+                </p>
+              </div>
+              <div *ngIf="event.event_type" class="event-type">
+                <fa-icon [icon]="faGlobe" class="event-type-icon"></fa-icon>
+                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-type-text">
+                  {{ event.event_type }}
                 </p>
               </div>
             </div>
@@ -190,34 +204,24 @@
                 {{ momentTimezone.tz(event.timezone).format('z') }}
               </strong>
             </ng-template>
-            <div *ngIf="event.interested_members_count" class="attending-members">
-              <app-attending-members
-                (hasInterestedMembers)="hasInterestedMembers = $event"
-                [community]="community"
-                [event]="event"
-              ></app-attending-members>
+            <div *ngIf="interestedUsersCount" class="attending-members">
+              <commudle-interested-members
+                [users]="interestedUsers"
+                [totalCount]="interestedUsersCount"
+                [showHeading]="false"
+              ></commudle-interested-members>
             </div>
-            <button
-              *ngIf="moment() >= moment(event.start_time)"
-              [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
-              class="view-attended-members-button"
-              fullWidth
-              nbButton
-              outline
-              size="small"
-              status="info"
-            >
-              View attended members
-            </button>
-            <div *ngIf="moment() < moment(event.end_time)" class="registrations-buttons">
-              <div class="registration-form">
-                <app-highlighted-links
-                  (hasOpenForms)="hasOpenForms = $event"
-                  *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
-                  [community]="community"
-                  [event]="event"
-                ></app-highlighted-links>
-              </div>
+            <div *ngIf="moment() >= moment(event.start_time)" class="view-attended-members-button">
+              <button
+                [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
+                fullWidth
+                nbButton
+                outline
+                size="small"
+                status="info"
+              >
+                View attended members
+              </button>
             </div>
           </nb-card-body>
         </nb-card>
@@ -237,4 +241,21 @@
       </div>
     </div>
   </div>
+
+  <div *appBreakpoints="'<=lg'">
+    <div *ngIf="hasOpenForms && moment() < moment(event.end_time)" class="mobile-register-button">
+      <button nbButton status="info" size="large" shape="semi-round" fullWidth (click)="openBottomSheet()">
+        Register Now
+      </button>
+    </div>
+  </div>
+
+  <commudle-bottom-sheet [isOpen]="isBottomSheetOpen" title="Register for Event" (close)="closeBottomSheet()">
+    <app-highlighted-links
+      *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+      (hasOpenForms)="hasOpenForms = $event"
+      [community]="community"
+      [event]="event"
+    ></app-highlighted-links>
+  </commudle-bottom-sheet>
 </div>

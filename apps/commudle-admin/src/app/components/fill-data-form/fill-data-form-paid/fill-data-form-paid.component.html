@@ -96,8 +96,7 @@
                   <span class="value">
                     <span class="heading com-mr-2">x{{ showEventTicketOrder?.eto_users.length }}</span>
                     <span>
-                      {{ paymentDetails.currency === 'inr' ? '₹' : '$' }}
-                      {{ basePrice * showEventTicketOrder?.eto_users.length }}
+                      {{ basePrice * showEventTicketOrder?.eto_users.length | currency : paymentDetails.currency }}
                     </span>
                   </span>
                 </div>
@@ -105,22 +104,19 @@
               <div class="payment-deatils" *ngIf="showEventTicketOrder?.discount_amount > 0">
                 <span class="heading">Discount Amount</span>
                 <span class="value">
-                  {{ showEventTicketOrder.currency === 'inr' ? '₹' : '$' }}
-                  {{ showEventTicketOrder.discount_amount / 100 }}
+                  {{ showEventTicketOrder.discount_amount / 100 | currency : showEventTicketOrder.currency }}
                 </span>
               </div>
               <div class="payment-deatils" *ngIf="showEventTicketOrder?.tax_amount > 0">
                 <span class="heading">{{ paymentDetails.tax_name }} ({{ paymentDetails.tax_percentage }}%)</span>
                 <span class="value">
-                  {{ showEventTicketOrder.currency === 'inr' ? '₹' : '$' }}
-                  {{ showEventTicketOrder.tax_amount / 100 }}
+                  {{ showEventTicketOrder.tax_amount / 100 | currency : showEventTicketOrder.currency }}
                 </span>
               </div>
               <div class="payment-deatils">
                 <span class="heading">Total</span>
                 <span class="value">
-                  {{ showEventTicketOrder?.currency === 'inr' ? '₹' : '$' }}
-                  {{ showEventTicketOrder?.total_amount / 100 }}
+                  {{ showEventTicketOrder?.total_amount / 100 | currency : showEventTicketOrder.currency }}
                 </span>
               </div>
 
@@ -146,36 +142,31 @@
                   <span class="heading">Price </span>
                   <span class="value">
                     <span class="heading com-mr-2">x{{ forms.length }}</span>
-                    <span> {{ paymentDetails.currency === 'inr' ? '₹' : '$' }} {{ basePrice }} </span>
+                    <span> {{ basePrice | currency : paymentDetails.currency }} </span>
                   </span>
                 </div>
                 <div class="com-flex com-justify-between com-mt-4">
                   <span class="heading">Sub Total</span>
-                  <span class="value"
-                    >{{ paymentDetails.currency === 'inr' ? '₹' : '$' }} {{ basePrice * forms.length }}</span
-                  >
+                  <span class="value"> {{ basePrice * forms.length | currency : paymentDetails.currency }} </span>
                 </div>
               </div>
               <div class="payment-deatils" *ngIf="discountAmount > 0">
                 <span class="heading">Discount Amount</span>
                 <span class="value">
-                  {{ paymentDetails.currency === 'inr' ? '₹' : '$' }}
-                  {{ discountAmount }}
+                  {{ discountAmount | currency : paymentDetails.currency }}
                 </span>
               </div>
               <div class="payment-deatils" *ngIf="totalTaxAmount > 0">
                 <span class="heading">{{ paymentDetails.tax_name }} ({{ paymentDetails.tax_percentage }}%)</span>
                 <span class="value">
-                  {{ paymentDetails.currency === 'inr' ? '₹' : '$' }}
-                  {{ totalTaxAmount }}
+                  {{ totalTaxAmount | currency : paymentDetails.currency }}
                 </span>
               </div>
 
               <div class="payment-deatils">
                 <span class="heading">Total</span>
                 <span class="value">
-                  {{ paymentDetails.currency === 'inr' ? '₹' : '$' }}
-                  {{ totalPrice + totalTaxAmount }}
+                  {{ totalPrice + totalTaxAmount | currency : paymentDetails.currency }}
                 </span>
               </div>
 
@@ -377,7 +368,7 @@
     <nb-card-body class="com-min-h-[250px]">
       <div class="com-flex com-justify-between com-mb-4">
         <div class="com-text-base com-font-semibold">
-          {{ paymentDetails.currency === 'inr' ? '₹' : '$' }} {{ totalPrice + totalTaxAmount }}
+          {{ totalPrice + totalTaxAmount | currency : paymentDetails.currency }}
         </div>
         <div *ngIf="showTimer" class="com-text-xs com-text-red-500">Time Left: {{ formattedTimeRemaining }}</div>
       </div>
