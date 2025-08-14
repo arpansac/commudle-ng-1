@@ -129,14 +129,14 @@
 
             <!-- Allow group tickets -->
             <nb-card
-              *ngIf="edfeg.is_paid && community.payments_enabled && edfeg.paid_ticket_settings.id"
+              *ngIf="edfeg.is_paid && community.payments_enabled && edfeg.paid_ticket_setting.id"
               class="toggle-cards"
             >
               <nb-card-body>
                 <nb-checkbox
                   status="primary"
                   (checkedChange)="toggleApprovalGroupTicketing(edfeg, i)"
-                  [checked]="edfeg.paid_ticket_settings.multi_person_ticket"
+                  [checked]="edfeg.paid_ticket_setting.multi_person_ticket"
                 >
                   <span class="text"> Allow group tickets </span>
                 </nb-checkbox></nb-card-body

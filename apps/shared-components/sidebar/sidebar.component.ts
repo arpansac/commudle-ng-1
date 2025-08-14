@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // Set up document click listener manually for better control
     if (this.forWindow) {
       this.documentClickListener = this.onDocumentClick.bind(this);
-      document.addEventListener('click', this.documentClickListener);
+      document.addEventListener('mousedown', this.documentClickListener);
     }
   }
 
@@ -73,9 +73,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
 
-    // Remove document click listener
     if (this.documentClickListener) {
-      document.removeEventListener('click', this.documentClickListener);
+      document.removeEventListener('mousedown', this.documentClickListener);
       this.documentClickListener = undefined;
     }
   }
@@ -86,12 +85,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private onDocumentClick(event: MouseEvent): void {
-    if (!this.forWindow) return;
+    if (!this.forWindow || !(this.expandSidebar || this.isExpanded)) return;
 
     const clickedInside = this.sidebarElement?.nativeElement.contains(event.target);
     const clickedToggle = (event.target as HTMLElement)?.closest('.home-sidebar');
 
-    if (!clickedInside && !clickedToggle && (this.expandSidebar || this.isExpanded)) {
+    if (!clickedInside && !clickedToggle) {
       this.sidebarService.toggleSidebarVisibility(this.eventName);
       this.toggleSidebar.emit(false);
     }
