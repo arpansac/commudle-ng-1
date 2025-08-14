@@ -59,7 +59,7 @@
   </div>
   <div *ngIf="userForm.get('location')">
     <label for="name">Location <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="location" />
+    <input type="text" nbInput fullWidth id="addressInput" formControlName="location" />
     <commudle-alert
       *ngIf="
         userForm.get('location').touched && userForm.get('location').invalid && userForm.get('location').errors.required
