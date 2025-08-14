@@ -1,1 +1,73 @@
-<h1>Spam Detectors</h1>
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <nb-card>
+        <nb-card-header>
+          <span>Spam Detectors</span>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="filters">
+            <div class="select">
+              <select #filterSelect placeholder="Filter by" (change)="changeSpamDetectorType($event.target)">
+                <option value="">Filter By</option>
+                <option value="is_spam">Spam</option>
+                <option value="is_spam_decision">Spam Decision</option>
+              </select>
+            </div>
+            <button nbButton status="basic" size="small" (click)="clearFilters(filterSelect)">Clear Filters</button>
+          </div>
+          <table>
+            <tr>
+              <th>Created At</th>
+              <th>Content ID</th>
+              <th>Content Type</th>
+              <th>Request Sent At</th>
+              <th>Response Received At</th>
+              <th>Is Spam</th>
+              <th>Score</th>
+              <th>Is Spam Decision</th>
+            </tr>
+            <tr *ngFor="let spamDetector of spamDetectors">
+              <td>{{ moment(spamDetector.created_at).format('ddd, MMM Do, YYYY') }}</td>
+              <td>{{ spamDetector.content_id }}</td>
+              <td>{{ spamDetector.content_type }}</td>
+              <td>{{ moment(spamDetector.request_sent_at).format('ddd, MMM Do, YYYY') }}</td>
+              <td>{{ moment(spamDetector.response_received_at).format('ddd, MMM Do, YYYY') }}</td>
+              <td>{{ spamDetector.is_spam }}</td>
+              <td>{{ spamDetector.score }}</td>
+              <td>{{ spamDetector.is_spam_decision }}</td>
+            </tr>
+          </table>
+        </nb-card-body>
+        <nb-card-footer>
+          <div class="pagination">
+            <app-pagination
+              (goTo)="page = $event; getSpamDetectorsData()"
+              (next)="page = $event; getSpamDetectorsData()"
+              (previous)="page = $event; getSpamDetectorsData()"
+              *ngIf="total > 0"
+              [count]="count"
+              [current]="page"
+              [total]="total"
+            ></app-pagination>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </div>
+</div>
+
+<ng-template #profanityTermFormDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>Are you sure</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="create(); ref.close()">Yes</button>
+      <button nbButton status="danger" (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

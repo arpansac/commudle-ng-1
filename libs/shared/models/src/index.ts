@@ -41,6 +41,7 @@ export * from './lib/upcoming-event-hackathon.model';
 export * from './lib/hackathon-user-response.model';
 export * from './lib/activity-feed.model';
 export * from './lib/profanity.model';
+export * from './lib/spam-detector.model';
 export * from './lib/user-recap-stats.model';
 export * from './lib/campaign-type.model';
 export * from './lib/campaign.model';
