@@ -29,3 +29,7 @@ tr:not(:last-child) {
 .filters {
   @apply com-flex com-justify-between com-items-center com-gap-5;
 }
+
+.template-header {
+  @apply com-flex com-justify-between com-items-center com-gap-5;
+}

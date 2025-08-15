@@ -1,4 +1,5 @@
 export interface ISpamDetector {
+  id: number;
   request_sent_at: string;
   response_received_at: string;
   is_spam: boolean;

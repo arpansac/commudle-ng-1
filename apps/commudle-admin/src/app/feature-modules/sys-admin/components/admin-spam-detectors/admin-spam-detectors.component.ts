@@ -18,6 +18,8 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   isSpam = false;
   isSpamDecision = false;
   moment = moment;
+  actionSelectValue: string[] = [];
+  lastConfirmedValues: any[] = []; // Track the last confirmed value for each row
 
   constructor(
     private dialogService: NbDialogService,
@@ -32,20 +34,22 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   }
 
   getSpamDetectorsData() {
-    console.log(this.isSpam, this.isSpamDecision);
     this.spamDetectorService
       .getSpamResult(this.page, this.count, this.isSpam, this.isSpamDecision)
       .subscribe((data) => {
         this.spamDetectors = data.values;
-        console.log(this.spamDetectors, 'spam');
         this.total = data.total;
         this.page = data.page;
         this.count = data.count;
+        this.actionSelectValue = new Array(this.spamDetectors.length).fill('');
+        this.lastConfirmedValues = new Array(this.spamDetectors.length).fill('');
       });
   }
 
-  createSpamDetector() {
-    console.log('createSpamDetector');
+  updateSpamDetector(selectedValue, id, index) {
+    this.actionSelectValue[index] = selectedValue;
+    this.lastConfirmedValues[index] = selectedValue;
+    this.spamDetectorService.updateSpamDetector(selectedValue, id).subscribe(() => {});
   }
 
   changeSpamDetectorType(data) {
@@ -61,15 +65,29 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   }
 
   clearFilters(selectElement: HTMLSelectElement) {
-    console.log(this.isSpam, this.isSpamDecision, 'clearFilters');
     this.isSpam = false;
     this.isSpamDecision = false;
     selectElement.value = '';
     this.getSpamDetectorsData();
   }
 
-  openDialog(dialog: any) {
-    this.dialogService.open(dialog);
+  openDialog(selectedValue, id, index, dialog) {
+    if (selectedValue === true || selectedValue === false) {
+      const previousValue = this.lastConfirmedValues[index];
+
+      this.dialogService.open(dialog, {
+        context: {
+          selectedValue,
+          id,
+          index,
+          previousValue,
+        },
+      });
+    }
+  }
+
+  onCancel(index: number, previousValue: any) {
+    this.actionSelectValue[index] = previousValue;
   }
 
   ngOnDestroy() {
