@@ -34,7 +34,6 @@ export class SpamDetectorService {
   }
 
   updateSpamDetector(value, id): Observable<ISpamDetector> {
-    console.log(typeof value, typeof id, 'value, id');
     return this.http.put<ISpamDetector>(this.apiRoutesService.getRoute(API_ROUTES.SPAM_DETECTOR.UPDATE), {
       is_spam_decision: value,
       spam_detector_id: id,
