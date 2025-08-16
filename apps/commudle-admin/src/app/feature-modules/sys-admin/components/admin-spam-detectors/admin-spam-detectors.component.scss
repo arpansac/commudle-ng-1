@@ -32,6 +32,10 @@ tr:not(:last-child) {
 
 .template-header {
   @apply com-flex com-justify-between com-items-center com-gap-5;
+
+  span {
+    @apply com-text-sm com-font-normal com-text-gray-700;
+  }
 }
 
 .table-data-content {

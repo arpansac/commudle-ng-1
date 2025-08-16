@@ -69,19 +69,12 @@
                 {{ spamDetector.is_spam_decision }}
                 <select
                   class="select"
-                  [(ngModel)]="spamDetector.is_spam_decision"
-                  (change)="
-                    openDialog(
-                      $any($event.target).value,
-                      spamDetector.is_spam_decision,
-                      spamDetector.id,
-                      spamDetectorFormDialog
-                    )
-                  "
+                  [value]="spamDetector.is_spam_decision"
+                  (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
                 >
-                  <option [value]="null" disabled>Select Action</option>
-                  <option [value]="true">True</option>
-                  <option [value]="false">False</option>
+                  <option value="null" disabled>Select Action</option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
                 </select>
               </td>
             </tr>
@@ -109,21 +102,30 @@
   <nb-card>
     <nb-card-header class="template-header">
       <div>
-        {{
-          data.selectedValue === true
-            ? 'Are you sure you want to mark this id: ' + data.id + ' as spam?'
-            : 'Are you sure you want to mark this id: ' + data.id + ' as not spam?'
-        }}
+        <span *ngIf="data.selectedValue === 'true'">
+          Are you sure you want to mark
+          <strong>{{ data.spamDetector.community_build.name }}</strong>
+          as spam?
+        </span>
+        <span *ngIf="data.selectedValue === 'false'">
+          Are you sure you want to mark
+          <strong>{{ data.spamDetector.community_build.name }}</strong>
+          as not spam?
+        </span>
       </div>
-      <button ghost nbButton size="small" (click)="ref.close()">
+      <button ghost nbButton size="small" (click)="ref.close(false)">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="updateSpamDetector(data.selectedValue, data.id); ref.close()">
+      <button
+        nbButton
+        status="primary"
+        (click)="updateSpamDetector(data.selectedValue, data.spamDetector.id); ref.close(true)"
+      >
         Confirm
       </button>
-      <button nbButton status="danger" (click)="cancelDialog(data.previousValue, data.id); ref.close()">Cancel</button>
+      <button nbButton status="danger" (click)="ref.close(false)">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

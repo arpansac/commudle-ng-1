@@ -33,7 +33,6 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   }
 
   getSpamDetectorsData() {
-    console.log(this.isSpam, this.isSpamDecision, 'isSpam, isSpamDecision');
     this.spamDetectorService
       .getSpamResult(this.page, this.count, this.isSpam, this.isSpamDecision)
       .subscribe((data) => {
@@ -44,13 +43,9 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateSpamDetector(selectedValue, spamDetector) {
-    if (selectedValue === 'true') {
-      selectedValue = true;
-    } else if (selectedValue === 'false') {
-      selectedValue = false;
-    }
-    this.spamDetectorService.updateSpamDetector(selectedValue, spamDetector.id).subscribe(() => {});
+  updateSpamDetector(selectedValue, id) {
+    selectedValue === 'true' ? (selectedValue = true) : (selectedValue = false);
+    this.spamDetectorService.updateSpamDetector(selectedValue, id).subscribe(() => {});
   }
 
   changeSpamDetectorType(data) {
@@ -72,48 +67,29 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
     this.getSpamDetectorsData();
   }
 
-  openDialog(selectedValue: string, previousValue: boolean, id: number, dialog: any) {
-    console.log(selectedValue, 'selectedValue');
-    console.log(typeof previousValue, 'originalValue 1');
+  openDialog(selectedValue: string, spamDetector: ISpamDetector, dialog: any) {
+    const previousValue = spamDetector.is_spam_decision;
+    spamDetector.is_spam_decision = selectedValue === 'true' ? true : selectedValue === 'false' ? false : null;
+    this.changeDetectorRef.detectChanges();
 
-    this.dialogService.open(dialog, {
-      context: {
-        selectedValue: selectedValue,
-        id: id,
-      },
-    });
-    // .onClose.subscribe((result) => {
-    //   if (result === 'cancelled') {
-    //     console.log(previousValue, 'originalValue');
-    //     console.log(typeof previousValue, 'originalValue 2');
-    //     if (previousValue === true) {
-    //       // console.log('true');
-    //       // spamDetector.is_spam_decision = true;
-    //     } else if (originalValue === false) {
-    //       // console.log('false');
-    //       // spamDetector.is_spam_decision = false;
-    //     } else {
-    //       // console.log('null');
-    //       // spamDetector.is_spam_decision = null;
-    //     }
-    //     this.changeDetectorRef.detectChanges();
-    //   } else {
-    //     console.log(selectedValue, 'selectedValue');
-    //     // spamDetector.is_spam_decision = selectedValue === 'true' ? true : false;
-    //   }
-    // }
-    // );
-  }
-
-  cancelDialog(previousValue, id) {
-    console.log(previousValue, 'previousValue');
-    console.log(id, 'id');
-    // spamDetector.is_spam_decision = previousValue.is_spam_decision;
-    // console.log(previousValue.is_spam_decision, 'previousValue');
-    const spamDetector = this.spamDetectors.find((spamDetector) => spamDetector.id === id);
-    if (spamDetector) {
-      spamDetector.is_spam_decision = previousValue;
-    }
+    this.dialogService
+      .open(dialog, {
+        context: {
+          selectedValue: selectedValue,
+          spamDetector: spamDetector,
+        },
+      })
+      .onClose.subscribe((result) => {
+        if (result === false) {
+          spamDetector.is_spam_decision = previousValue;
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
+        } else {
+          spamDetector.is_spam_decision = selectedValue === 'true' ? true : false;
+          this.changeDetectorRef.detectChanges();
+          this.changeDetectorRef.markForCheck();
+        }
+      });
   }
 
   ngOnDestroy() {
