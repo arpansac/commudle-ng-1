@@ -51,7 +51,7 @@
               <th>Is Spam Decision</th>
             </tr>
             <tr *ngFor="let spamDetector of spamDetectors">
-              <td>{{ moment(spamDetector.created_at).format('ddd, MMM Do, YYYY') }}</td>
+              <td>{{ moment(spamDetector.created_at).format('MMM Do, YYYY hh:mm A') }}</td>
               <td class="table-data-content">
                 <span>{{ spamDetector.content_type }}</span>
                 <span>{{ spamDetector.community_build.name }}</span>
@@ -61,12 +61,11 @@
                 <span>{{ spamDetector.user.name }}</span>
                 <span>{{ spamDetector.user.blocked }}</span>
               </td>
-              <td>{{ moment(spamDetector.request_sent_at).format('ddd, MMM Do, YYYY') }}</td>
-              <td>{{ moment(spamDetector.response_received_at).format('ddd, MMM Do, YYYY') }}</td>
+              <td>{{ moment(spamDetector.request_sent_at).format('MMM Do, YYYY hh:mm A') }}</td>
+              <td>{{ moment(spamDetector.response_received_at).format('MMM Do, YYYY hh:mm A') }}</td>
               <td>{{ spamDetector.is_spam }}</td>
               <td>{{ spamDetector.score }}</td>
-              <td class="table-data-content">
-                {{ spamDetector.is_spam_decision }}
+              <td>
                 <select
                   class="select"
                   [value]="spamDetector.is_spam_decision"
