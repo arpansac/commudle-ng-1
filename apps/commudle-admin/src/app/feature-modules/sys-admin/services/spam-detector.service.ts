@@ -13,15 +13,15 @@ export class SpamDetectorService {
   getSpamResult(
     page: number,
     count: number,
-    isSpam: boolean,
-    isSpamDecision: boolean,
+    isSpam: boolean | string,
+    isSpamDecision: boolean | string,
   ): Observable<IPaginationCount<ISpamDetector>> {
     let params = new HttpParams().set('page', page).set('count', count.toString());
 
-    if (isSpam) {
+    if (isSpam === true || isSpam === false) {
       params = params.set('is_spam', isSpam.toString());
     }
-    if (isSpamDecision) {
+    if (isSpamDecision === true || isSpamDecision === false) {
       params = params.set('is_spam_decision', isSpamDecision.toString());
     }
 
