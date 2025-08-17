@@ -98,7 +98,7 @@
 
       .toggle {
         @apply md:com-border-l com-border-Bright-Gray com-border-solid com-border-y-0 com-border-r-0
-        com-text-sm com-font-medium com-border-0 md:com-pl-4 com-pl-0 com-flex md:com--ml-2;
+        com-text-sm com-font-medium com-border-0 md:com-pl-4 com-pl-0 com-block md:com-flex md:com--ml-2;
         span {
           @apply com-text-black;
         }
@@ -119,22 +119,11 @@
           @apply com-flex com-justify-between;
         }
       }
-
-      @media (max-width: 767px) {
-        .toggle {
-          @apply com-block;
-        }
-
-        .footer-icons {
-          @apply com-hidden;
-        }
-
-        .context-menu {
-          @apply com-flex;
-        }
-      }
     }
   }
+}
+.footer-icons {
+  @apply md:com-flex com-hidden;
 }
 
 .required-text {

@@ -152,7 +152,6 @@
                             [ngClass]="{
                               disable: question.get('has_responses').value
                             }"
-                            class="com-border-0"
                             formControlName="question_type_id"
                           >
                             <option *ngFor="let qt of questionTypes" [ngValue]="qt.id">
