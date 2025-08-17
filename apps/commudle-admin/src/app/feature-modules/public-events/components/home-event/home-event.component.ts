@@ -14,7 +14,8 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { DiscussionService } from '@commudle/shared-services';
 import { NbMenuService } from '@commudle/theme';
 import { map } from 'rxjs';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { IUser } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-home-event',
@@ -38,6 +39,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   hasOpenForms = false;
   hasInterestedMembers = false;
   hasSponsors = false;
+  isBottomSheetOpen = false;
 
   environment = environment;
 
@@ -48,6 +50,11 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   isOrganizer = false;
   isLoading = true;
   faEllipsisVertical = faEllipsisVertical;
+  faCalendar = faCalendar;
+  faClockFour = faClockFour;
+  faGlobe = faGlobe;
+  interestedUsers: IUser[];
+  interestedUsersCount: number;
 
   items: [{ title: string }];
   @ViewChild('updatesSection', { static: false }) updatesSectionRef: ElementRef<HTMLDivElement>;
@@ -68,6 +75,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     private discussionsService: DiscussionsService,
     private discussionService: DiscussionService,
     private menuService: NbMenuService,
+    private eventService: EventsService,
   ) {}
 
   ngOnInit() {
@@ -87,6 +95,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   getEvent(eventId) {
     this.eventsService.pGetEvent(eventId).subscribe((event) => {
       this.event = event;
+      this.fetchInterestedMembers();
       this.isLoading = false;
       this.getCommunity(event.kommunity_id);
     });
@@ -106,6 +115,13 @@ export class HomeEventComponent implements OnInit, OnDestroy {
         this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
         this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
       );
+    });
+  }
+
+  fetchInterestedMembers() {
+    this.eventService.pGetEventsInterestedMembers(this.event.id).subscribe((res) => {
+      this.interestedUsers = res.users;
+      this.interestedUsersCount = res.total_count;
     });
   }
 
@@ -185,5 +201,13 @@ export class HomeEventComponent implements OnInit, OnDestroy {
 
   updateContextMenu() {
     this.items = [{ title: this.discussionChat.open ? 'Turn OFF Comments' : 'Turn ON Comments' }];
+  }
+
+  openBottomSheet() {
+    this.isBottomSheetOpen = true;
+  }
+
+  closeBottomSheet() {
+    this.isBottomSheetOpen = false;
   }
 }

@@ -16,9 +16,9 @@ div {
   }
 
   .upcoming-hackathons {
-    @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto md:com-m-0 com-gap-4 md:com-gap-0 com-mt-3 md:com-mt-0 com-ml-4 md:com-ml-0 com-p-0 md:com-block com-bg-transparent;
+    @apply com-flex com-flex-nowrap md:com-flex-wrap com-overflow-x-auto md:com-m-0 com-gap-4 com-mt-3 md:com-mt-0 com-ml-4 md:com-ml-0 com-p-0 com-bg-transparent;
     .upcoming-hackathons-card {
-      @apply md:com-mb-3 com-m-0 com-p-0 com-rounded-xl com-bg-transparent;
+      @apply com-m-0 com-p-0 com-rounded-xl com-bg-transparent com-w-full;
     }
   }
 

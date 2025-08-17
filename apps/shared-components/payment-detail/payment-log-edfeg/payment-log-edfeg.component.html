@@ -65,21 +65,21 @@
             <ng-template #noOtherUsers> No Other users Found </ng-template>
           </td>
           <td>
-            {{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$' }}{{ rpd?.order.orderable.total_amount / 100 }}
+            {{ rpd?.order.orderable.total_amount / 100 | currency : rpd?.order.orderable.currency }}
           </td>
           <td>
-            {{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$' }}{{ rpd?.order.orderable.discount_amount / 100 }}
+            {{ rpd?.order.orderable.discount_amount / 100 | currency : rpd?.order.orderable.currency }}
             <br />
             {{ rpd?.order.orderable.discount_code?.code }}
           </td>
-          <td>{{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$' }}{{ rpd?.order.orderable.tax_amount / 100 }}</td>
           <td>
-            {{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$'
-            }}{{ rpd?.order.orderable.application_fee_amount / 100 }}
+            {{ rpd?.order.orderable.tax_amount / 100 | currency : rpd?.order.orderable.currency }}
           </td>
           <td>
-            {{ rpd?.order.orderable.currency === 'inr' ? '₹' : '$'
-            }}{{ rpd?.order.orderable.payment_gateway_fee / 100 }}
+            {{ rpd?.order.orderable.application_fee_amount / 100 | currency : rpd?.order.orderable.currency }}
+          </td>
+          <td>
+            {{ rpd?.order.orderable.payment_gateway_fee / 100 | currency : rpd?.order.orderable.currency }}
           </td>
           <td *ngIf="rpd && rpd?.order.orderable.status === 'paid'">
             <small *ngIf="rpd">{{ rpd.transfer_id }}</small>
@@ -132,7 +132,7 @@
 <ng-template #transferDetails let-data>
   <nb-card>
     <nb-card-body>
-      <div>{{ data.currency === 'INR' ? '₹ ' : '$ ' }}{{ data.amount / 100 }}</div>
+      <div>{{ data.amount / 100 | currency : data.currency }}</div>
       <div>{{ data.status }}</div>
       <div>
         {{ data.createdAt }}
