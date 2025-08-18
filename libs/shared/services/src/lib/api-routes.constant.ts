@@ -1005,6 +1005,11 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/profanity', //PUT
   },
 
+  SPAM_DETECTOR: {
+    INDEX: 'api/v2/spam_detectors', //GET
+    UPDATE: 'api/v2/spam_detectors', //PUT
+  },
+
   CAMPAIGNS: {
     INDEX: 'api/v2/campaigns', //GET
     CREATE: 'api/v2/campaigns', //POST

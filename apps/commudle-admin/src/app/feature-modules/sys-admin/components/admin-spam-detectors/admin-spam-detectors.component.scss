@@ -1,0 +1,57 @@
+nb-card-header,
+nb-card-footer {
+  @apply com-flex com-justify-between com-items-center;
+}
+table {
+  @apply com-border-collapse com-w-full com-mt-4;
+}
+
+td,
+th {
+  @apply com-p-2;
+}
+
+tr:not(:last-child) {
+  @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+}
+
+.select {
+  @apply com-flex com-items-center com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+  select {
+    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+  }
+}
+
+.pagination {
+  @apply com-w-full;
+}
+
+.filters {
+  @apply com-flex com-justify-between com-items-end com-gap-5;
+}
+
+.template-header {
+  @apply com-flex com-justify-between com-items-center com-gap-5;
+
+  span {
+    @apply com-text-sm com-font-normal com-text-gray-700;
+  }
+}
+
+.table-data-content {
+  span {
+    @apply com-flex com-w-full;
+  }
+}
+
+.select-container {
+  @apply com-flex com-gap-5 com-w-full;
+}
+
+label {
+  @apply com-text-sm com-font-medium com-mb-1 com-text-gray-500;
+}
+
+.select-label-container {
+  @apply com-flex com-flex-col com-gap-1 com-w-full;
+}

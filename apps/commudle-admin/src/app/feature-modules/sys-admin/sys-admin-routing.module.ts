@@ -32,6 +32,7 @@ import { AdminCampaignsListComponent } from 'apps/commudle-admin/src/app/feature
 import { CampaignPurchaseOrdersComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/campaign-purchase-orders/campaign-purchase-orders.component';
 import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/sys-admin-campaign-stats/sys-admin-campaign-stats.component';
 import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-orders.component';
+import { AdminSpamDetectorsComponent } from './components/admin-spam-detectors/admin-spam-detectors.component';
 
 const routes = [
   {
@@ -146,6 +147,10 @@ const routes = [
       {
         path: 'profanity',
         component: AdminProfanityComponent,
+      },
+      {
+        path: 'spam-detectors',
+        component: AdminSpamDetectorsComponent,
       },
       {
         path: 'discount-codes',

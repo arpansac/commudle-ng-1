@@ -32,6 +32,7 @@ import { AdminFeaturedCommunitiesComponent } from './components/admin-featured/a
 import { AdminPageAdsFormComponent } from './components/admin-page-ads/admin-page-ads-form/admin-page-ads-form.component';
 import { AdminPageAdsListComponent } from './components/admin-page-ads/admin-page-ads-list/admin-page-ads-list.component';
 import { AdminPageAdsComponent } from './components/admin-page-ads/admin-page-ads.component';
+import { AdminSpamDetectorsComponent } from './components/admin-spam-detectors/admin-spam-detectors.component';
 import { AdminStaticAssetsListComponent } from './components/admin-static-assets/admin-static-assets-list/admin-static-assets-list.component';
 import { AdminStaticAssetsComponent } from './components/admin-static-assets/admin-static-assets.component';
 import { AdminSurveysComponent } from './components/admin-surveys/admin-surveys.component';
@@ -99,6 +100,7 @@ import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-o
     SysAdminDiscountCodeComponent,
     DiscountCodeFormComponent,
     PurchaseOrdersComponent,
+    AdminSpamDetectorsComponent,
   ],
   imports: [
     CommonModule,
