@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import {
   faAnglesRight,
   faArrowLeft,
+  faRightLeft,
   faCalendar,
   faCircleInfo,
   faFileImage,
@@ -20,11 +22,13 @@ import { Subscription } from 'rxjs';
 })
 export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
+  isExpanded = false;
   sidebarEventName: string;
   lastSegment: string;
   slug: string;
   icons = {
     faAnglesRight,
+    faRightLeft,
     faArrowLeft,
     faUser,
     faCircleInfo,
@@ -35,7 +39,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   isEditMode = false;
   private subscriptions: Subscription[] = [];
 
-  constructor(private router: Router, private footerService: FooterService) {
+  constructor(private router: Router, private footerService: FooterService, private sidebarService: SidebarService) {
     this.sidebarEventName = 'campaignFormComponent';
   }
 
@@ -45,6 +49,9 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.isEditMode = url.includes('/edit/');
     this.generateSlug();
     this.footerService.changeMiniFooterStatus(false);
+    this.isExpanded = window.innerWidth > 768;
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, this.isExpanded, true);
+
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
@@ -52,6 +59,9 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
         }
       }),
     );
+  }
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 
   ngOnDestroy(): void {
