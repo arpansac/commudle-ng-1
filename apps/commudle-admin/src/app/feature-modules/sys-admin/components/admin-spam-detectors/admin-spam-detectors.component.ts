@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { SeoService } from '@commudle/shared-services';
+import { SeoService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { SpamDetectorService } from '../../services/spam-detector.service';
 import { ISpamDetector } from '@commudle/shared-models';
@@ -24,6 +24,7 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private spamDetectorService: SpamDetectorService,
     private changeDetectorRef: ChangeDetectorRef,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit() {
@@ -45,7 +46,9 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
 
   updateSpamDetector(selectedValue, id) {
     selectedValue === 'true' ? (selectedValue = true) : (selectedValue = false);
-    this.spamDetectorService.updateSpamDetector(selectedValue, id).subscribe(() => {});
+    this.spamDetectorService.updateSpamDetector(selectedValue, id).subscribe(() => {
+      this.toastrService.successDialog('Spam Detector Updated');
+    });
   }
 
   changeSpamDetectorType(data) {

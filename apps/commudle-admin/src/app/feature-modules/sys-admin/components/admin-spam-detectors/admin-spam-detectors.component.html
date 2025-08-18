@@ -61,8 +61,20 @@
                 <span>{{ spamDetector.user.name }}</span>
                 <span>{{ spamDetector.user.blocked }}</span>
               </td>
-              <td>{{ moment(spamDetector.request_sent_at).format('MMM Do, YYYY hh:mm A') }}</td>
-              <td>{{ moment(spamDetector.response_received_at).format('MMM Do, YYYY hh:mm A') }}</td>
+              <td>
+                {{
+                  spamDetector.request_sent_at
+                    ? moment(spamDetector.request_sent_at).format('MMM Do, YYYY hh:mm A')
+                    : '--'
+                }}
+              </td>
+              <td>
+                {{
+                  spamDetector.response_received_at
+                    ? moment(spamDetector.response_received_at).format('MMM Do, YYYY hh:mm A')
+                    : '--'
+                }}
+              </td>
               <td>{{ spamDetector.is_spam }}</td>
               <td>{{ spamDetector.score }}</td>
               <td>
