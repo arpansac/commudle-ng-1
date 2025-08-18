@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@commudle/theme';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumService } from '@commudle/shared-services';
+import { IForum } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-forum-form',
@@ -9,46 +11,45 @@ import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/
   styleUrls: ['./forum-form.component.scss'],
 })
 export class ForumFormComponent implements OnInit {
-  @Output() formClosed = new EventEmitter<void>();
-
+  @Input() forumId: number;
   topicForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private forumsStore: ForumsStore,
     private dialogRef: NbDialogRef<ForumFormComponent>,
+    private forumService: ForumService,
   ) {
     this.topicForm = this.fb.group({
       name: ['', Validators.required],
-      category: ['', Validators.required],
+      group_name: ['', Validators.required],
       description: ['', Validators.required],
-      isPrivate: [false],
-      isReadonly: [false],
+      is_private: [false],
+      is_readonly: [false],
     });
   }
 
-  ngOnInit() {}
-
-  onSubmit() {
-    if (this.topicForm.valid) {
-      const topicData = {
-        id: Date.now(),
-        name: this.topicForm.value.name,
-        description: this.topicForm.value.description,
-        category: this.topicForm.value.category,
-        is_private: this.topicForm.value.isPrivate,
-        is_readonly: this.topicForm.value.isReadonly,
-        created_at: new Date(),
-        posts_count: 0,
-      };
-
-      this.forumsStore.addForum(topicData as any);
-      this.closeForm();
+  ngOnInit() {
+    if (this.forumId) {
+      this.forumService.showForum(this.forumId).subscribe({
+        next: (data: IForum) => {
+          this.forumsStore.setSelectedForum(data);
+        },
+      });
     }
   }
 
-  addNewCategory() {
-    console.log('Add new category clicked');
+  onSubmit() {
+    if (this.topicForm.valid) {
+      if (this.forumId) {
+        this.forumsStore.updateForum(this.topicForm.value, this.forumId);
+      } else {
+        this.forumsStore.addForum(this.topicForm.value);
+      }
+      this.closeForm();
+    } else {
+      this.topicForm.markAllAsTouched();
+    }
   }
 
   closeForm() {

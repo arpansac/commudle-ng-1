@@ -6,6 +6,7 @@ import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule } from '@comm
 import { ForumsCategoriesComponent } from './components/forums-categories/forums-categories.component';
 import { ForumFormComponent } from './components/forum-form/forum-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [ForumsDashboardComponent, ForumsCategoriesComponent, ForumFormComponent],
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ForumsRoutes,
     ReactiveFormsModule,
+    FontAwesomeModule,
 
     // Nebular
     NbCardModule,

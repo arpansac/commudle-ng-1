@@ -29,4 +29,21 @@ export class ForumService {
       params,
     });
   }
+
+  createForum(forum: IForum, parentType: EDbModels, parentId: number | string): Observable<IForum> {
+    const params = new HttpParams().set('parent_type', parentType).set('parent_id', parentId);
+
+    return this.http.post<IForum>(
+      this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.CREATE),
+      { community_channel: forum },
+      {
+        params,
+      },
+    );
+  }
+
+  updateForum(forum: IForum, forumId: number): Observable<IForum> {
+    const params = new HttpParams().set('community_channel_id', forumId);
+    return this.http.put<IForum>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.UPDATE), forum, { params });
+  }
 }
