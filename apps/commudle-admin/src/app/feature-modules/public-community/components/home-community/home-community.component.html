@@ -34,7 +34,6 @@
                   [url]="environment.app_url + '/communities/' + community.slug"
                   [showText]="true"
                   [appearance]="'outline'"
-                  class="com-pl-4"
                 ></app-share-button>
               </div>
               <div class="details">
@@ -50,7 +49,6 @@
                       [url]="environment.app_url + '/communities/' + community.slug"
                       [showText]="true"
                       [appearance]="'outline'"
-                      class="com-pl-4"
                     ></app-share-button>
                   </div>
                 </div>
@@ -62,7 +60,6 @@
                         {{ community.members_count }} Members
                       </a>
                     </p>
-                    <div class="vertical-divider"></div>
                     <div *ngIf="community.location" class="location">
                       <nb-icon icon="pin" status="basic"></nb-icon>
                       <span>{{ community.location }}</span>

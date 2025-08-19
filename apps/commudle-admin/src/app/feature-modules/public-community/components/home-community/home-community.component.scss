@@ -48,13 +48,11 @@
           @apply com-flex com-items-start com-gap-2 com-flex-col md:com-flex-row md:com-gap-3;
           .member-count {
             @apply com-gap-2 com-h-5 com-self-stretch md:com-m-0 com-items-start com-m-0;
-
+            @apply md:com-border-r com-border-Bright-Gray md:com-pr-3;
+            border-right-style: solid;
             a {
               @apply com-text-gray-500 com-no-underline com-gap-2 com-inline-flex;
             }
-          }
-          .vertical-divider {
-            @apply com-w-px com-h-5 com-bg-Bright-Gray com-hidden md:com-block;
           }
           .location {
             @apply com-inline-flex com-items-center com-gap-2 com-h-5 com-text-gray-500;
