@@ -5,7 +5,6 @@
       [eventName]="sidebarEventName"
       [showExpandedButton]="false"
       heading="Advertisement Dashboard"
-      [isExpanded]="true"
       [forWindow]="false"
       [showExpandedButton]="false"
     >
@@ -103,6 +102,9 @@
   </div>
   <div class="right-section">
     <div class="header">
+      <div class="toggle" (click)="toggleSidebar()">
+        <fa-icon [icon]="icons.faRightLeft"></fa-icon>
+      </div>
       <span class="step-one">New Order</span>
       &nbsp;
       <fa-icon [icon]="icons.faAnglesRight"></fa-icon>

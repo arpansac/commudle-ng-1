@@ -62,6 +62,7 @@ export interface IUser {
   experience_level: string;
   user_domain: string;
   goals: string[];
+  blocked: boolean;
 }
 
 export interface IUserSearch extends IUser {
