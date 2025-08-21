@@ -8,10 +8,10 @@
       <small>{{ user.email === 'Not Visible' ? 'Email: Not Visible' : user.email }}</small>
       <small *ngIf="user.phone"> / {{ user.phone === 'Not Visible' ? 'Phone: Not Visible' : user.phone }}</small>
     </p>
-    <p class="user-domain">
+    <p *ngIf="user.user_domain" class="user-domain">
       <small>Domain: {{ EDomain[user.user_domain] }}</small>
     </p>
-    <p class="user-experience">
+    <p *ngIf="user.experience_level" class="user-experience">
       <small>Experience Level: {{ EExperienceLevel[user.experience_level] }}</small>
     </p>
     <div class="social-links">
