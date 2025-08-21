@@ -140,7 +140,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     this.communityBuildForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100), this.noLinkValidator()]],
       build_type: ['', Validators.required],
-      description: ['', [Validators.required, Validators.maxLength(300)]],
+      description: ['', [Validators.required, Validators.minLength(300)]],
       publish_status: [EPublishStatus.draft, Validators.required],
       link: ['', [this.validateLink()]],
       live_app_link: ['', [this.validateLink()]],
