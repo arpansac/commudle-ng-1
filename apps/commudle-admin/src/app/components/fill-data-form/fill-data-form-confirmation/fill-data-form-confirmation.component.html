@@ -9,7 +9,8 @@
             <div class="confirmation-header" *ngIf="event">
               <div class="check-icon">{{ formIsPaid ? '🎉' : '🤩' }}</div>
               <h1 class="title" *ngIf="!formIsPaid || !etoUuid">
-                Thank You {{ currentUser?.name }} for filling the form for {{ event?.name }}
+                Thank You {{ currentUser?.name }} for filling the
+                {{ dataFormEntity?.form_type?.form_type_name | titlecase }} form for {{ event?.name }}
               </h1>
               <h1 *ngIf="formIsPaid && etoUuid" class="title paid-form">
                 Your Purchase is Successful! for {{ event?.name }}
