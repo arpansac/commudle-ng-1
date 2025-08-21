@@ -1,81 +1,114 @@
 <div class="community-members">
-  <form [formGroup]="searchForm">
-    <div class="name-filter">
-      <nb-form-field>
-        <nb-icon icon="search" nbPrefix></nb-icon>
-        <input
-          [disabled]="isLoading"
-          fieldSize="small"
-          formControlName="name"
-          fullWidth
-          nbInput
-          placeholder="Search by Name, Tagline or About Me..."
-          type="text"
-        />
-      </nb-form-field>
+  <!-- <div class="header-section">
+    <button
+      (click)="sendSpeakerCSV()"
+      nbButton
+      outline
+      status="primary"
+      [nbSpinner]="sendingRequest"
+      [disabled]="sendingRequest"
+    >
+      <fa-icon [icon]="faEnvelope"></fa-icon> &nbsp; List of speaker CSV
+    </button>
+  </div> -->
+
+  <div class="quick-insights">
+    <h2 class="quick-insights-title">Quick Insights</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-number">136</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-number">136</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-number">136</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-number">136</div>
+      </div>
     </div>
-  </form>
-  <br />
-  <div>
-    <nb-tag-list>
-      <nb-tag
-        appearance="outline"
-        [text]="options[0]"
-        status="primary"
-        [removable]="speaker ? 'true' : 'false'"
-        [ngClass]="{ activeTag: speaker }"
-        (click)="filterByTags(options[0])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[1]"
-        status="primary"
-        [removable]="contentCreator ? 'true' : 'false'"
-        [ngClass]="{ activeTag: contentCreator }"
-        (click)="filterByTags(options[1])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[2]"
-        status="primary"
-        [removable]="employer ? 'true' : 'false'"
-        [ngClass]="{ activeTag: employer }"
-        (click)="filterByTags(options[2])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[3]"
-        status="primary"
-        [removable]="employee ? 'true' : 'false'"
-        [ngClass]="{ activeTag: employee }"
-        (click)="filterByTags(options[3])"
-      ></nb-tag>
-    </nb-tag-list>
   </div>
 
-  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+  <div class="search-filters">
+    <form [formGroup]="searchForm" class="search-container">
+      <div class="search">
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search for Leaders, Speakers, or type any specific tags"
+            shape="round"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
 
-  <div class="com-my-4" style="overflow-x: auto">
-    <table *ngIf="!isLoading">
+    <!-- <div class="com-filter-dropdowns">
+      <select class="com-filter-select">
+        <option>Role</option>
+      </select>
+      <select class="com-filter-select">
+        <option>Hiring</option>
+      </select>
+      <select class="com-filter-select">
+        <option>Skills</option>
+      </select>
+      <select class="com-filter-select">
+        <option>Gender</option>
+      </select>
+      <select class="com-filter-select">
+        <option>Domains</option>
+      </select>
+    </div> -->
+
+    <!-- Active Filter Tags -->
+    <!-- <div class="com-active-filter-tags">
+      <button class="com-filter-tag" (click)="filterByTags(options[0])">Most Active (Top 10%)</button>
+      <button class="com-filter-tag" (click)="filterByTags(options[1])">New Member</button>
+      <button class="com-filter-tag" (click)="filterByTags(options[2])">Top Contributor</button>
+      <button class="com-filter-tag" (click)="filterByTags(options[3])">Content Creator</button>
+      <button class="com-filter-tag" (click)="filterByTags(options[4])">Speaker</button>
+    </div> -->
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div class="members-table" *ngIf="!isLoading">
+    <table>
       <thead>
-        <tr class="heading">
-          <th>Users</th>
-          <th>Skills Tag</th>
-          <th>Activity Stats</th>
-          <th>Speaker At</th>
-          <th>Content Creator</th>
+        <tr class="table-header">
+          <th class="sortable">
+            MEMBERS
+            <fa-icon [icon]="faSort"></fa-icon>
+          </th>
+          <th>USER ENGAGEMENT</th>
+          <th>ACTIVITY</th>
+          <th>LAST SEEN</th>
+          <th>PROFILE HIGHLIGHTS</th>
+          <th>LOCATION</th>
+          <th>JOINED DATE</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let userRole of userRolesUsers">
-          <td class="member com-w-[350px]" valign="top">
+          <td valign="top">
             <p class="user-communities-role" *ngIf="userRole.user_role.name === EUserRoles.ORGANIZER">
               <nb-icon icon="star"></nb-icon>
               <span>
                 {{ userRole.user_role.name | titlecase }}
               </span>
             </p>
-            <div class="com-flex com-flex-row com-gap-4 com-justify-between com-relative">
+            <div class="user-profile-card">
               <app-user-profile-card-large
                 [showAbout]="true"
                 [showSocialLinks]="true"
@@ -93,120 +126,134 @@
               </button>
             </div>
           </td>
-          <td class="com-w-[200px]" valign="top">
-            <nb-tag-list>
-              <nb-tag
-                *ngFor="let tag of userRole.user.tags"
-                [text]="tag.name"
-                appearance="outline"
-                status="info"
-                size="tiny"
-              ></nb-tag>
-            </nb-tag-list>
-          </td>
-          <td class="com-w-[300px]" valign="top">
-            <!-- <app-user-engagement-data [user]="userRole.user" [communityId]="communityId"></app-user-engagement-data> -->
-          </td>
-          <td class="com-w-[300px]" valign="top">
-            <ul *ngFor="let item of userRole.user.speaker_events">
-              <li>
-                <a [href]="'communities/' + item.kommunity_id + '/events/' + item.id" target="_blank">
-                  {{ item.name }}
-                </a>
-                &#64;
-                <a [href]="'communities/' + item.kommunity_id" target="_blank">
-                  {{ item.kommunity.name }}
-                </a>
-              </li>
-            </ul>
-          </td>
-          <td class="com-w-[200px]" valign="top">
-            <div>
-              <p *ngIf="userRole.user.community_builds_count > 0">Builds: {{ userRole.user.community_builds_count }}</p>
-              <p *ngIf="userRole.user.labs_count > 0">Labs: {{ userRole.user.labs_count }}</p>
-              <p *ngIf="userRole.user.social_resources_count > 0">
-                Social Resource: {{ userRole.user.social_resources_count }}
-              </p>
+          <td>
+            <div class="engagement-data">
+              <!-- <p>Attended {{ userRole.user.community_builds_count || 0 }} events</p>
+              <p>Posted in forum {{ userRole.user.labs_count || 0 }} times</p>
+              <p>Joined {{ userRole.user.social_resources_count || 0 }} channels</p>
+              <p class="com-engagement-item">8 more</p> -->
             </div>
+          </td>
+          <td>
+            <div class="com-activity-indicator"></div>
+          </td>
+          <td>
+            <span class="com-last-seen">{{ userRole.displayData?.lastSeen }}</span>
+          </td>
+          <td valign="top">
+            <div class="com-profile-highlights">
+              <!-- <ul *ngFor="let item of userRole.user.speaker_events">
+                <li>
+                  <a [href]="'communities/' + item.kommunity_id + '/events/' + item.id" target="_blank">
+                    {{ item.name }}
+                  </a>
+                  &#64;
+                  <a [href]="'communities/' + item.kommunity_id" target="_blank">
+                    {{ item.kommunity.name }}
+                  </a>
+                </li>
+              </ul> -->
+            </div>
+          </td>
+          <td>
+            <span class="com-location">{{ userRole.displayData?.location }}</span>
+          </td>
+          <td>
+            <span class="com-joined-date">{{ userRole.displayData?.joinedDate }}</span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
-  <app-pagination
-    (goTo)="page = $event; getMembers()"
-    (next)="page = $event; getMembers()"
-    (previous)="page = $event; getMembers()"
-    *ngIf="total > 0"
-    [count]="count"
-    [current]="page"
-    [total]="total"
-  ></app-pagination>
 </div>
 
+<!-- Remove User Dialog -->
 <ng-template #removeUserDialog let-data let-ref="dialogRef">
-  <nb-card class="com-max-h-[90dvh]">
-    <nb-card-header class="com-flex com-items-center com-justify-between">
-      <span class="com-flex com-items-center com-gap-2">
-        <nb-icon icon="alert-triangle" status="warning"></nb-icon>
-        Confirmation
-      </span>
-      <button (click)="ref.close()" ghost nbButton size="small">
-        <nb-icon icon="close"></nb-icon>
-      </button>
-    </nb-card-header>
-    <nb-card-body class="com-max-w-[350px]">
-      <p>
-        Are you sure you want to <strong>remove</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community? (Select
-        the roles you want to remove them from)
-      </p>
-      <div class="com-flex com-flex-col com-items-start com-gap-3 com-space-x-3">
-        <div *ngFor="let userRole of selectedUserRoles">
-          <input
-            type="checkbox"
-            (change)="toggleUserRole(userRole.id)"
-            [checked]="userRolesUserIds.value.includes(userRole.id)"
-          />
-          <label for="vehicle1"> {{ userRole.parent_name }} ({{ userRole.user_role.name }})</label><br />
-        </div>
+  <div class="com-dialog-overlay">
+    <div class="com-dialog-container com-large">
+      <div class="com-dialog-header">
+        <span class="com-dialog-title">
+          <svg class="com-warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"
+            ></path>
+          </svg>
+          Confirmation
+        </span>
+        <button (click)="ref.close()" class="com-close-button">
+          <svg class="com-close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
       </div>
-      <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
-    </nb-card-body>
-    <nb-card-footer class="com-flex com-items-center com-justify-between">
-      <button (click)="ref.close()" ghost nbButton status="danger">No</button>
-      <button
-        (click)="removeUser(); ref.close()"
-        [disabled]="!selectedUserRoles.length || !userRolesUserIds.value.length"
-        nbButton
-        status="success"
-      >
-        Yes
-      </button>
-    </nb-card-footer>
-  </nb-card>
+      <div class="com-dialog-body">
+        <p class="com-dialog-message">
+          Are you sure you want to <strong>remove</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community?
+          (Select the roles you want to remove them from)
+        </p>
+        <div class="com-checkbox-group">
+          <div *ngFor="let userRole of selectedUserRoles" class="com-checkbox-item">
+            <input
+              type="checkbox"
+              (change)="toggleUserRole(userRole.id)"
+              [checked]="userRolesUserIds.value.includes(userRole.id)"
+              class="com-checkbox-input"
+            />
+            <label class="com-checkbox-label">{{ userRole.parent_name }} ({{ userRole.user_role.name }})</label>
+          </div>
+        </div>
+        <p class="com-dialog-note"><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
+      </div>
+      <div class="com-dialog-footer">
+        <button (click)="ref.close()" class="com-cancel-button">No</button>
+        <button
+          (click)="removeUser(); ref.close()"
+          [disabled]="!selectedUserRoles.length || !userRolesUserIds.value.length"
+          class="com-confirm-button"
+        >
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
+<!-- Block User Dialog -->
 <ng-template #blockUserDialog let-data let-ref="dialogRef">
-  <nb-card>
-    <nb-card-header class="com-flex com-items-center com-justify-between">
-      <span class="com-flex com-items-center com-gap-2">
-        <nb-icon icon="alert-triangle" status="warning"></nb-icon>
-        Confirmation
-      </span>
-      <button (click)="ref.close()" ghost nbButton size="small">
-        <nb-icon icon="close"></nb-icon>
-      </button>
-    </nb-card-header>
-    <nb-card-body class="com-max-w-[350px]">
-      <p>
-        Are you sure you want to <strong>remove & block</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community?
-      </p>
-      <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
-    </nb-card-body>
-    <nb-card-footer class="com-flex com-items-center com-justify-between">
-      <button (click)="ref.close()" ghost nbButton status="danger">No</button>
-      <button (click)="blockUser(data.user.id); ref.close()" nbButton status="success">Yes</button>
-    </nb-card-footer>
-  </nb-card>
+  <div class="com-dialog-overlay">
+    <div class="com-dialog-container">
+      <div class="com-dialog-header">
+        <span class="com-dialog-title">
+          <svg class="com-warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"
+            ></path>
+          </svg>
+          Confirmation
+        </span>
+        <button (click)="ref.close()" class="com-close-button">
+          <svg class="com-close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="com-dialog-body">
+        <p class="com-dialog-message">
+          Are you sure you want to <strong>remove & block</strong>&nbsp;<em>{{ data.user?.name }}</em> from the
+          community?
+        </p>
+        <p class="com-dialog-note"><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
+      </div>
+      <div class="com-dialog-footer">
+        <button (click)="ref.close()" class="com-cancel-button">No</button>
+        <button (click)="blockUser(data.user.id); ref.close()" class="com-confirm-button">Yes</button>
+      </div>
+    </div>
+  </div>
 </ng-template>

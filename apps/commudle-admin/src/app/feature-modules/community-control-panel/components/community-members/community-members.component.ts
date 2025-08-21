@@ -8,6 +8,8 @@ import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription } from 'rxjs';
 import { ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 
 @Component({
   selector: 'app-community-members',
@@ -27,6 +29,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   employer = false;
   contentCreator = false;
   employee = false;
+  sendingRequest = false;
+  faEnvelope = faEnvelope;
+  faSort = faSort;
 
   contextMenuItems = [
     {
@@ -59,6 +64,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     private toastrService: NbToastrService,
     private menuService: NbMenuService,
     private seoService: SeoService,
+    private communityService: CommunitiesService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -66,7 +72,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.removeUserForm = this.fb.group({
       user_roles_user_ids: this.fb.array([]),
     });
-    this.options = ['speakers', 'content creator', 'employer', 'employee'];
+    this.options = ['speakers', 'content creator', 'employer', 'employee', 'speaker'];
   }
 
   get userRolesUserIds(): FormArray {
@@ -224,8 +230,23 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     if (event === this.options[3]) {
       this.employee = !this.employee;
     }
+    if (event === this.options[4]) {
+      this.speaker = !this.speaker;
+    }
     this.total = 0;
     this.page = 1;
     this.getMembers();
+  }
+
+  sendSpeakerCSV() {
+    this.sendingRequest = true;
+    this.communityService
+      .sendCsvSpeakersList(this.activatedRoute.parent.snapshot.params['community_id'])
+      .subscribe((data) => {
+        if (data) {
+          this.toastrService.success('CSV will be sent to your email inbox');
+          this.sendingRequest = false;
+        }
+      });
   }
 }

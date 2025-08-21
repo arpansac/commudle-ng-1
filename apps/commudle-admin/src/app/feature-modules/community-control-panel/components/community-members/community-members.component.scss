@@ -1,36 +1,351 @@
 .community-members {
-  @apply com-px-6 com-pt-6;
+  @apply com-pt-6;
 
-  .activeTag {
-    @apply com-bg-primary-500 com-text-tWhite;
-  }
+  // .header-section {
+  //   @apply com-flex com-items-center com-justify-between com-mb-6;
+  // }
 
-  .member {
-    .context-menu {
-      @apply com-invisible;
+  .quick-insights {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-6;
+
+    .quick-insights-title {
+      @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-mb-6;
     }
 
-    &:hover {
-      .context-menu {
-        @apply com-visible;
+    .insights-grid {
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-4 com-gap-6;
+
+      .insight-card {
+        @apply com-bg-gray-50 com-rounded-10 com-p-4 com-border com-border-solid com-border-Bright-Gray;
+
+        .insight-label {
+          @apply com-text-xs com-font-medium com-text-gray-600 com-mb-3;
+        }
+
+        .insight-number {
+          @apply com-text-xl com-font-bold com-text-Yankees-Blue;
+        }
       }
     }
-    .user-communities-role {
-      @apply com-text-black com-bg-Chrome-Yellow com-flex com-items-center com-w-min com-p-0 com-px-2 com-font-medium com-rounded-xl com-mt-0;
-      nb-icon {
-        @apply com-text-tWhite com-mr-1;
+  }
+
+  .search-filters {
+    @apply com-mt-6 com-mb-8;
+
+    .search-container {
+      @apply com-mb-4;
+
+      .search {
+        @apply com-m-0 com-bg-white;
+
+        input {
+          @apply com-bg-white #{!important};
+        }
+      }
+    }
+
+    .com-filter-dropdowns {
+      @apply com-flex com-flex-wrap com-items-center com-gap-4 com-mb-4;
+
+      .com-filter-select {
+        @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-lg focus:com-ring-2 focus:com-ring-blue-500 focus:com-border-blue-500 com-transition-colors;
+      }
+    }
+
+    .com-active-filter-tags {
+      @apply com-flex com-flex-wrap com-gap-2;
+
+      .com-filter-tag {
+        @apply com-px-3 com-py-1 com-bg-blue-600 com-text-white com-text-sm com-rounded-full hover:com-bg-blue-700 com-transition-colors;
+      }
+    }
+  }
+
+  .loading-spinner {
+    @apply com-flex com-justify-center com-items-center com-py-8;
+  }
+
+  .members-table {
+    table {
+      @apply com-w-full;
+
+      thead {
+        th {
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+          .sortable {
+            @apply com-flex com-items-center com-space-x-1;
+          }
+        }
+
+        .table-header {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        }
+      }
+
+      tbody {
+        tr {
+          @apply hover:com-bg-gray-50;
+
+          td {
+            @apply com-p-4;
+
+            .com-member-info {
+              @apply com-flex com-items-center com-space-x-3;
+
+              .com-avatar {
+                @apply com-flex-shrink-0;
+
+                .com-avatar-circle {
+                  @apply com-w-10 com-h-10 com-bg-gray-300 com-rounded-full com-flex com-items-center com-justify-center;
+
+                  .com-avatar-initial {
+                    @apply com-text-sm com-font-medium com-text-gray-700;
+                  }
+                }
+              }
+
+              .com-member-details {
+                @apply com-flex-1 com-min-w-0;
+
+                .com-member-name {
+                  @apply com-text-sm com-font-medium com-text-gray-900 com-truncate;
+                }
+
+                .com-member-role {
+                  @apply com-text-sm com-text-gray-500;
+                }
+              }
+
+              .com-context-menu-button {
+                @apply com-text-gray-400 hover:com-text-gray-600 com-transition-colors;
+
+                .com-context-menu-icon {
+                  @apply com-w-5 com-h-5;
+                }
+              }
+            }
+
+            .engagement-data {
+              @apply com-text-sm com-font-normal com-text-gray-500;
+
+              p {
+                @apply com-m-0;
+              }
+
+              .com-engagement-item {
+                @apply com-text-blue-600;
+              }
+            }
+
+            .com-activity-indicator {
+              @apply com-flex com-items-center com-space-x-2;
+
+              .com-activity-dot {
+                @apply com-w-2 com-h-2 com-rounded-full;
+
+                &.com-highly-active,
+                &.bg-red-500 {
+                  @apply com-bg-red-500;
+                }
+
+                &.com-active,
+                &.bg-green-500 {
+                  @apply com-bg-green-500;
+                }
+
+                &.com-occasionally-active,
+                &.bg-yellow-500 {
+                  @apply com-bg-yellow-500;
+                }
+
+                &.com-inactive,
+                &.bg-gray-500 {
+                  @apply com-bg-gray-500;
+                }
+              }
+
+              .com-activity-text {
+                @apply com-text-sm com-font-medium com-text-gray-900;
+              }
+            }
+
+            .com-last-seen {
+              @apply com-text-sm com-text-gray-500;
+            }
+
+            .com-profile-highlights {
+              @apply com-text-sm com-text-gray-900 com-space-y-1;
+
+              .com-highlight-item {
+                @apply com-text-blue-600;
+              }
+            }
+
+            .com-location {
+              @apply com-text-sm com-text-gray-900;
+            }
+
+            .com-joined-date {
+              @apply com-text-sm com-text-gray-500;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Pagination
+  .com-pagination {
+    @apply com-mt-6;
+
+    .com-pagination-container {
+      @apply com-flex com-items-center com-justify-between;
+
+      .com-pagination-controls {
+        @apply com-flex com-items-center com-space-x-2;
+
+        .com-pagination-button {
+          @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-lg hover:com-bg-gray-50 disabled:com-opacity-50 disabled:com-cursor-not-allowed com-transition-colors;
+
+          &.com-previous {
+            // Previous button specific styles
+          }
+
+          &.com-next {
+            // Next button specific styles
+          }
+        }
+
+        .com-page-info {
+          @apply com-text-sm com-text-gray-700;
+        }
       }
     }
   }
 }
 
-table {
-  @apply com-border-collapse com-w-auto;
-  td,
-  th {
-    @apply com-border com-border-solid com-border-gray-200 com-p-4;
+// Dialog Styles
+.com-dialog-overlay {
+  @apply com-fixed com-inset-0 com-bg-black com-bg-opacity-50 com-flex com-items-center com-justify-center com-z-50;
+}
+
+.com-dialog-container {
+  @apply com-bg-white com-rounded-lg com-shadow-xl com-max-w-md com-w-full com-mx-4;
+
+  &.com-large {
+    @apply com-max-h-[90vh] com-overflow-hidden;
   }
-  th {
-    @apply com-font-extrabold com-text-lg;
+}
+
+.com-dialog-header {
+  @apply com-flex com-items-center com-justify-between com-p-6 com-border-b com-border-gray-200;
+
+  .com-dialog-title {
+    @apply com-flex com-items-center com-gap-2 com-text-lg com-font-semibold com-text-gray-900;
+
+    .com-warning-icon {
+      @apply com-w-6 com-h-6 com-text-yellow-500;
+    }
+  }
+
+  .com-close-button {
+    @apply com-text-gray-400 hover:com-text-gray-600 com-transition-colors;
+
+    .com-close-icon {
+      @apply com-w-6 com-h-6;
+    }
+  }
+}
+
+.com-dialog-body {
+  @apply com-p-6 com-max-w-[350px];
+
+  .com-dialog-message {
+    @apply com-text-gray-700 com-mb-4;
+  }
+
+  .com-checkbox-group {
+    @apply com-flex com-flex-col com-items-start com-gap-3 com-mb-4;
+
+    .com-checkbox-item {
+      @apply com-flex com-items-center com-gap-2;
+
+      .com-checkbox-input {
+        @apply com-w-4 com-h-4 com-text-blue-600 com-bg-gray-100 com-border-gray-300 com-rounded focus:com-ring-blue-500 focus:com-ring-2;
+      }
+
+      .com-checkbox-label {
+        @apply com-text-sm com-text-gray-700;
+      }
+    }
+  }
+
+  .com-dialog-note {
+    @apply com-text-sm com-text-gray-600;
+  }
+}
+
+.com-dialog-footer {
+  @apply com-flex com-items-center com-justify-between com-p-6 com-border-t com-border-gray-200 com-bg-gray-50;
+
+  .com-cancel-button {
+    @apply com-px-4 com-py-2 com-text-red-600 hover:com-text-red-700 com-font-medium com-transition-colors;
+  }
+
+  .com-confirm-button {
+    @apply com-px-4 com-py-2 com-bg-green-600 com-text-white com-rounded-lg hover:com-bg-green-700 com-transition-colors;
+
+    &:disabled {
+      @apply com-opacity-50 com-cursor-not-allowed;
+    }
+  }
+}
+
+// Custom styles for specific components that can't be handled by Tailwind
+nb-card {
+  @apply com-shadow-lg com-border-0;
+}
+
+nb-card-header {
+  @apply com-bg-gray-50 com-border-b com-border-gray-200;
+}
+
+nb-card-body {
+  @apply com-p-6;
+}
+
+nb-card-footer {
+  @apply com-bg-gray-50 com-border-t com-border-gray-200 com-p-4;
+}
+
+// Override Nebular button styles to match design
+nb-button {
+  @apply com-transition-all com-duration-200;
+}
+
+// Custom scrollbar for better UX
+.com-overflow-x-auto {
+  &::-webkit-scrollbar {
+    @apply com-h-2;
+  }
+
+  &::-webkit-scrollbar-track {
+    @apply com-bg-gray-100 com-rounded;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply com-bg-gray-300 com-rounded hover:com-bg-gray-400;
+  }
+}
+
+.user-profile-card {
+  @apply com-flex com-flex-row com-gap-4 com-justify-between com-relative;
+}
+
+.user-communities-role {
+  @apply com-text-black com-bg-Chrome-Yellow com-flex com-items-center com-w-min com-p-0 com-px-2 com-font-medium com-rounded-xl com-mt-0;
+  nb-icon {
+    @apply com-text-tWhite com-mr-1;
   }
 }
