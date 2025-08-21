@@ -14,6 +14,7 @@ import { IRegistrationType } from 'apps/shared-models/registration_type.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
+import { EDomain, EExperienceLevel } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-user-details-cell',
@@ -25,6 +26,8 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   faTwitter = faTwitter;
   faLinkedin = faLinkedin;
   faInfo = faInfo;
+  EExperienceLevel = EExperienceLevel;
+  EDomain = EDomain;
 
   @Input() community: ICommunity;
   @Input() event: IEvent;
