@@ -11,8 +11,10 @@
     }
   }
 
-  .contact-details {
-    margin: 0;
+  .contact-details,
+  .user-domain,
+  .user-experience {
+    @apply com-m-0;
   }
 
   .social-links {
