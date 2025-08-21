@@ -316,6 +316,11 @@
                 <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
               </span>
               <editor [init]="tinyMCE" formControlName="description"></editor>
+              <commudle-alert
+                *ngIf="communityBuildForm.get['description'].hasError('maxlength')"
+                [error]="true"
+                errorMessage="Description cannot exceed 300 characters"
+              ></commudle-alert>
             </div>
 
             <div class="field image-upload">
