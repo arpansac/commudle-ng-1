@@ -133,6 +133,7 @@
                 <a [routerLink]="'.'" fragment="comments"
                   ><nb-icon icon="message-circle-outline" status="info"></nb-icon>Comments</a
                 >
+                <commudle-help-section [helpDictionaryName]="'event-comments'"></commudle-help-section>
               </h6>
               <button
                 *ngIf="isOrganizer && discussionChat && items"

@@ -1,5 +1,9 @@
 <div class="com-bg-white com-rounded-[10px]">
   <form (ngSubmit)="updateCommunityDetails()" [formGroup]="communityForm" class="community-edit-details-form">
+    <div class="heading">
+      Edit Community Details
+      <commudle-help-section [helpDictionaryName]="'community-details-edit'"></commudle-help-section>
+    </div>
     <div formGroupName="community">
       <div role="group">
         <div>
