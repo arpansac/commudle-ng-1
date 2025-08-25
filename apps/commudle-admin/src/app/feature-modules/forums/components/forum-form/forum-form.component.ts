@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@commudle/theme';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 import { ForumService } from '@commudle/shared-services';
-import { IForum } from '@commudle/shared-models';
+import { EDiscussionType, IForum } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-forum-form',
@@ -12,6 +12,7 @@ import { IForum } from '@commudle/shared-models';
 })
 export class ForumFormComponent implements OnInit {
   @Input() forumId: number;
+  @Input() displayType: EDiscussionType;
   topicForm: FormGroup;
 
   constructor(
@@ -26,10 +27,14 @@ export class ForumFormComponent implements OnInit {
       description: ['', Validators.required],
       is_private: [false],
       is_readonly: [false],
+      display_type: ['', Validators.required],
     });
   }
 
   ngOnInit() {
+    this.topicForm.patchValue({
+      display_type: this.displayType,
+    });
     if (this.forumId) {
       this.forumService.showForum(this.forumId).subscribe({
         next: (data: IForum) => {

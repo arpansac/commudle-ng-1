@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IForum } from '@commudle/shared-models';
+import { EDiscussionType, IForum } from '@commudle/shared-models';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 import { NbDialogService } from '@commudle/theme';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
@@ -23,12 +23,13 @@ export class ForumsCategoriesComponent implements OnInit {
 
   ngOnInit() {
     this.forums$ = this.forumsStore.forums$;
-    this.forumsStore.forumsByGroup$.subscribe((data) => {
-      console.log('🚀 ~ ForumsCategoriesComponent ~ ngOnInit ~ data:', data);
-    });
   }
 
   openDialogBox() {
-    this.dialogService.open(ForumFormComponent);
+    this.dialogService.open(ForumFormComponent, {
+      context: {
+        displayType: EDiscussionType.FORUM,
+      },
+    });
   }
 }
