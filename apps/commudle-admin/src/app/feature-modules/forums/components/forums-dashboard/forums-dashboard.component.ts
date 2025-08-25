@@ -15,30 +15,15 @@ interface ParentInfo {
 })
 export class ForumsDashboardComponent implements OnInit {
   parentInfo: ParentInfo | null = null;
+  categories$ = this.forumStore.categories$;
 
   constructor(private route: ActivatedRoute, private forumStore: ForumsStore) {}
 
   ngOnInit() {
     this.parentInfo = this.getParentFromUrl();
-    console.log('Parent info:', this.parentInfo);
 
     if (this.parentInfo) {
       this.forumStore.loadForums(this.parentInfo.parent_id, this.parentInfo.parent_type);
-
-      /* The code snippet `this.forumStore.forums$.subscribe((forums) => {
-        if (forums) {
-          console.log('🚀 ~ Forums loaded:', forums);
-        }
-      });` is setting up a subscription to the `forums$` observable in the `forumStore`. */
-      // this.forumStore.forums$.subscribe((forums) => {
-      //   if (forums) {
-      //     console.log('🚀 ~ Forums loaded:', forums);
-      //   }
-      // });
-
-      // this.forumStore.selectedForum$.subscribe((selectedForum) => {
-      //   console.log('🚀 ~ Selected forum:', selectedForum);
-      // });
     }
   }
 

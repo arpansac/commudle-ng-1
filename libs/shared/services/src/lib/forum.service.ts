@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseApiService } from './base-api.service';
 import { API_ROUTES } from './api-routes.constant';
 import { Observable } from 'rxjs';
-import { EDbModels, EDiscussionType, IForum, IPagination } from '@commudle/shared-models';
+import { EDbModels, EDiscussionType, IForum, IPagination, ICategory } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -45,5 +45,13 @@ export class ForumService {
   updateForum(forum: IForum, forumId: number): Observable<IForum> {
     const params = new HttpParams().set('community_channel_id', forumId);
     return this.http.put<IForum>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.UPDATE), forum, { params });
+  }
+
+  getCategories(parentId: number | string, parentType: EDbModels): Observable<ICategory[]> {
+    const params = new HttpParams().set('parent_id', parentId).set('parent_type', parentType);
+
+    return this.http.get<ICategory[]>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.GET_CATEGORIES), {
+      params,
+    });
   }
 }

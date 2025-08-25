@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IForum, IPagination, EDbModels } from '@commudle/shared-models';
+import { IForum, IPagination, EDbModels, ICategory } from '@commudle/shared-models';
 import { ForumService } from '@commudle/shared-services';
 
 @Injectable({
@@ -22,6 +22,9 @@ export class ForumsStore {
   private parentType: BehaviorSubject<EDbModels | null> = new BehaviorSubject(null);
   public readonly parentType$ = this.parentType.asObservable();
 
+  private categories: BehaviorSubject<ICategory[]> = new BehaviorSubject([]);
+  public readonly categories$ = this.categories.asObservable();
+
   constructor(private forumService: ForumService) {}
 
   loadForums(parentId: string, parentType: EDbModels) {
@@ -35,6 +38,16 @@ export class ForumsStore {
       },
       error: (error) => {
         console.error('Error loading forums:', error);
+      },
+    });
+
+    this.loadCategories(parentId, parentType);
+  }
+
+  loadCategories(parentId: string, parentType: EDbModels) {
+    this.forumService.getCategories(parentId, parentType).subscribe({
+      next: (categories: ICategory[]) => {
+        this.categories.next(categories);
       },
     });
   }
@@ -96,5 +109,6 @@ export class ForumsStore {
     this.selectedForum.next(null);
     this.parentId.next(null);
     this.parentType.next(null);
+    this.categories.next([]);
   }
 }
