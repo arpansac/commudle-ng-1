@@ -311,7 +311,7 @@
 
       <button
         (click)="createOrUpdate()"
-        [disabled]="hackathonForm.invalid || isLoading || tags.length < 5 || tags.length > 5"
+        [disabled]="hackathonForm.invalid || isLoading || tags.length < 5"
         [nbSpinner]="isLoading"
         class="save-button"
         fullWidth
