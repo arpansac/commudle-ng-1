@@ -7,6 +7,7 @@ import { ForumsCategoriesComponent } from './components/forums-categories/forums
 import { ForumFormComponent } from './components/forum-form/forum-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [ForumsDashboardComponent, ForumsCategoriesComponent, ForumFormComponent],
@@ -15,6 +16,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ForumsRoutes,
     ReactiveFormsModule,
     FontAwesomeModule,
+
+    // Standalone Components
+    SidebarComponent,
 
     // Nebular
     NbCardModule,

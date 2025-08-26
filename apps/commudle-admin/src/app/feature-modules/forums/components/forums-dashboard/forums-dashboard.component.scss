@@ -1,3 +1,22 @@
 .forums-dashboard-container {
-  @apply com-m-0 com-min-h-full com-max-w-full;
+  @apply com-m-0 com-max-w-full com-h-full;
+  nb-card-body {
+    @apply com-flex com-relative com-p-0;
+  }
+}
+
+.header-content {
+  @apply com-flex com-items-center com-gap-2;
+}
+
+.toggle-btn {
+  @apply com-flex com-items-center com-justify-center hover:com-bg-gray-100;
+}
+
+.categories-content {
+  @apply com-p-2;
+}
+
+.category-item {
+  @apply com-p-2 com-cursor-pointer com-rounded com-transition-colors hover:com-bg-gray-100;
 }

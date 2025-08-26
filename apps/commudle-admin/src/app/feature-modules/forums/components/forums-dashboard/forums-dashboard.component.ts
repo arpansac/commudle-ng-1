@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { EDbModels } from '@commudle/shared-models';
+import { ForumService } from '@commudle/shared-services';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 interface ParentInfo {
   parent_id: string;
@@ -16,14 +17,24 @@ interface ParentInfo {
 export class ForumsDashboardComponent implements OnInit {
   parentInfo: ParentInfo | null = null;
   categories$ = this.forumStore.categories$;
-
-  constructor(private route: ActivatedRoute, private forumStore: ForumsStore) {}
+  sidebarEventName = 'forumCategories';
+  constructor(
+    private forumStore: ForumsStore,
+    private forumService: ForumService,
+    public sidebarService: SidebarService,
+  ) {}
 
   ngOnInit() {
     this.parentInfo = this.getParentFromUrl();
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
 
     if (this.parentInfo) {
       this.forumStore.loadForums(this.parentInfo.parent_id, this.parentInfo.parent_type);
+      this.forumService
+        .getCategories(this.parentInfo.parent_id, this.parentInfo.parent_type)
+        .subscribe((categories) => {
+          console.log('🚀 ~ ForumsDashboardComponent ~ ngOnInit ~ categories:', categories);
+        });
     }
   }
 
@@ -49,5 +60,9 @@ export class ForumsDashboardComponent implements OnInit {
     }
 
     return null;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarService.toggleSidebarVisibility(this.sidebarEventName);
   }
 }
