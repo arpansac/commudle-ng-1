@@ -1,5 +1,5 @@
 .already-exist-dfe {
-  @apply com-w-[448px];
+  @apply com-w-[100dvw] md:com-w-[448px] com-m-0;
   nb-card-footer,
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
