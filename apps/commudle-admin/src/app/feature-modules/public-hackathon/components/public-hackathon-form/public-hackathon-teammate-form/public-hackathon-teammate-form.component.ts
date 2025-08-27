@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { faUserLargeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
@@ -76,16 +76,29 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
     }
   }
 
+  emailValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(control.value)) {
+      return { invalidEmail: true };
+    }
+
+    return null;
+  }
+
   addTeammate(email = '', tshirt_size = '') {
     let teammateGroup;
     if (this.hackathonResponseGroup.user_details.tshirt_size) {
       teammateGroup = this.fb.group({
-        email: [email, [Validators.required, Validators.email]],
+        email: [email, [Validators.required, this.emailValidator.bind(this)]],
         tshirt_size: [tshirt_size, Validators.required],
       });
     } else {
       teammateGroup = this.fb.group({
-        email: [email, [Validators.required, Validators.email]],
+        email: [email, [Validators.required, this.emailValidator.bind(this)]],
       });
     }
 
@@ -98,6 +111,10 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
 
   get teammatesArray() {
     return this.teammateForm.get('teammates') as FormArray;
+  }
+
+  getEmailControl(index: number) {
+    return this.teammatesArray.at(index).get('email');
   }
 
   fetchTeamDetails() {

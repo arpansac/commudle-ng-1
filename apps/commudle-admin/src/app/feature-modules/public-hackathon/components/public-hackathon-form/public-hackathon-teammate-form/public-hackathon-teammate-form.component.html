@@ -29,6 +29,13 @@
         />
         <commudle-alert *ngIf="showEmailError" [error]="true" errorMessage="You can't put your own email as teammate">
         </commudle-alert>
+        <commudle-alert
+          *ngIf="getEmailControl(i)?.invalid && getEmailControl(i)?.touched"
+          [error]="true"
+          [errorMessage]="getEmailControl(i)?.errors?.['required'] ? 'Email is required' : 
+                         getEmailControl(i)?.errors?.['invalidEmail'] ? 'Please enter a valid email address (e.g., user@example.com)' : ''"
+        >
+        </commudle-alert>
       </section>
 
       <section *ngIf="hackathonResponseGroup.user_details.tshirt_size">
