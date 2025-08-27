@@ -67,25 +67,21 @@
 
   .members-table {
     table {
-      @apply com-w-full;
+      @apply com-w-full com-border-collapse com-min-w-full;
 
       thead {
         th {
-          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500  com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
           .sortable {
             @apply com-flex com-items-center com-space-x-1;
           }
         }
-
-        .table-header {
-          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
-        }
       }
 
       tbody {
         tr {
-          @apply hover:com-bg-gray-50;
+          @apply hover:com-bg-gray-50 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
           td {
             @apply com-p-4;
