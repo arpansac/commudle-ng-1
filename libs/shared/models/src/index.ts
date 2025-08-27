@@ -54,4 +54,4 @@ export * from './lib/location.model';
 export * from './lib/profile-completion-status.model';
 export * from './lib/user-stats.model';
 export * from './lib/forum.model';
-export * from './lib/category.model';
+export * from './lib/channel-category.model';

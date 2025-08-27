@@ -6,17 +6,27 @@
 }
 
 .header-content {
-  @apply com-flex com-items-center com-gap-2;
+  @apply com-flex com-items-center com-gap-4;
+  fa-icon {
+    @apply com-text-lg com-cursor-pointer;
+  }
 }
 
-.toggle-btn {
-  @apply com-flex com-items-center com-justify-center hover:com-bg-gray-100;
-}
-
-.categories-content {
-  @apply com-p-2;
-}
-
-.category-item {
-  @apply com-p-2 com-cursor-pointer com-rounded com-transition-colors hover:com-bg-gray-100;
+.sidebar {
+  @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+  .categories-content {
+    @apply com-p-2;
+    a {
+      @apply com-no-underline com-text-gray-500;
+      .category-item {
+        @apply com-p-2 com-cursor-pointer com-rounded com-transition-colors hover:com-bg-Bright-Gray;
+      }
+    }
+    .active {
+      @apply com-text-Yankees-Blue com-font-medium;
+      .category-item {
+        @apply com-bg-Bright-Gray;
+      }
+    }
+  }
 }

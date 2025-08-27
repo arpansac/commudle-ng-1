@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EDiscussionType, IForum } from '@commudle/shared-models';
+import { EDiscussionType, IChannelCategory } from '@commudle/shared-models';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 import { NbDialogService } from '@commudle/theme';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
@@ -12,7 +12,7 @@ import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./forums-categories.component.scss'],
 })
 export class ForumsCategoriesComponent implements OnInit {
-  forums$: Observable<IForum[]>;
+  categories$: Observable<IChannelCategory[]>;
   showNewTopicForm = false;
   icons = {
     faPlus,
@@ -22,7 +22,7 @@ export class ForumsCategoriesComponent implements OnInit {
   constructor(private forumsStore: ForumsStore, private dialogService: NbDialogService) {}
 
   ngOnInit() {
-    this.forums$ = this.forumsStore.forums$;
+    this.categories$ = this.forumsStore.categories$;
   }
 
   openDialogBox() {

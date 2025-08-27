@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IForum, IPagination, EDbModels, ICategory } from '@commudle/shared-models';
+import { IForum, IPagination, EDbModels, IChannelCategory } from '@commudle/shared-models';
 import { ForumService } from '@commudle/shared-services';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class ForumsStore {
   private parentType: BehaviorSubject<EDbModels | null> = new BehaviorSubject(null);
   public readonly parentType$ = this.parentType.asObservable();
 
-  private categories: BehaviorSubject<ICategory[]> = new BehaviorSubject([]);
+  private categories: BehaviorSubject<IChannelCategory[]> = new BehaviorSubject([]);
   public readonly categories$ = this.categories.asObservable();
 
   constructor(private forumService: ForumService) {}
@@ -41,12 +41,12 @@ export class ForumsStore {
       },
     });
 
-    this.loadCategories(parentId, parentType);
+    // this.loadCategories(parentId, parentType);
   }
 
   loadCategories(parentId: string, parentType: EDbModels) {
     this.forumService.getCategories(parentId, parentType).subscribe({
-      next: (categories: ICategory[]) => {
+      next: (categories: IChannelCategory[]) => {
         this.categories.next(categories);
       },
     });

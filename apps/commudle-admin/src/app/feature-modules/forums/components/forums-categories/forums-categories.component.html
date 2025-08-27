@@ -7,17 +7,19 @@
   </div>
 
   <div class="forums-grid">
-    <nb-card class="forum-card" *ngFor="let forum of forums$ | async">
-      <nb-card-body>
-        <div class="forum-card-header">
-          <span class="forum-card-title">{{ forum.name }}</span>
-          <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-        </div>
-        <p class="forum-card-category">{{ forum.group_name }}</p>
-        <p class="forum-card-description">
-          {{ forum.description }}
-        </p>
-      </nb-card-body>
-    </nb-card>
+    <a *ngFor="let category of categories$ | async" [routerLink]="['category', category.slug]">
+      <nb-card class="forum-card">
+        <nb-card-body>
+          <div class="forum-card-header">
+            <span class="forum-card-title">{{ category.name }}</span>
+            <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+          </div>
+          <p class="forum-card-category">{{ category.featured_channel.name }}</p>
+          <p class="forum-card-description">
+            {{ category.featured_channel.description }}
+          </p>
+        </nb-card-body>
+      </nb-card>
+    </a>
   </div>
 </div>

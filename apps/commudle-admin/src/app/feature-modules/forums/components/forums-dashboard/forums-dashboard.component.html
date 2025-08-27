@@ -1,20 +1,32 @@
 <nb-card class="forums-dashboard-container">
   <nb-card-header>
     <div class="header-content">
-      <button nbButton ghost size="small" (click)="toggleSidebar()" class="toggle-btn" title="Toggle Categories">
-        <nb-icon icon="menu-2-outline"></nb-icon>
-      </button>
+      <fa-icon (click)="toggleSidebar()" [icon]="faIcons.faBars"></fa-icon>
       <span>Forums</span>
     </div>
   </nb-card-header>
   <nb-card-body>
-    <commudle-sidebar [eventName]="sidebarEventName" heading="Categories" [forWindow]="false">
-      <div class="categories-content">
-        <div *ngFor="let category of categories$ | async" class="category-item">
-          {{ category.name }}
+    <div class="sidebar">
+      <commudle-sidebar
+        [eventName]="sidebarEventName"
+        [forWindow]="false"
+        [showExpandedButton]="false"
+        heading="Categories"
+        [textSize]="ESidebarHeading.MEDIUM"
+      >
+        <div class="categories-content">
+          <a
+            *ngFor="let category of categories$ | async"
+            [routerLink]="['category', category.slug]"
+            routerLinkActive="active"
+          >
+            <div class="category-item">
+              {{ category.name }}
+            </div>
+          </a>
         </div>
-      </div>
-    </commudle-sidebar>
+      </commudle-sidebar>
+    </div>
     <router-outlet></router-outlet>
   </nb-card-body>
 </nb-card>

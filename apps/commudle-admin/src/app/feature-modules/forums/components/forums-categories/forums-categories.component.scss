@@ -1,4 +1,5 @@
 .categories-page {
+  @apply com-px-6 com-pb-4;
   .categories-header {
     @apply com-flex com-justify-between com-items-center;
     .categories-title {
@@ -8,25 +9,29 @@
 
   .forums-grid {
     @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 md:com-grid-cols-3 lg:com-grid-cols-4 com-gap-6;
-    .forum-card {
-      @apply com-bg-white com-rounded-lg com-shadow-md com-m-0;
-      .forum-card-header {
-        @apply com-flex com-items-center com-gap-3;
-        .forum-card-title {
-          @apply com-text-base com-font-semibold com-text-Yankees-Blue;
-          fa-icon {
-            @apply com-text-base;
+    a {
+      @apply com-no-underline;
+
+      .forum-card {
+        @apply com-bg-white com-rounded-lg com-shadow-md com-m-0;
+        .forum-card-header {
+          @apply com-flex com-items-center com-gap-3;
+          .forum-card-title {
+            @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+            fa-icon {
+              @apply com-text-base;
+            }
+          }
+          .forum-card-arrow {
+            @apply com-text-lg;
           }
         }
-        .forum-card-arrow {
-          @apply com-text-lg;
+        .forum-card-category {
+          @apply com-text-xs com-text-gray-600 com-font-medium;
         }
-      }
-      .forum-card-category {
-        @apply com-text-xs com-text-gray-600 com-font-medium;
-      }
-      .forum-card-description {
-        @apply com-text-xs com-line-clamp-3 com-text-gray-500;
+        .forum-card-description {
+          @apply com-text-xs com-line-clamp-3 com-text-gray-500;
+        }
       }
     }
   }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EDbModels } from '@commudle/shared-models';
-import { ForumService } from '@commudle/shared-services';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 interface ParentInfo {
@@ -18,23 +19,19 @@ export class ForumsDashboardComponent implements OnInit {
   parentInfo: ParentInfo | null = null;
   categories$ = this.forumStore.categories$;
   sidebarEventName = 'forumCategories';
-  constructor(
-    private forumStore: ForumsStore,
-    private forumService: ForumService,
-    public sidebarService: SidebarService,
-  ) {}
+  ESidebarHeading = ESidebarHeading;
+  faIcons = {
+    faBars,
+  };
+
+  constructor(private forumStore: ForumsStore, public sidebarService: SidebarService) {}
 
   ngOnInit() {
     this.parentInfo = this.getParentFromUrl();
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
 
     if (this.parentInfo) {
-      this.forumStore.loadForums(this.parentInfo.parent_id, this.parentInfo.parent_type);
-      this.forumService
-        .getCategories(this.parentInfo.parent_id, this.parentInfo.parent_type)
-        .subscribe((categories) => {
-          console.log('🚀 ~ ForumsDashboardComponent ~ ngOnInit ~ categories:', categories);
-        });
+      this.forumStore.loadCategories(this.parentInfo.parent_id, this.parentInfo.parent_type);
     }
   }
 
