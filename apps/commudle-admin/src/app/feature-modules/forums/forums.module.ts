@@ -5,12 +5,13 @@ import { ForumsDashboardComponent } from './components/forums-dashboard/forums-d
 import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule } from '@commudle/theme';
 import { ForumsCategoriesComponent } from './components/forums-categories/forums-categories.component';
 import { ForumFormComponent } from './components/forum-form/forum-form.component';
+import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 
 @NgModule({
-  declarations: [ForumsDashboardComponent, ForumsCategoriesComponent, ForumFormComponent],
+  declarations: [ForumsDashboardComponent, ForumsCategoriesComponent, ForumFormComponent, ForumsByCategoryComponent],
   imports: [
     CommonModule,
     ForumsRoutes,

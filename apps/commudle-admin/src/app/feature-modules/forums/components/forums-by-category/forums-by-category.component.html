@@ -1,0 +1,28 @@
+<div class="forums-by-category">
+  <div class="back-new-topic">
+    <div class="back-button" (click)="backButton()"><fa-icon [icon]="icons.faArrowLeft"></fa-icon> &nbsp;Go Back</div>
+    <button nbButton status="primary" (click)="openDialogBox()" shape="semi-round">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; New Topic
+    </button>
+  </div>
+  <!-- <div class="forums-by-category-header">
+    <h2>Forums - {{ categorySlug | titlecase }}</h2>
+  </div>
+
+  <div class="forums-by-category-list">
+    <div *ngIf="forums.length === 0" class="no-forums">
+      <p>No forums found in this category.</p>
+    </div>
+
+    <div *ngFor="let forum of forums" class="forum-card">
+      <div class="forum-card-info">
+        <h3>{{ forum.name }}</h3>
+        <p *ngIf="forum.description">{{ forum.description }}</p>
+      </div>
+
+      <div class="forum-card-meta">
+        <span class="forum-card-type">Forum</span>
+      </div>
+    </div>
+  </div> -->
+</div>

@@ -28,6 +28,9 @@ export class ForumsDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.parentInfo = this.getParentFromUrl();
+    if (this.parentInfo) {
+      this.forumStore.setParentContext(this.parentInfo.parent_id, this.parentInfo.parent_type);
+    }
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
 
     if (this.parentInfo) {

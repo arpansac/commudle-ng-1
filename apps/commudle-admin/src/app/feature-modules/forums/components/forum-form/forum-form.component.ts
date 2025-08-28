@@ -38,7 +38,7 @@ export class ForumFormComponent implements OnInit {
     if (this.forumId) {
       this.forumService.showForum(this.forumId).subscribe({
         next: (data: IForum) => {
-          this.forumsStore.setSelectedForum(data);
+          // this.forumsStore.setSelectedForum(data);
         },
       });
     }

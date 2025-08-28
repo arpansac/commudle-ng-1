@@ -57,4 +57,21 @@ export class ForumService {
       },
     );
   }
+
+  getForumsByCategory(
+    parentId: number | string,
+    parentType: EDbModels,
+    categorySlug: string,
+    displayType: EDiscussionType,
+  ): Observable<IForum[]> {
+    const params = new HttpParams()
+      .set('display_type', displayType)
+      .set('parent_type', parentType)
+      .set('parent_id', parentId)
+      .set('channel_category_id', categorySlug);
+
+    return this.http.get<IForum[]>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.INDEX_BY_CATEGORY), {
+      params,
+    });
+  }
 }

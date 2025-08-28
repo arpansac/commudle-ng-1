@@ -10,12 +10,6 @@ export class ForumsStore {
   private forums: BehaviorSubject<IForum[]> = new BehaviorSubject([]);
   public readonly forums$ = this.forums.asObservable();
 
-  private forumsByGroup: BehaviorSubject<{ [groupName: string]: IForum[] }> = new BehaviorSubject({});
-  public readonly forumsByGroup$ = this.forumsByGroup.asObservable();
-
-  private selectedForum: BehaviorSubject<IForum> = new BehaviorSubject(null);
-  public readonly selectedForum$ = this.selectedForum.asObservable();
-
   private parentId: BehaviorSubject<string | null> = new BehaviorSubject(null);
   public readonly parentId$ = this.parentId.asObservable();
 
@@ -28,20 +22,14 @@ export class ForumsStore {
   constructor(private forumService: ForumService) {}
 
   loadForums(parentId: string, parentType: EDbModels) {
-    this.parentId.next(parentId);
-    this.parentType.next(parentType);
-
     this.forumService.indexForums(parentId, parentType).subscribe({
       next: (data: IPagination<IForum[]>) => {
         this.forums.next(data.page.reduce((acc, value) => [...acc, value.data], []));
-        this.updateForumsByGroup();
       },
       error: (error) => {
         console.error('Error loading forums:', error);
       },
     });
-
-    // this.loadCategories(parentId, parentType);
   }
 
   loadCategories(parentId: string, parentType: EDbModels) {
@@ -52,15 +40,21 @@ export class ForumsStore {
     });
   }
 
-  setSelectedForum(forum: IForum) {
-    this.selectedForum.next(forum);
-  }
+  // loadForumsByCategory(parentId: string, parentType: EDbModels, categorySlug: string) {
+  //   this.forumService.getForumsByCategory(parentId, parentType, categorySlug).subscribe({
+  //     next: (data: IPagination<IForum[]>) => {
+  //       this.forums.next(data.page.reduce((acc, value) => [...acc, value.data], []));
+  //     },
+  //     error: (error) => {
+  //       console.error('Error loading forums by category:', error);
+  //     },
+  //   });
+  // }
 
   addForum(forum: IForum) {
     this.forumService.createForum(forum, this.parentType.value, this.parentId.value).subscribe({
       next: (data: IForum) => {
         this.forums.next([...this.forums.value, data]);
-        this.updateForumsByGroup();
       },
       error: (error) => {
         console.error('Error adding forum:', error);
@@ -77,7 +71,6 @@ export class ForumsStore {
           currentForums[index] = data;
           this.forums.next([...currentForums]);
         }
-        this.updateForumsByGroup();
       },
       error: (error) => {
         console.error('Error updating forum:', error);
@@ -88,25 +81,23 @@ export class ForumsStore {
   removeForum(forumId: number) {
     const currentForums = this.forums.value;
     this.forums.next(currentForums.filter((f) => f.id !== forumId));
-    this.updateForumsByGroup();
   }
 
-  private updateForumsByGroup() {
-    const groupedForums = this.forums.value.reduce((acc, forum) => {
-      const groupName = forum.group_name || 'General';
-      if (!acc[groupName]) {
-        acc[groupName] = [];
-      }
-      acc[groupName].push(forum);
-      return acc;
-    }, {} as { [groupName: string]: IForum[] });
-    this.forumsByGroup.next(groupedForums);
+  setParentContext(parentId: string, parentType: EDbModels): void {
+    this.parentId.next(parentId);
+    this.parentType.next(parentType);
+  }
+
+  getParentId(): string | null {
+    return this.parentId.value;
+  }
+
+  getParentType(): EDbModels | null {
+    return this.parentType.value;
   }
 
   clearAllData() {
     this.forums.next([]);
-    this.forumsByGroup.next({});
-    this.selectedForum.next(null);
     this.parentId.next(null);
     this.parentType.next(null);
     this.categories.next([]);
