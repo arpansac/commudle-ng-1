@@ -51,32 +51,77 @@
       </div>
     </form>
 
-    <!-- <div class="com-filter-dropdowns">
-      <select class="com-filter-select">
-        <option>Role</option>
-      </select>
-      <select class="com-filter-select">
-        <option>Hiring</option>
-      </select>
-      <select class="com-filter-select">
-        <option>Skills</option>
-      </select>
-      <select class="com-filter-select">
-        <option>Gender</option>
-      </select>
-      <select class="com-filter-select">
-        <option>Domains</option>
-      </select>
-    </div> -->
+    <div [formGroup]="communityFilterForm" class="filter-dropdowns-container">
+      <div class="com-filter-dropdowns">
+        <select formControlName="experience_level" (change)="onFilterChange()" class="com-filter-select">
+          <option value="null" disabled selected>Experience</option>
+          <option
+            *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder"
+            [value]="experienceLevel.key"
+          >
+            {{ experienceLevel.value }}
+          </option>
+        </select>
+        <select formControlName="employment_status" (change)="onFilterChange()" class="com-filter-select">
+          <option value="null" disabled selected>Looking for work / Hiring</option>
+          <option value="employee">Looking For Work</option>
+          <option value="employer">Hiring</option>
+        </select>
+        <select formControlName="skills" (change)="onFilterChange()" class="com-filter-select">
+          <option value="null" disabled selected>Skills</option>
+        </select>
+        <select formControlName="gender" (change)="onFilterChange()" class="com-filter-select">
+          <option value="null" disabled selected>Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Prefer not to say</option>
+        </select>
+        <select formControlName="domains" (change)="onFilterChange()" class="com-filter-select">
+          <option value="null" disabled selected>Domains</option>
+          <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
+            {{ domain.value }}
+          </option>
+        </select>
+      </div>
 
-    <!-- Active Filter Tags -->
-    <!-- <div class="com-active-filter-tags">
-      <button class="com-filter-tag" (click)="filterByTags(options[0])">Most Active (Top 10%)</button>
-      <button class="com-filter-tag" (click)="filterByTags(options[1])">New Member</button>
-      <button class="com-filter-tag" (click)="filterByTags(options[2])">Top Contributor</button>
-      <button class="com-filter-tag" (click)="filterByTags(options[3])">Content Creator</button>
-      <button class="com-filter-tag" (click)="filterByTags(options[4])">Speaker</button>
-    </div> -->
+      <!-- Active Filter Tags -->
+      <div class="com-active-filter-tags">
+        <nb-tag-list>
+          <nb-tag
+            appearance="outline"
+            [text]="'Most Active (Top 10%)'"
+            size="small"
+            [status]="mostActive ? 'info' : 'basic'"
+            [removable]="mostActive ? 'true' : 'false'"
+            (click)="filterByTags(options[0])"
+          ></nb-tag>
+          <nb-tag
+            appearance="outline"
+            [text]="'Top Contributor'"
+            size="small"
+            [status]="contributor ? 'info' : 'basic'"
+            [removable]="contributor ? 'true' : 'false'"
+            (click)="filterByTags(options[1])"
+          ></nb-tag>
+          <nb-tag
+            appearance="outline"
+            [text]="'Content Creator'"
+            size="small"
+            [status]="contentCreator ? 'info' : 'basic'"
+            [removable]="contentCreator ? 'true' : 'false'"
+            (click)="filterByTags(options[2])"
+          ></nb-tag>
+          <nb-tag
+            appearance="outline"
+            [text]="'Speaker'"
+            size="small"
+            [status]="speaker ? 'info' : 'basic'"
+            [removable]="speaker ? 'true' : 'false'"
+            (click)="filterByTags(options[3])"
+          ></nb-tag>
+        </nb-tag-list>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="isLoading" class="loading-spinner">
@@ -109,11 +154,11 @@
               </span>
             </p>
             <div class="user-profile-card">
-              <app-user-profile-card-large
-                [showAbout]="true"
-                [showSocialLinks]="true"
+              <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+              <!-- <app-user-profile-card-large
+                [showHiringLookingTags]="false"
                 [user]="userRole.user"
-              ></app-user-profile-card-large>
+              ></app-user-profile-card-large> -->
               <button
                 (click)="activeContextMenuUser = userRole.user"
                 [nbContextMenu]="contextMenuItems"

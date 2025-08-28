@@ -45,19 +45,14 @@
     }
 
     .com-filter-dropdowns {
-      @apply com-flex com-flex-wrap com-items-center com-gap-4 com-mb-4;
-
+      @apply com-flex com-items-center com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 com-border-r com-border-Bright-Gray com-border-solid com-pr-3 com-w-full;
       .com-filter-select {
-        @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-lg focus:com-ring-2 focus:com-ring-blue-500 focus:com-border-blue-500 com-transition-colors;
+        @apply com-bg-gray-100 hover:com-bg-[#eef2f7]/50 com-border-0 com-w-full com-cursor-pointer com-px-3 com-py-2 com-rounded-3xl;
       }
     }
 
     .com-active-filter-tags {
-      @apply com-flex com-flex-wrap com-gap-2;
-
-      .com-filter-tag {
-        @apply com-px-3 com-py-1 com-bg-blue-600 com-text-white com-text-sm com-rounded-full hover:com-bg-blue-700 com-transition-colors;
-      }
+      @apply com-flex com-flex-wrap com-gap-2 com-pl-3 com-w-full;
     }
   }
 
@@ -81,7 +76,7 @@
 
       tbody {
         tr {
-          @apply hover:com-bg-gray-50 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+          @apply hover:com-bg-gray-50;
 
           td {
             @apply com-p-4;
@@ -186,6 +181,10 @@
               @apply com-text-sm com-text-gray-500;
             }
           }
+        }
+
+        tr:not(:last-child) {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
         }
       }
     }
@@ -344,4 +343,8 @@ nb-button {
   nb-icon {
     @apply com-text-tWhite com-mr-1;
   }
+}
+
+.filter-dropdowns-container {
+  @apply com-flex com-items-center com-mb-4;
 }

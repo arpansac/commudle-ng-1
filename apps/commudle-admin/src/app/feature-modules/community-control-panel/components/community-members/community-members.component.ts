@@ -6,10 +6,11 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription } from 'rxjs';
-import { ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
+import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-community-members',
@@ -24,14 +25,17 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   query = '';
   isLoading = false;
   EUserRoles = EUserRoles;
-  options;
   speaker = false;
+  contributor = false;
+  mostActive = false;
   employer = false;
   contentCreator = false;
   employee = false;
   sendingRequest = false;
   faEnvelope = faEnvelope;
   faSort = faSort;
+  EExperienceLevel = EExperienceLevel;
+  EDomain = EDomain;
 
   contextMenuItems = [
     {
@@ -44,12 +48,15 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   activeContextMenuUser: IUser;
 
   searchForm;
+  communityFilterForm;
 
   selectedUserRoles: IUserRolesUser[] = [];
   removeUserForm;
 
   subscriptions: Subscription[] = [];
   community: ICommunity;
+
+  options = ['active', 'contributor', 'content_creator', 'speaker'];
 
   private destroy$ = new Subject<void>();
 
@@ -72,7 +79,14 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.removeUserForm = this.fb.group({
       user_roles_user_ids: this.fb.array([]),
     });
-    this.options = ['speakers', 'content creator', 'employer', 'employee', 'speaker'];
+
+    this.communityFilterForm = this.fb.group({
+      experience_level: [null],
+      employment_status: [null],
+      skills: [null],
+      gender: [null],
+      domains: [null],
+    });
   }
 
   get userRolesUserIds(): FormArray {
@@ -114,8 +128,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.community.id,
         this.count,
         this.page,
-        this.employer,
-        this.employee,
+        this.mostActive,
+        this.contributor,
         this.contentCreator,
         this.speaker,
       )
@@ -126,6 +140,10 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.total = data.total;
       });
   }
+
+  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
+  };
 
   search() {
     this.searchForm.valueChanges
@@ -218,21 +236,19 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   filterByTags(event) {
-    if (event === this.options[0]) {
-      this.speaker = !this.speaker;
+    if (event === 'active') {
+      this.mostActive = !this.mostActive;
     }
-    if (event === this.options[1]) {
+    if (event === 'contributor') {
+      this.contributor = !this.contributor;
+    }
+    if (event === 'content_creator') {
       this.contentCreator = !this.contentCreator;
     }
-    if (event === this.options[2]) {
-      this.employer = !this.employer;
-    }
-    if (event === this.options[3]) {
-      this.employee = !this.employee;
-    }
-    if (event === this.options[4]) {
+    if (event === 'speaker') {
       this.speaker = !this.speaker;
     }
+    console.log(this.mostActive, this.contributor, this.contentCreator, this.speaker);
     this.total = 0;
     this.page = 1;
     this.getMembers();
@@ -248,5 +264,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           this.sendingRequest = false;
         }
       });
+  }
+
+  onFilterChange() {
+    console.log(this.communityFilterForm.value);
   }
 }
