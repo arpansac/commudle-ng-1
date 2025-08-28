@@ -134,7 +134,7 @@
         <tr>
           <th class="sortable">
             MEMBERS
-            <fa-icon [icon]="faSort"></fa-icon>
+            <fa-icon (click)="sortBy()" [icon]="faSort"></fa-icon>
           </th>
           <th>USER ENGAGEMENT</th>
           <th>ACTIVITY</th>
@@ -201,7 +201,7 @@
             </div>
           </td>
           <td>
-            <span class="com-location">{{ userRole.displayData?.location }}</span>
+            <span class="com-location">{{ userRole.user.location }}</span>
           </td>
           <td>
             <span class="com-joined-date">{{ userRole.displayData?.joinedDate }}</span>

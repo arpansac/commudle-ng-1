@@ -136,6 +136,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.isLoading = false;
         this.userRolesUsers = data.user_roles_users;
+        console.log(this.userRolesUsers);
         this.page = +data.page;
         this.total = data.total;
       });
@@ -268,5 +269,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     console.log(this.communityFilterForm.value);
+  }
+
+  sortBy() {
+    console.log('sorting');
   }
 }
