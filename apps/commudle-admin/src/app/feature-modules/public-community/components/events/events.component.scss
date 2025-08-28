@@ -59,8 +59,6 @@ nb-card {
                   @apply com-p-4 com-border-t com-border-x-0 com-border-b-0 com-border-solid com-border-Bright-Gray;
 
                   .upcoming-details-container {
-                    @apply com-h-[116px];
-
                     .details {
                       @apply md:com-flex md:com-flex-row md:com-justify-between md:com-items-start;
 
@@ -90,14 +88,20 @@ nb-card {
                   }
 
                   .interested-members {
-                    @apply com-text-xs com-mt-5 com-font-normal com-text-Auro-Metal-Saurus com-items-center;
+                    @apply com-text-xs com-mt-6 com-font-normal com-text-Auro-Metal-Saurus com-items-center;
                     @apply md:com-text-sm md:com-m-0 md:com-flex md:com-justify-between md:com-mt-6;
-
+                    .location {
+                      @apply com-mb-2;
+                      @apply md:com-mb-0;
+                      nb-icon {
+                        @apply com-text-2xl;
+                      }
+                    }
                     div {
                       @apply com-flex com-items-center;
                       nb-icon {
                         @apply com-mr-2 com-text-Dark-Jungle-Green;
-                        @apply md:com-mr-6px com-text-base;
+                        @apply md:com-mr-6px com-text-2xl;
                       }
                     }
                   }
