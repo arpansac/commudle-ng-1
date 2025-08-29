@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseApiService } from './base-api.service';
-import { API_ROUTES } from './api-routes.constant';
+import { EDbModels, EDiscussionType, IChannelCategory, IForum, IPagination } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
-import { EDbModels, EDiscussionType, IForum, IPagination, IChannelCategory } from '@commudle/shared-models';
+import { API_ROUTES } from './api-routes.constant';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +71,13 @@ export class ForumService {
       .set('channel_category_id', categorySlug);
 
     return this.http.get<IForum[]>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.INDEX_BY_CATEGORY), {
+      params,
+    });
+  }
+
+  showCategory(categoryId: number | string): Observable<IChannelCategory> {
+    const params = new HttpParams().set('channel_category_id', categoryId);
+    return this.http.get<IChannelCategory>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.SHOW_CATEGORY), {
       params,
     });
   }

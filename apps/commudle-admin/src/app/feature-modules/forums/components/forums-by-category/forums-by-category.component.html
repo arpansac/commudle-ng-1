@@ -5,8 +5,9 @@
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; New Topic
     </button>
   </div>
-  <!-- <div class="forums-by-category-header">
-    <h2>Forums - {{ categorySlug | titlecase }}</h2>
+
+  <div class="forums-by-category-header">
+    <span>{{ forumCategory.name | titlecase }}</span>
   </div>
 
   <div class="forums-by-category-list">
@@ -14,15 +15,29 @@
       <p>No forums found in this category.</p>
     </div>
 
-    <div *ngFor="let forum of forums" class="forum-card">
-      <div class="forum-card-info">
-        <h3>{{ forum.name }}</h3>
-        <p *ngIf="forum.description">{{ forum.description }}</p>
-      </div>
-
-      <div class="forum-card-meta">
-        <span class="forum-card-type">Forum</span>
-      </div>
-    </div>
-  </div> -->
+    <ul>
+      <li *ngFor="let forum of forums" class="forum">
+        <a [routerLink]="[forum.discussion_id]">
+          <div class="topic-name">
+            <span>{{ forum.name }}</span>
+          </div>
+          <div class="description-last-message">
+            <span class="description" *ngIf="forum.description">{{ forum.description }}</span>
+            <span class="last-message" *ngIf="forum.last_message">
+              {{ forum.last_message }}
+            </span>
+          </div>
+          <div class="stats">
+            @if (forum.discussions_count ) {
+            <span class="discussions">
+              {{ forum.discussions_count }} {{ forum.discussions_count === 1 ? 'Discussion' : 'Discussions' }}
+            </span>
+            } @if (forum.replies_count) {
+            <span class="reply"> {{ forum.replies_count }} {{ forum.replies_count === 1 ? 'Reply' : 'Replies' }} </span>
+            }
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>

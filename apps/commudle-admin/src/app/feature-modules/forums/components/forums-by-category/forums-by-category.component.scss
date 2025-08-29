@@ -1,6 +1,57 @@
 .forums-by-category {
-  @apply com-px-6 com-pb-4 com-w-full;
+  @apply com-p-6;
   .back-new-topic {
     @apply com-flex com-justify-between com-items-center;
+    .back-button {
+      @apply com-cursor-pointer;
+    }
+  }
+
+  .forums-by-category-header {
+    @apply com-mt-6;
+    span {
+      @apply com-text-Yankees-Blue com-text-2xl com-font-semibold;
+    }
+  }
+
+  .forums-by-category-list {
+    .no-forums {
+      @apply com-text-center com-text-gray-500 com-py-8;
+    }
+
+    ul {
+      @apply com-list-none com-p-0 com-m-0 com-mt-8;
+      li {
+        @apply com-list-none;
+        a {
+          @apply com-no-underline com-py-3;
+
+          .topic-name {
+            @apply com-text-base com-font-semibold com-text-Yankees-Blue com-mb-3;
+          }
+
+          .description-last-message {
+            @apply com-mb-2;
+
+            .description,
+            .last-message {
+              @apply com-text-gray-500 com-text-sm com-font-normal;
+            }
+          }
+
+          .stats {
+            @apply com-flex com-gap-4;
+
+            .discussions,
+            .reply {
+              @apply com-text-blue-500 com-text-sm com-font-medium;
+            }
+          }
+        }
+      }
+      .forum:not(:last-child) {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-my-3;
+      }
+    }
   }
 }

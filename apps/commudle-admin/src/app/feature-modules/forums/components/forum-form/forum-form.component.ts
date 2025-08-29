@@ -13,6 +13,7 @@ import { EDiscussionType, IForum } from '@commudle/shared-models';
 export class ForumFormComponent implements OnInit {
   @Input() forumId: number;
   @Input() displayType: EDiscussionType;
+  @Input() categoryName = '';
   topicForm: FormGroup;
 
   constructor(
@@ -34,6 +35,7 @@ export class ForumFormComponent implements OnInit {
   ngOnInit() {
     this.topicForm.patchValue({
       display_type: this.displayType,
+      group_name: this.categoryName,
     });
     if (this.forumId) {
       this.forumService.showForum(this.forumId).subscribe({

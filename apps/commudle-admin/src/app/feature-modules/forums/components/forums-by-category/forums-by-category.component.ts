@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, switchMap, filter } from 'rxjs/operators';
-import { IForum, EDiscussionType } from '@commudle/shared-models';
-import { ForumsStore } from '../../store/forums.store';
+import { IForum, EDiscussionType, IChannelCategory } from '@commudle/shared-models';
 import { ForumService } from '@commudle/shared-services';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { NbDialogService } from '@commudle/theme';
+import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 
 @Component({
   selector: 'commudle-forums-by-category',
@@ -17,6 +17,7 @@ import { NbDialogService } from '@commudle/theme';
 })
 export class ForumsByCategoryComponent implements OnInit, OnDestroy {
   forums: IForum[] = [];
+  forumCategory: IChannelCategory;
   private readonly destroy$ = new Subject<void>();
   readonly icons = {
     faPlus,
@@ -37,11 +38,15 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         filter(([, parentId, parentType]) => !!parentId && !!parentType),
         switchMap(([params, parentId, parentType]) =>
-          this.forumService.getForumsByCategory(parentId, parentType, params['slug'], EDiscussionType.FORUM),
+          combineLatest([
+            this.forumService.getForumsByCategory(parentId, parentType, params['slug'], EDiscussionType.FORUM),
+            this.forumService.showCategory(params['slug']),
+          ]),
         ),
       )
-      .subscribe((forums) => {
+      .subscribe(([forums, categoryResponse]) => {
         this.forums = forums;
+        this.forumCategory = categoryResponse;
       });
   }
 
@@ -54,10 +59,15 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     this.dialogService.open(ForumFormComponent, {
       context: {
         displayType: EDiscussionType.FORUM,
+        categoryName: this.forumCategory.name,
       },
     });
   }
   backButton(): void {
     this.location.back();
   }
+
+  editForum(forum) {}
+
+  deleteForum(forum) {}
 }
