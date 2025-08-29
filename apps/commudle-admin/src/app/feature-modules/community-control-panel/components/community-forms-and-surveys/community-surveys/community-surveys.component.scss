@@ -1,3 +1,6 @@
 .commudle-surveys {
   @apply com-p-6;
+  .heading {
+    @apply com-font-bold com-text-lg com-m-0 com-flex com-items-center;
+  }
 }

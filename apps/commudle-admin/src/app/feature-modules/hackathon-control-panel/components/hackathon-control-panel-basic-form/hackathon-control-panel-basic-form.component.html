@@ -1,5 +1,8 @@
 <nb-card>
-  <nb-card-header>{{ hackathon ? 'Basic Information' : 'New Hackathon Form' }}</nb-card-header>
+  <nb-card-header
+    >{{ hackathon ? 'Basic Information' : 'New Hackathon Form' }}
+    <commudle-help-section [helpDictionaryName]="'hackathon-create'"></commudle-help-section>
+  </nb-card-header>
   <nb-card-body class="hackathon-form">
     <form [formGroup]="hackathonForm">
       <div>

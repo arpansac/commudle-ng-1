@@ -61,6 +61,7 @@ import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/featu
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { ReusableComponentsModule } from 'apps/commudle-admin/src/app/feature-modules/reusable-components/reusable-components.module';
 import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { CommunityMailsSentStatsComponent } from './components/community-mails-s
     AppSharedComponentsModule,
     CommunityChannelsModule,
     ReusableComponentsModule,
+    HelpSectionComponent,
 
     //standalone
     SidebarComponent,

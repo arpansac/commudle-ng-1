@@ -1,6 +1,9 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 .collaborations {
   @apply com-mx-0 com-my-6;
+  h6 {
+    @apply com-flex com-items-center;
+  }
 }
 
 .actions {

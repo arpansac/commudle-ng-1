@@ -60,7 +60,7 @@
         nb-card-header {
           @apply com-py-4 md:com-px-6 com-px-4 com-flex com-items-center com-justify-between;
           .title {
-            @apply com-flex com-m-0;
+            @apply com-flex com-m-0 com-items-center;
             a {
               @apply md:com-font-semibold com-font-bold com-no-underline com-text-Yankees-Blue;
               nb-icon {
