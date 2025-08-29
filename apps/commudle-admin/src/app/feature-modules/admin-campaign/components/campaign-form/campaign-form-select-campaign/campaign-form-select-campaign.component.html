@@ -35,7 +35,10 @@
             <span></span>
           </div>
           <div class="campaign-info">
-            <p class="header">{{ campaignType.name }}</p>
+            <div class="header-budget-amount">
+              <p class="header">{{ campaignType.name }}</p>
+              <span class="budget">{{ campaignType.budget_amount }} &nbsp;per minute</span>
+            </div>
             <p class="clamped-description">
               <span [innerHTML]="getClampedText(campaignType.description)"></span>&nbsp;
               <ng-container *ngIf="campaignType.description.length > 150">
