@@ -4,9 +4,12 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Subscription } from 'rxjs';
+import { debounceTime, takeUntil, Subscription, switchMap, Subject } from 'rxjs';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
+import { FormBuilder } from '@angular/forms';
+import { EDomain } from '@commudle/shared-models';
+import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-members',
@@ -39,13 +42,31 @@ export class MembersComponent implements OnInit, OnDestroy {
   showSpinner = false;
   isLeftScrollDisabled = true;
   isRightScrollDisabled = true;
+  searchForm;
+  communityFilterForm;
+  EDomain = EDomain;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private userRolesUsersService: UserRolesUsersService,
     private seoService: SeoService,
     private communitiesService: CommunitiesService,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.searchForm = this.fb.group({
+      name: [''],
+    });
+
+    this.communityFilterForm = this.fb.group({
+      experience_level: [null],
+      employment_status: [null],
+      skills: [null],
+      gender: [null],
+      domains: [null],
+    });
+  }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -62,6 +83,37 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  search() {
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(800),
+        takeUntil(this.destroy$),
+        switchMap(() => {
+          this.page = 1;
+          this.isLoadingMembers = true;
+          this.query = this.searchForm.get('name').value;
+          return this.userRolesUsersService.getCommunityMembers(
+            this.query,
+            this.community.id,
+            this.count,
+            this.page,
+            this.employer,
+            this.employee,
+          );
+        }),
+      )
+      .subscribe((data) => {
+        this.isLoadingMembers = false;
+        this.members = data.users;
+        this.page = +data.page;
+        this.total = data.total;
+      });
+  }
+
+  onFilterChange() {
+    console.log(this.communityFilterForm.value);
   }
 
   getSpeakerDetails() {
@@ -130,4 +182,8 @@ export class MembersComponent implements OnInit, OnDestroy {
       );
     }
   }
+
+  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
+  };
 }

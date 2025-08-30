@@ -17,6 +17,8 @@ import {
   NbSpinnerModule,
   NbTabsetModule,
   NbTooltipModule,
+  NbFormFieldModule,
+  NbTagModule,
 } from '@commudle/theme';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { LinkyModule } from 'ngx-linky';
@@ -100,6 +102,8 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     EventHorizontalCardComponent,
     UserPersonalConnectComponent,
     UserExpertTickComponent,
+    NbFormFieldModule,
+    NbTagModule,
   ],
 })
 export class PublicCommunityModule {}

@@ -2,14 +2,14 @@ nb-card {
   @apply com-mt-4 com-p-0 com-mx-0;
 
   nb-card-body {
-    @apply com-m-5 com-p-0;
+    @apply com-p-6 com-m-0;
 
     .skeleton-vertical-cards {
       @apply com-mb-20;
     }
 
     .speakers-container {
-      @apply com-mt-3 com-mb-5 com-p-0 com-relative;
+      @apply com-mt-0 com-mb-5 com-p-0 com-relative;
       &:hover {
         .scroll-button {
           @apply com-opacity-80;
@@ -21,11 +21,11 @@ nb-card {
       }
 
       .header-text {
-        @apply com-max-w-fit com-mt-0 com-mx-0 com-mb-6 com-text-2xl com-font-medium com-text-Dark-Jungle-Green;
+        @apply com-max-w-fit com-m-0 com-mb-6 com-text-2xl com-font-semibold com-text-Yankees-Blue;
       }
 
       .speakers-list {
-        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-4 com-mx-4 com-mb-20 com-items-center com-scroll-smooth;
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 com-mb-14 com-items-center com-scroll-smooth;
 
         .load-more {
           @apply com-text-center md:com-mt-6 com-mt-0;
@@ -44,11 +44,23 @@ nb-card {
         @apply com-mt-0 com-mx-0 com-mb-4;
 
         .header-text {
-          @apply com-max-w-fit com-mt-0 com-mx-0 com-mb-7 com-text-2xl com-font-medium com-text-Dark-Jungle-Green;
+          @apply com-max-w-fit com-m-0 com-mb-6 com-text-2xl com-font-semibold com-text-Yankees-Blue;
         }
 
         .members-list {
-          @apply com-grid com-gap-y-6 com-gap-x-20 com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3;
+          @apply com-grid com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3;
+
+          .member-card {
+            @apply com-px-4 com-py-6 com-border com-border-solid com-border-Bright-Gray;
+          }
+
+          &:not(:nth-child(3n + 1)) {
+            @apply com-border-l;
+          }
+
+          &:not(:nth-last-child(-n + 3)) {
+            @apply com-border-b;
+          }
         }
 
         .load-more {
@@ -72,5 +84,32 @@ nb-card {
   &:disabled {
     opacity: 0 !important;
     @apply com-cursor-default com-opacity-0;
+  }
+}
+
+.search-filters {
+  @apply com-mt-0 com-mb-4;
+
+  .search-container {
+    @apply com-mb-4;
+
+    .search {
+      @apply com-m-0 com-bg-white;
+
+      input {
+        @apply com-bg-white #{!important};
+      }
+    }
+  }
+
+  .com-filter-dropdowns {
+    @apply com-flex com-items-center com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 md:com-border-r com-border-r-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 md:com-mb-0 com-mb-4 com-w-full;
+    .com-filter-select {
+      @apply com-bg-gray-100 hover:com-bg-[#eef2f7]/50 com-border-0 com-w-full com-cursor-pointer com-px-3 com-py-2 com-rounded-3xl;
+    }
+  }
+
+  .com-active-filter-tags {
+    @apply com-flex com-flex-wrap com-gap-2 md:com-pl-3 com-pl-0 com-w-full;
   }
 }

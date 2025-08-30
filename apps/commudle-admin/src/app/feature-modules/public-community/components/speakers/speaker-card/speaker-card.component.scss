@@ -12,7 +12,7 @@ nb-card {
       @apply com-overflow-hidden;
 
       .banner-image {
-        @apply com-h-[94px] com-overflow-hidden com-w-full;
+        @apply com-h-[96px] com-overflow-hidden com-w-full;
 
         img {
           @apply com-h-full com-object-cover com-object-center com-w-full;
@@ -32,7 +32,7 @@ nb-card {
       }
 
       .user-image {
-        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[58px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
+        @apply com-border-3 com-border-solid com-border-white com-rounded-full com-h-[72px] com-ml-3 com-mt-[60px] com-overflow-hidden com-w-[72px] com-bg-Azureish-White;
 
         img {
           @apply com-h-full com-object-cover com-w-full;
@@ -84,14 +84,14 @@ nb-card {
             }
 
             .location {
-              @apply com-flex com-text-xs com-font-normal  com-flex-shrink-0;
+              @apply com-flex com-text-xs com-font-normal com-flex-shrink-0;
 
               nb-icon {
                 @apply com-w-[14px] com-mr-1 com-text-Azure;
               }
 
               p {
-                @apply com-m-0 com-text-Azure;
+                @apply com-m-0 com-text-xs com-text-Azure;
               }
             }
           }
