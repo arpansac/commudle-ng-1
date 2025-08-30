@@ -37,7 +37,12 @@
           <div class="campaign-info">
             <div class="header-budget-amount">
               <p class="header">{{ campaignType.name }}</p>
-              <span class="budget">{{ campaignType.budget_amount }} &nbsp;per minute</span>
+              <span class="budget"
+                >${{ campaignType.budget_amount }} &nbsp;<span
+                  *ngIf="campaignType.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER"
+                  >per minute</span
+                ></span
+              >
             </div>
             <p class="clamped-description">
               <span [innerHTML]="getClampedText(campaignType.description)"></span>&nbsp;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignType } from '@commudle/shared-models';
+import { ICampaign, ICampaignType, ECampaignTypeSlug } from '@commudle/shared-models';
 import { CampaignService, CampaignTypeService, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +19,8 @@ export class CampaignFormSelectCampaignComponent implements OnInit {
   campaign: ICampaign;
   isLoading = true;
   campaignExists = false;
+  ECampaignTypeSlug = ECampaignTypeSlug;
+
   constructor(
     private campaignTypeService: CampaignTypeService,
     private campaignService: CampaignService,
