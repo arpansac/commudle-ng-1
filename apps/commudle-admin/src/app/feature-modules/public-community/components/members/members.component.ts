@@ -10,6 +10,7 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { FormBuilder } from '@angular/forms';
 import { EDomain } from '@commudle/shared-models';
 import { KeyValue } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-members',
@@ -43,7 +44,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   isLeftScrollDisabled = true;
   isRightScrollDisabled = true;
   searchForm;
-  communityFilterForm;
+  membersForm;
   EDomain = EDomain;
   filterByMutuals = false;
 
@@ -55,17 +56,15 @@ export class MembersComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private communitiesService: CommunitiesService,
     private fb: FormBuilder,
+    private location: Location,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
     });
 
-    this.communityFilterForm = this.fb.group({
-      experience_level: [null],
-      employment_status: [null],
-      skills: [null],
-      gender: [null],
-      domains: [null],
+    this.membersForm = this.fb.group({
+      employment_status: [''],
+      domains: [''],
     });
   }
 
@@ -73,9 +72,24 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.search();
     const params = this.activatedRoute.snapshot.queryParams;
     if (Object.keys(params).length > 0) {
+      if (params.domains) {
+        this.membersForm.get('domains').setValue(params.domains);
+      }
+      if (params.employment_status) {
+        this.membersForm.get('employment_status').setValue(params.employment_status);
+        if (params.employer === 'true') {
+          this.employer = true;
+        }
+        if (params.employee === 'true') {
+          this.employee = true;
+        }
+      }
       if (params.query) {
         this.query = params.query;
         this.searchForm.get('name').setValue(this.query);
+      }
+      if (params.mutuals === 'true') {
+        this.filterByMutuals = true;
       }
     }
     this.activatedRoute.parent.data.subscribe((data) => {
@@ -88,10 +102,14 @@ export class MembersComponent implements OnInit, OnDestroy {
         this.seoService.setTitle(` Community Members | ${this.community.name}`);
       }
     });
+    this.members = [];
+    this.page_info = null;
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   search() {
@@ -103,6 +121,15 @@ export class MembersComponent implements OnInit, OnDestroy {
           this.page = 1;
           this.isLoadingMembers = true;
           this.query = this.searchForm.get('name').value;
+
+          this.generateParams(
+            this.employer,
+            this.employee,
+            this.query,
+            this.filterByMutuals,
+            this.membersForm.get('domains').value,
+          );
+
           return this.userRolesUsersService.getCommunityMembers(
             this.query,
             this.community.id,
@@ -122,7 +149,24 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
-    console.log(this.communityFilterForm.value);
+    const filterValues = this.membersForm.value;
+
+    if (filterValues.employment_status === 'employer') {
+      this.employer = true;
+      this.employee = false;
+    } else if (filterValues.employment_status === 'employee') {
+      this.employer = false;
+      this.employee = true;
+    } else {
+      this.employer = false;
+      this.employee = false;
+    }
+
+    this.generateParams(this.employer, this.employee, this.query, this.filterByMutuals, filterValues.domains);
+    this.page = 1;
+    this.members = [];
+    this.total = 0;
+    this.getMembers();
   }
 
   getSpeakerDetails() {
@@ -199,10 +243,49 @@ export class MembersComponent implements OnInit, OnDestroy {
   filterByTags(event) {
     if (event === 'mutuals') {
       this.filterByMutuals = !this.filterByMutuals;
+
+      this.generateParams(
+        this.employer,
+        this.employee,
+        this.query,
+        this.filterByMutuals,
+        this.membersForm.get('domains').value,
+      );
     }
-    console.log(this.filterByMutuals);
     this.total = 0;
     this.page = 1;
     this.getMembers();
+  }
+
+  generateParams(employer, employee, query, filterByMutuals, domains) {
+    const queryParams: { [key: string]: any } = {};
+    if (employer) {
+      queryParams.employer = true;
+    }
+    if (employee) {
+      queryParams.employee = true;
+    }
+    if (query) {
+      queryParams.query = query;
+    }
+    if (filterByMutuals) {
+      queryParams.mutuals = true;
+    }
+    if (domains) {
+      queryParams.domains = domains;
+    }
+    const urlSearchParams = new URLSearchParams(queryParams);
+    const queryParamsString = urlSearchParams.toString();
+    this.location.replaceState(location.pathname, queryParamsString);
+  }
+
+  clearAllFilters() {
+    this.membersForm.reset();
+    this.generateParams(false, false, '', false, '');
+    this.page = 1;
+    this.members = [];
+    this.total = 0;
+    this.getMembers();
+    this.location.replaceState(location.pathname, '');
   }
 }

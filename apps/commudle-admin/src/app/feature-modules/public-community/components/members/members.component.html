@@ -69,16 +69,16 @@
             </div>
           </form>
 
-          <div [formGroup]="communityFilterForm" class="filter-dropdowns-container">
+          <div [formGroup]="membersForm" class="filter-dropdowns-container">
             <div class="com-filter-dropdowns">
               <select formControlName="domains" (change)="onFilterChange()" class="com-filter-select">
-                <option value="null" disabled selected>Domains</option>
+                <option value="" disabled>Domains</option>
                 <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
                   {{ domain.value }}
                 </option>
               </select>
               <select formControlName="employment_status" (change)="onFilterChange()" class="com-filter-select">
-                <option value="null" disabled selected>Looking for work / Hiring</option>
+                <option value="" disabled>Looking for work / Hiring</option>
                 <option value="employee">Looking For Work</option>
                 <option value="employer">Hiring</option>
               </select>
@@ -96,6 +96,18 @@
                   (click)="filterByTags('mutuals')"
                 ></nb-tag>
               </nb-tag-list>
+
+              <button
+                (click)="clearAllFilters()"
+                nbButton
+                size="tiny"
+                status="basic"
+                appearance="outline"
+                shape="round"
+                class="clear-filters-btn"
+              >
+                Clear All
+              </button>
             </div>
           </div>
         </div>
