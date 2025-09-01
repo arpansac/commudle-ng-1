@@ -75,9 +75,23 @@
     </label>
     <select formControlName="experience_level" class="experience-select">
       <option value="" selected disabled>Select your experience</option>
-      <option *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder" [value]="experienceLevel.key">
-        {{ experienceLevel.value }}
-      </option>
+      <optgroup label="Student">
+        <option
+          *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder | slice : 0 : 3"
+          [value]="experienceLevel.key"
+        >
+          {{ experienceLevel.value }}
+        </option>
+      </optgroup>
+
+      <optgroup label="Professional (NOT STUDYING IN SCHOOL OR COLLEGE)">
+        <option
+          *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder | slice : 3"
+          [value]="experienceLevel.key"
+        >
+          {{ experienceLevel.value }}
+        </option>
+      </optgroup>
     </select>
     <commudle-alert
       *ngIf="
