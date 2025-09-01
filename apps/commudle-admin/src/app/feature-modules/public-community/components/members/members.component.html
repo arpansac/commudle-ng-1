@@ -82,49 +82,19 @@
                 <option value="employee">Looking For Work</option>
                 <option value="employer">Hiring</option>
               </select>
-              <select formControlName="gender" (change)="onFilterChange()" class="com-filter-select">
-                <option value="null" disabled selected>Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Prefer not to say</option>
-              </select>
             </div>
 
             <!-- Active Filter Tags -->
             <div class="com-active-filter-tags">
               <nb-tag-list>
-                <!-- <nb-tag
-                  appearance="outline"
-                  [text]="'Most Active (Top 10%)'"
-                  size="small"
-                  [status]="mostActive ? 'info' : 'basic'"
-                  [removable]="mostActive ? 'true' : 'false'"
-                  (click)="filterByTags(options[0])"
-                ></nb-tag>
                 <nb-tag
-                  appearance="outline"
-                  [text]="'Top Contributor'"
+                  [appearance]="filterByMutuals ? 'filled' : 'outline'"
+                  [text]="'My Mutuals'"
                   size="small"
-                  [status]="contributor ? 'info' : 'basic'"
-                  [removable]="contributor ? 'true' : 'false'"
-                  (click)="filterByTags(options[1])"
+                  status="info"
+                  [removable]="filterByMutuals ? 'true' : 'false'"
+                  (click)="filterByTags('mutuals')"
                 ></nb-tag>
-                <nb-tag
-                  appearance="outline"
-                  [text]="'Content Creator'"
-                  size="small"
-                  [status]="contentCreator ? 'info' : 'basic'"
-                  [removable]="contentCreator ? 'true' : 'false'"
-                  (click)="filterByTags(options[2])"
-                ></nb-tag>
-                <nb-tag
-                  appearance="outline"
-                  [text]="'Speaker'"
-                  size="small"
-                  [status]="speaker ? 'info' : 'basic'"
-                  [removable]="speaker ? 'true' : 'false'"
-                  (click)="filterByTags(options[3])"
-                ></nb-tag> -->
               </nb-tag-list>
             </div>
           </div>
@@ -136,6 +106,9 @@
                 [user]="member"
                 [showFollowButton]="true"
                 [alignFollowToRight]="true"
+                [showLeaderBadgeToNameHeader]="true"
+                [appearanceOfFollowButton]="'outline'"
+                [showCompanyName]="true"
               ></app-user-profile-card-large>
             </div>
           </ng-container>

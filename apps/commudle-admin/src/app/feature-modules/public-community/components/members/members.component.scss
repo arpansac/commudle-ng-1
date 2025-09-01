@@ -48,18 +48,18 @@ nb-card {
         }
 
         .members-list {
-          @apply com-grid com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3;
+          @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-0;
 
           .member-card {
-            @apply com-px-4 com-py-6 com-border com-border-solid com-border-Bright-Gray;
-          }
+            @apply com-px-4 com-py-6 com-border-0 com-border-r com-border-b com-border-solid com-border-Bright-Gray;
 
-          &:not(:nth-child(3n + 1)) {
-            @apply com-border-l;
-          }
+            &:nth-child(3n) {
+              @apply com-border-r-0;
+            }
 
-          &:not(:nth-last-child(-n + 3)) {
-            @apply com-border-b;
+            &:nth-last-child(-n + 3) {
+              @apply com-border-b-0;
+            }
           }
         }
 
@@ -112,4 +112,8 @@ nb-card {
   .com-active-filter-tags {
     @apply com-flex com-flex-wrap com-gap-2 md:com-pl-3 com-pl-0 com-w-full;
   }
+}
+
+.filter-dropdowns-container {
+  @apply com-flex md:com-flex-row com-flex-col com-items-center com-mb-4;
 }

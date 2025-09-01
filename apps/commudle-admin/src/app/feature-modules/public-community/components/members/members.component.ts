@@ -45,6 +45,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   searchForm;
   communityFilterForm;
   EDomain = EDomain;
+  filterByMutuals = false;
 
   private destroy$ = new Subject<void>();
 
@@ -69,16 +70,24 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.activatedRoute.parent.data.subscribe((data) => {
-        this.community = data.community;
-        if (this.community) {
-          this.getSpeakerDetails();
+    this.search();
+    const params = this.activatedRoute.snapshot.queryParams;
+    if (Object.keys(params).length > 0) {
+      if (params.query) {
+        this.query = params.query;
+        this.searchForm.get('name').setValue(this.query);
+      }
+    }
+    this.activatedRoute.parent.data.subscribe((data) => {
+      this.community = data.community;
+      if (this.community) {
+        this.getSpeakerDetails();
+        if (!params.query) {
           this.getMembers();
-          this.seoService.setTitle(` Community Members | ${this.community.name}`);
         }
-      }),
-    );
+        this.seoService.setTitle(` Community Members | ${this.community.name}`);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -186,4 +195,14 @@ export class MembersComponent implements OnInit, OnDestroy {
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
     return 0;
   };
+
+  filterByTags(event) {
+    if (event === 'mutuals') {
+      this.filterByMutuals = !this.filterByMutuals;
+    }
+    console.log(this.filterByMutuals);
+    this.total = 0;
+    this.page = 1;
+    this.getMembers();
+  }
 }

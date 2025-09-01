@@ -27,6 +27,16 @@
             <commudle-user-personal-connect
               [userConnect]="user.distance_from_current_user"
             ></commudle-user-personal-connect>
+            <button
+              *ngIf="showLeaderBadgeToNameHeader && user.is_community_leader"
+              nbButton
+              shape="round"
+              size="tiny"
+              outline
+              class="leader com-ml-2"
+            >
+              Leader
+            </button>
           </div>
           <div *ngIf="showSpeakersCount && alignSpeakerCountToRight" class="speaker-count">
             <app-badge
@@ -55,9 +65,17 @@
         <p *ngIf="user.followers_count > 0 && showFollowersCount" class="followers-count">
           <span>{{ user.followers_count }}</span> Follower{{ user.followers_count > 1 ? 's' : '' }}
         </p>
-        <div *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadge" class="talks-leader">
+        <div *ngIf="user.company_name && showCompanyName" class="user-company">
+          <fa-icon class="user-company-icon" [icon]="faBriefcase"></fa-icon>
+          <p class="user-company-name">{{ user.company_name }}</p>
+        </div>
+        <!-- <span class="mutuals">You both follow John, Priya, and 2 others</span> -->
+        <div
+          *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadgeToSpeakerCount"
+          class="talks-leader"
+        >
           <button
-            *ngIf="showLeaderBadge && user.is_community_leader"
+            *ngIf="showLeaderBadgeToSpeakerCount && user.is_community_leader"
             nbButton
             shape="round"
             size="tiny"
