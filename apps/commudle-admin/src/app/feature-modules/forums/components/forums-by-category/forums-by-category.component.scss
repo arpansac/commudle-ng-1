@@ -3,7 +3,7 @@
   .back-new-topic {
     @apply com-flex com-justify-between com-items-center;
     .back-button {
-      @apply com-cursor-pointer;
+      @apply com-cursor-pointer com-text-black;
     }
   }
 
