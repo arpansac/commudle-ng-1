@@ -281,7 +281,10 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   clearAllFilters() {
     this.membersForm.reset();
-    this.generateParams(false, false, '', false, '');
+    this.searchForm.get('name').setValue('');
+    this.filterByMutuals = false;
+    this.employer = false;
+    this.employee = false;
     this.page = 1;
     this.members = [];
     this.total = 0;
