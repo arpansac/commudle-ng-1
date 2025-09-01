@@ -82,7 +82,7 @@ export interface IUsers {
 export enum EExperienceLevel {
   high_school = "I'm yet to complete high school, exploring my interests!",
   undergrad = 'Undergrad - Ready to build the next big thing!',
-  beyond_grad = 'Beyond Grad - Diving deeper into tech',
+  beyond_grad = 'Pursuing Higher Education - Diving deeper into tech',
   getting_started = 'I’m not a student anymore (<1 year)',
   arrived = 'I have Arrived (1 Year)',
   finding_expertise = 'Finding My Expertise (2-3 Years)',
