@@ -70,14 +70,14 @@
           </form>
 
           <div [formGroup]="membersForm" class="filter-dropdowns-container">
-            <div class="com-filter-dropdowns">
-              <select formControlName="domains" (change)="onFilterChange()" class="com-filter-select">
+            <div class="filter-dropdowns">
+              <select formControlName="domains" (change)="onFilterChange()" class="filter-select">
                 <option value="" disabled>Domains</option>
                 <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
                   {{ domain.value }}
                 </option>
               </select>
-              <select formControlName="employment_status" (change)="onFilterChange()" class="com-filter-select">
+              <select formControlName="employment_status" (change)="onFilterChange()" class="filter-select">
                 <option value="" disabled>Looking for work / Hiring</option>
                 <option value="employee">Looking For Work</option>
                 <option value="employer">Hiring</option>
@@ -85,7 +85,7 @@
             </div>
 
             <!-- Active Filter Tags -->
-            <div class="com-active-filter-tags">
+            <div class="active-filter-tags">
               <nb-tag-list>
                 <nb-tag
                   [appearance]="filterByMutuals ? 'filled' : 'outline'"
