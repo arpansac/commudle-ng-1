@@ -21,11 +21,11 @@ nb-card {
       }
 
       .header-text {
-        @apply com-max-w-fit com-m-0 com-mb-6 com-text-2xl com-font-semibold com-text-Yankees-Blue;
+        @apply com-max-w-fit com-m-0 com-mb-6 md:com-text-2xl com-text-xl com-font-semibold com-text-Yankees-Blue;
       }
 
       .speakers-list {
-        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 com-mb-14 com-items-center com-scroll-smooth;
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 md:com-mb-14 com-mb-8 com-items-center com-scroll-smooth;
 
         .load-more {
           @apply com-text-center md:com-mt-6 com-mt-0;
@@ -51,13 +51,17 @@ nb-card {
           @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-0;
 
           .member-card {
-            @apply com-px-4 com-py-6 com-border-0 com-border-r com-border-b com-border-solid com-border-Bright-Gray;
+            @apply com-px-4 com-py-6 com-border-0 md:com-border-r com-border-r-0 com-border-b com-border-solid com-border-Bright-Gray;
 
             &:nth-child(3n) {
-              @apply com-border-r-0;
+              @apply md:com-border-r-0;
             }
 
             &:nth-last-child(-n + 3) {
+              @apply md:com-border-b-0;
+            }
+
+            &:last-child {
               @apply com-border-b-0;
             }
           }
