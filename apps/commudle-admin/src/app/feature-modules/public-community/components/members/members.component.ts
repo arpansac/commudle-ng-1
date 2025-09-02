@@ -64,25 +64,46 @@ export class MembersComponent implements OnInit, OnDestroy {
 
     this.membersForm = this.fb.group({
       employment_status: [''],
-      domains: [''],
+      domains: [[]],
     });
   }
 
   ngOnInit(): void {
-    this.search();
     const params = this.activatedRoute.snapshot.queryParams;
+    console.log('Current URL:', window.location.href);
+    console.log('All query params:', params);
+    console.log('Form initial state:', this.membersForm.value);
     if (Object.keys(params).length > 0) {
       if (params.domains) {
-        this.membersForm.get('domains').setValue(params.domains);
+        console.log('params.domains:', params.domains);
+        let domainsArray: string[];
+
+        if (Array.isArray(params.domains)) {
+          domainsArray = params.domains;
+        } else if (typeof params.domains === 'string' && params.domains.includes(',')) {
+          // Handle comma-separated domains (when URL is pasted and decoded)
+          domainsArray = params.domains.split(',');
+        } else {
+          // Handle single domain
+          domainsArray = [params.domains];
+        }
+
+        console.log('domainsArray:', domainsArray);
+
+        // Use setTimeout to ensure the component is fully initialized
+        setTimeout(() => {
+          this.membersForm.get('domains').patchValue(domainsArray);
+          console.log('Form domains value after patchValue:', this.membersForm.get('domains').value);
+        }, 0);
       }
-      if (params.employment_status) {
-        this.membersForm.get('employment_status').setValue(params.employment_status);
-        if (params.employer === 'true') {
-          this.employer = true;
-        }
-        if (params.employee === 'true') {
-          this.employee = true;
-        }
+      if (params.employer === 'true') {
+        this.membersForm.get('employment_status').setValue('employer');
+        this.employer = true;
+        this.employee = false;
+      } else if (params.employee === 'true') {
+        this.membersForm.get('employment_status').setValue('employee');
+        this.employer = false;
+        this.employee = true;
       }
       if (params.query) {
         this.query = params.query;
@@ -91,7 +112,12 @@ export class MembersComponent implements OnInit, OnDestroy {
       if (params.mutuals === 'true') {
         this.filterByMutuals = true;
       }
+      this.page = 1;
+      this.members = [];
+      this.total = 0;
     }
+    this.search();
+
     this.activatedRoute.parent.data.subscribe((data) => {
       this.community = data.community;
       if (this.community) {
@@ -150,6 +176,8 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     const filterValues = this.membersForm.value;
+    console.log(filterValues, 'filterValues');
+    console.log(this.membersForm, 'this.membersForm');
 
     if (filterValues.employment_status === 'employer') {
       this.employer = true;
@@ -271,7 +299,7 @@ export class MembersComponent implements OnInit, OnDestroy {
     if (filterByMutuals) {
       queryParams.mutuals = true;
     }
-    if (domains) {
+    if (domains && domains.length > 0) {
       queryParams.domains = domains;
     }
     const urlSearchParams = new URLSearchParams(queryParams);

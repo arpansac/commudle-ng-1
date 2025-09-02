@@ -71,17 +71,32 @@
 
           <div [formGroup]="membersForm" class="filter-dropdowns-container">
             <div class="filter-dropdowns">
-              <select formControlName="domains" (change)="onFilterChange()" class="filter-select">
-                <option value="" disabled>Domains</option>
-                <option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
+              <nb-select
+                formControlName="domains"
+                (selectedChange)="onFilterChange()"
+                placeholder="Domains"
+                multiple
+                size="small"
+                shape="round"
+                ghost
+                class="filter-select"
+              >
+                <nb-option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
                   {{ domain.value }}
-                </option>
-              </select>
-              <select formControlName="employment_status" (change)="onFilterChange()" class="filter-select">
-                <option value="" disabled>Looking for work / Hiring</option>
-                <option value="employee">Looking For Work</option>
-                <option value="employer">Hiring</option>
-              </select>
+                </nb-option>
+              </nb-select>
+              <nb-select
+                formControlName="employment_status"
+                size="small"
+                shape="round"
+                ghost
+                placeholder="Employment Status"
+                (selectedChange)="onFilterChange()"
+                class="filter-select"
+              >
+                <nb-option value="employee">Looking for work</nb-option>
+                <nb-option value="employer">Hiring</nb-option>
+              </nb-select>
             </div>
 
             <!-- Active Filter Tags -->
