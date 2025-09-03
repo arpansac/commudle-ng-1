@@ -196,7 +196,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
-    const employmentStatus = this.communityFilterForm.get('employment_status').value;
     const gender = this.communityFilterForm.get('gender').value;
     const domains = this.communityFilterForm.get('domains').value || [];
     this.userRolesUsersService
@@ -207,15 +206,16 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.page,
         skills,
         experienceLevel,
-        employmentStatus,
+        this.employer,
+        this.employee,
         gender,
         domains,
         this.mostActive,
         this.contributor,
         this.contentCreator,
+        this.speaker,
       )
       .subscribe((data) => {
-        // this.speaker,
         this.isLoading = false;
         this.userRolesUsers = data.user_roles_users;
         console.log(this.userRolesUsers);
@@ -336,12 +336,11 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
-    console.log(this.communityFilterForm.value);
     this.generateParams();
   }
 
   generateParams() {
-    const queryParams: { [key: string]: string | string[] } = {};
+    const queryParams: { [key: string]: string | string[] | boolean } = {};
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
     const employmentStatus = this.communityFilterForm.get('employment_status').value;
@@ -357,8 +356,11 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     if (experienceLevel && experienceLevel.length > 0) {
       queryParams.experience_level = experienceLevel;
     }
-    if (employmentStatus) {
-      queryParams.employment_status = employmentStatus;
+    if (employmentStatus === 'employer') {
+      queryParams.employer = true;
+    }
+    if (employmentStatus === 'employee') {
+      queryParams.employee = true;
     }
     if (gender) {
       queryParams.gender = gender;
@@ -367,16 +369,16 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       queryParams.domains = domains;
     }
     if (this.mostActive) {
-      queryParams.most_active = 'true';
+      queryParams.most_active = true;
     }
     if (this.contributor) {
-      queryParams.contributor = 'true';
+      queryParams.contributor = true;
     }
     if (this.contentCreator) {
-      queryParams.content_creator = 'true';
+      queryParams.content_creator = true;
     }
     if (this.speaker) {
-      queryParams.speaker = 'true';
+      queryParams.speaker = true;
     }
 
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
