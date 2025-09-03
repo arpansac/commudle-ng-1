@@ -45,6 +45,18 @@
       }
     }
 
+    .skills-filter-container {
+      @apply com-flex com-flex-col com-gap-2 com-w-full com-min-w-0;
+
+      .skills-label {
+        @apply com-text-xs com-font-medium com-text-Yankees-Blue com-mb-1;
+      }
+
+      app-tag {
+        @apply com-w-full;
+      }
+    }
+
     .com-active-filter-tags {
       @apply com-flex com-flex-wrap com-gap-2 md:com-pl-3 com-pl-0 com-w-full;
     }

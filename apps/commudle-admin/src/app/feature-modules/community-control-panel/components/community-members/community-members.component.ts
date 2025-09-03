@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
@@ -10,10 +11,9 @@ import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@c
 import { SeoService } from '@commudle/shared-services';
 import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { KeyValue } from '@angular/common';
 
 @Component({
-  selector: 'app-community-members',
+  selector: 'commudle-community-members',
   templateUrl: './community-members.component.html',
   styleUrls: ['./community-members.component.scss'],
 })
@@ -59,8 +59,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<any>;
-  @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<any>;
+  @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<unknown>;
+  @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<unknown>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -71,6 +71,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     private menuService: NbMenuService,
     private seoService: SeoService,
     private communityService: CommunitiesService,
+    private location: Location,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -82,7 +83,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.communityFilterForm = this.fb.group({
       experience_level: [null],
       employment_status: [null],
-      skills: [null],
+      skills: [[]],
       gender: [null],
       domains: [null],
     });
@@ -94,10 +95,31 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.seoService.noIndex(true);
+    const params = this.activatedRoute.snapshot.queryParams;
+    if (Object.keys(params).length > 0) {
+      if (params.skills) {
+        let skillsArray: string[];
+        if (typeof params.skills === 'string' && params.skills.includes(',')) {
+          skillsArray = params.skills.split(',');
+        } else {
+          skillsArray = [params.skills];
+        }
+        this.communityFilterForm.get('skills').setValue(skillsArray);
+      }
+      if (params.query) {
+        this.query = params.query;
+        this.searchForm.get('name').setValue(this.query);
+      }
+      this.page = 1;
+      this.userRolesUsers = [];
+      this.total = 0;
+    }
+
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
+          console.log(this.community);
           this.setMeta();
         }
       }),
@@ -119,8 +141,24 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.seoService.setTitle(`Community Members | Dashboard | ${this.community.name}`);
   }
 
+  onTagAdd(value: string) {
+    const currentSkills = this.communityFilterForm.get('skills').value || [];
+    if (!currentSkills.includes(value)) {
+      this.communityFilterForm.get('skills').setValue([...currentSkills, value]);
+      this.generateParams();
+    }
+  }
+
+  onTagDelete(value: string) {
+    const currentSkills = this.communityFilterForm.get('skills').value || [];
+    const updatedSkills = currentSkills.filter((tag: string) => tag !== value);
+    this.communityFilterForm.get('skills').setValue(updatedSkills);
+    this.generateParams();
+  }
+
   getMembers() {
     this.isLoading = true;
+    const skills = this.communityFilterForm.get('skills').value || [];
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
@@ -131,6 +169,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.contributor,
         this.contentCreator,
         this.speaker,
+        skills,
       )
       .subscribe((data) => {
         this.isLoading = false;
@@ -141,7 +180,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       });
   }
 
-  originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+  originalOrder = (): number => {
     return 0;
   };
 
@@ -179,7 +218,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.getMembers();
   }
 
-  openDialog(template: TemplateRef<any>, user: IUser) {
+  openDialog(template: TemplateRef<unknown>, user: IUser) {
     this.dialogService.open(template, { context: { user } });
   }
 
@@ -256,6 +295,26 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     console.log(this.communityFilterForm.value);
+    this.generateParams();
+  }
+
+  generateParams() {
+    const queryParams: { [key: string]: string | string[] } = {};
+    const skills = this.communityFilterForm.get('skills').value || [];
+
+    if (this.query) {
+      queryParams.query = this.query;
+    }
+    if (skills && skills.length > 0) {
+      queryParams.skills = skills;
+    }
+
+    const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
+    const queryParamsString = urlSearchParams.toString();
+    this.location.replaceState(location.pathname, queryParamsString);
+
+    this.page = 1;
+    this.getMembers();
   }
 
   sortBy() {

@@ -50,10 +50,11 @@ export class UserRolesUsersService {
     communityId,
     count,
     page,
-    employer?,
-    employee?,
+    mostActive?,
+    contributor?,
     contentCreator?,
     speaker?,
+    skills?,
   ): Observable<IUserRolesUsers> {
     let params = new HttpParams();
     params = params
@@ -61,10 +62,15 @@ export class UserRolesUsersService {
       .set('query', query)
       .set('count', count)
       .set('page', page)
-      .set('employer', employer)
-      .set('employee', employee)
+      .set('most_active', mostActive)
+      .set('contributor', contributor)
       .set('content_creator', contentCreator)
       .set('speaker', speaker);
+
+    if (skills && skills.length > 0) {
+      params = params.set('skills', skills.join(','));
+    }
+
     return this.http.get<IUserRolesUsers>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.COMMUNITY_MEMBERS),
       { params },

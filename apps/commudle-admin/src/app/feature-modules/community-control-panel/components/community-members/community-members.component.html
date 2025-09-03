@@ -4,18 +4,18 @@
     <div class="insights-grid">
       <div class="insight-card">
         <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-number">{{ community.members_count }}</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">GENDER DISTRIBUTION</div>
         <div class="insight-number">136</div>
       </div>
       <div class="insight-card">
-        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-label">PROFESSIONALS VS STUDENTS</div>
         <div class="insight-number">136</div>
       </div>
       <div class="insight-card">
-        <div class="insight-label">TOTAL MEMBERS</div>
-        <div class="insight-number">136</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-label">TOTAL MEMBERS</div>
+        <div class="insight-label">NEW MEMBERS IN LAST 90 DAYS</div>
         <div class="insight-number">136</div>
       </div>
     </div>
@@ -54,9 +54,6 @@
           <option value="employee">Looking For Work</option>
           <option value="employer">Hiring</option>
         </select>
-        <select formControlName="skills" (change)="onFilterChange()" class="com-filter-select">
-          <option value="null" disabled selected>Skills</option>
-        </select>
         <select formControlName="gender" (change)="onFilterChange()" class="com-filter-select">
           <option value="null" disabled selected>Gender</option>
           <option value="male">Male</option>
@@ -69,6 +66,21 @@
             {{ domain.value }}
           </option>
         </select>
+        <div class="skills-filter-container">
+          <label class="skills-label">Skills</label>
+          <app-tag
+            (tagAdd)="onTagAdd($event)"
+            (tagDelete)="onTagDelete($event)"
+            [backgroundColor]="'com-bg-gray-100'"
+            [editable]="true"
+            [fontColor]="'com-text-tYankees-Blue'"
+            [tags]="communityFilterForm.get('skills').value || []"
+            [minTagLimit]="false"
+            [showAutoSuggestDropDown]="true"
+            [showTagsOnLoad]="true"
+            [size]="'tiny'"
+          ></app-tag>
+        </div>
       </div>
 
       <!-- Active Filter Tags -->
