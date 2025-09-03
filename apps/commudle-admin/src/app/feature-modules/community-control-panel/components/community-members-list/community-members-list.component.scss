@@ -1,3 +1,26 @@
 .members-list {
   @apply com-p-6;
+
+  .tab-list {
+    @apply com-ml-2;
+    a {
+      @apply com-text-gunmetal com-text-sm com-leading-4 com-h-fit com-m-0 com-pt-0 com-px-6 com-pb-17px com-cursor-pointer com-no-underline com-mt-4;
+
+      .title {
+        @apply com-self-center com-ml-2;
+      }
+    }
+
+    .active {
+      @apply com-border-0 com-border-b-3 com-border-solid com-border-primary-500;
+
+      .title {
+        @apply com-text-primary-500;
+      }
+    }
+  }
+
+  .tab-content {
+    @apply com-mt-6;
+  }
 }

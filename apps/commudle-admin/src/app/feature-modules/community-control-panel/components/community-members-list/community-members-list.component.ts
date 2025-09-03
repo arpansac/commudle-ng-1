@@ -5,16 +5,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./community-members-list.component.scss'],
 })
 export class CommunityMembersListComponent {
-  tabs: any[] = [
-    {
-      title: 'All Members',
-      route: `./`,
-    },
-    {
-      title: 'Blocked Members',
-      route: `./blocked`,
-    },
-  ];
-
   constructor() {}
 }

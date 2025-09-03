@@ -1,3 +1,15 @@
 <div class="members-list">
-  <nb-route-tabset [tabs]="tabs"></nb-route-tabset>
+  <div class="custom-tabset">
+    <div class="tab-list">
+      <a [routerLink]="['./']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="tab-button">
+        <span class="title">All Members</span>
+      </a>
+      <a [routerLink]="['./blocked']" routerLinkActive="active" class="tab-button">
+        <span class="title">Blocked Members</span>
+      </a>
+    </div>
+  </div>
+  <div class="tab-content">
+    <router-outlet></router-outlet>
+  </div>
 </div>
