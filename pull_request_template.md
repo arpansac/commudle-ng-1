@@ -2,15 +2,15 @@
 
 ## Type
 
-- ( ) Fix
-- ( ) Refactor
-- ( ) Style
-- ( ) Docs
-- (X) Feat
-- ( ) Hotfix
-- ( ) Merge
-- ( ) Revamp
-- ( ) Chore
+- [ ] Fix
+- [ ] Refactor
+- [ ] Style
+- [ ] Docs
+- [ ] Feat
+- [ ] Hotfix
+- [ ] Merge
+- [ ] Revamp
+- [ ] Chore
 
 ## Description
 
