@@ -4,7 +4,7 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { debounceTime, takeUntil, Subscription, switchMap, Subject } from 'rxjs';
+import { debounceTime, takeUntil, Subscription, Subject, distinctUntilChanged } from 'rxjs';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { FormBuilder } from '@angular/forms';
@@ -30,6 +30,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   canLoadMore = true;
   total;
   query = '';
+  queryParamsString = '';
   month = false;
   year = false;
   employer = false;
@@ -40,6 +41,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   speakers: IUser[] = [];
   isLoadingSpeakers = false;
   isLoadingMembers = false;
+  loadingData = false;
   showSpinner = false;
   isLeftScrollDisabled = true;
   isRightScrollDisabled = true;
@@ -70,31 +72,16 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const params = this.activatedRoute.snapshot.queryParams;
-    console.log('Current URL:', window.location.href);
-    console.log('All query params:', params);
-    console.log('Form initial state:', this.membersForm.value);
     if (Object.keys(params).length > 0) {
       if (params.domains) {
-        console.log('params.domains:', params.domains);
         let domainsArray: string[];
 
-        if (Array.isArray(params.domains)) {
-          domainsArray = params.domains;
-        } else if (typeof params.domains === 'string' && params.domains.includes(',')) {
-          // Handle comma-separated domains (when URL is pasted and decoded)
+        if (typeof params.domains === 'string' && params.domains.includes(',')) {
           domainsArray = params.domains.split(',');
         } else {
-          // Handle single domain
           domainsArray = [params.domains];
         }
-
-        console.log('domainsArray:', domainsArray);
-
-        // Use setTimeout to ensure the component is fully initialized
-        setTimeout(() => {
-          this.membersForm.get('domains').patchValue(domainsArray);
-          console.log('Form domains value after patchValue:', this.membersForm.get('domains').value);
-        }, 0);
+        this.membersForm.get('domains').patchValue(domainsArray);
       }
       if (params.employer === 'true') {
         this.membersForm.get('employment_status').setValue('employer');
@@ -139,45 +126,33 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   search() {
+    this.query = '';
     this.searchForm.valueChanges
-      .pipe(
-        debounceTime(800),
-        takeUntil(this.destroy$),
-        switchMap(() => {
-          this.page = 1;
-          this.isLoadingMembers = true;
-          this.query = this.searchForm.get('name').value;
-
-          this.generateParams(
-            this.employer,
-            this.employee,
-            this.query,
-            this.filterByMutuals,
-            this.membersForm.get('domains').value,
-          );
-
-          return this.userRolesUsersService.getCommunityMembers(
-            this.query,
-            this.community.id,
-            this.count,
-            this.page,
-            this.employer,
-            this.employee,
-          );
-        }),
-      )
-      .subscribe((data) => {
-        this.isLoadingMembers = false;
-        this.members = data.users;
-        this.page = +data.page;
-        this.total = data.total;
+      .pipe(debounceTime(800), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.loadingData) {
+          return;
+        }
+        this.members = [];
+        this.page_info = null;
+        this.page = 1;
+        this.total = 0;
+        this.canLoadMore = true;
+        this.loadingData = true;
+        this.query = this.searchForm.get('name').value;
+        this.queryParamsString = this.query;
+        this.generateParams(
+          this.employer,
+          this.employee,
+          this.query,
+          this.filterByMutuals,
+          this.membersForm.get('domains').value,
+        );
       });
   }
 
   onFilterChange() {
     const filterValues = this.membersForm.value;
-    console.log(filterValues, 'filterValues');
-    console.log(this.membersForm, 'this.membersForm');
 
     if (filterValues.employment_status === 'employer') {
       this.employer = true;
@@ -246,20 +221,32 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   getMembers(): void {
-    if (!this.isLoadingMembers && (!this.total || this.members.length < this.total)) {
+    if (!this.isLoadingMembers) {
       this.isLoadingMembers = true;
       this.showSpinner = true;
       this.subscriptions.push(
-        this.userRolesUsersService.pGetCommunityMembers(this.community.id, this.page, this.count).subscribe((data) => {
-          this.members = [...this.members, ...data.users];
-          this.page += 1;
-          this.total = data.total;
-          this.isLoadingMembers = false;
-          if (this.members.length >= this.total) {
-            this.canLoadMore = false;
-          }
-          this.showSpinner = false;
-        }),
+        this.userRolesUsersService
+          .pGetCommunityMembers(
+            this.employer,
+            this.employee,
+            this.query,
+            this.filterByMutuals,
+            this.membersForm.get('domains').value,
+            this.community.id,
+            this.page,
+            this.count,
+          )
+          .subscribe((data) => {
+            this.members = data.values;
+            this.page = +data.page;
+            this.total = data.total;
+            this.isLoadingMembers = false;
+            if (this.members.length >= this.total) {
+              this.canLoadMore = false;
+            }
+            this.showSpinner = false;
+            this.loadingData = false;
+          }),
       );
     }
   }
@@ -305,6 +292,7 @@ export class MembersComponent implements OnInit, OnDestroy {
     const urlSearchParams = new URLSearchParams(queryParams);
     const queryParamsString = urlSearchParams.toString();
     this.location.replaceState(location.pathname, queryParamsString);
+    this.getMembers();
   }
 
   clearAllFilters() {

@@ -6,6 +6,7 @@ import { IUsers } from 'apps/shared-models/users.model';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { Observable } from 'rxjs';
+import { IPaginationCount, IUser } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -133,9 +134,26 @@ export class UserRolesUsersService {
     );
   }
 
-  pGetCommunityMembers(communityId, page, count): Observable<IUsers> {
-    const params = new HttpParams().set('community_id', communityId).set('page', page).set('count', count);
-    return this.http.get<IUsers>(
+  pGetCommunityMembers(
+    employer,
+    employee,
+    query,
+    filterByMutuals,
+    domains,
+    communityId,
+    page,
+    count,
+  ): Observable<IPaginationCount<IUser>> {
+    const params = new HttpParams()
+      .set('community_id', communityId)
+      .set('page', page)
+      .set('count', count)
+      .set('employer', employer)
+      .set('employee', employee)
+      .set('query', query)
+      .set('filter_by_mutuals', filterByMutuals)
+      .set('domains', domains);
+    return this.http.get<IPaginationCount<IUser>>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.PUBLIC_GET_COMMUNITY_MEMBERS),
       { params },
     );
