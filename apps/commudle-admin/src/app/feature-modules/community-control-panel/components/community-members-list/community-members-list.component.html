@@ -1,15 +1,30 @@
 <div class="members-list">
-  <div class="custom-tabset">
-    <div class="tab-list">
-      <a [routerLink]="['./']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="tab-button">
-        <span class="title">All Members</span>
-      </a>
-      <a [routerLink]="['./blocked']" routerLinkActive="active" class="tab-button">
-        <span class="title">Blocked Members</span>
-      </a>
+  <div class="header-section">
+    <div class="custom-tabset">
+      <div class="tab-list">
+        <a
+          [routerLink]="['./']"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="tab-button"
+        >
+          <span class="title">All Members</span>
+        </a>
+        <a [routerLink]="['./blocked']" routerLinkActive="active" class="tab-button">
+          <span class="title">Blocked Members</span>
+        </a>
+      </div>
     </div>
+    <button
+      (click)="sendSpeakerCSV()"
+      nbButton
+      outline
+      status="primary"
+      [nbSpinner]="sendingRequest"
+      [disabled]="sendingRequest"
+    >
+      <fa-icon [icon]="faEnvelope"></fa-icon> &nbsp; List of speaker CSV
+    </button>
   </div>
-  <div class="tab-content">
-    <router-outlet></router-outlet>
-  </div>
+  <router-outlet></router-outlet>
 </div>

@@ -31,7 +31,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   employer = false;
   contentCreator = false;
   employee = false;
-  sendingRequest = false;
   faEnvelope = faEnvelope;
   faSort = faSort;
   EExperienceLevel = EExperienceLevel;
@@ -253,18 +252,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.total = 0;
     this.page = 1;
     this.getMembers();
-  }
-
-  sendSpeakerCSV() {
-    this.sendingRequest = true;
-    this.communityService
-      .sendCsvSpeakersList(this.activatedRoute.parent.snapshot.params['community_id'])
-      .subscribe((data) => {
-        if (data) {
-          this.toastrService.success('CSV will be sent to your email inbox');
-          this.sendingRequest = false;
-        }
-      });
   }
 
   onFilterChange() {
