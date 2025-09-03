@@ -52,11 +52,14 @@ export class UserRolesUsersService {
     page,
     skills?,
     experienceLevel?,
+    employmentStatus?,
+    gender?,
+    domains?,
     mostActive?,
     contributor?,
     contentCreator?,
-    speaker?,
   ): Observable<IUserRolesUsers> {
+    // speaker?,
     let params = new HttpParams();
     params = params
       .set('community_id', communityId)
@@ -65,14 +68,23 @@ export class UserRolesUsersService {
       .set('page', page)
       .set('most_active', mostActive)
       .set('contributor', contributor)
-      .set('content_creator', contentCreator)
-      .set('speaker', speaker);
+      .set('content_creator', contentCreator);
+    // .set('speaker', speaker);
 
     if (skills && skills.length > 0) {
       params = params.set('skills', skills.join(','));
     }
     if (experienceLevel && experienceLevel.length > 0) {
       params = params.set('experience_level', experienceLevel.join(','));
+    }
+    if (employmentStatus) {
+      params = params.set('employment_status', employmentStatus);
+    }
+    if (gender) {
+      params = params.set('gender', gender);
+    }
+    if (domains && domains.length > 0) {
+      params = params.set('domains', domains.join(','));
     }
 
     return this.http.get<IUserRolesUsers>(

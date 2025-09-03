@@ -85,7 +85,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       employment_status: [null],
       skills: [[]],
       gender: [null],
-      domains: [null],
+      domains: [[]],
     });
   }
 
@@ -114,6 +114,21 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           experienceArray = [params.experience_level];
         }
         this.communityFilterForm.get('experience_level').setValue(experienceArray);
+      }
+      if (params.employment_status) {
+        this.communityFilterForm.get('employment_status').setValue(params.employment_status);
+      }
+      if (params.gender) {
+        this.communityFilterForm.get('gender').setValue(params.gender);
+      }
+      if (params.domains) {
+        let domainsArray: string[];
+        if (typeof params.domains === 'string' && params.domains.includes(',')) {
+          domainsArray = params.domains.split(',');
+        } else {
+          domainsArray = [params.domains];
+        }
+        this.communityFilterForm.get('domains').setValue(domainsArray);
       }
       if (params.query) {
         this.query = params.query;
@@ -169,6 +184,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const employmentStatus = this.communityFilterForm.get('employment_status').value;
+    const gender = this.communityFilterForm.get('gender').value;
+    const domains = this.communityFilterForm.get('domains').value || [];
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
@@ -177,12 +195,15 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.page,
         skills,
         experienceLevel,
+        employmentStatus,
+        gender,
+        domains,
         this.mostActive,
         this.contributor,
         this.contentCreator,
-        this.speaker,
       )
       .subscribe((data) => {
+        // this.speaker,
         this.isLoading = false;
         this.userRolesUsers = data.user_roles_users;
         console.log(this.userRolesUsers);
@@ -313,6 +334,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const queryParams: { [key: string]: string | string[] } = {};
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const employmentStatus = this.communityFilterForm.get('employment_status').value;
+    const gender = this.communityFilterForm.get('gender').value;
+    const domains = this.communityFilterForm.get('domains').value || [];
 
     if (this.query) {
       queryParams.query = this.query;
@@ -322,6 +346,15 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     }
     if (experienceLevel && experienceLevel.length > 0) {
       queryParams.experience_level = experienceLevel;
+    }
+    if (employmentStatus) {
+      queryParams.employment_status = employmentStatus;
+    }
+    if (gender) {
+      queryParams.gender = gender;
+    }
+    if (domains && domains.length > 0) {
+      queryParams.domains = domains;
     }
 
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
