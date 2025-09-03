@@ -109,7 +109,20 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         }
         this.communityFilterForm.get('skills').setValue(skillsArray);
       }
-      if (params.experience_level) {
+      if (params['experience_level[]']) {
+        let experienceArray: string[];
+        if (Array.isArray(params['experience_level[]'])) {
+          experienceArray = params['experience_level[]'];
+        } else {
+          const experienceString = params['experience_level[]'];
+          if (typeof experienceString === 'string' && experienceString.includes(',')) {
+            experienceArray = experienceString.split(',').map((level) => level.trim());
+          } else {
+            experienceArray = [experienceString];
+          }
+        }
+        this.communityFilterForm.get('experience_level').setValue(experienceArray);
+      } else if (params.experience_level) {
         let experienceArray: string[];
         if (typeof params.experience_level === 'string' && params.experience_level.includes(',')) {
           experienceArray = params.experience_level.split(',');
@@ -378,7 +391,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       queryParams.skills = skills;
     }
     if (experienceLevel && experienceLevel.length > 0) {
-      queryParams.experience_level = experienceLevel;
+      queryParams['experience_level[]'] = experienceLevel;
     }
     if (employmentStatus === 'employer') {
       queryParams.employer = true;

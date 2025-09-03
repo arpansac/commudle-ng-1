@@ -81,7 +81,9 @@ export class UserRolesUsersService {
       params = params.set('skills', skills.join(','));
     }
     if (experienceLevel && experienceLevel.length > 0) {
-      params = params.set('experience_level', experienceLevel.join(','));
+      experienceLevel.forEach((level) => {
+        params = params.append('experience_level[]', level);
+      });
     }
     if (domains && domains.length > 0) {
       domains.forEach((domain) => {
