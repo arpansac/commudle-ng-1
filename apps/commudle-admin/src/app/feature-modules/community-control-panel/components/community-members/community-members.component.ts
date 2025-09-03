@@ -6,7 +6,7 @@ import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { Subject, takeUntil, Subscription } from 'rxjs';
+import { Subject, takeUntil, Subscription, distinctUntilChanged } from 'rxjs';
 import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
@@ -35,6 +35,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   faSort = faSort;
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
+  domainsArray: string[] = [];
+  queryParamsString = '';
 
   contextMenuItems = [
     {
@@ -54,6 +56,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   community: ICommunity;
+  loadingData = false;
 
   options = ['active', 'contributor', 'content_creator', 'speaker'];
 
@@ -121,14 +124,18 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       if (params.gender) {
         this.communityFilterForm.get('gender').setValue(params.gender);
       }
-      if (params.domains) {
-        let domainsArray: string[];
-        if (typeof params.domains === 'string' && params.domains.includes(',')) {
-          domainsArray = params.domains.split(',');
+      if (params['domains[]']) {
+        if (Array.isArray(params['domains[]'])) {
+          this.domainsArray = params['domains[]'];
         } else {
-          domainsArray = [params.domains];
+          const domainsString = params['domains[]'];
+          if (typeof domainsString === 'string' && domainsString.includes(',')) {
+            this.domainsArray = domainsString.split(',').map((domain) => domain.trim());
+          } else {
+            this.domainsArray = [domainsString];
+          }
         }
-        this.communityFilterForm.get('domains').setValue(domainsArray);
+        this.communityFilterForm.get('domains').setValue(this.domainsArray);
       }
       if (params.most_active === 'true') {
         this.mostActive = true;
@@ -197,7 +204,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
     const gender = this.communityFilterForm.get('gender').value;
-    const domains = this.communityFilterForm.get('domains').value || [];
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
@@ -209,7 +215,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.employer,
         this.employee,
         gender,
-        domains,
+        this.domainsArray,
         this.mostActive,
         this.contributor,
         this.contentCreator,
@@ -228,32 +234,50 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     return 0;
   };
 
+  // search() {
+  //   this.searchForm.valueChanges
+  //     .pipe(
+  //       debounceTime(800),
+  //       takeUntil(this.destroy$),
+  //       switchMap(() => {
+  //         this.page = 1;
+  //         this.isLoading = true;
+  //         this.query = this.searchForm.get('name').value;
+  //         return this.userRolesUsersService.getCommunityMembers(
+  //           this.query,
+  //           this.community.id,
+  //           this.count,
+  //           this.page,
+  //           this.employer,
+  //           this.employee,
+  //           this.contentCreator,
+  //           this.speaker,
+  //         );
+  //       }),
+  //     )
+  //     .subscribe((data) => {
+  //       this.isLoading = false;
+  //       this.userRolesUsers = data.user_roles_users;
+  //       this.page = +data.page;
+  //       this.total = data.total;
+  //     });
+  // }
+
   search() {
+    this.query = '';
     this.searchForm.valueChanges
-      .pipe(
-        debounceTime(800),
-        takeUntil(this.destroy$),
-        switchMap(() => {
-          this.page = 1;
-          this.isLoading = true;
-          this.query = this.searchForm.get('name').value;
-          return this.userRolesUsersService.getCommunityMembers(
-            this.query,
-            this.community.id,
-            this.count,
-            this.page,
-            this.employer,
-            this.employee,
-            this.contentCreator,
-            this.speaker,
-          );
-        }),
-      )
-      .subscribe((data) => {
-        this.isLoading = false;
-        this.userRolesUsers = data.user_roles_users;
-        this.page = +data.page;
-        this.total = data.total;
+      .pipe(debounceTime(800), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.loadingData) {
+          return;
+        }
+        this.userRolesUsers = [];
+        this.page = 1;
+        this.total = 0;
+        this.loadingData = true;
+        this.query = this.searchForm.get('name').value;
+        this.queryParamsString = this.query;
+        this.generateParams();
       });
   }
 
@@ -366,7 +390,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       queryParams.gender = gender;
     }
     if (domains && domains.length > 0) {
-      queryParams.domains = domains;
+      queryParams['domains[]'] = domains;
     }
     if (this.mostActive) {
       queryParams.most_active = true;

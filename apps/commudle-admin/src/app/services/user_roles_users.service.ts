@@ -84,7 +84,9 @@ export class UserRolesUsersService {
       params = params.set('experience_level', experienceLevel.join(','));
     }
     if (domains && domains.length > 0) {
-      params = params.set('domains', domains.join(','));
+      domains.forEach((domain) => {
+        params = params.append('domains[]', domain);
+      });
     }
 
     return this.http.get<IUserRolesUsers>(
