@@ -81,7 +81,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
 
     this.communityFilterForm = this.fb.group({
-      experience_level: [null],
+      experience_level: [[]],
       employment_status: [null],
       skills: [[]],
       gender: [null],
@@ -105,6 +105,15 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           skillsArray = [params.skills];
         }
         this.communityFilterForm.get('skills').setValue(skillsArray);
+      }
+      if (params.experience_level) {
+        let experienceArray: string[];
+        if (typeof params.experience_level === 'string' && params.experience_level.includes(',')) {
+          experienceArray = params.experience_level.split(',');
+        } else {
+          experienceArray = [params.experience_level];
+        }
+        this.communityFilterForm.get('experience_level').setValue(experienceArray);
       }
       if (params.query) {
         this.query = params.query;
@@ -159,17 +168,19 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   getMembers() {
     this.isLoading = true;
     const skills = this.communityFilterForm.get('skills').value || [];
+    const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
         this.community.id,
         this.count,
         this.page,
+        skills,
+        experienceLevel,
         this.mostActive,
         this.contributor,
         this.contentCreator,
         this.speaker,
-        skills,
       )
       .subscribe((data) => {
         this.isLoading = false;
@@ -301,12 +312,16 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   generateParams() {
     const queryParams: { [key: string]: string | string[] } = {};
     const skills = this.communityFilterForm.get('skills').value || [];
+    const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
 
     if (this.query) {
       queryParams.query = this.query;
     }
     if (skills && skills.length > 0) {
       queryParams.skills = skills;
+    }
+    if (experienceLevel && experienceLevel.length > 0) {
+      queryParams.experience_level = experienceLevel;
     }
 
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);

@@ -50,11 +50,12 @@ export class UserRolesUsersService {
     communityId,
     count,
     page,
+    skills?,
+    experienceLevel?,
     mostActive?,
     contributor?,
     contentCreator?,
     speaker?,
-    skills?,
   ): Observable<IUserRolesUsers> {
     let params = new HttpParams();
     params = params
@@ -69,6 +70,9 @@ export class UserRolesUsersService {
 
     if (skills && skills.length > 0) {
       params = params.set('skills', skills.join(','));
+    }
+    if (experienceLevel && experienceLevel.length > 0) {
+      params = params.set('experience_level', experienceLevel.join(','));
     }
 
     return this.http.get<IUserRolesUsers>(

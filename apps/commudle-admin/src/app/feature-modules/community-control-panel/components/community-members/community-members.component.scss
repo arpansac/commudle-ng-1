@@ -41,7 +41,7 @@
     .com-filter-dropdowns {
       @apply com-flex com-items-center com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 md:com-border-r com-border-r-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 md:com-mb-0 com-mb-4 com-w-full;
       .com-filter-select {
-        @apply com-bg-gray-100 hover:com-bg-[#eef2f7]/50 com-border-0 com-w-full com-cursor-pointer com-px-3 com-py-2 com-rounded-3xl;
+        @apply com-bg-gray-100 com-border-0 com-w-full com-cursor-pointer com-rounded-3xl;
       }
     }
 

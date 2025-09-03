@@ -40,15 +40,23 @@
 
     <div [formGroup]="communityFilterForm" class="filter-dropdowns-container">
       <div class="com-filter-dropdowns">
-        <select formControlName="experience_level" (change)="onFilterChange()" class="com-filter-select">
-          <option value="null" disabled selected>Experience</option>
-          <option
+        <nb-select
+          formControlName="experience_level"
+          (selectedChange)="onFilterChange()"
+          placeholder="Experience"
+          multiple
+          size="small"
+          shape="round"
+          ghost
+          class="com-filter-select"
+        >
+          <nb-option
             *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder"
             [value]="experienceLevel.key"
           >
             {{ experienceLevel.value }}
-          </option>
-        </select>
+          </nb-option>
+        </nb-select>
         <select formControlName="employment_status" (change)="onFilterChange()" class="com-filter-select">
           <option value="null" disabled selected>Looking for work / Hiring</option>
           <option value="employee">Looking For Work</option>
