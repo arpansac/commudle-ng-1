@@ -130,6 +130,18 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         }
         this.communityFilterForm.get('domains').setValue(domainsArray);
       }
+      if (params.most_active === 'true') {
+        this.mostActive = true;
+      }
+      if (params.contributor === 'true') {
+        this.contributor = true;
+      }
+      if (params.content_creator === 'true') {
+        this.contentCreator = true;
+      }
+      if (params.speaker === 'true') {
+        this.speaker = true;
+      }
       if (params.query) {
         this.query = params.query;
         this.searchForm.get('name').setValue(this.query);
@@ -320,9 +332,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.speaker = !this.speaker;
     }
     console.log(this.mostActive, this.contributor, this.contentCreator, this.speaker);
-    this.total = 0;
-    this.page = 1;
-    this.getMembers();
+    this.generateParams();
   }
 
   onFilterChange() {
@@ -355,6 +365,18 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     }
     if (domains && domains.length > 0) {
       queryParams.domains = domains;
+    }
+    if (this.mostActive) {
+      queryParams.most_active = 'true';
+    }
+    if (this.contributor) {
+      queryParams.contributor = 'true';
+    }
+    if (this.contentCreator) {
+      queryParams.content_creator = 'true';
+    }
+    if (this.speaker) {
+      queryParams.speaker = 'true';
     }
 
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);

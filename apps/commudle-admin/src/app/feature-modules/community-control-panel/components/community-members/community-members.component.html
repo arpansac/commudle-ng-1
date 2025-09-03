@@ -117,34 +117,34 @@
       <div class="com-active-filter-tags">
         <nb-tag-list>
           <nb-tag
-            appearance="outline"
+            [appearance]="mostActive ? 'filled' : 'outline'"
             [text]="'Most Active (Top 10%)'"
             size="small"
-            [status]="mostActive ? 'info' : 'basic'"
+            status="info"
             [removable]="mostActive ? 'true' : 'false'"
             (click)="filterByTags(options[0])"
           ></nb-tag>
           <nb-tag
-            appearance="outline"
+            [appearance]="contributor ? 'filled' : 'outline'"
             [text]="'Top Contributor'"
             size="small"
-            [status]="contributor ? 'info' : 'basic'"
+            status="info"
             [removable]="contributor ? 'true' : 'false'"
             (click)="filterByTags(options[1])"
           ></nb-tag>
           <nb-tag
-            appearance="outline"
+            [appearance]="contentCreator ? 'filled' : 'outline'"
             [text]="'Content Creator'"
             size="small"
-            [status]="contentCreator ? 'info' : 'basic'"
+            status="info"
             [removable]="contentCreator ? 'true' : 'false'"
             (click)="filterByTags(options[2])"
           ></nb-tag>
           <nb-tag
-            appearance="outline"
+            [appearance]="speaker ? 'filled' : 'outline'"
             [text]="'Speaker'"
             size="small"
-            [status]="speaker ? 'info' : 'basic'"
+            status="info"
             [removable]="speaker ? 'true' : 'false'"
             (click)="filterByTags(options[3])"
           ></nb-tag>
