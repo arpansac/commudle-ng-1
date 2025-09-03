@@ -9,8 +9,7 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { FormBuilder } from '@angular/forms';
 import { EDomain } from '@commudle/shared-models';
-import { KeyValue } from '@angular/common';
-import { Location } from '@angular/common';
+import { KeyValue, Location } from '@angular/common';
 
 @Component({
   selector: 'app-members',
