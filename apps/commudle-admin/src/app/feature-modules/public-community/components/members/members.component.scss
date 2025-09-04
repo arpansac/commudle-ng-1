@@ -62,7 +62,7 @@ nb-card {
             }
 
             &:last-child {
-              @apply com-border-b-0;
+              @apply com-border-b-0 md:com-border-r-0;
             }
           }
         }
