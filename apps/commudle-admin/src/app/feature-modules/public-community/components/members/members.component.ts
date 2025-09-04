@@ -286,7 +286,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       queryParams.mutuals = true;
     }
     if (domains && domains.length > 0) {
-      queryParams.domains = domains;
+      queryParams.domains = domains.join(',');
     }
     const urlSearchParams = new URLSearchParams(queryParams);
     const queryParamsString = urlSearchParams.toString();

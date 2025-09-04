@@ -144,15 +144,21 @@ export class UserRolesUsersService {
     page,
     count,
   ): Observable<IPaginationCount<IUser>> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('community_id', communityId)
       .set('page', page)
       .set('count', count)
-      .set('employer', employer)
-      .set('employee', employee)
+      .set('is_employer', employer)
+      .set('is_employee', employee)
       .set('query', query)
-      .set('filter_by_mutuals', filterByMutuals)
-      .set('domains', domains);
+      .set('filter_by_mutuals', filterByMutuals);
+
+    if (domains && Array.isArray(domains) && domains.length > 0) {
+      domains.forEach((domain) => {
+        params = params.append('user_domains[]', domain);
+      });
+    }
+
     return this.http.get<IPaginationCount<IUser>>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.PUBLIC_GET_COMMUNITY_MEMBERS),
       { params },
