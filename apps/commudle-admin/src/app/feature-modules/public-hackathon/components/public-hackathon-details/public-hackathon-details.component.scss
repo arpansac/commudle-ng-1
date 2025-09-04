@@ -45,7 +45,12 @@
     .track-card {
       @apply com-py-2 com-my-1;
       .name {
-        @apply com-text-Yankees-Blue com-text-2xl com-font-bold;
+        @apply com-text-Yankees-Blue com-text-xl com-font-semibold com-my-0;
+      }
+      .problem-statement {
+        .title {
+          @apply com-text-Yankees-Blue com-text-base com-font-semibold;
+        }
       }
       .prize-card {
         .hackathon-prize {
