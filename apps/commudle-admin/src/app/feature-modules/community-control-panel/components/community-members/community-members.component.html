@@ -153,7 +153,15 @@
             (click)="filterByTags(options[3])"
           ></nb-tag>
         </nb-tag-list>
-        <button (click)="clearAllFilters()" class="clear-filters-btn" nbButton size="small" status="basic" ghost>
+        <button
+          (click)="clearAllFilters()"
+          nbButton
+          size="tiny"
+          status="basic"
+          appearance="outline"
+          shape="round"
+          class="clear-filters-btn"
+        >
           Clear All Filters
         </button>
       </div>
