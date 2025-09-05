@@ -122,6 +122,7 @@
             size="small"
             status="info"
             [removable]="mostActive ? 'true' : 'false'"
+            [ngClass]="{ activeTag: mostActive }"
             (click)="filterByTags(options[0])"
           ></nb-tag>
           <nb-tag
@@ -130,6 +131,7 @@
             size="small"
             status="info"
             [removable]="contributor ? 'true' : 'false'"
+            [ngClass]="{ activeTag: contributor }"
             (click)="filterByTags(options[1])"
           ></nb-tag>
           <nb-tag
@@ -138,6 +140,7 @@
             size="small"
             status="info"
             [removable]="contentCreator ? 'true' : 'false'"
+            [ngClass]="{ activeTag: contentCreator }"
             (click)="filterByTags(options[2])"
           ></nb-tag>
           <nb-tag
@@ -146,6 +149,7 @@
             size="small"
             status="info"
             [removable]="speaker ? 'true' : 'false'"
+            [ngClass]="{ activeTag: speaker }"
             (click)="filterByTags(options[3])"
           ></nb-tag>
         </nb-tag-list>

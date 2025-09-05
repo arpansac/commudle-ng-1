@@ -357,3 +357,7 @@ nb-button {
 .filter-dropdowns-container {
   @apply com-flex com-flex-col com-items-center com-mb-4;
 }
+
+.activeTag {
+  @apply com-bg-Azure com-text-tWhite #{!important};
+}
