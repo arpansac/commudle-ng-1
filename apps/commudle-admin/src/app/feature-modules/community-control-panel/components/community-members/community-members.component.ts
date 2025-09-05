@@ -35,7 +35,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   faSort = faSort;
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
-  domainsArray: string[] = [];
   queryParamsString = '';
 
   contextMenuItems = [
@@ -109,20 +108,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         }
         this.communityFilterForm.get('skills').setValue(skillsArray);
       }
-      if (params['experience_level[]']) {
-        let experienceArray: string[];
-        if (Array.isArray(params['experience_level[]'])) {
-          experienceArray = params['experience_level[]'];
-        } else {
-          const experienceString = params['experience_level[]'];
-          if (typeof experienceString === 'string' && experienceString.includes(',')) {
-            experienceArray = experienceString.split(',').map((level) => level.trim());
-          } else {
-            experienceArray = [experienceString];
-          }
-        }
-        this.communityFilterForm.get('experience_level').setValue(experienceArray);
-      } else if (params.experience_level) {
+      if (params.experience_level) {
         let experienceArray: string[];
         if (typeof params.experience_level === 'string' && params.experience_level.includes(',')) {
           experienceArray = params.experience_level.split(',');
@@ -150,7 +136,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         } else {
           domainsArray = [params.domains];
         }
-        this.domainsArray = domainsArray;
         this.communityFilterForm.get('domains').setValue(domainsArray);
       }
       if (params.most_active === 'true') {
@@ -219,6 +204,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const domains = this.communityFilterForm.get('domains').value || [];
     const gender = this.communityFilterForm.get('gender').value;
     this.userRolesUsersService
       .getCommunityMembers(
@@ -231,7 +217,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.employer,
         this.employee,
         gender,
-        this.domainsArray,
+        domains,
         this.mostActive,
         this.contributor,
         this.contentCreator,
@@ -389,10 +375,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.employee = false;
     }
 
-    if (filterValues.domains) {
-      this.domainsArray = filterValues.domains;
-    }
-
     this.generateParams();
   }
 
@@ -407,10 +389,10 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       queryParams.query = this.query;
     }
     if (skills && skills.length > 0) {
-      queryParams.skills = skills;
+      queryParams.skills = skills.join(',');
     }
     if (experienceLevel && experienceLevel.length > 0) {
-      queryParams['experience_level[]'] = experienceLevel;
+      queryParams.experience_level = experienceLevel.join(',');
     }
     if (this.employer) {
       queryParams.employer = true;
@@ -458,7 +440,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.speaker = false;
     this.employer = false;
     this.employee = false;
-    this.domainsArray = [];
     this.page = 1;
     this.userRolesUsers = [];
     this.total = 0;

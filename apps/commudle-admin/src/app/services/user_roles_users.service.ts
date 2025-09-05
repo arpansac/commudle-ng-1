@@ -80,7 +80,9 @@ export class UserRolesUsersService {
       params = params.set('gender', gender);
     }
     if (skills && skills.length > 0) {
-      params = params.set('skills', skills.join(','));
+      skills.forEach((skill) => {
+        params = params.append('skills[]', skill);
+      });
     }
     if (experienceLevel && experienceLevel.length > 0) {
       experienceLevel.forEach((level) => {
