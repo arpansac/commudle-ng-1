@@ -71,7 +71,7 @@
                   [submitButtonText]="
                     hackathonResponseGroup.filled_by_only_team_lead && !current_user_is_team_lead ? 'Submit' : 'Next'
                   "
-                  (submitUserDetailsEvent)="UpdateOrSubmitResponse($event)"
+                  (submitUserDetailsEvent)="updateUserDetails($event)"
                 ></commudle-user-details-form>
               </nb-step>
               <nb-step

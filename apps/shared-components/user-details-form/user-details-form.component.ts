@@ -6,6 +6,7 @@ import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService, ToastrService } from '@commudle/shared-services';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 @Component({
   selector: 'commudle-user-details-form',
   templateUrl: './user-details-form.component.html',
@@ -32,6 +33,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private toastLogService: ToastrService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private userProfileManagerService: UserProfileManagerService,
   ) {}
 
   ngOnInit(): void {
@@ -113,6 +115,10 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
         return;
       }
       this.uploadedProfilePictureFile = file;
+
+      if (this.uploadedProfilePictureFile != null) {
+        this.userProfileManagerService.uploadedProfilePictureFile = this.uploadedProfilePictureFile;
+      }
 
       const reader = new FileReader();
       reader.onload = () => (this.uploadedProfilePicture = reader.result);
