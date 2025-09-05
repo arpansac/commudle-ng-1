@@ -153,19 +153,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.domainsArray = domainsArray;
         this.communityFilterForm.get('domains').setValue(domainsArray);
       }
-      if (params['domains[]']) {
-        if (Array.isArray(params['domains[]'])) {
-          this.domainsArray = params['domains[]'];
-        } else {
-          const domainsString = params['domains[]'];
-          if (typeof domainsString === 'string' && domainsString.includes(',')) {
-            this.domainsArray = domainsString.split(',').map((domain) => domain.trim());
-          } else {
-            this.domainsArray = [domainsString];
-          }
-        }
-        this.communityFilterForm.get('domains').setValue(this.domainsArray);
-      }
       if (params.most_active === 'true') {
         this.mostActive = true;
       }
