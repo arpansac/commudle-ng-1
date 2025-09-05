@@ -178,14 +178,18 @@
         <tr>
           <th class="sortable">
             MEMBERS
-            <fa-icon (click)="sortBy()" [icon]="faSort"></fa-icon>
+            <fa-icon (click)="sortBy('name')" title="Sort by name" [icon]="faSort"></fa-icon>
           </th>
           <th>USER ENGAGEMENT</th>
           <th>ACTIVITY</th>
-          <th>LAST SEEN</th>
+          <th>
+            LAST SEEN <fa-icon (click)="sortBy('last_seen_at')" title="Sort by last seen" [icon]="faSort"></fa-icon>
+          </th>
           <th>PROFILE HIGHLIGHTS</th>
-          <th>LOCATION</th>
-          <th>JOINED DATE</th>
+          <th>LOCATION <fa-icon (click)="sortBy('location')" title="Sort by location" [icon]="faSort"></fa-icon></th>
+          <th>
+            JOINED DATE <fa-icon (click)="sortBy('activated_at')" title="Sort by joined date" [icon]="faSort"></fa-icon>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -199,10 +203,6 @@
             </p>
             <div class="user-profile-card">
               <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
-              <!-- <app-user-profile-card-large
-                [showHiringLookingTags]="false"
-                [user]="userRole.user"
-              ></app-user-profile-card-large> -->
               <button
                 (click)="activeContextMenuUser = userRole.user"
                 [nbContextMenu]="contextMenuItems"
@@ -227,7 +227,9 @@
             <div class="com-activity-indicator"></div>
           </td>
           <td>
-            <span class="com-last-seen">{{ userRole.displayData?.lastSeen }}</span>
+            <span class="com-last-seen">{{
+              userRole.user_roles_users?.last_seen_at ? moment(userRole.user_roles_users.last_seen_at).fromNow() : '--'
+            }}</span>
           </td>
           <td valign="top">
             <div class="com-profile-highlights">
@@ -248,7 +250,11 @@
             <span class="com-location">{{ userRole.user.location }}</span>
           </td>
           <td>
-            <span class="com-joined-date">{{ userRole.displayData?.joinedDate }}</span>
+            <span class="com-joined-date">{{
+              userRole.user_roles_users?.activated_at
+                ? moment(userRole.user_roles_users.activated_at).format('MMM DD, YYYY')
+                : '--'
+            }}</span>
           </td>
         </tr>
       </tbody>

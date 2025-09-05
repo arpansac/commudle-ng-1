@@ -11,6 +11,7 @@ import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@c
 import { SeoService } from '@commudle/shared-services';
 import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'commudle-community-members',
@@ -36,6 +37,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
   queryParamsString = '';
+  sortByField = '';
+  sortOrder = '';
 
   contextMenuItems = [
     {
@@ -56,6 +59,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   community: ICommunity;
   loadingData = false;
+  moment = moment;
 
   options = ['active', 'contributor', 'content_creator', 'speaker'];
 
@@ -154,6 +158,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.query = params.query;
         this.searchForm.get('name').setValue(this.query);
       }
+      if (params.sort_by) {
+        this.sortByField = params.sort_by;
+      }
+      if (params.sort_order) {
+        this.sortOrder = params.sort_order;
+      }
       this.page = 1;
       this.userRolesUsers = [];
       this.total = 0;
@@ -222,6 +232,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         this.contributor,
         this.contentCreator,
         this.speaker,
+        this.sortByField,
+        this.sortOrder,
       )
       .subscribe((data) => {
         this.isLoading = false;
@@ -418,6 +430,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     if (this.speaker) {
       queryParams.speaker = true;
     }
+    if (this.sortByField) {
+      queryParams.sort_by = this.sortByField;
+    }
+    if (this.sortOrder) {
+      queryParams.sort_order = this.sortOrder;
+    }
 
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
     const queryParamsString = urlSearchParams.toString();
@@ -427,8 +445,10 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.getMembers();
   }
 
-  sortBy() {
-    console.log('sorting');
+  sortBy(sortByField: string) {
+    this.sortByField = sortByField;
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    this.generateParams();
   }
 
   clearAllFilters() {
@@ -440,6 +460,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.speaker = false;
     this.employer = false;
     this.employee = false;
+    this.sortByField = '';
+    this.sortOrder = '';
     this.page = 1;
     this.userRolesUsers = [];
     this.total = 0;

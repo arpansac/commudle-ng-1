@@ -60,6 +60,8 @@ export class UserRolesUsersService {
     contributor?,
     contentCreator?,
     speaker?,
+    sortBy?,
+    sortOrder?,
   ): Observable<IUserRolesUsers> {
     let params = new HttpParams();
     params = params
@@ -93,6 +95,12 @@ export class UserRolesUsersService {
       domains.forEach((domain) => {
         params = params.append('domains[]', domain);
       });
+    }
+    if (sortBy) {
+      params = params.set('sort_by', sortBy);
+    }
+    if (sortOrder) {
+      params = params.set('sort_order', sortOrder);
     }
 
     return this.http.get<IUserRolesUsers>(
