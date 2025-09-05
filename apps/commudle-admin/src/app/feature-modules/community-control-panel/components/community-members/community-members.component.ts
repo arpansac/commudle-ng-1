@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription, distinctUntilChanged } from 'rxjs';
 import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
@@ -131,11 +131,27 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         }
         this.communityFilterForm.get('experience_level').setValue(experienceArray);
       }
-      if (params.employment_status) {
-        this.communityFilterForm.get('employment_status').setValue(params.employment_status);
+      if (params.employer === 'true') {
+        this.communityFilterForm.get('employment_status').setValue('employer');
+        this.employer = true;
+        this.employee = false;
+      } else if (params.employee === 'true') {
+        this.communityFilterForm.get('employment_status').setValue('employee');
+        this.employer = false;
+        this.employee = true;
       }
       if (params.gender) {
         this.communityFilterForm.get('gender').setValue(params.gender);
+      }
+      if (params.domains) {
+        let domainsArray: string[];
+        if (typeof params.domains === 'string' && params.domains.includes(',')) {
+          domainsArray = params.domains.split(',');
+        } else {
+          domainsArray = [params.domains];
+        }
+        this.domainsArray = domainsArray;
+        this.communityFilterForm.get('domains').setValue(domainsArray);
       }
       if (params['domains[]']) {
         if (Array.isArray(params['domains[]'])) {
@@ -373,6 +389,23 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
+    const filterValues = this.communityFilterForm.value;
+
+    if (filterValues.employment_status === 'employer') {
+      this.employer = true;
+      this.employee = false;
+    } else if (filterValues.employment_status === 'employee') {
+      this.employer = false;
+      this.employee = true;
+    } else {
+      this.employer = false;
+      this.employee = false;
+    }
+
+    if (filterValues.domains) {
+      this.domainsArray = filterValues.domains;
+    }
+
     this.generateParams();
   }
 
@@ -380,7 +413,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const queryParams: { [key: string]: string | string[] | boolean } = {};
     const skills = this.communityFilterForm.get('skills').value || [];
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
-    const employmentStatus = this.communityFilterForm.get('employment_status').value;
     const gender = this.communityFilterForm.get('gender').value;
     const domains = this.communityFilterForm.get('domains').value || [];
 
@@ -393,17 +425,17 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     if (experienceLevel && experienceLevel.length > 0) {
       queryParams['experience_level[]'] = experienceLevel;
     }
-    if (employmentStatus === 'employer') {
+    if (this.employer) {
       queryParams.employer = true;
     }
-    if (employmentStatus === 'employee') {
+    if (this.employee) {
       queryParams.employee = true;
     }
     if (gender) {
       queryParams.gender = gender;
     }
     if (domains && domains.length > 0) {
-      queryParams['domains[]'] = domains;
+      queryParams.domains = domains.join(',');
     }
     if (this.mostActive) {
       queryParams.most_active = true;
@@ -428,5 +460,22 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   sortBy() {
     console.log('sorting');
+  }
+
+  clearAllFilters() {
+    this.communityFilterForm.reset();
+    this.searchForm.get('name').setValue('');
+    this.mostActive = false;
+    this.contributor = false;
+    this.contentCreator = false;
+    this.speaker = false;
+    this.employer = false;
+    this.employee = false;
+    this.domainsArray = [];
+    this.page = 1;
+    this.userRolesUsers = [];
+    this.total = 0;
+    this.getMembers();
+    this.location.replaceState(location.pathname, '');
   }
 }

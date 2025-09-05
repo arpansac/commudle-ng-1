@@ -70,12 +70,14 @@ export class UserRolesUsersService {
       .set('contributor', contributor)
       .set('content_creator', contentCreator)
       .set('speaker', speaker)
-      .set('employer', employer)
-      .set('employee', employee)
-      .set('gender', gender);
+      .set('is_employer', employer)
+      .set('is_employee', employee);
 
     if (query) {
       params = params.set('query', query);
+    }
+    if (gender) {
+      params = params.set('gender', gender);
     }
     if (skills && skills.length > 0) {
       params = params.set('skills', skills.join(','));
