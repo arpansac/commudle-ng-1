@@ -228,7 +228,7 @@
           </td>
           <td>
             <span class="com-last-seen">{{
-              userRole.user_roles_users?.last_seen_at ? moment(userRole.user_roles_users.last_seen_at).fromNow() : '--'
+              userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--'
             }}</span>
           </td>
           <td valign="top">
@@ -251,9 +251,7 @@
           </td>
           <td>
             <span class="com-joined-date">{{
-              userRole.user_roles_users?.activated_at
-                ? moment(userRole.user_roles_users.activated_at).format('MMM DD, YYYY')
-                : '--'
+              userRole.activated_at ? moment(userRole.activated_at).format('MMM DD, YYYY') : '--'
             }}</span>
           </td>
         </tr>
