@@ -1,3 +1,3 @@
 User-Agent: *
 Disallow: /my-profile
-Sitemap: https://commudle.com/sitemap.xml
+Sitemap: https://www.commudle.com/sitemap.xml
