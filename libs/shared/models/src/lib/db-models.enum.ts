@@ -20,4 +20,5 @@ export enum EDbModels {
   PRODUCT_PRICE = 'ProductPrice',
   ADMIN_SURVEY = 'AdminSurvey',
   SURVEY = 'Survey',
+  TRACK_SLOT = 'TrackSlot',
 }

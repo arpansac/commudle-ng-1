@@ -1,19 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-session-page-poll',
+  selector: 'commudle-session-page-poll',
   templateUrl: './session-page-poll.component.html',
-  styleUrls: ['./session-page-poll.component.scss']
+  styleUrls: ['./session-page-poll.component.scss'],
 })
-export class SessionPagePollComponent implements OnInit {
-
+export class SessionPagePollComponent {
   @Input() pollableId: number;
-  @Input() pollableType: string;
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
+  @Input() pollableType: EDbModels;
 }
