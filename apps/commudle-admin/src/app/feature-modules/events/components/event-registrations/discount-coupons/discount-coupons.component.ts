@@ -10,6 +10,7 @@ import {
   faPenToSquare,
   faPlus,
   faTableList,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DiscountCouponFormComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-registrations/discount-coupons/discount-coupon-form/discount-coupon-form.component';
@@ -37,6 +38,7 @@ export class DiscountCouponsComponent implements OnInit {
     faMoneyBill,
     faHandHoldingDollar,
     faTableList,
+    faTrash,
   };
 
   EDbModels = EDbModels;
@@ -108,5 +110,21 @@ export class DiscountCouponsComponent implements OnInit {
 
   updateRefundPage(page) {
     this.refundPolicy = page;
+  }
+
+  deleteDiscountCode(id: number, discountUsedCount: number, discountAppliedCount: number) {
+    if (discountUsedCount > 0 || discountAppliedCount > 0) {
+      this.toastrService.errorDialog('Discount code cannot be deleted because it has been used');
+      return;
+    }
+    this.discountCodesService.destroy(id).subscribe((data) => {
+      if (data) {
+        const indexToDelete = this.discountCodes.findIndex((code) => code.id === id);
+        if (indexToDelete !== -1) {
+          this.discountCodes.splice(indexToDelete, 1);
+        }
+        this.toastrService.successDialog('Discount code deleted successfully');
+      }
+    });
   }
 }
