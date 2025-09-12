@@ -22,6 +22,7 @@ import { hmsActions, hmsStore } from 'apps/shared-modules/hms-video/stores/hms.s
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-session-page',
@@ -41,7 +42,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
   chat: IDiscussion;
 
   pollableId: number;
-  pollableType: string;
+  pollableType: EDbModels;
 
   embeddedVideoStream: IEmbeddedVideoStream;
 
@@ -125,7 +126,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
             } else if (params.track_slot_id) {
               this.getTrackSlot(params.track_slot_id);
               this.pollableId = params.track_slot_id;
-              this.pollableType = 'TrackSlot';
+              this.pollableType = EDbModels.TRACK_SLOT;
             }
           });
         } else {
@@ -134,7 +135,7 @@ export class SessionPageComponent implements OnInit, OnDestroy {
           this.getDiscussionChat();
           this.seoService.setTitle(`Live Session | ${this.event.name}`);
           this.pollableId = this.event.id;
-          this.pollableType = 'Event';
+          this.pollableType = EDbModels.EVENT;
         }
       }),
     );
