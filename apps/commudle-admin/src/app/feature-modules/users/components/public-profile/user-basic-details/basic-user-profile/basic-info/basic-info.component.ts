@@ -80,10 +80,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/heif', 'image/heic'];
 
       if (!allowedTypes.includes(file.type)) {
-        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+        this.toastLogService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG, WebP, HEIF)');
         return;
       }
       this.uploadedProfilePictureFile = file;
