@@ -404,8 +404,12 @@ export const API_ROUTES = {
   },
 
   POLLS: {
+    INDEX: 'api/v2/polls',
+    CREATE: 'api/v2/polls',
+    DELETE: 'api/v2/polls',
     PUBLIC: {
       SHOW: 'api/v2/polls/public',
+      SUBMIT: 'api/v2/polls/public/fill_poll',
       QUESTION_RESPONSE: 'api/v2/polls/public/question_responses',
     },
   },

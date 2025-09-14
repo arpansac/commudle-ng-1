@@ -6,12 +6,14 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EPollStatuses, IPoll } from 'apps/shared-models/poll.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { PollsService } from 'apps/shared-services/polls.service';
 import { PollsChannel } from '../services/websockets/polls.channel';
 import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-polls',
+  selector: 'commudle-polls',
   templateUrl: './polls.component.html',
   styleUrls: ['./polls.component.scss'],
 })
@@ -20,7 +22,7 @@ export class PollsComponent implements OnInit, OnDestroy {
   @ViewChild('fillPollTemplate') fillPollTemplate: TemplateRef<any>;
 
   @Input() pollableId: number;
-  @Input() pollableType: string;
+  @Input() pollableType: EDbModels;
 
   allActions;
   currentUser: ICurrentUser;
@@ -42,6 +44,7 @@ export class PollsComponent implements OnInit, OnDestroy {
     private eventsService: EventsService,
     private trackSlotsService: TrackSlotsService,
     private loginAuthService: LoginAuthService,
+    private pollsService: PollsService,
   ) {}
 
   login() {
@@ -53,7 +56,7 @@ export class PollsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((user) => (this.currentUser = user));
-
+    this.getPolls();
     this.allActions = this.pollsChannel.ACTIONS;
     this.pollsChannel.subscribe(this.pollableType, this.pollableId);
     this.receiveData();
@@ -75,7 +78,6 @@ export class PollsComponent implements OnInit, OnDestroy {
         switch (data.action) {
           case this.pollsChannel.ACTIONS.SET_PERMISSIONS: {
             this.permittedActions = data.permitted_actions;
-            this.getPolls();
             break;
           }
           case this.pollsChannel.ACTIONS.CREATE: {
@@ -143,17 +145,26 @@ export class PollsComponent implements OnInit, OnDestroy {
 
   getPolls() {
     if (this.pollableType === 'Event') {
-      this.eventsService.getPolls(this.pollableId).subscribe((value) => (this.polls = value.polls));
+      this.eventsService.getPolls(this.pollableId).subscribe((value) => {
+        this.polls = value.polls;
+      });
     } else {
       this.trackSlotsService.getPolls(this.pollableId).subscribe((value) => (this.polls = value.polls));
     }
   }
 
   create(pollData) {
-    this.pollsChannel.sendData(this.pollsChannel.ACTIONS.CREATE, {
-      poll: pollData,
-      pollable_type: this.pollableType,
-      pollable_id: this.pollableId,
+    this.pollsService.create(pollData, this.pollableType, this.pollableId).subscribe({
+      next: (poll) => {
+        if (this.windowRefCreatePoll) {
+          this.windowRefCreatePoll.close();
+        }
+        this.polls.unshift(poll);
+        this.toastLogService.successDialog('Poll created successfully');
+      },
+      error: () => {
+        this.toastLogService.warningDialog('Failed to create poll');
+      },
     });
   }
 
@@ -170,9 +181,17 @@ export class PollsComponent implements OnInit, OnDestroy {
   }
 
   submitPoll(pollData) {
-    this.pollsChannel.sendData(this.pollsChannel.ACTIONS.FILL, {
-      poll_id: this.selectedPoll.id,
-      poll: pollData,
+    this.pollsService.submitPoll(this.selectedPoll.id, pollData).subscribe({
+      next: () => {
+        this.toastLogService.successDialog('Poll submitted successfully');
+        this.polls[this.polls.findIndex((p) => p.id === this.selectedPoll.id)].already_filled = true;
+        if (this.windowRefFillPoll) {
+          this.windowRefFillPoll.close();
+        }
+      },
+      error: () => {
+        this.toastLogService.warningDialog('Failed to submit poll');
+      },
     });
   }
 
@@ -182,9 +201,15 @@ export class PollsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deletePoll(pollId) {
-    this.pollsChannel.sendData(this.pollsChannel.ACTIONS.DELETE, {
-      poll_id: pollId,
+  deletePoll(pollId: number, index: number) {
+    this.pollsService.delete(pollId, this.pollableType, this.pollableId).subscribe({
+      next: () => {
+        this.toastLogService.successDialog('Poll deleted successfully');
+        this.polls.splice(index, 1);
+      },
+      error: () => {
+        this.toastLogService.warningDialog('Failed to delete poll');
+      },
     });
   }
 }

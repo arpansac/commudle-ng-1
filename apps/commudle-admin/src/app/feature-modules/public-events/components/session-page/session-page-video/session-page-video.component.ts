@@ -13,6 +13,7 @@ import {
   SimpleChanges,
   ViewChildren,
 } from '@angular/core';
+import { EDbModels } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -39,7 +40,7 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
   @Input() chat: IDiscussion;
   @Input() qna: IDiscussion;
   @Input() pollableId: number;
-  @Input() pollableType: string;
+  @Input() pollableType: EDbModels;
   @Input() community: ICommunity;
   @Input() trackSlot: ITrackSlot;
   @Input() speaker: IUser;
