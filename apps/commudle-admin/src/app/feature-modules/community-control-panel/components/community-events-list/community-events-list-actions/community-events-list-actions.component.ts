@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IEvent } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
+import { faTableList } from '@fortawesome/free-solid-svg-icons';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 
 @Component({
@@ -12,8 +13,10 @@ export class CommunityEventsListActionsComponent {
   @Input() value: string | number;
   @Input() eventData: IEvent;
   EEventStatuses = EEventStatuses;
+  faTableList = faTableList;
+
   constructor(private dialogBoxService: NbDialogService) {}
-  openCloneEventWindow(dialogBox) {
-    this.dialogBoxService.open(dialogBox);
-  }
+  // openCloneEventWindow(dialogBox) {
+  //   this.dialogBoxService.open(dialogBox);
+  // }
 }
