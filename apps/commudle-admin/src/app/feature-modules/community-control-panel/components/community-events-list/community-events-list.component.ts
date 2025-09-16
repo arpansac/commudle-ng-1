@@ -1,13 +1,10 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faArrowUpRightFromSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
-import { CommunityEventsListDateComponent } from './community-events-list-date/community-events-list-date.component';
-import { CommunityEventsListPublicPageComponent } from './community-events-list-public-page/community-events-list-public-page.component';
-import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ICommunity, IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';

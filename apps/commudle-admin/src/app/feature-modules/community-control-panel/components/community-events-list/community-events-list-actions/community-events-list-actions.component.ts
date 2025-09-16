@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IEvent } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
-import { faTableList } from '@fortawesome/free-solid-svg-icons';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 
 @Component({

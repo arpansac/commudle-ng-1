@@ -67,7 +67,9 @@
           <ng-container *ngIf="!isLoading">
             <tr *ngFor="let event of events" class="event-row">
               <td>
-                <div class="event-name">{{ event.name }}</div>
+                <a class="event-name" [routerLink]="['/admin/communities', community.slug, 'events', event.slug]">{{
+                  event.name
+                }}</a>
               </td>
               <td>
                 <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
