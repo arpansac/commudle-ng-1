@@ -1,11 +1,6 @@
+<!-- DEPRECATED -->
 <div class="actions" *ngIf="eventData">
-  <select (change)="onActionSelect($event)">
-    <option value="more" selected disabled>More</option>
-    <option *ngIf="eventData.start_time" value="clone">Clone</option>
-    <option value="public-page">Public Page</option>
-    <option value="stats">Stats</option>
-  </select>
-  <!-- <a
+  <a
     [routerLink]="['/communities/', eventData.kommunity_id, 'events', eventData.slug]"
     nbButton
     hero
@@ -27,7 +22,7 @@
     <nb-icon icon="trending-up-outline"></nb-icon>
     Stats <sup>New</sup>&nbsp;
     <nb-icon icon="external-link"></nb-icon>
-  </a> -->
+  </a>
 </div>
 
 <ng-template #cloneEvent let-data let-ref="dialogRef">

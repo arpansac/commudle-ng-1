@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faPlus, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { CommunityEventsListActionsComponent } from './community-events-list-actions/community-events-list-actions.component';
@@ -11,6 +11,7 @@ import { debounceTime, filter, map, switchMap, takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { ICommunity, IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
 
 @Component({
   selector: 'app-community-events-list',
@@ -18,6 +19,7 @@ import { SeoService } from '@commudle/shared-services';
   styleUrls: ['./community-events-list.component.scss'],
 })
 export class CommunityEventsListComponent implements OnInit, OnDestroy {
+  @ViewChild('cloneEvent') cloneEvent: TemplateRef<any>;
   destroy$ = new Subject<void>();
 
   community: ICommunity;
@@ -30,6 +32,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   icons = {
     faPlus,
     faArrowUpRightFromSquare,
+    faTableList,
   };
 
   total = 0;
@@ -97,6 +100,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private eventsService: EventsService,
     private fb: FormBuilder,
     private seoService: SeoService,
+    private dialogBoxService: NbDialogService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -175,5 +179,21 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Events | Dashboard | ${this.community.name}`);
+  }
+
+  onActionSelect(event: Event, eventData: IEvent) {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value;
+    if (value === 'clone') {
+      this.openCloneEventWindow(this.cloneEvent, eventData);
+    } else if (value === 'public-page') {
+      this.router.navigate(['/communities/', eventData.kommunity_id, 'events', eventData.slug]);
+    } else if (value === 'stats') {
+      this.router.navigate(['/admin/communities/', eventData.kommunity_id, 'event-dashboard', eventData.slug, 'stats']);
+    }
+  }
+
+  openCloneEventWindow(dialogBox, eventData: IEvent) {
+    this.dialogBoxService.open(dialogBox, { context: { eventData } });
   }
 }

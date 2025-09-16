@@ -17,24 +17,6 @@ export class CommunityEventsListPublicPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onActionSelect(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const value = target.value;
-    if (value === 'clone') {
-      this.openCloneEventWindow(this.cloneEvent);
-    } else if (value === 'public-page') {
-      this.router.navigate(['/communities/', this.eventData.kommunity_id, 'events', this.eventData.slug]);
-    } else if (value === 'stats') {
-      this.router.navigate([
-        '/admin/communities/',
-        this.eventData.kommunity_id,
-        'event-dashboard',
-        this.eventData.slug,
-        'stats',
-      ]);
-    }
-  }
-
   openCloneEventWindow(dialogBox) {
     this.dialogBoxService.open(dialogBox);
   }
