@@ -9,11 +9,16 @@
         <!-- input for file upload -->
         <div class="upload-wrapper">
           <div class="image-text-details">
-            <input (change)="displaySelectedProfileImage($event)" type="file" accept="image/*" class="image-input" />
+            <input
+              (change)="displaySelectedProfileImage($event)"
+              type="file"
+              accept="image/png,image/jpeg,image/jpg,image/webp,image/heif,image/heic"
+              class="image-input"
+            />
             <label class="upload-area">
               <div class="upload-content">
                 <button nbButton class="upload-picture" size="small" shape="semi-round">Upload Picture</button>
-                <p class="file-info">Accepted file types: JPG, JPEG, PNG</p>
+                <p class="file-info">Accepted file types: JPG, JPEG, PNG, WebP, HEIF</p>
                 <p class="file-info">Max file size 2MB</p>
               </div>
             </label>
