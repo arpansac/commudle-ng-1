@@ -1,7 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
-import { CampaignService, GoogleTagManagerService, UserEngagementRecordsService } from '@commudle/shared-services';
+import {
+  CampaignService,
+  GoogleTagManagerService,
+  UserEngagementRecordsService,
+  SeoService,
+} from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-campaign-assets-display',
@@ -31,6 +36,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
     private uerService: UserEngagementRecordsService,
     private fb: FormBuilder,
     private gtmService: GoogleTagManagerService,
+    private seoService: SeoService,
   ) {
     this.userEngagementRecordForm = this.fb.group({
       url: '',
@@ -151,17 +157,20 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
         parent_type: EDbModels.CAMPAIGN,
         url: window.location.href,
       });
-      this.uerService
-        .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
-        .subscribe(() =>
-          this.gtmService.dataLayerPushEvent('ad_campaign', {
-            com_campaign_id: this.campaign.id,
-            com_campaign_name: this.campaign.name,
-            com_campaign_type: this.campaign.campaign_type,
-            com_current_page_url: window.location.href,
-            com_event_type: eventType,
-          }),
-        );
+
+      if (!this.seoService.isBot) {
+        this.uerService
+          .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
+          .subscribe(() =>
+            this.gtmService.dataLayerPushEvent('ad_campaign', {
+              com_campaign_id: this.campaign.id,
+              com_campaign_name: this.campaign.name,
+              com_campaign_type: this.campaign.campaign_type,
+              com_current_page_url: window.location.href,
+              com_event_type: eventType,
+            }),
+          );
+      }
     }
   }
 
