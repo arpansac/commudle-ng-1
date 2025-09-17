@@ -14,7 +14,7 @@
     @apply com-flex com-flex-row com-items-center com-gap-3 com-mb-6;
 
     .status-filter {
-      @apply com-flex com-flex-col com-gap-2;
+      @apply com-flex com-flex-col com-gap-2 com-min-w-[140px];
 
       .filter-label {
         @apply com-text-sm com-font-medium com-text-gray-700;
