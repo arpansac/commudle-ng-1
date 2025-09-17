@@ -247,18 +247,6 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  onActionSelect(event: Event, eventData: IEvent) {
-    const target = event.target as HTMLSelectElement;
-    const value = target.value;
-    if (value === 'clone') {
-      this.openCloneEventWindow(this.cloneEvent, eventData);
-    } else if (value === 'public-page') {
-      this.router.navigate(['/communities/', eventData.kommunity_id, 'events', eventData.slug]);
-    } else if (value === 'stats') {
-      this.router.navigate(['/admin/communities/', eventData.kommunity_id, 'event-dashboard', eventData.slug, 'stats']);
-    }
-  }
-
   openCloneEventWindow(dialogBox, eventData: IEvent) {
     this.dialogBoxService.open(dialogBox, { context: { eventData } });
   }
