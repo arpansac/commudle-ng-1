@@ -14,13 +14,26 @@
 
   <!-- Search and Filter Section -->
   <div class="search-filter-section">
+    <div class="status-filter">
+      <nb-select
+        placeholder="Status"
+        multiple
+        [selected]="activeEventStatuses"
+        (selectedChange)="onStatusFilterChange($event)"
+        class="status-multi-select"
+      >
+        <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
+          {{ eventStatus | titlecase }}
+        </nb-option>
+      </nb-select>
+    </div>
     <form [formGroup]="searchForm" class="search-form">
       <div>
         <nb-form-field>
           <nb-icon icon="search" nbPrefix></nb-icon>
           <input
             [disabled]="isLoading"
-            fieldSize="small"
+            fieldSize="medium"
             formControlName="name"
             fullWidth
             nbInput
@@ -30,20 +43,6 @@
         </nb-form-field>
       </div>
     </form>
-
-    <div class="status-filter">
-      <nb-tag-list>
-        <nb-tag
-          *ngFor="let eventStatus of eventStatuses"
-          [appearance]="activeEventStatuses && activeEventStatuses.includes(eventStatus) ? 'filled' : 'outline'"
-          [text]="eventStatus"
-          status="primary"
-          [removable]="activeEventStatuses && activeEventStatuses.includes(eventStatus) ? 'true' : 'false'"
-          [ngClass]="{ activeTag: activeEventStatuses && activeEventStatuses.includes(eventStatus) }"
-          (click)="filterByTags(eventStatus)"
-        ></nb-tag>
-      </nb-tag-list>
-    </div>
   </div>
 
   <!-- Events Table Section -->
@@ -129,10 +128,10 @@
                     (click)="setContextEvent(event)"
                     [nbContextMenu]="contextMenuItems"
                     class="context-menu-button"
-                    ghost
                     nbButton
                     nbContextMenuTag="community-event-context-menu"
                     size="small"
+                    shape="semi-round"
                     status="basic"
                   >
                     <nb-icon icon="more-vertical"></nb-icon>

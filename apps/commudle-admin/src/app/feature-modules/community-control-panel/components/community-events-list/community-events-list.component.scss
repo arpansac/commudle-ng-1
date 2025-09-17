@@ -11,18 +11,14 @@
 
   // Search and Filter Section
   .search-filter-section {
-    @apply com-mb-6;
-
-    .search-form {
-      @apply com-mb-4;
-    }
-
-    .activeTag {
-      @apply com-bg-primary-500 com-text-tWhite;
-    }
+    @apply com-flex com-flex-row com-items-center com-gap-3 com-mb-6;
 
     .status-filter {
-      @apply com-my-4;
+      @apply com-flex com-flex-col com-gap-2;
+
+      .filter-label {
+        @apply com-text-sm com-font-medium com-text-gray-700;
+      }
     }
   }
 
@@ -105,5 +101,9 @@
 // Removed select styling as we're now using context menu
 
 .event-name-container {
-  @apply com-flex com-flex-row com-gap-2;
+  @apply com-flex com-flex-row com-items-center com-gap-2;
+}
+
+.search-form {
+  @apply com-w-full;
 }

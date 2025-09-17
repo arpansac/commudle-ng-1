@@ -177,6 +177,14 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onStatusFilterChange(selectedValues: string[]) {
+    this.activeEventStatuses = selectedValues;
+    this.isLoading = true;
+    this.total = 0;
+    this.page = 1;
+    this.getCommunityEvents();
+  }
+
   filterByTags(status: string) {
     const index = this.activeEventStatuses.indexOf(status);
     if (index > -1) {
