@@ -51,7 +51,7 @@
           }
 
           td {
-            @apply com-p-4 com-text-sm com-font-normal com-text-gray-500;
+            @apply com-p-4 com-text-xs com-font-medium com-text-gray-500;
             .event-name {
               @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Bright-Gray;
             }
@@ -73,7 +73,23 @@
 }
 
 .event-dashboard-actions {
-  @apply com-flex com-gap-4;
+  @apply com-flex com-gap-4 com-items-center;
+
+  .context-menu-button {
+    @apply com-p-2 com-min-w-0 com-flex-shrink-0;
+
+    nb-icon {
+      @apply com-text-gray-500;
+    }
+
+    &:hover {
+      @apply com-bg-gray-100;
+
+      nb-icon {
+        @apply com-text-gray-700;
+      }
+    }
+  }
 }
 
 .clone-event {
@@ -86,9 +102,7 @@
   }
 }
 
-select {
-  @apply com-flex com-flex-shrink-0 com-p-6px com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
-}
+// Removed select styling as we're now using context menu
 
 .event-name-container {
   @apply com-flex com-flex-row com-gap-2;

@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faArrowUpRightFromSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
-import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, filter, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ICommunity, IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
-import { NbDialogService } from '@commudle/theme';
+import { NbDialogService, NbMenuService } from '@commudle/theme';
 import moment from 'moment';
 
 @Component({
@@ -40,6 +40,20 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
 
   eventStatuses = Object.values(EEventStatuses);
   activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.COMPLETED];
+
+  contextMenuItems = [
+    {
+      title: 'Clone',
+    },
+    {
+      title: 'Public Page',
+    },
+    {
+      title: 'Stats',
+    },
+  ];
+
+  activeContextMenuEvent: IEvent;
 
   searchForm;
   //angular2 smart-table, not being used anymore (kept for reference)
@@ -100,6 +114,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private seoService: SeoService,
     private dialogBoxService: NbDialogService,
+    private menuService: NbMenuService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -114,6 +129,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
       this.getCommunityEvents();
       this.search();
     });
+    this.handleContextMenu();
   }
 
   getCommunityEvents() {
@@ -178,6 +194,49 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Events | Dashboard | ${this.community.name}`);
+  }
+
+  setContextEvent(event: IEvent) {
+    this.activeContextMenuEvent = event;
+  }
+
+  handleContextMenu(): void {
+    this.menuService
+      .onItemClick()
+      .pipe(
+        filter(({ tag }) => tag === 'community-event-context-menu'),
+        map(({ item: title }) => title),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((menuItem) => {
+        switch (menuItem.title) {
+          case 'Clone': {
+            if (this.activeContextMenuEvent?.start_time) {
+              this.openCloneEventWindow(this.cloneEvent, this.activeContextMenuEvent);
+            }
+            break;
+          }
+          case 'Public Page': {
+            this.router.navigate([
+              '/communities/',
+              this.activeContextMenuEvent.kommunity_id,
+              'events',
+              this.activeContextMenuEvent.slug,
+            ]);
+            break;
+          }
+          case 'Stats': {
+            this.router.navigate([
+              '/admin/communities/',
+              this.activeContextMenuEvent.kommunity_id,
+              'event-dashboard',
+              this.activeContextMenuEvent.slug,
+              'stats',
+            ]);
+            break;
+          }
+        }
+      });
   }
 
   onActionSelect(event: Event, eventData: IEvent) {

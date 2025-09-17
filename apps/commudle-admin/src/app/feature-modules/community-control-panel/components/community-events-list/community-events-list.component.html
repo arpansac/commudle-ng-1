@@ -85,9 +85,29 @@
                 <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
               </td>
               <td>
-                <span>
-                  {{ event.status | titlecase }}
-                </span>
+                <app-badge
+                  [text]="event.status | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="
+                    event.status === EEventStatuses.OPEN
+                      ? 'com-bg-[#3366FF1A]'
+                      : event.status === EEventStatuses.DRAFT
+                      ? 'com-bg-gray-100'
+                      : event.status === EEventStatuses.COMPLETED
+                      ? 'com-bg-[#00D68F14]'
+                      : 'com-bg-[#FF3D711A]'
+                  "
+                  [fontColor]="
+                    event.status === EEventStatuses.OPEN
+                      ? 'com-text-ultramarine-blue'
+                      : event.status === EEventStatuses.DRAFT
+                      ? 'com-text-gray-700'
+                      : event.status === EEventStatuses.COMPLETED
+                      ? 'com-text-Crayola-Green'
+                      : 'com-text-infra-red'
+                  "
+                ></app-badge>
               </td>
               <td class="action-buttons">
                 <div class="event-dashboard-actions">
@@ -105,12 +125,18 @@
                     size="small"
                     ><fa-icon [icon]="icons.faTableList"></fa-icon>&nbsp; Dashboard
                   </a>
-                  <select (change)="onActionSelect($event, event)">
-                    <option value="more" selected disabled>More</option>
-                    <option *ngIf="event.start_time" value="clone">Clone</option>
-                    <option value="public-page">Public Page</option>
-                    <option value="stats">Stats</option>
-                  </select>
+                  <button
+                    (click)="setContextEvent(event)"
+                    [nbContextMenu]="contextMenuItems"
+                    class="context-menu-button"
+                    ghost
+                    nbButton
+                    nbContextMenuTag="community-event-context-menu"
+                    size="small"
+                    status="basic"
+                  >
+                    <nb-icon icon="more-vertical"></nb-icon>
+                  </button>
                 </div>
               </td>
             </tr>

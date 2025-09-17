@@ -3,13 +3,5 @@ p {
 }
 
 .time {
-  @apply com-flex com-flex-col com-gap-1 com-text-sm com-font-normal com-m-0;
-}
-
-.start-time {
-  @apply com-text-Yankees-Blue;
-}
-
-.end-time {
-  @apply com-text-gray-500;
+  @apply com-flex com-flex-col com-gap-1 com-text-xs com-font-normal com-text-gray-500 com-m-0;
 }
