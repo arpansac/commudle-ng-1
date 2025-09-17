@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { ICommunity, IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
+import moment from 'moment';
 
 @Component({
   selector: 'app-community-events-list',
@@ -24,6 +25,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   isLoading = true;
   events: IEvent[];
   EEventStatuses = EEventStatuses;
+  moment = moment;
 
   query = '';
   icons = {

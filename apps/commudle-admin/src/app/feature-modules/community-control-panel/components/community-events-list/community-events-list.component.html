@@ -66,12 +66,20 @@
           </tr>
           <ng-container *ngIf="!isLoading">
             <tr *ngFor="let event of events" class="event-row">
-              <td>
+              <td class="event-name-container">
                 <a
                   class="event-name"
                   [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug]"
-                  >{{ event.name }}</a
-                >
+                  >{{ event.name }}
+                </a>
+                <app-badge
+                  *ngIf="moment(event.start_time) > moment() && event.status === 'open'"
+                  [text]="moment(event.start_time).fromNow() | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="'com-bg-red-500'"
+                  [fontColor]="'com-text-tWhite'"
+                ></app-badge>
               </td>
               <td>
                 <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
