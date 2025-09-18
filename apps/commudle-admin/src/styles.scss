@@ -585,6 +585,8 @@ input::-webkit-calendar-picker-indicator {
 
   --color-slate-100-light: #f1f5f9;
   --color-slate-100-dark: #121212;
+
+  --color-gray-400-light: #9ca3af;
 }
 
 [data-theme='light'] {
@@ -652,6 +654,7 @@ input::-webkit-calendar-picker-indicator {
   --color-Bright-Gray-opacity-30: var(--color-Bright-Gray-opacity-30-light);
   --color-Ghost-White: var(--color-Ghost-White-light);
   --color-slate-100: var(--color-slate-100-light);
+  --color-gray-1000: var(--color-gray-500-light);
 
   .linear-gradient-top {
     background: linear-gradient(180deg, #ffffff 0%, #c7dcff 100%);
@@ -739,6 +742,7 @@ input::-webkit-calendar-picker-indicator {
   --color-Bright-Gray-opacity-30: var(--color-Bright-Gray-opacity-30-dark);
   --color-Ghost-White: var(--color-Ghost-White-dark);
   --color-slate-100: var(--color-slate-100-dark);
+  --color-gray-1000: var(--color-gray-400-light);
 
   .linear-gradient-top,
   .linear-gradient-bottom,
