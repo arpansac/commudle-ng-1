@@ -1,5 +1,5 @@
 <div *ngIf="eventData && eventData.start_time" class="time-container">
-  <p *ngIf="eventData.start_time" class="start-time">
+  <p class="start-time">
     <span class="date">{{ moment.tz(eventData.start_time, eventData.timezone).format('MMM Do, YYYY') }}</span>
     <span class="time">
       {{ moment.tz(eventData.start_time, eventData.timezone).format('h:mm A') }}&nbsp;
