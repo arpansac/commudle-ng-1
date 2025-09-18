@@ -1,13 +1,16 @@
-<div *ngIf="eventData && eventData.start_time">
-  <p class="time">
-    <span *ngIf="eventData.start_time" class="start-time"
-      >Starts - {{ moment.tz(eventData.start_time, eventData.timezone).format('MMMM Do, YYYY') }} |
-      {{ moment.tz(eventData.start_time, eventData.timezone).format('h:mm A') }} -
+<div *ngIf="eventData && eventData.start_time" class="time-container">
+  <p *ngIf="eventData.start_time" class="start-time">
+    <span class="date">{{ moment.tz(eventData.start_time, eventData.timezone).format('MMM Do, YYYY') }}</span>
+    <span class="time">
+      {{ moment.tz(eventData.start_time, eventData.timezone).format('h:mm A') }}&nbsp;
       {{ moment.tz(eventData.timezone).zoneAbbr() }}
     </span>
-    <span *ngIf="eventData.end_time" class="end-time"
-      >Ends - {{ moment.tz(eventData.end_time, eventData.timezone).format('MMMM Do, YYYY') }} |
-      {{ moment.tz(eventData.end_time, eventData.timezone).format('h:mm A') }} -
+  </p>
+  <fa-icon [icon]="faArrowRight"></fa-icon>
+  <p *ngIf="eventData.end_time" class="end-time">
+    <span class="date">{{ moment.tz(eventData.end_time, eventData.timezone).format('MMM Do, YYYY') }}</span>
+    <span class="time">
+      {{ moment.tz(eventData.end_time, eventData.timezone).format('h:mm A') }}&nbsp;
       {{ moment.tz(eventData.end_time, eventData.timezone).zoneAbbr() }}
     </span>
   </p>

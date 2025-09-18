@@ -68,6 +68,9 @@
             .event-name {
               @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Yankees-Blue;
             }
+            &.date-column {
+              @apply com-whitespace-nowrap;
+            }
           }
         }
 
