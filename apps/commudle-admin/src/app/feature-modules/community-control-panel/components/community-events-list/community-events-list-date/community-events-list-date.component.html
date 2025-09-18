@@ -1,17 +1,14 @@
 <div *ngIf="eventData && eventData.start_time">
-  <p>
-    {{ moment.tz(eventData.start_time, eventData.timezone).format('Do MMM YYYY h:mm A') }} - ({{
-      moment.tz(eventData.timezone).zoneAbbr()
-    }})
+  <p class="time">
+    <span *ngIf="eventData.start_time" class="start-time"
+      >Starts - {{ moment.tz(eventData.start_time, eventData.timezone).format('MMMM Do, YYYY') }} |
+      {{ moment.tz(eventData.start_time, eventData.timezone).format('h:mm A') }} -
+      {{ moment.tz(eventData.timezone).zoneAbbr() }}
+    </span>
+    <span *ngIf="eventData.end_time" class="end-time"
+      >Ends - {{ moment.tz(eventData.end_time, eventData.timezone).format('MMMM Do, YYYY') }} |
+      {{ moment.tz(eventData.end_time, eventData.timezone).format('h:mm A') }} -
+      {{ moment.tz(eventData.end_time, eventData.timezone).zoneAbbr() }}
+    </span>
   </p>
-  <div *ngIf="eventData.status === 'open'">
-    <app-badge
-      *ngIf="moment(eventData.start_time) > moment()"
-      [text]="moment(eventData.start_time).fromNow() | titlecase"
-      [fontSize]="'small'"
-      [borderRadius]="'round'"
-      [color]="'com-bg-red-500'"
-      [fontColor]="'com-text-tWhite'"
-    ></app-badge>
-  </div>
 </div>
