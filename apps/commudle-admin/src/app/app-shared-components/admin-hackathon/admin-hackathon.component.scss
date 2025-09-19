@@ -1,26 +1,107 @@
-.create-button {
-  @apply com-my-3;
-  fa-icon {
-    @apply com-mr-2;
+.admin-hackathon-container {
+  @apply com-w-full;
+
+  .header-section {
+    @apply com-flex com-justify-between com-items-center com-mb-6;
+
+    .page-title {
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+    }
+
+    a {
+      @apply com-no-underline com-rounded-lg;
+    }
   }
-}
 
-section {
-  @apply com-overflow-x-scroll;
-  table {
-    @apply com-border-collapse com-w-full;
+  .search-filter-section {
+    @apply com-flex com-gap-3 com-mb-6 com-flex-col md:com-flex-row;
 
-    td,
-    th {
-      @apply com-text-left com-p-2;
+    .search-form {
+      @apply com-w-full;
+    }
+  }
+
+  .hackathon-list-container {
+    @apply com-w-full;
+
+    .table-wrapper {
+      @apply com-overflow-x-scroll;
+
+      .hackathons-table {
+        @apply com-w-full com-border-collapse;
+
+        .table-header {
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+          th {
+            @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+          }
+        }
+
+        .loading-row {
+          .loading-cell {
+            @apply com-py-8 com-text-center;
+          }
+        }
+
+        .hackathon-row {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-50 com-transition-colors;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+
+          td {
+            @apply com-p-4 com-text-xs com-font-medium com-text-gray-500;
+
+            .hackathon-name {
+              @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Bright-Gray;
+            }
+
+            .hackathon-dates {
+              .date-info {
+                @apply com-space-y-1;
+
+                .date-item {
+                  @apply com-text-sm com-text-gray-600;
+
+                  strong {
+                    @apply com-text-gray-900 com-font-medium;
+                  }
+                }
+              }
+            }
+
+            .hackathon-dashboard-actions {
+              @apply com-flex com-gap-4 com-items-center;
+
+              a {
+                @apply com-rounded-lg;
+              }
+
+              .context-menu-button {
+                @apply com-p-2 com-flex-shrink-0;
+
+                nb-icon {
+                  @apply com-text-gray-500;
+                }
+
+                &:hover {
+                  @apply com-bg-gray-100;
+
+                  nb-icon {
+                    @apply com-text-gray-700;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
-    tr:nth-child(even) {
-      @apply com-bg-Bright-Gray;
-    }
-
-    .action-buttons {
-      @apply com-flex com-justify-evenly com-flex-wrap;
+    .pagination {
+      @apply com-px-6 com-py-4 com-border-t com-border-gray-200 com-bg-gray-50;
     }
   }
 }
