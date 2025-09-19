@@ -1,7 +1,12 @@
 <div class="community-events-list">
   <div class="header-section">
     <h1 class="page-title">Events</h1>
-    <a nbButton status="primary" [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']">
+    <a
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+    >
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Event
     </a>
   </div>
@@ -80,7 +85,7 @@
                   [fontColor]="'com-text-tWhite'"
                 ></app-badge>
               </td>
-              <td>
+              <td class="date-column">
                 <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
               </td>
               <td>
@@ -90,20 +95,20 @@
                   [borderRadius]="'round'"
                   [color]="
                     event.status === EEventStatuses.OPEN
-                      ? 'com-bg-[#3366FF1A]'
+                      ? 'com-bg-blue-100'
                       : event.status === EEventStatuses.DRAFT
                       ? 'com-bg-gray-100'
                       : event.status === EEventStatuses.COMPLETED
-                      ? 'com-bg-[#00D68F14]'
-                      : 'com-bg-[#FF3D711A]'
+                      ? 'com-bg-green-100'
+                      : 'com-bg-red-100'
                   "
                   [fontColor]="
                     event.status === EEventStatuses.OPEN
                       ? 'com-text-Ultramarine-Blue'
                       : event.status === EEventStatuses.DRAFT
-                      ? 'com-text-gray-700'
+                      ? 'com-text-gray-500'
                       : event.status === EEventStatuses.COMPLETED
-                      ? 'com-text-Crayola-Green'
+                      ? 'com-text-green-700'
                       : 'com-text-Infra-Red'
                   "
                 ></app-badge>
