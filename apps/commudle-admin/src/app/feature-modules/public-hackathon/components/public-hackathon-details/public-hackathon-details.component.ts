@@ -119,11 +119,14 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
   getFaqs() {
     this.subscriptions.push(
       this.faqService.pIndexFaqs(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
         this.faqs = data;
-        this.setSchema();
+        if (this.faqs && this.faqs.length > 0) {
+          this.setSchema();
+        }
       }),
     );
   }
