@@ -22,7 +22,9 @@ export class UserSocialCardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onDialogOpen() {
+  onDialogOpen(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
     this.nbDialogService.open(this.confirmationDialog);
   }
 
