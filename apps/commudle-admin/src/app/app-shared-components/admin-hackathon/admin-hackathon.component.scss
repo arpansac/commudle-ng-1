@@ -58,10 +58,6 @@
               @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Yankees-Blue;
             }
 
-            &.time-container {
-              @apply com-whitespace-nowrap;
-            }
-
             .hackathon-dashboard-actions {
               @apply com-flex com-gap-4 com-items-center;
 
@@ -101,7 +97,7 @@
 }
 
 .date {
-  @apply com-font-medium;
+  @apply com-m-0 com-font-medium;
 }
 
 .status-multi-select {
@@ -112,4 +108,8 @@
       }
     }
   }
+}
+
+.date-column {
+  @apply com-whitespace-nowrap;
 }

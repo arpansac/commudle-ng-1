@@ -50,7 +50,7 @@
       <table *ngIf="hackathons && hackathons.length > 0" class="hackathons-table">
         <thead>
           <tr class="table-header">
-            <th>NAME</th>
+            <th colspan="2">NAME</th>
             <th>APPLICATION DATES</th>
             <th>HACKATHON DATES</th>
             <th>STATUS</th>
@@ -59,20 +59,20 @@
         </thead>
         <tbody>
           <tr *ngIf="isLoading" class="loading-row">
-            <td colspan="4" class="loading-cell">
+            <td class="loading-cell">
               <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
             </td>
           </tr>
           <ng-container *ngIf="!isLoading">
             <tr *ngFor="let hackathon of hackathons" class="hackathon-row">
-              <td>
+              <td colspan="2">
                 <a
                   class="hackathon-name"
                   [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]"
                   >{{ hackathon.name }}
                 </a>
               </td>
-              <td>
+              <td class="date-column">
                 <div *ngIf="hackathon.application_start_date" class="time-container">
                   <p class="date">{{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}</p>
                   <fa-icon [icon]="icons.faArrowRight"></fa-icon>
@@ -80,7 +80,7 @@
                 </div>
                 <p *ngIf="!hackathon.application_start_date">--</p>
               </td>
-              <td>
+              <td class="date-column">
                 <div *ngIf="hackathon.start_date" class="time-container">
                   <p class="date">{{ moment(hackathon.start_date).format('MMM DD, YYYY') }}</p>
                   <fa-icon [icon]="icons.faArrowRight"></fa-icon>
