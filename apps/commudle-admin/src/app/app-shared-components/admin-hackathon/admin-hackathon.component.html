@@ -51,7 +51,8 @@
         <thead>
           <tr class="table-header">
             <th>NAME</th>
-            <th>DATES</th>
+            <th>APPLICATION DATES</th>
+            <th>HACKATHON DATES</th>
             <th>STATUS</th>
             <th>ACTIONS</th>
           </tr>
@@ -71,20 +72,15 @@
                   >{{ hackathon.name }}
                 </a>
               </td>
-              <td class="hackathon-dates">
-                <div class="date-info">
-                  <div class="date-item">
-                    <strong>Start:</strong> {{ moment(hackathon.start_date).format('MMM DD, YYYY') }}
-                  </div>
-                  <div class="date-item">
-                    <strong>End:</strong> {{ moment(hackathon.end_date).format('MMM DD, YYYY') }}
-                  </div>
-                  <div class="date-item">
-                    <strong>Applications:</strong>
-                    {{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }} -
-                    {{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}
-                  </div>
-                </div>
+              <td class="time-container">
+                <p class="date">{{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}</p>
+                <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                <p class="date">{{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}</p>
+              </td>
+              <td class="time-container">
+                <p class="date">{{ moment(hackathon.start_date).format('MMM DD, YYYY') }}</p>
+                <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                <p class="date">{{ moment(hackathon.end_date).format('MMM DD, YYYY') }}</p>
               </td>
               <td>
                 <app-badge
@@ -93,20 +89,20 @@
                   [borderRadius]="'round'"
                   [color]="
                     hackathon.status === EHackathonStatus.OPEN
-                      ? 'com-bg-[#3366FF1A]'
+                      ? 'com-bg-blue-100'
                       : hackathon.status === EHackathonStatus.DRAFT
                       ? 'com-bg-gray-100'
                       : hackathon.status === EHackathonStatus.COMPLETED
-                      ? 'com-bg-[#00D68F14]'
-                      : 'com-bg-[#FF3D711A]'
+                      ? 'com-bg-green-100'
+                      : 'com-bg-red-100'
                   "
                   [fontColor]="
                     hackathon.status === EHackathonStatus.OPEN
                       ? 'com-text-Ultramarine-Blue'
                       : hackathon.status === EHackathonStatus.DRAFT
-                      ? 'com-text-gray-700'
+                      ? 'com-text-gray-500'
                       : hackathon.status === EHackathonStatus.COMPLETED
-                      ? 'com-text-Crayola-Green'
+                      ? 'com-text-green-700'
                       : 'com-text-Infra-Red'
                   "
                 ></app-badge>

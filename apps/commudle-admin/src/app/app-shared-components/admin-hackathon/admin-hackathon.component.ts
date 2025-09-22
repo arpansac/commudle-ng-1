@@ -5,7 +5,7 @@ import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model
 import * as moment from 'moment';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, filter } from 'rxjs/operators';
-import { faPlus, faArrowUpRightFromSquare, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare, faTableList, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { NbMenuService } from '@commudle/theme';
 
@@ -48,6 +48,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
     faPlus,
     faArrowUpRightFromSquare,
     faTableList,
+    faArrowRight,
   };
 
   constructor(
