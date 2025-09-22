@@ -69,8 +69,8 @@ export class TrackSlotsService {
     );
   }
 
-  getTrackSlots(location_id, date): Observable<IEventLocationTrack> {
-    const params = new HttpParams().set('location_id', location_id).set('date', date);
+  getTrackSlots(location_id, date, eventId: number | string): Observable<IEventLocationTrack> {
+    const params = new HttpParams().set('location_id', location_id).set('date', date).set('event_id', eventId);
     return this.http.get<IEventLocationTrack>(
       this.apiRoutesService.getRoute(API_ROUTES.TRACK_SLOTS.TRACK_SLOTS_BY_DATE_AND_LOCATION),
       {
