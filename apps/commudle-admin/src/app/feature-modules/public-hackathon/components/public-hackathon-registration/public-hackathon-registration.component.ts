@@ -32,7 +32,7 @@ export class PublicHackathonRegistrationComponent implements OnInit {
     const hackathonEndDatePlusFiveDays = new Date(this.hackathonEndDate);
     hackathonEndDatePlusFiveDays.setDate(this.hackathonEndDate.getDate() + 5);
 
-    if (this.currentDate < this.hackathonApplicationEndDate) {
+    if (this.currentDate <= this.hackathonEndDate) {
       this.canSubmitProject = true;
     }
     if (this.currentDate <= hackathonEndDatePlusFiveDays) {
