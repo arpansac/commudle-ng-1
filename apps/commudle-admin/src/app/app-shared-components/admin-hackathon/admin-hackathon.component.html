@@ -72,15 +72,21 @@
                   >{{ hackathon.name }}
                 </a>
               </td>
-              <td class="time-container">
-                <p class="date">{{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}</p>
-                <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-                <p class="date">{{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}</p>
+              <td>
+                <div *ngIf="hackathon.application_start_date" class="time-container">
+                  <p class="date">{{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}</p>
+                  <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                  <p class="date">{{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}</p>
+                </div>
+                <p *ngIf="!hackathon.application_start_date">--</p>
               </td>
-              <td class="time-container">
-                <p class="date">{{ moment(hackathon.start_date).format('MMM DD, YYYY') }}</p>
-                <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-                <p class="date">{{ moment(hackathon.end_date).format('MMM DD, YYYY') }}</p>
+              <td>
+                <div *ngIf="hackathon.start_date" class="time-container">
+                  <p class="date">{{ moment(hackathon.start_date).format('MMM DD, YYYY') }}</p>
+                  <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                  <p class="date">{{ moment(hackathon.end_date).format('MMM DD, YYYY') }}</p>
+                </div>
+                <p *ngIf="!hackathon.start_date">--</p>
               </td>
               <td>
                 <app-badge

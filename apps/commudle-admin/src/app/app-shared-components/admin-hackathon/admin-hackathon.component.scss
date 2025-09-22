@@ -52,10 +52,14 @@
           }
 
           td {
-            @apply com-p-4 com-text-xs com-font-medium com-text-gray-500;
+            @apply com-p-4 com-text-sm com-font-medium com-text-gray-500;
 
             .hackathon-name {
-              @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Bright-Gray;
+              @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Yankees-Blue;
+            }
+
+            &.time-container {
+              @apply com-whitespace-nowrap;
             }
 
             .hackathon-dashboard-actions {
@@ -66,10 +70,10 @@
               }
 
               .context-menu-button {
-                @apply com-p-2 com-flex-shrink-0;
+                @apply com-p-2 com-flex-shrink-0 com-rounded-lg;
 
                 nb-icon {
-                  @apply com-text-gray-500;
+                  @apply com-text-tgray-500;
                 }
 
                 &:hover {
@@ -98,4 +102,14 @@
 
 .date {
   @apply com-font-medium;
+}
+
+.status-multi-select {
+  ::ng-deep {
+    button {
+      span {
+        @apply com-text-xs;
+      }
+    }
+  }
 }
