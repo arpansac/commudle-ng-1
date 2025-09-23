@@ -12,15 +12,90 @@
   }
 }
 
-table {
-  @apply com-border-collapse com-w-full com-mt-4;
+// Surveys Table Section
+.surveys-list-container {
+  @apply com-w-full;
+
+  .table-wrapper {
+    @apply com-overflow-scroll;
+
+    .surveys-table {
+      @apply com-w-full com-border-collapse;
+
+      .table-header {
+        @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+        th {
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+          // &:nth-child(1) {
+          //   width: 60%; // NAME column
+          // }
+          // &:nth-child(2) {
+          //   width: 40%; // ACTIONS column
+          // }
+        }
+      }
+
+      .survey-row {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-100 com-transition-colors;
+
+        &:last-child {
+          @apply com-border-b-0;
+        }
+
+        td {
+          @apply com-p-4 com-text-sm com-font-normal com-text-Yankees-Blue;
+
+          .survey-name {
+            @apply com-text-Yankees-Blue com-font-semibold;
+          }
+
+          .survey-link {
+            @apply com-text-xs com-font-normal com-text-Ultramarine-Blue com-no-underline com-flex com-items-center com-gap-1;
+            nb-icon {
+              @apply com-text-base;
+            }
+          }
+
+          .survey-actions {
+            @apply com-flex com-flex-row com-gap-5 com-justify-between com-items-center;
+
+            .show-responses-button {
+              @apply com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+            }
+
+            .show-responses-button-container {
+              @apply com-flex com-flex-row com-gap-6 com-items-center;
+            }
+
+            .toggle-controls {
+              @apply com-flex com-flex-row com-items-center;
+
+              .toggle-item {
+                @apply com-flex com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-pr-4;
+              }
+            }
+          }
+
+          .edit-btn {
+            @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-gap-1 com-pl-4;
+            fa-icon {
+              @apply com-text-base;
+            }
+          }
+        }
+      }
+
+      .loading-row {
+        .loading-cell {
+          @apply com-text-center com-py-8;
+        }
+      }
+    }
+  }
 }
 
-td,
-th {
-  @apply com-p-4;
-}
-
-tr:not(:last-child) {
-  @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+.survey-header {
+  @apply com-flex com-justify-between com-items-center com-px-2 com-mt-8;
 }

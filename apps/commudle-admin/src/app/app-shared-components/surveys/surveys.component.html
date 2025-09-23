@@ -1,4 +1,4 @@
-<div class="survey-header com-flex com-justify-between com-items-center com-px-2 com-mt-8">
+<div class="survey-header">
   <form (ngSubmit)="createNewSurvey()" [formGroup]="createSurveyForm" class="dfeg-create-form">
     <div formGroupName="survey" class="com-flex com-gap-4">
       <div class="name">
@@ -66,54 +66,82 @@
   </form>
 </div>
 
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-<table>
-  <tr *ngFor="let survey of surveys; let i = index">
-    <td class="com-w-2/5">
-      <div>
-        {{ survey.name | titlecase }}
-      </div>
-
-      <small>
-        <a [routerLink]="['/fill-form', survey.data_form_entity.id]" target="_blank">
-          <nb-icon icon="external-link" class="com-text-base"></nb-icon>
-          <span class="com-text-base"> Link to fill </span>
-        </a>
-      </small>
-    </td>
-    <td>
-      <a [routerLink]="['/forms', survey.data_form_entity.data_form_id, 'edit']" nbButton>
-        <nb-icon icon="edit"></nb-icon>
-        Edit
-      </a>
-    </td>
-    <td>
-      <div class="status">
-        <nb-toggle
-          (checkedChange)="updateStatus($event, i)"
-          [checked]="survey.status === ESurveyStatus.open"
-          labelPosition="end"
-        >
-          Open
-        </nb-toggle>
-      </div>
-    </td>
-    <td>
-      <div class="multiple-responses">
-        <nb-toggle (checkedChange)="toggleMultiResponse(i)" [checked]="survey.multi_response" labelPosition="end">
-          Multiple Responses
-        </nb-toggle>
-      </div>
-    </td>
-    <td>
-      <div class="details">
-        <a (click)="openResponses(survey)" class="clickable total-responses">
-          Responses: {{ survey.total_responses }}
-        </a>
-      </div>
-    </td>
-  </tr>
-</table>
+<!-- Surveys Table Section -->
+<section class="surveys-list-container">
+  <div class="table-wrapper">
+    <table *ngIf="surveys && surveys.length > 0" class="surveys-table">
+      <thead>
+        <tr class="table-header">
+          <th colspan="2">NAME</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading" class="loading-row">
+          <td class="loading-cell">
+            <app-loading-spinner></app-loading-spinner>
+          </td>
+        </tr>
+        <ng-container *ngIf="!isLoading">
+          <tr *ngFor="let survey of surveys; let i = index" class="survey-row">
+            <td colspan="2">
+              <div class="survey-name">
+                {{ survey.name | titlecase }}
+              </div>
+            </td>
+            <td>
+              <div class="survey-actions">
+                <div class="show-responses-button-container">
+                  <button
+                    (click)="openResponses(survey)"
+                    nbButton
+                    status="basic"
+                    shape="semi-round"
+                    size="small"
+                    class="show-responses-button"
+                  >
+                    Show Responses
+                  </button>
+                  <a [routerLink]="['/fill-form', survey.data_form_entity.id]" target="_blank" class="survey-link">
+                    <span>Link to fill</span>
+                    <nb-icon icon="external-link"></nb-icon>
+                  </a>
+                </div>
+                <div class="toggle-controls">
+                  <div class="toggle-item">
+                    <nb-toggle
+                      (checkedChange)="updateStatus($event, i)"
+                      [checked]="survey.status === ESurveyStatus.open"
+                      labelPosition="end"
+                      status="success"
+                      size="tiny"
+                    >
+                      Open
+                    </nb-toggle>
+                  </div>
+                  <div class="toggle-item">
+                    <nb-toggle
+                      (checkedChange)="toggleMultiResponse(i)"
+                      [checked]="survey.multi_response"
+                      labelPosition="end"
+                      size="tiny"
+                      class="com-pl-4"
+                    >
+                      Multiple Responses
+                    </nb-toggle>
+                  </div>
+                  <a [routerLink]="['/forms', survey.data_form_entity.data_form_id, 'edit']" class="edit-btn">
+                    <fa-icon [icon]="faEdit"></fa-icon>&nbsp; Edit
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 <ng-template #newCommunitySurveyForm let-data let-ref="dialogRef">
   <nb-card class="com-h-[90dvh] md:com-w-[50dvw]">

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-community-surveys',
@@ -12,6 +13,7 @@ import { SeoService } from '@commudle/shared-services';
 export class CommunitySurveysComponent implements OnInit, OnDestroy {
   community: ICommunity;
   subscriptions: Subscription[] = [];
+  faPlus = faPlus;
 
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 

@@ -8,6 +8,7 @@ import { IDataForm } from 'apps/shared-models/data_form.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 import { SurveysService } from 'apps/commudle-admin/src/app/services/surveys.service';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-surveys',
@@ -24,6 +25,7 @@ export class SurveysComponent implements OnInit, OnDestroy {
   newDataDialogBox;
   isLoading = true;
   subscriptions: Subscription[] = [];
+  faEdit = faEdit;
 
   @ViewChild('newCommunitySurveyForm') newCommunitySurveyForm: TemplateRef<any>;
 
