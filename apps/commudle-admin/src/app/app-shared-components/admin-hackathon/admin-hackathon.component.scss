@@ -2,10 +2,10 @@
   @apply com-w-full;
 
   .header-section {
-    @apply com-flex com-justify-between com-items-center com-mb-6;
+    @apply com-flex com-justify-between com-items-center com-mb-6 md:com-flex-row com-flex-col com-gap-4;
 
     .page-title {
-      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mt-0 com-mt-4;
     }
 
     a {
@@ -54,6 +54,22 @@
           td {
             @apply com-p-4 com-text-sm com-font-medium com-text-gray-500;
 
+            &:nth-child(1) {
+              @apply com-w-[40%];
+            }
+            &:nth-child(2) {
+              @apply com-w-[18%];
+            }
+            &:nth-child(3) {
+              @apply com-w-[18%];
+            }
+            &:nth-child(4) {
+              @apply com-w-[10%];
+            }
+            &:nth-child(5) {
+              @apply com-w-[14%];
+            }
+
             .hackathon-name {
               @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Yankees-Blue;
             }
@@ -87,7 +103,7 @@
     }
 
     .pagination {
-      @apply com-px-6 com-py-4 com-border-t com-border-gray-200 com-bg-gray-50;
+      @apply com-px-6 com-py-4 com-border-t com-border-gray-200;
     }
   }
 }
@@ -112,4 +128,8 @@
 
 .date-column {
   @apply com-whitespace-nowrap;
+}
+
+.status-filter {
+  @apply com-flex com-flex-col com-gap-2 com-min-w-[140px];
 }

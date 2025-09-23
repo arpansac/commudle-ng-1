@@ -27,7 +27,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
   query = '';
   searchForm;
   total = 0;
-  count = 10;
+  count = 2;
   page = 1;
   hackathonStatuses = Object.values(EHackathonStatus);
   activeHackathonStatuses: string[] = [EHackathonStatus.OPEN, EHackathonStatus.DRAFT, EHackathonStatus.COMPLETED];
@@ -76,47 +76,42 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
 
   getHackathons() {
     this.isLoading = true;
-    this.hackathonService.indexHackathons(this.parentId, this.parentType).subscribe((data) => {
-      this.hackathons = data;
-      this.isLoading = false;
-    });
+    this.hackathonService
+      .indexHackathons(this.parentId, this.parentType, this.page, this.count, this.query, this.activeHackathonStatuses)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.hackathons = data.values;
+        this.total = data.total;
+        this.page = data.page;
+        this.isLoading = false;
+      });
   }
 
-  // getHackathons() {
-  //   this.isLoading = true;
-  //   this.hackathonService.indexHackathons(this.parentId, this.parentType, this.page, this.count, this.query, this.activeEventStatuses).pipe(takeUntil(this.destroy$)).subscribe((data) => {
-  //     this.hackathons = data.values;
-  //     this.total = data.total;
-  //     this.page = data.page;
-  //     this.isLoading = false;
-  //   });
-  // }
-
   search() {
-    // this.searchForm.valueChanges
-    //   .pipe(
-    //     debounceTime(800),
-    //     takeUntil(this.destroy$),
-    //     switchMap(() => {
-    //       this.page = 1;
-    //       this.isLoading = true;
-    //       this.query = this.searchForm.get('name').value;
-    //       return this.hackathonService.indexHackathons(
-    //         this.parentId,
-    //         this.parentType,
-    //         this.page,
-    //         this.count,
-    //         this.query,
-    //         this.activeEventStatuses,
-    //       );
-    //     }),
-    //   )
-    //   .subscribe((data) => {
-    //     this.hackathons = data.values;
-    //     this.total = data.total;
-    //     this.page = data.page;
-    //     this.isLoading = false;
-    //   });
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(800),
+        takeUntil(this.destroy$),
+        switchMap(() => {
+          this.page = 1;
+          this.isLoading = true;
+          this.query = this.searchForm.get('name').value;
+          return this.hackathonService.indexHackathons(
+            this.parentId,
+            this.parentType,
+            this.page,
+            this.count,
+            this.query,
+            this.activeHackathonStatuses,
+          );
+        }),
+      )
+      .subscribe((data) => {
+        this.hackathons = data.values;
+        this.total = data.total;
+        this.page = data.page;
+        this.isLoading = false;
+      });
   }
 
   onStatusFilterChange(selectedValues: string[]) {

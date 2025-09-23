@@ -1,4 +1,4 @@
-<div class="admin-hackathon-container">
+<div class="admin-hackathon-container custom-scrollbar">
   <div class="header-section">
     <h1 class="page-title">Hackathons</h1>
     <a
@@ -50,7 +50,7 @@
       <table *ngIf="hackathons && hackathons.length > 0" class="hackathons-table">
         <thead>
           <tr class="table-header">
-            <th colspan="2">NAME</th>
+            <th>NAME</th>
             <th>APPLICATION DATES</th>
             <th>HACKATHON DATES</th>
             <th>STATUS</th>
@@ -65,7 +65,7 @@
           </tr>
           <ng-container *ngIf="!isLoading">
             <tr *ngFor="let hackathon of hackathons" class="hackathon-row">
-              <td colspan="2">
+              <td>
                 <a
                   class="hackathon-name"
                   [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]"
