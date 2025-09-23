@@ -68,7 +68,18 @@
               <td>
                 <a
                   class="hackathon-name"
-                  [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]"
+                  [routerLink]="
+                    hackathon.status === EHackathonStatus.OPEN
+                      ? [
+                          '/admin',
+                          'communities',
+                          parentId,
+                          'hackathon-dashboard',
+                          hackathon.slug,
+                          'applications-dashboard'
+                        ]
+                      : ['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]
+                  "
                   >{{ hackathon.name }}
                 </a>
               </td>
@@ -118,8 +129,15 @@
                   <a
                     [routerLink]="
                       hackathon.status === EHackathonStatus.OPEN
-                        ? ['hackathon-dashboard', hackathon.slug, 'applications-dashboard']
-                        : ['hackathon-dashboard', hackathon.slug]
+                        ? [
+                            '/admin',
+                            'communities',
+                            parentId,
+                            'hackathon-dashboard',
+                            hackathon.slug,
+                            'applications-dashboard'
+                          ]
+                        : ['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]
                     "
                     nbButton
                     status="basic"
