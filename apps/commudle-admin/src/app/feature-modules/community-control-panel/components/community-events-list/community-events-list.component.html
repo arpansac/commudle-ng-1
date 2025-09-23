@@ -73,7 +73,13 @@
               <td class="event-name-container">
                 <a
                   class="event-name"
-                  [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug]"
+                  [routerLink]="
+                    event.status === EEventStatuses.OPEN
+                      ? ['event-dashboard', event.slug, 'registrations']
+                      : event.status === EEventStatuses.COMPLETED
+                      ? ['event-dashboard', event.slug, 'stats']
+                      : ['event-dashboard', event.slug]
+                  "
                   >{{ event.name }}
                 </a>
                 <app-badge
