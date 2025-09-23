@@ -58,7 +58,6 @@ export class HackathonService {
     status: string[],
   ): Observable<IPaginationCount<IHackathon>> {
     let params = new HttpParams();
-    params = params.set('page', page).set('count', count);
     switch (parentType) {
       case 'Kommunity': {
         params = params.set('community_id', parentId).set('page', page).set('count', count);
