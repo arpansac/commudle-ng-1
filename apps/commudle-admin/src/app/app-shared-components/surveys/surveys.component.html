@@ -1,20 +1,25 @@
+<div class="header-section">
+  <h1 class="page-title">Surveys</h1>
+  <a nbButton status="primary" shape="semi-round"
+    ><fa-icon [icon]="faPlus" (click)="openNewFormDialogBox()"></fa-icon> &nbsp; New Survey Form
+  </a>
+</div>
+
 <div class="survey-header">
   <form (ngSubmit)="createNewSurvey()" [formGroup]="createSurveyForm" class="dfeg-create-form">
-    <div formGroupName="survey" class="com-flex com-gap-4">
+    <div formGroupName="survey" class="form-container">
       <div class="name">
-        <label fullWidth>
-          Name*
-          <input fieldSize="small" formControlName="name" placeholder="Survey Name" fullWidth nbInput type="text" />
-          <span
-            *ngIf="
-              createSurveyForm.controls.survey.get('name').touched &&
-              createSurveyForm.controls.survey.get('name').invalid &&
-              createSurveyForm.controls.survey.get('name').errors.required
-            "
-          >
-            <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-          </span>
-        </label>
+        <label fullWidth>Name*</label>
+        <input
+          fieldSize="small"
+          formControlName="name"
+          placeholder="Survey Name"
+          size="large"
+          shape="semi-round"
+          fullWidth
+          nbInput
+          type="text"
+        />
       </div>
 
       <div class="data-form-type-select">
@@ -35,34 +40,34 @@
             </option>
           </select>
         </div>
-        <span
-          *ngIf="
-            createSurveyForm.controls.survey.get('data_form_id').touched &&
-            createSurveyForm.controls.survey.get('data_form_id').invalid &&
-            createSurveyForm.controls.survey.get('data_form_id').errors.required
-          "
-        >
-          <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-        </span>
+
         <span *ngIf="createSurveyForm.controls.survey.get('data_form_id').value === 'createNewForm'">
           <commudle-alert [error]="true" [errorMessage]="'Please Select Valid Form'"></commudle-alert>
         </span>
       </div>
+      <div class="save-button-bottom">
+        <button
+          [disabled]="!createSurveyForm.valid"
+          fullWidth
+          nbButton
+          outline
+          size="medium"
+          status="primary"
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </div>
-
-    <div class="save-button-bottom">
-      <button
-        [disabled]="!createSurveyForm.valid"
-        fullWidth
-        nbButton
-        outline
-        size="small"
-        status="primary"
-        type="submit"
-      >
-        Save
-      </button>
-    </div>
+    <span
+      *ngIf="
+        createSurveyForm.controls.survey.get('name').touched &&
+        createSurveyForm.controls.survey.get('name').invalid &&
+        createSurveyForm.controls.survey.get('name').errors.required
+      "
+    >
+      <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+    </span>
   </form>
 </div>
 

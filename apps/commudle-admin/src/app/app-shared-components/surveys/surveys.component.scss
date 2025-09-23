@@ -1,14 +1,7 @@
 .dropdown {
-  @apply com-w-44 com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#eef2f7] com-my-0 com-mb-2;
+  @apply com-flex com-items-center com-text-sm com-cursor-pointer com-m-0;
   select {
-    @apply com-bg-[#eef2f7] com-cursor-pointer com-w-full;
-  }
-}
-
-.dropdown:hover {
-  @apply com-bg-[#eef2f7]/50;
-  select {
-    @apply com-bg-[#eef2f7]/30;
+    @apply com-bg-[#eef2f7] com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3;
   }
 }
 
@@ -28,12 +21,12 @@
         th {
           @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
 
-          // &:nth-child(1) {
-          //   width: 60%; // NAME column
-          // }
-          // &:nth-child(2) {
-          //   width: 40%; // ACTIONS column
-          // }
+          &:nth-child(1) {
+            width: 40%;
+          }
+          &:nth-child(2) {
+            width: 60%;
+          }
         }
       }
 
@@ -97,5 +90,38 @@
 }
 
 .survey-header {
-  @apply com-flex com-justify-between com-items-center com-px-2 com-mt-8;
+  @apply com-flex com-justify-between com-items-center com-mb-6 com-w-full;
+
+  .dfeg-create-form {
+    @apply com-w-full;
+  }
+
+  .name,
+  .data-form-type-select {
+    @apply com-w-full;
+    label {
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-w-full;
+    }
+
+    input,
+    select {
+      @apply com-h-10 com-w-full com-mt-3;
+    }
+  }
+}
+
+.header-section {
+  @apply com-flex com-justify-between md:com-items-center md:com-mb-6 com-mb-4 com-flex-col md:com-flex-row com-gap-4;
+
+  .page-title {
+    @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+  }
+
+  a {
+    @apply com-rounded-lg;
+  }
+}
+
+.form-container {
+  @apply com-flex com-flex-row com-gap-6 com-items-end com-w-full;
 }

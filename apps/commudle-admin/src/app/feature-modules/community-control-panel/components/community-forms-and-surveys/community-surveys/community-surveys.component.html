@@ -1,14 +1,3 @@
 <div class="community-surveys">
-  <div class="header-section">
-    <h1 class="page-title">Surveys</h1>
-    <a
-      nbButton
-      status="primary"
-      shape="semi-round"
-      [routerLink]="['/admin/communities', community.id, 'surveys', 'new']"
-    >
-      <fa-icon [icon]="faPlus"></fa-icon> &nbsp; Create New Survey
-    </a>
-  </div>
   <commudle-surveys [parentId]="community.id" parentType="Kommunity"></commudle-surveys>
 </div>

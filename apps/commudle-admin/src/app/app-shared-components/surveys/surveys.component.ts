@@ -9,6 +9,7 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 import { SurveysService } from 'apps/commudle-admin/src/app/services/surveys.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-surveys',
@@ -26,6 +27,7 @@ export class SurveysComponent implements OnInit, OnDestroy {
   isLoading = true;
   subscriptions: Subscription[] = [];
   faEdit = faEdit;
+  faPlus = faPlus;
 
   @ViewChild('newCommunitySurveyForm') newCommunitySurveyForm: TemplateRef<any>;
 
