@@ -1,11 +1,77 @@
 <div class="header-section">
   <h1 class="page-title">Surveys</h1>
-  <a nbButton status="primary" shape="semi-round"
-    ><fa-icon [icon]="faPlus" (click)="openNewFormDialogBox()"></fa-icon> &nbsp; New Survey Form
+  <a *appBreakpoints="'<=lg'" nbButton status="primary" shape="semi-round" (click)="openBottomSheet()"
+    ><fa-icon [icon]="faPlus"></fa-icon> &nbsp; New Survey Form
   </a>
+  <commudle-bottom-sheet [isOpen]="isBottomSheetOpen" title="New Survey Form" (close)="closeBottomSheet()">
+    <form (ngSubmit)="createNewSurvey()" [formGroup]="createSurveyForm" class="dfeg-create-form">
+      <div formGroupName="survey" class="form-container">
+        <div class="name">
+          <label fullWidth>Name*</label>
+          <input
+            fieldSize="small"
+            formControlName="name"
+            placeholder="Survey Name"
+            size="large"
+            shape="semi-round"
+            fullWidth
+            nbInput
+            type="text"
+            class="input-field"
+          />
+        </div>
+
+        <div class="data-form-type-select">
+          <label fullWidth> Select Form*</label>
+          <div class="dropdown">
+            <select
+              formControlName="data_form_id"
+              class="com-border-0"
+              [ngClass]="{
+                'com-text-[#8E9BB3]': createSurveyForm.controls.survey.get('data_form_id').value === ''
+              }"
+              (change)="optionChanged($event)"
+            >
+              <option value="" selected disabled>Select Form</option>
+              <option value="createNewForm">+ Create New Form</option>
+              <option *ngFor="let qt of dataForms" [value]="qt.id">
+                {{ qt.name | titlecase }}
+              </option>
+            </select>
+          </div>
+
+          <span *ngIf="createSurveyForm.controls.survey.get('data_form_id').value === 'createNewForm'">
+            <commudle-alert [error]="true" [errorMessage]="'Please Select Valid Form'"></commudle-alert>
+          </span>
+        </div>
+        <div class="save-button-bottom">
+          <button
+            [disabled]="!createSurveyForm.valid"
+            fullWidth
+            nbButton
+            outline
+            size="medium"
+            status="primary"
+            type="submit"
+          >
+            Create Survey
+          </button>
+        </div>
+      </div>
+      <span
+        *ngIf="
+          createSurveyForm.controls.survey.get('name').touched &&
+          createSurveyForm.controls.survey.get('name').invalid &&
+          createSurveyForm.controls.survey.get('name').errors.required
+        "
+      >
+        <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
+      </span>
+    </form>
+  </commudle-bottom-sheet>
 </div>
 
-<div class="survey-header">
+<div *appBreakpoints="'>lg'" class="survey-header">
   <form (ngSubmit)="createNewSurvey()" [formGroup]="createSurveyForm" class="dfeg-create-form">
     <div formGroupName="survey" class="form-container">
       <div class="name">
@@ -51,11 +117,12 @@
           fullWidth
           nbButton
           outline
+          shape="semi-round"
           size="medium"
           status="primary"
           type="submit"
         >
-          Save
+          Create Survey
         </button>
       </div>
     </div>

@@ -28,6 +28,7 @@ export class SurveysComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   faEdit = faEdit;
   faPlus = faPlus;
+  isBottomSheetOpen = false;
 
   @ViewChild('newCommunitySurveyForm') newCommunitySurveyForm: TemplateRef<any>;
 
@@ -144,4 +145,12 @@ export class SurveysComponent implements OnInit, OnDestroy {
     }
   }
   updateSurvey() {}
+
+  openBottomSheet() {
+    this.isBottomSheetOpen = true;
+  }
+
+  closeBottomSheet() {
+    this.isBottomSheetOpen = false;
+  }
 }

@@ -45,7 +45,7 @@
           }
 
           .survey-link {
-            @apply com-text-xs com-font-normal com-text-Ultramarine-Blue com-no-underline com-flex com-items-center com-gap-1;
+            @apply com-text-xs com-font-normal com-text-Ultramarine-Blue com-no-underline com-flex com-items-center com-gap-1 com-whitespace-nowrap;
             nb-icon {
               @apply com-text-base;
             }
@@ -91,21 +91,32 @@
 
 .survey-header {
   @apply com-flex com-justify-between com-items-center com-mb-6 com-w-full;
+}
 
-  .dfeg-create-form {
-    @apply com-w-full;
-  }
+.dfeg-create-form {
+  @apply md:com-w-full com-w-auto md:com-mx-0 com-mx-3 md:com-mb-0 com-mb-3;
 
-  .name,
-  .data-form-type-select {
-    @apply com-w-full;
-    label {
-      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-w-full;
+  .form-container {
+    @apply com-flex md:com-flex-row com-flex-col com-gap-6 com-items-end com-w-full;
+
+    .name,
+    .data-form-type-select {
+      @apply com-w-full;
+      label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue com-w-full;
+      }
+
+      input {
+        @apply com-w-full com-h-10 com-mt-3;
+      }
+
+      select {
+        @apply com-h-10 com-w-full com-mt-3 com-px-3;
+      }
     }
 
-    input,
-    select {
-      @apply com-h-10 com-w-full com-mt-3;
+    .input-field {
+      @apply com-m-0 com-mt-3 com-w-full;
     }
   }
 }
@@ -122,6 +133,6 @@
   }
 }
 
-.form-container {
-  @apply com-flex com-flex-row com-gap-6 com-items-end com-w-full;
+.save-button-bottom {
+  @apply md:com-w-auto com-w-full;
 }
