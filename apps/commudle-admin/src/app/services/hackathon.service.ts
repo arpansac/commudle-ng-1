@@ -49,11 +49,26 @@ export class HackathonService {
     });
   }
 
-  indexHackathons(parentId, parentType: string): Observable<IHackathon[]> {
+  indexHackathons(
+    parentId,
+    parentType: string,
+    page: number,
+    count: number,
+    query: string,
+    status: string[],
+  ): Observable<IPaginationCount<IHackathon>> {
     let params = new HttpParams();
     switch (parentType) {
       case 'Kommunity': {
-        params = params.set('community_id', parentId);
+        params = params.set('community_id', parentId).set('page', page).set('count', count);
+        if (query) {
+          params = params.set('query', query);
+        }
+        if (status && status.length > 0) {
+          status.forEach((status) => {
+            params = params.append(`status[]`, status);
+          });
+        }
         break;
       }
       case 'CommunityGroup': {
@@ -61,7 +76,9 @@ export class HackathonService {
         break;
       }
     }
-    return this.http.get<IHackathon[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX), { params });
+    return this.http.get<IPaginationCount<IHackathon>>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX), {
+      params,
+    });
   }
 
   pIndexHackathons(parentId, parentType: string, when?: string): Observable<IPaginationCount<IHackathon>> {

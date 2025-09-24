@@ -7,6 +7,8 @@ import {
   NbButtonModule,
   NbCardModule,
   NbCheckboxModule,
+  NbContextMenuModule,
+  NbFormFieldModule,
   NbIconModule,
   NbInputModule,
   NbRadioModule,
@@ -121,6 +123,7 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     MiniUserProfileModule,
     SharedDirectivesModule,
     LinkyModule,
+    NbContextMenuModule,
 
     //Standalone
     TechSessionsCardComponent,
@@ -148,6 +151,7 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     NbToggleModule,
     NbIconModule,
     NbCardModule,
+    NbFormFieldModule,
     //FontAwesome
     FontAwesomeModule,
     SharedPipesModule,

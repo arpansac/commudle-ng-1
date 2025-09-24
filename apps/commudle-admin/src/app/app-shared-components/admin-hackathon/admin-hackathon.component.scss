@@ -1,26 +1,135 @@
-.create-button {
-  @apply com-my-3;
-  fa-icon {
-    @apply com-mr-2;
+.admin-hackathon-container {
+  @apply com-w-full;
+
+  .header-section {
+    @apply com-flex com-justify-between com-items-center com-mb-6 md:com-flex-row com-flex-col com-gap-4;
+
+    .page-title {
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mt-0 com-mt-4;
+    }
+
+    a {
+      @apply com-no-underline com-rounded-lg;
+    }
+  }
+
+  .search-filter-section {
+    @apply com-flex com-gap-3 com-mb-6 com-flex-col md:com-flex-row;
+
+    .search-form {
+      @apply com-w-full;
+    }
+  }
+
+  .hackathon-list-container {
+    @apply com-w-full;
+
+    .table-wrapper {
+      @apply com-overflow-x-scroll;
+
+      .hackathons-table {
+        @apply com-w-full com-border-collapse;
+
+        .table-header {
+          @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+          th {
+            @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+          }
+        }
+
+        .loading-row {
+          .loading-cell {
+            @apply com-py-8 com-text-center;
+          }
+        }
+
+        .hackathon-row {
+          @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-50 com-transition-colors;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+
+          td {
+            @apply com-p-4 com-text-sm com-font-medium com-text-gray-500;
+
+            &:nth-child(1) {
+              @apply com-w-[40%];
+            }
+            &:nth-child(2) {
+              @apply com-w-[18%];
+            }
+            &:nth-child(3) {
+              @apply com-w-[18%];
+            }
+            &:nth-child(4) {
+              @apply com-w-[10%];
+            }
+            &:nth-child(5) {
+              @apply com-w-[14%];
+            }
+
+            .hackathon-name {
+              @apply com-no-underline com-text-Yankees-Blue com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-Yankees-Blue;
+            }
+
+            .hackathon-dashboard-actions {
+              @apply com-flex com-gap-4 com-items-center;
+
+              a {
+                @apply com-rounded-lg;
+              }
+
+              .context-menu-button {
+                @apply com-p-2 com-flex-shrink-0 com-rounded-lg;
+
+                nb-icon {
+                  @apply com-text-tgray-500;
+                }
+
+                &:hover {
+                  @apply com-bg-gray-100;
+
+                  nb-icon {
+                    @apply com-text-gray-700;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .pagination {
+      @apply com-px-6 com-py-4 com-border-t com-border-gray-200;
+    }
   }
 }
 
-section {
-  @apply com-overflow-x-scroll;
-  table {
-    @apply com-border-collapse com-w-full;
+.time-container {
+  @apply com-flex com-flex-row com-gap-4 com-text-sm com-font-normal com-text-gray-custom-1 com-m-0 com-items-center;
+}
 
-    td,
-    th {
-      @apply com-text-left com-p-2;
-    }
+.date {
+  @apply com-m-0 com-font-medium;
+}
 
-    tr:nth-child(even) {
-      @apply com-bg-Bright-Gray;
-    }
-
-    .action-buttons {
-      @apply com-flex com-justify-evenly com-flex-wrap;
+.status-multi-select {
+  ::ng-deep {
+    button {
+      span {
+        @apply com-text-xs;
+      }
     }
   }
+}
+
+.date-column {
+  @apply com-whitespace-nowrap;
+}
+
+.status-filter {
+  @apply com-flex com-flex-col com-gap-2 com-min-w-[140px];
 }
