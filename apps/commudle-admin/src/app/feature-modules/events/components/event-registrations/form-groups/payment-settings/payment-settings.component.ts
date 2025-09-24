@@ -233,12 +233,14 @@ export class PaymentSettingsComponent implements OnInit {
   toggleHasTaxes(event) {
     if (!event) {
       this.paidTicketingForm.patchValue({
-        tax_name: '',
-        tax_percentage: '',
-        seller_tax_details: '',
-        country: '',
-        seller_name: '',
-        seller_address: '',
+        paid_ticket_setting: {
+          tax_name: '',
+          tax_percentage: '',
+          seller_tax_details: '',
+          country: '',
+          seller_name: '',
+          seller_address: '',
+        },
       });
     }
   }
