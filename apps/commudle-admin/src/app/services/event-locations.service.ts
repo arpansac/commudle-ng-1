@@ -5,6 +5,7 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { IEventLocations } from 'apps/shared-models/event-locations.model';
 import { IEventDatesLocation, IEventLocation } from 'apps/shared-models/event-location.model';
+import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
 
 @Injectable({
   providedIn: 'root',
@@ -56,9 +57,9 @@ export class EventLocationsService {
     );
   }
 
-  getLocationTracks(LocationId, date): Observable<any> {
-    const params = new HttpParams().set('location_id', LocationId).set('date', date);
-    return this.http.get<any>(
+  getLocationTracks(LocationId, date, eventId: number | string): Observable<IEventLocationTrack> {
+    const params = new HttpParams().set('location_id', LocationId).set('date', date).set('event_id', eventId);
+    return this.http.get<IEventLocationTrack>(
       this.apiRoutesService.getRoute(API_ROUTES.TRACK_SLOTS.PUBLIC.TRACK_SLOTS_BY_DATE_AND_LOCATION),
       {
         params,
