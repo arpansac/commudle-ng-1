@@ -230,15 +230,18 @@
             </div>
           </td>
           <td>
-            <div class="engagement-data">
-              <!-- <p>Attended {{ userRole.user.community_builds_count || 0 }} events</p>
-              <p>Posted in forum {{ userRole.user.labs_count || 0 }} times</p>
-              <p>Joined {{ userRole.user.social_resources_count || 0 }} channels</p>
-              <p class="com-engagement-item">8 more</p> -->
+            <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
+              <p>Attended {{ userRole.agg_user_community_engagement.overall_attendance_rate }} events</p>
+              <p>Posted in forum {{ userRole.agg_user_community_engagement.total_channel_messages }} times</p>
+              <p>Joined {{ userRole.agg_user_community_engagement.total_event_registrations }} events</p>
+              <p>Joined {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} events</p>
+              <p>Joined {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} events</p>
+              <p>Joined {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} events</p>
+              <p>Joined {{ userRole.agg_user_community_engagement.total_volunteered_events }} events</p>
             </div>
           </td>
           <td>
-            <div class="com-activity-indicator"></div>
+            <div class="com-activity-indicator">{{ userRole.community_score }}</div>
           </td>
           <td>
             <span class="com-last-seen">{{
@@ -246,22 +249,51 @@
             }}</span>
           </td>
           <td valign="top">
-            <div class="com-profile-highlights">
-              <!-- <ul *ngFor="let item of userRole.user.speaker_events">
-                <li>
-                  <a [href]="'communities/' + item.kommunity_id + '/events/' + item.id" target="_blank">
-                    {{ item.name }}
-                  </a>
-                  &#64;
-                  <a [href]="'communities/' + item.kommunity_id" target="_blank">
-                    {{ item.kommunity.name }}
-                  </a>
-                </li>
-              </ul> -->
-            </div>
+            <ul *ngIf="userRole.user_highlights" class="com-profile-highlights">
+              <li *ngIf="userRole.user_highlights.community_builds.length > 0">
+                Posted Builds
+                <a
+                  *ngFor="let item of userRole.user_highlights.community_builds"
+                  [routerLink]="['/builds', item.slug]"
+                  target="_blank"
+                >
+                  {{ item.name }}
+                </a>
+              </li>
+              <li *ngIf="userRole.user_highlights.labs.length > 0">
+                Posted Labs
+                <a
+                  *ngFor="let item of userRole.user_highlights.labs"
+                  [routerLink]="['/labs', item.slug]"
+                  target="_blank"
+                >
+                  {{ item.name }}
+                </a>
+              </li>
+              <li *ngIf="userRole.user_highlights.social_resources.length > 0">
+                Social Resources
+                <a
+                  *ngFor="let item of userRole.user_highlights.social_resources"
+                  [routerLink]="['/users', item.username]"
+                  target="_blank"
+                >
+                  {{ item.name }}
+                </a>
+              </li>
+              <li *ngIf="userRole.user_highlights.speaker_resources.length > 0">
+                Speaker Resources
+                <a
+                  *ngFor="let item of userRole.user_highlights.speaker_resources"
+                  [routerLink]="['/speaker-resources', item.id]"
+                  target="_blank"
+                >
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
           </td>
-          <td>
-            <span class="com-location">{{ userRole.user.location }}</span>
+          <td class="location">
+            <span>{{ userRole.user.location }}</span>
           </td>
           <td>
             <span class="com-joined-date">{{

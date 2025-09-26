@@ -13,6 +13,18 @@ export interface IUserRolesUser {
   status: EUserRolesUserStatus;
   community?: ICommunity;
   role_designation?: string;
+  agg_user_community_engagement: IAggUserCommunityEngagement;
+  community_score: number;
+}
+
+export interface IAggUserCommunityEngagement {
+  overall_attendance_rate: number;
+  total_channel_messages: number;
+  total_event_registrations: number;
+  total_event_speaker_registrations: number;
+  total_event_speaker_sessions: number;
+  total_hackathon_registrations: number;
+  total_volunteered_events: number;
 }
 
 export enum EUserRolesUserStatus {
