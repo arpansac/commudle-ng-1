@@ -32,7 +32,7 @@ export class NewsletterComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   newsletters: INewsletter[];
   newScheduleDateTime: Date;
-  isLoading = true; // Loading state for newsletters
+  isLoading = true;
   icons = {
     faPlus,
     faClock,
@@ -76,6 +76,7 @@ export class NewsletterComponent implements OnInit, OnDestroy {
   }
 
   getNewsletters() {
+    this.isLoading = true;
     this.subscriptions.push(
       this.newsletterService.getIndex(this.parentId, this.parentType).subscribe((data: INewsletter[]) => {
         this.newsletters = data;

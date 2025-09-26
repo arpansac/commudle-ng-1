@@ -119,9 +119,7 @@
       }
 
       .loading-row {
-        .loading-cell {
-          @apply com-text-center com-py-8;
-        }
+        @apply com-flex com-justify-center com-py-8;
       }
     }
   }

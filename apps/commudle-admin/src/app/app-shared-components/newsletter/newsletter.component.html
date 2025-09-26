@@ -9,6 +9,9 @@
   <!-- Newsletters Table Section -->
   <section class="newsletters-list-container">
     <div class="table-wrapper">
+      <div *ngIf="isLoading" class="loading-row">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
       <table *ngIf="newsletters && newsletters.length > 0" class="newsletters-table">
         <thead>
           <tr class="table-header">
@@ -18,11 +21,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="isLoading" class="loading-row">
-            <td class="loading-cell">
-              <app-loading-spinner></app-loading-spinner>
-            </td>
-          </tr>
           <ng-container *ngIf="!isLoading">
             <tr *ngFor="let newsletter of newsletters; let i = index" class="newsletter-row">
               <td colspan="2">
