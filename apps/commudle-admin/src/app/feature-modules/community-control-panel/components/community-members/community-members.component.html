@@ -202,7 +202,21 @@
               </span>
             </p>
             <div class="user-profile-card">
-              <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+              <div class="profile-badges">
+                <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+                <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
+                  <app-badge
+                    *ngFor="let badge of userRole.user_highlights.badges"
+                    [text]="badge.name"
+                    [color]="'com-bg-Bright-Gray-Light'"
+                    [fontSize]="'small'"
+                    [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                    [borderRadius]="'round'"
+                    class="user-badge"
+                  >
+                  </app-badge>
+                </div>
+              </div>
               <button
                 (click)="activeContextMenuUser = userRole.user"
                 [nbContextMenu]="contextMenuItems"

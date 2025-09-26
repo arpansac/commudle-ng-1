@@ -40,7 +40,7 @@
 
     .com-filter-dropdowns {
       // md:com-border-r com-border-r-0
-      @apply com-flex com-items-center com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 md:com-mb-0 com-mb-4 com-w-full;
+      @apply com-flex com-items-end com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 com-mb-4 com-w-full;
       .com-filter-select {
         @apply com-bg-gray-100 com-border-0 com-w-full com-cursor-pointer com-rounded-3xl;
       }
@@ -211,14 +211,6 @@
 
         .com-pagination-button {
           @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-lg hover:com-bg-gray-50 disabled:com-opacity-50 disabled:com-cursor-not-allowed com-transition-colors;
-
-          &.com-previous {
-            // Previous button specific styles
-          }
-
-          &.com-next {
-            // Next button specific styles
-          }
         }
 
         .com-page-info {
@@ -360,4 +352,16 @@ nb-button {
 
 .activeTag {
   @apply com-bg-Azure com-text-tWhite #{!important};
+}
+
+.profile-badges {
+  @apply com-flex com-flex-col com-gap-2;
+
+  .badges-container {
+    @apply com-flex com-flex-wrap com-gap-2 com-mt-2;
+
+    .user-badge {
+      @apply com-inline-block;
+    }
+  }
 }

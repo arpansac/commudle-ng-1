@@ -173,7 +173,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
-          console.log(this.community);
           this.setMeta();
         }
       }),
@@ -369,7 +368,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     if (event === 'speaker') {
       this.speaker = !this.speaker;
     }
-    console.log(this.mostActive, this.contributor, this.contentCreator, this.speaker);
     this.generateParams();
   }
 
