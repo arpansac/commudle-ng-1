@@ -54,7 +54,7 @@
           }
 
           .newsletter-stats {
-            @apply com-flex com-flex-col com-gap-2;
+            @apply com-flex com-flex-col com-gap-2 com-whitespace-nowrap;
 
             .stat-item {
               @apply com-flex com-items-center com-gap-1 com-text-sm com-text-Yankees-Blue;
@@ -68,10 +68,10 @@
             @apply com-flex com-flex-col com-gap-8 com-items-end;
 
             .publish-controls {
-              @apply com-flex com-flex-row com-gap-5 com-justify-between com-w-full;
+              @apply com-flex com-flex-row com-justify-between com-w-full;
 
               .publish-toggle {
-                @apply com-flex com-items-center;
+                @apply com-flex com-items-center md:com-pr-5 com-pl-0 com-pr-3;
               }
 
               .edit-link,
@@ -81,6 +81,14 @@
                 fa-icon {
                   @apply com-text-base;
                 }
+              }
+
+              .edit-link {
+                @apply md:com-px-5 com-px-3;
+              }
+
+              .test-email-link {
+                @apply md:com-pl-5 com-pr-0 com-pl-3;
               }
             }
 

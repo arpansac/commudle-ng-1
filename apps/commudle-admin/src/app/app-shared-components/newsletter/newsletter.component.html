@@ -73,10 +73,10 @@
                         Publish
                       </nb-toggle>
                     </div>
-                    <a [routerLink]="['./edit', newsletter.slug]" class="edit-link com-px-5">
+                    <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
                       Edit &nbsp; <fa-icon [icon]="icons.faEdit"></fa-icon>
                     </a>
-                    <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link com-pl-5">
+                    <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
                       Send Test Email &nbsp; <fa-icon [icon]="icons.faEnvelope"></fa-icon>
                     </a>
                   </div>
