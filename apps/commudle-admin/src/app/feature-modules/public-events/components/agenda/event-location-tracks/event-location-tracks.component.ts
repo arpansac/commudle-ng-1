@@ -113,7 +113,7 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
   getLocationTracks() {
     this.isLoading = true;
     this.eventLocationsService
-      .getLocationTracks(this.eventLocation.location.id, this.eventLocationDate)
+      .getLocationTracks(this.eventLocation.location.id, this.eventLocationDate, this.event.id)
       .subscribe((data: any) => {
         this.eventLocationTracks = data;
         if (data) {
