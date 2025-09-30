@@ -176,6 +176,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         if (value.community) {
           this.community = value.community;
           this.getMembersDistribution();
+          this.getExperienceLevelDistribution();
+          this.getNewMembersCount();
           this.setMeta();
         }
       }),
@@ -219,6 +221,48 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  getExperienceLevelDistribution() {
+    this.statsCommunitiesService.experienceLevelDistribution(this.community.slug).subscribe((data) => {
+      const chartData = data.chart_data;
+      return new Chart('chart-experience-distribution', {
+        type: 'pie',
+        data: {
+          datasets: [
+            {
+              data: [chartData.professionals, chartData.students, chartData.unspecified],
+              backgroundColor: ['#3366ff', '#ff43bc', 'purple'],
+            },
+          ],
+
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: ['Professionals', 'Students', 'NA'],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+    });
+  }
+
+  getNewMembersCount() {
+    this.statsCommunitiesService.newMembersCount(this.community.slug).subscribe((data) => {
+      this.newMembersCount = data.chart_data;
+      return new Chart('chart-member-growth', {
+        type: 'bar',
+        data: {
+          datasets: [
+            {
+              data: this.newMembersCount,
+              backgroundColor: '#5072ff',
+            },
+          ],
+        },
+      });
+    });
+  }
+
+  newMembersCount;
 
   onTagAdd(value: string) {
     const currentSkills = this.communityFilterForm.get('skills').value || [];
