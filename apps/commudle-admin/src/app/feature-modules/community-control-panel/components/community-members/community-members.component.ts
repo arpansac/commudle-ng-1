@@ -40,6 +40,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   queryParamsString = '';
   sortByField = '';
   sortOrder = '';
+  newMembersCount: number;
 
   contextMenuItems = [
     {
@@ -247,13 +248,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   getNewMembersCount() {
     this.statsCommunitiesService.newMembersCount(this.community.slug).subscribe((data) => {
-      this.newMembersCount = data.chart_data;
       return new Chart('chart-member-growth', {
         type: 'bar',
         data: {
           datasets: [
             {
-              data: this.newMembersCount,
+              data: [data.chart_data],
               backgroundColor: '#5072ff',
             },
           ],
@@ -261,8 +261,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-  newMembersCount;
 
   onTagAdd(value: string) {
     const currentSkills = this.communityFilterForm.get('skills').value || [];

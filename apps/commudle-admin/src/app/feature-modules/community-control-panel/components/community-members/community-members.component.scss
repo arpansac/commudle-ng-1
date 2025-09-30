@@ -81,6 +81,27 @@
         th {
           @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500  com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
+          &:nth-child(1) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(2) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(3) {
+            @apply com-w-[10%];
+          }
+          &:nth-child(4) {
+            @apply com-w-[10%];
+          }
+          &:nth-child(5) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(6) {
+            @apply com-w-[10%];
+          }
+          &:nth-child(7) {
+            @apply com-w-[10%];
+          }
           .sortable {
             @apply com-flex com-items-center com-space-x-1;
           }
@@ -92,7 +113,7 @@
           @apply hover:com-bg-gray-50;
 
           td {
-            @apply com-p-4;
+            @apply com-p-4 com-text-left com-align-top;
 
             span {
               @apply com-text-sm com-text-gray-500;
@@ -135,7 +156,7 @@
             }
 
             .engagement-data {
-              @apply com-text-sm com-font-normal com-text-gray-500;
+              @apply com-text-sm com-font-normal com-text-gray-500 com-flex-nowrap;
 
               p {
                 @apply com-m-0;
@@ -146,8 +167,8 @@
               }
             }
 
-            .com-activity-indicator {
-              @apply com-flex com-items-center com-space-x-2;
+            .activity-indicator {
+              @apply com-flex com-items-center com-space-x-2 com-flex-nowrap;
 
               .com-activity-dot {
                 @apply com-w-2 com-h-2 com-rounded-full;
@@ -178,12 +199,12 @@
               }
             }
 
-            .com-last-seen {
-              @apply com-text-sm com-text-gray-500;
+            .last-seen {
+              @apply com-text-sm com-text-gray-500 com-flex-nowrap;
             }
 
-            .com-profile-highlights {
-              @apply com-text-sm com-text-gray-900 com-space-y-1;
+            .profile-highlights {
+              @apply com-text-sm com-text-gray-900 com-p-0 com-pl-4;
 
               .com-highlight-item {
                 @apply com-text-blue-600;
@@ -366,6 +387,7 @@ nb-button {
   }
 }
 
-.location {
+.location,
+.joined-date {
   @apply com-flex-nowrap;
 }

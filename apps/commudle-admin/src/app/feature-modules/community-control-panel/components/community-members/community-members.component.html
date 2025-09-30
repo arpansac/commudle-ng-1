@@ -241,15 +241,13 @@
             </div>
           </td>
           <td>
-            <div class="com-activity-indicator">{{ userRole.community_score }}</div>
+            <div class="activity-indicator">{{ userRole.community_score }}</div>
           </td>
           <td>
-            <span class="com-last-seen">{{
-              userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--'
-            }}</span>
+            <span class="last-seen">{{ userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--' }}</span>
           </td>
           <td valign="top">
-            <ul *ngIf="userRole.user_highlights" class="com-profile-highlights">
+            <ul *ngIf="userRole.user_highlights" class="profile-highlights">
               <li *ngIf="userRole.user_highlights.community_builds.length > 0">
                 Posted Builds
                 <a
@@ -295,10 +293,8 @@
           <td class="location">
             <span>{{ userRole.user.location }}</span>
           </td>
-          <td>
-            <span class="com-joined-date">{{
-              userRole.activated_at ? moment(userRole.activated_at).format('MMM DD, YYYY') : '--'
-            }}</span>
+          <td class="joined-date">
+            <span>{{ userRole.activated_at ? moment(userRole.activated_at).format('MMM DD, YYYY') : '--' }}</span>
           </td>
         </tr>
       </tbody>
