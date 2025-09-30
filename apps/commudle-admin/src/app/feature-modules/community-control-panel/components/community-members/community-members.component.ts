@@ -12,7 +12,8 @@ import { SeoService } from '@commudle/shared-services';
 import { faEnvelope, faSort } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import * as moment from 'moment';
-
+import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
+import { Chart } from 'chart.js';
 @Component({
   selector: 'commudle-community-members',
   templateUrl: './community-members.component.html',
@@ -78,6 +79,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private communityService: CommunitiesService,
     private location: Location,
+    private statsCommunitiesService: StatsCommunitiesService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -173,6 +175,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
+          this.getMembersDistribution();
           this.setMeta();
         }
       }),
@@ -192,6 +195,29 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTitle(`Community Members | Dashboard | ${this.community.name}`);
+  }
+
+  getMembersDistribution() {
+    this.statsCommunitiesService.membersDistribution(this.community.slug).subscribe((data) => {
+      const chartData = data.chart_data;
+      return new Chart('chart-member-distibution', {
+        type: 'pie',
+        data: {
+          datasets: [
+            {
+              data: [chartData.male, chartData.female, chartData.prefer_not_to_answer, chartData.NA],
+              backgroundColor: ['#3366ff', '#ff43bc', 'purple', 'green'],
+            },
+          ],
+
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: ['Male', 'Female', 'Prefer Not Answer', 'NA'],
+        },
+        options: {
+          responsive: true,
+        },
+      });
+    });
   }
 
   onTagAdd(value: string) {

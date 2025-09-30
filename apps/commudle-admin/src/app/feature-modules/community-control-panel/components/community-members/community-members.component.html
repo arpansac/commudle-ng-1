@@ -8,7 +8,7 @@
       </div>
       <div class="insight-card">
         <div class="insight-label">GENDER DISTRIBUTION</div>
-        <div class="insight-number">136</div>
+        <canvas id="chart-member-distibution"></canvas>
       </div>
       <div class="insight-card">
         <div class="insight-label">PROFESSIONALS VS STUDENTS</div>
@@ -257,7 +257,7 @@
                   [routerLink]="['/builds', item.slug]"
                   target="_blank"
                 >
-                  {{ item.name }}
+                  {{ item.name }}&nbsp;
                 </a>
               </li>
               <li *ngIf="userRole.user_highlights.labs.length > 0">
@@ -267,7 +267,7 @@
                   [routerLink]="['/labs', item.slug]"
                   target="_blank"
                 >
-                  {{ item.name }}
+                  {{ item.name }}&nbsp;
                 </a>
               </li>
               <li *ngIf="userRole.user_highlights.social_resources.length > 0">
@@ -277,7 +277,7 @@
                   [routerLink]="['/users', item.username]"
                   target="_blank"
                 >
-                  {{ item.name }}
+                  {{ item.name }}&nbsp;
                 </a>
               </li>
               <li *ngIf="userRole.user_highlights.speaker_resources.length > 0">
@@ -287,7 +287,7 @@
                   [routerLink]="['/speaker-resources', item.id]"
                   target="_blank"
                 >
-                  {{ item.name }}
+                  {{ item.name }}&nbsp;
                 </a>
               </li>
             </ul>
