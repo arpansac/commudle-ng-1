@@ -39,7 +39,7 @@
     </form>
 
     <div [formGroup]="communityFilterForm" class="filter-dropdowns-container">
-      <div class="com-filter-dropdowns">
+      <div class="filter-dropdowns">
         <nb-select
           formControlName="experience_level"
           (selectedChange)="onFilterChange()"
@@ -48,7 +48,7 @@
           size="small"
           shape="round"
           ghost
-          class="com-filter-select"
+          class="filter-select"
         >
           <nb-option
             *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder"
@@ -64,7 +64,7 @@
           size="small"
           shape="round"
           ghost
-          class="com-filter-select"
+          class="filter-select"
         >
           <nb-option value="employee">Looking For Work</nb-option>
           <nb-option value="employer">Hiring</nb-option>
@@ -76,7 +76,7 @@
           size="small"
           shape="round"
           ghost
-          class="com-filter-select"
+          class="filter-select"
         >
           <nb-option value="male">Male</nb-option>
           <nb-option value="female">Female</nb-option>
@@ -90,7 +90,7 @@
           size="small"
           shape="round"
           ghost
-          class="com-filter-select"
+          class="filter-select"
         >
           <nb-option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
             {{ domain.value }}
@@ -114,7 +114,7 @@
       </div>
 
       <!-- Active Filter Tags -->
-      <div class="com-active-filter-tags">
+      <div class="active-filter-tags">
         <nb-tag-list>
           <nb-tag
             [appearance]="mostActive ? 'filled' : 'outline'"
@@ -241,13 +241,21 @@
             </div>
           </td>
           <td>
-            <div class="activity-indicator">{{ userRole.community_score }}</div>
+            <span class="activity-indicator">{{ userRole.community_score }}</span>
           </td>
           <td>
             <span class="last-seen">{{ userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--' }}</span>
           </td>
-          <td valign="top">
-            <ul *ngIf="userRole.user_highlights" class="profile-highlights">
+          <td>
+            <ul
+              *ngIf="
+                userRole.user_highlights?.community_builds?.length > 0 ||
+                userRole.user_highlights?.labs?.length > 0 ||
+                userRole.user_highlights?.speaker_resources?.length > 0 ||
+                userRole.user_highlights?.social_resources?.length > 0
+              "
+              class="profile-highlights"
+            >
               <li *ngIf="userRole.user_highlights.community_builds.length > 0">
                 Posted Builds
                 <a
@@ -289,9 +297,19 @@
                 </a>
               </li>
             </ul>
+            <p
+              *ngIf="
+                userRole.user_highlights.community_builds.length === 0 &&
+                userRole.user_highlights.labs.length === 0 &&
+                userRole.user_highlights.speaker_resources.length === 0 &&
+                userRole.user_highlights.social_resources.length === 0
+              "
+            >
+              --
+            </p>
           </td>
           <td class="location">
-            <span>{{ userRole.user.location }}</span>
+            <span>{{ userRole.user.location ? userRole.user.location : '--' }}</span>
           </td>
           <td class="joined-date">
             <span>{{ userRole.activated_at ? moment(userRole.activated_at).format('MMM DD, YYYY') : '--' }}</span>
@@ -300,95 +318,82 @@
       </tbody>
     </table>
   </div>
+
+  <app-pagination
+    (goTo)="page = $event; getMembers()"
+    (next)="page = $event; getMembers()"
+    (previous)="page = $event; getMembers()"
+    *ngIf="total > 0"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
 </div>
 
 <!-- Remove User Dialog -->
 <ng-template #removeUserDialog let-data let-ref="dialogRef">
-  <div class="com-dialog-overlay">
-    <div class="com-dialog-container com-large">
-      <div class="com-dialog-header">
-        <span class="com-dialog-title">
-          <svg class="com-warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"
-            ></path>
-          </svg>
-          Confirmation
-        </span>
-        <button (click)="ref.close()" class="com-close-button">
-          <svg class="com-close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="com-dialog-body">
-        <p class="com-dialog-message">
-          Are you sure you want to <strong>remove</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community?
-          (Select the roles you want to remove them from)
-        </p>
-        <div class="com-checkbox-group">
-          <div *ngFor="let userRole of selectedUserRoles" class="com-checkbox-item">
-            <input
-              type="checkbox"
-              (change)="toggleUserRole(userRole.id)"
-              [checked]="userRolesUserIds.value.includes(userRole.id)"
-              class="com-checkbox-input"
-            />
-            <label class="com-checkbox-label">{{ userRole.parent_name }} ({{ userRole.user_role.name }})</label>
-          </div>
+  <nb-card class="dialog-card">
+    <nb-card-header class="dialog-header">
+      <span>
+        <nb-icon icon="alert-triangle" status="warning"></nb-icon>
+        Confirmation
+      </span>
+      <button (click)="ref.close()" ghost nbButton size="small">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="dialog-body">
+      <p>
+        Are you sure you want to <strong>remove</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community? (Select
+        the roles you want to remove them from)
+      </p>
+      <div class="dialog-body-content">
+        <div *ngFor="let userRole of selectedUserRoles">
+          <input
+            type="checkbox"
+            (change)="toggleUserRole(userRole.id)"
+            [checked]="userRolesUserIds.value.includes(userRole.id)"
+          />
+          <label for="vehicle1"> {{ userRole.parent_name }} ({{ userRole.user_role.name }})</label><br />
         </div>
-        <p class="com-dialog-note"><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
       </div>
-      <div class="com-dialog-footer">
-        <button (click)="ref.close()" class="com-cancel-button">No</button>
-        <button
-          (click)="removeUser(); ref.close()"
-          [disabled]="!selectedUserRoles.length || !userRolesUserIds.value.length"
-          class="com-confirm-button"
-        >
-          Yes
-        </button>
-      </div>
-    </div>
-  </div>
+      <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
+    </nb-card-body>
+    <nb-card-footer class="dialog-footer">
+      <button (click)="ref.close()" ghost nbButton status="danger">No</button>
+      <button
+        (click)="removeUser(); ref.close()"
+        [disabled]="!selectedUserRoles.length || !userRolesUserIds.value.length"
+        nbButton
+        status="success"
+      >
+        Yes
+      </button>
+    </nb-card-footer>
+  </nb-card>
 </ng-template>
 
 <!-- Block User Dialog -->
 <ng-template #blockUserDialog let-data let-ref="dialogRef">
-  <div class="com-dialog-overlay">
-    <div class="com-dialog-container">
-      <div class="com-dialog-header">
-        <span class="com-dialog-title">
-          <svg class="com-warning-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"
-            ></path>
-          </svg>
-          Confirmation
-        </span>
-        <button (click)="ref.close()" class="com-close-button">
-          <svg class="com-close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="com-dialog-body">
-        <p class="com-dialog-message">
-          Are you sure you want to <strong>remove & block</strong>&nbsp;<em>{{ data.user?.name }}</em> from the
-          community?
-        </p>
-        <p class="com-dialog-note"><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
-      </div>
-      <div class="com-dialog-footer">
-        <button (click)="ref.close()" class="com-cancel-button">No</button>
-        <button (click)="blockUser(data.user.id); ref.close()" class="com-confirm-button">Yes</button>
-      </div>
-    </div>
-  </div>
+  <nb-card class="dialog-card">
+    <nb-card-header class="dialog-header">
+      <span>
+        <nb-icon icon="alert-triangle" status="warning"></nb-icon>
+        Confirmation
+      </span>
+      <button (click)="ref.close()" ghost nbButton size="small">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="dialog-body">
+      <p>
+        Are you sure you want to <strong>remove & block</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community?
+      </p>
+      <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
+    </nb-card-body>
+    <nb-card-footer class="dialog-footer">
+      <button (click)="ref.close()" ghost nbButton status="danger">No</button>
+      <button (click)="blockUser(data.user.id); ref.close()" nbButton status="success">Yes</button>
+    </nb-card-footer>
+  </nb-card>
 </ng-template>
