@@ -67,8 +67,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<unknown>;
-  @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<unknown>;
+  @ViewChild('removeUserDialog', { static: true }) removeUserDialog: TemplateRef<any>;
+  @ViewChild('blockUserDialog', { static: true }) blockUserDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -190,7 +190,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
-    // destroy$ used in the search method
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -315,35 +314,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     return 0;
   };
 
-  // search() {
-  //   this.searchForm.valueChanges
-  //     .pipe(
-  //       debounceTime(800),
-  //       takeUntil(this.destroy$),
-  //       switchMap(() => {
-  //         this.page = 1;
-  //         this.isLoading = true;
-  //         this.query = this.searchForm.get('name').value;
-  //         return this.userRolesUsersService.getCommunityMembers(
-  //           this.query,
-  //           this.community.id,
-  //           this.count,
-  //           this.page,
-  //           this.employer,
-  //           this.employee,
-  //           this.contentCreator,
-  //           this.speaker,
-  //         );
-  //       }),
-  //     )
-  //     .subscribe((data) => {
-  //       this.isLoading = false;
-  //       this.userRolesUsers = data.user_roles_users;
-  //       this.page = +data.page;
-  //       this.total = data.total;
-  //     });
-  // }
-
   search() {
     this.query = '';
     this.searchForm.valueChanges
@@ -367,7 +337,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.getMembers();
   }
 
-  openDialog(template: TemplateRef<unknown>, user: IUser) {
+  openDialog(template: TemplateRef<any>, user: IUser) {
     this.dialogService.open(template, { context: { user } });
   }
 
