@@ -1,26 +1,138 @@
 .dropdown {
-  @apply com-w-44 com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#eef2f7] com-my-0 com-mb-2;
+  @apply com-flex com-items-center com-text-sm com-cursor-pointer com-m-0;
   select {
-    @apply com-bg-[#eef2f7] com-cursor-pointer com-w-full;
+    @apply com-bg-[#eef2f7] com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3;
   }
 }
 
-.dropdown:hover {
-  @apply com-bg-[#eef2f7]/50;
-  select {
-    @apply com-bg-[#eef2f7]/30;
+// Surveys Table Section
+.surveys-list-container {
+  @apply com-w-full;
+
+  .table-wrapper {
+    @apply com-overflow-scroll;
+
+    .surveys-table {
+      @apply com-w-full com-border-collapse;
+
+      .table-header {
+        @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+        th {
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+          &:nth-child(1) {
+            @apply com-w-[40%];
+          }
+          &:nth-child(2) {
+            @apply com-w-[60%];
+          }
+        }
+      }
+
+      .survey-row {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-100 com-transition-colors;
+
+        &:last-child {
+          @apply com-border-b-0;
+        }
+
+        td {
+          @apply com-p-4 com-text-sm com-font-normal com-text-Yankees-Blue;
+
+          .survey-name {
+            @apply com-text-Yankees-Blue com-font-semibold;
+          }
+
+          .survey-link {
+            @apply com-text-xs com-font-normal com-text-Ultramarine-Blue com-no-underline com-flex com-items-center com-gap-1 com-whitespace-nowrap;
+            nb-icon {
+              @apply com-text-base;
+            }
+          }
+
+          .survey-actions {
+            @apply com-flex com-flex-row com-gap-5 com-justify-between com-items-center;
+
+            .show-responses-button {
+              @apply com-rounded-lg com-border com-border-solid com-border-Bright-Gray;
+            }
+
+            .show-responses-button-container {
+              @apply com-flex com-flex-row com-gap-6 com-items-center;
+            }
+
+            .toggle-controls {
+              @apply com-flex com-flex-row com-items-center;
+
+              .toggle-item {
+                @apply com-flex com-border-0 com-border-r com-border-solid com-border-Bright-Gray com-pr-4;
+              }
+            }
+          }
+
+          .edit-btn {
+            @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-gap-1 com-pl-4;
+            fa-icon {
+              @apply com-text-base;
+            }
+          }
+        }
+      }
+
+      .loading-row {
+        .loading-cell {
+          @apply com-text-center com-py-8;
+        }
+      }
+    }
   }
 }
 
-table {
-  @apply com-border-collapse com-w-full com-mt-4;
+.survey-header {
+  @apply com-flex com-justify-between com-items-center com-mb-6 com-w-full;
 }
 
-td,
-th {
-  @apply com-p-4;
+.dfeg-create-form {
+  @apply md:com-w-full com-w-auto md:com-mx-0 com-mx-3 md:com-mb-0 com-mb-3;
+
+  .form-container {
+    @apply com-flex md:com-flex-row com-flex-col com-gap-6 com-items-end com-w-full;
+
+    .name,
+    .data-form-type-select {
+      @apply com-w-full;
+      label {
+        @apply com-text-sm com-font-medium com-text-Yankees-Blue com-w-full;
+      }
+
+      input {
+        @apply com-w-full com-h-10 com-mt-3;
+      }
+
+      select {
+        @apply com-h-10 com-w-full com-mt-3 com-px-3;
+      }
+    }
+
+    .input-field {
+      @apply com-m-0 com-mt-3 com-w-full;
+    }
+  }
 }
 
-tr:not(:last-child) {
-  @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+.header-section {
+  @apply com-flex com-justify-between md:com-items-center md:com-mb-6 com-mb-4 com-flex-col md:com-flex-row com-gap-4;
+
+  .page-title {
+    @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+  }
+
+  a {
+    @apply com-rounded-lg;
+  }
+}
+
+.save-button-bottom {
+  @apply md:com-w-auto com-w-full;
 }
