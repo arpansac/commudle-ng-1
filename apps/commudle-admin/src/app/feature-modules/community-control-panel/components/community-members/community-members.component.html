@@ -3,20 +3,20 @@
     <h2 class="quick-insights-title">Quick Insights</h2>
     <div class="insights-grid">
       <div class="insight-card">
-        <div class="insight-label">TOTAL MEMBERS</div>
-        <div class="insight-number">{{ community.members_count }}</div>
+        <p class="insight-label">TOTAL MEMBERS</p>
+        <p class="insight-number">{{ community.members_count }}</p>
       </div>
       <div class="insight-card">
-        <div class="insight-label">GENDER DISTRIBUTION</div>
+        <p class="insight-label">GENDER DISTRIBUTION</p>
         <canvas id="chart-member-distibution"></canvas>
       </div>
       <div class="insight-card">
-        <div class="insight-label">PROFESSIONALS VS STUDENTS</div>
+        <p class="insight-label">PROFESSIONALS VS STUDENTS</p>
         <canvas id="chart-experience-distribution"></canvas>
       </div>
       <div class="insight-card">
-        <div class="insight-label">NEW MEMBERS IN LAST 90 DAYS</div>
-        <canvas id="chart-member-growth"></canvas>
+        <p class="insight-label">NEW MEMBERS IN LAST 90 DAYS</p>
+        <p class="insight-number">{{ newMembersCount }}</p>
       </div>
     </div>
   </div>
@@ -231,13 +231,24 @@
           </td>
           <td>
             <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
-              <p>Attended {{ userRole.agg_user_community_engagement.overall_attendance_rate }} events</p>
-              <p>Posted in forum {{ userRole.agg_user_community_engagement.total_channel_messages }} times</p>
-              <p>Joined {{ userRole.agg_user_community_engagement.total_event_registrations }} events</p>
-              <p>Joined {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} events</p>
-              <p>Joined {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} events</p>
-              <p>Joined {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} events</p>
-              <p>Joined {{ userRole.agg_user_community_engagement.total_volunteered_events }} events</p>
+              <ul>
+                <li>Overall Attendence: {{ userRole.agg_user_community_engagement.overall_attendance_rate }}</li>
+                <li>
+                  Events (attendee): {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
+                  {{ userRole.agg_user_community_engagement.total_event_registrations }} attended,
+                  {{ userRole.agg_user_community_engagement.total_event_registrations }} invited & skipped,
+                  {{ userRole.agg_user_community_engagement.total_volunteered_events }} volunteered
+                </li>
+                <li>
+                  Events (speaker):
+                  {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} registered,
+                  {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} talks delivered
+                </li>
+                <li>
+                  Hackathon: {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} registered
+                </li>
+                <li>Channel Messages Sent: {{ userRole.agg_user_community_engagement.total_channel_messages }}</li>
+              </ul>
             </div>
           </td>
           <td>

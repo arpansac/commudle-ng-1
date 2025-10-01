@@ -246,18 +246,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   getNewMembersCount() {
-    this.statsCommunitiesService.newMembersCount(this.community.slug).subscribe((data) => {
-      return new Chart('chart-member-growth', {
-        type: 'bar',
-        data: {
-          datasets: [
-            {
-              data: [data.chart_data],
-              backgroundColor: '#5072ff',
-            },
-          ],
-        },
-      });
+    this.statsCommunitiesService.newMembersCount(this.community.slug, 180).subscribe((data) => {
+      this.newMembersCount = data.total;
     });
   }
 
@@ -304,7 +294,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.isLoading = false;
         this.userRolesUsers = data.user_roles_users;
-        console.log(this.userRolesUsers);
         this.page = +data.page;
         this.total = data.total;
       });
