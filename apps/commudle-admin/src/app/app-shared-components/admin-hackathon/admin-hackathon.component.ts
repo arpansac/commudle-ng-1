@@ -27,7 +27,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
   query = '';
   searchForm;
   total = 0;
-  count = 2;
+  count = 10;
   page = 1;
   hackathonStatuses = Object.values(EHackathonStatus);
   activeHackathonStatuses: string[] = [EHackathonStatus.OPEN, EHackathonStatus.DRAFT, EHackathonStatus.COMPLETED];
