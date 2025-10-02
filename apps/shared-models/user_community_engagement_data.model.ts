@@ -1,8 +1,11 @@
 export interface IUserCommunityEngagementData {
-  event_registrations_count: string;
-  entry_passes_count: string;
-  entry_passes_attended_count: string;
-  entry_passes_uninvited_attended_count: string;
-  community_channel_messages_count: string;
-  overall_event_attendance_rate: string;
+  overall_attendance_rate: number;
+  total_channel_messages: number;
+  total_event_registrations: number;
+  total_event_speaker_registrations: number;
+  total_event_speaker_sessions: number;
+  total_hackathon_registrations: number;
+  total_volunteered_events: number;
+  total_skipped_events: number;
+  attended_events_count: number;
 }

@@ -3,11 +3,11 @@
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-6;
 
     .quick-insights-title {
-      @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-6;
+      @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-m-0 md:com-mb-6 com-mb-4;
     }
 
     .insights-grid {
-      @apply com-grid com-grid-cols-1 md:com-grid-cols-4 com-gap-6;
+      @apply com-grid com-grid-cols-1 md:com-grid-cols-4 md:com-gap-6 com-gap-4;
 
       .insight-card {
         @apply com-bg-gray-50 com-rounded-10 com-p-4 com-border com-border-solid com-border-Bright-Gray;
@@ -39,7 +39,7 @@
     }
 
     .filter-dropdowns {
-      @apply com-flex com-items-end com-gap-3 com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 com-mb-4 com-w-full;
+      @apply com-flex com-items-end com-gap-3 md:com-flex-nowrap com-flex-wrap com-justify-center com-text-xs com-font-medium com-text-Yankees-Blue com-border-0 com-border-Bright-Gray com-border-solid md:com-pr-3 com-pr-0 com-mb-4 com-w-full;
       .filter-select {
         @apply com-bg-gray-100 com-border-0 com-w-full com-cursor-pointer com-rounded-3xl;
       }

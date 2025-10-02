@@ -1,6 +1,7 @@
 import { ICommunity } from './community.model';
 import { IUserRole } from './user-role.model';
 import { IUser } from './user.model';
+import { IUserCommunityEngagementData } from 'apps/shared-models/user_community_engagement_data.model';
 
 export interface IUserRolesUser {
   id: number;
@@ -13,18 +14,8 @@ export interface IUserRolesUser {
   status: EUserRolesUserStatus;
   community?: ICommunity;
   role_designation?: string;
-  agg_user_community_engagement: IAggUserCommunityEngagement;
+  agg_user_community_engagement: IUserCommunityEngagementData;
   community_score: number;
-}
-
-export interface IAggUserCommunityEngagement {
-  overall_attendance_rate: number;
-  total_channel_messages: number;
-  total_event_registrations: number;
-  total_event_speaker_registrations: number;
-  total_event_speaker_sessions: number;
-  total_hackathon_registrations: number;
-  total_volunteered_events: number;
 }
 
 export enum EUserRolesUserStatus {

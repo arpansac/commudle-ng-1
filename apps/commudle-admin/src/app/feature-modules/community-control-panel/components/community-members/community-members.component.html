@@ -247,8 +247,8 @@
                 <li>Overall Attendence: {{ userRole.agg_user_community_engagement.overall_attendance_rate }}</li>
                 <li>
                   Events (attendee): {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
-                  {{ userRole.agg_user_community_engagement.total_event_registrations }} attended,
-                  {{ userRole.agg_user_community_engagement.total_event_registrations }} invited & skipped,
+                  {{ userRole.agg_user_community_engagement.attended_events_count }} attended,
+                  {{ userRole.agg_user_community_engagement.total_skipped_events }} invited & skipped,
                   {{ userRole.agg_user_community_engagement.total_volunteered_events }} volunteered
                 </li>
                 <li>
@@ -303,7 +303,7 @@
                 Social Resources
                 <a
                   *ngFor="let item of userRole.user_highlights.social_resources"
-                  [routerLink]="['/users', item.username]"
+                  [routerLink]="['/users', item.user.username]"
                   target="_blank"
                 >
                   {{ item.name }}&nbsp;
