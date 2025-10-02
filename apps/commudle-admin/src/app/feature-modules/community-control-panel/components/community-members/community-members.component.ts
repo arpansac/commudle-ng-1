@@ -179,7 +179,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           this.community = value.community;
           this.getMembersDistribution();
           this.getExperienceLevelDistribution();
-          this.getNewMembersCount();
           this.setMeta();
         }
       }),
