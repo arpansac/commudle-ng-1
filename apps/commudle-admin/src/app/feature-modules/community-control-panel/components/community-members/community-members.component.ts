@@ -41,6 +41,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   sortByField = '';
   sortOrder = '';
   newMembersCount: number;
+  daysFilter = 90;
 
   contextMenuItems = [
     {
@@ -246,9 +247,17 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   getNewMembersCount() {
-    this.statsCommunitiesService.newMembersCount(this.community.slug, 180).subscribe((data) => {
+    this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
       this.newMembersCount = data.total;
     });
+  }
+
+  onDaysFilterChange(event) {
+    console.log(event, 'called');
+    const days = parseInt((event.target as HTMLInputElement).value);
+    console.log(days, 'days');
+    this.daysFilter = days;
+    this.getNewMembersCount();
   }
 
   onTagAdd(value: string) {
@@ -272,6 +281,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
     const domains = this.communityFilterForm.get('domains').value || [];
     const gender = this.communityFilterForm.get('gender').value;
+
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,

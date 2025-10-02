@@ -13,7 +13,7 @@
         @apply com-bg-gray-50 com-rounded-10 com-p-4 com-border com-border-solid com-border-Bright-Gray;
 
         .insight-label {
-          @apply com-text-xs com-font-medium com-text-gray-600 com-mb-3;
+          @apply com-text-xs com-font-medium com-text-gray-600 com-m-0 com-mb-3;
         }
 
         .insight-number {
@@ -214,4 +214,12 @@
 .location,
 .joined-date {
   @apply com-flex-nowrap;
+}
+
+.days-filter-container {
+  @apply com-flex com-flex-col com-gap-2 com-w-full com-min-w-0;
+
+  .days-input {
+    @apply com-w-full com-text-xs;
+  }
 }
