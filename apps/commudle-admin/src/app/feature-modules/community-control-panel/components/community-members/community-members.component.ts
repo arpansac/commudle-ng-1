@@ -253,9 +253,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   onDaysFilterChange(event) {
-    console.log(event, 'called');
     const days = parseInt((event.target as HTMLInputElement).value);
-    console.log(days, 'days');
     this.daysFilter = days;
     this.getNewMembersCount();
   }
@@ -315,20 +313,15 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   search() {
     this.query = '';
-    this.searchForm.valueChanges
-      .pipe(debounceTime(800), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(() => {
-        if (this.loadingData) {
-          return;
-        }
-        this.userRolesUsers = [];
-        this.page = 1;
-        this.total = 0;
-        this.loadingData = true;
-        this.query = this.searchForm.get('name').value;
-        this.queryParamsString = this.query;
-        this.generateParams();
-      });
+    this.searchForm.valueChanges.pipe(debounceTime(800), distinctUntilChanged()).subscribe(() => {
+      this.userRolesUsers = [];
+      this.page = 1;
+      this.total = 0;
+      this.loadingData = true;
+      this.query = this.searchForm.get('name').value;
+      this.queryParamsString = this.query;
+      this.generateParams();
+    });
   }
 
   getPageData(page) {
@@ -475,7 +468,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
     const queryParamsString = urlSearchParams.toString();
     this.location.replaceState(location.pathname, queryParamsString);
-
     this.page = 1;
     this.getMembers();
   }

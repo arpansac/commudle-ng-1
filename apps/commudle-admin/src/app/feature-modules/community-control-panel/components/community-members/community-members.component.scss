@@ -128,6 +128,10 @@
               p {
                 @apply com-m-0;
               }
+
+              ul {
+                @apply com-p-0 com-m-0 com-pl-4;
+              }
             }
 
             .activity-indicator {
