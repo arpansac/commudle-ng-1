@@ -1,7 +1,7 @@
 import { ICommunity } from './community.model';
 import { IUserRole } from './user-role.model';
 import { IUser } from './user.model';
-import { IUserCommunityEngagementData } from 'apps/shared-models/user_community_engagement_data.model';
+import { IUserCommunityEngagementData } from './user_community_engagement_data.model';
 
 export interface IUserRolesUser {
   id: number;

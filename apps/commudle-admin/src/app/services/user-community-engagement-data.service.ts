@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
-import { IUserCommunityEngagementData } from 'apps/shared-models/user_community_engagement_data.model';
+import { IUserCommunityEngagementData } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
