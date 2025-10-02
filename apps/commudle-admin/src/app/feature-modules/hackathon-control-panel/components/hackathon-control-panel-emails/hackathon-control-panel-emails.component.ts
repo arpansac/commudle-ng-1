@@ -23,9 +23,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-emails',
-  templateUrl: './hackathon-control-panel-emails.component.html',
-  styleUrls: ['./hackathon-control-panel-emails.component.scss'],
+    selector: 'commudle-hackathon-control-panel-emails',
+    templateUrl: './hackathon-control-panel-emails.component.html',
+    styleUrls: ['./hackathon-control-panel-emails.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   hackathonId: number | string;

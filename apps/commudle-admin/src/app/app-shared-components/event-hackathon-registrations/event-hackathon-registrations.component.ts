@@ -9,9 +9,10 @@ import { generate } from 'lean-qr';
 import { NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-event-hackathon-registrations',
-  templateUrl: './event-hackathon-registrations.component.html',
-  styleUrls: ['./event-hackathon-registrations.component.scss'],
+    selector: 'commudle-event-hackathon-registrations',
+    templateUrl: './event-hackathon-registrations.component.html',
+    styleUrls: ['./event-hackathon-registrations.component.scss'],
+    standalone: false
 })
 export class EventHackathonRegistrationsComponent implements OnInit {
   registrations: IDataFormEntityResponseGroup[] = [];

@@ -4,9 +4,10 @@ import { NbDialogRef } from '@commudle/theme';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-add-to-calendar',
-  templateUrl: './add-to-calendar.component.html',
-  styleUrls: ['./add-to-calendar.component.scss'],
+    selector: 'commudle-add-to-calendar',
+    templateUrl: './add-to-calendar.component.html',
+    styleUrls: ['./add-to-calendar.component.scss'],
+    standalone: false
 })
 export class AddToCalendarComponent implements OnInit {
   @Input() startDate: Date;

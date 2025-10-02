@@ -5,9 +5,10 @@ import { EventCollaborationCommunitiesService } from 'apps/commudle-admin/src/ap
 import { IEventCollaborationCommunity } from 'apps/shared-models/event_collaboration_community.model';
 
 @Component({
-  selector: 'app-collaboration-communities',
-  templateUrl: './collaboration-communities.component.html',
-  styleUrls: ['./collaboration-communities.component.scss'],
+    selector: 'app-collaboration-communities',
+    templateUrl: './collaboration-communities.component.html',
+    styleUrls: ['./collaboration-communities.component.scss'],
+    standalone: false
 })
 export class CollaborationCommunitiesComponent implements OnInit, OnChanges {
   @Input() community: ICommunity;

@@ -6,9 +6,10 @@ import * as moment from 'moment';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'commudle-purchase-orders',
-  templateUrl: './purchase-orders.component.html',
-  styleUrls: ['./purchase-orders.component.scss'],
+    selector: 'commudle-purchase-orders',
+    templateUrl: './purchase-orders.component.html',
+    styleUrls: ['./purchase-orders.component.scss'],
+    standalone: false
 })
 export class PurchaseOrdersComponent implements OnInit, OnDestroy {
   purchaseOrders: IPurchaseOrder[];

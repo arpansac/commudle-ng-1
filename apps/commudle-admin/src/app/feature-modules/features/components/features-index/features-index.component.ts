@@ -4,9 +4,10 @@ import { IFeature } from 'apps/shared-models/features.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-features-index',
-  templateUrl: './features-index.component.html',
-  styleUrls: ['./features-index.component.scss'],
+    selector: 'commudle-features-index',
+    templateUrl: './features-index.component.html',
+    styleUrls: ['./features-index.component.scss'],
+    standalone: false
 })
 export class FeaturesIndexComponent implements OnInit {
   @Input() features: IFeature[];

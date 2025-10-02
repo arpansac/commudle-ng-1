@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-exa-drive-page',
-  templateUrl: './exa-drive-page.component.html',
-  styleUrls: ['./exa-drive-page.component.scss'],
+    selector: 'commudle-exa-drive-page',
+    templateUrl: './exa-drive-page.component.html',
+    styleUrls: ['./exa-drive-page.component.scss'],
+    standalone: false
 })
 export class ExaDrivePageComponent implements OnInit {
   cryptoCurrencies: { id: string; link: string; name: string }[] = [];

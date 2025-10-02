@@ -4,10 +4,11 @@ import { IUser } from 'apps/shared-models/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-homepage-experts',
-  templateUrl: './homepage-experts.component.html',
-  styleUrls: ['./homepage-experts.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-homepage-experts',
+    templateUrl: './homepage-experts.component.html',
+    styleUrls: ['./homepage-experts.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomepageExpertsComponent implements OnInit, OnDestroy {
   experts: IUser[] = [];

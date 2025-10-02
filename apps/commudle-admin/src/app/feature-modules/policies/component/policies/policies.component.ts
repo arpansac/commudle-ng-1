@@ -7,9 +7,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-policies',
-  templateUrl: './policies.component.html',
-  styleUrls: ['./policies.component.scss'],
+    selector: 'commudle-policies',
+    templateUrl: './policies.component.html',
+    styleUrls: ['./policies.component.scss'],
+    standalone: false
 })
 export class PoliciesComponent implements OnInit, OnDestroy {
   privacyPolicy: IPrivacy;

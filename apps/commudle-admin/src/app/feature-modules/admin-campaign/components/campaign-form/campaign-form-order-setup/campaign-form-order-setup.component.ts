@@ -7,9 +7,10 @@ import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-so
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-campaign-form-order-setup',
-  templateUrl: './campaign-form-order-setup.component.html',
-  styleUrls: ['./campaign-form-order-setup.component.scss'],
+    selector: 'commudle-campaign-form-order-setup',
+    templateUrl: './campaign-form-order-setup.component.html',
+    styleUrls: ['./campaign-form-order-setup.component.scss'],
+    standalone: false
 })
 export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   fragment: string;

@@ -25,9 +25,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { filter, map } from 'rxjs';
 
 @Component({
-  selector: 'commudle-edit-data-form',
-  templateUrl: './edit-data-form.component.html',
-  styleUrls: ['./edit-data-form.component.scss'],
+    selector: 'commudle-edit-data-form',
+    templateUrl: './edit-data-form.component.html',
+    styleUrls: ['./edit-data-form.component.scss'],
+    standalone: false
 })
 export class EditDataFormComponent implements OnInit, OnChanges {
   @Input() dataFormId: number;

@@ -4,9 +4,10 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 
 @Component({
-  selector: 'commudle-first-signin',
-  templateUrl: './first-signin.component.html',
-  styleUrls: ['./first-signin.component.scss'],
+    selector: 'commudle-first-signin',
+    templateUrl: './first-signin.component.html',
+    styleUrls: ['./first-signin.component.scss'],
+    standalone: false
 })
 export class FirstSigninComponent implements OnInit {
   @Input() currentUser: ICurrentUser;

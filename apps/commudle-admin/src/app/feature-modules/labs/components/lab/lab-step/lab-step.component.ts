@@ -20,9 +20,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-lab-step',
-  templateUrl: './lab-step.component.html',
-  styleUrls: ['./lab-step.component.scss'],
+    selector: 'app-lab-step',
+    templateUrl: './lab-step.component.html',
+    styleUrls: ['./lab-step.component.scss'],
+    standalone: false
 })
 export class LabStepComponent implements OnInit, OnDestroy, AfterViewChecked {
   public src;

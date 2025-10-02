@@ -7,9 +7,10 @@ import { NbDialogService } from '@commudle/theme';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'commudle-faq-control-panel',
-  templateUrl: './faq-control-panel.component.html',
-  styleUrls: ['./faq-control-panel.component.scss'],
+    selector: 'commudle-faq-control-panel',
+    templateUrl: './faq-control-panel.component.html',
+    styleUrls: ['./faq-control-panel.component.scss'],
+    standalone: false
 })
 export class FaqControlPanelComponent implements OnInit {
   @Input() parentId: number | string;

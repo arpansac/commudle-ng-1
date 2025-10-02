@@ -17,9 +17,10 @@ import * as moment from 'moment';
 import { IPageInfo } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 @Component({
-  selector: 'app-event-updates',
-  templateUrl: './event-updates.component.html',
-  styleUrls: ['./event-updates.component.scss'],
+    selector: 'app-event-updates',
+    templateUrl: './event-updates.component.html',
+    styleUrls: ['./event-updates.component.scss'],
+    standalone: false
 })
 export class EventUpdatesComponent implements OnInit, OnChanges {
   @Input() community: ICommunity;

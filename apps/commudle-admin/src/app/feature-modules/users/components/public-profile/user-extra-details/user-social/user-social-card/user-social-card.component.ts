@@ -5,9 +5,10 @@ import { ISocialResource } from 'apps/shared-models/social_resource.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-user-social-card',
-  templateUrl: './user-social-card.component.html',
-  styleUrls: ['./user-social-card.component.scss'],
+    selector: 'app-user-social-card',
+    templateUrl: './user-social-card.component.html',
+    styleUrls: ['./user-social-card.component.scss'],
+    standalone: false
 })
 export class UserSocialCardComponent implements OnInit {
   @Input() socialResource: ISocialResource;

@@ -10,9 +10,10 @@ import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-event-registrations',
-  templateUrl: './event-registrations.component.html',
-  styleUrls: ['./event-registrations.component.scss'],
+    selector: 'commudle-event-registrations',
+    templateUrl: './event-registrations.component.html',
+    styleUrls: ['./event-registrations.component.scss'],
+    standalone: false
 })
 export class EventRegistrationsComponent implements OnInit, OnDestroy {
   event: IEvent;

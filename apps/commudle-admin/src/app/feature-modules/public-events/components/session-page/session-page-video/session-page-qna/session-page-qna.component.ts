@@ -3,9 +3,10 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { SessionPageNotificationsService } from 'apps/shared-services/session-page-notifications.service';
 
 @Component({
-  selector: 'app-session-page-qna',
-  templateUrl: './session-page-qna.component.html',
-  styleUrls: ['./session-page-qna.component.scss'],
+    selector: 'app-session-page-qna',
+    templateUrl: './session-page-qna.component.html',
+    styleUrls: ['./session-page-qna.component.scss'],
+    standalone: false
 })
 export class SessionPageQnaComponent implements OnInit {
   @Input() qna: IDiscussion;

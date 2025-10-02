@@ -6,9 +6,10 @@ import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-email-preferences',
-  templateUrl: './email-preferences.component.html',
-  styleUrls: ['./email-preferences.component.scss'],
+    selector: 'app-email-preferences',
+    templateUrl: './email-preferences.component.html',
+    styleUrls: ['./email-preferences.component.scss'],
+    standalone: false
 })
 export class EmailPreferencesComponent implements OnInit, OnDestroy {
   subscriptionGroups: Record<any, any>;

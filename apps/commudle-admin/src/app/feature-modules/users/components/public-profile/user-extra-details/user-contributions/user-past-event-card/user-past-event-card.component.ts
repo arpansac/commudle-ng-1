@@ -6,9 +6,10 @@ import { IEventStatus } from 'apps/shared-models/event_status.model';
 import { ISpeakerResource } from 'apps/shared-models/speaker_resource.model';
 
 @Component({
-  selector: 'app-user-past-event-card',
-  templateUrl: './user-past-event-card.component.html',
-  styleUrls: ['./user-past-event-card.component.scss'],
+    selector: 'app-user-past-event-card',
+    templateUrl: './user-past-event-card.component.html',
+    styleUrls: ['./user-past-event-card.component.scss'],
+    standalone: false
 })
 export class UserPastEventCardComponent implements OnInit {
   @Input() pastEvent: IEvent;

@@ -59,9 +59,10 @@ import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-review',
-  templateUrl: './hackathon-control-panel-review.component.html',
-  styleUrls: ['./hackathon-control-panel-review.component.scss'],
+    selector: 'commudle-hackathon-control-panel-review',
+    templateUrl: './hackathon-control-panel-review.component.html',
+    styleUrls: ['./hackathon-control-panel-review.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   userResponses: IHackathonUserResponses[];

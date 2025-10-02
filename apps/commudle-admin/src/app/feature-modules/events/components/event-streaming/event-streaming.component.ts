@@ -8,9 +8,10 @@ import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/service
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-event-streaming',
-  templateUrl: './event-streaming.component.html',
-  styleUrls: ['./event-streaming.component.scss'],
+    selector: 'commudle-event-streaming',
+    templateUrl: './event-streaming.component.html',
+    styleUrls: ['./event-streaming.component.scss'],
+    standalone: false
 })
 export class EventStreamingComponent implements AfterContentInit {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;

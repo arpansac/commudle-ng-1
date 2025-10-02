@@ -7,9 +7,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-experts-program',
-  templateUrl: './experts-program.component.html',
-  styleUrls: ['./experts-program.component.scss'],
+    selector: 'commudle-experts-program',
+    templateUrl: './experts-program.component.html',
+    styleUrls: ['./experts-program.component.scss'],
+    standalone: false
 })
 export class ExpertsProgramComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;

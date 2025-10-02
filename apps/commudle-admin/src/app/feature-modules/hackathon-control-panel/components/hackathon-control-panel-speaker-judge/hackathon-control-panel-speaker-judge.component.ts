@@ -13,9 +13,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-speaker-judge',
-  templateUrl: './hackathon-control-panel-speaker-judge.component.html',
-  styleUrls: ['./hackathon-control-panel-speaker-judge.component.scss'],
+    selector: 'commudle-hackathon-control-panel-speaker-judge',
+    templateUrl: './hackathon-control-panel-speaker-judge.component.html',
+    styleUrls: ['./hackathon-control-panel-speaker-judge.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDestroy {
   fetchSpeakerJudge: FormGroup;

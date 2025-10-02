@@ -3,9 +3,10 @@ import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { IHackathonSponsor } from 'apps/shared-models/hackathon-sponsor';
 @Component({
-  selector: 'commudle-hackathon-control-panel-sponsor-card',
-  templateUrl: './hackathon-control-panel-sponsor-card.component.html',
-  styleUrls: ['./hackathon-control-panel-sponsor-card.component.scss'],
+    selector: 'commudle-hackathon-control-panel-sponsor-card',
+    templateUrl: './hackathon-control-panel-sponsor-card.component.html',
+    styleUrls: ['./hackathon-control-panel-sponsor-card.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelSponsorCardComponent {
   @Input() hackathonSponsor: IHackathonSponsor;

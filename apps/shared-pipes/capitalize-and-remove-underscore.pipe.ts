@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'capitalizeAndRemoveUnderscore',
+    name: 'capitalizeAndRemoveUnderscore',
+    standalone: false
 })
 export class CapitalizeAndRemoveUnderscorePipe implements PipeTransform {
   transform(value: string): string {

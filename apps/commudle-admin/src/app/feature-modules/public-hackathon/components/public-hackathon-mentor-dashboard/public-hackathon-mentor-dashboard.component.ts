@@ -32,6 +32,7 @@ import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/w
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 
 @Component({
+  standalone: false,
   selector: 'commudle-public-hackathon-mentor-dashboard',
   templateUrl: './public-hackathon-mentor-dashboard.component.html',
   styleUrls: ['./public-hackathon-mentor-dashboard.component.scss'],

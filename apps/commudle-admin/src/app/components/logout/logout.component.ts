@@ -7,9 +7,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss'],
+    selector: 'app-logout',
+    templateUrl: './logout.component.html',
+    styleUrls: ['./logout.component.scss'],
+    standalone: false
 })
 export class LogoutComponent implements OnInit, OnDestroy {
   constructor(

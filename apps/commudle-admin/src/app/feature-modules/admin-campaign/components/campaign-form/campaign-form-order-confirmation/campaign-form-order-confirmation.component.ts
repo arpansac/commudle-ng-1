@@ -7,9 +7,10 @@ import { faEdit, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { AwsS3Bucket } from 'apps/commudle-admin/src/assets/static-assets';
 @Component({
-  selector: 'commudle-campaign-form-order-confirmation',
-  templateUrl: './campaign-form-order-confirmation.component.html',
-  styleUrls: ['./campaign-form-order-confirmation.component.scss'],
+    selector: 'commudle-campaign-form-order-confirmation',
+    templateUrl: './campaign-form-order-confirmation.component.html',
+    styleUrls: ['./campaign-form-order-confirmation.component.scss'],
+    standalone: false
 })
 export class CampaignFormOrderConfirmationComponent implements OnInit {
   campaign: ICampaign;

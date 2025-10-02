@@ -12,9 +12,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Observable, Subscription, timer } from 'rxjs';
 
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss'],
+    selector: 'app-homepage',
+    templateUrl: './homepage.component.html',
+    styleUrls: ['./homepage.component.scss'],
+    standalone: false
 })
 export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
   timer$: Observable<number>;

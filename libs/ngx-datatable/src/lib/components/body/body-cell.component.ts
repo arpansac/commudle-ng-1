@@ -22,9 +22,9 @@ import { Keys } from '../../utils/keys';
 export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
 
 @Component({
-  selector: 'datatable-body-cell',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'datatable-body-cell',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     <div class="datatable-body-cell-label" [style.margin-left.px]="calcLeftMargin(column, row)">
       <label
         *ngIf="column.checkboxable && (!displayCheck || displayCheck(row, column, value))"
@@ -62,7 +62,8 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
       >
       </ng-template>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   @Input() displayCheck: (row: any, column?: TableColumn, value?: any) => boolean;

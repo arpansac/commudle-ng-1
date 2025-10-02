@@ -17,8 +17,8 @@ import { DataTableColumnDirective } from '../columns/column.directive';
 import { translateXY } from '../../utils/translate';
 
 @Component({
-  selector: 'datatable-header',
-  template: `
+    selector: 'datatable-header',
+    template: `
     <div
       role="row"
       orderable
@@ -68,10 +68,11 @@ import { translateXY } from '../../utils/translate';
       </div>
     </div>
   `,
-  host: {
-    class: 'datatable-header'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    host: {
+        class: 'datatable-header'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableHeaderComponent implements OnDestroy {
   @Input() sortAscendingIcon: any;

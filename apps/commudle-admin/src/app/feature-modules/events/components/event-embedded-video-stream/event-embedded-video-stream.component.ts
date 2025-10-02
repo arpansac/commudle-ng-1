@@ -10,10 +10,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-event-embedded-video-stream',
-  templateUrl: './event-embedded-video-stream.component.html',
-  styleUrls: ['./event-embedded-video-stream.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-event-embedded-video-stream',
+    templateUrl: './event-embedded-video-stream.component.html',
+    styleUrls: ['./event-embedded-video-stream.component.scss'],
+    standalone: false
 })
 export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;

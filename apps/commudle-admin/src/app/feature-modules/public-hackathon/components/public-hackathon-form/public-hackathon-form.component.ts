@@ -24,9 +24,10 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { PublicHackathonFormConfirmationComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-form/public-hackathon-form-confirmation/public-hackathon-form-confirmation.component';
 
 @Component({
-  selector: 'commudle-public-hackathon-form',
-  templateUrl: './public-hackathon-form.component.html',
-  styleUrls: ['./public-hackathon-form.component.scss'],
+    selector: 'commudle-public-hackathon-form',
+    templateUrl: './public-hackathon-form.component.html',
+    styleUrls: ['./public-hackathon-form.component.scss'],
+    standalone: false
 })
 export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;

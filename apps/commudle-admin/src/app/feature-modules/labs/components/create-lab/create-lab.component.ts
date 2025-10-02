@@ -8,9 +8,10 @@ import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/se
 import { SeoService, ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-create-lab',
-  templateUrl: './create-lab.component.html',
-  styleUrls: ['./create-lab.component.scss'],
+    selector: 'commudle-create-lab',
+    templateUrl: './create-lab.component.html',
+    styleUrls: ['./create-lab.component.scss'],
+    standalone: false
 })
 export class CreateLabComponent implements OnInit {
   faFlask = faFlask;

@@ -10,9 +10,10 @@ import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-admin-team',
-  templateUrl: './admin-team.component.html',
-  styleUrls: ['./admin-team.component.scss'],
+    selector: 'commudle-admin-team',
+    templateUrl: './admin-team.component.html',
+    styleUrls: ['./admin-team.component.scss'],
+    standalone: false
 })
 export class AdminTeamComponent implements OnInit, OnDestroy {
   team: IUserRolesUser[] = [];

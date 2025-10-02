@@ -15,9 +15,10 @@ import { FormBuilder } from '@angular/forms';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'app-community-forms-list',
-  templateUrl: './community-forms-list.component.html',
-  styleUrls: ['./community-forms-list.component.scss'],
+    selector: 'app-community-forms-list',
+    templateUrl: './community-forms-list.component.html',
+    styleUrls: ['./community-forms-list.component.scss'],
+    standalone: false
 })
 export class CommunityFormsListComponent implements OnInit, OnDestroy {
   community: ICommunity;

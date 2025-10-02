@@ -3,9 +3,10 @@ import { MentionModel } from '../../models/mentions.model';
 import { AngularNodeViewComponent } from '../node-view.component';
 
 @Component({
-  selector: 'commudle-mentions-node',
-  templateUrl: './mentions-node.component.html',
-  styleUrls: ['./mentions-node.component.scss'],
+    selector: 'commudle-mentions-node',
+    templateUrl: './mentions-node.component.html',
+    styleUrls: ['./mentions-node.component.scss'],
+    standalone: false
 })
 export class MentionsNodeComponent extends AngularNodeViewComponent implements OnInit {
   constructor() {

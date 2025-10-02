@@ -13,9 +13,10 @@ enum EFormPurposes {
 }
 
 @Component({
-  selector: 'app-new-data-form',
-  templateUrl: './new-data-form.component.html',
-  styleUrls: ['./new-data-form.component.scss'],
+    selector: 'app-new-data-form',
+    templateUrl: './new-data-form.component.html',
+    styleUrls: ['./new-data-form.component.scss'],
+    standalone: false
 })
 export class NewDataFormComponent implements OnInit {
   @Input() showDescriptionField = true;

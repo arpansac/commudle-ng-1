@@ -32,9 +32,10 @@ import {
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-job-card',
-  templateUrl: './user-job-card.component.html',
-  styleUrls: ['./user-job-card.component.scss'],
+    selector: 'app-user-job-card',
+    templateUrl: './user-job-card.component.html',
+    styleUrls: ['./user-job-card.component.scss'],
+    standalone: false
 })
 export class UserJobCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

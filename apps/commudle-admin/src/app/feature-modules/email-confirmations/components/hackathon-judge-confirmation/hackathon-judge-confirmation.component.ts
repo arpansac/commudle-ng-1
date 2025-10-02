@@ -18,9 +18,10 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-hackathon-judge-confirmation',
-  templateUrl: './hackathon-judge-confirmation.component.html',
-  styleUrls: ['./hackathon-judge-confirmation.component.scss'],
+    selector: 'commudle-hackathon-judge-confirmation',
+    templateUrl: './hackathon-judge-confirmation.component.html',
+    styleUrls: ['./hackathon-judge-confirmation.component.scss'],
+    standalone: false
 })
 export class HackathonJudgeConfirmationComponent implements OnInit {
   token: string;

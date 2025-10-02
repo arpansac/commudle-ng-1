@@ -11,9 +11,10 @@ import { environment } from '@commudle/shared-environments';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-labs-search',
-  templateUrl: './labs-search.component.html',
-  styleUrls: ['./labs-search.component.scss'],
+    selector: 'app-labs-search',
+    templateUrl: './labs-search.component.html',
+    styleUrls: ['./labs-search.component.scss'],
+    standalone: false
 })
 export class LabsSearchComponent implements OnInit {
   labs: ILab[] = [];

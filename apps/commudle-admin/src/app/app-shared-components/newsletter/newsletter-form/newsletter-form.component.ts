@@ -13,9 +13,10 @@ import { NbDialogService } from '@commudle/theme';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-newsletter-form',
-  templateUrl: './newsletter-form.component.html',
-  styleUrls: ['./newsletter-form.component.scss'],
+    selector: 'commudle-newsletter-form',
+    templateUrl: './newsletter-form.component.html',
+    styleUrls: ['./newsletter-form.component.scss'],
+    standalone: false
 })
 export class NewsletterFormComponent implements OnInit, AfterViewInit {
   newsletterForm: FormGroup;

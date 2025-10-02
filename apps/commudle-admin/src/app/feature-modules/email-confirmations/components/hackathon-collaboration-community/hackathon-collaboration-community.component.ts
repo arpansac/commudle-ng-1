@@ -6,6 +6,7 @@ import { SeoService } from '@commudle/shared-services';
 import { faCheckCircle, faTimesCircle, faRocket, faUsers, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
+  standalone: false,
   selector: 'commudle-hackathon-collaboration-community',
   templateUrl: './hackathon-collaboration-community.component.html',
   styleUrls: ['./hackathon-collaboration-community.component.scss'],

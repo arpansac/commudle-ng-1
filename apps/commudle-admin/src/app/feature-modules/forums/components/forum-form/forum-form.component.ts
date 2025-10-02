@@ -6,6 +6,7 @@ import { ForumService } from '@commudle/shared-services';
 import { EDiscussionType, IForum } from '@commudle/shared-models';
 
 @Component({
+  standalone: false,
   selector: 'commudle-forum-form',
   templateUrl: './forum-form.component.html',
   styleUrls: ['./forum-form.component.scss'],

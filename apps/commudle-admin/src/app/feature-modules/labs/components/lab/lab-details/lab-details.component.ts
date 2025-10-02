@@ -8,9 +8,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 
 @Component({
-  selector: 'app-lab-details',
-  templateUrl: './lab-details.component.html',
-  styleUrls: ['./lab-details.component.scss'],
+    selector: 'app-lab-details',
+    templateUrl: './lab-details.component.html',
+    styleUrls: ['./lab-details.component.scss'],
+    standalone: false
 })
 export class LabDetailsComponent implements OnInit {
   @Input() lab: ILab;

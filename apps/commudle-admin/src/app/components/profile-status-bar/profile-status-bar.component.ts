@@ -6,9 +6,10 @@ import { StepperService } from 'apps/commudle-admin/src/app/services/stepper.ser
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-profile-status-bar',
-  templateUrl: './profile-status-bar.component.html',
-  styleUrls: ['./profile-status-bar.component.scss'],
+    selector: 'app-profile-status-bar',
+    templateUrl: './profile-status-bar.component.html',
+    styleUrls: ['./profile-status-bar.component.scss'],
+    standalone: false
 })
 export class ProfileStatusBarComponent implements OnInit, OnDestroy {
   value = 0;

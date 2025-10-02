@@ -4,9 +4,10 @@ import { EDbModels, IHackathon } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-public-hackathon-channels',
-  templateUrl: './public-hackathon-channels.component.html',
-  styleUrls: ['./public-hackathon-channels.component.scss'],
+    selector: 'commudle-public-hackathon-channels',
+    templateUrl: './public-hackathon-channels.component.html',
+    styleUrls: ['./public-hackathon-channels.component.scss'],
+    standalone: false
 })
 export class PublicHackathonChannelsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

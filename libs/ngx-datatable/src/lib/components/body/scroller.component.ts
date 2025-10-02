@@ -15,12 +15,13 @@ import {
 import { MouseEvent } from '../../events';
 
 @Component({
-  selector: 'datatable-scroller',
-  template: ` <ng-content></ng-content> `,
-  host: {
-    class: 'datatable-scroll'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'datatable-scroller',
+    template: ` <ng-content></ng-content> `,
+    host: {
+        class: 'datatable-scroll'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ScrollerComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean = false;

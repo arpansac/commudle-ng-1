@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-user-profile-card-medium',
-  templateUrl: './user-profile-card-medium.component.html',
-  styleUrls: ['./user-profile-card-medium.component.scss'],
+    selector: 'app-user-profile-card-medium',
+    templateUrl: './user-profile-card-medium.component.html',
+    styleUrls: ['./user-profile-card-medium.component.scss'],
+    standalone: false
 })
 export class UserProfileCardMediumComponent implements OnInit {
   @Input() user: IUser;

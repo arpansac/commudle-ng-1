@@ -17,9 +17,10 @@ import { NbDialogService } from '@commudle/theme';
 import { AddToCalendarComponent } from '@commudle/shared-components';
 
 @Component({
-  selector: 'commudle-event-registered-card',
-  templateUrl: './event-registered-card.component.html',
-  styleUrls: ['./event-registered-card.component.scss'],
+    selector: 'commudle-event-registered-card',
+    templateUrl: './event-registered-card.component.html',
+    styleUrls: ['./event-registered-card.component.scss'],
+    standalone: false
 })
 export class EventRegisteredCardComponent implements OnInit {
   @Input() event: IEvent;

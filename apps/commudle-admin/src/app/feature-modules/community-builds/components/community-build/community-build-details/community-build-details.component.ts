@@ -15,9 +15,10 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-  selector: 'app-community-build-details',
-  templateUrl: './community-build-details.component.html',
-  styleUrls: ['./community-build-details.component.scss'],
+    selector: 'app-community-build-details',
+    templateUrl: './community-build-details.component.html',
+    styleUrls: ['./community-build-details.component.scss'],
+    standalone: false
 })
 export class CommunityBuildDetailsComponent implements OnInit {
   @Input() cBuild: ICommunityBuild;

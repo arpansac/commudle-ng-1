@@ -5,9 +5,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faFlask } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-labs-featured',
-  templateUrl: './labs-featured.component.html',
-  styleUrls: ['./labs-featured.component.scss'],
+    selector: 'commudle-labs-featured',
+    templateUrl: './labs-featured.component.html',
+    styleUrls: ['./labs-featured.component.scss'],
+    standalone: false
 })
 export class LabsFeaturedComponent implements OnInit {
   @Input() showCardsHorizontal = false;

@@ -10,9 +10,10 @@ import { ListingPagesFilterTypes } from 'apps/shared-models/enums/listing-pages-
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'commudle-public-home-list-speakers-profile',
-  templateUrl: './public-home-list-speakers-profile.component.html',
-  styleUrls: ['./public-home-list-speakers-profile.component.scss'],
+    selector: 'commudle-public-home-list-speakers-profile',
+    templateUrl: './public-home-list-speakers-profile.component.html',
+    styleUrls: ['./public-home-list-speakers-profile.component.scss'],
+    standalone: false
 })
 export class PublicHomeListSpeakersProfileComponent implements OnInit {
   speakers: IUser[] = [];

@@ -16,7 +16,8 @@ import { IInfiniteScrollAction, IInfiniteScrollEvent } from '../utils/models';
 import { createScroller, InfiniteScrollActions } from '../utils/scroll-register';
 
 @Directive({
-  selector: '[commudleInfiniteScroll]',
+    selector: '[commudleInfiniteScroll]',
+    standalone: false
 })
 export class InfiniteScrollDirective implements OnDestroy, OnChanges, AfterViewInit {
   @Output() scrolled = new EventEmitter<IInfiniteScrollEvent>();

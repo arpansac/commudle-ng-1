@@ -8,10 +8,11 @@ import { DiscussionHandlerService } from '../../../services/discussion-handler.s
 import { UserMessageReceiptHandlerService } from '../../../services/user-message-receipt-handler.service';
 
 @Component({
-  selector: 'commudle-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MessageComponent implements OnInit, AfterViewInit {
   @Input() message!: IUserMessage;

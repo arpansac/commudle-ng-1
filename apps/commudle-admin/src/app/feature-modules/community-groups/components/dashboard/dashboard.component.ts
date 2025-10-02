@@ -19,9 +19,10 @@ import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/e
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: false
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

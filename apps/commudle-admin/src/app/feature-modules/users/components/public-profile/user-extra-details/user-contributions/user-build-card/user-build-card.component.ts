@@ -4,9 +4,10 @@ import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-user-build-card',
-  templateUrl: './user-build-card.component.html',
-  styleUrls: ['./user-build-card.component.scss'],
+    selector: 'app-user-build-card',
+    templateUrl: './user-build-card.component.html',
+    styleUrls: ['./user-build-card.component.scss'],
+    standalone: false
 })
 export class UserBuildCardComponent implements OnChanges {
   @Input() build: ICommunityBuild;

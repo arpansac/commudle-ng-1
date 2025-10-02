@@ -11,9 +11,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-team',
-  templateUrl: './community-team.component.html',
-  styleUrls: ['./community-team.component.scss'],
+    selector: 'app-community-team',
+    templateUrl: './community-team.component.html',
+    styleUrls: ['./community-team.component.scss'],
+    standalone: false
 })
 export class CommunityTeamComponent implements OnInit, OnDestroy {
   EUserRolesUserStatus = EUserRolesUserStatus;

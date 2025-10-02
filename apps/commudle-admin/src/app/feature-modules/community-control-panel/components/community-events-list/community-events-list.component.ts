@@ -13,9 +13,10 @@ import moment from 'moment';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'app-community-events-list',
-  templateUrl: './community-events-list.component.html',
-  styleUrls: ['./community-events-list.component.scss'],
+    selector: 'app-community-events-list',
+    templateUrl: './community-events-list.component.html',
+    styleUrls: ['./community-events-list.component.scss'],
+    standalone: false
 })
 export class CommunityEventsListComponent implements OnInit, OnDestroy {
   @ViewChild('cloneEvent') cloneEvent: TemplateRef<any>;

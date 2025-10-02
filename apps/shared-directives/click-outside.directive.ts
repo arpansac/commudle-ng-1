@@ -15,7 +15,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[appClickOutside]',
+    selector: '[appClickOutside]',
+    standalone: false
 })
 export class ClickOutsideDirective implements OnInit, OnChanges, OnDestroy {
   @Input() clickOutsideEnabled = true;

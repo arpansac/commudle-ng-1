@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'numkeys', pure: false })
+@Pipe({
+    name: 'numkeys', pure: false,
+    standalone: false
+})
 export class NumkeysPipe implements PipeTransform {
 
   transform(object: Object): number {

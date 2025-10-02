@@ -8,9 +8,10 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 @Component({
-  selector: 'commudle-newsletters',
-  templateUrl: './newsletters.component.html',
-  styleUrls: ['./newsletters.component.scss'],
+    selector: 'commudle-newsletters',
+    templateUrl: './newsletters.component.html',
+    styleUrls: ['./newsletters.component.scss'],
+    standalone: false
 })
 export class NewslettersComponent implements OnInit {
   subscriptions: Subscription[] = [];

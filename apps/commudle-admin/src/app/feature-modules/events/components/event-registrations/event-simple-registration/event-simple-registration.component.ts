@@ -11,10 +11,11 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 
 @Component({
-  selector: 'app-event-simple-registration',
-  templateUrl: './event-simple-registration.component.html',
-  styleUrls: ['./event-simple-registration.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-event-simple-registration',
+    templateUrl: './event-simple-registration.component.html',
+    styleUrls: ['./event-simple-registration.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventSimpleRegistrationComponent implements OnInit {
   @Input() community: ICommunity;

@@ -8,9 +8,10 @@ import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-chats-list',
-  templateUrl: './chats-list.component.html',
-  styleUrls: ['./chats-list.component.scss'],
+    selector: 'app-chats-list',
+    templateUrl: './chats-list.component.html',
+    styleUrls: ['./chats-list.component.scss'],
+    standalone: false
 })
 export class ChatsListComponent implements OnInit, OnDestroy {
   @Input() currentUser: ICurrentUser;

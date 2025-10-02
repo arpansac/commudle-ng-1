@@ -7,9 +7,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-my-job-applications',
-  templateUrl: './my-job-applications.component.html',
-  styleUrls: ['./my-job-applications.component.scss'],
+    selector: 'app-my-job-applications',
+    templateUrl: './my-job-applications.component.html',
+    styleUrls: ['./my-job-applications.component.scss'],
+    standalone: false
 })
 export class MyJobApplicationsComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;

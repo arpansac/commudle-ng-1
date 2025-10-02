@@ -4,9 +4,10 @@ import { ISpeakerResource } from '@commudle/shared-models';
 import { SpeakerResourcesService } from 'apps/commudle-admin/src/app/services/speaker-resources.service';
 
 @Component({
-  selector: 'commudle-speaker-slides',
-  templateUrl: './speaker-slides.component.html',
-  styleUrls: ['./speaker-slides.component.scss'],
+    selector: 'commudle-speaker-slides',
+    templateUrl: './speaker-slides.component.html',
+    styleUrls: ['./speaker-slides.component.scss'],
+    standalone: false
 })
 export class SpeakerSlidesComponent implements OnInit {
   speakerSlides: ISpeakerResource[] = [];

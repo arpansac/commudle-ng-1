@@ -14,9 +14,10 @@ import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 
 @Component({
-  selector: 'app-user-details',
-  templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss']
+    selector: 'app-user-details',
+    templateUrl: './user-details.component.html',
+    styleUrls: ['./user-details.component.scss'],
+    standalone: false
 })
 export class UserDetailsComponent implements OnInit, OnChanges {
   faGithub = faGithub;

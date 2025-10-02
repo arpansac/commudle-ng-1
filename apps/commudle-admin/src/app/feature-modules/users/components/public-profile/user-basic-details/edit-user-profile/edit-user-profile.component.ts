@@ -7,9 +7,10 @@ import { IUser } from '@commudle/shared-models';
 import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-user-profile',
-  templateUrl: './edit-user-profile.component.html',
-  styleUrls: ['./edit-user-profile.component.scss'],
+    selector: 'app-edit-user-profile',
+    templateUrl: './edit-user-profile.component.html',
+    styleUrls: ['./edit-user-profile.component.scss'],
+    standalone: false
 })
 export class EditUserProfileComponent implements OnInit, OnDestroy {
   dialogRef: NbDialogRef<any>;

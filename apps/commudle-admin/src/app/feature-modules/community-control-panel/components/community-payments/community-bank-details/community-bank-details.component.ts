@@ -40,9 +40,10 @@ import {
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-community-bank-details',
-  templateUrl: './community-bank-details.component.html',
-  styleUrls: ['./community-bank-details.component.scss'],
+    selector: 'commudle-community-bank-details',
+    templateUrl: './community-bank-details.component.html',
+    styleUrls: ['./community-bank-details.component.scss'],
+    standalone: false
 })
 export class CommunityBankDetailsComponent implements OnInit, OnDestroy {
   isLoading = false;

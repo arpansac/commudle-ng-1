@@ -7,9 +7,10 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { EHackathonStatus, ICommunity, IHackathonTeam, IUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 @Component({
-  selector: 'commudle-public-hackathon-details-mini-card',
-  templateUrl: './public-hackathon-details-mini-card.component.html',
-  styleUrls: ['./public-hackathon-details-mini-card.component.scss'],
+    selector: 'commudle-public-hackathon-details-mini-card',
+    templateUrl: './public-hackathon-details-mini-card.component.html',
+    styleUrls: ['./public-hackathon-details-mini-card.component.scss'],
+    standalone: false
 })
 export class PublicHackathonDetailsMiniCardComponent implements OnInit, OnDestroy {
   @Input() hackathon: IHackathon;

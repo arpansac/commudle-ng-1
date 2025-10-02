@@ -35,10 +35,10 @@ import {
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-form-groups',
-  templateUrl: './form-groups.component.html',
-  styleUrls: ['./form-groups.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-form-groups',
+    templateUrl: './form-groups.component.html',
+    styleUrls: ['./form-groups.component.scss'],
+    standalone: false
 })
 export class FormGroupsComponent implements OnInit {
   @Input() event: IEvent;

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-home-promotions',
-  templateUrl: './home-promotions.component.html',
-  styleUrls: ['./home-promotions.component.scss']
+    selector: 'app-home-promotions',
+    templateUrl: './home-promotions.component.html',
+    styleUrls: ['./home-promotions.component.scss'],
+    standalone: false
 })
 export class HomePromotionsComponent implements OnInit {
 

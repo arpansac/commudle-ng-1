@@ -4,9 +4,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-explore-experts',
-  templateUrl: './explore-experts.component.html',
-  styleUrls: ['./explore-experts.component.scss'],
+    selector: 'commudle-explore-experts',
+    templateUrl: './explore-experts.component.html',
+    styleUrls: ['./explore-experts.component.scss'],
+    standalone: false
 })
 export class ExploreExpertsComponent implements OnInit {
   experts: IUser[] = [];

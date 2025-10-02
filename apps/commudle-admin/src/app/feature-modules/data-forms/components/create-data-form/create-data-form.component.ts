@@ -6,9 +6,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-create-data-form',
-  templateUrl: './create-data-form.component.html',
-  styleUrls: ['./create-data-form.component.scss'],
+    selector: 'app-create-data-form',
+    templateUrl: './create-data-form.component.html',
+    styleUrls: ['./create-data-form.component.scss'],
+    standalone: false
 })
 export class CreateDataFormComponent implements OnInit, OnDestroy {
   parentType;

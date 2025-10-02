@@ -11,9 +11,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-dates-form',
-  templateUrl: './hackathon-control-panel-dates-form.component.html',
-  styleUrls: ['./hackathon-control-panel-dates-form.component.scss'],
+    selector: 'commudle-hackathon-control-panel-dates-form',
+    templateUrl: './hackathon-control-panel-dates-form.component.html',
+    styleUrls: ['./hackathon-control-panel-dates-form.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelDatesFormComponent implements OnInit, OnDestroy {
   hackathonDatesForm: FormGroup;

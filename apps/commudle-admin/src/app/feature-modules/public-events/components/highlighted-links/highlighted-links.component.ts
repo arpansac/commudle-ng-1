@@ -28,9 +28,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-highlighted-links',
-  templateUrl: './highlighted-links.component.html',
-  styleUrls: ['./highlighted-links.component.scss'],
+    selector: 'app-highlighted-links',
+    templateUrl: './highlighted-links.component.html',
+    styleUrls: ['./highlighted-links.component.scss'],
+    standalone: false
 })
 export class HighlightedLinksComponent implements OnInit {
   ERegistationTypes = ERegistationTypes;

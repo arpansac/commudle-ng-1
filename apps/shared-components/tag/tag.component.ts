@@ -6,9 +6,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { debounceTime, distinctUntilChanged, filter, fromEvent, Subscription, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'app-tag',
-  templateUrl: './tag.component.html',
-  styleUrls: ['./tag.component.scss'],
+    selector: 'app-tag',
+    templateUrl: './tag.component.html',
+    styleUrls: ['./tag.component.scss'],
+    standalone: false
 })
 export class TagComponent implements OnInit, OnDestroy {
   @Input() tags: string[];

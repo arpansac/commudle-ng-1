@@ -5,9 +5,10 @@ import { ICaseStudy } from 'apps/shared-models/case-study.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-case-study-header',
-  templateUrl: './case-study-header.component.html',
-  styleUrls: ['./case-study-header.component.scss'],
+    selector: 'commudle-case-study-header',
+    templateUrl: './case-study-header.component.html',
+    styleUrls: ['./case-study-header.component.scss'],
+    standalone: false
 })
 export class CaseStudyHeaderComponent implements OnInit {
   caseStudyPageHeader: ICaseStudy;

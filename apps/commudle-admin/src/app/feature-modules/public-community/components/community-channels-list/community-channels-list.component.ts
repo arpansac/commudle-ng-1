@@ -5,9 +5,10 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-community-channels-list',
-  templateUrl: './community-channels-list.component.html',
-  styleUrls: ['./community-channels-list.component.scss'],
+    selector: 'app-community-channels-list',
+    templateUrl: './community-channels-list.component.html',
+    styleUrls: ['./community-channels-list.component.scss'],
+    standalone: false
 })
 export class CommunityChannelsListComponent implements OnInit, OnDestroy {
   community: ICommunity;

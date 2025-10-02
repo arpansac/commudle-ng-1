@@ -18,9 +18,10 @@ import { IUserRolesUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-membership-toggle',
-  templateUrl: './membership-toggle.component.html',
-  styleUrls: ['./membership-toggle.component.scss'],
+    selector: 'app-membership-toggle',
+    templateUrl: './membership-toggle.component.html',
+    styleUrls: ['./membership-toggle.component.scss'],
+    standalone: false
 })
 export class MembershipToggleComponent implements OnInit, OnDestroy {
   isMember = false;

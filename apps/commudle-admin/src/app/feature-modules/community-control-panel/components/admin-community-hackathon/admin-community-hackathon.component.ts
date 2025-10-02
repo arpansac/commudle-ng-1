@@ -5,9 +5,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-admin-community-hackathon',
-  templateUrl: './admin-community-hackathon.component.html',
-  styleUrls: ['./admin-community-hackathon.component.scss'],
+    selector: 'commudle-admin-community-hackathon',
+    templateUrl: './admin-community-hackathon.component.html',
+    styleUrls: ['./admin-community-hackathon.component.scss'],
+    standalone: false
 })
 export class AdminCommunityHackathonComponent implements OnInit, OnDestroy {
   community: ICommunity;

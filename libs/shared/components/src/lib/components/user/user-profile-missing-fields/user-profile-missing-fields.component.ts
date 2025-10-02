@@ -11,9 +11,10 @@ interface MissingField {
 }
 
 @Component({
-  selector: 'commudle-user-profile-missing-fields',
-  templateUrl: './user-profile-missing-fields.component.html',
-  styleUrls: ['./user-profile-missing-fields.component.scss'],
+    selector: 'commudle-user-profile-missing-fields',
+    templateUrl: './user-profile-missing-fields.component.html',
+    styleUrls: ['./user-profile-missing-fields.component.scss'],
+    standalone: false
 })
 export class UserProfileMissingFieldsComponent implements OnInit, OnDestroy {
   userProfileMissingFields: string[] = [];

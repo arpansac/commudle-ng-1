@@ -5,9 +5,10 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-feed-input',
-  templateUrl: './user-feed-input.component.html',
-  styleUrls: ['./user-feed-input.component.scss'],
+    selector: 'app-user-feed-input',
+    templateUrl: './user-feed-input.component.html',
+    styleUrls: ['./user-feed-input.component.scss'],
+    standalone: false
 })
 export class UserFeedInputComponent implements OnInit {
   showImageUpload = false;

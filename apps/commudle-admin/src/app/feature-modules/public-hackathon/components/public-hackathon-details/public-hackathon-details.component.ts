@@ -23,9 +23,10 @@ import * as moment from 'moment';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faPencil, faAward, faSackDollar, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'commudle-public-hackathon-details',
-  templateUrl: './public-hackathon-details.component.html',
-  styleUrls: ['./public-hackathon-details.component.scss'],
+    selector: 'commudle-public-hackathon-details',
+    templateUrl: './public-hackathon-details.component.html',
+    styleUrls: ['./public-hackathon-details.component.scss'],
+    standalone: false
 })
 export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;

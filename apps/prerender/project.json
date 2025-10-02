@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/prerender/src",
   "projectType": "application",
+  "tags": [],
   "implicitDependencies": ["commudle-admin"],
   "targets": {
     "build": {
@@ -69,6 +70,5 @@
         }
       ]
     }
-  },
-  "tags": []
+  }
 }

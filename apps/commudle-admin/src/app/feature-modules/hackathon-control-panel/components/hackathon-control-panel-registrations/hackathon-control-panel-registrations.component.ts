@@ -13,9 +13,10 @@ import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-registrations',
-  templateUrl: './hackathon-control-panel-registrations.component.html',
-  styleUrls: ['./hackathon-control-panel-registrations.component.scss'],
+    selector: 'commudle-hackathon-control-panel-registrations',
+    templateUrl: './hackathon-control-panel-registrations.component.html',
+    styleUrls: ['./hackathon-control-panel-registrations.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDestroy {
   userDetailsForm: FormGroup;

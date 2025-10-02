@@ -1,7 +1,8 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appBreakpoints]',
+    selector: '[appBreakpoints]',
+    standalone: false
 })
 export class BreakpointsDirective {
   private breakpoints = [

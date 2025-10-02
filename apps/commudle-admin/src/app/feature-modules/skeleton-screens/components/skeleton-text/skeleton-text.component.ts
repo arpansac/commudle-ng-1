@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-skeleton-text',
-  templateUrl: './skeleton-text.component.html',
-  styleUrls: ['./skeleton-text.component.scss']
+    selector: 'app-skeleton-text',
+    templateUrl: './skeleton-text.component.html',
+    styleUrls: ['./skeleton-text.component.scss'],
+    standalone: false
 })
 export class SkeletonTextComponent implements OnInit {
   @Input() rows: number;

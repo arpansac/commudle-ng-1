@@ -4,10 +4,11 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 
 @Component({
-  selector: 'app-homepage-events',
-  templateUrl: './homepage-events.component.html',
-  styleUrls: ['./homepage-events.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-homepage-events',
+    templateUrl: './homepage-events.component.html',
+    styleUrls: ['./homepage-events.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomepageEventsComponent implements OnInit {
   events: IEvent[];

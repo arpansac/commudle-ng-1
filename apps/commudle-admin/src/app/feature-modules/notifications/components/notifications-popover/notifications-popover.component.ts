@@ -7,9 +7,10 @@ import { ENotificationStatuses } from 'apps/shared-models/enums/notification_sta
 import { INotification } from 'apps/shared-models/notification.model';
 
 @Component({
-  selector: 'app-notifications-popover',
-  templateUrl: './notifications-popover.component.html',
-  styleUrls: ['./notifications-popover.component.scss'],
+    selector: 'app-notifications-popover',
+    templateUrl: './notifications-popover.component.html',
+    styleUrls: ['./notifications-popover.component.scss'],
+    standalone: false
 })
 export class NotificationsPopoverComponent implements OnInit {
   isLoading = true;

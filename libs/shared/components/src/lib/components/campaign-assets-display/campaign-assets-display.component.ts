@@ -10,9 +10,10 @@ import {
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-campaign-assets-display',
-  templateUrl: './campaign-assets-display.component.html',
-  styleUrls: ['./campaign-assets-display.component.scss'],
+    selector: 'commudle-campaign-assets-display',
+    templateUrl: './campaign-assets-display.component.html',
+    styleUrls: ['./campaign-assets-display.component.scss'],
+    standalone: false
 })
 export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() defaultImage: string;

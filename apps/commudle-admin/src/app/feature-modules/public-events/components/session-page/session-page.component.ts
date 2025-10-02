@@ -25,10 +25,11 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-session-page',
-  templateUrl: './session-page.component.html',
-  styleUrls: ['./session-page.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-session-page',
+    templateUrl: './session-page.component.html',
+    styleUrls: ['./session-page.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SessionPageComponent implements OnInit, OnDestroy {
   isBrowser: boolean;

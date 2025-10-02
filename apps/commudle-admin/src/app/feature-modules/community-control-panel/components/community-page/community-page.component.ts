@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-community-page',
-  templateUrl: './community-page.component.html',
-  styleUrls: ['./community-page.component.scss'],
+    selector: 'commudle-community-page',
+    templateUrl: './community-page.component.html',
+    styleUrls: ['./community-page.component.scss'],
+    standalone: false
 })
 export class CommunityPageComponent implements OnInit {
   EDbModels = EDbModels;

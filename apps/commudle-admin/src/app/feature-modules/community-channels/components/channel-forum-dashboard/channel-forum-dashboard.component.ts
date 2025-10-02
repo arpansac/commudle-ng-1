@@ -19,9 +19,10 @@ import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum'
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 @Component({
-  selector: 'commudle-channel-forum-dashboard',
-  templateUrl: './channel-forum-dashboard.component.html',
-  styleUrls: ['./channel-forum-dashboard.component.scss'],
+    selector: 'commudle-channel-forum-dashboard',
+    templateUrl: './channel-forum-dashboard.component.html',
+    styleUrls: ['./channel-forum-dashboard.component.scss'],
+    standalone: false
 })
 export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   @Input() showCommunityList = false;

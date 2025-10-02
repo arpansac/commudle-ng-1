@@ -19,7 +19,8 @@ import { createScroller, InfiniteScrollActions } from 'apps/shared-modules/infin
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appInfiniteScroll]',
+    selector: '[appInfiniteScroll]',
+    standalone: false
 })
 export class InfiniteScrollDirective implements AfterViewInit, OnChanges, OnDestroy {
   @Output() scrolled = new EventEmitter<IInfiniteScrollEvent>();

@@ -5,9 +5,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-community-newsletter',
-  templateUrl: './community-newsletter.component.html',
-  styleUrls: ['./community-newsletter.component.scss'],
+    selector: 'commudle-community-newsletter',
+    templateUrl: './community-newsletter.component.html',
+    styleUrls: ['./community-newsletter.component.scss'],
+    standalone: false
 })
 export class CommunityNewsletterComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

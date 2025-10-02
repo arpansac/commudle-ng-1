@@ -5,9 +5,10 @@ import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.s
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-help-dictionary-iframe',
-  templateUrl: './help-dictionary-iframe.component.html',
-  styleUrls: ['./help-dictionary-iframe.component.scss'],
+    selector: 'commudle-help-dictionary-iframe',
+    templateUrl: './help-dictionary-iframe.component.html',
+    styleUrls: ['./help-dictionary-iframe.component.scss'],
+    standalone: false
 })
 export class HelpDictionaryIframeComponent implements OnInit, OnDestroy {
   @Input() eventName: string;

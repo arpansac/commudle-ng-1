@@ -4,9 +4,10 @@ import { HomeService } from 'apps/commudle-admin/src/app/services/home.service';
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
-  selector: 'app-home-events',
-  templateUrl: './home-events.component.html',
-  styleUrls: ['./home-events.component.scss'],
+    selector: 'app-home-events',
+    templateUrl: './home-events.component.html',
+    styleUrls: ['./home-events.component.scss'],
+    standalone: false
 })
 export class HomeEventsComponent implements OnInit {
   events: IEvent[];

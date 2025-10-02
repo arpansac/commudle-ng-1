@@ -4,9 +4,10 @@ import { faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 
 @Component({
-  selector: 'commudle-login-consent-popup',
-  templateUrl: './login-consent-popup.component.html',
-  styleUrls: ['./login-consent-popup.component.scss'],
+    selector: 'commudle-login-consent-popup',
+    templateUrl: './login-consent-popup.component.html',
+    styleUrls: ['./login-consent-popup.component.scss'],
+    standalone: false
 })
 export class LoginConsentPopupComponent implements OnInit {
   @Output() consentValueChangedOutput = new EventEmitter<object>();

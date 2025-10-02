@@ -13,9 +13,10 @@ import { EDbModels, IUser } from '@commudle/shared-models';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 @Component({
-  selector: 'commudle-check-fill-data-form',
-  templateUrl: './check-fill-data-form.component.html',
-  styleUrls: ['./check-fill-data-form.component.scss'],
+    selector: 'commudle-check-fill-data-form',
+    templateUrl: './check-fill-data-form.component.html',
+    styleUrls: ['./check-fill-data-form.component.scss'],
+    standalone: false
 })
 export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   dataFormEntity: IDataFormEntity;

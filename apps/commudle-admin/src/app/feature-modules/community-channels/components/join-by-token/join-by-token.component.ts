@@ -14,9 +14,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'commudle-join-by-token',
-  templateUrl: './join-by-token.component.html',
-  styleUrls: ['./join-by-token.component.scss'],
+    selector: 'commudle-join-by-token',
+    templateUrl: './join-by-token.component.html',
+    styleUrls: ['./join-by-token.component.scss'],
+    standalone: false
 })
 export class JoinByTokenComponent implements OnInit, OnDestroy {
   @Input() parent: ICommunity | ICommunityGroup | IHackathon;

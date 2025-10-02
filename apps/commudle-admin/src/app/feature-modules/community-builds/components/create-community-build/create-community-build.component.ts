@@ -36,9 +36,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-  selector: 'commudle-create-community-build',
-  templateUrl: './create-community-build.component.html',
-  styleUrls: ['./create-community-build.component.scss'],
+    selector: 'commudle-create-community-build',
+    templateUrl: './create-community-build.component.html',
+    styleUrls: ['./create-community-build.component.scss'],
+    standalone: false
 })
 export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   eUserRolesUserStatus = EUserRolesUserStatus;

@@ -6,9 +6,10 @@ import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community-group-custom-pages',
-  templateUrl: './community-group-custom-pages.component.html',
-  styleUrls: ['./community-group-custom-pages.component.scss'],
+    selector: 'commudle-community-group-custom-pages',
+    templateUrl: './community-group-custom-pages.component.html',
+    styleUrls: ['./community-group-custom-pages.component.scss'],
+    standalone: false
 })
 export class CommunityGroupCustomPagesComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

@@ -5,9 +5,10 @@ import { IQuestion } from 'apps/shared-models/question.model';
 import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'commudle-event-form-responses-graph',
-  templateUrl: './event-form-responses-graph.component.html',
-  styleUrls: ['./event-form-responses-graph.component.scss'],
+    selector: 'commudle-event-form-responses-graph',
+    templateUrl: './event-form-responses-graph.component.html',
+    styleUrls: ['./event-form-responses-graph.component.scss'],
+    standalone: false
 })
 export class EventFormResponsesGraphComponent implements OnInit, OnDestroy {
   isLoading = true;

@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'completeurl' })
+@Pipe({
+    name: 'completeurl',
+    standalone: false
+})
 export class CompleteUrlPipe implements PipeTransform {
   transform(url: string, urlType: string = '') {
     if (!/(http(s?)):\/\//i.test(url)) {

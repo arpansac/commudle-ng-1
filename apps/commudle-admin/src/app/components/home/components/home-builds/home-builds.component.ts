@@ -4,9 +4,10 @@ import { HomeService } from 'apps/commudle-admin/src/app/services/home.service';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 
 @Component({
-  selector: 'app-home-builds',
-  templateUrl: './home-builds.component.html',
-  styleUrls: ['./home-builds.component.scss'],
+    selector: 'app-home-builds',
+    templateUrl: './home-builds.component.html',
+    styleUrls: ['./home-builds.component.scss'],
+    standalone: false
 })
 export class HomeBuildsComponent implements OnInit {
   builds: ICommunityBuild[] = [];

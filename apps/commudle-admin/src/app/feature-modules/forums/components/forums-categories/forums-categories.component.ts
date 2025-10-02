@@ -8,6 +8,7 @@ import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
+  standalone: false,
   selector: 'commudle-forums-categories',
   templateUrl: './forums-categories.component.html',
   styleUrls: ['./forums-categories.component.scss'],

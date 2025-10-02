@@ -6,9 +6,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-user-network',
-  templateUrl: './user-network.component.html',
-  styleUrls: ['./user-network.component.scss']
+    selector: 'app-user-network',
+    templateUrl: './user-network.component.html',
+    styleUrls: ['./user-network.component.scss'],
+    standalone: false
 })
 export class UserNetworkComponent implements OnInit, OnDestroy {
 

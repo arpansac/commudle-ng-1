@@ -12,9 +12,10 @@ import { Location } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-attended-members',
-  templateUrl: './attended-members.component.html',
-  styleUrls: ['./attended-members.component.scss'],
+    selector: 'app-attended-members',
+    templateUrl: './attended-members.component.html',
+    styleUrls: ['./attended-members.component.scss'],
+    standalone: false
 })
 export class AttendedMembersComponent implements OnInit, OnDestroy {
   event: IEvent;

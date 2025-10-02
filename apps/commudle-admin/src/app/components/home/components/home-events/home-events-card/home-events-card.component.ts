@@ -7,9 +7,10 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
-  selector: 'app-home-events-card',
-  templateUrl: './home-events-card.component.html',
-  styleUrls: ['./home-events-card.component.scss']
+    selector: 'app-home-events-card',
+    templateUrl: './home-events-card.component.html',
+    styleUrls: ['./home-events-card.component.scss'],
+    standalone: false
 })
 export class HomeEventsCardComponent implements OnInit {
 

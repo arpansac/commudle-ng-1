@@ -18,9 +18,10 @@ import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_
 import { INotification, INotificationMessage } from 'apps/shared-models/notification.model';
 
 @Component({
-  selector: 'app-notifications-list-item',
-  templateUrl: './notifications-list-item.component.html',
-  styleUrls: ['./notifications-list-item.component.scss'],
+    selector: 'app-notifications-list-item',
+    templateUrl: './notifications-list-item.component.html',
+    styleUrls: ['./notifications-list-item.component.scss'],
+    standalone: false
 })
 export class NotificationsListItemComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   timeout: any;

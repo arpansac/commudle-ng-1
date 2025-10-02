@@ -3,9 +3,10 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { IUser, ICommunityBuild } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-show-more-builds',
-  templateUrl: './show-more-builds.component.html',
-  styleUrls: ['./show-more-builds.component.scss'],
+    selector: 'commudle-show-more-builds',
+    templateUrl: './show-more-builds.component.html',
+    styleUrls: ['./show-more-builds.component.scss'],
+    standalone: false
 })
 export class ShowMoreBuildsComponent implements OnInit {
   @Input() user: IUser;

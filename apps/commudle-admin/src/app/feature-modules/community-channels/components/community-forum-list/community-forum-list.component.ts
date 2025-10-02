@@ -21,9 +21,10 @@ interface EGroupedCommunityChannels {
 }
 
 @Component({
-  selector: 'app-community-forum-list',
-  templateUrl: './community-forum-list.component.html',
-  styleUrls: ['./community-forum-list.component.scss'],
+    selector: 'app-community-forum-list',
+    templateUrl: './community-forum-list.component.html',
+    styleUrls: ['./community-forum-list.component.scss'],
+    standalone: false
 })
 export class CommunityForumListComponent implements OnInit, OnDestroy {
   @Input() showCommunityBadge = false;

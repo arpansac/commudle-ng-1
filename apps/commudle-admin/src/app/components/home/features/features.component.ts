@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-features',
-  templateUrl: './features.component.html',
-  styleUrls: ['./features.component.scss'],
+    selector: 'app-features',
+    templateUrl: './features.component.html',
+    styleUrls: ['./features.component.scss'],
+    standalone: false
 })
 export class FeaturesComponent implements OnInit {
   constructor(private seoService: SeoService) {}

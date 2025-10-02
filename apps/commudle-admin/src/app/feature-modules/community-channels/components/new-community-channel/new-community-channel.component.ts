@@ -4,9 +4,10 @@ import { CommunityChannelManagerService } from '@commudle/shared-services';
 import { NbDialogRef } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-new-community-channel',
-  templateUrl: './new-community-channel.component.html',
-  styleUrls: ['./new-community-channel.component.scss'],
+    selector: 'commudle-new-community-channel',
+    templateUrl: './new-community-channel.component.html',
+    styleUrls: ['./new-community-channel.component.scss'],
+    standalone: false
 })
 export class NewCommunityChannelComponent {
   @Input() groupName: string;

@@ -15,7 +15,10 @@ type Inputs =
   | 'deleteNode';
 type NodeViewPropsWithoutInputs = Omit<NodeViewProps, Inputs>;
 
-@Component({ template: '' })
+@Component({
+    template: '',
+    standalone: false
+})
 export class AngularNodeViewComponent implements NodeViewPropsWithoutInputs {
   readonly editor = input.required<NodeViewProps['editor']>();
   readonly node = input.required<NodeViewProps['node']>();

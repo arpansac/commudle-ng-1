@@ -6,9 +6,10 @@ import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-session-page-details',
-  templateUrl: './session-page-details.component.html',
-  styleUrls: ['./session-page-details.component.scss'],
+    selector: 'app-session-page-details',
+    templateUrl: './session-page-details.component.html',
+    styleUrls: ['./session-page-details.component.scss'],
+    standalone: false
 })
 export class SessionPageDetailsComponent implements OnInit {
   @Input() event: IEvent;

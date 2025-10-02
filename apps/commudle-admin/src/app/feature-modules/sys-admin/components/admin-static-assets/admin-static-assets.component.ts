@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-admin-static-assets',
-  templateUrl: './admin-static-assets.component.html',
-  styleUrls: ['./admin-static-assets.component.scss'],
+    selector: 'app-admin-static-assets',
+    templateUrl: './admin-static-assets.component.html',
+    styleUrls: ['./admin-static-assets.component.scss'],
+    standalone: false
 })
 export class AdminStaticAssetsComponent implements OnInit {
   constructor() {}

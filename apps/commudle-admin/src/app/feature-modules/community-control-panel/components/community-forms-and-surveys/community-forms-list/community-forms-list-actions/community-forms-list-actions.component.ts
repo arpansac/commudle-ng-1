@@ -4,9 +4,10 @@ import { FormResponsesComponent } from 'apps/shared-components/form-responses/fo
 import { NbWindowService } from '@commudle/theme';
 
 @Component({
-  selector: 'app-community-forms-list-actions',
-  templateUrl: './community-forms-list-actions.component.html',
-  styleUrls: ['./community-forms-list-actions.component.scss'],
+    selector: 'app-community-forms-list-actions',
+    templateUrl: './community-forms-list-actions.component.html',
+    styleUrls: ['./community-forms-list-actions.component.scss'],
+    standalone: false
 })
 export class CommunityFormsListActionsComponent implements OnInit {
   @Input() value: string | number;

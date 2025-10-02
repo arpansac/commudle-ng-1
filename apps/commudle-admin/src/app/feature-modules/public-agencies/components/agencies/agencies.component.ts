@@ -8,9 +8,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-agencies',
-  templateUrl: './agencies.component.html',
-  styleUrls: ['./agencies.component.scss'],
+    selector: 'commudle-agencies',
+    templateUrl: './agencies.component.html',
+    styleUrls: ['./agencies.component.scss'],
+    standalone: false
 })
 export class AgenciesComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;

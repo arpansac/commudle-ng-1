@@ -7,9 +7,10 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 
 @Component({
-  selector: 'commudle-upcoming-hackathons',
-  templateUrl: './upcoming-hackathons.component.html',
-  styleUrls: ['./upcoming-hackathons.component.scss'],
+    selector: 'commudle-upcoming-hackathons',
+    templateUrl: './upcoming-hackathons.component.html',
+    styleUrls: ['./upcoming-hackathons.component.scss'],
+    standalone: false
 })
 export class UpcomingHackathonsComponent implements OnInit {
   upcomingHackathons = [];

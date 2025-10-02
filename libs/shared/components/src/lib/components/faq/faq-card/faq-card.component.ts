@@ -3,9 +3,10 @@ import { IFaq } from '@commudle/shared-models';
 import { faAdd, faMinus, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-faq-card',
-  templateUrl: './faq-card.component.html',
-  styleUrls: ['./faq-card.component.scss'],
+    selector: 'commudle-faq-card',
+    templateUrl: './faq-card.component.html',
+    styleUrls: ['./faq-card.component.scss'],
+    standalone: false
 })
 export class FaqCardComponent {
   @Input() faq: IFaq;

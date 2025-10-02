@@ -12,9 +12,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-admin-featured-communities',
-  templateUrl: './admin-featured-communities.component.html',
-  styleUrls: ['./admin-featured-communities.component.scss'],
+    selector: 'app-admin-featured-communities',
+    templateUrl: './admin-featured-communities.component.html',
+    styleUrls: ['./admin-featured-communities.component.scss'],
+    standalone: false
 })
 export class AdminFeaturedCommunitiesComponent implements OnInit {
   featuredItems: IFeaturedItems[] = [];

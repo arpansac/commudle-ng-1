@@ -13,9 +13,10 @@ import { IAttachedFile, IUser } from '@commudle/shared-models';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
 @Component({
-  selector: 'commudle-user-profile-complete-step-two',
-  templateUrl: './user-profile-complete-step-two.component.html',
-  styleUrls: ['./user-profile-complete-step-two.component.scss'],
+    selector: 'commudle-user-profile-complete-step-two',
+    templateUrl: './user-profile-complete-step-two.component.html',
+    styleUrls: ['./user-profile-complete-step-two.component.scss'],
+    standalone: false
 })
 export class UserProfileCompleteStepTwoComponent implements OnInit, OnDestroy {
   validBasicDetailsStatus: boolean;

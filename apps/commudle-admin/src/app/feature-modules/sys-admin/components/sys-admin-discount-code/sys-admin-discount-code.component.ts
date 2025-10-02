@@ -8,9 +8,10 @@ import { DiscountCodeFormComponent } from './discount-code-form/discount-code-fo
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-sys-admin-discount-code',
-  templateUrl: './sys-admin-discount-code.component.html',
-  styleUrls: ['./sys-admin-discount-code.component.scss'],
+    selector: 'commudle-sys-admin-discount-code',
+    templateUrl: './sys-admin-discount-code.component.html',
+    styleUrls: ['./sys-admin-discount-code.component.scss'],
+    standalone: false
 })
 export class SysAdminDiscountCodeComponent implements OnInit, OnDestroy {
   discountCodes: IDiscountCode[] = [];

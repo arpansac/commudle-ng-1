@@ -20,9 +20,10 @@ import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-navbar-menu',
-  templateUrl: './navbar-menu.component.html',
-  styleUrls: ['./navbar-menu.component.scss'],
+    selector: 'app-navbar-menu',
+    templateUrl: './navbar-menu.component.html',
+    styleUrls: ['./navbar-menu.component.scss'],
+    standalone: false
 })
 export class NavbarMenuComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;

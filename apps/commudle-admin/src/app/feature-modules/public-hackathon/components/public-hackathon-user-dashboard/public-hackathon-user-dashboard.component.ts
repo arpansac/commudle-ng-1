@@ -21,9 +21,10 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 @Component({
-  selector: 'commudle-public-hackathon-user-dashboard',
-  templateUrl: './public-hackathon-user-dashboard.component.html',
-  styleUrls: ['./public-hackathon-user-dashboard.component.scss'],
+    selector: 'commudle-public-hackathon-user-dashboard',
+    templateUrl: './public-hackathon-user-dashboard.component.html',
+    styleUrls: ['./public-hackathon-user-dashboard.component.scss'],
+    standalone: false
 })
 export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy {
   icons = {

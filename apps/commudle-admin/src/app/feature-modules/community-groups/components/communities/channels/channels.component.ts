@@ -8,9 +8,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-channels',
-  templateUrl: './channels.component.html',
-  styleUrls: ['./channels.component.scss'],
+    selector: 'commudle-channels',
+    templateUrl: './channels.component.html',
+    styleUrls: ['./channels.component.scss'],
+    standalone: false
 })
 export class ChannelsComponent implements OnInit, OnDestroy {
   channels: ICommunityChannel[] = [];

@@ -4,9 +4,10 @@ import { JobApplicationService } from 'apps/commudle-admin/src/app/feature-modul
 import { IJobApplication } from 'apps/shared-models/job-application.model';
 
 @Component({
-  selector: 'app-my-job-application',
-  templateUrl: './my-job-application.component.html',
-  styleUrls: ['./my-job-application.component.scss'],
+    selector: 'app-my-job-application',
+    templateUrl: './my-job-application.component.html',
+    styleUrls: ['./my-job-application.component.scss'],
+    standalone: false
 })
 export class MyJobApplicationComponent implements OnInit {
   @Input() jobApplication: IJobApplication;

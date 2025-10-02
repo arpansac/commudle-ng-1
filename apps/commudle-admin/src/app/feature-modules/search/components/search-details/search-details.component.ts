@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'commudle-search-details',
-  templateUrl: './search-details.component.html',
-  styleUrls: ['./search-details.component.scss'],
+    selector: 'commudle-search-details',
+    templateUrl: './search-details.component.html',
+    styleUrls: ['./search-details.component.scss'],
+    standalone: false
 })
 export class SearchDetailsComponent implements OnInit {
   @Input() option: any;

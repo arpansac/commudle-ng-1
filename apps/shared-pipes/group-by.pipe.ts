@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({
-  name: 'groupByDate',
+    name: 'groupByDate',
+    standalone: false
 })
 export class GroupByDatePipe implements PipeTransform {
   transform(items: any[], field: string): any {

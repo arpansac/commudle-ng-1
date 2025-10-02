@@ -3,9 +3,10 @@ import { SeoService } from '@commudle/shared-services';
 import { faRectangleAd } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-community-controls',
-  templateUrl: './community-controls.component.html',
-  styleUrls: ['./community-controls.component.scss'],
+    selector: 'commudle-community-controls',
+    templateUrl: './community-controls.component.html',
+    styleUrls: ['./community-controls.component.scss'],
+    standalone: false
 })
 export class CommunityControlsComponent implements OnInit, OnDestroy {
   icons = {

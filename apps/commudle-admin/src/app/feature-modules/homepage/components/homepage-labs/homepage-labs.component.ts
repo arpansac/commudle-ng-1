@@ -3,10 +3,11 @@ import { HomeService } from 'apps/commudle-admin/src/app/services/home.service';
 import { ILab } from 'apps/shared-models/lab.model';
 
 @Component({
-  selector: 'app-homepage-labs',
-  templateUrl: './homepage-labs.component.html',
-  styleUrls: ['./homepage-labs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-homepage-labs',
+    templateUrl: './homepage-labs.component.html',
+    styleUrls: ['./homepage-labs.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomepageLabsComponent implements OnInit {
   labs: ILab[] = [];

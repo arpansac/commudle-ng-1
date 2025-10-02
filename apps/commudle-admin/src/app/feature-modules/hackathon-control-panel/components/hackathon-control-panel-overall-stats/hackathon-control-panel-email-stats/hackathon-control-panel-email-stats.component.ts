@@ -5,9 +5,10 @@ import { IFixedEmail } from 'apps/shared-models/fixed-email.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-email-stats',
-  templateUrl: './hackathon-control-panel-email-stats.component.html',
-  styleUrls: ['./hackathon-control-panel-email-stats.component.scss'],
+    selector: 'commudle-hackathon-control-panel-email-stats',
+    templateUrl: './hackathon-control-panel-email-stats.component.html',
+    styleUrls: ['./hackathon-control-panel-email-stats.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelEmailStatsComponent implements OnInit {
   private hackathonId: string;

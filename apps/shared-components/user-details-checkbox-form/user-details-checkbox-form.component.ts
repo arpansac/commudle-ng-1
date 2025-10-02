@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'commudle-user-details-checkbox-form',
-  templateUrl: './user-details-checkbox-form.component.html',
-  styleUrls: ['./user-details-checkbox-form.component.scss'],
+    selector: 'commudle-user-details-checkbox-form',
+    templateUrl: './user-details-checkbox-form.component.html',
+    styleUrls: ['./user-details-checkbox-form.component.scss'],
+    standalone: false
 })
 export class UserDetailsCheckboxFormComponent implements OnInit, OnChanges {
   @Input() userDetails;

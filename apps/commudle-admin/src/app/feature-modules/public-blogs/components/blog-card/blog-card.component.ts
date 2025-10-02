@@ -7,9 +7,10 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { IUser } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-blog-card',
-  templateUrl: './blog-card.component.html',
-  styleUrls: ['./blog-card.component.scss'],
+    selector: 'commudle-blog-card',
+    templateUrl: './blog-card.component.html',
+    styleUrls: ['./blog-card.component.scss'],
+    standalone: false
 })
 export class BlogCardComponent implements OnInit {
   @Input() blog: IBlog;

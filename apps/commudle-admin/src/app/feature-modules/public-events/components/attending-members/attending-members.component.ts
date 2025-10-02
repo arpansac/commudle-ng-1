@@ -7,9 +7,10 @@ import { UserEventRegistrationsService } from 'apps/commudle-admin/src/app/servi
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 
 @Component({
-  selector: 'app-attending-members',
-  templateUrl: './attending-members.component.html',
-  styleUrls: ['./attending-members.component.scss'],
+    selector: 'app-attending-members',
+    templateUrl: './attending-members.component.html',
+    styleUrls: ['./attending-members.component.scss'],
+    standalone: false
 })
 export class AttendingMembersComponent {
   EEventStatuses = EEventStatuses;

@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 @Component({
-  selector: 'app-suggestion-box',
-  templateUrl: './suggestion-box.component.html',
-  styleUrls: ['./suggestion-box.component.scss']
+    selector: 'app-suggestion-box',
+    templateUrl: './suggestion-box.component.html',
+    styleUrls: ['./suggestion-box.component.scss'],
+    standalone: false
 })
 export class SuggestionBoxComponent implements OnInit {
 

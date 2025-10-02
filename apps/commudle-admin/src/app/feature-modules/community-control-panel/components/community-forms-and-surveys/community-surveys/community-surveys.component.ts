@@ -5,9 +5,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-community-surveys',
-  templateUrl: './community-surveys.component.html',
-  styleUrls: ['./community-surveys.component.scss'],
+    selector: 'commudle-community-surveys',
+    templateUrl: './community-surveys.component.html',
+    styleUrls: ['./community-surveys.component.scss'],
+    standalone: false
 })
 export class CommunitySurveysComponent implements OnInit, OnDestroy {
   community: ICommunity;

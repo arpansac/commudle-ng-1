@@ -27,10 +27,10 @@ import { environment } from '@commudle/shared-environments';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-channel-discussion',
-  templateUrl: './channel-discussion.component.html',
-  styleUrls: ['./channel-discussion.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-channel-discussion',
+    templateUrl: './channel-discussion.component.html',
+    styleUrls: ['./channel-discussion.component.scss'],
+    standalone: false
 })
 export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() discussionId!: number;

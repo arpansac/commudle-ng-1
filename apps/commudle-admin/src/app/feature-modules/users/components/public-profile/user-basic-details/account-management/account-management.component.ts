@@ -8,9 +8,10 @@ import { ButtonStyle, ButtonText, ConsentTypesEnum } from 'apps/shared-models/en
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'commudle-account-management',
-  templateUrl: './account-management.component.html',
-  styleUrls: ['./account-management.component.scss'],
+    selector: 'commudle-account-management',
+    templateUrl: './account-management.component.html',
+    styleUrls: ['./account-management.component.scss'],
+    standalone: false
 })
 export class AccountManagementComponent implements OnInit {
   deactivateAccount = false;

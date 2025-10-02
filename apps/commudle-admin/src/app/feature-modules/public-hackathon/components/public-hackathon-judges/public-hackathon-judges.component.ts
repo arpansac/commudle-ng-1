@@ -7,9 +7,10 @@ import { faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { IHackathonJudge } from '@commudle/shared-models';
 @Component({
-  selector: 'commudle-public-hackathon-judges',
-  templateUrl: './public-hackathon-judges.component.html',
-  styleUrls: ['./public-hackathon-judges.component.scss'],
+    selector: 'commudle-public-hackathon-judges',
+    templateUrl: './public-hackathon-judges.component.html',
+    styleUrls: ['./public-hackathon-judges.component.scss'],
+    standalone: false
 })
 export class PublicHackathonJudgesComponent implements OnInit {
   subscriptions: Subscription[] = [];

@@ -6,9 +6,10 @@ import { FormBuilder } from '@angular/forms';
 import { EmailerPreviewService } from '@commudle/shared-services';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
-  selector: 'commudle-hackathon-winner-announcement-emailer',
-  templateUrl: './hackathon-winner-announcement-emailer.component.html',
-  styleUrls: ['./hackathon-winner-announcement-emailer.component.scss'],
+    selector: 'commudle-hackathon-winner-announcement-emailer',
+    templateUrl: './hackathon-winner-announcement-emailer.component.html',
+    styleUrls: ['./hackathon-winner-announcement-emailer.component.scss'],
+    standalone: false
 })
 export class HackathonWinnerAnnouncementEmailerComponent {
   @Input() hackathonId: number;

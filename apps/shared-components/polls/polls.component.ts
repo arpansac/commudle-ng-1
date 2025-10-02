@@ -13,9 +13,10 @@ import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-polls',
-  templateUrl: './polls.component.html',
-  styleUrls: ['./polls.component.scss'],
+    selector: 'commudle-polls',
+    templateUrl: './polls.component.html',
+    styleUrls: ['./polls.component.scss'],
+    standalone: false
 })
 export class PollsComponent implements OnInit, OnDestroy {
   @ViewChild('newPollTemplate') newPollTemplate: TemplateRef<any>;

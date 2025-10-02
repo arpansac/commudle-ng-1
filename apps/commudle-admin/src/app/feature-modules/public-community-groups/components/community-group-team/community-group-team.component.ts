@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-community-group-team',
-  templateUrl: './community-group-team.component.html',
-  styleUrls: ['./community-group-team.component.scss'],
+    selector: 'app-community-group-team',
+    templateUrl: './community-group-team.component.html',
+    styleUrls: ['./community-group-team.component.scss'],
+    standalone: false
 })
 export class CommunityGroupTeamComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

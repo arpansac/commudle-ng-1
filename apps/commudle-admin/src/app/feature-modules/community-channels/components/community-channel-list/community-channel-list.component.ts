@@ -22,9 +22,10 @@ interface EGroupedCommunityChannels {
 }
 
 @Component({
-  selector: 'app-community-channel-list',
-  templateUrl: './community-channel-list.component.html',
-  styleUrls: ['./community-channel-list.component.scss'],
+    selector: 'app-community-channel-list',
+    templateUrl: './community-channel-list.component.html',
+    styleUrls: ['./community-channel-list.component.scss'],
+    standalone: false
 })
 export class CommunityChannelListComponent implements OnInit, OnDestroy {
   @Input() groupedChannels: EGroupedCommunityChannels;

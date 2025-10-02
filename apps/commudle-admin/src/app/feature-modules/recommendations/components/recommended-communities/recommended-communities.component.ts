@@ -5,9 +5,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-recommended-communities',
-  templateUrl: './recommended-communities.component.html',
-  styleUrls: ['./recommended-communities.component.scss'],
+    selector: 'app-recommended-communities',
+    templateUrl: './recommended-communities.component.html',
+    styleUrls: ['./recommended-communities.component.scss'],
+    standalone: false
 })
 export class RecommendedCommunitiesComponent implements OnInit, OnDestroy {
   recommendedCommunities: ICommunity[] = [];

@@ -11,9 +11,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-work-history',
-  templateUrl: './user-work-history.component.html',
-  styleUrls: ['./user-work-history.component.scss'],
+    selector: 'app-user-work-history',
+    templateUrl: './user-work-history.component.html',
+    styleUrls: ['./user-work-history.component.scss'],
+    standalone: false
 })
 export class UserWorkHistoryComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

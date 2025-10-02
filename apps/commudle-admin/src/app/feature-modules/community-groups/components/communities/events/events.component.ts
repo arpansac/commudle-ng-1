@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 
 @Component({
-  selector: 'commudle-events',
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss'],
+    selector: 'commudle-events',
+    templateUrl: './events.component.html',
+    styleUrls: ['./events.component.scss'],
+    standalone: false
 })
 export class EventsComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

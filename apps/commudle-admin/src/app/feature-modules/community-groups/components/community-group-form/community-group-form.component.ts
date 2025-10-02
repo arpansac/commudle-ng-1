@@ -8,9 +8,10 @@ import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-group-form',
-  templateUrl: './community-group-form.component.html',
-  styleUrls: ['./community-group-form.component.scss'],
+    selector: 'app-community-group-form',
+    templateUrl: './community-group-form.component.html',
+    styleUrls: ['./community-group-form.component.scss'],
+    standalone: false
 })
 export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

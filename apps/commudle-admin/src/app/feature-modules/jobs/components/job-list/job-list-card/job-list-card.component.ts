@@ -27,9 +27,10 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-job-list-card',
-  templateUrl: './job-list-card.component.html',
-  styleUrls: ['./job-list-card.component.scss'],
+    selector: 'app-job-list-card',
+    templateUrl: './job-list-card.component.html',
+    styleUrls: ['./job-list-card.component.scss'],
+    standalone: false
 })
 export class JobListCardComponent implements OnInit, OnDestroy {
   @Input() job: IJob;

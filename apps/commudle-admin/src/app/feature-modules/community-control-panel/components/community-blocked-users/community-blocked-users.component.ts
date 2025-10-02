@@ -9,9 +9,10 @@ import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-community-blocked-users',
-  templateUrl: './community-blocked-users.component.html',
-  styleUrls: ['./community-blocked-users.component.scss'],
+    selector: 'app-community-blocked-users',
+    templateUrl: './community-blocked-users.component.html',
+    styleUrls: ['./community-blocked-users.component.scss'],
+    standalone: false
 })
 export class CommunityBlockedUsersComponent implements OnInit {
   communityId;

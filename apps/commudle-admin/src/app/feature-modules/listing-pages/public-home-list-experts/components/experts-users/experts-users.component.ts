@@ -4,9 +4,10 @@ import { ExpertsService } from 'apps/commudle-admin/src/app/services/experts.ser
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'commudle-experts-users',
-  templateUrl: './experts-users.component.html',
-  styleUrls: ['./experts-users.component.scss'],
+    selector: 'commudle-experts-users',
+    templateUrl: './experts-users.component.html',
+    styleUrls: ['./experts-users.component.scss'],
+    standalone: false
 })
 export class ExpertsUsersComponent implements OnInit {
   @Input() BadgeId: number;

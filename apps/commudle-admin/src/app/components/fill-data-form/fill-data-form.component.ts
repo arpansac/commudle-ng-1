@@ -26,9 +26,10 @@ import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-co
 import { SDataFormsService } from 'apps/shared-components/services/s-data-forms.service';
 
 @Component({
-  selector: 'app-fill-data-form',
-  templateUrl: './fill-data-form.component.html',
-  styleUrls: ['./fill-data-form.component.scss'],
+    selector: 'app-fill-data-form',
+    templateUrl: './fill-data-form.component.html',
+    styleUrls: ['./fill-data-form.component.scss'],
+    standalone: false
 })
 export class FillDataFormComponent implements OnInit, OnDestroy {
   @Input() existingResponses;

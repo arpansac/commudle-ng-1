@@ -4,9 +4,10 @@ import { IPost } from 'apps/shared-models/post.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-user-feed-posts',
-  templateUrl: './user-feed-posts.component.html',
-  styleUrls: ['./user-feed-posts.component.scss'],
+    selector: 'app-user-feed-posts',
+    templateUrl: './user-feed-posts.component.html',
+    styleUrls: ['./user-feed-posts.component.scss'],
+    standalone: false
 })
 export class UserFeedPostsComponent implements OnInit {
   @Input() user: IUser;

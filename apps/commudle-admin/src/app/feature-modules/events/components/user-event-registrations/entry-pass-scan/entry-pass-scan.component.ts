@@ -11,9 +11,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-entry-pass-scan',
-  templateUrl: './entry-pass-scan.component.html',
-  styleUrls: ['./entry-pass-scan.component.scss'],
+    selector: 'app-entry-pass-scan',
+    templateUrl: './entry-pass-scan.component.html',
+    styleUrls: ['./entry-pass-scan.component.scss'],
+    standalone: false
 })
 export class EntryPassScanComponent implements OnInit, OnDestroy {
   event: IEvent;

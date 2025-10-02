@@ -4,9 +4,10 @@ import { ToastrService } from '@commudle/shared-services';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 
 @Component({
-  selector: 'commudle-hackathon-judge-card',
-  templateUrl: './hackathon-judge-card.component.html',
-  styleUrls: ['./hackathon-judge-card.component.scss'],
+    selector: 'commudle-hackathon-judge-card',
+    templateUrl: './hackathon-judge-card.component.html',
+    styleUrls: ['./hackathon-judge-card.component.scss'],
+    standalone: false
 })
 export class HackathonJudgeCardComponent {
   @Input() judge: IHackathonJudge;

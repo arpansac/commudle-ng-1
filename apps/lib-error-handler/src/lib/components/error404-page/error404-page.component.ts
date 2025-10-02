@@ -5,9 +5,10 @@ import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/pr
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'lib-error404-page',
-  templateUrl: './error404-page.component.html',
-  styleUrls: ['./error404-page.component.scss'],
+    selector: 'lib-error404-page',
+    templateUrl: './error404-page.component.html',
+    styleUrls: ['./error404-page.component.scss'],
+    standalone: false
 })
 export class Error404PageComponent implements OnInit, OnDestroy {
   constructor(

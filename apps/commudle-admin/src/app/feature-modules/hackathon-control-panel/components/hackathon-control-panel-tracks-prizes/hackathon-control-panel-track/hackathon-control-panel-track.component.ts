@@ -8,9 +8,10 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-track',
-  templateUrl: './hackathon-control-panel-track.component.html',
-  styleUrls: ['./hackathon-control-panel-track.component.scss'],
+    selector: 'commudle-hackathon-control-panel-track',
+    templateUrl: './hackathon-control-panel-track.component.html',
+    styleUrls: ['./hackathon-control-panel-track.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelTrackComponent implements OnInit {
   trackForm: FormGroup;

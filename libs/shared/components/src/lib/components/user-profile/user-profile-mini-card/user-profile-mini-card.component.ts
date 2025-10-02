@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { IUser } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-user-profile-mini-card',
-  templateUrl: './user-profile-mini-card.component.html',
-  styleUrls: ['./user-profile-mini-card.component.scss'],
+    selector: 'commudle-user-profile-mini-card',
+    templateUrl: './user-profile-mini-card.component.html',
+    styleUrls: ['./user-profile-mini-card.component.scss'],
+    standalone: false
 })
 export class UserProfileMiniCardComponent {
   @Input() user: IUser;

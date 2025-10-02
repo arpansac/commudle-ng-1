@@ -9,9 +9,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-tracks-prizes',
-  templateUrl: './hackathon-control-panel-tracks-prizes.component.html',
-  styleUrls: ['./hackathon-control-panel-tracks-prizes.component.scss'],
+    selector: 'commudle-hackathon-control-panel-tracks-prizes',
+    templateUrl: './hackathon-control-panel-tracks-prizes.component.html',
+    styleUrls: ['./hackathon-control-panel-tracks-prizes.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelTracksPrizesComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;

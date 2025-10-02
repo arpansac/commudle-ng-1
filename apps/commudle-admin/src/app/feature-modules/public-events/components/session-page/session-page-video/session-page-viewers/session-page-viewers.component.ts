@@ -17,9 +17,10 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-session-page-viewers',
-  templateUrl: './session-page-viewers.component.html',
-  styleUrls: ['./session-page-viewers.component.scss'],
+    selector: 'app-session-page-viewers',
+    templateUrl: './session-page-viewers.component.html',
+    styleUrls: ['./session-page-viewers.component.scss'],
+    standalone: false
 })
 export class SessionPageViewersComponent implements OnInit, OnDestroy {
   uuid = uuidv4();

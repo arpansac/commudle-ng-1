@@ -9,9 +9,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-admin-notifications',
-  templateUrl: './community-admin-notifications.component.html',
-  styleUrls: ['./community-admin-notifications.component.scss'],
+    selector: 'app-community-admin-notifications',
+    templateUrl: './community-admin-notifications.component.html',
+    styleUrls: ['./community-admin-notifications.component.scss'],
+    standalone: false
 })
 export class CommunityAdminNotificationsComponent implements OnInit, OnDestroy {
   community: ICommunity;

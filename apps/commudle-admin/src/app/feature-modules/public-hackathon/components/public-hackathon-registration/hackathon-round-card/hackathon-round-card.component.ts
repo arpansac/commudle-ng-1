@@ -13,6 +13,7 @@ import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-mo
 import * as moment from 'moment';
 
 @Component({
+  standalone: false,
   selector: 'commudle-hackathon-round-card',
   templateUrl: './hackathon-round-card.component.html',
   styleUrls: ['./hackathon-round-card.component.scss'],

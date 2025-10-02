@@ -11,9 +11,10 @@ import {
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-build-list-item',
-  templateUrl: './build-list-item.component.html',
-  styleUrls: ['./build-list-item.component.scss'],
+    selector: 'commudle-build-list-item',
+    templateUrl: './build-list-item.component.html',
+    styleUrls: ['./build-list-item.component.scss'],
+    standalone: false
 })
 export class BuildListItemComponent implements OnInit {
   @ViewChild('confirmDeleteTemplate') confirmDeleteTemplate: TemplateRef<any>;

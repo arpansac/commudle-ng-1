@@ -16,9 +16,10 @@ import { ReCaptchaV3Service } from 'ng-recaptcha-2';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-login-signup',
-  templateUrl: './login-signup.component.html',
-  styleUrls: ['./login-signup.component.scss'],
+    selector: 'commudle-login-signup',
+    templateUrl: './login-signup.component.html',
+    styleUrls: ['./login-signup.component.scss'],
+    standalone: false
 })
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;

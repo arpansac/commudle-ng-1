@@ -13,9 +13,10 @@ import { Location } from '@angular/common';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'commudle-community-forum-message',
-  templateUrl: './community-forum-message.component.html',
-  styleUrls: ['./community-forum-message.component.scss'],
+    selector: 'commudle-community-forum-message',
+    templateUrl: './community-forum-message.component.html',
+    styleUrls: ['./community-forum-message.component.scss'],
+    standalone: false
 })
 export class CommunityForumMessageComponent implements OnInit, OnDestroy {
   @Input() forumId;

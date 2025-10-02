@@ -5,9 +5,10 @@ import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-channel-settings',
-  templateUrl: './channel-settings.component.html',
-  styleUrls: ['./channel-settings.component.scss'],
+    selector: 'commudle-channel-settings',
+    templateUrl: './channel-settings.component.html',
+    styleUrls: ['./channel-settings.component.scss'],
+    standalone: false
 })
 export class ChannelSettingsComponent implements OnInit, OnDestroy {
   @Input() channel: ICommunityChannel;

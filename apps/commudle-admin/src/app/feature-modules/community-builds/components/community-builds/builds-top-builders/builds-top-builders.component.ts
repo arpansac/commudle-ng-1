@@ -5,9 +5,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/services/labs.service';
 
 @Component({
-  selector: 'commudle-builds-top-builders',
-  templateUrl: './builds-top-builders.component.html',
-  styleUrls: ['./builds-top-builders.component.scss'],
+    selector: 'commudle-builds-top-builders',
+    templateUrl: './builds-top-builders.component.html',
+    styleUrls: ['./builds-top-builders.component.scss'],
+    standalone: false
 })
 export class BuildsTopBuildersComponent implements OnInit {
   @Input() backgroundColor: string;

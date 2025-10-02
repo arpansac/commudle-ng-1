@@ -6,9 +6,10 @@ import { NbDialogService } from '@commudle/theme';
 import { ProfanityService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/profanity.service';
 
 @Component({
-  selector: 'commudle-admin-profanity',
-  templateUrl: './admin-profanity.component.html',
-  styleUrls: ['./admin-profanity.component.scss'],
+    selector: 'commudle-admin-profanity',
+    templateUrl: './admin-profanity.component.html',
+    styleUrls: ['./admin-profanity.component.scss'],
+    standalone: false
 })
 export class AdminProfanityComponent implements OnInit, OnDestroy {
   profanityTerms: IProfanity[];

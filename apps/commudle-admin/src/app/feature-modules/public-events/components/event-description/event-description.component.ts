@@ -6,9 +6,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-event-description',
-  templateUrl: './event-description.component.html',
-  styleUrls: ['./event-description.component.scss'],
+    selector: 'app-event-description',
+    templateUrl: './event-description.component.html',
+    styleUrls: ['./event-description.component.scss'],
+    standalone: false
 })
 export class EventDescriptionComponent implements OnInit, AfterViewInit {
   @Input() community: ICommunity;

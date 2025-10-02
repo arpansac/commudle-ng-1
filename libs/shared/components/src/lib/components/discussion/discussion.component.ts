@@ -21,10 +21,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-discussion',
-  templateUrl: './discussion.component.html',
-  styleUrls: ['./discussion.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-discussion',
+    templateUrl: './discussion.component.html',
+    styleUrls: ['./discussion.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() discussionId!: number;

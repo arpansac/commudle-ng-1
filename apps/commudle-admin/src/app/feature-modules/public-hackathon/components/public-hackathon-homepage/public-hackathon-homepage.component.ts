@@ -28,9 +28,10 @@ import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hack
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-  selector: 'commudle-public-hackathon-homepage',
-  templateUrl: './public-hackathon-homepage.component.html',
-  styleUrls: ['./public-hackathon-homepage.component.scss'],
+    selector: 'commudle-public-hackathon-homepage',
+    templateUrl: './public-hackathon-homepage.component.html',
+    styleUrls: ['./public-hackathon-homepage.component.scss'],
+    standalone: false
 })
 export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

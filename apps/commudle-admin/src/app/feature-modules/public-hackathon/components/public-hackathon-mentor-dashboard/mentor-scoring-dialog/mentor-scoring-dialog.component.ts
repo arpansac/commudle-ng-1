@@ -5,6 +5,7 @@ import { IHackathon, IHackathonTeamRoundScore, IMarkingCriteria } from '@commudl
 import { HackathonTeamRoundScoreService, ToastrService, RoundService } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-mentor-scoring-dialog',
   templateUrl: './mentor-scoring-dialog.component.html',
   styleUrls: ['./mentor-scoring-dialog.component.scss'],

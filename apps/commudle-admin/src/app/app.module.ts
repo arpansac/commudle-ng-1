@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -267,12 +267,10 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     IsBrowserService,
     PrismJsHighlightCodeService,
     AuthService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initApp,
-      deps: [AppInitService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initApp(inject(AppInitService));
+      return initializerFn();
+    }),
     {
       // TODO move the interceptors to a common barrel file if needed
       // https://angular.io/guide/http#provide-the-interceptor
@@ -316,12 +314,9 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
       deps: [Router],
     },
     // TODO: there are two providers with same provide key, check if that causes error?
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [TraceService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      inject(TraceService);
+    }),
     provideHttpClient(withInterceptorsFromDi()),
   ],
 })

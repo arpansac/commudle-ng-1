@@ -9,9 +9,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'commudle-communities-list',
-  templateUrl: './communities-list.component.html',
-  styleUrls: ['./communities-list.component.scss'],
+    selector: 'commudle-communities-list',
+    templateUrl: './communities-list.component.html',
+    styleUrls: ['./communities-list.component.scss'],
+    standalone: false
 })
 export class CommunitiesListComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];

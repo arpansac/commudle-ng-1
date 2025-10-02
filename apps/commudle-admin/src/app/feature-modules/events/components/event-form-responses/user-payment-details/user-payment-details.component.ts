@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 import { IEventTicketOrder, IUser } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-user-payment-details',
-  templateUrl: './user-payment-details.component.html',
-  styleUrls: ['./user-payment-details.component.scss'],
+    selector: 'commudle-user-payment-details',
+    templateUrl: './user-payment-details.component.html',
+    styleUrls: ['./user-payment-details.component.scss'],
+    standalone: false
 })
 export class UserPaymentDetailsComponent implements OnInit {
   @Input() eto: IEventTicketOrder[];

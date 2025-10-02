@@ -41,9 +41,10 @@ import { ICustomPage } from 'apps/shared-models/custom-page.model';
 
 declare const Razorpay: any;
 @Component({
-  selector: 'commudle-fill-data-form-paid',
-  templateUrl: './fill-data-form-paid.component.html',
-  styleUrls: ['./fill-data-form-paid.component.scss'],
+    selector: 'commudle-fill-data-form-paid',
+    templateUrl: './fill-data-form-paid.component.html',
+    styleUrls: ['./fill-data-form-paid.component.scss'],
+    standalone: false
 })
 export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() existingResponses;

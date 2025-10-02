@@ -5,9 +5,10 @@ import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { EventSponsorsService } from 'apps/commudle-admin/src/app/services/event-sponsors.service';
 
 @Component({
-  selector: 'app-sponsors',
-  templateUrl: './sponsors.component.html',
-  styleUrls: ['./sponsors.component.scss']
+    selector: 'app-sponsors',
+    templateUrl: './sponsors.component.html',
+    styleUrls: ['./sponsors.component.scss'],
+    standalone: false
 })
 export class SponsorsComponent implements OnInit {
   @Input() event: IEvent;

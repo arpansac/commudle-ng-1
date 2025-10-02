@@ -5,9 +5,10 @@ import { NbDialogService } from '@commudle/theme';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { IHackathonTrack } from '@commudle/shared-models';
 @Component({
-  selector: 'commudle-hackathon-track-card',
-  templateUrl: './hackathon-track-card.component.html',
-  styleUrls: ['./hackathon-track-card.component.scss'],
+    selector: 'commudle-hackathon-track-card',
+    templateUrl: './hackathon-track-card.component.html',
+    styleUrls: ['./hackathon-track-card.component.scss'],
+    standalone: false
 })
 export class HackathonTrackCardComponent implements OnInit {
   @Input() hackathonTrack: IHackathonTrack;

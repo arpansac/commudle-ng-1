@@ -7,9 +7,10 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-discount-code-form',
-  templateUrl: './discount-code-form.component.html',
-  styleUrls: ['./discount-code-form.component.scss'],
+    selector: 'commudle-discount-code-form',
+    templateUrl: './discount-code-form.component.html',
+    styleUrls: ['./discount-code-form.component.scss'],
+    standalone: false
 })
 export class DiscountCodeFormComponent implements OnInit {
   @Input() discountCode?: IDiscountCode;

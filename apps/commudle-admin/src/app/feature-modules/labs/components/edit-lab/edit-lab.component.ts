@@ -12,9 +12,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-edit-lab',
-  templateUrl: './edit-lab.component.html',
-  styleUrls: ['./edit-lab.component.scss'],
+    selector: 'app-edit-lab',
+    templateUrl: './edit-lab.component.html',
+    styleUrls: ['./edit-lab.component.scss'],
+    standalone: false
 })
 export class EditLabComponent implements OnInit, OnDestroy {
   EPublishStatus = EPublishStatus;

@@ -11,9 +11,10 @@ import { IEvent, ICommunity } from '@commudle/shared-models';
 import { EditorComponent } from '@commudle/editor';
 
 @Component({
-  selector: 'app-event-updates',
-  templateUrl: './event-updates.component.html',
-  styleUrls: ['./event-updates.component.scss'],
+    selector: 'app-event-updates',
+    templateUrl: './event-updates.component.html',
+    styleUrls: ['./event-updates.component.scss'],
+    standalone: false
 })
 export class EventUpdatesComponent implements OnInit, OnDestroy, AfterViewInit {
   event: IEvent;

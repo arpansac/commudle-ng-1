@@ -17,9 +17,10 @@ import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-p
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-emailer',
-  templateUrl: './emailer.component.html',
-  styleUrls: ['./emailer.component.scss'],
+    selector: 'app-emailer',
+    templateUrl: './emailer.component.html',
+    styleUrls: ['./emailer.component.scss'],
+    standalone: false
 })
 export class EmailerComponent implements OnInit, OnDestroy {
   @ViewChild('emailPreview') emailPreview: TemplateRef<any>;

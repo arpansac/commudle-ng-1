@@ -17,9 +17,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-event-registrations',
-  templateUrl: './user-event-registrations.component.html',
-  styleUrls: ['./user-event-registrations.component.scss'],
+    selector: 'app-user-event-registrations',
+    templateUrl: './user-event-registrations.component.html',
+    styleUrls: ['./user-event-registrations.component.scss'],
+    standalone: false
 })
 export class UserEventRegistrationsComponent implements OnInit {
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;

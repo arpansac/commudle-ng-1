@@ -4,10 +4,11 @@ import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 
 @Component({
-  selector: 'app-homepage-builds',
-  templateUrl: './homepage-builds.component.html',
-  styleUrls: ['./homepage-builds.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-homepage-builds',
+    templateUrl: './homepage-builds.component.html',
+    styleUrls: ['./homepage-builds.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomepageBuildsComponent implements OnInit {
   builds: ICommunityBuild[] = [];

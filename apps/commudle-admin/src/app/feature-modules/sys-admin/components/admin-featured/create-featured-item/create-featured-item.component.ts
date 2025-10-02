@@ -9,9 +9,10 @@ import { distinctUntilChanged, switchMap } from 'rxjs';
 import { ECategoryType } from 'apps/shared-models/featured-items.model';
 
 @Component({
-  selector: 'commudle-create-featured-item',
-  templateUrl: './create-featured-item.component.html',
-  styleUrls: ['./create-featured-item.component.scss'],
+    selector: 'commudle-create-featured-item',
+    templateUrl: './create-featured-item.component.html',
+    styleUrls: ['./create-featured-item.component.scss'],
+    standalone: false
 })
 export class CreateFeaturedItemComponent implements OnInit {
   @Input() entityType: EDbModels;

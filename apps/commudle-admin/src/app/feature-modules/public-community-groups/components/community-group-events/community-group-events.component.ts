@@ -8,9 +8,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community-group-events',
-  templateUrl: './community-group-events.component.html',
-  styleUrls: ['./community-group-events.component.scss'],
+    selector: 'commudle-community-group-events',
+    templateUrl: './community-group-events.component.html',
+    styleUrls: ['./community-group-events.component.scss'],
+    standalone: false
 })
 export class CommunityGroupEventsComponent implements OnInit {
   communityGroup: ICommunityGroup;

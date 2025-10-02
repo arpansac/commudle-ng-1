@@ -7,9 +7,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { MainNewslettersService } from '../../services/main-newsletters.service';
 
 @Component({
-  selector: 'app-main-newsletter-test-emailer',
-  templateUrl: './main-newsletter-test-emailer.component.html',
-  styleUrls: ['./main-newsletter-test-emailer.component.scss'],
+    selector: 'app-main-newsletter-test-emailer',
+    templateUrl: './main-newsletter-test-emailer.component.html',
+    styleUrls: ['./main-newsletter-test-emailer.component.scss'],
+    standalone: false
 })
 export class MainNewsletterTestEmailerComponent implements OnInit {
   @Input() newsletter: IMainNewsletter;

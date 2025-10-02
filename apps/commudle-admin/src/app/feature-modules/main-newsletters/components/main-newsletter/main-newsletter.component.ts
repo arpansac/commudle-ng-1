@@ -8,9 +8,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-main-newsletter',
-  templateUrl: './main-newsletter.component.html',
-  styleUrls: ['./main-newsletter.component.scss'],
+    selector: 'app-main-newsletter',
+    templateUrl: './main-newsletter.component.html',
+    styleUrls: ['./main-newsletter.component.scss'],
+    standalone: false
 })
 export class MainNewsletterComponent implements OnInit, OnDestroy {
   mainNewsletter: IMainNewsletter;

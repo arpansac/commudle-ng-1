@@ -5,9 +5,10 @@ import { SysAdminCommunityBuildService } from 'apps/commudle-admin/src/app/featu
 import { EPublishStatus, ICommunityBuild } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-community-builds',
-  templateUrl: './community-builds.component.html',
-  styleUrls: ['./community-builds.component.scss'],
+    selector: 'commudle-community-builds',
+    templateUrl: './community-builds.component.html',
+    styleUrls: ['./community-builds.component.scss'],
+    standalone: false
 })
 export class CommunityBuildsComponent implements OnInit {
   moment = moment;

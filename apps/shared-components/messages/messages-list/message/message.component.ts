@@ -13,10 +13,11 @@ import { SVotesService } from 'apps/shared-components/services/s-votes.service';
 import { EditorComponent } from '@commudle/editor';
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
-  providers: [InViewportDirective],
+    selector: 'app-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    providers: [InViewportDirective],
+    standalone: false
 })
 export class MessageComponent implements OnInit {
   @Input() canReply: boolean;

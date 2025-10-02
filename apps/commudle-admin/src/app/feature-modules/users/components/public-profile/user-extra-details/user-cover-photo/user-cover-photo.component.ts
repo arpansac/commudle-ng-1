@@ -7,9 +7,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-cover-photo',
-  templateUrl: './user-cover-photo.component.html',
-  styleUrls: ['./user-cover-photo.component.scss'],
+    selector: 'app-user-cover-photo',
+    templateUrl: './user-cover-photo.component.html',
+    styleUrls: ['./user-cover-photo.component.scss'],
+    standalone: false
 })
 export class UserCoverPhotoComponent implements OnInit, OnDestroy {
   @Input() user: IUser;

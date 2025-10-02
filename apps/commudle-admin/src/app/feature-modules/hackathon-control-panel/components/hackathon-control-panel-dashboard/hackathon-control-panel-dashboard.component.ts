@@ -33,9 +33,10 @@ import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/e
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-dashboard',
-  templateUrl: './hackathon-control-panel-dashboard.component.html',
-  styleUrls: ['./hackathon-control-panel-dashboard.component.scss'],
+    selector: 'commudle-hackathon-control-panel-dashboard',
+    templateUrl: './hackathon-control-panel-dashboard.component.html',
+    styleUrls: ['./hackathon-control-panel-dashboard.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelDashboardComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;

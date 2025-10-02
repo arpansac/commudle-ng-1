@@ -11,6 +11,7 @@ import { environment } from '@commudle/shared-environments';
 import { NewDiscussionFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/new-discussion-form/new-discussion-form.component';
 
 @Component({
+  standalone: false,
   selector: 'commudle-forum-discussion',
   templateUrl: './forum-discussion.component.html',
   styleUrls: ['./forum-discussion.component.scss'],

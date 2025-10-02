@@ -9,9 +9,10 @@ import { IUser, IUserStat } from '@commudle/shared-models';
 import { AuthService, SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-notifications-page',
-  templateUrl: './notifications-page.component.html',
-  styleUrls: ['./notifications-page.component.scss'],
+    selector: 'commudle-notifications-page',
+    templateUrl: './notifications-page.component.html',
+    styleUrls: ['./notifications-page.component.scss'],
+    standalone: false
 })
 export class NotificationsPageComponent implements OnInit, OnDestroy {
   notificationCount: number;

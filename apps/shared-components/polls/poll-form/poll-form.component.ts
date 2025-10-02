@@ -2,9 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IPoll } from 'apps/shared-models/poll.model';
 
 @Component({
-  selector: 'app-poll-form',
-  templateUrl: './poll-form.component.html',
-  styleUrls: ['./poll-form.component.scss']
+    selector: 'app-poll-form',
+    templateUrl: './poll-form.component.html',
+    styleUrls: ['./poll-form.component.scss'],
+    standalone: false
 })
 export class PollFormComponent implements OnInit {
   @Input() poll: IPoll;

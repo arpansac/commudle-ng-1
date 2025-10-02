@@ -1,7 +1,8 @@
 import { Directive, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[appHighlightLinks]'
+    selector: '[appHighlightLinks]',
+    standalone: false
 })
 export class HighlightLinksDirective {
 

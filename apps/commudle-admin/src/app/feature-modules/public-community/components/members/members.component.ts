@@ -12,9 +12,10 @@ import { EDomain } from '@commudle/shared-models';
 import { KeyValue, Location } from '@angular/common';
 
 @Component({
-  selector: 'app-members',
-  templateUrl: './members.component.html',
-  styleUrls: ['./members.component.scss'],
+    selector: 'app-members',
+    templateUrl: './members.component.html',
+    styleUrls: ['./members.component.scss'],
+    standalone: false
 })
 export class MembersComponent implements OnInit, OnDestroy {
   community: ICommunity;

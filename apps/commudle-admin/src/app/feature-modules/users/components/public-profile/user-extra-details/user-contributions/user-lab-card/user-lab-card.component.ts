@@ -2,9 +2,10 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ILab } from 'apps/shared-models/lab.model';
 
 @Component({
-  selector: 'app-user-lab-card',
-  templateUrl: './user-lab-card.component.html',
-  styleUrls: ['./user-lab-card.component.scss'],
+    selector: 'app-user-lab-card',
+    templateUrl: './user-lab-card.component.html',
+    styleUrls: ['./user-lab-card.component.scss'],
+    standalone: false
 })
 export class UserLabCardComponent implements OnChanges {
   @Input() lab: ILab;

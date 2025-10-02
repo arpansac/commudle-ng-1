@@ -13,10 +13,11 @@ import { IPoll } from 'apps/shared-models/poll.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-event-stats',
-  templateUrl: './event-stats.component.html',
-  styleUrls: ['./event-stats.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-event-stats',
+    templateUrl: './event-stats.component.html',
+    styleUrls: ['./event-stats.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventStatsComponent implements OnInit {
   event: IEvent;

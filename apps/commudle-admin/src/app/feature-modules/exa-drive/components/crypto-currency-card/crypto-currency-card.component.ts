@@ -3,9 +3,10 @@ import { NbDialogService } from '@commudle/theme';
 import { ExaDriveService } from 'apps/commudle-admin/src/app/feature-modules/exa-drive/service/exa-drive.service';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'commudle-crypto-currency-card',
-  templateUrl: './crypto-currency-card.component.html',
-  styleUrls: ['./crypto-currency-card.component.scss'],
+    selector: 'commudle-crypto-currency-card',
+    templateUrl: './crypto-currency-card.component.html',
+    styleUrls: ['./crypto-currency-card.component.scss'],
+    standalone: false
 })
 export class CryptoCurrencyCardComponent implements OnInit {
   @Input() cryptoCurrency;

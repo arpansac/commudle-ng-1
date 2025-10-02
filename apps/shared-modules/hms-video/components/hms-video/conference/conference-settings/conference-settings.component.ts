@@ -5,9 +5,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-conference-settings',
-  templateUrl: './conference-settings.component.html',
-  styleUrls: ['./conference-settings.component.scss'],
+    selector: 'app-conference-settings',
+    templateUrl: './conference-settings.component.html',
+    styleUrls: ['./conference-settings.component.scss'],
+    standalone: false
 })
 export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   invitation: boolean;

@@ -8,9 +8,10 @@ import { AuthService, countries_details as countryDetails } from '@commudle/shar
 import { ICommunity, IHackathonPrize, IHackathonTeam } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-public-hackathon-prizes',
-  templateUrl: './public-hackathon-prizes.component.html',
-  styleUrls: ['./public-hackathon-prizes.component.scss'],
+    selector: 'commudle-public-hackathon-prizes',
+    templateUrl: './public-hackathon-prizes.component.html',
+    styleUrls: ['./public-hackathon-prizes.component.scss'],
+    standalone: false
 })
 export class PublicHackathonPrizesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

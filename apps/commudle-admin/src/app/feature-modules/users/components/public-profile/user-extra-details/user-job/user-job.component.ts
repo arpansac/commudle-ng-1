@@ -28,10 +28,11 @@ import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha-2';
 
 @Component({
-  selector: 'app-user-job',
-  templateUrl: './user-job.component.html',
-  styleUrls: ['./user-job.component.scss'],
-  providers: [EnumFormatPipe],
+    selector: 'app-user-job',
+    templateUrl: './user-job.component.html',
+    styleUrls: ['./user-job.component.scss'],
+    providers: [EnumFormatPipe],
+    standalone: false
 })
 export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

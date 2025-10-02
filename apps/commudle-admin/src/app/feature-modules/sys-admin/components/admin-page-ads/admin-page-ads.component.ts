@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-admin-pa-slots',
-  templateUrl: './admin-page-ads.component.html',
-  styleUrls: ['./admin-page-ads.component.scss'],
+    selector: 'app-admin-pa-slots',
+    templateUrl: './admin-page-ads.component.html',
+    styleUrls: ['./admin-page-ads.component.scss'],
+    standalone: false
 })
 export class AdminPageAdsComponent implements OnInit {
   constructor() {

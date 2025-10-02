@@ -6,9 +6,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-events-volunteer-list',
-  templateUrl: './events-volunteer-list.component.html',
-  styleUrls: ['./events-volunteer-list.component.scss'],
+    selector: 'commudle-events-volunteer-list',
+    templateUrl: './events-volunteer-list.component.html',
+    styleUrls: ['./events-volunteer-list.component.scss'],
+    standalone: false
 })
 export class EventsVolunteerListComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;

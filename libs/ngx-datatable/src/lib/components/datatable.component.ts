@@ -47,14 +47,15 @@ import { forceFillColumnWidths, adjustColumnWidths } from '../utils/math';
 import { sortRows } from '../utils/sort';
 
 @Component({
-  selector: 'ngx-datatable',
-  templateUrl: './datatable.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./datatable.component.scss'],
-  host: {
-    class: 'ngx-datatable'
-  }
+    selector: 'ngx-datatable',
+    templateUrl: './datatable.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./datatable.component.scss'],
+    host: {
+        class: 'ngx-datatable'
+    },
+    standalone: false
 })
 export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**

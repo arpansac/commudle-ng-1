@@ -5,9 +5,10 @@ import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_en
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-paid-form-list',
-  templateUrl: './paid-form-list.component.html',
-  styleUrls: ['./paid-form-list.component.scss'],
+    selector: 'commudle-paid-form-list',
+    templateUrl: './paid-form-list.component.html',
+    styleUrls: ['./paid-form-list.component.scss'],
+    standalone: false
 })
 export class PaidFormListComponent implements OnInit {
   @Input() communityId: number | string;

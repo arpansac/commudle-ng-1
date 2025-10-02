@@ -22,9 +22,10 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 
 @Component({
-  selector: 'commudle-hackathon-team-confirmation',
-  templateUrl: './hackathon-team-confirmation.component.html',
-  styleUrls: ['./hackathon-team-confirmation.component.scss'],
+    selector: 'commudle-hackathon-team-confirmation',
+    templateUrl: './hackathon-team-confirmation.component.html',
+    styleUrls: ['./hackathon-team-confirmation.component.scss'],
+    standalone: false
 })
 export class HackathonTeamConfirmationComponent implements OnInit {
   roleName = 'Hackathon Teammate Invitation';

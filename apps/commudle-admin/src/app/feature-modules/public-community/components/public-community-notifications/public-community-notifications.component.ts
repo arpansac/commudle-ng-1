@@ -8,9 +8,10 @@ import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-public-community-notifications',
-  templateUrl: './public-community-notifications.component.html',
-  styleUrls: ['./public-community-notifications.component.scss'],
+    selector: 'app-public-community-notifications',
+    templateUrl: './public-community-notifications.component.html',
+    styleUrls: ['./public-community-notifications.component.scss'],
+    standalone: false
 })
 export class PublicCommunityNotificationsComponent implements OnInit, OnDestroy {
   community: ICommunity;

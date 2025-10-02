@@ -5,7 +5,8 @@ import { AuthService } from '../auth.service';
 declare let google: any;
 
 @Directive({
-  selector: '[google-signin-button]',
+    selector: '[google-signin-button]',
+    standalone: false
 })
 export class GoogleSigninButtonDirective {
   @Input()

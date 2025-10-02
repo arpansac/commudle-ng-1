@@ -4,10 +4,11 @@ import { IUser } from 'apps/shared-models/user.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-user-details-cell',
-  templateUrl: './user-details-cell.component.html',
-  styleUrls: ['./user-details-cell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-user-details-cell',
+    templateUrl: './user-details-cell.component.html',
+    styleUrls: ['./user-details-cell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserDetailsCellComponent implements OnInit, OnChanges {
   moment = moment;

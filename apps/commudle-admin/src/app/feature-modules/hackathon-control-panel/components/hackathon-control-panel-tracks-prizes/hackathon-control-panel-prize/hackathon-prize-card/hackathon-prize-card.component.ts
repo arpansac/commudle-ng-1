@@ -10,9 +10,10 @@ import { NbDialogService } from '@commudle/theme';
 import { IHackathonPrize, IHackathonTeam, IHackathonWinner } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-hackathon-prize-card',
-  templateUrl: './hackathon-prize-card.component.html',
-  styleUrls: ['./hackathon-prize-card.component.scss'],
+    selector: 'commudle-hackathon-prize-card',
+    templateUrl: './hackathon-prize-card.component.html',
+    styleUrls: ['./hackathon-prize-card.component.scss'],
+    standalone: false
 })
 export class HackathonPrizeCardComponent implements OnInit {
   @Input() hackathonPrize: IHackathonPrize;

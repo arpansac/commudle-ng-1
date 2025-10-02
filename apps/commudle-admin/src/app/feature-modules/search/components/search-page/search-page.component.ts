@@ -12,9 +12,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
 import { environment } from '@commudle/shared-environments';
 @Component({
-  selector: 'app-search-page',
-  templateUrl: './search-page.component.html',
-  styleUrls: ['./search-page.component.scss'],
+    selector: 'app-search-page',
+    templateUrl: './search-page.component.html',
+    styleUrls: ['./search-page.component.scss'],
+    standalone: false
 })
 export class SearchPageComponent implements OnInit, OnDestroy {
   count = 10;

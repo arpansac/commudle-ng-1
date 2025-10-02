@@ -9,9 +9,10 @@ import {
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-collaboration-community',
-  templateUrl: './collaboration-community.component.html',
-  styleUrls: ['./collaboration-community.component.scss'],
+    selector: 'app-collaboration-community',
+    templateUrl: './collaboration-community.component.html',
+    styleUrls: ['./collaboration-community.component.scss'],
+    standalone: false
 })
 export class CollaborationCommunityComponent implements OnInit, OnDestroy {
   eventCollaboration: IEventCollaborationCommunity;

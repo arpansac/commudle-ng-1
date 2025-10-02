@@ -5,9 +5,10 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IFeedItem } from 'apps/shared-models/feed-item.model';
 
 @Component({
-  selector: 'app-feed-item-details',
-  templateUrl: './feed-item-details.component.html',
-  styleUrls: ['./feed-item-details.component.scss'],
+    selector: 'app-feed-item-details',
+    templateUrl: './feed-item-details.component.html',
+    styleUrls: ['./feed-item-details.component.scss'],
+    standalone: false
 })
 export class FeedItemDetailsComponent implements OnInit {
   @Input() feedItem: IFeedItem;

@@ -10,9 +10,10 @@ import { UserChatNotificationsChannel } from 'apps/commudle-admin/src/app/featur
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-chats-container',
-  templateUrl: './chats-container.component.html',
-  styleUrls: ['./chats-container.component.scss'],
+    selector: 'app-chats-container',
+    templateUrl: './chats-container.component.html',
+    styleUrls: ['./chats-container.component.scss'],
+    standalone: false
 })
 export class ChatsContainerComponent implements OnInit, OnDestroy {
   page = 1;

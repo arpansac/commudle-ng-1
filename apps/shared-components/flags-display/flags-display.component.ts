@@ -9,9 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-flags-display',
-  templateUrl: './flags-display.component.html',
-  styleUrls: ['./flags-display.component.scss'],
+    selector: 'app-flags-display',
+    templateUrl: './flags-display.component.html',
+    styleUrls: ['./flags-display.component.scss'],
+    standalone: false
 })
 export class FlagsDisplayComponent implements OnInit, OnDestroy {
   @Input() flaggableType: string;

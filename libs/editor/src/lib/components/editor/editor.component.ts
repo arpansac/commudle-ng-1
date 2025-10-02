@@ -27,10 +27,11 @@ import { IEditorValidator } from '../../models/editor-validator.model';
 import { NbButtonAppearance, NbComponentStatus } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-editor',
+    templateUrl: './editor.component.html',
+    styleUrls: ['./editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showMenu = false;

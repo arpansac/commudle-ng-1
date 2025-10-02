@@ -9,9 +9,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-feed',
-  templateUrl: './user-feed.component.html',
-  styleUrls: ['./user-feed.component.scss'],
+    selector: 'app-user-feed',
+    templateUrl: './user-feed.component.html',
+    styleUrls: ['./user-feed.component.scss'],
+    standalone: false
 })
 export class UserFeedComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

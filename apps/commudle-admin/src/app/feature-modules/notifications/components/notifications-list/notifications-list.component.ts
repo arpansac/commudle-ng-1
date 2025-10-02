@@ -23,9 +23,10 @@ import { ENotificationSenderTypes } from 'apps/shared-models/enums/notification_
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-notifications-list',
-  templateUrl: './notifications-list.component.html',
-  styleUrls: ['./notifications-list.component.scss'],
+    selector: 'app-notifications-list',
+    templateUrl: './notifications-list.component.html',
+    styleUrls: ['./notifications-list.component.scss'],
+    standalone: false
 })
 export class NotificationsListComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() markAllAsRead: boolean;

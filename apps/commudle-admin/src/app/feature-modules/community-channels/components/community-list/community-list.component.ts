@@ -6,9 +6,10 @@ import { CommunityChannelNotificationsChannel } from '../../services/websockets/
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-community-list',
-  templateUrl: './community-list.component.html',
-  styleUrls: ['./community-list.component.scss'],
+    selector: 'app-community-list',
+    templateUrl: './community-list.component.html',
+    styleUrls: ['./community-list.component.scss'],
+    standalone: false
 })
 export class CommunityListComponent implements OnInit, OnDestroy {
   @Input() selectedCommunity: ICommunity;

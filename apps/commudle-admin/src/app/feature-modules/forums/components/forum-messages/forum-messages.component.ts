@@ -9,6 +9,7 @@ import { ToastrService } from '@commudle/shared-services';
 import { ForumsStore } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-forum-messages',
   templateUrl: './forum-messages.component.html',
   styleUrls: ['./forum-messages.component.scss'],

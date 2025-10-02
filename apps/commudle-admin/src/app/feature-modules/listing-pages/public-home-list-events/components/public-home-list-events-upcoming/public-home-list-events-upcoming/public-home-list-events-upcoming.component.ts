@@ -8,9 +8,10 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { ActivatedRoute } from '@angular/router';
 @Component({
-  selector: 'commudle-public-home-list-events-upcoming',
-  templateUrl: './public-home-list-events-upcoming.component.html',
-  styleUrls: ['./public-home-list-events-upcoming.component.scss'],
+    selector: 'commudle-public-home-list-events-upcoming',
+    templateUrl: './public-home-list-events-upcoming.component.html',
+    styleUrls: ['./public-home-list-events-upcoming.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewInit {
   community: ICommunity;

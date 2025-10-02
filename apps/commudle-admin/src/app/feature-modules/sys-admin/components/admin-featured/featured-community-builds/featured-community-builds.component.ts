@@ -8,9 +8,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'commudle-featured-community-builds',
-  templateUrl: './featured-community-builds.component.html',
-  styleUrls: ['./featured-community-builds.component.scss'],
+    selector: 'commudle-featured-community-builds',
+    templateUrl: './featured-community-builds.component.html',
+    styleUrls: ['./featured-community-builds.component.scss'],
+    standalone: false
 })
 export class FeaturedCommunityBuildsComponent implements OnInit {
   communityBuilds: IFeaturedItems[] = [];

@@ -12,9 +12,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-community-group-activity',
-  templateUrl: './community-group-activity.component.html',
-  styleUrls: ['./community-group-activity.component.scss'],
+    selector: 'commudle-community-group-activity',
+    templateUrl: './community-group-activity.component.html',
+    styleUrls: ['./community-group-activity.component.scss'],
+    standalone: false
 })
 export class CommunityGroupActivityComponent implements OnInit, OnDestroy {
   limit = 6;

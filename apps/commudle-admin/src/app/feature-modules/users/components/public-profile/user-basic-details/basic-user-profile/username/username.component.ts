@@ -15,9 +15,10 @@ import { of, Subject, Subscription, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-username',
-  templateUrl: './username.component.html',
-  styleUrls: ['./username.component.scss'],
+    selector: 'app-username',
+    templateUrl: './username.component.html',
+    styleUrls: ['./username.component.scss'],
+    standalone: false
 })
 export class UsernameComponent implements OnInit, OnDestroy {
   @Input() showSaveButton = true;

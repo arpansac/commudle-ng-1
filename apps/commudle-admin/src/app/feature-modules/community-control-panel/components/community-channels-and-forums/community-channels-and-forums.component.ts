@@ -4,10 +4,11 @@ import { ICommunity, EDbModels } from '@commudle/shared-models';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 
 @Component({
-  selector: 'commudle-community-channels-and-forums',
-  templateUrl: './community-channels-and-forums.component.html',
-  styleUrls: ['./community-channels-and-forums.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'commudle-community-channels-and-forums',
+    templateUrl: './community-channels-and-forums.component.html',
+    styleUrls: ['./community-channels-and-forums.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class CommunityChannelsAndForumsComponent implements OnInit {
   community: ICommunity;

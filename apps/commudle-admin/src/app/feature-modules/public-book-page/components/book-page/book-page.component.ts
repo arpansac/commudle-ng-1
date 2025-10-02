@@ -14,9 +14,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-book-page',
-  templateUrl: './book-page.component.html',
-  styleUrls: ['./book-page.component.scss'],
+    selector: 'commudle-book-page',
+    templateUrl: './book-page.component.html',
+    styleUrls: ['./book-page.component.scss'],
+    standalone: false
 })
 export class BookPageComponent implements OnInit, OnDestroy {
   faqs: IFaq[];

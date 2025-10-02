@@ -7,9 +7,10 @@ import { SDataFormsService } from '../services/s-data-forms.service';
 import { ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-data-form-fill',
-  templateUrl: './data-form-fill.component.html',
-  styleUrls: ['./data-form-fill.component.scss'],
+    selector: 'app-data-form-fill',
+    templateUrl: './data-form-fill.component.html',
+    styleUrls: ['./data-form-fill.component.scss'],
+    standalone: false
 })
 export class DataFormFillComponent implements OnInit, OnChanges {
   formClosed = false;

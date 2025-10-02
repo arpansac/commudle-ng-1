@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
-  selector: 'commudle-custom-page',
-  templateUrl: './custom-page.component.html',
-  styleUrls: ['./custom-page.component.scss'],
+    selector: 'commudle-custom-page',
+    templateUrl: './custom-page.component.html',
+    styleUrls: ['./custom-page.component.scss'],
+    standalone: false
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

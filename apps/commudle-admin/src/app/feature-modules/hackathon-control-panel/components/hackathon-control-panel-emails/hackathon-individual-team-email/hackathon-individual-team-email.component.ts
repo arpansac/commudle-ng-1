@@ -8,9 +8,10 @@ import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 
 @Component({
-  selector: 'commudle-hackathon-individual-team-email',
-  templateUrl: './hackathon-individual-team-email.component.html',
-  styleUrls: ['./hackathon-individual-team-email.component.scss'],
+    selector: 'commudle-hackathon-individual-team-email',
+    templateUrl: './hackathon-individual-team-email.component.html',
+    styleUrls: ['./hackathon-individual-team-email.component.scss'],
+    standalone: false
 })
 export class HackathonIndividualTeamEmailComponent implements OnInit, OnDestroy {
   @Input() hackathonTeam: IHackathonTeam;

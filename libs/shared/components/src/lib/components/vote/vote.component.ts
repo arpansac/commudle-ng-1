@@ -7,10 +7,11 @@ import { faThumbsUp, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-  selector: 'commudle-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-vote',
+    templateUrl: './vote.component.html',
+    styleUrls: ['./vote.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class VoteComponent implements OnInit, OnDestroy {
   @Input() votableType!: string;

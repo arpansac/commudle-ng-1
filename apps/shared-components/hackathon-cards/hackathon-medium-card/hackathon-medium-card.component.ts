@@ -4,9 +4,10 @@ import * as moment from 'moment';
 import { countries_details } from '@commudle/shared-services';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 @Component({
-  selector: 'commudle-hackathon-medium-card',
-  templateUrl: './hackathon-medium-card.component.html',
-  styleUrls: ['./hackathon-medium-card.component.scss'],
+    selector: 'commudle-hackathon-medium-card',
+    templateUrl: './hackathon-medium-card.component.html',
+    styleUrls: ['./hackathon-medium-card.component.scss'],
+    standalone: false
 })
 export class HackathonMediumCardComponent implements OnInit {
   @Input() hackathon: IHackathon;

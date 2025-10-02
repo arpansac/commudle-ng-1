@@ -16,10 +16,11 @@ import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_v
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 
 @Component({
-  selector: 'app-video-stream',
-  templateUrl: './video-stream.component.html',
-  styleUrls: ['./video-stream.component.scss'],
-  providers: [IsBrowserService],
+    selector: 'app-video-stream',
+    templateUrl: './video-stream.component.html',
+    styleUrls: ['./video-stream.component.scss'],
+    providers: [IsBrowserService],
+    standalone: false
 })
 export class VideoStreamComponent implements OnInit, OnChanges {
   @Input() started: boolean;

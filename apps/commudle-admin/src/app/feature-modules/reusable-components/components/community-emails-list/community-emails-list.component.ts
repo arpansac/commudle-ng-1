@@ -18,10 +18,11 @@ import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-community-emails-list',
-  templateUrl: './community-emails-list.component.html',
-  styleUrls: ['./community-emails-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-community-emails-list',
+    templateUrl: './community-emails-list.component.html',
+    styleUrls: ['./community-emails-list.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CommunityEmailsListComponent implements OnInit, OnDestroy {
   @ViewChild('emailMessageTemplate') emailMessageTemplate: TemplateRef<any>;

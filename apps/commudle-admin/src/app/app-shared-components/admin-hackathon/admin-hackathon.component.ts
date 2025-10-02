@@ -11,9 +11,10 @@ import { NbMenuService } from '@commudle/theme';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-admin-hackathon',
-  templateUrl: './admin-hackathon.component.html',
-  styleUrls: ['./admin-hackathon.component.scss'],
+    selector: 'commudle-admin-hackathon',
+    templateUrl: './admin-hackathon.component.html',
+    styleUrls: ['./admin-hackathon.component.scss'],
+    standalone: false
 })
 export class AdminHackathonComponent implements OnInit, OnDestroy {
   @Input() parentId: number | string;

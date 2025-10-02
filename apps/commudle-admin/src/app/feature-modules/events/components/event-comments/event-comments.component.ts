@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-event-comments',
-  templateUrl: './event-comments.component.html',
-  styleUrls: ['./event-comments.component.scss']
+    selector: 'app-event-comments',
+    templateUrl: './event-comments.component.html',
+    styleUrls: ['./event-comments.component.scss'],
+    standalone: false
 })
 export class EventCommentsComponent implements OnInit {
 

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'commudle-user-expert-tick',
-  templateUrl: './user-expert-tick.component.html',
-  styleUrls: ['./user-expert-tick.component.scss'],
+    selector: 'commudle-user-expert-tick',
+    templateUrl: './user-expert-tick.component.html',
+    styleUrls: ['./user-expert-tick.component.scss'],
+    standalone: false
 })
 export class UserExpertTickComponent implements OnInit {
   staticAssets: any;

@@ -7,6 +7,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'commudle-hackathon-prize-form',
   templateUrl: './hackathon-prize-form.component.html',
   styleUrls: ['./hackathon-prize-form.component.scss'],

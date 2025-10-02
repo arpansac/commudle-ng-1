@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 
 @Component({
-  selector: 'app-home-builds-card',
-  templateUrl: './home-builds-card.component.html',
-  styleUrls: ['./home-builds-card.component.scss'],
+    selector: 'app-home-builds-card',
+    templateUrl: './home-builds-card.component.html',
+    styleUrls: ['./home-builds-card.component.scss'],
+    standalone: false
 })
 export class HomeBuildsCardComponent implements OnInit {
   @Input() build: ICommunityBuild;

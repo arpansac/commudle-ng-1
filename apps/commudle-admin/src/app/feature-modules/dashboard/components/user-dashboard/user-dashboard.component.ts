@@ -15,9 +15,10 @@ import { FeedService } from 'apps/shared-services/feed.service';
 import { AuthService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-user-dashboard',
-  templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.scss'],
+    selector: 'commudle-user-dashboard',
+    templateUrl: './user-dashboard.component.html',
+    styleUrls: ['./user-dashboard.component.scss'],
+    standalone: false
 })
 export class UserDashboardComponent implements OnInit {
   currentUser: IUser;

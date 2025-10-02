@@ -11,9 +11,10 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-public-home-list-speakers-upcoming',
-  templateUrl: './public-home-list-speakers-upcoming.component.html',
-  styleUrls: ['./public-home-list-speakers-upcoming.component.scss'],
+    selector: 'commudle-public-home-list-speakers-upcoming',
+    templateUrl: './public-home-list-speakers-upcoming.component.html',
+    styleUrls: ['./public-home-list-speakers-upcoming.component.scss'],
+    standalone: false
 })
 export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
   @Input() parentType = EDbModels.KOMMUNITY;

@@ -5,9 +5,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-homepage-dashboard',
-  templateUrl: './homepage-dashboard.component.html',
-  styleUrls: ['./homepage-dashboard.component.scss'],
+    selector: 'commudle-homepage-dashboard',
+    templateUrl: './homepage-dashboard.component.html',
+    styleUrls: ['./homepage-dashboard.component.scss'],
+    standalone: false
 })
 export class HomepageDashboardComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;

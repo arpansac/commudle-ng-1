@@ -4,9 +4,10 @@ import {HomeService} from 'apps/commudle-admin/src/app/services/home.service';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-home-experts',
-  templateUrl: './home-experts.component.html',
-  styleUrls: ['./home-experts.component.scss']
+    selector: 'app-home-experts',
+    templateUrl: './home-experts.component.html',
+    styleUrls: ['./home-experts.component.scss'],
+    standalone: false
 })
 export class HomeExpertsComponent implements OnInit, OnDestroy {
 

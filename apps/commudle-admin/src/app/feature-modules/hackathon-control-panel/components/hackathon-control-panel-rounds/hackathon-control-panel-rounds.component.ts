@@ -23,9 +23,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-rounds',
-  templateUrl: './hackathon-control-panel-rounds.component.html',
-  styleUrls: ['./hackathon-control-panel-rounds.component.scss'],
+    selector: 'commudle-hackathon-control-panel-rounds',
+    templateUrl: './hackathon-control-panel-rounds.component.html',
+    styleUrls: ['./hackathon-control-panel-rounds.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   roundForm: FormGroup;

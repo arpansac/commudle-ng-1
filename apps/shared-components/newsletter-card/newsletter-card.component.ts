@@ -6,9 +6,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-newsletter-card',
-  templateUrl: './newsletter-card.component.html',
-  styleUrls: ['./newsletter-card.component.scss'],
+    selector: 'commudle-newsletter-card',
+    templateUrl: './newsletter-card.component.html',
+    styleUrls: ['./newsletter-card.component.scss'],
+    standalone: false
 })
 export class NewsletterCardComponent implements OnInit {
   @Input() newsletter: INewsletter;

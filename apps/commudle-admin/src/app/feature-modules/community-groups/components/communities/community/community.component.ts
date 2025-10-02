@@ -8,9 +8,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community',
-  templateUrl: './community.component.html',
-  styleUrls: ['./community.component.scss'],
+    selector: 'commudle-community',
+    templateUrl: './community.component.html',
+    styleUrls: ['./community.component.scss'],
+    standalone: false
 })
 export class CommunityComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

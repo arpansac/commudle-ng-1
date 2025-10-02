@@ -10,9 +10,10 @@ import { IReadingBook } from 'apps/shared-models/reading_book.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-reading-book',
-  templateUrl: './reading-book.component.html',
-  styleUrls: ['./reading-book.component.scss'],
+    selector: 'commudle-reading-book',
+    templateUrl: './reading-book.component.html',
+    styleUrls: ['./reading-book.component.scss'],
+    standalone: false
 })
 export class ReadingBookComponent implements OnInit, OnDestroy {
   faDownload = faDownload;

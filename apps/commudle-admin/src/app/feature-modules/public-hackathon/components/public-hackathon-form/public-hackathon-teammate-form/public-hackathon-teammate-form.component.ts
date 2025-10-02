@@ -23,9 +23,10 @@ import { IHackathonTeam, IHackathonUserResponse } from '@commudle/shared-models'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-public-hackathon-teammate-form',
-  templateUrl: './public-hackathon-teammate-form.component.html',
-  styleUrls: ['./public-hackathon-teammate-form.component.scss'],
+    selector: 'commudle-public-hackathon-teammate-form',
+    templateUrl: './public-hackathon-teammate-form.component.html',
+    styleUrls: ['./public-hackathon-teammate-form.component.scss'],
+    standalone: false
 })
 export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() hackathonUserResponse: IHackathonUserResponse;

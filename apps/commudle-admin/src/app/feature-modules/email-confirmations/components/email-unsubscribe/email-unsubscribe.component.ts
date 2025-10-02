@@ -10,9 +10,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-email-unsubscribe',
-  templateUrl: './email-unsubscribe.component.html',
-  styleUrls: ['./email-unsubscribe.component.scss'],
+    selector: 'app-email-unsubscribe',
+    templateUrl: './email-unsubscribe.component.html',
+    styleUrls: ['./email-unsubscribe.component.scss'],
+    standalone: false
 })
 export class EmailUnsubscribeComponent implements OnInit, OnDestroy {
   uuid;

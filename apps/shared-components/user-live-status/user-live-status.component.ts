@@ -3,9 +3,10 @@ import { UserLiveStatusChannel } from '../services/websockets/user-live-status.c
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-user-live-status',
-  templateUrl: './user-live-status.component.html',
-  styleUrls: ['./user-live-status.component.scss'],
+    selector: 'app-user-live-status',
+    templateUrl: './user-live-status.component.html',
+    styleUrls: ['./user-live-status.component.scss'],
+    standalone: false
 })
 export class UserLiveStatusComponent implements OnInit, OnDestroy {
   uuid = uuidv4();

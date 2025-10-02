@@ -12,9 +12,10 @@ import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/pr
 import { AuthService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-user-profile-complete-step-one',
-  templateUrl: './user-profile-complete-step-one.component.html',
-  styleUrls: ['./user-profile-complete-step-one.component.scss'],
+    selector: 'commudle-user-profile-complete-step-one',
+    templateUrl: './user-profile-complete-step-one.component.html',
+    styleUrls: ['./user-profile-complete-step-one.component.scss'],
+    standalone: false
 })
 export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
   parentType: 'profile-complete' | 'edit-profile' = 'profile-complete';

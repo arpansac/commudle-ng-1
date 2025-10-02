@@ -10,9 +10,10 @@ import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-discount-coupon-form',
-  templateUrl: './discount-coupon-form.component.html',
-  styleUrls: ['./discount-coupon-form.component.scss'],
+    selector: 'commudle-discount-coupon-form',
+    templateUrl: './discount-coupon-form.component.html',
+    styleUrls: ['./discount-coupon-form.component.scss'],
+    standalone: false
 })
 export class DiscountCouponFormComponent implements OnInit {
   @Input() event: IEvent;

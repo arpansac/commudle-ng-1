@@ -5,9 +5,10 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
-  selector: 'app-homepage-events-card',
-  templateUrl: './homepage-events-card.component.html',
-  styleUrls: ['./homepage-events-card.component.scss'],
+    selector: 'app-homepage-events-card',
+    templateUrl: './homepage-events-card.component.html',
+    styleUrls: ['./homepage-events-card.component.scss'],
+    standalone: false
 })
 export class HomepageEventsCardComponent implements OnInit {
   @Input() event: IEvent;

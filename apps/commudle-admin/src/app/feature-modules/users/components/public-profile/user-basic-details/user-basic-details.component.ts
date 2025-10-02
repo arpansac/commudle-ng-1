@@ -25,9 +25,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'app-user-basic-details',
-  templateUrl: './user-basic-details.component.html',
-  styleUrls: ['./user-basic-details.component.scss'],
+    selector: 'app-user-basic-details',
+    templateUrl: './user-basic-details.component.html',
+    styleUrls: ['./user-basic-details.component.scss'],
+    standalone: false
 })
 export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   // this variable is set to true whenever the user has no active menu items

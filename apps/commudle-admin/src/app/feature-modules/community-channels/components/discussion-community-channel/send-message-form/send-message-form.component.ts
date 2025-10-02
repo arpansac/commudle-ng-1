@@ -9,9 +9,10 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-send-message-form',
-  templateUrl: './send-message-form.component.html',
-  styleUrls: ['./send-message-form.component.scss'],
+    selector: 'app-send-message-form',
+    templateUrl: './send-message-form.component.html',
+    styleUrls: ['./send-message-form.component.scss'],
+    standalone: false
 })
 export class SendMessageFormComponent implements OnInit, AfterViewInit {
   @ViewChild('inputElement', { static: true }) inputElement: ElementRef;

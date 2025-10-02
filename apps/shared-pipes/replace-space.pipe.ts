@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'replaceSpace',
+    name: 'replaceSpace',
+    standalone: false
 })
 export class ReplaceSpacePipe implements PipeTransform {
   transform(value: string): string {

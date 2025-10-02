@@ -19,9 +19,10 @@ import { NoteService } from '@commudle/shared-services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-details-cell',
-  templateUrl: './user-details-cell.component.html',
-  styleUrls: ['./user-details-cell.component.scss'],
+    selector: 'app-user-details-cell',
+    templateUrl: './user-details-cell.component.html',
+    styleUrls: ['./user-details-cell.component.scss'],
+    standalone: false
 })
 export class UserDetailsCellComponent implements OnInit, OnChanges {
   faGithub = faGithub;

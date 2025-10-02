@@ -13,9 +13,10 @@ interface AppData {
 }
 
 @Component({
-  selector: 'app-sw-update',
-  templateUrl: './sw-update.component.html',
-  styleUrls: ['./sw-update.component.scss'],
+    selector: 'app-sw-update',
+    templateUrl: './sw-update.component.html',
+    styleUrls: ['./sw-update.component.scss'],
+    standalone: false
 })
 export class SwUpdateComponent implements OnInit {
   isBrowser: boolean;

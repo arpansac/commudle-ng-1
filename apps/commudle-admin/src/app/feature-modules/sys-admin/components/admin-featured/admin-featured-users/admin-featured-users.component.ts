@@ -8,9 +8,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'commudle-admin-featured-users',
-  templateUrl: './admin-featured-users.component.html',
-  styleUrls: ['./admin-featured-users.component.scss'],
+    selector: 'commudle-admin-featured-users',
+    templateUrl: './admin-featured-users.component.html',
+    styleUrls: ['./admin-featured-users.component.scss'],
+    standalone: false
 })
 export class AdminFeaturedUsersComponent implements OnInit {
   featuredItems: IFeaturedItems[] = [];

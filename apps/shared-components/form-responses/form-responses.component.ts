@@ -7,9 +7,10 @@ import { SDataFormsService } from '../services/s-data-forms.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-form-responses',
-  templateUrl: './form-responses.component.html',
-  styleUrls: ['./form-responses.component.scss']
+    selector: 'app-form-responses',
+    templateUrl: './form-responses.component.html',
+    styleUrls: ['./form-responses.component.scss'],
+    standalone: false
 })
 export class FormResponsesComponent implements OnInit {
   @Input() dataFormId: number;

@@ -5,9 +5,10 @@ import { IHmsClient } from 'apps/shared-modules/hms-video/models/hms-client.mode
 import { HmsVideoStateService } from 'apps/shared-modules/hms-video/services/hms-video-state.service';
 
 @Component({
-  selector: 'app-select-role',
-  templateUrl: './select-role.component.html',
-  styleUrls: ['./select-role.component.scss'],
+    selector: 'app-select-role',
+    templateUrl: './select-role.component.html',
+    styleUrls: ['./select-role.component.scss'],
+    standalone: false
 })
 export class SelectRoleComponent implements OnInit {
   @Input() serverClient: IHmsClient;

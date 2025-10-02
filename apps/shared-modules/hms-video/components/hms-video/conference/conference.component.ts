@@ -45,9 +45,10 @@ import { combineLatest, Subscription } from 'rxjs';
 import { ConferenceSettingsComponent } from './conference-settings/conference-settings.component';
 
 @Component({
-  selector: 'app-conference',
-  templateUrl: './conference.component.html',
-  styleUrls: ['./conference.component.scss'],
+    selector: 'app-conference',
+    templateUrl: './conference.component.html',
+    styleUrls: ['./conference.component.scss'],
+    standalone: false
 })
 export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() serverClient: IHmsClient;

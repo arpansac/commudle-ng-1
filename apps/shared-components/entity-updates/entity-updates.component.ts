@@ -6,9 +6,10 @@ import { NbDialogService } from '@commudle/theme';
 import { EntityUpdatesService } from 'apps/commudle-admin/src/app/services/entity-updates.service';
 
 @Component({
-  selector: 'commudle-entity-updates',
-  templateUrl: './entity-updates.component.html',
-  styleUrls: ['./entity-updates.component.scss'],
+    selector: 'commudle-entity-updates',
+    templateUrl: './entity-updates.component.html',
+    styleUrls: ['./entity-updates.component.scss'],
+    standalone: false
 })
 export class EntityUpdatesComponent implements OnInit {
   @Input() entityId: number;

@@ -10,9 +10,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-edit-details',
-  templateUrl: './community-edit-details.component.html',
-  styleUrls: ['./community-edit-details.component.scss'],
+    selector: 'app-community-edit-details',
+    templateUrl: './community-edit-details.component.html',
+    styleUrls: ['./community-edit-details.component.scss'],
+    standalone: false
 })
 export class CommunityEditDetailsComponent implements OnInit, OnDestroy {
   community: ICommunity;

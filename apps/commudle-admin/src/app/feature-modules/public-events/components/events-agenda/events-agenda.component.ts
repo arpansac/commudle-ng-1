@@ -8,9 +8,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-events-agenda',
-  templateUrl: './events-agenda.component.html',
-  styleUrls: ['./events-agenda.component.scss'],
+    selector: 'commudle-events-agenda',
+    templateUrl: './events-agenda.component.html',
+    styleUrls: ['./events-agenda.component.scss'],
+    standalone: false
 })
 export class EventsAgendaComponent implements OnInit {
   community: ICommunity;

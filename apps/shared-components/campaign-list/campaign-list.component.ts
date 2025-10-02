@@ -12,9 +12,10 @@ import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-campaign-list',
-  templateUrl: './campaign-list.component.html',
-  styleUrls: ['./campaign-list.component.scss'],
+    selector: 'commudle-campaign-list',
+    templateUrl: './campaign-list.component.html',
+    styleUrls: ['./campaign-list.component.scss'],
+    standalone: false
 })
 export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
