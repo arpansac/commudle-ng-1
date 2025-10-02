@@ -223,3 +223,11 @@
     @apply com-w-full com-text-xs;
   }
 }
+
+.no-results-found {
+  @apply com-flex com-justify-center com-p-4 com-text-center;
+
+  p {
+    @apply com-text-xl com-text-gray-700 com-p-4;
+  }
+}

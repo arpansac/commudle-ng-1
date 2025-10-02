@@ -204,7 +204,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="userRolesUsers.length > 0">
         <tr *ngFor="let userRole of userRolesUsers">
           <td valign="top">
             <p class="user-communities-role" *ngIf="userRole.user_role.name === EUserRoles.ORGANIZER">
@@ -340,6 +340,9 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="userRolesUsers.length === 0" class="no-results-found">
+      <p>No Results Found</p>
+    </div>
   </div>
 
   <app-pagination
