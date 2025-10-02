@@ -246,16 +246,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  getNewMembersCount() {
-    this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
-      this.newMembersCount = data.total;
-    });
-  }
-
   onDaysFilterChange(event) {
     const days = parseInt((event.target as HTMLInputElement).value);
     this.daysFilter = days;
-    this.getNewMembersCount();
+    this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
+      this.newMembersCount = data.total;
+    });
   }
 
   onTagAdd(value: string) {
