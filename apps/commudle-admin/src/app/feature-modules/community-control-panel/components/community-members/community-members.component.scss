@@ -136,6 +136,10 @@
 
             .activity-indicator {
               @apply com-flex com-items-center com-space-x-2 com-flex-nowrap;
+
+              fa-icon {
+                @apply com-flex com-justify-center com-items-center com-mr-1 com-h-4 com-w-4;
+              }
             }
 
             .last-seen {

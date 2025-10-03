@@ -273,7 +273,25 @@
             </div>
           </td>
           <td>
-            <span class="activity-indicator">{{ userRole.community_score }}</span>
+            <span class="activity-indicator">
+              <fa-icon *ngIf="userRole.community_activeness === 'dormant'" class="dormant" [icon]="faSkull"></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'low_active'"
+                class="low_active"
+                [icon]="faHourglassHalf"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'moderately_active'"
+                class="moderately_active"
+                [icon]="faFire"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'highly_active'"
+                class="highly_active"
+                [icon]="faBolt"
+              ></fa-icon>
+              {{ userRole.community_activeness ? userRole.community_activeness : '--' }}
+            </span>
           </td>
           <td>
             <span class="last-seen">{{ userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--' }}</span>

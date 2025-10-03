@@ -15,7 +15,7 @@ export interface IUserRolesUser {
   community?: ICommunity;
   role_designation?: string;
   agg_user_community_engagement: IUserCommunityEngagementData;
-  community_score: number;
+  community_activeness: string;
 }
 
 export enum EUserRolesUserStatus {
