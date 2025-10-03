@@ -109,7 +109,6 @@
           </nb-option>
         </nb-select>
         <div class="skills-filter-container">
-          <label class="skills-label">Skills</label>
           <app-tag
             (tagAdd)="onTagAdd($event)"
             (tagDelete)="onTagDelete($event)"
@@ -121,6 +120,9 @@
             [showAutoSuggestDropDown]="true"
             [showTagsOnLoad]="true"
             [size]="'tiny'"
+            [shape]="'rounded'"
+            [label]="'Type skills and press enter to keep adding'"
+            [inputSize]="'small'"
           ></app-tag>
         </div>
       </div>
@@ -244,22 +246,29 @@
           <td>
             <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
               <ul>
-                <li>Overall Attendence: {{ userRole.agg_user_community_engagement.overall_attendance_rate }}</li>
                 <li>
-                  Events (attendee): {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
+                  <span>Overall Attendence:</span> {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
+                </li>
+                <li>
+                  <span>Events (attendee):</span>
+                  {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
                   {{ userRole.agg_user_community_engagement.attended_events_count }} attended,
                   {{ userRole.agg_user_community_engagement.total_skipped_events }} invited & skipped,
                   {{ userRole.agg_user_community_engagement.total_volunteered_events }} volunteered
                 </li>
                 <li>
-                  Events (speaker):
+                  <span>Events (speaker):</span>
                   {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} registered,
                   {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} talks delivered
                 </li>
                 <li>
-                  Hackathon: {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} registered
+                  <span>Hackathon:</span>
+                  {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} registered
                 </li>
-                <li>Channel Messages Sent: {{ userRole.agg_user_community_engagement.total_channel_messages }}</li>
+                <li>
+                  <span>Channel Messages Sent:</span>
+                  {{ userRole.agg_user_community_engagement.total_channel_messages }}
+                </li>
               </ul>
             </div>
           </td>
