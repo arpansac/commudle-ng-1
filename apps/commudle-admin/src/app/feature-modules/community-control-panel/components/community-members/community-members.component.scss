@@ -10,14 +10,14 @@
       @apply com-grid com-grid-cols-1 md:com-grid-cols-4 md:com-gap-6 com-gap-4;
 
       .insight-card {
-        @apply com-bg-gray-50 com-rounded-10 com-p-4 com-border com-border-solid com-border-Bright-Gray;
+        @apply com-bg-gray-50 com-rounded-10 com-p-4 com-border com-border-solid com-border-Bright-Gray com-h-full com-flex com-flex-col com-items-center;
 
         .insight-label {
           @apply com-text-xs com-font-medium com-text-gray-600 com-m-0 com-mb-3;
         }
 
         .insight-number {
-          @apply com-text-xl com-font-bold com-text-Yankees-Blue;
+          @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
         }
       }
     }
@@ -228,7 +228,7 @@
   @apply com-flex com-flex-col com-gap-2 com-w-full com-min-w-0;
 
   .days-input {
-    @apply com-w-full com-text-xs;
+    @apply com-w-full com-text-xs com-mb-3;
   }
 }
 
@@ -241,5 +241,5 @@
 }
 
 canvas {
-  @apply com-h-[75px] com-w-[150px] #{!important};
+  @apply com-h-[74px] com-w-[150px] #{!important};
 }
