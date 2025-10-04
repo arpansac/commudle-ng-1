@@ -239,3 +239,7 @@
     @apply com-text-xl com-text-gray-700 com-p-4;
   }
 }
+
+canvas {
+  @apply com-h-[75px] com-w-[150px] #{!important};
+}

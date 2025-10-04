@@ -221,6 +221,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         },
         options: {
           responsive: true,
+          legend: {
+            display: false,
+          },
         },
       });
     });
@@ -244,6 +247,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
         },
         options: {
           responsive: true,
+          legend: {
+            display: false,
+          },
         },
       });
     });
