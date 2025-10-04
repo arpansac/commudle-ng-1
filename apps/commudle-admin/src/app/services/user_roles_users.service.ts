@@ -150,8 +150,11 @@ export class UserRolesUsersService {
       .set('count', count)
       .set('is_employer', employer)
       .set('is_employee', employee)
-      .set('query', query)
       .set('filter_by_mutuals', filterByMutuals);
+
+    if (query) {
+      params = params.set('query', query);
+    }
 
     if (domains && Array.isArray(domains) && domains.length > 0) {
       domains.forEach((domain) => {

@@ -129,3 +129,7 @@ nb-card {
 .filter-dropdowns-container {
   @apply com-flex md:com-flex-row com-flex-col com-items-center com-mb-4;
 }
+
+.activeTag {
+  @apply com-bg-Azure com-text-tWhite #{!important};
+}

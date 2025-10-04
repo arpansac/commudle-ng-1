@@ -69,7 +69,7 @@
           <fa-icon class="user-company-icon" [icon]="faBriefcase"></fa-icon>
           <p class="user-company-name">{{ user.company_name }}</p>
         </div>
-        <!-- <span class="mutuals">You both follow John, Priya, and 2 others</span> -->
+        <span *ngIf="user.mutual_followee" class="mutuals">You both follow {{ user.mutual_followee }}</span>
         <div
           *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadgeToSpeakerCount"
           class="talks-leader"

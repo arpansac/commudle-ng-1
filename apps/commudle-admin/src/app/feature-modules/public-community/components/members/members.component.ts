@@ -126,28 +126,23 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   search() {
     this.query = '';
-    this.searchForm.valueChanges
-      .pipe(debounceTime(800), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe(() => {
-        if (this.loadingData) {
-          return;
-        }
-        this.members = [];
-        this.page_info = null;
-        this.page = 1;
-        this.total = 0;
-        this.canLoadMore = true;
-        this.loadingData = true;
-        this.query = this.searchForm.get('name').value;
-        this.queryParamsString = this.query;
-        this.generateParams(
-          this.employer,
-          this.employee,
-          this.query,
-          this.filterByMutuals,
-          this.membersForm.get('domains').value,
-        );
-      });
+    this.searchForm.valueChanges.pipe(debounceTime(800), distinctUntilChanged()).subscribe(() => {
+      this.members = [];
+      this.page_info = null;
+      this.page = 1;
+      this.total = 0;
+      this.canLoadMore = true;
+      this.loadingData = true;
+      this.query = this.searchForm.get('name').value;
+      this.queryParamsString = this.query;
+      this.generateParams(
+        this.employer,
+        this.employee,
+        this.query,
+        this.filterByMutuals,
+        this.membersForm.get('domains').value,
+      );
+    });
   }
 
   onFilterChange() {

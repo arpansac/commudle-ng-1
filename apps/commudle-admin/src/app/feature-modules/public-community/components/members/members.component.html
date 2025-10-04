@@ -108,10 +108,10 @@
                   size="small"
                   status="info"
                   [removable]="filterByMutuals ? 'true' : 'false'"
+                  [ngClass]="{ activeTag: filterByMutuals }"
                   (click)="filterByTags('mutuals')"
                 ></nb-tag>
               </nb-tag-list>
-
               <button
                 (click)="clearAllFilters()"
                 nbButton
