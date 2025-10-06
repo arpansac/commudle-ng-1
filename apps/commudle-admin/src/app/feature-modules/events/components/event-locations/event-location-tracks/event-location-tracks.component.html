@@ -107,22 +107,22 @@
                     <div class="session-title">
                       <p>{{ slot.session_title }}</p>
                       <div *appBreakpoints="'<=md'" class="mobile-action-buttons">
+                        <a
+                          *ngIf="slot.track_slot_speakers.length > 0"
+                          [routerLink]="['/speaker-resource-form']"
+                          [queryParams]="{ token: slot.rsvp_token, event_id: event.slug }"
+                          target="_blank"
+                        >
+                          <button nbButton status="info" size="tiny" (click)="$event.stopPropagation()">
+                            {{ slot.speaker_resource ? 'View Speaker Slides' : 'Add Speaker Slides' }}
+                          </button>
+                        </a>
                         <div
                           *ngIf="event.editable"
                           class="edit"
                           (click)="showEditSlotForm(slot, elti, tsi); $event.stopPropagation()"
                         >
                           <fa-icon [icon]="faPen"></fa-icon>
-                        </div>
-                        <div class="attachment" *ngIf="slot.track_slot_speakers.length > 0">
-                          <a
-                            [queryParams]="{ token: slot.rsvp_token, event_id: event.slug }"
-                            [routerLink]="['/speaker-resource-form']"
-                            class="add-session"
-                            target="_blank"
-                          >
-                            <fa-icon [icon]="faPaperclip"></fa-icon>
-                          </a>
                         </div>
                       </div>
                       <div *ngIf="slot.tags_list" class="tags">
@@ -170,7 +170,17 @@
                     </div>
                   </div>
 
-                  <div *appBreakpoints="'>md'" class="com-flex com-justify-between com-w-full md:com-w-auto">
+                  <div *appBreakpoints="'>md'" class="desktop-action-buttons">
+                    <a
+                      *ngIf="slot.track_slot_speakers.length > 0"
+                      [routerLink]="['/speaker-resource-form']"
+                      [queryParams]="{ token: slot.rsvp_token, event_id: event.slug }"
+                      target="_blank"
+                    >
+                      <button nbButton status="info" size="tiny" (click)="$event.stopPropagation()">
+                        {{ slot.speaker_resource ? 'View Speaker Slides' : 'Add Speaker Slides' }}
+                      </button>
+                    </a>
                     <div class="action-buttons">
                       <div
                         *ngIf="event.editable"
@@ -178,16 +188,6 @@
                         (click)="showEditSlotForm(slot, elti, tsi); $event.stopPropagation()"
                       >
                         <fa-icon [icon]="faPen"></fa-icon>
-                      </div>
-                      <div class="attachment" *ngIf="slot.track_slot_speakers.length > 0">
-                        <a
-                          [queryParams]="{ token: slot.rsvp_token, event_id: event.slug }"
-                          [routerLink]="['/speaker-resource-form']"
-                          class="add-session"
-                          target="_blank"
-                        >
-                          <fa-icon [icon]="faPaperclip"></fa-icon>
-                        </a>
                       </div>
                       <div class="public">
                         <a
