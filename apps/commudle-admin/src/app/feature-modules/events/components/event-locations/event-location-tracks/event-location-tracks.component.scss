@@ -62,7 +62,7 @@
             }
           }
           .session-title {
-            @apply com-w-56 md:com-w-64 com-flex com-justify-between com-flex-col;
+            @apply com-w-56 md:com-w-64 com-flex com-justify-between com-flex-col com-mr-2px;
             p {
               @apply com-my-0 com-text-sm md:com-text-base com-font-semibold com-ml-4;
             }
@@ -142,7 +142,7 @@
         }
       }
       .mobile-action-buttons {
-        @apply com-flex com-gap-4 com-ml-3 com-mt-3;
+        @apply com-flex com-gap-2px com-ml-1 com-mt-1 com-justify-between;
         div {
           @apply com-bg-[#6B72801A] com-w-7  com-h-7 com-rounded-lg com-flex com-gap-3 com-items-center com-justify-center;
         }
@@ -219,4 +219,8 @@ nb-accordion-item {
 
 .tags {
   @apply com-flex com-flex-row com-items-center com-gap-3 com-ml-4 com-mt-2;
+}
+
+.desktop-action-buttons {
+  @apply com-flex com-justify-between md:com-gap-4 com-gap-2px com-w-full md:com-w-auto com-items-center;
 }
