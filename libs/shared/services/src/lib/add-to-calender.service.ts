@@ -10,6 +10,9 @@ export class AddToCalenderService {
   }
 
   private sanitizeHtml(html: string): string {
+    if (!html) {
+      return '';
+    }
     return html
       .replace(/<br\s*\/?>/gi, '\n')
       .replace(/<\/p>\s*<p>/gi, '\n\n')
@@ -20,7 +23,7 @@ export class AddToCalenderService {
   addToGoogleCalendar(sDate: Date, eDate: Date, title: string, location: string, details: string): string {
     const startDate = this.formatDate(sDate);
     const endDate = this.formatDate(eDate);
-    const eventName = encodeURIComponent(title);
+    const eventName = encodeURIComponent(title || '');
     const encodedLocation = location ? encodeURIComponent(location) : '';
     const encodedDetails = encodeURIComponent(this.sanitizeHtml(details));
 
@@ -35,7 +38,7 @@ export class AddToCalenderService {
     const startDate = encodeURIComponent(moment(sDate).toISOString());
     const endDate = encodeURIComponent(moment(eDate).toISOString());
     const plainDetails = encodeURIComponent(this.sanitizeHtml(details));
-    const eventName = encodeURIComponent(title);
+    const eventName = encodeURIComponent(title || '');
     const encodedLocation = location ? encodeURIComponent(location) : '';
 
     return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${eventName}&body=${plainDetails}&startdt=${startDate}&enddt=${endDate}&location=${encodedLocation}`;
@@ -44,7 +47,7 @@ export class AddToCalenderService {
   addToMicrosoftCalendar(sDate: Date, eDate: Date, title: string, location: string, details: string): string {
     const startDate = this.formatDate(sDate, 'YYYY-MM-DDTHH:mm:ss');
     const endDate = this.formatDate(eDate, 'YYYY-MM-DDTHH:mm:ss');
-    const eventName = encodeURIComponent(title);
+    const eventName = encodeURIComponent(title || '');
     const encodedLocation = location ? encodeURIComponent(location) : '';
     const encodedDetails = encodeURIComponent(this.sanitizeHtml(details));
 
