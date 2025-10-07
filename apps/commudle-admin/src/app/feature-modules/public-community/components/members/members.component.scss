@@ -2,14 +2,14 @@ nb-card {
   @apply com-mt-4 com-p-0 com-mx-0;
 
   nb-card-body {
-    @apply com-p-6 com-m-0;
+    @apply md:com-p-6 com-p-0 com-m-0;
 
     .skeleton-vertical-cards {
       @apply com-mb-20;
     }
 
     .speakers-container {
-      @apply com-mt-0 com-mb-5 com-p-0 com-relative;
+      @apply com-mt-0 md:com-mb-5 com-mb-0 md:com-p-0 com-p-4 com-relative;
       &:hover {
         .scroll-button {
           @apply com-opacity-80;
@@ -25,7 +25,7 @@ nb-card {
       }
 
       .speakers-list {
-        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 md:com-mb-14 com-mb-8 com-items-center com-scroll-smooth;
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 md:com-mb-14 com-mb-4 com-items-center com-scroll-smooth;
 
         .load-more {
           @apply com-text-center md:com-mt-6 com-mt-0;
@@ -44,7 +44,7 @@ nb-card {
         @apply com-mt-0 com-mx-0 com-mb-4;
 
         .header-text {
-          @apply com-max-w-fit com-m-0 com-mb-6 com-text-2xl com-font-semibold com-text-Yankees-Blue;
+          @apply com-max-w-fit com-m-0 com-mb-6 com-text-2xl com-font-semibold com-text-Yankees-Blue md:com-px-0 com-px-4;
         }
 
         .members-list {
@@ -92,7 +92,7 @@ nb-card {
 }
 
 .search-filters {
-  @apply com-mt-0 com-mb-4;
+  @apply com-mt-0 com-mb-4 md:com-px-0 com-px-4;
 
   .search-container {
     @apply com-mb-4;
@@ -132,4 +132,12 @@ nb-card {
 
 .activeTag {
   @apply com-bg-Azure com-text-tWhite #{!important};
+}
+
+.no-members-found {
+  @apply com-flex com-justify-center;
+
+  p {
+    @apply com-text-xl com-font-medium com-text-gray-600 com-mt-6;
+  }
 }

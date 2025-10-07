@@ -51,7 +51,6 @@
     <div class="members-container">
       <div class="members">
         <p class="header-text">Active members of the community</p>
-        <app-loading-spinner *ngIf="isLoadingMembers && !canLoadMore"></app-loading-spinner>
         <div class="search-filters">
           <form [formGroup]="searchForm" class="search-container">
             <div class="search">
@@ -126,7 +125,8 @@
             </div>
           </div>
         </div>
-        <div class="members-list">
+        <app-loading-spinner *ngIf="isLoadingMembers && !canLoadMore"></app-loading-spinner>
+        <div *ngIf="members.length > 0 && !isLoadingMembers" class="members-list">
           <ng-container *ngFor="let member of members">
             <div class="member-card">
               <app-user-profile-card-large
@@ -139,6 +139,9 @@
               ></app-user-profile-card-large>
             </div>
           </ng-container>
+        </div>
+        <div *ngIf="members.length === 0 && !isLoadingMembers" class="no-members-found">
+          <p>No results found</p>
         </div>
 
         <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
