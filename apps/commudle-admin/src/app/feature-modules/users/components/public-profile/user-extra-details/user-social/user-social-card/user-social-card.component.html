@@ -34,7 +34,7 @@
           <p class="user-social-card-description">{{ socialResource.description | truncatetext : 150 }}</p>
         </div>
         <button
-          (click)="onDialogOpen()"
+          (click)="onDialogOpen($event)"
           *ngIf="currentUser?.id === user.id"
           class="user-social-card-delete"
           ghost
