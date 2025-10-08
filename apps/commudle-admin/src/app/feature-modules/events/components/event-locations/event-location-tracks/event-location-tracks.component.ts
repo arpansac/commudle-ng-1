@@ -125,8 +125,10 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
     this.minSlotDate = moment(this.event.start_time).toDate();
   }
 
-  ngOnChanges() {
-    this.getLocationTracks();
+  ngOnChanges(changes: any) {
+    if (changes.eventLocation || changes.eventLocationDate) {
+      this.getLocationTracks();
+    }
   }
 
   scrollFromTop() {
