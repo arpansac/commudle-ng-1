@@ -39,7 +39,7 @@
             @apply com-flex com-items-center com-gap-4;
 
             .newsletter-image {
-              @apply com-flex-shrink-0;
+              @apply com-w-[80px] com-flex-shrink-0;
               img {
                 @apply com-w-12 com-h-8 com-object-cover com-rounded;
               }
@@ -76,7 +76,7 @@
 
               .edit-link,
               .test-email-link {
-                @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-whitespace-nowrap;
+                @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-whitespace-nowrap com-cursor-pointer;
                 nb-icon,
                 fa-icon {
                   @apply com-text-base;
@@ -88,7 +88,7 @@
               }
 
               .test-email-link {
-                @apply md:com-pl-5 com-pr-0 com-pl-3;
+                @apply md:com-pl-5 com-pr-0 com-pl-3  com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
               }
             }
 
@@ -96,7 +96,7 @@
               @apply com-flex com-flex-row com-justify-between com-gap-5 com-w-full;
 
               .schedule-button {
-                @apply com-text-xs com-text-Yankees-Blue com-bg-transparent;
+                @apply com-text-xs com-text-Yankees-Blue com-bg-transparent com-rounded-lg com-border-Bright-Gray;
               }
 
               .reset-button {
@@ -108,7 +108,7 @@
               }
 
               .delete-link {
-                @apply com-text-xs com-font-normal com-text-Infra-Red com-no-underline com-flex com-items-center com-whitespace-nowrap com-ml-auto;
+                @apply com-text-xs com-font-normal com-text-Infra-Red com-no-underline com-flex com-items-center com-whitespace-nowrap com-ml-auto com-cursor-pointer;
                 nb-icon {
                   @apply com-text-base;
                 }
@@ -155,4 +155,16 @@ nb-card {
       }
     }
   }
+}
+
+.edit-and-test-email-links {
+  @apply com-flex;
+}
+
+.schedule-and-reset-links {
+  @apply com-flex com-flex-row com-items-center com-gap-4;
+}
+
+.schedule-time {
+  @apply com-text-xs com-text-Yankees-Blue com-m-0;
 }

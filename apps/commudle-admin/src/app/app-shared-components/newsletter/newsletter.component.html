@@ -26,7 +26,11 @@
               <td colspan="2">
                 <div class="newsletter-name">
                   <div *ngIf="newsletter.banner_image" class="newsletter-image">
-                    <img [src]="newsletter.banner_image?.i160" [alt]="newsletter.title" />
+                    <commudle-banner-image
+                      [name]="newsletter.title"
+                      [headerImagePath]="newsletter.banner_image?.i160"
+                      [aspectRatio]="'16/9'"
+                    ></commudle-banner-image>
                   </div>
                   <a
                     (click)="redirectTo(newsletter.slug)"
@@ -71,36 +75,43 @@
                         Publish
                       </nb-toggle>
                     </div>
-                    <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
-                      Edit &nbsp; <fa-icon [icon]="icons.faEdit"></fa-icon>
-                    </a>
-                    <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
-                      Send Test Email &nbsp; <fa-icon [icon]="icons.faEnvelope"></fa-icon>
-                    </a>
+                    <div class="edit-and-test-email-links">
+                      <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
+                        Edit &nbsp; <fa-icon [icon]="icons.faEdit"></fa-icon>
+                      </a>
+                      <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
+                        Send Test Email &nbsp; <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+                      </a>
+                    </div>
                   </div>
                   <div class="action-links">
-                    <button
-                      *ngIf="newsletter.published && newsletter.scheduled_for"
-                      outline
-                      nbButton
-                      size="small"
-                      class="reset-button"
-                      (click)="openScheduleDialogBox(scheduleResetDialogBox, newsletter.id, i)"
-                    >
-                      <fa-icon [icon]="icons.faClock"></fa-icon>
-                      Reset
-                    </button>
-                    <button
-                      *ngIf="newsletter.published && !newsletter.scheduled_for"
-                      outline
-                      nbButton
-                      size="small"
-                      class="schedule-button"
-                      (click)="openScheduleDialogBox(scheduleDialogBox, newsletter.id, i)"
-                    >
-                      <fa-icon [icon]="icons.faClock"></fa-icon>
-                      Set Email Schedule
-                    </button>
+                    <div class="schedule-and-reset-links">
+                      <button
+                        *ngIf="newsletter.published && newsletter.scheduled_for"
+                        outline
+                        nbButton
+                        size="small"
+                        class="reset-button"
+                        (click)="openScheduleDialogBox(scheduleResetDialogBox, newsletter.id, i)"
+                      >
+                        <fa-icon [icon]="icons.faClock"></fa-icon>
+                        Reset
+                      </button>
+                      <button
+                        *ngIf="newsletter.published && !newsletter.scheduled_for"
+                        outline
+                        nbButton
+                        size="small"
+                        class="schedule-button"
+                        (click)="openScheduleDialogBox(scheduleDialogBox, newsletter.id, i)"
+                      >
+                        <fa-icon [icon]="icons.faClock"></fa-icon>
+                        Set Email Schedule
+                      </button>
+                      <p *ngIf="newsletter.published && newsletter.scheduled_for" class="schedule-time">
+                        {{ moment(newsletter.scheduled_for).format('MMMM Do YYYY |  h:mm a') }}
+                      </p>
+                    </div>
                     <a (click)="openConfirmDialogBox(deleteDialog, newsletter.id, i)" class="delete-link">
                       <nb-icon icon="trash"></nb-icon>&nbsp; Delete
                     </a>
