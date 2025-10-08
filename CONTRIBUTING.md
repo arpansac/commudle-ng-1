@@ -23,14 +23,18 @@ requests.
 
 ### The instructions to setup the repository in a local environment are mentioned in the [ReadMe](README.md)
 
-#### Branch Names
 
-Your branches should be named with a prefix for their purpose, viz.
+#### Branch Naming Conventions
 
-- New Feature: `feature-branchname`
-- Urgent Fix: `hotfix-branchname`
-- Bug Fix: `fix-branchname`
-  In the above examples, replace `branchname` with the name of your branch.
+Follow these modern branch naming conventions to keep the repository organized and collaboration clear:
+
+- **feature/**: For new feature development. Example: `feature/awesome-login`
+- **hotfix/**: For urgent production fixes. Example: `hotfix/logout-issue`
+- **bugfix/**: For fixes to the develop branch (non-urgent). Example: `bugfix/login-error`
+
+Replace the part after the slash with a short, descriptive name for your branch. Use hyphens to separate words.
+
+These conventions help clarify the purpose of each branch and make collaboration easier.
 
 #### Git Commit
 - `chmod ug+x .husky/*`
