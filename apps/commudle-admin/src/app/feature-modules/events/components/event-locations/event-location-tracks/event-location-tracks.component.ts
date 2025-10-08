@@ -8,6 +8,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -125,7 +126,7 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
     this.minSlotDate = moment(this.event.start_time).toDate();
   }
 
-  ngOnChanges(changes: any) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.eventLocation || changes.eventLocationDate) {
       this.getLocationTracks();
     }
