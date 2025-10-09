@@ -25,16 +25,32 @@ requests.
 
 
 #### Branch Naming Conventions
+Use **lowercase** and **hyphens** (`-`) to separate words.  
+Example: `feat/community-badges`, `fix/api-timezone`, `upgrade/angular-19`
 
-Follow these modern branch naming conventions to keep the repository organized and collaboration clear:
+---
 
-- **feature/**: For new feature development. Example: `feature/awesome-login`
-- **hotfix/**: For urgent production fixes. Example: `hotfix/logout-issue`
-- **bugfix/**: For fixes to the develop branch (non-urgent). Example: `bugfix/login-error`
+##### 🧱 Branch Types
 
-Replace the part after the slash with a short, descriptive name for your branch. Use hyphens to separate words.
+| Type | Purpose | Example |
+|------|----------|----------|
+| **feat/** | For new feature development. | `feat/awesome-login` |
+| **fix/** | For fixing bugs or regressions during development or testing. | `fix/login-error` |
+| **hotfix/** | For urgent production fixes that must bypass normal QA flow. | `hotfix/logout-issue` |
+| **upgrade/** | For upgrading frameworks, dependencies, or major libraries. | `upgrade/angular-19` |
+| **docs/** | For documentation updates (README, wiki, setup guides, etc.). | `docs/setup-instructions` |
+| **chore/** | For maintenance, cleanup, or non-feature tasks (e.g., CI, linting). | `chore/update-eslint-config` |
+| **exp/** | For experimental branches to test ideas or new tools. | `exp/chatbot-prototype` |
+| **spike/** | For short-term research or proof-of-concept work. | `spike/ai-summary-feature` |
 
-These conventions help clarify the purpose of each branch and make collaboration easier.
+---
+
+##### 💡 Best Practices
+
+- Keep branch names **under 20 characters**.
+- Always use **clear and descriptive** words — avoid vague names like `fix/stuff`.
+- Link pull requests to their issue numbers if applicable.  
+  Example: `feat/upgrade-angular-#452`
 
 #### Git Commit
 - `chmod ug+x .husky/*`
