@@ -1,29 +1,116 @@
-.create-button {
-  @apply com-my-6;
-}
-table {
-  @apply com-border-collapse com-w-full;
-  tr {
-    .published {
-      @apply com-flex com-items-center com-gap-8;
+.pages-list-container {
+  @apply com-w-full;
+
+  .table-wrapper {
+    @apply com-overflow-scroll;
+
+    .pages-table {
+      @apply com-w-full com-border-collapse;
+
+      .table-header {
+        @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+        th {
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+          &:nth-child(1) {
+            @apply com-w-[40%];
+          }
+          &:nth-child(2) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(3) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(4) {
+            @apply com-w-[20%];
+          }
+        }
+      }
+
+      .page-row {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-100 com-transition-colors;
+
+        &:last-child {
+          @apply com-border-b-0;
+        }
+
+        td {
+          @apply com-p-4 com-text-sm com-font-normal com-text-Yankees-Blue;
+
+          .page-name {
+            @apply com-flex com-items-center;
+
+            .page-link {
+              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-flex com-items-center com-gap-1  hover:com-border-0 hover:com-border-b hover:com-border-solid hover:com-border-gray-400;
+              fa-icon {
+                @apply com-text-xs;
+              }
+            }
+          }
+
+          .publish-control {
+            @apply com-flex;
+
+            nb-toggle {
+              ::ng-deep {
+                label {
+                  @apply com-text-sm;
+                  .text {
+                    @apply com-text-xs com-text-gray-900;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .created-by {
+          @apply com-flex com-items-center;
+        }
+
+        .page-actions {
+          @apply com-flex;
+
+          .edit-link,
+          .delete-link {
+            @apply com-text-xs com-font-normal com-no-underline com-flex com-items-center com-border-0 com-border-solid com-border-Bright-Gray com-whitespace-nowrap com-cursor-pointer;
+            fa-icon {
+              @apply com-text-base com-mr-1;
+            }
+          }
+
+          .edit-link {
+            @apply com-text-Yankees-Blue com-border-r md:com-pr-5 com-pr-0 com-pr-3;
+          }
+
+          .delete-link {
+            @apply com-text-Infra-Red md:com-pl-5 com-pr-0 com-pl-3;
+          }
+        }
+      }
     }
-    .action {
-      @apply com-flex com-gap-3;
+
+    .loading-row {
+      @apply com-flex com-justify-center com-py-8;
     }
   }
 }
 
-td,
-th {
-  @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-2;
-}
+.header-section {
+  @apply com-flex com-justify-between md:com-items-center com-mb-6 com-flex-col md:com-flex-row com-gap-4;
 
-tr:nth-child(even) {
-  @apply com-bg-Bright-Gray;
+  .page-title {
+    @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+  }
+
+  a {
+    @apply com-rounded-lg;
+  }
 }
 
 .disableAnchorTag {
-  @apply com-pointer-events-none com-no-underline com-text-black;
+  @apply com-pointer-events-none com-no-underline com-text-gray-400;
 }
 
 nb-card {

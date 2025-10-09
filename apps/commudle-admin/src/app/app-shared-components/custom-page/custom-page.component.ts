@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
 import { ICustomPage } from 'apps/shared-models/custom-page.model';
 import { Subscription } from 'rxjs';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faArrowUpRightFromSquare, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
@@ -13,12 +13,18 @@ import { EDbModels } from '@commudle/shared-models';
   templateUrl: './custom-page.component.html',
   styleUrls: ['./custom-page.component.scss'],
 })
-export class CustomPageComponent implements OnInit {
+export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() parentId: number | string;
   @Input() parentType: EDbModels;
   subscription: Subscription[] = [];
   pages: ICustomPage[];
-  faPlus = faPlus;
+  isLoading = true;
+  icons = {
+    faPlus,
+    faArrowUpRightFromSquare,
+    faEdit,
+    faTrash,
+  };
 
   constructor(
     private customPageService: CustomPageService,
@@ -31,10 +37,16 @@ export class CustomPageComponent implements OnInit {
     this.getCustomPages();
   }
 
+  ngOnDestroy() {
+    this.subscription.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
   getCustomPages() {
+    this.isLoading = true;
     this.subscription.push(
       this.customPageService.getIndex(this.parentId, this.parentType).subscribe((data) => {
         this.pages = data;
+        this.isLoading = false;
       }),
     );
   }
