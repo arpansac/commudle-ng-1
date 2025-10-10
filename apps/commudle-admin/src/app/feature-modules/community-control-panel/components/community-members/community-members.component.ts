@@ -46,6 +46,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   sortOrder = '';
   newMembersCount: number;
   daysFilter = 90;
+  isActiveFilter = false;
 
   contextMenuItems = [
     {
@@ -470,6 +471,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       queryParams.sort_order = this.sortOrder;
     }
 
+    if (Object.keys(queryParams).length > 0) {
+      this.isActiveFilter = true;
+    } else {
+      this.isActiveFilter = false;
+    }
+
     const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
     const queryParamsString = urlSearchParams.toString();
     this.location.replaceState(location.pathname, queryParamsString);
@@ -484,6 +491,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   clearAllFilters() {
+    this.isLoading = true;
     this.communityFilterForm.reset();
     this.searchForm.get('name').setValue('');
     this.mostActive = false;
@@ -495,9 +503,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.sortByField = '';
     this.sortOrder = '';
     this.page = 1;
-    this.userRolesUsers = [];
     this.total = 0;
-    this.getMembers();
+    this.query = '';
+    this.isActiveFilter = false;
     this.location.replaceState(location.pathname, '');
   }
 }

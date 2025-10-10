@@ -119,7 +119,7 @@
             }
 
             .engagement-data {
-              @apply com-text-sm com-font-normal com-text-gray-500 com-flex-nowrap;
+              @apply com-flex-nowrap;
 
               p {
                 @apply com-m-0;
@@ -143,11 +143,11 @@
             }
 
             .last-seen {
-              @apply com-text-sm com-text-gray-500 com-flex-nowrap;
+              @apply com-flex-nowrap;
             }
 
             .profile-highlights {
-              @apply com-text-sm com-text-gray-500 com-p-0 com-m-0 com-pl-4;
+              @apply com-p-0 com-m-0 com-pl-4;
             }
           }
         }

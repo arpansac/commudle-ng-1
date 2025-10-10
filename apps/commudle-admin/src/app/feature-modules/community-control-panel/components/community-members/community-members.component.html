@@ -168,6 +168,7 @@
           ></nb-tag>
         </nb-tag-list>
         <button
+          *ngIf="isActiveFilter"
           (click)="clearAllFilters()"
           nbButton
           size="tiny"
@@ -290,7 +291,9 @@
                 class="highly_active"
                 [icon]="faBolt"
               ></fa-icon>
-              {{ userRole.community_activeness ? userRole.community_activeness : '--' }}
+              {{
+                userRole.community_activeness ? (userRole.community_activeness | capitalizeAndRemoveUnderscore) : '--'
+              }}
             </span>
           </td>
           <td>
@@ -367,7 +370,7 @@
         </tr>
       </tbody>
     </table>
-    <div *ngIf="userRolesUsers.length === 0" class="no-results-found">
+    <div *ngIf="userRolesUsers.length === 0 && !isLoading" class="no-results-found">
       <p>No Results Found</p>
     </div>
   </div>
