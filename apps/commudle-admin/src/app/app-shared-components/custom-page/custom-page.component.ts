@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
@@ -16,6 +16,7 @@ import { EDbModels } from '@commudle/shared-models';
 export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() parentId: number | string;
   @Input() parentType: EDbModels;
+  @ViewChild('publishDialog') publishDialog: TemplateRef<any>;
   subscription: Subscription[] = [];
   pages: ICustomPage[];
   isLoading = true;
@@ -49,6 +50,20 @@ export class CustomPageComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }),
     );
+  }
+
+  onToggleClick(event: Event, id: number, index: number) {
+    event.preventDefault();
+
+    if (!this.pages[index].published) {
+      this.openConfirmDialogBox(this.publishDialog, id, index);
+    } else {
+      this.togglePublished(id, index);
+    }
+  }
+
+  confirmPublish(id: number, index: number) {
+    this.togglePublished(id, index);
   }
 
   togglePublished(id, index) {
