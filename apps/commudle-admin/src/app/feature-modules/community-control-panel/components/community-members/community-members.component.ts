@@ -9,7 +9,16 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription, distinctUntilChanged } from 'rxjs';
 import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
-import { faBolt, faEnvelope, faFire, faHourglassHalf, faSkull, faSort } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBolt,
+  faEnvelope,
+  faFire,
+  faHourglassHalf,
+  faSkull,
+  faSort,
+  faSortUp,
+  faSortDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import * as moment from 'moment';
 import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
@@ -35,6 +44,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   employee = false;
   faEnvelope = faEnvelope;
   faSort = faSort;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
   faSkull = faSkull;
   faHourglassHalf = faHourglassHalf;
   faFire = faFire;
@@ -42,8 +53,8 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
   queryParamsString = '';
-  sortByField = '';
-  sortOrder = '';
+  sortByField = 'activated_at';
+  sortOrder = 'desc';
   newMembersCount: number;
   daysFilter = 90;
   isActiveFilter = false;
@@ -484,9 +495,32 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.getMembers();
   }
 
-  sortBy(sortByField: string) {
-    this.sortByField = sortByField;
-    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+  sortBy(sort: string) {
+    if (sort === 'nameAsc') {
+      this.sortByField = 'name';
+      this.sortOrder = 'asc';
+    } else if (sort === 'nameDesc') {
+      this.sortByField = 'name';
+      this.sortOrder = 'desc';
+    } else if (sort === 'lastSeenAsc') {
+      this.sortByField = 'last_seen_at';
+      this.sortOrder = 'asc';
+    } else if (sort === 'lastSeenDesc') {
+      this.sortByField = 'last_seen_at';
+      this.sortOrder = 'desc';
+    } else if (sort === 'locationAsc') {
+      this.sortByField = 'location';
+      this.sortOrder = 'asc';
+    } else if (sort === 'locationDesc') {
+      this.sortByField = 'location';
+      this.sortOrder = 'desc';
+    } else if (sort === 'activated_at') {
+      this.sortByField = 'activated_at';
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortByField = sort;
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    }
     this.generateParams();
   }
 

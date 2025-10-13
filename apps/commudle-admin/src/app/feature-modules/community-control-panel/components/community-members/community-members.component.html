@@ -190,20 +190,113 @@
   <div class="members-table" *ngIf="!isLoading">
     <table>
       <thead>
-        <tr>
+        <tr class="header-row">
           <th class="sortable">
-            MEMBERS
-            <fa-icon (click)="sortBy('name')" title="Sort by name" [icon]="faSort"></fa-icon>
+            <div class="header-content">
+              <span class="header-text">MEMBERS</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'name' || sortOrder !== 'asc'"
+                  (click)="sortBy('nameAsc')"
+                  title="Sort by name Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'name' || sortOrder !== 'desc'"
+                  (click)="sortBy('nameDesc')"
+                  title="Sort by name Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
           </th>
-          <th>USER ENGAGEMENT</th>
-          <th>ACTIVITY</th>
           <th>
-            LAST SEEN <fa-icon (click)="sortBy('last_seen_at')" title="Sort by last seen" [icon]="faSort"></fa-icon>
+            <div class="header-content">
+              <span class="header-text">USER ENGAGEMENT</span>
+            </div>
           </th>
-          <th>PROFILE HIGHLIGHTS</th>
-          <th>LOCATION <fa-icon (click)="sortBy('location')" title="Sort by location" [icon]="faSort"></fa-icon></th>
           <th>
-            JOINED DATE <fa-icon (click)="sortBy('activated_at')" title="Sort by joined date" [icon]="faSort"></fa-icon>
+            <div class="header-content">
+              <span class="header-text">ACTIVITY</span>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">LAST SEEN</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'last_seen_at' || sortOrder !== 'asc'"
+                  (click)="sortBy('lastSeenAsc')"
+                  title="Sort by last seen Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'last_seen_at' || sortOrder !== 'desc'"
+                  (click)="sortBy('lastSeenDesc')"
+                  title="Sort by last seen Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="header-content">
+              <span class="header-text">PROFILE HIGHLIGHTS</span>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">LOCATION</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'location' || sortOrder !== 'asc'"
+                  (click)="sortBy('locationAsc')"
+                  title="Sort by location Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'location' || sortOrder !== 'desc'"
+                  (click)="sortBy('locationDesc')"
+                  title="Sort by location Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">JOINED DATE</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'activated_at' || sortOrder !== 'asc'"
+                  (click)="sortBy('activated_at')"
+                  title="Sort by joined date Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'activated_at' || sortOrder !== 'desc'"
+                  (click)="sortBy('activated_at')"
+                  title="Sort by joined date Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
           </th>
         </tr>
       </thead>

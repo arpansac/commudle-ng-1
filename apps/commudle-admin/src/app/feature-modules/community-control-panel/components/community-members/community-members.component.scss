@@ -25,6 +25,7 @@
 
   .search-filters {
     @apply com-mt-6 com-mb-8;
+    // @apply com-sticky com-top-[148px] com-z-50 com-bg-white;
 
     .search-container {
       @apply com-mb-4;
@@ -33,7 +34,7 @@
         @apply com-m-0 com-bg-white;
 
         input {
-          @apply com-bg-white #{!important};
+          @apply com-bg-white;
         }
       }
     }
@@ -74,7 +75,7 @@
 
       thead {
         th {
-          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500  com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+          @apply com-px-4 com-py-3 com-text-left com-text-xs com-font-semibold com-text-gray-500;
 
           &:nth-child(1) {
             @apply com-w-[20%];
@@ -97,8 +98,26 @@
           &:nth-child(7) {
             @apply com-w-[10%];
           }
-          .sortable {
-            @apply com-flex com-items-center com-space-x-1;
+
+          &.sortable {
+            @apply com-cursor-pointer hover:com-bg-gray-50;
+          }
+
+          .header-content {
+            @apply com-flex com-items-center com-w-full com-gap-2;
+
+            .header-text {
+              @apply com-flex-1 com-truncate com-text-xs com-font-semibold com-text-gray-500;
+            }
+
+            .sort-icons {
+              @apply com-flex com-flex-col com-items-center com-justify-center com-gap-0 com-flex-shrink-0;
+
+              .sort-icon-asc,
+              .sort-icon-desc {
+                @apply com-flex com-items-center com-justify-center com-h-1 com-w-1 com-cursor-pointer hover:com-text-gray-700 com-transition-colors;
+              }
+            }
           }
         }
       }
@@ -204,7 +223,7 @@
 }
 
 .activeTag {
-  @apply com-bg-Azure com-text-tWhite #{!important};
+  @apply com-bg-Azure com-text-tWhite;
 }
 
 .profile-badges {
@@ -241,5 +260,10 @@
 }
 
 canvas {
-  @apply com-h-[74px] com-w-[150px] #{!important};
+  @apply com-h-[74px] com-w-[150px];
+}
+
+.header-row {
+  @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+  // @apply com-sticky com-top-[148px] com-z-50 com-bg-white;
 }
