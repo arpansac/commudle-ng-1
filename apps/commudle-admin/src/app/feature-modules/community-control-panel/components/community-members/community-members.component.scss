@@ -67,12 +67,13 @@
   }
 
   .members-table {
-    @apply com-overflow-auto;
+    @apply com-overflow-auto com-relative com-max-h-[70vh];
 
     table {
       @apply com-w-full com-border-collapse com-min-w-full;
 
       thead {
+        @apply com-sticky com-top-0 com-z-20 com-bg-white;
         th {
           @apply com-px-4 com-py-3 com-text-left com-text-xs com-font-semibold com-text-gray-500;
 
