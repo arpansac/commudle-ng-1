@@ -234,3 +234,58 @@ fa-icon {
     }
   }
 }
+.filter-popover {
+  @apply com-p-4 com-w-80 com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg;
+
+  .filter-header {
+    @apply com-flex com-items-center com-gap-2 com-mb-4 com-pb-3 com-border-b com-border-gray-200;
+
+    fa-icon {
+      @apply com-text-gray-600;
+    }
+
+    span {
+      @apply com-text-base com-font-medium com-text-gray-800;
+    }
+  }
+
+  .filter-section {
+    @apply com-mb-6;
+
+    h6 {
+      @apply com-mb-3 com-text-sm com-font-medium com-text-gray-600 com-uppercase;
+    }
+
+    .filter-option {
+      @apply com-flex com-items-center com-mb-2;
+
+      input[type='checkbox'] {
+        @apply com-w-5 com-h-5 com-mr-3 com-rounded com-border-2 com-border-gray-300;
+
+        &:checked {
+          @apply com-bg-blue-600 com-border-blue-600;
+        }
+      }
+
+      label {
+        @apply com-flex com-items-center com-justify-between com-w-full com-cursor-pointer com-text-sm;
+
+        .option-name {
+          @apply com-text-gray-800;
+        }
+
+        .option-count {
+          @apply com-text-gray-500 com-ml-auto;
+        }
+      }
+    }
+  }
+
+  .filter-actions {
+    @apply com-flex com-gap-3 com-pt-4 com-border-t com-border-gray-200;
+
+    button {
+      @apply com-flex-1;
+    }
+  }
+}

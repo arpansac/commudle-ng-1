@@ -3,7 +3,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ColumnMode, SortType } from '@commudle/ngx-datatable';
-import { NbDialogService, NbWindowService } from '@commudle/theme';
+import { NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
@@ -35,6 +35,7 @@ import { IEventLocation } from 'apps/shared-models/event-location.model';
 export class EventFormResponsesComponent implements OnInit {
   @ViewChild('table') table;
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
+  @ViewChild(NbPopoverDirective) popover: NbPopoverDirective;
 
   event: IEvent;
   community: ICommunity;
@@ -235,13 +236,13 @@ export class EventFormResponsesComponent implements OnInit {
   registrationStatusFilter(event) {
     this.page = 1;
     this.registrationStatusId = event.target.value;
-    this.getResponses();
+    // this.getResponses();
   }
 
   genderFilter(event) {
     this.page = 1;
     this.gender = event ? event.target.value : '';
-    this.getResponses();
+    // this.getResponses();
   }
 
   getEventLocationTracks() {
@@ -658,5 +659,27 @@ export class EventFormResponsesComponent implements OnInit {
     });
 
     return formData;
+  }
+
+  openPopover() {
+    this.popover.show();
+  }
+  closePopover() {
+    this.popover.hide();
+  }
+
+  onStatusChange(event: Event, statusId: number) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.registrationStatusFilter({ target: { value: checked ? statusId : 0 } });
+  }
+
+  onGenderChange(event: Event, genderValue: string) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.genderFilter({ target: { value: checked ? genderValue : '' } });
+  }
+
+  applyFilter() {
+    this.getResponses();
+    this.closePopover();
   }
 }

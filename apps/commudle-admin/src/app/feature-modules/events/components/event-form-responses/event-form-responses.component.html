@@ -150,7 +150,9 @@
             }
           </div>
         </form>
-        <div class="filter"><fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filter</span></div>
+        <div class="filter" [nbPopover]="filterPopover" nbPopoverTrigger="click" nbPopoverPlacement="bottom">
+          <fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filter</span>
+        </div>
         <div class="refresh" (click)="getResponses()"><fa-icon [icon]="icons.faRefresh"></fa-icon></div>
       </div>
       <div class="action-dropdown"></div>
@@ -910,4 +912,73 @@
       <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
+</ng-template>
+
+<ng-template #filterPopover>
+  <div class="filter-popover">
+    <div class="filter-header">
+      <fa-icon [icon]="icons.faFilter"></fa-icon>
+      <span>Filter by</span>
+    </div>
+
+    <div class="filter-section">
+      <h6>Status</h6>
+      @for (rs of registrationStatuses; track rs.id) {
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          [id]="'status-' + rs.id"
+          [checked]="registrationStatusId === rs.id"
+          (change)="onStatusChange($event, rs.id)"
+        />
+        <label [for]="'status-' + rs.id">
+          <span class="option-name">{{ rs.name | titlecase }}</span>
+          <span class="option-count">({{ eventDataFormEntityGroup?.summary_registration_counts[rs.name] || 0 }})</span>
+        </label>
+      </div>
+      }
+    </div>
+
+    <div class="filter-section">
+      <h6>Gender</h6>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-male"
+          [checked]="gender === 'male'"
+          (change)="onGenderChange($event, 'male')"
+        />
+        <label for="gender-male">
+          <span class="option-name">Male</span>
+        </label>
+      </div>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-female"
+          [checked]="gender === 'female'"
+          (change)="onGenderChange($event, 'female')"
+        />
+        <label for="gender-female">
+          <span class="option-name">Female</span>
+        </label>
+      </div>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-other"
+          [checked]="gender === 'prefer_not_to_answer'"
+          (change)="onGenderChange($event, 'prefer_not_to_answer')"
+        />
+        <label for="gender-other">
+          <span class="option-name">Prefer not to answer</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button nbButton size="medium" status="primary" (click)="applyFilter()">Apply</button>
+      <button nbButton size="medium" ghost (click)="closePopover()">Cancel</button>
+    </div>
+  </div>
 </ng-template>
