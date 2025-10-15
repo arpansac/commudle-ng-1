@@ -1,10 +1,11 @@
 :host {
   .data-table-responses {
-    overflow: hidden;
+    @apply com-overflow-hidden;
 
     nb-card-body {
-      padding: 0;
+      @apply com-p-0;
     }
+
     nb-card-header {
       p {
         @apply com-text-sm com-font-medium;
@@ -26,23 +27,21 @@
 
   .heading-actions {
     @apply com-h-16 com-flex com-gap-2 com-mx-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
     .filters-refresh {
       @apply com-flex com-gap-2 com-my-0;
+
       .filter,
       .refresh {
-        @apply com-cursor-pointer com-p-2;
+        @apply com-cursor-pointer com-p-2 com-my-auto;
+
         .text {
           @apply com-ml-1;
         }
       }
 
-      .name-form,
-      .filter,
-      .refresh {
-        @apply com-my-auto;
-      }
       .name-form {
-        @apply com-w-64;
+        @apply com-my-auto com-w-64;
       }
     }
   }
@@ -50,73 +49,68 @@
   .data-table-container {
     @media screen and (max-width: 800px) {
       .desktop-hidden {
-        display: initial;
+        @apply com-block;
       }
+
       .mobile-hidden {
-        display: none;
+        @apply com-hidden;
       }
 
       .view-mobile-response {
-        display: block;
-        margin-top: 0.5rem;
+        @apply com-block com-mt-2;
       }
     }
 
     @media screen and (min-width: 800px) {
       .desktop-hidden {
-        display: none;
+        @apply com-hidden;
       }
+
       .mobile-hidden {
-        display: initial;
+        @apply com-block;
       }
     }
 
     .ngx-datatable {
-      @apply com-bg-white;
-      height: 70vh;
+      @apply com-bg-white com-h-[70vh];
 
       .header-column-template {
         p {
-          margin: 0;
+          @apply com-m-0;
         }
 
-        > .registration-status-filter {
-          display: flex;
-          flex-wrap: nowrap;
+        .registration-status-filter {
+          @apply com-flex com-flex-nowrap;
 
           div {
-            border: 0.5px solid lightgrey;
-            cursor: pointer;
-            padding: 5px;
+            @apply com-border com-border-gray-300 com-cursor-pointer com-p-1;
           }
 
           p {
-            font-size: 12px;
-            margin: 0;
+            @apply com-text-xs com-m-0;
           }
         }
       }
 
       .row-header {
-        white-space: normal;
-      }
+        @apply com-whitespace-normal;
 
-      .row-header.question {
-        overflow-y: visible;
+        &.question {
+          @apply com-overflow-y-visible com-whitespace-normal com-flex com-gap-1 com-items-baseline com-cursor-pointer;
 
-        white-space: normal;
-        @apply com-flex com-gap-1 com-items-baseline com-cursor-pointer;
-
-        .small-text {
-          font-size: 10px;
+          .small-text {
+            @apply com-text-xs;
+          }
         }
       }
 
-      .row-cell.question {
-        white-space: normal;
+      .row-cell {
+        &.question {
+          @apply com-whitespace-normal;
 
-        p {
-          font-size: 14px;
+          p {
+            @apply com-text-sm;
+          }
         }
       }
     }
@@ -137,23 +131,21 @@
 // }
 
 .group-actions {
-  display: flex;
-  flex-wrap: wrap;
+  @apply com-flex com-flex-wrap;
 
   button,
   nb-select,
   a {
-    margin: 0.5rem;
+    @apply com-m-2;
   }
 }
 
 .question-responses {
-  @apply com-mb-0;
-  white-space: pre-wrap;
+  @apply com-mb-0 com-whitespace-pre-wrap;
 }
 
 .dropdown {
-  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#F6F9FC]  com-my-2   com-w-1/2 com-border com-border-solid com-border-primary-200 hover:com-bg-white;
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#F6F9FC] com-my-2 com-w-1/2 com-border com-border-solid com-border-primary-200 hover:com-bg-white;
 
   select {
     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-full;
@@ -162,20 +154,23 @@
 
 .user-detail-dropdown {
   @apply com-flex com-items-center com-gap-1 com-h-6 com-p-0 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-border com-border-solid com-border-[#E4E9F2] com-w-full;
+
   select {
     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-full;
   }
 }
 
 .track-slot-filter-dropdown {
-  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-cursor-pointer com-bg-transparent com-my-2  com-w-max com-border-0;
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-cursor-pointer com-bg-transparent com-my-2 com-w-max com-border-0;
+
   select {
-    @apply com-bg-transparent  com-cursor-pointer com-w-full com-text-black;
+    @apply com-bg-transparent com-cursor-pointer com-w-full com-text-black;
   }
 }
 
 .clear-track-filter {
   @apply com-cursor-pointer;
+
   fa-icon {
     @apply com-text-red-500 com-text-base;
   }
@@ -190,8 +185,10 @@ fa-icon {
 
   nb-card-header {
     @apply com-flex com-items-center com-justify-between;
+
     .title {
       @apply com-flex;
+
       p {
         @apply com-m-0 com-text-base com-text-black com-font-medium;
       }
@@ -201,28 +198,35 @@ fa-icon {
 
 .user-engagement-filter {
   @apply com-w-full md:com-w-[50dvw] com-h-full md:com-max-h-[90dvh];
+
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
+
   nb-card-body {
     form {
       @apply com-flex com-flex-col com-gap-2;
+
       .form-group {
         @apply com-flex com-items-center com-gap-4 com-justify-between;
+
         > label {
           @apply com-flex com-gap-3;
         }
+
         label {
           @apply com-text-xs;
         }
       }
+
       .attended-dropdown {
         @apply com-grid com-grid-cols-2 com-w-3/5 com-gap-3;
       }
 
       .select {
-        @apply com-flex com-items-center com-gap-1 com-h-6 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+        @apply com-flex com-items-center com-gap-1 com-h-6 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-border com-border-solid com-border-[#E4E9F2] com-w-full;
+
         select {
           @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
         }

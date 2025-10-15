@@ -292,13 +292,13 @@ export class EventFormResponsesComponent implements OnInit {
 
   getResponses() {
     this.emptyMessage = 'Loading...';
-    this.isLoading = false;
+    this.isLoading = true;
     this.rows = [];
 
     this.dataFormEntityResponseGroupsService
       .getEventDataFormResponses(
         this.eventDataFormEntityGroupId,
-        this.searchForm.get('name').value.toLowerCase(),
+        this.searchForm.get('name').value?.toLowerCase() || '',
         this.registrationStatusId,
         this.page,
         this.count,
@@ -308,29 +308,23 @@ export class EventFormResponsesComponent implements OnInit {
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
       .subscribe((data) => {
-        this.totalEntries = data.total;
-        this.rows = data.data_form_entity_response_groups;
-        this.isLoading = false;
-        this.emptyMessage = 'No data to display';
+        this.setResponses(data);
       });
   }
 
   setResponses(data) {
     this.getEventDataFromEntityGroup();
-    this.totalEntries = data.total;
-    this.rows = data.data_form_entity_response_groups;
+    this.totalEntries = data?.total || 0;
+    this.rows = data?.data_form_entity_response_groups || [];
     this.isLoading = false;
-    this.emptyMessage = 'No entries found';
+    this.emptyMessage = this.rows.length === 0 ? 'No entries found' : '';
   }
 
   getQuestionResponse(userResponses, questionId) {
-    const userQuestionResponses = userResponses.filter((k) => k.question_id === questionId);
-    let responses = '';
-    for (const resp of userQuestionResponses) {
-      responses += `${resp.response_text} \n`;
-    }
-
-    return userQuestionResponses.length === 0 ? '..' : responses;
+    const userQuestionResponses = userResponses?.filter((k) => k.question_id === questionId) || [];
+    return userQuestionResponses.length === 0
+      ? 'No response'
+      : userQuestionResponses.map((resp) => resp.response_text).join('\n');
   }
 
   updateRegistrationStatus(registrationStatus, userResponseId) {
@@ -477,155 +471,145 @@ export class EventFormResponsesComponent implements OnInit {
     this.dialogService.open(userEngagementFilterTemplate);
   }
 
+  private readonly requiredFields = [
+    { checkbox: 'show_total_channel_messages', min: 'min_total_channel_messages', max: 'max_total_channel_messages' },
+    {
+      checkbox: 'show_total_event_registrations',
+      min: 'min_total_event_registrations',
+      max: 'max_total_event_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_registrations',
+      min: 'min_total_event_speaker_registrations',
+      max: 'max_total_event_speaker_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_sessions',
+      min: 'min_total_event_speaker_sessions',
+      max: 'max_total_event_speaker_sessions',
+    },
+    {
+      checkbox: 'show_total_hackathon_registrations',
+      min: 'min_total_hackathon_registrations',
+      max: 'max_total_hackathon_registrations',
+    },
+    {
+      checkbox: 'show_total_invited_attended_events',
+      min: 'min_total_invited_attended_events',
+      max: 'max_total_invited_attended_events',
+    },
+    { checkbox: 'show_total_skipped_events', min: 'min_total_skipped_events', max: 'max_total_skipped_events' },
+    {
+      checkbox: 'show_total_uninvited_attended_events',
+      min: 'min_total_uninvited_attended_events',
+      max: 'max_total_uninvited_attended_events',
+    },
+    {
+      checkbox: 'show_total_volunteered_events',
+      min: 'min_total_volunteered_events',
+      max: 'max_total_volunteered_events',
+    },
+  ];
+
+  private isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
+
   isApplyDisabled(): boolean {
     const formValues = this.userEngagementFilter.value;
 
-    // Helper function to check if a field has a valid value
-    const isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
-
-    // Check for each checkbox; if checked, min and max must be filled
-    const requiredFields = [
-      {
-        checkbox: 'show_total_channel_messages',
-        min: 'min_total_channel_messages',
-        max: 'max_total_channel_messages',
-      },
-      {
-        checkbox: 'show_total_event_registrations',
-        min: 'min_total_event_registrations',
-        max: 'max_total_event_registrations',
-      },
-      {
-        checkbox: 'show_total_event_speaker_registrations',
-        min: 'min_total_event_speaker_registrations',
-        max: 'max_total_event_speaker_registrations',
-      },
-      {
-        checkbox: 'show_total_event_speaker_sessions',
-        min: 'min_total_event_speaker_sessions',
-        max: 'max_total_event_speaker_sessions',
-      },
-      {
-        checkbox: 'show_total_hackathon_registrations',
-        min: 'min_total_hackathon_registrations',
-        max: 'max_total_hackathon_registrations',
-      },
-      {
-        checkbox: 'show_total_invited_attended_events',
-        min: 'min_total_invited_attended_events',
-        max: 'max_total_invited_attended_events',
-      },
-      {
-        checkbox: 'show_total_skipped_events',
-        min: 'min_total_skipped_events',
-        max: 'max_total_skipped_events',
-      },
-      {
-        checkbox: 'show_total_uninvited_attended_events',
-        min: 'min_total_uninvited_attended_events',
-        max: 'max_total_uninvited_attended_events',
-      },
-      {
-        checkbox: 'show_total_volunteered_events',
-        min: 'min_total_volunteered_events',
-        max: 'max_total_volunteered_events',
-      },
-    ];
-
-    // Check the condition for show_attended_events
     if (
       formValues['show_attended_events'] &&
-      (!isValidValue(formValues['attended_events_attendance']) || !isValidValue(formValues['attended_events_slugs']))
+      (!this.isValidValue(formValues['attended_events_attendance']) ||
+        !this.isValidValue(formValues['attended_events_slugs']))
     ) {
-      return true; // If show_attended_events is true and the other two fields are not filled, disable the apply button
+      return true;
     }
 
-    // Loop through requiredFields to check each condition
-    return requiredFields.some((field) => {
-      if (formValues[field.checkbox]) {
-        // If checkbox is true, min and max values are required
-        const minValue = formValues[field.min];
-        const maxValue = formValues[field.max];
+    return this.requiredFields.some((field) => {
+      if (!formValues[field.checkbox]) return false;
 
-        // Check if min or max is not filled
-        if (!isValidValue(minValue) || !isValidValue(maxValue)) {
-          return true;
-        }
+      const minValue = formValues[field.min];
+      const maxValue = formValues[field.max];
 
-        // Ensure max is greater than or equal to min
-        if (Number(minValue) > Number(maxValue)) {
-          return true; // If max is less than min, disable the apply button
-        }
-      }
-      return false;
+      return !this.isValidValue(minValue) || !this.isValidValue(maxValue) || Number(minValue) > Number(maxValue);
     });
   }
+
+  private readonly filterMappings = [
+    {
+      checkbox: 'show_total_channel_messages',
+      key: 'total_channel_messages',
+      min: 'min_total_channel_messages',
+      max: 'max_total_channel_messages',
+    },
+    {
+      checkbox: 'show_total_event_registrations',
+      key: 'total_event_registrations',
+      min: 'min_total_event_registrations',
+      max: 'max_total_event_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_registrations',
+      key: 'total_event_speaker_registrations',
+      min: 'min_total_event_speaker_registrations',
+      max: 'max_total_event_speaker_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_sessions',
+      key: 'total_event_speaker_sessions',
+      min: 'min_total_event_speaker_sessions',
+      max: 'max_total_event_speaker_sessions',
+    },
+    {
+      checkbox: 'show_total_hackathon_registrations',
+      key: 'total_hackathon_registrations',
+      min: 'min_total_hackathon_registrations',
+      max: 'max_total_hackathon_registrations',
+    },
+    {
+      checkbox: 'show_total_invited_attended_events',
+      key: 'total_invited_attended_events',
+      min: 'min_total_invited_attended_events',
+      max: 'max_total_invited_attended_events',
+    },
+    {
+      checkbox: 'show_total_skipped_events',
+      key: 'total_skipped_events',
+      min: 'min_total_skipped_events',
+      max: 'max_total_skipped_events',
+    },
+    {
+      checkbox: 'show_total_uninvited_attended_events',
+      key: 'total_uninvited_attended_events',
+      min: 'min_total_uninvited_attended_events',
+      max: 'max_total_uninvited_attended_events',
+    },
+    {
+      checkbox: 'show_total_volunteered_events',
+      key: 'total_volunteered_events',
+      min: 'min_total_volunteered_events',
+      max: 'max_total_volunteered_events',
+    },
+  ];
 
   applyUserEngagementFilter() {
     this.isLoading = true;
     this.emptyMessage = 'Loading';
     this.community_engagement_filters = {};
     const formValues = this.userEngagementFilter.value;
-    if (formValues.show_total_channel_messages) {
-      this.community_engagement_filters.total_channel_messages = [
-        formValues.min_total_channel_messages,
-        formValues.max_total_channel_messages,
-      ];
-    }
-    if (formValues.show_total_event_registrations) {
-      this.community_engagement_filters.total_event_registrations = [
-        formValues.min_total_event_registrations,
-        formValues.max_total_event_registrations,
-      ];
-    }
-    if (formValues.show_total_event_speaker_registrations) {
-      this.community_engagement_filters.total_event_speaker_registrations = [
-        formValues.min_total_event_speaker_registrations,
-        formValues.max_total_event_speaker_registrations,
-      ];
-    }
-    if (formValues.show_total_event_speaker_sessions) {
-      this.community_engagement_filters.total_event_speaker_sessions = [
-        formValues.min_total_event_speaker_sessions,
-        formValues.max_total_event_speaker_sessions,
-      ];
-    }
-    if (formValues.show_total_hackathon_registrations) {
-      this.community_engagement_filters.total_hackathon_registrations = [
-        formValues.min_total_hackathon_registrations,
-        formValues.max_total_hackathon_registrations,
-      ];
-    }
-    if (formValues.show_total_invited_attended_events) {
-      this.community_engagement_filters.total_invited_attended_events = [
-        formValues.min_total_invited_attended_events,
-        formValues.max_total_invited_attended_events,
-      ];
-    }
-    if (formValues.show_total_skipped_events) {
-      this.community_engagement_filters.total_skipped_events = [
-        formValues.min_total_skipped_events,
-        formValues.max_total_skipped_events,
-      ];
-    }
-    if (formValues.show_total_uninvited_attended_events) {
-      this.community_engagement_filters.total_uninvited_attended_events = [
-        formValues.min_total_uninvited_attended_events,
-        formValues.max_total_uninvited_attended_events,
-      ];
-    }
-    if (formValues.show_total_volunteered_events) {
-      this.community_engagement_filters.total_volunteered_events = [
-        formValues.min_total_volunteered_events,
-        formValues.max_total_volunteered_events,
-      ];
-    }
+
+    this.filterMappings.forEach((mapping) => {
+      if (formValues[mapping.checkbox]) {
+        this.community_engagement_filters[mapping.key] = [formValues[mapping.min], formValues[mapping.max]];
+      }
+    });
+
     if (formValues.show_attended_events && formValues.attended_events_attendance && formValues.attended_events_slugs) {
       this.community_engagement_filters.attended_events = {
         attendance: formValues.attended_events_attendance,
         slugs: [formValues.attended_events_slugs],
       };
     }
+
     this.getResponses();
   }
 
@@ -659,25 +643,20 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   getFormData() {
-    // Create a Map to hold unique keys
     const uniqueEntries = new Map();
 
-    for (const form of this.forms) {
-      if (form && form.get('v').value !== '') {
-        const qValue = form.get('q').value;
-        const vValue = form.get('v').value;
-
-        // Update the Map with the latest value for each unique `q` key
-        uniqueEntries.set(qValue, vValue);
+    this.forms.forEach((form) => {
+      if (form?.get('v')?.value) {
+        uniqueEntries.set(form.get('q').value, form.get('v').value);
       }
-    }
+    });
 
-    // Clear the formData and re-add only unique entries
     const formData = new FormData();
     uniqueEntries.forEach((vValue, qValue) => {
-      formData.append(`qres[]q`, qValue);
-      formData.append(`qres[]v`, vValue);
+      formData.append('qres[]q', qValue);
+      formData.append('qres[]v', vValue);
     });
+
     return formData;
   }
 }
