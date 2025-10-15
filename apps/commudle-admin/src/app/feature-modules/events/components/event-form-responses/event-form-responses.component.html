@@ -1,7 +1,7 @@
-<div>
+<!-- <div>
   <commudle-back-button text="Back"></commudle-back-button>
-</div>
-
+</div> -->
+<!-- 
 <nb-card class="com-mx-0 com-my-6">
   <nb-card-header
     ><p *ngIf="eventDataFormEntityGroup">
@@ -115,10 +115,42 @@
       </button>
     </div>
   </nb-card-body>
-</nb-card>
+</nb-card> -->
 
 <nb-card class="data-table-responses">
+  <nb-card-header>
+    <p *ngIf="eventDataFormEntityGroup">
+      <a (click)="goBack()" style="cursor: pointer">
+        <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon>
+      </a>
+      &nbsp;
+      <span>{{ eventDataFormEntityGroup.name }}</span>
+    </p>
+  </nb-card-header>
   <nb-card-body>
+    <div class="heading-actions">
+      <div class="filters-refresh">
+        <form class="name-form" [formGroup]="searchForm">
+          <div class="name-filter">
+            <input
+              [disabled]="isLoading"
+              fieldSize="small"
+              formControlName="name"
+              nbInput
+              placeholder="{{ isLoading ? 'Still Loading' : 'Search by name, email, designation or tags' }}"
+              type="text"
+              fullWidth
+            />
+            <div (click)="clearInput()" class="clear-search-filter" *ngIf="searchForm.get('name').value">
+              <fa-icon [icon]="icons.faXmark"></fa-icon>
+            </div>
+          </div>
+        </form>
+        <div class="filter"><fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filter</span></div>
+        <div class="refresh" (click)="getResponses()"><fa-icon [icon]="icons.faRefresh"></fa-icon></div>
+      </div>
+      <div class="action-dropdown"></div>
+    </div>
     <div class="data-table-container">
       <ngx-datatable
         #table
@@ -166,58 +198,6 @@
                   "
                 >
                   <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
-                </div>
-              </div>
-              <form [formGroup]="searchForm">
-                <div class="name-filter">
-                  <input
-                    [disabled]="isLoading"
-                    fieldSize="tiny"
-                    formControlName="name"
-                    nbInput
-                    placeholder="{{ isLoading ? 'Still Loading' : 'Search by name, email, designation or tags' }}"
-                    type="text"
-                  />
-                  <div (click)="clearInput()" class="clear-search-filter" *ngIf="searchForm.get('name').value">
-                    <fa-icon [icon]="icons.faXmark"></fa-icon>
-                  </div>
-                </div>
-              </form>
-
-              <div class="com-grid com-grid-cols-2 com-gap-2 com-my-2">
-                <div class="user-detail-dropdown">
-                  <select
-                    class="com-border-0"
-                    (change)="registrationStatusFilter($event)"
-                    *ngIf="eventDataFormEntityGroup"
-                    [(ngModel)]="registrationStatusId"
-                  >
-                    <option selected value="0">
-                      Status: All ({{
-                        eventDataFormEntityGroup.summary_registration_counts.all
-                          ? eventDataFormEntityGroup.summary_registration_counts.all
-                          : 0
-                      }})
-                    </option>
-                    <option *ngFor="let rs of registrationStatuses" [value]="rs.id">
-                      {{ rs.name | titlecase }} ({{
-                        eventDataFormEntityGroup.summary_registration_counts[rs.name]
-                          ? eventDataFormEntityGroup.summary_registration_counts[rs.name]
-                          : 0
-                      }})
-                    </option>
-                  </select>
-                </div>
-
-                <!-- gender filter -->
-                <div class="user-detail-dropdown">
-                  <select class="com-border-0" (change)="genderFilter($event)" [(ngModel)]="gender">
-                    <option selected disable value="">Gender: All</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="prefer_not_to_answer">Prefer Not Answer</option>
-                    <option value="null">null</option>
-                  </select>
                 </div>
               </div>
             </div>

@@ -5,6 +5,11 @@
     nb-card-body {
       padding: 0;
     }
+    nb-card-header {
+      p {
+        @apply com-text-sm com-font-medium;
+      }
+    }
   }
 
   nb-card-header {
@@ -17,6 +22,29 @@
 
   .change-bulk-btn {
     @apply com-m-0 com-flex com-items-center;
+  }
+
+  .heading-actions {
+    @apply com-h-16 com-flex com-gap-2 com-mx-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    .filters-refresh {
+      @apply com-flex com-gap-2 com-my-0;
+      .filter,
+      .refresh {
+        @apply com-cursor-pointer com-p-2;
+        .text {
+          @apply com-ml-1;
+        }
+      }
+
+      .name-form,
+      .filter,
+      .refresh {
+        @apply com-my-auto;
+      }
+      .name-form {
+        @apply com-w-64;
+      }
+    }
   }
 
   .data-table-container {
@@ -50,10 +78,6 @@
       .header-column-template {
         p {
           margin: 0;
-        }
-
-        > .name-filter {
-          margin-top: 5px;
         }
 
         > .registration-status-filter {
@@ -99,18 +123,18 @@
   }
 }
 
-.name-filter {
-  @apply com-w-full com-flex com-gap-1 com-items-center;
-  input {
-    @apply com-w-full;
-  }
-  .clear-search-filter {
-    @apply com-cursor-pointer;
-    fa-icon {
-      @apply com-text-red-500 com-text-base;
-    }
-  }
-}
+// .name-filter {
+//   @apply com-w-full com-flex com-gap-1 com-items-center;
+//   input {
+//     @apply com-w-full;
+//   }
+//   .clear-search-filter {
+//     @apply com-cursor-pointer;
+//     fa-icon {
+//       @apply com-text-red-500 com-text-base;
+//     }
+//   }
+// }
 
 .group-actions {
   display: flex;
@@ -175,9 +199,6 @@ fa-icon {
   }
 }
 
-.filter {
-  @apply com-cursor-pointer;
-}
 .user-engagement-filter {
   @apply com-w-full md:com-w-[50dvw] com-h-full md:com-max-h-[90dvh];
   nb-card-header,

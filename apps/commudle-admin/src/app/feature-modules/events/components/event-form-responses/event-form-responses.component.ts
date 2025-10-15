@@ -1,7 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColumnMode, SortType } from '@commudle/ngx-datatable';
 import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
@@ -21,7 +21,7 @@ import { IQuestion } from 'apps/shared-models/question.model';
 import { IRegistrationStatus } from 'apps/shared-models/registration_status.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { faXmark, faFilter, faPieChart } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faFilter, faPieChart, faRefresh, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { EQuestionTypes } from 'apps/shared-models/enums/question_types.enum';
 import { RegistrationTypeNames } from 'apps/shared-models/registration_type.model';
 import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
@@ -75,6 +75,8 @@ export class EventFormResponsesComponent implements OnInit {
     faXmark,
     faFilter,
     faPieChart,
+    faRefresh,
+    faChevronLeft,
   };
   editMode = false;
 
@@ -99,6 +101,7 @@ export class EventFormResponsesComponent implements OnInit {
     private appUsersService: AppUsersService,
     private eventLocationsService: EventLocationsService,
     private dialogService: NbDialogService,
+    private router: Router,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -643,6 +646,16 @@ export class EventFormResponsesComponent implements OnInit {
           this.attendedEventList = data;
         });
     }
+  }
+
+  goBack(): void {
+    this.router.navigate([
+      '/admin/communities',
+      this.community.slug,
+      'event-dashboard',
+      this.event.slug,
+      'registrations',
+    ]);
   }
 
   getFormData() {
