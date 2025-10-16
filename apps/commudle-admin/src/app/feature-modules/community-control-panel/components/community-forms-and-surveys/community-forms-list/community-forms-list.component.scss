@@ -1,19 +1,19 @@
 .forms-list {
-  @apply md:com-p-6 com-p-3 com-rounded-10 com-overflow-hidden;
+  @apply md:com-p-6 com-p-3 com-rounded-10;
 }
 
 .page-header {
-  @apply com-mb-8;
+  @apply md:com-mb-8 com-mb-6;
 
   .header-content {
-    @apply com-flex com-justify-between com-items-center com-mb-6;
+    @apply com-flex md:com-flex-row com-flex-col com-justify-between com-items-center md:com-gap-0 com-gap-4 com-mb-6;
 
     .page-title {
       @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
     }
 
     a {
-      @apply com-rounded-lg;
+      @apply com-rounded-lg md:com-w-auto com-w-full;
     }
   }
 
@@ -66,7 +66,7 @@
         @apply com-flex com-flex-col com-gap-1 com-justify-center;
 
         .responses-count {
-          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-m-0;
+          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-flex-shrink-0;
         }
 
         .questions-count {
@@ -91,4 +91,8 @@
       }
     }
   }
+}
+
+.table-wrapper {
+  @apply com-overflow-scroll;
 }

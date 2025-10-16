@@ -37,58 +37,60 @@
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <!-- Table Section -->
-  <table *ngIf="!isLoading" class="forms-table">
-    <thead>
-      <tr class="table-header">
-        <th>NAME</th>
-        <th>MINI STATS</th>
-        <th>CREATED BY</th>
-        <th>ACTIONS</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let form of dataForms" class="table-row">
-        <td>
-          <p class="form-name" [title]="form.name">
-            {{ form.name }}
-          </p>
-        </td>
+  <div class="table-wrapper">
+    <table *ngIf="!isLoading" class="forms-table">
+      <thead>
+        <tr class="table-header">
+          <th>NAME</th>
+          <th>MINI STATS</th>
+          <th>CREATED BY</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let form of dataForms" class="table-row">
+          <td>
+            <p class="form-name" [title]="form.name">
+              {{ form.name }}
+            </p>
+          </td>
 
-        <td>
-          <div class="stats-content">
-            <p class="responses-count">{{ form.responses_count }} Responses</p>
-            <p class="questions-count">{{ form.questions_count }} Questions</p>
-          </div>
-        </td>
+          <td>
+            <div class="stats-content">
+              <p class="responses-count">{{ form.responses_count }} Responses</p>
+              <p class="questions-count">{{ form.questions_count }} Questions</p>
+            </div>
+          </td>
 
-        <td>
-          <!-- <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small> -->
-        </td>
+          <td>
+            <!-- <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small> -->
+          </td>
 
-        <td class="actions-cell">
-          <div class="actions-buttons">
-            <button
-              class="show-responses-btn"
-              nbButton
-              status="basic"
-              size="small"
-              shape="semi-round"
-              (click)="openResponses(form)"
-            >
-              Show Responses
-            </button>
-            <button
-              class="edit-btn"
-              nbButton
-              shape="semi-round"
-              size="small"
-              [routerLink]="['/forms', form.id, 'edit']"
-            >
-              <fa-icon [icon]="faEdit"></fa-icon> &nbsp; Edit
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <td class="actions-cell">
+            <div class="actions-buttons">
+              <button
+                class="show-responses-btn"
+                nbButton
+                status="basic"
+                size="small"
+                shape="semi-round"
+                (click)="openResponses(form)"
+              >
+                Show Responses
+              </button>
+              <button
+                class="edit-btn"
+                nbButton
+                shape="semi-round"
+                size="small"
+                [routerLink]="['/forms', form.id, 'edit']"
+              >
+                <fa-icon [icon]="faEdit"></fa-icon> &nbsp; Edit
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
