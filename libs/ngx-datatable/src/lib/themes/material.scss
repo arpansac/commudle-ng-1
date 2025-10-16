@@ -68,7 +68,7 @@ $datatable-summary-row-background-hover: #ddd !default;
 
 .ngx-datatable.material {
   background: $ngx-datatable-background;
-  box-shadow: $ngx-datatable-box-shadow;
+  // box-shadow: $ngx-datatable-box-shadow;
 
   &.striped {
     .datatable-row-odd {
