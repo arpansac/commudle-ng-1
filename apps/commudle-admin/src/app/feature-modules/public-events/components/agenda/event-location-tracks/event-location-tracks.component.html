@@ -11,7 +11,8 @@
     </p>
   </div>
 
-  <div class="track-container">
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+  <div *ngIf="!isLoading" class="track-container">
     <nb-accordion *ngFor="let elt of eventLocationTracks; let elti = index" class="com-mb-3 com-shadow-none">
       <nb-accordion-item
         collapsed="{{ !trackSlotVisibility[elt.id] }}"

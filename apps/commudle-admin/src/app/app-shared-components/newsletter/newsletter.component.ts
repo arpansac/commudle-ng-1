@@ -1,10 +1,22 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { INewsletter } from 'apps/shared-models/newsletter.model';
 import { Subscription } from 'rxjs';
-import { faPlus, faClock, faEnvelopeOpenText, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faClock,
+  faEnvelopeOpenText,
+  faArrowUpRightFromSquare,
+  faListCheck,
+  faEnvelopeCircleCheck,
+  faEnvelopeOpen,
+  faMousePointer,
+  faEdit,
+  faEnvelope,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
@@ -14,17 +26,25 @@ import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/
   templateUrl: './newsletter.component.html',
   styleUrls: ['./newsletter.component.scss'],
 })
-export class NewsletterComponent implements OnInit {
+export class NewsletterComponent implements OnInit, OnDestroy {
   @Input() parentId: string | number;
   @Input() parentType: 'CommunityGroup' | 'Kommunity';
   subscriptions: Subscription[] = [];
   newsletters: INewsletter[];
   newScheduleDateTime: Date;
+  isLoading = true;
   icons = {
     faPlus,
     faClock,
     faEnvelopeOpenText,
     faArrowUpRightFromSquare,
+    faListCheck,
+    faEnvelopeCircleCheck,
+    faEnvelopeOpen,
+    faMousePointer,
+    faEdit,
+    faEnvelope,
+    faTrash,
   };
   moment = moment;
   testEmailsForms;
@@ -44,6 +64,10 @@ export class NewsletterComponent implements OnInit {
     this.getNewsletters();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
   maxEmails(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const emails = control.value.split(',').map((email) => email.trim());
@@ -52,9 +76,11 @@ export class NewsletterComponent implements OnInit {
   }
 
   getNewsletters() {
+    this.isLoading = true;
     this.subscriptions.push(
       this.newsletterService.getIndex(this.parentId, this.parentType).subscribe((data: INewsletter[]) => {
         this.newsletters = data;
+        this.isLoading = false;
         for (let i = 0; i < this.newsletters.length; i++) {
           const newsletter = this.newsletters[i];
           this.newsletterService.emailStats(newsletter.id).subscribe((data) => {
