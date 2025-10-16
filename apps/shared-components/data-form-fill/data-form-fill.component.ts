@@ -4,6 +4,7 @@ import { IDataForm } from 'apps/shared-models/data_form.model';
 import { EQuestionTypes } from 'apps/shared-models/enums/question_types.enum';
 import { IQuestion } from 'apps/shared-models/question.model';
 import { SDataFormsService } from '../services/s-data-forms.service';
+import { ToastrService } from '@commudle/shared-services';
 
 @Component({
   selector: 'app-data-form-fill',
@@ -34,7 +35,11 @@ export class DataFormFillComponent implements OnInit, OnChanges {
 
   dataFormEntityResponseForm;
 
-  constructor(private dataFormsService: SDataFormsService, private fb: FormBuilder) {}
+  constructor(
+    private dataFormsService: SDataFormsService,
+    private fb: FormBuilder,
+    private toastrService: ToastrService,
+  ) {}
 
   ngOnInit() {
     this.getDataForm();
@@ -120,11 +125,29 @@ export class DataFormFillComponent implements OnInit, OnChanges {
     this.isFormSubmitting = true;
     if (this.dataFormEntityResponseForm.invalid) {
       this.dataFormEntityResponseForm.markAllAsTouched();
+      this.toastrService.warningDialog('Please fill all required fields');
+      this.scrollToFirstInvalidField();
       this.isFormSubmitting = false;
       return;
     }
     this.formSubmitted.emit(this.dataFormEntityResponseForm.value);
     this.isFormSubmitting = false;
+  }
+
+  private scrollToFirstInvalidField() {
+    const firstInvalidControl = Object.keys(this.dataFormEntityResponseForm.controls).find((key) => {
+      const control = this.dataFormEntityResponseForm.get(key);
+      return control && control.invalid;
+    });
+
+    if (firstInvalidControl) {
+      const invalidElement = document.querySelector(
+        `[formControlName="${firstInvalidControl}"], [formGroupName="${firstInvalidControl}"]`,
+      );
+      if (invalidElement) {
+        invalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   }
 
   // onAcceptRoleButton() {
