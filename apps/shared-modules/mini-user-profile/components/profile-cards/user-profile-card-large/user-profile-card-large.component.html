@@ -69,7 +69,16 @@
           <fa-icon class="user-company-icon" [icon]="faBriefcase"></fa-icon>
           <p class="user-company-name">{{ user.company_name }}</p>
         </div>
-        <span *ngIf="user.mutual_followee" class="mutuals">You both follow {{ user.mutual_followee }}</span>
+        <span *ngIf="user.mutual_followee" class="mutuals"
+          >You both follow
+          <span *ngFor="let mutual of user.mutual_followee.first_three; let last = last"
+            ><a [routerLink]="['/users', mutual.username]">{{ mutual.name }}</a
+            ><span *ngIf="!last">, </span></span
+          >
+          <span *ngIf="user.mutual_followee.remaining_count > 0"
+            >and {{ user.mutual_followee.remaining_count }} others</span
+          >
+        </span>
         <div
           *ngIf="(showSpeakersCount && !alignSpeakerCountToRight) || showLeaderBadgeToSpeakerCount"
           class="talks-leader"
