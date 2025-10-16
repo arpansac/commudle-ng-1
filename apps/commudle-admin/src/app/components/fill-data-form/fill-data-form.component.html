@@ -59,6 +59,7 @@
               [dataFormId]="dataFormEntity.data_form_id"
               [existingResponses]="selectedFormResponse"
               [eventId]="event ? event.id : ''"
+              [submitButtonLoading]="submitButtonLoading"
             >
             </app-data-form-fill>
             <p *ngIf="dataFormEntity.multi_response" class="text-info">
