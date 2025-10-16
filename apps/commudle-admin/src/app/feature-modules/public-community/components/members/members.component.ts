@@ -232,7 +232,7 @@ export class MembersComponent implements OnInit, OnDestroy {
           )
           .subscribe((data) => {
             this.members = data.values;
-            this.page = +data.page;
+            this.page += 1;
             this.total = data.total;
             this.isLoadingMembers = false;
             if (this.members.length >= this.total) {
