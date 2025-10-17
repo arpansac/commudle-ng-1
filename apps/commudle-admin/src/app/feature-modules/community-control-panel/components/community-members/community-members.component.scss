@@ -223,7 +223,7 @@
 }
 
 .activeTag {
-  @apply com-bg-Azure com-text-tWhite;
+  @apply com-bg-Azure com-text-tWhite #{!important};
 }
 
 .profile-badges {
