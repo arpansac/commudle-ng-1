@@ -196,6 +196,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           this.getMembersDistribution();
           this.getExperienceLevelDistribution();
           this.setMeta();
+          this.loadNewMembersCount();
         }
       }),
     );
@@ -267,12 +268,19 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadNewMembersCount() {
+    if (this.community) {
+      this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
+        this.newMembersCount = data.total;
+      });
+    }
+  }
+
   onDaysFilterChange(event) {
-    const days = parseInt((event.target as HTMLInputElement).value);
+    const inputValue = (event.target as HTMLInputElement).value;
+    const days = inputValue ? parseInt(inputValue) : 90;
     this.daysFilter = days;
-    this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
-      this.newMembersCount = data.total;
-    });
+    this.loadNewMembersCount();
   }
 
   onTagAdd(value: string) {
@@ -527,6 +535,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   clearAllFilters() {
     this.isLoading = true;
     this.communityFilterForm.reset();
+    this.daysFilter = 90;
     this.searchForm.get('name').setValue('');
     this.mostActive = false;
     this.contributor = false;
