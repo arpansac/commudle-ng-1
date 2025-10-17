@@ -7,7 +7,9 @@
       <p class="header-text">Meet Our Speakers</p>
       <div class="speakers-list" (scroll)="checkScrollPosition($event)">
         <ng-container *ngFor="let speaker of speakers" class="speakers-card">
-          <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25"></app-speaker-card>
+          <div class="speaker-card">
+            <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25"></app-speaker-card>
+          </div>
         </ng-container>
         <div class="load-more">
           <app-loading-spinner *ngIf="canLoadMoreSpeakers && !skeletonLoaderCard"></app-loading-spinner>
