@@ -24,7 +24,7 @@
   }
 
   .search-filters {
-    @apply com-mt-6 com-mb-8 com-sticky com-top-[148px] com-z-40 com-bg-white;
+    @apply com-mt-6 com-mb-8 md:com-sticky md:com-top-[148px] com-z-40 com-bg-white;
 
     .search-container {
       @apply com-mb-4;
@@ -223,7 +223,7 @@
 }
 
 .activeTag {
-  @apply com-bg-Azure com-text-tWhite;
+  @apply com-bg-Azure com-text-tWhite #{!important};
 }
 
 .profile-badges {
@@ -265,4 +265,8 @@ canvas {
 
 .header-row {
   @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+}
+
+.loading-row {
+  @apply com-h-[70vh];
 }

@@ -89,12 +89,12 @@ export class UserRolesUsersService {
     }
     if (experienceLevel && experienceLevel.length > 0) {
       experienceLevel.forEach((level) => {
-        params = params.append('experience_level[]', level);
+        params = params.append('experience_levels[]', level);
       });
     }
     if (domains && domains.length > 0) {
       domains.forEach((domain) => {
-        params = params.append('domains[]', domain);
+        params = params.append('user_domains[]', domain);
       });
     }
     if (sortBy) {

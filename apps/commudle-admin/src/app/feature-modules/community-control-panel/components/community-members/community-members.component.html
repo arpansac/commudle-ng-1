@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div class="search-filters">
+  <div class="search-filters" *ngIf="!isLoading">
     <form [formGroup]="searchForm" class="search-container">
       <div class="search">
         <nb-form-field>
@@ -183,11 +183,7 @@
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-spinner">
-    <app-loading-spinner></app-loading-spinner>
-  </div>
-
-  <div class="members-table" *ngIf="!isLoading">
+  <div class="members-table">
     <table>
       <thead>
         <tr class="header-row">
@@ -300,7 +296,14 @@
           </th>
         </tr>
       </thead>
-      <tbody *ngIf="userRolesUsers.length > 0">
+      <ng-container class="loader-container" *ngIf="isLoading">
+        <tr colspan="8" class="loading-row">
+          <td colspan="8" class="text-center">
+            <app-loading-spinner></app-loading-spinner>
+          </td>
+        </tr>
+      </ng-container>
+      <tbody *ngIf="!isLoading && userRolesUsers.length > 0">
         <tr *ngFor="let userRole of userRolesUsers">
           <td valign="top">
             <p class="user-communities-role" *ngIf="userRole.user_role.name === EUserRoles.ORGANIZER">
@@ -311,7 +314,10 @@
             </p>
             <div class="user-profile-card">
               <div class="profile-badges">
-                <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+                <app-user-profile-card-medium
+                  [user]="userRole.user"
+                  [openInNewTab]="true"
+                ></app-user-profile-card-medium>
                 <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
                   <app-badge
                     *ngFor="let badge of userRole.user_highlights.badges"
@@ -341,7 +347,8 @@
             <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
               <ul>
                 <li>
-                  <span>Overall Attendence:</span> {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
+                  <span>Overall Attendence:</span>
+                  {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
                 </li>
                 <li>
                   <span>Events (attendee):</span>
@@ -403,44 +410,36 @@
               class="profile-highlights"
             >
               <li *ngIf="userRole.user_highlights.community_builds.length > 0">
-                Posted Builds
-                <a
-                  *ngFor="let item of userRole.user_highlights.community_builds; let isLast = last"
-                  [routerLink]="['/builds', item.slug]"
-                  target="_blank"
+                Posted Builds<span *ngFor="let item of userRole.user_highlights.community_builds; let isLast = last">
+                  <a [routerLink]="['/builds', item.slug]" target="_blank"> {{ item.name }}</a>
+                  <span *ngIf="!isLast">, </span></span
                 >
-                  {{ item.name }}<span *ngIf="!isLast">,</span>
-                </a>
               </li>
               <li *ngIf="userRole.user_highlights.labs.length > 0">
-                Posted Labs
-                <a
-                  *ngFor="let item of userRole.user_highlights.labs; let isLast = last"
-                  [routerLink]="['/labs', item.slug]"
-                  target="_blank"
+                Posted Labs<span *ngFor="let item of userRole.user_highlights.labs; let isLast = last">
+                  <a [routerLink]="['/labs', item.slug]" target="_blank">
+                    {{ item.name }}
+                  </a>
+                  <span *ngIf="!isLast">, </span></span
                 >
-                  {{ item.name }}<span *ngIf="!isLast">, </span>
-                </a>
               </li>
               <li *ngIf="userRole.user_highlights.social_resources.length > 0">
-                Social Resources
-                <a
-                  *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last"
-                  [routerLink]="['/users', item.user.username]"
-                  target="_blank"
+                Social Resources<span *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last">
+                  <a [routerLink]="['/users', item.user.username]" [fragment]="'content'" target="_blank">
+                    {{ item.name }}
+                  </a>
+                  <span *ngIf="!isLast">, </span></span
                 >
-                  {{ item.name }}<span *ngIf="!isLast">, </span>
-                </a>
               </li>
               <li *ngIf="userRole.user_highlights.speaker_resources.length > 0">
-                Speaker Resources
-                <a
+                Speaker Resources<span
                   *ngFor="let item of userRole.user_highlights.speaker_resources; let isLast = last"
-                  [routerLink]="['/speaker-resources', item.id]"
-                  target="_blank"
                 >
-                  {{ item.name }}<span *ngIf="!isLast">, </span>
-                </a>
+                  <a [routerLink]="['/speaker-resources', item.id]" target="_blank">
+                    {{ item.name }}
+                  </a>
+                  <span *ngIf="!isLast">, </span></span
+                >
               </li>
             </ul>
             <p

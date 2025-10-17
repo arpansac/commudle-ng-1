@@ -1,4 +1,4 @@
-<a [routerLink]="['/users', user.username]">
+<a [routerLink]="['/users', user.username]" [target]="openInNewTab ? '_blank' : null">
   <div class="user-profile-medium d-flex align-items-center">
     <img
       [alt]="user.name"
