@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <div class="search-filters">
+  <div class="search-filters" *ngIf="!isLoading">
     <form [formGroup]="searchForm" class="search-container">
       <div class="search">
         <nb-form-field>
