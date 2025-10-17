@@ -183,11 +183,7 @@
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-spinner">
-    <app-loading-spinner></app-loading-spinner>
-  </div>
-
-  <div class="members-table" *ngIf="!isLoading">
+  <div class="members-table">
     <table>
       <thead>
         <tr class="header-row">
@@ -300,7 +296,14 @@
           </th>
         </tr>
       </thead>
-      <tbody *ngIf="userRolesUsers.length > 0">
+      <ng-container class="loader-container" *ngIf="isLoading">
+        <tr colspan="8" class="loading-row">
+          <td colspan="8" class="text-center">
+            <app-loading-spinner></app-loading-spinner>
+          </td>
+        </tr>
+      </ng-container>
+      <tbody *ngIf="!isLoading && userRolesUsers.length > 0">
         <tr *ngFor="let userRole of userRolesUsers">
           <td valign="top">
             <p class="user-communities-role" *ngIf="userRole.user_role.name === EUserRoles.ORGANIZER">
@@ -341,7 +344,8 @@
             <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
               <ul>
                 <li>
-                  <span>Overall Attendence:</span> {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
+                  <span>Overall Attendence:</span>
+                  {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
                 </li>
                 <li>
                   <span>Events (attendee):</span>

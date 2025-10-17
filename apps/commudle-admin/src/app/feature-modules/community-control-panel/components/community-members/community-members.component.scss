@@ -266,3 +266,7 @@ canvas {
 .header-row {
   @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 }
+
+.loading-row {
+  @apply com-h-[70vh];
+}
