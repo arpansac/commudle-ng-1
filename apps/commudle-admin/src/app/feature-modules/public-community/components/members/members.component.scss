@@ -26,14 +26,6 @@ nb-card {
 
       .speakers-list {
         @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-6 md:com-mb-14 com-mb-4 com-items-center com-scroll-smooth;
-
-        .load-more {
-          @apply com-text-center md:com-mt-6 com-mt-0;
-
-          app-loading-spinner {
-            @apply com-mb-6;
-          }
-        }
       }
     }
 
@@ -139,5 +131,13 @@ nb-card {
 
   p {
     @apply com-text-xl com-font-medium com-text-gray-600 com-mt-6;
+  }
+}
+
+.load-more {
+  @apply com-text-center md:com-mt-6 com-mt-0;
+
+  app-loading-spinner {
+    @apply com-mb-6;
   }
 }

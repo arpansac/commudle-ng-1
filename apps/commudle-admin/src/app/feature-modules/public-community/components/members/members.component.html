@@ -125,7 +125,9 @@
             </div>
           </div>
         </div>
-        <app-loading-spinner *ngIf="isLoadingMembers && !canLoadMore"></app-loading-spinner>
+        <div class="load-more">
+          <app-loading-spinner *ngIf="isLoadingMembers"></app-loading-spinner>
+        </div>
         <div *ngIf="members.length > 0 && !isLoadingMembers" class="members-list">
           <ng-container *ngFor="let member of members">
             <div class="member-card">
@@ -144,20 +146,16 @@
           <p>No results found</p>
         </div>
 
-        <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
-        <div class="load-more">
-          <button
-            *ngIf="canLoadMore"
-            (click)="getMembers()"
-            nbButton
-            outline
-            size="small"
-            status="info"
-            [disabled]="!canLoadMore || isLoadingMembers"
-          >
-            Load More
-          </button>
-        </div>
+        <app-pagination
+          class="pagination"
+          (goTo)="page = $event; getMembers()"
+          (next)="page = $event; getMembers()"
+          (previous)="page = $event; getMembers()"
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
       </div>
     </div>
   </nb-card-body>
