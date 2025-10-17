@@ -26,7 +26,6 @@ export class MembersComponent implements OnInit, OnDestroy {
   canLoadMoreSpeakers = false;
   page = 1;
   count = 9;
-  canLoadMore = true;
   total;
   query = '';
   queryParamsString = '';
@@ -40,8 +39,6 @@ export class MembersComponent implements OnInit, OnDestroy {
   speakers: IUser[] = [];
   isLoadingSpeakers = false;
   isLoadingMembers = false;
-  loadingData = false;
-  showSpinner = false;
   isLeftScrollDisabled = true;
   isRightScrollDisabled = true;
   searchForm;
@@ -131,8 +128,6 @@ export class MembersComponent implements OnInit, OnDestroy {
       this.page_info = null;
       this.page = 1;
       this.total = 0;
-      this.canLoadMore = true;
-      this.loadingData = true;
       this.query = this.searchForm.get('name').value;
       this.queryParamsString = this.query;
       this.generateParams(
@@ -217,7 +212,6 @@ export class MembersComponent implements OnInit, OnDestroy {
   getMembers(): void {
     if (!this.isLoadingMembers) {
       this.isLoadingMembers = true;
-      this.showSpinner = true;
       this.subscriptions.push(
         this.userRolesUsersService
           .pGetCommunityMembers(
@@ -232,14 +226,9 @@ export class MembersComponent implements OnInit, OnDestroy {
           )
           .subscribe((data) => {
             this.members = data.values;
-            this.page += 1;
+            this.page = data.page;
             this.total = data.total;
             this.isLoadingMembers = false;
-            if (this.members.length >= this.total) {
-              this.canLoadMore = false;
-            }
-            this.showSpinner = false;
-            this.loadingData = false;
           }),
       );
     }
