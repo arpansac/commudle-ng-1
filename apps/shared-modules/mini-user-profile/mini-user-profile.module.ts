@@ -13,6 +13,7 @@ import { HiringLookingWorksTagsComponent } from './components/hiring-looking-wor
 import { BadgeComponent } from '../../shared-components/badge/badge.component';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     NbButtonModule,
     UserPersonalConnectComponent,
     UserExpertTickComponent,
+    FontAwesomeModule,
   ],
 
   exports: [
