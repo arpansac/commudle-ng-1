@@ -187,6 +187,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.page = 1;
       this.userRolesUsers = [];
       this.total = 0;
+      this.checkForActiveFilters();
     }
 
     this.subscriptions.push(
@@ -281,6 +282,30 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     const days = inputValue ? parseInt(inputValue) : 90;
     this.daysFilter = days;
     this.loadNewMembersCount();
+  }
+
+  checkForActiveFilters() {
+    const skills = this.communityFilterForm.get('skills').value || [];
+    const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const gender = this.communityFilterForm.get('gender').value;
+    const domains = this.communityFilterForm.get('domains').value || [];
+
+    const hasActiveFilters =
+      this.query ||
+      (skills && skills.length > 0) ||
+      (experienceLevel && experienceLevel.length > 0) ||
+      this.employer ||
+      this.employee ||
+      gender ||
+      (domains && domains.length > 0) ||
+      this.mostActive ||
+      this.contributor ||
+      this.contentCreator ||
+      this.speaker ||
+      (this.sortByField && this.sortByField !== 'activated_at') ||
+      (this.sortOrder && this.sortOrder !== 'desc');
+
+    this.isActiveFilter = hasActiveFilters;
   }
 
   onTagAdd(value: string) {
@@ -550,5 +575,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.query = '';
     this.isActiveFilter = false;
     this.location.replaceState(location.pathname, '');
+    this.getMembers();
   }
 }
