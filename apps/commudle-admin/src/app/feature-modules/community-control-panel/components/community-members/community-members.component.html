@@ -314,7 +314,10 @@
             </p>
             <div class="user-profile-card">
               <div class="profile-badges">
-                <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+                <app-user-profile-card-medium
+                  [user]="userRole.user"
+                  [openInNewTab]="true"
+                ></app-user-profile-card-medium>
                 <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
                   <app-badge
                     *ngFor="let badge of userRole.user_highlights.badges"
@@ -407,15 +410,13 @@
               class="profile-highlights"
             >
               <li *ngIf="userRole.user_highlights.community_builds.length > 0">
-                Posted Builds
-                <span *ngFor="let item of userRole.user_highlights.community_builds; let isLast = last">
+                Posted Builds<span *ngFor="let item of userRole.user_highlights.community_builds; let isLast = last">
                   <a [routerLink]="['/builds', item.slug]" target="_blank"> {{ item.name }}</a>
                   <span *ngIf="!isLast">, </span></span
                 >
               </li>
               <li *ngIf="userRole.user_highlights.labs.length > 0">
-                Posted Labs
-                <span *ngFor="let item of userRole.user_highlights.labs; let isLast = last">
+                Posted Labs<span *ngFor="let item of userRole.user_highlights.labs; let isLast = last">
                   <a [routerLink]="['/labs', item.slug]" target="_blank">
                     {{ item.name }}
                   </a>
@@ -423,8 +424,7 @@
                 >
               </li>
               <li *ngIf="userRole.user_highlights.social_resources.length > 0">
-                Social Resources
-                <span *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last">
+                Social Resources<span *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last">
                   <a [routerLink]="['/users', item.user.username]" [fragment]="'content'" target="_blank">
                     {{ item.name }}
                   </a>
@@ -432,9 +432,10 @@
                 >
               </li>
               <li *ngIf="userRole.user_highlights.speaker_resources.length > 0">
-                Speaker Resources
-                <span *ngFor="let item of userRole.user_highlights.speaker_resources; let isLast = last">
-                  <a routerLink]="['/speaker-resources', item.id]" target="_blank">
+                Speaker Resources<span
+                  *ngFor="let item of userRole.user_highlights.speaker_resources; let isLast = last"
+                >
+                  <a [routerLink]="['/speaker-resources', item.id]" target="_blank">
                     {{ item.name }}
                   </a>
                   <span *ngIf="!isLast">, </span></span
