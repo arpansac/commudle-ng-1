@@ -462,9 +462,11 @@
         </tr>
       </tbody>
     </table>
-    <div *ngIf="userRolesUsers.length === 0 && !isLoading" class="no-results-found">
+    @if (userRolesUsers && userRolesUsers.length === 0 && !isLoading) {
+    <div class="no-results-found">
       <p>No Results Found</p>
     </div>
+    }
   </div>
 
   <app-pagination
