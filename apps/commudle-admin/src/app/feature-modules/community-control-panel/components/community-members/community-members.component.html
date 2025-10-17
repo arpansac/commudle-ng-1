@@ -425,7 +425,7 @@
               <li *ngIf="userRole.user_highlights.social_resources.length > 0">
                 Social Resources
                 <span *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last">
-                  <a [routerLink]="['/users', item.user.username]" target="_blank">
+                  <a [routerLink]="['/users', item.user.username]" [fragment]="'content'" target="_blank">
                     {{ item.name }}
                   </a>
                   <span *ngIf="!isLast">, </span></span
