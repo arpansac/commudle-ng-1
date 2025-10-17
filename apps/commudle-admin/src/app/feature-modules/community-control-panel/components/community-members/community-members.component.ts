@@ -1,16 +1,30 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { Subject, takeUntil, Subscription } from 'rxjs';
-import { ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
+import { debounceTime, filter, map } from 'rxjs/operators';
+import { Subject, takeUntil, Subscription, distinctUntilChanged } from 'rxjs';
+import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
-
+import {
+  faBolt,
+  faEnvelope,
+  faFire,
+  faHourglassHalf,
+  faSkull,
+  faSort,
+  faSortUp,
+  faSortDown,
+} from '@fortawesome/free-solid-svg-icons';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import * as moment from 'moment';
+import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
+import { Chart } from 'chart.js';
 @Component({
-  selector: 'app-community-members',
+  selector: 'commudle-community-members',
   templateUrl: './community-members.component.html',
   styleUrls: ['./community-members.component.scss'],
 })
@@ -22,11 +36,28 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   query = '';
   isLoading = false;
   EUserRoles = EUserRoles;
-  options;
   speaker = false;
+  contributor = false;
+  mostActive = false;
   employer = false;
   contentCreator = false;
   employee = false;
+  faEnvelope = faEnvelope;
+  faSort = faSort;
+  faSortUp = faSortUp;
+  faSortDown = faSortDown;
+  faSkull = faSkull;
+  faHourglassHalf = faHourglassHalf;
+  faFire = faFire;
+  faBolt = faBolt;
+  EExperienceLevel = EExperienceLevel;
+  EDomain = EDomain;
+  queryParamsString = '';
+  sortByField = 'activated_at';
+  sortOrder = 'desc';
+  newMembersCount: number;
+  daysFilter = 90;
+  isActiveFilter = false;
 
   contextMenuItems = [
     {
@@ -39,12 +70,17 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   activeContextMenuUser: IUser;
 
   searchForm;
+  communityFilterForm;
 
   selectedUserRoles: IUserRolesUser[] = [];
   removeUserForm;
 
   subscriptions: Subscription[] = [];
   community: ICommunity;
+  loadingData = false;
+  moment = moment;
+
+  options = ['active', 'contributor', 'content_creator', 'speaker'];
 
   private destroy$ = new Subject<void>();
 
@@ -59,6 +95,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     private toastrService: NbToastrService,
     private menuService: NbMenuService,
     private seoService: SeoService,
+    private communityService: CommunitiesService,
+    private location: Location,
+    private statsCommunitiesService: StatsCommunitiesService,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -66,7 +105,14 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.removeUserForm = this.fb.group({
       user_roles_user_ids: this.fb.array([]),
     });
-    this.options = ['speakers', 'content creator', 'employer', 'employee'];
+
+    this.communityFilterForm = this.fb.group({
+      experience_level: [[]],
+      employment_status: [null],
+      skills: [[]],
+      gender: [null],
+      domains: [[]],
+    });
   }
 
   get userRolesUserIds(): FormArray {
@@ -75,10 +121,80 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.seoService.noIndex(true);
+    const params = this.activatedRoute.snapshot.queryParams;
+    if (Object.keys(params).length > 0) {
+      if (params.skills) {
+        let skillsArray: string[];
+        if (typeof params.skills === 'string' && params.skills.includes(',')) {
+          skillsArray = params.skills.split(',');
+        } else {
+          skillsArray = [params.skills];
+        }
+        this.communityFilterForm.get('skills').setValue(skillsArray);
+      }
+      if (params.experience_level) {
+        let experienceArray: string[];
+        if (typeof params.experience_level === 'string' && params.experience_level.includes(',')) {
+          experienceArray = params.experience_level.split(',');
+        } else {
+          experienceArray = [params.experience_level];
+        }
+        this.communityFilterForm.get('experience_level').setValue(experienceArray);
+      }
+      if (params.employer === 'true') {
+        this.communityFilterForm.get('employment_status').setValue('employer');
+        this.employer = true;
+        this.employee = false;
+      } else if (params.employee === 'true') {
+        this.communityFilterForm.get('employment_status').setValue('employee');
+        this.employer = false;
+        this.employee = true;
+      }
+      if (params.gender) {
+        this.communityFilterForm.get('gender').setValue(params.gender);
+      }
+      if (params.domains) {
+        let domainsArray: string[];
+        if (typeof params.domains === 'string' && params.domains.includes(',')) {
+          domainsArray = params.domains.split(',');
+        } else {
+          domainsArray = [params.domains];
+        }
+        this.communityFilterForm.get('domains').setValue(domainsArray);
+      }
+      if (params.most_active === 'true') {
+        this.mostActive = true;
+      }
+      if (params.contributor === 'true') {
+        this.contributor = true;
+      }
+      if (params.content_creator === 'true') {
+        this.contentCreator = true;
+      }
+      if (params.speaker === 'true') {
+        this.speaker = true;
+      }
+      if (params.query) {
+        this.query = params.query;
+        this.searchForm.get('name').setValue(this.query);
+      }
+      if (params.sort_by) {
+        this.sortByField = params.sort_by;
+      }
+      if (params.sort_order) {
+        this.sortOrder = params.sort_order;
+      }
+      this.page = 1;
+      this.userRolesUsers = [];
+      this.total = 0;
+    }
+
     this.subscriptions.push(
       this.activatedRoute.parent.parent.data.subscribe((value) => {
         if (value.community) {
           this.community = value.community;
+          this.getMembersDistribution();
+          this.getExperienceLevelDistribution();
           this.setMeta();
         }
       }),
@@ -90,7 +206,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.seoService.noIndex(false);
-    // destroy$ used in the search method
     this.destroy$.next();
     this.destroy$.complete();
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -100,18 +215,106 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.seoService.setTitle(`Community Members | Dashboard | ${this.community.name}`);
   }
 
+  getMembersDistribution() {
+    this.statsCommunitiesService.membersDistribution(this.community.slug).subscribe((data) => {
+      const chartData = data.chart_data;
+      return new Chart('chart-member-distibution', {
+        type: 'pie',
+        data: {
+          datasets: [
+            {
+              data: [chartData.male, chartData.female, chartData.prefer_not_to_answer, chartData.NA],
+              backgroundColor: ['#3366ff', '#ff43bc', 'purple', 'green'],
+            },
+          ],
+
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: ['Male', 'Female', 'Prefer Not Answer', 'NA'],
+        },
+        options: {
+          responsive: true,
+          legend: {
+            display: false,
+          },
+        },
+      });
+    });
+  }
+
+  getExperienceLevelDistribution() {
+    this.statsCommunitiesService.experienceLevelDistribution(this.community.slug).subscribe((data) => {
+      const chartData = data.chart_data;
+      return new Chart('chart-experience-distribution', {
+        type: 'pie',
+        data: {
+          datasets: [
+            {
+              data: [chartData.professionals, chartData.students, chartData.unspecified],
+              backgroundColor: ['#3366ff', '#ff43bc', 'purple'],
+            },
+          ],
+
+          // These labels appear in the legend and in the tooltips when hovering different arcs
+          labels: ['Professionals', 'Students', 'NA'],
+        },
+        options: {
+          responsive: true,
+          legend: {
+            display: false,
+          },
+        },
+      });
+    });
+  }
+
+  onDaysFilterChange(event) {
+    const days = parseInt((event.target as HTMLInputElement).value);
+    this.daysFilter = days;
+    this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
+      this.newMembersCount = data.total;
+    });
+  }
+
+  onTagAdd(value: string) {
+    const currentSkills = this.communityFilterForm.get('skills').value || [];
+    if (!currentSkills.includes(value)) {
+      this.communityFilterForm.get('skills').setValue([...currentSkills, value]);
+      this.generateParams();
+    }
+  }
+
+  onTagDelete(value: string) {
+    const currentSkills = this.communityFilterForm.get('skills').value || [];
+    const updatedSkills = currentSkills.filter((tag: string) => tag !== value);
+    this.communityFilterForm.get('skills').setValue(updatedSkills);
+    this.generateParams();
+  }
+
   getMembers() {
     this.isLoading = true;
+    const skills = this.communityFilterForm.get('skills').value || [];
+    const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const domains = this.communityFilterForm.get('domains').value || [];
+    const gender = this.communityFilterForm.get('gender').value;
+
     this.userRolesUsersService
       .getCommunityMembers(
         this.query,
         this.community.id,
         this.count,
         this.page,
+        skills,
+        experienceLevel,
         this.employer,
         this.employee,
+        gender,
+        domains,
+        this.mostActive,
+        this.contributor,
         this.contentCreator,
         this.speaker,
+        this.sortByField,
+        this.sortOrder,
       )
       .subscribe((data) => {
         this.isLoading = false;
@@ -121,33 +324,21 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       });
   }
 
+  originalOrder = (): number => {
+    return 0;
+  };
+
   search() {
-    this.searchForm.valueChanges
-      .pipe(
-        debounceTime(800),
-        takeUntil(this.destroy$),
-        switchMap(() => {
-          this.page = 1;
-          this.isLoading = true;
-          this.query = this.searchForm.get('name').value;
-          return this.userRolesUsersService.getCommunityMembers(
-            this.query,
-            this.community.id,
-            this.count,
-            this.page,
-            this.employer,
-            this.employee,
-            this.contentCreator,
-            this.speaker,
-          );
-        }),
-      )
-      .subscribe((data) => {
-        this.isLoading = false;
-        this.userRolesUsers = data.user_roles_users;
-        this.page = +data.page;
-        this.total = data.total;
-      });
+    this.query = '';
+    this.searchForm.valueChanges.pipe(debounceTime(800), distinctUntilChanged()).subscribe(() => {
+      this.userRolesUsers = [];
+      this.page = 1;
+      this.total = 0;
+      this.loadingData = true;
+      this.query = this.searchForm.get('name').value;
+      this.queryParamsString = this.query;
+      this.generateParams();
+    });
   }
 
   getPageData(page) {
@@ -212,20 +403,143 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   filterByTags(event) {
-    if (event === this.options[0]) {
-      this.speaker = !this.speaker;
+    if (event === 'active') {
+      this.mostActive = !this.mostActive;
     }
-    if (event === this.options[1]) {
+    if (event === 'contributor') {
+      this.contributor = !this.contributor;
+    }
+    if (event === 'content_creator') {
       this.contentCreator = !this.contentCreator;
     }
-    if (event === this.options[2]) {
-      this.employer = !this.employer;
+    if (event === 'speaker') {
+      this.speaker = !this.speaker;
     }
-    if (event === this.options[3]) {
-      this.employee = !this.employee;
+    this.generateParams();
+  }
+
+  onFilterChange() {
+    const filterValues = this.communityFilterForm.value;
+
+    if (filterValues.employment_status === 'employer') {
+      this.employer = true;
+      this.employee = false;
+    } else if (filterValues.employment_status === 'employee') {
+      this.employer = false;
+      this.employee = true;
+    } else {
+      this.employer = false;
+      this.employee = false;
     }
-    this.total = 0;
+
+    this.generateParams();
+  }
+
+  generateParams() {
+    const queryParams: { [key: string]: string | string[] | boolean } = {};
+    const skills = this.communityFilterForm.get('skills').value || [];
+    const experienceLevel = this.communityFilterForm.get('experience_level').value || [];
+    const gender = this.communityFilterForm.get('gender').value;
+    const domains = this.communityFilterForm.get('domains').value || [];
+
+    if (this.query) {
+      queryParams.query = this.query;
+    }
+    if (skills && skills.length > 0) {
+      queryParams.skills = skills.join(',');
+    }
+    if (experienceLevel && experienceLevel.length > 0) {
+      queryParams.experience_level = experienceLevel.join(',');
+    }
+    if (this.employer) {
+      queryParams.employer = true;
+    }
+    if (this.employee) {
+      queryParams.employee = true;
+    }
+    if (gender) {
+      queryParams.gender = gender;
+    }
+    if (domains && domains.length > 0) {
+      queryParams.domains = domains.join(',');
+    }
+    if (this.mostActive) {
+      queryParams.most_active = true;
+    }
+    if (this.contributor) {
+      queryParams.contributor = true;
+    }
+    if (this.contentCreator) {
+      queryParams.content_creator = true;
+    }
+    if (this.speaker) {
+      queryParams.speaker = true;
+    }
+    if (this.sortByField) {
+      queryParams.sort_by = this.sortByField;
+    }
+    if (this.sortOrder) {
+      queryParams.sort_order = this.sortOrder;
+    }
+
+    if (Object.keys(queryParams).length > 0) {
+      this.isActiveFilter = true;
+    } else {
+      this.isActiveFilter = false;
+    }
+
+    const urlSearchParams = new URLSearchParams(queryParams as Record<string, string>);
+    const queryParamsString = urlSearchParams.toString();
+    this.location.replaceState(location.pathname, queryParamsString);
     this.page = 1;
     this.getMembers();
+  }
+
+  sortBy(sort: string) {
+    if (sort === 'nameAsc') {
+      this.sortByField = 'name';
+      this.sortOrder = 'asc';
+    } else if (sort === 'nameDesc') {
+      this.sortByField = 'name';
+      this.sortOrder = 'desc';
+    } else if (sort === 'lastSeenAsc') {
+      this.sortByField = 'last_seen_at';
+      this.sortOrder = 'asc';
+    } else if (sort === 'lastSeenDesc') {
+      this.sortByField = 'last_seen_at';
+      this.sortOrder = 'desc';
+    } else if (sort === 'locationAsc') {
+      this.sortByField = 'location';
+      this.sortOrder = 'asc';
+    } else if (sort === 'locationDesc') {
+      this.sortByField = 'location';
+      this.sortOrder = 'desc';
+    } else if (sort === 'activated_at') {
+      this.sortByField = 'activated_at';
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortByField = sort;
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    }
+    this.generateParams();
+  }
+
+  clearAllFilters() {
+    this.isLoading = true;
+    this.communityFilterForm.reset();
+    this.searchForm.get('name').setValue('');
+    this.mostActive = false;
+    this.contributor = false;
+    this.contentCreator = false;
+    this.speaker = false;
+    this.employer = false;
+    this.employee = false;
+    this.sortByField = '';
+    this.sortOrder = '';
+    this.page = 1;
+    this.total = 0;
+    this.query = '';
+    this.isActiveFilter = false;
+    this.location.replaceState(location.pathname, '');
   }
 }

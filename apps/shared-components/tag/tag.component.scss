@@ -3,11 +3,39 @@
 }
 
 .tag-list {
-  @apply com-flex com-flex-wrap com-w-full;
+  @apply com-flex com-items-center com-flex-wrap com-w-full;
+
+  &.rounded {
+    @apply com-rounded-3xl;
+  }
+
+  &.semi-round {
+    @apply com-rounded-10;
+  }
+
+  &.rectangle {
+    @apply com-rounded-[4px];
+  }
+
+  &.input-small {
+    @apply com-h-8;
+
+    .tag {
+      @apply com-mx-2px com-mb-2px;
+    }
+  }
+
+  &.input-medium {
+    @apply com-h-[46px];
+
+    .tag {
+      @apply com-m-1;
+    }
+  }
 }
 
 .tag {
-  @apply com-px-4 com-py-1 com-mx-1 com-my-1 com-rounded-3xl com-font-medium;
+  @apply com-px-4 com-py-1 com-rounded-3xl com-font-medium;
   fa-icon {
     @apply com-cursor-pointer;
   }
@@ -20,7 +48,7 @@
 form {
   @apply com-flex-1 com-w-auto com-max-w-full;
   input {
-    @apply com-w-full com-border-0 com-bg-transparent com-text-black com-h-9;
+    @apply com-w-full com-border-0 com-bg-transparent com-text-black;
   }
 }
 

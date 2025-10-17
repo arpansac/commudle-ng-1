@@ -50,21 +50,59 @@ export class UserRolesUsersService {
     communityId,
     count,
     page,
+    skills?,
+    experienceLevel?,
     employer?,
     employee?,
+    gender?,
+    domains?,
+    mostActive?,
+    contributor?,
     contentCreator?,
     speaker?,
+    sortBy?,
+    sortOrder?,
   ): Observable<IUserRolesUsers> {
     let params = new HttpParams();
     params = params
       .set('community_id', communityId)
-      .set('query', query)
       .set('count', count)
       .set('page', page)
-      .set('employer', employer)
-      .set('employee', employee)
+      .set('most_active', mostActive)
+      .set('contributor', contributor)
       .set('content_creator', contentCreator)
-      .set('speaker', speaker);
+      .set('speaker', speaker)
+      .set('is_employer', employer)
+      .set('is_employee', employee);
+
+    if (query) {
+      params = params.set('query', query);
+    }
+    if (gender) {
+      params = params.set('gender', gender);
+    }
+    if (skills && skills.length > 0) {
+      skills.forEach((skill) => {
+        params = params.append('skills[]', skill);
+      });
+    }
+    if (experienceLevel && experienceLevel.length > 0) {
+      experienceLevel.forEach((level) => {
+        params = params.append('experience_level[]', level);
+      });
+    }
+    if (domains && domains.length > 0) {
+      domains.forEach((domain) => {
+        params = params.append('domains[]', domain);
+      });
+    }
+    if (sortBy) {
+      params = params.set('sort_by', sortBy);
+    }
+    if (sortOrder) {
+      params = params.set('sort_order', sortOrder);
+    }
+
     return this.http.get<IUserRolesUsers>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.COMMUNITY_MEMBERS),
       { params },

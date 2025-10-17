@@ -1,6 +1,7 @@
 import { ICommunity } from './community.model';
 import { IUserRole } from './user-role.model';
 import { IUser } from './user.model';
+import { IUserCommunityEngagementData } from './user_community_engagement_data.model';
 
 export interface IUserRolesUser {
   id: number;
@@ -13,6 +14,8 @@ export interface IUserRolesUser {
   status: EUserRolesUserStatus;
   community?: ICommunity;
   role_designation?: string;
+  agg_user_community_engagement: IUserCommunityEngagementData;
+  community_activeness: string;
 }
 
 export enum EUserRolesUserStatus {

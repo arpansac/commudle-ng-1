@@ -686,6 +686,8 @@ export const API_ROUTES = {
     },
     COMMUNITIES: {
       MEMBERS_DISTRIBUTION: 'api/v2/stats/communities/members_distribution',
+      EXPERIENCE_CATEGORIES: 'api/v2/stats/communities/experience_categories',
+      NEW_MEMBERS_COUNT: 'api/v2/stats/communities/new_members_count',
       MEMBERS_TIMELINE: 'api/v2/stats/communities/members_timeline',
       EVENTS_TIMELINE: 'api/v2/stats/communities/events_timeline',
       EMAILS: 'api/v2/stats/communities/emails',

@@ -1,86 +1,330 @@
 <div class="community-members">
-  <form [formGroup]="searchForm">
-    <div class="name-filter">
-      <nb-form-field>
-        <nb-icon icon="search" nbPrefix></nb-icon>
-        <input
-          [disabled]="isLoading"
-          fieldSize="small"
-          formControlName="name"
-          fullWidth
-          nbInput
-          placeholder="Search by Name, Tagline or About Me..."
-          type="text"
-        />
-      </nb-form-field>
+  <div class="quick-insights">
+    <h2 class="quick-insights-title">Quick Insights</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <p class="insight-label">TOTAL MEMBERS</p>
+        <p class="insight-number">{{ community.members_count }}</p>
+      </div>
+      <div class="insight-card">
+        <p class="insight-label">GENDER DISTRIBUTION</p>
+        <canvas id="chart-member-distibution"></canvas>
+      </div>
+      <div class="insight-card">
+        <p class="insight-label">PROFESSIONALS VS STUDENTS</p>
+        <canvas id="chart-experience-distribution"></canvas>
+      </div>
+      <div class="insight-card">
+        <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilter || 90 }} DAYS</p>
+        <div class="days-filter-container">
+          <input
+            formControlName="days"
+            nbInput
+            placeholder="Enter the number of days"
+            type="number"
+            min="1"
+            max="365"
+            (input)="onDaysFilterChange($event)"
+            class="days-input"
+          />
+        </div>
+        <p class="insight-number">{{ newMembersCount || 0 }}</p>
+      </div>
     </div>
-  </form>
-  <br />
-  <div>
-    <nb-tag-list>
-      <nb-tag
-        appearance="outline"
-        [text]="options[0]"
-        status="primary"
-        [removable]="speaker ? 'true' : 'false'"
-        [ngClass]="{ activeTag: speaker }"
-        (click)="filterByTags(options[0])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[1]"
-        status="primary"
-        [removable]="contentCreator ? 'true' : 'false'"
-        [ngClass]="{ activeTag: contentCreator }"
-        (click)="filterByTags(options[1])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[2]"
-        status="primary"
-        [removable]="employer ? 'true' : 'false'"
-        [ngClass]="{ activeTag: employer }"
-        (click)="filterByTags(options[2])"
-      ></nb-tag>
-      <nb-tag
-        appearance="outline"
-        [text]="options[3]"
-        status="primary"
-        [removable]="employee ? 'true' : 'false'"
-        [ngClass]="{ activeTag: employee }"
-        (click)="filterByTags(options[3])"
-      ></nb-tag>
-    </nb-tag-list>
   </div>
 
-  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+  <div class="search-filters">
+    <form [formGroup]="searchForm" class="search-container">
+      <div class="search">
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search using name, email, designation, about, etc"
+            shape="round"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
 
-  <div class="com-my-4" style="overflow-x: auto">
-    <table *ngIf="!isLoading">
+    <div [formGroup]="communityFilterForm" class="filter-dropdowns-container">
+      <div class="filter-dropdowns">
+        <nb-select
+          formControlName="experience_level"
+          (selectedChange)="onFilterChange()"
+          placeholder="Experience"
+          multiple
+          size="small"
+          shape="round"
+          ghost
+          class="filter-select"
+        >
+          <nb-option
+            *ngFor="let experienceLevel of EExperienceLevel | keyvalue : originalOrder"
+            [value]="experienceLevel.key"
+          >
+            {{ experienceLevel.value }}
+          </nb-option>
+        </nb-select>
+        <nb-select
+          formControlName="employment_status"
+          (selectedChange)="onFilterChange()"
+          placeholder="Looking for work / Hiring"
+          size="small"
+          shape="round"
+          ghost
+          class="filter-select"
+        >
+          <nb-option value="employee">Looking For Work</nb-option>
+          <nb-option value="employer">Hiring</nb-option>
+        </nb-select>
+        <nb-select
+          formControlName="gender"
+          (selectedChange)="onFilterChange()"
+          placeholder="Gender"
+          size="small"
+          shape="round"
+          ghost
+          class="filter-select"
+        >
+          <nb-option value="male">Male</nb-option>
+          <nb-option value="female">Female</nb-option>
+          <nb-option value="prefer_not_to_answer">Prefer not to say</nb-option>
+        </nb-select>
+        <nb-select
+          formControlName="domains"
+          (selectedChange)="onFilterChange()"
+          placeholder="Domains"
+          multiple
+          size="small"
+          shape="round"
+          ghost
+          class="filter-select"
+        >
+          <nb-option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
+            {{ domain.value }}
+          </nb-option>
+        </nb-select>
+        <div class="skills-filter-container">
+          <app-tag
+            (tagAdd)="onTagAdd($event)"
+            (tagDelete)="onTagDelete($event)"
+            [backgroundColor]="'com-bg-gray-100'"
+            [editable]="true"
+            [fontColor]="'com-text-tYankees-Blue'"
+            [tags]="communityFilterForm.get('skills').value || []"
+            [minTagLimit]="false"
+            [showAutoSuggestDropDown]="true"
+            [showTagsOnLoad]="true"
+            [size]="'tiny'"
+            [shape]="'rounded'"
+            [label]="'Type skills and press enter to keep adding'"
+            [inputSize]="'small'"
+          ></app-tag>
+        </div>
+      </div>
+
+      <!-- Active Filter Tags -->
+      <div class="active-filter-tags">
+        <nb-tag-list>
+          <nb-tag
+            [appearance]="mostActive ? 'filled' : 'outline'"
+            [text]="'Most Active (Top 10%)'"
+            size="small"
+            status="info"
+            [removable]="mostActive ? 'true' : 'false'"
+            [ngClass]="{ activeTag: mostActive }"
+            (click)="filterByTags(options[0])"
+          ></nb-tag>
+          <nb-tag
+            [appearance]="contributor ? 'filled' : 'outline'"
+            [text]="'Top Contributor'"
+            size="small"
+            status="info"
+            [removable]="contributor ? 'true' : 'false'"
+            [ngClass]="{ activeTag: contributor }"
+            (click)="filterByTags(options[1])"
+          ></nb-tag>
+          <nb-tag
+            [appearance]="contentCreator ? 'filled' : 'outline'"
+            [text]="'Content Creator'"
+            size="small"
+            status="info"
+            [removable]="contentCreator ? 'true' : 'false'"
+            [ngClass]="{ activeTag: contentCreator }"
+            (click)="filterByTags(options[2])"
+          ></nb-tag>
+          <nb-tag
+            [appearance]="speaker ? 'filled' : 'outline'"
+            [text]="'Speaker'"
+            size="small"
+            status="info"
+            [removable]="speaker ? 'true' : 'false'"
+            [ngClass]="{ activeTag: speaker }"
+            (click)="filterByTags(options[3])"
+          ></nb-tag>
+        </nb-tag-list>
+        <button
+          *ngIf="isActiveFilter"
+          (click)="clearAllFilters()"
+          nbButton
+          size="tiny"
+          status="basic"
+          appearance="outline"
+          shape="round"
+          class="clear-filters-btn"
+        >
+          Clear All Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div class="members-table" *ngIf="!isLoading">
+    <table>
       <thead>
-        <tr class="heading">
-          <th>Users</th>
-          <th>Skills Tag</th>
-          <th>Activity Stats</th>
-          <th>Speaker At</th>
-          <th>Content Creator</th>
+        <tr class="header-row">
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">MEMBERS</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'name' || sortOrder !== 'asc'"
+                  (click)="sortBy('nameAsc')"
+                  title="Sort by name Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'name' || sortOrder !== 'desc'"
+                  (click)="sortBy('nameDesc')"
+                  title="Sort by name Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="header-content">
+              <span class="header-text">USER ENGAGEMENT</span>
+            </div>
+          </th>
+          <th>
+            <div class="header-content">
+              <span class="header-text">ACTIVITY</span>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">LAST SEEN</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'last_seen_at' || sortOrder !== 'asc'"
+                  (click)="sortBy('lastSeenAsc')"
+                  title="Sort by last seen Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'last_seen_at' || sortOrder !== 'desc'"
+                  (click)="sortBy('lastSeenDesc')"
+                  title="Sort by last seen Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
+          <th>
+            <div class="header-content">
+              <span class="header-text">PROFILE HIGHLIGHTS</span>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">LOCATION</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'location' || sortOrder !== 'asc'"
+                  (click)="sortBy('locationAsc')"
+                  title="Sort by location Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'location' || sortOrder !== 'desc'"
+                  (click)="sortBy('locationDesc')"
+                  title="Sort by location Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
+          <th class="sortable">
+            <div class="header-content">
+              <span class="header-text">JOINED DATE</span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByField !== 'activated_at' || sortOrder !== 'asc'"
+                  (click)="sortBy('activated_at')"
+                  title="Sort by joined date Ascending"
+                  [icon]="faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByField !== 'activated_at' || sortOrder !== 'desc'"
+                  (click)="sortBy('activated_at')"
+                  title="Sort by joined date Descending"
+                  [icon]="faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </div>
+          </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="userRolesUsers.length > 0">
         <tr *ngFor="let userRole of userRolesUsers">
-          <td class="member com-w-[350px]" valign="top">
+          <td valign="top">
             <p class="user-communities-role" *ngIf="userRole.user_role.name === EUserRoles.ORGANIZER">
               <nb-icon icon="star"></nb-icon>
               <span>
                 {{ userRole.user_role.name | titlecase }}
               </span>
             </p>
-            <div class="com-flex com-flex-row com-gap-4 com-justify-between com-relative">
-              <app-user-profile-card-large
-                [showAbout]="true"
-                [showSocialLinks]="true"
-                [user]="userRole.user"
-              ></app-user-profile-card-large>
+            <div class="user-profile-card">
+              <div class="profile-badges">
+                <app-user-profile-card-medium [user]="userRole.user"></app-user-profile-card-medium>
+                <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
+                  <app-badge
+                    *ngFor="let badge of userRole.user_highlights.badges"
+                    [text]="badge.name"
+                    [color]="'com-bg-Bright-Gray-Light'"
+                    [fontSize]="'small'"
+                    [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                    [borderRadius]="'round'"
+                    class="user-badge"
+                  >
+                  </app-badge>
+                </div>
+              </div>
               <button
                 (click)="activeContextMenuUser = userRole.user"
                 [nbContextMenu]="contextMenuItems"
@@ -93,45 +337,135 @@
               </button>
             </div>
           </td>
-          <td class="com-w-[200px]" valign="top">
-            <nb-tag-list>
-              <nb-tag
-                *ngFor="let tag of userRole.user.tags"
-                [text]="tag.name"
-                appearance="outline"
-                status="info"
-                size="tiny"
-              ></nb-tag>
-            </nb-tag-list>
+          <td>
+            <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
+              <ul>
+                <li>
+                  <span>Overall Attendence:</span> {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
+                </li>
+                <li>
+                  <span>Events (attendee):</span>
+                  {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
+                  {{ userRole.agg_user_community_engagement.attended_events_count }} attended,
+                  {{ userRole.agg_user_community_engagement.total_skipped_events }} invited & skipped,
+                  {{ userRole.agg_user_community_engagement.total_volunteered_events }} volunteered
+                </li>
+                <li>
+                  <span>Events (speaker):</span>
+                  {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} registered,
+                  {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} talks delivered
+                </li>
+                <li>
+                  <span>Hackathon:</span>
+                  {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} registered
+                </li>
+                <li>
+                  <span>Channel Messages Sent:</span>
+                  {{ userRole.agg_user_community_engagement.total_channel_messages }}
+                </li>
+              </ul>
+            </div>
           </td>
-          <td class="com-w-[300px]" valign="top">
-            <!-- <app-user-engagement-data [user]="userRole.user" [communityId]="communityId"></app-user-engagement-data> -->
+          <td>
+            <span class="activity-indicator">
+              <fa-icon *ngIf="userRole.community_activeness === 'dormant'" class="dormant" [icon]="faSkull"></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'low_active'"
+                class="low_active"
+                [icon]="faHourglassHalf"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'moderately_active'"
+                class="moderately_active"
+                [icon]="faFire"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'highly_active'"
+                class="highly_active"
+                [icon]="faBolt"
+              ></fa-icon>
+              {{
+                userRole.community_activeness ? (userRole.community_activeness | capitalizeAndRemoveUnderscore) : '--'
+              }}
+            </span>
           </td>
-          <td class="com-w-[300px]" valign="top">
-            <ul *ngFor="let item of userRole.user.speaker_events">
-              <li>
-                <a [href]="'communities/' + item.kommunity_id + '/events/' + item.id" target="_blank">
-                  {{ item.name }}
+          <td>
+            <span class="last-seen">{{ userRole.last_seen_at ? moment(userRole.last_seen_at).fromNow() : '--' }}</span>
+          </td>
+          <td>
+            <ul
+              *ngIf="
+                userRole.user_highlights?.community_builds?.length > 0 ||
+                userRole.user_highlights?.labs?.length > 0 ||
+                userRole.user_highlights?.speaker_resources?.length > 0 ||
+                userRole.user_highlights?.social_resources?.length > 0
+              "
+              class="profile-highlights"
+            >
+              <li *ngIf="userRole.user_highlights.community_builds.length > 0">
+                Posted Builds
+                <a
+                  *ngFor="let item of userRole.user_highlights.community_builds; let isLast = last"
+                  [routerLink]="['/builds', item.slug]"
+                  target="_blank"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">,</span>
                 </a>
-                &#64;
-                <a [href]="'communities/' + item.kommunity_id" target="_blank">
-                  {{ item.kommunity.name }}
+              </li>
+              <li *ngIf="userRole.user_highlights.labs.length > 0">
+                Posted Labs
+                <a
+                  *ngFor="let item of userRole.user_highlights.labs; let isLast = last"
+                  [routerLink]="['/labs', item.slug]"
+                  target="_blank"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">, </span>
+                </a>
+              </li>
+              <li *ngIf="userRole.user_highlights.social_resources.length > 0">
+                Social Resources
+                <a
+                  *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last"
+                  [routerLink]="['/users', item.user.username]"
+                  target="_blank"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">, </span>
+                </a>
+              </li>
+              <li *ngIf="userRole.user_highlights.speaker_resources.length > 0">
+                Speaker Resources
+                <a
+                  *ngFor="let item of userRole.user_highlights.speaker_resources; let isLast = last"
+                  [routerLink]="['/speaker-resources', item.id]"
+                  target="_blank"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">, </span>
                 </a>
               </li>
             </ul>
+            <p
+              *ngIf="
+                userRole.user_highlights.community_builds.length === 0 &&
+                userRole.user_highlights.labs.length === 0 &&
+                userRole.user_highlights.speaker_resources.length === 0 &&
+                userRole.user_highlights.social_resources.length === 0
+              "
+            >
+              --
+            </p>
           </td>
-          <td class="com-w-[200px]" valign="top">
-            <div>
-              <p *ngIf="userRole.user.community_builds_count > 0">Builds: {{ userRole.user.community_builds_count }}</p>
-              <p *ngIf="userRole.user.labs_count > 0">Labs: {{ userRole.user.labs_count }}</p>
-              <p *ngIf="userRole.user.social_resources_count > 0">
-                Social Resource: {{ userRole.user.social_resources_count }}
-              </p>
-            </div>
+          <td class="location">
+            <span>{{ userRole.user.location ? userRole.user.location : '--' }}</span>
+          </td>
+          <td class="joined-date">
+            <span>{{ userRole.activated_at ? moment(userRole.activated_at).format('MMM DD, YYYY') : '--' }}</span>
           </td>
         </tr>
       </tbody>
     </table>
+    <div *ngIf="userRolesUsers.length === 0 && !isLoading" class="no-results-found">
+      <p>No Results Found</p>
+    </div>
   </div>
 
   <app-pagination
@@ -145,10 +479,11 @@
   ></app-pagination>
 </div>
 
+<!-- Remove User Dialog -->
 <ng-template #removeUserDialog let-data let-ref="dialogRef">
-  <nb-card class="com-max-h-[90dvh]">
-    <nb-card-header class="com-flex com-items-center com-justify-between">
-      <span class="com-flex com-items-center com-gap-2">
+  <nb-card class="dialog-card">
+    <nb-card-header class="dialog-header">
+      <span>
         <nb-icon icon="alert-triangle" status="warning"></nb-icon>
         Confirmation
       </span>
@@ -156,12 +491,12 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body class="com-max-w-[350px]">
+    <nb-card-body class="dialog-body">
       <p>
         Are you sure you want to <strong>remove</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community? (Select
         the roles you want to remove them from)
       </p>
-      <div class="com-flex com-flex-col com-items-start com-gap-3 com-space-x-3">
+      <div class="dialog-body-content">
         <div *ngFor="let userRole of selectedUserRoles">
           <input
             type="checkbox"
@@ -173,7 +508,7 @@
       </div>
       <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
     </nb-card-body>
-    <nb-card-footer class="com-flex com-items-center com-justify-between">
+    <nb-card-footer class="dialog-footer">
       <button (click)="ref.close()" ghost nbButton status="danger">No</button>
       <button
         (click)="removeUser(); ref.close()"
@@ -187,10 +522,11 @@
   </nb-card>
 </ng-template>
 
+<!-- Block User Dialog -->
 <ng-template #blockUserDialog let-data let-ref="dialogRef">
-  <nb-card>
-    <nb-card-header class="com-flex com-items-center com-justify-between">
-      <span class="com-flex com-items-center com-gap-2">
+  <nb-card class="dialog-card">
+    <nb-card-header class="dialog-header">
+      <span>
         <nb-icon icon="alert-triangle" status="warning"></nb-icon>
         Confirmation
       </span>
@@ -198,13 +534,13 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body class="com-max-w-[350px]">
+    <nb-card-body class="dialog-body">
       <p>
         Are you sure you want to <strong>remove & block</strong>&nbsp;<em>{{ data.user?.name }}</em> from the community?
       </p>
       <p><strong>Note:</strong>&nbsp;This action cannot be undone.</p>
     </nb-card-body>
-    <nb-card-footer class="com-flex com-items-center com-justify-between">
+    <nb-card-footer class="dialog-footer">
       <button (click)="ref.close()" ghost nbButton status="danger">No</button>
       <button (click)="blockUser(data.user.id); ref.close()" nbButton status="success">Yes</button>
     </nb-card-footer>

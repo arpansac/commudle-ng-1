@@ -24,9 +24,23 @@ export class StatsCommunitiesService {
     });
   }
 
+  experienceLevelDistribution(communityId): Observable<any> {
+    const params = new HttpParams().set('community_id', communityId);
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.COMMUNITIES.EXPERIENCE_CATEGORIES), {
+      params,
+    });
+  }
+
   membersTimeline(communityId): Observable<any> {
     const params = new HttpParams().set('community_id', communityId);
     return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.COMMUNITIES.MEMBERS_TIMELINE), {
+      params,
+    });
+  }
+
+  newMembersCount(communityId, days = 90): Observable<any> {
+    const params = new HttpParams().set('community_id', communityId).set('days', days);
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.STATS.COMMUNITIES.NEW_MEMBERS_COUNT), {
       params,
     });
   }

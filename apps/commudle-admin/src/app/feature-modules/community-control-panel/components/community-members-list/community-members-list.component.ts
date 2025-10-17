@@ -1,8 +1,9 @@
-import { ToastrService } from '@commudle/shared-services';
 import { Component } from '@angular/core';
-import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { NbToastrService } from '@commudle/theme';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-community-members-list',
   templateUrl: './community-members-list.component.html',
@@ -10,24 +11,12 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 })
 export class CommunityMembersListComponent {
   sendingRequest = false;
-  communityId: string | number;
-  tabs: any[] = [
-    {
-      title: 'All Members',
-      route: `./`,
-    },
-    {
-      title: 'Blocked Users',
-      route: `./blocked`,
-    },
-  ];
-
   faEnvelope = faEnvelope;
 
   constructor(
     private communityService: CommunitiesService,
-    private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
+    private toastrService: NbToastrService,
   ) {}
 
   sendSpeakerCSV() {
@@ -36,7 +25,7 @@ export class CommunityMembersListComponent {
       .sendCsvSpeakersList(this.activatedRoute.parent.snapshot.params['community_id'])
       .subscribe((data) => {
         if (data) {
-          this.toastrService.successDialog('CSV will be sent to your email inbox');
+          this.toastrService.success('CSV will be sent to your email inbox');
           this.sendingRequest = false;
         }
       });
