@@ -63,7 +63,7 @@
           </td>
 
           <td>
-            <!-- <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small> -->
+            <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small>
           </td>
 
           <td class="actions-cell">
@@ -93,4 +93,14 @@
       </tbody>
     </table>
   </div>
+  <app-pagination
+    class="pagination"
+    (goTo)="page = $event; getDataForms()"
+    (next)="page = $event; getDataForms()"
+    (previous)="page = $event; getDataForms()"
+    *ngIf="total > 0"
+    [count]="count"
+    [current]="page"
+    [total]="total"
+  ></app-pagination>
 </div>

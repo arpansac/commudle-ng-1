@@ -24,11 +24,15 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
   faUser = faUser;
   faEdit = faEdit;
-  dataForms: IDataForm[];
-  filteredForms: IDataForm[];
+  dataForms: IDataForm[] = [];
   searchTerm = '';
   isLoading = true;
   searchForm;
+  total = 0;
+  count = 10;
+  page = 1;
+  query = '';
+
   // tableSettings: Settings = {
   //   actions: false,
   //   pager: {
@@ -97,24 +101,15 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
 
   getDataForms() {
     this.subscriptions.push(
-      this.dataFormsService.getCommunityDataForms(this.community.id).subscribe((data) => {
-        this.dataForms = data.data_forms;
-        this.filteredForms = [...this.dataForms];
-        this.isLoading = false;
-      }),
+      this.dataFormsService
+        .getCommunityDataForms(this.community.id, this.page, this.count, this.query)
+        .subscribe((data) => {
+          this.dataForms = data.values;
+          this.total = data.total;
+          this.page = data.page;
+          this.isLoading = false;
+        }),
     );
-  }
-
-  onSearchChange() {
-    if (!this.searchTerm.trim()) {
-      this.filteredForms = [...this.dataForms];
-    } else {
-      this.filteredForms = this.dataForms.filter(
-        (form) =>
-          form.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-          form.user.toLowerCase().includes(this.searchTerm.toLowerCase()),
-      );
-    }
   }
 
   openResponses(form: IDataForm) {
