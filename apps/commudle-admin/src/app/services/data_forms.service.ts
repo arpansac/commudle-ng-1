@@ -5,6 +5,7 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { IDataForm } from 'apps/shared-models/data_form.model';
 import { IDataForms } from 'apps/shared-models/data_forms.model';
+import { IPaginationCount } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +13,25 @@ import { IDataForms } from 'apps/shared-models/data_forms.model';
 export class DataFormsService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  getCommunityDataForms(parentId): Observable<IDataForms> {
-    const params = new HttpParams().set('community_id', parentId);
+  getCommunityDataForms(
+    parentId,
+    page: number,
+    count: number,
+    query?: string,
+  ): Observable<IPaginationCount<IDataForm>> {
+    let params = new HttpParams().set('community_id', parentId).set('page', page).set('count', count);
+    if (query) {
+      params = params.set('query', query);
+    }
 
-    return this.http.get<IDataForms>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_DATA_FORMS), {
+    return this.http.get<IPaginationCount<IDataForm>>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_DATA_FORMS), {
+      params: params,
+    });
+  }
+
+  dataFormIndexByParent(parentId): Observable<IDataForm[]> {
+    const params = new HttpParams().set('community_id', parentId);
+    return this.http.get<IDataForm[]>(this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_INDEX_BY_PARENT), {
       params: params,
     });
   }

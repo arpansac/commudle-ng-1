@@ -1,9 +1,109 @@
-:host {
-  .page-actions {
-    @apply com-mt-2 com-mb-4 com-mx-auto;
+.forms-list {
+  @apply md:com-p-6 com-p-3 com-rounded-10;
+}
+
+.page-header {
+  @apply md:com-mb-8 com-mb-6;
+
+  .header-content {
+    @apply com-flex md:com-flex-row com-flex-col com-justify-between com-items-center md:com-gap-0 com-gap-4 com-mb-6;
+
+    .page-title {
+      @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+    }
+
+    a {
+      @apply com-rounded-lg md:com-w-auto com-w-full;
+    }
+  }
+
+  .search-form {
+    @apply com-w-full;
   }
 }
 
-.forms-list {
-  @apply md:com-p-6 com-py-6 com-px-4;
+// Table Section
+.forms-table {
+  @apply com-w-full;
+
+  thead {
+    @apply com-border-b com-border-solid com-border-Bright-Gray;
+    .table-header {
+      @apply com-border-b com-border-solid com-border-Bright-Gray;
+      th {
+        @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500 com-uppercase;
+        &:nth-child(1) {
+          @apply com-w-[40%];
+        }
+        &:nth-child(2) {
+          @apply com-w-[20%];
+        }
+        &:nth-child(3) {
+          @apply com-w-[20%];
+        }
+        &:nth-child(4) {
+          @apply com-w-[20%];
+        }
+      }
+    }
+  }
+
+  .table-row {
+    @apply com-border-b com-border-Bright-Gray hover:com-bg-gray-50;
+
+    &:last-child {
+      @apply com-border-b-0;
+    }
+
+    td {
+      @apply com-p-4;
+
+      p {
+        @apply com-text-sm com-font-normal com-text-Yankees-Blue com-m-0;
+      }
+
+      .stats-content {
+        @apply com-flex com-flex-col com-gap-1 com-justify-center;
+
+        .responses-count {
+          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-flex-shrink-0;
+        }
+
+        .questions-count {
+          @apply com-text-sm com-text-gray-500 com-m-0;
+        }
+      }
+
+      .actions-buttons {
+        @apply com-flex com-items-center com-justify-between com-gap-2;
+
+        .show-responses-btn {
+          @apply com-text-xs com-rounded-lg com-font-normal com-text-Yankees-Blue com-bg-gray-50 com-border-Bright-Gray com-cursor-pointer;
+        }
+
+        .edit-btn {
+          @apply com-bg-transparent com-border-0 com-text-xs com-font-normal com-text-Yankees-Blue com-cursor-pointer;
+
+          fa-icon {
+            @apply com-text-base;
+          }
+        }
+      }
+    }
+  }
+}
+
+.table-wrapper {
+  @apply com-overflow-scroll;
+}
+
+.pagination {
+  @apply com-my-6;
+}
+
+.no-results-found {
+  @apply com-text-center com-text-gray-500 com-py-6;
+  p {
+    @apply com-text-lg com-font-medium com-text-Yankees-Blue com-m-0;
+  }
 }
