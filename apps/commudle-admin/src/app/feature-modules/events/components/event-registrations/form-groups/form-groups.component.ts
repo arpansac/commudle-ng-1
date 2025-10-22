@@ -140,8 +140,8 @@ export class FormGroupsComponent implements OnInit {
 
   // get all the data forms made in this community
   getCommunityDataForms() {
-    this.dataFormsService.getCommunityDataForms(this.community.id).subscribe((data) => {
-      this.communityDataForms = data.data_forms;
+    this.dataFormsService.dataFormIndexByParent(this.community.id).subscribe((data) => {
+      this.communityDataForms = data;
       this.changeDetectorRef.markForCheck();
     });
   }

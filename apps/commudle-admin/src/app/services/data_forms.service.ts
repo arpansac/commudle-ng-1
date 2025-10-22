@@ -13,13 +13,25 @@ import { IPaginationCount } from '@commudle/shared-models';
 export class DataFormsService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  getCommunityDataForms(parentId, page: number, count: number, query: string): Observable<IPaginationCount<IDataForm>> {
+  getCommunityDataForms(
+    parentId,
+    page: number,
+    count: number,
+    query?: string,
+  ): Observable<IPaginationCount<IDataForm>> {
     let params = new HttpParams().set('community_id', parentId).set('page', page).set('count', count);
     if (query) {
       params = params.set('query', query);
     }
 
     return this.http.get<IPaginationCount<IDataForm>>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITY_DATA_FORMS), {
+      params: params,
+    });
+  }
+
+  dataFormIndexByParent(parentId): Observable<IDataForm[]> {
+    const params = new HttpParams().set('community_id', parentId);
+    return this.http.get<IDataForm[]>(this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_INDEX_BY_PARENT), {
       params: params,
     });
   }
