@@ -96,3 +96,14 @@
 .table-wrapper {
   @apply com-overflow-scroll;
 }
+
+.pagination {
+  @apply com-my-6;
+}
+
+.no-results-found {
+  @apply com-text-center com-text-gray-500 com-py-6;
+  p {
+    @apply com-text-lg com-font-medium com-text-Yankees-Blue com-m-0;
+  }
+}

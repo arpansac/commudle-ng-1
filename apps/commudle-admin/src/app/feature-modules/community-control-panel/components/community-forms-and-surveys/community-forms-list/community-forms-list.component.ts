@@ -6,7 +6,7 @@ import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_form
 import { IDataForm } from 'apps/shared-models/data_form.model';
 import { CommunityFormsListActionsComponent } from './community-forms-list-actions/community-forms-list-actions.component';
 import { CommunityFormsListStatsComponent } from './community-forms-list-stats/community-forms-list-stats.component';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription, takeUntil, switchMap, Subject } from 'rxjs';
 import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { FormResponsesComponent } from 'apps/shared-components/form-responses/form-responses.component';
@@ -32,6 +32,7 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   count = 10;
   page = 1;
   query = '';
+  destroy$ = new Subject<void>();
 
   // tableSettings: Settings = {
   //   actions: false,
@@ -90,6 +91,7 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
         if (this.community.id) {
           this.getDataForms();
         }
+        this.search();
       }),
     );
   }
@@ -97,6 +99,28 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.seoService.noIndex(false);
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  search() {
+    this.searchForm.valueChanges
+      .pipe(
+        debounceTime(800),
+        takeUntil(this.destroy$),
+        switchMap(() => {
+          this.page = 1;
+          this.isLoading = true;
+          this.query = this.searchForm.get('name').value;
+          return this.dataFormsService.getCommunityDataForms(this.community.id, this.page, this.count, this.query);
+        }),
+      )
+      .subscribe((data) => {
+        this.dataForms = data.values;
+        this.total = data.total;
+        this.page = data.page;
+        this.isLoading = false;
+      });
   }
 
   getDataForms() {

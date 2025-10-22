@@ -47,7 +47,7 @@
           <th>ACTIONS</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="dataForms.length > 0">
         <tr *ngFor="let form of dataForms" class="table-row">
           <td>
             <p class="form-name" [title]="form.name">
@@ -92,6 +92,9 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="dataForms.length === 0 && !isLoading" class="no-results-found">
+      <p>No Results Found</p>
+    </div>
   </div>
   <app-pagination
     class="pagination"
