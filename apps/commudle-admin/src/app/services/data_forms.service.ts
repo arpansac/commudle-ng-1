@@ -29,9 +29,9 @@ export class DataFormsService {
     });
   }
 
-  dataFormIndexByParent(parentId): Observable<IDataForm[]> {
+  IndexByParent(parentId: number | string): Observable<IDataForm[]> {
     const params = new HttpParams().set('community_id', parentId);
-    return this.http.get<IDataForm[]>(this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_INDEX_BY_PARENT), {
+    return this.http.get<IDataForm[]>(this.apiRoutesService.getRoute(API_ROUTES.INDEX_BY_PARENT), {
       params: params,
     });
   }
