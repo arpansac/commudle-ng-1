@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { NbToastrService } from '@commudle/theme';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
@@ -9,15 +10,29 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './community-members-list.component.html',
   styleUrls: ['./community-members-list.component.scss'],
 })
-export class CommunityMembersListComponent {
+export class CommunityMembersListComponent implements OnInit {
   sendingRequest = false;
   faEnvelope = faEnvelope;
+  isBlockedTab = false;
 
   constructor(
     private communityService: CommunitiesService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private toastrService: NbToastrService,
   ) {}
+
+  ngOnInit() {
+    this.checkCurrentRoute();
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      this.checkCurrentRoute();
+    });
+  }
+
+  private checkCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.isBlockedTab = currentUrl.includes('/blocked');
+  }
 
   sendSpeakerCSV() {
     this.sendingRequest = true;
