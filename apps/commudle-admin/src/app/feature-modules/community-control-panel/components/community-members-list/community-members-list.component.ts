@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { NbToastrService } from '@commudle/theme';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-community-members-list',
   templateUrl: './community-members-list.component.html',
   styleUrls: ['./community-members-list.component.scss'],
 })
-export class CommunityMembersListComponent implements OnInit {
+export class CommunityMembersListComponent implements OnInit, OnDestroy {
   sendingRequest = false;
   faEnvelope = faEnvelope;
   isBlockedTab = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private communityService: CommunitiesService,
@@ -24,9 +26,11 @@ export class CommunityMembersListComponent implements OnInit {
 
   ngOnInit() {
     this.checkCurrentRoute();
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      this.checkCurrentRoute();
-    });
+    this.subscriptions.push(
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+        this.checkCurrentRoute();
+      }),
+    );
   }
 
   private checkCurrentRoute() {
@@ -44,5 +48,9 @@ export class CommunityMembersListComponent implements OnInit {
           this.sendingRequest = false;
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
