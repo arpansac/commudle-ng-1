@@ -2,15 +2,10 @@
   <div class="header-section">
     <div class="custom-tabset">
       <div class="tab-list">
-        <a
-          [routerLink]="['./']"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="tab-button"
-        >
+        <a [routerLink]="['./']" [class.active]="!isBlockedTab" class="tab-button">
           <span class="title">All Members</span>
         </a>
-        <a [routerLink]="['./blocked']" routerLinkActive="active" class="tab-button">
+        <a [routerLink]="['./blocked']" [class.active]="isBlockedTab" class="tab-button">
           <span class="title">Blocked Members</span>
         </a>
       </div>
