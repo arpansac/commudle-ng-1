@@ -136,14 +136,19 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
       .subscribe(({ item: menuItem }) => {
         switch (menuItem.title) {
           case 'Public Page': {
-            this.router.navigate(['/communities', this.parentId, 'hackathons', this.activeContextMenuHackathon.slug]);
+            this.router.navigate([
+              '/communities',
+              this.activeContextMenuHackathon.community.slug,
+              'hackathons',
+              this.activeContextMenuHackathon.slug,
+            ]);
             break;
           }
           case 'Stats': {
             this.router.navigate([
               '/admin',
               'communities',
-              this.parentId,
+              this.activeContextMenuHackathon.community.slug,
               'hackathon-dashboard',
               this.activeContextMenuHackathon.slug,
               'stats',
