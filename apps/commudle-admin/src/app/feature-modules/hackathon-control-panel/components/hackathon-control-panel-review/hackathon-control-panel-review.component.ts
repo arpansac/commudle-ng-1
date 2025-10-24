@@ -80,6 +80,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
   private originalStatusValue: EHackathonRegistrationStatus;
+  private originalRoundValue: number;
 
   tinyMCE = {
     height: 200,
@@ -426,6 +427,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.originalStatusValue = value;
   }
 
+  storeOriginalRoundValue(value: number) {
+    this.originalRoundValue = value;
+  }
+
   trackByTeamId(index: number, item: any): any {
     return item.team.id + '-' + item.team.registration_status;
   }
@@ -470,13 +475,19 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number, previousRoundId?: number) {
+  openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
     const selectedRoundId = event.target.value;
     const selectedRound = this.hackathonRounds.find((round) => round.id == selectedRoundId);
+    // Use the stored original value from mousedown
+    const previousValue = this.originalRoundValue;
 
-    // Revert the visible select back until user confirms
-    event.target.value = previousRoundId;
-    this.userResponses[index].team.round = this.hackathonRounds.find((round) => round.id == previousRoundId);
+    // Revert the model first
+    if (this.selectedTeamDetails && previousValue) {
+      this.selectedTeamDetails.round = this.hackathonRounds.find((round) => round.id == previousValue);
+    }
+
+    // Then revert the visible select
+    event.target.value = previousValue?.toString() || '';
 
     this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
       context: {
@@ -484,8 +495,29 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         roundName: selectedRound?.name,
         teamId: teamId,
         index: index,
-        previousValue: previousRoundId,
+        previousValue: previousValue,
+        newValue: selectedRoundId,
       },
+    });
+  }
+
+  confirmRoundChange(teamId: number, index: number, newRoundId: number) {
+    this.hackathonService.changeTeamRound(teamId, newRoundId).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      if (index >= 0) {
+        this.userResponses[index].team.round = data.round;
+      }
+      this.selectedTeamDetails.round = data.round;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`round-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.round.id.toString();
+      }
+
+      this.closeConfirmationDialogBox();
     });
   }
 }

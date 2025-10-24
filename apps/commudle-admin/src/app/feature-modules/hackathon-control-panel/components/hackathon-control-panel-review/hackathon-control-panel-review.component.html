@@ -264,6 +264,7 @@
         </table>
       </ng-template>
 
+      <!-- NO RESPONSE MESSAGE -->
       <ng-template #noUserResponse>
         <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
         <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
@@ -409,24 +410,8 @@
         <label>Round:</label>
         <div *ngIf="selectedTeamDetails.round">
           <select
-            (change)="
-              openRoundConfirmationDialogBox(
-                roundChangedConfirmationDialogBox,
-                $event,
-                selectedTeamDetails.id,
-                data.index,
-                selectedTeamDetails.round.id
-              )
-            "
-            [(ngModel)]="selectedTeamDetails.round.id"
-          >
-            <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
-              {{ hackathonRound.name }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="!selectedTeamDetails.round">
-          <select
+            [id]="'round-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalRoundValue(selectedTeamDetails.round.id)"
             (change)="
               openRoundConfirmationDialogBox(
                 roundChangedConfirmationDialogBox,
@@ -435,8 +420,8 @@
                 data.index
               )
             "
+            [(ngModel)]="selectedTeamDetails.round.id"
           >
-            <option selected disabled [value]="null">Select a round</option>
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
               {{ hackathonRound.name }}
             </option>
@@ -800,7 +785,7 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="changeRoundOption(data.event, data.teamId, data.index); ref.close()">
+      <button nbButton status="primary" (click)="confirmRoundChange(data.teamId, data.index, data.newValue)">
         Confirm
       </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>
