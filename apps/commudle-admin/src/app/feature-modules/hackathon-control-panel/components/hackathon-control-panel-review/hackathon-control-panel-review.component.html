@@ -212,9 +212,8 @@
                 class="select-wrapper"
               >
                 <select
-                  (focus)="onSelectFocus(userResponse.team.registration_status)"
                   (change)="
-                    openConfirmationDialogBox(
+                    openApplicationConfirmationDialogBox(
                       confirmApplicationStatusChanged,
                       $event,
                       userResponse.team.id,
@@ -759,11 +758,7 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button
-        nbButton
-        status="primary"
-        (click)="confirmApplicationStatusChange(data.newValue, data.teamId, data.index); ref.close()"
-      >
+      <button nbButton status="primary" (click)="optionChanged(data.newValue, data.teamId, data.index); ref.close()">
         Confirm
       </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>

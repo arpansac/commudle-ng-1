@@ -203,7 +203,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.closeConfirmationDialogBox();
       this.userResponses[index].team = data;
       this.userResponses[index].team.registration_status = data.registration_status;
-      this.previousStatus = data.registration_status;
       this.selectedTeamDetails = data;
     });
   }
@@ -420,24 +419,22 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
   }
 
-  previousStatus: EHackathonRegistrationStatus | null = null;
-
-  onSelectFocus(previousValue: EHackathonRegistrationStatus) {
-    // Store the old value before change
-    this.previousStatus = previousValue;
-  }
-
-  openConfirmationDialogBox(
+  openApplicationConfirmationDialogBox(
     templateRef,
     event,
     teamId: number,
     index: number,
     previousValue?: EHackathonRegistrationStatus,
   ) {
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ previousValue:',
+      previousValue,
+    );
     const newValue = event.target.value;
+    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ newValue:', newValue);
     // Revert the visible select back until user confirms
-    event.target.value = this.previousStatus;
-    this.userResponses[index].team.registration_status = this.previousStatus;
+    event.target.value = previousValue;
+    this.userResponses[index].team.registration_status = previousValue;
 
     this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
       context: {
@@ -448,11 +445,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         newValue: newValue,
       },
     });
-  }
-
-  confirmApplicationStatusChange(newStatus: string, teamId: number, index: number) {
-    this.userResponses[index].team.registration_status = newStatus as EHackathonRegistrationStatus;
-    this.optionChanged(newStatus, teamId, index);
   }
 
   closeConfirmationDialogBox() {
