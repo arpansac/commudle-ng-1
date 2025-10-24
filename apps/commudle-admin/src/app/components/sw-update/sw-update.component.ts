@@ -50,10 +50,8 @@ export class SwUpdateComponent implements OnInit {
             console.log(`Current app version: ${evt.currentVersion.hash}`);
             console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
             // Prompt the user to update
-            if (confirm('New version available. Load New Version?')) {
-              this.toastLogService.warningDialog('Updating App...!');
-              this.document.location.reload();
-            }
+            this.toastLogService.notificationDialog(`New version available. Loading new version...`);
+            this.document.location.reload();
             break;
           case 'NO_NEW_VERSION_DETECTED':
             console.log('No new version detected. App is up to date.');
