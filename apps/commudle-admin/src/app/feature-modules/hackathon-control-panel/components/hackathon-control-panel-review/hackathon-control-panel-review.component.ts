@@ -44,12 +44,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   hackathonRounds: IRound[];
   hackathonTracks: IHackathonTrack[];
   selectedUserDetails: IHackathonUserResponse;
-  faXmark = faXmark;
-  faPlus = faPlus;
-  faCheck = faCheck;
-  faUpRightFromSquare = faUpRightFromSquare;
-  faEnvelope = faEnvelope;
-  notesForm;
+  icons = {
+    faXmark,
+    faPlus,
+    faCheck,
+    faUpRightFromSquare,
+    faEnvelope,
+  };
+  notesForm: FormGroup;
   notes: INote[];
   dialogRef: NbDialogRef<unknown>;
   EHackathonStatus = EHackathonStatus;
@@ -426,7 +428,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     index: number,
     previousValue?: EHackathonRegistrationStatus,
   ) {
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ openApplicationConfirmationDialogBox ~ previousValue:',
+      previousValue,
+    );
     const newValue = event.target.value;
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ openApplicationConfirmationDialogBox ~ newValue:',
+      newValue,
+    );
     // Revert the visible select back until user confirms
     event.target.value = previousValue;
     this.userResponses[index].team.registration_status = previousValue;

@@ -4,11 +4,11 @@
       Applications & Projects
       <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
       <a
-        *ngIf="parent && parent.id && hackathon && hackathon.hackathon_response_group"
+        *ngIf="parent && parent.slug && hackathon && hackathon.hackathon_response_group"
         target="_blank"
         [routerLink]="[
           '/communities',
-          parent.id,
+          parent.slug,
           'hackathons',
           hackathon.slug,
           'fill-form',
@@ -16,7 +16,7 @@
         ]"
       >
         <button nbButton status="primary" size="tiny">
-          <fa-icon [icon]="faUpRightFromSquare"></fa-icon> &nbsp; Link to register
+          <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon> &nbsp; Link to register
         </button>
       </a>
     </div>
@@ -52,12 +52,12 @@
         class="com-w-max"
         size="small"
       >
-        <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
+        <fa-icon [icon]="icons.faEnvelope"></fa-icon>&nbsp;CSV
       </button>
 
       <a
         *ngIf="hackathon && userResponses && userResponses.length > 0"
-        [routerLink]="['/admin', 'communities', parent.id, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
+        [routerLink]="['/admin', 'communities', parent.slug, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
       >
         <button nbButton status="primary" class="com-w-max" size="small">Select Winner</button>
       </a>
@@ -150,6 +150,7 @@
             (click)="openDialogBox(userResponseDetailsDialogBox, userResponse.team.id, i)"
             class="user-response"
           >
+            <!-- TEAM NAME -->
             <td class="name">
               <div class="team-details">
                 <div class="team-name">
@@ -167,17 +168,21 @@
                 <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
                   Link to project:
                   <a [routerLink]="['/builds', userResponse.team.community_build.slug]" target="_blank">
-                    <fa-icon [icon]="faUpRightFromSquare"></fa-icon> {{ userResponse.team.community_build.name }}</a
+                    <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
+                    {{ userResponse.team.community_build.name }}</a
                   >
                 </div>
               </div>
             </td>
+
+            <!-- ROUND NAME -->
             <td>
               <div *ngIf="userResponse.team.round" class="round-name">
                 {{ userResponse.team.round?.name }}
               </div>
             </td>
 
+            <!-- UPDATED -->
             <td class="updates">
               <div *ngIf="userResponse.team.entity_updates.length > 0">
                 <span
@@ -200,12 +205,16 @@
                 </span>
               </div>
             </td>
+
+            <!-- NOTES -->
             <td class="notes">
               <div *ngIf="userResponse.team.notes.length > 0">
                 <span class="details">{{ userResponse.team.notes[userResponse.team.notes.length - 1].text }}</span>
                 <span class="notes-count"> {{ userResponse.team.notes.length }} Notes </span>
               </div>
             </td>
+
+            <!-- APPLICATION STATUS CHANGE ACTION -->
             <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
               <div
                 [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
@@ -239,6 +248,8 @@
                 </select>
               </div>
             </td>
+
+            <!-- EMAIL ACTION -->
             <td class="actions">
               <button
                 nbButton
@@ -258,6 +269,7 @@
       </ng-template>
     </div>
 
+    <!-- PAGINATION -->
     <div *ngIf="total > 0" class="pagination">
       <app-pagination
         [count]="count"
@@ -441,7 +453,7 @@
                   <div>
                     <span>{{ note.text }} &nbsp;</span>
                     <span class="delete-note clickable" (click)="destroyNote(note.id, i, selectedUserResponse)">
-                      <fa-icon [icon]="faXmark"></fa-icon>
+                      <fa-icon [icon]="icons.faXmark"></fa-icon>
                     </span>
                   </div>
                   <small>
@@ -465,11 +477,11 @@
                   status="primary"
                   [disabled]="notesList.invalid || notesList.length === 0"
                 >
-                  <fa-icon class="clickable" [icon]="faCheck"></fa-icon>
+                  <fa-icon class="clickable" [icon]="icons.faCheck"></fa-icon>
                   Save
                 </button>
                 <button (click)="removeNote(i)" status="danger" nbButton size="tiny">
-                  <fa-icon class="clickable" [icon]="faXmark"></fa-icon>
+                  <fa-icon class="clickable" [icon]="icons.faXmark"></fa-icon>
                   Remove
                 </button>
               </div>
@@ -486,7 +498,7 @@
           </div>
           <div class="com-my-3">
             <button (click)="addNote()" class="add-button" nbButton status="warning" size="small">
-              <fa-icon class="clickable" [icon]="faPlus"></fa-icon>
+              <fa-icon class="clickable" [icon]="icons.faPlus"></fa-icon>
               Add Note
             </button>
             <br />
@@ -562,7 +574,7 @@
         <div *ngIf="selectedUserDetails" class="selected-user-details">
           <a [routerLink]="['/users', selectedUserDetails.username]" target="_blank" class="com-w-max com-p-2">
             Go To Profile
-            <fa-icon [icon]="faUpRightFromSquare"></fa-icon>
+            <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
           </a>
           <!-- About -->
           <div *ngIf="selectedUserDetails.about_me">
