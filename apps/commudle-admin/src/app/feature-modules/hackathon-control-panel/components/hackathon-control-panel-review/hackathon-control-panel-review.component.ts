@@ -250,7 +250,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   changeRoundOption(event, teamId, index) {
-    this.hackathonService.changeTeamRound(teamId, event.target.value).subscribe((data) => {
+    this.hackathonService.changeTeamRound(teamId, event).subscribe((data) => {
       this.toastrService.successDialog('Details has been updated successfully');
       this.userResponses[index].team.round = data.round;
     });
@@ -434,12 +434,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     index: number,
     previousValue?: EHackathonRegistrationStatus,
   ) {
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ previousValue:',
-      previousValue,
-    );
     const newValue = event.target.value;
-    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ newValue:', newValue);
     // Revert the visible select back until user confirms
     event.target.value = this.previousStatus;
     this.userResponses[index].team.registration_status = this.previousStatus;
@@ -465,25 +460,20 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number, previousRoundId?: number) {
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ openRoundConfirmationDialogBox ~ previousRoundId:',
-      previousRoundId,
-    );
-    const newValue = event.target.value;
-    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openRoundConfirmationDialogBox ~ newValue:', newValue);
-    const newRoundName = this.hackathonRounds.find((round) => round.id == newValue)?.name;
+    const selectedRoundId = event.target.value;
+    const selectedRound = this.hackathonRounds.find((round) => round.id == selectedRoundId);
 
     // Revert the visible select back until user confirms
     event.target.value = previousRoundId;
+    this.userResponses[index].team.round = this.hackathonRounds.find((round) => round.id == previousRoundId);
 
     this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
       context: {
-        event: newValue,
-        roundName: newRoundName,
+        event: selectedRoundId,
+        roundName: selectedRound?.name,
         teamId: teamId,
         index: index,
         previousValue: previousRoundId,
-        newValue: newValue,
       },
     });
   }

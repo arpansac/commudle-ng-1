@@ -788,7 +788,9 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary">Confirm</button>
+      <button nbButton status="primary" (click)="changeRoundOption(data.event, data.teamId, data.index); ref.close()">
+        Confirm
+      </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
