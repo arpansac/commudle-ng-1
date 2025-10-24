@@ -146,7 +146,7 @@
             <th>Actions</th>
           </tr>
           <tr
-            *ngFor="let userResponse of userResponses; let i = index"
+            *ngFor="let userResponse of userResponses; let i = index; trackBy: trackByTeamId"
             (click)="openDialogBox(userResponseDetailsDialogBox, userResponse.team.id, i)"
             class="user-response"
           >
@@ -221,13 +221,14 @@
                 class="select-wrapper"
               >
                 <select
+                  [id]="'status-select-' + userResponse.team.id"
+                  (mousedown)="storeOriginalValue(userResponse.team.registration_status)"
                   (change)="
                     openApplicationConfirmationDialogBox(
                       confirmApplicationStatusChanged,
                       $event,
                       userResponse.team.id,
-                      i,
-                      userResponse.team.registration_status
+                      i
                     )
                   "
                   [(ngModel)]="userResponse.team.registration_status"
@@ -770,7 +771,11 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="optionChanged(data.newValue, data.teamId, data.index); ref.close()">
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmApplicationStatusChange(data.teamId, data.index, data.newValue)"
+      >
         Confirm
       </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>

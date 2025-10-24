@@ -79,6 +79,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   confirmationDialogReference: NbDialogRef<any>;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
+  private originalStatusValue: EHackathonRegistrationStatus;
 
   tinyMCE = {
     height: 200,
@@ -421,29 +422,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
   }
 
-  openApplicationConfirmationDialogBox(
-    templateRef,
-    event,
-    teamId: number,
-    index: number,
-    previousValue?: EHackathonRegistrationStatus,
-  ) {
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ openApplicationConfirmationDialogBox ~ previousValue:',
-      previousValue,
-    );
+  storeOriginalValue(value: EHackathonRegistrationStatus) {
+    this.originalStatusValue = value;
+  }
+
+  trackByTeamId(index: number, item: any): any {
+    return item.team.id + '-' + item.team.registration_status;
+  }
+
+  openApplicationConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
+    const previousValue = this.originalStatusValue;
     const newValue = event.target.value;
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ openApplicationConfirmationDialogBox ~ newValue:',
-      newValue,
-    );
+
     // Revert the visible select back until user confirms
     event.target.value = previousValue;
     this.userResponses[index].team.registration_status = previousValue;
 
     this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
       context: {
-        event: newValue,
         teamId: teamId,
         index: index,
         previousValue: previousValue,
@@ -454,6 +450,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   closeConfirmationDialogBox() {
     this.confirmationDialogReference.close();
+  }
+
+  confirmApplicationStatusChange(teamId: number, index: number, newValue: EHackathonRegistrationStatus) {
+    this.hackathonService.changeTeamStatus(teamId, newValue).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      this.userResponses[index].team = data;
+      this.selectedTeamDetails = data;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`status-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.registration_status;
+      }
+
+      this.closeConfirmationDialogBox();
+    });
   }
 
   openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number, previousRoundId?: number) {
