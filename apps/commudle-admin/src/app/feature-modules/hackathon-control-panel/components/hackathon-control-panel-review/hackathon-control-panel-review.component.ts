@@ -74,7 +74,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   dialogReference: NbDialogRef<any>;
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
-
+  confirmationDialogReference: NbDialogRef<any>;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
 
@@ -197,11 +197,13 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  optionChanged(event, teamId, index) {
-    const value = event.target ? event.target.value : event;
-    this.hackathonService.changeTeamStatus(teamId, value).subscribe((data) => {
+  optionChanged(event, teamId: number, index: number) {
+    this.hackathonService.changeTeamStatus(teamId, event).subscribe((data) => {
       this.toastrService.successDialog('Details has been updated successfully');
+      this.closeConfirmationDialogBox();
       this.userResponses[index].team = data;
+      this.userResponses[index].team.registration_status = data.registration_status;
+      this.previousStatus = data.registration_status;
       this.selectedTeamDetails = data;
     });
   }
@@ -416,5 +418,73 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   setMeta() {
     this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
     this.seoService.noIndex(true);
+  }
+
+  previousStatus: EHackathonRegistrationStatus | null = null;
+
+  onSelectFocus(previousValue: EHackathonRegistrationStatus) {
+    // Store the old value before change
+    this.previousStatus = previousValue;
+  }
+
+  openConfirmationDialogBox(
+    templateRef,
+    event,
+    teamId: number,
+    index: number,
+    previousValue?: EHackathonRegistrationStatus,
+  ) {
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ previousValue:',
+      previousValue,
+    );
+    const newValue = event.target.value;
+    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ newValue:', newValue);
+    // Revert the visible select back until user confirms
+    event.target.value = this.previousStatus;
+    this.userResponses[index].team.registration_status = this.previousStatus;
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        event: newValue,
+        teamId: teamId,
+        index: index,
+        previousValue: previousValue,
+        newValue: newValue,
+      },
+    });
+  }
+
+  confirmApplicationStatusChange(newStatus: string, teamId: number, index: number) {
+    this.userResponses[index].team.registration_status = newStatus as EHackathonRegistrationStatus;
+    this.optionChanged(newStatus, teamId, index);
+  }
+
+  closeConfirmationDialogBox() {
+    this.confirmationDialogReference.close();
+  }
+
+  openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number, previousRoundId?: number) {
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ openRoundConfirmationDialogBox ~ previousRoundId:',
+      previousRoundId,
+    );
+    const newValue = event.target.value;
+    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openRoundConfirmationDialogBox ~ newValue:', newValue);
+    const newRoundName = this.hackathonRounds.find((round) => round.id == newValue)?.name;
+
+    // Revert the visible select back until user confirms
+    event.target.value = previousRoundId;
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        event: newValue,
+        roundName: newRoundName,
+        teamId: teamId,
+        index: index,
+        previousValue: previousRoundId,
+        newValue: newValue,
+      },
+    });
   }
 }

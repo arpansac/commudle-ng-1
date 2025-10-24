@@ -212,7 +212,16 @@
                 class="select-wrapper"
               >
                 <select
-                  (change)="optionChanged($event, userResponse.team.id, i)"
+                  (focus)="onSelectFocus(userResponse.team.registration_status)"
+                  (change)="
+                    openConfirmationDialogBox(
+                      confirmApplicationStatusChanged,
+                      $event,
+                      userResponse.team.id,
+                      i,
+                      userResponse.team.registration_status
+                    )
+                  "
                   [(ngModel)]="userResponse.team.registration_status"
                   [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
                 >
@@ -388,7 +397,15 @@
         <label>Round:</label>
         <div *ngIf="selectedTeamDetails.round">
           <select
-            (change)="changeRoundOption($event, selectedTeamDetails.id, data.index)"
+            (change)="
+              openRoundConfirmationDialogBox(
+                roundChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index,
+                selectedTeamDetails.round.id
+              )
+            "
             [(ngModel)]="selectedTeamDetails.round.id"
           >
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
@@ -397,7 +414,16 @@
           </select>
         </div>
         <div *ngIf="!selectedTeamDetails.round">
-          <select (change)="changeRoundOption($event, selectedTeamDetails.id, data.index)">
+          <select
+            (change)="
+              openRoundConfirmationDialogBox(
+                roundChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+          >
             <option selected disabled [value]="null">Select a round</option>
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
               {{ hackathonRound.name }}
@@ -711,6 +737,59 @@
         Send
       </button>
       <button nbButton status="danger">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #confirmApplicationStatusChanged let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-application-dialog-box">
+    <nb-card-header class="">
+      <span>Confirm Application Status Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to change this team's status to
+          <strong>{{ data.newValue | titlecase }}</strong
+          >?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmApplicationStatusChange(data.newValue, data.teamId, data.index); ref.close()"
+      >
+        Confirm
+      </button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #roundChangedConfirmationDialogBox let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-round-dialog-box">
+    <nb-card-header>
+      <span>Confirm Status Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to move this team to <strong>{{ data.roundName | titlecase }}</strong
+          >, an email will automatically be sent to them ?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary">Confirm</button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>
