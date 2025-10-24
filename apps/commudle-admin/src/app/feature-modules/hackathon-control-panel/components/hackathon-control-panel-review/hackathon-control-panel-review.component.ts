@@ -426,12 +426,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     index: number,
     previousValue?: EHackathonRegistrationStatus,
   ) {
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ previousValue:',
-      previousValue,
-    );
     const newValue = event.target.value;
-    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ openConfirmationDialogBox ~ newValue:', newValue);
     // Revert the visible select back until user confirms
     event.target.value = previousValue;
     this.userResponses[index].team.registration_status = previousValue;
