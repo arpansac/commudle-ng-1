@@ -306,7 +306,14 @@
             nbButton
             status="primary"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.ACCEPTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.ACCEPTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Accepted
@@ -315,7 +322,14 @@
             nbButton
             status="danger"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.REJECTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.REJECTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Reject
@@ -324,7 +338,14 @@
             nbButton
             status="warning"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.WAITLISTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.WAITLISTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Waitlist

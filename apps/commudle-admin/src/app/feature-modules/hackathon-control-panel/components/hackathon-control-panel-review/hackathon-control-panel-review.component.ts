@@ -437,10 +437,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   openApplicationConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
     const previousValue = this.originalStatusValue;
-    const newValue = event.target.value;
+    const newValue = event?.target ? event.target.value : event;
 
     // Revert the visible select back until user confirms
-    event.target.value = previousValue;
+    if (event?.target) {
+      event.target.value = previousValue;
+    }
     this.userResponses[index].team.registration_status = previousValue;
 
     this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
