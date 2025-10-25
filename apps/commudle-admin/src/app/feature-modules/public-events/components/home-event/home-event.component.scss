@@ -50,6 +50,10 @@
               @apply com-no-underline com-text-base com-ml-2 com-font-semibold com-text-Yankees-Blue;
             }
           }
+
+          nb-action {
+            @apply com-flex-shrink-0;
+          }
         }
       }
     }
@@ -75,7 +79,7 @@
         }
       }
 
-      nb-card {
+      .event-date-time-card {
         @apply com-mb-0 com-mx-0 md:com-ml-4 com-ml-0 md:com-rounded-[10px] com-rounded-none com-flex md:com-sticky md:com-top-32;
         .event-date-time {
           @apply com-p-0;
@@ -125,4 +129,32 @@
 
 .mobile-register-button {
   @apply com-fixed com-bottom-[68px] com-left-0 com-right-0 com-p-4 com-bg-white com-border-t com-border-solid com-border-Bright-Gray com-z-50 com-shadow-md;
+
+  .register-now-button {
+    @apply com-rounded-lg #{!important};
+  }
+}
+
+.registrations-buttons {
+  .event-form-card {
+    @apply com-m-0 com-mt-4 md:com-rounded-[10px] com-rounded-none;
+
+    nb-card-header {
+      @apply com-flex com-items-center com-justify-between com-py-4 md:com-px-6 com-px-4;
+      .event-form-title {
+        @apply com-flex com-m-0 com-items-center;
+        a {
+          @apply md:com-font-semibold com-font-bold com-no-underline com-text-Yankees-Blue;
+        }
+
+        nb-icon {
+          @apply com-mr-1;
+        }
+      }
+    }
+
+    nb-card-body {
+      @apply com-px-6 com-py-4 com-bg-gray-50 com-rounded-10;
+    }
+  }
 }

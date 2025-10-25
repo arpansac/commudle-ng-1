@@ -32,7 +32,16 @@
           ></fa-icon>
           <fa-icon *ngIf="form.already_filled" [icon]="faPencil" class="form-icon"></fa-icon>
           <span class="form-name"> {{ form.name }}</span>
-          <span *ngIf="form.is_paid" class="paid-form">PAID</span>
+          <span *ngIf="form.is_paid" class="form-badge paid-form">PAID</span>
+          <span
+            *ngIf="
+              !form.is_paid &&
+              (form.registration_type.name === ERegistationTypes.ATTENDEE ||
+                form.registration_type.name === ERegistationTypes.SPEAKER)
+            "
+            class="form-badge free-form"
+            >FREE</span
+          >
         </div>
         <div class="register-now-container">
           <span *ngIf="form.is_paid" class="price">{{

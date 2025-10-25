@@ -66,6 +66,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   collaborationCommunitiesSectionRef: ElementRef<HTMLDivElement>;
   @ViewChild('commentsSection', { static: false }) commentsSectionRef: ElementRef<HTMLDivElement>;
   @ViewChild('volunteersSection', { static: false }) volunteersSectionRef: ElementRef<HTMLDivElement>;
+  @ViewChild('eventFormSection', { static: false }) eventFormSectionRef: ElementRef<HTMLDivElement>;
 
   constructor(
     private activatedRoute: ActivatedRoute,

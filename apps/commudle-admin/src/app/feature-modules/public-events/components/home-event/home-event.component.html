@@ -42,6 +42,10 @@
     <nb-card class="home-event-menu">
       <nb-card-body>
         <nb-actions>
+          <nb-action (click)="scroll(eventFormSectionRef)" *ngIf="moment() < moment(event.end_time)" class="clickable">
+            <nb-icon icon="file-text-outline" status="primary"></nb-icon>
+            <span><a [routerLink]="'.'" fragment="event-form">Event Form</a></span>
+          </nb-action>
           <nb-action (click)="scroll(updatesSectionRef)" *ngIf="hasUpdates" class="clickable">
             <nb-icon icon="star-outline" status="warning"></nb-icon>
             <span><a [routerLink]="'.'" fragment="updates">Updates</a></span>
@@ -90,14 +94,25 @@
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
         <div *appBreakpoints="'>lg'" class="registrations-buttons">
-          <div *ngIf="moment() < moment(event.end_time)" class="registration-form">
-            <app-highlighted-links
-              (hasOpenForms)="hasOpenForms = $event"
-              *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
-              [community]="community"
-              [event]="event"
-            ></app-highlighted-links>
-          </div>
+          <nb-card class="event-form-card">
+            <nb-card-header>
+              <h6 class="event-form-title">
+                <a [routerLink]="'.'" fragment="event-form"
+                  ><nb-icon icon="file-text-outline" status="primary"></nb-icon>Event Form</a
+                >
+              </h6>
+            </nb-card-header>
+            <nb-card-body>
+              <div #eventFormSection id="event-form" class="registration-form">
+                <app-highlighted-links
+                  (hasOpenForms)="hasOpenForms = $event"
+                  *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+                  [community]="community"
+                  [event]="event"
+                ></app-highlighted-links>
+              </div>
+            </nb-card-body>
+          </nb-card>
         </div>
         <app-live-sessions [community]="community" [event]="event"></app-live-sessions>
         <div #updatesSection id="updates">
@@ -165,7 +180,7 @@
             <nb-icon icon="edit-outline"></nb-icon>
           </a>
         </div>
-        <nb-card *ngIf="event.start_time && event.end_time">
+        <nb-card *ngIf="event.start_time && event.end_time" class="event-date-time-card">
           <nb-card-body class="event-date-time-container">
             <div
               class="event-date-time"
@@ -245,7 +260,15 @@
 
   <div *appBreakpoints="'<=lg'">
     <div *ngIf="hasOpenForms && moment() < moment(event.end_time)" class="mobile-register-button">
-      <button nbButton status="info" size="large" shape="semi-round" fullWidth (click)="openBottomSheet()">
+      <button
+        nbButton
+        status="info"
+        size="large"
+        shape="semi-round"
+        fullWidth
+        (click)="openBottomSheet()"
+        class="register-now-button"
+      >
         Register Now
       </button>
     </div>
