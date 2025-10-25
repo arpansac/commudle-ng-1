@@ -168,9 +168,24 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-  // TODO: handle case
   checkHackathonAdminRoles() {
-    // Handle hackathon roles for channels
+    const hackathon = this.parent as IHackathon;
+
+    if (hackathon.community) {
+      this.subscriptions.push(
+        this.communitiesService.userManagedCommunities$.subscribe((data: ICommunity[]) => {
+          this.isCommunityOrganizer = data.some((community) => community.slug === hackathon.community.slug);
+        }),
+      );
+    }
+
+    if (hackathon.community_group) {
+      this.subscriptions.push(
+        this.communityGroupsService.userManagedCommunityGroups$.subscribe((data: ICommunityGroup[]) => {
+          this.isCommunityOrganizer = data.some((group) => group.slug === hackathon.community_group.slug);
+        }),
+      );
+    }
   }
 
   checkCommunityGroupOrganizer() {

@@ -4,13 +4,13 @@ import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feat
 import { DiscussionsService } from 'apps/commudle-admin/src/app/services/discussions.service';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, finalize, catchError, of } from 'rxjs';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
+import { CommunityChannelsService } from '@commudle/shared-services';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'app-community-channel',
+  selector: 'commudle-community-channel',
   templateUrl: './community-channel.component.html',
   styleUrls: ['./community-channel.component.scss'],
 })
@@ -18,73 +18,85 @@ export class CommunityChannelComponent implements OnInit, OnDestroy, OnChanges {
   @Input() selectedChannelId: number;
   @Input() shareMessageUrl: string;
   selectedChannel: ICommunityChannel;
-  subscriptions: Subscription[] = [];
   discussion: IDiscussion;
-  initialized = false;
-  notFound = false;
   channelRoles = {};
   showMembersList = false;
   isLoading = true;
+  notFound = false;
 
   faUsers = faUsers;
-  timeout: any;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private communityChannelManagerService: CommunityChannelManagerService,
     private discussionsService: DiscussionsService,
     private nbDialogService: NbDialogService,
+    private channelService: CommunityChannelsService,
   ) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.communityChannelManagerService.channelsByGroups$.subscribe((data) => {
-        if (data && !this.initialized) {
-          this.initialized = true;
-        } else if (this.initialized && this.selectedChannel) {
-          this.communityChannelManagerService.findChannel(this.selectedChannel.id), this.getDiscussion();
-        }
-      }),
-    );
-
-    this.subscriptions.push(
-      this.communityChannelManagerService.allChannelRoles$.subscribe((data) => {
-        this.channelRoles = data;
-      }),
-    );
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-    this.initialize();
-    this.communityChannelManagerService.selectedChannel$.subscribe((data) => {
-      this.selectedChannel = data;
+    this.communityChannelManagerService.allChannelRoles$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      this.channelRoles = data;
     });
-  }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-  }
-
-  initialize() {
-    const selectedCh = this.communityChannelManagerService.findChannel(this.selectedChannelId);
-    if (selectedCh) {
-      this.notFound = false;
-      this.communityChannelManagerService.setChannel(selectedCh);
-      this.getDiscussion();
-    } else {
-      this.notFound = true;
+    if (this.selectedChannelId) {
+      this.loadChannel();
     }
   }
 
-  getDiscussion() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedChannelId']) {
+      this.selectedChannelId = Number(changes['selectedChannelId'].currentValue);
+      this.loadChannel();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadChannel() {
+    if (!this.selectedChannelId) {
+      this.notFound = true;
+      this.isLoading = false;
+      return;
+    }
+
     this.isLoading = true;
-    this.subscriptions.push(
-      this.discussionsService.pGetOrCreateForCommunityChannel(this.selectedChannelId).subscribe((data) => {
-        this.discussion = data;
+    this.notFound = false;
+
+    this.channelService.showChannelForm(this.selectedChannelId).subscribe((selectedChannel) => {
+      if (selectedChannel) {
+        this.selectedChannel = selectedChannel;
+        this.communityChannelManagerService.setChannel(selectedChannel);
+        this.loadDiscussion();
+      } else {
+        this.notFound = true;
         this.isLoading = false;
-        this.communityChannelManagerService.setCommunityListview(false);
-      }),
-    );
+      }
+    });
+  }
+
+  private loadDiscussion() {
+    this.discussionsService
+      .pGetOrCreateForCommunityChannel(this.selectedChannelId)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(() => {
+          this.notFound = true;
+          return of(null);
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.discussion = data;
+          this.communityChannelManagerService.setCommunityListview(false);
+        }
+      });
   }
 
   toggleMembersList() {
