@@ -427,6 +427,25 @@
             </option>
           </select>
         </div>
+        <div *ngIf="!selectedTeamDetails.round">
+          <select
+            [id]="'round-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalRoundValue(selectedTeamDetails?.round?.id || null)"
+            (change)="
+              openRoundConfirmationDialogBox(
+                roundChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+          >
+            <option selected disabled [value]="null">Select a round</option>
+            <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
+              {{ hackathonRound.name }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div [formGroup]="notesForm" class="notes-form">

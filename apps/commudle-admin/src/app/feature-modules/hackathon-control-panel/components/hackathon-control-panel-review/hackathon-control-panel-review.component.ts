@@ -454,7 +454,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   closeConfirmationDialogBox() {
-    this.confirmationDialogReference.close();
+    if (this.confirmationDialogReference) {
+      this.confirmationDialogReference.close();
+    }
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   confirmApplicationStatusChange(teamId: number, index: number, newValue: EHackathonRegistrationStatus) {
