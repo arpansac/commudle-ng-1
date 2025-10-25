@@ -3,32 +3,29 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ColumnMode, SortType } from '@commudle/ngx-datatable';
-import { NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
-import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
-import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
-import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
-import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
-import { RegistrationStatusesService } from 'apps/commudle-admin/src/app/services/registration-statuses.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IDataForm } from 'apps/shared-models/data_form.model';
-import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
-import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
-import { IEvent } from 'apps/shared-models/event.model';
-import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
-import { IQuestion } from 'apps/shared-models/question.model';
-import { IRegistrationStatus } from 'apps/shared-models/registration_status.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { faXmark, faFilter, faPieChart, faRefresh, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { AppUsersService, ToastrService } from '@commudle/shared-services';
+import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
+import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
+import { IRegistrationStatus } from 'apps/shared-models/registration_status.model';
+import { IDataForm } from 'apps/shared-models/data_form.model';
+import { IQuestion } from 'apps/shared-models/question.model';
+import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
 import { EQuestionTypes } from 'apps/shared-models/enums/question_types.enum';
 import { RegistrationTypeNames } from 'apps/shared-models/registration_type.model';
-import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
 import { IEventLocation } from 'apps/shared-models/event-location.model';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { RegistrationStatusesService } from 'apps/commudle-admin/src/app/services/registration-statuses.service';
+import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
+import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
+import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
+import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
+import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 
 @Component({
-  selector: 'app-event-form-responses',
+  selector: 'commudle-event-form-responses',
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],
 })
@@ -39,7 +36,7 @@ export class EventFormResponsesComponent implements OnInit {
 
   event: IEvent;
   community: ICommunity;
-  eventDataFormEntityGroupId;
+  eventDataFormEntityGroupId: number;
   eventDataFormEntityGroup: IEventDataFormEntityGroup;
   registrationStatuses: IRegistrationStatus[] = [];
   dataForm: IDataForm;
@@ -58,7 +55,7 @@ export class EventFormResponsesComponent implements OnInit {
   totalEntries: number;
   count = 10;
   filterValue = '';
-  registrationStatusId = 0;
+  selectedStatusIds: number[] = [];
 
   searchForm;
 
@@ -69,7 +66,7 @@ export class EventFormResponsesComponent implements OnInit {
   fromRegistrationStatus: string;
   toRegistrationStatus: string;
   selectedRegistrationStatus = 0;
-  gender = '';
+  selectedGenders: string[] = [];
   eventLocationTracks: IEventLocationTrack[] = [];
   selectedEventLocationTrackId = 0;
   icons = {
@@ -85,9 +82,9 @@ export class EventFormResponsesComponent implements OnInit {
   EQuestionTypes = EQuestionTypes;
   RegistrationTypeNames = RegistrationTypeNames;
   eventLocations: IEventLocation[];
-  dialogRef: any;
+  dialogRef: NbDialogRef<unknown>;
   userEngagementFilter: FormGroup;
-  community_engagement_filters: Record<string, any> = {};
+  community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
   //TODO past event stats
   constructor(
@@ -98,7 +95,7 @@ export class EventFormResponsesComponent implements OnInit {
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private windowService: NbWindowService,
     private fb: FormBuilder,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private appUsersService: AppUsersService,
     private eventLocationsService: EventLocationsService,
     private dialogService: NbDialogService,
@@ -205,10 +202,10 @@ export class EventFormResponsesComponent implements OnInit {
           return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
             this.eventDataFormEntityGroupId,
             this.searchForm.get('name').value.toLowerCase(),
-            this.registrationStatusId,
+            this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
             this.page,
             this.count,
-            this.gender,
+            this.selectedGenders.length > 0 ? this.selectedGenders : [''],
             this.selectedEventLocationTrackId,
             this.getFormData(),
             Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -227,21 +224,25 @@ export class EventFormResponsesComponent implements OnInit {
     for (const question of this.questions) {
       if (question.editMode === true) question.editMode = false;
     }
-    this.gender = '';
-    this.registrationStatusId = 0;
+    this.selectedGenders = [];
+    this.selectedStatusIds = [];
     this.selectedEventLocationTrackId = 0;
     this.community_engagement_filters = {};
   }
 
   registrationStatusFilter(event) {
     this.page = 1;
-    this.registrationStatusId = event.target.value;
+    this.selectedStatusIds = Array.isArray(event.target.value)
+      ? event.target.value
+      : [event.target.value].filter((v) => v !== 0);
     // this.getResponses();
   }
 
   genderFilter(event) {
     this.page = 1;
-    this.gender = event ? event.target.value : '';
+    this.selectedGenders = Array.isArray(event.target.value)
+      ? event.target.value
+      : [event.target.value].filter((v) => v !== '');
     // this.getResponses();
   }
 
@@ -275,10 +276,10 @@ export class EventFormResponsesComponent implements OnInit {
         .getEventDataFormResponses(
           this.eventDataFormEntityGroupId,
           this.searchForm.get('name').value.toLowerCase(),
-          this.registrationStatusId,
+          this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
           this.page,
           this.count,
-          this.gender,
+          this.selectedGenders.length > 0 ? this.selectedGenders : [''],
           this.selectedEventLocationTrackId,
           this.getFormData(),
           Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -300,10 +301,10 @@ export class EventFormResponsesComponent implements OnInit {
       .getEventDataFormResponses(
         this.eventDataFormEntityGroupId,
         this.searchForm.get('name').value?.toLowerCase() || '',
-        this.registrationStatusId,
+        this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
         this.page,
         this.count,
-        this.gender,
+        this.selectedGenders.length > 0 ? this.selectedGenders : [''],
         this.selectedEventLocationTrackId,
         this.getFormData(),
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -431,10 +432,10 @@ export class EventFormResponsesComponent implements OnInit {
             return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
               this.eventDataFormEntityGroupId,
               this.searchForm.get('name').value.toLowerCase(),
-              this.registrationStatusId,
+              this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
               this.page,
               this.count,
-              this.gender,
+              this.selectedGenders.length > 0 ? this.selectedGenders : [''],
               this.selectedEventLocationTrackId,
               this.getFormData(),
               Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -670,12 +671,22 @@ export class EventFormResponsesComponent implements OnInit {
 
   onStatusChange(event: Event, statusId: number) {
     const checked = (event.target as HTMLInputElement).checked;
-    this.registrationStatusFilter({ target: { value: checked ? statusId : 0 } });
+    if (checked) {
+      this.selectedStatusIds.push(statusId);
+    } else {
+      this.selectedStatusIds = this.selectedStatusIds.filter((id) => id !== statusId);
+    }
+    this.registrationStatusFilter({ target: { value: this.selectedStatusIds } });
   }
 
   onGenderChange(event: Event, genderValue: string) {
     const checked = (event.target as HTMLInputElement).checked;
-    this.genderFilter({ target: { value: checked ? genderValue : '' } });
+    if (checked) {
+      this.selectedGenders.push(genderValue);
+    } else {
+      this.selectedGenders = this.selectedGenders.filter((g) => g !== genderValue);
+    }
+    this.genderFilter({ target: { value: this.selectedGenders } });
   }
 
   applyFilter() {

@@ -194,8 +194,8 @@
                     <fa-icon [icon]="icons.faPieChart"></fa-icon>
                   </div>
                 </div>
-                @if (forms.length > 0 || gender !== '' || searchForm.get('name').value !== '' || registrationStatusId
-                !== 0 || selectedEventLocationTrackId !== 0) {
+                @if (forms.length > 0 || selectedGenders.length > 0 || searchForm.get('name').value !== '' ||
+                selectedStatusIds.length !== 0 || selectedEventLocationTrackId !== 0) {
                 <div>
                   <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
                 </div>
@@ -555,15 +555,14 @@
 </ng-template>
 
 <ng-template #templateRef let-data>
+  <!-- TODO: fix it  -->
   <div class="com-max-h-[384px] com-w-80 com-overflow-scroll">
     <commudle-event-form-responses-graph
       [forms]="forms"
       [eventDataFormEntityGroupId]="eventDataFormEntityGroupId"
       [filterValue]="filterValue"
-      [registrationStatusId]="registrationStatusId"
       [page]="page"
       [count]="count"
-      [gender]="gender"
       [selectedEventLocationTrackId]="selectedEventLocationTrackId"
       [question]="data.question"
       [showGenderGraphOnly]="data.showGenderGraph"
@@ -917,18 +916,17 @@
 <ng-template #filterPopover>
   <div class="filter-popover">
     <div class="filter-header">
-      <fa-icon [icon]="icons.faFilter"></fa-icon>
       <span>Filter by</span>
     </div>
 
     <div class="filter-section">
-      <h6>Status</h6>
+      <span class="filter-section-header">Status</span>
       @for (rs of registrationStatuses; track rs.id) {
       <div class="filter-option">
         <input
           type="checkbox"
           [id]="'status-' + rs.id"
-          [checked]="registrationStatusId === rs.id"
+          [checked]="selectedStatusIds.includes(rs.id)"
           (change)="onStatusChange($event, rs.id)"
         />
         <label [for]="'status-' + rs.id">
@@ -940,12 +938,12 @@
     </div>
 
     <div class="filter-section">
-      <h6>Gender</h6>
+      <span class="filter-section-header">Gender</span>
       <div class="filter-option">
         <input
           type="checkbox"
           id="gender-male"
-          [checked]="gender === 'male'"
+          [checked]="selectedGenders.includes('male')"
           (change)="onGenderChange($event, 'male')"
         />
         <label for="gender-male">
@@ -956,7 +954,7 @@
         <input
           type="checkbox"
           id="gender-female"
-          [checked]="gender === 'female'"
+          [checked]="selectedGenders.includes('female')"
           (change)="onGenderChange($event, 'female')"
         />
         <label for="gender-female">
@@ -967,7 +965,7 @@
         <input
           type="checkbox"
           id="gender-other"
-          [checked]="gender === 'prefer_not_to_answer'"
+          [checked]="selectedGenders.includes('prefer_not_to_answer')"
           (change)="onGenderChange($event, 'prefer_not_to_answer')"
         />
         <label for="gender-other">
@@ -977,7 +975,7 @@
     </div>
 
     <div class="filter-actions">
-      <button nbButton size="medium" status="primary" (click)="applyFilter()">Apply</button>
+      <button nbButton size="medium" status="primary" (click)="applyFilter()" class="apply-button">Apply</button>
       <button nbButton size="medium" ghost (click)="closePopover()">Cancel</button>
     </div>
   </div>

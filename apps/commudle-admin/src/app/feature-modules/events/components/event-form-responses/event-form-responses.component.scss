@@ -238,44 +238,43 @@ fa-icon {
   @apply com-p-4 com-w-80 com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg;
 
   .filter-header {
-    @apply com-flex com-items-center com-gap-2 com-mb-4 com-pb-3 com-border-b com-border-gray-200;
-
-    fa-icon {
-      @apply com-text-gray-600;
-    }
+    @apply com-flex com-items-center com-gap-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-3 com-mb-3;
 
     span {
-      @apply com-text-base com-font-medium com-text-gray-800;
+      @apply com-text-sm com-text-Yankees-Blue;
     }
   }
 
   .filter-section {
     @apply com-mb-6;
 
-    h6 {
-      @apply com-mb-3 com-text-sm com-font-medium com-text-gray-600 com-uppercase;
+    .filter-section-header {
+      @apply com-text-gray-500 com-pt-3 com-font-medium com-text-xs com-uppercase com-mt-3 com-mb-2;
     }
 
     .filter-option {
-      @apply com-flex com-items-center com-mb-2;
+      @apply com-flex com-gap-0 com-mb-2;
 
       input[type='checkbox'] {
-        @apply com-w-5 com-h-5 com-mr-3 com-rounded com-border-2 com-border-gray-300;
+        @apply com-w-5 com-h-5 com-mr-1 com-rounded-lg com-border-2 com-border-gray-300;
 
         &:checked {
-          @apply com-bg-blue-600 com-border-blue-600;
+          background-color: #222b45;
+          border-color: #222b45;
         }
+
+        accent-color: #222b45;
       }
 
       label {
-        @apply com-flex com-items-center com-justify-between com-w-full com-cursor-pointer com-text-sm;
+        @apply com-flex com-items-center com-gap-1.5 com-w-full com-cursor-pointer com-text-sm;
 
         .option-name {
           @apply com-text-gray-800;
         }
 
         .option-count {
-          @apply com-text-gray-500 com-ml-auto;
+          @apply com-text-gray-500;
         }
       }
     }
@@ -286,6 +285,9 @@ fa-icon {
 
     button {
       @apply com-flex-1;
+    }
+    .apply-button {
+      @apply com-bg-Yankees-Blue com-border-Yankees-Blue;
     }
   }
 }
