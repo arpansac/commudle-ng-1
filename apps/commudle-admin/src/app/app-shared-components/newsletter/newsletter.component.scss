@@ -57,9 +57,10 @@
             @apply com-flex com-flex-col com-gap-2 com-whitespace-nowrap;
 
             .stat-item {
-              @apply com-flex com-items-center com-gap-1 com-text-sm com-text-Yankees-Blue;
-              fa-icon {
-                @apply com-text-base;
+              @apply com-flex com-items-center com-gap-1 com-text-xs com-text-Yankees-Blue;
+
+              .stat-item-icon {
+                @apply com-flex com-items-center com-justify-center com-w-4 com-h-4;
               }
             }
           }

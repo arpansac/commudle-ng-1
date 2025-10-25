@@ -44,19 +44,27 @@
               <td>
                 <div class="newsletter-stats">
                   <div class="stat-item">
-                    <fa-icon [icon]="icons.faListCheck"></fa-icon>
+                    <div class="stat-item-icon">
+                      <fa-icon [icon]="icons.faListCheck"></fa-icon>
+                    </div>
                     <span>Total Sent : {{ newsletter.stats?.total }}</span>
                   </div>
                   <div class="stat-item">
-                    <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
+                    <div class="stat-item-icon">
+                      <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
+                    </div>
                     <span>Delivered : {{ newsletter.stats?.delivered }}</span>
                   </div>
                   <div class="stat-item">
-                    <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
+                    <div class="stat-item-icon">
+                      <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
+                    </div>
                     <span>Opened : {{ newsletter.stats?.opened }}</span>
                   </div>
                   <div class="stat-item">
-                    <fa-icon [icon]="icons.faMousePointer"></fa-icon>
+                    <div class="stat-item-icon">
+                      <fa-icon [icon]="icons.faMousePointer"></fa-icon>
+                    </div>
                     <span>Clicked : {{ newsletter.stats?.clicked }}</span>
                   </div>
                 </div>
@@ -77,10 +85,12 @@
                     </div>
                     <div class="edit-and-test-email-links">
                       <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
-                        Edit &nbsp; <fa-icon [icon]="icons.faEdit"></fa-icon>
+                        <fa-icon [icon]="icons.faEdit"></fa-icon>
+                        &nbsp; Edit
                       </a>
                       <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
-                        Send Test Email &nbsp; <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+                        <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+                        &nbsp; Send Test Email
                       </a>
                     </div>
                   </div>
