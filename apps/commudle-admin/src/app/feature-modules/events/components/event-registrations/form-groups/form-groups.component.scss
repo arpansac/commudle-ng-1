@@ -1,77 +1,69 @@
 .event-data-form-groups-list > nb-card {
   @apply com-mx-0;
   .edfeg-details {
-    @apply com-flex com-flex-col md:com-flex-row com-justify-between com-gap-2 md:com-gap-0;
+    @apply com-flex com-flex-col md:com-flex-row com-justify-between com-gap-2 md:com-gap-10 com-p-4;
     .form-details {
       @apply com-w-60;
       p {
         @apply com-my-0;
       }
       .name {
-        @apply com-text-xl com-font-medium com-text-tYankees-Blue;
+        @apply com-text-xl com-font-medium com-text-tYankees-Blue com-mb-1;
       }
       .type {
-        @apply com-text-base com-text-tYankees-Blue;
+        @apply com-text-xs com-text-tYankees-Blue com-mb-3;
       }
-      a {
-        @apply com-no-underline com-text-xs com-text-tblack;
-      }
-      .link-to-fill {
-        @apply com-mt-4 com-border com-border-solid com-border-primary-500 com-rounded-md com-bg-blue-100 hover:com-bg-blue-100 com-h-8 com-w-28 com-flex com-justify-center com-items-center;
-        a {
-          @apply com-text-primary-500 com-flex com-items-center com-no-underline com-gap-2;
+      div {
+        @apply com-w-full com-mb-3;
+
+        .link-to-fill {
+          @apply com-border com-border-solid com-border-Ultramarine-Blue com-rounded-md com-bg-gray-100 hover:com-bg-blue-100 com-justify-center com-text-xs com-font-medium com-text-Ultramarine-Blue com-no-underline;
         }
       }
     }
 
     .edfeg-status-dropdown {
-      @apply com-w-28  com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-font-semibold com-cursor-pointer com-bg-[#EDF1F7] hover:com-bg-[#eef2f7]/50  com-border-0 com-mb-4;
+      @apply com-flex com-items-center com-h-8 com-p-2 com-text-xs com-rounded-md com-cursor-pointer com-bg-tWhite com-border-0 com-mb-5;
       select {
-        @apply com-bg-[#EDF1F7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-24;
+        @apply com-bg-tWhite com-cursor-pointer com-w-full;
       }
     }
+
     .toggle-cards {
       @apply com-mx-0 com-my-2 com-bg-tWhite;
       nb-card-body {
-        @apply com-px-2 com-py-1;
+        @apply com-p-2;
         nb-checkbox {
           .text {
-            @apply com-text-primary-500 com-px-0;
+            @apply com-text-xs com-font-medium com-text-tYankees-Blue;
           }
         }
       }
     }
 
-    .send-email {
-      @apply com-mb-4;
-      button {
-        @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4 com-cursor-pointer;
-      }
-    }
-
     .show-response {
       a {
-        @apply com-bg-[#EDF1F7] com-border-0 com-rounded-md com-py-2 com-px-4 com-text-tblack com-flex com-items-center com-no-underline;
+        @apply com-bg-tYankees-Blue com-border-0 com-rounded-md com-text-tWhite com-flex com-items-center com-no-underline;
       }
     }
     .response-stat {
-      @apply com-mt-4;
+      @apply com-mt-3;
       table {
-        @apply com-w-full com-bg-gray-500-opacity-50 com-p-1 com-rounded-md com-text-tYankees-Blue;
+        @apply com-w-full com-bg-blue-50 com-p-2 com-rounded-md com-text-tYankees-Blue;
+
+        tr {
+          th {
+            @apply com-text-xs com-font-bold com-text-Yankees-Blue;
+          }
+          td {
+            @apply com-text-xs com-font-normal com-text-Yankees-Blue;
+          }
+        }
       }
     }
     .payment-details {
-      @apply com-mt-8;
+      @apply com-mt-2;
     }
-    // }
-    // .link-to-fill {
-    //   @apply com-no-underline com-mt-3 com-flex com-items-center com-gap-1;
-    // }
-    // .stats {
-    //   @apply com-bg-Bright-Gray com-border-0 com-rounded-3xl com-px-4 com-py-1 com-text-center com-mt-2;
-    //   p {
-    //     @apply com-m-0 com-text-2xl;
-    //   }
   }
 }
 
@@ -149,4 +141,41 @@ nb-toggle {
       @apply com-text-tYankees-Blue #{!important};
     }
   }
+}
+
+.label-form-status {
+  @apply com-text-sm com-font-medium com-mb-1;
+}
+
+.auto-close-text {
+  @apply com-text-xs com-mt-1;
+}
+
+.send-email {
+  @apply com-w-full;
+  .send-email-btn {
+    @apply com-bg-gray-100 com-border-0 com-rounded-md com-cursor-pointer com-text-xs com-text-Yankees-Blue com-flex com-items-center com-no-underline com-gap-2;
+  }
+}
+
+.auto-close-link {
+  @apply com-w-full com-mt-2;
+  p {
+    @apply com-text-xs com-font-semibold com-text-Ultramarine-Blue com-cursor-pointer com-m-0;
+  }
+}
+
+.paid-ticketing-toggle {
+  @apply com-w-full com-bg-tWhite com-rounded-md com-flex com-items-center com-gap-2 com-p-2 com-cursor-pointer;
+  span {
+    @apply com-text-xs com-font-medium com-text-tYankees-Blue com-cursor-pointer com-m-0;
+  }
+}
+
+.delete-section {
+  @apply com-flex com-flex-col com-gap-4;
+}
+
+.clone-btn {
+  @apply com-bg-tYankees-Blue com-border-0 com-rounded-md com-text-tWhite com-flex com-items-center com-no-underline;
 }
