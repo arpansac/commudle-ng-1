@@ -9,7 +9,7 @@
               <div class="check-icon">{{ judge.invite_status === EInvitationStatus.ACCEPTED ? '🎉' : '❌' }}</div>
               <div *ngIf="judge.invite_status === EInvitationStatus.ACCEPTED">
                 <h1 class="title">
-                  You’re officially a judge at <span>{{ judge.name }}</span>
+                  Congratulations! You are selected as a {{ judge.judge_type }} at {{ hackathon.name }}
                 </h1>
                 <h3 class="sub-heading">
                   We’re excited to have your expertise onboard. Here's everything you need to prepare.
