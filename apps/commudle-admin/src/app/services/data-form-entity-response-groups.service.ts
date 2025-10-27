@@ -28,10 +28,16 @@ export class DataFormEntityResponseGroupsService {
       .set('event_data_form_entity_group_id', eventDataFormEntityGroupId)
       .set('count', count)
       .set('page', page)
-      .set('registration_status_id', registrationStatusId)
       .set('query', filterQuery);
-    if (gender) {
-      params = params.set('gender', gender);
+    if (registrationStatusId && registrationStatusId.length > 0) {
+      registrationStatusId.forEach((id) => {
+        params = params.append('registration_status_id[]', id);
+      });
+    }
+    if (gender && gender.length > 0) {
+      gender.forEach((g) => {
+        params = params.append('gender[]', g);
+      });
     }
     if (eventLocationTrackId) {
       params = params.set('event_location_track_id', eventLocationTrackId);
@@ -61,11 +67,17 @@ export class DataFormEntityResponseGroupsService {
       .set('event_data_form_entity_group_id', eventDataFormEntityGroupId)
       .set('count', count)
       .set('page', page)
-      .set('registration_status_id', registrationStatusId)
       .set('query', filterQuery)
       .set('question_id', questionId);
-    if (gender) {
-      params = params.set('gender', gender);
+    if (registrationStatusId && registrationStatusId.length > 0) {
+      registrationStatusId.forEach((id) => {
+        params = params.append('registration_status_id[]', id);
+      });
+    }
+    if (gender && gender.length > 0) {
+      gender.forEach((g) => {
+        params = params.append('gender[]', g);
+      });
     }
     if (eventLocationTrackId) {
       params = params.set('event_location_track_id', eventLocationTrackId);
