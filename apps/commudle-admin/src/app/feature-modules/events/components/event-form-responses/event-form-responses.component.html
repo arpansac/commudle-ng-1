@@ -165,7 +165,7 @@
         [count]="totalEntries"
         [externalPaging]="true"
         [footerHeight]="50"
-        [headerHeight]="100"
+        [headerHeight]="64"
         [limit]="count"
         [loadingIndicator]="isLoading"
         [messages]="{ emptyMessage: emptyMessage }"
@@ -196,9 +196,7 @@
                 </div>
                 @if (forms.length > 0 || selectedGenders.length > 0 || searchForm.get('name').value !== '' ||
                 selectedStatusIds.length !== 0 || selectedEventLocationTrackId !== 0) {
-                <div>
-                  <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
-                </div>
+                <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
                 }
               </div>
             </div>
@@ -231,7 +229,7 @@
         </ngx-datatable-column>
 
         <!-- engagement Data with -->
-        <ngx-datatable-column [width]="300">
+        <ngx-datatable-column [width]="248">
           <ng-template let-column="column" ngx-datatable-header-template>
             <div class="mobile-hidden">
               <div class="">
