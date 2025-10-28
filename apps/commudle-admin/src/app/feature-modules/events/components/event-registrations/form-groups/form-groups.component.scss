@@ -179,3 +179,14 @@ nb-toggle {
 .clone-btn {
   @apply com-bg-tYankees-Blue com-border-0 com-rounded-md com-text-tWhite com-flex com-items-center com-no-underline;
 }
+
+nb-checkbox {
+  ::ng-deep {
+    .custom-checkbox {
+      @apply com-h-[14px] com-w-[14px];
+    }
+    .text {
+      @apply com-text-xs com-font-medium com-text-tYankees-Blue com-cursor-pointer com-m-0 com-pl-2;
+    }
+  }
+}
