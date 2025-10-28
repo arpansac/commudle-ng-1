@@ -107,7 +107,7 @@
                   size="tiny"
                   status="primary"
                 >
-                  <span class="text">Allow RSVP</span>
+                  Allow RSVP
                 </nb-checkbox>
               </nb-card-body>
             </nb-card>
@@ -127,7 +127,7 @@
                   [checked]="edfeg.allow_cancellation"
                   status="primary"
                 >
-                  <span class="text">Allow Entry Pass Cancellation </span>
+                  Allow Entry Pass Cancellation
                 </nb-checkbox>
               </nb-card-body>
             </nb-card>
@@ -140,7 +140,7 @@
                   [checked]="edfeg.approval_based_payments"
                   status="primary"
                 >
-                  <span class="text">Approval Based Payments </span>
+                  Approval Based Payments
                 </nb-checkbox></nb-card-body
               >
             </nb-card>
@@ -156,7 +156,7 @@
                   [checked]="edfeg.paid_ticket_setting.multi_person_ticket"
                   status="primary"
                 >
-                  <span class="text">Allow group tickets </span>
+                  Allow group tickets
                 </nb-checkbox></nb-card-body
               >
             </nb-card>
@@ -217,8 +217,8 @@
                   </td>
                 </tr>
                 <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                  <td>Confirmed</td>
-                  <td>
+                  <td class="com-font-semibold">Confirmed</td>
+                  <td class="com-font-semibold">
                     {{ edfeg.summary_registration_counts?.confirmed ? edfeg.summary_registration_counts.confirmed : 0 }}
                   </td>
                 </tr>

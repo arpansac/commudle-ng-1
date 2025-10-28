@@ -17,7 +17,7 @@
         @apply com-w-full com-mb-3;
 
         .link-to-fill {
-          @apply com-border com-border-solid com-border-Ultramarine-Blue com-rounded-md com-bg-gray-100 hover:com-bg-blue-100 com-justify-center com-text-xs com-font-medium com-text-Ultramarine-Blue com-no-underline;
+          @apply com-bg-blue-100 com-border com-border-solid com-border-Ultramarine-Blue com-rounded-md hover:com-bg-blue-100 com-justify-center com-text-xs com-font-medium com-text-Ultramarine-Blue com-no-underline;
         }
       }
     }
@@ -56,7 +56,7 @@
             @apply com-text-xs com-font-bold com-text-Yankees-Blue;
           }
           td {
-            @apply com-text-xs com-font-normal com-text-Yankees-Blue;
+            @apply com-text-xs com-text-Yankees-Blue;
           }
         }
       }
