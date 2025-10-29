@@ -200,17 +200,15 @@
         <ngx-datatable-column [canAutoResize]="true" [frozenLeft]="true" [width]="360" name="User Details">
           <ng-template let-column="column" ngx-datatable-header-template>
             <div class="header-column-template">
-              <div class="com-flex com-gap-2 com-justify-between">
-                <div class="com-flex com-gap-2">
-                  <p class="user-details">User Details</p>
-                  <div
-                    [nbPopover]="templateRef"
-                    nbPopoverTrigger="hover"
-                    nbPopoverPlacement="bottom"
-                    [nbPopoverContext]="{ showGenderGraph: true }"
-                  >
-                    <fa-icon [icon]="icons.faPieChart"></fa-icon>
-                  </div>
+              <div class="com-flex com-gap-3 com-items-center">
+                <p class="user-details">User Details</p>
+                <div
+                  [nbPopover]="templateRef"
+                  nbPopoverTrigger="hover"
+                  nbPopoverPlacement="bottom"
+                  [nbPopoverContext]="{ showGenderGraph: true }"
+                >
+                  <fa-icon [icon]="icons.faPieChart"></fa-icon>
                 </div>
               </div>
             </div>
@@ -243,23 +241,23 @@
         </ngx-datatable-column>
 
         <!-- engagement Data with -->
-        <ngx-datatable-column [width]="248">
+        <ngx-datatable-column>
           <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="mobile-hidden">
-              <div class="">
-                <p class="engagement-data">Community Engagement</p>
+            <div class="com-flex com-items-center com-w-full com-gap-3">
+              <div class="mobile-hidden">
+                <p class="engagement-data">Insights</p>
               </div>
-            </div>
 
-            <div>
-              <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
-                <fa-icon [icon]="icons.faFilter"></fa-icon> Filter
-              </span>
-              &nbsp; &nbsp; &nbsp; @if (hasCommunityEngagementFilters()) {
-              <span (click)="clearUserEngagementFilter()" class="com-text-red-500 com-cursor-pointer"
-                >Clear Filters</span
-              >
-              }
+              <div>
+                <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
+                  <fa-icon [icon]="icons.faFilter"></fa-icon>
+                </span>
+                &nbsp; &nbsp; &nbsp; @if (hasCommunityEngagementFilters()) {
+                <span (click)="clearUserEngagementFilter()" class="com-text-red-500 com-cursor-pointer"
+                  >Clear Filters</span
+                >
+                }
+              </div>
             </div>
           </ng-template>
 

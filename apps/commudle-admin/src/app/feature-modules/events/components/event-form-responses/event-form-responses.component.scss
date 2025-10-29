@@ -91,11 +91,12 @@
     .ngx-datatable {
       @apply com-bg-white com-h-[70vh];
 
-      .header-column-template {
-        p {
-          @apply com-m-0;
-        }
+      // ::ng-deep .datatable-header-cell {
+      //   padding: 0 16px !important;
+      //   display: flex !important;
+      // }
 
+      .header-column-template {
         .registration-status-filter {
           @apply com-flex com-flex-nowrap;
 
@@ -253,7 +254,7 @@ fa-icon {
 }
 
 .filter-popover {
-  @apply com-p-4 com-w-80 com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg com-bg-transparent;
+  @apply com-p-4 com-w-80 com-border com-border-gray-200 com-rounded-lg com-shadow-lg com-bg-transparent;
 
   .filter-header {
     @apply com-flex com-items-center com-gap-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-3 com-mb-3;
