@@ -118,7 +118,7 @@
       @apply com-flex md:com-flex-row com-text-primary-500 com-gap-3 com-mt-12 com-justify-between com-items-end md:com-items-center;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium com-pl-0;
+        @apply com-text-sm com-font-medium com-pl-0 com-pr-4 com-text-primary-500;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -126,7 +126,7 @@
       }
 
       .toggles {
-        @apply md:com-border-l com-border-Bright-Gray com-border-0 com-border-solid com-border-y-0;
+        @apply md:com-border-l com-border-Bright-Gray com-border-0 com-border-solid com-border-y-0 com-pl-4 com-flex com-gap-4;
         .toggle {
           @apply com-text-sm com-font-medium com-border-0;
           @apply com-mr-0 md:com-mb-2;
@@ -175,7 +175,7 @@
 }
 
 .dropdown {
-  @apply com-w-max com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#eef2f7] com-my-2;
+  @apply com-w-max com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#eef2f7] com-my-2 com-text-tYankees-Blue;
   select {
     @apply com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer;
   }
