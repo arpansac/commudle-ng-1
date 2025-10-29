@@ -151,11 +151,29 @@
           </div>
         </form>
         <div class="filter" [nbPopover]="filterPopover" nbPopoverTrigger="click" nbPopoverPlacement="bottom">
-          <fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filter</span>
+          <fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filters</span>
+          @if (selectedStatusIds.length + selectedGenders.length > 0) {
+          <span class="filter-count">({{ selectedStatusIds.length + selectedGenders.length }})</span>
+          }
         </div>
         <div class="refresh" (click)="getResponses()"><fa-icon [icon]="icons.faRefresh"></fa-icon></div>
+        @if (forms.length > 0 || selectedGenders.length > 0 || searchForm.get('name').value !== '' ||
+        selectedStatusIds.length !== 0 || selectedEventLocationTrackId !== 0) {
+        <div (click)="clearAllFilter()" class="clear-filter">Clear All Filters</div>
+        }
       </div>
-      <div class="action-dropdown"></div>
+      <div class="action-dropdown">
+        <div
+          class="action"
+          [nbPopover]="actionsPopover"
+          nbPopoverTrigger="click"
+          nbPopoverPlacement="bottom"
+          #actionsPopoverDirective="nbPopover"
+        >
+          <span>Actions</span>
+          <fa-icon [icon]="icons.faCaretDown"></fa-icon>
+        </div>
+      </div>
     </div>
     <div class="data-table-container">
       <ngx-datatable
@@ -194,10 +212,6 @@
                     <fa-icon [icon]="icons.faPieChart"></fa-icon>
                   </div>
                 </div>
-                @if (forms.length > 0 || selectedGenders.length > 0 || searchForm.get('name').value !== '' ||
-                selectedStatusIds.length !== 0 || selectedEventLocationTrackId !== 0) {
-                <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
-                }
               </div>
             </div>
           </ng-template>
@@ -973,8 +987,96 @@
     </div>
 
     <div class="filter-actions">
-      <button nbButton size="medium" status="primary" (click)="applyFilter()" class="apply-button">Apply</button>
-      <button nbButton size="medium" ghost (click)="closePopover()">Cancel</button>
+      <button nbButton size="medium" status="primary" (click)="applyFilter()" class="apply-button" fullWidth>
+        Apply
+      </button>
+      <button nbButton size="medium" ghost (click)="closePopover(true)" fullWidth>Reset</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #actionsPopover>
+  <div class="actions-popover">
+    <div class="actions-header">
+      <span>Select Action</span>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Emails</span>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); openRSVPEmailWindow()"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEnvelope" class="action-icon"></fa-icon>
+        <span>Send All RSVP Emails</span>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); openEntryPassEmailWindow()"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEnvelopeOpen" class="action-icon"></fa-icon>
+        <span>Send All Entry Passes</span>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Passes</span>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover()"
+        *ngIf="
+          userRoles.length > 0 &&
+          (userRoles.includes(EUserRoles.COMMUNITY_ADMIN) ||
+            userRoles.includes(EUserRoles.EVENT_ORGANIZER) ||
+            userRoles.includes(EUserRoles.EVENT_VOLUNTEER) ||
+            userRoles.includes(EUserRoles.ORGANIZER))
+        "
+      >
+        <a
+          [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
+          class="action-link"
+        >
+          <fa-icon [icon]="icons.faQrcode" class="action-icon"></fa-icon>
+          <span>Scan Entry Pass</span>
+        </a>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover()"
+        *ngIf="
+          userRoles.length > 0 &&
+          (userRoles.includes(EUserRoles.COMMUNITY_ADMIN) ||
+            userRoles.includes(EUserRoles.EVENT_ORGANIZER) ||
+            userRoles.includes(EUserRoles.EVENT_VOLUNTEER) ||
+            userRoles.includes(EUserRoles.ORGANIZER))
+        "
+      >
+        <a
+          [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug, 'scan-exit-pass']"
+          class="action-link"
+        >
+          <fa-icon [icon]="icons.faSignOutAlt" class="action-icon"></fa-icon>
+          <span>Scan Exit Pass</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Other</span>
+      <div class="action-item" (click)="closeActionsPopover(); sendCSV()">
+        <fa-icon [icon]="icons.faFileCsv" class="action-icon"></fa-icon>
+        <span>Send CSV to email</span>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); bulkStatusChangeConfirmation(confirmStatusChange)"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEdit" class="action-icon"></fa-icon>
+        <span>Change Bulk Status</span>
+      </div>
     </div>
   </div>
 </ng-template>

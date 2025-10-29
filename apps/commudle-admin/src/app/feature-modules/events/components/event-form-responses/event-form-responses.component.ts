@@ -5,7 +5,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ColumnMode, SortType } from '@commudle/ngx-datatable';
 import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { faXmark, faFilter, faPieChart, faRefresh, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faFilter,
+  faPieChart,
+  faRefresh,
+  faChevronLeft,
+  faCaretDown,
+  faEnvelope,
+  faEnvelopeOpen,
+  faQrcode,
+  faSignOutAlt,
+  faFileCsv,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
 import { AppUsersService, ToastrService } from '@commudle/shared-services';
 import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
@@ -32,7 +45,8 @@ import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 export class EventFormResponsesComponent implements OnInit {
   @ViewChild('table') table;
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
-  @ViewChild(NbPopoverDirective) popover: NbPopoverDirective;
+  @ViewChild(NbPopoverDirective) filterPopover: NbPopoverDirective;
+  @ViewChild('actionsPopoverDirective') actionsPopover: NbPopoverDirective;
 
   event: IEvent;
   community: ICommunity;
@@ -75,6 +89,13 @@ export class EventFormResponsesComponent implements OnInit {
     faPieChart,
     faRefresh,
     faChevronLeft,
+    faCaretDown,
+    faEnvelope,
+    faEnvelopeOpen,
+    faQrcode,
+    faSignOutAlt,
+    faFileCsv,
+    faEdit,
   };
   editMode = false;
 
@@ -663,10 +684,17 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   openPopover() {
-    this.popover.show();
+    this.filterPopover.show();
   }
-  closePopover() {
-    this.popover.hide();
+  closePopover(resetFilter = false) {
+    if (resetFilter) {
+      this.clearAllFilter();
+    }
+    this.filterPopover.hide();
+  }
+
+  closeActionsPopover() {
+    this.actionsPopover.hide();
   }
 
   onStatusChange(event: Event, statusId: number) {

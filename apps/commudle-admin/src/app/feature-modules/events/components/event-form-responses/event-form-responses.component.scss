@@ -26,7 +26,7 @@
   }
 
   .heading-actions {
-    @apply com-h-16 com-flex com-gap-2 com-mx-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    @apply com-h-16 com-flex com-my-auto com-mx-6 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-justify-between;
 
     .filters-refresh {
       @apply com-flex com-gap-2 com-my-0;
@@ -38,10 +38,27 @@
         .text {
           @apply com-ml-1;
         }
+
+        .filter-count {
+          @apply com-ml-1.5;
+        }
       }
 
       .name-form {
         @apply com-my-auto com-w-64;
+      }
+      .clear-filter {
+        @apply com-text-Infra-Red com-text-xs com-font-medium com-my-auto;
+      }
+    }
+    .action-dropdown {
+      @apply com-my-auto;
+      .action {
+        span {
+          @apply com-text-Yankees-Blue com-text-xs com-mr-1;
+        }
+        fa-icon {
+        }
       }
     }
   }
@@ -234,14 +251,15 @@ fa-icon {
     }
   }
 }
+
 .filter-popover {
-  @apply com-p-4 com-w-80 com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg;
+  @apply com-p-4 com-w-80 com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg com-bg-transparent;
 
   .filter-header {
     @apply com-flex com-items-center com-gap-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-3 com-mb-3;
 
     span {
-      @apply com-text-sm com-text-Yankees-Blue;
+      @apply com-text-sm com-text-Yankees-Blue com-font-medium;
     }
   }
 
@@ -253,7 +271,11 @@ fa-icon {
     }
 
     .filter-option {
-      @apply com-flex com-gap-0 com-mb-2;
+      @apply com-flex com-gap-0 com-mb-2 com-py-1;
+
+      &:first-child {
+        @apply com-mt-2;
+      }
 
       input[type='checkbox'] {
         @apply com-w-5 com-h-5 com-mr-1 com-rounded-lg com-border-2 com-border-gray-300;
@@ -270,7 +292,7 @@ fa-icon {
         @apply com-flex com-items-center com-gap-1.5 com-w-full com-cursor-pointer com-text-sm;
 
         .option-name {
-          @apply com-text-gray-800;
+          @apply com-text-Yankees-Blue;
         }
 
         .option-count {
@@ -281,13 +303,58 @@ fa-icon {
   }
 
   .filter-actions {
-    @apply com-flex com-gap-3 com-pt-4 com-border-t com-border-gray-200;
+    @apply com-flex com-gap-3 com-border-t com-border-gray-200;
 
-    button {
-      @apply com-flex-1;
-    }
     .apply-button {
-      @apply com-bg-Yankees-Blue com-border-Yankees-Blue;
+      @apply com-bg-tYankees-Blue com-border-Yankees-Blue;
+    }
+  }
+}
+.action-dropdown {
+  @apply com-flex com-items-center;
+
+  .action {
+    @apply com-cursor-pointer com-p-2 com-flex com-items-center com-gap-2 com-px-2 com-py-2;
+  }
+}
+
+.actions-popover {
+  @apply com-p-4 com-w-auto com-bg-white com-border com-border-gray-200 com-rounded-lg com-shadow-lg;
+
+  .actions-header {
+    @apply com-flex com-items-center com-gap-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-3 com-mb-3 com-text-Yankees-Blue com-text-sm com-font-medium;
+
+    span {
+      @apply com-text-Yankees-Blue com-font-medium;
+    }
+  }
+
+  .actions-section {
+    .actions-section-header {
+      @apply com-text-gray-500 com-pt-3 com-font-medium com-text-xs com-mt-3 com-mb-2;
+    }
+
+    .action-item {
+      @apply com-flex com-items-center com-gap-1 com-p-2 com-cursor-pointer com-rounded hover:com-bg-gray-50;
+
+      .action-icon {
+        @apply com-text-Cadet-Grey com-w-5 com-h-5;
+      }
+      a {
+        @apply com-no-underline;
+      }
+
+      span {
+        @apply com-text-sm com-text-Yankees-Blue;
+      }
+
+      .action-link {
+        @apply com-flex com-items-center com-gap-1 com-w-full;
+
+        span {
+          @apply com-text-sm com-text-gray-700;
+        }
+      }
     }
   }
 }
