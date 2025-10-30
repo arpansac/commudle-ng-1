@@ -58,6 +58,29 @@
     }
   }
 
+  .entry-pass-container {
+    @apply com-flex com-items-center com-gap-2;
+
+    .entry-pass-button {
+      @apply com-flex com-items-center com-gap-2;
+
+      .entry-pass-icon {
+        @apply com-text-gray-600;
+      }
+
+      .entry-pass-text {
+        @apply com-text-sm com-font-medium com-text-gray-700;
+      }
+    }
+
+    .notes-button {
+      .notes-icon {
+        @apply com-text-orange-400;
+        font-size: 18px;
+      }
+    }
+  }
+
   .action-buttons {
     .entry-pass-code {
       margin: 0;
@@ -79,5 +102,19 @@
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
+  }
+}
+
+.create-note-dialog-box {
+  @apply com-w-full md:com-w-[20dvw];
+}
+
+.notes-dialog-box {
+  @apply com-w-full md:com-w-[30dvw];
+}
+
+.dialog-box {
+  nb-card-header {
+    @apply com-flex com-items-center com-justify-between;
   }
 }

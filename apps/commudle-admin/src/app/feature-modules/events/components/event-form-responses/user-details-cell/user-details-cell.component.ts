@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faInfo } from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faEnvelope, faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
@@ -14,7 +14,9 @@ import { IRegistrationType } from 'apps/shared-models/registration_type.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
-import { EDomain, EExperienceLevel } from '@commudle/shared-models';
+import { EDbModels, EDomain, EExperienceLevel, INote } from '@commudle/shared-models';
+import { NoteService } from '@commudle/shared-services';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-user-details-cell',
@@ -26,6 +28,8 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   faTwitter = faTwitter;
   faLinkedin = faLinkedin;
   faInfo = faInfo;
+  faEnvelope = faEnvelope;
+  faStickyNote = faStickyNote;
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
 
@@ -43,13 +47,24 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
 
   @ViewChild('confirmDeleteEntryPassDialog') confirmDeleteEntryPassDialog: TemplateRef<any>;
 
+  @ViewChild('notesListDialog') notesListDialogBox: TemplateRef<any>;
+  @ViewChild('createNotesDialog') createNotesDialogBox: TemplateRef<any>;
+
+  noteForm: FormGroup;
+
   constructor(
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private toastLogService: LibToastLogService,
     private eventEntryPassesService: EventEntryPassesService,
     private windowService: NbWindowService,
     private nbDialogService: NbDialogService,
-  ) {}
+    private noteService: NoteService,
+    private fb: FormBuilder,
+  ) {
+    this.noteForm = this.fb.group({
+      text: '',
+    });
+  }
 
   ngOnInit() {
     this.user = this.userResponse.user;
@@ -140,5 +155,42 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     } else {
       this.updateRegistrationStatus(registrationStatusId);
     }
+  }
+
+  openNotesDialogBox(dfergId) {
+    this.nbDialogService.open(this.notesListDialogBox, {
+      context: {
+        dfergId: dfergId,
+      },
+    });
+  }
+
+  openCreateNotesDialog(dfergId) {
+    this.nbDialogService.open(this.createNotesDialogBox, {
+      context: {
+        dfergId: dfergId,
+      },
+    });
+  }
+
+  createNotes(dfergId: number | string) {
+    this.noteService
+      .createNote(
+        { note: this.noteForm.value },
+        EDbModels.KOMMUNITY,
+        this.community.id,
+        EDbModels.USER,
+        this.user.id,
+        JSON.parse(
+          JSON.stringify({
+            dferg_id: dfergId,
+            event_id: this.event.id,
+          }),
+        ),
+      )
+      .subscribe((note: INote) => {
+        this.userResponse.notes.unshift(note);
+        this.noteForm.reset();
+      });
   }
 }
