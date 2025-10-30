@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { NbDialogService, NbMenuService, NbToastrService } from '@commudle/theme';
@@ -71,6 +71,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
 
   searchForm;
   communityFilterForm;
+  daysFilterForm;
 
   selectedUserRoles: IUserRolesUser[] = [];
   removeUserForm;
@@ -112,6 +113,10 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       skills: [[]],
       gender: [null],
       domains: [[]],
+    });
+
+    this.daysFilterForm = this.fb.group({
+      days: [this.daysFilter, [Validators.min(1), Validators.max(365)]],
     });
   }
 
@@ -188,6 +193,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.userRolesUsers = [];
       this.total = 0;
       this.checkForActiveFilters();
+      this.setupDaysFilter();
     }
 
     this.subscriptions.push(
@@ -204,6 +210,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     this.getMembers();
     this.search();
     this.handleContextMenu();
+    this.loadNewMembersCount();
   }
 
   ngOnDestroy() {
@@ -269,9 +276,19 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
   }
 
+  setupDaysFilter() {
+    this.daysFilterForm
+      .get('days')
+      .valueChanges.pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((days) => {
+        this.loadNewMembersCount();
+      });
+  }
+
   loadNewMembersCount() {
     if (this.community) {
-      this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
+      const days = this.daysFilterForm.get('days').value || 90;
+      this.statsCommunitiesService.newMembersCount(this.community.slug, days).subscribe((data) => {
         this.newMembersCount = data.total;
       });
     }

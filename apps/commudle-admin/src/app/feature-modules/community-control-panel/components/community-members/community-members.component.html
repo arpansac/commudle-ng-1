@@ -15,15 +15,15 @@
         <canvas id="chart-experience-distribution"></canvas>
       </div>
       <div class="insight-card">
-        <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilter || 90 }} DAYS</p>
-        <div class="days-filter-container">
+        <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilterForm.get('days').value || 90 }} DAYS</p>
+        <div class="days-filter-container" [formGroup]="daysFilterForm">
           <input
             nbInput
             placeholder="Enter the number of days"
             type="number"
             min="1"
             max="365"
-            (input)="onDaysFilterChange($event)"
+            formControlName="days"
             class="days-input"
           />
         </div>
