@@ -317,6 +317,7 @@
                 <app-user-profile-card-medium
                   [user]="userRole.user"
                   [openInNewTab]="true"
+                  [showHiringLookingTags]="true"
                 ></app-user-profile-card-medium>
                 <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
                   <app-badge
@@ -337,6 +338,7 @@
                 class="context-menu com-h-2"
                 ghost
                 nbButton
+                size="tiny"
                 nbContextMenuTag="community-member-context-menu"
               >
                 <nb-icon icon="more-vertical"></nb-icon>

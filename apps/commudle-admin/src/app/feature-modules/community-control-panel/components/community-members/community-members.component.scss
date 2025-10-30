@@ -67,7 +67,7 @@
   }
 
   .members-table {
-    @apply com-overflow-auto com-relative com-max-h-[70vh];
+    @apply com-overflow-auto com-relative com-h-[70vh];
 
     table {
       @apply com-w-full com-border-collapse com-min-w-full;
@@ -227,7 +227,7 @@
 }
 
 .profile-badges {
-  @apply com-flex com-flex-col com-gap-2;
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
 
   .badges-container {
     @apply com-flex com-flex-wrap com-gap-2 com-mt-2;
