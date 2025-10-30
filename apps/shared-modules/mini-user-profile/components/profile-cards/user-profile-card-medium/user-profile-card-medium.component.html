@@ -19,7 +19,7 @@
           [size]="'small'"
         ></app-hiring-looking-works-tags>
       </div>
-      <p class="designation com-line-clamp-1">{{ user.designation || '--' }}</p>
+      <p class="designation com-line-clamp-{{ maxDesignationLineClamp }}">{{ user.designation || '--' }}</p>
     </div>
   </div>
 </a>

@@ -18,7 +18,6 @@
         <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilter || 90 }} DAYS</p>
         <div class="days-filter-container">
           <input
-            formControlName="days"
             nbInput
             placeholder="Enter the number of days"
             type="number"
@@ -318,6 +317,7 @@
                   [user]="userRole.user"
                   [openInNewTab]="true"
                   [showHiringLookingTags]="true"
+                  [maxDesignationLineClamp]="2"
                 ></app-user-profile-card-medium>
                 <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
                   <app-badge

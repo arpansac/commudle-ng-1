@@ -208,7 +208,7 @@
 }
 
 .user-profile-card {
-  @apply com-flex com-flex-row com-gap-4 com-justify-between com-relative;
+  @apply com-flex com-flex-row com-gap-2 com-justify-between com-relative;
 }
 
 .user-communities-role {
@@ -219,7 +219,7 @@
 }
 
 .filter-dropdowns-container {
-  @apply com-flex com-flex-col com-items-center com-mb-4;
+  @apply com-flex com-flex-col com-items-center com-mb-4 com-pb-4 com-shadow-sm;
 }
 
 .activeTag {
