@@ -63,9 +63,9 @@ export interface IUser {
   user_domain: string;
   goals: string[];
   blocked: boolean;
-  mutual_followee: {
-    first_three: IUser[];
-    remaining_count: number;
+  user_mutuals: {
+    mutual_followees_preview: IUser[];
+    mutual_followees: number;
   };
 }
 
