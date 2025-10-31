@@ -1,7 +1,7 @@
-<div>
+<!-- <div>
   <commudle-back-button text="Back"></commudle-back-button>
-</div>
-
+</div> -->
+<!-- 
 <nb-card class="com-mx-0 com-my-6">
   <nb-card-header
     ><p *ngIf="eventDataFormEntityGroup">
@@ -115,10 +115,66 @@
       </button>
     </div>
   </nb-card-body>
-</nb-card>
+</nb-card> -->
 
 <nb-card class="data-table-responses">
+  <nb-card-header>
+    @if (eventDataFormEntityGroup) {
+    <p>
+      <a (click)="goBack()" style="cursor: pointer">
+        <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon>
+      </a>
+      &nbsp;
+      <span>{{ eventDataFormEntityGroup.name }}</span>
+    </p>
+    }
+  </nb-card-header>
   <nb-card-body>
+    <div class="heading-actions">
+      <div class="filters-refresh">
+        <form class="name-form" [formGroup]="searchForm">
+          <div class="name-filter">
+            <input
+              [disabled]="isLoading"
+              fieldSize="small"
+              formControlName="name"
+              nbInput
+              placeholder="{{ isLoading ? 'Still Loading' : 'Search by name, email, designation or tags' }}"
+              type="text"
+              fullWidth
+            />
+            @if (searchForm.get('name').value) {
+            <div (click)="clearInput()" class="clear-search-filter">
+              <fa-icon [icon]="icons.faXmark"></fa-icon>
+            </div>
+            }
+          </div>
+        </form>
+        <div class="filter" [nbPopover]="filterPopover" nbPopoverTrigger="click" nbPopoverPlacement="bottom">
+          <fa-icon [icon]="icons.faFilter"></fa-icon><span class="text">Filters</span>
+          @if (selectedStatusIds.length + selectedGenders.length > 0) {
+          <span class="filter-count">({{ selectedStatusIds.length + selectedGenders.length }})</span>
+          }
+        </div>
+        <div class="refresh" (click)="getResponses()"><fa-icon [icon]="icons.faRefresh"></fa-icon></div>
+        @if (forms.length > 0 || selectedGenders.length > 0 || searchForm.get('name').value !== '' ||
+        selectedStatusIds.length !== 0 || selectedEventLocationTrackId !== 0) {
+        <div (click)="clearAllFilter()" class="clear-filter">Clear All Filters</div>
+        }
+      </div>
+      <div class="action-dropdown">
+        <div
+          class="action"
+          [nbPopover]="actionsPopover"
+          nbPopoverTrigger="click"
+          nbPopoverPlacement="bottom"
+          #actionsPopoverDirective="nbPopover"
+        >
+          <span>Actions</span>
+          <fa-icon [icon]="icons.faCaretDown"></fa-icon>
+        </div>
+      </div>
+    </div>
     <div class="data-table-container">
       <ngx-datatable
         #table
@@ -127,7 +183,7 @@
         [count]="totalEntries"
         [externalPaging]="true"
         [footerHeight]="50"
-        [headerHeight]="100"
+        [headerHeight]="64"
         [limit]="count"
         [loadingIndicator]="isLoading"
         [messages]="{ emptyMessage: emptyMessage }"
@@ -144,80 +200,15 @@
         <ngx-datatable-column [canAutoResize]="true" [frozenLeft]="true" [width]="360" name="User Details">
           <ng-template let-column="column" ngx-datatable-header-template>
             <div class="header-column-template">
-              <div class="com-flex com-gap-2 com-justify-between">
-                <div class="com-flex com-gap-2">
-                  <p class="user-details">User Details</p>
-                  <div
-                    [nbPopover]="templateRef"
-                    nbPopoverTrigger="hover"
-                    nbPopoverPlacement="bottom"
-                    [nbPopoverContext]="{ showGenderGraph: true }"
-                  >
-                    <fa-icon [icon]="icons.faPieChart"></fa-icon>
-                  </div>
-                </div>
+              <div class="com-flex com-gap-3 com-items-center">
+                <p class="user-details">User Details</p>
                 <div
-                  *ngIf="
-                    forms.length > 0 ||
-                    gender !== '' ||
-                    this.searchForm.get('name').value !== '' ||
-                    registrationStatusId !== 0 ||
-                    selectedEventLocationTrackId !== 0
-                  "
+                  [nbPopover]="templateRef"
+                  nbPopoverTrigger="hover"
+                  nbPopoverPlacement="bottom"
+                  [nbPopoverContext]="{ showGenderGraph: true }"
                 >
-                  <div (click)="clearAllFilter()" class="com-text-red-500 com-cursor-pointer">Clear All Filters</div>
-                </div>
-              </div>
-              <form [formGroup]="searchForm">
-                <div class="name-filter">
-                  <input
-                    [disabled]="isLoading"
-                    fieldSize="tiny"
-                    formControlName="name"
-                    nbInput
-                    placeholder="{{ isLoading ? 'Still Loading' : 'Search by name, email, designation or tags' }}"
-                    type="text"
-                  />
-                  <div (click)="clearInput()" class="clear-search-filter" *ngIf="searchForm.get('name').value">
-                    <fa-icon [icon]="icons.faXmark"></fa-icon>
-                  </div>
-                </div>
-              </form>
-
-              <div class="com-grid com-grid-cols-2 com-gap-2 com-my-2">
-                <div class="user-detail-dropdown">
-                  <select
-                    class="com-border-0"
-                    (change)="registrationStatusFilter($event)"
-                    *ngIf="eventDataFormEntityGroup"
-                    [(ngModel)]="registrationStatusId"
-                  >
-                    <option selected value="0">
-                      Status: All ({{
-                        eventDataFormEntityGroup.summary_registration_counts.all
-                          ? eventDataFormEntityGroup.summary_registration_counts.all
-                          : 0
-                      }})
-                    </option>
-                    <option *ngFor="let rs of registrationStatuses" [value]="rs.id">
-                      {{ rs.name | titlecase }} ({{
-                        eventDataFormEntityGroup.summary_registration_counts[rs.name]
-                          ? eventDataFormEntityGroup.summary_registration_counts[rs.name]
-                          : 0
-                      }})
-                    </option>
-                  </select>
-                </div>
-
-                <!-- gender filter -->
-                <div class="user-detail-dropdown">
-                  <select class="com-border-0" (change)="genderFilter($event)" [(ngModel)]="gender">
-                    <option selected disable value="">Gender: All</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="prefer_not_to_answer">Prefer Not Answer</option>
-                    <option value="null">null</option>
-                  </select>
+                  <fa-icon [icon]="icons.faPieChart"></fa-icon>
                 </div>
               </div>
             </div>
@@ -250,25 +241,23 @@
         </ngx-datatable-column>
 
         <!-- engagement Data with -->
-        <ngx-datatable-column [width]="300">
+        <ngx-datatable-column [width]="360">
           <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="mobile-hidden">
-              <div class="">
-                <p class="engagement-data">Community Engagement</p>
+            <div class="com-flex com-items-center com-w-full com-gap-3">
+              <div class="mobile-hidden">
+                <p class="engagement-data">Insights</p>
               </div>
-            </div>
 
-            <div>
-              <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
-                <fa-icon [icon]="icons.faFilter"></fa-icon> Filter
-              </span>
-              &nbsp; &nbsp; &nbsp;
-              <span
-                (click)="clearUserEngagementFilter()"
-                class="com-text-red-500 com-cursor-pointer"
-                *ngIf="hasCommunityEngagementFilters()"
-                >Clear Filters</span
-              >
+              <div>
+                <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
+                  <fa-icon [icon]="icons.faFilter"></fa-icon>
+                </span>
+                &nbsp; &nbsp; &nbsp; @if (hasCommunityEngagementFilters()) {
+                <span (click)="clearUserEngagementFilter()" class="com-text-red-500 com-cursor-pointer"
+                  >Clear Filters</span
+                >
+                }
+              </div>
             </div>
           </ng-template>
 
@@ -284,24 +273,24 @@
         </ngx-datatable-column>
 
         <!-- track slot details -->
-        <ngx-datatable-column
-          [width]="350"
-          *ngIf="eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER"
-        >
+        @if (eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+        <ngx-datatable-column [width]="350">
           <ng-template let-column="column" ngx-datatable-header-template>
             <div class="mobile-hidden">
               <div class="com-flex com-gap-2 com-items-center com-justify-center">
                 <div class="track-slot-filter-dropdown">
                   <select [(ngModel)]="selectedEventLocationTrackId" (change)="trackSlotFilter()" class="com-border-0">
                     <option [ngValue]="0">Assigned Session Slots: All</option>
-                    <option *ngFor="let elt of eventLocationTracks" [ngValue]="elt.id">
-                      {{ elt.name }}
-                    </option>
+                    @for (elt of eventLocationTracks; track elt.id) {
+                    <option [ngValue]="elt.id">{{ elt.name }}</option>
+                    }
                   </select>
                 </div>
-                <div (click)="trackSlotFilter(0)" class="clear-track-filter" *ngIf="selectedEventLocationTrackId !== 0">
+                @if (selectedEventLocationTrackId !== 0) {
+                <div (click)="trackSlotFilter(0)" class="clear-track-filter">
                   <fa-icon [icon]="icons.faXmark"></fa-icon>
                 </div>
+                }
               </div>
             </div>
           </ng-template>
@@ -318,9 +307,11 @@
             </div>
           </ng-template>
         </ngx-datatable-column>
+        }
 
         <!-- Payment Details -->
-        <ngx-datatable-column [width]="300" *ngIf="eventDataFormEntityGroup?.is_paid">
+        @if (eventDataFormEntityGroup?.is_paid) {
+        <ngx-datatable-column [width]="300">
           <ng-template let-column="column" ngx-datatable-header-template>
             <div class="mobile-hidden">
               <div class="">
@@ -338,25 +329,20 @@
             </div>
           </ng-template>
         </ngx-datatable-column>
+        }
 
         <!-- Questions -->
-        <ngx-datatable-column
-          *ngFor="let question of questions; let i = index"
-          [canAutoResize]="true"
-          [width]="200"
-          name="{{ question.title }}"
-        >
+        @for (question of questions; track question.id; let i = $index) {
+        <ngx-datatable-column [canAutoResize]="true" [width]="200" name="{{ question.title }}">
           <ng-template ngx-datatable-header-template>
-            <div
-              class="row-header question mobile-hidden"
-              *ngIf="!question.editMode"
-              (click)="enableEditMode(question, i)"
-            >
+            @if (!question.editMode) {
+            <div class="row-header question mobile-hidden" (click)="enableEditMode(question, i)">
               <div><fa-icon [icon]="icons.faFilter"></fa-icon></div>
-              <p *ngIf="question.title.length > 20" nbTooltip="{{ question.title }}">
-                {{ question.title }}
-              </p>
-              <p *ngIf="question.title.length <= 20">{{ question.title }}</p>
+              @if (question.title.length > 20) {
+              <p nbTooltip="{{ question.title }}">{{ question.title }}</p>
+              } @else {
+              <p>{{ question.title }}</p>
+              }
               <div
                 [nbPopover]="templateRef"
                 nbPopoverTrigger="hover"
@@ -366,17 +352,16 @@
                 <fa-icon [icon]="icons.faPieChart"></fa-icon>
               </div>
             </div>
-            <div *ngIf="question.editMode" class="com-flex com-items-center com-gap-2">
+            } @if (question.editMode) {
+            <div class="com-flex com-items-center com-gap-2">
               <div class="com-my-14px">
-                <div *ngIf="forms[i]">
+                @if (forms[i]) {
+                <div>
                   <form [formGroup]="forms[i]">
                     <div class="name-filter">
-                      <div
-                        *ngIf="
-                          question.question_type_id === EQuestionTypes.SHORT_ANSWER ||
-                          question.question_type_id === EQuestionTypes.LONG_ANSWER
-                        "
-                      >
+                      @if (question.question_type_id === EQuestionTypes.SHORT_ANSWER || question.question_type_id ===
+                      EQuestionTypes.LONG_ANSWER) {
+                      <div>
                         <input
                           [disabled]="isLoading"
                           fieldSize="tiny"
@@ -388,7 +373,8 @@
                           autofocus
                         />
                       </div>
-                      <div *ngIf="question.question_type_id === EQuestionTypes.NUMBER">
+                      } @if (question.question_type_id === EQuestionTypes.NUMBER) {
+                      <div>
                         <input
                           [disabled]="isLoading"
                           fieldSize="tiny"
@@ -400,27 +386,27 @@
                           autofocus
                         />
                       </div>
-                      <div
-                        *ngIf="
-                          question.question_type_id === EQuestionTypes.SINGLE_CHOICE ||
-                          question.question_type_id === EQuestionTypes.MULTIPLE_CHOICE
-                        "
-                      >
+                      } @if (question.question_type_id === EQuestionTypes.SINGLE_CHOICE || question.question_type_id ===
+                      EQuestionTypes.MULTIPLE_CHOICE) {
+                      <div>
                         <select formControlName="v" autofocus class="com-max-w-[150px]">
                           <option selected disabled value="">Choose Answer</option>
-                          <option [value]="qc.title" *ngFor="let qc of question.question_choices">
-                            {{ qc.title }}
-                          </option>
+                          @for (qc of question.question_choices; track qc.id) {
+                          <option [value]="qc.title">{{ qc.title }}</option>
+                          }
                         </select>
                       </div>
+                      }
                     </div>
                   </form>
                 </div>
+                }
               </div>
               <div (click)="disableEditMode(question, i)" class="clear-track-filter">
                 <fa-icon [icon]="icons.faXmark"></fa-icon>
               </div>
             </div>
+            }
           </ng-template>
 
           <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
@@ -436,34 +422,31 @@
                 "
                 class="question-responses"
               ></p>
-              <a
-                (click)="row.showFullAnswer = !row.showFullAnswer"
-                *ngIf="getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100"
-                class="clickable"
-              >
+              @if (getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100) {
+              <a (click)="row.showFullAnswer = !row.showFullAnswer" class="clickable">
                 {{ row.showFullAnswer ? 'Read less' : 'Read more' }}
               </a>
+              }
             </div>
           </ng-template>
         </ngx-datatable-column>
+        }
 
         <!-- responsive row format -->
         <ngx-datatable-row-detail (toggle)="onDetailToggle($event)" [rowHeight]="'100%'">
           <ng-template let-expanded="expanded" let-row="row" ngx-datatable-row-detail-template>
+            @if (row) {
             <div class="com-max-w-fit">
-              <app-user-engagement-data
-                *ngIf="row"
-                [userResponse]="row"
-                [communityId]="community.id"
-              ></app-user-engagement-data>
+              <app-user-engagement-data [userResponse]="row" [communityId]="community.id"></app-user-engagement-data>
             </div>
-            <div class="com-max-w-fit" *ngIf="eventDataFormEntityGroup?.is_paid">
+            } @if (eventDataFormEntityGroup?.is_paid) {
+            <div class="com-max-w-fit">
               <commudle-user-payment-details
                 [eto]="row.event_ticket_orders"
                 [user]="row.user"
               ></commudle-user-payment-details>
             </div>
-            <div class="com-max-w-fit" *ngIf="eventDataFormEntityGroup?.is_paid">
+            <div class="com-max-w-fit">
               <commudle-user-track-slots
                 [trackSlots]="row.track_slots"
                 [event]="event"
@@ -472,10 +455,12 @@
                 [eventLocations]="eventLocations"
               ></commudle-user-track-slots>
             </div>
+            } @if (questions.length > 0) {
             <div style="padding-left: 1rem; font-size: 14px; height: 300px; overflow-y: scroll">
-              <div *ngFor="let question of questions">
+              @for (question of questions; track question.id) {
+              <div>
                 <p>
-                  <strong> Q. {{ question.title }} </strong>
+                  <strong>Q. {{ question.title }}</strong>
                 </p>
                 <div>
                   <p
@@ -489,16 +474,18 @@
                     "
                     class="question-responses"
                   ></p>
-                  <a
-                    (click)="row.showFullAnswer = !row.showFullAnswer"
-                    *ngIf="getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100"
-                    class="clickable"
-                  >
+                  @if (getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100) {
+                  <a (click)="row.showFullAnswer = !row.showFullAnswer" class="clickable">
                     {{ row.showFullAnswer ? 'Read less' : 'Read more' }}
                   </a>
+                  }
                 </div>
               </div>
+              }
             </div>
+            } @else {
+            <div style="padding-left: 1rem; font-size: 14px">No questions available</div>
+            }
           </ng-template>
         </ngx-datatable-row-detail>
       </ngx-datatable>
@@ -532,9 +519,9 @@
             }"
           >
             <option selected disabled>From</option>
-            <option *ngFor="let rs of registrationStatuses" [value]="rs.name">
-              {{ rs.name | titlecase }}
-            </option>
+            @for (rs of registrationStatuses; track rs.id) {
+            <option [value]="rs.name">{{ rs.name | titlecase }}</option>
+            }
           </select>
         </div>
         <div class="dropdown">
@@ -546,15 +533,17 @@
             }"
           >
             <option selected disabled>To</option>
-            <option *ngFor="let rs of registrationStatuses" [value]="rs.name">
-              {{ rs.name | titlecase }}
-            </option>
+            @for (rs of registrationStatuses; track rs.id) {
+            <option [value]="rs.name">{{ rs.name | titlecase }}</option>
+            }
           </select>
         </div>
       </div>
-      <div *ngIf="fromRegistrationStatus === toRegistrationStatus && toRegistrationStatus !== undefined">
+      @if (fromRegistrationStatus === toRegistrationStatus && toRegistrationStatus !== undefined) {
+      <div>
         <commudle-alert [error]="true" errorMessage="From and To value can't be same"></commudle-alert>
       </div>
+      }
       <p>
         This will change the status of all {{ selectedRegistrationStatus }} entries and
         <strong>cannot be undone</strong>.
@@ -576,15 +565,14 @@
 </ng-template>
 
 <ng-template #templateRef let-data>
+  <!-- TODO: fix it  -->
   <div class="com-max-h-[384px] com-w-80 com-overflow-scroll">
     <commudle-event-form-responses-graph
       [forms]="forms"
       [eventDataFormEntityGroupId]="eventDataFormEntityGroupId"
       [filterValue]="filterValue"
-      [registrationStatusId]="registrationStatusId"
       [page]="page"
       [count]="count"
-      [gender]="gender"
       [selectedEventLocationTrackId]="selectedEventLocationTrackId"
       [question]="data.question"
       [showGenderGraphOnly]="data.showGenderGraph"
@@ -609,7 +597,8 @@
             Attended Events
           </label>
 
-          <div *ngIf="userEngagementFilter.get('show_attended_events').value" class="attended-dropdown">
+          @if (userEngagementFilter.get('show_attended_events').value) {
+          <div class="attended-dropdown">
             <div class="select">
               <select
                 formControlName="attended_events_attendance"
@@ -630,12 +619,13 @@
                 }"
               >
                 <option value="" disabled>Select event slugs</option>
-                <option *ngFor="let event of attendedEventList | orderBy : ['name'] : ['asc']" [value]="event.slug">
-                  {{ event.name }} - {{ event.kommunity.name }}
-                </option>
+                @for (event of attendedEventList | orderBy : ['name'] : ['asc']; track event.id) {
+                <option [value]="event.slug">{{ event.name }} - {{ event.kommunity.name }}</option>
+                }
               </select>
             </div>
           </div>
+          }
         </div>
 
         <!-- Show Total Channel Messages -->
@@ -644,7 +634,8 @@
             <input type="checkbox" formControlName="show_total_channel_messages" />
             Total Channel Messages
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_channel_messages').value">
+          @if (userEngagementFilter.get('show_total_channel_messages').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -665,6 +656,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- Show Total Event Registrations -->
@@ -673,7 +665,8 @@
             <input type="checkbox" formControlName="show_total_event_registrations" />
             Total Event Registrations
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_event_registrations').value">
+          @if (userEngagementFilter.get('show_total_event_registrations').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -694,6 +687,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_event_speaker_registrations -->
@@ -702,7 +696,8 @@
             <input type="checkbox" formControlName="show_total_event_speaker_registrations" />
             Total Event Speaker Registrations
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_event_speaker_registrations').value">
+          @if (userEngagementFilter.get('show_total_event_speaker_registrations').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -723,6 +718,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_event_speaker_sessions -->
@@ -731,7 +727,8 @@
             <input type="checkbox" formControlName="show_total_event_speaker_sessions" />
             Total Event Speaker Sessions
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_event_speaker_sessions').value">
+          @if (userEngagementFilter.get('show_total_event_speaker_sessions').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -752,6 +749,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_hackathon_registrations -->
@@ -760,7 +758,8 @@
             <input type="checkbox" formControlName="show_total_hackathon_registrations" />
             Total Hackathon Registrations
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_hackathon_registrations').value">
+          @if (userEngagementFilter.get('show_total_hackathon_registrations').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -781,6 +780,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_invited_attended_events -->
@@ -789,7 +789,8 @@
             <input type="checkbox" formControlName="show_total_invited_attended_events" />
             Total Invited Attended Events
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_invited_attended_events').value">
+          @if (userEngagementFilter.get('show_total_invited_attended_events').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -810,6 +811,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_skipped_events -->
@@ -818,7 +820,8 @@
             <input type="checkbox" formControlName="show_total_skipped_events" />
             Total Skipped Events
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_skipped_events').value">
+          @if (userEngagementFilter.get('show_total_skipped_events').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -839,6 +842,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_uninvited_attended_events -->
@@ -847,7 +851,8 @@
             <input type="checkbox" formControlName="show_total_uninvited_attended_events" />
             Total Uninvited Attended Events
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_uninvited_attended_events').value">
+          @if (userEngagementFilter.get('show_total_uninvited_attended_events').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -868,6 +873,7 @@
               min="0"
             />
           </div>
+          }
         </div>
 
         <!-- show_total_volunteered_events -->
@@ -876,7 +882,8 @@
             <input type="checkbox" formControlName="show_total_volunteered_events" />
             Total Volunteered Events
           </label>
-          <div *ngIf="userEngagementFilter.get('show_total_volunteered_events').value">
+          @if (userEngagementFilter.get('show_total_volunteered_events').value) {
+          <div>
             <label>Min:</label>
             <input
               nbInput
@@ -897,6 +904,7 @@
               min="0"
             />
           </div>
+          }
         </div>
       </form>
     </nb-card-body>
@@ -913,4 +921,160 @@
       <button nbButton status="danger" outline (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
+</ng-template>
+
+<ng-template #filterPopover>
+  <div class="filter-popover">
+    <div class="filter-header">
+      <span>Filter by</span>
+    </div>
+
+    <div class="filter-section">
+      <span class="filter-section-header">Status</span>
+      @for (rs of registrationStatuses; track rs.id) {
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          [id]="'status-' + rs.id"
+          [checked]="selectedStatusIds.includes(rs.id)"
+          (change)="onStatusChange($event, rs.id)"
+        />
+        <label [for]="'status-' + rs.id">
+          <span class="option-name">{{ rs.name | titlecase }}</span>
+          <span class="option-count">({{ eventDataFormEntityGroup?.summary_registration_counts[rs.name] || 0 }})</span>
+        </label>
+      </div>
+      }
+    </div>
+
+    <div class="filter-section">
+      <span class="filter-section-header">Gender</span>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-male"
+          [checked]="selectedGenders.includes('male')"
+          (change)="onGenderChange($event, 'male')"
+        />
+        <label for="gender-male">
+          <span class="option-name">Male</span>
+        </label>
+      </div>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-female"
+          [checked]="selectedGenders.includes('female')"
+          (change)="onGenderChange($event, 'female')"
+        />
+        <label for="gender-female">
+          <span class="option-name">Female</span>
+        </label>
+      </div>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-other"
+          [checked]="selectedGenders.includes('prefer_not_to_answer')"
+          (change)="onGenderChange($event, 'prefer_not_to_answer')"
+        />
+        <label for="gender-other">
+          <span class="option-name">Prefer not to answer</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button nbButton size="medium" status="primary" (click)="applyFilter()" class="apply-button" fullWidth>
+        Apply
+      </button>
+      <button nbButton size="medium" ghost (click)="closePopover(true)" fullWidth>Reset</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #actionsPopover>
+  <div class="actions-popover">
+    <div class="actions-header">
+      <span>Select Action</span>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Emails</span>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); openRSVPEmailWindow()"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEnvelope" class="action-icon"></fa-icon>
+        <span>Send All RSVP Emails</span>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); openEntryPassEmailWindow()"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEnvelopeOpen" class="action-icon"></fa-icon>
+        <span>Send All Entry Passes</span>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Passes</span>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover()"
+        *ngIf="
+          userRoles.length > 0 &&
+          (userRoles.includes(EUserRoles.COMMUNITY_ADMIN) ||
+            userRoles.includes(EUserRoles.EVENT_ORGANIZER) ||
+            userRoles.includes(EUserRoles.EVENT_VOLUNTEER) ||
+            userRoles.includes(EUserRoles.ORGANIZER))
+        "
+      >
+        <a
+          [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug, 'scan-entry-pass']"
+          class="action-link"
+        >
+          <fa-icon [icon]="icons.faQrcode" class="action-icon"></fa-icon>
+          <span>Scan Entry Pass</span>
+        </a>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover()"
+        *ngIf="
+          userRoles.length > 0 &&
+          (userRoles.includes(EUserRoles.COMMUNITY_ADMIN) ||
+            userRoles.includes(EUserRoles.EVENT_ORGANIZER) ||
+            userRoles.includes(EUserRoles.EVENT_VOLUNTEER) ||
+            userRoles.includes(EUserRoles.ORGANIZER))
+        "
+      >
+        <a
+          [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug, 'scan-exit-pass']"
+          class="action-link"
+        >
+          <fa-icon [icon]="icons.faSignOutAlt" class="action-icon"></fa-icon>
+          <span>Scan Exit Pass</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <span class="actions-section-header">Other</span>
+      <div class="action-item" (click)="closeActionsPopover(); sendCSV()">
+        <fa-icon [icon]="icons.faFileCsv" class="action-icon"></fa-icon>
+        <span>Send CSV to email</span>
+      </div>
+      <div
+        class="action-item"
+        (click)="closeActionsPopover(); bulkStatusChangeConfirmation(confirmStatusChange)"
+        *ngIf="event.editable && eventDataFormEntityGroup?.registration_type.name !== RegistrationTypeNames.FEEDBACK"
+      >
+        <fa-icon [icon]="icons.faEdit" class="action-icon"></fa-icon>
+        <span>Change Bulk Status</span>
+      </div>
+    </div>
+  </div>
 </ng-template>

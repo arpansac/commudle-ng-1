@@ -1,44 +1,56 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColumnMode, SortType } from '@commudle/ngx-datatable';
-import { NbDialogService, NbWindowService } from '@commudle/theme';
-import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
-import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
-import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
-import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
-import { RegistrationStatusesService } from 'apps/commudle-admin/src/app/services/registration-statuses.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { IDataForm } from 'apps/shared-models/data_form.model';
-import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
-import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
-import { IEvent } from 'apps/shared-models/event.model';
-import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
-import { IQuestion } from 'apps/shared-models/question.model';
-import { IRegistrationStatus } from 'apps/shared-models/registration_status.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
+import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { faXmark, faFilter, faPieChart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faFilter,
+  faPieChart,
+  faRefresh,
+  faChevronLeft,
+  faCaretDown,
+  faEnvelope,
+  faEnvelopeOpen,
+  faQrcode,
+  faSignOutAlt,
+  faFileCsv,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
+import { AppUsersService, ToastrService } from '@commudle/shared-services';
+import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
+import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
+import { IRegistrationStatus } from 'apps/shared-models/registration_status.model';
+import { IDataForm } from 'apps/shared-models/data_form.model';
+import { IQuestion } from 'apps/shared-models/question.model';
+import { IEventLocationTrack } from 'apps/shared-models/event-location-track.model';
 import { EQuestionTypes } from 'apps/shared-models/enums/question_types.enum';
 import { RegistrationTypeNames } from 'apps/shared-models/registration_type.model';
-import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
 import { IEventLocation } from 'apps/shared-models/event-location.model';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { RegistrationStatusesService } from 'apps/commudle-admin/src/app/services/registration-statuses.service';
+import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
+import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
+import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
+import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
+import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
 
 @Component({
-  selector: 'app-event-form-responses',
+  selector: 'commudle-event-form-responses',
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],
 })
 export class EventFormResponsesComponent implements OnInit {
   @ViewChild('table') table;
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
+  @ViewChild(NbPopoverDirective) filterPopover: NbPopoverDirective;
+  @ViewChild('actionsPopoverDirective') actionsPopover: NbPopoverDirective;
 
   event: IEvent;
   community: ICommunity;
-  eventDataFormEntityGroupId;
+  eventDataFormEntityGroupId: number;
   eventDataFormEntityGroup: IEventDataFormEntityGroup;
   registrationStatuses: IRegistrationStatus[] = [];
   dataForm: IDataForm;
@@ -57,7 +69,7 @@ export class EventFormResponsesComponent implements OnInit {
   totalEntries: number;
   count = 10;
   filterValue = '';
-  registrationStatusId = 0;
+  selectedStatusIds: number[] = [];
 
   searchForm;
 
@@ -68,13 +80,22 @@ export class EventFormResponsesComponent implements OnInit {
   fromRegistrationStatus: string;
   toRegistrationStatus: string;
   selectedRegistrationStatus = 0;
-  gender = '';
+  selectedGenders: string[] = [];
   eventLocationTracks: IEventLocationTrack[] = [];
   selectedEventLocationTrackId = 0;
   icons = {
     faXmark,
     faFilter,
     faPieChart,
+    faRefresh,
+    faChevronLeft,
+    faCaretDown,
+    faEnvelope,
+    faEnvelopeOpen,
+    faQrcode,
+    faSignOutAlt,
+    faFileCsv,
+    faEdit,
   };
   editMode = false;
 
@@ -82,9 +103,9 @@ export class EventFormResponsesComponent implements OnInit {
   EQuestionTypes = EQuestionTypes;
   RegistrationTypeNames = RegistrationTypeNames;
   eventLocations: IEventLocation[];
-  dialogRef: any;
+  dialogRef: NbDialogRef<unknown>;
   userEngagementFilter: FormGroup;
-  community_engagement_filters: Record<string, any> = {};
+  community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
   //TODO past event stats
   constructor(
@@ -95,10 +116,11 @@ export class EventFormResponsesComponent implements OnInit {
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
     private windowService: NbWindowService,
     private fb: FormBuilder,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     private appUsersService: AppUsersService,
     private eventLocationsService: EventLocationsService,
     private dialogService: NbDialogService,
+    private router: Router,
   ) {
     this.searchForm = this.fb.group({
       name: [''],
@@ -201,10 +223,10 @@ export class EventFormResponsesComponent implements OnInit {
           return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
             this.eventDataFormEntityGroupId,
             this.searchForm.get('name').value.toLowerCase(),
-            this.registrationStatusId,
+            this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
             this.page,
             this.count,
-            this.gender,
+            this.selectedGenders.length > 0 ? this.selectedGenders : [''],
             this.selectedEventLocationTrackId,
             this.getFormData(),
             Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -223,22 +245,26 @@ export class EventFormResponsesComponent implements OnInit {
     for (const question of this.questions) {
       if (question.editMode === true) question.editMode = false;
     }
-    this.gender = '';
-    this.registrationStatusId = 0;
+    this.selectedGenders = [];
+    this.selectedStatusIds = [];
     this.selectedEventLocationTrackId = 0;
     this.community_engagement_filters = {};
   }
 
   registrationStatusFilter(event) {
     this.page = 1;
-    this.registrationStatusId = event.target.value;
-    this.getResponses();
+    this.selectedStatusIds = Array.isArray(event.target.value)
+      ? event.target.value
+      : [event.target.value].filter((v) => v !== 0);
+    // this.getResponses();
   }
 
   genderFilter(event) {
     this.page = 1;
-    this.gender = event ? event.target.value : '';
-    this.getResponses();
+    this.selectedGenders = Array.isArray(event.target.value)
+      ? event.target.value
+      : [event.target.value].filter((v) => v !== '');
+    // this.getResponses();
   }
 
   getEventLocationTracks() {
@@ -271,10 +297,10 @@ export class EventFormResponsesComponent implements OnInit {
         .getEventDataFormResponses(
           this.eventDataFormEntityGroupId,
           this.searchForm.get('name').value.toLowerCase(),
-          this.registrationStatusId,
+          this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
           this.page,
           this.count,
-          this.gender,
+          this.selectedGenders.length > 0 ? this.selectedGenders : [''],
           this.selectedEventLocationTrackId,
           this.getFormData(),
           Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -289,45 +315,39 @@ export class EventFormResponsesComponent implements OnInit {
 
   getResponses() {
     this.emptyMessage = 'Loading...';
-    this.isLoading = false;
+    this.isLoading = true;
     this.rows = [];
 
     this.dataFormEntityResponseGroupsService
       .getEventDataFormResponses(
         this.eventDataFormEntityGroupId,
-        this.searchForm.get('name').value.toLowerCase(),
-        this.registrationStatusId,
+        this.searchForm.get('name').value?.toLowerCase() || '',
+        this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
         this.page,
         this.count,
-        this.gender,
+        this.selectedGenders.length > 0 ? this.selectedGenders : [''],
         this.selectedEventLocationTrackId,
         this.getFormData(),
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
       .subscribe((data) => {
-        this.totalEntries = data.total;
-        this.rows = data.data_form_entity_response_groups;
-        this.isLoading = false;
-        this.emptyMessage = 'No data to display';
+        this.setResponses(data);
       });
   }
 
   setResponses(data) {
     this.getEventDataFromEntityGroup();
-    this.totalEntries = data.total;
-    this.rows = data.data_form_entity_response_groups;
+    this.totalEntries = data?.total || 0;
+    this.rows = data?.data_form_entity_response_groups || [];
     this.isLoading = false;
-    this.emptyMessage = 'No entries found';
+    this.emptyMessage = this.rows.length === 0 ? 'No entries found' : '';
   }
 
   getQuestionResponse(userResponses, questionId) {
-    const userQuestionResponses = userResponses.filter((k) => k.question_id === questionId);
-    let responses = '';
-    for (const resp of userQuestionResponses) {
-      responses += `${resp.response_text} \n`;
-    }
-
-    return userQuestionResponses.length === 0 ? '..' : responses;
+    const userQuestionResponses = userResponses?.filter((k) => k.question_id === questionId) || [];
+    return userQuestionResponses.length === 0
+      ? 'No response'
+      : userQuestionResponses.map((resp) => resp.response_text).join('\n');
   }
 
   updateRegistrationStatus(registrationStatus, userResponseId) {
@@ -433,10 +453,10 @@ export class EventFormResponsesComponent implements OnInit {
             return this.dataFormEntityResponseGroupsService.getEventDataFormResponses(
               this.eventDataFormEntityGroupId,
               this.searchForm.get('name').value.toLowerCase(),
-              this.registrationStatusId,
+              this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
               this.page,
               this.count,
-              this.gender,
+              this.selectedGenders.length > 0 ? this.selectedGenders : [''],
               this.selectedEventLocationTrackId,
               this.getFormData(),
               Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
@@ -474,155 +494,145 @@ export class EventFormResponsesComponent implements OnInit {
     this.dialogService.open(userEngagementFilterTemplate);
   }
 
+  private readonly requiredFields = [
+    { checkbox: 'show_total_channel_messages', min: 'min_total_channel_messages', max: 'max_total_channel_messages' },
+    {
+      checkbox: 'show_total_event_registrations',
+      min: 'min_total_event_registrations',
+      max: 'max_total_event_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_registrations',
+      min: 'min_total_event_speaker_registrations',
+      max: 'max_total_event_speaker_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_sessions',
+      min: 'min_total_event_speaker_sessions',
+      max: 'max_total_event_speaker_sessions',
+    },
+    {
+      checkbox: 'show_total_hackathon_registrations',
+      min: 'min_total_hackathon_registrations',
+      max: 'max_total_hackathon_registrations',
+    },
+    {
+      checkbox: 'show_total_invited_attended_events',
+      min: 'min_total_invited_attended_events',
+      max: 'max_total_invited_attended_events',
+    },
+    { checkbox: 'show_total_skipped_events', min: 'min_total_skipped_events', max: 'max_total_skipped_events' },
+    {
+      checkbox: 'show_total_uninvited_attended_events',
+      min: 'min_total_uninvited_attended_events',
+      max: 'max_total_uninvited_attended_events',
+    },
+    {
+      checkbox: 'show_total_volunteered_events',
+      min: 'min_total_volunteered_events',
+      max: 'max_total_volunteered_events',
+    },
+  ];
+
+  private isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
+
   isApplyDisabled(): boolean {
     const formValues = this.userEngagementFilter.value;
 
-    // Helper function to check if a field has a valid value
-    const isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
-
-    // Check for each checkbox; if checked, min and max must be filled
-    const requiredFields = [
-      {
-        checkbox: 'show_total_channel_messages',
-        min: 'min_total_channel_messages',
-        max: 'max_total_channel_messages',
-      },
-      {
-        checkbox: 'show_total_event_registrations',
-        min: 'min_total_event_registrations',
-        max: 'max_total_event_registrations',
-      },
-      {
-        checkbox: 'show_total_event_speaker_registrations',
-        min: 'min_total_event_speaker_registrations',
-        max: 'max_total_event_speaker_registrations',
-      },
-      {
-        checkbox: 'show_total_event_speaker_sessions',
-        min: 'min_total_event_speaker_sessions',
-        max: 'max_total_event_speaker_sessions',
-      },
-      {
-        checkbox: 'show_total_hackathon_registrations',
-        min: 'min_total_hackathon_registrations',
-        max: 'max_total_hackathon_registrations',
-      },
-      {
-        checkbox: 'show_total_invited_attended_events',
-        min: 'min_total_invited_attended_events',
-        max: 'max_total_invited_attended_events',
-      },
-      {
-        checkbox: 'show_total_skipped_events',
-        min: 'min_total_skipped_events',
-        max: 'max_total_skipped_events',
-      },
-      {
-        checkbox: 'show_total_uninvited_attended_events',
-        min: 'min_total_uninvited_attended_events',
-        max: 'max_total_uninvited_attended_events',
-      },
-      {
-        checkbox: 'show_total_volunteered_events',
-        min: 'min_total_volunteered_events',
-        max: 'max_total_volunteered_events',
-      },
-    ];
-
-    // Check the condition for show_attended_events
     if (
       formValues['show_attended_events'] &&
-      (!isValidValue(formValues['attended_events_attendance']) || !isValidValue(formValues['attended_events_slugs']))
+      (!this.isValidValue(formValues['attended_events_attendance']) ||
+        !this.isValidValue(formValues['attended_events_slugs']))
     ) {
-      return true; // If show_attended_events is true and the other two fields are not filled, disable the apply button
+      return true;
     }
 
-    // Loop through requiredFields to check each condition
-    return requiredFields.some((field) => {
-      if (formValues[field.checkbox]) {
-        // If checkbox is true, min and max values are required
-        const minValue = formValues[field.min];
-        const maxValue = formValues[field.max];
+    return this.requiredFields.some((field) => {
+      if (!formValues[field.checkbox]) return false;
 
-        // Check if min or max is not filled
-        if (!isValidValue(minValue) || !isValidValue(maxValue)) {
-          return true;
-        }
+      const minValue = formValues[field.min];
+      const maxValue = formValues[field.max];
 
-        // Ensure max is greater than or equal to min
-        if (Number(minValue) > Number(maxValue)) {
-          return true; // If max is less than min, disable the apply button
-        }
-      }
-      return false;
+      return !this.isValidValue(minValue) || !this.isValidValue(maxValue) || Number(minValue) > Number(maxValue);
     });
   }
+
+  private readonly filterMappings = [
+    {
+      checkbox: 'show_total_channel_messages',
+      key: 'total_channel_messages',
+      min: 'min_total_channel_messages',
+      max: 'max_total_channel_messages',
+    },
+    {
+      checkbox: 'show_total_event_registrations',
+      key: 'total_event_registrations',
+      min: 'min_total_event_registrations',
+      max: 'max_total_event_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_registrations',
+      key: 'total_event_speaker_registrations',
+      min: 'min_total_event_speaker_registrations',
+      max: 'max_total_event_speaker_registrations',
+    },
+    {
+      checkbox: 'show_total_event_speaker_sessions',
+      key: 'total_event_speaker_sessions',
+      min: 'min_total_event_speaker_sessions',
+      max: 'max_total_event_speaker_sessions',
+    },
+    {
+      checkbox: 'show_total_hackathon_registrations',
+      key: 'total_hackathon_registrations',
+      min: 'min_total_hackathon_registrations',
+      max: 'max_total_hackathon_registrations',
+    },
+    {
+      checkbox: 'show_total_invited_attended_events',
+      key: 'total_invited_attended_events',
+      min: 'min_total_invited_attended_events',
+      max: 'max_total_invited_attended_events',
+    },
+    {
+      checkbox: 'show_total_skipped_events',
+      key: 'total_skipped_events',
+      min: 'min_total_skipped_events',
+      max: 'max_total_skipped_events',
+    },
+    {
+      checkbox: 'show_total_uninvited_attended_events',
+      key: 'total_uninvited_attended_events',
+      min: 'min_total_uninvited_attended_events',
+      max: 'max_total_uninvited_attended_events',
+    },
+    {
+      checkbox: 'show_total_volunteered_events',
+      key: 'total_volunteered_events',
+      min: 'min_total_volunteered_events',
+      max: 'max_total_volunteered_events',
+    },
+  ];
 
   applyUserEngagementFilter() {
     this.isLoading = true;
     this.emptyMessage = 'Loading';
     this.community_engagement_filters = {};
     const formValues = this.userEngagementFilter.value;
-    if (formValues.show_total_channel_messages) {
-      this.community_engagement_filters.total_channel_messages = [
-        formValues.min_total_channel_messages,
-        formValues.max_total_channel_messages,
-      ];
-    }
-    if (formValues.show_total_event_registrations) {
-      this.community_engagement_filters.total_event_registrations = [
-        formValues.min_total_event_registrations,
-        formValues.max_total_event_registrations,
-      ];
-    }
-    if (formValues.show_total_event_speaker_registrations) {
-      this.community_engagement_filters.total_event_speaker_registrations = [
-        formValues.min_total_event_speaker_registrations,
-        formValues.max_total_event_speaker_registrations,
-      ];
-    }
-    if (formValues.show_total_event_speaker_sessions) {
-      this.community_engagement_filters.total_event_speaker_sessions = [
-        formValues.min_total_event_speaker_sessions,
-        formValues.max_total_event_speaker_sessions,
-      ];
-    }
-    if (formValues.show_total_hackathon_registrations) {
-      this.community_engagement_filters.total_hackathon_registrations = [
-        formValues.min_total_hackathon_registrations,
-        formValues.max_total_hackathon_registrations,
-      ];
-    }
-    if (formValues.show_total_invited_attended_events) {
-      this.community_engagement_filters.total_invited_attended_events = [
-        formValues.min_total_invited_attended_events,
-        formValues.max_total_invited_attended_events,
-      ];
-    }
-    if (formValues.show_total_skipped_events) {
-      this.community_engagement_filters.total_skipped_events = [
-        formValues.min_total_skipped_events,
-        formValues.max_total_skipped_events,
-      ];
-    }
-    if (formValues.show_total_uninvited_attended_events) {
-      this.community_engagement_filters.total_uninvited_attended_events = [
-        formValues.min_total_uninvited_attended_events,
-        formValues.max_total_uninvited_attended_events,
-      ];
-    }
-    if (formValues.show_total_volunteered_events) {
-      this.community_engagement_filters.total_volunteered_events = [
-        formValues.min_total_volunteered_events,
-        formValues.max_total_volunteered_events,
-      ];
-    }
+
+    this.filterMappings.forEach((mapping) => {
+      if (formValues[mapping.checkbox]) {
+        this.community_engagement_filters[mapping.key] = [formValues[mapping.min], formValues[mapping.max]];
+      }
+    });
+
     if (formValues.show_attended_events && formValues.attended_events_attendance && formValues.attended_events_slugs) {
       this.community_engagement_filters.attended_events = {
         attendance: formValues.attended_events_attendance,
         slugs: [formValues.attended_events_slugs],
       };
     }
+
     this.getResponses();
   }
 
@@ -645,26 +655,70 @@ export class EventFormResponsesComponent implements OnInit {
     }
   }
 
+  goBack(): void {
+    this.router.navigate([
+      '/admin/communities',
+      this.community.slug,
+      'event-dashboard',
+      this.event.slug,
+      'registrations',
+    ]);
+  }
+
   getFormData() {
-    // Create a Map to hold unique keys
     const uniqueEntries = new Map();
 
-    for (const form of this.forms) {
-      if (form && form.get('v').value !== '') {
-        const qValue = form.get('q').value;
-        const vValue = form.get('v').value;
-
-        // Update the Map with the latest value for each unique `q` key
-        uniqueEntries.set(qValue, vValue);
+    this.forms.forEach((form) => {
+      if (form?.get('v')?.value) {
+        uniqueEntries.set(form.get('q').value, form.get('v').value);
       }
-    }
+    });
 
-    // Clear the formData and re-add only unique entries
     const formData = new FormData();
     uniqueEntries.forEach((vValue, qValue) => {
-      formData.append(`qres[]q`, qValue);
-      formData.append(`qres[]v`, vValue);
+      formData.append('qres[]q', qValue);
+      formData.append('qres[]v', vValue);
     });
+
     return formData;
+  }
+
+  openPopover() {
+    this.filterPopover.show();
+  }
+  closePopover(resetFilter = false) {
+    if (resetFilter) {
+      this.clearAllFilter();
+    }
+    this.filterPopover.hide();
+  }
+
+  closeActionsPopover() {
+    this.actionsPopover.hide();
+  }
+
+  onStatusChange(event: Event, statusId: number) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedStatusIds.push(statusId);
+    } else {
+      this.selectedStatusIds = this.selectedStatusIds.filter((id) => id !== statusId);
+    }
+    this.registrationStatusFilter({ target: { value: this.selectedStatusIds } });
+  }
+
+  onGenderChange(event: Event, genderValue: string) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedGenders.push(genderValue);
+    } else {
+      this.selectedGenders = this.selectedGenders.filter((g) => g !== genderValue);
+    }
+    this.genderFilter({ target: { value: this.selectedGenders } });
+  }
+
+  applyFilter() {
+    this.getResponses();
+    this.closePopover();
   }
 }
