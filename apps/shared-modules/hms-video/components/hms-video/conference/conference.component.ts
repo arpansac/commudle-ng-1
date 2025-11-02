@@ -413,14 +413,19 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getMeetingUrl(): string {
-    // if 'admin/' is present in url then remove it, then remove 'session' and add 'beam' at the end
-    let meetingUrl = location.href.replace('admin/', '');
-    if (meetingUrl.endsWith('session')) {
-      meetingUrl = meetingUrl.replace('session', 'beam');
+    // if 'admin/' is present in url then remove it, then replace last 'session' or 'agenda' with 'beam'
+    let meetingUrl = location.href.replace('/admin/', '/');
+    const lastSessionIndex = meetingUrl.lastIndexOf('/session');
+    const lastAgendaIndex = meetingUrl.lastIndexOf('/agenda');
+
+    if (lastSessionIndex !== -1) {
+      meetingUrl = meetingUrl.substring(0, lastSessionIndex) + '/beam';
+    } else if (lastAgendaIndex !== -1) {
+      meetingUrl = meetingUrl.substring(0, lastAgendaIndex) + '/beam';
+      // replace 'event-dashboard' with 'events' for admin side
+      meetingUrl = meetingUrl.replace('event-dashboard', 'events');
     } else {
       meetingUrl = meetingUrl + '/beam';
-      // replace 'event-dashboard' with 'events'
-      meetingUrl = meetingUrl.replace('event-dashboard', 'events');
     }
     return meetingUrl;
   }
