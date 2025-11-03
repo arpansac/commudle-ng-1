@@ -155,15 +155,18 @@
               <div class="team-details">
                 <div class="team-name">
                   <span class="com-flex com-gap-2">
-                    <span> (#{{ userResponse.team.id }}){{ userResponse.team.name }}</span>
+                    <span
+                      ><span class="id"> (#{{ userResponse.team.id }})</span> {{ userResponse.team.name }}</span
+                    >
                     @if(userResponse.team.team_leader_hur_status !== EInvitationStatus.APPLICATION_COMPLETE){
-                    <app-badge
-                      text="Submission not completed"
-                      [fontColor]="'com-text-tAuro-Metal-Saurus'"
-                      [fontSize]="'small'"
-                      [borderRadius]="'round'"
-                      [color]="'com-bg-Bright-Gray-Light'"
-                    ></app-badge>
+                    <fa-icon
+                      [icon]="icons.faExclamationTriangle"
+                      [title]="
+                        hackathon.participate_types === ENUMS.EParticipateTypes.TEAM
+                          ? 'Incomplete registration: Team Leader has not completed the form'
+                          : 'Incomplete registration'
+                      "
+                    ></fa-icon>
                     }
                   </span>
                   <span
