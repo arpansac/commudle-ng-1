@@ -40,8 +40,11 @@ table {
     .team-details {
       .team-name {
         @apply com-text-black com-text-base com-font-medium;
-        app-badge {
-          @apply com-w-max;
+        .id {
+          @apply com-text-xs com-font-normal;
+        }
+        fa-icon {
+          @apply com-text-sm;
         }
       }
       .date {
