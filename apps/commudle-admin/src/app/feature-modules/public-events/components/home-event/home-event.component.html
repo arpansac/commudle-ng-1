@@ -44,7 +44,7 @@
         <nb-actions>
           <nb-action (click)="scroll(eventFormSectionRef)" *ngIf="moment() < moment(event.end_time)" class="clickable">
             <nb-icon icon="file-text-outline" status="primary"></nb-icon>
-            <span><a [routerLink]="'.'" fragment="event-form">Event Form</a></span>
+            <span><a [routerLink]="'.'" fragment="event-form">Event Forms</a></span>
           </nb-action>
           <nb-action (click)="scroll(updatesSectionRef)" *ngIf="hasUpdates" class="clickable">
             <nb-icon icon="star-outline" status="warning"></nb-icon>
@@ -94,11 +94,11 @@
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
         <div *appBreakpoints="'>lg'" class="registrations-buttons">
-          <nb-card class="event-form-card">
+          <nb-card *ngIf="moment() < moment(event.end_time)" class="event-form-card">
             <nb-card-header>
               <h6 class="event-form-title">
                 <a [routerLink]="'.'" fragment="event-form"
-                  ><nb-icon icon="file-text-outline" status="primary"></nb-icon>Event Form</a
+                  ><nb-icon icon="file-text-outline" status="primary"></nb-icon>Event Forms</a
                 >
               </h6>
             </nb-card-header>
