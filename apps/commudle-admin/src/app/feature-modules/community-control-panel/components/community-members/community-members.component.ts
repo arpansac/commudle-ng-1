@@ -116,7 +116,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
 
     this.daysFilterForm = this.fb.group({
-      days: [this.daysFilter, [Validators.min(1), Validators.max(365)]],
+      days: [this.daysFilter, [Validators.min(1)]],
     });
   }
 
@@ -193,7 +193,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.userRolesUsers = [];
       this.total = 0;
       this.checkForActiveFilters();
-      this.setupDaysFilter();
     }
 
     this.subscriptions.push(
@@ -276,19 +275,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  setupDaysFilter() {
-    this.daysFilterForm
-      .get('days')
-      .valueChanges.pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((days) => {
-        this.loadNewMembersCount();
-      });
-  }
-
   loadNewMembersCount() {
     if (this.community) {
-      const days = this.daysFilterForm.get('days').value || 90;
-      this.statsCommunitiesService.newMembersCount(this.community.slug, days).subscribe((data) => {
+      this.statsCommunitiesService.newMembersCount(this.community.slug, this.daysFilter).subscribe((data) => {
         this.newMembersCount = data.total;
       });
     }

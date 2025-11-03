@@ -22,8 +22,8 @@
             placeholder="Enter the number of days"
             type="number"
             min="1"
-            max="365"
             formControlName="days"
+            (input)="onDaysFilterChange($event)"
             class="days-input"
           />
         </div>
