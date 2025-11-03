@@ -175,6 +175,11 @@
         </div>
       </div>
     </div>
+    @if (bulkUpdateMessage) {
+    <div class="com-p-4 com-text-center com-bg-blue-50 com-text-blue-700 com-rounded com-mb-4">
+      <p>{{ bulkUpdateMessage }}</p>
+    </div>
+    }
     <div class="data-table-container">
       <ngx-datatable
         #table
