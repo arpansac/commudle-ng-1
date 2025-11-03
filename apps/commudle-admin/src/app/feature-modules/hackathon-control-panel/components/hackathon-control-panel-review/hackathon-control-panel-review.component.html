@@ -154,7 +154,18 @@
             <td class="name">
               <div class="team-details">
                 <div class="team-name">
-                  {{ userResponse.team.name }}
+                  <span class="com-flex com-gap-2">
+                    <span> (#{{ userResponse.team.id }}){{ userResponse.team.name }}</span>
+                    @if(userResponse.team.team_leader_hur_status !== EInvitationStatus.APPLICATION_COMPLETE){
+                    <app-badge
+                      text="Submission not completed"
+                      [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                      [fontSize]="'small'"
+                      [borderRadius]="'round'"
+                      [color]="'com-bg-Bright-Gray-Light'"
+                    ></app-badge>
+                    }
+                  </span>
                   <span
                     *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"
                     [nbTooltip]="hackathonWinner.hackathon_prize.name"
@@ -290,7 +301,12 @@
   <nb-card class="response-dialog-box">
     <nb-card-header class="com-flex com-justify-between com-items-center">
       <div class="heading">
-        <span>{{ selectedTeamDetails.name }}</span>
+        <div>
+          <span>{{ selectedTeamDetails.name }}</span>
+          <div class="date">
+            {{ moment(selectedTeamDetails.created_at).format('DD MMM YYYY') }}
+          </div>
+        </div>
         <div class="project-submit" *ngIf="selectedTeamDetails.community_build">Project Submitted</div>
         <div class="project-link" *ngIf="selectedTeamDetails.community_build">
           <a [routerLink]="['/builds', selectedTeamDetails.community_build.slug]"> Go to Project</a>
@@ -580,7 +596,16 @@
             }"
           >
             <div (click)="displayUserData(user)" class="name" *ngIf="user.name">
-              {{ user.name }}
+              <span> {{ user.name }}</span>
+              @if(user.team_leader ){
+              <app-badge
+                text="Team Leader"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+              }
               <commudle-user-personal-connect
                 [userConnect]="user.distance_from_current_user"
               ></commudle-user-personal-connect>
@@ -593,7 +618,8 @@
                   user.invite_status !== EInvitationStatus.APPLICATION_COMPLETE
               }"
             >
-              {{ user.user_email }} <br />
+              {{ user.user_email }}
+              <br />
               <small>{{ user.invite_status | capitalizeAndRemoveUnderscore }}</small>
             </div>
           </div>
