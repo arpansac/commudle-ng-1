@@ -255,6 +255,7 @@
               <button
                 nbButton
                 status="primary"
+                size="tiny"
                 (click)="openIndividualTeamEmailDialogBox(userResponse.team); $event.stopPropagation()"
               >
                 Send Email
@@ -644,33 +645,40 @@
             <input type="text" nbInput fullWidth readonly [value]="selectedUserDetails.phone" />
           </div>
 
-          <div *ngIf="selectedResponse?.length > 0">
-            <div *ngFor="let questionAndAnswer of selectedResponse; let i = index">
-              <div>
-                Question: <strong>{{ questionAndAnswer.question.title }}</strong>
-              </div>
-              <ng-container *ngIf="questionAndAnswer.question.question_type_id === 5">
-                <div>
-                  Answer:
-                  <div *ngFor="let answer of questionAndAnswer?.answer">{{ answer?.title }}</div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="questionAndAnswer.question.question_type_id === 4">
-                <div>
-                  Answer: <span>{{ questionAndAnswer.answer?.title }}</span>
-                </div>
-              </ng-container>
-              <ng-container
-                *ngIf="
-                  questionAndAnswer.question.question_type_id !== 5 && questionAndAnswer.question.question_type_id !== 4
-                "
-              >
-                <div>
-                  Answer: <span>{{ questionAndAnswer.answer?.response_text }}</span>
-                </div>
-              </ng-container>
-            </div>
-          </div>
+          @if(selectedResponse?.length > 0){
+          <span>Form Responses</span>
+          @for (questionAndAnswer of selectedResponse; track questionAndAnswer.id) {
+          <nb-card class="form-responses-card">
+            <nb-card-body>
+              <details open>
+                <summary>
+                  <strong>{{ questionAndAnswer.question.title }}</strong>
+                </summary>
+                <ng-container *ngIf="questionAndAnswer.question.question_type_id === 5">
+                  <div>
+                    Answer:
+                    <div *ngFor="let answer of questionAndAnswer?.answer">{{ answer?.title }}</div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="questionAndAnswer.question.question_type_id === 4">
+                  <div>
+                    Answer: <span>{{ questionAndAnswer.answer?.title }}</span>
+                  </div>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    questionAndAnswer.question.question_type_id !== 5 &&
+                    questionAndAnswer.question.question_type_id !== 4
+                  "
+                >
+                  <div>
+                    Answer: <span>{{ questionAndAnswer.answer?.response_text }}</span>
+                  </div>
+                </ng-container>
+              </details>
+            </nb-card-body>
+          </nb-card>
+          } }
         </div>
       </div>
     </nb-card-body>
