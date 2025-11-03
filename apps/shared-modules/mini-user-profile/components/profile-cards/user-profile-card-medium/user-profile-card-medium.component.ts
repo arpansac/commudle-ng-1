@@ -11,6 +11,8 @@ export class UserProfileCardMediumComponent implements OnInit {
   @Input() maxNameLength = 50;
   @Input() maxDesignationLength = 50;
   @Input() openInNewTab = false;
+  @Input() showHiringLookingTags = false;
+  @Input() maxDesignationLineClamp = 1;
 
   constructor() {}
 
