@@ -73,7 +73,7 @@
       @apply com-w-full com-border-collapse com-min-w-full;
 
       thead {
-        @apply com-sticky com-top-0 com-z-20 com-bg-white;
+        @apply com-sticky com-top-0 com-z-[8] com-bg-white;
         th {
           @apply com-px-4 com-py-3 com-text-left com-text-xs com-font-semibold com-text-gray-500;
 

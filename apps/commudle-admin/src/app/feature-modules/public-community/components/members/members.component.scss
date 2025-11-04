@@ -90,7 +90,7 @@ nb-card {
     @apply com-mb-4;
 
     .search {
-      @apply com-m-0 com-bg-white;
+      @apply com-m-0 com-bg-white com-rounded-xl;
 
       input {
         @apply com-bg-white #{!important};
