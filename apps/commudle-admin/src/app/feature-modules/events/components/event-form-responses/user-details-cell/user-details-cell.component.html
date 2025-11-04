@@ -45,14 +45,15 @@
       </div>
       <div *ngIf="event.editable" class="action-buttons">
         @if (userResponse.registration_status.name === 'shortlisted') {
-        <button
-          (click)="openRSVPEmailWindow()"
-          *ngIf="userResponse.registration_status.name === 'shortlisted'"
-          nbButton
-          size="tiny"
-        >
-          Send RSVP Email
-        </button>
+        <div class="rsvp-container">
+          <button (click)="openRSVPEmailWindow()" nbButton ghost class="rsvp-button" fullWidth>
+            <fa-icon [icon]="faEnvelope" class="rsvp-icon"></fa-icon>
+            <span class="rsvp-text">Send RSVP Email</span>
+          </button>
+          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button">
+            <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
+          </button>
+        </div>
         } @else if (userResponse.registration_status.name === 'confirmed') { @if (userResponse.entry_pass === null) {
         <button (click)="generateEntryPass()" nbButton size="small" ghost>Generate Entry Pass</button>
         } @else {
@@ -147,7 +148,7 @@
             >
           </div>
           <div class="actions">
-            <fa-icon [icon]="icons.faXmark" (click)="destroyNote(note.id, i)"></fa-icon>
+            <fa-icon [icon]="icons.faXmark" (click)="openDeleteNoteConfirmation(note.id, i)"></fa-icon>
           </div>
         </div>
         }
@@ -156,23 +157,21 @@
   </nb-card>
 </ng-template>
 
-<!-- <ng-template #createNotesDialog let-data let-ref="dialogRef">
-  <nb-card class="create-note-dialog-box dialog-box">
+<ng-template #confirmDeleteNoteDialog let-data let-ref="dialogRef">
+  <nb-card class="confirm-delete-note">
     <nb-card-header>
-      <div>New Note</div>
+      <div>Delete Note</div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <form [formGroup]="noteForm" (ngSubmit)="createNotes(data.dfergId); ref.close()">
-        <textarea nbInput placeholder="Enter your note..." formControlName="text" rows="4" fullWidth></textarea>
-      </form>
+      <div>Are you sure you want to delete this note?</div>
+      <em>This action cannot be undone.</em>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" fullWidth (click)="createNotes(data.dfergId); ref.close()">
-        <span>Save Note</span>
-      </button>
+      <button nbButton status="danger" (click)="destroyNote(data.noteId, data.index); ref.close()">Delete</button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
-</ng-template> -->
+</ng-template>

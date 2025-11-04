@@ -58,17 +58,21 @@
     }
   }
 
-  .entry-pass-container {
+  .entry-pass-container,
+  .rsvp-container {
     @apply com-flex com-items-center com-gap-2;
 
-    .entry-pass-button {
+    .entry-pass-button,
+    .rsvp-button {
       @apply com-flex com-items-center com-gap-2;
 
-      .entry-pass-icon {
+      .entry-pass-icon,
+      .rsvp-icon {
         @apply com-text-gray-600;
       }
 
-      .entry-pass-text {
+      .entry-pass-text,
+      .rsvp-text {
         @apply com-text-sm com-font-medium com-text-gray-700;
       }
     }
@@ -98,7 +102,8 @@
   }
 }
 
-.confirm-delete-entry-pass {
+.confirm-delete-entry-pass,
+.confirm-delete-note {
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;

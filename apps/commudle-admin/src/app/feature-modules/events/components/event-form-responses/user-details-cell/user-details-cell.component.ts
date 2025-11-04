@@ -52,6 +52,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   @ViewChild('confirmDeleteEntryPassDialog') confirmDeleteEntryPassDialog: TemplateRef<any>;
 
   @ViewChild('notesListDialog') notesListDialogBox: TemplateRef<any>;
+  @ViewChild('confirmDeleteNoteDialog') confirmDeleteNoteDialog: TemplateRef<any>;
   // @ViewChild('createNotesDialog') createNotesDialogBox: TemplateRef<any>;
 
   noteForm: FormGroup;
@@ -199,6 +200,15 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
         this.userResponse.notes.unshift(note);
         this.newNoteText = '';
       });
+  }
+
+  openDeleteNoteConfirmation(noteId: number, index: number) {
+    this.nbDialogService.open(this.confirmDeleteNoteDialog, {
+      context: {
+        noteId: noteId,
+        index: index,
+      },
+    });
   }
 
   destroyNote(noteId: number, index: number) {
