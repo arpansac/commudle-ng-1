@@ -123,16 +123,16 @@
     </nb-card-header>
     <nb-card-body>
       <div class="add-note-container">
-        <textarea nbInput placeholder="Enter your note..." [(ngModel)]="newNoteText" rows="3" fullWidth></textarea>
+        <textarea nbInput placeholder="Enter your note..." [(ngModel)]="newNoteText" rows="2" fullWidth></textarea>
         <button
           (click)="createNotes(data.dfergId)"
           nbButton
-          status="warning"
-          outline
+          status="primary"
           [disabled]="!newNoteText?.trim()"
           class="add-note-button"
+          size="small"
         >
-          <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
+          <fa-icon [icon]="icons.faCheck" class="notes-icon"></fa-icon>
           <span>Add Note</span>
         </button>
       </div>

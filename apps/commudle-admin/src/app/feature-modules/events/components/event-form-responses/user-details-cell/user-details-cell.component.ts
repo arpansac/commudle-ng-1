@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faInfo, faEnvelope, faStickyNote, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faEnvelope, faStickyNote, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
@@ -34,6 +34,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   EDomain = EDomain;
   icons = {
     faXmark,
+    faCheck,
   };
 
   @Input() community: ICommunity;
