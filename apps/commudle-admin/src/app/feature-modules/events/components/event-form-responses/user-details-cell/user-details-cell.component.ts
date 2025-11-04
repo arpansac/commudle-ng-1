@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faInfo, faEnvelope, faStickyNote } from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faEnvelope, faStickyNote, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService, NbWindowService } from '@commudle/theme';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app/services/data-form-entity-response-groups.service';
@@ -32,6 +32,9 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   faStickyNote = faStickyNote;
   EExperienceLevel = EExperienceLevel;
   EDomain = EDomain;
+  icons = {
+    faXmark,
+  };
 
   @Input() community: ICommunity;
   @Input() event: IEvent;
@@ -48,9 +51,10 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
   @ViewChild('confirmDeleteEntryPassDialog') confirmDeleteEntryPassDialog: TemplateRef<any>;
 
   @ViewChild('notesListDialog') notesListDialogBox: TemplateRef<any>;
-  @ViewChild('createNotesDialog') createNotesDialogBox: TemplateRef<any>;
+  // @ViewChild('createNotesDialog') createNotesDialogBox: TemplateRef<any>;
 
   noteForm: FormGroup;
+  newNoteText = '';
 
   constructor(
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
@@ -165,18 +169,20 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     });
   }
 
-  openCreateNotesDialog(dfergId) {
-    this.nbDialogService.open(this.createNotesDialogBox, {
-      context: {
-        dfergId: dfergId,
-      },
-    });
-  }
+  // openCreateNotesDialog(dfergId) {
+  //   this.nbDialogService.open(this.createNotesDialogBox, {
+  //     context: {
+  //       dfergId: dfergId,
+  //     },
+  //   });
+  // }
 
   createNotes(dfergId: number | string) {
+    if (!this.newNoteText?.trim()) return;
+
     this.noteService
       .createNote(
-        { note: this.noteForm.value },
+        { note: { text: this.newNoteText.trim() } },
         EDbModels.KOMMUNITY,
         this.community.id,
         EDbModels.USER,
@@ -190,7 +196,16 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
       )
       .subscribe((note: INote) => {
         this.userResponse.notes.unshift(note);
-        this.noteForm.reset();
+        this.newNoteText = '';
       });
+  }
+
+  destroyNote(noteId: number, index: number) {
+    this.noteService.destroyNote(noteId).subscribe((data) => {
+      if (data) {
+        this.toastLogService.successDialog('Note Deleted!');
+        this.userResponse.notes.splice(index, 1);
+      }
+    });
   }
 }
