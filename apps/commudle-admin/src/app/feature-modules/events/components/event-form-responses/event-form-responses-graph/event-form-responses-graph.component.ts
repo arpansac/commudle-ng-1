@@ -14,13 +14,15 @@ export class EventFormResponsesGraphComponent implements OnInit, OnDestroy {
   @Input() forms;
   @Input() eventDataFormEntityGroupId;
   @Input() filterValue;
-  @Input() registrationStatusId;
+  @Input() selectedStatusIds: number[] = [];
   @Input() page;
   @Input() count;
-  @Input() gender;
+  @Input() selectedGenders: string[] = [];
   @Input() selectedEventLocationTrackId;
   @Input() question: IQuestion;
   @Input() showGenderGraphOnly = false;
+  @Input() community_engagement_filters: Record<string, unknown> = {};
+
   EQuestionTypes = EQuestionTypes;
   responses;
   responseChart;
@@ -64,14 +66,16 @@ export class EventFormResponsesGraphComponent implements OnInit, OnDestroy {
       .getEventDataFormResponsesByFilter(
         this.eventDataFormEntityGroupId,
         this.filterValue,
-        this.registrationStatusId,
+        this.selectedStatusIds,
         this.page,
         this.count,
         this.question ? this.question.id : '',
-        this.gender,
+        this.selectedGenders,
         this.selectedEventLocationTrackId,
         formData,
+        Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
+
       .subscribe((data) => {
         this.responses = data.responses;
         this.diversityChat = new Chart(`diversity`, {
