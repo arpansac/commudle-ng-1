@@ -48,6 +48,8 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   interestedUsers: IUser[];
   interestedUsersCount: number;
   hrgId: number;
+  isLoadingCommunityLeaders = true;
+  isLoadingJudges = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -122,11 +124,11 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   }
 
   getJudges() {
-    this.isLoading = true;
+    this.isLoadingJudges = true;
     this.subscriptions.push(
       this.hackathonService.pIndexJudge(this.hackathon.id).subscribe((data) => {
         this.hackathonJudges = data;
-        this.isLoading = false;
+        this.isLoadingJudges = false;
       }),
     );
   }
@@ -174,10 +176,10 @@ export class HackathonTeamConfirmationComponent implements OnInit {
   }
 
   private fetchCommunityDetails() {
-    this.isLoading = true;
+    this.isLoadingCommunityLeaders = true;
     this.uruService.pGetCommunityLeadersByRole(this.hackathon.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
       this.communityLeaders = data.users;
-      this.isLoading = false;
+      this.isLoadingCommunityLeaders = false;
     });
   }
 }
