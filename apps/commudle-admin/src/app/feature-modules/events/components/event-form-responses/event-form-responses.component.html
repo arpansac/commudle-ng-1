@@ -176,293 +176,255 @@
       </div>
     </div>
     <div class="data-table-container">
-      <ngx-datatable
-        #table
-        (page)="setPage($event.offset)"
-        [columnMode]="ColumnMode.force"
-        [count]="totalEntries"
-        [externalPaging]="true"
-        [footerHeight]="50"
-        [headerHeight]="64"
-        [limit]="count"
-        [loadingIndicator]="isLoading"
-        [messages]="{ emptyMessage: emptyMessage }"
-        [offset]="page - 1"
-        [rows]="rows"
-        [scrollbarH]="true"
-        [scrollbarV]="true"
-        [sortType]="SortType.single"
-        [virtualization]="false"
-        class="material expandable"
-        rowHeight="auto"
-      >
-        <!-- User Details -->
-        <ngx-datatable-column [canAutoResize]="true" [frozenLeft]="true" [width]="360" name="User Details">
-          <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="header-column-template">
-              <div class="com-flex com-gap-3 com-items-center">
-                <p class="user-details">User Details</p>
-                <div
-                  [nbPopover]="templateRef"
-                  nbPopoverTrigger="hover"
-                  nbPopoverPlacement="bottom"
-                  [nbPopoverContext]="{ showGenderGraph: true }"
-                >
-                  <fa-icon [icon]="icons.faPieChart"></fa-icon>
-                </div>
-              </div>
-            </div>
-          </ng-template>
+      <!-- Loading indicator -->
+      @if (isLoading) {
+      <div class="loading-indicator">
+        <div class="loading-spinner"></div>
+        <p>Loading... ({{ rows.length }} rows loaded)</p>
+      </div>
+      }
 
-          <ng-template let-expanded="expanded" let-row="row" ngx-datatable-cell-template>
-            <div class="row-header user-details">
-              <app-user-details-cell
-                (updateEntryPass)="updateEntryPass($event, row.id)"
-                (updatedRegistrationStatus)="updateRegistrationStatus($event, row.id)"
-                [community]="community"
-                [eventDataFormEntityGroupId]="eventDataFormEntityGroup.id"
-                [event]="event"
-                [registrationStatuses]="registrationStatuses"
-                [registrationType]="eventDataFormEntityGroup.registration_type"
-                [userResponse]="row"
-              >
-              </app-user-details-cell>
-              <p
-                (click)="toggleExpandRow(row)"
-                [class.datatable-icon-down]="expanded"
-                [class.datatable-icon-right]="!expanded"
-                class="desktop-hidden view-mobile-response"
-                title="Expand/Collapse Row"
-              >
-                View Responses
-              </p>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
+      <!-- Empty message -->
+      @if (!isLoading && rows.length === 0) {
+      <div class="empty-message">
+        <p>{{ emptyMessage || 'No entries found' }}</p>
+      </div>
+      }
 
-        <!-- engagement Data with -->
-        <ngx-datatable-column [width]="360">
-          <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="com-flex com-items-center com-w-full com-gap-3">
-              <div class="mobile-hidden">
-                <p class="engagement-data">Insights</p>
-              </div>
-
-              <div>
-                <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
-                  <fa-icon [icon]="icons.faFilter"></fa-icon>
-                </span>
-                &nbsp; &nbsp; &nbsp; @if (hasCommunityEngagementFilters()) {
-                <span (click)="clearUserEngagementFilter()" class="com-text-red-500 com-cursor-pointer"
-                  >Clear Filters</span
-                >
-                }
-              </div>
-            </div>
-          </ng-template>
-
-          <ng-template let-expanded="expanded" let-row="row" ngx-datatable-cell-template>
-            <div class="mobile-hidden">
-              <app-user-engagement-data
-                *ngIf="row"
-                [userResponse]="row"
-                [communityId]="community.id"
-              ></app-user-engagement-data>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <!-- track slot details -->
-        @if (eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
-        <ngx-datatable-column [width]="350">
-          <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="mobile-hidden">
-              <div class="com-flex com-gap-2 com-items-center com-justify-center">
-                <div class="track-slot-filter-dropdown">
-                  <select [(ngModel)]="selectedEventLocationTrackId" (change)="trackSlotFilter()" class="com-border-0">
-                    <option [ngValue]="0">Assigned Session Slots: All</option>
-                    @for (elt of eventLocationTracks; track elt.id) {
-                    <option [ngValue]="elt.id">{{ elt.name }}</option>
-                    }
-                  </select>
-                </div>
-                @if (selectedEventLocationTrackId !== 0) {
-                <div (click)="trackSlotFilter(0)" class="clear-track-filter">
-                  <fa-icon [icon]="icons.faXmark"></fa-icon>
-                </div>
-                }
-              </div>
-            </div>
-          </ng-template>
-
-          <ng-template let-expanded="expanded" let-row="row" ngx-datatable-cell-template>
-            <div class="mobile-hidden">
-              <commudle-user-track-slots
-                [trackSlots]="row.track_slots"
-                [event]="event"
-                [community]="community"
-                [row]="row"
-                [eventLocations]="eventLocations"
-              ></commudle-user-track-slots>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-        }
-
-        <!-- Payment Details -->
-        @if (eventDataFormEntityGroup?.is_paid) {
-        <ngx-datatable-column [width]="300">
-          <ng-template let-column="column" ngx-datatable-header-template>
-            <div class="mobile-hidden">
-              <div class="">
-                <p>Payment Details</p>
-              </div>
-            </div>
-          </ng-template>
-
-          <ng-template let-expanded="expanded" let-row="row" ngx-datatable-cell-template>
-            <div class="mobile-hidden">
-              <commudle-user-payment-details
-                [eto]="row.event_ticket_orders"
-                [user]="row.user"
-              ></commudle-user-payment-details>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-        }
-
-        <!-- Questions -->
-        @for (question of questions; track question.id; let i = $index) {
-        <ngx-datatable-column [canAutoResize]="true" [width]="200" name="{{ question.title }}">
-          <ng-template ngx-datatable-header-template>
-            @if (!question.editMode) {
-            <div class="row-header question mobile-hidden" (click)="enableEditMode(question, i)">
-              <div><fa-icon [icon]="icons.faFilter"></fa-icon></div>
-              @if (question.title.length > 20) {
-              <p nbTooltip="{{ question.title }}">{{ question.title }}</p>
-              } @else {
-              <p>{{ question.title }}</p>
-              }
-              <div
-                [nbPopover]="templateRef"
-                nbPopoverTrigger="hover"
-                nbPopoverPlacement="bottom"
-                [nbPopoverContext]="{ question: question }"
-              >
-                <fa-icon [icon]="icons.faPieChart"></fa-icon>
-              </div>
-            </div>
-            } @if (question.editMode) {
-            <div class="com-flex com-items-center com-gap-2">
-              <div class="com-my-14px">
-                @if (forms[i]) {
-                <div>
-                  <form [formGroup]="forms[i]">
-                    <div class="name-filter">
-                      @if (question.question_type_id === EQuestionTypes.SHORT_ANSWER || question.question_type_id ===
-                      EQuestionTypes.LONG_ANSWER) {
-                      <div>
-                        <input
-                          [disabled]="isLoading"
-                          fieldSize="tiny"
-                          formControlName="v"
-                          fullWidth
-                          nbInput
-                          placeholder="{{ isLoading ? 'Still Loading' : 'Search Answer' }}"
-                          type="text"
-                          autofocus
-                        />
-                      </div>
-                      } @if (question.question_type_id === EQuestionTypes.NUMBER) {
-                      <div>
-                        <input
-                          [disabled]="isLoading"
-                          fieldSize="tiny"
-                          formControlName="v"
-                          fullWidth
-                          nbInput
-                          placeholder="{{ isLoading ? 'Still Loading' : 'Search Answer' }}"
-                          type="number"
-                          autofocus
-                        />
-                      </div>
-                      } @if (question.question_type_id === EQuestionTypes.SINGLE_CHOICE || question.question_type_id ===
-                      EQuestionTypes.MULTIPLE_CHOICE) {
-                      <div>
-                        <select formControlName="v" autofocus class="com-max-w-[150px]">
-                          <option selected disabled value="">Choose Answer</option>
-                          @for (qc of question.question_choices; track qc.id) {
-                          <option [value]="qc.title">{{ qc.title }}</option>
-                          }
-                        </select>
-                      </div>
-                      }
+      <!-- Custom Table with frozen header and first column -->
+      @if (!isLoading && rows.length > 0) {
+      <div class="custom-table-wrapper">
+        <table class="custom-data-table">
+          <thead class="table-header">
+            <tr>
+              <!-- User Details Column (Frozen) -->
+              <th class="frozen-column user-details-header resizable-column" data-column="user-details">
+                <div class="header-column-template">
+                  <div class="com-flex com-gap-3 com-items-center">
+                    <p class="user-details">User Details</p>
+                    <div
+                      [nbPopover]="templateRef"
+                      nbPopoverTrigger="hover"
+                      nbPopoverPlacement="bottom"
+                      [nbPopoverContext]="{ showGenderGraph: true }"
+                    >
+                      <fa-icon [icon]="icons.faPieChart"></fa-icon>
                     </div>
-                  </form>
+                  </div>
+                </div>
+                <div class="resize-handle" (mousedown)="startResize($event, 'user-details')"></div>
+              </th>
+
+              <!-- Insights Column -->
+              <th class="insights-header resizable-column" data-column="insights">
+                <div class="com-flex com-items-center com-w-full com-gap-3">
+                  <div class="mobile-hidden">
+                    <p class="engagement-data">Insights</p>
+                  </div>
+                  <div>
+                    <span class="filter" (click)="openUserEngagementFilter(userEngagementFilterTemplate)">
+                      <fa-icon [icon]="icons.faFilter"></fa-icon>
+                    </span>
+                    &nbsp; &nbsp; &nbsp; @if (hasCommunityEngagementFilters()) {
+                    <span (click)="clearUserEngagementFilter()" class="com-text-red-500 com-cursor-pointer"
+                      >Clear Filters</span
+                    >
+                    }
+                  </div>
+                </div>
+                <div class="resize-handle" (mousedown)="startResize($event, 'insights')"></div>
+              </th>
+
+              <!-- Track Slot Details (for speakers) -->
+              @if (eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+              <th class="track-slots-header resizable-column" data-column="track-slots">
+                <div class="mobile-hidden">
+                  <div class="com-flex com-gap-2 com-items-center com-justify-center">
+                    <div class="track-slot-filter-dropdown">
+                      <select
+                        [(ngModel)]="selectedEventLocationTrackId"
+                        (change)="trackSlotFilter()"
+                        class="com-border-0"
+                      >
+                        <option [ngValue]="0">Assigned Session Slots: All</option>
+                        @for (elt of eventLocationTracks; track elt.id) {
+                        <option [ngValue]="elt.id">{{ elt.name }}</option>
+                        }
+                      </select>
+                    </div>
+                    @if (selectedEventLocationTrackId !== 0) {
+                    <div (click)="trackSlotFilter(0)" class="clear-track-filter">
+                      <fa-icon [icon]="icons.faXmark"></fa-icon>
+                    </div>
+                    }
+                  </div>
+                </div>
+                <div class="resize-handle" (mousedown)="startResize($event, 'track-slots')"></div>
+              </th>
+              }
+
+              <!-- Payment Details -->
+              @if (eventDataFormEntityGroup?.is_paid) {
+              <th class="payment-header resizable-column" data-column="payment">
+                <div class="mobile-hidden">
+                  <p>Payment Details</p>
+                </div>
+                <div class="resize-handle" (mousedown)="startResize($event, 'payment')"></div>
+              </th>
+              }
+
+              <!-- Question Headers -->
+              @for (question of questions; track question.id; let i = $index) {
+              <th class="question-header resizable-column" [attr.data-column]="'question-' + question.id">
+                @if (!question.editMode) {
+                <div class="row-header question mobile-hidden" (click)="enableEditMode(question, i)">
+                  <div><fa-icon [icon]="icons.faFilter"></fa-icon></div>
+                  @if (question.title.length > 20) {
+                  <p nbTooltip="{{ question.title }}">{{ question.title }}</p>
+                  } @else {
+                  <p>{{ question.title }}</p>
+                  }
+                  <div
+                    [nbPopover]="templateRef"
+                    nbPopoverTrigger="hover"
+                    nbPopoverPlacement="bottom"
+                    [nbPopoverContext]="{ question: question }"
+                  >
+                    <fa-icon [icon]="icons.faPieChart"></fa-icon>
+                  </div>
+                </div>
+                } @if (question.editMode) {
+                <div class="com-flex com-items-center com-gap-2">
+                  <div class="com-my-14px">
+                    @if (forms[i]) {
+                    <div>
+                      <form [formGroup]="forms[i]">
+                        <div class="name-filter">
+                          @if (question.question_type_id === EQuestionTypes.SHORT_ANSWER || question.question_type_id
+                          === EQuestionTypes.LONG_ANSWER) {
+                          <div>
+                            <input
+                              [disabled]="isLoading"
+                              fieldSize="tiny"
+                              formControlName="v"
+                              fullWidth
+                              nbInput
+                              placeholder="{{ isLoading ? 'Still Loading' : 'Search Answer' }}"
+                              type="text"
+                              autofocus
+                            />
+                          </div>
+                          } @if (question.question_type_id === EQuestionTypes.NUMBER) {
+                          <div>
+                            <input
+                              [disabled]="isLoading"
+                              fieldSize="tiny"
+                              formControlName="v"
+                              fullWidth
+                              nbInput
+                              placeholder="{{ isLoading ? 'Still Loading' : 'Search Answer' }}"
+                              type="number"
+                              autofocus
+                            />
+                          </div>
+                          } @if (question.question_type_id === EQuestionTypes.SINGLE_CHOICE || question.question_type_id
+                          === EQuestionTypes.MULTIPLE_CHOICE) {
+                          <div>
+                            <select formControlName="v" autofocus class="com-max-w-[150px]">
+                              <option selected disabled value="">Choose Answer</option>
+                              @for (qc of question.question_choices; track qc.id) {
+                              <option [value]="qc.title">{{ qc.title }}</option>
+                              }
+                            </select>
+                          </div>
+                          }
+                        </div>
+                      </form>
+                    </div>
+                    }
+                  </div>
+                  <div (click)="disableEditMode(question, i)" class="clear-track-filter">
+                    <fa-icon [icon]="icons.faXmark"></fa-icon>
+                  </div>
                 </div>
                 }
-              </div>
-              <div (click)="disableEditMode(question, i)" class="clear-track-filter">
-                <fa-icon [icon]="icons.faXmark"></fa-icon>
-              </div>
-            </div>
-            }
-          </ng-template>
-
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <div class="row-cell question mobile-hidden" style="height: 100px">
-              <p
-                [innerHTML]="
-                  row.showFullAnswer
-                    ? (getQuestionResponse(row.data_form_entity_response_values, question.id)
-                      | linky : { sanitizeHtml: true })
-                    : (getQuestionResponse(row.data_form_entity_response_values, question.id)
-                      | truncatetext : 100
-                      | linky : { sanitizeHtml: true })
-                "
-                class="question-responses"
-              ></p>
-              @if (getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100) {
-              <a (click)="row.showFullAnswer = !row.showFullAnswer" class="clickable">
-                {{ row.showFullAnswer ? 'Read less' : 'Read more' }}
-              </a>
+                <div class="resize-handle" (mousedown)="startResize($event, 'question-' + question.id)"></div>
+              </th>
               }
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-        }
+            </tr>
+          </thead>
 
-        <!-- responsive row format -->
-        <ngx-datatable-row-detail (toggle)="onDetailToggle($event)" [rowHeight]="'100%'">
-          <ng-template let-expanded="expanded" let-row="row" ngx-datatable-row-detail-template>
-            @if (row) {
-            <div class="com-max-w-fit">
-              <app-user-engagement-data [userResponse]="row" [communityId]="community.id"></app-user-engagement-data>
-            </div>
-            } @if (eventDataFormEntityGroup?.is_paid) {
-            <div class="com-max-w-fit">
-              <commudle-user-payment-details
-                [eto]="row.event_ticket_orders"
-                [user]="row.user"
-              ></commudle-user-payment-details>
-            </div>
-            <div class="com-max-w-fit">
-              <commudle-user-track-slots
-                [trackSlots]="row.track_slots"
-                [event]="event"
-                [community]="community"
-                [row]="row"
-                [eventLocations]="eventLocations"
-              ></commudle-user-track-slots>
-            </div>
-            } @if (questions.length > 0) {
-            <div style="padding-left: 1rem; font-size: 14px; height: 300px; overflow-y: scroll">
+          <tbody class="table-body">
+            @for (row of rows; track row.id; let rowIndex = $index) {
+            <tr class="table-row" [class.expanded]="expandedRows.has(row.id)">
+              <!-- User Details Cell (Frozen) -->
+              <td class="frozen-column user-details-cell">
+                <div class="row-header user-details">
+                  <app-user-details-cell
+                    (updateEntryPass)="updateEntryPass($event, row.id)"
+                    (updatedRegistrationStatus)="updateRegistrationStatus($event, row.id)"
+                    [community]="community"
+                    [eventDataFormEntityGroupId]="eventDataFormEntityGroup.id"
+                    [event]="event"
+                    [registrationStatuses]="registrationStatuses"
+                    [registrationType]="eventDataFormEntityGroup.registration_type"
+                    [userResponse]="row"
+                  >
+                  </app-user-details-cell>
+                  <p
+                    (click)="toggleExpandRow(row)"
+                    [class.datatable-icon-down]="expandedRows.has(row.id)"
+                    [class.datatable-icon-right]="!expandedRows.has(row.id)"
+                    class="desktop-hidden view-mobile-response"
+                    title="Expand/Collapse Row"
+                  >
+                    View Responses
+                  </p>
+                </div>
+              </td>
+
+              <!-- Insights Cell -->
+              <td class="insights-cell">
+                <div class="mobile-hidden">
+                  <app-user-engagement-data
+                    *ngIf="row"
+                    [userResponse]="row"
+                    [communityId]="community.id"
+                  ></app-user-engagement-data>
+                </div>
+              </td>
+
+              <!-- Track Slots Cell -->
+              @if (eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+              <td class="track-slots-cell">
+                <div class="mobile-hidden">
+                  <commudle-user-track-slots
+                    [trackSlots]="row.track_slots"
+                    [event]="event"
+                    [community]="community"
+                    [row]="row"
+                    [eventLocations]="eventLocations"
+                  ></commudle-user-track-slots>
+                </div>
+              </td>
+              }
+
+              <!-- Payment Details Cell -->
+              @if (eventDataFormEntityGroup?.is_paid) {
+              <td class="payment-cell">
+                <div class="mobile-hidden">
+                  <commudle-user-payment-details
+                    [eto]="row.event_ticket_orders"
+                    [user]="row.user"
+                  ></commudle-user-payment-details>
+                </div>
+              </td>
+              }
+
+              <!-- Question Cells -->
               @for (question of questions; track question.id) {
-              <div>
-                <p>
-                  <strong>Q. {{ question.title }}</strong>
-                </p>
-                <div>
+              <td class="question-cell" [attr.data-question-id]="question.id">
+                <div class="row-cell question mobile-hidden">
                   <p
                     [innerHTML]="
                       row.showFullAnswer
@@ -480,17 +442,94 @@
                   </a>
                   }
                 </div>
-              </div>
+              </td>
               }
-            </div>
-            } @else {
-            <div style="padding-left: 1rem; font-size: 14px">No questions available</div>
-            }
-          </ng-template>
-        </ngx-datatable-row-detail>
-      </ngx-datatable>
+            </tr>
+
+            <!-- Expanded Row Details -->
+            @if (expandedRows.has(row.id)) {
+            <tr class="expanded-row">
+              <td [attr.colspan]="getColumnCount()" class="expanded-content">
+                <div class="expanded-details">
+                  @if (row) {
+                  <div class="com-max-w-fit">
+                    <app-user-engagement-data
+                      [userResponse]="row"
+                      [communityId]="community.id"
+                    ></app-user-engagement-data>
+                  </div>
+                  } @if (eventDataFormEntityGroup?.is_paid) {
+                  <div class="com-max-w-fit">
+                    <commudle-user-payment-details
+                      [eto]="row.event_ticket_orders"
+                      [user]="row.user"
+                    ></commudle-user-payment-details>
+                  </div>
+                  <div class="com-max-w-fit">
+                    <commudle-user-track-slots
+                      [trackSlots]="row.track_slots"
+                      [event]="event"
+                      [community]="community"
+                      [row]="row"
+                      [eventLocations]="eventLocations"
+                    ></commudle-user-track-slots>
+                  </div>
+                  } @if (questions.length > 0) {
+                  <div style="padding-left: 1rem; font-size: 14px; height: 300px; overflow-y: scroll">
+                    @for (question of questions; track question.id) {
+                    <div>
+                      <p>
+                        <strong>Q. {{ question.title }}</strong>
+                      </p>
+                      <div>
+                        <p
+                          [innerHTML]="
+                            row.showFullAnswer
+                              ? (getQuestionResponse(row.data_form_entity_response_values, question.id)
+                                | linky : { sanitizeHtml: true })
+                              : (getQuestionResponse(row.data_form_entity_response_values, question.id)
+                                | truncatetext : 100
+                                | linky : { sanitizeHtml: true })
+                          "
+                          class="question-responses"
+                        ></p>
+                        @if (getQuestionResponse(row.data_form_entity_response_values, question.id).length > 100) {
+                        <a (click)="row.showFullAnswer = !row.showFullAnswer" class="clickable">
+                          {{ row.showFullAnswer ? 'Read less' : 'Read more' }}
+                        </a>
+                        }
+                      </div>
+                    </div>
+                    }
+                  </div>
+                  } @else {
+                  <div style="padding-left: 1rem; font-size: 14px">No questions available</div>
+                  }
+                </div>
+              </td>
+            </tr>
+            } }
+          </tbody>
+        </table>
+      </div>
+
+      }
+
+      <!-- Pagination -->
     </div>
   </nb-card-body>
+  <nb-card-footer>
+    <div class="pagination-container">
+      <app-pagination
+        (goTo)="page = $event; getResponses()"
+        (next)="page = $event; getResponses()"
+        (previous)="page = $event; getResponses()"
+        [count]="count"
+        [current]="page"
+        [total]="totalEntries"
+      ></app-pagination>
+    </div>
+  </nb-card-footer>
 </nb-card>
 
 <ng-template #confirmStatusChange let-data let-ref="dialogRef">

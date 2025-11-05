@@ -64,6 +64,8 @@
   }
 
   .data-table-container {
+    @apply com-relative com-h-[70vh] com-overflow-hidden;
+
     @media screen and (max-width: 800px) {
       .desktop-hidden {
         @apply com-block;
@@ -88,65 +90,227 @@
       }
     }
 
-    .ngx-datatable {
-      @apply com-bg-white com-h-[70vh];
+    .loading-indicator {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-h-full;
 
-      // ::ng-deep .datatable-header-cell {
-      //   padding: 0 16px !important;
-      //   display: flex !important;
-      // }
+      .loading-spinner {
+        @apply com-w-8 com-h-8 com-border-4 com-border-gray-200 com-border-t-blue-500 com-rounded-full com-animate-spin com-mb-4;
+      }
 
-      .header-column-template {
-        .registration-status-filter {
-          @apply com-flex com-flex-nowrap;
+      p {
+        @apply com-text-gray-600;
+      }
+    }
 
-          div {
-            @apply com-border com-border-gray-300 com-cursor-pointer com-p-1;
+    .empty-message {
+      @apply com-flex com-items-center com-justify-center com-h-full;
+
+      p {
+        @apply com-text-gray-600 com-text-lg;
+      }
+    }
+
+    .custom-table-wrapper {
+      @apply com-h-full com-overflow-auto com-relative;
+    }
+
+    .custom-data-table {
+      @apply com-w-full com-border-collapse com-bg-white;
+      border-spacing: 0;
+
+      .table-header {
+        @apply com-sticky com-top-0 com-z-20 com-bg-white com-shadow-sm;
+
+        th {
+          @apply com-p-4 com-text-left com-font-medium com-text-gray-700 com-border-b com-border-gray-200 com-bg-gray-50;
+          min-width: 200px;
+          position: relative;
+
+          &.frozen-column {
+            @apply com-sticky com-left-0 com-z-30 com-bg-gray-50;
+            min-width: 360px;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
           }
 
-          p {
-            @apply com-text-xs com-m-0;
+          &.user-details-header {
+            @apply com-w-[360px];
+          }
+
+          &.insights-header {
+            @apply com-w-[480px];
+          }
+
+          &.track-slots-header {
+            @apply com-w-[350px];
+          }
+
+          &.payment-header {
+            @apply com-w-[300px];
+          }
+
+          &.question-header {
+            @apply com-w-[200px];
           }
         }
       }
 
-      .row-header {
-        @apply com-whitespace-normal;
+      .table-body {
+        tr {
+          @apply com-border-b com-border-gray-100 hover:com-bg-gray-50;
 
-        &.question {
-          @apply com-overflow-y-visible com-whitespace-normal com-flex com-gap-1 com-items-baseline com-cursor-pointer;
+          &.expanded {
+            @apply com-bg-blue-50;
+          }
 
-          .small-text {
-            @apply com-text-xs;
+          td {
+            @apply com-p-4 com-align-top com-border-b com-border-gray-100;
+            min-width: 200px;
+            max-height: 120px;
+            overflow-y: auto;
+            position: relative;
+
+            &.frozen-column {
+              @apply com-sticky com-left-0 com-z-10 com-bg-white;
+              min-width: 360px;
+              box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+            }
+
+            &.user-details-cell {
+              @apply com-w-[360px];
+            }
+
+            &.insights-cell {
+              @apply com-w-[480px];
+            }
+
+            &.track-slots-cell {
+              @apply com-w-[350px];
+            }
+
+            &.payment-cell {
+              @apply com-w-[300px];
+            }
+
+            &.question-cell {
+              @apply com-w-[200px];
+            }
           }
         }
-      }
 
-      .row-cell {
-        &.question {
-          @apply com-whitespace-normal;
+        .expanded-row {
+          @apply com-bg-blue-50;
 
-          p {
-            @apply com-text-sm;
+          .expanded-content {
+            @apply com-p-6;
+          }
+
+          .expanded-details {
+            @apply com-flex com-flex-col com-gap-4;
           }
         }
       }
     }
+
+    .pagination-container {
+      @apply com-p-4 com-bg-white com-border-t com-border-gray-200;
+
+      app-pagination {
+        @apply com-flex com-justify-center;
+      }
+    }
+
+    .header-column-template {
+      .registration-status-filter {
+        @apply com-flex com-flex-nowrap;
+
+        div {
+          @apply com-border com-border-gray-300 com-cursor-pointer com-p-1;
+        }
+
+        p {
+          @apply com-text-xs com-m-0;
+        }
+      }
+    }
+
+    .row-header {
+      @apply com-whitespace-normal;
+
+      &.question {
+        @apply com-overflow-y-visible com-whitespace-normal com-flex com-gap-1 com-items-baseline com-cursor-pointer;
+
+        .small-text {
+          @apply com-text-xs;
+        }
+      }
+    }
+
+    .row-cell {
+      &.question {
+        @apply com-whitespace-normal;
+
+        p {
+          @apply com-text-sm;
+        }
+      }
+    }
+
+    /* // Expand/collapse icons */
+    .datatable-icon-right::before {
+      content: '▶';
+      @apply com-text-gray-500 com-mr-2;
+    }
+
+    .datatable-icon-down::before {
+      content: '▼';
+      @apply com-text-gray-500 com-mr-2;
+    }
+
+    .view-mobile-response {
+      @apply com-cursor-pointer com-text-blue-600 com-text-sm com-font-medium;
+    }
+
+    .clickable {
+      @apply com-cursor-pointer com-text-blue-600 com-underline;
+    }
+
+    /* // Resizable columns */
+    .resizable-column {
+      position: relative;
+
+      .resize-handle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: transparent;
+        cursor: col-resize;
+        z-index: 10;
+
+        &:hover {
+          background: #007bff;
+          opacity: 0.5;
+        }
+
+        &:active {
+          background: #007bff;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    /* // Resizing state */
+    .resizing {
+      user-select: none;
+
+      .resize-handle {
+        background: #007bff;
+        opacity: 0.8;
+      }
+    }
   }
 }
-
-// .name-filter {
-//   @apply com-w-full com-flex com-gap-1 com-items-center;
-//   input {
-//     @apply com-w-full;
-//   }
-//   .clear-search-filter {
-//     @apply com-cursor-pointer;
-//     fa-icon {
-//       @apply com-text-red-500 com-text-base;
-//     }
-//   }
-// }
 
 .group-actions {
   @apply com-flex com-flex-wrap;

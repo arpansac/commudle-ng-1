@@ -1,8 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ColumnMode, SortType } from '@commudle/ngx-datatable';
 import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import {
@@ -42,8 +41,7 @@ import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],
 })
-export class EventFormResponsesComponent implements OnInit {
-  @ViewChild('table') table;
+export class EventFormResponsesComponent implements OnInit, OnDestroy {
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
   @ViewChild(NbPopoverDirective) filterPopover: NbPopoverDirective;
   @ViewChild('actionsPopoverDirective') actionsPopover: NbPopoverDirective;
@@ -61,9 +59,20 @@ export class EventFormResponsesComponent implements OnInit {
 
   isLoading = true;
   rows = [];
-  ColumnMode = ColumnMode;
-  SortType = SortType;
   emptyMessage;
+  expandedRows = new Set<number>();
+
+  // Resize functionality
+  isResizing = false;
+  currentColumn: string | null = null;
+  startX = 0;
+  startWidth = 0;
+  columnWidths: { [key: string]: number } = {
+    'user-details': 360,
+    insights: 480,
+    'track-slots': 350,
+    payment: 300,
+  };
 
   page = 1;
   totalEntries: number;
@@ -183,7 +192,7 @@ export class EventFormResponsesComponent implements OnInit {
         this.questions = this.dataForm.questions;
       });
 
-    // this.getResponses();
+    this.getResponses();
     this.updateFilter();
   }
 
@@ -290,27 +299,9 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   setPage(pageNumber) {
-    this.page = pageNumber + 1;
-    if (this.searchForm.get('name').value) {
-      this.emptyMessage = 'Loading...';
-      this.dataFormEntityResponseGroupsService
-        .getEventDataFormResponses(
-          this.eventDataFormEntityGroupId,
-          this.searchForm.get('name').value.toLowerCase(),
-          this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
-          this.page,
-          this.count,
-          this.selectedGenders.length > 0 ? this.selectedGenders : [''],
-          this.selectedEventLocationTrackId,
-          this.getFormData(),
-          Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
-        )
-        .subscribe((data) => {
-          this.setResponses(data);
-        });
-    } else {
-      this.getResponses();
-    }
+    // app-pagination passes the actual page number (1-based), not 0-based
+    this.page = pageNumber;
+    this.getResponses();
   }
 
   getResponses() {
@@ -330,8 +321,15 @@ export class EventFormResponsesComponent implements OnInit {
         this.getFormData(),
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
-      .subscribe((data) => {
-        this.setResponses(data);
+      .subscribe({
+        next: (data) => {
+          this.setResponses(data);
+        },
+        error: (error) => {
+          console.error('Error loading responses:', error);
+          this.isLoading = false;
+          this.emptyMessage = 'Error loading data';
+        },
       });
   }
 
@@ -359,7 +357,11 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   toggleExpandRow(row) {
-    this.table.rowDetail.toggleExpandRow(row);
+    if (this.expandedRows.has(row.id)) {
+      this.expandedRows.delete(row.id);
+    } else {
+      this.expandedRows.add(row.id);
+    }
   }
 
   onDetailToggle(event) {}
@@ -720,5 +722,123 @@ export class EventFormResponsesComponent implements OnInit {
   applyFilter() {
     this.getResponses();
     this.closePopover();
+  }
+
+  getColumnCount(): number {
+    let count = 2; // User Details + Insights
+
+    if (this.eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+      count++; // Track slots
+    }
+
+    if (this.eventDataFormEntityGroup?.is_paid) {
+      count++; // Payment details
+    }
+
+    count += this.questions.length; // Questions
+
+    return count;
+  }
+
+  // Resize functionality methods
+  startResize(event: MouseEvent, columnId: string) {
+    event.preventDefault();
+    this.isResizing = true;
+    this.currentColumn = columnId;
+    this.startX = event.clientX;
+
+    // Get current width
+    const headerElement = document.querySelector(`[data-column="${columnId}"]`) as HTMLElement;
+    if (headerElement) {
+      this.startWidth = headerElement.offsetWidth;
+    }
+
+    // Add event listeners
+    document.addEventListener('mousemove', this.onResize.bind(this));
+    document.addEventListener('mouseup', this.stopResize.bind(this));
+
+    // Add resizing class to body
+    document.body.classList.add('resizing');
+  }
+
+  onResize(event: MouseEvent) {
+    if (!this.isResizing || !this.currentColumn) return;
+
+    const deltaX = event.clientX - this.startX;
+    const newWidth = Math.max(100, this.startWidth + deltaX); // Minimum width of 100px
+
+    // Update the column width
+    this.columnWidths[this.currentColumn] = newWidth;
+    this.updateColumnWidth(this.currentColumn, newWidth);
+  }
+
+  stopResize() {
+    this.isResizing = false;
+    this.currentColumn = null;
+
+    // Remove event listeners
+    document.removeEventListener('mousemove', this.onResize.bind(this));
+    document.removeEventListener('mouseup', this.stopResize.bind(this));
+
+    // Remove resizing class from body
+    document.body.classList.remove('resizing');
+  }
+
+  updateColumnWidth(columnId: string, width: number) {
+    // Update header width
+    const headerElement = document.querySelector(`[data-column="${columnId}"]`) as HTMLElement;
+    if (headerElement) {
+      headerElement.style.width = `${width}px`;
+      headerElement.style.minWidth = `${width}px`;
+    }
+
+    // Update corresponding cell widths using more specific selectors
+    if (columnId.startsWith('question-')) {
+      // For question columns, use the data attribute to target specific cells
+      const questionId = columnId.replace('question-', '');
+      const cellSelector = `td[data-question-id="${questionId}"]`;
+      const cellElements = document.querySelectorAll(cellSelector);
+      cellElements.forEach((cell: HTMLElement) => {
+        cell.style.width = `${width}px`;
+        cell.style.minWidth = `${width}px`;
+      });
+    } else {
+      // For non-question columns, use the class-based approach
+      const cellClass = this.getCellClass(columnId);
+      if (cellClass) {
+        const cellElements = document.querySelectorAll(`.${cellClass}`);
+        cellElements.forEach((cell: HTMLElement) => {
+          cell.style.width = `${width}px`;
+          cell.style.minWidth = `${width}px`;
+        });
+      }
+    }
+  }
+
+  getCellClass(columnId: string): string {
+    switch (columnId) {
+      case 'user-details':
+        return 'user-details-cell';
+      case 'insights':
+        return 'insights-cell';
+      case 'track-slots':
+        return 'track-slots-cell';
+      case 'payment':
+        return 'payment-cell';
+      default:
+        if (columnId.startsWith('question-')) {
+          return 'question-cell';
+        }
+        return '';
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up event listeners if component is destroyed while resizing
+    if (this.isResizing) {
+      document.removeEventListener('mousemove', this.onResize.bind(this));
+      document.removeEventListener('mouseup', this.stopResize.bind(this));
+      document.body.classList.remove('resizing');
+    }
   }
 }
