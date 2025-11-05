@@ -32,11 +32,15 @@
   <div class="registration-status-details">
     <div *ngIf="['speaker', 'attendee'].includes(registrationType.name)">
       <div class="registration-status-list">
-        <div (click)="event.editable && openConfirmationDialogBox(rs.id)" *ngFor="let rs of registrationStatuses">
+        <div
+          (click)="event.editable && openConfirmationDialogBox(rs.id)"
+          *ngFor="let rs of registrationStatuses"
+          class="registration-status-button"
+        >
           <p
             [ngClass]="{ 'selected-status': rs.id === userResponse.registration_status.id, disabled: !event.editable }"
           >
-            {{ rs.name }}
+            {{ rs.name | titlecase }}
           </p>
         </div>
       </div>
@@ -47,12 +51,12 @@
           <button
             (click)="openRSVPEmailWindow()"
             nbButton
-            ghost
             class="rsvp-button"
             fullWidth
             outline
             shape="semi-round"
             size="small"
+            ghost
           >
             <fa-icon [icon]="faEnvelope" class="rsvp-icon"></fa-icon>
             <span class="rsvp-text">Send RSVP Email</span>
@@ -60,11 +64,11 @@
           <button
             (click)="openNotesDialogBox(userResponse.id)"
             nbButton
-            ghost
             class="notes-button"
             outline
             shape="semi-round"
             size="small"
+            ghost
           >
             <app-badge
               *ngIf="userResponse.notes.length > 0"
@@ -82,23 +86,23 @@
           <button
             (click)="generateEntryPass()"
             nbButton
-            ghost
             class="entry-pass-button"
             fullWidth
             outline
             size="small"
             shape="semi-round"
+            ghost
           >
             <span class="entry-pass-text">Generate Entry Pass</span>
           </button>
           <button
             (click)="openNotesDialogBox(userResponse.id)"
             nbButton
-            ghost
             class="notes-button"
             outline
             size="small"
             shape="semi-round"
+            ghost
           >
             <app-badge
               *ngIf="userResponse.notes.length > 0"
@@ -116,12 +120,12 @@
           <button
             (click)="openEntryPassEmailWindow()"
             nbButton
-            ghost
             class="entry-pass-button"
             fullWidth
             outline
             size="small"
             shape="semi-round"
+            ghost
           >
             <fa-icon [icon]="faEnvelope" class="entry-pass-icon"></fa-icon>
             <span class="entry-pass-text">Send Entry Pass :</span>
@@ -130,11 +134,11 @@
           <button
             (click)="openNotesDialogBox(userResponse.id)"
             nbButton
-            ghost
             class="notes-button"
             outline
             size="small"
             shape="semi-round"
+            ghost
           >
             <app-badge
               *ngIf="userResponse.notes.length > 0"
@@ -148,10 +152,10 @@
           </button>
         </div>
         <div class="attendee-buttons">
-          <!-- [ngClass]="{ 'active-attendance': userResponse.entry_pass.attendance === true }" -->
+          @if(userResponse.entry_pass.attendance){
           <button
             (click)="toggleAttendance()"
-            [status]="userResponse.entry_pass.attendance === true ? 'success' : 'basic'"
+            status="success"
             nbButton
             size="small"
             fullWidth
@@ -160,10 +164,12 @@
           >
             <fa-icon [icon]="icons.faCheck"></fa-icon> &nbsp; Attendance
           </button>
-          <!-- [ngClass]="{ 'active-uninvited': userResponse.entry_pass.uninvited === true }" -->
+          }@else {<button (click)="toggleAttendance()" nbButton size="small" fullWidth outline shape="semi-round" ghost>
+            <fa-icon [icon]="icons.faCheck"></fa-icon> &nbsp; Attendance</button
+          >} @if(userResponse.entry_pass.uninvited){
           <button
             (click)="toggleUninvited()"
-            [status]="userResponse.entry_pass.uninvited === true ? 'warning' : 'basic'"
+            status="warning"
             nbButton
             size="small"
             fullWidth
@@ -172,17 +178,20 @@
           >
             Uninvited
           </button>
+          }@else {<button (click)="toggleUninvited()" nbButton size="small" fullWidth outline shape="semi-round" ghost>
+            Uninvited</button
+          >}
         </div>
         }} @else {
         <button
           (click)="openNotesDialogBox(userResponse.id)"
           nbButton
-          ghost
           class="notes-only-button"
           fullWidth
           outline
           size="small"
           shape="semi-round"
+          ghost
         >
           <fa-icon [icon]="faStickyNote" class="notes-only-icon"></fa-icon>
           <span>Add Note</span>

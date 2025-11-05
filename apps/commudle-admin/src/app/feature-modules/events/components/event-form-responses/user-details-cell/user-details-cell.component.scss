@@ -50,6 +50,12 @@
         }
       }
     }
+    .registration-status-button:first-child {
+      @apply com-rounded-l-10;
+    }
+    .registration-status-button:last-child {
+      @apply com-rounded-r-10;
+    }
   }
 
   .entry-pass-container,
@@ -169,7 +175,7 @@
 
 // Override outline button border color
 button[nbButton][outline][ghost] {
-  @apply com-border-Bright-Gray;
+  @apply com-border-Bright-Gray com-text-Yankees-Blue;
 
   &:hover {
     @apply com-border-Bright-Gray;
