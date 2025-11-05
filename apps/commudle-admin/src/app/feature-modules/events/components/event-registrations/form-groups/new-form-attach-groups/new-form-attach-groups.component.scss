@@ -5,15 +5,18 @@
 .registration-types {
   @apply com-grid lg:com-grid-cols-4 md:com-grid-cols-3 com-grid-cols-1 com-gap-4;
   .registration-type {
-    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full com-h-12 com-text-center hover:com-border-Ultramarine-Blue hover:com-bg-[#3366FF1A] hover:com-cursor-pointer;
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full com-h-12 com-text-center hover:com-border-Ultramarine-Blue hover:com-bg-[#3366FF1A] hover:com-cursor-pointer com-flex com-justify-center com-items-center;
     &.active {
       @apply com-border-Ultramarine-Blue com-bg-[#3366FF1A];
       span {
         @apply com-text-base com-font-medium com-text-Yankees-Blue;
       }
     }
+    > div {
+      @apply com-flex com-items-center com-justify-center com-gap-1;
+    }
     span {
-      @apply com-flex com-justify-center com-items-center com-h-full com-text-base com-font-medium com-text-Yankees-Blue com-flex-wrap com-cursor-pointer;
+      @apply com-text-base com-font-medium com-text-Yankees-Blue;
     }
   }
 }
