@@ -51,7 +51,7 @@
   }
 
   .select {
-    @apply com-flex com-items-center com-gap-1 com-px-4 com-py-2 com-rounded-lg com-cursor-pointer com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-w-full;
+    @apply com-flex com-items-center com-gap-1 com-px-4 com-py-2 com-rounded-lg com-cursor-pointer com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-w-full com-mb-2;
     select {
       @apply com-bg-Ghost-White com-text-sm com-text-gray-500 com-cursor-pointer com-border-0 com-w-full;
     }
