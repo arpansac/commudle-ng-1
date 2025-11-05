@@ -59,7 +59,7 @@
               [color]="'com-bg-red-500'"
               [fontColor]="'com-text-tWhite'"
               [position]="'top right'"
-              borderRadius="round"
+              borderRadius="full-round"
             ></app-badge>
             <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
           </button>
@@ -80,7 +80,7 @@
               [color]="'com-bg-red-500'"
               [fontColor]="'com-text-tWhite'"
               [position]="'top right'"
-              borderRadius="round"
+              borderRadius="full-round"
             ></app-badge>
             <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
           </button>
@@ -116,14 +116,15 @@
         >
           <fa-icon [icon]="faStickyNote" class="notes-only-icon"></fa-icon>
           <span>Add Note</span>
+          @if(userResponse.notes && userResponse.notes.length > 0){
           <app-badge
-            *ngIf="userResponse.notes.length > 0"
             [text]="userResponse.notes.length.toString()"
             [color]="'com-bg-red-500'"
             [fontColor]="'com-text-tWhite'"
             [position]="'top right'"
-            borderRadius="round"
+            borderRadius="full-round"
           ></app-badge>
+          }
         </button>
         }
       </div>
