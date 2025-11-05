@@ -5,7 +5,7 @@
   .group-values {
     @apply com-flex com-gap-6 com-flex-wrap;
     label {
-      @apply com-relative com-flex com-items-center com-w-48 com-pr-3 com-pl-[38px] com-py-10px com-text-gray-900 com-font-normal com-text-sm com-cursor-pointer com-rounded-lg;
+      @apply com-relative com-flex com-items-center md:com-w-48 com-pr-3 com-pl-[38px] com-py-10px com-text-gray-900 com-font-normal com-text-sm com-cursor-pointer com-rounded-lg com-w-full;
 
       input {
         @apply com-cursor-pointer com-absolute com-top-0 com-left-0 com-opacity-0;

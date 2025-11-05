@@ -6,7 +6,9 @@
       class="registration-type"
       (click)="selectedRegistrationType = rt; openDialogBox()"
     >
-      <div><fa-icon [icon]="icons.faPlus"></fa-icon> {{ rt.name | titlecase }} Form</div>
+      <div>
+        <fa-icon [icon]="icons.faPlus"></fa-icon><span> {{ rt.name | titlecase }} Form</span>
+      </div>
     </div>
   </div>
 </div>
