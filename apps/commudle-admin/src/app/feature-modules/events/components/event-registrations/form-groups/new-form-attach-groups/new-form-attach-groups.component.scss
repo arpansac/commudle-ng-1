@@ -5,23 +5,15 @@
 .registration-types {
   @apply com-grid lg:com-grid-cols-4 md:com-grid-cols-3 com-grid-cols-2 com-gap-4;
   .registration-type {
-    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-2xl com-w-full com-h-86px com-text-center hover:com-border-primary-500 hover:com-bg-sky-50 hover:com-cursor-pointer;
+    @apply com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full com-h-12 com-text-center hover:com-border-Ultramarine-Blue hover:com-bg-[#3366FF1A] hover:com-cursor-pointer;
     &.active {
-      @apply com-border-primary-500 com-bg-sky-50;
-      div {
-        @apply com-text-tYankees-Blue;
+      @apply com-border-Ultramarine-Blue com-bg-[#3366FF1A];
+      span {
+        @apply com-text-base com-font-medium com-text-tYankees-Blue;
       }
     }
-    div {
-      @apply com-flex com-justify-center com-items-center com-h-full com-text-xl com-font-semibold com-flex-wrap com-cursor-pointer;
-      fa-icon {
-        @apply com-text-sm com-mr-0 md:com-mr-1;
-      }
-    }
-  }
-  .registration-type:hover {
-    div {
-      @apply com-text-tYankees-Blue;
+    span {
+      @apply com-flex com-justify-center com-items-center com-h-full com-text-base com-font-medium com-text-tYankees-Blue com-flex-wrap com-cursor-pointer;
     }
   }
 }
@@ -30,21 +22,46 @@
   @apply com-max-h-[90dvh] com-w-full md:com-w-[60dvw];
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
+
+    span {
+      @apply com-text-lg com-font-medium com-text-Yankees-Blue;
+    }
   }
+
+  nb-card-body {
+    @apply com-p-6 com-pt-0;
+  }
+  input {
+    @apply com-text-gray-500 com-bg-Ghost-White com-rounded-lg;
+  }
+
   label {
     @apply com-flex com-flex-col com-gap-1;
   }
+
   .question-heading {
-    @apply com-text-Yankees-Blue com-text-base com-font-semibold com-my-5;
+    @apply com-text-black com-text-base com-font-medium;
+
+    span {
+      @apply com-text-sm com-font-normal com-text-gray-500 com-ml-3;
+    }
   }
 
   .select {
-    @apply com-flex com-items-center com-gap-1 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-my-2  com-border com-border-solid com-border-[#EDF1F6] com-w-full com-mt-1;
+    @apply com-flex com-items-center com-gap-1 com-px-4 com-py-2 com-rounded-lg com-cursor-pointer com-bg-Ghost-White com-border com-border-solid com-border-Bright-Gray com-w-full;
     select {
-      @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+      @apply com-bg-Ghost-White com-text-sm com-text-gray-500 com-cursor-pointer com-border-0 com-w-full;
     }
   }
 }
 .disabled {
   @apply com-pointer-events-none com-cursor-not-allowed com-text-[#A6A6A6] hover:com-bg-[#F6F9FC] #{!important};
+}
+
+.question-spacing {
+  @apply com-pt-8 com-pb-4;
+}
+
+.required-question {
+  @apply com-text-sm com-font-semibold com-text-Infra-Red com-ml-2px #{!important};
 }
