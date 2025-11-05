@@ -60,7 +60,7 @@
 
   .entry-pass-container,
   .rsvp-container {
-    @apply com-flex com-items-center com-gap-2;
+    @apply com-flex com-items-center com-gap-2 com-my-3;
 
     .entry-pass-button,
     .rsvp-button {
@@ -78,10 +78,22 @@
     }
 
     .notes-button {
+      @apply com-relative;
       .notes-icon {
-        @apply com-text-orange-400;
+        @apply com-text-Chrome-Yellow;
         font-size: 18px;
       }
+    }
+  }
+
+  .notes-only-button {
+    @apply com-flex com-items-center com-gap-2 com-justify-center com-my-3 com-relative;
+
+    .notes-only-icon {
+      @apply com-text-Chrome-Yellow;
+    }
+    span {
+      @apply com-text-Yankees-Blue;
     }
   }
 
@@ -115,11 +127,11 @@
 }
 
 .notes-dialog-box {
-  @apply com-w-full md:com-w-[30dvw];
+  @apply com-w-full md:com-w-[30dvw] com-max-h-[90dvh];
 
   .add-note-container {
     .add-note-button {
-      @apply com-mt-3;
+      @apply com-mt-3 com-mb-5;
 
       .notes-icon {
         @apply com-mr-2;

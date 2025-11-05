@@ -40,17 +40,27 @@
           </p>
         </div>
       </div>
-      <div *ngIf="userResponse.registration_status.name === 'confirmed' && userResponse.entry_pass !== null">
+      @if (userResponse.registration_status.name === 'confirmed' && userResponse.entry_pass !== null) {
+      <!-- <div>
         <p class="entry-pass-code">Entry Pass: {{ userResponse.entry_pass.unique_code }}</p>
-      </div>
-      <div *ngIf="event.editable" class="action-buttons">
+      </div> -->
+      } @if (event.editable) {
+      <div class="action-buttons">
         @if (userResponse.registration_status.name === 'shortlisted') {
         <div class="rsvp-container">
-          <button (click)="openRSVPEmailWindow()" nbButton ghost class="rsvp-button" fullWidth>
+          <button (click)="openRSVPEmailWindow()" nbButton ghost class="rsvp-button" fullWidth outline>
             <fa-icon [icon]="faEnvelope" class="rsvp-icon"></fa-icon>
             <span class="rsvp-text">Send RSVP Email</span>
           </button>
-          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button">
+          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button" outline>
+            <app-badge
+              *ngIf="userResponse.notes.length > 0"
+              [text]="userResponse.notes.length.toString()"
+              [color]="'com-bg-red-500'"
+              [fontColor]="'com-text-tWhite'"
+              [position]="'top right'"
+              borderRadius="round"
+            ></app-badge>
             <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
           </button>
         </div>
@@ -58,12 +68,20 @@
         <button (click)="generateEntryPass()" nbButton size="small" ghost>Generate Entry Pass</button>
         } @else {
         <div class="entry-pass-container">
-          <button (click)="openEntryPassEmailWindow()" nbButton ghost class="entry-pass-button" fullWidth>
+          <button (click)="openEntryPassEmailWindow()" nbButton ghost class="entry-pass-button" fullWidth outline>
             <fa-icon [icon]="faEnvelope" class="entry-pass-icon"></fa-icon>
             <span class="entry-pass-text">Send Entry Pass :</span>
             <span class="entry-pass-code">{{ userResponse.entry_pass.unique_code }}</span>
           </button>
-          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button">
+          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button" outline>
+            <app-badge
+              *ngIf="userResponse.notes.length > 0"
+              [text]="userResponse.notes.length.toString()"
+              [color]="'com-bg-red-500'"
+              [fontColor]="'com-text-tWhite'"
+              [position]="'top right'"
+              borderRadius="round"
+            ></app-badge>
             <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
           </button>
         </div>
@@ -87,8 +105,29 @@
             Attendance
           </button>
         </div>
-        } }
+        }} @else {
+        <button
+          (click)="openNotesDialogBox(userResponse.id)"
+          nbButton
+          ghost
+          class="notes-only-button"
+          fullWidth
+          outline
+        >
+          <fa-icon [icon]="faStickyNote" class="notes-only-icon"></fa-icon>
+          <span>Add Note</span>
+          <app-badge
+            *ngIf="userResponse.notes.length > 0"
+            [text]="userResponse.notes.length.toString()"
+            [color]="'com-bg-red-500'"
+            [fontColor]="'com-text-tWhite'"
+            [position]="'top right'"
+            borderRadius="round"
+          ></app-badge>
+        </button>
+        }
       </div>
+      }
     </div>
   </div>
 </div>
