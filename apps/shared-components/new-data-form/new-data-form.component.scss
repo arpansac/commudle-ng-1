@@ -136,7 +136,7 @@
   @apply com-flex com-gap-x-4 com-mt-4;
 
   .add-description-button {
-    @apply com-bg-white com-text-black md:com-flex com-hidden;
+    @apply com-bg-white com-text-xs com-font-medium com-text-black md:com-flex com-hidden com-border com-border-solid com-border-gray-400 com-rounded;
     nb-icon {
       @apply com-mr-1;
     }
@@ -146,9 +146,15 @@
     @apply com-font-semibold com-text-xl com-justify-start com-flex com-w-full md:com-w-auto;
 
     .dropdown {
-      @apply com-flex com-items-center com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded hover:com-bg-[#eef2f7]/50 com-w-full md:com-w-auto;
+      @apply com-flex com-items-center com-text-black com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded com-w-full md:com-w-auto;
+      nb-icon {
+        @apply com-text-black;
+      }
       select {
-        @apply com-border-0 com-bg-white hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-text-xs com-w-full md:com-w-auto;
+        @apply com-border-0 com-bg-white com-cursor-pointer com-text-xs com-w-full md:com-w-auto com-text-black com-font-medium;
+        option {
+          @apply com-text-xs com-text-black;
+        }
       }
     }
   }

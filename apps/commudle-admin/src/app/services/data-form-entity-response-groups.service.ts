@@ -62,6 +62,7 @@ export class DataFormEntityResponseGroupsService {
     gender?,
     eventLocationTrackId?,
     formData?,
+    communityEngagementFilters?,
   ): Observable<any> {
     let params = new HttpParams()
       .set('event_data_form_entity_group_id', eventDataFormEntityGroupId)
@@ -82,7 +83,9 @@ export class DataFormEntityResponseGroupsService {
     if (eventLocationTrackId) {
       params = params.set('event_location_track_id', eventLocationTrackId);
     }
-
+    if (communityEngagementFilters) {
+      formData.append('community_engagement_filters', JSON.stringify(communityEngagementFilters));
+    }
     return this.http.post<any>(
       this.apiRoutesService.getRoute(API_ROUTES.DATA_FORM_ENTITY_RESPONSE_GROUPS.FILTERED_RESPONSE_VALUES),
       formData,

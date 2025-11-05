@@ -53,29 +53,35 @@
             </div>
 
             <!-- Hackathon judges section -->
-            <div *ngIf="hackathon.judges_count" class="leaders-card">
+            <div *ngIf="hackathon.judges_count > 0 || isLoading" class="leaders-card">
               <h2 class="card-heading">Follow Hackathon Judges</h2>
-              <div *ngFor="let user of hackathonJudges" class="leader">
-                <app-user-profile-card-large
-                  [alignFollowToRight]="true"
-                  [showFollowButton]="true"
-                  [user]="user"
-                  appearanceOfFollowButton="outline"
-                ></app-user-profile-card-large>
-              </div>
+              <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+              <ng-container *ngIf="!isLoading && hackathonJudges?.length > 0">
+                <div *ngFor="let user of hackathonJudges" class="leader">
+                  <app-user-profile-card-large
+                    [alignFollowToRight]="true"
+                    [showFollowButton]="true"
+                    [user]="user"
+                    appearanceOfFollowButton="outline"
+                  ></app-user-profile-card-large>
+                </div>
+              </ng-container>
             </div>
 
             <!-- Community leaders section -->
-            <div *ngIf="communityLeaders?.length" class="leaders-card">
+            <div *ngIf="communityLeaders?.length > 0 || isLoadingCommunityLeaders" class="leaders-card">
               <h2 class="card-heading">Follow Community Leaders</h2>
-              <div *ngFor="let user of communityLeaders" class="leader">
-                <app-user-profile-card-large
-                  [alignFollowToRight]="true"
-                  [showFollowButton]="true"
-                  [user]="user"
-                  appearanceOfFollowButton="outline"
-                ></app-user-profile-card-large>
-              </div>
+              <commudle-loading-spinner *ngIf="isLoadingCommunityLeaders"></commudle-loading-spinner>
+              <ng-container *ngIf="!isLoadingCommunityLeaders && communityLeaders?.length > 0">
+                <div *ngFor="let user of communityLeaders" class="leader">
+                  <app-user-profile-card-large
+                    [alignFollowToRight]="true"
+                    [showFollowButton]="true"
+                    [user]="user"
+                    appearanceOfFollowButton="outline"
+                  ></app-user-profile-card-large>
+                </div>
+              </ng-container>
             </div>
           </div>
         </ng-template>

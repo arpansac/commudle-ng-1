@@ -28,6 +28,7 @@ export class UserProfileCardLargeComponent implements OnInit {
   @Input() showLeaderBadgeToNameHeader = false;
   @Input() showCompanyName = false;
   @Input() showLeaderBadgeToSpeakerCount = false;
+  @Input() showMutuals = false;
   @Output() componentClicked = new EventEmitter();
 
   faBriefcase = faBriefcase;

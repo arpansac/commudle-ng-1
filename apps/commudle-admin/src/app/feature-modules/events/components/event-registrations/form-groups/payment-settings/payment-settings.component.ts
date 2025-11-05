@@ -50,6 +50,8 @@ export class PaymentSettingsComponent implements OnInit {
   commudleFeePercentage = 2;
   commudleFeeAmount = 0;
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
+  @ViewChild('dialog') dialog: TemplateRef<any>;
+  @ViewChild('refundPage') refundPage: TemplateRef<any>;
   @Output() paidTicketSettingUpdated = new EventEmitter<IPaymentDetail>();
 
   constructor(
@@ -266,5 +268,18 @@ export class PaymentSettingsComponent implements OnInit {
     this.paymentSettingService.calculateCommudleFeeAmount(priceValue, taxValue).subscribe((data) => {
       this.commudleFeeAmount = data;
     });
+  }
+
+  onChangeTicketSettings(event) {
+    const value = event.target.value;
+    if (value === 'edit-payment-details' || value === 'add-payment-details') {
+      this.open(this.dialog);
+    }
+    if (value === 'coupon-code') {
+      this.openCreateDiscountDialog();
+    }
+    if (value === 'refund-policy') {
+      this.open(this.refundPage);
+    }
   }
 }

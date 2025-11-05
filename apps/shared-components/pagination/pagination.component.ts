@@ -22,8 +22,8 @@ export class PaginationComponent implements OnChanges {
       return [...Array(total).keys()].map((x) => ++x);
     }
 
-    if (current > 5) {
-      if (current >= total - 4) {
+    if (current >= 5) {
+      if (current > total - 4) {
         return [1, -1, total - 4, total - 3, total - 2, total - 1, total];
       } else {
         return [1, -1, current - 1, current, current + 1, -1, total];
@@ -50,6 +50,6 @@ export class PaginationComponent implements OnChanges {
   }
 
   public onPrevious(): void {
-    this.previous.next(this.current - 1);
+    this.previous.emit(this.current - 1);
   }
 }

@@ -119,25 +119,26 @@
                       >
                         <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                       </span>
-
-                      <button
-                        (click)="toggleDescriptionField(i)"
-                        class="add-description-button"
-                        ghost
-                        nbButton
-                        size="small"
-                        status="primary"
-                      >
-                        <nb-icon
-                          [icon]="question?.get('show_description')?.value ? 'close-outline' : 'plus-outline'"
-                        ></nb-icon>
-                        {{ question?.get('show_description')?.value ? 'Remove Description' : 'Add Description' }}
-                      </button>
-
-                      <div *ngIf="question?.get('show_description')?.value" class="description-textbox">
-                        <editor [init]="tinyMCE" class="editor" formControlName="description"></editor>
-                      </div>
                     </div>
+                  </div>
+
+                  <div *ngIf="question?.get('show_description')?.value" class="description-textbox">
+                    <editor [init]="tinyMCE" class="editor" formControlName="description"></editor>
+                  </div>
+                  <div class="field">
+                    <button
+                      (click)="toggleDescriptionField(i)"
+                      class="add-description-button"
+                      outline
+                      size="small"
+                      status="basic"
+                      nbButton
+                    >
+                      <nb-icon
+                        [icon]="question?.get('show_description')?.value ? 'close-outline' : 'plus-outline'"
+                      ></nb-icon>
+                      {{ question?.get('show_description')?.value ? 'Remove Description' : 'Add Description' }}
+                    </button>
 
                     <div class="question-settings">
                       <div
@@ -170,83 +171,90 @@
                         <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                       </span>
                     </div>
+                  </div>
 
-                    <div *ngIf="[4, 5].includes(question.get('question_type_id').value)">
-                      <div
-                        *ngFor="let choice of question['controls'].question_choices['controls']; let chi = index"
-                        class="choices-container"
-                        formArrayName="question_choices"
-                      >
-                        <div class="choice-container com-flex com-items-center">
-                          <div [formGroupName]="chi">
-                            <input
-                              [readonly]="choice.value.has_responses"
-                              formControlName="title"
-                              nbInput
-                              placeholder="Choice {{ chi + 1 }}"
-                              required
-                              type="text"
-                            />
-                            <span
-                              *ngIf="
-                                choice.get('title').touched &&
-                                choice.get('title').invalid &&
-                                choice.get('title').errors.required
-                              "
-                            >
-                              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                            </span>
-                          </div>
+                  <div *ngIf="[4, 5].includes(question.get('question_type_id').value)">
+                    <div
+                      *ngFor="let choice of question['controls'].question_choices['controls']; let chi = index"
+                      class="choices-container"
+                      formArrayName="question_choices"
+                    >
+                      <div class="choice-container">
+                        <div [formGroupName]="chi" class="required-choice">
+                          <input
+                            [readonly]="choice.value.has_responses"
+                            formControlName="title"
+                            nbInput
+                            placeholder="Choice {{ chi + 1 }}"
+                            required
+                            type="text"
+                          />
+                          <span
+                            *ngIf="
+                              choice.get('title').touched &&
+                              choice.get('title').invalid &&
+                              choice.get('title').errors.required
+                            "
+                          >
+                            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                          </span>
+                        </div>
 
-                          <div class="close-circle-outline">
-                            <nb-icon
-                              (click)="removeQuestionChoiceButtonClick(i, chi)"
-                              class="com-ml-2 com-mt-4"
-                              icon="close-circle-outline"
-                            ></nb-icon>
-                          </div>
+                        <div class="close-circle-outline">
+                          <nb-icon
+                            (click)="removeQuestionChoiceButtonClick(i, chi)"
+                            class="required-cross"
+                            icon="close-circle-outline"
+                          ></nb-icon>
                         </div>
                       </div>
-                      <button
-                        (click)="addQuestionChoiceButtonClick(i)"
-                        class="com-mt-2"
-                        hero
-                        nbButton
-                        size="tiny"
-                        status="warning"
-                      >
-                        <nb-icon icon="plus-outline"></nb-icon>
-                        &nbsp; Add Choice
-                      </button>
                     </div>
+                    <button
+                      (click)="addQuestionChoiceButtonClick(i)"
+                      class="add-choice-button"
+                      hero
+                      nbButton
+                      size="tiny"
+                      status="primary"
+                    >
+                      <nb-icon icon="plus-outline"></nb-icon>
+                      &nbsp; Add Choice
+                    </button>
                   </div>
                 </div>
 
                 <div class="question-form-footer">
-                  <div class="com-align-middle com-flex">
+                  <div class="required-below">
                     <button
                       (click)="addQuestionButtonClick(i + 1)"
                       class="footer-icons add-question-footer"
                       ghost
                       nbButton
                       size="small"
-                      status="primary"
                     >
-                      <nb-icon class="footer-icons" icon="plus-circle-outline" status="primary"></nb-icon>
+                      <nb-icon class="footer-icons" icon="plus-circle-outline" status="basic"></nb-icon>
                       &nbsp; Add Question Below
                     </button>
                     <div class="toggles">
-                      <nb-toggle class="md:com-pl-3 toggle" formControlName="required" labelPosition="right" size="tiny"
-                        ><span>Required</span></nb-toggle
+                      <nb-checkbox
+                        class="toggle md:com-pr-4"
+                        formControlName="required"
+                        labelPosition="right"
+                        size="tiny"
+                        ><span class="required-text">Required</span></nb-checkbox
                       >
-                      <nb-toggle class="toggle md:com-ml-6" formControlName="disabled" labelPosition="right" size="tiny"
+                      <nb-checkbox
+                        class="toggle md:com-pl-4"
+                        formControlName="disabled"
+                        labelPosition="right"
+                        size="tiny"
                         ><span
                           >Disable this question
                           <p class="com-m-0 com-text-primary-500">
                             <small>(This question won't appear anymore)</small>
                           </p>
                         </span>
-                      </nb-toggle>
+                      </nb-checkbox>
                     </div>
                   </div>
                   <button

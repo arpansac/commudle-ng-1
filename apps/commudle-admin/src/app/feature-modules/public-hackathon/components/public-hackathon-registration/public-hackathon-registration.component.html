@@ -3,9 +3,12 @@
     <div class="heading"></div>
     <div>
       Registration Status: Profile Submitted for Review
-      <a [routerLink]="['fill-form', hrgId]">Edit Your Response</a>
+      <a [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
+        >Edit Your Response</a
+      >
     </div>
   </nb-card-header>
+
   <nb-card-body>
     <div class="round-details">Next: Round 1 confirmation</div>
     <div *ngIf="userTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED && canSubmitProject">
