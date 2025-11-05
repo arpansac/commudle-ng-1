@@ -40,19 +40,32 @@
           </p>
         </div>
       </div>
-      @if (userResponse.registration_status.name === 'confirmed' && userResponse.entry_pass !== null) {
-      <!-- <div>
-        <p class="entry-pass-code">Entry Pass: {{ userResponse.entry_pass.unique_code }}</p>
-      </div> -->
-      } @if (event.editable) {
+      @if (event.editable) {
       <div class="action-buttons">
         @if (userResponse.registration_status.name === 'shortlisted') {
         <div class="rsvp-container">
-          <button (click)="openRSVPEmailWindow()" nbButton ghost class="rsvp-button" fullWidth outline>
+          <button
+            (click)="openRSVPEmailWindow()"
+            nbButton
+            ghost
+            class="rsvp-button"
+            fullWidth
+            outline
+            shape="semi-round"
+            size="small"
+          >
             <fa-icon [icon]="faEnvelope" class="rsvp-icon"></fa-icon>
             <span class="rsvp-text">Send RSVP Email</span>
           </button>
-          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button" outline>
+          <button
+            (click)="openNotesDialogBox(userResponse.id)"
+            nbButton
+            ghost
+            class="notes-button"
+            outline
+            shape="semi-round"
+            size="small"
+          >
             <app-badge
               *ngIf="userResponse.notes.length > 0"
               [text]="userResponse.notes.length.toString()"
@@ -65,15 +78,28 @@
           </button>
         </div>
         } @else if (userResponse.registration_status.name === 'confirmed') { @if (userResponse.entry_pass === null) {
-        <button (click)="generateEntryPass()" nbButton size="small" ghost>Generate Entry Pass</button>
-        } @else {
         <div class="entry-pass-container">
-          <button (click)="openEntryPassEmailWindow()" nbButton ghost class="entry-pass-button" fullWidth outline>
-            <fa-icon [icon]="faEnvelope" class="entry-pass-icon"></fa-icon>
-            <span class="entry-pass-text">Send Entry Pass :</span>
-            <span class="entry-pass-code">{{ userResponse.entry_pass.unique_code }}</span>
+          <button
+            (click)="generateEntryPass()"
+            nbButton
+            ghost
+            class="entry-pass-button"
+            fullWidth
+            outline
+            size="small"
+            shape="semi-round"
+          >
+            <span class="entry-pass-text">Generate Entry Pass</span>
           </button>
-          <button (click)="openNotesDialogBox(userResponse.id)" nbButton ghost class="notes-button" outline>
+          <button
+            (click)="openNotesDialogBox(userResponse.id)"
+            nbButton
+            ghost
+            class="notes-button"
+            outline
+            size="small"
+            shape="semi-round"
+          >
             <app-badge
               *ngIf="userResponse.notes.length > 0"
               [text]="userResponse.notes.length.toString()"
@@ -85,24 +111,66 @@
             <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
           </button>
         </div>
-        <div>
+        } @else {
+        <div class="entry-pass-container">
           <button
-            (click)="toggleUninvited()"
-            [ngClass]="{ 'active-uninvited': userResponse.entry_pass.uninvited === true }"
+            (click)="openEntryPassEmailWindow()"
             nbButton
-            size="tiny"
-            status="link"
+            ghost
+            class="entry-pass-button"
+            fullWidth
+            outline
+            size="small"
+            shape="semi-round"
           >
-            Uninvited
+            <fa-icon [icon]="faEnvelope" class="entry-pass-icon"></fa-icon>
+            <span class="entry-pass-text">Send Entry Pass :</span>
+            <span class="entry-pass-code">{{ userResponse.entry_pass.unique_code }}</span>
           </button>
           <button
-            (click)="toggleAttendance()"
-            [ngClass]="{ 'active-attendance': userResponse.entry_pass.attendance === true }"
+            (click)="openNotesDialogBox(userResponse.id)"
             nbButton
-            size="tiny"
-            status="link"
+            ghost
+            class="notes-button"
+            outline
+            size="small"
+            shape="semi-round"
           >
-            Attendance
+            <app-badge
+              *ngIf="userResponse.notes.length > 0"
+              [text]="userResponse.notes.length.toString()"
+              [color]="'com-bg-red-500'"
+              [fontColor]="'com-text-tWhite'"
+              [position]="'top right'"
+              borderRadius="full-round"
+            ></app-badge>
+            <fa-icon [icon]="faStickyNote" class="notes-icon"></fa-icon>
+          </button>
+        </div>
+        <div class="attendee-buttons">
+          <!-- [ngClass]="{ 'active-attendance': userResponse.entry_pass.attendance === true }" -->
+          <button
+            (click)="toggleAttendance()"
+            [status]="userResponse.entry_pass.attendance === true ? 'success' : 'basic'"
+            nbButton
+            size="small"
+            fullWidth
+            outline
+            shape="semi-round"
+          >
+            <fa-icon [icon]="icons.faCheck"></fa-icon> &nbsp; Attendance
+          </button>
+          <!-- [ngClass]="{ 'active-uninvited': userResponse.entry_pass.uninvited === true }" -->
+          <button
+            (click)="toggleUninvited()"
+            [status]="userResponse.entry_pass.uninvited === true ? 'warning' : 'basic'"
+            nbButton
+            size="small"
+            fullWidth
+            outline
+            shape="semi-round"
+          >
+            Uninvited
           </button>
         </div>
         }} @else {
@@ -113,6 +181,8 @@
           class="notes-only-button"
           fullWidth
           outline
+          size="small"
+          shape="semi-round"
         >
           <fa-icon [icon]="faStickyNote" class="notes-only-icon"></fa-icon>
           <span>Add Note</span>

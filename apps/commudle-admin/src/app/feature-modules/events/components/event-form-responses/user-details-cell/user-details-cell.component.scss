@@ -35,24 +35,18 @@
 
 .registration-status-details {
   .registration-status-list {
-    display: flex;
-    flex-wrap: wrap;
+    @apply com-flex com-flex-wrap com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-py-4;
     > div {
-      padding: 5px;
-      border: 0.5px solid lightgrey;
-      cursor: pointer;
+      @apply com-px-2 com-py-1 com-border com-border-solid com-border-Bright-Gray com-cursor-pointer;
       p {
-        font-size: 12px;
-        margin: 0;
-        color: blue;
+        @apply com-text-Yankees-Blue com-m-0 com-text-10px com-font-medium;
 
         &.disabled {
-          color: lightgrey;
+          @apply com-text-gray-500;
         }
 
         &.selected-status {
-          color: green;
-          font-weight: bold;
+          @apply com-text-green-500;
         }
       }
     }
@@ -85,6 +79,9 @@
       }
     }
   }
+  .attendee-buttons {
+    @apply com-w-full com-gap-4 com-flex;
+  }
 
   .notes-only-button {
     @apply com-flex com-items-center com-gap-2 com-justify-center com-my-3 com-relative;
@@ -99,7 +96,7 @@
 
   .action-buttons {
     .entry-pass-code {
-      margin: 0;
+      @apply com-m-0 com-text-Yankees-Blue com-font-semibold;
     }
 
     .active-uninvited {
@@ -167,5 +164,18 @@
 .dialog-box {
   nb-card-header {
     @apply com-flex com-items-center com-justify-between;
+  }
+}
+
+// Override outline button border color
+button[nbButton][outline][ghost] {
+  @apply com-border-Bright-Gray;
+
+  &:hover {
+    @apply com-border-Bright-Gray;
+  }
+
+  &:focus {
+    @apply com-border-Bright-Gray;
   }
 }
