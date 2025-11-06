@@ -158,8 +158,8 @@ export class EditorComponent implements OnInit, OnDestroy, OnChanges {
     this.uploadImages.emit(event.target.files);
   }
 
-  public focus(): void {
-    if (this.editor && !this.editor.isDestroyed) {
+  focus(): void {
+    if (this.editor && this.editable) {
       this.editor.commands.focus();
     }
   }
