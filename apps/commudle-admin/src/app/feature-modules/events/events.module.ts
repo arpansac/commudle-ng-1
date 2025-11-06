@@ -84,6 +84,7 @@ import { EditorModule as NewEditorModule } from '@commudle/editor';
 import { EventCheckedInListComponent } from './components/event-checked-in-list/event-checked-in-list.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
+import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
     BackButtonComponent,
     HelpSectionComponent,
     BadgeComponent,
+    DataTableComponent,
     //Nebular
     NbButtonModule,
     NbCardModule,

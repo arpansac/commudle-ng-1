@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
@@ -17,6 +17,8 @@ import {
   faSignOutAlt,
   faFileCsv,
   faEdit,
+  faExpand,
+  faCompress,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppUsersService, ToastrService } from '@commudle/shared-services';
 import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
@@ -35,16 +37,31 @@ import { EventLocationsService } from 'apps/commudle-admin/src/app/services/even
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 
 @Component({
   selector: 'commudle-event-form-responses',
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],
 })
-export class EventFormResponsesComponent implements OnInit, OnDestroy {
+export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
   @ViewChild(NbPopoverDirective) filterPopover: NbPopoverDirective;
   @ViewChild('actionsPopoverDirective') actionsPopover: NbPopoverDirective;
+  @ViewChild('userDetailsHeaderTemplate') userDetailsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('userDetailsCellTemplate') userDetailsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('insightsHeaderTemplate') insightsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('insightsCellTemplate') insightsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('trackSlotsHeaderTemplate') trackSlotsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('trackSlotsCellTemplate') trackSlotsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('paymentHeaderTemplate') paymentHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('paymentCellTemplate') paymentCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('questionHeaderTemplate') questionHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('questionCellTemplate') questionCellTemplate!: TemplateRef<unknown>;
 
   event: IEvent;
   community: ICommunity;
@@ -61,18 +78,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
   rows = [];
   emptyMessage;
   expandedRows = new Set<number>();
-
-  // Resize functionality
-  isResizing = false;
-  currentColumn: string | null = null;
-  startX = 0;
-  startWidth = 0;
-  columnWidths: { [key: string]: number } = {
-    'user-details': 360,
-    insights: 480,
-    'track-slots': 350,
-    payment: 300,
-  };
 
   page = 1;
   totalEntries: number;
@@ -105,8 +110,11 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     faSignOutAlt,
     faFileCsv,
     faEdit,
+    faExpand: faExpand,
+    faCompress: faCompress,
   };
   editMode = false;
+  isFullscreen = false;
 
   forms: FormGroup[] = [];
   EQuestionTypes = EQuestionTypes;
@@ -117,6 +125,17 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
   community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
   //TODO past event stats
+
+  // Data table properties
+  tableColumns: DataTableColumn[] = [];
+  tableRows: DataTableRow[] = [];
+  tableConfig: DataTableConfig = {
+    expandableRows: true,
+    resizableColumns: true,
+    frozenColumns: true,
+    emptyMessage: 'No entries found',
+    loadingMessage: 'Loading...',
+  };
   constructor(
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private registrationStatusesService: RegistrationStatusesService,
@@ -190,10 +209,18 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.dataForm = data;
         this.questions = this.dataForm.questions;
+        this.setupTableColumns();
       });
 
     this.getResponses();
     this.updateFilter();
+  }
+
+  ngAfterViewInit() {
+    // Setup table columns with templates after view init
+    setTimeout(() => {
+      this.setupTableColumns();
+    }, 100);
   }
 
   // get event_data_form_entity_group
@@ -337,8 +364,115 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     this.getEventDataFromEntityGroup();
     this.totalEntries = data?.total || 0;
     this.rows = data?.data_form_entity_response_groups || [];
+    this.tableRows = this.convertRowsToTableFormat(this.rows);
     this.isLoading = false;
     this.emptyMessage = this.rows.length === 0 ? 'No entries found' : '';
+  }
+
+  setupTableColumns() {
+    this.tableColumns = [];
+
+    // User Details Column (Frozen)
+    this.tableColumns.push({
+      key: 'userDetails',
+      title: 'User Details',
+      width: '360px',
+      frozen: true,
+      resizable: true,
+      filterable: true,
+      headerTemplate: this.userDetailsHeaderTemplate,
+      cellTemplate: this.userDetailsCellTemplate,
+    });
+
+    // Insights Column
+    this.tableColumns.push({
+      key: 'insights',
+      title: 'Insights',
+      width: '300px',
+      resizable: true,
+      filterable: true,
+      headerTemplate: this.insightsHeaderTemplate,
+      cellTemplate: this.insightsCellTemplate,
+    });
+
+    // Track Slots Column (for speakers)
+    if (this.eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+      this.tableColumns.push({
+        key: 'trackSlots',
+        title: 'Track Slots',
+        width: '350px',
+        resizable: true,
+        headerTemplate: this.trackSlotsHeaderTemplate,
+        cellTemplate: this.trackSlotsCellTemplate,
+      });
+    }
+
+    // Payment Details Column
+    if (this.eventDataFormEntityGroup?.is_paid) {
+      this.tableColumns.push({
+        key: 'payment',
+        title: 'Payment Details',
+        width: '300px',
+        resizable: true,
+        headerTemplate: this.paymentHeaderTemplate,
+        cellTemplate: this.paymentCellTemplate,
+      });
+    }
+
+    // Question Columns
+    if (this.questions) {
+      this.questions.forEach((question, index) => {
+        this.tableColumns.push({
+          key: `question_${question.id}`,
+          title: question.title,
+          width: '200px',
+          resizable: true,
+          filterable: true,
+          headerTemplate: this.questionHeaderTemplate,
+          cellTemplate: this.questionCellTemplate,
+        });
+      });
+    }
+  }
+
+  convertRowsToTableFormat(rows: any[]): DataTableRow[] {
+    return rows.map((row) => ({
+      id: row.id,
+      userDetails: row,
+      insights: row,
+      trackSlots: row,
+      payment: row,
+      ...(this.questions?.reduce((acc, question) => {
+        acc[`question_${question.id}`] = {
+          question,
+          response: this.getQuestionResponse(row.data_form_entity_response_values, question.id),
+          row,
+        };
+        return acc;
+      }, {}) || {}),
+    }));
+  }
+
+  onTableRowExpand(row: DataTableRow) {
+    this.toggleExpandRow(row);
+  }
+
+  getQuestionByKey(columnKey: string): IQuestion | undefined {
+    if (!columnKey.startsWith('question_')) return undefined;
+    const questionId = parseInt(columnKey.replace('question_', ''));
+    return this.questions?.find((q) => q.id === questionId);
+  }
+
+  getQuestionIndex(columnKey: string): number {
+    if (!columnKey.startsWith('question_')) return -1;
+    const questionId = parseInt(columnKey.replace('question_', ''));
+    return this.questions?.findIndex((q) => q.id === questionId) || -1;
+  }
+
+  getExpandedRowData(): any {
+    // Get the first expanded row data for the expanded content template
+    const expandedRowId = Array.from(this.expandedRows)[0];
+    return this.rows.find((row) => row.id === expandedRowId);
   }
 
   getQuestionResponse(userResponses, questionId) {
@@ -364,7 +498,9 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDetailToggle(event) {}
+  onDetailToggle(_event: unknown) {
+    // Method kept for compatibility
+  }
 
   openRSVPEmailWindow() {
     this.windowService.open(EmailerComponent, {
@@ -398,7 +534,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     });
   }
 
-  bulkStatusChangeConfirmation(dialog: TemplateRef<any>) {
+  bulkStatusChangeConfirmation(dialog: TemplateRef<unknown>) {
     this.dialogRef = this.dialogService.open(dialog);
     this.dialogRef.onClose.subscribe(() => {
       this.bulkStatus = null;
@@ -536,7 +672,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     },
   ];
 
-  private isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
+  private isValidValue = (value: unknown) => value !== null && value !== undefined && value !== '';
 
   isApplyDisabled(): boolean {
     const formValues = this.userEngagementFilter.value;
@@ -740,105 +876,11 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy {
     return count;
   }
 
-  // Resize functionality methods
-  startResize(event: MouseEvent, columnId: string) {
-    event.preventDefault();
-    this.isResizing = true;
-    this.currentColumn = columnId;
-    this.startX = event.clientX;
-
-    // Get current width
-    const headerElement = document.querySelector(`[data-column="${columnId}"]`) as HTMLElement;
-    if (headerElement) {
-      this.startWidth = headerElement.offsetWidth;
-    }
-
-    // Add event listeners
-    document.addEventListener('mousemove', this.onResize.bind(this));
-    document.addEventListener('mouseup', this.stopResize.bind(this));
-
-    // Add resizing class to body
-    document.body.classList.add('resizing');
-  }
-
-  onResize(event: MouseEvent) {
-    if (!this.isResizing || !this.currentColumn) return;
-
-    const deltaX = event.clientX - this.startX;
-    const newWidth = Math.max(100, this.startWidth + deltaX); // Minimum width of 100px
-
-    // Update the column width
-    this.columnWidths[this.currentColumn] = newWidth;
-    this.updateColumnWidth(this.currentColumn, newWidth);
-  }
-
-  stopResize() {
-    this.isResizing = false;
-    this.currentColumn = null;
-
-    // Remove event listeners
-    document.removeEventListener('mousemove', this.onResize.bind(this));
-    document.removeEventListener('mouseup', this.stopResize.bind(this));
-
-    // Remove resizing class from body
-    document.body.classList.remove('resizing');
-  }
-
-  updateColumnWidth(columnId: string, width: number) {
-    // Update header width
-    const headerElement = document.querySelector(`[data-column="${columnId}"]`) as HTMLElement;
-    if (headerElement) {
-      headerElement.style.width = `${width}px`;
-      headerElement.style.minWidth = `${width}px`;
-    }
-
-    // Update corresponding cell widths using more specific selectors
-    if (columnId.startsWith('question-')) {
-      // For question columns, use the data attribute to target specific cells
-      const questionId = columnId.replace('question-', '');
-      const cellSelector = `td[data-question-id="${questionId}"]`;
-      const cellElements = document.querySelectorAll(cellSelector);
-      cellElements.forEach((cell: HTMLElement) => {
-        cell.style.width = `${width}px`;
-        cell.style.minWidth = `${width}px`;
-      });
-    } else {
-      // For non-question columns, use the class-based approach
-      const cellClass = this.getCellClass(columnId);
-      if (cellClass) {
-        const cellElements = document.querySelectorAll(`.${cellClass}`);
-        cellElements.forEach((cell: HTMLElement) => {
-          cell.style.width = `${width}px`;
-          cell.style.minWidth = `${width}px`;
-        });
-      }
-    }
-  }
-
-  getCellClass(columnId: string): string {
-    switch (columnId) {
-      case 'user-details':
-        return 'user-details-cell';
-      case 'insights':
-        return 'insights-cell';
-      case 'track-slots':
-        return 'track-slots-cell';
-      case 'payment':
-        return 'payment-cell';
-      default:
-        if (columnId.startsWith('question-')) {
-          return 'question-cell';
-        }
-        return '';
-    }
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
   }
 
   ngOnDestroy() {
-    // Clean up event listeners if component is destroyed while resizing
-    if (this.isResizing) {
-      document.removeEventListener('mousemove', this.onResize.bind(this));
-      document.removeEventListener('mouseup', this.stopResize.bind(this));
-      document.body.classList.remove('resizing');
-    }
+    // Component cleanup
   }
 }

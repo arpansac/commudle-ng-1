@@ -9,6 +9,7 @@ export class PaginationComponent implements OnChanges {
   @Input() current: number = 0;
   @Input() count: number = 0; // items per page
   @Input() total: number = 0; // all items
+  @Input() showJumpTo: boolean = false;
 
   @Output() goTo: EventEmitter<number> = new EventEmitter<number>();
   @Output() next: EventEmitter<number> = new EventEmitter<number>();
@@ -51,5 +52,9 @@ export class PaginationComponent implements OnChanges {
 
   public onPrevious(): void {
     this.previous.next(this.current - 1);
+  }
+
+  public getAllPages(): number[] {
+    return Array.from({ length: this.totalPage }, (_, i) => i + 1);
   }
 }

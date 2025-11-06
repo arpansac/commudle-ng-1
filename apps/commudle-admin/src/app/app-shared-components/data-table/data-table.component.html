@@ -1,0 +1,107 @@
+<!-- Loading indicator -->
+@if (isLoading) {
+<div class="loading-indicator">
+  <div class="loading-spinner"></div>
+  <p>{{ config.loadingMessage || 'Loading...' }} ({{ rows.length }} rows loaded)</p>
+</div>
+}
+
+<!-- Empty message -->
+@if (!isLoading && rows.length === 0) {
+<div class="empty-message">
+  <p>{{ config.emptyMessage || 'No entries found' }}</p>
+</div>
+}
+
+<!-- Custom Table -->
+@if (!isLoading && rows.length > 0) {
+<div class="custom-table-wrapper">
+  <table class="custom-data-table" [class.resizing]="isResizing">
+    <thead class="table-header">
+      <tr>
+        @for (column of columns; track column.key) {
+        <th
+          class="resizable-column"
+          [class.frozen-column]="column.frozen && config.frozenColumns"
+          [attr.data-column]="column.key"
+          [style.width]="column.width"
+        >
+          @if (column.headerTemplate) {
+          <!-- Custom header template -->
+          <ng-container *ngTemplateOutlet="column.headerTemplate; context: { column: column }"></ng-container>
+          } @else {
+          <!-- Default header -->
+          <div class="header-column-template">
+            <div class="com-flex com-gap-3 com-items-center">
+              <p>{{ column.title }}</p>
+              @if (column.filterable) {
+              <div>
+                <fa-icon [icon]="icons.faPieChart"></fa-icon>
+              </div>
+              }
+            </div>
+          </div>
+          } @if (column.resizable && config.resizableColumns) {
+          <div class="resize-handle" (mousedown)="startResize($event, column.key)"></div>
+          }
+        </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody class="table-body">
+      @for (row of rows; track row.id; let rowIndex = $index) {
+      <tr class="table-row" [class.expanded]="isRowExpanded(row.id)">
+        @for (column of columns; track column.key) {
+        <td
+          [class.frozen-column]="column.frozen && config.frozenColumns"
+          [class.frozen-shadow]="column.frozen && config.frozenColumns && $index === 0"
+          [attr.data-column]="column.key"
+        >
+          @if (column.cellTemplate) {
+          <!-- Custom cell template -->
+          <ng-container
+            *ngTemplateOutlet="
+              column.cellTemplate;
+              context: { row: row, column: column, value: getCellValue(row, column) }
+            "
+          ></ng-container>
+          } @else {
+          <!-- Default cell -->
+          <div class="row-cell">
+            <p>{{ getCellValue(row, column) }}</p>
+          </div>
+          }
+        </td>
+        }
+
+        <!-- Expand/Collapse button for mobile -->
+        @if (config.expandableRows) {
+        <td class="expand-cell desktop-hidden">
+          <p
+            (click)="toggleExpandRow(row)"
+            [class.datatable-icon-down]="isRowExpanded(row.id)"
+            [class.datatable-icon-right]="!isRowExpanded(row.id)"
+            class="view-mobile-response"
+            title="Expand/Collapse Row"
+          >
+            View Details
+          </p>
+        </td>
+        }
+      </tr>
+
+      <!-- Expanded Row Details -->
+      @if (config.expandableRows && isRowExpanded(row.id)) {
+      <tr class="expanded-row">
+        <td [attr.colspan]="getColumnCount()" class="expanded-content">
+          <div class="expanded-details">
+            <ng-content select="[slot=expanded-content]"></ng-content>
+          </div>
+        </td>
+      </tr>
+      } }
+    </tbody>
+  </table>
+</div>
+}
