@@ -1,5 +1,5 @@
 .confirmation-card {
-  @apply com-mt-20;
+  @apply md:com-mt-20 com-mt-10;
 
   .confirmation-header {
     @apply com-text-center com-mb-14;
@@ -58,5 +58,5 @@
 }
 
 .rsvp-container {
-  @apply com-bg-white com-pb-16 md:com-px-0 com-px-4;
+  @apply com-bg-white com-pb-16 md:com-px-0 com-px-3;
 }
