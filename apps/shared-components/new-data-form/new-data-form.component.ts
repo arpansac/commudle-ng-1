@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { IDataForm } from 'apps/shared-models/data_form.model';
 import { FormBuilder, Validators, FormArray, FormGroup, Form } from '@angular/forms';
 import { IQuestionType } from 'apps/shared-models/question_type.model';
@@ -21,6 +21,8 @@ export class NewDataFormComponent implements OnInit {
   @Input() showDescriptionField = true;
   @Input() showNameInputField = true;
   EFormPurposes = EFormPurposes;
+
+  @ViewChildren('choiceInput') choiceInputs: QueryList<ElementRef<HTMLInputElement>>;
 
   dataForm: IDataForm;
   questionTypes: IQuestionType[];
@@ -148,6 +150,14 @@ export class NewDataFormComponent implements OnInit {
         'question_choices',
       ) as FormArray
     ).push(this.initQuestionChoice());
+
+    // Focus the newly added input after view updates
+    setTimeout(() => {
+      const inputs = this.choiceInputs.toArray();
+      if (inputs.length > 0) {
+        inputs[inputs.length - 1].nativeElement.focus();
+      }
+    }, 0);
   }
 
   removeQuestionButtonClick(questionIndex: number) {

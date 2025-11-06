@@ -135,6 +135,7 @@
                         <div class="required-title">
                           <div [formGroupName]="chi" class="required-choice">
                             <input
+                              #choiceInput
                               formControlName="title"
                               nbInput
                               fullWidth
@@ -142,24 +143,23 @@
                               required
                               type="text"
                             />
-                            <span
-                              *ngIf="
-                                choice.get('title').touched &&
-                                choice.get('title').invalid &&
-                                choice.get('title').errors.required
-                              "
-                            >
-                              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                            </span>
+                            <div class="close-circle-outline">
+                              <nb-icon
+                                (click)="removeQuestionChoiceButtonClick(i, chi)"
+                                class="required-cross"
+                                icon="close-circle-outline"
+                              ></nb-icon>
+                            </div>
                           </div>
-
-                          <div class="close-circle-outline">
-                            <nb-icon
-                              (click)="removeQuestionChoiceButtonClick(i, chi)"
-                              class="required-cross"
-                              icon="close-circle-outline"
-                            ></nb-icon>
-                          </div>
+                          <span
+                            *ngIf="
+                              choice.get('title').touched &&
+                              choice.get('title').invalid &&
+                              choice.get('title').errors.required
+                            "
+                          >
+                            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                          </span>
                         </div>
                       </div>
                       <button
