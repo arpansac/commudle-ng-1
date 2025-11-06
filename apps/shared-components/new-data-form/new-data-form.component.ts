@@ -151,7 +151,7 @@ export class NewDataFormComponent implements OnInit {
       ) as FormArray
     ).push(this.initQuestionChoice());
 
-    // Focus the newly added input after view updates
+    // Focus
     setTimeout(() => {
       const inputs = this.choiceInputs.toArray();
       if (inputs.length > 0) {

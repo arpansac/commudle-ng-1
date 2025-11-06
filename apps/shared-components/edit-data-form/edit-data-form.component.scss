@@ -165,11 +165,11 @@
 }
 
 .required-choice {
-  @apply com-flex;
+  @apply com-flex com-items-center;
 }
 
 .required-cross {
-  @apply com-ml-2 com-mt-4;
+  @apply com-ml-2;
 }
 
 .required-below {
@@ -192,7 +192,7 @@
   @apply com-flex com-flex-col com-font-semibold com-text-xl com-justify-start com-mt-5;
 
   .choice-container {
-    @apply com-flex com-flex-row com-items-center;
+    @apply com-flex com-flex-col;
     nb-icon {
       @apply com-text-base;
     }
