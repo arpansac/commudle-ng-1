@@ -53,7 +53,7 @@
                     {{ moment(reason.created_at).format('MMM Do, YYYY') }}
                   </td>
                   <td *ngIf="isCampaignAdmin">
-                    {{ reason.user.name }}
+                    {{ reason.created_by.name }}
                   </td>
                 </tr>
               </table>
