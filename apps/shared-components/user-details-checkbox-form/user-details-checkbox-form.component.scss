@@ -1,28 +1,34 @@
 .form-values {
   .group-name {
-    @apply com-text-Yankees-Blue com-text-base com-font-semibold com-mt-6;
+    @apply com-text-gray-900 com-text-sm com-pb-3;
   }
   .group-values {
-    @apply com-flex com-gap-6 com-flex-wrap com-my-2;
+    @apply com-flex com-gap-6 com-flex-wrap;
     label {
-      @apply com-relative com-inline-block com-border com-border-solid com-border-Yankees-Blue com-w-64 com-pl-8 com-pr-4 com-py-2 com-text-Yankees-Blue com-font-semibold com-text-sm  com-cursor-pointer com-rounded hover:com-bg-primary-100/50;
+      @apply com-relative com-flex com-items-center md:com-w-48 com-pr-3 com-pl-[38px] com-py-10px com-text-gray-900 com-font-normal com-text-sm com-cursor-pointer com-rounded-lg com-w-full;
+
       input {
         @apply com-cursor-pointer com-absolute com-top-0 com-left-0 com-opacity-0;
       }
       .checkmark {
-        @apply com-absolute com-left-1.5 com-h-5 com-w-5 com-bg-white com-border com-border-solid com-border-[#ccc] com-rounded com-flex com-justify-center com-items-center;
+        @apply com-absolute com-left-3 com-h-4 com-w-4 com-bg-white com-border com-border-solid com-border-gray-900 com-rounded com-flex com-justify-center com-items-center;
       }
-      &.active {
-        @apply com-bg-Azure com-text-white;
+      &.active,
+      &.selected {
+        @apply com-bg-gray-50;
       }
       &.selected {
-        @apply com-bg-[#E4E7EC] com-pointer-events-none com-cursor-not-allowed com-text-primary-500 #{!important};
+        @apply com-pointer-events-none com-cursor-not-allowed;
       }
     }
 
-    .custom-checkbox input:checked + .checkmark:after {
-      content: '\2713'; /* Unicode character for checkmark */
-      @apply com-text-Yankees-Blue com-text-base;
+    .custom-checkbox input:checked + .checkmark {
+      @apply com-bg-Ultramarine-Blue com-border-Ultramarine-Blue;
+
+      &:after {
+        content: '\2713'; /* Unicode character for checkmark */
+        @apply com-text-white;
+      }
     }
 
     .custom-checkbox:hover .checkmark {

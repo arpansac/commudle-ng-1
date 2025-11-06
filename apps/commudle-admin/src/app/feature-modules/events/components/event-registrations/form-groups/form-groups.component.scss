@@ -38,6 +38,7 @@
       nb-card-body {
         @apply com-p-2;
         nb-checkbox {
+          @apply com-flex com-items-center;
           .text {
             @apply com-text-xs com-font-medium com-text-tYankees-Blue;
           }
