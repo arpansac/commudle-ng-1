@@ -51,12 +51,13 @@ export class SwUpdateComponent implements OnInit {
             console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
             // Prompt the user to update
             if ((evt as VersionReadyEvent)?.latestVersion?.appData?.critical) {
+              this.toastLogService.warningDialog('Updating App...!');
               this.document.location.reload();
             } else {
-              if (confirm('New version available. Load New Version?')) {
-                this.toastLogService.warningDialog('Updating App...!');
-                this.document.location.reload();
-              }
+              console.log(
+                'New version available. Reload to continue... Version: ' +
+                  (evt as VersionReadyEvent)?.latestVersion?.appData?.version,
+              );
             }
             break;
           case 'NO_NEW_VERSION_DETECTED':
