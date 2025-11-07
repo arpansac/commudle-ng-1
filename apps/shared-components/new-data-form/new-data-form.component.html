@@ -56,7 +56,15 @@
                   <label>
                     Question {{ i + 1 }}
                     <span *ngIf="question.get('required').value" class="required-question">*</span>
-                    <input formControlName="title" fullWidth nbInput placeholder="Title*" required type="text" />
+                    <input
+                      formControlName="title"
+                      fullWidth
+                      nbInput
+                      placeholder="Title"
+                      required
+                      type="text"
+                      size="medium"
+                    />
                   </label>
                 </div>
               </nb-card-body>
@@ -135,6 +143,7 @@
                         <div class="required-title">
                           <div [formGroupName]="chi" class="required-choice">
                             <input
+                              #choiceInput
                               formControlName="title"
                               nbInput
                               fullWidth
@@ -142,24 +151,23 @@
                               required
                               type="text"
                             />
-                            <span
-                              *ngIf="
-                                choice.get('title').touched &&
-                                choice.get('title').invalid &&
-                                choice.get('title').errors.required
-                              "
-                            >
-                              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                            </span>
+                            <div class="close-circle-outline">
+                              <nb-icon
+                                (click)="removeQuestionChoiceButtonClick(i, chi)"
+                                class="required-cross"
+                                icon="close-circle-outline"
+                              ></nb-icon>
+                            </div>
                           </div>
-
-                          <div class="close-circle-outline">
-                            <nb-icon
-                              (click)="removeQuestionChoiceButtonClick(i, chi)"
-                              class="required-cross"
-                              icon="close-circle-outline"
-                            ></nb-icon>
-                          </div>
+                          <span
+                            *ngIf="
+                              choice.get('title').touched &&
+                              choice.get('title').invalid &&
+                              choice.get('title').errors.required
+                            "
+                          >
+                            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                          </span>
                         </div>
                       </div>
                       <button
@@ -187,7 +195,7 @@
                       size="small"
                     >
                       <nb-icon class="footer-icons" icon="plus-circle-outline" status="basic"></nb-icon>
-                      &nbsp; Add Question Below
+                      &nbsp; <span>Add Question Below</span>
                     </button>
                     <nb-checkbox class="toggle" formControlName="required" labelPosition="right" size="tiny"
                       ><span class="required-text">Required</span></nb-checkbox
@@ -221,15 +229,22 @@
           </div>
         </div>
         <div *ngIf="!maxQuestionCount || maxQuestionCount > totalQuestions" class="add-question-button">
-          <button (click)="addQuestionButtonClick(totalQuestions + 1)" nbButton size="medium" status="primary">
-            <nb-icon icon="plus-outline"></nb-icon>
-            &nbsp; Add Question
+          <button (click)="addQuestionButtonClick(totalQuestions + 1)" nbButton size="medium" status="primary" outline>
+            <nb-icon icon="plus-outline"></nb-icon>Add Question
           </button>
         </div>
       </div>
 
       <div *ngIf="showSubmitButton" [ngClass]="{ sticky: stickSubmitButtonBottom }" class="submit-button">
-        <button (click)="saveDataForm()" fullWidth nbButton size="medium" status="primary" type="submit">
+        <button
+          (click)="saveDataForm()"
+          shape="semi-round"
+          fullWidth
+          nbButton
+          size="medium"
+          status="primary"
+          type="submit"
+        >
           {{ submitButtonText() }}
         </button>
       </div>

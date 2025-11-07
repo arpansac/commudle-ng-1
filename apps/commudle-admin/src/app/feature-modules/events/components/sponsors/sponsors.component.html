@@ -50,7 +50,7 @@
       </button>
     </nb-card-header>
     <nb-card-body>
-      <nb-tabset class="new-event-sponsor-options">
+      <nb-tabset class="new-event-sponsor-options" (changeTab)="onTabChange($event)">
         <nb-tab tabTitle="Choose">
           <app-loading-spinner *ngIf="loadingExistingSponsors"></app-loading-spinner>
           <div class="existing-sponsors" *ngIf="!loadingExistingSponsors">
@@ -102,7 +102,7 @@
 
             <div class="field">
               <label> Name <span class="required">*</span> </label>
-              <input formControlName="name" fullWidth nbInput type="text" placeholder="Sponsor's name" />
+              <input #nameInput formControlName="name" fullWidth nbInput type="text" placeholder="Sponsor's name" />
             </div>
 
             <div class="field">

@@ -7,7 +7,9 @@
       <p class="header-text">Meet Our Speakers</p>
       <div class="speakers-list" (scroll)="checkScrollPosition($event)">
         <ng-container *ngFor="let speaker of speakers" class="speakers-card">
-          <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25"></app-speaker-card>
+          <div class="speaker-card">
+            <app-speaker-card [speaker]="speaker" [maxUserNameLength]="25"></app-speaker-card>
+          </div>
         </ng-container>
         <div class="load-more">
           <app-loading-spinner *ngIf="canLoadMoreSpeakers && !skeletonLoaderCard"></app-loading-spinner>
@@ -50,32 +52,113 @@
 
     <div class="members-container">
       <div class="members">
-        <p class="header-text">Explore Members</p>
-        <app-loading-spinner *ngIf="isLoadingMembers && !canLoadMore"></app-loading-spinner>
-        <div class="members-list">
+        <p class="header-text">Active members of the community</p>
+        <div class="search-filters">
+          <form [formGroup]="searchForm" class="search-container">
+            <div class="search">
+              <nb-form-field>
+                <nb-icon icon="search" nbPrefix></nb-icon>
+                <input
+                  formControlName="name"
+                  fullWidth
+                  nbInput
+                  placeholder="Search using name, email, designation, about, etc"
+                  shape="semi-round"
+                  type="text"
+                />
+              </nb-form-field>
+            </div>
+          </form>
+
+          <div [formGroup]="membersForm" class="filter-dropdowns-container">
+            <div class="filter-dropdowns">
+              <nb-select
+                formControlName="domains"
+                (selectedChange)="onFilterChange()"
+                placeholder="Domains"
+                multiple
+                size="small"
+                shape="round"
+                ghost
+                class="filter-select"
+              >
+                <nb-option *ngFor="let domain of EDomain | keyvalue : originalOrder" [value]="domain.key">
+                  {{ domain.value }}
+                </nb-option>
+              </nb-select>
+              <nb-select
+                formControlName="employment_status"
+                size="small"
+                shape="round"
+                ghost
+                placeholder="Employment Status"
+                (selectedChange)="onFilterChange()"
+                class="filter-select"
+              >
+                <nb-option value="employee">Looking for work</nb-option>
+                <nb-option value="employer">Hiring</nb-option>
+              </nb-select>
+            </div>
+
+            <!-- Active Filter Tags -->
+            <div class="active-filter-tags">
+              <nb-tag-list>
+                <nb-tag
+                  [appearance]="filterByMutuals ? 'filled' : 'outline'"
+                  [text]="'My Mutuals'"
+                  size="small"
+                  status="info"
+                  [removable]="filterByMutuals ? 'true' : 'false'"
+                  [ngClass]="{ activeTag: filterByMutuals }"
+                  (click)="filterByTags('mutuals')"
+                ></nb-tag>
+              </nb-tag-list>
+              <button
+                (click)="clearAllFilters()"
+                nbButton
+                size="tiny"
+                status="basic"
+                appearance="outline"
+                shape="round"
+                class="clear-filters-btn"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="load-more">
+          <app-loading-spinner *ngIf="isLoadingMembers"></app-loading-spinner>
+        </div>
+        <div *ngIf="members.length > 0 && !isLoadingMembers" class="members-list">
           <ng-container *ngFor="let member of members">
-            <app-user-profile-card-large
-              [user]="member"
-              [showFollowButton]="true"
-              [alignFollowToRight]="true"
-            ></app-user-profile-card-large>
+            <div class="member-card">
+              <app-user-profile-card-large
+                [user]="member"
+                [showFollowButton]="true"
+                [alignFollowToRight]="true"
+                [showLeaderBadgeToNameHeader]="true"
+                [appearanceOfFollowButton]="'outline'"
+                [showCompanyName]="true"
+                [showMutuals]="true"
+              ></app-user-profile-card-large>
+            </div>
           </ng-container>
         </div>
-
-        <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
-        <div class="load-more">
-          <button
-            *ngIf="canLoadMore"
-            (click)="getMembers()"
-            nbButton
-            outline
-            size="small"
-            status="info"
-            [disabled]="!canLoadMore || isLoadingMembers"
-          >
-            Load More
-          </button>
+        <div *ngIf="members.length === 0 && !isLoadingMembers" class="no-members-found">
+          <p>No results found</p>
         </div>
+
+        <app-pagination
+          class="pagination"
+          (goTo)="page = $event; getMembers()"
+          (next)="page = $event; getMembers()"
+          (previous)="page = $event; getMembers()"
+          *ngIf="total > 0"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
       </div>
     </div>
   </nb-card-body>

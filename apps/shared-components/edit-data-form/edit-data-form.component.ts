@@ -1,5 +1,16 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+  ElementRef,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeoService } from '@commudle/shared-services';
@@ -56,6 +67,7 @@ export class EditDataFormComponent implements OnInit, OnChanges {
   };
 
   @ViewChild('cdkDrag') cdkDrag: any;
+  @ViewChildren('choiceInput') choiceInputs: QueryList<ElementRef<HTMLInputElement>>;
 
   constructor(
     private dataFormsService: DataFormsService,
@@ -150,6 +162,14 @@ export class EditDataFormComponent implements OnInit, OnChanges {
     (<FormArray>(
       (<FormArray>this.editDataForm.get('data_form').get('questions')).controls[questionIndex].get('question_choices')
     )).push(this.initQuestionChoice());
+
+    // Focus
+    setTimeout(() => {
+      const inputs = this.choiceInputs.toArray();
+      if (inputs.length > 0) {
+        inputs[inputs.length - 1].nativeElement.focus();
+      }
+    }, 0);
   }
 
   removeQuestionButtonClick(questionIndex: number) {

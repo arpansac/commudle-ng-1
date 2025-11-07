@@ -1,4 +1,4 @@
-<a [routerLink]="['/users', user.username]">
+<a [routerLink]="['/users', user.username]" [target]="openInNewTab ? '_blank' : null">
   <div class="user-profile-medium d-flex align-items-center">
     <img
       [alt]="user.name"
@@ -12,9 +12,14 @@
       <div [username]="user.username" appMiniUserProfile class="name d-flex align-items-center com-line-clamp-1">
         {{ user.name }}
         <commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick>
-        <!-- <app-hiring-looking-works-tags [user]="user" [fontSize]="'12px'"></app-hiring-looking-works-tags> -->
+        <app-hiring-looking-works-tags
+          *ngIf="showHiringLookingTags"
+          [user]="user"
+          [fontSize]="'12px'"
+          [size]="'small'"
+        ></app-hiring-looking-works-tags>
       </div>
-      <p class="designation com-line-clamp-1">{{ user.designation || '--' }}</p>
+      <p class="designation com-line-clamp-{{ maxDesignationLineClamp }}">{{ user.designation || '--' }}</p>
     </div>
   </div>
 </a>

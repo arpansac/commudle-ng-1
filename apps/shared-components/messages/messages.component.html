@@ -21,7 +21,7 @@
 
   <ng-container *ngIf="discussion.open; else discussionClose">
     <ng-container *ngIf="currentUser; else noUser">
-      <commudle-editor (contentChange)="sendMessage($event)" [validators]="validators"></commudle-editor>
+      <commudle-editor #mainEditor (contentChange)="sendMessage($event)" [validators]="validators"></commudle-editor>
     </ng-container>
   </ng-container>
 

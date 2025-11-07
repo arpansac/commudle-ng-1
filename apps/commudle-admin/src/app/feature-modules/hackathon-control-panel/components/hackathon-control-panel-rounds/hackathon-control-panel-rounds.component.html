@@ -10,7 +10,7 @@
       <div *ngFor="let round of rounds; let i = index">
         <commudle-hackathon-control-panel-round-card
           [round]="round"
-          [communitySlug]="parent.slug"
+          [communitySlug]="parent?.slug"
           [hackathonSlug]="hackathonSlug"
           (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
           (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"

@@ -63,6 +63,10 @@ export interface IUser {
   user_domain: string;
   goals: string[];
   blocked: boolean;
+  user_mutuals: {
+    mutual_followees_preview: IUser[];
+    mutual_followees: number;
+  };
 }
 
 export interface IUserSearch extends IUser {

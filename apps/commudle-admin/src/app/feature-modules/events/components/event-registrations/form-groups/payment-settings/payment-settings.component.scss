@@ -1,20 +1,20 @@
 table {
-  @apply com-w-full com-bg-gray-500-opacity-50 com-p-3 com-rounded-md com-mt-4;
+  @apply com-w-full com-bg-blue-50 com-p-2 com-rounded-md;
   tr {
-    @apply com-p-2 com-text-xs com-font-normal;
+    @apply com-p-2;
   }
   tr td:nth-child(2) {
     @apply com-font-medium com-text-right;
   }
   td {
-    @apply com-text-tblack;
+    @apply com-text-xs com-font-normal com-text-Yankees-Blue;
   }
 }
 
 .edit-buttons {
-  @apply com-flex com-gap-3 com-mt-4 com-flex-col;
-  div {
-    @apply com-text-primary-500 com-text-sm com-font-medium com-cursor-pointer com-flex com-gap-1;
+  @apply com-flex com-items-center com-p-2 com-text-xs com-rounded-md com-cursor-pointer com-bg-tWhite com-border-0 com-mb-2;
+  select {
+    @apply com-bg-tWhite com-cursor-pointer com-w-full com-border-0;
   }
 }
 

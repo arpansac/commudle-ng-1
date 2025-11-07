@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NbButtonAppearance } from '@commudle/theme';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { IUser } from '@commudle/shared-models';
+import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-user-profile-card-large',
   templateUrl: './user-profile-card-large.component.html',
@@ -24,8 +25,13 @@ export class UserProfileCardLargeComponent implements OnInit {
   @Input() appearanceOfFollowButton: NbButtonAppearance = 'filled';
   @Input() alignSpeakerCountToRight = false;
   @Input() showFollowersCount = false;
-  @Input() showLeaderBadge = false;
+  @Input() showLeaderBadgeToNameHeader = false;
+  @Input() showCompanyName = false;
+  @Input() showLeaderBadgeToSpeakerCount = false;
+  @Input() showMutuals = false;
   @Output() componentClicked = new EventEmitter();
+
+  faBriefcase = faBriefcase;
 
   constructor(private userChatsService: UserChatsService) {}
 

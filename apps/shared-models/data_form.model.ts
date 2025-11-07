@@ -1,3 +1,4 @@
+import { IUser } from '@commudle/shared-models';
 import { IQuestion } from './question.model';
 
 export interface IDataForm {
@@ -8,7 +9,7 @@ export interface IDataForm {
   slug: string;
   questions_count: number;
   responses_count: number;
-  user: string;
+  user: IUser;
   parent_type: string;
   parent_id: string;
   questions: IQuestion[];

@@ -49,6 +49,8 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   leadersOrg: IUser[] = [];
   speakers: IDataFormEntityResponseGroup[] = [];
   private destroy$ = new Subject<void>();
+  isLoadingSpeakers = true;
+  isLoadingCommunityLeaders = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -84,10 +86,10 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   }
 
   private fetchCommunityDetails() {
-    this.isLoading = true;
+    this.isLoadingCommunityLeaders = true;
     this.uruService.pGetCommunityLeadersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
       this.communityLeaders = data.users;
-      this.isLoading = false;
+      this.isLoadingCommunityLeaders = false;
     });
   }
 
@@ -117,9 +119,10 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   }
 
   getEventSpeakers() {
+    this.isLoadingSpeakers = true;
     this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
       this.speakers = data.data_form_entity_response_groups;
-      this.isLoading = false;
+      this.isLoadingSpeakers = false;
     });
   }
 

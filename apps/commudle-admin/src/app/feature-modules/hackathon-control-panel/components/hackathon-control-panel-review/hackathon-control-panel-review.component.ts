@@ -17,8 +17,16 @@ import {
   INote,
   IRound,
   ICommunity,
+  EParticipateTypes,
 } from '@commudle/shared-models';
-import { faXmark, faPlus, faCheck, faUpRightFromSquare, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faPlus,
+  faCheck,
+  faUpRightFromSquare,
+  faEnvelope,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
@@ -44,12 +52,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   hackathonRounds: IRound[];
   hackathonTracks: IHackathonTrack[];
   selectedUserDetails: IHackathonUserResponse;
-  faXmark = faXmark;
-  faPlus = faPlus;
-  faCheck = faCheck;
-  faUpRightFromSquare = faUpRightFromSquare;
-  faEnvelope = faEnvelope;
-  notesForm;
+  icons = {
+    faXmark,
+    faPlus,
+    faCheck,
+    faUpRightFromSquare,
+    faEnvelope,
+    faExclamationTriangle,
+  };
+  notesForm: FormGroup;
   notes: INote[];
   dialogRef: NbDialogRef<unknown>;
   EHackathonStatus = EHackathonStatus;
@@ -74,9 +85,15 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   dialogReference: NbDialogRef<any>;
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
-
+  confirmationDialogReference: NbDialogRef<any>;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
+
+  ENUMS = {
+    EParticipateTypes,
+  };
+  private originalStatusValue: EHackathonRegistrationStatus;
+  private originalRoundValue: number;
 
   tinyMCE = {
     height: 200,
@@ -197,11 +214,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  optionChanged(event, teamId, index) {
-    const value = event.target ? event.target.value : event;
-    this.hackathonService.changeTeamStatus(teamId, value).subscribe((data) => {
+  optionChanged(event, teamId: number, index: number) {
+    this.hackathonService.changeTeamStatus(teamId, event).subscribe((data) => {
       this.toastrService.successDialog('Details has been updated successfully');
+      this.closeConfirmationDialogBox();
       this.userResponses[index].team = data;
+      this.userResponses[index].team.registration_status = data.registration_status;
       this.selectedTeamDetails = data;
     });
   }
@@ -248,7 +266,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   changeRoundOption(event, teamId, index) {
-    this.hackathonService.changeTeamRound(teamId, event.target.value).subscribe((data) => {
+    this.hackathonService.changeTeamRound(teamId, event).subscribe((data) => {
       this.toastrService.successDialog('Details has been updated successfully');
       this.userResponses[index].team.round = data.round;
     });
@@ -416,5 +434,110 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   setMeta() {
     this.seoService.setTitle(`Applications & Projects | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
     this.seoService.noIndex(true);
+  }
+
+  storeOriginalValue(value: EHackathonRegistrationStatus) {
+    this.originalStatusValue = value;
+  }
+
+  storeOriginalRoundValue(value: number) {
+    this.originalRoundValue = value;
+  }
+
+  trackByTeamId(index: number, item: any): any {
+    return item.team.id + '-' + item.team.registration_status;
+  }
+
+  openApplicationConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
+    const previousValue = this.originalStatusValue;
+    const newValue = event?.target ? event.target.value : event;
+
+    // Revert the visible select back until user confirms
+    if (event?.target) {
+      event.target.value = previousValue;
+    }
+    this.userResponses[index].team.registration_status = previousValue;
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        teamId: teamId,
+        index: index,
+        previousValue: previousValue,
+        newValue: newValue,
+      },
+    });
+  }
+
+  closeConfirmationDialogBox() {
+    if (this.confirmationDialogReference) {
+      this.confirmationDialogReference.close();
+    }
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+  }
+
+  confirmApplicationStatusChange(teamId: number, index: number, newValue: EHackathonRegistrationStatus) {
+    this.hackathonService.changeTeamStatus(teamId, newValue).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      this.userResponses[index].team = data;
+      this.selectedTeamDetails = data;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`status-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.registration_status;
+      }
+
+      this.closeConfirmationDialogBox();
+    });
+  }
+
+  openRoundConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
+    const selectedRoundId = event.target.value;
+    const selectedRound = this.hackathonRounds.find((round) => round.id == selectedRoundId);
+    // Use the stored original value from mousedown
+    const previousValue = this.originalRoundValue;
+
+    // Revert the model first
+    if (this.selectedTeamDetails && previousValue) {
+      this.selectedTeamDetails.round = this.hackathonRounds.find((round) => round.id == previousValue);
+    }
+
+    // Then revert the visible select
+    event.target.value = previousValue?.toString() || '';
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        event: selectedRoundId,
+        roundName: selectedRound?.name,
+        teamId: teamId,
+        index: index,
+        previousValue: previousValue,
+        newValue: selectedRoundId,
+      },
+    });
+  }
+
+  confirmRoundChange(teamId: number, index: number, newRoundId: number) {
+    this.hackathonService.changeTeamRound(teamId, newRoundId).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      if (index >= 0) {
+        this.userResponses[index].team.round = data.round;
+      }
+      this.selectedTeamDetails.round = data.round;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`round-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.round.id.toString();
+      }
+
+      this.closeConfirmationDialogBox();
+    });
   }
 }

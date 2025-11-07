@@ -30,6 +30,7 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
   communityLeaders: IUser[];
   subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
+  isLoadingCommunityLeaders = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -90,12 +91,15 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
   }
 
   private fetchCommunityDetails() {
+    this.isLoadingCommunityLeaders = true;
     this.uruService.pGetCommunityLeadersByRole(this.hackathon.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
       this.communityLeaders = data.users;
+      this.isLoadingCommunityLeaders = false;
     });
   }
 
   getJudges() {
+    this.isLoading = true;
     this.subscriptions.push(
       this.hackathonService.pIndexJudge(this.hackathon.id).subscribe((data) => {
         this.hackathonJudges = data;

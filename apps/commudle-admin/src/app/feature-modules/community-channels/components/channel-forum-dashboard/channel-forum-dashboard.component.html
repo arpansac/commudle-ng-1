@@ -75,10 +75,10 @@
 
     <!-- //Channel message Component -->
     <div *ngIf="channelMessage && !forumMessage">
-      <app-community-channel
+      <commudle-community-channel
         [selectedChannelId]="selectedChannelOrFormId"
         [shareMessageUrl]="redirectUrl"
-      ></app-community-channel>
+      ></commudle-community-channel>
     </div>
     <div *ngIf="token">
       <commudle-join-by-token [redirectUrl]="redirectUrl"></commudle-join-by-token>

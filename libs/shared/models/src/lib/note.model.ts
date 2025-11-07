@@ -5,7 +5,6 @@ export interface INote {
   text: string;
   parent_type: string;
   parent_id: number;
-  user_id: number;
-  user: IUser;
+  created_by: IUser;
   created_at: Date;
 }

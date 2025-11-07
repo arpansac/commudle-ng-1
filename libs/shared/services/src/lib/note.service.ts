@@ -11,8 +11,21 @@ import { BaseApiService } from './base-api.service';
 export class NoteService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  createNote(formData, parentType: EDbModels, parentId): Observable<INote> {
-    const params = new HttpParams().set('parent_id', parentId).set('parent_type', parentType);
+  createNote(
+    formData,
+    parentType: EDbModels,
+    parentId: number | string,
+    entityType?: EDbModels,
+    entityId?: number | string,
+    metadata?: JSON,
+  ): Observable<INote> {
+    let params = new HttpParams().set('parent_id', parentId).set('parent_type', parentType);
+    if (entityId && entityType) {
+      params = params.set('entity_id', entityId).set('entity_type', entityType);
+    }
+    if (metadata) {
+      params = params.set('metadata', JSON.stringify(metadata));
+    }
     return this.http.post<INote>(this.baseApiService.getRoute(API_ROUTES.NOTE.CREATE), formData, {
       params,
     });

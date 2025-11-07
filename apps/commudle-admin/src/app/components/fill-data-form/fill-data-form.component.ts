@@ -48,6 +48,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   faArrowRight = faArrowRight;
   formAnswers = {};
+  submitButtonLoading = false;
   private destroy$ = new Subject<void>();
 
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
@@ -206,6 +207,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
   }
 
   updateUserDetailsAndSubmitForm($event) {
+    this.submitButtonLoading = true;
     this.formAnswers = $event;
     if (this.dataFormEntity.user_details) {
       this.userDetailsFormComponent.submitUserDetails();
@@ -249,6 +251,7 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       .submitDataFormEntityResponse(this.dataFormEntity.id, this.formAnswers)
       .subscribe(() => {
         this.toastLogService.successDialog('Saved!');
+        this.submitButtonLoading = true;
         this.redirectTo();
         this.gtm.dataLayerPushEvent('submit-form', this.gtmData);
       });

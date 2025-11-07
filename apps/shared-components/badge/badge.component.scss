@@ -31,6 +31,14 @@ div {
         @apply com-text-sm;
       }
     }
+
+    &.regular-text {
+      @apply com-py-2 com-px-3 com-text-sm;
+
+      nb-icon {
+        font-size: 1.125rem;
+      }
+    }
   }
 
   &.rectangle {
@@ -42,6 +50,14 @@ div {
 
   &.round {
     @apply com-rounded-3xl;
+  }
+
+  &.full-round {
+    @apply com-rounded-full com-w-4 com-h-4 com-flex com-items-center com-justify-center;
+
+    p {
+      @apply com-p-0 com-text-xs com-font-medium com-leading-none;
+    }
   }
 
   &.dotmode {
@@ -74,6 +90,20 @@ div {
 }
 
 :host.left.center {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+:host.center.right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+:host.center.left {
   position: absolute;
   left: 0;
   top: 50%;

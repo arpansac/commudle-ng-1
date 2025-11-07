@@ -119,7 +119,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
     );
   }
   updateHeaderVariation() {
-    const url = this.router.url;
+    const url = this.router.url.split('?')[0]; // Remove query parameters
     const value = url.split(this.hackathon.slug)[1];
     if (value) {
       this.showBannerImage = true;

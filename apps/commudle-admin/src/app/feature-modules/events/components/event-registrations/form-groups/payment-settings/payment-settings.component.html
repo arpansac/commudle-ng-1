@@ -1,24 +1,15 @@
 <div>
-  <div *ngIf="paymentDetailsExist" class="edit-buttons">
-    <div (click)="open(dialog)">
-      <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
-      Edit Payment Details
-    </div>
-    <div (click)="openCreateDiscountDialog()"><fa-icon [icon]="icons.faTicket"></fa-icon>Create Coupon Code</div>
-    <div *ngIf="!community.has_refund_policy" (click)="open(refundPage)">
-      <fa-icon [icon]="icons.faTicket"></fa-icon>Create Refund Policy
-    </div>
+  <div class="edit-buttons">
+    <select (change)="onChangeTicketSettings($event)" [value]="selectedOption">
+      <option value="ticket-settings" selected disabled>Ticket Settings</option>
+      <option *ngIf="paymentDetailsExist" value="edit-payment-details">Edit Payment Details</option>
+      <option *ngIf="paymentDetailsExist" value="coupon-code">Create Coupon Code</option>
+      <option *ngIf="!community.has_refund_policy && paymentDetailsExist" value="refund-policy">
+        Create Refund Policy
+      </option>
+      <option *ngIf="!paymentDetailsExist" value="add-payment-details">Add Payment Details</option>
+    </select>
   </div>
-  <button
-    *ngIf="!paymentDetailsExist"
-    (click)="open(dialog)"
-    nbButton
-    size="small"
-    status="primary"
-    class="com-w-full md:com-w-max"
-  >
-    Add Payment Details
-  </button>
   <div *ngIf="paymentData">
     <table>
       <tr>
@@ -46,7 +37,7 @@
     <nb-card-header>
       <div class="com-flex com-justify-between">
         <div>{{ paymentDetailsExist ? 'Edit' : 'Add' }} Payment Details</div>
-        <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <button (click)="closeDialogBox()" ghost nbButton shape="round" size="small">
           <nb-icon icon="close"></nb-icon>
         </button>
       </div>
@@ -348,7 +339,7 @@ If you are collecting tax for this ticket, please provide corrected information.
   <nb-card class="com-max-h-[90dvh] com-w-full md:com-w-[70dvw]">
     <nb-card-header class="com-flex com-justify-between com-items-center">
       <span>Refund Policy</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost nbButton size="small" (click)="closeDialogBox()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>

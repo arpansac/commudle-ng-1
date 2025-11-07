@@ -1,47 +1,145 @@
-.create-button {
-  @apply com-my-6;
-}
+.newsletters-list-container {
+  @apply com-w-full;
 
-.newsletters > table {
-  @apply com-border-collapse com-w-full;
-  tr {
-    td {
-      @apply com-px-4;
-    }
-    .title {
-      @apply com-flex com-gap-3 com-items-center com-my-2 com-flex-wrap;
-    }
-    .published {
-      @apply com-flex com-items-center com-gap-8;
-    }
+  .table-wrapper {
+    @apply com-overflow-scroll;
 
-    .scheduled-for {
-      @apply com-mt-3;
-    }
-    .action {
-      @apply com-flex com-gap-3;
-    }
+    .newsletters-table {
+      @apply com-w-full com-border-collapse;
 
-    .stats {
-      table {
-        @apply com-w-3/4 com-py-1;
-        td {
-          @apply com-p-0;
+      .table-header {
+        @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+        th {
+          @apply com-px-4 com-py-2 com-text-left com-text-xs com-font-semibold com-text-gray-500;
+
+          &:nth-child(1) {
+            @apply com-w-[40%];
+          }
+          &:nth-child(2) {
+            @apply com-w-[20%];
+          }
+          &:nth-child(3) {
+            @apply com-w-[40%];
+          }
         }
+      }
+
+      .newsletter-row {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray hover:com-bg-gray-100 com-transition-colors;
+
+        &:last-child {
+          @apply com-border-b-0;
+        }
+
+        td {
+          @apply com-p-4 com-text-sm com-font-normal com-text-Yankees-Blue;
+
+          .newsletter-name {
+            @apply com-flex com-items-center com-gap-4;
+
+            .newsletter-image {
+              @apply com-w-[80px] com-flex-shrink-0;
+              img {
+                @apply com-w-12 com-h-8 com-object-cover com-rounded;
+              }
+            }
+
+            .newsletter-link {
+              @apply com-text-Yankees-Blue com-no-underline com-cursor-pointer com-flex com-items-center com-gap-1;
+              fa-icon {
+                @apply com-text-xs;
+              }
+            }
+          }
+
+          .newsletter-stats {
+            @apply com-flex com-flex-col com-gap-2 com-whitespace-nowrap;
+
+            .stat-item {
+              @apply com-flex com-items-center com-gap-1 com-text-xs com-text-Yankees-Blue;
+
+              .stat-item-icon {
+                @apply com-flex com-items-center com-justify-center com-w-4 com-h-4;
+              }
+            }
+          }
+
+          .newsletter-actions {
+            @apply com-flex com-flex-col com-gap-8 com-items-end;
+
+            .publish-controls {
+              @apply com-flex com-flex-row com-justify-between com-w-full;
+
+              .publish-toggle {
+                @apply com-flex com-items-center md:com-pr-5 com-pl-0 com-pr-3;
+              }
+
+              .edit-link,
+              .test-email-link {
+                @apply com-text-xs com-font-normal com-text-Yankees-Blue com-no-underline com-flex com-items-center com-whitespace-nowrap com-cursor-pointer;
+                nb-icon,
+                fa-icon {
+                  @apply com-text-base;
+                }
+              }
+
+              .edit-link {
+                @apply md:com-px-5 com-px-3;
+              }
+
+              .test-email-link {
+                @apply md:com-pl-5 com-pr-0 com-pl-3  com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+              }
+            }
+
+            .action-links {
+              @apply com-flex com-flex-row com-justify-between com-gap-5 com-w-full;
+
+              .schedule-button {
+                @apply com-text-xs com-text-Yankees-Blue com-bg-transparent com-rounded-lg com-border-Bright-Gray;
+              }
+
+              .reset-button {
+                @apply com-text-xs com-text-Infra-Red com-bg-transparent com-border-Infra-Red;
+              }
+
+              fa-icon {
+                @apply com-mr-2;
+              }
+
+              .delete-link {
+                @apply com-text-xs com-font-normal com-text-Infra-Red com-no-underline com-flex com-items-center com-whitespace-nowrap com-ml-auto com-cursor-pointer;
+                nb-icon {
+                  @apply com-text-base;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .loading-row {
+        @apply com-flex com-justify-center com-py-8;
       }
     }
   }
 }
-.newsletters > table > td,
-th {
-  @apply com-border com-border-solid com-border-Bright-Gray com-text-left com-p-2;
+
+.header-section {
+  @apply com-flex com-justify-between md:com-items-center com-mb-6 com-flex-col md:com-flex-row com-gap-4;
+
+  .page-title {
+    @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0;
+  }
+
+  a {
+    @apply com-rounded-lg;
+  }
 }
 
-.newsletters > table > tr:nth-child(even) {
-  @apply com-bg-Bright-Gray;
-}
 .disableAnchorTag {
-  @apply com-pointer-events-none com-no-underline com-text-black;
+  @apply com-pointer-events-none com-no-underline com-text-gray-400;
 }
 
 nb-card {
@@ -59,6 +157,15 @@ nb-card {
     }
   }
 }
-.newsletters {
-  @apply com-overflow-x-auto md:com-overflow-x-hidden;
+
+.edit-and-test-email-links {
+  @apply com-flex;
+}
+
+.schedule-and-reset-links {
+  @apply com-flex com-flex-row com-items-center com-gap-4;
+}
+
+.schedule-time {
+  @apply com-text-xs com-text-Yankees-Blue com-m-0;
 }

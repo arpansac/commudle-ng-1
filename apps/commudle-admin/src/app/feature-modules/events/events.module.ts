@@ -83,6 +83,7 @@ import { EventFormResponsesGraphComponent } from './components/event-form-respon
 import { EditorModule as NewEditorModule } from '@commudle/editor';
 import { EventCheckedInListComponent } from './components/event-checked-in-list/event-checked-in-list.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +150,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     SidebarComponent,
     BackButtonComponent,
     HelpSectionComponent,
+    BadgeComponent,
     //Nebular
     NbButtonModule,
     NbCardModule,
