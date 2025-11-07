@@ -58,7 +58,6 @@ export class SwUpdateComponent implements OnInit {
                 this.document.location.reload();
               }
             }
-            this.document.location.reload();
             break;
           case 'NO_NEW_VERSION_DETECTED':
             console.log('No new version detected. App is up to date.');
