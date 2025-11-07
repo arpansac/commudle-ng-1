@@ -26,8 +26,12 @@ a {
     }
   }
 
+  .count-display {
+    @apply com-hidden md:com-block;
+  }
+
   .jump-to-container {
-    @apply com-flex com-items-center;
+    @apply md:com-flex com-items-center com-hidden;
 
     .jump-dropdown {
       @apply com-min-w-[120px];

@@ -13,6 +13,28 @@
     .view-mobile-response {
       @apply com-block com-mt-2;
     }
+
+    // Remove frozen column styling in mobile
+    .custom-data-table {
+      .table-header {
+        th.frozen-column {
+          @apply com-static com-bg-gray-50;
+          min-width: 200px;
+        }
+      }
+
+      .table-body {
+        td.frozen-column {
+          @apply com-static com-bg-white;
+          min-width: 200px;
+        }
+
+        td.frozen-shadow {
+          box-shadow: none;
+          border-right: none;
+        }
+      }
+    }
   }
 
   @media screen and (min-width: 800px) {
@@ -111,6 +133,11 @@
         &.frozen-column {
           @apply com-sticky com-left-0 com-z-30 com-bg-gray-50;
           min-width: 360px;
+
+          @media screen and (max-width: 800px) {
+            @apply com-static;
+            min-width: 200px;
+          }
         }
 
         &.frozen-shadow {
@@ -137,6 +164,11 @@
           &.frozen-column {
             @apply com-sticky com-left-0 com-z-10 com-bg-white;
             min-width: 360px;
+
+            @media screen and (max-width: 800px) {
+              @apply com-static;
+              min-width: 200px;
+            }
           }
 
           &.frozen-shadow {

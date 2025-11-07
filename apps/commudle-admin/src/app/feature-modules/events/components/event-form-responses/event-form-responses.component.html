@@ -127,7 +127,7 @@
               [userResponse]="value"
             >
             </app-user-details-cell>
-            <p
+            <!-- <p
               (click)="toggleExpandRow(value)"
               [class.datatable-icon-down]="expandedRows.has(value.id)"
               [class.datatable-icon-right]="!expandedRows.has(value.id)"
@@ -135,7 +135,7 @@
               title="Expand/Collapse Row"
             >
               View Responses
-            </p>
+            </p> -->
           </div>
         </ng-template>
 
@@ -322,72 +322,6 @@
             }
           </div>
         </ng-template>
-
-        <!-- Expanded Content Slot -->
-        <div slot="expanded-content">
-          @if (getExpandedRowData()) {
-          <div class="expanded-details">
-            @if (getExpandedRowData()) {
-            <div class="com-max-w-fit">
-              <app-user-engagement-data
-                [userResponse]="getExpandedRowData()"
-                [communityId]="community.id"
-              ></app-user-engagement-data>
-            </div>
-            } @if (eventDataFormEntityGroup?.is_paid) {
-            <div class="com-max-w-fit">
-              <commudle-user-payment-details
-                [eto]="getExpandedRowData()?.event_ticket_orders"
-                [user]="getExpandedRowData()?.user"
-              ></commudle-user-payment-details>
-            </div>
-            <div class="com-max-w-fit">
-              <commudle-user-track-slots
-                [trackSlots]="getExpandedRowData()?.track_slots"
-                [event]="event"
-                [community]="community"
-                [row]="getExpandedRowData()"
-                [eventLocations]="eventLocations"
-              ></commudle-user-track-slots>
-            </div>
-            } @if (questions.length > 0) {
-            <div style="padding-left: 1rem; font-size: 14px; height: 300px; overflow-y: scroll">
-              @for (question of questions; track question.id) {
-              <div>
-                <p>
-                  <strong>Q. {{ question.title }}</strong>
-                </p>
-                <div>
-                  <p
-                    [innerHTML]="
-                      getExpandedRowData()?.showFullAnswer
-                        ? (getQuestionResponse(getExpandedRowData()?.data_form_entity_response_values, question.id)
-                          | linky : { sanitizeHtml: true })
-                        : (getQuestionResponse(getExpandedRowData()?.data_form_entity_response_values, question.id)
-                          | truncatetext : 100
-                          | linky : { sanitizeHtml: true })
-                    "
-                    class="question-responses"
-                  ></p>
-                  @if (getQuestionResponse(getExpandedRowData()?.data_form_entity_response_values, question.id).length >
-                  100) {
-                  <a
-                    (click)="getExpandedRowData().showFullAnswer = !getExpandedRowData().showFullAnswer"
-                    class="clickable"
-                  >
-                    {{ getExpandedRowData()?.showFullAnswer ? 'Read less' : 'Read more' }}
-                  </a>
-                  }
-                </div>
-              </div>
-              }
-            </div>
-            } @else {
-            <div style="padding-left: 1rem; font-size: 14px">No questions available</div>
-            }
-          </div>
-          }
-        </div>
       </commudle-data-table>
 
       <!-- Pagination -->
