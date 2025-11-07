@@ -19,7 +19,7 @@
     @if (showJumpTo) {
     <div class="jump-to-container">
       <div class="jump-dropdown">
-        <select [(ngModel)]="current" (ngModelChange)="onGoTo($event)" class="jump-select">
+        <select [value]="current" (change)="onGoTo(+$any($event).target.value)" class="jump-select">
           @for (pageNum of getAllPages(); track pageNum) {
           <option [value]="pageNum">Page {{ pageNum }}</option>
           }

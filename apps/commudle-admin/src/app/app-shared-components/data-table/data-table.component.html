@@ -1,8 +1,12 @@
 <!-- Loading indicator -->
 @if (isLoading) {
 <div class="loading-indicator">
-  <div class="loading-spinner"></div>
-  <p>{{ config.loadingMessage || 'Loading...' }} ({{ rows.length }} rows loaded)</p>
+  <div class="loading">
+    <div class="spinner">
+      <div *ngFor="let _ of [].constructor(5)"></div>
+    </div>
+  </div>
+  <p>{{ config.loadingMessage || 'Loading...' }}</p>
 </div>
 }
 

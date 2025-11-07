@@ -33,7 +33,7 @@ a {
       @apply com-min-w-[120px];
 
       .jump-select {
-        @apply com-px-3 com-py-1 com-border com-border-gray-300 com-rounded com-text-sm com-bg-white com-cursor-pointer;
+        @apply com-px-3 com-py-1 com-border com-border-gray-300 com-rounded com-text-sm com-bg-white com-cursor-pointer com-text-Yankees-Blue;
         @apply hover:com-border-gray-400 focus:com-border-blue-500 focus:com-outline-none;
       }
     }

@@ -188,8 +188,8 @@
       <!-- Loading indicator -->
       @if (isLoading) {
       <div class="loading-indicator">
-        <div class="loading-spinner"></div>
-        <p>Loading... ({{ rows.length }} rows loaded)</p>
+        <app-loading-spinner></app-loading-spinner>
+        <p>Loading...</p>
       </div>
       }
 
@@ -343,9 +343,11 @@
           >
             <div><fa-icon [icon]="icons.faFilter"></fa-icon></div>
             @if (getQuestionByKey(column.key)?.title && getQuestionByKey(column.key).title.length > 20) {
-            <p nbTooltip="{{ getQuestionByKey(column.key).title }}">{{ getQuestionByKey(column.key).title }}</p>
+            <p nbTooltip="{{ getQuestionByKey(column.key).title }}" class="com-m-0">
+              {{ getQuestionByKey(column.key).title }}
+            </p>
             } @else {
-            <p>{{ getQuestionByKey(column.key)?.title }}</p>
+            <p class="com-m-0">{{ getQuestionByKey(column.key)?.title }}</p>
             }
             <div
               [nbPopover]="templateRef"
