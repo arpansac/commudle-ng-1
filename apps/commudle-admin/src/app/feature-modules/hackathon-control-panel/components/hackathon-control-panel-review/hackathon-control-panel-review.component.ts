@@ -17,8 +17,16 @@ import {
   INote,
   IRound,
   ICommunity,
+  EParticipateTypes,
 } from '@commudle/shared-models';
-import { faXmark, faPlus, faCheck, faUpRightFromSquare, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faPlus,
+  faCheck,
+  faUpRightFromSquare,
+  faEnvelope,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
@@ -50,6 +58,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faCheck,
     faUpRightFromSquare,
     faEnvelope,
+    faExclamationTriangle,
   };
   notesForm: FormGroup;
   notes: INote[];
@@ -79,6 +88,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   confirmationDialogReference: NbDialogRef<any>;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
+
+  ENUMS = {
+    EParticipateTypes,
+  };
   private originalStatusValue: EHackathonRegistrationStatus;
   private originalRoundValue: number;
 

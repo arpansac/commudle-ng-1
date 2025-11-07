@@ -67,7 +67,7 @@
   }
 
   .members-table {
-    @apply com-overflow-auto com-relative com-max-h-[70vh];
+    @apply com-overflow-auto com-relative com-h-[70vh];
 
     table {
       @apply com-w-full com-border-collapse com-min-w-full;
@@ -148,7 +148,7 @@
                 @apply com-p-0 com-m-0 com-pl-4;
               }
 
-              span {
+              .engagement-data-label {
                 @apply com-font-medium;
               }
             }
@@ -208,7 +208,7 @@
 }
 
 .user-profile-card {
-  @apply com-flex com-flex-row com-gap-4 com-justify-between com-relative;
+  @apply com-flex com-flex-row com-gap-2 com-justify-between com-relative;
 }
 
 .user-communities-role {
@@ -219,7 +219,7 @@
 }
 
 .filter-dropdowns-container {
-  @apply com-flex com-flex-col com-items-center com-mb-4;
+  @apply com-flex com-flex-col com-items-center com-mb-4 com-pb-4 com-shadow-sm;
 }
 
 .activeTag {
@@ -227,7 +227,7 @@
 }
 
 .profile-badges {
-  @apply com-flex com-flex-col com-gap-2;
+  @apply com-flex com-flex-col com-gap-2 com-w-full;
 
   .badges-container {
     @apply com-flex com-flex-wrap com-gap-2 com-mt-2;

@@ -77,7 +77,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   isLoading = true;
   rows = [];
   emptyMessage;
-  expandedRows = new Set<number>();
 
   page = 1;
   totalEntries: number;
@@ -543,18 +542,26 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   }
 
   bulkStatusChange() {
+    this.isLoading = true;
+    this.rows = [];
+    this.bulkUpdateMessage = 'Updating status, this may take some time. Please wait...';
+    this.toastLogService.successDialog('Status update in progress, this may take some time. Please wait...', 3000);
+
     this.eventDataFormEntityGroupsService
       .changeBulkRegistrationStatus(
         this.fromRegistrationStatus,
         this.toRegistrationStatus,
         this.eventDataFormEntityGroupId,
         this.bulkStatusChangeForCanceled,
+        this.totalEntries,
       )
       .subscribe((data) => {
         if (data) {
           this.getResponses();
           this.toastLogService.successDialog('Updated!');
         }
+        this.isLoading = false;
+        this.bulkUpdateMessage = '';
       });
     this.bulkStatus = null;
     this.dialogRef.close();

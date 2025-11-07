@@ -1,24 +1,15 @@
 <div>
-  <div *ngIf="paymentDetailsExist" class="edit-buttons">
-    <div (click)="open(dialog)">
-      <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
-      Edit Payment Details
-    </div>
-    <div (click)="openCreateDiscountDialog()"><fa-icon [icon]="icons.faTicket"></fa-icon>Create Coupon Code</div>
-    <div *ngIf="!community.has_refund_policy" (click)="open(refundPage)">
-      <fa-icon [icon]="icons.faTicket"></fa-icon>Create Refund Policy
-    </div>
+  <div class="edit-buttons">
+    <select (change)="onChangeTicketSettings($event)">
+      <option value="ticket-settings" selected>Ticket Settings</option>
+      <option *ngIf="paymentDetailsExist" value="edit-payment-details">Edit Payment Details</option>
+      <option *ngIf="paymentDetailsExist" value="coupon-code">Create Coupon Code</option>
+      <option *ngIf="!community.has_refund_policy && paymentDetailsExist" value="refund-policy">
+        Create Refund Policy
+      </option>
+      <option *ngIf="!paymentDetailsExist" value="add-payment-details">Add Payment Details</option>
+    </select>
   </div>
-  <button
-    *ngIf="!paymentDetailsExist"
-    (click)="open(dialog)"
-    nbButton
-    size="small"
-    status="primary"
-    class="com-w-full md:com-w-max"
-  >
-    Add Payment Details
-  </button>
   <div *ngIf="paymentData">
     <table>
       <tr>

@@ -40,6 +40,12 @@ table {
     .team-details {
       .team-name {
         @apply com-text-black com-text-base com-font-medium;
+        .id {
+          @apply com-text-xs com-font-normal;
+        }
+        fa-icon {
+          @apply com-text-sm;
+        }
       }
       .date {
         @apply com-text-gray-400 com-text-xs com-font-medium;
@@ -95,7 +101,7 @@ th {
     .user-response-tab {
       @apply com-px-4 com-py-2;
       .name {
-        @apply com-font-bold com-text-sm com-cursor-pointer;
+        @apply com-font-bold com-text-sm com-cursor-pointer com-flex com-gap-1;
       }
       &.active {
         @apply com-border-0 com-border-b-2 com-border-solid com-border-primary-500;
@@ -165,6 +171,9 @@ th {
 }
 .heading {
   @apply com-flex com-gap-4 com-items-center;
+  .date {
+    @apply com-text-gray-400 com-text-xs com-font-medium;
+  }
   .project-submit {
     @apply com-text-sm com-font-medium com-bg-teal-700 com-py-2 com-px-3 com-rounded-3xl com-text-white;
   }
@@ -200,4 +209,8 @@ th {
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
   }
+}
+
+.form-responses-card {
+  @apply com-m-0;
 }

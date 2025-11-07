@@ -15,15 +15,14 @@
         <canvas id="chart-experience-distribution"></canvas>
       </div>
       <div class="insight-card">
-        <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilter || 90 }} DAYS</p>
-        <div class="days-filter-container">
+        <p class="insight-label">NEW MEMBERS IN LAST {{ daysFilterForm.get('days').value || 90 }} DAYS</p>
+        <div class="days-filter-container" [formGroup]="daysFilterForm">
           <input
-            formControlName="days"
             nbInput
             placeholder="Enter the number of days"
             type="number"
             min="1"
-            max="365"
+            formControlName="days"
             (input)="onDaysFilterChange($event)"
             class="days-input"
           />
@@ -33,7 +32,7 @@
     </div>
   </div>
 
-  <div class="search-filters" *ngIf="!isLoading">
+  <div class="search-filters">
     <form [formGroup]="searchForm" class="search-container">
       <div class="search">
         <nb-form-field>
@@ -130,7 +129,7 @@
       <!-- Active Filter Tags -->
       <div class="active-filter-tags">
         <nb-tag-list>
-          <nb-tag
+          <!-- <nb-tag
             [appearance]="mostActive ? 'filled' : 'outline'"
             [text]="'Most Active (Top 10%)'"
             size="small"
@@ -138,8 +137,8 @@
             [removable]="mostActive ? 'true' : 'false'"
             [ngClass]="{ activeTag: mostActive }"
             (click)="filterByTags(options[0])"
-          ></nb-tag>
-          <nb-tag
+          ></nb-tag> -->
+          <!-- <nb-tag
             [appearance]="contributor ? 'filled' : 'outline'"
             [text]="'Top Contributor'"
             size="small"
@@ -147,7 +146,7 @@
             [removable]="contributor ? 'true' : 'false'"
             [ngClass]="{ activeTag: contributor }"
             (click)="filterByTags(options[1])"
-          ></nb-tag>
+          ></nb-tag> -->
           <nb-tag
             [appearance]="contentCreator ? 'filled' : 'outline'"
             [text]="'Content Creator'"
@@ -317,6 +316,8 @@
                 <app-user-profile-card-medium
                   [user]="userRole.user"
                   [openInNewTab]="true"
+                  [showHiringLookingTags]="true"
+                  [maxDesignationLineClamp]="2"
                 ></app-user-profile-card-medium>
                 <div class="badges-container" *ngIf="userRole.user_highlights?.badges?.length">
                   <app-badge
@@ -337,6 +338,7 @@
                 class="context-menu com-h-2"
                 ghost
                 nbButton
+                size="tiny"
                 nbContextMenuTag="community-member-context-menu"
               >
                 <nb-icon icon="more-vertical"></nb-icon>
@@ -347,27 +349,43 @@
             <div *ngIf="userRole.agg_user_community_engagement" class="engagement-data">
               <ul>
                 <li>
-                  <span>Overall Attendence:</span>
-                  {{ userRole.agg_user_community_engagement.overall_attendance_rate }}
+                  <span class="engagement-data-label">Overall Attendence:</span>
+                  {{ userRole.agg_user_community_engagement.overall_attendance_rate }}%
                 </li>
                 <li>
-                  <span>Events (attendee):</span>
+                  <span class="engagement-data-label">Events (attendee):</span>
                   {{ userRole.agg_user_community_engagement.total_event_registrations }} registered,
                   {{ userRole.agg_user_community_engagement.attended_events_count }} attended,
-                  {{ userRole.agg_user_community_engagement.total_skipped_events }} invited & skipped,
+                  <span *ngIf="userRole.agg_user_community_engagement.total_skipped_events > 0"
+                    >{{ userRole.agg_user_community_engagement.total_skipped_events }} invited & skipped,</span
+                  >
                   {{ userRole.agg_user_community_engagement.total_volunteered_events }} volunteered
                 </li>
                 <li>
-                  <span>Events (speaker):</span>
-                  {{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} registered,
-                  {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} talks delivered
+                  <span class="engagement-data-label">Events (speaker):</span>
+                  <span
+                    *ngIf="
+                      userRole.agg_user_community_engagement.total_event_speaker_registrations > 0 ||
+                      userRole.agg_user_community_engagement.total_event_speaker_sessions > 0
+                    "
+                    >{{ userRole.agg_user_community_engagement.total_event_speaker_registrations }} registered,
+                    {{ userRole.agg_user_community_engagement.total_event_speaker_sessions }} talks delivered
+                  </span>
+                  <span
+                    *ngIf="
+                      userRole.agg_user_community_engagement.total_event_speaker_registrations === 0 &&
+                      userRole.agg_user_community_engagement.total_event_speaker_sessions === 0
+                    "
+                  >
+                    --
+                  </span>
                 </li>
                 <li>
-                  <span>Hackathon:</span>
+                  <span class="engagement-data-label">Hackathon:</span>
                   {{ userRole.agg_user_community_engagement.total_hackathon_registrations }} registered
                 </li>
                 <li>
-                  <span>Channel Messages Sent:</span>
+                  <span class="engagement-data-label">Channel Messages Sent:</span>
                   {{ userRole.agg_user_community_engagement.total_channel_messages }}
                 </li>
               </ul>
@@ -425,7 +443,7 @@
               </li>
               <li *ngIf="userRole.user_highlights.social_resources.length > 0">
                 Social Resources<span *ngFor="let item of userRole.user_highlights.social_resources; let isLast = last">
-                  <a [routerLink]="['/users', item.user.username]" [fragment]="'content'" target="_blank">
+                  <a [href]="item.link" target="_blank">
                     {{ item.name }}
                   </a>
                   <span *ngIf="!isLast">, </span></span

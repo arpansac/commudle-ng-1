@@ -146,9 +146,9 @@
     @apply com-font-semibold com-text-xl com-justify-start com-flex com-w-full md:com-w-auto;
 
     .dropdown {
-      @apply com-flex com-items-center com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded hover:com-bg-[#eef2f7]/50 com-w-full md:com-w-auto;
+      @apply com-flex com-items-center com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded com-w-full md:com-w-auto;
       select {
-        @apply com-border-0 com-bg-white hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-text-xs com-w-full md:com-w-auto;
+        @apply com-border-0 com-bg-white com-cursor-pointer com-text-xs com-w-full md:com-w-auto com-text-black;
       }
     }
   }
