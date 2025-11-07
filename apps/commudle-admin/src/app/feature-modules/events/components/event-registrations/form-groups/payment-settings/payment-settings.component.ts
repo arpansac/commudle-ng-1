@@ -49,6 +49,8 @@ export class PaymentSettingsComponent implements OnInit {
   EPageType = EPageType;
   commudleFeePercentage = 2;
   commudleFeeAmount = 0;
+  selectedOption = 'ticket-settings';
+
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
   @ViewChild('dialog') dialog: TemplateRef<any>;
   @ViewChild('refundPage') refundPage: TemplateRef<any>;
@@ -195,10 +197,14 @@ export class PaymentSettingsComponent implements OnInit {
       hasScroll: false,
       context: { type: 'create', event: this.event },
     });
+    dialogRef.onClose.subscribe(() => {
+      this.selectedOption = 'ticket-settings';
+    });
   }
 
   closeDialogBox() {
     this.dialogRef.close();
+    this.selectedOption = 'ticket-settings';
   }
 
   selectAccount(event) {
@@ -230,6 +236,7 @@ export class PaymentSettingsComponent implements OnInit {
     this.customPageFormComponent.createOrUpdate();
     this.dialogRef.close();
     this.community.has_refund_policy = true;
+    this.selectedOption = 'ticket-settings';
   }
 
   toggleHasTaxes(event) {
@@ -272,6 +279,7 @@ export class PaymentSettingsComponent implements OnInit {
 
   onChangeTicketSettings(event) {
     const value = event.target.value;
+    this.selectedOption = value;
     if (value === 'edit-payment-details' || value === 'add-payment-details') {
       this.open(this.dialog);
     }

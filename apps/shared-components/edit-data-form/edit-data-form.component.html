@@ -73,7 +73,15 @@
                   <label>
                     Question {{ i + 1 }}
                     <span *ngIf="question.get('required').value" class="required-question">*</span>
-                    <input formControlName="title" fullWidth nbInput placeholder="Title*" required type="text" />
+                    <input
+                      formControlName="title"
+                      fullWidth
+                      nbInput
+                      placeholder="Title"
+                      required
+                      type="text"
+                      size="medium"
+                    />
                   </label>
                 </div>
               </nb-card-body>
@@ -233,24 +241,15 @@
                       size="small"
                     >
                       <nb-icon class="footer-icons" icon="plus-circle-outline" status="basic"></nb-icon>
-                      &nbsp; Add Question Below
+                      &nbsp; <span>Add Question Below</span>
                     </button>
                     <div class="toggles">
-                      <nb-checkbox
-                        class="toggle md:com-pr-4"
-                        formControlName="required"
-                        labelPosition="right"
-                        size="tiny"
+                      <nb-checkbox class="toggle" formControlName="required" labelPosition="right" size="tiny"
                         ><span class="required-text">Required</span></nb-checkbox
                       >
-                      <nb-toggle class="toggle md:com-pl-4" formControlName="disabled" labelPosition="right" size="tiny"
-                        ><span
-                          >Disable this question
-                          <p class="com-m-0 com-text-primary-500">
-                            <small>(This question won't appear anymore)</small>
-                          </p>
-                        </span>
-                      </nb-toggle>
+                      <nb-checkbox class="toggle" formControlName="disabled" labelPosition="right" size="tiny"
+                        ><span class="required-text">Disable this question </span>
+                      </nb-checkbox>
                     </div>
                   </div>
                   <button
@@ -293,13 +292,21 @@
             status="primary"
           >
             <nb-icon icon="plus-outline"></nb-icon>
-            &nbsp; Add Question
+            Add Question
           </button>
         </div>
       </div>
 
       <div class="submit-button" *ngIf="showSubmitButton">
-        <button (click)="updateDataForm()" fullWidth nbButton size="medium" status="primary" type="submit">
+        <button
+          (click)="updateDataForm()"
+          shape="semi-round"
+          fullWidth
+          nbButton
+          size="medium"
+          status="primary"
+          type="submit"
+        >
           {{ submitButtonText() }}
         </button>
       </div>

@@ -49,6 +49,8 @@ export class RsvpComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];
   communityGroupLeaders: IUserRolesUser[] = [];
   pageInfo: IPageInfo;
+  isLoadingVolunteers = true;
+  isLoadingCommunityLeaders = true;
 
   constructor(
     private dataFormEntityResponseGroupsService: DataFormEntityResponseGroupsService,
@@ -173,15 +175,19 @@ export class RsvpComponent implements OnInit, OnDestroy {
   }
 
   private getVolunteers() {
+    this.isLoadingVolunteers = true;
     this.eventsService.pGetEventVolunteers(this.event.slug, this.count, this.pageInfo?.end_cursor).subscribe((data) => {
       this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.pageInfo = data.page_info;
+      this.isLoadingVolunteers = false;
     });
   }
 
   private fetchCommunityDetails() {
+    this.isLoadingCommunityLeaders = true;
     this.uruService.pGetCommunityLeadersByRole(this.community.id, EUserRoles.ORGANIZER).subscribe((data) => {
       this.communityLeaders = data.users;
+      this.isLoadingCommunityLeaders = false;
     });
   }
 }

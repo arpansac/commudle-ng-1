@@ -1,3 +1,5 @@
+@import './apps/commudle-admin/src/assets/styles/variables';
+
 .newsletter-form {
   @apply com-p-6;
 
@@ -41,4 +43,20 @@ nb-card {
 
 .banner-image-wrapper {
   @apply com-max-w-full md:com-max-w-[90dvw] com-mx-auto;
+}
+
+// tinymce style
+editor {
+  ::ng-deep {
+    div.tox.tox-tinymce {
+      border: none;
+
+      // this holds true only for fixed menubar
+      div.tox-editor-container {
+        div.tox-editor-header {
+          top: calc($top-nav-height + 86px) !important;
+        }
+      }
+    }
+  }
 }

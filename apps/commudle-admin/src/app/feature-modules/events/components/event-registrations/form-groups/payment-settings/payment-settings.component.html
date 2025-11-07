@@ -1,7 +1,7 @@
 <div>
   <div class="edit-buttons">
-    <select (change)="onChangeTicketSettings($event)">
-      <option value="ticket-settings" selected>Ticket Settings</option>
+    <select (change)="onChangeTicketSettings($event)" [value]="selectedOption">
+      <option value="ticket-settings" selected disabled>Ticket Settings</option>
       <option *ngIf="paymentDetailsExist" value="edit-payment-details">Edit Payment Details</option>
       <option *ngIf="paymentDetailsExist" value="coupon-code">Create Coupon Code</option>
       <option *ngIf="!community.has_refund_policy && paymentDetailsExist" value="refund-policy">
@@ -37,7 +37,7 @@
     <nb-card-header>
       <div class="com-flex com-justify-between">
         <div>{{ paymentDetailsExist ? 'Edit' : 'Add' }} Payment Details</div>
-        <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <button (click)="closeDialogBox()" ghost nbButton shape="round" size="small">
           <nb-icon icon="close"></nb-icon>
         </button>
       </div>
@@ -339,7 +339,7 @@ If you are collecting tax for this ticket, please provide corrected information.
   <nb-card class="com-max-h-[90dvh] com-w-full md:com-w-[70dvw]">
     <nb-card-header class="com-flex com-justify-between com-items-center">
       <span>Refund Policy</span>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost nbButton size="small" (click)="closeDialogBox()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>

@@ -1,7 +1,7 @@
 .event-data-form-groups-list > nb-card {
   @apply com-mx-0;
   .edfeg-details {
-    @apply com-flex com-flex-col md:com-flex-row com-justify-between com-gap-2 md:com-gap-10 com-p-4;
+    @apply com-flex com-flex-col md:com-flex-row com-justify-between com-gap-2 md:com-gap-12 com-p-4;
     .form-details {
       @apply com-w-60;
       p {
@@ -18,6 +18,10 @@
 
         .link-to-fill {
           @apply com-bg-blue-100 com-border com-border-solid com-border-Ultramarine-Blue com-rounded-md hover:com-bg-blue-100 com-justify-center com-text-xs com-font-medium com-text-Ultramarine-Blue com-no-underline;
+
+          nb-icon {
+            @apply com-text-sm com-ml-3;
+          }
         }
       }
     }
@@ -34,6 +38,7 @@
       nb-card-body {
         @apply com-p-2;
         nb-checkbox {
+          @apply com-flex com-items-center;
           .text {
             @apply com-text-xs com-font-medium com-text-tYankees-Blue;
           }
@@ -173,7 +178,7 @@ nb-toggle {
 }
 
 .delete-section {
-  @apply com-flex com-flex-col com-gap-4;
+  @apply com-flex com-flex-col com-gap-4 md:com-ml-auto;
 }
 
 .clone-btn {

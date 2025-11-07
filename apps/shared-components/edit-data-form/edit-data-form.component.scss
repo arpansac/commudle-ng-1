@@ -33,7 +33,11 @@
     }
 
     label {
-      @apply com-text-base com-font-medium com-text-Charcoal;
+      @apply com-text-base com-font-medium com-text-Yankees-Blue;
+    }
+
+    input {
+      @apply com-text-gray-500 com-bg-Ghost-White com-rounded-lg com-text-sm com-font-medium;
     }
 
     .data-form-question-choices-container {
@@ -41,7 +45,7 @@
     }
 
     .add-question-button {
-      @apply com-mb-10 com-mx-2;
+      @apply com-text-sm com-font-medium com-text-Ultramarine-Blue com-border-Ultramarine-Blue com-bg-white com-rounded-10 com-mt-2 com-mb-6;
     }
 
     .cdk-drag-animating {
@@ -87,30 +91,33 @@
     }
 
     .question-form-footer {
-      @apply com-flex com-space-x-2 com-items-center com-mt-12 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
+      @apply com-flex com-space-x-2 com-items-center com-mt-20 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium com-text-black com-pl-px;
+        @apply com-text-sm com-font-normal com-text-gray-900 com-pl-px com-pr-4;
 
         nb-icon {
-          @apply com-h-5 com-w-5;
+          @apply com-h-5 com-w-5 com-text-gray-500;
         }
       }
 
       .toggle {
-        @apply md:com-border-l com-border-Bright-Gray com-border-solid com-border-y-0 com-border-r-0
-        com-text-sm com-font-medium com-border-0 md:com-pl-4 com-pl-0 com-block md:com-flex md:com--ml-2;
+        @apply com-text-sm com-font-medium md:com-pl-4 com-pl-0 com-block md:com-flex md:com--ml-2;
         span {
           @apply com-text-black;
         }
       }
 
       .delete-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-text-Infra-Red;
 
         nb-icon {
           @apply com-h-5 com-w-5;
         }
+      }
+
+      nb-card-body {
+        @apply com-pt-4 com-px-6 com-pb-6;
       }
 
       .context-menu {
@@ -146,22 +153,34 @@
   @apply com-flex com-gap-x-4 com-mt-4 com-items-center;
 
   .add-description-button {
-    @apply com-bg-white com-text-black md:com-flex com-hidden;
+    @apply com-bg-white com-text-sm com-font-medium com-text-Yankees-Blue md:com-flex com-hidden com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
     nb-icon {
-      @apply com-mr-1;
+      @apply com-h-4 com-w-4 com-mr-1;
     }
   }
 
   .question-settings {
-    @apply com-font-semibold com-text-xl com-justify-start com-flex com-w-full md:com-w-auto;
+    @apply com-justify-start com-flex com-w-full md:com-w-auto;
 
     .dropdown {
-      @apply com-flex com-items-center com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-gray-400 com-rounded com-w-full md:com-w-auto com-my-0;
+      @apply com-flex com-items-center com-text-Yankees-Blue com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full md:com-w-auto;
+
+      nb-icon {
+        @apply com-h-4 com-w-4 com-mr-1;
+      }
+
       select {
-        @apply com-border-0 com-bg-white com-cursor-pointer com-text-xs com-w-full md:com-w-auto com-text-black;
+        @apply com-border-0 com-bg-white com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium;
+        option {
+          @apply com-text-sm com-text-Yankees-Blue;
+        }
       }
     }
   }
+}
+
+.required-question {
+  @apply com-text-sm com-font-semibold com-text-Infra-Red com-ml-2px;
 }
 
 .required-choice {
@@ -181,7 +200,7 @@
 }
 
 .toggles {
-  @apply com-pl-4 com-flex com-gap-4;
+  @apply md:com-pl-4 com-pl-0 com-flex com-items-center com-gap-4;
 }
 
 .footer-icons {
@@ -197,4 +216,14 @@
       @apply com-text-base;
     }
   }
+}
+
+.edit-data-form {
+  nb-card {
+    @apply com-mx-0 com-my-4;
+  }
+}
+
+.required-text {
+  @apply com-text-sm com-font-normal com-text-gray-900;
 }
