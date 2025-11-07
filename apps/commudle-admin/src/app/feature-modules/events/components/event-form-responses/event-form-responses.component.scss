@@ -125,6 +125,11 @@
       .question {
         @apply com-flex com-flex-wrap com-gap-x-2 com-gap-y-0 com-items-center;
       }
+
+      .user-details,
+      .engagement-data {
+        @apply com-my-0;
+      }
     }
 
     .datatable-icon-right::before {

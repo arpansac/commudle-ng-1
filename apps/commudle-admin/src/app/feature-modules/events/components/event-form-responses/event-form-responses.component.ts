@@ -376,7 +376,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
     this.tableColumns.push({
       key: 'userDetails',
       title: 'User Details',
-      width: '360px',
+      width: '370px',
       frozen: true,
       resizable: true,
       filterable: true,
