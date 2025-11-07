@@ -10,6 +10,7 @@ export class PaginationComponent implements OnChanges {
   @Input() count: number = 0; // items per page
   @Input() total: number = 0; // all items
   @Input() showJumpTo: boolean = false;
+  @Input() showCount: boolean = false;
 
   @Output() goTo: EventEmitter<number> = new EventEmitter<number>();
   @Output() next: EventEmitter<number> = new EventEmitter<number>();
@@ -17,6 +18,7 @@ export class PaginationComponent implements OnChanges {
 
   public pages: number[] = [];
   public totalPage: number;
+  public Math = Math;
 
   private static getPages(current: number, total: number): number[] {
     if (total <= 7) {

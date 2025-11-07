@@ -403,6 +403,7 @@
         [current]="page"
         [total]="totalEntries"
         [showJumpTo]="true"
+        [showCount]="true"
       ></app-pagination>
     </div>
   </nb-card-footer>
@@ -480,7 +481,6 @@
 </ng-template>
 
 <ng-template #templateRef let-data>
-  <!-- TODO: fix it  -->
   <div class="com-max-h-[384px] com-w-80 com-overflow-scroll">
     <commudle-event-form-responses-graph
       [forms]="forms"
@@ -898,6 +898,17 @@
         />
         <label for="gender-other">
           <span class="option-name">Prefer not to answer</span>
+        </label>
+      </div>
+      <div class="filter-option">
+        <input
+          type="checkbox"
+          id="gender-na"
+          [checked]="selectedGenders.includes(null)"
+          (change)="onGenderChange($event, null)"
+        />
+        <label for="gender-na">
+          <span class="option-name">NA</span>
         </label>
       </div>
     </div>

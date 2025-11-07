@@ -77,6 +77,8 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   isLoading = true;
   rows = [];
   emptyMessage;
+  expandedRows = new Set<number>();
+  bulkUpdateMessage = '';
 
   page = 1;
   totalEntries: number;
