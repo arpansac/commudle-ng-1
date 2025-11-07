@@ -2,13 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnDestroy,
   OnInit,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbDialogRef, NbDialogService } from '@commudle/theme';
+import { NbDialogRef, NbDialogService, NbTabComponent, NbTabsetComponent } from '@commudle/theme';
 import { IEventSponsor } from 'apps/shared-models/event_sponsor.model';
 import { ISponsor } from 'apps/shared-models/sponsor.model';
 import { ActivatedRoute } from '@angular/router';
@@ -41,6 +43,8 @@ export class SponsorsComponent implements OnInit, OnDestroy {
   readonly icons = {
     faImage,
   };
+
+  @ViewChild('nameInput') nameInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -97,6 +101,14 @@ export class SponsorsComponent implements OnInit, OnDestroy {
       this.loadingExistingSponsors = false;
       this.changeDetectorRef.markForCheck();
     });
+  }
+
+  onTabChange(event): void {
+    if (event && event.tabTitle === 'Add New') {
+      setTimeout(() => {
+        this.nameInput.nativeElement.focus();
+      }, 0);
+    }
   }
 
   addExistingSponsor(sponsorId) {

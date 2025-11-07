@@ -1,7 +1,17 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IEditorValidator } from '@commudle/editor';
+import { EditorComponent, IEditorValidator } from '@commudle/editor';
 import { IEvent } from '@commudle/shared-models';
 import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
 import { DiscussionChatChannel } from 'apps/shared-components/services/websockets/discussion-chat.channel';
@@ -10,7 +20,8 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil, fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
@@ -18,10 +29,11 @@ import { LoginAuthService } from 'apps/shared-services/login-auth.service';
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss'],
 })
-export class MessagesComponent implements OnInit, OnDestroy {
+export class MessagesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() discussion: IDiscussion;
   @Input() parentData: IEvent;
   @Output() newMessage: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('mainEditor') mainEditor: EditorComponent;
 
   currentUser: ICurrentUser;
 
@@ -66,6 +78,14 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.allActions = this.discussionChatChannel.ACTIONS;
     this.receiveData();
     this.getDiscussionMessages();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.mainEditor && this.currentUser && this.discussion.open) {
+        this.mainEditor.focus();
+      }
+    }, 100);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -73,7 +73,7 @@
               [ngClass]="{ 'com-pointer-events-none': permittedActions.includes(allActions.BLOCKED) }"
             >
               <nb-icon
-                (click)="showReplyForm = !showReplyForm"
+                (click)="onReplyClick()"
                 class="clickable"
                 icon="undo-outline"
                 nbTooltip="Reply to this message"
@@ -128,7 +128,7 @@
       [showFullDateTime]="showFullDateTime"
     ></app-message>
     <div *ngIf="showReplyForm" class="reply-form">
-      <commudle-editor (contentChange)="emitReply($event)" [validators]="validators"></commudle-editor>
+      <commudle-editor #replyEditor (contentChange)="emitReply($event)" [validators]="validators"></commudle-editor>
     </div>
   </div>
 </div>
