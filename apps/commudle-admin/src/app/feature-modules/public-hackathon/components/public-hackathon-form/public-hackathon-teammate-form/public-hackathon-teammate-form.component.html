@@ -25,6 +25,7 @@
           placeholder="xyz@example.com"
           fullWidth
           nbInput
+          #emailInput
           (input)="checkEmail($event.target)"
         />
         <commudle-alert *ngIf="showEmailError" [error]="true" errorMessage="You can't put your own email as teammate">
