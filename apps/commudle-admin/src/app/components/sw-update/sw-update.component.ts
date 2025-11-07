@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ApplicationRef, Component, Inject, OnInit } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { concat, interval } from 'rxjs';
@@ -50,7 +50,14 @@ export class SwUpdateComponent implements OnInit {
             console.log(`Current app version: ${evt.currentVersion.hash}`);
             console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
             // Prompt the user to update
-            this.toastLogService.notificationDialog(`New version available. Loading new version...`);
+            if ((evt as VersionReadyEvent)?.latestVersion?.appData?.critical) {
+              this.document.location.reload();
+            } else {
+              if (confirm('New version available. Load New Version?')) {
+                this.toastLogService.warningDialog('Updating App...!');
+                this.document.location.reload();
+              }
+            }
             this.document.location.reload();
             break;
           case 'NO_NEW_VERSION_DETECTED':
