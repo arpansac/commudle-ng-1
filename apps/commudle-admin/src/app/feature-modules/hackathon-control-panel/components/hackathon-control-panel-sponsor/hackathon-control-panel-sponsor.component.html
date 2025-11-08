@@ -39,7 +39,7 @@
         <!-- Tier Name -->
         <div>
           <label for="tier_name">Tier Name*</label>
-          <input placeholder="Tier name" nbInput fullWidth formControlName="tier_name" type="text" />
+          <input placeholder="Tier name" nbInput fullWidth formControlName="tier_name" type="text" #tierNameInput />
           <commudle-alert
             *ngIf="
               sponsorForm.controls['tier_name'].touched &&

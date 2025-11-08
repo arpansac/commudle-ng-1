@@ -1,5 +1,5 @@
 import { NbDialogService } from '@commudle/theme';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faPlus, faFileImage, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,6 +30,8 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
   hackathon: IHackathon;
 
   hackathonSponsorGroupedByTierName: IHackathonSponsorGroupedByTierName;
+  @ViewChild('tierNameInput') tierNameInput: ElementRef;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private nbDialogService: NbDialogService,
@@ -103,6 +105,12 @@ export class HackathonControlPanelSponsorComponent implements OnInit, OnDestroy 
     this.nbDialogService.open(dialog, {
       context: { index: index, sponsor: hackathonSponsor },
     });
+
+    setTimeout(() => {
+      if (this.tierNameInput) {
+        this.tierNameInput.nativeElement.focus();
+      }
+    }, 0);
   }
 
   openConfirmDeleteDialogBox(dialog, sponsorId, index) {
