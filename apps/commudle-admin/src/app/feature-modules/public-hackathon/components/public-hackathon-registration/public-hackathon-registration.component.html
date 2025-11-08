@@ -2,15 +2,17 @@
   <nb-card-header *ngIf="canEditForm">
     <div class="heading"></div>
     <div>
-      Registration Status: Profile Submitted for Review
+      Registration Status: {{ userTeamDetails.registration_status | titlecase }}&nbsp;
       <a [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
-        >Edit Your Response</a
+        >Edit your registration form response</a
       >
     </div>
   </nb-card-header>
 
   <nb-card-body>
-    <div class="round-details">Next: Round 1 confirmation</div>
+    @if(userTeamDetails?.round?.name){
+    <div class="round-details">Current Round: {{ userTeamDetails.round.name | titlecase }}</div>
+    }
     <div *ngIf="userTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED && canSubmitProject">
       <a
         *ngIf="!userTeamDetails.community_build"
