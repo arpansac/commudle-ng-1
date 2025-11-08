@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +9,14 @@ import { ToastrService, SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 import { NbDialogService } from '@commudle/theme';
+import { EditorComponent } from '@commudle/editor';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-updates',
   templateUrl: './hackathon-control-panel-updates.component.html',
   styleUrls: ['./hackathon-control-panel-updates.component.scss'],
 })
-export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy {
+export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy, AfterViewInit {
   EDbModels = EDbModels;
   moment = moment;
   updates: IEntityUpdate[] = [];
@@ -29,6 +30,9 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
   hackathon: IHackathon;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
+
+  @ViewChild('editor') editor: EditorComponent;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private entityUpdatesService: EntityUpdatesService,
@@ -45,6 +49,14 @@ export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy 
         this.fetchHackathonDetails(params.get('hackathon_id'));
       }),
     );
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+    }, 100);
   }
 
   ngOnDestroy(): void {
