@@ -31,27 +31,30 @@
           value="Selected Registration Option"
           class="radio-btn"
         />
-        <label for="SelectedRegistrationOption">Selected Registration Option</label>
+        <label for="SelectedRegistrationOption">Selected Team registration status</label>
       </div>
       <select
         name=""
         id=""
         *ngIf="selectedRecipient === 'Selected Registration Option'"
-        [(ngModel)]="selectedStatus"
+        [(ngModel)]="selectedHackathonTeamStatus"
         class="selected-status"
       >
         <option disabled selected value="">Select Status</option>
-        <option *ngFor="let InvitationStatus of EInvitationStatus | keyvalue" [value]="InvitationStatus.value">
-          {{ InvitationStatus.value | capitalizeAndRemoveUnderscore }}
+        <option
+          *ngFor="let registrationStatus of EHackathonRegistrationStatus | keyvalue"
+          [value]="registrationStatus.value"
+        >
+          {{ registrationStatus.value | capitalizeAndRemoveUnderscore }}
         </option>
       </select>
     </div>
     <div class="subject">
-      <label for="emailReason">Subject<span class="mandatory-field">*</span></label>
+      <label for="emailReason">Subject<span class="mandatory-field"> *</span></label>
       <input type="text" placeholder="Subject" [(ngModel)]="subject" nbInput fullWidth />
     </div>
     <div class="message-field">
-      <label for="message" class="message">Message (Optional)</label>
+      <label for="message" class="message">Message<span class="mandatory-field"> *</span></label>
       <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
     </div>
   </nb-card-body>
@@ -63,7 +66,7 @@
       shape="semi-round"
       [nbSpinner]="showPreviewSpinner"
       type="button"
-      [disabled]="showPreviewSpinner || subject.length === 0"
+      [disabled]="showPreviewSpinner || subject.length === 0 || message.length === 0"
     >
       Preview Email
     </button>
@@ -74,7 +77,7 @@
       fullWidth
       (click)="SendStatusFilterGeneralMailer()"
       [nbSpinner]="isLoading"
-      [disabled]="isLoading || subject.length === 0"
+      [disabled]="showPreviewSpinner || subject.length === 0 || message.length === 0"
     >
       Send
     </button>
