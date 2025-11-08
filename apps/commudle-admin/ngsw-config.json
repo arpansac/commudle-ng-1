@@ -17,5 +17,10 @@
         "files": ["/assets/**", "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"]
       }
     }
-  ]
+  ],
+  // "appData": {
+  //   "version": "1.3.0",
+  //   "releaseNotes": "Fixes critical security bug in auth flow",
+  //   "critical": true
+  // }
 }

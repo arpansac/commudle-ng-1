@@ -10,6 +10,8 @@ import { Injectable } from '@angular/core';
 import { API_ROUTES } from '@commudle/shared-services';
 import { Observable } from 'rxjs';
 import {
+  EHackathonRegistrationStatus,
+  EInvitationStatus,
   ICommunityBuild,
   ICommunityChannel,
   IHackathonPrize,
@@ -437,12 +439,19 @@ export class HackathonService {
     });
   }
 
-  StatusFilterGeneralEmail(hackathonId, message: string, subject: string, selectedStatus: string): Observable<boolean> {
+  StatusFilterGeneralEmail(
+    hackathonId,
+    message: string,
+    subject: string,
+    teamStatus?: EHackathonRegistrationStatus,
+    hurStatus?: EInvitationStatus,
+  ): Observable<boolean> {
     return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.STATUS_FILTER_GENERAL_EMAIL), {
       hackathon_id: hackathonId,
       message: message,
       subject: subject,
-      selected_status: selectedStatus,
+      team_status: teamStatus,
+      hur_status: hurStatus,
     });
   }
 
