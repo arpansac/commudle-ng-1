@@ -27,7 +27,7 @@
       <div class="jump-dropdown">
         <select [value]="current" (change)="onGoTo(+$any($event).target.value)" class="jump-select">
           @for (pageNum of getAllPages(); track pageNum) {
-          <option [value]="pageNum">Page {{ pageNum }}</option>
+          <option [value]="pageNum">{{ pageNum }}</option>
           }
         </select>
       </div>
