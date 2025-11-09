@@ -1,9 +1,11 @@
 <div>
   <div class="user-details-container">
-    <p class="timeago" title="{{ moment(userResponse.created_at).format('dddd Do MMM, YYYY h:mm A') }}">
-      {{ moment(userResponse.created_at).fromNow() }}
-    </p>
-    <app-user-profile-card-large [user]="user"></app-user-profile-card-large>
+    <div class="com-flex com-justify-between">
+      <app-user-profile-card-large [user]="user"></app-user-profile-card-large>
+      <p class="timeago" title="{{ moment(userResponse.created_at).format('dddd Do MMM, YYYY h:mm A') }}">
+        {{ moment(userResponse.created_at).fromNow() }}
+      </p>
+    </div>
     <p class="contact-details">
       <small>{{ user.email === 'Not Visible' ? 'Email: Not Visible' : user.email }}</small>
       <small *ngIf="user.phone"> / {{ user.phone === 'Not Visible' ? 'Phone: Not Visible' : user.phone }}</small>

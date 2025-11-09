@@ -1,6 +1,6 @@
 .user-details-container {
   .timeago {
-    @apply com-text-gray-400;
+    @apply com-text-gray-900 com-m-0 com-mt-2 com-italic com-font-medium com-text-xs;
   }
   app-user-profile-card-large {
     &::ng-deep {
@@ -14,20 +14,16 @@
   .contact-details,
   .user-domain,
   .user-experience {
-    @apply com-m-0;
+    @apply com-m-0 com-text-xs com-text-gray-900;
   }
 
   .social-links {
-    width: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 12px;
+    @apply com-w-1/2 com-flex com-gap-3 com-flex-wrap com-text-xs;
     a {
-      color: black;
-      margin: 0 0.5rem;
+      @apply com-bg-gray-100 com-rounded-3xl com-w-5 com-h-5 com-text-Yankees-Blue;
 
       fa-icon {
-        @apply com-text-black;
+        @apply com-text-black com-flex com-justify-center com-items-center com-h-full;
       }
     }
   }
