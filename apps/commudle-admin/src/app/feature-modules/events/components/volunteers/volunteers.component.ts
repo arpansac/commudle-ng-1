@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
@@ -15,7 +24,7 @@ import { SeoService } from '@commudle/shared-services';
   styleUrls: ['./volunteers.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VolunteersComponent implements OnInit, OnDestroy {
+export class VolunteersComponent implements OnInit, OnDestroy, AfterViewInit {
   event: IEvent;
   community: ICommunity;
   inputValue: string;
@@ -31,6 +40,8 @@ export class VolunteersComponent implements OnInit, OnDestroy {
   loadingVolunteers = true;
 
   subscriptions: Subscription[] = [];
+
+  @ViewChild('emailInput') emailInput: ElementRef;
 
   constructor(
     private userRolesUsersService: UserRolesUsersService,
@@ -70,6 +81,14 @@ export class VolunteersComponent implements OnInit, OnDestroy {
     this.userRolesUserForm.patchValue({
       parent_id: this.event.id,
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.emailInput?.nativeElement) {
+        this.emailInput.nativeElement.focus();
+      }
+    }, 0);
   }
 
   ngOnDestroy(): void {
