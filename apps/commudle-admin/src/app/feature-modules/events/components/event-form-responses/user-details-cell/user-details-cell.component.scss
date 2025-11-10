@@ -102,6 +102,37 @@
   }
 }
 
+.entry-pass-container,
+.rsvp-container {
+  @apply com-flex com-items-center com-gap-2 com-my-3;
+
+  .entry-pass-button,
+  .rsvp-button {
+    @apply com-flex com-items-center com-gap-2;
+
+    .entry-pass-icon,
+    .rsvp-icon {
+      @apply com-text-gray-600;
+    }
+
+    .entry-pass-text,
+    .rsvp-text {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+  }
+
+  .notes-button {
+    @apply com-relative;
+    .notes-icon {
+      @apply com-text-Chrome-Yellow;
+      font-size: 18px;
+    }
+  }
+}
+.attendee-buttons {
+  @apply com-w-full com-gap-4 com-flex;
+}
+
 .confirm-delete-entry-pass,
 .confirm-delete-note {
   nb-card-header,
@@ -192,6 +223,26 @@ button[nbButton][outline][ghost] {
 
 .mobile-action-buttons {
   @apply com-flex com-gap-4;
+}
+
+.status-select {
+  @apply com-w-full com-p-2 com-border com-border-Bright-Gray com-rounded com-text-Yankees-Blue com-text-sm;
+
+  &:disabled {
+    @apply com-text-gray-500 com-bg-gray-100;
+  }
+}
+
+.bottom-sheet-content {
+  @apply com-p-4;
+
+  .registration-status-section {
+    @apply com-mb-4;
+
+    .status-label {
+      @apply com-block com-mb-2 com-text-sm com-font-medium com-text-Yankees-Blue;
+    }
+  }
 }
 
 .responses-dialog {

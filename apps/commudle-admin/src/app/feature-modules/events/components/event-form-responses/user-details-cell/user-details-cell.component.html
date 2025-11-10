@@ -236,7 +236,9 @@
       }
     </button>
     <div class="mobile-action-buttons">
-      <button nbButton size="small" fullWidth outline shape="semi-round" ghost>Actions</button>
+      <button nbButton size="small" fullWidth outline shape="semi-round" ghost (click)="mobileActionBottomSheet = true">
+        Actions
+      </button>
 
       <button
         nbButton
@@ -339,7 +341,6 @@
 <ng-template #viewResponseDialogBox let-data let-ref="dialogRef">
   <nb-card class="responses-dialog">
     <nb-card-header>
-      <div>Responses</div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
@@ -366,8 +367,88 @@
   </nb-card>
 </ng-template>
 
-<commudle-bottom-sheet
-  [isOpen]="mobileActionBottomSheet"
-  title="Actions"
-  (close)="closeActionBottomSheet()"
-></commudle-bottom-sheet>
+<commudle-bottom-sheet [isOpen]="mobileActionBottomSheet" title="Actions" (close)="closeActionBottomSheet()">
+  <div class="bottom-sheet-content">
+    <div class="registration-status-section">
+      <label class="status-label">Registration Status</label>
+      <select
+        [ngModel]="userResponse.registration_status.id"
+        (ngModelChange)="openConfirmationDialogBox($event)"
+        [disabled]="!event.editable"
+        class="status-select"
+      >
+        <option *ngFor="let rs of registrationStatuses" [value]="rs.id">
+          {{ rs.name | titlecase }}
+        </option>
+      </select>
+    </div>
+    @if (userResponse.registration_status.name === 'shortlisted') {
+    <div class="rsvp-container">
+      <button
+        (click)="openRSVPEmailWindow()"
+        nbButton
+        class="rsvp-button"
+        fullWidth
+        outline
+        shape="semi-round"
+        size="small"
+        ghost
+      >
+        <fa-icon [icon]="faEnvelope" class="rsvp-icon"></fa-icon>
+        <span class="rsvp-text">Send RSVP Email</span>
+      </button>
+    </div>
+    } @if (userResponse.registration_status.name === 'confirmed') { @if (userResponse.entry_pass === null) {
+    <div class="entry-pass-container">
+      <button
+        (click)="generateEntryPass()"
+        nbButton
+        class="entry-pass-button"
+        fullWidth
+        outline
+        size="small"
+        shape="semi-round"
+        ghost
+      >
+        <span class="entry-pass-text">Generate Entry Pass</span>
+      </button>
+    </div>
+    } @else {
+    <div class="entry-pass-container">
+      <button
+        (click)="openEntryPassEmailWindow()"
+        nbButton
+        class="entry-pass-button"
+        fullWidth
+        outline
+        size="small"
+        shape="semi-round"
+        ghost
+      >
+        <fa-icon [icon]="faEnvelope" class="entry-pass-icon"></fa-icon>
+        <span class="entry-pass-text">Send Entry Pass :</span>
+        <span class="entry-pass-code">{{ userResponse.entry_pass.unique_code }}</span>
+      </button>
+    </div>
+    <div class="attendee-buttons">
+      @if(userResponse.entry_pass.attendance){
+      <button (click)="toggleAttendance()" status="success" nbButton size="small" fullWidth outline shape="semi-round">
+        <fa-icon [icon]="icons.faCheck"></fa-icon> &nbsp; Attendance
+      </button>
+      }@else {
+      <button (click)="toggleAttendance()" nbButton size="small" fullWidth outline shape="semi-round" ghost>
+        <fa-icon [icon]="icons.faCheck"></fa-icon> &nbsp; Attendance
+      </button>
+      } @if(userResponse.entry_pass.uninvited){
+      <button (click)="toggleUninvited()" status="warning" nbButton size="small" fullWidth outline shape="semi-round">
+        Uninvited
+      </button>
+      }@else {
+      <button (click)="toggleUninvited()" nbButton size="small" fullWidth outline shape="semi-round" ghost>
+        Uninvited
+      </button>
+      }
+    </div>
+    }}
+  </div>
+</commudle-bottom-sheet>
