@@ -85,17 +85,6 @@
     @apply com-w-full com-gap-4 com-flex;
   }
 
-  .notes-only-button {
-    @apply com-flex com-items-center com-gap-2 com-justify-center com-my-3 com-relative;
-
-    .notes-only-icon {
-      @apply com-text-Chrome-Yellow;
-    }
-    span {
-      @apply com-text-Yankees-Blue;
-    }
-  }
-
   .action-buttons {
     .entry-pass-code {
       @apply com-m-0 com-text-Yankees-Blue com-font-semibold;
@@ -179,5 +168,50 @@ button[nbButton][outline][ghost] {
 
   &:focus {
     @apply com-border-Bright-Gray;
+  }
+}
+
+.mobile-hidden {
+  @apply com-hidden md:com-block;
+}
+
+.mobile-show-only {
+  @apply md:com-hidden com-block;
+}
+
+.notes-only-button {
+  @apply com-flex com-items-center com-gap-2 com-justify-center com-my-3 com-relative;
+
+  .notes-only-icon {
+    @apply com-text-Chrome-Yellow;
+  }
+  span {
+    @apply com-text-Yankees-Blue;
+  }
+}
+
+.mobile-action-buttons {
+  @apply com-flex com-gap-4;
+}
+
+.responses-dialog {
+  @apply com-w-[95dvw] com-h-90dvh;
+  nb-card-header {
+    @apply com-flex com-justify-between;
+  }
+  nb-card-body {
+    @apply com-p-0;
+  }
+  .question-answer {
+    @apply com-py-4;
+    .question {
+      @apply com-text-Yankees-Blue com-text-sm com-font-semibold com-m-0;
+    }
+    .answer {
+      @apply com-text-Yankees-Blue com-text-sm com-font-normal com-italic com-m-0;
+    }
+  }
+  .question-answer:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
 }
