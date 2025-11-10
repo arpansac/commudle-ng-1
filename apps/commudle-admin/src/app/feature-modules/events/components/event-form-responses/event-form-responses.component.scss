@@ -2,6 +2,9 @@
   .data-table-responses {
     @apply com-overflow-hidden;
 
+    fa-icon {
+      @apply com-text-gray-500;
+    }
     nb-card-body {
       @apply com-p-0;
     }
@@ -183,10 +186,6 @@
   }
 }
 
-fa-icon {
-  @apply com-text-gray-500;
-}
-
 .change-status-dialog {
   @apply md:com-w-500px;
 
@@ -347,6 +346,22 @@ fa-icon {
           @apply com-text-sm com-text-gray-700;
         }
       }
+    }
+  }
+}
+
+.data-table-responses.mobile-view {
+  @apply com-m-0;
+  .action-button {
+    @apply com-m-4 com-flex com-flex-col com-gap-4;
+    button.action {
+      @apply com-text-Yankees-Blue;
+    }
+  }
+  .responses {
+    @apply com-px-4;
+    .response:not(:last-child) {
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-py-4;
     }
   }
 }

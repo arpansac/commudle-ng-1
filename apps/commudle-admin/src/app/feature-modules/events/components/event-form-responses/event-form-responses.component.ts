@@ -19,6 +19,8 @@ import {
   faEdit,
   faExpand,
   faCompress,
+  faAngleDown,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppUsersService, ToastrService } from '@commudle/shared-services';
 import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
@@ -111,8 +113,10 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
     faSignOutAlt,
     faFileCsv,
     faEdit,
-    faExpand: faExpand,
-    faCompress: faCompress,
+    faExpand,
+    faCompress,
+    faAngleDown,
+    faUser,
   };
   editMode = false;
   isFullscreen = false;
@@ -125,6 +129,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   userEngagementFilter: FormGroup;
   community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
+  protected isMobileView = false;
   //TODO past event stats
 
   // Data table properties
@@ -189,6 +194,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   }
 
   ngOnInit() {
+    this.isMobileView = window.innerWidth <= 1024;
     this.activatedRoute.parent.data.subscribe((data) => {
       this.event = data.event;
       this.community = data.community;
@@ -479,7 +485,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   getQuestionResponse(userResponses, questionId) {
     const userQuestionResponses = userResponses?.filter((k) => k.question_id === questionId) || [];
     return userQuestionResponses.length === 0
-      ? 'No response'
+      ? '--'
       : userQuestionResponses.map((resp) => resp.response_text).join('\n');
   }
 
