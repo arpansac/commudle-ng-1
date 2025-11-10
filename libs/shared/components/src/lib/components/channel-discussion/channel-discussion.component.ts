@@ -21,6 +21,7 @@ import {
   CommunityChannelManagerService,
 } from '@commudle/shared-services';
 import { CommunityChannelHandlerService } from '../../services/community-channel-handler.service';
+import { EditorComponent } from '@commudle/editor';
 
 @Component({
   selector: 'commudle-channel-discussion',
@@ -53,6 +54,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
 
   @ViewChild(InfiniteScrollDirective) infiniteScrollDirective;
   @ViewChildren('messagesListRef', { read: ViewContainerRef }) messagesListRefs: QueryList<HTMLDivElement>;
+  @ViewChild('editorRef') editorRef: EditorComponent;
 
   constructor(
     public communityChannelHandlerService: CommunityChannelHandlerService,
@@ -99,6 +101,12 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
         }
       });
     });
+
+    setTimeout(() => {
+      if (this.editorRef) {
+        this.editorRef.focus();
+      }
+    }, 0);
   }
 
   ngOnDestroy(): void {

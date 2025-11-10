@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
@@ -128,6 +128,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     font_size_formats: '8px 10px 12px 14px 16px 18px 20px 22px 24px',
     license_key: 'gpl',
   };
+
+  @ViewChildren('noteTextarea') noteTextarea: QueryList<ElementRef>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -279,6 +281,13 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   addNote(noteText = '') {
     this.notesList.push(this.fb.group({ value: new FormControl(noteText, [Validators.required]) }));
+
+    setTimeout(() => {
+      if (this.noteTextarea && this.noteTextarea.length > 0) {
+        const lastTextarea = this.noteTextarea.last;
+        lastTextarea.nativeElement.focus();
+      }
+    }, 0);
   }
 
   removeNote(index) {
