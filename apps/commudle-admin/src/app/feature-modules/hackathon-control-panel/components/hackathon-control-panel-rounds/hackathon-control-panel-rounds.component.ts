@@ -112,6 +112,13 @@ export class HackathonControlPanelRoundsComponent implements OnInit {
     this.dialogRef = this.nbDialogService.open(dialog, {
       context: { index: index, round: round },
     });
+
+    setTimeout(() => {
+      const nameInput = document.querySelector('#name') as HTMLInputElement;
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 0);
   }
 
   openConfirmDeleteDialogBox(dialog, roundId, index) {

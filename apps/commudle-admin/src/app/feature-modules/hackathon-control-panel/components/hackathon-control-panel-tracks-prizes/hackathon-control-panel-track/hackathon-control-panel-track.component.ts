@@ -68,6 +68,13 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     this.nbDialogService.open(dialog, {
       context: { index: index, track: track },
     });
+
+    setTimeout(() => {
+      const nameInput = document.querySelector('#name') as HTMLInputElement;
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 0);
   }
 
   confirmDeleteDialogBox(dialog, trackId, index) {
