@@ -1,5 +1,16 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+  ElementRef,
+} from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { faUserLargeSlash, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -33,6 +44,7 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
   };
 
   private destroy$ = new Subject<void>();
+  @ViewChildren('emailInput') emailInputs: QueryList<ElementRef>;
 
   constructor(
     private fb: FormBuilder,
@@ -103,6 +115,14 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
     }
 
     this.teammatesArray.push(teammateGroup);
+
+    setTimeout(() => {
+      const lastIndex = this.teammatesArray.length - 1;
+      const emailInputsArray = this.emailInputs.toArray();
+      if (emailInputsArray[lastIndex]) {
+        emailInputsArray[lastIndex].nativeElement.focus();
+      }
+    });
   }
 
   removeTeammate(index: number) {
