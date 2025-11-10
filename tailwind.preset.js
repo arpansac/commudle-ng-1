@@ -167,6 +167,7 @@ module.exports = {
         '95vw': '95vw',
         '100vw': '100vw',
         'navbar-desktop': '68px',
+        '90dvh': '90dvh',
       },
       borderWidth: {
         /* Setting the default border width to 1px and 3px. */
