@@ -10,6 +10,7 @@ import {
   faPieChart,
   faRefresh,
   faChevronLeft,
+  faChevronRight,
   faCaretDown,
   faEnvelope,
   faEnvelopeOpen,
@@ -21,6 +22,7 @@ import {
   faCompress,
   faAngleDown,
   faUser,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppUsersService, ToastrService } from '@commudle/shared-services';
 import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
@@ -106,6 +108,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
     faPieChart,
     faRefresh,
     faChevronLeft,
+    faChevronRight,
     faCaretDown,
     faEnvelope,
     faEnvelopeOpen,
@@ -117,6 +120,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
     faCompress,
     faAngleDown,
     faUser,
+    faArrowRight,
   };
   editMode = false;
   isFullscreen = false;
@@ -130,6 +134,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
   protected isMobileView = false;
+  protected actionBottomSheet = false;
   //TODO past event stats
 
   // Data table properties
@@ -897,5 +902,9 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
 
   ngOnDestroy() {
     // Component cleanup
+  }
+
+  closeActionBottomSheet() {
+    this.actionBottomSheet = false;
   }
 }
