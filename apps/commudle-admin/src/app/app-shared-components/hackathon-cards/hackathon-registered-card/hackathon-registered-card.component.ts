@@ -51,7 +51,6 @@ export class HackathonRegisteredCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.hackathon);
     this.fetchInterestedMembers();
     if (this.hackathon.total_prize_amount) {
       this.totalPrizesByCurrency = Object.keys(this.hackathon.total_prize_amount).map((currency) => ({
