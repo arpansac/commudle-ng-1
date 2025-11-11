@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
@@ -11,4 +11,5 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 })
 export class UserExpertTickComponent {
   staticAssets = staticAssets;
+  @Input() size = '16px';
 }
