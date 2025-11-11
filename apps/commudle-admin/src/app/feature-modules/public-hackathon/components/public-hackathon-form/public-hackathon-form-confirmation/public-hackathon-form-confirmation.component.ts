@@ -39,8 +39,6 @@ export class PublicHackathonFormConfirmationComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private hrgService: HackathonResponseGroupService,
-    private hurService: HackathonUserResponsesService,
     private hackathonService: HackathonService,
     private seoService: SeoService,
     private authService: AuthService,
@@ -48,28 +46,11 @@ export class PublicHackathonFormConfirmationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.activatedRoute);
     this.activatedRoute.params.subscribe((params) => {
       this.hackathonSlug = params.hackathon_id;
       this.fetchHackathonDetails();
       this.getJudges();
-      // this.hackathonUserResponse = params.hackathon_user_response;
-      // this.hurService.verifyInvitationTokenHur(this.token).subscribe((data) => {
-      //   this.hackathon = data.hackathon;
-      //   this.isLoading = false;
-      //   this.getJudges();
-      //   // this.getHackathonCurrentRegistrationDetails();
-      //   // this.getHackathonResponseGroup();
-      //
-      //   console.log(this.hackathon);
-      // });
     });
-    // this.hrgService
-    //   .pFetchHackathonResponseGroup(this.activatedRoute.snapshot.params['hackathon_response_group_id'])
-    //   .subscribe((data: IHackathonResponseGroup) => {
-    //     this.hackathonResponseGroup = data;
-    //     this.isLoading = false;
-    //   }),
     this.fetchCurrentUserDetails();
     this.seoService.setTitle('Hackathon Form Confirmation');
     this.seoService.noIndex(true);
@@ -80,7 +61,6 @@ export class PublicHackathonFormConfirmationComponent implements OnInit {
     this.subscriptions.push(
       this.hackathonService.pShowHackathon(this.hackathonSlug).subscribe((data) => {
         this.hackathon = data;
-        console.log(this.hackathon);
         this.isLoading = false;
       }),
     );
