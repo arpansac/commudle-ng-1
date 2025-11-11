@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   EInvitationStatus,
   IHackathon,
@@ -22,7 +22,7 @@ import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/servi
   templateUrl: './public-hackathon-form-confirmation.component.html',
   styleUrl: './public-hackathon-form-confirmation.component.scss',
 })
-export class PublicHackathonFormConfirmationComponent implements OnInit {
+export class PublicHackathonFormConfirmationComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   hackathonUserResponse: IHackathonUserResponse;
   hackathonResponseGroup: IHackathonResponseGroup;
@@ -54,6 +54,12 @@ export class PublicHackathonFormConfirmationComponent implements OnInit {
     this.fetchCurrentUserDetails();
     this.seoService.setTitle('Hackathon Form Confirmation');
     this.seoService.noIndex(true);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   fetchHackathonDetails() {
