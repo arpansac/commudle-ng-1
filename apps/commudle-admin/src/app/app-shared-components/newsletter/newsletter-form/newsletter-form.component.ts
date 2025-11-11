@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { INewsletter } from 'apps/shared-models/newsletter.model';
 import { Subscription, combineLatest } from 'rxjs';
@@ -122,6 +122,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
     private location: Location,
     private toastrService: ToastrService,
     private dialogService: NbDialogService,
+    private router: Router,
   ) {
     this.newsletterForm = this.fb.group({
       title: ['', Validators.required],
@@ -188,11 +189,9 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
             content: data.content,
             banner_image: data.banner_image?.url,
             brief_description: data.brief_description,
-            grapes_js_editor: data.grapes_js_editor,
+            grapes_js_editor: false,
           });
-          if (data.grapes_js_editor) {
-            this.initEditor();
-          }
+          this.newsletterForm.controls['grapes_js_editor'].disable();
         }
       }),
     );
@@ -350,6 +349,12 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
         this.toastrService.successDialog('Newsletter Created');
         if (sendTestEmail) {
           this.openTestEmailsDialogBox(data);
+        } else {
+          const editRoute =
+            this.parentType === EDbModels.KOMMUNITY
+              ? `admin/communities/${this.parentId}/newsletters/edit/${data.slug}`
+              : `admin/orgs/${this.parentId}/newsletters/edit/${data.slug}`;
+          this.router.navigate([editRoute]);
         }
       }
     });
