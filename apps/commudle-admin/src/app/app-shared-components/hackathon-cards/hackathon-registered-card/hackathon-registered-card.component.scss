@@ -37,13 +37,13 @@
 }
 
 .prize-money {
-  @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-gray-50  com-text-American-Orange;
+  @apply com-flex com-flex-row com-items-center com-text-American-Orange;
   fa-icon {
-    @apply com-text-sm com-mr-1;
+    @apply com-text-base com-mr-2;
   }
 
   span {
-    @apply com-text-xs com-font-semibold;
+    @apply com-text-base com-font-medium;
   }
 }
 
