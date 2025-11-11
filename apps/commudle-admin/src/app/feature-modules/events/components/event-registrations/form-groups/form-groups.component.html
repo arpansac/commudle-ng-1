@@ -27,11 +27,24 @@
               ></fa-icon>
             </p>
             <p class="type">Form type: {{ edfeg.registration_type.name | titlecase }}</p>
-            <div class="link-to-fill" *ngIf="event.editable">
-              <a [routerLink]="['/fill-form', edfeg.data_form_entity.id]" target="_blank">
+            <div *ngIf="event.editable">
+              <a
+                [routerLink]="['/fill-form', edfeg.data_form_entity.id]"
+                target="_blank"
+                nbButton
+                outline
+                size="small"
+                class="link-to-fill"
+              >
                 <span class="com-text-sm">Link to fill</span>
-                <nb-icon icon="external-link" class="com-text-sm"></nb-icon>
+                <nb-icon icon="external-link"></nb-icon>
               </a>
+            </div>
+            <div *ngIf="event.editable" class="send-email">
+              <button (click)="openEmailWindow(edfeg)" nbButton outline size="small" class="send-email-btn">
+                <fa-icon [icon]="faEnvelope"></fa-icon>
+                Send By Email
+              </button>
             </div>
           </div>
 
@@ -44,37 +57,37 @@
                   value="{{ visibilityOptions.YET_TO_ANNOUNCE }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.YET_TO_ANNOUNCE"
                 >
-                  Yet to announce
+                  Status: Yet to announce
                 </option>
                 <option
                   value="{{ visibilityOptions.OPEN_BUT_INVISIBLE }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.OPEN_BUT_INVISIBLE"
                 >
-                  Open but invisible
+                  Status: Open but invisible
                 </option>
                 <option
                   value="{{ visibilityOptions.OPEN }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.OPEN"
                 >
-                  Open to all
+                  Status: Open to all
                 </option>
                 <option
                   value="{{ visibilityOptions.CLOSED }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.CLOSED"
                 >
-                  Closed to all
+                  Status: Closed to all
                 </option>
                 <option
                   value="{{ visibilityOptions.ON_THE_SPOT_UNINVITED }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.ON_THE_SPOT_UNINVITED"
                 >
-                  On the spot uninvited
+                  Status: On the spot uninvited
                 </option>
                 <option
                   value="{{ visibilityOptions.MEMBERS_WHO_HAVE_ATTENDED }}"
                   [selected]="edfeg.data_form_entity.visibility === visibilityOptions.MEMBERS_WHO_HAVE_ATTENDED"
                 >
-                  Members who have attended
+                  Status: Members who have attended
                 </option>
               </select>
             </div>
@@ -88,8 +101,8 @@
               "
             >
               <nb-card-body>
-                <nb-checkbox status="primary" (checkedChange)="updateRSVP(edfeg.id, i)" [checked]="edfeg.rsvp_open">
-                  <span class="text">Allow RSVP</span>
+                <nb-checkbox (checkedChange)="updateRSVP(edfeg.id, i)" [checked]="edfeg.rsvp_open" status="primary">
+                  Allow RSVP
                 </nb-checkbox>
               </nb-card-body>
             </nb-card>
@@ -105,11 +118,11 @@
               <nb-card-body>
                 <nb-checkbox
                   [disabled]="edfeg.is_paid"
-                  status="primary"
                   (checkedChange)="toggleCancellation(edfeg.id, i)"
                   [checked]="edfeg.allow_cancellation"
+                  status="primary"
                 >
-                  <span class="text"> Allow Entry Pass Cancellation </span>
+                  Allow Entry Pass Cancellation
                 </nb-checkbox>
               </nb-card-body>
             </nb-card>
@@ -118,52 +131,39 @@
             <nb-card *ngIf="edfeg.is_paid && community.payments_enabled" class="toggle-cards">
               <nb-card-body>
                 <nb-checkbox
-                  status="primary"
                   (checkedChange)="toggleApprovalBasedPayments(edfeg.id, i)"
                   [checked]="edfeg.approval_based_payments"
+                  status="primary"
                 >
-                  <span class="text"> Approval Based Payments </span>
+                  Approval Based Payments
                 </nb-checkbox></nb-card-body
               >
             </nb-card>
 
             <!-- Allow group tickets -->
             <nb-card
-              *ngIf="edfeg.is_paid && community.payments_enabled && edfeg.paid_ticket_settings.id"
+              *ngIf="edfeg.is_paid && community.payments_enabled && edfeg.paid_ticket_setting.id"
               class="toggle-cards"
             >
               <nb-card-body>
                 <nb-checkbox
-                  status="primary"
                   (checkedChange)="toggleApprovalGroupTicketing(edfeg, i)"
-                  [checked]="edfeg.paid_ticket_settings.multi_person_ticket"
+                  [checked]="edfeg.paid_ticket_setting.multi_person_ticket"
+                  status="primary"
                 >
-                  <span class="text"> Allow group tickets </span>
+                  Allow group tickets
                 </nb-checkbox></nb-card-body
               >
             </nb-card>
 
             <!-- auto close -->
-            <div *ngIf="event.editable">
-              <div
-                class="com-text-primary-500 com-cursor-pointer"
-                (click)="openAutomationDialog(automationDialog, edfeg.data_form_entity, i)"
-              >
+            <div *ngIf="event.editable" class="auto-close-link">
+              <p (click)="openAutomationDialog(automationDialog, edfeg.data_form_entity, i)">
                 {{ edfeg.data_form_entity.auto_close_responses_count > 0 ? 'Edit Auto Close' : 'Add Auto Close' }}
-              </div>
-              <div class="com-text-xs" *ngIf="edfeg.data_form_entity.auto_close_responses_count > 0">
+              </p>
+              <div class="auto-close-text" *ngIf="edfeg.data_form_entity.auto_close_responses_count > 0">
                 Auto Close in {{ edfeg.data_form_entity.auto_close_responses_count }} entities
               </div>
-            </div>
-          </div>
-
-          <!-- send email and link to fill -->
-          <div>
-            <div *ngIf="event.editable" class="send-email">
-              <button (click)="openEmailWindow(edfeg)">
-                <fa-icon [icon]="faEnvelope"></fa-icon>
-                Send By Email
-              </button>
             </div>
           </div>
 
@@ -177,67 +177,64 @@
                   data_form_id: edfeg.data_form_entity.data_form_id
                 }"
                 [routerLink]="['/admin/communities', community.slug, 'event-dashboard', event.slug, 'form-responses']"
+                nbButton
+                size="small"
               >
                 Show Responses
               </a>
             </div>
-            <div>
-              <div class="response-stat">
-                <table class="com-w-full">
-                  <tr>
-                    <th>Total</th>
-                    <th>{{ edfeg.summary_registration_counts?.all ? edfeg.summary_registration_counts.all : 0 }}</th>
-                  </tr>
-                  <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                    <td>Registered</td>
-                    <td>
-                      {{
-                        edfeg.summary_registration_counts?.registered ? edfeg.summary_registration_counts.registered : 0
-                      }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                    <td>Waiting</td>
-                    <td>
-                      {{ edfeg.summary_registration_counts?.waiting ? edfeg.summary_registration_counts.waiting : 0 }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                    <td>Shortlisted</td>
-                    <td>
-                      {{
-                        edfeg.summary_registration_counts?.shortlisted
-                          ? edfeg.summary_registration_counts.shortlisted
-                          : 0
-                      }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                    <td>Confirmed</td>
-                    <td>
-                      {{
-                        edfeg.summary_registration_counts?.confirmed ? edfeg.summary_registration_counts.confirmed : 0
-                      }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
-                    <td>Cancelled</td>
-                    <td>
-                      {{
-                        edfeg.summary_registration_counts?.cancelled ? edfeg.summary_registration_counts.cancelled : 0
-                      }}
-                    </td>
-                  </tr>
-                </table>
-              </div>
+            <div class="response-stat">
+              <table class="com-w-full">
+                <tr>
+                  <th>Total</th>
+                  <th>{{ edfeg.summary_registration_counts?.all ? edfeg.summary_registration_counts.all : 0 }}</th>
+                </tr>
+                <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
+                  <td>Registered</td>
+                  <td>
+                    {{
+                      edfeg.summary_registration_counts?.registered ? edfeg.summary_registration_counts.registered : 0
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
+                  <td>Waiting</td>
+                  <td>
+                    {{ edfeg.summary_registration_counts?.waiting ? edfeg.summary_registration_counts.waiting : 0 }}
+                  </td>
+                </tr>
+                <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
+                  <td>Shortlisted</td>
+                  <td>
+                    {{
+                      edfeg.summary_registration_counts?.shortlisted ? edfeg.summary_registration_counts.shortlisted : 0
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
+                  <td class="com-font-semibold">Confirmed</td>
+                  <td class="com-font-semibold">
+                    {{ edfeg.summary_registration_counts?.confirmed ? edfeg.summary_registration_counts.confirmed : 0 }}
+                  </td>
+                </tr>
+                <tr *ngIf="edfeg.registration_type.name !== ERegistationTypes.FEEDBACK">
+                  <td>Cancelled</td>
+                  <td>
+                    {{ edfeg.summary_registration_counts?.cancelled ? edfeg.summary_registration_counts.cancelled : 0 }}
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
 
           <!-- payment Details -->
           <div *ngIf="community.payments_enabled">
-            <div *ngIf="edfeg.registration_type.name !== ERegistrationTypeNames.FEEDBACK && event.editable">
+            <div
+              *ngIf="edfeg.registration_type.name !== ERegistrationTypeNames.FEEDBACK && event.editable"
+              class="paid-ticketing-toggle"
+            >
               <input type="checkbox" (change)="onSwitchToggled(edfeg.id)" [checked]="edfeg.is_paid" />
-              <span class="com-text-primary-500"> Paid Ticketing</span>
+              <span> Paid Ticketing</span>
             </div>
             <div *ngIf="edfeg.is_paid && community.payments_enabled" class="payment-details">
               <commudle-payment-settings
@@ -252,8 +249,8 @@
             </div>
           </div>
 
-          <!-- delete and clone -->
-          <div>
+          <!-- Delete Button -->
+          <div class="delete-section">
             <button
               (click)="deleteEventDataFormEntityGroup(edfeg.id, i)"
               nbButton
@@ -261,10 +258,14 @@
               size="small"
               status="danger"
               [disabled]="edfeg.responses_count > 0"
+              class="delete-btn"
             >
-              <fa-icon [icon]="faTimesCircle"></fa-icon>
-              &nbsp; Delete
+              <fa-icon [icon]="faTimesCircle"></fa-icon>&nbsp; Delete
             </button>
+            <!-- <button *ngIf="event.editable" nbButton outline size="small" status="primary" class="clone-btn">
+              <fa-icon [icon]="faCopy"></fa-icon>
+              Clone Form
+            </button> -->
           </div>
         </nb-card-body>
       </nb-card>

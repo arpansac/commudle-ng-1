@@ -4,10 +4,11 @@
       <h6>
         <nb-icon icon="calendar-outline"></nb-icon>
         Agenda
+        <commudle-help-section [helpDictionaryName]="'event-location-agenda'"></commudle-help-section>
       </h6>
     </nb-card-header>
     <nb-card-body>
-      <div *ngIf="event.editable" class="com-flex com-gap-4">
+      <div *ngIf="event.editable" class="com-flex com-items-center com-gap-4">
         <p>
           Simple Hosting
           <br />
@@ -25,6 +26,7 @@
           <br />
           (online/offline with Multiple Tracks)
         </p>
+        <commudle-help-section [helpDictionaryName]="'event-livestreaming-setup'"></commudle-help-section>
       </div>
       <div *ngIf="!event.start_time">
         <nb-alert accent="info">

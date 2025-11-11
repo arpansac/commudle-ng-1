@@ -20,6 +20,7 @@ import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
+import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 
 @Component({
   selector: 'commudle-public-hackathon-form',
@@ -70,6 +71,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
     private authWatchService: LibAuthwatchService,
     private appUsersService: AppUsersService,
     private dialogService: NbDialogService,
+    private userProfileManagerService: UserProfileManagerService,
   ) {}
 
   ngOnInit() {
@@ -142,6 +144,32 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   switchTeamIndex(event: any) {
     this.switchTeam(event.value);
     this.stepper.reset();
+  }
+
+  updateUserDetails(event) {
+    this.userProfileManagerService.userProfileForm.patchValue({
+      name: event.name ? event.name : this.currentUser.name,
+      about_me: event.about_me ? event.about_me : this.currentUser.about_me,
+      designation: event.designation ? event.designation : this.currentUser.designation,
+      location: event.location ? event.location : this.currentUser.location,
+      gender: event.gender ? event.gender : this.currentUser.gender,
+      personal_website: event.personal_website ? event.personal_website : this.currentUser.personal_website,
+      github: event.github ? event.github : this.currentUser.github,
+      linkedin: event.linkedin ? event.linkedin : this.currentUser.linkedin,
+      twitter: event.twitter ? event.twitter : this.currentUser.twitter,
+      dribbble: event.dribbble ? event.dribbble : this.currentUser.dribbble,
+      behance: event.behance ? event.behance : this.currentUser.behance,
+      medium: event.medium ? event.medium : this.currentUser.medium,
+      gitlab: event.gitlab ? event.gitlab : this.currentUser.gitlab,
+      facebook: event.facebook ? event.facebook : this.currentUser.facebook,
+      youtube: event.youtube ? event.youtube : this.currentUser.youtube,
+      phone: event.phone ? event.phone : this.currentUser.phone,
+      instagram: event.instagram ? event.instagram : this.currentUser.instagram,
+      experience_level: event.experience_level ? event.experience_level : this.currentUser.experience_level,
+      user_domain: event.user_domain ? event.user_domain : this.currentUser.user_domain,
+    });
+    this.userProfileManagerService.updateUserDetails(false, this.currentUser);
+    this.UpdateOrSubmitResponse(event);
   }
 
   UpdateOrSubmitResponse(formData) {

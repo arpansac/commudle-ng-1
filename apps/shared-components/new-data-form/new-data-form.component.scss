@@ -3,14 +3,15 @@
     // max-width: 920px;
     // margin: 0 auto;
 
-    .required-question {
-      @apply com-text-red-500 com-ml-2px;
-    }
     .submit-button {
       @apply com-px-2;
       &.sticky {
         @apply com-py-1 com-sticky com-bottom-0 com-bg-transparent;
       }
+    }
+
+    nb-card {
+      @apply com-mx-0 com-my-4;
     }
 
     .card-body {
@@ -39,7 +40,10 @@
       margin-bottom: 0;
 
       .add-question-button {
-        @apply com-mt-2 com-mb-12 com-mx-2;
+        @apply com-mt-2 com-mb-6;
+        button {
+          @apply com-text-sm com-font-medium com-text-Ultramarine-Blue com-border-Ultramarine-Blue com-bg-white com-rounded-10;
+        }
       }
     }
 
@@ -66,28 +70,6 @@
         @apply com-mt-1 com-mb-0;
       }
 
-      .add-description-button {
-        @apply com-mt-3 com-mb-0 com-p-0 com-text-sm com-justify-start;
-        width: max-content;
-
-        nb-icon {
-          @apply com-mr-1;
-        }
-      }
-
-      .description-textbox {
-        @apply com-m-0;
-      }
-
-      .question-settings {
-        @apply com-flex com-flex-col com-font-semibold com-text-xl com-justify-start com-flex-wrap;
-
-        label {
-          @apply com-flex com-flex-col com-font-semibold com-text-xl com-mb-4;
-          margin-right: 1.5rem;
-        }
-      }
-
       .choices-container {
         @apply com-flex com-flex-col com-font-semibold com-text-xl com-justify-start;
 
@@ -107,27 +89,34 @@
         @apply com-cursor-move;
       }
     }
+
+    label {
+      @apply com-text-base com-font-medium com-text-Yankees-Blue;
+    }
+
+    input {
+      @apply com-text-gray-500 com-bg-Ghost-White com-rounded-lg com-text-sm com-font-medium;
+    }
     .question-form-footer {
-      @apply com-flex com-space-x-2 com-items-center com-mt-12 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
+      @apply com-flex com-space-x-2 com-items-center com-mt-20 com-align-middle md:com-flex-row sm:com-flex-col com-justify-between;
 
       .add-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-text-gray-900 com-pl-px com-pr-4;
 
         nb-icon {
-          @apply com-h-5 com-w-5;
+          @apply com-h-5 com-w-5 com-text-gray-500;
         }
       }
 
       .toggle {
-        @apply md:com-border-l com-border-Bright-Gray com-border-solid md:com-pl-3 com-border-y-0 com-border-r-0 com-text-primary-500
-        com-text-sm com-font-medium com-border-0 com-pl-0;
+        @apply md:com-border-l com-border-Bright-Gray com-border-solid com-border-y-0 com-border-r-0
+        com-text-sm com-font-medium com-border-0 md:com-pl-4 com-pl-0 com-block md:com-flex md:com--ml-2;
         span {
-          @apply com-text-primary-500;
         }
       }
 
       .delete-question-footer {
-        @apply com-text-sm com-font-medium;
+        @apply com-text-sm com-font-medium com-text-Infra-Red;
 
         nb-icon {
           @apply com-h-5 com-w-5;
@@ -141,27 +130,66 @@
           @apply com-flex com-justify-between;
         }
       }
+    }
 
-      @media (max-width: 767px) {
-        .toggle {
-          @apply com-block;
-        }
+    nb-card-body {
+      @apply com-pt-4 com-px-6 com-pb-6;
+    }
+  }
+}
+.footer-icons {
+  @apply md:com-flex com-hidden;
+}
 
-        .footer-icons {
-          @apply com-hidden;
-        }
+.required-text {
+  @apply com-text-sm com-text-gray-900;
+}
+.description-textbox {
+  @apply com-mt-3 com-w-full;
+}
+.field {
+  @apply com-flex com-gap-x-4 com-mt-4;
 
-        .context-menu {
-          @apply com-flex;
+  .add-description-button {
+    @apply com-bg-white com-text-sm com-font-medium com-text-Yankees-Blue md:com-flex com-hidden com-border com-border-solid com-border-Bright-Gray com-rounded-lg;
+    nb-icon {
+      @apply com-h-4 com-w-4 com-mr-1;
+    }
+  }
+
+  .question-settings {
+    @apply com-justify-start com-flex com-w-full md:com-w-auto;
+
+    .dropdown {
+      @apply com-flex com-items-center com-text-Yankees-Blue com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full md:com-w-auto;
+      nb-icon {
+        @apply com-h-4 com-w-4 com-mr-1;
+      }
+      select {
+        @apply com-border-0 com-bg-white com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium;
+        option {
+          @apply com-text-sm com-text-Yankees-Blue;
         }
       }
     }
   }
 }
+.required-choice {
+  @apply com-mt-5 com-w-full com-flex com-items-center;
+}
+.close-circle-outline {
+  @apply com-ml-2 com-text-red-500 com-h-5 com-w-5;
+}
+.add-choice-button {
+  @apply com-mt-3;
+}
+.required-below {
+  @apply com-align-middle com-flex;
+}
+.required-title {
+  @apply com-flex com-flex-col;
+}
 
-.dropdown {
-  @apply com-w-max com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-rounded-md com-cursor-pointer com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-my-2;
-  select {
-    @apply com-bg-[#eef2f7] hover:com-bg-[#eef2f7]/50 com-cursor-pointer;
-  }
+.required-question {
+  @apply com-text-sm com-font-semibold com-text-Infra-Red com-ml-2px;
 }

@@ -1,5 +1,15 @@
 <div class="members-list">
-  <div>
+  <div class="header-section">
+    <div class="custom-tabset">
+      <div class="tab-list">
+        <a [routerLink]="['./']" [class.active]="!isBlockedTab" class="tab-button">
+          <span class="title">All Members</span>
+        </a>
+        <a [routerLink]="['./blocked']" [class.active]="isBlockedTab" class="tab-button">
+          <span class="title">Blocked Members</span>
+        </a>
+      </div>
+    </div>
     <button
       (click)="sendSpeakerCSV()"
       nbButton
@@ -8,8 +18,8 @@
       [nbSpinner]="sendingRequest"
       [disabled]="sendingRequest"
     >
-      <fa-icon [icon]="faEnvelope"></fa-icon> &nbsp; List of speaker CSV
+      <fa-icon [icon]="faEnvelope"></fa-icon> &nbsp; List of speakers CSV
     </button>
   </div>
-  <nb-route-tabset [tabs]="tabs"></nb-route-tabset>
+  <router-outlet></router-outlet>
 </div>

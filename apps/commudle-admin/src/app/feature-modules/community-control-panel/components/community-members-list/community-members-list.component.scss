@@ -1,3 +1,34 @@
 .members-list {
-  @apply com-p-6;
+  @apply md:com-p-6 com-p-4;
+
+  .tab-list {
+    @apply md:com-ml-2 com-ml-0;
+    a {
+      @apply com-text-gray-500 com-text-base com-font-medium com-h-fit com-m-0 com-pt-0 com-px-6 com-pb-5 com-cursor-pointer com-no-underline com-mt-4;
+
+      .title {
+        @apply com-self-center com-ml-2;
+      }
+    }
+
+    .active {
+      @apply com-border-0 com-border-b-3 com-border-solid com-border-primary-500;
+
+      .title {
+        @apply com-font-semibold com-text-primary-500;
+      }
+    }
+  }
+}
+
+.header-section {
+  @apply com-flex md:com-justify-between md:com-flex-row com-flex-col com-items-center md:com-mb-8 com-mb-6;
+}
+
+button {
+  @apply md:com-w-auto com-w-full md:com-mt-0 com-mt-4;
+}
+
+.custom-tabset {
+  @apply md:com-mb-0 com-mb-4;
 }

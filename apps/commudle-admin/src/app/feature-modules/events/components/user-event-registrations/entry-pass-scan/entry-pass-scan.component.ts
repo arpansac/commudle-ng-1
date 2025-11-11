@@ -48,6 +48,7 @@ export class EntryPassScanComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getRouteData();
+    this.setMeta();
 
     this.seoService.noIndex(true);
   }
@@ -161,5 +162,13 @@ export class EntryPassScanComponent implements OnInit, OnDestroy {
     if (value?.length) {
       this.getEntryPass(value);
     }
+  }
+
+  setMeta(): void {
+    this.seoService.setTags(
+      `Entry Pass Scanner - ${this.event?.name} | ${this.community?.name}`,
+      `Scan entry passes for ${this.event?.name} event`,
+      `${this.community?.name}, ${this.event?.name}, entry pass, scanner`,
+    );
   }
 }

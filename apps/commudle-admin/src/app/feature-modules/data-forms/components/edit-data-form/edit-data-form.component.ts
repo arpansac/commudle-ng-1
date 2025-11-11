@@ -30,6 +30,7 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
 
   questionDescription = [];
   menuItem = [
+    { title: 'Add Description', icon: 'file-text-outline' },
     { title: 'Add Question Below', icon: 'plus-circle-outline' },
     { title: 'Delete Question', icon: 'trash-outline' },
   ];
@@ -269,6 +270,9 @@ export class EditDataFormComponent implements OnInit, OnDestroy {
       )
       .subscribe((menu) => {
         switch (menu.title) {
+          case 'Add Description':
+            this.toggleDescriptionField(this.questionContextMenuIndex);
+            break;
           case 'Add Question Below':
             this.addQuestionButtonClick(this.questionContextMenuIndex + 1);
             break;

@@ -1,5 +1,8 @@
 <nb-card>
-  <nb-card-header>{{ hackathon ? 'Basic Information' : 'New Hackathon Form' }}</nb-card-header>
+  <nb-card-header
+    >{{ hackathon ? 'Basic Information' : 'New Hackathon Form' }}
+    <commudle-help-section [helpDictionaryName]="'hackathon-create'"></commudle-help-section>
+  </nb-card-header>
   <nb-card-body class="hackathon-form">
     <form [formGroup]="hackathonForm">
       <div>
@@ -294,9 +297,24 @@
         </form>
       </div>
 
+      <div class="tags">
+        <label fullWidth> Tags* </label>
+        <app-tag
+          (tagAdd)="onTagAdd($event)"
+          (tagDelete)="onTagDelete($event)"
+          [backgroundColor]="'com-bg-tAnti-Flash'"
+          [editable]="true"
+          [fontColor]="'com-text-tYankees-Blue'"
+          [tags]="tags"
+        ></app-tag>
+      </div>
+      <span *ngIf="tags.length < 5">
+        <commudle-alert [errorMessage]="'Minimum 5 tags need to be added'" [error]="true"></commudle-alert>
+      </span>
+
       <button
         (click)="createOrUpdate()"
-        [disabled]="hackathonForm.invalid || isLoading"
+        [disabled]="hackathonForm.invalid || isLoading || tags.length < 5"
         [nbSpinner]="isLoading"
         class="save-button"
         fullWidth

@@ -1,4 +1,14 @@
-<div class="tag-list" [ngClass]="{ editable: editable }">
+<div
+  class="tag-list"
+  [ngClass]="{
+    editable: editable,
+    rounded: shape === 'rounded',
+    'semi-round': shape === 'semi-round',
+    rectangle: shape === 'rectangle',
+    'input-small': inputSize === 'small',
+    'input-medium': inputSize === 'medium'
+  }"
+>
   <span
     class="tag"
     *ngFor="let tag of getTags()"
@@ -18,9 +28,7 @@
       fullWidth
       formControlName="q"
       [placeholder]="
-        minTagLimit
-          ? 'Type something and press enter to keep adding (At least ' + minimumTags + ' tags)'
-          : 'Type something and press enter to keep adding'
+        minTagLimit ? 'Type something and press enter to keep adding (At least ' + minimumTags + ' tags)' : label
       "
       type="text"
       [nbAutocomplete]="autoControl"

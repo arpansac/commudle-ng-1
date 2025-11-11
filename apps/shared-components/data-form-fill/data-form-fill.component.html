@@ -145,8 +145,8 @@
         size="medium"
         status="primary"
         type="submit"
-        [disabled]="isFormSubmitting"
-        [nbSpinner]="isFormSubmitting"
+        [disabled]="isFormSubmitting || submitButtonLoading"
+        [nbSpinner]="isFormSubmitting || submitButtonLoading"
       >
         {{ submitButtonText }}
       </button>

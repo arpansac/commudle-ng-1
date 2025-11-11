@@ -55,6 +55,7 @@ import { PublicHomeListEventsModule } from 'apps/commudle-admin/src/app/feature-
 import { PublicHomeListSpeakersModule } from 'apps/commudle-admin/src/app/feature-modules/listing-pages/public-home-list-speakers/public-home-list-speakers.module';
 import { EventsAgendaComponent } from './components/events-agenda/events-agenda.component';
 import { EditorModule } from '@commudle/editor';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { EditorModule } from '@commudle/editor';
     LinkyModule,
     PublicHomeListEventsModule,
     PublicHomeListSpeakersModule,
+    HelpSectionComponent,
 
     // external
     FontAwesomeModule,

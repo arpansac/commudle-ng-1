@@ -4,7 +4,7 @@
       <nb-card class="entry-pass-scan-container">
         <nb-card-header>
           <h2 class="fs-h2">
-            {{ event.name }}
+            Entry Pass Scanner - {{ event.name }}
             <commudle-help-section [helpDictionaryName]="'event-qr-attendance'"></commudle-help-section>
           </h2>
 
@@ -126,6 +126,9 @@
         [showSocialLinks]="true"
         [user]="entryPass.user"
       ></app-user-profile-card-large>
+      <ul *ngFor="let formName of entryPass.forms_filled">
+        <li>{{ formName }}</li>
+      </ul>
     </nb-card-body>
     <nb-card-footer class="com-flex com-items-center com-justify-between">
       <button (click)="handleOk(); ref.close()" nbButton size="small" status="info">

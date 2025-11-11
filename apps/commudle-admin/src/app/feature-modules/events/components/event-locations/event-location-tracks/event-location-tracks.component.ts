@@ -8,6 +8,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -125,8 +126,10 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
     this.minSlotDate = moment(this.event.start_time).toDate();
   }
 
-  ngOnChanges() {
-    this.getLocationTracks();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.eventLocation || changes.eventLocationDate) {
+      this.getLocationTracks();
+    }
   }
 
   scrollFromTop() {
@@ -516,7 +519,7 @@ export class EventLocationTracksComponent implements OnInit, OnChanges {
   getLocationTracks() {
     this.isLoading = true;
     this.trackSlotsService
-      .getTrackSlots(this.eventLocation.location.id, this.eventLocationDate)
+      .getTrackSlots(this.eventLocation.location.id, this.eventLocationDate, this.event.id)
       .subscribe((data: any) => {
         this.eventLocationTracks = data;
         this.isLoading = false;

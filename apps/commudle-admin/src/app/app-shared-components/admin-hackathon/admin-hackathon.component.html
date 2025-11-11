@@ -1,62 +1,180 @@
-<div class="create-button">
-  <button nbButton status="primary" [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', 'new']">
-    <fa-icon [icon]="icons.faPlus"></fa-icon>
-    Create New Hackathon
-  </button>
-</div>
+<div class="admin-hackathon-container custom-scrollbar">
+  <div class="header-section">
+    <h1 class="page-title">Hackathons</h1>
+    <a
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', 'new']"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Hackathon
+    </a>
+  </div>
 
-<section>
-  <table *ngIf="hackathons && hackathons.length > 0">
-    <tr>
-      <th>Name</th>
-      <th>Creation Date</th>
-      <th>Start Date</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let hackathon of hackathons">
-      <td>{{ hackathon.name }}</td>
-      <td>{{ moment(hackathon.created_at).format('dddd, MMM Do, YYYY') }}</td>
-      <td>
-        <small>Start At: {{ moment(hackathon.start_date).format('dddd, MMM Do, YYYY') }}</small>
-        <br />
-        <small>Application Start At: {{ moment(hackathon.application_start_date).format('dddd, MMM Do, YYYY') }}</small>
-      </td>
-      <td>{{ hackathon.status | titlecase }}</td>
-      <td class="action-buttons">
-        <a
-          *ngIf="hackathon.status !== EHackathonStatus.OPEN"
-          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]"
-        >
-          <button nbButton status="primary" size="tiny">Dashboard</button>
-        </a>
-        <a
-          *ngIf="hackathon.status === EHackathonStatus.OPEN"
-          [routerLink]="[
-            '/admin',
-            'communities',
-            parentId,
-            'hackathon-dashboard',
-            hackathon.slug,
-            'applications-dashboard'
-          ]"
-        >
-          <button nbButton status="primary" size="tiny">Dashboard</button>
-        </a>
-        <a [routerLink]="['/communities', parentId, 'hackathons', hackathon.slug]" target="_blank">
-          <button nbButton status="primary" size="tiny">
-            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Public Page
-          </button>
-        </a>
-        <a
-          [routerLink]="['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug, 'stats']"
-          target="_blank"
-        >
-          <button nbButton status="success" size="tiny">
-            <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon> &nbsp; Stats
-          </button>
-        </a>
-      </td>
-    </tr>
-  </table>
-</section>
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="status-filter">
+      <nb-select
+        placeholder="Status"
+        multiple
+        [selected]="activeHackathonStatuses"
+        (selectedChange)="onStatusFilterChange($event)"
+        class="status-multi-select"
+      >
+        <nb-option *ngFor="let hackathonStatus of hackathonStatuses" [value]="hackathonStatus">
+          {{ hackathonStatus | titlecase }}
+        </nb-option>
+      </nb-select>
+    </div>
+    <form [formGroup]="searchForm" class="search-form">
+      <div>
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            [disabled]="isLoading"
+            fieldSize="medium"
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search hackathons by name, description, or tags"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
+  </div>
+
+  <!-- Hackathons Table Section -->
+  <section class="hackathon-list-container">
+    <div class="table-wrapper">
+      <table *ngIf="hackathons && hackathons.length > 0" class="hackathons-table">
+        <thead>
+          <tr class="table-header">
+            <th>NAME</th>
+            <th>APPLICATION DATES</th>
+            <th>HACKATHON DATES</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading" class="loading-row">
+            <td class="loading-cell">
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+            </td>
+          </tr>
+          <ng-container *ngIf="!isLoading">
+            <tr *ngFor="let hackathon of hackathons" class="hackathon-row">
+              <td>
+                <a
+                  class="hackathon-name"
+                  [routerLink]="
+                    hackathon.status === EHackathonStatus.OPEN
+                      ? [
+                          '/admin',
+                          'communities',
+                          parentId,
+                          'hackathon-dashboard',
+                          hackathon.slug,
+                          'applications-dashboard'
+                        ]
+                      : ['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]
+                  "
+                  >{{ hackathon.name }}
+                </a>
+              </td>
+              <td class="date-column">
+                <div *ngIf="hackathon.application_start_date" class="time-container">
+                  <p class="date">{{ moment(hackathon.application_start_date).format('MMM DD, YYYY') }}</p>
+                  <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                  <p class="date">{{ moment(hackathon.application_end_date).format('MMM DD, YYYY') }}</p>
+                </div>
+                <p *ngIf="!hackathon.application_start_date">--</p>
+              </td>
+              <td class="date-column">
+                <div *ngIf="hackathon.start_date" class="time-container">
+                  <p class="date">{{ moment(hackathon.start_date).format('MMM DD, YYYY') }}</p>
+                  <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+                  <p class="date">{{ moment(hackathon.end_date).format('MMM DD, YYYY') }}</p>
+                </div>
+                <p *ngIf="!hackathon.start_date">--</p>
+              </td>
+              <td>
+                <app-badge
+                  [text]="hackathon.status | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="
+                    hackathon.status === EHackathonStatus.OPEN
+                      ? 'com-bg-blue-100'
+                      : hackathon.status === EHackathonStatus.DRAFT
+                      ? 'com-bg-gray-100'
+                      : hackathon.status === EHackathonStatus.COMPLETED
+                      ? 'com-bg-green-100'
+                      : 'com-bg-red-100'
+                  "
+                  [fontColor]="
+                    hackathon.status === EHackathonStatus.OPEN
+                      ? 'com-text-Ultramarine-Blue'
+                      : hackathon.status === EHackathonStatus.DRAFT
+                      ? 'com-text-gray-500'
+                      : hackathon.status === EHackathonStatus.COMPLETED
+                      ? 'com-text-green-700'
+                      : 'com-text-Infra-Red'
+                  "
+                ></app-badge>
+              </td>
+              <td>
+                <div class="hackathon-dashboard-actions">
+                  <a
+                    [routerLink]="
+                      hackathon.status === EHackathonStatus.OPEN
+                        ? [
+                            '/admin',
+                            'communities',
+                            parentId,
+                            'hackathon-dashboard',
+                            hackathon.slug,
+                            'applications-dashboard'
+                          ]
+                        : ['/admin', 'communities', parentId, 'hackathon-dashboard', hackathon.slug]
+                    "
+                    nbButton
+                    status="basic"
+                    shape="semi-round"
+                    size="small"
+                    ><fa-icon [icon]="icons.faTableList"></fa-icon>&nbsp; Dashboard
+                  </a>
+                  <button
+                    (click)="setContextHackathon(hackathon)"
+                    [nbContextMenu]="contextMenuItems"
+                    class="context-menu-button"
+                    nbButton
+                    nbContextMenuTag="hackathon-context-menu"
+                    size="small"
+                    shape="semi-round"
+                    status="basic"
+                  >
+                    <nb-icon icon="more-vertical"></nb-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination
+      class="pagination"
+      (goTo)="page = $event; getHackathons()"
+      (next)="page = $event; getHackathons()"
+      (previous)="page = $event; getHackathons()"
+      *ngIf="total > 0"
+      [count]="count"
+      [current]="page"
+      [total]="total"
+    ></app-pagination>
+  </section>
+</div>

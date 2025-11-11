@@ -70,6 +70,7 @@ import { PublicProfileCampaignComponent } from 'apps/commudle-admin/src/app/feat
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 @NgModule({
   declarations: [
     PublicProfileComponent,
@@ -124,6 +125,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     JobsModule,
     newSharedComponentsModule,
     EventMiniCardComponent,
+    HelpSectionComponent,
     // Nebular
     NbCardModule,
     NbIconModule,

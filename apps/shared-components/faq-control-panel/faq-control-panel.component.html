@@ -36,7 +36,7 @@
       <form [formGroup]="faqForm">
         <div>
           <label for="question">Question*</label>
-          <input placeholder="question" nbInput fullWidth formControlName="question" type="text" />
+          <input placeholder="question" nbInput fullWidth formControlName="question" type="text" #questionInput />
           <commudle-alert
             *ngIf="
               faqForm.controls['question'].touched &&

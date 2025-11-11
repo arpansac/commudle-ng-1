@@ -21,6 +21,7 @@ import { UserProfileComponent } from 'apps/commudle-admin/src/app/app-shared-com
 import { UserprofileDetailsComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/homepage-dashboard/userprofile-details/userprofile-details.component';
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import { UserNotificationsCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/notifications/components/user-notifications-campaign/user-notifications-campaign.component';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { UserNotificationsCampaignComponent } from 'apps/commudle-admin/src/app/
     InfiniteScrollModule,
     SharedComponentsModule,
     newSharedComponentsModule,
+    SharedDirectivesModule,
 
     //Nebular
     NbListModule,

@@ -23,14 +23,34 @@ requests.
 
 ### The instructions to setup the repository in a local environment are mentioned in the [ReadMe](README.md)
 
-#### Branch Names
 
-Your branches should be named with a prefix for their purpose, viz.
+#### Branch Naming Conventions
+Use **lowercase** and **hyphens** (`-`) to separate words.  
+Example: `feat/community-badges`, `fix/api-timezone`, `upgrade/angular-19`
 
-- New Feature: `feature-branchname`
-- Urgent Fix: `hotfix-branchname`
-- Bug Fix: `fix-branchname`
-  In the above examples, replace `branchname` with the name of your branch.
+---
+
+##### 🧱 Branch Types
+
+| Type | Purpose | Example |
+|------|----------|----------|
+| **feat/** | For new feature development. | `feat/awesome-login` |
+| **fix/** | For fixing bugs or regressions during development or testing. | `fix/login-error` |
+| **hotfix/** | For urgent production fixes that must bypass normal QA flow. | `hotfix/logout-issue` |
+| **upgrade/** | For upgrading frameworks, dependencies, or major libraries. | `upgrade/angular-19` |
+| **docs/** | For documentation updates (README, wiki, setup guides, etc.). | `docs/setup-instructions` |
+| **chore/** | For maintenance, cleanup, or non-feature tasks (e.g., CI, linting). | `chore/update-eslint-config` |
+| **exp/** | For experimental branches to test ideas or new tools. | `exp/chatbot-prototype` |
+| **spike/** | For short-term research or proof-of-concept work. | `spike/ai-summary-feature` |
+
+---
+
+##### 💡 Best Practices
+
+- Keep branch names **under 20 characters**.
+- Always use **clear and descriptive** words — avoid vague names like `fix/stuff`.
+- Link pull requests to their issue numbers if applicable.  
+  Example: `feat/upgrade-angular-#452`
 
 #### Git Commit
 - `chmod ug+x .husky/*`

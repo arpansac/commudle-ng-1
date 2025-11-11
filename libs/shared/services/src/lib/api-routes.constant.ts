@@ -149,6 +149,7 @@ export const API_ROUTES = {
   UPDATE_DATA_FORM: 'api/v2/data_forms',
   CLONE_COMMUNITY_DATA_FORM: 'api/v2/data_forms/clone_community_data_form',
   LIST: 'api/v2/data_forms/list',
+  INDEX_BY_PARENT: 'api/v2/data_forms/index_by_parent',
 
   // question_types
   ALL_QUESTION_TYPES: 'api/v2/question_types',
@@ -407,8 +408,12 @@ export const API_ROUTES = {
   },
 
   POLLS: {
+    INDEX: 'api/v2/polls',
+    CREATE: 'api/v2/polls',
+    DELETE: 'api/v2/polls',
     PUBLIC: {
       SHOW: 'api/v2/polls/public',
+      SUBMIT: 'api/v2/polls/public/fill_poll',
       QUESTION_RESPONSE: 'api/v2/polls/public/question_responses',
     },
   },
@@ -685,6 +690,8 @@ export const API_ROUTES = {
     },
     COMMUNITIES: {
       MEMBERS_DISTRIBUTION: 'api/v2/stats/communities/members_distribution',
+      EXPERIENCE_CATEGORIES: 'api/v2/stats/communities/experience_categories',
+      NEW_MEMBERS_COUNT: 'api/v2/stats/communities/new_members_count',
       MEMBERS_TIMELINE: 'api/v2/stats/communities/members_timeline',
       EVENTS_TIMELINE: 'api/v2/stats/communities/events_timeline',
       EMAILS: 'api/v2/stats/communities/emails',
@@ -1006,6 +1013,11 @@ export const API_ROUTES = {
     CREATE: 'api/v2/profanity', //POST
     DELETE: 'api/v2/profanity', //DELETE
     UPDATE: 'api/v2/profanity', //PUT
+  },
+
+  SPAM_DETECTOR: {
+    INDEX: 'api/v2/spam_detectors', //GET
+    UPDATE: 'api/v2/spam_detectors', //PUT
   },
 
   CAMPAIGNS: {

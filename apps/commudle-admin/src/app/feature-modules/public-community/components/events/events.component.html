@@ -82,7 +82,7 @@
                             <span *ngIf="event.end_time === null">Date and time to be announced soon</span>
                           </p>
                         </div>
-                        <button nbButton size="small" class="event_type_button">
+                        <button nbButton size="tiny" class="event_type_button">
                           <fa-icon [icon]="faMapPin"></fa-icon>
                           {{ event.event_type }} Event
                         </button>
@@ -90,6 +90,10 @@
                     </div>
 
                     <div class="interested-members">
+                      <div *ngIf="event.event_locations && event.event_locations.length > 0" class="location">
+                        <nb-icon icon="pin-outline"></nb-icon>
+                        <span>{{ event.event_locations[0].name }}</span>
+                      </div>
                       <div>
                         <nb-icon icon="people-outline" class="people-outline"></nb-icon>
                         <span>{{ event.interested_members_count }} Interested Members</span>

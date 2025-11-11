@@ -45,6 +45,7 @@ export class ExitPassScanComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getRouteData();
+    this.setMeta();
 
     this.seoService.noIndex(true);
   }
@@ -136,5 +137,13 @@ export class ExitPassScanComponent implements OnInit, OnDestroy {
     if (value?.length) {
       this.getExitPass(value);
     }
+  }
+
+  setMeta(): void {
+    this.seoService.setTags(
+      `Exit Pass Scanner - ${this.event?.name} | ${this.community?.name}`,
+      `Scan exit passes for ${this.event?.name} event`,
+      `${this.community?.name}, ${this.event?.name}, exit pass, scanner`,
+    );
   }
 }

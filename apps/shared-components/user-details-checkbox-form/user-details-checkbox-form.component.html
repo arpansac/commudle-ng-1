@@ -1,7 +1,7 @@
 <div class="form-values">
   <form [formGroup]="userDetailsForm">
     <div>
-      <div class="group-name">PERSONAL</div>
+      <div class="group-name">Personal</div>
       <div class="group-values">
         <label class="custom-checkbox selected" [ngClass]="{ active: userDetailsForm.get('name').value }">
           <input type="checkbox" formControlName="name" (click)="$event.preventDefault()" />
@@ -50,7 +50,7 @@
     </div>
 
     <div *ngIf="showExperienceField">
-      <div class="group-name">EXPERIENCE</div>
+      <div class="group-name com-pt-6">Experience</div>
       <div class="group-values">
         <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('work_experience_months').value }">
           <input type="checkbox" formControlName="work_experience_months" />
@@ -66,7 +66,7 @@
     </div>
 
     <div>
-      <div class="group-name">CONTACT</div>
+      <div class="group-name com-pt-6">Contact</div>
       <div class="group-values">
         <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('phone').value }">
           <input type="checkbox" formControlName="phone" />
@@ -77,7 +77,7 @@
     </div>
 
     <div>
-      <div class="group-name">SOCIAL LINKS</div>
+      <div class="group-name com-pt-6">Social Links</div>
       <div class="group-values">
         <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('twitter').value }">
           <input type="checkbox" formControlName="twitter" />
@@ -128,7 +128,7 @@
     </div>
 
     <div *ngIf="showGoodiesContainer">
-      <div class="group-name">GOODIES</div>
+      <div class="group-name com-pt-6">Goodies</div>
       <div class="group-values">
         <label class="custom-checkbox" [ngClass]="{ active: userDetailsForm.get('tshirt_size').value }">
           <input type="checkbox" formControlName="tshirt_size" />

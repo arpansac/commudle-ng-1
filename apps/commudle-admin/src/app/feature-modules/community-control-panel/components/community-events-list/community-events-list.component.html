@@ -1,8 +1,13 @@
 <div class="community-events-list">
-  <div class="page-actions">
-    <a nbButton status="primary" [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']">
-      <fa-icon [icon]="icons.faPlus"></fa-icon>
-      &nbsp; Create New Event
+  <div class="header-section">
+    <h1 class="page-title">Events</h1>
+    <a
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Event
     </a>
   </div>
 
@@ -12,68 +17,141 @@
   <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> 
   </div> -->
 
-  <form [formGroup]="searchForm">
-    <div class="name-filter">
-      <nb-form-field>
-        <nb-icon icon="search" nbPrefix></nb-icon>
-        <input
-          [disabled]="isLoading"
-          fieldSize="small"
-          formControlName="name"
-          fullWidth
-          nbInput
-          placeholder="Search by Event.."
-          type="text"
-        />
-      </nb-form-field>
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="status-filter">
+      <nb-select
+        placeholder="Status"
+        multiple
+        [selected]="activeEventStatuses"
+        (selectedChange)="onStatusFilterChange($event)"
+        class="status-multi-select"
+      >
+        <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
+          {{ eventStatus | titlecase }}
+        </nb-option>
+      </nb-select>
     </div>
-  </form>
-
-  <div class="status-filter">
-    <nb-tag-list>
-      <nb-tag
-        *ngFor="let eventStatus of eventStatuses"
-        appearance="outline"
-        [text]="eventStatus"
-        status="primary"
-        [removable]="activeEventStatuses && activeEventStatuses.includes(eventStatus) ? 'true' : 'false'"
-        [ngClass]="{ activeTag: activeEventStatuses && activeEventStatuses.includes(eventStatus) }"
-        (click)="filterByTags(eventStatus)"
-      ></nb-tag>
-    </nb-tag-list>
+    <form [formGroup]="searchForm" class="search-form">
+      <div>
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            [disabled]="isLoading"
+            fieldSize="medium"
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search by name, email, designation or tags"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
   </div>
+
+  <!-- Events Table Section -->
   <section class="event-list-container">
     <div class="table-wrapper">
-      <table *ngIf="events && events.length > 0">
-        <tr>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Actions</th>
-          <th>Public Page</th>
-        </tr>
-        <tr *ngIf="isLoading">
-          <td colspan="5" style="text-align: center">
-            <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-          </td>
-        </tr>
-        <ng-container *ngIf="!isLoading">
-          <tr *ngFor="let event of events">
-            <td>{{ event.name }}</td>
-            <td>
-              <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
-            </td>
-
-            <td>{{ event.status | titlecase }}</td>
-            <td class="action-buttons">
-              <commudle-community-events-list-actions [eventData]="event"> </commudle-community-events-list-actions>
-            </td>
-            <td class="public-page-buttons">
-              <commudle-community-events-list-public-page [eventData]="event">
-              </commudle-community-events-list-public-page>
+      <table *ngIf="events && events.length > 0" class="events-table">
+        <thead>
+          <tr class="table-header">
+            <th>NAME</th>
+            <th>DATE</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading" class="loading-row">
+            <td colspan="4" class="loading-cell">
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
             </td>
           </tr>
-        </ng-container>
+          <ng-container *ngIf="!isLoading">
+            <tr *ngFor="let event of events" class="event-row">
+              <td class="event-name-container">
+                <a
+                  class="event-name"
+                  [routerLink]="
+                    event.status === EEventStatuses.OPEN
+                      ? ['event-dashboard', event.slug, 'registrations']
+                      : event.status === EEventStatuses.COMPLETED
+                      ? ['event-dashboard', event.slug, 'stats']
+                      : ['event-dashboard', event.slug]
+                  "
+                  >{{ event.name }}
+                </a>
+                <app-badge
+                  *ngIf="moment(event.start_time) > moment() && event.status === 'open'"
+                  [text]="moment(event.start_time).fromNow() | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="'com-bg-red-500'"
+                  [fontColor]="'com-text-tWhite'"
+                ></app-badge>
+              </td>
+              <td class="date-column">
+                <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
+              </td>
+              <td>
+                <app-badge
+                  [text]="event.status | titlecase"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="
+                    event.status === EEventStatuses.OPEN
+                      ? 'com-bg-blue-100'
+                      : event.status === EEventStatuses.DRAFT
+                      ? 'com-bg-gray-100'
+                      : event.status === EEventStatuses.COMPLETED
+                      ? 'com-bg-green-100'
+                      : 'com-bg-red-100'
+                  "
+                  [fontColor]="
+                    event.status === EEventStatuses.OPEN
+                      ? 'com-text-Ultramarine-Blue'
+                      : event.status === EEventStatuses.DRAFT
+                      ? 'com-text-gray-500'
+                      : event.status === EEventStatuses.COMPLETED
+                      ? 'com-text-green-700'
+                      : 'com-text-Infra-Red'
+                  "
+                ></app-badge>
+              </td>
+              <td class="action-buttons">
+                <div class="event-dashboard-actions">
+                  <a
+                    [routerLink]="
+                      event.status === EEventStatuses.OPEN
+                        ? ['event-dashboard', event.slug, 'registrations']
+                        : event.status === EEventStatuses.COMPLETED
+                        ? ['event-dashboard', event.slug, 'stats']
+                        : ['event-dashboard', event.slug]
+                    "
+                    nbButton
+                    status="basic"
+                    shape="semi-round"
+                    size="small"
+                    ><fa-icon [icon]="icons.faTableList"></fa-icon>&nbsp; Dashboard
+                  </a>
+                  <button
+                    (click)="setContextEvent(event)"
+                    [nbContextMenu]="contextMenuItems"
+                    class="context-menu-button"
+                    nbButton
+                    nbContextMenuTag="community-event-context-menu"
+                    size="small"
+                    shape="semi-round"
+                    status="basic"
+                  >
+                    <nb-icon icon="more-vertical"></nb-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
       </table>
     </div>
 
@@ -89,3 +167,17 @@
     ></app-pagination>
   </section>
 </div>
+
+<ng-template #cloneEvent let-data let-ref="dialogRef">
+  <nb-card class="clone-event">
+    <nb-card-header>
+      <div>Clone of {{ data.eventData.name }}</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <app-edit-event [eventId]="data.eventData.id" type="clone"></app-edit-event>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

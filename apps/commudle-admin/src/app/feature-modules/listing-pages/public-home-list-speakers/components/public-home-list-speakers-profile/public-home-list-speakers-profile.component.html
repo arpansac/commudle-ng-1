@@ -1,4 +1,6 @@
-<h2 class="heading">Popular Speakers</h2>
+<h2 class="heading">
+  Popular Speakers<commudle-help-section [helpDictionaryName]="'speakers'"></commudle-help-section>
+</h2>
 <div class="search-filters">
   <form [formGroup]="searchForm">
     <div class="search">
@@ -83,12 +85,15 @@
           [appearanceOfFollowButton]="'outline'"
           [showHiringLookingTags]="false"
           [showFollowersCount]="true"
-          [showLeaderBadge]="true"
+          [showLeaderBadgeToSpeakerCount]="true"
         ></app-user-profile-card-large>
       </div>
     </div>
     <div class="speakers-upcoming">
       <commudle-public-home-list-speakers-upcoming></commudle-public-home-list-speakers-upcoming>
+    </div>
+    <div class="hackathons-upcoming">
+      <commudle-upcoming-hackathons></commudle-upcoming-hackathons>
     </div>
     <div class="featured-communities">
       <commudle-public-home-list-events-featured-communities></commudle-public-home-list-events-featured-communities>
@@ -114,7 +119,7 @@
           [appearanceOfFollowButton]="'outline'"
           [showHiringLookingTags]="false"
           [showFollowersCount]="true"
-          [showLeaderBadge]="true"
+          [showLeaderBadgeToSpeakerCount]="true"
         ></app-user-profile-card-large>
       </div>
     </div>

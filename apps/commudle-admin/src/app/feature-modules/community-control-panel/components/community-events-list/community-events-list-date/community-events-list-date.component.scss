@@ -1,0 +1,11 @@
+.time-container {
+  @apply com-flex com-flex-row com-gap-4 com-text-sm com-font-normal com-text-gray-custom-1 com-m-0 com-items-center;
+}
+.start-time,
+.end-time {
+  @apply com-flex com-flex-col com-gap-1 com-text-sm com-font-normal com-text-gray-custom-1 com-m-0;
+}
+
+.date {
+  @apply com-font-medium;
+}

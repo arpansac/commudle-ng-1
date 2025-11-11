@@ -5,6 +5,9 @@
   div[role='individual'] {
     margin: 2rem auto;
   }
+  .heading {
+    @apply com-font-bold com-text-lg com-mb-6 com-flex com-items-center;
+  }
 
   .uploaded-logo {
     height: 150px;

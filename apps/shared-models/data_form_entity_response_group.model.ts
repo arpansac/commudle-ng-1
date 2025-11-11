@@ -3,7 +3,7 @@ import { IRegistrationStatus } from './registration_status.model';
 import { IUser } from './user.model';
 import { IDataFormEntityResponseValue } from './data_form_entity_response_value.model';
 import { ITrackSlot } from 'apps/shared-models/track-slot.model';
-import { EDbModels, IEvent, IHackathon, IHackathonTeam } from '@commudle/shared-models';
+import { EDbModels, IEvent, IHackathon, IHackathonTeam, INote } from '@commudle/shared-models';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 
 export interface IDataFormEntityResponseGroup {
@@ -20,6 +20,7 @@ export interface IDataFormEntityResponseGroup {
   hackathon_team?: IHackathonTeam;
   event_data_form_entity_group?: IEventDataFormEntityGroup;
   agg_user_community_engagement: IAggUserCommunityEngagement;
+  notes: INote[];
 }
 
 export interface IAggUserCommunityEngagement {

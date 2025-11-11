@@ -1,6 +1,7 @@
 .tech-sessions,
 .explore-experts,
-.featured-communities {
+.featured-communities,
+.events-upcoming {
   @apply com-m-0 com-mt-8;
 }
 
@@ -41,4 +42,11 @@
 
 app-skeleton-cards {
   @apply com-my-4;
+}
+
+.publish-hackathon-button {
+  @apply md:com-mx-0 com-mx-4 md:com-my-8 com-mt-8 com-mb-6 md:com-w-[343px];
+  .button {
+    @apply com-w-full com-text-Catalina-Blue com-bg-Alice-Blue-Dark com-border-Catalina-Blue com-rounded-lg com-mb-3;
+  }
 }

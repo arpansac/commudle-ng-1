@@ -90,6 +90,7 @@ export class EventDataFormEntityGroupsService {
     toRegistrationStatus,
     eventDataFormEntityGroupId,
     changeCanceledStatus,
+    count: number,
   ): Observable<boolean> {
     return this.http.put<boolean>(
       this.apiRoutesService.getRoute(API_ROUTES.EVENT_DATA_FORM_ENTITY_GROUPS.CHANGE_BULK_REGISTRATION_STATUS),
@@ -98,6 +99,7 @@ export class EventDataFormEntityGroupsService {
         to_registration_status: toRegistrationStatus,
         event_data_form_entity_group_id: eventDataFormEntityGroupId,
         canceled_change: changeCanceledStatus,
+        count: count,
       },
     );
   }

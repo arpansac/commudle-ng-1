@@ -4,11 +4,11 @@
       Applications & Projects
       <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
       <a
-        *ngIf="parent && parent.id && hackathon && hackathon.hackathon_response_group"
+        *ngIf="parent && parent.slug && hackathon && hackathon.hackathon_response_group"
         target="_blank"
         [routerLink]="[
           '/communities',
-          parent.id,
+          parent.slug,
           'hackathons',
           hackathon.slug,
           'fill-form',
@@ -16,7 +16,7 @@
         ]"
       >
         <button nbButton status="primary" size="tiny">
-          <fa-icon [icon]="faUpRightFromSquare"></fa-icon> &nbsp; Link to register
+          <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon> &nbsp; Link to register
         </button>
       </a>
     </div>
@@ -52,12 +52,12 @@
         class="com-w-max"
         size="small"
       >
-        <fa-icon [icon]="faEnvelope"></fa-icon>&nbsp;CSV
+        <fa-icon [icon]="icons.faEnvelope"></fa-icon>&nbsp;CSV
       </button>
 
       <a
         *ngIf="hackathon && userResponses && userResponses.length > 0"
-        [routerLink]="['/admin', 'communities', parent.id, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
+        [routerLink]="['/admin', 'communities', parent.slug, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
       >
         <button nbButton status="primary" class="com-w-max" size="small">Select Winner</button>
       </a>
@@ -146,14 +146,29 @@
             <th>Actions</th>
           </tr>
           <tr
-            *ngFor="let userResponse of userResponses; let i = index"
+            *ngFor="let userResponse of userResponses; let i = index; trackBy: trackByTeamId"
             (click)="openDialogBox(userResponseDetailsDialogBox, userResponse.team.id, i)"
             class="user-response"
           >
+            <!-- TEAM NAME -->
             <td class="name">
               <div class="team-details">
                 <div class="team-name">
-                  {{ userResponse.team.name }}
+                  <span class="com-flex com-gap-2">
+                    <span
+                      ><span class="id"> (#{{ userResponse.team.id }})</span> {{ userResponse.team.name }}</span
+                    >
+                    @if(userResponse.team.team_leader_hur_status !== EInvitationStatus.APPLICATION_COMPLETE){
+                    <fa-icon
+                      [icon]="icons.faExclamationTriangle"
+                      [title]="
+                        hackathon.participate_types === ENUMS.EParticipateTypes.TEAM
+                          ? 'Incomplete registration: Team Leader has not completed the form'
+                          : 'Incomplete registration'
+                      "
+                    ></fa-icon>
+                    }
+                  </span>
                   <span
                     *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"
                     [nbTooltip]="hackathonWinner.hackathon_prize.name"
@@ -167,17 +182,21 @@
                 <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
                   Link to project:
                   <a [routerLink]="['/builds', userResponse.team.community_build.slug]" target="_blank">
-                    <fa-icon [icon]="faUpRightFromSquare"></fa-icon> {{ userResponse.team.community_build.name }}</a
+                    <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
+                    {{ userResponse.team.community_build.name }}</a
                   >
                 </div>
               </div>
             </td>
+
+            <!-- ROUND NAME -->
             <td>
               <div *ngIf="userResponse.team.round" class="round-name">
                 {{ userResponse.team.round?.name }}
               </div>
             </td>
 
+            <!-- UPDATED -->
             <td class="updates">
               <div *ngIf="userResponse.team.entity_updates.length > 0">
                 <span
@@ -200,19 +219,32 @@
                 </span>
               </div>
             </td>
+
+            <!-- NOTES -->
             <td class="notes">
               <div *ngIf="userResponse.team.notes.length > 0">
                 <span class="details">{{ userResponse.team.notes[userResponse.team.notes.length - 1].text }}</span>
                 <span class="notes-count"> {{ userResponse.team.notes.length }} Notes </span>
               </div>
             </td>
+
+            <!-- APPLICATION STATUS CHANGE ACTION -->
             <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
               <div
                 [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
                 class="select-wrapper"
               >
                 <select
-                  (change)="optionChanged($event, userResponse.team.id, i)"
+                  [id]="'status-select-' + userResponse.team.id"
+                  (mousedown)="storeOriginalValue(userResponse.team.registration_status)"
+                  (change)="
+                    openApplicationConfirmationDialogBox(
+                      confirmApplicationStatusChanged,
+                      $event,
+                      userResponse.team.id,
+                      i
+                    )
+                  "
                   [(ngModel)]="userResponse.team.registration_status"
                   [class]="EHackathonRegistrationStatusColor[userResponse.team.registration_status]"
                 >
@@ -231,10 +263,13 @@
                 </select>
               </div>
             </td>
+
+            <!-- EMAIL ACTION -->
             <td class="actions">
               <button
                 nbButton
                 status="primary"
+                size="tiny"
                 (click)="openIndividualTeamEmailDialogBox(userResponse.team); $event.stopPropagation()"
               >
                 Send Email
@@ -244,12 +279,14 @@
         </table>
       </ng-template>
 
+      <!-- NO RESPONSE MESSAGE -->
       <ng-template #noUserResponse>
         <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
         <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
       </ng-template>
     </div>
 
+    <!-- PAGINATION -->
     <div *ngIf="total > 0" class="pagination">
       <app-pagination
         [count]="count"
@@ -267,7 +304,12 @@
   <nb-card class="response-dialog-box">
     <nb-card-header class="com-flex com-justify-between com-items-center">
       <div class="heading">
-        <span>{{ selectedTeamDetails.name }}</span>
+        <div>
+          <span>{{ selectedTeamDetails.name }}</span>
+          <div class="date">
+            {{ moment(selectedTeamDetails.created_at).format('DD MMM YYYY') }}
+          </div>
+        </div>
         <div class="project-submit" *ngIf="selectedTeamDetails.community_build">Project Submitted</div>
         <div class="project-link" *ngIf="selectedTeamDetails.community_build">
           <a [routerLink]="['/builds', selectedTeamDetails.community_build.slug]"> Go to Project</a>
@@ -284,7 +326,14 @@
             nbButton
             status="primary"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.ACCEPTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.ACCEPTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Accepted
@@ -293,7 +342,14 @@
             nbButton
             status="danger"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.REJECTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.REJECTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Reject
@@ -302,7 +358,14 @@
             nbButton
             status="warning"
             fullWidth
-            (click)="optionChanged(EHackathonRegistrationStatus.WAITLISTED, selectedTeamDetails.id, data.index)"
+            (click)="
+              openApplicationConfirmationDialogBox(
+                confirmApplicationStatusChanged,
+                EHackathonRegistrationStatus.WAITLISTED,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             size="small"
           >
             Waitlist
@@ -388,7 +451,16 @@
         <label>Round:</label>
         <div *ngIf="selectedTeamDetails.round">
           <select
-            (change)="changeRoundOption($event, selectedTeamDetails.id, data.index)"
+            [id]="'round-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalRoundValue(selectedTeamDetails.round.id)"
+            (change)="
+              openRoundConfirmationDialogBox(
+                roundChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
             [(ngModel)]="selectedTeamDetails.round.id"
           >
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
@@ -397,7 +469,18 @@
           </select>
         </div>
         <div *ngIf="!selectedTeamDetails.round">
-          <select (change)="changeRoundOption($event, selectedTeamDetails.id, data.index)">
+          <select
+            [id]="'round-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalRoundValue(selectedTeamDetails?.round?.id || null)"
+            (change)="
+              openRoundConfirmationDialogBox(
+                roundChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+          >
             <option selected disabled [value]="null">Select a round</option>
             <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
               {{ hackathonRound.name }}
@@ -416,12 +499,12 @@
                   <div>
                     <span>{{ note.text }} &nbsp;</span>
                     <span class="delete-note clickable" (click)="destroyNote(note.id, i, selectedUserResponse)">
-                      <fa-icon [icon]="faXmark"></fa-icon>
+                      <fa-icon [icon]="icons.faXmark"></fa-icon>
                     </span>
                   </div>
                   <small>
                     <span class="com-text-Auro-Metal-Saurus"
-                      >{{ moment(note.created_at).format('LT DD-MM-YYYY') }} by {{ note.user.name }}</span
+                      >{{ moment(note.created_at).format('LT DD-MM-YYYY') }} by {{ note.created_by.name }}</span
                     >
                   </small>
                 </div>
@@ -430,7 +513,7 @@
           </div>
           <div *ngFor="let note of notesForm.controls.note['controls']; let i = index">
             <div [formGroupName]="i" class="note">
-              <textarea formControlName="value" fullWidth nbInput placeholder="Notes" required></textarea>
+              <textarea #noteTextarea formControlName="value" fullWidth nbInput placeholder="Notes" required></textarea>
               <div class="action-button">
                 <button
                   size="tiny"
@@ -440,11 +523,11 @@
                   status="primary"
                   [disabled]="notesList.invalid || notesList.length === 0"
                 >
-                  <fa-icon class="clickable" [icon]="faCheck"></fa-icon>
+                  <fa-icon class="clickable" [icon]="icons.faCheck"></fa-icon>
                   Save
                 </button>
                 <button (click)="removeNote(i)" status="danger" nbButton size="tiny">
-                  <fa-icon class="clickable" [icon]="faXmark"></fa-icon>
+                  <fa-icon class="clickable" [icon]="icons.faXmark"></fa-icon>
                   Remove
                 </button>
               </div>
@@ -461,7 +544,7 @@
           </div>
           <div class="com-my-3">
             <button (click)="addNote()" class="add-button" nbButton status="warning" size="small">
-              <fa-icon class="clickable" [icon]="faPlus"></fa-icon>
+              <fa-icon class="clickable" [icon]="icons.faPlus"></fa-icon>
               Add Note
             </button>
             <br />
@@ -516,7 +599,16 @@
             }"
           >
             <div (click)="displayUserData(user)" class="name" *ngIf="user.name">
-              {{ user.name }}
+              <span> {{ user.name }}</span>
+              @if(user.team_leader ){
+              <app-badge
+                text="Team Leader"
+                [fontColor]="'com-text-tAuro-Metal-Saurus'"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
+                [color]="'com-bg-Bright-Gray-Light'"
+              ></app-badge>
+              }
               <commudle-user-personal-connect
                 [userConnect]="user.distance_from_current_user"
               ></commudle-user-personal-connect>
@@ -529,7 +621,8 @@
                   user.invite_status !== EInvitationStatus.APPLICATION_COMPLETE
               }"
             >
-              {{ user.user_email }} <br />
+              {{ user.user_email }}
+              <br />
               <small>{{ user.invite_status | capitalizeAndRemoveUnderscore }}</small>
             </div>
           </div>
@@ -537,7 +630,7 @@
         <div *ngIf="selectedUserDetails" class="selected-user-details">
           <a [routerLink]="['/users', selectedUserDetails.username]" target="_blank" class="com-w-max com-p-2">
             Go To Profile
-            <fa-icon [icon]="faUpRightFromSquare"></fa-icon>
+            <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
           </a>
           <!-- About -->
           <div *ngIf="selectedUserDetails.about_me">
@@ -581,33 +674,40 @@
             <input type="text" nbInput fullWidth readonly [value]="selectedUserDetails.phone" />
           </div>
 
-          <div *ngIf="selectedResponse?.length > 0">
-            <div *ngFor="let questionAndAnswer of selectedResponse; let i = index">
-              <div>
-                Question: <strong>{{ questionAndAnswer.question.title }}</strong>
-              </div>
-              <ng-container *ngIf="questionAndAnswer.question.question_type_id === 5">
-                <div>
-                  Answer:
-                  <div *ngFor="let answer of questionAndAnswer?.answer">{{ answer?.title }}</div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="questionAndAnswer.question.question_type_id === 4">
-                <div>
-                  Answer: <span>{{ questionAndAnswer.answer?.title }}</span>
-                </div>
-              </ng-container>
-              <ng-container
-                *ngIf="
-                  questionAndAnswer.question.question_type_id !== 5 && questionAndAnswer.question.question_type_id !== 4
-                "
-              >
-                <div>
-                  Answer: <span>{{ questionAndAnswer.answer?.response_text }}</span>
-                </div>
-              </ng-container>
-            </div>
-          </div>
+          @if(selectedResponse?.length > 0){
+          <span>Form Responses</span>
+          @for (questionAndAnswer of selectedResponse; track questionAndAnswer.id) {
+          <nb-card class="form-responses-card">
+            <nb-card-body>
+              <details open>
+                <summary>
+                  <strong>{{ questionAndAnswer.question.title }}</strong>
+                </summary>
+                <ng-container *ngIf="questionAndAnswer.question.question_type_id === 5">
+                  <div>
+                    Answer:
+                    <div *ngFor="let answer of questionAndAnswer?.answer">{{ answer?.title }}</div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="questionAndAnswer.question.question_type_id === 4">
+                  <div>
+                    Answer: <span>{{ questionAndAnswer.answer?.title }}</span>
+                  </div>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    questionAndAnswer.question.question_type_id !== 5 &&
+                    questionAndAnswer.question.question_type_id !== 4
+                  "
+                >
+                  <div>
+                    Answer: <span>{{ questionAndAnswer.answer?.response_text }}</span>
+                  </div>
+                </ng-container>
+              </details>
+            </nb-card-body>
+          </nb-card>
+          } }
         </div>
       </div>
     </nb-card-body>
@@ -711,6 +811,61 @@
         Send
       </button>
       <button nbButton status="danger">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #confirmApplicationStatusChanged let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-application-dialog-box">
+    <nb-card-header class="">
+      <span>Confirm Application Status Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to change this team's status to
+          <strong>{{ data.newValue | titlecase }}</strong
+          >?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmApplicationStatusChange(data.teamId, data.index, data.newValue)"
+      >
+        Confirm
+      </button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #roundChangedConfirmationDialogBox let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-round-dialog-box">
+    <nb-card-header>
+      <span>Confirm Status Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to move this team to <strong>{{ data.roundName | titlecase }}</strong
+          >, an email will automatically be sent to them ?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmRoundChange(data.teamId, data.index, data.newValue)">
+        Confirm
+      </button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

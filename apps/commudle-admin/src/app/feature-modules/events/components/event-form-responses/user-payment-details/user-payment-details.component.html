@@ -5,17 +5,17 @@
   </tr>
   <tr>
     <td>Amount</td>
-    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.total_amount / 100 }}</td>
+    <td>{{ detail.total_amount / 100 | currency : detail.currency }}</td>
   </tr>
 
   <tr *ngIf="detail.tax_amount > 0">
     <td>Tax Amount</td>
-    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.tax_amount / 100 }}</td>
+    <td>{{ detail.tax_amount / 100 | currency : detail.currency }}</td>
   </tr>
 
   <tr *ngIf="detail.discount_amount > 0">
     <td>Discount Amount</td>
-    <td>{{ detail.currency === 'inr' ? '₹' : '$' }} {{ detail.discount_amount / 100 }}</td>
+    <td>{{ detail.discount_amount / 100 | currency : detail.currency }}</td>
   </tr>
   <tr *ngIf="detail.discount_amount > 0 && detail.discount_code">
     <td>Discount code</td>

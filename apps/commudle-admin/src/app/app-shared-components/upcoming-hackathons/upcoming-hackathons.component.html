@@ -26,17 +26,7 @@
       ></commudle-event-mini-card>
     </div>
   </div>
-  <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
-  <div *ngIf="pageInfo?.has_next_page" class="load-more">
-    <button
-      (click)="getUpcomingHackathons(); showSpinner = true"
-      nbButton
-      outline
-      size="tiny"
-      status="info"
-      [disabled]="showSpinner"
-    >
-      Load More
-    </button>
+  <div class="load-more">
+    <button [routerLink]="['/hackathons']" nbButton outline size="tiny" status="info">View All</button>
   </div>
 </div>

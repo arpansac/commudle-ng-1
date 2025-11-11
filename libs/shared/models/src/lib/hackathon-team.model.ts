@@ -5,7 +5,7 @@ import { IEntityUpdate } from './entity-update.model';
 import { IHackathonWinner } from './hackathon-winner.model';
 import { ICommunity } from './community.model';
 import { IHackathon } from './hackathon.model';
-import { IHackathonUserResponse } from './hackathon-user-response.model';
+import { EInvitationStatus, IHackathonUserResponse } from './hackathon-user-response.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -25,6 +25,7 @@ export interface IHackathonTeam {
   community: ICommunity;
   hackathon_user_responses: IHackathonUserResponse[];
   user_id: number;
+  team_leader_hur_status: EInvitationStatus;
 }
 
 export enum EHackathonRegistrationStatus {

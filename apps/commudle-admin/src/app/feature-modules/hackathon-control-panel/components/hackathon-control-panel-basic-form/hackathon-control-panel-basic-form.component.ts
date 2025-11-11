@@ -22,7 +22,7 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
   parentId = '';
   parentType = '';
   imagePreview = '';
-
+  tags: string[] = [];
   subscriptions: Subscription[] = [];
   hackathon: IHackathon;
   EParticipateTypes = EParticipateTypes;
@@ -149,6 +149,9 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
         min_number_of_teammates: data.min_number_of_teammates,
         max_number_of_teammates: data.max_number_of_teammates,
       });
+      if (data.tags) {
+        data.tags.map((tag) => this.tags.push(tag));
+      }
       if (this.hackathon.location_name) {
         this.locationForm.patchValue({
           name: this.hackathon.location_name,
@@ -225,8 +228,13 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       formData.append('location[address]', this.locationForm.get('address').value);
     }
 
-    if (this.locationForm.get('map_link').value)
+    if (this.locationForm.get('map_link').value) {
       formData.append('location[map_link]', this.locationForm.get('map_link').value);
+    }
+
+    if (this.tags.length > 0) {
+      this.tags.forEach((value) => formData.append('hackathon[tags][]', value));
+    }
 
     this.hackathonService.createHackathon(formData, this.parentId, this.parentType).subscribe(
       (data) => {
@@ -259,8 +267,13 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       formData.append('location[address]', this.locationForm.get('address').value);
     }
 
-    if (this.locationForm.get('map_link').value)
+    if (this.locationForm.get('map_link').value) {
       formData.append('location[map_link]', this.locationForm.get('map_link').value);
+    }
+
+    if (this.tags.length > 0) {
+      this.tags.forEach((value) => formData.append('hackathon[tags][]', value));
+    }
 
     this.hackathonService.updateHackathon(formData, this.hackathon.slug).subscribe(
       (data) => {
@@ -279,5 +292,16 @@ export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestro
       this.hackathon.tagline,
       this.hackathon.banner_image?.i320,
     );
+  }
+
+  onTagAdd(value: string) {
+    if (!this.tags.includes(value)) {
+      const finalValue = value.trim();
+      this.tags.push(finalValue);
+    }
+  }
+
+  onTagDelete(value: string) {
+    this.tags = this.tags.filter((tag) => tag !== value);
   }
 }

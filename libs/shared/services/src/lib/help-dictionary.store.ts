@@ -10,6 +10,10 @@ const helpDictionary = {
     url: 'https://documentation.commudle.com/labs/create-a-lab',
     title: 'What is a Lab?',
   },
+  'lab-what-2': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/labs/create-a-lab',
+  },
   'build-publish': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/builds-projects-shared-by-developers/how-to-publish-a-build',
@@ -18,6 +22,10 @@ const helpDictionary = {
   'build-publish-2': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/builds-projects-shared-by-developers/how-to-publish-a-build',
+  },
+  'build-help': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/builds-projects-shared-by-developers/how-does-builds-help-you-as-a-devrel',
   },
   'event-create': {
     type: EHelpDictionaryType.URL,
@@ -31,6 +39,22 @@ const helpDictionary = {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/events/events/registrations/managing-registrations',
   },
+  'event-forms': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/how-to-send-the-registration-or-call-for-speaker-form-to-all-community-members-for-my-event',
+  },
+  'event-location-agenda': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/how-to-add-location-and-agenda-to-my-event',
+  },
+  'event-livestreaming-setup': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/how-to-setup-live-streaming-for-my-online-event',
+  },
+  'event-updates': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/how-to-post-public-updates-for-my-event',
+  },
   'event-status': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/events/events/event-statuses',
@@ -39,17 +63,25 @@ const helpDictionary = {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/events/events/bulk-status-change',
   },
+  'event-comments': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/how-to-turn-off-event-comments?q=COMMENTS',
+  },
   'event-qr-attendance': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/events/events/qr-codes-and-scanning-to-mark-attendance',
   },
   'event-volunteer': {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/events/events/volunteers',
+    url: 'https://documentation.commudle.com/events/events/how-to-add-volunteers-and-teammates-to-my-event',
   },
   'event-sponsors': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/events/events/sponsors-and-partners',
+  },
+  'event-collaborations': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/how-to-add-collaborating-communities-to-my-event',
   },
   channels: {
     type: EHelpDictionaryType.URL,
@@ -57,11 +89,31 @@ const helpDictionary = {
   },
   forums: {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/community-dashboard/channels-1',
+    url: 'https://documentation.commudle.com/channels-forums/how-to-create-and-manage-forums-in-my-communities',
+  },
+  speakers: {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/smart-tips/how-to-find-a-speaker-for-my-next-event-using-commudle',
+  },
+  surveys: {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/surveys/how-to-create-surveys-in-communities',
+  },
+  jobs: {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/jobs/post-a-job-on-commudle',
   },
   'event-specific-mails': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/community-dashboard/emails-and-newsletters/send-a-form-or-event-information-email',
+  },
+  'community-admin-dashboard': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/community-dashboard/what-are-the-different-options-in-the-community-admin-dashboard',
+  },
+  'community-details-edit': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/community-dashboard/community-details',
   },
   'community-general-email': {
     type: EHelpDictionaryType.URL,
@@ -69,10 +121,34 @@ const helpDictionary = {
   },
   'community-newsletter': {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/community-dashboard/emails-and-newsletters/publish-newsletters',
+    url: 'https://documentation.commudle.com/community-newsletters/how-to-publish-a-newsletter-in-your-community',
+  },
+  'community-page-builder': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/page-builder/how-to-create-custom-pages-and-policies-in-your-community',
+  },
+  'community-stats': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/community-dashboard/community-stats',
+  },
+  'community-view-members': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/community-dashboard/how-to-view-community-members-and-their-activities',
+  },
+  'event-stats': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/event-over',
+  },
+  'event-paid-ticketing': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/events/events/paid-events',
   },
 
   //Hackathons
+  'hackathon-create': {
+    type: EHelpDictionaryType.URL,
+    url: 'https://documentation.commudle.com/hackathons/how-to-create-a-new-hackathon',
+  },
   'hackathon-updates': {
     type: EHelpDictionaryType.URL,
     url: 'https://documentation.commudle.com/hackathons/how-to-post-updates-on-the-public-page-of-the-hackathon',
@@ -115,7 +191,7 @@ const helpDictionary = {
   },
   'hackathon-dates': {
     type: EHelpDictionaryType.URL,
-    url: 'https://documentation.commudle.com/hackathons/set-hackathon-dates',
+    url: 'https://documentation.commudle.com/hackathons/add-links-and-other-details',
   },
   'hackathon-contacts-social-links': {
     type: EHelpDictionaryType.URL,

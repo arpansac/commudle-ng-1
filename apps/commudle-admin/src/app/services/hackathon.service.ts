@@ -10,6 +10,8 @@ import { Injectable } from '@angular/core';
 import { API_ROUTES } from '@commudle/shared-services';
 import { Observable } from 'rxjs';
 import {
+  EHackathonRegistrationStatus,
+  EInvitationStatus,
   ICommunityBuild,
   ICommunityChannel,
   IHackathonPrize,
@@ -49,11 +51,26 @@ export class HackathonService {
     });
   }
 
-  indexHackathons(parentId, parentType: string): Observable<IHackathon[]> {
+  indexHackathons(
+    parentId,
+    parentType: string,
+    page: number,
+    count: number,
+    query: string,
+    status: string[],
+  ): Observable<IPaginationCount<IHackathon>> {
     let params = new HttpParams();
     switch (parentType) {
       case 'Kommunity': {
-        params = params.set('community_id', parentId);
+        params = params.set('community_id', parentId).set('page', page).set('count', count);
+        if (query) {
+          params = params.set('query', query);
+        }
+        if (status && status.length > 0) {
+          status.forEach((status) => {
+            params = params.append(`status[]`, status);
+          });
+        }
         break;
       }
       case 'CommunityGroup': {
@@ -61,7 +78,9 @@ export class HackathonService {
         break;
       }
     }
-    return this.http.get<IHackathon[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX), { params });
+    return this.http.get<IPaginationCount<IHackathon>>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX), {
+      params,
+    });
   }
 
   pIndexHackathons(parentId, parentType: string, when?: string): Observable<IPaginationCount<IHackathon>> {
@@ -420,12 +439,19 @@ export class HackathonService {
     });
   }
 
-  StatusFilterGeneralEmail(hackathonId, message: string, subject: string, selectedStatus: string): Observable<boolean> {
+  StatusFilterGeneralEmail(
+    hackathonId,
+    message: string,
+    subject: string,
+    teamStatus?: EHackathonRegistrationStatus,
+    hurStatus?: EInvitationStatus,
+  ): Observable<boolean> {
     return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.STATUS_FILTER_GENERAL_EMAIL), {
       hackathon_id: hackathonId,
       message: message,
       subject: subject,
-      selected_status: selectedStatus,
+      team_status: teamStatus,
+      hur_status: hurStatus,
     });
   }
 

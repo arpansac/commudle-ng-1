@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EDbModels, IFaq } from '@commudle/shared-models';
 import { FaqService, ToastrService, SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,8 @@ export class FaqControlPanelComponent implements OnInit {
     faFileImage,
     faXmark,
   };
+
+  @ViewChild('questionInput') questionInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private faqService: FaqService,
@@ -65,6 +67,12 @@ export class FaqControlPanelComponent implements OnInit {
     this.nbDialogService.open(dialog, {
       context: { index: index, faq: faq },
     });
+
+    setTimeout(() => {
+      if (this.questionInput) {
+        this.questionInput.nativeElement.focus();
+      }
+    }, 0);
   }
 
   createFaq() {

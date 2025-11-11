@@ -49,7 +49,11 @@ export class PaymentSettingsComponent implements OnInit {
   EPageType = EPageType;
   commudleFeePercentage = 2;
   commudleFeeAmount = 0;
+  selectedOption = 'ticket-settings';
+
   @ViewChild(CustomPageFormComponent) customPageFormComponent: CustomPageFormComponent;
+  @ViewChild('dialog') dialog: TemplateRef<any>;
+  @ViewChild('refundPage') refundPage: TemplateRef<any>;
   @Output() paidTicketSettingUpdated = new EventEmitter<IPaymentDetail>();
 
   constructor(
@@ -65,7 +69,7 @@ export class PaymentSettingsComponent implements OnInit {
           bank_ac_type: ['', Validators.required],
           bank_ac_id: ['', Validators.required],
           price: ['', [Validators.required, Validators.min(2)]],
-          currency: ['inr', Validators.required],
+          currency: ['INR', Validators.required],
           has_taxes: [false],
           tax_name: [''],
           tax_percentage: ['', Validators.pattern('^[0-9]+$')],
@@ -193,10 +197,14 @@ export class PaymentSettingsComponent implements OnInit {
       hasScroll: false,
       context: { type: 'create', event: this.event },
     });
+    dialogRef.onClose.subscribe(() => {
+      this.selectedOption = 'ticket-settings';
+    });
   }
 
   closeDialogBox() {
     this.dialogRef.close();
+    this.selectedOption = 'ticket-settings';
   }
 
   selectAccount(event) {
@@ -228,17 +236,20 @@ export class PaymentSettingsComponent implements OnInit {
     this.customPageFormComponent.createOrUpdate();
     this.dialogRef.close();
     this.community.has_refund_policy = true;
+    this.selectedOption = 'ticket-settings';
   }
 
   toggleHasTaxes(event) {
     if (!event) {
       this.paidTicketingForm.patchValue({
-        tax_name: '',
-        tax_percentage: '',
-        seller_tax_details: '',
-        country: '',
-        seller_name: '',
-        seller_address: '',
+        paid_ticket_setting: {
+          tax_name: '',
+          tax_percentage: '',
+          seller_tax_details: '',
+          country: '',
+          seller_name: '',
+          seller_address: '',
+        },
       });
     }
   }
@@ -264,5 +275,19 @@ export class PaymentSettingsComponent implements OnInit {
     this.paymentSettingService.calculateCommudleFeeAmount(priceValue, taxValue).subscribe((data) => {
       this.commudleFeeAmount = data;
     });
+  }
+
+  onChangeTicketSettings(event) {
+    const value = event.target.value;
+    this.selectedOption = value;
+    if (value === 'edit-payment-details' || value === 'add-payment-details') {
+      this.open(this.dialog);
+    }
+    if (value === 'coupon-code') {
+      this.openCreateDiscountDialog();
+    }
+    if (value === 'refund-policy') {
+      this.open(this.refundPage);
+    }
   }
 }

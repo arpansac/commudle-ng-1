@@ -1,10 +1,12 @@
 import { KeyValue } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EDomain, EExperienceLevel, IHackathonUserResponse, IUser } from '@commudle/shared-models';
 import { faFileImage } from '@fortawesome/free-solid-svg-icons';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService, ToastrService } from '@commudle/shared-services';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 @Component({
   selector: 'commudle-user-details-form',
   templateUrl: './user-details-form.component.html',
@@ -26,7 +28,13 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   EDomain = EDomain;
   private destroy$ = new Subject<void>();
 
-  constructor(private authWatchService: AuthService, private fb: FormBuilder, private toastLogService: ToastrService) {}
+  constructor(
+    private authWatchService: AuthService,
+    private fb: FormBuilder,
+    private toastLogService: ToastrService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private userProfileManagerService: UserProfileManagerService,
+  ) {}
 
   ngOnInit(): void {
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -34,6 +42,10 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
       this.uploadedProfilePicture = this.currentUser.avatar;
       this.userForm = this.createForm(this.userFormDetails);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.initAutocomplete();
   }
 
   ngOnDestroy(): void {
@@ -104,6 +116,10 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
       }
       this.uploadedProfilePictureFile = file;
 
+      if (this.uploadedProfilePictureFile != null) {
+        this.userProfileManagerService.uploadedProfilePictureFile = this.uploadedProfilePictureFile;
+      }
+
       const reader = new FileReader();
       reader.onload = () => (this.uploadedProfilePicture = reader.result);
       reader.readAsDataURL(file);
@@ -113,4 +129,20 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
     return 0;
   };
+
+  initAutocomplete() {
+    if (this.userForm && this.userForm.get('location')) {
+      const addressInput = document.getElementById('addressInput') as HTMLInputElement;
+      if (addressInput) {
+        this.googlePlacesAutocompleteService.initAutocomplete(addressInput);
+        this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+          this.onLocationPlaceSelected(place);
+        });
+      }
+    }
+  }
+
+  onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+    this.userForm.get('location').setValue(place.formatted_address);
+  }
 }

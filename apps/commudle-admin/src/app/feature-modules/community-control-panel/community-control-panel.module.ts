@@ -31,7 +31,6 @@ import { CommunityBlockedUsersComponent } from './components/community-blocked-u
 import { CommunityControlPanelComponent } from './components/community-control-panel/community-control-panel.component';
 import { CommunityCreateComponent } from './components/community-create/community-create.component';
 import { CommunityEditDetailsComponent } from './components/community-edit-details/community-edit-details.component';
-import { CommunityEventsListActionsComponent } from './components/community-events-list/community-events-list-actions/community-events-list-actions.component';
 import { CommunityEventsListDateComponent } from './components/community-events-list/community-events-list-date/community-events-list-date.component';
 import { CommunityEventsListComponent } from './components/community-events-list/community-events-list.component';
 import { CommunityFormsListActionsComponent } from './components/community-forms-and-surveys/community-forms-list/community-forms-list-actions/community-forms-list-actions.component';
@@ -44,7 +43,6 @@ import { CommunityTeamComponent } from './components/community-team/community-te
 import { CommunityAdminNotificationsComponent } from './components/community-admin-notifications/community-admin-notifications.component';
 import { NotificationsModule } from 'apps/commudle-admin/src/app/feature-modules/notifications/notifications.module';
 import { NbEvaIconsModule } from '@commudle/eva-icons';
-import { CommunityEventsListPublicPageComponent } from './components/community-events-list/community-events-list-public-page/community-events-list-public-page.component';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { EventsModule } from 'apps/commudle-admin/src/app/feature-modules/events/events.module';
 import { CommunityFormsAndSurveysComponent } from './components/community-forms-and-surveys/community-forms-and-surveys.component';
@@ -61,6 +59,7 @@ import { CommunityBankDetailsComponent } from 'apps/commudle-admin/src/app/featu
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { ReusableComponentsModule } from 'apps/commudle-admin/src/app/feature-modules/reusable-components/reusable-components.module';
 import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
+import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +67,6 @@ import { CommunityMailsSentStatsComponent } from './components/community-mails-s
     CommunityCreateComponent,
     CommunityEditDetailsComponent,
     CommunityEventsListComponent,
-    CommunityEventsListActionsComponent,
     CommunityEventsListDateComponent,
     CommunityFormsListComponent,
     CommunityFormsListActionsComponent,
@@ -79,7 +77,6 @@ import { CommunityMailsSentStatsComponent } from './components/community-mails-s
     CommunityBlockedUsersComponent,
     CommunityMembersListComponent,
     CommunityAdminNotificationsComponent,
-    CommunityEventsListPublicPageComponent,
     CommunityFormsAndSurveysComponent,
     CommunitySurveysComponent,
     CommunityPaymentsComponent,
@@ -107,6 +104,7 @@ import { CommunityMailsSentStatsComponent } from './components/community-mails-s
     AppSharedComponentsModule,
     CommunityChannelsModule,
     ReusableComponentsModule,
+    HelpSectionComponent,
 
     //standalone
     SidebarComponent,

@@ -101,6 +101,20 @@
                 <fa-icon [icon]="icons.faCopy"></fa-icon>
                 <span> Copy </span>
               </div>
+              <div
+                *ngIf="discountCode.discount_used_count === 0 && discountCode.discount_applied_count === 0"
+                class="action-button"
+                (click)="
+                  deleteDiscountCode(
+                    discountCode.id,
+                    discountCode.discount_used_count,
+                    discountCode.discount_applied_count
+                  )
+                "
+              >
+                <fa-icon [icon]="icons.faTrash"></fa-icon>
+                <span> Delete </span>
+              </div>
             </td>
           </tr>
         </table>

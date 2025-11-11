@@ -10,6 +10,7 @@ import { IEditorValidator } from '@commudle/editor';
 // import { UserMessageReceiptHandlerService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import { SVotesService } from 'apps/shared-components/services/s-votes.service';
+import { EditorComponent } from '@commudle/editor';
 
 @Component({
   selector: 'app-message',
@@ -41,6 +42,7 @@ export class MessageComponent implements OnInit {
   totalVotesCount: number;
 
   @ViewChild('messageInput') messageInput: ElementRef<HTMLInputElement>;
+  @ViewChild('replyEditor') replyEditor: EditorComponent;
 
   faGrin = faGrin;
 
@@ -97,5 +99,14 @@ export class MessageComponent implements OnInit {
     this.votesService.pGetVotesCount('UserMessage', this.message.id).subscribe((data) => {
       this.totalVotesCount = data.total;
     });
+  }
+
+  onReplyClick(): void {
+    this.showReplyForm = !this.showReplyForm;
+    setTimeout(() => {
+      if (this.replyEditor && this.replyEditor.editor && this.showReplyForm) {
+        this.replyEditor.editor.commands.focus();
+      }
+    }, 0);
   }
 }

@@ -4,16 +4,19 @@
   }
 
   .page-header {
-    h3 {
-      font-weight: 300;
-      margin-bottom: 0;
+    nb-card-header {
+      @apply com-flex com-items-center;
+      h3 {
+        font-weight: 300;
+        margin-bottom: 0;
 
-      nb-icon {
-        font-size: 2rem;
-      }
+        nb-icon {
+          font-size: 2rem;
+        }
 
-      small {
-        font-size: 1rem;
+        small {
+          font-size: 1rem;
+        }
       }
     }
   }

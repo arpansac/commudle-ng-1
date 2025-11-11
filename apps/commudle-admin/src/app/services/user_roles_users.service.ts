@@ -6,6 +6,7 @@ import { IUsers } from 'apps/shared-models/users.model';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { Observable } from 'rxjs';
+import { IPaginationCount, IUser } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -50,21 +51,59 @@ export class UserRolesUsersService {
     communityId,
     count,
     page,
+    skills?,
+    experienceLevel?,
     employer?,
     employee?,
+    gender?,
+    domains?,
+    mostActive?,
+    contributor?,
     contentCreator?,
     speaker?,
+    sortBy?,
+    sortOrder?,
   ): Observable<IUserRolesUsers> {
     let params = new HttpParams();
     params = params
       .set('community_id', communityId)
-      .set('query', query)
       .set('count', count)
       .set('page', page)
-      .set('employer', employer)
-      .set('employee', employee)
+      .set('most_active', mostActive)
+      .set('contributor', contributor)
       .set('content_creator', contentCreator)
-      .set('speaker', speaker);
+      .set('speaker', speaker)
+      .set('is_employer', employer)
+      .set('is_employee', employee);
+
+    if (query) {
+      params = params.set('query', query);
+    }
+    if (gender) {
+      params = params.set('gender', gender);
+    }
+    if (skills && skills.length > 0) {
+      skills.forEach((skill) => {
+        params = params.append('skills[]', skill);
+      });
+    }
+    if (experienceLevel && experienceLevel.length > 0) {
+      experienceLevel.forEach((level) => {
+        params = params.append('experience_levels[]', level);
+      });
+    }
+    if (domains && domains.length > 0) {
+      domains.forEach((domain) => {
+        params = params.append('user_domains[]', domain);
+      });
+    }
+    if (sortBy) {
+      params = params.set('sort_by', sortBy);
+    }
+    if (sortOrder) {
+      params = params.set('sort_order', sortOrder);
+    }
+
     return this.http.get<IUserRolesUsers>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.COMMUNITY_MEMBERS),
       { params },
@@ -133,9 +172,35 @@ export class UserRolesUsersService {
     );
   }
 
-  pGetCommunityMembers(communityId, page, count): Observable<IUsers> {
-    const params = new HttpParams().set('community_id', communityId).set('page', page).set('count', count);
-    return this.http.get<IUsers>(
+  pGetCommunityMembers(
+    employer,
+    employee,
+    query,
+    filterByMutuals,
+    domains,
+    communityId,
+    page,
+    count,
+  ): Observable<IPaginationCount<IUser>> {
+    let params = new HttpParams()
+      .set('community_id', communityId)
+      .set('page', page)
+      .set('count', count)
+      .set('is_employer', employer)
+      .set('is_employee', employee)
+      .set('filter_by_mutuals', filterByMutuals);
+
+    if (query) {
+      params = params.set('query', query);
+    }
+
+    if (domains && Array.isArray(domains) && domains.length > 0) {
+      domains.forEach((domain) => {
+        params = params.append('user_domains[]', domain);
+      });
+    }
+
+    return this.http.get<IPaginationCount<IUser>>(
       this.apiRoutesService.getRoute(API_ROUTES.USER_ROLES_USERS.PUBLIC_GET_COMMUNITY_MEMBERS),
       { params },
     );

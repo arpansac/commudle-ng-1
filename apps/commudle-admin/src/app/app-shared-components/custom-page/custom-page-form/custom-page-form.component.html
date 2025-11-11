@@ -2,7 +2,10 @@
   <div class="back-button" (click)="backButtonClick()" *ngIf="!pageType">
     <fa-icon [icon]="icons.faChevronLeft" class="com-mr-1"></fa-icon> Back to list of pages
   </div>
-  <h6 *ngIf="!pageType">Create new page</h6>
+  <h6 *ngIf="!pageType">
+    Create new page
+    <commudle-help-section [helpDictionaryName]="'community-page-builder'"></commudle-help-section>
+  </h6>
   <form [formGroup]="customPageForm">
     <div class="title">
       <label for="title">Title*</label>

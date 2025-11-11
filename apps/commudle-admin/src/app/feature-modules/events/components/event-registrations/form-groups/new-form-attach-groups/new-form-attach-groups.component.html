@@ -1,12 +1,14 @@
 <div>
-  <h3 class="heading">Select a type of form you want to attach</h3>
+  <h3 class="heading">Select a type of form you want to attach<span class="required-question">*</span></h3>
   <div class="registration-types">
     <div
       *ngFor="let rt of registrationTypes"
       class="registration-type"
       (click)="selectedRegistrationType = rt; openDialogBox()"
     >
-      <div><fa-icon [icon]="icons.faPlus"></fa-icon> {{ rt.name | titlecase }} Form</div>
+      <div>
+        <fa-icon [icon]="icons.faPlus"></fa-icon><span> {{ rt.name | titlecase }} Form</span>
+      </div>
     </div>
   </div>
 </div>
@@ -19,6 +21,9 @@
         <nb-icon icon="close"></nb-icon></button
     ></nb-card-header>
     <nb-card-body>
+      <div class="question-heading com-pt-4 com-pb-4">
+        1. Select type of form<span class="required-question">*</span>
+      </div>
       <div class="registration-types">
         <div
           *ngFor="let rt of registrationTypes"
@@ -26,7 +31,7 @@
           class="registration-type"
           [ngClass]="{ active: selectedRegistrationType.id === rt.id }"
         >
-          <div><fa-icon [icon]="icons.faPlus"></fa-icon> {{ rt.name | titlecase }} Form</div>
+          <span>{{ rt.name | titlecase }}</span>
         </div>
       </div>
 
@@ -34,13 +39,12 @@
         <form [formGroup]="eventDataFormEntityGroupForm">
           <div formGroupName="data_form_entity_group">
             <div class="name">
-              <div class="question-heading">1. Select your form and form name</div>
+              <div class="question-heading question-spacing">2. Form Name<span class="required-question">*</span></div>
               <label fullWidth>
-                <span> Form Name*</span>
                 <input
-                  fieldSize="small"
+                  fieldSize="medium"
                   formControlName="name"
-                  placeholder="Select your form name"
+                  placeholder="Enter your form name"
                   fullWidth
                   nbInput
                   type="text"
@@ -64,9 +68,9 @@
                   (eventDataFormEntityGroup !== null && eventDataFormEntityGroup.user_details !== null))
               "
             >
-              <div class="question-heading">
-                2. Choose which fields are absolutely necessary for registering. Remember, a shorter form leads to
-                quicker signup.
+              <div class="question-heading question-spacing">
+                3. Choose which fields are absolutely necessary for registering<span class="required-question">*</span
+                ><span>(Remember, a shorter form leads to quicker signups)</span>
               </div>
               <commudle-user-details-checkbox-form
                 [userDetails]="eventDataFormEntityGroup?.user_details"
@@ -75,14 +79,16 @@
               ></commudle-user-details-checkbox-form>
             </div>
             <div class="data-form-select">
-              <div class="question-heading">Additional Form Questions.</div>
+              <div class="question-heading question-spacing">
+                4. Add Form Questions<span class="required-question">*</span>
+              </div>
               <label>
                 <div class="select">
                   <select
                     formControlName="data_form_id"
                     [ngClass]="{ disabled: eventDataFormEntityGroup?.summary_registration_counts?.all > 0 }"
                   >
-                    <option value=""><strong>+</strong> CREATE NEW FORM</option>
+                    <option value="">Create New Form</option>
                     <option *ngFor="let df of communityDataForms" [value]="df.id">
                       {{ df.name | titlecase }}
                     </option>

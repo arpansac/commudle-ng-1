@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventUpdatesService } from 'apps/commudle-admin/src/app/services/event-updates.service';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
@@ -8,13 +8,14 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService, SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 import { IEvent, ICommunity } from '@commudle/shared-models';
+import { EditorComponent } from '@commudle/editor';
 
 @Component({
   selector: 'app-event-updates',
   templateUrl: './event-updates.component.html',
   styleUrls: ['./event-updates.component.scss'],
 })
-export class EventUpdatesComponent implements OnInit {
+export class EventUpdatesComponent implements OnInit, OnDestroy, AfterViewInit {
   event: IEvent;
   community: ICommunity;
   moment = moment;
@@ -31,6 +32,9 @@ export class EventUpdatesComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   isLoading = false;
+
+  @ViewChild('editor') editor: EditorComponent;
+
   constructor(
     private eventUpdatesService: EventUpdatesService,
     private activatedRoute: ActivatedRoute,
@@ -48,6 +52,14 @@ export class EventUpdatesComponent implements OnInit {
         this.getEventUpdates();
       }),
     );
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+    }, 0);
   }
 
   ngOnDestroy(): void {

@@ -88,6 +88,7 @@ module.exports = {
         'gray-800': 'var(--color-gray-800)',
         'gray-600': 'var(--color-gray-600)',
         'gray-500-opacity-50': 'var(--color-gray-500-opacity-50)',
+        'gray-custom-1': 'var(--color-gray-custom-1)',
         'Bright-Gray-opacity-60': 'var(--color-Bright-Gray-opacity-60)',
         'Bright-Gray-opacity-30': 'var(--color-Bright-Gray-opacity-30)',
         'Ghost-White': 'var(--color-Ghost-White)',
@@ -165,6 +166,7 @@ module.exports = {
         '80vw': '80vw',
         '95vw': '95vw',
         '100vw': '100vw',
+        'navbar-desktop': '68px',
       },
       borderWidth: {
         /* Setting the default border width to 1px and 3px. */
@@ -184,7 +186,7 @@ module.exports = {
       },
       borderRadius: {
         10: '10px',
-      }
+      },
     },
     container: {
       center: true,

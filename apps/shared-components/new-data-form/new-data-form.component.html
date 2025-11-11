@@ -56,7 +56,15 @@
                   <label>
                     Question {{ i + 1 }}
                     <span *ngIf="question.get('required').value" class="required-question">*</span>
-                    <input formControlName="title" fullWidth nbInput placeholder="Title*" required type="text" />
+                    <input
+                      formControlName="title"
+                      fullWidth
+                      nbInput
+                      placeholder="Title"
+                      required
+                      type="text"
+                      size="medium"
+                    />
                   </label>
                 </div>
               </nb-card-body>
@@ -87,46 +95,43 @@
                       >
                         <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                       </span>
+                    </div>
+                    <div *ngIf="question?.get('show_description')?.value" class="description-textbox">
+                      <editor [init]="tinyMCE" class="editor" formControlName="description"></editor>
+                    </div>
+                    <div class="field">
                       <button
                         (click)="toggleDescriptionField(i)"
-                        class="add-description-button"
-                        ghost
-                        nbButton
                         size="small"
-                        status="primary"
+                        class="add-description-button"
+                        nbButton
+                        outline
+                        status="basic"
                       >
                         <nb-icon
                           [icon]="question?.get('show_description')?.value ? 'close-outline' : 'plus-outline'"
                         ></nb-icon>
                         {{ question?.get('show_description')?.value ? 'Remove Description' : 'Add Description' }}
                       </button>
-                      <div *ngIf="question?.get('show_description')?.value" class="description-textbox">
-                        <editor [init]="tinyMCE" class="editor" formControlName="description"></editor>
-                      </div>
-                    </div>
 
-                    <div class="question-settings">
-                      <div class="dropdown">
-                        <nb-icon icon="question-mark-circle-outline" nbPrefix></nb-icon>
+                      <div class="question-settings">
+                        <div class="dropdown">
+                          <nb-icon icon="question-mark-circle-outline"></nb-icon>
+                          <select (change)="questionTypeChange($event, i)" formControlName="question_type_id">
+                            <option *ngFor="let qt of questionTypes" [ngValue]="qt.id">
+                              {{ qt.name | capitalizeAndRemoveUnderscore }}
+                            </option>
+                          </select>
+                        </div>
 
-                        <select
-                          (change)="questionTypeChange($event, i)"
-                          class="com-border-0"
-                          formControlName="question_type_id"
+                        <span
+                          *ngIf="
+                            question.get('question_type_id').invalid && question.get('question_type_id').errors.required
+                          "
                         >
-                          <option *ngFor="let qt of questionTypes" [ngValue]="qt.id">
-                            {{ qt.name | capitalizeAndRemoveUnderscore }}
-                          </option>
-                        </select>
+                          <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                        </span>
                       </div>
-
-                      <span
-                        *ngIf="
-                          question.get('question_type_id').invalid && question.get('question_type_id').errors.required
-                        "
-                      >
-                        <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                      </span>
                     </div>
 
                     <div *ngIf="[4, 5].includes(question.get('question_type_id').value)">
@@ -135,33 +140,34 @@
                         class="choices-container"
                         formArrayName="question_choices"
                       >
-                        <div class="choice-container com-flex com-items-center">
-                          <div [formGroupName]="chi" class="com-mb-2">
+                        <div class="required-title">
+                          <div [formGroupName]="chi" class="required-choice">
                             <input
+                              #choiceInput
                               formControlName="title"
                               nbInput
+                              fullWidth
                               placeholder="Choice {{ chi + 1 }}"
                               required
                               type="text"
                             />
-                            <span
-                              *ngIf="
-                                choice.get('title').touched &&
-                                choice.get('title').invalid &&
-                                choice.get('title').errors.required
-                              "
-                            >
-                              <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                            </span>
+                            <div class="close-circle-outline">
+                              <nb-icon
+                                (click)="removeQuestionChoiceButtonClick(i, chi)"
+                                class="required-cross"
+                                icon="close-circle-outline"
+                              ></nb-icon>
+                            </div>
                           </div>
-
-                          <div class="close-circle-outline">
-                            <nb-icon
-                              (click)="removeQuestionChoiceButtonClick(i, chi)"
-                              class="com-ml-2"
-                              icon="close-circle-outline"
-                            ></nb-icon>
-                          </div>
+                          <span
+                            *ngIf="
+                              choice.get('title').touched &&
+                              choice.get('title').invalid &&
+                              choice.get('title').errors.required
+                            "
+                          >
+                            <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                          </span>
                         </div>
                       </div>
                       <button
@@ -169,8 +175,9 @@
                         class="add-choice-button"
                         hero
                         nbButton
+                        shape="round"
                         size="tiny"
-                        status="warning"
+                        status="primary"
                       >
                         <nb-icon icon="plus-outline"></nb-icon>
                         &nbsp; Add Choice
@@ -179,20 +186,19 @@
                   </div>
                 </div>
                 <div class="question-form-footer">
-                  <div class="com-align-middle com-flex">
+                  <div class="required-below">
                     <button
                       (click)="addQuestionButtonClick(i + 1)"
                       class="footer-icons add-question-footer"
                       ghost
                       nbButton
                       size="small"
-                      status="primary"
                     >
-                      <nb-icon class="footer-icons" icon="plus-circle-outline" status="primary"></nb-icon>
-                      &nbsp; Add Question Below
+                      <nb-icon class="footer-icons" icon="plus-circle-outline" status="basic"></nb-icon>
+                      &nbsp; <span>Add Question Below</span>
                     </button>
-                    <nb-toggle class="toggle" formControlName="required" labelPosition="right" size="tiny"
-                      ><span>Required</span></nb-toggle
+                    <nb-checkbox class="toggle" formControlName="required" labelPosition="right" size="tiny"
+                      ><span class="required-text">Required</span></nb-checkbox
                     >
                   </div>
                   <button
@@ -223,15 +229,22 @@
           </div>
         </div>
         <div *ngIf="!maxQuestionCount || maxQuestionCount > totalQuestions" class="add-question-button">
-          <button (click)="addQuestionButtonClick(totalQuestions + 1)" nbButton size="medium" status="primary">
-            <nb-icon icon="plus-outline"></nb-icon>
-            &nbsp; Add Question
+          <button (click)="addQuestionButtonClick(totalQuestions + 1)" nbButton size="medium" status="primary" outline>
+            <nb-icon icon="plus-outline"></nb-icon>Add Question
           </button>
         </div>
       </div>
 
       <div *ngIf="showSubmitButton" [ngClass]="{ sticky: stickSubmitButtonBottom }" class="submit-button">
-        <button (click)="saveDataForm()" fullWidth nbButton size="medium" status="primary" type="submit">
+        <button
+          (click)="saveDataForm()"
+          shape="semi-round"
+          fullWidth
+          nbButton
+          size="medium"
+          status="primary"
+          type="submit"
+        >
           {{ submitButtonText() }}
         </button>
       </div>

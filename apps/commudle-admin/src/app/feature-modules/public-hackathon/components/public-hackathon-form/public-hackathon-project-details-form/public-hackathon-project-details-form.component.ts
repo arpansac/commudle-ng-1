@@ -60,7 +60,7 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
 
   fetchHackathonTracks() {
     this.hackathonService.pIndexHackathonTracks(this.hackathon.id).subscribe((data: IHackathonTrack[]) => {
-      this.hackathonTracks = data;
+      this.hackathonTracks = data.sort((a, b) => a.name.localeCompare(b.name));
       const hackathonTrackIdControl = this.hackathonProjectDetailsForm.get('hackathon_track_id');
       if (hackathonTrackIdControl && this.hackathonTracks.length > 0) {
         // hackathonTrackIdControl.setValidators([Validators.required]);

@@ -1,10 +1,16 @@
 import { DOCUMENT } from '@angular/common';
 import { ApplicationRef, Component, Inject, OnInit } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { concat, interval } from 'rxjs';
 import { first } from 'rxjs/operators';
+
+interface AppData {
+  version?: string;
+  releaseNotes?: string;
+  critical?: boolean;
+}
 
 @Component({
   selector: 'app-sw-update',
@@ -46,15 +52,19 @@ export class SwUpdateComponent implements OnInit {
             console.log(`Downloading new app version: ${evt.version.hash}`);
             this.toastLogService.notificationDialog(`Downloading new app version...`);
             break;
-          case 'VERSION_READY':
+          case 'VERSION_READY': {
             console.log(`Current app version: ${evt.currentVersion.hash}`);
             console.log(`New app version ready for use: ${evt.latestVersion.hash}`);
             // Prompt the user to update
-            if (confirm('New version available. Load New Version?')) {
+            const appData = (evt as VersionReadyEvent)?.latestVersion?.appData as AppData;
+            if (appData?.critical) {
               this.toastLogService.warningDialog('Updating App...!');
               this.document.location.reload();
+            } else {
+              console.log('New version available. Reload to continue... Version: ' + appData?.version);
             }
             break;
+          }
           case 'NO_NEW_VERSION_DETECTED':
             console.log('No new version detected. App is up to date.');
             break;

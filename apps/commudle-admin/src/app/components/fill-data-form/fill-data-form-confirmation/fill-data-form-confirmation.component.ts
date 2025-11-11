@@ -50,6 +50,11 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   userProfileDetails: IUserStat;
   readonly EDbModels = EDbModels;
   private destroy$ = new Subject<void>();
+  isLoadingSpeakers = false;
+  isLoadingVolunteers = false;
+  isLoadingCommunityLeaders = false;
+  isLoadingCommunityGroupLeaders = false;
+  isLoadingCommunities = false;
 
   constructor(
     private authService: AuthService,
@@ -169,35 +174,42 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   }
 
   private getSpeakers() {
+    this.isLoadingSpeakers = true;
     this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
       this.speakers = data.data_form_entity_response_groups;
+      this.isLoadingSpeakers = false;
     });
   }
 
   private getVolunteers() {
+    this.isLoadingVolunteers = true;
     this.eventsService.pGetEventVolunteers(this.event.slug, this.count, this.pageInfo?.end_cursor).subscribe((data) => {
       this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.pageInfo = data.page_info;
+      this.isLoadingVolunteers = false;
     });
   }
 
   private fetchCommunityDetails() {
+    this.isLoadingCommunityLeaders = true;
     this.uruService
       .pGetCommunityLeadersByRole(this.dataFormEntity.community.id, EUserRoles.ORGANIZER)
       .subscribe((data) => {
         this.communityLeaders = data.users;
-        this.isLoading = false;
+        this.isLoadingCommunityLeaders = false;
       });
   }
 
   private fetchCommunityGroupDetails() {
+    this.isLoadingCommunityGroupLeaders = true;
+    this.isLoadingCommunities = true;
     this.communityGroupService.pCommunities(this.dataFormEntity.community_group.id, 10).subscribe((data) => {
       this.communities = this.communities.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
-      this.isLoading = false;
+      this.isLoadingCommunities = false;
     });
     this.uruService.pGetCommunityGroupLeaders(this.dataFormEntity.community_group.id).subscribe((data) => {
       this.communityGroupLeaders = data.user_roles_users;
-      this.isLoading = false;
+      this.isLoadingCommunityGroupLeaders = false;
     });
   }
 }

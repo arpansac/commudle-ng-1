@@ -33,15 +33,16 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
   editor: any = null;
   imageUrl = '';
   defaultTemplate = '';
+  imagesList = [];
 
   @ViewChild('gjs', { static: true }) gjsElement: ElementRef;
   @ViewChild('sendTestEmailDialog') sendTestEmailDialogBox: TemplateRef<any>;
 
-  tinyMCE = {
+  tinyMCE: any = {
     min_height: 500,
     menubar: false,
     convert_urls: false,
-    placeholder: 'Write content for custom page',
+    placeholder: 'Start typing your newsletter content here...',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
     plugins: [
@@ -67,9 +68,50 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
       'media',
     ],
     toolbar:
-      'bold italic backcolor forecolor | codesample emoticons | link | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media code | removeformat | table',
+      'formatselect | fontsize | paste | bold italic forecolor backcolor | image emoticons | \
+      link | alignleft aligncenter alignright alignjustify | table | \
+      bullist numlist outdent indent | codesample | code | removeformat',
+    table_toolbar:
+      'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+    codesample_languages: [
+      { text: 'HTML/XML', value: 'markup' },
+      { text: 'CSS', value: 'css' },
+      { text: 'JavaScript', value: 'javascript' },
+      { text: 'TypeScript', value: 'typescript' },
+      { text: 'PHP', value: 'php' },
+      { text: 'Ruby', value: 'ruby' },
+      { text: 'Python', value: 'python' },
+      { text: 'Java', value: 'java' },
+      { text: 'C', value: 'c' },
+      { text: 'C#', value: 'csharp' },
+      { text: 'C++', value: 'cpp' },
+    ],
+    style_formats: [
+      {
+        title: 'Image Left',
+        selector: 'img',
+        styles: {
+          float: 'left',
+          margin: '0 10px 0 10px',
+        },
+      },
+      {
+        title: 'Image Right',
+        selector: 'img',
+        styles: {
+          float: 'right',
+          margin: '0 10px 0 10px',
+        },
+      },
+    ],
     default_link_target: '_blank',
+    image_list: this.imagesList,
+    image_advtab: true,
     branding: false,
+    image_caption: true,
+    images_upload_handler: this.uploadTextImage.bind(this),
+    toolbar_location: 'top',
+    toolbar_sticky: true,
     license_key: 'gpl',
   };
 
@@ -88,7 +130,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
       brief_description: ['', [Validators.required, Validators.maxLength(200)]],
       content: [''],
       banner_image: [null],
-      grapes_js_editor: [true, Validators.required],
+      grapes_js_editor: [{ value: false, disabled: true }, Validators.required],
     });
     this.testEmailsForms = this.fb.group({
       emails: ['', [Validators.required, this.maxEmails(5)]],
@@ -112,7 +154,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
           this.fetchNewsletterDetails();
         } else {
           this.newsletterForm.patchValue({
-            grapes_js_editor: true,
+            grapes_js_editor: false,
           });
         }
       },
@@ -268,6 +310,24 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
         },
       );
     });
+  }
+
+  // upload_inline_images
+  uploadTextImage(blobInfo, progress) {
+    const promise = new Promise<any>((resolve, reject) => {
+      const formData: any = new FormData();
+      formData.append('image', blobInfo.blob());
+      this.newsletterService.attachImage(formData).subscribe({
+        next: (res: any) => {
+          this.imagesList.push({ value: res });
+          resolve(res);
+        },
+        error: (err: any) => {
+          reject(err);
+        },
+      });
+    });
+    return promise;
   }
 
   create(sendTestEmail?) {

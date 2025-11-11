@@ -57,3 +57,11 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+
+.budget {
+  @apply com-rounded-2xl com-border com-border-solid com-border-Bright-Gray com-bg-gray-500 com-font-medium com-text-sm com-text-white com-py-1 com-px-2;
+}
+
+.header-budget-amount {
+  @apply com-flex com-flex-row com-items-center com-gap-4;
+}

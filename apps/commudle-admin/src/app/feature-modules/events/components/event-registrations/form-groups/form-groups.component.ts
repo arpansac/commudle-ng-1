@@ -116,9 +116,8 @@ export class FormGroupsComponent implements OnInit {
   }
 
   getEventDataFormEntityGroups() {
-    this.eventDataFormEntityGroupsService.getEventDataFormEntityGroups(this.event.id).subscribe((data) => {
-      this.eventDataFormEntityGroups = data.event_data_form_entity_groups;
-      this.edfegStore.setEventDataFormEntityGroups(this.eventDataFormEntityGroups);
+    this.edfegStore.eventDataFormEntityGroups$.subscribe((edfegs) => {
+      this.eventDataFormEntityGroups = edfegs;
       this.checkDiscountCode();
       this.changeDetectorRef.markForCheck();
     });
@@ -141,8 +140,8 @@ export class FormGroupsComponent implements OnInit {
 
   // get all the data forms made in this community
   getCommunityDataForms() {
-    this.dataFormsService.getCommunityDataForms(this.community.id).subscribe((data) => {
-      this.communityDataForms = data.data_forms;
+    this.dataFormsService.IndexByParent(this.community.id).subscribe((data) => {
+      this.communityDataForms = data;
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -346,13 +345,13 @@ export class FormGroupsComponent implements OnInit {
   toggleApprovalGroupTicketing(eventDataFormEntityGroup: IEventDataFormEntityGroup, index) {
     const paidTicketingForm = {
       paid_ticket_setting: {
-        multi_person_ticket: !eventDataFormEntityGroup.paid_ticket_settings.multi_person_ticket,
+        multi_person_ticket: !eventDataFormEntityGroup.paid_ticket_setting.multi_person_ticket,
       },
     };
     this.paymentSettingService
-      .updateTicketDetails(paidTicketingForm, eventDataFormEntityGroup.paid_ticket_settings.id)
+      .updateTicketDetails(paidTicketingForm, eventDataFormEntityGroup.paid_ticket_setting.id)
       .subscribe((data) => {
-        this.eventDataFormEntityGroups[index].paid_ticket_settings = data;
+        this.eventDataFormEntityGroups[index].paid_ticket_setting = data;
         this.toastLogService.successDialog('Updated');
         this.changeDetectorRef.markForCheck();
       });
@@ -360,6 +359,6 @@ export class FormGroupsComponent implements OnInit {
 
   updatePaidTicketSetting(data, eventDataFormEntityGroup) {
     const edfegIndex = this.eventDataFormEntityGroups.findIndex((edfeg) => edfeg.id === eventDataFormEntityGroup.id);
-    this.eventDataFormEntityGroups[edfegIndex].paid_ticket_settings = data;
+    this.eventDataFormEntityGroups[edfegIndex].paid_ticket_setting = data;
   }
 }

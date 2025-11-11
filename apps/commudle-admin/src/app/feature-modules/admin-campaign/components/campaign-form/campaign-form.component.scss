@@ -52,9 +52,15 @@ section {
   }
 
   .right-section {
-    @apply com-w-[calc(100%-320px)] com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+    @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-flex-1;
     .header {
-      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4;
+      @apply com-w-full com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-px-6 com-py-4 com-flex com-items-center com-gap-2;
+      .toggle {
+        @apply com-p-4 com-rounded com-cursor-pointer com-transition-all;
+        &:hover {
+          @apply com-bg-gray-200;
+        }
+      }
       .step-one {
         @apply com-text-gray-500 com-text-base com-font-medium;
       }

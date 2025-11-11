@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { EInvitationStatus } from '@commudle/shared-models';
+import { EHackathonRegistrationStatus, EInvitationStatus } from '@commudle/shared-models';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
@@ -18,7 +18,8 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   isLoading = false;
   selectedRecipient = 'all';
   EInvitationStatus = EInvitationStatus;
-  selectedStatus = '';
+  EHackathonRegistrationStatus = EHackathonRegistrationStatus;
+  selectedHackathonTeamStatus: EHackathonRegistrationStatus | '' = '';
   showPreviewSpinner = false;
   previewEmailForm;
   previewData: string;
@@ -69,7 +70,7 @@ export class HackathonStatusFilterGeneralEmailsComponent {
     protected dialogRef: NbDialogRef<HackathonStatusFilterGeneralEmailsComponent>,
   ) {
     this.previewEmailForm = this.fb.group({
-      body: [''],
+      body: ['', Validators.required],
       subject: ['', Validators.required],
     });
   }
@@ -77,13 +78,19 @@ export class HackathonStatusFilterGeneralEmailsComponent {
   SendStatusFilterGeneralMailer() {
     this.isLoading = true;
     this.hackathonService
-      .StatusFilterGeneralEmail(this.hackathonId, this.message, this.subject, this.selectedStatus)
+      .StatusFilterGeneralEmail(
+        this.hackathonId,
+        this.message,
+        this.subject,
+        (this.selectedHackathonTeamStatus as EHackathonRegistrationStatus) || undefined,
+        undefined,
+      )
       .subscribe(
         (data) => {
           if (data) {
             this.toastrService.successDialog('Email sent successfully, Will be delivered soon!');
+            this.closeDialogBox();
           }
-          this.closeDialogBox();
         },
         () => {
           this.closeDialogBox();
@@ -93,7 +100,7 @@ export class HackathonStatusFilterGeneralEmailsComponent {
 
   onRecipientChange() {
     if (this.selectedRecipient === 'all') {
-      this.selectedStatus = '';
+      this.selectedHackathonTeamStatus = '';
     }
   }
 

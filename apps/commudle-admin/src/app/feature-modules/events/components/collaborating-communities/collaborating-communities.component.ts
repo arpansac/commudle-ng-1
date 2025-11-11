@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -29,7 +30,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./collaborating-communities.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnDestroy {
+export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() community: ICommunity;
   @Input() event: IEvent;
 
@@ -67,6 +68,14 @@ export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnD
         this.setMeta();
       }),
     );
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.input) {
+        this.input.nativeElement.focus();
+      }
+    }, 0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
