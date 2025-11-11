@@ -130,6 +130,13 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
     this.nbDialogService.open(dialog, {
       context: { index: index, prize: prize },
     });
+
+    setTimeout(() => {
+      const nameInput = document.querySelector('#name') as HTMLInputElement;
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 0);
   }
 
   confirmDeleteDialogBox(dialog, prizeId, index) {

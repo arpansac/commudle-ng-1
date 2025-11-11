@@ -78,6 +78,7 @@
       "
     >
       <commudle-editor
+        #editorRef
         (contentChange)="communityChannelHandlerService.sendMessage($event)"
         *ngIf="
           !channelOrForum.is_readonly ||

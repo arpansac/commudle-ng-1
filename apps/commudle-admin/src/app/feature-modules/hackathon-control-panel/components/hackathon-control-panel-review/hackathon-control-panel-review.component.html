@@ -513,7 +513,7 @@
           </div>
           <div *ngFor="let note of notesForm.controls.note['controls']; let i = index">
             <div [formGroupName]="i" class="note">
-              <textarea formControlName="value" fullWidth nbInput placeholder="Notes" required></textarea>
+              <textarea #noteTextarea formControlName="value" fullWidth nbInput placeholder="Notes" required></textarea>
               <div class="action-button">
                 <button
                   size="tiny"
