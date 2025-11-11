@@ -7,11 +7,12 @@ import {
   faCalendarDays,
   faCalendarPlus,
   faLocationDot,
+  faSackDollar,
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
 import { faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
-import { ShareService } from '@commudle/shared-services';
+import { countries_details, ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 import { NbDialogService } from '@commudle/theme';
 import { AddToCalendarComponent } from '@commudle/shared-components';
@@ -30,6 +31,8 @@ export class HackathonRegisteredCardComponent implements OnInit {
   interestedUsers: IUser[];
   interestedUsersCount: number;
   hackathonUrl: string;
+  totalPrizesByCurrency: { currency: any; amount: number }[];
+  countryDetails = countries_details;
 
   readonly icons = {
     faCalendarDays,
@@ -38,6 +41,7 @@ export class HackathonRegisteredCardComponent implements OnInit {
     faShareNodes,
     faArrowUpRightFromSquare,
     faCircleCheck,
+    faSackDollar,
   };
 
   constructor(
@@ -47,7 +51,14 @@ export class HackathonRegisteredCardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.hackathon);
     this.fetchInterestedMembers();
+    if (this.hackathon.total_prize_amount) {
+      this.totalPrizesByCurrency = Object.keys(this.hackathon.total_prize_amount).map((currency) => ({
+        currency: this.countryDetails.find((detail) => detail.currency === currency),
+        amount: this.hackathon.total_prize_amount[currency],
+      }));
+    }
   }
 
   fetchInterestedMembers() {

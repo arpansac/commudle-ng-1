@@ -540,4 +540,9 @@ export class HackathonService {
       },
     );
   }
+
+  pShowHackathon(hackathonId): Observable<IHackathon> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<IHackathon>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.SHOW), { params });
+  }
 }

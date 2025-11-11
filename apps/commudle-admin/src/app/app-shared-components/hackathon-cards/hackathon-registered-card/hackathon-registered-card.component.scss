@@ -7,7 +7,7 @@
   }
   .hackathon-start-date,
   .hackathon-location {
-    @apply com-mb-3 com-text-gray-500 com-text-base com-font-medium com-flex com-items-center;
+    @apply com-text-gray-500 com-text-base com-font-medium com-flex com-items-center;
 
     a {
       @apply com-no-underline com-text-gray-500;
@@ -34,4 +34,19 @@
       @apply com-text-Yankees-Blue;
     }
   }
+}
+
+.prize-money {
+  @apply com-flex com-flex-row com-items-center com-py-1 com-pl-2 com-pr-1 com-bg-gray-50  com-text-American-Orange;
+  fa-icon {
+    @apply com-text-sm com-mr-1;
+  }
+
+  span {
+    @apply com-text-xs com-font-semibold;
+  }
+}
+
+.hackathon-location-prize-money-container {
+  @apply com-flex com-justify-between com-items-center com-mb-3;
 }

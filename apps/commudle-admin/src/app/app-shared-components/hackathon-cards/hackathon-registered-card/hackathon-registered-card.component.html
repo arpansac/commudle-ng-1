@@ -9,9 +9,15 @@
     </div>
   </div>
 
-  <div class="hackathon-location" *ngIf="hackathon?.location_name">
-    <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
-    <a [href]="hackathon.location_map_link">{{ hackathon.location_name }}</a>
+  <div class="hackathon-location-prize-money-container">
+    <div class="hackathon-location" *ngIf="hackathon?.location_name">
+      <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
+      <a [href]="hackathon.location_map_link">{{ hackathon.location_name }}</a>
+    </div>
+    <div *ngIf="totalPrizesByCurrency?.length > 0" class="prize-money">
+      <fa-icon [icon]="icons.faSackDollar"></fa-icon>
+      <span>{{ totalPrizesByCurrency[0].currency.symbol }}{{ totalPrizesByCurrency[0].amount }}</span>
+    </div>
   </div>
 
   <div class="interested-members">
