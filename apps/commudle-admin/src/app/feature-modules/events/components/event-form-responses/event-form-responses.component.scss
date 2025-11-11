@@ -2,6 +2,9 @@
   .data-table-responses {
     @apply com-overflow-hidden;
 
+    fa-icon {
+      @apply com-text-gray-500;
+    }
     nb-card-body {
       @apply com-p-0;
     }
@@ -11,18 +14,34 @@
         @apply com-text-sm com-font-medium;
       }
     }
+
+    &.fullscreen {
+      @apply com-fixed com-top-navbar-desktop com-left-0 com-w-full com-h-[calc(100dvh-68px)] com-z-50 com-bg-white com-m-0;
+
+      .data-table-container {
+        @apply com-h-[calc(100dvh-68px)];
+      }
+    }
   }
 
   nb-card-header {
-    @apply com-m-0 com-flex com-items-center;
+    @apply com-m-0 com-flex com-items-center com-justify-between;
 
     p {
       @apply com-m-0;
     }
-  }
 
-  .change-bulk-btn {
-    @apply com-m-0 com-flex com-items-center;
+    .header-actions {
+      @apply com-flex com-items-center com-gap-2;
+
+      .fullscreen-button {
+        @apply com-p-2 com-bg-transparent com-border-0 com-cursor-pointer com-rounded com-text-gray-600 hover:com-text-gray-800 hover:com-bg-gray-100;
+
+        fa-icon {
+          @apply com-text-base;
+        }
+      }
+    }
   }
 
   .heading-actions {
@@ -48,7 +67,7 @@
         @apply com-my-auto com-w-64;
       }
       .clear-filter {
-        @apply com-text-Infra-Red com-text-xs com-font-medium com-my-auto;
+        @apply com-text-Infra-Red com-text-xs com-font-medium com-my-auto com-cursor-pointer;
       }
     }
     .action-dropdown {
@@ -57,13 +76,13 @@
         span {
           @apply com-text-Yankees-Blue com-text-xs com-mr-1;
         }
-        fa-icon {
-        }
       }
     }
   }
 
   .data-table-container {
+    @apply com-relative com-h-[70vh] com-overflow-hidden com-w-full;
+
     @media screen and (max-width: 800px) {
       .desktop-hidden {
         @apply com-block;
@@ -88,73 +107,54 @@
       }
     }
 
-    .ngx-datatable {
-      @apply com-bg-white com-h-[70vh];
+    .loading-indicator {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-h-full;
 
-      // ::ng-deep .datatable-header-cell {
-      //   padding: 0 16px !important;
-      //   display: flex !important;
-      // }
-
-      .header-column-template {
-        .registration-status-filter {
-          @apply com-flex com-flex-nowrap;
-
-          div {
-            @apply com-border com-border-gray-300 com-cursor-pointer com-p-1;
-          }
-
-          p {
-            @apply com-text-xs com-m-0;
-          }
-        }
-      }
-
-      .row-header {
-        @apply com-whitespace-normal;
-
-        &.question {
-          @apply com-overflow-y-visible com-whitespace-normal com-flex com-gap-1 com-items-baseline com-cursor-pointer;
-
-          .small-text {
-            @apply com-text-xs;
-          }
-        }
-      }
-
-      .row-cell {
-        &.question {
-          @apply com-whitespace-normal;
-
-          p {
-            @apply com-text-sm;
-          }
-        }
+      p {
+        @apply com-text-gray-600;
       }
     }
-  }
-}
 
-// .name-filter {
-//   @apply com-w-full com-flex com-gap-1 com-items-center;
-//   input {
-//     @apply com-w-full;
-//   }
-//   .clear-search-filter {
-//     @apply com-cursor-pointer;
-//     fa-icon {
-//       @apply com-text-red-500 com-text-base;
-//     }
-//   }
-// }
+    .empty-message {
+      @apply com-flex com-items-center com-justify-center com-h-full;
 
-.group-actions {
-  @apply com-flex com-flex-wrap;
+      p {
+        @apply com-text-gray-600 com-text-lg;
+      }
+    }
 
-  button,
-  nb-select,
-  a {
-    @apply com-m-2;
+    commudle-data-table {
+      @apply com-grid;
+      .question {
+        @apply com-flex com-gap-x-2 com-gap-y-0 com-items-center;
+      }
+      .answer {
+        @apply com-flex-col com-items-start;
+      }
+
+      .user-details,
+      .engagement-data {
+        @apply com-my-0;
+      }
+    }
+
+    .datatable-icon-right::before {
+      content: '▶';
+      @apply com-text-gray-500 com-mr-2;
+    }
+
+    .datatable-icon-down::before {
+      content: '▼';
+      @apply com-text-gray-500 com-mr-2;
+    }
+
+    .view-mobile-response {
+      @apply com-cursor-pointer com-text-blue-600 com-text-sm com-font-medium;
+    }
+
+    .clickable {
+      @apply com-cursor-pointer com-text-blue-600 com-underline;
+    }
   }
 }
 
@@ -164,14 +164,6 @@
 
 .dropdown {
   @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-md com-cursor-pointer com-bg-[#F6F9FC] com-my-2 com-w-1/2 com-border com-border-solid com-border-primary-200 hover:com-bg-white;
-
-  select {
-    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-full;
-  }
-}
-
-.user-detail-dropdown {
-  @apply com-flex com-items-center com-gap-1 com-h-6 com-p-0 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-border com-border-solid com-border-[#E4E9F2] com-w-full;
 
   select {
     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-w-full;
@@ -192,10 +184,6 @@
   fa-icon {
     @apply com-text-red-500 com-text-base;
   }
-}
-
-fa-icon {
-  @apply com-text-gray-500;
 }
 
 .change-status-dialog {
@@ -311,6 +299,7 @@ fa-icon {
     }
   }
 }
+
 .action-dropdown {
   @apply com-flex com-items-center;
 
@@ -341,6 +330,7 @@ fa-icon {
       .action-icon {
         @apply com-text-Cadet-Grey com-w-5 com-h-5;
       }
+
       a {
         @apply com-no-underline;
       }
@@ -355,6 +345,57 @@ fa-icon {
         span {
           @apply com-text-sm com-text-gray-700;
         }
+      }
+    }
+  }
+}
+
+.data-table-responses.mobile-view {
+  @apply com-m-0;
+  .action-button {
+    @apply com-m-4 com-flex com-flex-col com-gap-4;
+    button.action {
+      @apply com-text-Yankees-Blue;
+    }
+  }
+  .responses {
+    @apply com-px-4;
+    .response {
+      @apply com-py-4;
+    }
+    .response:not(:last-child) {
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    }
+  }
+}
+
+.action-items {
+  @apply com-flex com-flex-col;
+
+  .action-item {
+    @apply com-flex com-items-center com-justify-between com-p-4 com-border-0 com-border-b com-border-solid com-border-gray-100 com-cursor-pointer hover:com-bg-gray-50;
+
+    &:last-child {
+      @apply com-border-b-0;
+    }
+
+    .action-icon {
+      @apply com-text-gray-500 com-w-6 com-h-6 com-mr-3;
+    }
+
+    span {
+      @apply com-flex-1 com-text-base com-text-gray-800;
+    }
+
+    .chevron-icon {
+      @apply com-text-gray-400 com-w-4 com-h-4;
+    }
+
+    .action-link {
+      @apply com-flex com-items-center com-justify-between com-w-full com-no-underline;
+
+      span {
+        @apply com-text-base com-text-gray-800;
       }
     }
   }

@@ -1,0 +1,280 @@
+:host {
+  @apply com-relative com-h-full com-overflow-hidden;
+
+  @media screen and (max-width: 800px) {
+    .desktop-hidden {
+      @apply com-block;
+    }
+
+    .mobile-hidden {
+      @apply com-hidden;
+    }
+
+    .view-mobile-response {
+      @apply com-block com-mt-2;
+    }
+
+    // Remove frozen column styling in mobile
+    .custom-data-table {
+      .table-header {
+        th.frozen-column {
+          @apply com-static com-bg-gray-50;
+          min-width: 200px;
+        }
+      }
+
+      .table-body {
+        td.frozen-column {
+          @apply com-static com-bg-white;
+          min-width: 200px;
+        }
+
+        td.frozen-shadow {
+          box-shadow: none;
+          border-right: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    .desktop-hidden {
+      @apply com-hidden;
+    }
+
+    .mobile-hidden {
+      @apply com-block;
+    }
+  }
+
+  .loading-indicator {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-h-full;
+
+    :host {
+      display: block;
+      text-align: center;
+    }
+
+    .loading {
+      display: block;
+      text-align: center;
+      .spinner {
+        height: 40px;
+
+        & > div {
+          animation: stretch-delay 1.2s infinite ease-in-out;
+          background-color: #5c6972;
+          display: inline-block;
+          height: 100%;
+          margin: 0 1px;
+          width: 4px;
+
+          &:nth-child(2) {
+            animation-delay: -1.1s;
+          }
+
+          &:nth-child(3) {
+            animation-delay: -1s;
+          }
+
+          &:nth-child(4) {
+            animation-delay: -0.9s;
+          }
+
+          &:nth-child(5) {
+            animation-delay: -0.8s;
+          }
+        }
+
+        @keyframes stretch-delay {
+          0%,
+          40%,
+          100% {
+            transform: scaleY(0.4);
+          }
+          20% {
+            transform: scaleY(1);
+          }
+        }
+      }
+    }
+
+    p {
+      @apply com-text-gray-600;
+    }
+  }
+
+  .empty-message {
+    @apply com-flex com-items-center com-justify-center com-h-full;
+
+    p {
+      @apply com-text-gray-600 com-text-lg;
+    }
+  }
+
+  .custom-table-wrapper {
+    @apply com-h-full com-overflow-auto com-relative;
+    min-height: 400px; /* Ensure minimum height for proper rendering */
+  }
+
+  .custom-data-table {
+    @apply com-w-full com-border-collapse com-bg-white;
+    border-spacing: 0;
+    table-layout: fixed; /* Fixed layout for better column control */
+
+    .table-header {
+      @apply com-sticky com-top-0 com-z-20 com-bg-white com-shadow-sm;
+
+      th {
+        @apply com-p-4 com-text-left com-font-medium com-text-gray-700 com-border-b com-border-gray-200 com-bg-gray-50;
+        min-width: 200px;
+        position: relative;
+
+        &.frozen-column {
+          @apply com-sticky com-left-0 com-z-30 com-bg-gray-50;
+          min-width: 360px;
+
+          @media screen and (max-width: 800px) {
+            @apply com-static;
+            min-width: 200px;
+          }
+        }
+
+        &.frozen-shadow {
+          @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+        }
+      }
+    }
+
+    .table-body {
+      tr {
+        @apply com-border-b com-border-gray-100 hover:com-bg-gray-50;
+
+        &.expanded {
+          @apply com-bg-blue-50;
+        }
+
+        td {
+          @apply com-p-4 com-align-top com-border-b com-border-gray-100;
+          min-width: 200px;
+          max-height: 120px;
+          overflow-y: auto;
+          position: relative;
+
+          &.frozen-column {
+            @apply com-sticky com-left-0 com-z-10 com-bg-white;
+            min-width: 360px;
+
+            @media screen and (max-width: 800px) {
+              @apply com-static;
+              min-width: 200px;
+            }
+          }
+
+          &.frozen-shadow {
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+            border-right: 2px solid #e5e7eb;
+          }
+
+          &.expand-cell {
+            @apply com-w-auto;
+            min-width: auto;
+          }
+        }
+      }
+
+      .expanded-row {
+        @apply com-bg-blue-50;
+
+        .expanded-content {
+          @apply com-p-6;
+        }
+
+        .expanded-details {
+          @apply com-flex com-flex-col com-gap-4;
+        }
+      }
+    }
+  }
+
+  .header-column-template {
+    .registration-status-filter {
+      @apply com-flex com-flex-nowrap;
+
+      div {
+        @apply com-border com-border-gray-300 com-cursor-pointer com-p-1;
+      }
+
+      p {
+        @apply com-text-xs com-m-0;
+      }
+    }
+  }
+
+  .row-cell {
+    @apply com-whitespace-normal;
+
+    p {
+      @apply com-text-sm com-mb-0;
+    }
+  }
+
+  /* // Expand/collapse icons */
+  .datatable-icon-right::before {
+    content: '▶';
+    @apply com-text-gray-500 com-mr-2;
+  }
+
+  .datatable-icon-down::before {
+    content: '▼';
+    @apply com-text-gray-500 com-mr-2;
+  }
+
+  .view-mobile-response {
+    @apply com-cursor-pointer com-text-blue-600 com-text-sm com-font-medium;
+  }
+
+  .clickable {
+    @apply com-cursor-pointer com-text-blue-600 com-underline;
+  }
+
+  /* // Resizable columns */
+  .resizable-column {
+    // position: relative;
+    @apply com-relative;
+
+    .resize-handle {
+      // cursor: col-resize;
+      // z-index: 15;
+      @apply com-z-20 com-cursor-col-resize;
+
+      // Add a visual indicator
+      &::after {
+        content: '';
+        // position: absolute;
+        // top: 50%;
+        // right: 1px;
+        // transform: translateY(-50%);
+        // width: 2px;
+        // height: 20px;
+        // background: rgba(0, 123, 255, 0.3);
+        // border-radius: 1px;
+        @apply com-absolute com-top-1/2 com-right-[1px] -com-translate-y-1/2 com-w-0.5 com-h-5 com-bg-primary-500;
+      }
+    }
+  }
+
+  /* // Resizing state */
+  .resizing {
+    user-select: none;
+
+    .resize-handle {
+      background: #007bff;
+      opacity: 0.8;
+    }
+  }
+}
+
+fa-icon {
+  @apply com-text-gray-500;
+}

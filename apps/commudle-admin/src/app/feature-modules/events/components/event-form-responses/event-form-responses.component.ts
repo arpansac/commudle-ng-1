@@ -1,8 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ColumnMode, SortType } from '@commudle/ngx-datatable';
 import { NbDialogRef, NbDialogService, NbPopoverDirective, NbWindowService } from '@commudle/theme';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import {
@@ -11,6 +10,7 @@ import {
   faPieChart,
   faRefresh,
   faChevronLeft,
+  faChevronRight,
   faCaretDown,
   faEnvelope,
   faEnvelopeOpen,
@@ -18,6 +18,11 @@ import {
   faSignOutAlt,
   faFileCsv,
   faEdit,
+  faExpand,
+  faCompress,
+  faAngleDown,
+  faUser,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { AppUsersService, ToastrService } from '@commudle/shared-services';
 import { EUserRoles, ICommunity, IEvent } from '@commudle/shared-models';
@@ -36,17 +41,31 @@ import { EventLocationsService } from 'apps/commudle-admin/src/app/services/even
 import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_forms.service';
 import { EmailerComponent } from 'apps/commudle-admin/src/app/app-shared-components/emailer/emailer.component';
 import { EemailTypes } from 'apps/shared-models/enums/email_types.enum';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 
 @Component({
   selector: 'commudle-event-form-responses',
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],
 })
-export class EventFormResponsesComponent implements OnInit {
-  @ViewChild('table') table;
+export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('confirmStatusChange', { read: TemplateRef }) confirmStatusChange: TemplateRef<HTMLElement>;
   @ViewChild(NbPopoverDirective) filterPopover: NbPopoverDirective;
   @ViewChild('actionsPopoverDirective') actionsPopover: NbPopoverDirective;
+  @ViewChild('userDetailsHeaderTemplate') userDetailsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('userDetailsCellTemplate') userDetailsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('insightsHeaderTemplate') insightsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('insightsCellTemplate') insightsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('trackSlotsHeaderTemplate') trackSlotsHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('trackSlotsCellTemplate') trackSlotsCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('paymentHeaderTemplate') paymentHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('paymentCellTemplate') paymentCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('questionHeaderTemplate') questionHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('questionCellTemplate') questionCellTemplate!: TemplateRef<unknown>;
 
   event: IEvent;
   community: ICommunity;
@@ -61,9 +80,8 @@ export class EventFormResponsesComponent implements OnInit {
 
   isLoading = true;
   rows = [];
-  ColumnMode = ColumnMode;
-  SortType = SortType;
   emptyMessage;
+  expandedRows = new Set<number>();
   bulkUpdateMessage = '';
 
   page = 1;
@@ -90,6 +108,7 @@ export class EventFormResponsesComponent implements OnInit {
     faPieChart,
     faRefresh,
     faChevronLeft,
+    faChevronRight,
     faCaretDown,
     faEnvelope,
     faEnvelopeOpen,
@@ -97,8 +116,14 @@ export class EventFormResponsesComponent implements OnInit {
     faSignOutAlt,
     faFileCsv,
     faEdit,
+    faExpand,
+    faCompress,
+    faAngleDown,
+    faUser,
+    faArrowRight,
   };
   editMode = false;
+  isFullscreen = false;
 
   forms: FormGroup[] = [];
   EQuestionTypes = EQuestionTypes;
@@ -108,7 +133,20 @@ export class EventFormResponsesComponent implements OnInit {
   userEngagementFilter: FormGroup;
   community_engagement_filters: Record<string, unknown> = {};
   attendedEventList: IEvent[];
+  protected isMobileView = false;
+  protected actionBottomSheet = false;
   //TODO past event stats
+
+  // Data table properties
+  tableColumns: DataTableColumn[] = [];
+  tableRows: DataTableRow[] = [];
+  tableConfig: DataTableConfig = {
+    expandableRows: true,
+    resizableColumns: true,
+    frozenColumns: true,
+    emptyMessage: 'No entries found',
+    loadingMessage: 'Loading...',
+  };
   constructor(
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private registrationStatusesService: RegistrationStatusesService,
@@ -161,6 +199,7 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isMobileView = window.innerWidth <= 1024;
     this.activatedRoute.parent.data.subscribe((data) => {
       this.event = data.event;
       this.community = data.community;
@@ -182,10 +221,18 @@ export class EventFormResponsesComponent implements OnInit {
       .subscribe((data) => {
         this.dataForm = data;
         this.questions = this.dataForm.questions;
+        this.setupTableColumns();
       });
 
-    // this.getResponses();
+    this.getResponses();
     this.updateFilter();
+  }
+
+  ngAfterViewInit() {
+    // Setup table columns with templates after view init
+    setTimeout(() => {
+      this.setupTableColumns();
+    }, 100);
   }
 
   // get event_data_form_entity_group
@@ -291,27 +338,9 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   setPage(pageNumber) {
-    this.page = pageNumber + 1;
-    if (this.searchForm.get('name').value) {
-      this.emptyMessage = 'Loading...';
-      this.dataFormEntityResponseGroupsService
-        .getEventDataFormResponses(
-          this.eventDataFormEntityGroupId,
-          this.searchForm.get('name').value.toLowerCase(),
-          this.selectedStatusIds.length > 0 ? this.selectedStatusIds : [],
-          this.page,
-          this.count,
-          this.selectedGenders.length > 0 ? this.selectedGenders : [''],
-          this.selectedEventLocationTrackId,
-          this.getFormData(),
-          Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
-        )
-        .subscribe((data) => {
-          this.setResponses(data);
-        });
-    } else {
-      this.getResponses();
-    }
+    // app-pagination passes the actual page number (1-based), not 0-based
+    this.page = pageNumber;
+    this.getResponses();
   }
 
   getResponses() {
@@ -331,8 +360,15 @@ export class EventFormResponsesComponent implements OnInit {
         this.getFormData(),
         Object.keys(this.community_engagement_filters).length === 0 ? null : this.community_engagement_filters,
       )
-      .subscribe((data) => {
-        this.setResponses(data);
+      .subscribe({
+        next: (data) => {
+          this.setResponses(data);
+        },
+        error: (error) => {
+          console.error('Error loading responses:', error);
+          this.isLoading = false;
+          this.emptyMessage = 'Error loading data';
+        },
       });
   }
 
@@ -340,14 +376,121 @@ export class EventFormResponsesComponent implements OnInit {
     this.getEventDataFromEntityGroup();
     this.totalEntries = data?.total || 0;
     this.rows = data?.data_form_entity_response_groups || [];
+    this.tableRows = this.convertRowsToTableFormat(this.rows);
     this.isLoading = false;
     this.emptyMessage = this.rows.length === 0 ? 'No entries found' : '';
+  }
+
+  setupTableColumns() {
+    this.tableColumns = [];
+
+    // User Details Column (Frozen)
+    this.tableColumns.push({
+      key: 'userDetails',
+      title: 'User Details',
+      width: '370px',
+      frozen: true,
+      resizable: true,
+      filterable: true,
+      headerTemplate: this.userDetailsHeaderTemplate,
+      cellTemplate: this.userDetailsCellTemplate,
+    });
+
+    // Insights Column
+    this.tableColumns.push({
+      key: 'insights',
+      title: 'Insights',
+      width: '300px',
+      resizable: true,
+      filterable: true,
+      headerTemplate: this.insightsHeaderTemplate,
+      cellTemplate: this.insightsCellTemplate,
+    });
+
+    // Track Slots Column (for speakers)
+    if (this.eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+      this.tableColumns.push({
+        key: 'trackSlots',
+        title: 'Track Slots',
+        width: '350px',
+        resizable: true,
+        headerTemplate: this.trackSlotsHeaderTemplate,
+        cellTemplate: this.trackSlotsCellTemplate,
+      });
+    }
+
+    // Payment Details Column
+    if (this.eventDataFormEntityGroup?.is_paid) {
+      this.tableColumns.push({
+        key: 'payment',
+        title: 'Payment Details',
+        width: '300px',
+        resizable: true,
+        headerTemplate: this.paymentHeaderTemplate,
+        cellTemplate: this.paymentCellTemplate,
+      });
+    }
+
+    // Question Columns
+    if (this.questions) {
+      this.questions.forEach((question, index) => {
+        this.tableColumns.push({
+          key: `question_${question.id}`,
+          title: question.title,
+          width: '200px',
+          resizable: true,
+          filterable: true,
+          headerTemplate: this.questionHeaderTemplate,
+          cellTemplate: this.questionCellTemplate,
+        });
+      });
+    }
+  }
+
+  convertRowsToTableFormat(rows: any[]): DataTableRow[] {
+    return rows.map((row) => ({
+      id: row.id,
+      userDetails: row,
+      insights: row,
+      trackSlots: row,
+      payment: row,
+      ...(this.questions?.reduce((acc, question) => {
+        acc[`question_${question.id}`] = {
+          question,
+          response: this.getQuestionResponse(row.data_form_entity_response_values, question.id),
+          row,
+        };
+        return acc;
+      }, {}) || {}),
+    }));
+  }
+
+  onTableRowExpand(row: DataTableRow) {
+    this.toggleExpandRow(row);
+  }
+
+  getQuestionByKey(columnKey: string): IQuestion | undefined {
+    if (!columnKey.startsWith('question_')) return undefined;
+    const questionId = parseInt(columnKey.replace('question_', ''));
+    return this.questions?.find((q) => q.id === questionId);
+  }
+
+  getQuestionIndex(columnKey: string): number {
+    if (!columnKey.startsWith('question_')) return -1;
+    const questionId = parseInt(columnKey.replace('question_', ''));
+    return this.questions?.findIndex((q) => q.id === questionId) || -1;
+  }
+
+  getExpandedRowData(): any {
+    // Get the first expanded row data for the expanded content template
+    const expandedRowId = Array.from(this.expandedRows)[0];
+    return this.rows.find((row) => row.id === expandedRowId);
   }
 
   getQuestionResponse(userResponses, questionId) {
     const userQuestionResponses = userResponses?.filter((k) => k.question_id === questionId) || [];
     return userQuestionResponses.length === 0
-      ? 'No response'
+      ? '--'
       : userQuestionResponses.map((resp) => resp.response_text).join('\n');
   }
 
@@ -360,10 +503,16 @@ export class EventFormResponsesComponent implements OnInit {
   }
 
   toggleExpandRow(row) {
-    this.table.rowDetail.toggleExpandRow(row);
+    if (this.expandedRows.has(row.id)) {
+      this.expandedRows.delete(row.id);
+    } else {
+      this.expandedRows.add(row.id);
+    }
   }
 
-  onDetailToggle(event) {}
+  onDetailToggle(_event: unknown) {
+    // Method kept for compatibility
+  }
 
   openRSVPEmailWindow() {
     this.windowService.open(EmailerComponent, {
@@ -397,7 +546,7 @@ export class EventFormResponsesComponent implements OnInit {
     });
   }
 
-  bulkStatusChangeConfirmation(dialog: TemplateRef<any>) {
+  bulkStatusChangeConfirmation(dialog: TemplateRef<unknown>) {
     this.dialogRef = this.dialogService.open(dialog);
     this.dialogRef.onClose.subscribe(() => {
       this.bulkStatus = null;
@@ -543,7 +692,7 @@ export class EventFormResponsesComponent implements OnInit {
     },
   ];
 
-  private isValidValue = (value: any) => value !== null && value !== undefined && value !== '';
+  private isValidValue = (value: unknown) => value !== null && value !== undefined && value !== '';
 
   isApplyDisabled(): boolean {
     const formValues = this.userEngagementFilter.value;
@@ -729,5 +878,33 @@ export class EventFormResponsesComponent implements OnInit {
   applyFilter() {
     this.getResponses();
     this.closePopover();
+  }
+
+  getColumnCount(): number {
+    let count = 2; // User Details + Insights
+
+    if (this.eventDataFormEntityGroup?.registration_type.name === RegistrationTypeNames.SPEAKER) {
+      count++; // Track slots
+    }
+
+    if (this.eventDataFormEntityGroup?.is_paid) {
+      count++; // Payment details
+    }
+
+    count += this.questions.length; // Questions
+
+    return count;
+  }
+
+  toggleFullscreen() {
+    this.isFullscreen = !this.isFullscreen;
+  }
+
+  ngOnDestroy() {
+    // Component cleanup
+  }
+
+  closeActionBottomSheet() {
+    this.actionBottomSheet = false;
   }
 }

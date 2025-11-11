@@ -15,7 +15,24 @@
       </ng-template>
     </ng-container>
   </div>
-  <div class="com--mt-px com-w-0 com-flex-1 com-flex com-justify-end">
+  <div class="com--mt-px com-w-0 com-flex-1 com-flex com-justify-end com-items-center com-gap-2">
+    @if (showCount) {
+    <div class="count-display">
+      <span class="com-text-sm com-text-gray-600">
+        Showing {{ (current - 1) * count + 1 }} to {{ Math.min(current * count, total) }} of {{ total }} entries
+      </span>
+    </div>
+    } @if (showJumpTo) {
+    <div class="jump-to-container">
+      <div class="jump-dropdown">
+        <select [value]="current" (change)="onGoTo(+$any($event).target.value)" class="jump-select">
+          @for (pageNum of getAllPages(); track pageNum) {
+          <option [value]="pageNum">{{ pageNum }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    }
     <button (click)="onNext()" [disabled]="current === totalPage" nbButton size="small" status="primary">
       Next
       <nb-icon icon="arrow-ios-forward"></nb-icon>
