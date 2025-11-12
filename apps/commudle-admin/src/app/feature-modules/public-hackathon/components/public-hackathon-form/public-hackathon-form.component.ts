@@ -40,8 +40,10 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper') stepper: NbStepperComponent;
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
+  @ViewChild('formClosedDialog', { static: true }) formClosedDialog: TemplateRef<any>;
   isLoading = true;
   hasTeammateOption = false;
+  isFormClosed = false;
 
   icons = {
     faLinkedinIn,
@@ -87,6 +89,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
         this.community = data.community;
+        this.checkApplicationDates();
         this.getContactInfo();
         if (this.hackathon.participate_types === EParticipateTypes.TEAM) {
           this.hasTeammateOption = true;
@@ -108,6 +111,28 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.dialogRef?.close();
+  }
+
+  checkApplicationDates() {
+    const currentDate = new Date();
+    const applicationEndDate = new Date(this.hackathon.application_end_date);
+
+    if (currentDate > applicationEndDate) {
+      this.isFormClosed = true;
+      this.showFormClosedDialog();
+    }
+  }
+
+  showFormClosedDialog() {
+    this.dialogRef = this.dialogService.open(this.formClosedDialog, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+    });
+  }
+
+  closeFormDialog() {
+    this.dialogRef?.close();
+    this.router.navigate(['/communities', this.community.slug, 'hackathons', this.hackathon.slug]);
   }
 
   getContactInfo() {
