@@ -57,7 +57,6 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
 import { LinkyModule } from 'ngx-linky';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { EventRegisteredCardComponent } from './event-cards/event-registered-card/event-registered-card.component';
-import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/hackathon-cards/hackathon-registered-card/hackathon-registered-card.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +82,6 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     EventHackathonRegistrationsComponent,
     EmailPreviewComponent,
     EventRegisteredCardComponent,
-    HackathonRegisteredCardComponent,
   ],
   exports: [
     EmailerComponent,
@@ -110,7 +108,6 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     EventHackathonRegistrationsComponent,
     EmailPreviewComponent,
     EventRegisteredCardComponent,
-    HackathonRegisteredCardComponent,
   ],
   imports: [
     CommonModule,
