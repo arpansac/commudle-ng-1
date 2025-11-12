@@ -14,11 +14,27 @@ import { faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { countries_details, ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
-import { NbDialogService } from '@commudle/theme';
+import { NbButtonModule, NbCardModule, NbDialogService, NbIconModule } from '@commudle/theme';
 import { AddToCalendarComponent } from '@commudle/shared-components';
+import { RouterModule } from '@angular/router';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommonModule } from '@angular/common';
+import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 
 @Component({
   selector: 'commudle-hackathon-registered-card',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    RouterModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    SharedComponentsModule,
+    SharedDirectivesModule,
+  ],
   templateUrl: './hackathon-registered-card.component.html',
   styleUrls: ['./hackathon-registered-card.component.scss'],
 })

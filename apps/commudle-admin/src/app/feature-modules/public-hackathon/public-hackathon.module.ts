@@ -36,7 +36,8 @@ import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-mod
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { PublicHackathonFormConfirmationComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-form/public-hackathon-form-confirmation/public-hackathon-form-confirmation.component';
-import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
+// import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
+import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/hackathon-cards/hackathon-registered-card/hackathon-registered-card.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-share
     UserprofileDetailsComponent,
     SharedPipesModule,
     UserPersonalConnectComponent,
-    AppSharedComponentsModule,
+    // AppSharedComponentsModule,
+    HackathonRegisteredCardComponent,
   ],
   declarations: [
     PublicHackathonHomepageComponent,
