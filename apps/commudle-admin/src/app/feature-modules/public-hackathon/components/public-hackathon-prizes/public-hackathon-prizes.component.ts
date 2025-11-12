@@ -56,8 +56,10 @@ export class PublicHackathonPrizesComponent implements OnInit, OnDestroy {
       this.hackathonService.pIndexPrizes(this.hackathon.id).subscribe((data) => {
         this.hackathonPrizes = data;
         this.hackathonPrizes.forEach((prize) => {
-          const prizeCurrencySymbol = countryDetails.find((detail) => detail.currency === prize.currency_type);
-          prize.currency_symbol = prizeCurrencySymbol.symbol;
+          const prizeCurrencySymbol = countryDetails.find((detail) => detail.currency === prize.currency_type) || {
+            symbol: prize.currency_type,
+          };
+          prize.currency_symbol = prizeCurrencySymbol?.symbol || prize.currency_type;
         });
         this.isLoading = false;
       }),
