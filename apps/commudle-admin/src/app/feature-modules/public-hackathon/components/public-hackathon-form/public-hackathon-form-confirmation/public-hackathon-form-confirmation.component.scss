@@ -1,0 +1,59 @@
+.hackathon-form-confirmation-container {
+  @apply com-bg-white com-pb-16;
+}
+
+.confirmation-card {
+  @apply md:com-mt-20 com-mt-10 md:com-mx-0 com-mx-3;
+
+  .confirmation-header {
+    @apply com-text-center com-mb-6;
+
+    .check-icon {
+      @apply com-text-6xl com-mb-8;
+    }
+
+    .title {
+      @apply com-text-Yankees-Blue com-text-[32px] com-font-semibold com-leading-10 com-m-0 com-mb-[60px];
+    }
+  }
+
+  .profile-card {
+    @apply com-grid com-grid-cols-2;
+
+    .profile-completion-card {
+      @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray com-pl-3;
+    }
+
+    .profile-preview-card,
+    .profile-completion-card {
+      .card-heading {
+        @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-4;
+      }
+    }
+  }
+
+  .missing-field-card {
+    @apply com-mt-8 com-mb-0;
+  }
+
+  .card-heading {
+    @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-m-0 com-mb-8;
+  }
+
+  .leaders-card {
+    @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-py-8;
+  }
+
+  .leader:not(:last-child) {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2 com-mb-2;
+  }
+
+  .profile-card-container,
+  .details-card-container {
+    @apply com-pb-8;
+  }
+}
+
+.loading-spinner-container {
+  @apply com-my-8;
+}

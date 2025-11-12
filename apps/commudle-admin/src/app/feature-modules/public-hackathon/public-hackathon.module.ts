@@ -35,6 +35,8 @@ import { PublicHackathonRegistrationComponent } from 'apps/commudle-admin/src/ap
 import { CommunityChannelsModule } from 'apps/commudle-admin/src/app/feature-modules/community-channels/community-channels.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
+import { PublicHackathonFormConfirmationComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-form/public-hackathon-form-confirmation/public-hackathon-form-confirmation.component';
+import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
 
 @NgModule({
   imports: [
@@ -59,6 +61,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     UserprofileDetailsComponent,
     SharedPipesModule,
     UserPersonalConnectComponent,
+    AppSharedComponentsModule,
   ],
   declarations: [
     PublicHackathonHomepageComponent,
@@ -75,6 +78,7 @@ import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/com
     PublicHackathonCustomQuestionsFormComponent,
     PublicHackathonUserDashboardComponent,
     PublicHackathonRegistrationComponent,
+    PublicHackathonFormConfirmationComponent,
   ],
 })
 export class PublicHackathonModule {}

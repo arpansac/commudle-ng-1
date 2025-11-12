@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICommunity, IHackathonUserResponse, IHackathonUserResponsesGroupByTeam } from '@commudle/shared-models';
 import { NbDialogRef, NbDialogService, NbStepperComponent } from '@commudle/theme';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
@@ -21,6 +21,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
+import { PublicHackathonFormConfirmationComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-form/public-hackathon-form-confirmation/public-hackathon-form-confirmation.component';
 
 @Component({
   selector: 'commudle-public-hackathon-form',
@@ -72,6 +73,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
     private appUsersService: AppUsersService,
     private dialogService: NbDialogService,
     private userProfileManagerService: UserProfileManagerService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -192,7 +194,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
       if (this.hackathonResponseGroup.filled_by_only_team_lead && !this.current_user_is_team_lead) {
         this.toastrService.successDialog('Details has been saved');
         this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
-        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+        this.router.navigate(['submitted'], { relativeTo: this.activatedRoute });
       } else {
         this.stepper.next();
       }
@@ -205,7 +207,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
       if (this.hackathonResponseGroup.filled_by_only_team_lead && !this.current_user_is_team_lead) {
         this.toastrService.successDialog('Details has been saved');
         this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
-        this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+        this.router.navigate(['submitted'], { relativeTo: this.activatedRoute });
       } else {
         this.stepper.next();
       }
@@ -226,7 +228,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
         } else {
           this.toastrService.successDialog('Details has been saved');
           this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
-          this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+          this.dialogRef = this.dialogService.open(PublicHackathonFormConfirmationComponent);
+          this.router.navigate(['submitted'], { relativeTo: this.activatedRoute });
         }
       }
     });
@@ -239,7 +242,8 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
         if (data) {
           this.toastrService.successDialog('Details has been saved');
           this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
-          this.dialogRef = this.dialogService.open(this.formConfirmationDialog, { closeOnBackdropClick: false });
+          this.dialogRef = this.dialogService.open(PublicHackathonFormConfirmationComponent);
+          this.router.navigate(['submitted'], { relativeTo: this.activatedRoute });
         }
       });
   }
