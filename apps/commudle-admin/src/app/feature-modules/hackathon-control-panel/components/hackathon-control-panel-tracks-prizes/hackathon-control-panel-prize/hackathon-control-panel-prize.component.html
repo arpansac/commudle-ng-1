@@ -80,14 +80,22 @@
         <div>
           <label for="prize_amount">Prize Amount</label>
           <div class="prize-amount">
-            <select formControlName="currency_type" name="currency_type">
-              <option [value]="countryDetails[0].currency" selected>
-                {{ countryDetails[0].currency }} ({{ countryDetails[0].symbol }})
-              </option>
-              <option *ngFor="let countryDetail of countryDetails.slice(1)" [value]="countryDetail.currency">
-                {{ countryDetail.currency }} ({{ countryDetail.symbol }})
-              </option>
-            </select>
+            <div>
+              <input
+                type="text"
+                id="currency_type"
+                nbInput
+                fullWidth
+                formControlName="currency_type"
+                placeholder="Currency"
+                [nbAutocomplete]="currencyAutocomplete"
+              />
+              <nb-autocomplete #currencyAutocomplete (selectedChange)="selectCurrency($event)">
+                <nb-option *ngFor="let country of currencySuggestions" [value]="country.currency">
+                  {{ country.currency }} ({{ country.symbol }})
+                </nb-option>
+              </nb-autocomplete>
+            </div>
             <input formControlName="prize_amount" fullWidth id="prize_amount" nbInput placeholder="100" type="text" />
           </div>
         </div>

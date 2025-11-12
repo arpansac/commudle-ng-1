@@ -15,7 +15,7 @@
       </div>
       <p class="prize">
         <span *ngIf="hackathonPrize.prize_amount && hackathonPrize.prize_amount > 0">
-          {{ this.prizeCurrencySymbol?.symbol }}{{ hackathonPrize.prize_amount }},
+          {{ this.prizeCurrencySymbol?.symbol }} {{ hackathonPrize.prize_amount }},
         </span>
         <br />
         <span>
@@ -42,7 +42,7 @@
 <ng-template #prizeDistributionDialogBox let-ref="dialogRef" let-data>
   <nb-card class="prize-distribution-dialog-box">
     <nb-card-header>
-      <span> {{ hackathonPrize.name }} ({{ prizeCurrencySymbol?.symbol }}{{ hackathonPrize.prize_amount }}) </span>
+      <span> {{ hackathonPrize.name }} ({{ prizeCurrencySymbol?.symbol }} {{ hackathonPrize.prize_amount }}) </span>
       <button nbButton ghost shape="round" (click)="ref.close()">X</button>
     </nb-card-header>
     <nb-card-body>
