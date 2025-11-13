@@ -160,3 +160,21 @@
     </nb-card-footer>
   </nb-card>
 </ng-template>
+
+<ng-template #formClosedDialog>
+  <nb-card class="form-closed-dialog">
+    <nb-card-body>
+      <div class="dialog-content">
+        <p class="icon">
+          <nb-icon icon="close-circle" status="danger"></nb-icon>
+        </p>
+        <h3>Application Closed</h3>
+        <p>The application period for this hackathon has ended. You can no longer submit applications.</p>
+        <p><strong>Application closed on:</strong> {{ hackathon.application_end_date | date : 'medium' }}</p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="closeFormDialog()">Go to Hackathon Page</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
