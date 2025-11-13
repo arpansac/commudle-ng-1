@@ -51,6 +51,16 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.userProfileManagerService.patchFormValues(this.currentUser);
         this.basicInfoForm.patchValue(this.currentUser);
+
+        const nameControl = this.basicInfoForm.get('name');
+        if (nameControl && nameControl.invalid) {
+          nameControl.markAsTouched();
+        }
+
+        const designationControl = this.basicInfoForm.get('designation');
+        if (designationControl && designationControl.invalid) {
+          designationControl.markAsTouched();
+        }
         this.basicInfoFormValidity.emit(this.basicInfoForm.valid); //initial validity
         this.userData.emit(this.currentUser); //initial validity
         this.uploadedProfilePicture = this.currentUser.avatar;

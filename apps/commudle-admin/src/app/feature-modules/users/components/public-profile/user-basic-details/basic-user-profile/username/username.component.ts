@@ -66,6 +66,12 @@ export class UsernameComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.currentUsername = this.lastUsername = this.currentUser.username;
         this.usernameForm.patchValue({ username: this.currentUser.username });
+
+        const usernameControl = this.usernameForm.get('username');
+        if (usernameControl && usernameControl.invalid) {
+          usernameControl.markAsTouched();
+        }
+
         if (this.lastUsername === this.currentUser.username) {
           this.validUsername = true;
         }
