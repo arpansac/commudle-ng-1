@@ -22,7 +22,7 @@
     </div>
     <div *ngIf="totalPrizesByCurrency?.length > 0" class="prize-money">
       <fa-icon [icon]="icons.faSackDollar"></fa-icon>
-      <span>{{ totalPrizesByCurrency[0].currency.symbol }}{{ totalPrizesByCurrency[0].amount }}</span>
+      <span>{{ totalPrizesByCurrency[0].currency.symbol }} {{ totalPrizesByCurrency[0].amount }}</span>
     </div>
   </div>
 

@@ -70,7 +70,10 @@ export class HackathonRegisteredCardComponent implements OnInit {
     this.fetchInterestedMembers();
     if (this.hackathon.total_prize_amount) {
       this.totalPrizesByCurrency = Object.keys(this.hackathon.total_prize_amount).map((currency) => ({
-        currency: this.countryDetails.find((detail) => detail.currency === currency),
+        currency: this.countryDetails.find((detail) => detail.currency === currency) || {
+          currency: currency,
+          symbol: currency,
+        },
         amount: this.hackathon.total_prize_amount[currency],
       }));
     }

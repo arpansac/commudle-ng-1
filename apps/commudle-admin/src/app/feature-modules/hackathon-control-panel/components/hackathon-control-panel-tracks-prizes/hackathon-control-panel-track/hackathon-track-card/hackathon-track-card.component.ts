@@ -20,8 +20,10 @@ export class HackathonTrackCardComponent implements OnInit {
 
   ngOnInit() {
     this.hackathonTrack.hackathon_prizes.forEach((prize) => {
-      this.prizeCurrencySymbol = this.countryDetails.find((detail) => detail.currency === prize.currency_type);
-      prize.currency_symbol = this.prizeCurrencySymbol.symbol;
+      this.prizeCurrencySymbol = this.countryDetails.find((detail) => detail.currency === prize.currency_type) || {
+        symbol: prize.currency_type,
+      };
+      prize.currency_symbol = this.prizeCurrencySymbol.symbol || prize.currency_type;
     });
   }
 
