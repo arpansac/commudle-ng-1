@@ -45,17 +45,44 @@
       [error]="true"
       [errorMessage]="'Required Field'"
     ></commudle-alert>
+    <span
+      *ngIf="
+        userForm.get('designation').touched &&
+        userForm.get('designation').invalid &&
+        userForm.get('designation').errors.maxlength
+      "
+    >
+      <commudle-alert [error]="true" [errorMessage]="'Maximum 300 characters allowed'"></commudle-alert>
+    </span>
   </div>
   <div *ngIf="userForm.get('about_me')">
     <label for="name">About <span class="required">*</span></label>
     <textarea name="about_me" id="about_me" rows="3" nbInput fullWidth formControlName="about_me"></textarea>
-    <commudle-alert
+    <span
       *ngIf="
         userForm.get('about_me').touched && userForm.get('about_me').invalid && userForm.get('about_me').errors.required
       "
-      [error]="true"
-      [errorMessage]="'Required Field'"
-    ></commudle-alert>
+    >
+      <commudle-alert [error]="true" [errorMessage]="'Required field'"></commudle-alert>
+    </span>
+    <span
+      *ngIf="
+        userForm.get('about_me').touched &&
+        userForm.get('about_me').invalid &&
+        userForm.get('about_me').errors.minlength
+      "
+    >
+      <commudle-alert [error]="true" [errorMessage]="'Minimum 30 characters required'"></commudle-alert>
+    </span>
+    <span
+      *ngIf="
+        userForm.get('about_me').touched &&
+        userForm.get('about_me').invalid &&
+        userForm.get('about_me').errors.maxlength
+      "
+    >
+      <commudle-alert [error]="true" [errorMessage]="'Maximum 2600 characters allowed'"></commudle-alert>
+    </span>
   </div>
   <div *ngIf="userForm.get('location')">
     <label for="name">Location <span class="required">*</span></label>
