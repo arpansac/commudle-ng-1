@@ -1,21 +1,23 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   EDbModels,
   EDiscussionType,
   EInvitationStatus,
+  EParticipateTypes,
   ICommunityChannel,
   IHackathonTeam,
   IHackathonUserResponse,
 } from '@commudle/shared-models';
 import { AuthService, CommunityChannelsService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { faArrowRight, faUserMinus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faUserMinus, faXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 import { HackathonUserResponsesService } from 'apps/commudle-admin/src/app/services/hackathon-user-responses.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
+import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-group.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 @Component({
   selector: 'commudle-public-hackathon-user-dashboard',
@@ -27,6 +29,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     faArrowRight,
     faUserMinus,
     faXmark,
+    faEdit,
   };
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
@@ -37,7 +40,10 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   EDiscussionType = EDiscussionType;
   channels: ICommunityChannel[];
   EInvitationStatus = EInvitationStatus;
+  hackathonResponseGroup: IHackathonResponseGroup;
+  hasTeammateOption = false;
 
+  @ViewChild('editTeamMembersDialog') editTeamMembersDialogRef: TemplateRef<any>;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -55,6 +61,9 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     this.subscriptions.push(
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
+        if (this.hackathon.participate_types === EParticipateTypes.TEAM) {
+          this.hasTeammateOption = true;
+        }
         this.getChannels();
         this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
           if (currentUser) this.getHackathonCurrentRegistrationDetails();
@@ -62,6 +71,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
       }),
       this.hrgService.showHackathonResponseGroup(this.hackathon.id).subscribe((data) => {
         this.hrgId = data.id;
+        this.hackathonResponseGroup = data;
       }),
     );
   }
@@ -119,6 +129,27 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     this.hackathonUserResponseService.resendInviteToTeammate(team.id, hur.id).subscribe((data) => {
       if (data) {
         this.toasterService.successDialog('Team member invite resent');
+      }
+    });
+  }
+
+  openEditTeamMembersDialog() {
+    const selectedTeam = this.userTeamDetails[this.selectedTeamIndex];
+    const hackathonUserResponse = selectedTeam.hackathon_user_responses[0];
+    this.nbDialogService.open(this.editTeamMembersDialogRef, {
+      context: {
+        hackathonUserResponse: hackathonUserResponse,
+        hackathonResponseGroup: this.hackathonResponseGroup,
+        selectedTeam: selectedTeam,
+      },
+    });
+  }
+
+  submitTeammateDetails(formData, dialogRef: any, hackathonUserResponseId) {
+    dialogRef.close();
+    this.hackathonUserResponseService.updateTeamDetails(formData, hackathonUserResponseId).subscribe((data) => {
+      if (data) {
+        this.toasterService.successDialog('Team members updated successfully');
       }
     });
   }

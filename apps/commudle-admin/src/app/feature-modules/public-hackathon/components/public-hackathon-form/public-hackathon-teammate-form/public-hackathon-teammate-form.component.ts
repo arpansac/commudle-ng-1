@@ -19,7 +19,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { ToastrService } from '@commudle/shared-services';
-import { IHackathonUserResponse } from '@commudle/shared-models';
+import { IHackathonTeam, IHackathonUserResponse } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -31,7 +31,9 @@ export class PublicHackathonTeammateFormComponent implements OnInit, AfterViewIn
   @Input() hackathonUserResponse: IHackathonUserResponse;
   @Input() hackathonResponseGroup: IHackathonResponseGroup;
   @Input() hasTeammateOption: boolean;
+  @Input() hasSubmitButton = false;
   @Input() hackathon: IHackathon;
+  @Input() team: IHackathonTeam;
   @Output() submitTeammateDetailsEvent = new EventEmitter<any>();
   @Output() previousButtonEvent = new EventEmitter<any>();
   showEmailError = false;
