@@ -18,6 +18,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   @Input() hackathonUserResponse: IHackathonUserResponse;
   @Input() submitButtonText = 'Next';
   @Output() submitUserDetailsEvent = new EventEmitter<any>();
+  @Output() isLoadingEventEmitter = new EventEmitter<boolean>();
 
   currentUser: IUser;
   userForm: FormGroup;
@@ -102,6 +103,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
     if (this.userForm.invalid) {
       this.toastLogService.errorDialog('Please complete the profile fields');
       this.userForm.markAllAsTouched();
+      this.isLoadingEventEmitter.emit(false);
       return;
     }
     this.submitUserDetailsEvent.emit(this.userForm.value);
