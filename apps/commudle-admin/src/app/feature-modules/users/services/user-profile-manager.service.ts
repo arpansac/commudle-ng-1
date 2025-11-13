@@ -39,7 +39,7 @@ export class UserProfileManagerService {
   ) {
     this.userProfileForm = this.fb.group({
       name: ['', Validators.required],
-      about_me: ['', [Validators.required, Validators.maxLength(1000)]],
+      about_me: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(2600)]],
       designation: ['', [Validators.required, Validators.maxLength(100)]],
       experience_level: [''],
       user_domain: [''],
