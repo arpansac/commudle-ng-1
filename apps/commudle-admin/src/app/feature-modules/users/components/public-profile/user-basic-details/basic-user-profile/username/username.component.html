@@ -22,15 +22,6 @@
         </nb-form-field>
       </label>
       <commudle-alert [error]="!validUsername" [errorMessage]="validationError"></commudle-alert>
-      <span
-        *ngIf="
-          usernameForm['controls'].username.touched &&
-          usernameForm['controls'].username.invalid &&
-          usernameForm['controls'].username.errors.maxlength
-        "
-      >
-        <commudle-alert [error]="true" [errorMessage]="'Maximum 25 characters allowed'"></commudle-alert>
-      </span>
     </div>
     <div *ngIf="showSaveButton">
       <button
