@@ -49,7 +49,13 @@ export class UsernameComponent implements OnInit, OnDestroy {
     this.usernameForm = this.fb.group({
       username: [
         '',
-        [Validators.required, NoWhitespaceValidator, WhiteSpaceNotAllowedValidator, NoSpecialCharactersValidator],
+        [
+          Validators.required,
+          Validators.maxLength(25),
+          NoWhitespaceValidator,
+          WhiteSpaceNotAllowedValidator,
+          NoSpecialCharactersValidator,
+        ],
       ],
     });
   }
