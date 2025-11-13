@@ -12,6 +12,7 @@ import { CommunicationPreferencesComponent } from './components/public-profile/u
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
 import { RecapComponent } from './components/recap-2024/recap-2024.component';
+import { UserProfileCompleteStepOneComponent } from 'apps/commudle-admin/src/app/feature-modules/user-profile-complete/components/user-profile-complete-step-one/user-profile-complete-step-one.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
         outlet: 'p',
         component: EditUserProfileComponent,
         children: [
+          {
+            path: 'goals-and-skills',
+            component: UserProfileCompleteStepOneComponent,
+          },
           {
             path: 'basic-details',
             component: BasicUserProfileComponent,

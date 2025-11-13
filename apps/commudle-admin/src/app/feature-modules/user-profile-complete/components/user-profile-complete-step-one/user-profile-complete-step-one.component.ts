@@ -17,6 +17,7 @@ import { AuthService } from '@commudle/shared-services';
   styleUrls: ['./user-profile-complete-step-one.component.scss'],
 })
 export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
+  parentType: 'profile-complete' | 'edit-profile' = 'profile-complete';
   currentUser: IUser;
   goals = [];
   tags = [];
@@ -51,6 +52,13 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const url = this.router.url;
+    if (url.includes('goals-and-skills')) {
+      this.parentType = 'edit-profile';
+    } else {
+      this.parentType = 'profile-complete';
+    }
+
     this.profileStatusBarService.changeProfileBarStatus(false);
     this.authWatchService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       if (data) {
@@ -171,7 +179,10 @@ export class UserProfileCompleteStepOneComponent implements OnInit, OnDestroy {
     this.usersService.updateTags({ tags: this.tags }).subscribe(() => {
       this.authWatchService.updateSignedInUser();
       this.userProfileManagerService.updateUserDetails(false);
-      this.router.navigate(['/user-profile-complete/step-two']);
+
+      if (this.parentType === 'profile-complete') {
+        this.router.navigate(['/user-profile-complete/step-two']);
+      }
     });
   }
 
