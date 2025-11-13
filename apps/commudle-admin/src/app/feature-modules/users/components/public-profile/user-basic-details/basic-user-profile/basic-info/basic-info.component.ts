@@ -39,7 +39,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.basicInfoForm = this.fb.group({
       name: ['', Validators.required],
       about_me: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(2600)]],
-      designation: ['', [Validators.required, Validators.maxLength(100)]],
+      designation: ['', [Validators.required, Validators.maxLength(300)]],
       location: ['', [Validators.required]],
       gender: ['', [Validators.required]],
     });
