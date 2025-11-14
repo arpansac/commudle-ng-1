@@ -46,6 +46,9 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initAutocomplete();
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+    }
   }
 
   ngOnDestroy(): void {
@@ -67,7 +70,14 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
         let validators = [Validators.required];
 
-        // Add URL validation for social media fields
+        if (key === 'about_me') {
+          validators.push(Validators.minLength(30), Validators.maxLength(2600));
+        }
+
+        if (key === 'designation') {
+          validators.push(Validators.maxLength(300));
+        }
+
         if (
           key === 'github' ||
           key === 'gitlab' ||

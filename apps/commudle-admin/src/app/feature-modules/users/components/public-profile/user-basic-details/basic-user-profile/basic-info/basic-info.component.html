@@ -70,7 +70,7 @@
       </span>
       <commudle-alert
         [error]="basicInfoForm.get('designation').errors?.['maxlength']"
-        errorMessage="Max characters should be 100"
+        errorMessage="Maximum 300 characters allowed"
       >
       </commudle-alert>
     </div>
@@ -110,17 +110,36 @@
           shape="semi-round"
           fullWidth
           nbInput
-          placeholder="A little bit about your interests! (max 1000 characters)"
+          placeholder="A little bit about your interests! (max 2600 characters)"
           rows="3"
         ></textarea>
       </label>
       <span
         *ngIf="
           (basicInfoForm['controls'].about_me.touched || basicInfoForm.get('about_me').value) &&
-          basicInfoForm['controls'].about_me.invalid
+          basicInfoForm['controls'].about_me.invalid &&
+          basicInfoForm['controls'].about_me.errors.required
         "
       >
-        <commudle-alert [error]="true" [errorMessage]="'Required field. Maximum 1000 characters.'"></commudle-alert>
+        <commudle-alert [error]="true" [errorMessage]="'Required field'"></commudle-alert>
+      </span>
+      <span
+        *ngIf="
+          (basicInfoForm['controls'].about_me.touched || basicInfoForm.get('about_me').value) &&
+          basicInfoForm['controls'].about_me.invalid &&
+          basicInfoForm['controls'].about_me.errors.minlength
+        "
+      >
+        <commudle-alert [error]="true" [errorMessage]="'Minimum 30 characters required'"></commudle-alert>
+      </span>
+      <span
+        *ngIf="
+          (basicInfoForm['controls'].about_me.touched || basicInfoForm.get('about_me').value) &&
+          basicInfoForm['controls'].about_me.invalid &&
+          basicInfoForm['controls'].about_me.errors.maxlength
+        "
+      >
+        <commudle-alert [error]="true" [errorMessage]="'Maximum 2600 characters allowed'"></commudle-alert>
       </span>
     </div>
   </div>

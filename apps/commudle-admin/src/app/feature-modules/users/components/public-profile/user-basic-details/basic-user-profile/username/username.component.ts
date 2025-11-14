@@ -49,7 +49,13 @@ export class UsernameComponent implements OnInit, OnDestroy {
     this.usernameForm = this.fb.group({
       username: [
         '',
-        [Validators.required, NoWhitespaceValidator, WhiteSpaceNotAllowedValidator, NoSpecialCharactersValidator],
+        [
+          Validators.required,
+          Validators.maxLength(25),
+          NoWhitespaceValidator,
+          WhiteSpaceNotAllowedValidator,
+          NoSpecialCharactersValidator,
+        ],
       ],
     });
   }
@@ -60,6 +66,12 @@ export class UsernameComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.currentUsername = this.lastUsername = this.currentUser.username;
         this.usernameForm.patchValue({ username: this.currentUser.username });
+
+        const usernameControl = this.usernameForm.get('username');
+        if (usernameControl && usernameControl.invalid) {
+          usernameControl.markAsTouched();
+        }
+
         if (this.lastUsername === this.currentUser.username) {
           this.validUsername = true;
         }
