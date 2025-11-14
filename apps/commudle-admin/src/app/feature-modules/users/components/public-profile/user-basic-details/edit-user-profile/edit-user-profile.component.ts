@@ -82,7 +82,9 @@ export class EditUserProfileComponent implements OnInit, OnDestroy {
     if (!this.currentUser) {
       return;
     }
-    if (url.includes('basic-details')) {
+    if (url.includes('goals-and-skills')) {
+      this.title = 'Goals & Skills';
+    } else if (url.includes('basic-details')) {
       this.title = 'Basic Details';
     } else if (url.includes('email-preferences')) {
       this.title = 'Email Preferences';

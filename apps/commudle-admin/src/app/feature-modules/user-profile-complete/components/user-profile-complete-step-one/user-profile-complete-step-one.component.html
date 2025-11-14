@@ -1,16 +1,29 @@
 <div
-  class="background-image"
-  [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }"
+  [class.background-image]="parentType === 'profile-complete'"
+  [ngStyle]="
+    parentType === 'profile-complete'
+      ? { 'background-image': 'url(\'' + staticAssets.user_profile_complete_background + '\')' }
+      : {}
+  "
 >
   <div class="base-layout">
-    <div class="container">
-      <div class="three-column-layout thin">
-        <div class="left-column"></div>
+    <div class="container" [class.horizontal-spacing]="parentType === 'edit-profile'">
+      <div
+        [class.three-column-layout]="parentType === 'profile-complete'"
+        [class.thin]="parentType === 'profile-complete'"
+      >
+        <div [class.left-column]="parentType === 'profile-complete'"></div>
         <div [formGroup]="profileStepOneForm">
-          <p class="step-number">Step 1 of 3</p>
-          <h2 class="welcome-text" *ngIf="currentUser">Welcome, {{ currentUser.name }}</h2>
-          <h2 class="welcome-text" *ngIf="!currentUser">Welcome to the DeveloperVerse!</h2>
-          <p class="sub-text">Let’s get to know you — so we can personalise your journey</p>
+          <p *ngIf="parentType === 'profile-complete'" class="step-number">Step 1 of 3</p>
+          <h2 *ngIf="parentType === 'profile-complete' && currentUser" class="welcome-text">
+            Welcome, {{ currentUser.name }}
+          </h2>
+          <h2 *ngIf="parentType === 'profile-complete' && !currentUser" class="welcome-text">
+            Welcome to the DeveloperVerse!
+          </h2>
+          <p *ngIf="parentType === 'profile-complete'" class="sub-text">
+            Let’s get to know you — so we can personalise your journey
+          </p>
 
           <div class="goals-section">
             <h3 class="goals-heading">
@@ -109,7 +122,10 @@
 
           <div class="continue-btn">
             <button nbButton status="primary" shape="semi-round" fullWidth (click)="goToNextStep()">
-              Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon>
+              <span *ngIf="parentType === 'profile-complete'"
+                >Continue &nbsp;<fa-icon [icon]="faArrowRight"></fa-icon
+              ></span>
+              <span *ngIf="parentType === 'edit-profile'">Save</span>
             </button>
           </div>
         </div>
