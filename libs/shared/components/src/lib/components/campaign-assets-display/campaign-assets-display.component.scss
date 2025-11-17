@@ -1,7 +1,11 @@
 .carousel {
   @apply com-overflow-hidden com-w-full com-relative com-h-full;
   .promoted-badge {
-    @apply com-absolute com-right-0 com-top-0 com-rounded-md com-bg-blue-100 com-z-30 com-p-0.5 com-text-tYankees-Blue com-text-xs com-leading-none;
+    @apply com-flex com-items-center com-gap-1 com-no-underline com-absolute com-right-0 com-top-0 com-rounded-md com-bg-blue-100 com-z-30 com-p-0.5 com-text-tYankees-Blue com-text-xs com-leading-none;
+
+    fa-icon {
+      @apply com-text-gray-500;
+    }
   }
 
   .container {
@@ -14,7 +18,7 @@
     flex: 0 0 100%; /* Each slide takes full width */
 
     .slider-image {
-      @apply com-w-full com-h-full com-cursor-pointer com-object-contain com-overflow-hidden;
+      @apply com-w-full com-h-full com-cursor-pointer com-object-contain com-overflow-hidden com-rounded-md;
     }
   }
 }

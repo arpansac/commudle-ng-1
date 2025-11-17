@@ -1,5 +1,7 @@
 <div class="carousel" *ngIf="campaign" #campaignImageContainer>
-  <div class="promoted-badge">Promoted</div>
+  <div class="promoted-badge">
+    Promoted<a [routerLink]="['/campaigns/new']" target="_blank"><fa-icon [icon]="faCircleQuestion"></fa-icon></a>
+  </div>
 
   <div
     class="container"
