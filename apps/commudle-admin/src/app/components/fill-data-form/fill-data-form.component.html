@@ -49,6 +49,7 @@
                 [userFormDetails]="dataFormEntity.user_details"
                 [showActionButtons]="false"
                 (submitUserDetailsEvent)="updateUserDetails($event)"
+                (isLoadingEventEmitter)="submitButtonLoading = false"
               ></commudle-user-details-form>
             </nb-card-body>
           </nb-card>

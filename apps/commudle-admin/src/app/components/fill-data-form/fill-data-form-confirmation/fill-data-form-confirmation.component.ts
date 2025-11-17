@@ -178,6 +178,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
       this.speakers = data.data_form_entity_response_groups;
       this.isLoadingSpeakers = false;
+      this.isLoading = false;
     });
   }
 
@@ -187,6 +188,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       this.volunteers = this.volunteers.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.pageInfo = data.page_info;
       this.isLoadingVolunteers = false;
+      this.isLoading = false;
     });
   }
 
@@ -197,6 +199,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.communityLeaders = data.users;
         this.isLoadingCommunityLeaders = false;
+        this.isLoading = false;
       });
   }
 
@@ -206,10 +209,12 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
     this.communityGroupService.pCommunities(this.dataFormEntity.community_group.id, 10).subscribe((data) => {
       this.communities = this.communities.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
       this.isLoadingCommunities = false;
+      this.isLoading = false;
     });
     this.uruService.pGetCommunityGroupLeaders(this.dataFormEntity.community_group.id).subscribe((data) => {
       this.communityGroupLeaders = data.user_roles_users;
       this.isLoadingCommunityGroupLeaders = false;
+      this.isLoading = false;
     });
   }
 }
