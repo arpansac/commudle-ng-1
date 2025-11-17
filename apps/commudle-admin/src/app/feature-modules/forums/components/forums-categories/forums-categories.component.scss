@@ -1,9 +1,9 @@
 .categories-page {
   @apply com-px-6 com-pb-4;
   .categories-header {
-    @apply com-flex com-justify-between com-items-center;
+    @apply com-flex com-justify-between com-items-center com-my-6;
     .categories-title {
-      @apply com-text-2xl com-font-semibold;
+      @apply com-text-2xl com-font-semibold com-m-0;
     }
   }
 

@@ -4,8 +4,8 @@ import { ICommunityChannel } from './community-channel.model';
 // export type IForum = ICommunityChannel;
 
 export interface IForum extends ICommunityChannel {
-  category: IChannelCategory;
+  channel_category: IChannelCategory;
   last_message: string;
-  discussions_count: number;
-  replies_count: number;
+  total_discussions: number;
+  total_replies: number;
 }

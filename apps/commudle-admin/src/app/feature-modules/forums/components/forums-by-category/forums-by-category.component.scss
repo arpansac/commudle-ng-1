@@ -40,11 +40,14 @@
           }
 
           .stats {
-            @apply com-flex com-gap-4;
+            @apply com-flex com-gap-2 com-mb-3;
 
             .discussions,
             .reply {
               @apply com-text-blue-500 com-text-sm com-font-medium;
+            }
+            fa-icon {
+              @apply com-text-[2px];
             }
           }
         }
