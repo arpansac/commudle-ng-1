@@ -15,11 +15,14 @@
 .sidebar {
   @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
   .categories-content {
-    @apply com-p-2;
+    @apply com-p-4;
+    .heading {
+      @apply com-text-Yankees-Blue com-text-sm com-font-semibold com-m-0 com-px-2 com-py-1;
+    }
     a {
       @apply com-no-underline com-text-gray-500;
       .category-item {
-        @apply com-p-2 com-cursor-pointer com-rounded com-transition-colors hover:com-bg-Bright-Gray;
+        @apply com-p-2 com-cursor-pointer com-rounded com-transition-colors hover:com-bg-Bright-Gray hover:com-font-medium;
       }
     }
     .active {

@@ -13,24 +13,24 @@
       @apply com-no-underline;
 
       .forum-card {
-        @apply com-bg-white com-rounded-lg com-shadow-md com-m-0;
+        @apply com-bg-white com-m-0 com-h-36;
+        nb-card-body {
+          @apply com-px-3 com-py-4 com-overflow-y-hidden;
+        }
         .forum-card-header {
           @apply com-flex com-items-center com-gap-3;
           .forum-card-title {
             @apply com-text-base com-font-semibold com-text-Yankees-Blue;
-            fa-icon {
-              @apply com-text-base;
-            }
           }
-          .forum-card-arrow {
-            @apply com-text-lg;
+          fa-icon {
+            @apply com-text-base com-font-normal;
           }
         }
         .forum-card-category {
           @apply com-text-xs com-text-gray-600 com-font-medium;
         }
         .forum-card-description {
-          @apply com-text-xs com-line-clamp-3 com-text-gray-500;
+          @apply com-text-xs com-line-clamp-3 com-text-gray-500 com-m-0;
         }
       }
     }

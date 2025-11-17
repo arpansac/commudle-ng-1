@@ -11,19 +11,17 @@
         [eventName]="sidebarEventName"
         [forWindow]="false"
         [showExpandedButton]="false"
-        heading="Categories"
         [textSize]="ESidebarHeading.MEDIUM"
       >
         <div class="categories-content">
-          <a
-            *ngFor="let category of categories$ | async"
-            [routerLink]="['category', category.slug]"
-            routerLinkActive="active"
-          >
+          <p class="heading">Categories</p>
+          @for (category of categories$ | async; track category.slug) {
+          <a [routerLink]="['category', category.slug]" routerLinkActive="active">
             <div class="category-item">
               {{ category.name }}
             </div>
           </a>
+          }
         </div>
       </commudle-sidebar>
     </div>
