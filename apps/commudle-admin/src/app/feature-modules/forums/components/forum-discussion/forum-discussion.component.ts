@@ -19,7 +19,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   forumId: string;
   discussionId: string;
 
-  discussions: IUserMessage[] = [];
+  userMessages: IUserMessage[] = [];
   pageInfo: IPageInfo;
   isLoading = false;
   staticAssets = staticAssets;
@@ -82,7 +82,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: IPagination<IUserMessage>) => {
         const newDiscussions = data.page.map((item) => item.data);
-        this.discussions = loadMore ? [...this.discussions, ...newDiscussions] : newDiscussions;
+        this.userMessages = loadMore ? [...this.userMessages, ...newDiscussions] : newDiscussions;
         this.pageInfo = data.page_info;
         this.isLoading = false;
       });

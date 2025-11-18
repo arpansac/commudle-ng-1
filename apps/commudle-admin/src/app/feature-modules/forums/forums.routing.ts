@@ -3,6 +3,7 @@ import { ForumsDashboardComponent } from './components/forums-dashboard/forums-d
 import { ForumsCategoriesComponent } from './components/forums-categories/forums-categories.component';
 import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
 import { ForumDiscussionComponent } from './components/forum-discussion/forum-discussion.component';
+import { ForumMessagesComponent } from './components/forum-messages/forum-messages.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'category/:slug/:forumId/:discussionId',
         component: ForumDiscussionComponent,
+      },
+      {
+        path: 'category/:slug/:forumId/:discussionId/messages/:userMessageId',
+        component: ForumMessagesComponent,
       },
     ],
   },

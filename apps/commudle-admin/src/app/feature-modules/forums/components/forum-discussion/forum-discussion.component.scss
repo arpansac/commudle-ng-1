@@ -27,7 +27,12 @@
 
   .discussions-list {
     .discussion-item {
-      @apply com-flex com-gap-4 com-p-4 com-border-b com-border-gray-200;
+      @apply com-flex com-gap-4 com-p-4 com-border-b com-border-gray-200 com-cursor-pointer;
+      @apply hover:com-bg-gray-50 com-transition-colors com-duration-200 com-no-underline com-text-inherit;
+
+      &:hover {
+        @apply com-no-underline com-text-inherit;
+      }
 
       .discussion-avatar {
         img {

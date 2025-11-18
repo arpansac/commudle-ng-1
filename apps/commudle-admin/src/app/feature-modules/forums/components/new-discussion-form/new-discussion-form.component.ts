@@ -17,7 +17,7 @@ export class NewDiscussionFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: NbDialogRef<NewDiscussionFormComponent>,
-    public communityChannelHandlerService: CommunityChannelHandlerService,
+    private communityChannelHandlerService: CommunityChannelHandlerService,
     private toastrService: ToastrService,
   ) {}
 

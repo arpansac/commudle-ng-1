@@ -1,0 +1,93 @@
+.forum-messages-container {
+  @apply com-mx-auto com-p-6;
+
+  .header-section {
+    @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-6;
+
+    .back-button {
+      @apply com-cursor-pointer com-text-Yankees-Blue com-mb-4 com-flex com-items-center com-text-sm;
+    }
+
+    .discussion-header {
+      h2 {
+        @apply com-text-2xl com-font-semibold com-text-Yankees-Blue com-mb-2;
+      }
+
+      .post-meta {
+        @apply com-text-sm com-text-gray-600;
+      }
+    }
+  }
+
+  .main-content {
+    @apply com-flex com-gap-8;
+
+    > div:first-child {
+      @apply com-flex-1;
+
+      .discussion-post {
+        @apply com-p-6;
+
+        .post-content {
+          @apply com-mt-4 com-mb-6;
+
+          commudle-editor {
+            ::ng-deep {
+              p {
+                @apply com-text-gray-500;
+              }
+            }
+          }
+        }
+
+        .post-actions {
+          @apply com-flex com-gap-6 com-pt-4 com-border-gray-200 com-justify-end;
+
+          .action-item {
+            @apply com-flex com-items-center com-gap-2 com-text-gray-400 com-cursor-pointer com-text-sm;
+
+            .count {
+              @apply com-font-medium;
+            }
+          }
+        }
+      }
+
+      .reply-section {
+        @apply com-mb-4;
+        .form {
+          @apply com-border com-border-solid com-border-Bright-Gray com-rounded-md com-mb-6;
+          .header {
+            @apply com-p-4 com-bg-gray-50 com-text-gray-500 com-text-sm com-font-medium com-overflow-hidden;
+          }
+        }
+
+        .reply-form {
+          @apply com-p-0;
+          .reply-textarea {
+            @apply com-w-full com-resize-none com-border-0 com-bg-transparent;
+
+            &:focus {
+              @apply com-outline-none com-border-0 com-shadow-none;
+            }
+          }
+        }
+
+        .reply-actions {
+          @apply com-flex com-gap-3 com-justify-end;
+        }
+      }
+    }
+
+    .sidebar {
+      width: 350px;
+      @apply com-rounded-lg com-p-6 com-h-fit;
+
+      .explore-section {
+        h3 {
+          @apply com-text-lg com-font-semibold com-mb-4;
+        }
+      }
+    }
+  }
+}

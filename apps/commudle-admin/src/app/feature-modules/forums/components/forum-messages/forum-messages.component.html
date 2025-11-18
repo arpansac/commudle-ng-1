@@ -1,0 +1,68 @@
+<div class="forum-messages-container" *ngIf="userMessage">
+  <div class="header-section">
+    <div class="back-button" (click)="backToDiscussions()">
+      <fa-icon [icon]="icons.faArrowLeft"></fa-icon> &nbsp;Back to (Category Name)
+    </div>
+
+    <div class="discussion-header">
+      <h2>{{ userMessage.subject }}</h2>
+      <div class="post-meta">
+        <span>Posted on {{ userMessage.created_at | date : 'MMM d, y, h:mm a' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="">
+      <div class="discussion-post">
+        <app-user-profile-card-large [user]="userMessage.user"></app-user-profile-card-large>
+        <div class="post-content">
+          <commudle-editor [content]="userMessage.content" [editable]="false" class="com-w-full"></commudle-editor>
+        </div>
+        <div class="post-actions">
+          <div class="action-item">
+            <fa-icon [icon]="icons.faThumbsUp"></fa-icon>
+            <span>Like</span>
+            <span class="count">{{ userMessage.flags_count || 0 }}</span>
+          </div>
+          <div class="action-item">
+            <fa-icon [icon]="icons.faEye"></fa-icon>
+            <span>Views</span>
+            <span class="count">{{ userMessage.user_messages?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="reply-section">
+        <form [formGroup]="replyForm" (ngSubmit)="onSubmit()">
+          <div class="form">
+            <div class="header">
+              <span>Replying to {{ userMessage.user?.name }}</span>
+            </div>
+            <div class="reply-form">
+              <textarea
+                placeholder="Be the first to reply!!"
+                formControlName="reply"
+                nbInput
+                fullWidth
+                rows="4"
+                class="reply-textarea"
+              >
+              </textarea>
+            </div>
+          </div>
+
+          <div class="reply-actions">
+            <button type="button" nbButton status="basic" (click)="replyForm.reset()">Cancel</button>
+            <button type="submit" nbButton status="primary" [disabled]="!replyForm.valid">Reply</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="sidebar">
+      <!-- <div class="explore-section">
+        <h3>Explore Top Discussions</h3>
+        Sidebar content will go here
+      </div> -->
+    </div>
+  </div>
+</div>

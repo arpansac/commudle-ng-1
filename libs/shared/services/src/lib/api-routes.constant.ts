@@ -649,6 +649,7 @@ export const API_ROUTES = {
     PUBLIC_TRACK_SLOT_DISCUSSION_MESSAGES: 'api/v2/user_messages/track_slot_discussion_messages',
     PUBLIC_DISCUSSION_CHAT_MESSAGES: 'api/v2/user_messages/public_discussion_chat_messages',
     PUBLIC_COMMUNITY_CHANNEL_DISCUSSION_MESSAGES: 'api/v2/user_messages/public_community_channel_discussion_messages',
+    SHOW_USER_MESSAGE: 'api/v2/user_messages/show_user_message',
   },
 
   USER_MESSAGE_RECEIPTS: {

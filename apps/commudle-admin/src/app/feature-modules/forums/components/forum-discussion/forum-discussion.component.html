@@ -16,7 +16,7 @@
   </div>
 
   <div class="discussions-list">
-    <div *ngIf="discussions.length === 0 && !isLoading" class="empty-state">
+    <div *ngIf="userMessages.length === 0 && !isLoading" class="empty-state">
       <img [src]="staticAssets.message_empty" alt="No discussions" class="empty-image" />
       <h3>No Discussions Available</h3>
       <p>You can create one by clicking the "Start New Discussion" button</p>
@@ -25,28 +25,28 @@
       </button>
     </div>
 
-    <div *ngFor="let discussion of discussions" class="discussion-item">
+    <a *ngFor="let userMessage of userMessages" [routerLink]="['messages', userMessage.id]" class="discussion-item">
       <div class="discussion-avatar">
-        <img [src]="discussion.user?.photo?.i64" [alt]="discussion.user?.name || 'User'" />
+        <img [src]="userMessage.user?.photo?.i64" [alt]="userMessage.user?.name || 'User'" />
       </div>
       <div class="discussion-content">
-        <h3 class="discussion-title">{{ discussion.subject }}</h3>
-        <span class="discussion-description" [title]="discussion.content">{{ discussion.content }}</span>
+        <h3 class="discussion-title">{{ userMessage.subject }}</h3>
+        <span class="discussion-description" [title]="userMessage.content">{{ userMessage.content }}</span>
         <div class="discussion-meta">
-          <span class="posted-date">Posted on {{ discussion.created_at | date : 'MMM d, y, h:mm a' }}</span>
+          <span class="posted-date">Posted on {{ userMessage.created_at | date : 'MMM d, y, h:mm a' }}</span>
         </div>
       </div>
       <div class="discussion-stats">
         <div class="stat-item">
           <fa-icon [icon]="icons.faComment"></fa-icon>
-          <span>{{ discussion.user_messages?.length || 0 }}</span>
+          <span>{{ userMessage.user_messages?.length || 0 }}</span>
         </div>
         <div class="stat-item">
           <fa-icon [icon]="icons.faEye"></fa-icon>
-          <span>{{ discussion.flags_count || 0 }}</span>
+          <span>{{ userMessage.flags_count || 0 }}</span>
         </div>
       </div>
-    </div>
+    </a>
 
     <div class="load-more-section" *ngIf="pageInfo?.has_next_page">
       <button nbButton status="basic" (click)="loadMoreDiscussions()" [disabled]="isLoading" fullWidth>

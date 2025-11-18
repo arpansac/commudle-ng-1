@@ -7,10 +7,13 @@ import { ForumsCategoriesComponent } from './components/forums-categories/forums
 import { ForumFormComponent } from './components/forum-form/forum-form.component';
 import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
 import { ForumDiscussionComponent } from './components/forum-discussion/forum-discussion.component';
+import { ForumMessagesComponent } from './components/forum-messages/forum-messages.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { NewDiscussionFormComponent } from './components/new-discussion-form/new-discussion-form.component';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
+import { EditorModule } from '@commudle/editor';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,7 @@ import { NewDiscussionFormComponent } from './components/new-discussion-form/new
     ForumFormComponent,
     ForumsByCategoryComponent,
     ForumDiscussionComponent,
+    ForumMessagesComponent,
     NewDiscussionFormComponent,
   ],
   imports: [
@@ -27,15 +31,15 @@ import { NewDiscussionFormComponent } from './components/new-discussion-form/new
     ReactiveFormsModule,
     FormsModule,
     FontAwesomeModule,
-
+    MiniUserProfileModule,
     // Standalone Components
     SidebarComponent,
-
     // Nebular
     NbCardModule,
     NbIconModule,
     NbButtonModule,
     NbInputModule,
+    EditorModule,
   ],
 })
 export class ForumsModule {}
