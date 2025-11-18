@@ -48,6 +48,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
       this.forumId = params['forumId'];
       this.discussionId = params['discussionId'];
       this.userMessageId = params['userMessageId'];
+      this.initChannel();
       this.getUserMessages();
     });
   }
@@ -85,5 +86,12 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     }
 
     this.communityChannelHandlerService.sendReply(Number(this.userMessageId), message);
+  }
+
+  private initChannel() {
+    // Initialize channel if context is provided and not already subscribed
+    if (this.discussionId && !this.communityChannelHandlerService.CommunityChannelChatChannel) {
+      this.communityChannelHandlerService.init(parseInt(this.discussionId), 'channels');
+    }
   }
 }

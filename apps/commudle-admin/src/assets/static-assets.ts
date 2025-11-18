@@ -244,6 +244,9 @@ export const staticAssets = {
   // id: 203
   message_empty:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkxPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0913e78822fb31f96bacf5e94d8703df1ad81a33/message_empty.svg',
+
+  folder_empty:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkRPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2dbfa83c67668c9571746d1b9517c40b459312da/Folder_empty.svg',
 };
 
 export const AwsS3Bucket = {

@@ -36,8 +36,6 @@ export class NewDiscussionFormComponent implements OnInit {
   onSubmit(): void {
     if (this.discussionForm.valid) {
       const { discussion, subject } = this.discussionForm.value;
-      console.log('🚀 ~ NewDiscussionFormComponent ~ onSubmit ~ subject:', subject);
-      console.log('🚀 ~ NewDiscussionFormComponent ~ onSubmit ~ discussion:', discussion);
       this.sendMessage(discussion, subject);
       this.closeDialog();
     } else {

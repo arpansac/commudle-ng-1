@@ -6,9 +6,8 @@
     </button>
   </div>
 
-  <div class="forums-grid">
-    @for (category of categories$ | async; track category.slug) {
-    <a [routerLink]="['category', category.slug]">
+  <div class="forums-grid" *ngIf="categories.length > 0">
+    <a *ngFor="let category of categories" [routerLink]="['category', category.slug]">
       <nb-card class="forum-card">
         <nb-card-body>
           <div class="forum-card-header">
@@ -22,6 +21,12 @@
         </nb-card-body>
       </nb-card>
     </a>
-    }
+  </div>
+
+  <div *ngIf="categories.length === 0" class="empty-state">
+    <img [src]="staticAssets.folder_empty" alt="No categories" class="empty-image" />
+    <h3>No Categories Available</h3>
+    <p>You can create one by clicking the "New Topic" button</p>
+    <button nbButton status="primary" (click)="openDialogBox()">+ New Topic</button>
   </div>
 </div>
