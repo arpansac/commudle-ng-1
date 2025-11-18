@@ -18,7 +18,7 @@
     <ul>
       <li *ngFor="let forum of forums" class="forum">
         <div class="forum-item">
-          <a [routerLink]="[forum.discussion_id]" class="forum-content">
+          <a [routerLink]="[forum.id, forum.discussion_id]" class="forum-content">
             <div class="topic-name">
               <span>{{ forum.name }}</span>
             </div>

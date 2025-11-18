@@ -38,6 +38,33 @@ export class DiscussionService {
     );
   }
 
+  getForumsMessages(
+    discussionId: number,
+    {
+      limit,
+      after,
+      before,
+      first,
+      last,
+    }: { limit?: number; after?: string; before?: string; first?: number; last?: number },
+    fromLastRead?: boolean,
+  ): Observable<IPagination<IUserMessage>> {
+    return this.http.get<IPagination<IUserMessage>>(
+      this.baseApiService.getRoute(API_ROUTES.DISCUSSIONS.PUBLIC_FORUM_MESSAGES),
+      {
+        params: {
+          discussion_id: discussionId.toString(),
+          ...(limit && { limit: limit.toString() }),
+          ...(after && { after }),
+          ...(before && { before }),
+          ...(first && { first: first.toString() }),
+          ...(last && { last: last.toString() }),
+          ...(fromLastRead && { from_last_read: fromLastRead.toString() }),
+        },
+      },
+    );
+  }
+
   toggleDiscussionOpen(discussionId: number): Observable<boolean> {
     return this.http.put<boolean>(this.baseApiService.getRoute(API_ROUTES.DISCUSSIONS.TOGGLE_DISCUSSION_OPEN), {
       discussion_id: discussionId,

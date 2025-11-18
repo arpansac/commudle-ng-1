@@ -10,47 +10,48 @@
     </div>
 
     <div class="forum-header" *ngIf="forum">
-      <h1>{{ forum.name }}</h1>
-      <p>{{ forum.description }}</p>
-    </div>
-
-    <div class="search-sort-section">
-      <div class="sort-dropdown">
-        <select [(ngModel)]="sortBy" class="sort-select">
-          <option>Most Recent</option>
-          <option>Most Popular</option>
-          <option>Oldest</option>
-        </select>
-      </div>
-      <div class="search-box">
-        <fa-icon [icon]="icons.faSearch" class="search-icon"></fa-icon>
-        <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="onSearch()" class="search-input" />
-      </div>
+      <h2>{{ forum.name }}</h2>
+      <p [title]="">{{ forum.description }}</p>
     </div>
   </div>
 
   <div class="discussions-list">
+    <div *ngIf="discussions.length === 0 && !isLoading" class="empty-state">
+      <img [src]="staticAssets.message_empty" alt="No discussions" class="empty-image" />
+      <h3>No Discussions Available</h3>
+      <p>You can create one by clicking the "Start New Discussion" button</p>
+      <button nbButton status="primary" (click)="startNewDiscussion()" shape="semi-round">
+        + Start New Discussion
+      </button>
+    </div>
+
     <div *ngFor="let discussion of discussions" class="discussion-item">
       <div class="discussion-avatar">
-        <img [src]="discussion.author.avatar" [alt]="discussion.author.name" />
+        <img [src]="discussion.user?.photo?.i64" [alt]="discussion.user?.name || 'User'" />
       </div>
       <div class="discussion-content">
-        <h3 class="discussion-title">{{ discussion.title }}</h3>
-        <p class="discussion-description">{{ discussion.description }}</p>
+        <h3 class="discussion-title">{{ discussion.subject }}</h3>
+        <span class="discussion-description" [title]="discussion.content">{{ discussion.content }}</span>
         <div class="discussion-meta">
-          <span class="posted-date">Posted on {{ discussion.postedOn }}</span>
+          <span class="posted-date">Posted on {{ discussion.created_at | date : 'MMM d, y, h:mm a' }}</span>
         </div>
       </div>
       <div class="discussion-stats">
         <div class="stat-item">
           <fa-icon [icon]="icons.faComment"></fa-icon>
-          <span>{{ discussion.replies }}</span>
+          <span>{{ discussion.user_messages?.length || 0 }}</span>
         </div>
         <div class="stat-item">
           <fa-icon [icon]="icons.faEye"></fa-icon>
-          <span>{{ discussion.views }}</span>
+          <span>{{ discussion.flags_count || 0 }}</span>
         </div>
       </div>
+    </div>
+
+    <div class="load-more-section" *ngIf="pageInfo?.has_next_page">
+      <button nbButton status="basic" (click)="loadMoreDiscussions()" [disabled]="isLoading" fullWidth>
+        {{ isLoading ? 'Loading...' : 'Load More Discussions' }}
+      </button>
     </div>
   </div>
 </div>

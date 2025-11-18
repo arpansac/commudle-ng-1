@@ -15,6 +15,7 @@ export interface IUserMessage {
   edited: boolean;
   pinned: boolean;
   read: boolean;
+  subject?: string;
 }
 
 export interface IUserMessages {

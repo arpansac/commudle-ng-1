@@ -577,6 +577,7 @@ export const API_ROUTES = {
     PUBLIC_GET_OR_CREATE_FOR_COMMUNITY_CHANNEL_CHAT:
       'api/v2/discussions/public_get_or_create_for_community_channel_chat',
     PUBLIC_COMMUNITY_BUILD_MESSAGES: 'api/v2/discussions/public_community_build_messages',
+    PUBLIC_FORUM_MESSAGES: 'api/v2/discussions/public_forum_messages',
     TOGGLE_DISCUSSION_OPEN: 'api/v2/discussions/toggle_discussion_open',
 
     COMMUNITY_CHANNEL: {

@@ -36,11 +36,11 @@ type Message = {
 export class CommunityChannelChatChannel extends Channel<Params, Message> {
   static identifier = 'ApplicationCable::V2::Channels::DiscussionCommunityChannelChannel';
 
-  async add(content: string) {
+  async add(content: string, subject?: string) {
     return this.perform('receive', {
       perform: ACTIONS.ADD,
       data: {
-        user_message: { content },
+        user_message: { content, subject },
       },
     });
   }

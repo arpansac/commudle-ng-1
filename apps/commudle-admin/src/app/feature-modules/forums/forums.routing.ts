@@ -18,7 +18,7 @@ const routes: Routes = [
         component: ForumsByCategoryComponent,
       },
       {
-        path: 'category/:slug/:discussionId',
+        path: 'category/:slug/:forumId/:discussionId',
         component: ForumDiscussionComponent,
       },
     ],

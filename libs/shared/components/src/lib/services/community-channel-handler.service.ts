@@ -87,6 +87,10 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.add(content);
   }
 
+  sendForumMessage(content: string, subject?: string) {
+    this.CommunityChannelChatChannel.add(content, subject);
+  }
+
   sendReply(parentId: number, content: string) {
     if (this.permittedActions.value.includes('blocked')) {
       return;

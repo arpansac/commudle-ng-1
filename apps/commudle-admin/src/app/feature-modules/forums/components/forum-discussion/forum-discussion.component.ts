@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IForum } from '@commudle/shared-models';
-import { ForumService } from '@commudle/shared-services';
-import { faArrowLeft, faSearch, faComment, faEye } from '@fortawesome/free-solid-svg-icons';
+import { IForum, IUserMessage, IPagination, IPageInfo } from '@commudle/shared-models';
+import { ForumService, DiscussionService } from '@commudle/shared-services';
+import { faArrowLeft, faComment, faEye } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-forum-discussion',
@@ -15,28 +16,17 @@ import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussio
 })
 export class ForumDiscussionComponent implements OnInit, OnDestroy {
   forum: IForum;
+  forumId: string;
   discussionId: string;
-  searchTerm = '';
-  sortBy = 'Most Recent';
-  discussions = [
-    {
-      id: 1,
-      title: 'Managing Operations for DevFest and Google Cloud Community Day with 500-1500 attendees',
-      description:
-        'Create a Cloud Learning Log to keep track of your personal progress, connect with others who share your goal, and get feedback from your peers & mentors here.',
-      author: {
-        name: 'John Doe',
-        avatar: 'https://via.placeholder.com/40',
-      },
-      postedOn: 'Nov 10, 2024, 12:30 PM',
-      replies: 32,
-      views: 96,
-    },
-  ];
+
+  discussions: IUserMessage[] = [];
+  pageInfo: IPageInfo;
+  isLoading = false;
+  staticAssets = staticAssets;
   private readonly destroy$ = new Subject<void>();
   readonly icons = {
     faArrowLeft,
-    faSearch,
+
     faComment,
     faEye,
   };
@@ -46,12 +36,15 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly forumService: ForumService,
     private readonly dialogService: NbDialogService,
+    private readonly discussionService: DiscussionService,
   ) {}
 
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.forumId = params['forumId'];
       this.discussionId = params['discussionId'];
       this.loadForum();
+      this.loadDiscussions();
     });
   }
 
@@ -61,23 +54,45 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   }
 
   loadForum(): void {
-    this.forum = {
-      id: 1,
-      name: 'User Authentication',
-      description:
-        'Create a Cloud Learning Log to keep track of your personal progress, connect with others who share your goal, and get feedback from your peers & mentors here.',
-    } as IForum;
+    this.forumService
+      .showForum(parseInt(this.forumId))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((forum: IForum) => {
+        this.forum = forum;
+      });
   }
 
   startNewDiscussion(): void {
-    this.dialogService.open(NewDiscussionFormComponent);
+    this.dialogService.open(NewDiscussionFormComponent, {
+      context: {
+        discussionId: parseInt(this.discussionId),
+        discussionParent: 'channels',
+      },
+    });
   }
 
-  onSearch(): void {
-    // Filter discussions based on search term
+  loadDiscussions(loadMore = false): void {
+    if (loadMore && (!this.pageInfo.has_next_page || this.isLoading)) return;
+
+    this.isLoading = true;
+    const params = { limit: 10, ...(loadMore && { after: this.pageInfo.end_cursor }) };
+
+    this.discussionService
+      .getForumsMessages(parseInt(this.discussionId), params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: IPagination<IUserMessage>) => {
+        const newDiscussions = data.page.map((item) => item.data);
+        this.discussions = loadMore ? [...this.discussions, ...newDiscussions] : newDiscussions;
+        this.pageInfo = data.page_info;
+        this.isLoading = false;
+      });
+  }
+
+  loadMoreDiscussions(): void {
+    this.loadDiscussions(true);
   }
 
   backToCategory(): void {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }

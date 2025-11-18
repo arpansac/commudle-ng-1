@@ -15,34 +15,12 @@
     .forum-header {
       @apply com-mb-6;
 
-      h1 {
+      h2 {
         @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-2;
       }
 
       p {
-        @apply com-text-gray-600 com-text-base;
-      }
-    }
-
-    .search-sort-section {
-      @apply com-flex com-justify-between com-items-center com-gap-4;
-
-      .sort-dropdown {
-        .sort-select {
-          @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded com-bg-white;
-        }
-      }
-
-      .search-box {
-        @apply com-relative com-flex com-items-center;
-
-        .search-icon {
-          @apply com-absolute com-left-3 com-text-gray-400;
-        }
-
-        .search-input {
-          @apply com-pl-10 com-pr-4 com-py-2 com-border com-border-gray-300 com-rounded com-w-80;
-        }
+        @apply com-text-gray-500 com-text-sm com-m-0 com-line-clamp-2;
       }
     }
   }
@@ -61,22 +39,22 @@
         @apply com-flex-1;
 
         .discussion-title {
-          @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-mb-2;
+          @apply com-text-base com-font-semibold com-text-Yankees-Blue com-m-0;
         }
 
         .discussion-description {
-          @apply com-text-gray-600 com-text-sm com-mb-2;
+          @apply com-text-gray-500 com-text-sm com-font-normal com-my-2 com-line-clamp-2;
         }
 
         .discussion-meta {
           .posted-date {
-            @apply com-text-gray-500 com-text-xs;
+            @apply com-text-gray-600 com-text-sm com-font-medium;
           }
         }
       }
 
       .discussion-stats {
-        @apply com-flex com-flex-col com-gap-2 com-items-end;
+        @apply com-flex com-gap-2 com-items-center;
 
         .stat-item {
           @apply com-flex com-items-center com-gap-1 com-text-gray-500 com-text-sm;
@@ -86,6 +64,38 @@
           }
         }
       }
+    }
+
+    .discussion-item:not(:last-child) {
+      @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    }
+  }
+
+  .empty-state {
+    @apply com-text-center com-py-16;
+
+    .empty-image {
+      @apply com-w-64 com-h-64 com-mx-auto com-mb-6;
+    }
+
+    h3 {
+      @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-mb-2;
+    }
+
+    p {
+      @apply com-text-gray-600 com-mb-6;
+    }
+
+    button {
+      @apply com-px-6 com-py-3;
+    }
+  }
+
+  .load-more-section {
+    @apply com-mt-6 com-p-4;
+
+    button {
+      @apply com-py-3;
     }
   }
 }
