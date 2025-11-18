@@ -43,9 +43,11 @@
             </div>
             }
           </a>
-          <button class="edit-button" (click)="editForum(forum)" nbButton status="basic" size="small">
-            <fa-icon [icon]="icons.faEdit"></fa-icon>
-          </button>
+          <div class="action-buttons">
+            <button class="edit-button" (click)="editForum(forum)" nbButton status="basic" size="small" shape="round">
+              <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit
+            </button>
+          </div>
         </div>
       </li>
     </ul>

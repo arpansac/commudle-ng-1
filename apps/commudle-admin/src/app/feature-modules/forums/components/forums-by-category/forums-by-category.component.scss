@@ -55,12 +55,12 @@
               }
             }
           }
-
-          .edit-button {
-            @apply com-opacity-0 com-transition-opacity com-duration-200 com-ml-4;
+          .action-buttons {
+            @apply com-w-28;
+            @apply com-opacity-0 com-transition-opacity com-duration-200;
           }
 
-          &:hover .edit-button {
+          &:hover .action-buttons {
             @apply com-opacity-100;
           }
         }
