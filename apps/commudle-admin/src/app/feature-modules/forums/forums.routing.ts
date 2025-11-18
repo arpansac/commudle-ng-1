@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ForumsDashboardComponent } from './components/forums-dashboard/forums-dashboard.component';
 import { ForumsCategoriesComponent } from './components/forums-categories/forums-categories.component';
 import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
+import { ForumDiscussionComponent } from './components/forum-discussion/forum-discussion.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: 'category/:slug',
         component: ForumsByCategoryComponent,
+      },
+      {
+        path: 'category/:slug/:discussionId',
+        component: ForumDiscussionComponent,
       },
     ],
   },

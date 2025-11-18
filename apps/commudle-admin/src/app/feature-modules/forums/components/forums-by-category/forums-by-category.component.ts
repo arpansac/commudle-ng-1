@@ -4,7 +4,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, switchMap, filter } from 'rxjs/operators';
 import { IForum, EDiscussionType, IChannelCategory } from '@commudle/shared-models';
 import { ForumService } from '@commudle/shared-services';
-import { faArrowLeft, faCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCircle, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { NbDialogService } from '@commudle/theme';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
@@ -22,6 +22,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     faPlus,
     faArrowLeft,
     faCircle,
+    faEdit,
   };
 
   constructor(
@@ -49,15 +50,22 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
         this.forumCategory = categoryResponse;
       });
 
-    // Listen for new forums added to store
+    // Listen for forums changes in store
     this.forumsStore.forums$.pipe(takeUntil(this.destroy$)).subscribe((allForums) => {
       if (this.forumCategory) {
-        const newForums = allForums.filter(
-          (forum) =>
-            forum.channel_category.slug === this.forumCategory.slug &&
-            !this.forums.some((existingForum) => existingForum.id === forum.id),
+        const categoryForums = allForums.filter((forum) => forum.channel_category.slug === this.forumCategory.slug);
+
+        // Update existing forums and add new ones
+        const updatedForums = this.forums.map((existingForum) => {
+          const updatedForum = categoryForums.find((f) => f.id === existingForum.id);
+          return updatedForum || existingForum;
+        });
+
+        const newForums = categoryForums.filter(
+          (forum) => !this.forums.some((existingForum) => existingForum.id === forum.id),
         );
-        this.forums = [...this.forums, ...newForums];
+
+        this.forums = [...updatedForums, ...newForums];
       }
     });
   }
@@ -79,7 +87,15 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
-  editForum(forum) {}
+  editForum(forum: IForum): void {
+    this.dialogService.open(ForumFormComponent, {
+      context: {
+        displayType: EDiscussionType.FORUM,
+        categoryName: this.forumCategory.name,
+        forumId: forum.id,
+      },
+    });
+  }
 
   deleteForum(forum) {}
 }

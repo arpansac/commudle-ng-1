@@ -1,0 +1,91 @@
+.forum-discussion {
+  @apply com-p-6;
+
+  .header-section {
+    @apply com-mb-8;
+
+    .back-new-discussion {
+      @apply com-flex com-justify-between com-items-center com-mb-6;
+
+      .back-button {
+        @apply com-cursor-pointer com-text-black;
+      }
+    }
+
+    .forum-header {
+      @apply com-mb-6;
+
+      h1 {
+        @apply com-text-Yankees-Blue com-text-2xl com-font-semibold com-mb-2;
+      }
+
+      p {
+        @apply com-text-gray-600 com-text-base;
+      }
+    }
+
+    .search-sort-section {
+      @apply com-flex com-justify-between com-items-center com-gap-4;
+
+      .sort-dropdown {
+        .sort-select {
+          @apply com-px-3 com-py-2 com-border com-border-gray-300 com-rounded com-bg-white;
+        }
+      }
+
+      .search-box {
+        @apply com-relative com-flex com-items-center;
+
+        .search-icon {
+          @apply com-absolute com-left-3 com-text-gray-400;
+        }
+
+        .search-input {
+          @apply com-pl-10 com-pr-4 com-py-2 com-border com-border-gray-300 com-rounded com-w-80;
+        }
+      }
+    }
+  }
+
+  .discussions-list {
+    .discussion-item {
+      @apply com-flex com-gap-4 com-p-4 com-border-b com-border-gray-200;
+
+      .discussion-avatar {
+        img {
+          @apply com-w-10 com-h-10 com-rounded-full;
+        }
+      }
+
+      .discussion-content {
+        @apply com-flex-1;
+
+        .discussion-title {
+          @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-mb-2;
+        }
+
+        .discussion-description {
+          @apply com-text-gray-600 com-text-sm com-mb-2;
+        }
+
+        .discussion-meta {
+          .posted-date {
+            @apply com-text-gray-500 com-text-xs;
+          }
+        }
+      }
+
+      .discussion-stats {
+        @apply com-flex com-flex-col com-gap-2 com-items-end;
+
+        .stat-item {
+          @apply com-flex com-items-center com-gap-1 com-text-gray-500 com-text-sm;
+
+          fa-icon {
+            @apply com-text-xs;
+          }
+        }
+      }
+    }
+  }
+}

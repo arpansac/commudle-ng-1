@@ -56,7 +56,6 @@ export class ForumsStore {
         this.forums.next(forums);
         this.toastrService.successDialog('Forum updated successfully!');
       },
-      error: () => this.toastrService.errorDialog('Failed to update forum'),
     });
   }
 

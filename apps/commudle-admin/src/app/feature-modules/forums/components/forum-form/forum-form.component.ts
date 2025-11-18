@@ -40,7 +40,12 @@ export class ForumFormComponent implements OnInit {
     if (this.forumId) {
       this.forumService.showForum(this.forumId).subscribe({
         next: (data: IForum) => {
-          // this.forumsStore.setSelectedForum(data);
+          this.topicForm.patchValue({
+            name: data.name,
+            description: data.description,
+            is_private: data.is_private,
+            is_readonly: data.is_readonly,
+          });
         },
       });
     }

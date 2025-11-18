@@ -44,7 +44,11 @@ export class ForumService {
 
   updateForum(forum: IForum, forumId: number): Observable<IForum> {
     const params = new HttpParams().set('community_channel_id', forumId);
-    return this.http.put<IForum>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.UPDATE), forum, { params });
+    return this.http.put<IForum>(
+      this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.UPDATE),
+      { community_channel: forum },
+      { params },
+    );
   }
 
   getCategories(parentId: number | string, parentType: EDbModels): Observable<IChannelCategory[]> {

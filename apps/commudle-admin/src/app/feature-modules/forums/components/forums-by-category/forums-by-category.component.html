@@ -17,29 +17,36 @@
 
     <ul>
       <li *ngFor="let forum of forums" class="forum">
-        <a [routerLink]="[forum.discussion_id]">
-          <div class="topic-name">
-            <span>{{ forum.name }}</span>
-          </div>
-          <div class="description-last-message">
-            <span class="description" *ngIf="forum.description">{{ forum.description }}</span>
-            <span class="last-message" *ngIf="forum.last_message">
-              {{ forum.last_message }}
-            </span>
-          </div>
-          @if (forum.total_discussions || forum.total_replies ) {
-          <div class="stats">
-            @if (forum.total_discussions ) {
-            <span class="discussions">
-              {{ forum.total_discussions }} {{ forum.total_discussions === 1 ? 'Discussion' : 'Discussions' }}
-            </span>
-            } @if (forum.total_replies) {
-            <fa-icon [icon]="icons.faCircle"></fa-icon>
-            <span class="reply"> {{ forum.total_replies }} {{ forum.total_replies === 1 ? 'Reply' : 'Replies' }} </span>
+        <div class="forum-item">
+          <a [routerLink]="[forum.discussion_id]" class="forum-content">
+            <div class="topic-name">
+              <span>{{ forum.name }}</span>
+            </div>
+            <div class="description-last-message">
+              <span class="description" *ngIf="forum.description">{{ forum.description }}</span>
+              <span class="last-message" *ngIf="forum.last_message">
+                {{ forum.last_message }}
+              </span>
+            </div>
+            @if (forum.total_discussions || forum.total_replies ) {
+            <div class="stats">
+              @if (forum.total_discussions ) {
+              <span class="discussions">
+                {{ forum.total_discussions }} {{ forum.total_discussions === 1 ? 'Discussion' : 'Discussions' }}
+              </span>
+              } @if (forum.total_replies) {
+              <fa-icon [icon]="icons.faCircle"></fa-icon>
+              <span class="reply">
+                {{ forum.total_replies }} {{ forum.total_replies === 1 ? 'Reply' : 'Replies' }}
+              </span>
+              }
+            </div>
             }
-          </div>
-          }
-        </a>
+          </a>
+          <button class="edit-button" (click)="editForum(forum)" nbButton status="basic" size="small">
+            <fa-icon [icon]="icons.faEdit"></fa-icon>
+          </button>
+        </div>
       </li>
     </ul>
   </div>

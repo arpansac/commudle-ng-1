@@ -6,16 +6,26 @@ import { NbButtonModule, NbCardModule, NbIconModule, NbInputModule } from '@comm
 import { ForumsCategoriesComponent } from './components/forums-categories/forums-categories.component';
 import { ForumFormComponent } from './components/forum-form/forum-form.component';
 import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ForumDiscussionComponent } from './components/forum-discussion/forum-discussion.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
+import { NewDiscussionFormComponent } from './components/new-discussion-form/new-discussion-form.component';
 
 @NgModule({
-  declarations: [ForumsDashboardComponent, ForumsCategoriesComponent, ForumFormComponent, ForumsByCategoryComponent],
+  declarations: [
+    ForumsDashboardComponent,
+    ForumsCategoriesComponent,
+    ForumFormComponent,
+    ForumsByCategoryComponent,
+    ForumDiscussionComponent,
+    NewDiscussionFormComponent,
+  ],
   imports: [
     CommonModule,
     ForumsRoutes,
     ReactiveFormsModule,
+    FormsModule,
     FontAwesomeModule,
 
     // Standalone Components

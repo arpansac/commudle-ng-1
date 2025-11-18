@@ -1,0 +1,41 @@
+nb-card {
+  @apply com-w-full md:com-w-[40dvw] com-max-h-90dvh;
+}
+nb-card-header {
+  @apply com-flex com-justify-between com-items-center;
+  span {
+    @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+  }
+}
+
+.form-group {
+  @apply com-mb-6;
+
+  label {
+    @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+
+    .required {
+      @apply com-text-red-500;
+    }
+  }
+
+  input,
+  textarea {
+    @apply com-w-full com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
+    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-blue-500 focus:com-border-transparent;
+
+    &::placeholder {
+      @apply com-text-gray-400;
+    }
+  }
+
+  textarea {
+    @apply com-resize-none;
+  }
+}
+
+.form-actions {
+  button {
+    @apply com-text-base com-font-medium;
+  }
+}
