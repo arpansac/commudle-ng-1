@@ -8,6 +8,7 @@ import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-s
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { CommunityChannelHandlerService } from '@commudle/shared-components';
 
 @Component({
   selector: 'commudle-forum-discussion',
@@ -33,16 +34,19 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly dialogService: NbDialogService,
     private readonly discussionService: DiscussionService,
+    private readonly communityChannelHandlerService: CommunityChannelHandlerService,
   ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {
       this.forum = data.forum;
       this.loadDiscussions();
+      this.initializeRealTimeUpdates();
     });
   }
 
   ngOnDestroy(): void {
+    this.communityChannelHandlerService.destroy();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -51,7 +55,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     this.dialogService.open(NewDiscussionFormComponent, {
       context: {
         discussionId: this.forum.discussion_id,
-        discussionParent: 'channels',
+        discussionParent: 'forums',
       },
     });
   }
@@ -71,6 +75,17 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
         this.pageInfo = data.page_info;
         this.isLoading = false;
       });
+  }
+
+  private initializeRealTimeUpdates(): void {
+    this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
+      if (messages.length > 0) {
+        const newMessage = messages[0].data;
+        if (!this.userMessages.find((msg) => msg.id === newMessage.id)) {
+          this.userMessages = [newMessage, ...this.userMessages];
+        }
+      }
+    });
   }
 
   loadMoreDiscussions(): void {
