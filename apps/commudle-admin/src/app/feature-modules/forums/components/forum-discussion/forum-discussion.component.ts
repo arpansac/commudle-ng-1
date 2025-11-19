@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IForum, IUserMessage, IPagination, IPageInfo } from '@commudle/shared-models';
-import { ForumService, DiscussionService } from '@commudle/shared-services';
+import { DiscussionService } from '@commudle/shared-services';
 import { faArrowLeft, faComment, faEye } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
@@ -16,9 +16,6 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 })
 export class ForumDiscussionComponent implements OnInit, OnDestroy {
   forum: IForum;
-  forumId: string;
-  discussionId: string;
-
   userMessages: IUserMessage[] = [];
   pageInfo: IPageInfo;
   isLoading = false;
@@ -34,16 +31,13 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly forumService: ForumService,
     private readonly dialogService: NbDialogService,
     private readonly discussionService: DiscussionService,
   ) {}
 
   ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.forumId = params['forumId'];
-      this.discussionId = params['discussionId'];
-      this.loadForum();
+    this.route.data.subscribe((data) => {
+      this.forum = data.forum;
       this.loadDiscussions();
     });
   }
@@ -53,19 +47,10 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadForum(): void {
-    this.forumService
-      .showForum(parseInt(this.forumId))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((forum: IForum) => {
-        this.forum = forum;
-      });
-  }
-
   startNewDiscussion(): void {
     this.dialogService.open(NewDiscussionFormComponent, {
       context: {
-        discussionId: parseInt(this.discussionId),
+        discussionId: this.forum.discussion_id,
         discussionParent: 'channels',
       },
     });
@@ -78,7 +63,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     const params = { limit: 10, ...(loadMore && { after: this.pageInfo.end_cursor }) };
 
     this.discussionService
-      .getForumsMessages(parseInt(this.discussionId), params)
+      .getForumsMessages(this.forum.discussion_id, params)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: IPagination<IUserMessage>) => {
         const newDiscussions = data.page.map((item) => item.data);
@@ -93,6 +78,6 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   }
 
   backToCategory(): void {
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

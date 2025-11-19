@@ -4,6 +4,7 @@ import { ForumsCategoriesComponent } from './components/forums-categories/forums
 import { ForumsByCategoryComponent } from './components/forums-by-category/forums-by-category.component';
 import { ForumDiscussionComponent } from './components/forum-discussion/forum-discussion.component';
 import { ForumMessagesComponent } from './components/forum-messages/forum-messages.component';
+import { ForumDiscussionResolver } from './resolvers/forum-discussion.resolver';
 
 const routes: Routes = [
   {
@@ -15,15 +16,18 @@ const routes: Routes = [
         component: ForumsCategoriesComponent,
       },
       {
-        path: 'category/:slug',
+        path: ':category_slug',
         component: ForumsByCategoryComponent,
       },
       {
-        path: 'category/:slug/:forumId/:discussionId',
+        path: ':category_slug/:topic_slug',
         component: ForumDiscussionComponent,
+        resolve: {
+          forum: ForumDiscussionResolver,
+        },
       },
       {
-        path: 'category/:slug/:forumId/:discussionId/messages/:userMessageId',
+        path: ':category_slug/:topic_slug/:user_message_slug',
         component: ForumMessagesComponent,
       },
     ],

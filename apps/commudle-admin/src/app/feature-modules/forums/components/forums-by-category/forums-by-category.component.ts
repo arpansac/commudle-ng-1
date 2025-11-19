@@ -4,7 +4,7 @@ import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, switchMap, filter } from 'rxjs/operators';
 import { IForum, EDiscussionType, IChannelCategory } from '@commudle/shared-models';
 import { ForumService } from '@commudle/shared-services';
-import { faArrowLeft, faCircle, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCircle, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { NbDialogService } from '@commudle/theme';
 import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
@@ -23,6 +23,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     faArrowLeft,
     faCircle,
     faEdit,
+    faTrash,
   };
 
   constructor(
@@ -40,8 +41,8 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
         filter(([parentId, parentType]) => !!parentId && !!parentType),
         switchMap(([params, parentId, parentType]) =>
           combineLatest([
-            this.forumService.getForumsByCategory(parentId, parentType, params['slug'], EDiscussionType.FORUM),
-            this.forumService.showCategory(params['slug']),
+            this.forumService.getForumsByCategory(parentId, parentType, params['category_slug'], EDiscussionType.FORUM),
+            this.forumService.showCategory(params['category_slug']),
           ]),
         ),
       )
@@ -84,7 +85,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     });
   }
   backButton(): void {
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   editForum(forum: IForum): void {

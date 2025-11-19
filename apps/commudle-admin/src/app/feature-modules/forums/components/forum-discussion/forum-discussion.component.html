@@ -25,7 +25,7 @@
       </button>
     </div>
 
-    <a *ngFor="let userMessage of userMessages" [routerLink]="['messages', userMessage.id]" class="discussion-item">
+    <a *ngFor="let userMessage of userMessages" [routerLink]="[userMessage.id]" class="discussion-item">
       <div class="discussion-avatar">
         <img [src]="userMessage.user?.photo?.i64" [alt]="userMessage.user?.name || 'User'" />
       </div>
@@ -39,7 +39,7 @@
       <div class="discussion-stats">
         <div class="stat-item">
           <fa-icon [icon]="icons.faComment"></fa-icon>
-          <span>{{ userMessage.user_messages?.length || 0 }}</span>
+          <span>{{ userMessage.replies_count || 0 }}</span>
         </div>
         <div class="stat-item">
           <fa-icon [icon]="icons.faEye"></fa-icon>

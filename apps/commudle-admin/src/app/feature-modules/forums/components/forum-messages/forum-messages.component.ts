@@ -14,9 +14,7 @@ import { ToastrService } from '@commudle/shared-services';
   styleUrls: ['./forum-messages.component.scss'],
 })
 export class ForumMessagesComponent implements OnInit, OnDestroy {
-  slug: string;
-  forumId: string;
-  discussionId: string;
+  categorySlug: string;
   userMessageId: string;
   userMessage: IUserMessage;
   replyForm: FormGroup;
@@ -36,19 +34,16 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     private readonly fb: FormBuilder,
     private readonly communityChannelHandlerService: CommunityChannelHandlerService,
     private readonly toastrService: ToastrService,
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.replyForm = this.fb.group({
       reply: ['', Validators.required],
     });
+  }
 
+  ngOnInit(): void {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.slug = params['slug'];
-      this.forumId = params['forumId'];
-      this.discussionId = params['discussionId'];
-      this.userMessageId = params['userMessageId'];
-      this.initChannel();
+      this.categorySlug = params['category_slug'];
+      this.userMessageId = params['user_message_slug'];
       this.getUserMessages();
     });
   }
@@ -65,7 +60,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
   }
 
   backToDiscussions() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 
   onSubmit(): void {
@@ -86,12 +81,5 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     }
 
     this.communityChannelHandlerService.sendReply(Number(this.userMessageId), message);
-  }
-
-  private initChannel() {
-    // Initialize channel if context is provided and not already subscribed
-    if (this.discussionId && !this.communityChannelHandlerService.CommunityChannelChatChannel) {
-      this.communityChannelHandlerService.init(parseInt(this.discussionId), 'channels');
-    }
   }
 }

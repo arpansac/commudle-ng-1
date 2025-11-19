@@ -16,6 +16,7 @@ export interface IUserMessage {
   pinned: boolean;
   read: boolean;
   subject?: string;
+  replies_count?: number;
 }
 
 export interface IUserMessages {

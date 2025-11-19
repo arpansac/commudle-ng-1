@@ -56,8 +56,8 @@
             }
           }
           .action-buttons {
-            @apply com-w-28;
-            @apply com-opacity-0 com-transition-opacity com-duration-200;
+            @apply com-w-max;
+            @apply com-opacity-0 com-transition-opacity com-duration-200 com-flex com-gap-2;
           }
 
           &:hover .action-buttons {

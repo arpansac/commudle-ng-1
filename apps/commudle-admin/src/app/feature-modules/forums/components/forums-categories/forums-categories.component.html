@@ -7,7 +7,7 @@
   </div>
 
   <div class="forums-grid" *ngIf="categories.length > 0">
-    <a *ngFor="let category of categories" [routerLink]="['category', category.slug]">
+    <a *ngFor="let category of categories" [routerLink]="[category.slug]">
       <nb-card class="forum-card">
         <nb-card-body>
           <div class="forum-card-header">

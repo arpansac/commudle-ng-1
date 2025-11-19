@@ -18,7 +18,7 @@
     <ul>
       <li *ngFor="let forum of forums" class="forum">
         <div class="forum-item">
-          <a [routerLink]="[forum.id, forum.discussion_id]" class="forum-content">
+          <a [routerLink]="[forum.id]" class="forum-content">
             <div class="topic-name">
               <span>{{ forum.name }}</span>
             </div>
@@ -46,6 +46,17 @@
           <div class="action-buttons">
             <button class="edit-button" (click)="editForum(forum)" nbButton status="basic" size="small" shape="round">
               <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit
+            </button>
+
+            <button
+              class="delete-button"
+              (click)="deleteForum(forum)"
+              nbButton
+              status="basic"
+              size="small"
+              shape="round"
+            >
+              <fa-icon [icon]="icons.faTrash"></fa-icon>&nbsp; Delete
             </button>
           </div>
         </div>
