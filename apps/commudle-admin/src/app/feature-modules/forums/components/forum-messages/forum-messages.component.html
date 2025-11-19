@@ -32,6 +32,7 @@
           </div> -->
         </div>
       </div>
+
       <div class="reply-section">
         <form [formGroup]="replyForm" (ngSubmit)="onSubmit()">
           <div class="form">
@@ -52,10 +53,30 @@
           </div>
 
           <div class="reply-actions">
-            <button type="button" nbButton status="basic" (click)="replyForm.reset()">Cancel</button>
+            <button type="button" nbButton status="primary" outline (click)="replyForm.reset()">Cancel</button>
             <button type="submit" nbButton status="primary" [disabled]="!replyForm.valid">Reply</button>
           </div>
         </form>
+
+        <div class="replies-section" *ngIf="userMessage.user_messages && userMessage.user_messages.length > 0">
+          <h3>Replies</h3>
+          <div *ngFor="let reply of userMessage.user_messages" class="reply-item">
+            <div class="reply-header">
+              <app-user-profile-card-medium [user]="reply.user"></app-user-profile-card-medium>
+              <span class="reply-date">Posted on {{ reply.created_at | date : 'MMM d, y, h:mm a' }}</span>
+            </div>
+            <div class="reply-content">
+              <commudle-editor [content]="reply.content" [editable]="false" class="com-w-full"></commudle-editor>
+            </div>
+            <div class="reply-actions">
+              <commudle-vote
+                [icon]="'thumb-up-with-text'"
+                [votableId]="reply.id"
+                votableType="UserMessage"
+              ></commudle-vote>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="sidebar">

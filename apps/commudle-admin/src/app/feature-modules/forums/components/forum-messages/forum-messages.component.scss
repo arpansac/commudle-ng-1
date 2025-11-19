@@ -53,6 +53,42 @@
         }
       }
 
+      .replies-section {
+        @apply com-mt-8;
+
+        h3 {
+          @apply com-text-xl com-font-semibold com-mb-6 com-text-Yankees-Blue;
+        }
+
+        .reply-item {
+          @apply com-rounded-lg com-p-6 com-shadow-sm com-border com-mb-4 com-border-Bright-Gray com-border-solid;
+
+          .reply-header {
+            @apply com-flex com-justify-between com-items-start com-mb-4;
+
+            .reply-date {
+              @apply com-text-sm com-text-gray-500 com-font-medium;
+            }
+          }
+
+          .reply-content {
+            @apply com-mb-4;
+
+            commudle-editor {
+              ::ng-deep {
+                p {
+                  @apply com-text-gray-700 com-leading-relaxed;
+                }
+              }
+            }
+          }
+
+          .reply-actions {
+            @apply com-flex com-justify-end;
+          }
+        }
+      }
+
       .reply-section {
         @apply com-mb-4;
         .form {
