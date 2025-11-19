@@ -5,7 +5,7 @@
         <fa-icon [icon]="icons.faArrowLeft"></fa-icon> &nbsp;Go Back
       </div>
       <button nbButton status="primary" (click)="startNewDiscussion()" shape="semi-round">
-        + Start New Discussion
+        <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Start New Discussion
       </button>
     </div>
 
@@ -25,7 +25,7 @@
       </button>
     </div>
 
-    <a *ngFor="let userMessage of userMessages" [routerLink]="[userMessage.id]" class="discussion-item">
+    <a *ngFor="let userMessage of userMessages" [routerLink]="[userMessage.slug]" class="discussion-item">
       <div class="discussion-avatar">
         <img [src]="userMessage.user?.photo?.i64" [alt]="userMessage.user?.name || 'User'" />
       </div>

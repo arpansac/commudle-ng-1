@@ -15,7 +15,7 @@ import { ToastrService } from '@commudle/shared-services';
 })
 export class ForumMessagesComponent implements OnInit, OnDestroy {
   categorySlug: string;
-  userMessageId: string;
+  userMessageSlug: string;
   userMessage: IUserMessage;
   replyForm: FormGroup;
 
@@ -43,7 +43,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.categorySlug = params['category_slug'];
-      this.userMessageId = params['user_message_slug'];
+      this.userMessageSlug = params['user_message_slug'];
       this.getUserMessages();
     });
   }
@@ -54,7 +54,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
   }
 
   getUserMessages() {
-    this.userMessagesService.showUserMessage(Number(this.userMessageId)).subscribe((userMessage: IUserMessage) => {
+    this.userMessagesService.showUserMessage(this.userMessageSlug).subscribe((userMessage: IUserMessage) => {
       this.userMessage = userMessage;
     });
   }
@@ -80,6 +80,6 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.communityChannelHandlerService.sendReply(Number(this.userMessageId), message);
+    this.communityChannelHandlerService.sendReply(Number(this.userMessage.id), message);
   }
 }

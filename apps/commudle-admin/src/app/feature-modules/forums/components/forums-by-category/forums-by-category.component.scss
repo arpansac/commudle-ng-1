@@ -39,7 +39,7 @@
 
               .description,
               .last-message {
-                @apply com-text-gray-500 com-text-sm com-font-normal;
+                @apply com-text-gray-500 com-text-sm com-font-normal com-line-clamp-2;
               }
             }
 

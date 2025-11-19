@@ -45,7 +45,7 @@ export class UserMessagesService {
     );
   }
 
-  showUserMessage(userMessageId: number): Observable<IUserMessage> {
+  showUserMessage(userMessageId: number | string): Observable<IUserMessage> {
     const params = new HttpParams().set('user_message_id', userMessageId);
     return this.http.get<IUserMessage>(this.apiRoutesService.getRoute(API_ROUTES.USER_MESSAGES.SHOW_USER_MESSAGE), {
       params,

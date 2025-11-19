@@ -19,19 +19,14 @@ export class NewDiscussionFormComponent implements OnInit {
     private dialogRef: NbDialogRef<NewDiscussionFormComponent>,
     private communityChannelHandlerService: CommunityChannelHandlerService,
     private toastrService: ToastrService,
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.discussionForm = this.fb.group({
       subject: ['', Validators.required],
       discussion: ['', Validators.required],
     });
-
-    // Initialize channel if context is provided
-    if (this.discussionId && this.discussionParent) {
-      this.communityChannelHandlerService.init(this.discussionId, this.discussionParent);
-    }
   }
+
+  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.discussionForm.valid) {

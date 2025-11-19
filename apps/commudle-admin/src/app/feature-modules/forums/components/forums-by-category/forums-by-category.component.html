@@ -18,13 +18,15 @@
     <ul>
       <li *ngFor="let forum of forums" class="forum">
         <div class="forum-item">
-          <a [routerLink]="[forum.id]" class="forum-content">
+          <a [routerLink]="[forum.slug]" class="forum-content">
             <div class="topic-name">
               <span>{{ forum.name }}</span>
             </div>
             <div class="description-last-message">
-              <span class="description" *ngIf="forum.description">{{ forum.description }}</span>
-              <span class="last-message" *ngIf="forum.last_message">
+              <span class="description" *ngIf="!forum.last_message && forum.description" [title]="forum.description">{{
+                forum.description
+              }}</span>
+              <span class="last-message" *ngIf="forum.last_message" [title]="forum.last_message">
                 {{ forum.last_message }}
               </span>
             </div>

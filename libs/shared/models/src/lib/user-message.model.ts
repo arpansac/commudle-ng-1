@@ -17,6 +17,7 @@ export interface IUserMessage {
   read: boolean;
   subject?: string;
   replies_count?: number;
+  slug?: string;
 }
 
 export interface IUserMessages {

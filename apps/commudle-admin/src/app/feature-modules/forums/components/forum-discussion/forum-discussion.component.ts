@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IForum, IUserMessage, IPagination, IPageInfo } from '@commudle/shared-models';
 import { DiscussionService } from '@commudle/shared-services';
-import { faArrowLeft, faComment, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
@@ -23,7 +23,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   readonly icons = {
     faArrowLeft,
-
+    faPlus,
     faComment,
     faEye,
   };

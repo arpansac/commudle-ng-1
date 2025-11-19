@@ -16,7 +16,7 @@
         <div class="categories-content">
           <p class="heading">Categories</p>
           @for (category of categories$ | async; track category.slug) {
-          <a [routerLink]="['category', category.slug]" routerLinkActive="active">
+          <a [routerLink]="[category.slug]" routerLinkActive="active">
             <div class="category-item">
               {{ category.name }}
             </div>
