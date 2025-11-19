@@ -23,9 +23,9 @@ export class ForumFormComponent implements OnInit {
     private forumService: ForumService,
   ) {
     this.topicForm = this.fb.group({
-      name: ['', Validators.required],
-      group_name: ['', Validators.required],
-      description: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(120)]],
+      group_name: ['', [Validators.required, Validators.maxLength(60)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
       is_private: [false],
       is_readonly: [false],
       display_type: ['', Validators.required],

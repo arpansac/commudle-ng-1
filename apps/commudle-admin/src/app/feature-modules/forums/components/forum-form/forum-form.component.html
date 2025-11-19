@@ -10,11 +10,31 @@
       <div class="form-field-container">
         <label class="form-field"> Topic Name <span class="required">*</span> </label>
         <input class="form-field" formControlName="name" nbInput fullWidth placeholder="Enter Topic Name" />
+        <commudle-alert
+          *ngIf="topicForm.get('name')?.touched && topicForm.get('name')?.errors?.['required']"
+          [error]="true"
+          errorMessage="Topic name is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="topicForm.get('name')?.touched && topicForm.get('name')?.errors?.['maxlength']"
+          [error]="true"
+          errorMessage="Topic name cannot exceed 120 characters"
+        ></commudle-alert>
       </div>
 
       <div class="form-field-container">
         <label class="form-field"> Category <span class="required">*</span> </label>
         <input class="form-field" formControlName="group_name" nbInput fullWidth placeholder="Enter Category" />
+        <commudle-alert
+          *ngIf="topicForm.get('group_name')?.touched && topicForm.get('group_name')?.errors?.['required']"
+          [error]="true"
+          errorMessage="Category is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="topicForm.get('group_name')?.touched && topicForm.get('group_name')?.errors?.['maxlength']"
+          [error]="true"
+          errorMessage="Category cannot exceed 60 characters"
+        ></commudle-alert>
       </div>
 
       <div class="form-field-container">
@@ -27,6 +47,16 @@
           rows="6"
           placeholder="A very long line of text which is expected to span more than two to three lines so it breaks as the text increases."
         ></textarea>
+        <commudle-alert
+          *ngIf="topicForm.get('description')?.touched && topicForm.get('description')?.errors?.['required']"
+          [error]="true"
+          errorMessage="Description is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="topicForm.get('description')?.touched && topicForm.get('description')?.errors?.['maxlength']"
+          [error]="true"
+          errorMessage="Description cannot exceed 500 characters"
+        ></commudle-alert>
       </div>
     </form>
   </nb-card-body>

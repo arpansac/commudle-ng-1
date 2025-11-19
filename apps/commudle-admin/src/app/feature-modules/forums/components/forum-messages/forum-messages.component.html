@@ -49,6 +49,16 @@
                 class="reply-textarea"
               >
               </textarea>
+              <commudle-alert
+                *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.errors?.['required']"
+                [error]="true"
+                errorMessage="Reply is required"
+              ></commudle-alert>
+              <commudle-alert
+                *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.errors?.['maxlength']"
+                [error]="true"
+                errorMessage="Reply cannot exceed 1000 characters"
+              ></commudle-alert>
             </div>
           </div>
 

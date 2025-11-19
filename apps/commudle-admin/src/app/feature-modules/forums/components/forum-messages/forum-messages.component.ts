@@ -37,7 +37,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     private readonly toastrService: ToastrService,
   ) {
     this.replyForm = this.fb.group({
-      reply: ['', Validators.required],
+      reply: ['', [Validators.required, Validators.maxLength(1000)]],
     });
   }
 

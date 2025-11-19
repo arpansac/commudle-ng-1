@@ -21,8 +21,8 @@ export class NewDiscussionFormComponent implements OnInit {
     private toastrService: ToastrService,
   ) {
     this.discussionForm = this.fb.group({
-      subject: ['', Validators.required],
-      discussion: ['', Validators.required],
+      subject: ['', [Validators.required, Validators.maxLength(120)]],
+      message: ['', [Validators.required, Validators.maxLength(1000)]],
     });
   }
 
@@ -30,8 +30,8 @@ export class NewDiscussionFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.discussionForm.valid) {
-      const { discussion, subject } = this.discussionForm.value;
-      this.sendMessage(discussion, subject);
+      const { message, subject } = this.discussionForm.value;
+      this.sendMessage(message, subject);
       this.closeDialog();
     } else {
       this.discussionForm.markAllAsTouched();
