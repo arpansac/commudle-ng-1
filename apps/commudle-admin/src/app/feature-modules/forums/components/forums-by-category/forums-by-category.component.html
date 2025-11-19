@@ -16,7 +16,7 @@
     </div>
 
     <ul>
-      <li *ngFor="let forum of forums" class="forum">
+      <li *ngFor="let forum of forums; let i = index" class="forum">
         <div class="forum-item">
           <a [routerLink]="[forum.slug]" class="forum-content">
             <div class="topic-name">
@@ -52,7 +52,7 @@
 
             <button
               class="delete-button"
-              (click)="deleteForum(forum)"
+              (click)="deleteForum(forum, i)"
               nbButton
               status="basic"
               size="small"

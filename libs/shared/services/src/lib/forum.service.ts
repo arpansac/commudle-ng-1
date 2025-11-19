@@ -85,4 +85,9 @@ export class ForumService {
       params,
     });
   }
+
+  deleteForum(forumId: number): Observable<boolean> {
+    const params = new HttpParams().set('community_channel_id', forumId);
+    return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.DELETE), { params });
+  }
 }

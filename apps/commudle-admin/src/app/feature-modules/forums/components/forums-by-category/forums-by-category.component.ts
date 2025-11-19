@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, switchMap, filter } from 'rxjs/operators';
 import { IForum, EDiscussionType, IChannelCategory } from '@commudle/shared-models';
-import { ForumService } from '@commudle/shared-services';
+import { ForumService, ToastrService } from '@commudle/shared-services';
 import { faArrowLeft, faCircle, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { NbDialogService } from '@commudle/theme';
@@ -32,6 +32,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     private readonly forumService: ForumService,
     private readonly dialogService: NbDialogService,
     private readonly router: Router,
+    private readonly tosterService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -98,5 +99,14 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteForum(forum) {}
+  deleteForum(forum: IForum, index: number): void {
+    if (confirm(`Are you sure you want to delete "${forum.name}"? This action cannot be undone.`)) {
+      this.forumService.deleteForum(forum.id).subscribe((data) => {
+        if (data) {
+          this.forums.splice(index, 1);
+          this.tosterService.successDialog('Forum deleted successfully');
+        }
+      });
+    }
+  }
 }
