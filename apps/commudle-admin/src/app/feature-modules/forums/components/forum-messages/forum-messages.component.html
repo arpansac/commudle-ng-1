@@ -20,16 +20,16 @@
           <commudle-editor [content]="userMessage.content" [editable]="false" class="com-w-full"></commudle-editor>
         </div>
         <div class="post-actions">
-          <div class="action-item">
-            <fa-icon [icon]="icons.faThumbsUp"></fa-icon>
-            <span>Like</span>
-            <span class="count">{{ userMessage.flags_count || 0 }}</span>
-          </div>
-          <div class="action-item">
+          <commudle-vote
+            [icon]="'thumb-up-with-text'"
+            [votableId]="userMessage.id"
+            votableType="UserMessage"
+          ></commudle-vote>
+          <!-- <div class="action-item">
             <fa-icon [icon]="icons.faEye"></fa-icon>
             <span>Views</span>
             <span class="count">{{ userMessage.user_messages?.length || 0 }}</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="reply-section">

@@ -14,6 +14,7 @@ import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.compone
 import { NewDiscussionFormComponent } from './components/new-discussion-form/new-discussion-form.component';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { EditorModule } from '@commudle/editor';
+import { SharedComponentsModule } from '@commudle/shared-components';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { EditorModule } from '@commudle/editor';
     NbButtonModule,
     NbInputModule,
     EditorModule,
+    SharedComponentsModule,
   ],
 })
 export class ForumsModule {}
