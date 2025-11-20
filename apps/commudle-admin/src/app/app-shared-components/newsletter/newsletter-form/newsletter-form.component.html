@@ -154,6 +154,7 @@
             ? '/communities/' + parentId + '/newsletters/' + pageSlug
             : '/orgs/' + parentId + '/newsletters/' + pageSlug
         "
+        [disabled]="!newsletterForm.get('published').value"
         target="_blank"
         nbButton
         status="primary"

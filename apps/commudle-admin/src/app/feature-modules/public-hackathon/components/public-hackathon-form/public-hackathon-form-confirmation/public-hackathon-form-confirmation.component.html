@@ -1,0 +1,77 @@
+<div class="hackathon-form-confirmation-container">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <div *ngIf="isLoading; else confirmationContainer" class="loading-spinner-container">
+          <commudle-loading-spinner></commudle-loading-spinner>
+        </div>
+        <ng-template #confirmationContainer>
+          <div *ngIf="!isLoading" class="confirmation-card">
+            <div class="confirmation-header" *ngIf="hackathon">
+              <div class="check-icon">🤩</div>
+              <h1 class="title">
+                Thank You {{ currentUser?.name }} for filling the form for
+                {{ hackathon.name }}
+              </h1>
+            </div>
+
+            <!-- User profile section -->
+            <div *ngIf="hackathon" class="profile-card-container">
+              <ng-container *ngIf="currentUser && isProfileCompleted">
+                <div class="profile-card">
+                  <div class="profile-preview-card">
+                    <div class="card-heading">Profile Card Preview</div>
+                    <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+                  </div>
+
+                  <div class="profile-completion-card">
+                    <div class="card-heading">Profile's Progress</div>
+                    <commudle-profile-completion-progress></commudle-profile-completion-progress>
+                  </div>
+                </div>
+
+                <div class="missing-field-card">
+                  <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="currentUser && !isProfileCompleted">
+                <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+                <commudle-userprofile-details
+                  [userProfileDetails]="userProfileDetails"
+                  [username]="currentUser.username"
+                ></commudle-userprofile-details>
+              </ng-container>
+            </div>
+
+            <!-- Hackathon details -->
+            <div *ngIf="hackathon" class="details-card-container">
+              <h2 class="card-heading">Hackathon Details</h2>
+              <commudle-hackathon-registered-card
+                [hackathon]="hackathon"
+                [showRegisteredIcon]="true"
+                [showAddToCalendarButton]="true"
+              ></commudle-hackathon-registered-card>
+            </div>
+
+            <!-- Hackathon judges section -->
+            <div *ngIf="hackathon.judges_count > 0 || isLoading" class="leaders-card">
+              <h2 class="card-heading">Follow Hackathon Judges</h2>
+              <commudle-loading-spinner *ngIf="isLoadingHackathonJudges"></commudle-loading-spinner>
+              <ng-container *ngIf="!isLoadingHackathonJudges && hackathonJudges?.length > 0">
+                <div *ngFor="let user of hackathonJudges" class="leader">
+                  <app-user-profile-card-large
+                    [alignFollowToRight]="true"
+                    [showFollowButton]="true"
+                    [user]="user"
+                    appearanceOfFollowButton="outline"
+                  ></app-user-profile-card-large>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

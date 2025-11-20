@@ -53,7 +53,7 @@
       </section>
 
       <button
-        *ngIf="hackathonUserResponse.current_user_is_team_lead"
+        *ngIf="hackathonUserResponse.current_user_is_team_lead || team.user_id === hackathonUserResponse.user_id"
         type="button"
         nbButton
         ghost
@@ -81,6 +81,21 @@
   </button>
 
   <div class="action-buttons">
+    @if(hasSubmitButton){
+    <button
+      type="submit"
+      (click)="submitTeammateDetails()"
+      nbButton
+      status="primary"
+      fullWidth
+      [disabled]="
+        teammateForm.invalid ||
+        (hasTeammateOption && hackathon.min_number_of_teammates - 1 > teammatesArray.controls.length)
+      "
+    >
+      Save
+    </button>
+    }@else{
     <button status="primary" nbButton (click)="previousButton()">Previous</button>
     <button
       type="submit"
@@ -94,5 +109,6 @@
     >
       Next
     </button>
+    }
   </div>
 </form>

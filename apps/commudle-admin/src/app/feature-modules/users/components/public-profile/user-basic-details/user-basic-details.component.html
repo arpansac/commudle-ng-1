@@ -18,7 +18,7 @@
           ></app-share-button>
           <a
             *ngIf="currentUser?.id === user.id; else message"
-            [routerLink]="[{ outlets: { p: ['settings', 'basic-details'] } }]"
+            [routerLink]="[{ outlets: { p: ['settings', 'goals-and-skills'] } }]"
             outline
             nbButton
             shape="round"
@@ -58,7 +58,10 @@
           <div>
             <div class="name-username">
               <div class="name">
-                <h1>{{ user.name }}<commudle-user-expert-tick *ngIf="user.is_expert"></commudle-user-expert-tick></h1>
+                <h1>
+                  <span>{{ user.name }}</span
+                  ><commudle-user-expert-tick *ngIf="user.is_expert" [size]="'20px'"></commudle-user-expert-tick>
+                </h1>
                 <app-hiring-looking-works-tags
                   *ngIf="!user.deactivated"
                   [user]="user"

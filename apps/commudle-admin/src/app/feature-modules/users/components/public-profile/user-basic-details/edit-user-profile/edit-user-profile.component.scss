@@ -7,8 +7,7 @@
       position: relative;
       top: 17px;
       display: flex;
-      gap: 20px;
-      @apply com-overflow-x-auto;
+      @apply com-overflow-x-auto com-gap-[10px];
 
       a {
         @apply com-text-gunmetal;

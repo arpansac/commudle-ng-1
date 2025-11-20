@@ -58,3 +58,31 @@ nb-stepper {
     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
   }
 }
+
+.form-closed-dialog {
+  @apply com-m-0 com-w-auto com-max-w-md;
+
+  .dialog-content {
+    @apply com-text-center com-py-4;
+
+    .icon {
+      @apply com-m-0 com-mb-4;
+
+      nb-icon {
+        @apply com-text-6xl;
+      }
+    }
+
+    h3 {
+      @apply com-text-xl com-font-bold com-mb-4 com-text-red-500;
+    }
+
+    p {
+      @apply com-mb-2 com-text-gray-600;
+    }
+  }
+
+  nb-card-footer {
+    @apply com-text-center;
+  }
+}

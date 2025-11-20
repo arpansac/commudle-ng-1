@@ -51,13 +51,13 @@
       </div>
     </div>
     <div class="prize-amount" *ngIf="totalPrizesByCurrency[0] && totalPrizesByCurrency[0].amount !== 0">
-      <strong> {{ totalPrizesByCurrency[0].currency.symbol }}{{ totalPrizesByCurrency[0].amount }}</strong>
+      <strong> {{ totalPrizesByCurrency[0].currency.symbol }} {{ totalPrizesByCurrency[0].amount }}</strong>
       <span> in prizes</span>
     </div>
   </div>
   <hr class="divided-line" />
   <div class="interested-members-button">
-    <div class="interested-members">
+    <div *ngIf="users?.length > 0 && totalUsers > 0" class="interested-members">
       <commudle-interested-members [users]="users" [totalCount]="totalUsers"></commudle-interested-members>
     </div>
     <br />

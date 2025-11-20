@@ -1,5 +1,5 @@
 import { countries_details } from '@commudle/shared-services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -7,13 +7,15 @@ import { faFileImage, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonPrize, IHackathonTrack } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-prize',
   templateUrl: './hackathon-control-panel-prize.component.html',
   styleUrls: ['./hackathon-control-panel-prize.component.scss'],
 })
-export class HackathonControlPanelPrizeComponent implements OnInit {
+export class HackathonControlPanelPrizeComponent implements OnInit, OnDestroy {
   prizeForm: FormGroup;
   hackathonTracks: IHackathonTrack[];
   hackathon: IHackathon;
@@ -25,6 +27,9 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
   hackathonPrizes: IHackathonPrize[];
   countryDetails = countries_details;
   isLoading = true;
+  currencySuggestions: Array<{ name: string; code: string; phone: number; symbol: string; currency: string }> = [];
+  isSelectingCurrency = false;
+  subscriptions: Subscription[] = [];
   tinyMCE = {
     min_height: 200,
     menubar: false,
@@ -85,6 +90,11 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
       this.fetchPrizes(params.get('hackathon_id'));
       this.fetchHackathon(params.get('hackathon_id'));
     });
+    this.setupCurrencyAutocomplete();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   fetchHackathon(hackathonId) {
@@ -146,12 +156,14 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
   }
 
   createPrize() {
+    this.prizeForm.get('currency_type').setValue(this.prizeForm.get('currency_type').value.toUpperCase());
     this.hackathonService.createPrize(this.prizeForm.value).subscribe((data) => {
       this.hackathonPrizes.unshift(data);
     });
   }
 
   updatePrize(prizeId, index) {
+    this.prizeForm.get('currency_type').setValue(this.prizeForm.get('currency_type').value.toUpperCase());
     this.hackathonService.updatePrize(this.prizeForm.value, prizeId).subscribe((data) => {
       this.hackathonPrizes[index] = data;
     });
@@ -161,5 +173,45 @@ export class HackathonControlPanelPrizeComponent implements OnInit {
     this.hackathonService.destroyPrize(prizeId).subscribe((data) => {
       if (data) this.hackathonPrizes.splice(index, 1);
     });
+  }
+
+  setupCurrencyAutocomplete() {
+    this.subscriptions.push(
+      this.prizeForm
+        .get('currency_type')
+        .valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+        .subscribe((value) => {
+          if (!this.isSelectingCurrency && value && typeof value === 'string' && value.length > 0) {
+            this.filterCurrencies(value);
+          } else if (!this.isSelectingCurrency) {
+            this.currencySuggestions = [];
+          }
+        }),
+    );
+  }
+
+  filterCurrencies(query: string) {
+    const searchTerm = query.toLowerCase();
+    this.currencySuggestions = this.countryDetails
+      .filter(
+        (country) =>
+          country.currency.toLowerCase().includes(searchTerm) ||
+          country.symbol.toLowerCase().includes(searchTerm) ||
+          country.name.toLowerCase().includes(searchTerm),
+      )
+      .slice(0, 10);
+  }
+
+  selectCurrency(selectedValue: string) {
+    if (selectedValue) {
+      this.isSelectingCurrency = true;
+      this.prizeForm.patchValue({
+        currency_type: selectedValue,
+      });
+      this.currencySuggestions = [];
+      setTimeout(() => {
+        this.isSelectingCurrency = false;
+      }, 100);
+    }
   }
 }

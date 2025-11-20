@@ -25,4 +25,21 @@ a {
       @apply com-text-gray-500 com-pt-4 com-px-4 com-inline-flex com-items-center com-text-sm com-font-medium;
     }
   }
+
+  .count-display {
+    @apply com-hidden md:com-block;
+  }
+
+  .jump-to-container {
+    @apply md:com-flex com-items-center com-hidden;
+
+    .jump-dropdown {
+      @apply com-min-w-[120px];
+
+      .jump-select {
+        @apply com-px-3 com-py-1 com-border com-border-gray-300 com-rounded com-text-sm com-bg-white com-cursor-pointer com-text-Yankees-Blue;
+        @apply hover:com-border-gray-400 focus:com-border-blue-500 focus:com-outline-none;
+      }
+    }
+  }
 }

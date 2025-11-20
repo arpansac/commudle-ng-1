@@ -38,8 +38,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   ) {
     this.basicInfoForm = this.fb.group({
       name: ['', Validators.required],
-      about_me: ['', [Validators.required, Validators.maxLength(1000)]],
-      designation: ['', [Validators.required, Validators.maxLength(100)]],
+      about_me: ['', [Validators.required, Validators.minLength(30), Validators.maxLength(2600)]],
+      designation: ['', [Validators.required, Validators.maxLength(300)]],
       location: ['', [Validators.required]],
       gender: ['', [Validators.required]],
     });
@@ -51,6 +51,16 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         this.currentUser = currentUser;
         this.userProfileManagerService.patchFormValues(this.currentUser);
         this.basicInfoForm.patchValue(this.currentUser);
+
+        const nameControl = this.basicInfoForm.get('name');
+        if (nameControl && nameControl.invalid) {
+          nameControl.markAsTouched();
+        }
+
+        const designationControl = this.basicInfoForm.get('designation');
+        if (designationControl && designationControl.invalid) {
+          designationControl.markAsTouched();
+        }
         this.basicInfoFormValidity.emit(this.basicInfoForm.valid); //initial validity
         this.userData.emit(this.currentUser); //initial validity
         this.uploadedProfilePicture = this.currentUser.avatar;

@@ -8,7 +8,7 @@
         <nb-card>
           <nb-card-body>
             <div class="prize-amount" *ngIf="prize.prize_amount !== null">
-              PRIZE: {{ prize.currency_symbol }}{{ prize.prize_amount }}
+              PRIZE: {{ prize.currency_symbol }} {{ prize.prize_amount }}
             </div>
             <div class="prize-amount" *ngIf="prize.prize_amount === 0 || prize.prize_amount === null">
               {{ prize.name }}

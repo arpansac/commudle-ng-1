@@ -7,17 +7,34 @@ import {
   faCalendarDays,
   faCalendarPlus,
   faLocationDot,
+  faSackDollar,
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
 import { faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
-import { ShareService } from '@commudle/shared-services';
+import { countries_details, ShareService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
-import { NbDialogService } from '@commudle/theme';
+import { NbButtonModule, NbCardModule, NbDialogService, NbIconModule } from '@commudle/theme';
 import { AddToCalendarComponent } from '@commudle/shared-components';
+import { RouterModule } from '@angular/router';
+import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommonModule } from '@angular/common';
+import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 
 @Component({
   selector: 'commudle-hackathon-registered-card',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    RouterModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    SharedComponentsModule,
+    SharedDirectivesModule,
+  ],
   templateUrl: './hackathon-registered-card.component.html',
   styleUrls: ['./hackathon-registered-card.component.scss'],
 })
@@ -30,6 +47,8 @@ export class HackathonRegisteredCardComponent implements OnInit {
   interestedUsers: IUser[];
   interestedUsersCount: number;
   hackathonUrl: string;
+  totalPrizesByCurrency: { currency: any; amount: number }[];
+  countryDetails = countries_details;
 
   readonly icons = {
     faCalendarDays,
@@ -38,6 +57,7 @@ export class HackathonRegisteredCardComponent implements OnInit {
     faShareNodes,
     faArrowUpRightFromSquare,
     faCircleCheck,
+    faSackDollar,
   };
 
   constructor(
@@ -48,6 +68,15 @@ export class HackathonRegisteredCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchInterestedMembers();
+    if (this.hackathon.total_prize_amount) {
+      this.totalPrizesByCurrency = Object.keys(this.hackathon.total_prize_amount).map((currency) => ({
+        currency: this.countryDetails.find((detail) => detail.currency === currency) || {
+          currency: currency,
+          symbol: currency,
+        },
+        amount: this.hackathon.total_prize_amount[currency],
+      }));
+    }
   }
 
   fetchInterestedMembers() {

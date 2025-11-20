@@ -36,6 +36,7 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     faXmark,
     faCheck,
   };
+  mobileActionBottomSheet = false;
 
   @Input() community: ICommunity;
   @Input() event: IEvent;
@@ -171,14 +172,6 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
     });
   }
 
-  // openCreateNotesDialog(dfergId) {
-  //   this.nbDialogService.open(this.createNotesDialogBox, {
-  //     context: {
-  //       dfergId: dfergId,
-  //     },
-  //   });
-  // }
-
   createNotes(dfergId: number | string) {
     if (!this.newNoteText?.trim()) return;
 
@@ -218,5 +211,13 @@ export class UserDetailsCellComponent implements OnInit, OnChanges {
         this.userResponse.notes.splice(index, 1);
       }
     });
+  }
+
+  openResponseDialogBox(viewResponse) {
+    this.nbDialogService.open(viewResponse);
+  }
+
+  closeActionBottomSheet() {
+    this.mobileActionBottomSheet = false;
   }
 }

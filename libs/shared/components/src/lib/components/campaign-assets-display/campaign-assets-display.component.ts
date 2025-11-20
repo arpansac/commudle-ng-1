@@ -7,6 +7,7 @@ import {
   UserEngagementRecordsService,
   SeoService,
 } from '@commudle/shared-services';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-campaign-assets-display',
@@ -27,6 +28,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   @ViewChild('campaignImageContainer', { static: false }) campaignImageContainerDiv!: ElementRef;
   private campaignObserver!: IntersectionObserver;
   private defaultImageObserver!: IntersectionObserver;
+  faCircleQuestion = faCircleQuestion;
 
   private hasTrackedCampaignView = false;
   private hasTrackedDefaultImageView = false;

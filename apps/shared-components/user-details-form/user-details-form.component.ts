@@ -18,6 +18,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
   @Input() hackathonUserResponse: IHackathonUserResponse;
   @Input() submitButtonText = 'Next';
   @Output() submitUserDetailsEvent = new EventEmitter<any>();
+  @Output() isLoadingEventEmitter = new EventEmitter<boolean>();
 
   currentUser: IUser;
   userForm: FormGroup;
@@ -46,6 +47,9 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.initAutocomplete();
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+    }
   }
 
   ngOnDestroy(): void {
@@ -67,7 +71,14 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
 
         let validators = [Validators.required];
 
-        // Add URL validation for social media fields
+        if (key === 'about_me') {
+          validators.push(Validators.minLength(30), Validators.maxLength(2600));
+        }
+
+        if (key === 'designation') {
+          validators.push(Validators.maxLength(300));
+        }
+
         if (
           key === 'github' ||
           key === 'gitlab' ||
@@ -102,6 +113,7 @@ export class UserDetailsFormComponent implements OnInit, OnDestroy {
     if (this.userForm.invalid) {
       this.toastLogService.errorDialog('Please complete the profile fields');
       this.userForm.markAllAsTouched();
+      this.isLoadingEventEmitter.emit(false);
       return;
     }
     this.submitUserDetailsEvent.emit(this.userForm.value);

@@ -141,8 +141,10 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
               for (const prize of track.hackathon_prizes) {
                 const prizeCurrencySymbol = this.countryDetails.find(
                   (detail) => detail.currency === prize.currency_type,
-                );
-                prize.currency_symbol = prizeCurrencySymbol.symbol;
+                ) || {
+                  symbol: prize.currency_type,
+                };
+                prize.currency_symbol = prizeCurrencySymbol?.symbol || prize.currency_type;
               }
             }
           }

@@ -40,6 +40,12 @@ export class HackathonPrizeCardComponent implements OnInit {
     this.prizeCurrencySymbol = this.countryDetails.find(
       (detail) => detail.currency === this.hackathonPrize.currency_type,
     );
+
+    if (!this.prizeCurrencySymbol) {
+      this.prizeCurrencySymbol = {
+        symbol: this.hackathonPrize.currency_type,
+      };
+    }
   }
 
   editPrize(prize) {

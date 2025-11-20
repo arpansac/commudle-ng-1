@@ -1,4 +1,7 @@
 <div class="hackathon-details" *ngIf="hackathon">
+  <div class="community-badge">
+    <app-community-badge [community]="hackathon.community"></app-community-badge>
+  </div>
   <div class="date-registered-text">
     <div *ngIf="hackathon.start_date" class="hackathon-start-date">
       <fa-icon [icon]="icons.faCalendarDays"></fa-icon>&nbsp;
@@ -9,9 +12,18 @@
     </div>
   </div>
 
-  <div class="hackathon-location" *ngIf="hackathon?.location_name">
-    <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
-    <a [href]="hackathon.location_map_link">{{ hackathon.location_name }}</a>
+  <div
+    *ngIf="hackathon?.location_name || totalPrizesByCurrency?.length > 0"
+    class="hackathon-location-prize-money-container"
+  >
+    <div class="hackathon-location" *ngIf="hackathon?.location_name">
+      <fa-icon [icon]="icons.faLocationDot"></fa-icon>&nbsp;
+      <a [href]="hackathon.location_map_link">{{ hackathon.location_name }}</a>
+    </div>
+    <div *ngIf="totalPrizesByCurrency?.length > 0" class="prize-money">
+      <fa-icon [icon]="icons.faSackDollar"></fa-icon>
+      <span>{{ totalPrizesByCurrency[0].currency.symbol }} {{ totalPrizesByCurrency[0].amount }}</span>
+    </div>
   </div>
 
   <div class="interested-members">

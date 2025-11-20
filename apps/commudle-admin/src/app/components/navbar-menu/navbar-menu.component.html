@@ -44,10 +44,9 @@
     </a>
     <a
       *appBreakpoints="'>md'"
-      [nbPopover]="notificationPopover"
+      [routerLink]="['/notifications']"
       [ngClass]="{ active: notificationIconHighlight }"
       class="com-cursor-pointer"
-      nbPopoverContext="notificationsPopover"
     >
       <nb-badge *ngIf="notificationCount > 0" [text]="notificationCount.toString()" status="danger"></nb-badge>
       <fa-icon [icon]="faBell"></fa-icon>
