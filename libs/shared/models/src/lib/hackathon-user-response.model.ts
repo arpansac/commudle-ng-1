@@ -16,6 +16,7 @@ export interface IHackathonUserResponse extends IUser {
   track: IHackathonTrack;
   user: IUser;
   team_leader: boolean;
+  hackathon_problem_statement_id: number;
 }
 
 export enum EInvitationStatus {

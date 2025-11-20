@@ -17,25 +17,34 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
 
   hackathonTracks: IHackathonTrack[];
   hackathonProjectDetailsForm: FormGroup;
-  selectedTrackProblemStatement = '';
+
+  selectedTrackProblemStatements = [];
 
   constructor(private hackathonService: HackathonService, private fb: FormBuilder) {
     this.hackathonProjectDetailsForm = this.fb.group({
       hackathon_track_id: '',
-      project_description: [''],
+      hackathon_problem_statement_id: '',
     });
   }
 
   ngOnInit() {
     this.fetchHackathonTracks();
+    console.log(
+      '🚀 ~ PublicHackathonProjectDetailsFormComponent ~ ngOnInit ~  this.hackathonUserResponse:',
+      this.hackathonUserResponse.hackathon_problem_statement_id,
+    );
     if (
       this.hackathonUserResponse &&
-      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.project_description)
+      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.hackathon_problem_statement_id)
     ) {
       this.hackathonProjectDetailsForm.patchValue({
         hackathon_track_id: this.hackathonUserResponse.track_id,
-        project_description: this.hackathonUserResponse.project_description,
+        hackathon_problem_statement_id: this.hackathonUserResponse.hackathon_problem_statement_id,
       });
+      console.log(
+        '🚀 ~ PublicHackathonProjectDetailsFormComponent ~ ngOnInit ~     this.hackathonProjectDetailsForm:',
+        this.hackathonProjectDetailsForm.value,
+      );
     }
   }
 
@@ -51,10 +60,25 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   updateProblemStatement() {
     const selectedTrackId = this.hackathonProjectDetailsForm.get('hackathon_track_id').value;
     const selectedTrack = this.hackathonTracks.find((track) => track.id == selectedTrackId);
+
     if (selectedTrack) {
-      this.selectedTrackProblemStatement = selectedTrack.problem_statement;
+      this.selectedTrackProblemStatements = selectedTrack.hackathon_problem_statements || [];
     } else {
-      this.selectedTrackProblemStatement = '';
+      this.selectedTrackProblemStatements = [];
+    }
+
+    // Reset problem statement selection when track changes
+    this.hackathonProjectDetailsForm.patchValue({ hackathon_problem_statement_id: '' });
+  }
+
+  updateProblemStatementForEdit() {
+    const selectedTrackId = this.hackathonProjectDetailsForm.get('hackathon_track_id').value;
+    const selectedTrack = this.hackathonTracks.find((track) => track.id == selectedTrackId);
+
+    if (selectedTrack) {
+      this.selectedTrackProblemStatements = selectedTrack.hackathon_problem_statements || [];
+    } else {
+      this.selectedTrackProblemStatements = [];
     }
   }
 
@@ -68,6 +92,11 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
         hackathonTrackIdControl.clearValidators();
       }
       hackathonTrackIdControl.updateValueAndValidity();
+
+      // Update problem statements if track is already selected (edit mode)
+      if (this.hackathonProjectDetailsForm.get('hackathon_track_id').value) {
+        this.updateProblemStatementForEdit();
+      }
     });
   }
 
