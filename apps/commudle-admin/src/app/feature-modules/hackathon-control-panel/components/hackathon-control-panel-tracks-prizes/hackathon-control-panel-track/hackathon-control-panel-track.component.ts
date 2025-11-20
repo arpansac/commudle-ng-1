@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathonTrack } from '@commudle/shared-models';
+import { IHackathonTrack, IHackathonProblemStatement } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
-import { faFileImage, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faFileImage, faPlus, faXmark, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     faPlus,
     faFileImage,
     faXmark,
+    faMinus,
   };
   hackathonTracks: IHackathonTrack[];
   hackathonSlug = '';
@@ -45,7 +46,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     this.trackForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      problem_statement: '',
+      problem_statements: this.fb.array([]),
     });
   }
 
@@ -56,15 +57,43 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     });
   }
 
+  get problemStatements(): FormArray {
+    return this.trackForm.get('problem_statements') as FormArray;
+  }
+
+  createProblemStatementGroup(problemStatement?: IHackathonProblemStatement): FormGroup {
+    return this.fb.group({
+      id: [problemStatement?.id || null],
+      title: [problemStatement?.title || ''],
+      max_teams_limit: [problemStatement?.max_teams_limit || null],
+    });
+  }
+
+  addProblemStatement(): void {
+    this.problemStatements.push(this.createProblemStatementGroup());
+  }
+
+  removeProblemStatement(index: number): void {
+    this.problemStatements.removeAt(index);
+  }
+
   openSponsorDialogBox(dialog, track?: IHackathonTrack, index?) {
     this.trackForm.reset();
+    this.problemStatements.clear();
+
     if (track) {
       this.trackForm.patchValue({
         name: track.name,
         description: track.description,
-        problem_statement: track.problem_statement,
       });
+
+      if (track.hackathon_problem_statements?.length) {
+        track.hackathon_problem_statements.forEach((ps) => {
+          this.problemStatements.push(this.createProblemStatementGroup(ps));
+        });
+      }
     }
+
     this.nbDialogService.open(dialog, {
       context: { index: index, track: track },
     });
@@ -91,14 +120,44 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   }
 
   createTrack() {
-    this.hackathonService.createTrack(this.trackForm.value, this.hackathonSlug).subscribe((data) => {
+    const formValue = this.trackForm.value;
+    const filteredProblemStatements = formValue.problem_statements
+      .filter((ps) => ps.title?.trim())
+      .map((ps) => ({
+        ...(ps.id && { id: ps.id }),
+        title: ps.title,
+        ...(ps.max_teams_limit && { max_teams_limit: ps.max_teams_limit }),
+      }));
+
+    const payload = {
+      name: formValue.name,
+      description: formValue.description,
+      ...(filteredProblemStatements.length && { problem_statements: filteredProblemStatements }),
+    };
+
+    this.hackathonService.createTrack(payload, this.hackathonSlug).subscribe((data) => {
       if (data) this.hackathonTracks.unshift(data);
       this.trackForm.reset();
     });
   }
 
   updateTrack(trackId, index) {
-    this.hackathonService.updateTrack(this.trackForm.value, trackId).subscribe((data) => {
+    const formValue = this.trackForm.value;
+    const filteredProblemStatements = formValue.problem_statements
+      .filter((ps) => ps.title?.trim())
+      .map((ps) => ({
+        ...(ps.id && { id: ps.id }),
+        title: ps.title,
+        ...(ps.max_teams_limit && { max_teams_limit: ps.max_teams_limit }),
+      }));
+
+    const payload = {
+      name: formValue.name,
+      description: formValue.description,
+      ...(filteredProblemStatements.length && { problem_statements: filteredProblemStatements }),
+    };
+
+    this.hackathonService.updateTrack(payload, trackId).subscribe((data) => {
       this.hackathonTracks[index] = data;
     });
   }

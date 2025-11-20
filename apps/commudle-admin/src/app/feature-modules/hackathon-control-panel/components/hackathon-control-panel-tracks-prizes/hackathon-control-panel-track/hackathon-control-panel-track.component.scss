@@ -3,9 +3,38 @@
 }
 
 .track-form {
-  @apply com-w-full com-h-full md:com-max-h-[90dvh] md:com-w-[50vdw];
+  @apply com-w-full com-h-full md:com-max-h-[90dvh] md:com-w-[50dvw];
+
   form {
     @apply com-flex com-flex-col com-gap-3;
+  }
+
+  .problem-statements-header {
+    @apply com-flex com-justify-between com-items-center com-mb-3;
+
+    label {
+      @apply com-font-medium;
+    }
+  }
+
+  .problem-statement-item {
+    @apply com-flex com-gap-4 com-rounded-xl com-mb-4;
+
+    .problem-statement-fields {
+      @apply com-flex-1 com-flex com-flex-col com-gap-4;
+
+      .field-group {
+        @apply com-flex com-flex-col com-gap-2;
+
+        label {
+          @apply com-text-sm com-font-semibold com-text-gray-800;
+        }
+      }
+    }
+
+    .remove-button {
+      @apply com-flex-shrink-0 com-self-start com-mt-6;
+    }
   }
 }
 

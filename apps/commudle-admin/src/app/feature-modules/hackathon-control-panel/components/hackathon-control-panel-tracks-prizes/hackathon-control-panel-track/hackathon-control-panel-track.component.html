@@ -62,15 +62,53 @@
           ></commudle-alert>
         </div>
 
-        <!-- Problem Statement -->
+        <!-- Problem Statements -->
         <div>
-          <label for="problem_statement">Problem Statements</label>
-          <editor [init]="tinyMCE" formControlName="problem_statement" id="problem_statement"></editor>
-          <commudle-alert
-            *ngIf="trackForm.controls['problem_statement'].invalid && trackForm.controls['problem_statement'].touched"
-            [error]="true"
-            errorMessage="Problem Statement is required"
-          ></commudle-alert>
+          <div class="problem-statements-header">
+            <label>Problem Statements</label>
+            <button (click)="addProblemStatement()" nbButton size="small" status="primary" type="button">
+              <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Problem Statement
+            </button>
+          </div>
+
+          <div formArrayName="problem_statements">
+            <div
+              *ngFor="let problemStatement of problemStatements.controls; let i = index"
+              [formGroupName]="i"
+              class="problem-statement-item"
+            >
+              <div class="problem-statement-fields">
+                <div class="field-group">
+                  <label [for]="'title_' + i">Title</label>
+                  <editor [init]="tinyMCE" [id]="'title_' + i" formControlName="title"></editor>
+                </div>
+
+                <div class="field-group">
+                  <label [for]="'max_teams_limit_' + i">Max Teams Limit</label>
+                  <input
+                    [id]="'max_teams_limit_' + i"
+                    formControlName="max_teams_limit"
+                    fullWidth
+                    nbInput
+                    placeholder="Maximum number of teams (optional)"
+                    type="number"
+                  />
+                </div>
+              </div>
+
+              <button
+                *ngIf="problemStatements.length > 0"
+                (click)="removeProblemStatement(i)"
+                nbButton
+                size="small"
+                status="danger"
+                type="button"
+                class="remove-button"
+              >
+                <fa-icon [icon]="icons.faMinus"></fa-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </form>
     </nb-card-body>
