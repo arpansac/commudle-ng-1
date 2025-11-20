@@ -1,3 +1,4 @@
+import { IHackathonProblemStatement } from './hackathon-problem-statement.model';
 import { IHackathonTeam } from './hackathon-team.model';
 import { IHackathonTrack } from './hackathon-track.model';
 import { IUser } from './user.model';
@@ -16,7 +17,7 @@ export interface IHackathonUserResponse extends IUser {
   track: IHackathonTrack;
   user: IUser;
   team_leader: boolean;
-  hackathon_problem_statement_id: number;
+  hackathon_problem_statement: IHackathonProblemStatement;
 }
 
 export enum EInvitationStatus {

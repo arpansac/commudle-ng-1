@@ -577,6 +577,15 @@
         </ul>
       </div>
 
+      <div *ngIf="selectedUserDetails.hackathon_problem_statement">
+        <strong>Problem Statement Details:</strong>
+        <ul>
+          <li>
+            <p [innerHTML]="selectedUserDetails.hackathon_problem_statement.title"></p>
+          </li>
+        </ul>
+      </div>
+
       <div *ngIf="selectedUserDetails.project_description">
         <strong>Project Description:</strong>
         <ul>

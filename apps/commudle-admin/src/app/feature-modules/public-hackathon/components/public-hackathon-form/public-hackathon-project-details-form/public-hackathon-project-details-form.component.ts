@@ -29,22 +29,14 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
 
   ngOnInit() {
     this.fetchHackathonTracks();
-    console.log(
-      '🚀 ~ PublicHackathonProjectDetailsFormComponent ~ ngOnInit ~  this.hackathonUserResponse:',
-      this.hackathonUserResponse.hackathon_problem_statement_id,
-    );
     if (
       this.hackathonUserResponse &&
-      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.hackathon_problem_statement_id)
+      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.hackathon_problem_statement?.id)
     ) {
       this.hackathonProjectDetailsForm.patchValue({
         hackathon_track_id: this.hackathonUserResponse.track_id,
-        hackathon_problem_statement_id: this.hackathonUserResponse.hackathon_problem_statement_id,
+        hackathon_problem_statement_id: this.hackathonUserResponse.hackathon_problem_statement?.id,
       });
-      console.log(
-        '🚀 ~ PublicHackathonProjectDetailsFormComponent ~ ngOnInit ~     this.hackathonProjectDetailsForm:',
-        this.hackathonProjectDetailsForm.value,
-      );
     }
   }
 
