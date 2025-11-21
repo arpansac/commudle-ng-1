@@ -8,10 +8,11 @@ import {
   EDbModels,
   IChannelCategory,
   IUserMessage,
-  IPageInfo,
 } from '@commudle/shared-models';
-import { ForumService, ToastrService, DiscussionService } from '@commudle/shared-services';
-import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
+import { ForumService } from './forum.service';
+import { ToastrService } from './toastr.service';
+import { DiscussionService } from './discussion.service';
+import { UserMessagesService } from './user-messages.service';
 
 @Injectable({
   providedIn: 'root',
@@ -126,10 +127,12 @@ export class ForumsStore {
       });
   }
 
-  addNewMessage(message: IUserMessage): void {
-    const currentMessages = this.userMessages.value;
-    if (!currentMessages.find((msg) => msg.id === message.id)) {
-      this.userMessages.next([message, ...currentMessages]);
+  updateDiscussion(userMessage: IUserMessage) {
+    if (userMessage.parent_type === 'Discussion' && userMessage.parent_id === this.userMessages.value[0].parent_id) {
+      const currentMessages = this.userMessages.value;
+      if (!currentMessages.find((msg) => msg.id === userMessage.id)) {
+        this.userMessages.next([userMessage, ...currentMessages]);
+      }
     }
   }
 
@@ -150,12 +153,12 @@ export class ForumsStore {
       });
   }
 
-  addReplyToUserMessage(reply: IUserMessage): void {
+  updateUserMessage(userMessageSlug: string, reply: IUserMessage) {
     const currentMessage = this.currentUserMessage.value;
-    if (currentMessage && !currentMessage.user_messages.find((msg) => msg.id === reply.id)) {
+    if (currentMessage && currentMessage.slug === userMessageSlug) {
       const updatedMessage = {
-        ...currentMessage,
         user_messages: [...currentMessage.user_messages, reply],
+        ...currentMessage,
       };
       this.currentUserMessage.next(updatedMessage);
     }

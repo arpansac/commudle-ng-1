@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@commudle/theme';
-import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 import { ForumService } from '@commudle/shared-services';
 import { EDiscussionType, IForum } from '@commudle/shared-models';
 

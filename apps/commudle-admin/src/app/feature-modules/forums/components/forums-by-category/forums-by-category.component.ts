@@ -7,7 +7,7 @@ import { ForumService, ToastrService } from '@commudle/shared-services';
 import { faArrowLeft, faCircle, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { NbDialogService } from '@commudle/theme';
-import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-forums-by-category',

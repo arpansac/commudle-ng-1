@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { EDiscussionType, IChannelCategory } from '@commudle/shared-models';
-import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
 import { faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';

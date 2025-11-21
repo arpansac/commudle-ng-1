@@ -7,8 +7,7 @@ import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-s
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { CommunityChannelHandlerService } from '@commudle/shared-components';
-import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-forum-discussion',
@@ -34,7 +33,6 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly dialogService: NbDialogService,
-    private readonly communityChannelHandlerService: CommunityChannelHandlerService,
     private readonly forumsStore: ForumsStore,
   ) {}
 
@@ -42,7 +40,6 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.forum = data.forum;
       this.forumsStore.loadDiscussions(this.forum.discussion_id);
-      this.initializeRealTimeUpdates();
     });
   }
 
@@ -58,15 +55,6 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
         discussionId: this.forum.discussion_id,
         discussionParent: 'forums',
       },
-    });
-  }
-
-  private initializeRealTimeUpdates(): void {
-    this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
-      if (messages.length > 0) {
-        const newMessage = messages[0].data;
-        this.forumsStore.addNewMessage(newMessage);
-      }
     });
   }
 

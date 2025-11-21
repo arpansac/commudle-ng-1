@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EDbModels } from '@commudle/shared-models';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 import { ESidebarHeading } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 

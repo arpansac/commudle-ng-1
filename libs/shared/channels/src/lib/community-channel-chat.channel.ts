@@ -45,7 +45,7 @@ export class CommunityChannelChatChannel extends Channel<Params, Message> {
     });
   }
 
-  async reply(parentId: number, content: string) {
+  async reply(parentId: number | string, content: string) {
     return this.perform('receive', {
       perform: ACTIONS.REPLY,
       data: {

@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IUserMessage, IForum } from '@commudle/shared-models';
+import { IForum } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 import { faArrowLeft, faThumbsUp, faEye } from '@fortawesome/free-solid-svg-icons';
 import { CommunityChannelHandlerService } from '@commudle/shared-components';
 import { ToastrService } from '@commudle/shared-services';
-import { ForumsStore } from '../../store/forums.store';
+import { ForumsStore } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-forum-messages',
@@ -52,12 +52,10 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.forum = data.forum;
-      this.initializeRealTimeUpdates();
     });
   }
 
   ngOnDestroy(): void {
-    this.communityChannelHandlerService.destroy();
     this.forumsStore.clearUserMessage();
     this.destroy$.next();
     this.destroy$.complete();
@@ -83,25 +81,6 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
       this.toastrService.warningDialog('Unable to send message. Channel not connected.');
       return;
     }
-
-    this.userMessage$.pipe(takeUntil(this.destroy$)).subscribe((userMessage) => {
-      if (userMessage) {
-        this.communityChannelHandlerService.sendReply(Number(userMessage.id), message);
-      }
-    });
-  }
-
-  private initializeRealTimeUpdates(): void {
-    this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
-      if (messages.length > 0) {
-        const newMessage = messages[0].data;
-
-        this.userMessage$.pipe(takeUntil(this.destroy$)).subscribe((userMessage) => {
-          if (userMessage && Number(newMessage.parent_id) === Number(userMessage.id)) {
-            this.forumsStore.addReplyToUserMessage(newMessage);
-          }
-        });
-      }
-    });
+    this.communityChannelHandlerService.sendReply(this.userMessageSlug, message);
   }
 }
