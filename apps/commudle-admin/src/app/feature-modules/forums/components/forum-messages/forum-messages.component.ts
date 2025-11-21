@@ -50,6 +50,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.forum = data.forum;
+      this.initializeRealTimeUpdates();
     });
   }
 
@@ -62,7 +63,6 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
   getUserMessages() {
     this.userMessagesService.showUserMessage(this.userMessageSlug).subscribe((userMessage: IUserMessage) => {
       this.userMessage = userMessage;
-      this.initializeRealTimeUpdates();
     });
   }
 
@@ -91,10 +91,6 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
   }
 
   private initializeRealTimeUpdates(): void {
-    if (this.forum?.discussion_id && !this.communityChannelHandlerService.CommunityChannelChatChannel) {
-      this.communityChannelHandlerService.init(this.forum.discussion_id, 'channels');
-    }
-
     this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
       if (messages.length > 0) {
         const newMessage = messages[0].data;

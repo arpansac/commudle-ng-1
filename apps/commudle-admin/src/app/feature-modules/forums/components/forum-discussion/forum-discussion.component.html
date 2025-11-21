@@ -16,7 +16,12 @@
   </div>
 
   <div class="discussions-list">
-    <div *ngIf="userMessages.length === 0 && !isLoading" class="empty-state">
+    <div *ngIf="(isLoading$ | async) && (userMessages$ | async)?.length === 0" class="loading-state">
+      <commudle-loading-spinner></commudle-loading-spinner>
+      <p>Loading discussions...</p>
+    </div>
+
+    <div *ngIf="(userMessages$ | async)?.length === 0 && (isLoading$ | async) === false" class="empty-state">
       <img [src]="staticAssets.message_empty" alt="No discussions" class="empty-image" />
       <h3>No Discussions Available</h3>
       <p>You can create one by clicking the "Start New Discussion" button</p>
@@ -25,7 +30,7 @@
       </button>
     </div>
 
-    <a *ngFor="let userMessage of userMessages" [routerLink]="[userMessage.slug]" class="discussion-item">
+    <a *ngFor="let userMessage of userMessages$ | async" [routerLink]="[userMessage.slug]" class="discussion-item">
       <div class="discussion-avatar">
         <img [src]="userMessage.user?.photo?.i64" [alt]="userMessage.user?.name || 'User'" />
       </div>
@@ -48,9 +53,9 @@
       </div>
     </a>
 
-    <div class="load-more-section" *ngIf="pageInfo?.has_next_page">
-      <button nbButton status="basic" (click)="loadMoreDiscussions()" [disabled]="isLoading" fullWidth>
-        {{ isLoading ? 'Loading...' : 'Load More Discussions' }}
+    <div class="load-more-section" *ngIf="hasNextPage$ | async">
+      <button nbButton status="basic" (click)="loadMoreDiscussions()" [disabled]="isLoading$ | async" fullWidth>
+        {{ (isLoading$ | async) ? 'Loading...' : 'Load More Discussions' }}
       </button>
     </div>
   </div>

@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IForum, IPagination, EDbModels, IChannelCategory } from '@commudle/shared-models';
-import { ForumService, ToastrService } from '@commudle/shared-services';
+import { finalize } from 'rxjs/operators';
+import {
+  IForum,
+  IPagination,
+  IPaginationCount,
+  EDbModels,
+  IChannelCategory,
+  IUserMessage,
+  IPageInfo,
+} from '@commudle/shared-models';
+import { ForumService, ToastrService, DiscussionService } from '@commudle/shared-services';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +28,22 @@ export class ForumsStore {
   private readonly categories = new BehaviorSubject<IChannelCategory[]>([]);
   readonly categories$ = this.categories.asObservable();
 
-  constructor(private readonly forumService: ForumService, private readonly toastrService: ToastrService) {}
+  private readonly userMessages = new BehaviorSubject<IUserMessage[]>([]);
+  readonly userMessages$ = this.userMessages.asObservable();
+
+  private readonly isLoading = new BehaviorSubject<boolean>(false);
+  readonly isLoading$ = this.isLoading.asObservable();
+
+  private readonly hasNextPage = new BehaviorSubject<boolean>(false);
+  readonly hasNextPage$ = this.hasNextPage.asObservable();
+
+  private currentPage = 1;
+
+  constructor(
+    private readonly forumService: ForumService,
+    private readonly toastrService: ToastrService,
+    private readonly discussionService: DiscussionService,
+  ) {}
 
   loadForums(parentId: string, parentType: EDbModels): void {
     this.forumService.indexForums(parentId, parentType).subscribe({
@@ -70,11 +94,49 @@ export class ForumsStore {
     this.parentType.next(parentType);
   }
 
+  loadDiscussions(discussionId: number, loadMore = false, count = 10): void {
+    if (loadMore && (!this.hasNextPage.value || this.isLoading.value)) return;
+
+    if (!loadMore) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage++;
+    }
+
+    this.isLoading.next(true);
+
+    this.discussionService
+      .getForumsMessages(discussionId, count, this.currentPage)
+      .pipe(finalize(() => this.isLoading.next(false)))
+      .subscribe((data: IPaginationCount<IUserMessage>) => {
+        const currentMessages = this.userMessages.value;
+
+        this.userMessages.next(loadMore ? [...currentMessages, ...data.values] : data.values);
+
+        const totalPages = Math.ceil(data.total / count);
+        this.hasNextPage.next(this.currentPage < totalPages);
+      });
+  }
+
+  addNewMessage(message: IUserMessage): void {
+    const currentMessages = this.userMessages.value;
+    if (!currentMessages.find((msg) => msg.id === message.id)) {
+      this.userMessages.next([message, ...currentMessages]);
+    }
+  }
+
+  clearDiscussions(): void {
+    this.userMessages.next([]);
+    this.hasNextPage.next(false);
+    this.currentPage = 1;
+  }
+
   clearAllData(): void {
     this.forums.next([]);
     this.parentId.next(null);
     this.parentType.next(null);
     this.categories.next([]);
+    this.clearDiscussions();
   }
 
   private updateCategories(forum: IForum): void {

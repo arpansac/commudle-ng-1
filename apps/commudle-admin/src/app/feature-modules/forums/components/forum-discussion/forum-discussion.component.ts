@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IForum, IUserMessage, IPagination, IPageInfo } from '@commudle/shared-models';
-import { DiscussionService } from '@commudle/shared-services';
+import { IForum, IUserMessage, IPageInfo } from '@commudle/shared-models';
 import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { CommunityChannelHandlerService } from '@commudle/shared-components';
+import { ForumsStore } from './store/forums.store';
 
 @Component({
   selector: 'commudle-forum-discussion',
@@ -17,9 +17,6 @@ import { CommunityChannelHandlerService } from '@commudle/shared-components';
 })
 export class ForumDiscussionComponent implements OnInit, OnDestroy {
   forum: IForum;
-  userMessages: IUserMessage[] = [];
-  pageInfo: IPageInfo;
-  isLoading = false;
   staticAssets = staticAssets;
   private readonly destroy$ = new Subject<void>();
   readonly icons = {
@@ -29,24 +26,28 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     faEye,
   };
 
+  readonly userMessages$ = this.forumsStore.userMessages$;
+  readonly hasNextPage$ = this.forumsStore.hasNextPage$;
+  readonly isLoading$ = this.forumsStore.isLoading$;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly dialogService: NbDialogService,
-    private readonly discussionService: DiscussionService,
     private readonly communityChannelHandlerService: CommunityChannelHandlerService,
+    private readonly forumsStore: ForumsStore,
   ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => {
+    this.route.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.forum = data.forum;
-      this.loadDiscussions();
+      this.forumsStore.loadDiscussions(this.forum.discussion_id);
       this.initializeRealTimeUpdates();
     });
   }
 
   ngOnDestroy(): void {
-    this.communityChannelHandlerService.destroy();
+    this.forumsStore.clearDiscussions();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -60,36 +61,17 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadDiscussions(loadMore = false): void {
-    if (loadMore && (!this.pageInfo.has_next_page || this.isLoading)) return;
-
-    this.isLoading = true;
-    const params = { limit: 10, ...(loadMore && { after: this.pageInfo.end_cursor }) };
-
-    this.discussionService
-      .getForumsMessages(this.forum.discussion_id, params)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data: IPagination<IUserMessage>) => {
-        const newDiscussions = data.page.map((item) => item.data);
-        this.userMessages = loadMore ? [...this.userMessages, ...newDiscussions] : newDiscussions;
-        this.pageInfo = data.page_info;
-        this.isLoading = false;
-      });
-  }
-
   private initializeRealTimeUpdates(): void {
     this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
       if (messages.length > 0) {
         const newMessage = messages[0].data;
-        if (!this.userMessages.find((msg) => msg.id === newMessage.id)) {
-          this.userMessages = [newMessage, ...this.userMessages];
-        }
+        this.forumsStore.addNewMessage(newMessage);
       }
     });
   }
 
   loadMoreDiscussions(): void {
-    this.loadDiscussions(true);
+    this.forumsStore.loadDiscussions(this.forum.discussion_id, true);
   }
 
   backToCategory(): void {

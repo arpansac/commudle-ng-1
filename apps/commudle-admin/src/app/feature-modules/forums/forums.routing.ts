@@ -26,9 +26,13 @@ const routes: Routes = [
           forum: ForumDiscussionResolver,
         },
       },
+      // TODO: handle case to recall resolver for call twice with duplicate data
       {
         path: ':category_slug/:topic_slug/:user_message_slug',
         component: ForumMessagesComponent,
+        resolve: {
+          forum: ForumDiscussionResolver,
+        },
       },
     ],
   },
