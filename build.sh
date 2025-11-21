@@ -7,6 +7,27 @@ set -e
 echo "Starting the build process..."
 echo "Please provide the following information:"
 
+# Prompt for environment
+echo "Select environment (use arrow keys):"
+PS3="Choose environment: "
+select environment in "local" "test" "staging" "production"; do
+  case $environment in
+    local|test|staging|production)
+      break
+      ;;
+    *)
+      echo "Invalid selection. Please try again."
+      ;;
+  esac
+done
+
+echo "Selected environment: $environment"
+echo ""
+
+# Update environment in environments.ts
+echo "Updating environment configuration..."
+sed -i "" "s/export const environment = environments\['.*'\];/export const environment = environments['$environment'];/" libs/shared/environments/src/lib/environments.ts
+
 # Prompt for version
 read -p "Enter version (current: $(jq -r '.appData.version' apps/commudle-admin/ngsw-config.json)): " version
 if [ -z "$version" ]; then
