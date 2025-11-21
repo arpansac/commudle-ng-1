@@ -1,6 +1,18 @@
 .forum-messages-container {
   @apply com-mx-auto com-p-6;
 
+  .loading-state {
+    @apply com-text-center com-py-16;
+
+    nb-spinner {
+      @apply com-mb-4;
+    }
+
+    p {
+      @apply com-text-gray-600 com-text-lg;
+    }
+  }
+
   .header-section {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-6;
 

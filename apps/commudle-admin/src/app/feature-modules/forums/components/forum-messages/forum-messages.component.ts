@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUserMessage, IForum } from '@commudle/shared-models';
-import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
 import { Subject, takeUntil } from 'rxjs';
 import { faArrowLeft, faThumbsUp, faEye } from '@fortawesome/free-solid-svg-icons';
 import { CommunityChannelHandlerService } from '@commudle/shared-components';
 import { ToastrService } from '@commudle/shared-services';
+import { ForumsStore } from '../../store/forums.store';
 
 @Component({
   selector: 'commudle-forum-messages',
@@ -16,7 +16,6 @@ import { ToastrService } from '@commudle/shared-services';
 export class ForumMessagesComponent implements OnInit, OnDestroy {
   categorySlug: string;
   userMessageSlug: string;
-  userMessage: IUserMessage;
   forum: IForum;
   replyForm: FormGroup;
 
@@ -26,15 +25,18 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     faEye,
   };
 
+  readonly userMessage$ = this.forumsStore.currentUserMessage$;
+  readonly isLoadingUserMessage$ = this.forumsStore.isLoadingUserMessage$;
+
   private destroy$ = new Subject<void>();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly userMessagesService: UserMessagesService,
     private readonly router: Router,
     private readonly fb: FormBuilder,
     private readonly communityChannelHandlerService: CommunityChannelHandlerService,
     private readonly toastrService: ToastrService,
+    private readonly forumsStore: ForumsStore,
   ) {
     this.replyForm = this.fb.group({
       reply: ['', [Validators.required, Validators.maxLength(1000)]],
@@ -45,7 +47,7 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.categorySlug = params['category_slug'];
       this.userMessageSlug = params['user_message_slug'];
-      this.getUserMessages();
+      this.forumsStore.loadUserMessage(this.userMessageSlug);
     });
 
     this.activatedRoute.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -56,14 +58,9 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.communityChannelHandlerService.destroy();
+    this.forumsStore.clearUserMessage();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  getUserMessages() {
-    this.userMessagesService.showUserMessage(this.userMessageSlug).subscribe((userMessage: IUserMessage) => {
-      this.userMessage = userMessage;
-    });
   }
 
   backToDiscussions() {
@@ -87,7 +84,11 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.communityChannelHandlerService.sendReply(Number(this.userMessage.id), message);
+    this.userMessage$.pipe(takeUntil(this.destroy$)).subscribe((userMessage) => {
+      if (userMessage) {
+        this.communityChannelHandlerService.sendReply(Number(userMessage.id), message);
+      }
+    });
   }
 
   private initializeRealTimeUpdates(): void {
@@ -95,12 +96,11 @@ export class ForumMessagesComponent implements OnInit, OnDestroy {
       if (messages.length > 0) {
         const newMessage = messages[0].data;
 
-        if (
-          Number(newMessage.parent_id) === Number(this.userMessage.id) &&
-          !this.userMessage.user_messages.find((msg) => msg.id === newMessage.id)
-        ) {
-          this.userMessage.user_messages = [...this.userMessage.user_messages, newMessage];
-        }
+        this.userMessage$.pipe(takeUntil(this.destroy$)).subscribe((userMessage) => {
+          if (userMessage && Number(newMessage.parent_id) === Number(userMessage.id)) {
+            this.forumsStore.addReplyToUserMessage(newMessage);
+          }
+        });
       }
     });
   }

@@ -11,6 +11,7 @@ import {
   IPageInfo,
 } from '@commudle/shared-models';
 import { ForumService, ToastrService, DiscussionService } from '@commudle/shared-services';
+import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +38,19 @@ export class ForumsStore {
   private readonly hasNextPage = new BehaviorSubject<boolean>(false);
   readonly hasNextPage$ = this.hasNextPage.asObservable();
 
+  private readonly currentUserMessage = new BehaviorSubject<IUserMessage | null>(null);
+  readonly currentUserMessage$ = this.currentUserMessage.asObservable();
+
+  private readonly isLoadingUserMessage = new BehaviorSubject<boolean>(false);
+  readonly isLoadingUserMessage$ = this.isLoadingUserMessage.asObservable();
+
   private currentPage = 1;
 
   constructor(
     private readonly forumService: ForumService,
     private readonly toastrService: ToastrService,
     private readonly discussionService: DiscussionService,
+    private readonly userMessagesService: UserMessagesService,
   ) {}
 
   loadForums(parentId: string, parentType: EDbModels): void {
@@ -125,6 +133,39 @@ export class ForumsStore {
     }
   }
 
+  loadUserMessage(userMessageSlug: string): void {
+    this.isLoadingUserMessage.next(true);
+
+    this.userMessagesService
+      .showUserMessage(userMessageSlug)
+      .pipe(finalize(() => this.isLoadingUserMessage.next(false)))
+      .subscribe({
+        next: (userMessage: IUserMessage) => {
+          this.currentUserMessage.next(userMessage);
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to load message');
+          this.currentUserMessage.next(null);
+        },
+      });
+  }
+
+  addReplyToUserMessage(reply: IUserMessage): void {
+    const currentMessage = this.currentUserMessage.value;
+    if (currentMessage && !currentMessage.user_messages.find((msg) => msg.id === reply.id)) {
+      const updatedMessage = {
+        ...currentMessage,
+        user_messages: [...currentMessage.user_messages, reply],
+      };
+      this.currentUserMessage.next(updatedMessage);
+    }
+  }
+
+  clearUserMessage(): void {
+    this.currentUserMessage.next(null);
+    this.isLoadingUserMessage.next(false);
+  }
+
   clearDiscussions(): void {
     this.userMessages.next([]);
     this.hasNextPage.next(false);
@@ -137,6 +178,7 @@ export class ForumsStore {
     this.parentType.next(null);
     this.categories.next([]);
     this.clearDiscussions();
+    this.clearUserMessage();
   }
 
   private updateCategories(forum: IForum): void {

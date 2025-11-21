@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IForum, IUserMessage, IPageInfo } from '@commudle/shared-models';
+import { IForum } from '@commudle/shared-models';
 import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { CommunityChannelHandlerService } from '@commudle/shared-components';
-import { ForumsStore } from './store/forums.store';
+import { ForumsStore } from 'apps/commudle-admin/src/app/feature-modules/forums/store/forums.store';
 
 @Component({
   selector: 'commudle-forum-discussion',
