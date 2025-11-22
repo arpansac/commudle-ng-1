@@ -27,7 +27,10 @@
           [value]="ps.id"
           name="hackathon_problem_statement_id"
         />
-        <label [for]="'ps-' + ps.id" [innerHTML]="ps.title"></label>
+        <label [for]="'ps-' + ps.id" class="problem-statement-label">
+          <span class="display-id" *ngIf="ps.display_id">{{ ps.display_id }}</span>
+          <span class="title" [innerHTML]="ps.title"></span>
+        </label>
       </div>
     </div>
   </div>

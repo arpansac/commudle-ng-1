@@ -79,6 +79,11 @@
             >
               <div class="problem-statement-fields">
                 <div class="field-group">
+                  <label [for]="'display_id_' + i">Display ID</label>
+                  <input [id]="'display_id_' + i" formControlName="display_id" fullWidth nbInput readonly type="text" />
+                </div>
+
+                <div class="field-group">
                   <label [for]="'title_' + i">Title</label>
                   <editor [init]="tinyMCE" [id]="'title_' + i" formControlName="title"></editor>
                 </div>

@@ -117,7 +117,7 @@
         >
           <option value="" selected disabled>Filter with Problem Statements</option>
           <option *ngFor="let problemStatement of hackathonProblemStatements" [value]="problemStatement.id">
-            {{ problemStatement.title }}
+            #{{ problemStatement.display_id }}
           </option>
         </select>
       </div>

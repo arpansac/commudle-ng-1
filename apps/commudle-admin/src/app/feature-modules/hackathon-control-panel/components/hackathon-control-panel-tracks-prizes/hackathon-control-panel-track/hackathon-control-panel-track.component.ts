@@ -23,6 +23,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   hackathonTracks: IHackathonTrack[];
   hackathonSlug = '';
   isLoading = true;
+  currentTrackIndex: number;
   tinyMCE = {
     min_height: 200,
     menubar: false,
@@ -61,16 +62,26 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     return this.trackForm.get('problem_statements') as FormArray;
   }
 
-  createProblemStatementGroup(problemStatement?: IHackathonProblemStatement): FormGroup {
+  createProblemStatementGroup(problemStatement?: IHackathonProblemStatement, trackIndex?: number): FormGroup {
+    const psIndex = this.problemStatements.length + 1;
+    const displayId = problemStatement?.display_id || this.generateDisplayId(trackIndex, psIndex);
+
     return this.fb.group({
       id: [problemStatement?.id || null],
       title: [problemStatement?.title || ''],
       max_teams_limit: [problemStatement?.max_teams_limit || null],
+      display_id: [{ value: displayId, disabled: true }],
     });
   }
 
+  generateDisplayId(trackIndex?: number, psIndex?: number): string {
+    const tIndex = trackIndex !== undefined ? trackIndex + 1 : this.hackathonTracks?.length + 1 || 1;
+    const pIndex = psIndex || 1;
+    return `ps${tIndex}${pIndex}`;
+  }
+
   addProblemStatement(): void {
-    this.problemStatements.push(this.createProblemStatementGroup());
+    this.problemStatements.push(this.createProblemStatementGroup(undefined, this.currentTrackIndex));
   }
 
   removeProblemStatement(index: number): void {
@@ -80,6 +91,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   openSponsorDialogBox(dialog, track?: IHackathonTrack, index?) {
     this.trackForm.reset();
     this.problemStatements.clear();
+    this.currentTrackIndex = index;
 
     if (track) {
       this.trackForm.patchValue({
@@ -89,7 +101,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
 
       if (track.hackathon_problem_statements?.length) {
         track.hackathon_problem_statements.forEach((ps) => {
-          this.problemStatements.push(this.createProblemStatementGroup(ps));
+          this.problemStatements.push(this.createProblemStatementGroup(ps, index));
         });
       }
     }
@@ -120,13 +132,14 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   }
 
   createTrack() {
-    const formValue = this.trackForm.value;
+    const formValue = this.trackForm.getRawValue();
     const filteredProblemStatements = formValue.problem_statements
       .filter((ps) => ps.title?.trim())
       .map((ps) => ({
         ...(ps.id && { id: ps.id }),
         title: ps.title,
         ...(ps.max_teams_limit && { max_teams_limit: ps.max_teams_limit }),
+        ...(ps.display_id && { display_id: ps.display_id }),
       }));
 
     const payload = {
@@ -142,13 +155,14 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   }
 
   updateTrack(trackId, index) {
-    const formValue = this.trackForm.value;
+    const formValue = this.trackForm.getRawValue();
     const filteredProblemStatements = formValue.problem_statements
       .filter((ps) => ps.title?.trim())
       .map((ps) => ({
         ...(ps.id && { id: ps.id }),
         title: ps.title,
         ...(ps.max_teams_limit && { max_teams_limit: ps.max_teams_limit }),
+        ...(ps.display_id && { display_id: ps.display_id }),
       }));
 
     const payload = {

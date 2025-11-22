@@ -33,6 +33,18 @@ form {
 
         label {
           @apply com-flex-1 com-cursor-pointer;
+
+          &.problem-statement-label {
+            @apply com-flex com-items-start com-gap-3;
+
+            .display-id {
+              @apply com-flex-shrink-0 com-px-2 com-py-1 com-bg-primary-100 com-text-primary-500 com-rounded com-text-xs com-font-semibold com-uppercase;
+            }
+
+            .title {
+              @apply com-flex-1;
+            }
+          }
         }
       }
     }
