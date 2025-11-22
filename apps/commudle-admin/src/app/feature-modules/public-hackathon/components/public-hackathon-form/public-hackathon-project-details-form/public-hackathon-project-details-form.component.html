@@ -16,29 +16,22 @@
     </select>
   </div>
 
-  <div *ngIf="selectedTrackProblemStatement">
-    Problem Statement
-    <div [innerHTML]="selectedTrackProblemStatement"></div>
-  </div>
-
-  <div>
-    <label for="project_description">Describe Your Project/ Idea In Brief (Optional)</label>
+  <div *ngIf="selectedTrackProblemStatements.length > 0">
+    <label for="hackathon_problem_statement_id">Select Problem Statement (Optional)</label>
     <br />
-    <textarea
-      name="project_description"
-      id="project_description"
-      rows="3"
-      placeholder="Give us some details about your project"
-      nbInput
-      fullWidth
-      formControlName="project_description"
-    ></textarea>
-    <!-- <commudle-alert
-      [error]="this.hackathonProjectDetailsForm.get('project_description').errors?.['minWords'] && this.hackathonProjectDetailsForm.get('project_description').touched"
-      errorMessage="Minimum 50 words required."
+    <select
+      formControlName="hackathon_problem_statement_id"
+      name="hackathon_problem_statement_id"
+      id="hackathon_problem_statement_id"
+      [ngClass]="{
+        'com-text-[#8E9BB3]': hackathonProjectDetailsForm.get('hackathon_problem_statement_id').value === ''
+      }"
     >
-      "</commudle-alert
-    > -->
+      <option selected disabled value="">Select Problem Statement</option>
+      <option *ngFor="let ps of selectedTrackProblemStatements" [value]="ps.id">
+        <div [innerHTML]="ps.title"></div>
+      </option>
+    </select>
   </div>
 
   <div class="action-buttons">

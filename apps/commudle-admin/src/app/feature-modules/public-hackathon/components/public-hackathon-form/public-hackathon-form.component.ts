@@ -37,6 +37,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
   contactInfo: IContactInfo;
   selectedTeamIndex = 0;
   hackathonUserResponsesByTeam: IHackathonUserResponsesGroupByTeam[];
+  selectedTeam: IHackathonUserResponsesGroupByTeam;
 
   @ViewChild('stepper') stepper: NbStepperComponent;
   @ViewChild('formConfirmationDialog', { static: true }) formConfirmationDialog: TemplateRef<any>;
@@ -165,6 +166,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
       this.hackathonUserResponse = selectedTeamGroup.hackathon_user_responses[0];
       this.current_user_is_team_lead = this.hackathonUserResponse.current_user_is_team_lead;
       this.selectedTeamIndex = index;
+      this.selectedTeam = selectedTeamGroup;
     }
   }
   //Call it from html when user clicks on team change

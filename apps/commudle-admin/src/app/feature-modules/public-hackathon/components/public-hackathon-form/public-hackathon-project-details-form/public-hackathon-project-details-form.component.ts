@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { IHackathonTrack, IHackathonUserResponse } from '@commudle/shared-models';
+import { IHackathonTrack, IHackathonUserResponse, IHackathonUserResponsesGroupByTeam } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 
@@ -12,29 +12,28 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   @Input() hackathon: IHackathon;
   @Input() hackathonUserResponse: IHackathonUserResponse;
+  @Input() team: IHackathonUserResponsesGroupByTeam;
   @Output() createOrUpdateProjectDetails = new EventEmitter<any>();
   @Output() previousButtonEvent = new EventEmitter<any>();
 
   hackathonTracks: IHackathonTrack[];
   hackathonProjectDetailsForm: FormGroup;
-  selectedTrackProblemStatement = '';
+
+  selectedTrackProblemStatements = [];
 
   constructor(private hackathonService: HackathonService, private fb: FormBuilder) {
     this.hackathonProjectDetailsForm = this.fb.group({
       hackathon_track_id: '',
-      project_description: [''],
+      hackathon_problem_statement_id: '',
     });
   }
 
   ngOnInit() {
     this.fetchHackathonTracks();
-    if (
-      this.hackathonUserResponse &&
-      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.project_description)
-    ) {
+    if (this.team && (this.team.hackathon_team?.track?.id || this.team.hackathon_team?.problem_statement?.id)) {
       this.hackathonProjectDetailsForm.patchValue({
-        hackathon_track_id: this.hackathonUserResponse.track_id,
-        project_description: this.hackathonUserResponse.project_description,
+        hackathon_track_id: this.team.hackathon_team?.track?.id,
+        hackathon_problem_statement_id: this.team.hackathon_team?.problem_statement?.id,
       });
     }
   }
@@ -51,10 +50,25 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   updateProblemStatement() {
     const selectedTrackId = this.hackathonProjectDetailsForm.get('hackathon_track_id').value;
     const selectedTrack = this.hackathonTracks.find((track) => track.id == selectedTrackId);
+
     if (selectedTrack) {
-      this.selectedTrackProblemStatement = selectedTrack.problem_statement;
+      this.selectedTrackProblemStatements = selectedTrack.hackathon_problem_statements || [];
     } else {
-      this.selectedTrackProblemStatement = '';
+      this.selectedTrackProblemStatements = [];
+    }
+
+    // Reset problem statement selection when track changes
+    this.hackathonProjectDetailsForm.patchValue({ hackathon_problem_statement_id: '' });
+  }
+
+  updateProblemStatementForEdit() {
+    const selectedTrackId = this.hackathonProjectDetailsForm.get('hackathon_track_id').value;
+    const selectedTrack = this.hackathonTracks.find((track) => track.id == selectedTrackId);
+
+    if (selectedTrack) {
+      this.selectedTrackProblemStatements = selectedTrack.hackathon_problem_statements || [];
+    } else {
+      this.selectedTrackProblemStatements = [];
     }
   }
 
@@ -68,6 +82,11 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
         hackathonTrackIdControl.clearValidators();
       }
       hackathonTrackIdControl.updateValueAndValidity();
+
+      // Update problem statements if track is already selected (edit mode)
+      if (this.hackathonProjectDetailsForm.get('hackathon_track_id').value) {
+        this.updateProblemStatementForEdit();
+      }
     });
   }
 

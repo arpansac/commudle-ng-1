@@ -6,6 +6,8 @@ import { IHackathonWinner } from './hackathon-winner.model';
 import { ICommunity } from './community.model';
 import { IHackathon } from './hackathon.model';
 import { EInvitationStatus, IHackathonUserResponse } from './hackathon-user-response.model';
+import { IHackathonProblemStatement } from './hackathon-problem-statement.model';
+import { IHackathonTrack } from './hackathon-track.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -26,6 +28,8 @@ export interface IHackathonTeam {
   hackathon_user_responses: IHackathonUserResponse[];
   user_id: number;
   team_leader_hur_status: EInvitationStatus;
+  track: IHackathonTrack;
+  problem_statement: IHackathonProblemStatement;
 }
 
 export enum EHackathonRegistrationStatus {
