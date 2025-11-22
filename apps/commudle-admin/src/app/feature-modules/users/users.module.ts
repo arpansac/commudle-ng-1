@@ -71,6 +71,7 @@ import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/s
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 @NgModule({
   declarations: [
     PublicProfileComponent,
@@ -146,6 +147,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     NbSelectModule,
     UserExpertTickComponent,
     RecaptchaModule,
+    SkeletonCardsComponent,
   ],
   exports: [
     BasicUserProfileComponent,
