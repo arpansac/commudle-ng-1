@@ -91,7 +91,4 @@ const environments: { [type: string]: Environment } = {
   },
 };
 
-// export const environment = environments['local'];
-// export const environment = environments['test'];
-// export const environment = environments['staging'];
 export const environment = environments['production'];
