@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { IHackathonTrack, IHackathonUserResponse } from '@commudle/shared-models';
+import { IHackathonTrack, IHackathonUserResponse, IHackathonUserResponsesGroupByTeam } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 
@@ -12,6 +12,7 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   @Input() hackathon: IHackathon;
   @Input() hackathonUserResponse: IHackathonUserResponse;
+  @Input() team: IHackathonUserResponsesGroupByTeam;
   @Output() createOrUpdateProjectDetails = new EventEmitter<any>();
   @Output() previousButtonEvent = new EventEmitter<any>();
 
@@ -29,13 +30,10 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
 
   ngOnInit() {
     this.fetchHackathonTracks();
-    if (
-      this.hackathonUserResponse &&
-      (this.hackathonUserResponse.track_id || this.hackathonUserResponse.hackathon_problem_statement?.id)
-    ) {
+    if (this.team && (this.team.hackathon_team?.track?.id || this.team.hackathon_team?.problem_statement?.id)) {
       this.hackathonProjectDetailsForm.patchValue({
-        hackathon_track_id: this.hackathonUserResponse.track_id,
-        hackathon_problem_statement_id: this.hackathonUserResponse.hackathon_problem_statement?.id,
+        hackathon_track_id: this.team.hackathon_team?.track?.id,
+        hackathon_problem_statement_id: this.team.hackathon_team?.problem_statement?.id,
       });
     }
   }
