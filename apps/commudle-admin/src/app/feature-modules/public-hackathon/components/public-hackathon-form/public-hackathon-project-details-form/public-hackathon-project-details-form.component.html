@@ -16,22 +16,20 @@
     </select>
   </div>
 
-  <div *ngIf="selectedTrackProblemStatements.length > 0">
-    <label for="hackathon_problem_statement_id">Select Problem Statement (Optional)</label>
-    <br />
-    <select
-      formControlName="hackathon_problem_statement_id"
-      name="hackathon_problem_statement_id"
-      id="hackathon_problem_statement_id"
-      [ngClass]="{
-        'com-text-[#8E9BB3]': hackathonProjectDetailsForm.get('hackathon_problem_statement_id').value === ''
-      }"
-    >
-      <option selected disabled value="">Select Problem Statement</option>
-      <option *ngFor="let ps of selectedTrackProblemStatements" [value]="ps.id">
-        <div [innerHTML]="ps.title"></div>
-      </option>
-    </select>
+  <div *ngIf="selectedTrackProblemStatements.length > 0" class="problem-statements-container">
+    <label>Select Problem Statement (Optional)</label>
+    <div class="radio-group">
+      <div *ngFor="let ps of selectedTrackProblemStatements" class="radio-option">
+        <input
+          type="radio"
+          [id]="'ps-' + ps.id"
+          formControlName="hackathon_problem_statement_id"
+          [value]="ps.id"
+          name="hackathon_problem_statement_id"
+        />
+        <label [for]="'ps-' + ps.id" [innerHTML]="ps.title"></label>
+      </div>
+    </div>
   </div>
 
   <div class="action-buttons">

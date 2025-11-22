@@ -6,4 +6,35 @@ form {
   .action-buttons {
     @apply com-flex com-items-center com-justify-between;
   }
+
+  .problem-statements-container {
+    @apply com-flex com-flex-col com-gap-2;
+
+    .radio-group {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .radio-option {
+        @apply com-flex com-items-center com-gap-3 com-px-4 com-py-3 com-border com-border-solid com-border-Bright-Gray com-rounded com-transition-colors com-duration-200;
+        @apply hover:com-border-primary-500;
+
+        input[type='radio'] {
+          @apply com-cursor-pointer com-flex-shrink-0;
+
+          &:checked {
+            & ~ label {
+              @apply com-font-medium;
+            }
+          }
+        }
+
+        &:has(input[type='radio']:checked) {
+          @apply com-border-primary-500;
+        }
+
+        label {
+          @apply com-flex-1 com-cursor-pointer;
+        }
+      }
+    }
+  }
 }
