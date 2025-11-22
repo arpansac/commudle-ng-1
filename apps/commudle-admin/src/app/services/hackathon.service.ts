@@ -17,6 +17,7 @@ import {
   IHackathonPrize,
   IHackathonTeam,
   IHackathonTrack,
+  IHackathonProblemStatement,
   IPagination,
   IPaginationCount,
 } from '@commudle/shared-models';
@@ -209,6 +210,16 @@ export class HackathonService {
     });
   }
 
+  indexProblemStatements(hackathonId): Observable<IHackathonProblemStatement[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<IHackathonProblemStatement[]>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_PROBLEM_STATEMENTS),
+      {
+        params,
+      },
+    );
+  }
+
   destroyTrack(trackId): Observable<boolean> {
     const params = new HttpParams().set('track_id', trackId);
     return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.DESTROY_TRACK), { params });
@@ -297,6 +308,7 @@ export class HackathonService {
     status?: string,
     onlyWinners?: boolean,
     trackId?: number,
+    problemStatementId?: number,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
@@ -314,6 +326,9 @@ export class HackathonService {
     }
     if (trackId) {
       params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),

@@ -18,6 +18,7 @@ import {
   IRound,
   ICommunity,
   EParticipateTypes,
+  IHackathonProblemStatement,
 } from '@commudle/shared-models';
 import {
   faXmark,
@@ -51,6 +52,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   EHackathonRegistrationStatusColor = EHackathonRegistrationStatusColor;
   hackathonRounds: IRound[];
   hackathonTracks: IHackathonTrack[];
+  hackathonProblemStatements: IHackathonProblemStatement[];
   selectedUserDetails: IHackathonUserResponse;
   icons = {
     faXmark,
@@ -80,6 +82,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   selectedRoundIdForFilter = '';
   selectedStatusForFilter = '';
   selectedTrackForFilter = '';
+  selectProblemStatementForFilter = '';
   showOnlyWinnerEntry = false;
 
   dialogReference: NbDialogRef<any>;
@@ -165,6 +168,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.fetchHackathon(params.get('hackathon_id'));
         this.indexRounds(params.get('hackathon_id'));
         this.indexTracks(params.get('hackathon_id'));
+        this.indexProblemStatements(params.get('hackathon_id'));
       }),
     );
 
@@ -207,6 +211,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.selectedStatusForFilter,
         this.showOnlyWinnerEntry,
         Number(this.selectedTrackForFilter),
+        Number(this.selectProblemStatementForFilter),
       )
       .subscribe((data) => {
         this.userResponses = data.values;
@@ -235,6 +240,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   indexTracks(hackathonId) {
     this.hackathonService.indexTracks(hackathonId).subscribe((data) => {
       this.hackathonTracks = data;
+    });
+  }
+
+  indexProblemStatements(hackathonId) {
+    this.hackathonService.indexProblemStatements(hackathonId).subscribe((data) => {
+      this.hackathonProblemStatements = data;
     });
   }
 
@@ -366,6 +377,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   onTrackChange(event) {
     this.selectedTrackForFilter = event.target.value;
+    const selectedTrack = this.hackathonTracks.find((track) => track.id === Number(this.selectedTrackForFilter));
+    this.hackathonProblemStatements = selectedTrack.hackathon_problem_statements;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  onProblemStatementChange(event) {
+    this.selectProblemStatementForFilter = event.target.value;
     this.page = 1;
     this.fetchUserResponses();
   }
@@ -383,10 +402,17 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   clearAllFilter() {
-    if (this.selectedStatusForFilter || this.selectedRoundIdForFilter || this.selectedTrackForFilter) {
+    if (
+      this.selectedStatusForFilter ||
+      this.selectedRoundIdForFilter ||
+      this.selectedTrackForFilter ||
+      this.selectProblemStatementForFilter
+    ) {
       this.selectedStatusForFilter = '';
       this.selectedRoundIdForFilter = '';
       this.selectedTrackForFilter = '';
+      this.selectProblemStatementForFilter = '';
+      this.indexProblemStatements(this.hackathon.id);
       this.page = 1;
       this.fetchUserResponses();
     }

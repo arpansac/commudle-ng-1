@@ -108,6 +108,21 @@
       </div>
 
       <div class="select">
+        <select
+          (change)="onProblemStatementChange($event)"
+          [(ngModel)]="selectProblemStatementForFilter"
+          [ngClass]="{
+            'not-active': selectProblemStatementForFilter === ''
+          }"
+        >
+          <option value="" selected disabled>Filter with Problem Statements</option>
+          <option *ngFor="let problemStatement of hackathonProblemStatements" [value]="problemStatement.id">
+            {{ problemStatement.title }}
+          </option>
+        </select>
+      </div>
+
+      <div class="select">
         <select (change)="onSelectWinnerChange($event)" [(ngModel)]="showOnlyWinnerEntry">
           <option [value]="false">Show All</option>
           <option [value]="true">Show Only Winners</option>
@@ -117,7 +132,12 @@
       <div
         class="clear-filter"
         (click)="clearAllFilter()"
-        *ngIf="selectedStatusForFilter || selectedRoundIdForFilter || selectedTrackForFilter"
+        *ngIf="
+          selectedStatusForFilter ||
+          selectedRoundIdForFilter ||
+          selectedTrackForFilter ||
+          selectProblemStatementForFilter
+        "
       >
         Clear All Filters
       </div>
