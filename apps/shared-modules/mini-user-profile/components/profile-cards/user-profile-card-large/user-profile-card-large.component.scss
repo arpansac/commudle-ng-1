@@ -114,5 +114,9 @@ app-badge {
 }
 
 .mutuals {
-  @apply com-block com-text-xs com-font-semibold com-text-gray-500 com-mt-3;
+  @apply com-block com-text-xs com-font-medium com-text-gray-500 com-mt-3;
+
+  .mutuals-name {
+    @apply hover:com-underline;
+  }
 }
