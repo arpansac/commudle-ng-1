@@ -7,6 +7,7 @@ import { IHackathon } from './hackathon.model';
 
 export interface ICommunityChannel {
   id: number;
+  slug: string;
   user: IUser;
   kommunity_id: number;
   name: string;
@@ -30,7 +31,6 @@ export interface ICommunityChannel {
   members_count: number;
   default: boolean;
   parent_type: EDbModels;
-  // TODO: Handle other parent cases
   parent: ICommunity | IHackathon;
 }
 

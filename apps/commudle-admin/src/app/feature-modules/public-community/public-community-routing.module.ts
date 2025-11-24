@@ -52,17 +52,22 @@ const routes = [
         path: 'channels/email-join/:email_token',
         component: CommunityChannelsListComponent,
       },
+      // {
+      //   path: 'forums',
+      //   component: CommunityChannelsListComponent,
+      // },
+      // {
+      //   path: 'forums/:community_channel_id',
+      //   component: CommunityChannelsListComponent,
+      // },
+      // {
+      //   path: 'forums/join/:token',
+      //   component: CommunityChannelsListComponent,
+      // },
       {
         path: 'forums',
-        component: CommunityChannelsListComponent,
-      },
-      {
-        path: 'forums/:community_channel_id',
-        component: CommunityChannelsListComponent,
-      },
-      {
-        path: 'forums/join/:token',
-        component: CommunityChannelsListComponent,
+        loadChildren: () =>
+          import('apps/commudle-admin/src/app/feature-modules/forums/forums.module').then((m) => m.ForumsModule),
       },
       {
         path: 'notifications',

@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ICommunity, ICommunityChannel } from '@commudle/shared-models';
-import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { NbButtonModule, NbIconModule } from '@commudle/theme';
+import { ICommunityChannel } from '@commudle/shared-models';
+import { NbIconModule } from '@commudle/theme';
 
 @Component({
   selector: 'commudle-forum-card',
@@ -11,10 +10,7 @@ import { NbButtonModule, NbIconModule } from '@commudle/theme';
   templateUrl: './forum-card.component.html',
   styleUrls: ['./forum-card.component.scss'],
 })
-export class ForumCardComponent implements OnInit {
+export class ForumCardComponent {
   @Input() forum: ICommunityChannel;
   @Input() horizontalScroll = false;
-  constructor() {}
-
-  ngOnInit(): void {}
 }

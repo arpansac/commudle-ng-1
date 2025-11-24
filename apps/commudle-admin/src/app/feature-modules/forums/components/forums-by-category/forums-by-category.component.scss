@@ -1,0 +1,73 @@
+.forums-by-category {
+  @apply com-p-6;
+  .back-new-topic {
+    @apply com-flex com-justify-between com-items-center;
+    .back-button {
+      @apply com-cursor-pointer com-text-black;
+    }
+  }
+
+  .forums-by-category-header {
+    @apply com-mt-6;
+    span {
+      @apply com-text-Yankees-Blue com-text-2xl com-font-semibold;
+    }
+  }
+
+  .forums-by-category-list {
+    .no-forums {
+      @apply com-text-center com-text-gray-500 com-py-8;
+    }
+
+    ul {
+      @apply com-list-none com-p-0 com-m-0 com-mt-8;
+      li {
+        @apply com-list-none;
+
+        .forum-item {
+          @apply com-flex com-items-start com-justify-between com-py-3;
+
+          .forum-content {
+            @apply com-no-underline com-flex-1;
+
+            .topic-name {
+              @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+            }
+
+            .description-last-message {
+              @apply com-mb-2;
+
+              .description,
+              .last-message {
+                @apply com-text-gray-500 com-text-sm com-font-normal com-line-clamp-2;
+              }
+            }
+
+            .stats {
+              @apply com-flex com-gap-2 com-mb-3;
+
+              .discussions,
+              .reply {
+                @apply com-text-Ultramarine-Blue com-text-sm com-font-medium;
+              }
+              fa-icon {
+                @apply com-text-[2px];
+              }
+            }
+          }
+          .action-buttons {
+            @apply com-w-max;
+            @apply com-opacity-0 com-transition-opacity com-duration-200 com-flex com-gap-2;
+          }
+
+          &:hover .action-buttons {
+            @apply com-opacity-100;
+          }
+        }
+      }
+      .forum:not(:last-child) .forum-item {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-my-3;
+      }
+    }
+  }
+}

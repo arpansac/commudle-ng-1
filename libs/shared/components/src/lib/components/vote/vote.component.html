@@ -1,18 +1,59 @@
-<div class="vote-container">
-  <nb-icon
-    (click)="toggleVote()"
-    [icon]="(vote$ | async)?.voted ? 'heart' : 'heart-outline'"
-    [nbTooltipStatus]="(vote$ | async)?.voted ? 'basic' : 'danger'"
-    [nbTooltip]="(vote$ | async)?.voted ? 'Unvote' : 'Vote'"
-    [status]="(vote$ | async)?.voted ? 'danger' : 'basic'"
-  >
-  </nb-icon>
-  <span
-    [nbPopoverContext]="{ votableId: votableId, votableType: votableType }"
-    [nbPopover]="VotersComponent"
-    nbPopoverTrigger="hover"
-    *ngIf="(vote$ | async)?.total"
-  >
-    {{ (vote$ | async)?.total }}
-  </span>
+<div class="vote-container" (click)="toggleVote()" [ngSwitch]="icon">
+  <!-- Heart icon -->
+  <ng-container *ngSwitchCase="'heart'">
+    <fa-icon
+      [icon]="(vote$ | async)?.voted ? faHeart : faHeartOutline"
+      [ngClass]="{ voted: (vote$ | async)?.voted, unvoted: !(vote$ | async)?.voted }"
+      [nbTooltip]="(vote$ | async)?.voted ? 'Unvote' : 'Vote'"
+    >
+    </fa-icon>
+    <span
+      [nbPopoverContext]="{ votableId: votableId, votableType: votableType }"
+      [nbPopover]="VotersComponent"
+      nbPopoverTrigger="hover"
+      *ngIf="(vote$ | async)?.total"
+      class="vote-count"
+    >
+      {{ (vote$ | async)?.total }}
+    </span>
+  </ng-container>
+
+  <!-- Thumbs up icon only -->
+  <ng-container *ngSwitchCase="'thumb-up'">
+    <fa-icon
+      [icon]="faThumbsUp"
+      [ngClass]="{ voted: (vote$ | async)?.voted, unvoted: !(vote$ | async)?.voted }"
+      [nbTooltip]="(vote$ | async)?.voted ? 'Unvote' : 'Vote'"
+    >
+    </fa-icon>
+    <span
+      [nbPopoverContext]="{ votableId: votableId, votableType: votableType }"
+      [nbPopover]="VotersComponent"
+      nbPopoverTrigger="hover"
+      *ngIf="(vote$ | async)?.total"
+      class="vote-count"
+    >
+      {{ (vote$ | async)?.total }}
+    </span>
+  </ng-container>
+
+  <!-- Thumbs up with Like text -->
+  <ng-container *ngSwitchCase="'thumb-up-with-text'">
+    <fa-icon
+      [icon]="faThumbsUp"
+      [ngClass]="{ voted: (vote$ | async)?.voted, unvoted: !(vote$ | async)?.voted }"
+      [nbTooltip]="(vote$ | async)?.voted ? 'Unvote' : 'Vote'"
+    >
+    </fa-icon>
+    <span class="like-text" [nbTooltip]="(vote$ | async)?.voted ? 'Unvote' : 'Vote'">Like</span>
+    <span
+      [nbPopoverContext]="{ votableId: votableId, votableType: votableType }"
+      [nbPopover]="VotersComponent"
+      nbPopoverTrigger="hover"
+      *ngIf="(vote$ | async)?.total"
+      class="vote-count"
+    >
+      {{ (vote$ | async)?.total }}
+    </span>
+  </ng-container>
 </div>

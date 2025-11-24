@@ -240,6 +240,13 @@ export const staticAssets = {
 
   student_non_profit_community_support:
     'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png',
+
+  // id: 203
+  message_empty:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkxPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0913e78822fb31f96bacf5e94d8703df1ad81a33/message_empty.svg',
+
+  folder_empty:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkRPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2dbfa83c67668c9571746d1b9517c40b459312da/Folder_empty.svg',
 };
 
 export const AwsS3Bucket = {
