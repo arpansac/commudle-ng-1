@@ -3,4 +3,5 @@ export interface IHackathonProblemStatement {
   title: string;
   max_teams_limit: number;
   hackathon_track_id?: number;
+  display_id?: string;
 }

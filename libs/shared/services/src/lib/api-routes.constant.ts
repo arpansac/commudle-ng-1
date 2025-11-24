@@ -868,6 +868,7 @@ export const API_ROUTES = {
     UPDATE_TRACK: 'api/v2/hackathons/update_track', //PUT
     INDEX_TRACKS: 'api/v2/hackathons/index_tracks', //GET
     DESTROY_TRACK: 'api/v2/hackathons/destroy_track', //DELETE
+    INDEX_PROBLEM_STATEMENTS: 'api/v2/hackathons/index_problem_statements', //GET
     CREATE_PRIZE: 'api/v2/hackathons/create_prize', //POST
     UPDATE_PRIZE: 'api/v2/hackathons/update_prize', //PUT
     DESTROY_PRIZE: 'api/v2/hackathons/destroy_prize', //DELETE
