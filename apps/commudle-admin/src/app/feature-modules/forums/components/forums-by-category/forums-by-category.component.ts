@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, switchMap, filter } from 'rxjs/operators';
-import { IForum, EDiscussionType, IChannelCategory } from '@commudle/shared-models';
+import { IForum, EDiscussionType, IChannelCategory, EDbModels } from '@commudle/shared-models';
 import { ForumService, ToastrService } from '@commudle/shared-services';
 import { faArrowLeft, faCircle, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ForumFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/forum-form/forum-form.component';
@@ -17,6 +17,12 @@ import { ForumsStore } from '@commudle/shared-services';
 export class ForumsByCategoryComponent implements OnInit, OnDestroy {
   forums: IForum[] = [];
   forumCategory: IChannelCategory;
+  currentPage = 1;
+  itemsPerPage = 2;
+  totalItems = 0;
+  private parentId: number | string;
+  private parentType: EDbModels;
+  private categorySlug: string;
   private readonly destroy$ = new Subject<void>();
   readonly icons = {
     faPlus,
@@ -36,40 +42,50 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.loadForums();
+  }
+
+  private loadForums(): void {
     combineLatest([this.route.params, this.forumsStore.parentId$, this.forumsStore.parentType$])
       .pipe(
         takeUntil(this.destroy$),
-        filter(([parentId, parentType]) => !!parentId && !!parentType),
-        switchMap(([params, parentId, parentType]) =>
-          combineLatest([
-            this.forumService.getForumsByCategory(parentId, parentType, params['category_slug'], EDiscussionType.FORUM),
-            this.forumService.showCategory(params['category_slug']),
-          ]),
-        ),
+        filter(([, parentId, parentType]) => !!parentId && !!parentType),
       )
-      .subscribe(([forums, categoryResponse]) => {
-        this.forums = forums;
+      .subscribe(([params, parentId, parentType]) => {
+        this.parentId = parentId;
+        this.parentType = parentType;
+        this.categorySlug = params['category_slug'];
+        this.getForumsByCategory();
+        this.getCategoryDetails();
+      });
+  }
+
+  private getForumsByCategory(): void {
+    this.forumService
+      .getForumsByCategory(
+        this.parentId,
+        this.parentType,
+        this.categorySlug,
+        EDiscussionType.FORUM,
+        this.currentPage,
+        this.itemsPerPage,
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((forumsResponse) => {
+        this.forums = forumsResponse.values;
+        this.totalItems = forumsResponse.total;
+        this.currentPage = forumsResponse.page;
+        this.itemsPerPage = forumsResponse.count;
+      });
+  }
+
+  private getCategoryDetails(): void {
+    this.forumService
+      .showCategory(this.categorySlug)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((categoryResponse) => {
         this.forumCategory = categoryResponse;
       });
-
-    // Listen for forums changes in store
-    this.forumsStore.forums$.pipe(takeUntil(this.destroy$)).subscribe((allForums) => {
-      if (this.forumCategory) {
-        const categoryForums = allForums.filter((forum) => forum.channel_category.slug === this.forumCategory.slug);
-
-        // Update existing forums and add new ones
-        const updatedForums = this.forums.map((existingForum) => {
-          const updatedForum = categoryForums.find((f) => f.id === existingForum.id);
-          return updatedForum || existingForum;
-        });
-
-        const newForums = categoryForums.filter(
-          (forum) => !this.forums.some((existingForum) => existingForum.id === forum.id),
-        );
-
-        this.forums = [...updatedForums, ...newForums];
-      }
-    });
   }
 
   ngOnDestroy(): void {
@@ -104,9 +120,15 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
       this.forumService.deleteForum(forum.id).subscribe((data) => {
         if (data) {
           this.forums.splice(index, 1);
+          this.totalItems--;
           this.tosterService.successDialog('Forum deleted successfully');
         }
       });
     }
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.getForumsByCategory();
   }
 }

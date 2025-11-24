@@ -5,9 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { IForum } from '@commudle/shared-models';
 import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
-import { NewDiscussionFormComponent } from '../new-discussion-form/new-discussion-form.component';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { ForumsStore } from '@commudle/shared-services';
+import { NewDiscussionFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/new-discussion-form/new-discussion-form.component';
 
 @Component({
   selector: 'commudle-forum-discussion',

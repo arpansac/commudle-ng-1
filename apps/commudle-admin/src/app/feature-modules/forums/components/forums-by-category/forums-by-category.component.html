@@ -65,4 +65,15 @@
       </li>
     </ul>
   </div>
+
+  <app-pagination
+    *ngIf="totalItems > itemsPerPage"
+    [current]="currentPage"
+    [count]="itemsPerPage"
+    [total]="totalItems"
+    (goTo)="onPageChange($event)"
+    (next)="onPageChange($event)"
+    (previous)="onPageChange($event)"
+  >
+  </app-pagination>
 </div>
