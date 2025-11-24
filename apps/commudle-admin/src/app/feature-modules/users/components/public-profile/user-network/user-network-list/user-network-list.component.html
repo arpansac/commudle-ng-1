@@ -1,4 +1,5 @@
-<div *ngIf="network.length > 0" class="user-network-list-container">
+<app-skeleton-cards [cards]="4" *ngIf="isLoading"></app-skeleton-cards>
+<div *ngIf="!isLoading && network.length > 0" class="user-network-list-container">
   <nb-list>
     <nb-list-item *ngFor="let user of network">
       <!-- TODO : try fixing line clamp for username instead of using truncateText -->
