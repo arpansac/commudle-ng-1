@@ -62,7 +62,10 @@
       </div>
       <div class="event-description">
         <nb-icon icon="info-outline"></nb-icon>
-        <div [innerHTML]="event.description | linky : { sanitizeHtml: false }" class="inner-html md:com-w-2/3"></div>
+        <div
+          [innerHTML]="event.description | linky : { sanitizeHtml: false } | safeHtml"
+          class="inner-html md:com-w-2/3"
+        ></div>
       </div>
     </div>
   </nb-card-body>
