@@ -3,25 +3,28 @@
     <div class="one-column-layout">
       <nb-card class="page-header">
         <nb-card-body>
-          <h1>
-            <nb-icon icon="bulb-outline" status="warning"></nb-icon>
-            <span>Share Your Build!</span>
-            <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
-          </h1>
-          <p>
-            We as Software Developers create so many side projects which are really cool, from a simple script to a
-            complete app or even a tutorial/course you have created. This is the place where you can share them with
-            thousands of more developers like you.
-          </p>
-          <ul *ngIf="!cBuild">
-            <li><strong>Project:</strong> Code should be open sourced!</li>
-            <!-- <li><strong>Product:</strong> Should be live :D</li>
-            <li><strong>Slides:</strong> You delivered / are planning to use them for a Tech Session</li> -->
-            <li>
-              <strong>Course:</strong> Anything from which people can learn to add to their skills, can be both
-              online/offline!
-            </li>
-          </ul>
+          <div *ngIf="!(parentId && parentType)" class="header-content">
+            <div class="header-text">
+              <h1>
+                <span>Create Your Build</span>
+                <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
+              </h1>
+              <p>
+                Share your project’s story, visuals, and resources. Publish to connect with others, inspire discovery,
+                and receive feedback from the community.
+              </p>
+              <ul *ngIf="!cBuild">
+                <li><strong>Project:</strong> Code should be open sourced!</li>
+                <li>
+                  <strong>Course:</strong> Anything from which people can learn to add to their skills, can be both
+                  online/offline!
+                </li>
+              </ul>
+            </div>
+            <div class="header-image">
+              <img alt="Create Build Header" src="{{ staticAssets.create_build_header }}" title="Create Build Header" />
+            </div>
+          </div>
         </nb-card-body>
       </nb-card>
 
@@ -29,21 +32,19 @@
         <nb-card-body>
           <form (keydown.enter)="$event.preventDefault()" [formGroup]="communityBuildForm">
             <div class="field">
-              <label>
-                Select a category?*
-                <br />
-                <nb-select
-                  (selectedChange)="setBuildType()"
-                  formControlName="build_type"
-                  placeholder="Select One"
-                  size="medium"
-                  status="primary"
-                >
-                  <nb-option *ngFor="let bType of buildTypes" [value]="EBuildType[bType]">
-                    {{ bType | titlecase }}
-                  </nb-option>
-                </nb-select>
-              </label>
+              <label> Select a category?<span class="required-field">*</span></label>
+              <nb-select
+                (selectedChange)="setBuildType()"
+                formControlName="build_type"
+                placeholder="Select One"
+                size="medium"
+                status="primary"
+              >
+                <nb-option *ngFor="let bType of buildTypes" [value]="EBuildType[bType]">
+                  {{ bType | titlecase }}
+                </nb-option>
+              </nb-select>
+
               <span
                 *ngIf="
                   communityBuildForm.get('build_type').touched &&
@@ -56,17 +57,19 @@
             </div>
 
             <div class="field">
-              <label>
-                Title of your build*
-                <input
-                  formControlName="name"
-                  fullWidth
-                  nbInput
-                  placeholder="Name of your project or course"
-                  size="large"
-                  type="text"
-                />
-              </label>
+              <div class="field-header">
+                <h3>Title</h3>
+                <p>Give your project a clear and memorable name that best represents its purpose and impact</p>
+              </div>
+              <label> Title of your build<span class="required-field">*</span> </label>
+              <input
+                formControlName="name"
+                fullWidth
+                nbInput
+                placeholder="Name of your project or course"
+                size="large"
+                type="text"
+              />
               <span *ngIf="communityBuildForm.get('name').touched && communityBuildForm.get('name').invalid">
                 <commudle-alert
                   *ngIf="communityBuildForm.get('name').errors?.required"
@@ -86,6 +89,58 @@
                 [errorMessage]="'Name cannot be a link'"
                 [error]="true"
               ></commudle-alert>
+            </div>
+
+            <div class="field">
+              <div class="field-header">
+                <h3>Description</h3>
+                <p>Briefly explain your project's purpose and goals</p>
+              </div>
+              <label>Add Description<span class="required-field">*</span></label>
+              <span
+                *ngIf="
+                  communityBuildForm.get('description').touched &&
+                  communityBuildForm.get('description').invalid &&
+                  communityBuildForm.get('description').errors.required
+                "
+              >
+                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+              </span>
+              <editor [init]="tinyMCE" formControlName="description"></editor>
+              <commudle-alert
+                *ngIf="communityBuildForm.get('description').hasError('minlength')"
+                [error]="true"
+                errorMessage="Description must be at least 300 characters"
+              ></commudle-alert>
+            </div>
+
+            <div class="field image-upload">
+              <div class="field-header">
+                <h3>Image Gallery</h3>
+                <p>Upload visuals that best represent your project</p>
+              </div>
+              <label class="clickable">
+                <span>
+                  <nb-icon icon="plus"></nb-icon>
+                  Drag and drop images<span class="browse-text"> or Browse</span>
+                </span>
+                <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
+              </label>
+
+              <div class="images">
+                <div *ngFor="let image of uploadedImagesFiles; let i = index">
+                  <div *ngIf="!uploadedImagesFiles[i]['delete']">
+                    <img
+                      alt="{{ uploadedImages[i]?.name || 'Image' }}"
+                      src="{{ uploadedImages[i] }}"
+                      title="{{ uploadedImages[i]?.name || 'Image' }}"
+                    />
+                    <p class="clickable">
+                      <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div *ngIf="hackathonUserResponses" class="field">
@@ -302,49 +357,6 @@
             <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
               <div *ngIf="embeddedLink" class="com-aspect-[16/10] com-overflow-hidden">
                 <div [innerHTML]="embeddedLink"></div>
-              </div>
-            </div>
-            <div class="field">
-              <label> How is it useful for others?* </label>
-              <span
-                *ngIf="
-                  communityBuildForm.get('description').touched &&
-                  communityBuildForm.get('description').invalid &&
-                  communityBuildForm.get('description').errors.required
-                "
-              >
-                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-              </span>
-              <editor [init]="tinyMCE" formControlName="description"></editor>
-              <commudle-alert
-                *ngIf="communityBuildForm.get('description').hasError('minlength')"
-                [error]="true"
-                errorMessage="Description must be at least 300 characters"
-              ></commudle-alert>
-            </div>
-
-            <div class="field image-upload">
-              <label class="clickable">
-                <span>
-                  <nb-icon icon="plus"></nb-icon>
-                  Add Images
-                </span>
-                <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
-              </label>
-
-              <div class="images">
-                <div *ngFor="let image of uploadedImagesFiles; let i = index">
-                  <div *ngIf="!uploadedImagesFiles[i]['delete']">
-                    <img
-                      alt="{{ uploadedImages[i]?.name || 'Image' }}"
-                      src="{{ uploadedImages[i] }}"
-                      title="{{ uploadedImages[i]?.name || 'Image' }}"
-                    />
-                    <p class="clickable">
-                      <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
 

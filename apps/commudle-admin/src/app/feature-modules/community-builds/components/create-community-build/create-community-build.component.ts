@@ -31,6 +31,7 @@ import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-respo
 import { AuthService, SeoService, ToastrService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-create-community-build',
@@ -119,6 +120,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   environment = environment;
   recaptchaToken: string | null = null;
   isSubmitting = false;
+  staticAssets = staticAssets;
 
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
 

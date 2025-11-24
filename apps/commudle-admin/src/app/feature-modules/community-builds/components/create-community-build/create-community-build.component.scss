@@ -1,23 +1,69 @@
 .community-build {
   nb-card.page-header {
-    h1 {
-      @apply com-flex com-items-center;
-      font-weight: 300;
+    nb-card-body {
+      @apply com-py-10 com-pl-10 com-pr-0;
+    }
 
-      nb-icon {
-        font-size: 2.5rem;
+    .header-content {
+      @apply com-flex com-flex-row com-justify-between;
+
+      .header-text {
+        @apply com-flex com-flex-col com-w-full;
+      }
+
+      .header-image {
+        @apply com-flex com-items-center com-m-0 md:com-w-[560px] md:com-h-[184px] com-w-full com-h-full com-shrink-0;
+        img {
+          @apply com-h-full com-w-full;
+        }
+      }
+    }
+
+    h1 {
+      @apply com-m-0 com-flex com-items-center;
+
+      span {
+        @apply com-text-4xl com-font-bold com-text-Yankees-Blue com-mb-3;
       }
     }
 
     p {
-      font-size: 1.1rem;
+      @apply com-text-base com-font-normal com-text-gray-500 com-mb-3 com-m-0;
+    }
+
+    ul {
+      @apply com-text-Yankees-Blue com-pl-4 com-m-0;
+
+      li {
+        @apply com-text-base com-font-normal com-text-gray-500 com-m-0;
+      }
     }
   }
 
   nb-card.form-card {
+    nb-card-body {
+      @apply com-px-10 com-pb-10 com-pt-0;
+    }
+
     form {
       .field {
-        margin-top: 1.5rem;
+        @apply com-flex com-flex-col com-pt-10 com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+        label {
+          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-mb-3;
+        }
+
+        .field-header {
+          @apply com-flex com-flex-col com-mb-6;
+
+          h3 {
+            @apply com-text-2xl com-font-bold com-text-Yankees-Blue com-m-0 com-mb-3;
+          }
+
+          p {
+            @apply com-text-base com-font-normal com-text-gray-500 com-m-0;
+          }
+        }
 
         .teammate-email {
           padding: 5px 0px;
@@ -41,7 +87,11 @@
 
       .field.image-upload {
         input {
-          display: none;
+          @apply com-hidden;
+        }
+
+        .browse-text {
+          @apply com-text-primary-500;
         }
 
         label {
@@ -126,4 +176,8 @@
 
 .hackathon-user-response {
   @apply com-my-3;
+}
+
+.required-field {
+  @apply com-text-red-500;
 }
