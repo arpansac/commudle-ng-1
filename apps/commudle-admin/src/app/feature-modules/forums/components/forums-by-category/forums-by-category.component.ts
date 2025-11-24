@@ -18,8 +18,10 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
   forums: IForum[] = [];
   forumCategory: IChannelCategory;
   currentPage = 1;
-  itemsPerPage = 2;
+  itemsPerPage = 10;
   totalItems = 0;
+  isLoading = true;
+  isDeletingForum = false;
   private parentId: number | string;
   private parentType: EDbModels;
   private categorySlug: string;
@@ -61,6 +63,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
   }
 
   private getForumsByCategory(): void {
+    this.isLoading = true;
     this.forumService
       .getForumsByCategory(
         this.parentId,
@@ -76,6 +79,7 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
         this.totalItems = forumsResponse.total;
         this.currentPage = forumsResponse.page;
         this.itemsPerPage = forumsResponse.count;
+        this.isLoading = false;
       });
   }
 
@@ -117,12 +121,14 @@ export class ForumsByCategoryComponent implements OnInit, OnDestroy {
 
   deleteForum(forum: IForum, index: number): void {
     if (confirm(`Are you sure you want to delete "${forum.name}"? This action cannot be undone.`)) {
+      this.isDeletingForum = true;
       this.forumService.deleteForum(forum.id).subscribe((data) => {
         if (data) {
           this.forums.splice(index, 1);
           this.totalItems--;
           this.tosterService.successDialog('Forum deleted successfully');
         }
+        this.isDeletingForum = false;
       });
     }
   }

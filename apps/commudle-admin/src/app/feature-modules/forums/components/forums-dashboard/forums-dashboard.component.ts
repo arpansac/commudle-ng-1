@@ -18,6 +18,7 @@ interface ParentInfo {
 export class ForumsDashboardComponent implements OnInit {
   parentInfo: ParentInfo | null = null;
   categories$ = this.forumStore.categories$;
+  isLoadingCategories = true;
   sidebarEventName = 'forumCategories';
   ESidebarHeading = ESidebarHeading;
   faIcons = {
@@ -36,6 +37,10 @@ export class ForumsDashboardComponent implements OnInit {
     if (this.parentInfo) {
       this.forumStore.loadCategories(this.parentInfo.parent_id, this.parentInfo.parent_type);
     }
+
+    this.categories$.subscribe(() => {
+      this.isLoadingCategories = false;
+    });
   }
 
   private getParentFromUrl(): ParentInfo | null {

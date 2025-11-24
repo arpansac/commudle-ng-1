@@ -10,7 +10,9 @@
     <span>{{ forumCategory?.name | titlecase }}</span>
   </div>
 
-  <div class="forums-by-category-list">
+  <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+
+  <div class="forums-by-category-list" *ngIf="!isLoading">
     <div *ngIf="forums.length === 0" class="no-forums">
       <p>No forums found in this category.</p>
     </div>
@@ -57,6 +59,7 @@
               status="basic"
               size="small"
               shape="round"
+              [disabled]="isDeletingForum"
             >
               <fa-icon [icon]="icons.faTrash"></fa-icon>&nbsp; Delete
             </button>

@@ -14,6 +14,7 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 })
 export class ForumsCategoriesComponent implements OnInit, OnDestroy {
   categories: IChannelCategory[] = [];
+  isLoading = true;
   readonly staticAssets = staticAssets;
   readonly icons = { faPlus, faArrowRight };
 
@@ -22,9 +23,10 @@ export class ForumsCategoriesComponent implements OnInit, OnDestroy {
   constructor(private readonly forumsStore: ForumsStore, private readonly dialogService: NbDialogService) {}
 
   ngOnInit(): void {
-    this.forumsStore.categories$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((categories) => (this.categories = categories));
+    this.forumsStore.categories$.pipe(takeUntil(this.destroy$)).subscribe((categories) => {
+      this.categories = categories;
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy(): void {

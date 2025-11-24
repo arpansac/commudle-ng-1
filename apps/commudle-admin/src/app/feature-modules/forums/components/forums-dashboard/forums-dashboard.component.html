@@ -15,13 +15,16 @@
       >
         <div class="categories-content">
           <p class="heading">Categories</p>
-          @for (category of categories$ | async; track category.slug) {
-          <a [routerLink]="[category.slug]" routerLinkActive="active">
-            <div class="category-item">
-              {{ category.name }}
-            </div>
-          </a>
-          }
+          <commudle-loading-spinner *ngIf="isLoadingCategories"></commudle-loading-spinner>
+          <div *ngIf="!isLoadingCategories">
+            @for (category of categories$ | async; track category.slug) {
+            <a [routerLink]="[category.slug]" routerLinkActive="active">
+              <div class="category-item">
+                {{ category.name }}
+              </div>
+            </a>
+            }
+          </div>
         </div>
       </commudle-sidebar>
     </div>

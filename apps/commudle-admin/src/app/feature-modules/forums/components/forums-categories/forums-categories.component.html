@@ -1,12 +1,21 @@
 <div class="categories-page">
   <div class="categories-header">
     <h1 class="categories-title">Categories</h1>
-    <button class="new-topic-btn" nbButton status="primary" (click)="openDialogBox()" shape="semi-round">
+    <button
+      class="new-topic-btn"
+      nbButton
+      status="primary"
+      (click)="openDialogBox()"
+      shape="semi-round"
+      [disabled]="isLoading"
+    >
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; New Topic
     </button>
   </div>
 
-  <div class="forums-grid" *ngIf="categories.length > 0">
+  <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+
+  <div class="forums-grid" *ngIf="!isLoading && categories.length > 0">
     <a *ngFor="let category of categories" [routerLink]="[category.slug]">
       <nb-card class="forum-card">
         <nb-card-body>
@@ -23,7 +32,7 @@
     </a>
   </div>
 
-  <div *ngIf="categories.length === 0" class="empty-state">
+  <div *ngIf="!isLoading && categories.length === 0" class="empty-state">
     <img [src]="staticAssets.folder_empty" alt="No categories" class="empty-image" />
     <h3>No Categories Available</h3>
     <p>You can create one by clicking the "New Topic" button</p>
