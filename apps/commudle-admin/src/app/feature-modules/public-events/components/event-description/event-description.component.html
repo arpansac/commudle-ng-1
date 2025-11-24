@@ -14,8 +14,8 @@
     <div
       [innerHTML]="
         !isBot && !showFullDescription
-          ? (event.description | linky : { sanitizeHtml: false } | truncatetext : 2500)
-          : (event.description | linky : { sanitizeHtml: false })
+          ? (event.description | linky : { sanitizeHtml: false } | truncatetext : 2500 | safeHtml)
+          : (event.description | linky : { sanitizeHtml: false } | safeHtml)
       "
     ></div>
   </nb-card-body>
