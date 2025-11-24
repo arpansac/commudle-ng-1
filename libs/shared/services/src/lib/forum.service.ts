@@ -86,7 +86,7 @@ export class ForumService {
       .set('count', count.toString());
 
     return this.http.get<IPaginationCount<IForum>>(
-      this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.INDEX_BY_CATEGORY),
+      this.baseApiService.getRoute(API_ROUTES.COMMUNITY_CHANNELS.INDEX_FORUMS),
       {
         params,
       },
