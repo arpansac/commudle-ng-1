@@ -1,44 +1,6 @@
 .collaborations {
-  .collaboration-communities {
-    @apply com-flex com-flex-wrap com-gap-4;
-
-    .community {
-      @apply com-flex com-items-center com-gap-3 com-p-3 com-border com-rounded-lg;
-      @apply com-bg-gray-50 com-border-gray-200;
-
-      .logo {
-        @apply com-flex-shrink-0;
-
-        img {
-          @apply com-w-12 com-h-12 com-rounded-full com-object-cover;
-        }
-      }
-
-      .details {
-        @apply com-flex-1;
-
-        p {
-          @apply com-font-medium com-text-gray-900 com-mb-1;
-        }
-
-        .actions {
-          @apply com-flex com-gap-2 com-text-xs;
-
-          .clickable {
-            @apply com-text-blue-600 com-cursor-pointer;
-            @apply hover:com-text-blue-800;
-
-            &.disabled {
-              @apply com-text-gray-400 com-cursor-not-allowed;
-            }
-          }
-
-          .rejected {
-            @apply com-text-red-600 com-font-semibold;
-          }
-        }
-      }
-    }
+  .add-collaboration {
+    @apply com-mb-6;
 
     label {
       @apply com-block com-w-full;
@@ -49,24 +11,119 @@
       }
 
       input {
-        @apply com-w-full;
+        @apply com-w-full com-max-w-md;
       }
+    }
+
+    .community-option {
+      @apply com-flex com-items-center com-gap-2;
+
+      img {
+        @apply com-w-6 com-h-6 com-rounded-full com-object-cover;
+      }
+    }
+  }
+
+  .collaborations-table {
+    @apply com-overflow-x-auto;
+
+    .table {
+      @apply com-w-full com-border-collapse;
+
+      thead {
+        th {
+          @apply com-bg-gray-50 com-px-4 com-py-3 com-text-left com-text-sm com-font-medium com-text-gray-700;
+          @apply com-border-b com-border-gray-200;
+        }
+      }
+
+      tbody {
+        tr {
+          @apply com-border-b com-border-gray-100;
+          @apply hover:com-bg-gray-50;
+
+          td {
+            @apply com-px-4 com-py-3 com-text-sm;
+          }
+        }
+      }
+
+      .community-cell {
+        .community-info {
+          .community-link {
+            @apply com-flex com-items-center com-gap-3 com-no-underline;
+            @apply hover:com-text-blue-600;
+
+            .community-logo {
+              @apply com-w-10 com-h-10 com-rounded-full com-object-cover com-flex-shrink-0;
+            }
+
+            .community-name {
+              @apply com-font-medium com-text-gray-900;
+            }
+          }
+        }
+      }
+
+      .status-cell {
+        .status-badge {
+          @apply com-inline-flex com-px-2 com-py-1 com-text-xs com-font-medium com-rounded-full;
+
+          &.status-approved {
+            @apply com-bg-green-100 com-text-green-800;
+          }
+
+          &.status-rejected {
+            @apply com-bg-red-100 com-text-red-800;
+          }
+
+          &.status-pending {
+            @apply com-bg-yellow-100 com-text-yellow-800;
+          }
+        }
+      }
+
+      .actions-cell {
+        .action-buttons {
+          @apply com-flex com-gap-2;
+
+          button {
+            @apply com-min-w-0;
+
+            &:disabled {
+              @apply com-opacity-50 com-cursor-not-allowed;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .empty-state {
+    @apply com-text-center com-py-8 com-text-gray-500;
+
+    p {
+      @apply com-text-sm;
     }
   }
 }
 
-.confirmation-dialog-box {
+.confirmation-dialog {
   @apply com-max-w-md;
 
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
+
+    div {
+      @apply com-font-semibold com-text-gray-900;
+    }
   }
 
   nb-card-body {
-    @apply com-text-gray-700;
+    @apply com-text-gray-700 com-text-sm com-leading-relaxed;
   }
 
   nb-card-footer {
-    @apply com-flex com-gap-2;
+    @apply com-flex com-gap-2 com-justify-end;
   }
 }
