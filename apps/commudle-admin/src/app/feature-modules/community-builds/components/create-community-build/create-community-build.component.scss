@@ -1,5 +1,6 @@
 .community-build {
   nb-card.page-header {
+    @apply com-m-0;
     nb-card-body {
       @apply com-py-10 com-pl-10 com-pr-0;
     }
@@ -20,10 +21,10 @@
     }
 
     h1 {
-      @apply com-m-0 com-flex com-items-center;
+      @apply com-m-0 com-flex com-items-center com-mb-3;
 
       span {
-        @apply com-text-4xl com-font-bold com-text-Yankees-Blue com-mb-3;
+        @apply com-text-4xl com-font-bold com-text-Yankees-Blue;
       }
     }
 
@@ -41,6 +42,7 @@
   }
 
   nb-card.form-card {
+    @apply com-m-0 com-mt-4;
     nb-card-body {
       @apply com-px-10 com-pb-10 com-pt-0;
     }
@@ -90,11 +92,15 @@
           @apply com-font-normal com-text-primary-500;
         }
 
+        .image-text-content {
+          @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1 com-m-0;
+        }
+
         .image-container {
           @apply com-flex com-flex-col com-items-center com-justify-center md:com-w-[360px] md:com-h-[212px] com-w-full com-h-full com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-text-base com-font-medium com-text-Yankees-Blue com-pt-9;
 
           .image-text {
-            @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1;
+            @apply com-flex com-flex-col com-items-center com-justify-center com-gap-4;
           }
 
           nb-icon {
@@ -104,7 +110,7 @@
       }
 
       .images {
-        @apply com-flex com-flex-row com-justify-start com-flex-wrap com-mt-auto;
+        @apply com-flex com-flex-col com-justify-start com-flex-wrap;
         > div {
           > div {
             @apply com-m-2 com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative;
@@ -120,6 +126,10 @@
             }
           }
         }
+      }
+
+      .images-list {
+        @apply com-flex com-flex-row com-mt-auto;
       }
     }
   }
@@ -174,4 +184,20 @@
 
 .checkbox-container {
   @apply com-flex com-mb-3;
+}
+
+.image-icon {
+  @apply com-text-4xl com-text-Cadet-Grey;
+}
+
+.image-size-text {
+  @apply com-flex com-flex-col com-text-base com-text-gray-500 com-m-0 com-gap-2;
+}
+
+.image-size {
+  @apply com-font-normal;
+}
+
+.image-type {
+  @apply com-font-medium;
 }

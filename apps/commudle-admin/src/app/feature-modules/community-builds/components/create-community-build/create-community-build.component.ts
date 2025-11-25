@@ -32,6 +32,7 @@ import { AuthService, SeoService, ToastrService } from '@commudle/shared-service
 import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'commudle-create-community-build',
@@ -57,6 +58,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   paramsTags = [];
   faEdit = faEdit;
+  faImage = faImage;
 
   communityBuildForm;
   communityBuildUpdateForm;

@@ -13,13 +13,6 @@
                 Share your project’s story, visuals, and resources. Publish to connect with others, inspire discovery,
                 and receive feedback from the community.
               </p>
-              <ul *ngIf="!cBuild">
-                <li><strong>Project:</strong> Code should be open sourced!</li>
-                <li>
-                  <strong>Course:</strong> Anything from which people can learn to add to their skills, can be both
-                  online/offline!
-                </li>
-              </ul>
             </div>
             <div class="header-image">
               <img alt="Create Build Header" src="{{ staticAssets.create_build_header }}" title="Create Build Header" />
@@ -31,31 +24,6 @@
       <nb-card class="form-card">
         <nb-card-body>
           <form (keydown.enter)="$event.preventDefault()" [formGroup]="communityBuildForm">
-            <div class="field">
-              <label class="label"> Select a category?<span class="required-field">*</span></label>
-              <nb-select
-                (selectedChange)="setBuildType()"
-                formControlName="build_type"
-                placeholder="Select One"
-                size="medium"
-                status="primary"
-              >
-                <nb-option *ngFor="let bType of buildTypes" [value]="EBuildType[bType]">
-                  {{ bType | titlecase }}
-                </nb-option>
-              </nb-select>
-
-              <span
-                *ngIf="
-                  communityBuildForm.get('build_type').touched &&
-                  communityBuildForm.get('build_type').invalid &&
-                  communityBuildForm.get('build_type').errors.required
-                "
-              >
-                <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-              </span>
-            </div>
-
             <div class="field">
               <div class="field-header">
                 <h3>Title</h3>
@@ -122,24 +90,32 @@
               <div class="images-container">
                 <label class="label clickable image-container">
                   <span class="image-text">
-                    <nb-icon icon="plus"></nb-icon>
-                    Drag and drop images<span class="browse-text"> or Browse</span>
+                    <fa-icon class="image-icon" [icon]="faImage"></fa-icon>
+                    <p class="image-text-content">
+                      <span>Drag and drop images</span><span class="browse-text"> or Browse</span>
+                    </p>
                   </span>
                   <span class="info-text">Select first image as the thumbnail</span>
                   <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
                 </label>
 
                 <div class="images">
-                  <div *ngFor="let image of uploadedImagesFiles; let i = index">
-                    <div *ngIf="!uploadedImagesFiles[i]['delete']">
-                      <img
-                        alt="{{ uploadedImages[i]?.name || 'Image' }}"
-                        src="{{ uploadedImages[i] }}"
-                        title="{{ uploadedImages[i]?.name || 'Image' }}"
-                      />
-                      <p class="clickable">
-                        <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
-                      </p>
+                  <p class="image-size-text">
+                    <span class="image-size">1280 x 720px or higher recommended</span
+                    ><span class="image-type">JPG, JPEG, PNG</span>
+                  </p>
+                  <div class="images-list">
+                    <div *ngFor="let image of uploadedImagesFiles; let i = index">
+                      <div *ngIf="!uploadedImagesFiles[i]['delete']">
+                        <img
+                          alt="{{ uploadedImages[i]?.name || 'Image' }}"
+                          src="{{ uploadedImages[i] }}"
+                          title="{{ uploadedImages[i]?.name || 'Image' }}"
+                        />
+                        <p class="clickable">
+                          <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
