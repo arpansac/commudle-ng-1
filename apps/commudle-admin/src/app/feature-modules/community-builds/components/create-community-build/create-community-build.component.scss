@@ -29,14 +29,14 @@
     }
 
     p {
-      @apply com-text-base com-font-normal com-text-gray-500 com-mb-3 com-m-0;
+      @apply com-text-base com-font-normal com-text-gray-500 com-mb-7 com-m-0;
     }
 
     ul {
-      @apply com-text-Yankees-Blue com-pl-4 com-m-0;
+      @apply com-pl-4 com-m-0 com-gap-3;
 
       li {
-        @apply com-text-base com-font-normal com-text-gray-500 com-m-0;
+        @apply com-text-base com-font-medium  com-text-Yankees-Blue com-m-0;
       }
     }
   }
