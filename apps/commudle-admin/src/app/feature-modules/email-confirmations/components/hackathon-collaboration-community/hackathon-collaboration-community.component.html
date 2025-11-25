@@ -1,0 +1,79 @@
+<div class="page-padding">
+  <div *ngIf="hackathonCollaboration">
+    <nb-card>
+      <nb-card-body>
+        <div *ngIf="hackathonCollaboration.approved" class="status">
+          <div class="collaboration-status">
+            <div class="collaboration-community-logo">
+              <img
+                alt="{{ hackathonCollaboration.community.name }}"
+                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
+                title="{{ hackathonCollaboration.community.name }}"
+              />
+            </div>
+            <p>
+              Welcome Aboard!
+              <br />
+              <span>Thank You for approving the hackathon collaboration request.</span>
+            </p>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            !hackathonCollaboration.approved ||
+            hackathonCollaboration.status === EHackathonCollaborationCommunityStatus.REJECTED
+          "
+          class="status"
+        >
+          <div class="collaboration-status">
+            <div class="collaboration-community-logo">
+              <img
+                alt="{{ hackathonCollaboration.community.name }}"
+                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
+                title="{{ hackathonCollaboration.community.name }}"
+              />
+            </div>
+            <p>
+              <span>
+                Thank You, we have received your response for
+                <strong class="com-text-red-500 com-uppercase">rejecting</strong> the hackathon collaboration request.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="hackathon-details" *ngIf="hackathonCollaboration">
+          <div class="hackathon">
+            <p>
+              <a
+                [routerLink]="[
+                  '/communities',
+                  hackathonCollaboration.community.slug,
+                  'hackathons',
+                  hackathonCollaboration.hackathon.slug
+                ]"
+              >
+                Go To <strong>{{ hackathonCollaboration.hackathon.name }}</strong>
+              </a>
+            </p>
+          </div>
+          <div class="community">
+            <div class="logo">
+              <img
+                alt="{{ hackathonCollaboration.community.name }}"
+                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
+                title="{{ hackathonCollaboration.community.name }}"
+              />
+            </div>
+            <p>
+              <a [routerLink]="['/communities', hackathonCollaboration.community.slug]">{{
+                hackathonCollaboration.community.name
+              }}</a>
+            </p>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

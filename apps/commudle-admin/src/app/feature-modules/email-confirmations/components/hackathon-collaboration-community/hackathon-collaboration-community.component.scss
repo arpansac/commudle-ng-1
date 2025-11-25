@@ -1,0 +1,45 @@
+.status {
+  .collaboration-status {
+    @apply com-flex com-flex-wrap com-items-center com-justify-center;
+
+    .collaboration-community-logo {
+      @apply com-w-24 com-overflow-hidden;
+
+      img {
+        @apply com-w-full;
+      }
+    }
+
+    p {
+      @apply com-text-3xl com-ml-4;
+
+      span {
+        @apply com-text-sm;
+      }
+    }
+  }
+}
+
+.hackathon-details {
+  @apply com-flex com-justify-center com-flex-wrap;
+
+  .hackathon {
+    @apply com-flex com-items-center;
+
+    p {
+      @apply com-m-0;
+    }
+  }
+
+  .community {
+    @apply com-flex com-items-center com-ml-4;
+
+    .logo {
+      @apply com-w-12 com-overflow-hidden com-mr-4;
+
+      img {
+        @apply com-w-full;
+      }
+    }
+  }
+}

@@ -48,8 +48,8 @@ export class HackathonCollaborationCommunitiesService {
     );
   }
 
-  updateStatus(token, status): Observable<boolean> {
-    return this.http.put<boolean>(
+  updateStatus(token, status): Observable<IHackathonCollaborationCommunity> {
+    return this.http.put<IHackathonCollaborationCommunity>(
       this.baseApiService.getRoute(API_ROUTES.HACKATHON_COLLABORATION_COMMUNITIES.UPDATE_STATUS),
       {
         token,

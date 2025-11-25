@@ -12,6 +12,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { HackathonJudgeConfirmationComponent } from './components/hackathon-judge-confirmation/hackathon-judge-confirmation.component';
 import { HackathonTeamConfirmationComponent } from './components/hackathon-team-confirmation/hackathon-team-confirmation.component';
+import { HackathonCollaborationCommunityComponent } from './components/hackathon-collaboration-community/hackathon-collaboration-community.component';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { SharedComponentsModule } from '@commudle/shared-components';
 import { UserProfileComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-profile/user-profile.component';
@@ -28,6 +29,7 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
     EmailUnsubscribeComponent,
     HackathonJudgeConfirmationComponent,
     HackathonTeamConfirmationComponent,
+    HackathonCollaborationCommunityComponent,
   ],
   imports: [
     CommonModule,
