@@ -32,7 +32,7 @@
         <nb-card-body>
           <form (keydown.enter)="$event.preventDefault()" [formGroup]="communityBuildForm">
             <div class="field">
-              <label> Select a category?<span class="required-field">*</span></label>
+              <label class="label"> Select a category?<span class="required-field">*</span></label>
               <nb-select
                 (selectedChange)="setBuildType()"
                 formControlName="build_type"
@@ -61,7 +61,7 @@
                 <h3>Title</h3>
                 <p>Give your project a clear and memorable name that best represents its purpose and impact</p>
               </div>
-              <label> Title of your build<span class="required-field">*</span> </label>
+              <label class="label">Title of your build<span class="required-field">*</span> </label>
               <input
                 formControlName="name"
                 fullWidth
@@ -96,7 +96,7 @@
                 <h3>Description</h3>
                 <p>Briefly explain your project's purpose and goals</p>
               </div>
-              <label>Add Description<span class="required-field">*</span></label>
+              <label class="label">Add Description<span class="required-field">*</span></label>
               <span
                 *ngIf="
                   communityBuildForm.get('description').touched &&
@@ -119,26 +119,123 @@
                 <h3>Image Gallery</h3>
                 <p>Upload visuals that best represent your project</p>
               </div>
-              <label class="clickable">
-                <span>
-                  <nb-icon icon="plus"></nb-icon>
-                  Drag and drop images<span class="browse-text"> or Browse</span>
-                </span>
-                <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
-              </label>
+              <div class="images-container">
+                <label class="label clickable image-container">
+                  <span class="image-text">
+                    <nb-icon icon="plus"></nb-icon>
+                    Drag and drop images<span class="browse-text"> or Browse</span>
+                  </span>
+                  <span class="info-text">Select first image as the thumbnail</span>
+                  <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
+                </label>
 
-              <div class="images">
-                <div *ngFor="let image of uploadedImagesFiles; let i = index">
-                  <div *ngIf="!uploadedImagesFiles[i]['delete']">
-                    <img
-                      alt="{{ uploadedImages[i]?.name || 'Image' }}"
-                      src="{{ uploadedImages[i] }}"
-                      title="{{ uploadedImages[i]?.name || 'Image' }}"
-                    />
-                    <p class="clickable">
-                      <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
-                    </p>
+                <div class="images">
+                  <div *ngFor="let image of uploadedImagesFiles; let i = index">
+                    <div *ngIf="!uploadedImagesFiles[i]['delete']">
+                      <img
+                        alt="{{ uploadedImages[i]?.name || 'Image' }}"
+                        src="{{ uploadedImages[i] }}"
+                        title="{{ uploadedImages[i]?.name || 'Image' }}"
+                      />
+                      <p class="clickable">
+                        <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
+                      </p>
+                    </div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-header">
+                <h3>Links</h3>
+                <p>Share direct links to your live project or key resources</p>
+              </div>
+              <div class="links-container">
+                <div class="link-item">
+                  <label class="label"> Link to live project<span class="required-field">*</span> </label>
+                  <input
+                    formControlName="live_app_link"
+                    fullWidth
+                    nbInput
+                    placeholder="Link to live project"
+                    size="large"
+                    type="url"
+                  />
+                  <span *ngIf="communityBuildForm.get('live_app_link').invalid">
+                    <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+                  </span>
+                  <span
+                    *ngIf="
+                      linkOrLiveAppLinkValue &&
+                      communityBuildForm.get('link').value.length === 0 &&
+                      communityBuildForm.get('live_app_link').value.length === 0
+                    "
+                  >
+                    <commudle-alert
+                      [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
+                      [error]="true"
+                    ></commudle-alert>
+                  </span>
+                </div>
+                <div class="link-item">
+                  <div class="checkbox-container">
+                    <nb-checkbox
+                      #openSourceCheckbox
+                      (change)="hasOpenSourceLink = openSourceCheckbox.checked"
+                      status="primary"
+                    >
+                      Is it an open source project?
+                    </nb-checkbox>
+                  </div>
+                  <div *ngIf="hasOpenSourceLink" class="open-source-link">
+                    <label class="label"> Link to Open Source Code </label>
+                    <!-- <span
+                  *ngIf="communityBuildForm.get('build_type').value === EBuildType.slides"
+                  [nbPopover]="googleSlidesEmbed"
+                  class="text-info clickable"
+                  nbPopoverTrigger="hover"
+                >
+                  How to embed Google Slides
+                </span> -->
+                    <input
+                      formControlName="link"
+                      fullWidth
+                      nbInput
+                      placeholder="Link to Open Source Code"
+                      size="large"
+                      type="url"
+                    />
+
+                    <span *ngIf="communityBuildForm.get('link').invalid">
+                      <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-header">
+                <h3>Video Demo (Optional)</h3>
+                <p>Add a short video demo to showcase your project</p>
+              </div>
+              <label class="label"> Video Demo (Iframe 320px X 200px) </label>
+              <input
+                formControlName="video_iframe"
+                fullWidth
+                nbInput
+                placeholder=" Video Demo (Iframe)"
+                size="large"
+                type="url"
+              />
+              <span *ngIf="communityBuildForm.get('video_iframe').invalid">
+                <commudle-alert [errorMessage]="'Please add correct iframe'" [error]="true"></commudle-alert>
+              </span>
+
+              <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
+                <div *ngIf="embeddedLink" class="com-aspect-[16/10] com-overflow-hidden">
+                  <div [innerHTML]="embeddedLink"></div>
                 </div>
               </div>
             </div>
@@ -280,83 +377,6 @@
                   <nb-icon icon="plus"></nb-icon>
                   Add Update
                 </button>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>
-                Link to Open Source Code
-                <!-- <span
-                  *ngIf="communityBuildForm.get('build_type').value === EBuildType.slides"
-                  [nbPopover]="googleSlidesEmbed"
-                  class="text-info clickable"
-                  nbPopoverTrigger="hover"
-                >
-                  How to embed Google Slides
-                </span> -->
-                <input
-                  formControlName="link"
-                  fullWidth
-                  nbInput
-                  placeholder="Link to Open Source Code"
-                  size="large"
-                  type="url"
-                />
-              </label>
-              <span *ngIf="communityBuildForm.get('link').invalid">
-                <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
-              </span>
-            </div>
-
-            <div class="field">
-              <label>
-                Link to live project
-                <input
-                  formControlName="live_app_link"
-                  fullWidth
-                  nbInput
-                  placeholder="Link to live project"
-                  size="large"
-                  type="url"
-                />
-              </label>
-              <span *ngIf="communityBuildForm.get('live_app_link').invalid">
-                <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
-              </span>
-              <span
-                *ngIf="
-                  linkOrLiveAppLinkValue &&
-                  communityBuildForm.get('link').value.length === 0 &&
-                  communityBuildForm.get('live_app_link').value.length === 0
-                "
-              >
-                <commudle-alert
-                  [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
-                  [error]="true"
-                ></commudle-alert>
-              </span>
-            </div>
-
-            <div class="field">
-              <label>
-                Video Demo (Iframe 320px X 200px)
-                <input
-                  formControlName="video_iframe"
-                  fullWidth
-                  nbInput
-                  placeholder=" Video Demo (Iframe)"
-                  size="large"
-                  type="url"
-                />
-              </label>
-              <span *ngIf="communityBuildForm.get('video_iframe').invalid">
-                <commudle-alert [errorMessage]="'Please add correct iframe'" [error]="true"></commudle-alert>
-              </span>
-            </div>
-
-            <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
-              <div *ngIf="embeddedLink" class="com-aspect-[16/10] com-overflow-hidden">
-                <div [innerHTML]="embeddedLink"></div>
               </div>
             </div>
 

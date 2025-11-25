@@ -49,10 +49,6 @@
       .field {
         @apply com-flex com-flex-col com-pt-10 com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
-        label {
-          @apply com-text-sm com-font-medium com-text-Yankees-Blue com-mb-3;
-        }
-
         .field-header {
           @apply com-flex com-flex-col com-mb-6;
 
@@ -91,57 +87,35 @@
         }
 
         .browse-text {
-          @apply com-text-primary-500;
+          @apply com-font-normal com-text-primary-500;
         }
 
-        label {
-          display: flex;
-          width: 100%;
-          height: 100px;
-          border: 1px dotted lightgrey;
-          border-radius: 5px;
-          background-color: #f3f3f3;
-          justify-content: center;
-          align-items: center;
-          color: grey;
-          font-size: 1.5rem;
-          font-weight: lighter;
+        .image-container {
+          @apply com-flex com-flex-col com-items-center com-justify-center md:com-w-[360px] md:com-h-[212px] com-w-full com-h-full com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-text-base com-font-medium com-text-Yankees-Blue com-pt-9;
+
+          .image-text {
+            @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1;
+          }
 
           nb-icon {
-            font-size: 1.5rem;
+            @apply com-text-2xl com-text-Cadet-Grey;
           }
         }
       }
 
       .images {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
+        @apply com-flex com-flex-row com-justify-start com-flex-wrap com-mt-auto;
         > div {
           > div {
-            margin: 0.5rem;
-            width: 100px;
-            height: 100px;
-            border: 1px dotted lightgrey;
-            border-radius: 5px;
-            overflow: hidden;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            @apply com-m-2 com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative;
             img {
-              width: 100%;
+              @apply com-w-full;
             }
 
             p {
-              margin: 5px 0 0;
-              position: absolute;
-              bottom: 0;
+              @apply com-absolute com-bottom-0 com-m-0 com-mt-6px;
               nb-icon:hover {
-                border-radius: 50%;
-                background-color: white;
+                @apply com-rounded-full com-bg-white;
               }
             }
           }
@@ -180,4 +154,24 @@
 
 .required-field {
   @apply com-text-red-500;
+}
+
+.info-text {
+  @apply com-py-2 com-bg-gray-100 com-text-xs com-font-semibold com-text-gray-500 com-w-full com-text-center com-mt-auto;
+}
+
+.images-container {
+  @apply com-flex com-flex-row com-gap-4;
+}
+
+.links-container {
+  @apply com-flex com-flex-col com-gap-4;
+}
+
+.label {
+  @apply com-flex com-text-sm com-font-medium com-text-Yankees-Blue com-mb-3;
+}
+
+.checkbox-container {
+  @apply com-flex com-mb-3;
 }

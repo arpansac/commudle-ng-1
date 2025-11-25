@@ -61,6 +61,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   communityBuildForm;
   communityBuildUpdateForm;
   moment = moment;
+  hasOpenSourceLink = false;
 
   tinyMCE = {
     min_height: 500,
