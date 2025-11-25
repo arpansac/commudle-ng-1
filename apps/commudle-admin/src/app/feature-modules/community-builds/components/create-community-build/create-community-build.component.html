@@ -106,7 +106,7 @@
                   </p>
                   <div class="images-list">
                     <div *ngFor="let image of uploadedImagesFiles; let i = index">
-                      <div *ngIf="!uploadedImagesFiles[i]['delete']">
+                      <div *ngIf="!uploadedImagesFiles[i]['delete']" class="image">
                         <img
                           alt="{{ uploadedImages[i]?.name || 'Image' }}"
                           src="{{ uploadedImages[i] }}"
@@ -366,7 +366,7 @@
                 <h3>Tags</h3>
                 <p>Enter keywords so others can easily find your project</p>
               </div>
-              <label class="label"> Tags<span class="required-field">*</span></label>
+              <label class="label">Add Tags<span class="required-field">*</span></label>
               <app-tag
                 (tagAdd)="onTagAdd($event)"
                 (tagDelete)="onTagDelete($event)"
