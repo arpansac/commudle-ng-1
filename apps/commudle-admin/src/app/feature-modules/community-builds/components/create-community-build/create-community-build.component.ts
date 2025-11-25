@@ -65,6 +65,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   communityBuildUpdateForm;
   moment = moment;
   hasOpenSourceLink = false;
+  editBuildForm = false;
 
   tinyMCE = {
     min_height: 500,
@@ -184,6 +185,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
     this.paramsTags = this.activatedRoute.snapshot.queryParamMap.getAll('tags[]');
     this.activatedRoute.snapshot.queryParamMap;
+    this.editBuildForm = this.activatedRoute.snapshot.params.community_build_id ? true : false;
     this.getCommunityBuild();
     this.setBuildType();
     this.linkDisplay();

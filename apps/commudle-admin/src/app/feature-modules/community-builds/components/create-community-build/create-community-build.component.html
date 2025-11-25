@@ -29,7 +29,10 @@
         </nb-card-body>
       </nb-card>
 
-      <nb-card class="form-card">
+      <div *ngIf="editBuildForm && !parentId && !parentType" class="edit-build-header">
+        <p class="edit-header">Edit Your Build<fa-icon [icon]="faEdit"></fa-icon></p>
+      </div>
+      <nb-card class="form-card" [ngClass]="{ 'com-rounded-t-none': editBuildForm && !parentId && !parentType }">
         <nb-card-body>
           <form (keydown.enter)="$event.preventDefault()" [formGroup]="communityBuildForm">
             <div class="field">
