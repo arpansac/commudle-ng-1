@@ -60,11 +60,11 @@
 
               .hackathon-content {
                 .hackathon-name {
-                  @apply com-text-xl com-font-bold com-text-gray-900 com-mb-2;
+                  @apply com-text-xl com-font-bold com-text-tYankees-Blue com-mb-2 com-mt-0;
                 }
 
                 .hackathon-description {
-                  @apply com-text-gray-600 com-m-0;
+                  @apply com-text-tYankees-Blue com-m-0;
                 }
               }
 
@@ -98,11 +98,11 @@
                 @apply com-flex-1;
 
                 .community-name {
-                  @apply com-text-xl com-font-bold com-text-gray-900 com-mb-1;
+                  @apply com-text-xl com-font-bold com-text-tYankees-Blue com-mb-1 com-mt-0;
                 }
 
                 .community-description {
-                  @apply com-text-gray-600 com-m-0;
+                  @apply com-text-tYankees-Blue com-m-0;
                 }
               }
 
