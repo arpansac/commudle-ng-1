@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HackathonCollaborationCommunitiesService } from '@commudle/shared-services';
 import { IHackathonCollaborationCommunity, EHackathonCollaborationCommunityStatus } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { faCheckCircle, faTimesCircle, faRocket, faUsers, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-hackathon-collaboration-community',
@@ -15,6 +16,14 @@ export class HackathonCollaborationCommunityComponent implements OnInit, OnDestr
   collaborationToken: string;
   status: EHackathonCollaborationCommunityStatus;
 
+  readonly icons = {
+    faCheckCircle,
+    faTimesCircle,
+    faRocket,
+    faUsers,
+    faExternalLinkAlt,
+  };
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private hackathonCollaborationCommunitiesService: HackathonCollaborationCommunitiesService,
@@ -22,6 +31,7 @@ export class HackathonCollaborationCommunityComponent implements OnInit, OnDestr
   ) {}
 
   ngOnInit() {
+    this.seoService.noIndex(true);
     this.activatedRoute.queryParams.subscribe((data) => {
       this.collaborationToken = data.token;
       this.status = data.status;
@@ -34,7 +44,6 @@ export class HackathonCollaborationCommunityComponent implements OnInit, OnDestr
     });
 
     this.seoService.setTitle('Confirm Hackathon Collaboration');
-    this.seoService.noIndex(true);
   }
 
   ngOnDestroy() {
@@ -47,7 +56,7 @@ export class HackathonCollaborationCommunityComponent implements OnInit, OnDestr
         this.hackathonCollaboration = data;
       },
       error: (data) => {
-        this.hackathonCollaboration = data;
+        this.hackathonCollaboration = data.error.data;
       },
     });
   }

@@ -1,52 +1,54 @@
-<div class="page-padding">
-  <div *ngIf="hackathonCollaboration">
-    <nb-card>
-      <nb-card-body>
-        <div *ngIf="hackathonCollaboration.approved" class="status">
-          <div class="collaboration-status">
-            <div class="collaboration-community-logo">
-              <img
-                alt="{{ hackathonCollaboration.community.name }}"
-                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
-                title="{{ hackathonCollaboration.community.name }}"
-              />
-            </div>
-            <p>
-              Welcome Aboard!
-              <br />
-              <span>Thank You for approving the hackathon collaboration request.</span>
-            </p>
-          </div>
-        </div>
-
+<div class="collaboration-confirmation-container">
+  <div *ngIf="hackathonCollaboration" class="confirmation-wrapper">
+    <div class="status-card">
+      <!-- Status Header -->
+      <div class="status-header">
         <div
-          *ngIf="
-            !hackathonCollaboration.approved ||
-            hackathonCollaboration.status === EHackathonCollaborationCommunityStatus.REJECTED
-          "
-          class="status"
+          class="status-icon"
+          [ngClass]="{
+            'status-approved': hackathonCollaboration.approved,
+            'status-rejected':
+              !hackathonCollaboration.approved ||
+              hackathonCollaboration.status === EHackathonCollaborationCommunityStatus.REJECTED
+          }"
         >
-          <div class="collaboration-status">
-            <div class="collaboration-community-logo">
-              <img
-                alt="{{ hackathonCollaboration.community.name }}"
-                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
-                title="{{ hackathonCollaboration.community.name }}"
-              />
-            </div>
-            <p>
-              <span>
-                Thank You, we have received your response for
-                <strong class="com-text-red-500 com-uppercase">rejecting</strong> the hackathon collaboration request.
-              </span>
-            </p>
-          </div>
+          <fa-icon [icon]="hackathonCollaboration.approved ? icons.faCheckCircle : icons.faTimesCircle"></fa-icon>
         </div>
+        <div class="status-content">
+          <h1 class="status-title">
+            {{ hackathonCollaboration.approved ? 'Collaboration Approved!' : 'Collaboration Declined' }}
+          </h1>
+          <p class="status-message">
+            <span *ngIf="hackathonCollaboration.approved">
+              Welcome aboard! Thank you for approving the hackathon collaboration request.
+            </span>
+            <span
+              *ngIf="
+                !hackathonCollaboration.approved ||
+                hackathonCollaboration.status === EHackathonCollaborationCommunityStatus.REJECTED
+              "
+            >
+              Thank you for your response. We have received your decision to decline the collaboration request.
+            </span>
+          </p>
+        </div>
+      </div>
 
-        <div class="hackathon-details" *ngIf="hackathonCollaboration">
-          <div class="hackathon">
-            <p>
+      <!-- Collaboration Details -->
+      <div class="collaboration-details">
+        <div class="detail-section">
+          <div class="section-header">
+            <fa-icon [icon]="icons.faRocket" class="section-icon"></fa-icon>
+            <h3>Hackathon Details</h3>
+          </div>
+          <div class="hackathon-info">
+            <div class="hackathon-card">
+              <div class="hackathon-content">
+                <h4 class="hackathon-name">{{ hackathonCollaboration.hackathon.name }}</h4>
+                <p class="hackathon-description">Join this exciting hackathon event</p>
+              </div>
               <a
+                class="hackathon-link"
                 [routerLink]="[
                   '/communities',
                   hackathonCollaboration.community.slug,
@@ -54,26 +56,50 @@
                   hackathonCollaboration.hackathon.slug
                 ]"
               >
-                Go To <strong>{{ hackathonCollaboration.hackathon.name }}</strong>
+                <fa-icon [icon]="icons.faExternalLinkAlt"></fa-icon>
+                View Hackathon
               </a>
-            </p>
-          </div>
-          <div class="community">
-            <div class="logo">
-              <img
-                alt="{{ hackathonCollaboration.community.name }}"
-                src="{{ hackathonCollaboration.community.logo_image.i64 }}"
-                title="{{ hackathonCollaboration.community.name }}"
-              />
             </div>
-            <p>
-              <a [routerLink]="['/communities', hackathonCollaboration.community.slug]">{{
-                hackathonCollaboration.community.name
-              }}</a>
-            </p>
           </div>
         </div>
-      </nb-card-body>
-    </nb-card>
+
+        <div class="detail-section">
+          <div class="section-header">
+            <fa-icon [icon]="icons.faUsers" class="section-icon"></fa-icon>
+            <h3>Community Partner</h3>
+          </div>
+          <div class="community-info">
+            <div class="community-card">
+              <div class="community-avatar">
+                <img
+                  [src]="hackathonCollaboration.community.logo_image.i64"
+                  [alt]="hackathonCollaboration.community.name"
+                  [title]="hackathonCollaboration.community.name"
+                />
+              </div>
+              <div class="community-content">
+                <h4 class="community-name">{{ hackathonCollaboration.community.name }}</h4>
+                <p class="community-description">Collaboration Partner</p>
+              </div>
+              <a class="community-link" [routerLink]="['/communities', hackathonCollaboration.community.slug]">
+                <fa-icon [icon]="icons.faExternalLinkAlt"></fa-icon>
+                Visit Community
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="action-footer" *ngIf="hackathonCollaboration.approved">
+        <div class="next-steps">
+          <h4>What's Next?</h4>
+          <ul class="steps-list">
+            <li>Check the hackathon page for updates and announcements</li>
+            <li>Connect with other participating communities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
