@@ -44,12 +44,12 @@
   nb-card.form-card {
     @apply com-m-0;
     nb-card-body {
-      @apply com-px-10 com-pb-10 com-pt-0;
+      @apply md:com-px-10 com-px-4 md:com-pb-10 com-pb-8 com-pt-0;
     }
 
     form {
       .field {
-        @apply com-flex com-flex-col com-pt-10 com-pb-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+        @apply com-flex com-flex-col md:com-pt-10 md:com-pb-8 com-py-8 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
         .field-header {
           @apply com-flex com-flex-col com-mb-6;
@@ -75,8 +75,8 @@
         }
       }
 
-      .field.actions {
-        @apply com-flex com-flex-row com-flex-wrap com-gap-4;
+      .actions {
+        @apply com-flex com-flex-row com-flex-wrap com-gap-4 md:com-pt-10 com-pt-8;
 
         .save-as-draft-button {
           @apply com-bg-[#3366FF1A] com-text-Ultramarine-Blue com-w-max com-rounded-lg com-border-Ultramarine-Blue #{!important};
@@ -175,7 +175,7 @@
 }
 
 .images-container {
-  @apply com-flex com-flex-row com-gap-4;
+  @apply com-flex md:com-flex-row com-flex-col com-gap-4;
 }
 
 .links-container {
@@ -195,7 +195,7 @@
 }
 
 .image-size-text {
-  @apply com-flex com-flex-col com-text-base com-text-gray-500 com-m-0 com-gap-2;
+  @apply com-flex com-flex-col com-text-base com-text-gray-500 com-m-0 com-gap-2 com-mb-3;
 }
 
 .image-size {
