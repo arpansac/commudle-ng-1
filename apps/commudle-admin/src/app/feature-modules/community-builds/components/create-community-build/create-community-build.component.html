@@ -209,15 +209,22 @@
                 <commudle-alert [errorMessage]="'Please add correct iframe'" [error]="true"></commudle-alert>
               </span>
 
-              <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
-                <div *ngIf="embeddedLink" class="com-aspect-[16/10] com-overflow-hidden">
+              <div *ngIf="embeddedLink" class="video-iframe">
+                <div class="video-iframe-content">
                   <div [innerHTML]="embeddedLink"></div>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="hackathonUserResponses" class="field">
-              <label> Teammates* </label>
+            <div
+              *ngIf="
+                hackathonUserResponses &&
+                hackathonUserResponses.user_responses &&
+                hackathonUserResponses.user_responses.length > 0
+              "
+              class="field"
+            >
+              <label class="label">Teammates<span class="required-field">*</span></label>
               <div
                 *ngFor="let hackathonUserResponse of hackathonUserResponses.user_responses"
                 class="hackathon-user-response"
@@ -235,7 +242,7 @@
             </div>
 
             <div *ngIf="teammates.length > 0" class="field">
-              Teammates
+              <label class="label">Teammates</label>
               <div *ngFor="let teammate of teammates; let i = index">
                 <div
                   *ngIf="
@@ -266,6 +273,10 @@
             </div>
 
             <div class="field" formArrayName="team">
+              <div class="field-header">
+                <h3>Teammates</h3>
+                <p>List your collaborators or team members</p>
+              </div>
               <div *ngFor="let email of communityBuildForm.controls.team['controls']; let i = index">
                 <div [formGroupName]="i" class="teammate-email d-flex align-items-center">
                   <input
@@ -287,13 +298,7 @@
                   <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                 </span>
               </div>
-              <button
-                (click)="addTeammate()"
-                *ngIf="!(parentId && parentType)"
-                class="add-button"
-                nbButton
-                status="primary"
-              >
+              <button (click)="addTeammate()" *ngIf="!(parentId && parentType)" class="add-button" nbButton>
                 <nb-icon icon="plus"></nb-icon>
                 Add Teammate
               </button>
@@ -324,10 +329,10 @@
 
             <!-- to post updates for build -->
             <div [formGroup]="communityBuildUpdateForm">
-              <div class="field" formArrayName="update">
+              <div formArrayName="update">
                 <div
                   *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
-                  class="build-updates"
+                  class="build-updates field"
                 >
                   <div [formGroupName]="i" class="build-update">
                     <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
@@ -357,17 +362,20 @@
             </div>
 
             <div class="field">
-              <label>
-                Tags*
-                <app-tag
-                  (tagAdd)="onTagAdd($event)"
-                  (tagDelete)="onTagDelete($event)"
-                  [backgroundColor]="'com-bg-tAnti-Flash'"
-                  [editable]="true"
-                  [fontColor]="'com-text-tYankees-Blue'"
-                  [tags]="tags"
-                ></app-tag>
-              </label>
+              <div class="field-header">
+                <h3>Tags</h3>
+                <p>Enter keywords so others can easily find your project</p>
+              </div>
+              <label class="label"> Tags<span class="required-field">*</span></label>
+              <app-tag
+                (tagAdd)="onTagAdd($event)"
+                (tagDelete)="onTagDelete($event)"
+                [backgroundColor]="'com-bg-tAnti-Flash'"
+                [editable]="true"
+                [fontColor]="'com-text-tYankees-Blue'"
+                [tags]="tags"
+              ></app-tag>
+
               <span *ngIf="showTagsValidation && tags.length < 5">
                 <commudle-alert [errorMessage]="'Minimum 5 tags need to be added'" [error]="true"></commudle-alert>
               </span>
@@ -400,20 +408,20 @@
                 Submit For Approval
               </button> -->
 
-              <button (click)="submitForm(EPublishStatus.published)" nbButton status="primary" type="submit">
-                <nb-icon icon="cloud-upload"></nb-icon>
-                Publish
-              </button>
               <button
                 (click)="submitForm(EPublishStatus.draft)"
                 *ngIf="!hackathonUserResponses"
                 nbButton
                 outline
-                status="primary"
                 type="submit"
+                class="save-as-draft-button"
               >
-                <fa-icon [icon]="faEdit" class="com-mr-2"></fa-icon>
+                <fa-icon [icon]="faPenClip" class="com-mr-2"></fa-icon>
                 Save as Draft
+              </button>
+              <button (click)="submitForm(EPublishStatus.published)" nbButton type="submit" class="publish-now-button">
+                <nb-icon icon="cloud-upload"></nb-icon>
+                Publish Now
               </button>
             </div>
           </form>

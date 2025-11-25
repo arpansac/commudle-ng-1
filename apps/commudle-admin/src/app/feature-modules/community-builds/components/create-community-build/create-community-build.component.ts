@@ -12,7 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPenClip } from '@fortawesome/free-solid-svg-icons';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import {
   EBuildType,
@@ -59,6 +59,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   paramsTags = [];
   faEdit = faEdit;
   faImage = faImage;
+  faPenClip = faPenClip;
 
   communityBuildForm;
   communityBuildUpdateForm;

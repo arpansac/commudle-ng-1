@@ -76,10 +76,14 @@
       }
 
       .field.actions {
-        display: flex;
-        flex-wrap: wrap;
-        button {
-          margin: 0.5rem;
+        @apply com-flex com-flex-row com-flex-wrap com-gap-4;
+
+        .save-as-draft-button {
+          @apply com-bg-[#3366FF1A] com-text-Ultramarine-Blue com-w-max com-rounded-lg com-border-Ultramarine-Blue #{!important};
+        }
+
+        .publish-now-button {
+          @apply com-bg-Ultramarine-Blue com-text-white com-w-max com-rounded-lg #{!important};
         }
       }
 
@@ -200,4 +204,16 @@
 
 .image-type {
   @apply com-font-medium;
+}
+
+.video-iframe {
+  @apply com-w-80 com-mt-7 com-overflow-hidden com-h-max;
+}
+
+.video-iframe-content {
+  @apply com-aspect-[16/10] com-overflow-hidden;
+}
+
+.add-button {
+  @apply com-bg-black com-text-white com-w-max com-rounded-lg #{!important};
 }
