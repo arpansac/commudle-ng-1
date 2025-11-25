@@ -112,6 +112,12 @@
                     </div>
                     <div *ngIf="sidebarExpanded" class="action-button-name">Rounds</div>
                   </a>
+                  <a class="action-button" [routerLink]="['collaboration']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faGamepad"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Collaborations</div>
+                  </a>
                   <a class="action-button" [routerLink]="['registrations']" routerLinkActive="active">
                     <div class="icon">
                       <fa-icon [icon]="icons.faRectangleList"></fa-icon>

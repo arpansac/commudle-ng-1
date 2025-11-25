@@ -498,6 +498,16 @@ export const API_ROUTES = {
     PUBLIC_INDEX: 'api/v2/event_collaboration_communities/public_index',
   },
 
+  // hackathon_collaboration_communities
+  HACKATHON_COLLABORATION_COMMUNITIES: {
+    INDEX: 'api/v2/hackathon_collaboration_communities',
+    CREATE: 'api/v2/hackathon_collaboration_communities',
+    DELETE: 'api/v2/hackathon_collaboration_communities',
+    RESEND_INVITATION: 'api/v2/hackathon_collaboration_communities/resend_invitation',
+    UPDATE_STATUS: 'api/v2/hackathon_collaboration_communities/update_status',
+    PUBLIC_INDEX: 'api/v2/hackathon_collaboration_communities/public_index',
+  },
+
   EVENT_UPDATES: {
     INDEX: 'api/v2/event_updates',
     CREATE: 'api/v2/event_updates',
