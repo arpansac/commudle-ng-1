@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IHackathonTrack, IHackathonProblemStatement } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
-import { faFileImage, faPlus, faXmark, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faFileImage, faPlus, faXmark, faMinus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     faFileImage,
     faXmark,
     faMinus,
+    faEdit,
   };
   hackathonTracks: IHackathonTrack[];
   hackathonSlug = '';
@@ -68,8 +69,8 @@ export class HackathonControlPanelTrackComponent implements OnInit {
 
     return this.fb.group({
       id: [problemStatement?.id || null],
-      title: [problemStatement?.title || ''],
-      max_teams_limit: [problemStatement?.max_teams_limit || null],
+      title: [problemStatement?.title || '', [Validators.minLength(60)]],
+      max_teams_limit: [problemStatement?.max_teams_limit || null, [Validators.min(1)]],
       display_id: [{ value: displayId, disabled: true }],
     });
   }

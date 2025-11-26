@@ -42,3 +42,29 @@ nb-card-header,
 nb-card-footer {
   @apply com-flex com-justify-between com-items-center;
 }
+
+.hackathon-tracks-table {
+  @apply com-w-full com-border-collapse;
+
+  th {
+    @apply com-bg-gray-100 com-p-3 com-text-left com-font-semibold com-border com-border-gray-300;
+  }
+
+  td {
+    @apply com-p-3 com-border com-border-gray-300 com-align-top;
+  }
+
+  .description-scroll {
+    @apply com-h-20 com-overflow-y-scroll com-text-sm com-leading-tight;
+    max-width: 200px;
+  }
+
+  .action-btn {
+    @apply com-mr-2;
+  }
+
+  .problem-count-btn {
+    @apply com-bg-blue-500 com-text-white com-px-3 com-py-1 com-rounded com-cursor-pointer com-border-none;
+    @apply hover:com-bg-blue-600;
+  }
+}
