@@ -241,9 +241,13 @@ export const staticAssets = {
   student_non_profit_community_support:
     'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png',
 
-  // id: 187
+  // id: 205
   create_build_header:
-    'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png',
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenZtQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--80e490e3cc9f967833a0c20eefd6771c49a6a69e/Default%20Builds%20Image.png',
+
+  // id: 206
+  create_build_background:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4b2bc162b46a6d579f23982654afa33216a8ced2/Default%20Builds%20BG.png',
 };
 
 export const AwsS3Bucket = {

@@ -2,18 +2,18 @@
   nb-card.page-header {
     @apply com-m-0 com-mb-4;
     nb-card-body {
-      @apply com-py-10 com-pl-10 com-pr-0;
+      @apply com-p-0;
     }
 
     .header-content {
-      @apply com-flex com-flex-row com-justify-between;
+      @apply com-flex com-flex-row com-justify-between com-items-center;
 
       .header-text {
-        @apply com-flex com-flex-col com-w-full;
+        @apply com-flex com-flex-col com-w-full com-max-w-[714px] com-py-10 com-pl-10 com-pr-0;
       }
 
       .header-image {
-        @apply com-flex com-items-center com-m-0 md:com-w-[560px] md:com-h-[184px] com-w-full com-h-full com-shrink-0;
+        @apply com-flex com-items-center com-m-0 com-mt-auto md:com-w-[334px] md:com-h-[236px] com-w-full com-h-full com-shrink-0;
         img {
           @apply com-h-full com-w-full;
         }
@@ -33,10 +33,14 @@
     }
 
     ul {
-      @apply com-pl-4 com-m-0 com-gap-3;
+      @apply com-pl-0 com-m-0 com-gap-3;
 
       li {
-        @apply com-text-base com-font-medium  com-text-Yankees-Blue com-m-0;
+        @apply com-text-base com-font-medium com-text-Yankees-Blue com-list-none;
+      }
+
+      span {
+        @apply com-mr-2;
       }
     }
   }
@@ -234,4 +238,11 @@
 
 .hackathon-user-response-container {
   @apply com-flex com-flex-col com-gap-3;
+}
+
+.background-image {
+  @apply com-bg-no-repeat com-bg-cover md:com-h-full com-h-auto com-w-full;
+  img {
+    @apply com-h-full com-w-full;
+  }
 }

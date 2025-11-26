@@ -2,28 +2,33 @@
   <div class="container">
     <div class="one-column-layout">
       <nb-card class="page-header">
-        <nb-card-body>
-          <div *ngIf="!(parentId && parentType)" class="header-content">
-            <div class="header-text">
-              <h1>
-                <span>Create Your Build</span>
-                <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
-              </h1>
-              <p>
-                Share your project’s story, visuals, and resources. Publish to connect with others, inspire discovery,
-                and receive feedback from the community.
-              </p>
-              <ul>
-                <li>
-                  <span>Make your portfolio stronger by adding new projects</span>
-                </li>
-                <li>
-                  <span>Best one gets Featured!!</span>
-                </li>
-              </ul>
-            </div>
-            <div class="header-image">
-              <img alt="Create Build Header" src="{{ staticAssets.create_build_header }}" title="Create Build Header" />
+        <nb-card-body *ngIf="!(parentId && parentType)">
+          <div
+            class="background-image"
+            [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.create_build_background + '\')' }"
+          >
+            <div class="header-content">
+              <div class="header-text">
+                <h1>
+                  <span>Create Your Build</span>
+                  <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
+                </h1>
+                <p>
+                  Share your project’s story, visuals, and resources. Publish to connect with others, inspire discovery,
+                  and receive feedback from the community.
+                </p>
+                <ul>
+                  <li class="com-mb-3"><span>🔮</span>Make your portfolio stronger by adding new projects</li>
+                  <li><span>🏅</span>Best one gets Featured!!</li>
+                </ul>
+              </div>
+              <div class="header-image">
+                <img
+                  alt="Create Build Header"
+                  src="{{ staticAssets.create_build_header }}"
+                  title="Create Build Header"
+                />
+              </div>
             </div>
           </div>
         </nb-card-body>
