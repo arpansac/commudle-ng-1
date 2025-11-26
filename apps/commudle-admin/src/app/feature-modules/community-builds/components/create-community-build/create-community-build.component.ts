@@ -12,7 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faEdit, faPenClip } from '@fortawesome/free-solid-svg-icons';
+import { faCircleDot, faEdit, faPenClip, faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import {
   EBuildType,
@@ -60,6 +60,9 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   faEdit = faEdit;
   faImage = faImage;
   faPenClip = faPenClip;
+  faUsers = faUsers;
+  faCircleDot = faCircleDot;
+  faStar = faStar;
 
   communityBuildForm;
   communityBuildUpdateForm;
@@ -471,6 +474,9 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
       if (this.parentType === EDbModels.HACKATHON_TEAM) {
         this.hackathonService.showUserResponsesByTeam(this.parentId).subscribe((data) => {
           this.hackathonUserResponses = data;
+          console.log(this.hackathonUserResponses);
+          console.log(this.hackathonUserResponses.team);
+          console.log(this.hackathonUserResponses.team.round);
         });
       }
     });

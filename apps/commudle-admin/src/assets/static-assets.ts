@@ -248,6 +248,14 @@ export const staticAssets = {
   // id: 206
   create_build_background:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4b2bc162b46a6d579f23982654afa33216a8ced2/Default%20Builds%20BG.png',
+
+  // id: 207
+  create_hackathon_build_header:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMnZtQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--ac1c9124e74ea1f3e59fa8c7d2b670056a507999/Hackathon%20Builds%20Image%20(1).svg',
+
+  // id: 208
+  create_hackathon_build_background:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMnptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1a1946f9704cfa4fca0d9948da32f686adb2c681/Hackathon%20Builds%20BG.png',
 };
 
 export const AwsS3Bucket = {

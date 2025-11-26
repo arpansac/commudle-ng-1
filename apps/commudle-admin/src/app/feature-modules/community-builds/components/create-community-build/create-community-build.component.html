@@ -9,11 +9,11 @@
           >
             <div class="header-content">
               <div class="header-text">
-                <h1>
+                <h1 class="create-build-title">
                   <span>Create Your Build</span>
                   <commudle-help-section [helpDictionaryName]="'build-publish-2'"></commudle-help-section>
                 </h1>
-                <p>
+                <p class="create-build-subtitle">
                   Share your project’s story, visuals, and resources. Publish to connect with others, inspire discovery,
                   and receive feedback from the community.
                 </p>
@@ -28,6 +28,33 @@
                 <img
                   alt="Create Build Header"
                   src="{{ staticAssets.create_build_header }}"
+                  title="Create Build Header"
+                />
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+        <nb-card-body *ngIf="parentId && parentType">
+          <div
+            class="background-image"
+            [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.create_hackathon_build_background + '\')' }"
+          >
+            <div class="header-content">
+              <div class="header-text">
+                <h1 class="create-hackathon-build-title">
+                  <span>AI Accelerator Hub: A Personalized AI Solution</span>
+                </h1>
+                <p class="create-hackathon-build-subtitle">
+                  <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team.name }}</span>
+                  <span *ngIf="hackathonUserResponses.team.round" class="icon-border"
+                    ><fa-icon [icon]="faCircleDot"></fa-icon>Round {{ hackathonUserResponses.team.round?.order }}</span
+                  >
+                </p>
+              </div>
+              <div class="header-image">
+                <img
+                  alt="Create Build Header"
+                  src="{{ staticAssets.create_hackathon_build_header }}"
                   title="Create Build Header"
                 />
               </div>
@@ -267,7 +294,7 @@
                 <p>List your collaborators or team members</p>
               </div>
               <div *ngFor="let email of communityBuildForm.controls.team['controls']; let i = index">
-                <div [formGroupName]="i" class="teammate-email d-flex align-items-center">
+                <div [formGroupName]="i" class="teammate-email">
                   <input
                     formControlName="value"
                     fullWidth

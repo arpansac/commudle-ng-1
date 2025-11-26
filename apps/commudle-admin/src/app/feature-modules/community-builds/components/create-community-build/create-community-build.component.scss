@@ -20,7 +20,7 @@
       }
     }
 
-    h1 {
+    .create-build-title {
       @apply com-m-0 com-flex com-items-center com-mb-3;
 
       span {
@@ -28,8 +28,32 @@
       }
     }
 
-    p {
+    .create-build-subtitle {
       @apply md:com-text-base com-text-sm com-font-normal com-text-gray-500 md:com-mb-7 com-mb-6 com-m-0;
+    }
+
+    .create-hackathon-build-title {
+      @apply com-m-0 com-flex com-items-center com-mb-3;
+
+      span {
+        @apply md:com-text-4xl com-text-3xl com-font-bold com-text-tWhite;
+      }
+    }
+
+    .create-hackathon-build-subtitle {
+      @apply com-flex com-flex-row com-items-center md:com-text-lg com-text-sm com-font-normal com-text-tWhite com-m-0 md:com-mt-[76px] com-mt-6 md:com-mb-0 com-mb-9;
+
+      span {
+        @apply com-flex com-flex-row com-items-center com-pr-3;
+      }
+
+      fa-icon {
+        @apply com-text-lg com-text-tWhite com-mr-2;
+      }
+
+      .icon-border {
+        @apply com-border-0 com-border-l com-border-solid com-border-tWhite com-px-3;
+      }
     }
 
     ul {
@@ -68,7 +92,7 @@
         }
 
         .teammate-email {
-          padding: 5px 0px;
+          @apply com-flex com-items-center com-py-6px;
         }
       }
 
@@ -234,7 +258,7 @@
 }
 
 .background-image {
-  @apply com-bg-no-repeat com-bg-cover md:com-h-full com-h-auto com-w-full;
+  @apply com-bg-no-repeat com-bg-cover md:com-h-full com-h-auto com-w-full com-rounded-10;
   img {
     @apply com-h-full com-w-full;
   }
