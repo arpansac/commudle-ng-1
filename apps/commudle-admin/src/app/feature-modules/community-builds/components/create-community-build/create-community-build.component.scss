@@ -6,14 +6,14 @@
     }
 
     .header-content {
-      @apply com-flex com-flex-row com-justify-between com-items-center;
+      @apply com-flex md:com-flex-row com-flex-col com-justify-between com-items-center;
 
       .header-text {
-        @apply com-flex com-flex-col com-w-full com-max-w-[714px] com-py-10 com-pl-10 com-pr-0;
+        @apply com-flex com-flex-col com-w-full md:com-max-w-[714px] com-max-w-full md:com-py-10 md:com-pl-10 md:com-pr-0 com-px-4 com-py-4;
       }
 
       .header-image {
-        @apply com-flex com-items-center com-m-0 com-mt-auto md:com-w-[334px] md:com-h-[236px] com-w-full com-h-full com-shrink-0;
+        @apply com-flex com-items-center com-m-0 md:com-mt-auto com-mt-1 md:com-w-[334px] md:com-h-[236px] com-w-full com-h-full com-shrink-0;
         img {
           @apply com-h-full com-w-full;
         }
@@ -24,19 +24,19 @@
       @apply com-m-0 com-flex com-items-center com-mb-3;
 
       span {
-        @apply com-text-4xl com-font-bold com-text-Yankees-Blue;
+        @apply md:com-text-4xl com-text-3xl com-font-bold com-text-Yankees-Blue;
       }
     }
 
     p {
-      @apply com-text-base com-font-normal com-text-gray-500 com-mb-7 com-m-0;
+      @apply md:com-text-base com-text-sm com-font-normal com-text-gray-500 md:com-mb-7 com-mb-6 com-m-0;
     }
 
     ul {
       @apply com-pl-0 com-m-0 com-gap-3;
 
       li {
-        @apply com-text-base com-font-medium com-text-Yankees-Blue com-list-none;
+        @apply md:com-text-base com-text-sm md:com-font-medium com-font-normal com-text-Yankees-Blue com-list-none;
       }
 
       span {
@@ -69,13 +69,6 @@
 
         .teammate-email {
           padding: 5px 0px;
-        }
-        .add-button {
-          margin: 5px 0px;
-        }
-
-        .option {
-          color: blue;
         }
       }
 
@@ -219,7 +212,7 @@
 }
 
 .add-button {
-  @apply com-bg-black com-text-white com-w-max com-rounded-lg #{!important};
+  @apply com-bg-black com-text-white com-w-max com-rounded-lg com-mt-2 #{!important};
 }
 
 .image {
@@ -245,4 +238,28 @@
   img {
     @apply com-h-full com-w-full;
   }
+}
+
+.teammates-list {
+  @apply com-flex com-flex-col com-mt-6;
+}
+
+.teammate-item {
+  @apply com-flex com-justify-between com-items-center com-gap-4;
+}
+
+.actions-teammate {
+  @apply com-flex com-flex-row com-items-center com-gap-8;
+}
+
+.option {
+  @apply com-text-xs com-font-medium com-cursor-pointer;
+}
+
+.resend {
+  @apply com-text-Ultramarine-Blue;
+}
+
+.remove {
+  @apply com-text-Infra-Red;
 }
