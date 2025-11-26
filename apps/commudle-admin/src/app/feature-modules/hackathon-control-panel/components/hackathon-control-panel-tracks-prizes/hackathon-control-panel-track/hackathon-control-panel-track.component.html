@@ -12,6 +12,7 @@
       <thead>
         <tr>
           <th>Track Name</th>
+          <th>Description</th>
           <th>Problem Statements</th>
           <th>Prizes</th>
           <th>Actions</th>
@@ -20,6 +21,9 @@
       <tbody>
         <tr *ngFor="let hackathonTrack of hackathonTracks; let i = index">
           <td>{{ hackathonTrack.name }}</td>
+          <td>
+            <div class="description-scroll custom-scrollbar" [innerHTML]="hackathonTrack.description"></div>
+          </td>
           <td>
             <div *ngIf="hackathonTrack.hackathon_problem_statements?.length; else addProblemStatements">
               <button (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)" class="problem-count-btn">
@@ -39,10 +43,12 @@
           </td>
           <td>
             <div *ngIf="hackathonTrack.hackathon_prizes?.length; else addPrizes">
-              {{ hackathonTrack.hackathon_prizes.length }} Prize(s)
+              {{ hackathonTrack.hackathon_prizes.length }} Prize
             </div>
             <ng-template #addPrizes>
-              <button nbButton size="tiny" status="primary">Add Prize</button>
+              <button (click)="prizeDialogBox(hackathonTrack.id)" nbButton size="tiny" status="primary">
+                Add Prize
+              </button>
             </ng-template>
           </td>
           <td>
@@ -56,7 +62,16 @@
             >
               Edit Track
             </button>
-            <button nbButton size="tiny" status="success" class="action-btn" title="Add Prize">Add Prize</button>
+            <button
+              nbButton
+              size="tiny"
+              status="success"
+              class="action-btn"
+              title="Add Prize"
+              (click)="prizeDialogBox(hackathonTrack.id)"
+            >
+              Add Prize
+            </button>
             <button
               (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)"
               nbButton

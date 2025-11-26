@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathonTrack, IHackathonProblemStatement } from '@commudle/shared-models';
+import { IHackathonTrack, IHackathonProblemStatement, IHackathon } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { faFileImage, faPlus, faXmark, faMinus, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-tracks-prizes/hackathon-prize-form/hackathon-prize-form.component';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
@@ -13,15 +14,16 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 })
 export class HackathonControlPanelTrackComponent implements OnInit {
   trackForm: FormGroup;
+  hackathon: IHackathon;
+  hackathonTracks: IHackathonTrack[];
 
-  icons = {
+  readonly icons = {
     faPlus,
     faFileImage,
     faXmark,
     faMinus,
     faEdit,
   };
-  hackathonTracks: IHackathonTrack[];
   hackathonSlug = '';
   isLoading = true;
   currentTrackIndex: number;
@@ -55,6 +57,9 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.parent.parent.paramMap.subscribe((params) => {
       this.hackathonSlug = params.get('hackathon_id');
+      this.hackathonService.showHackathon(this.hackathonSlug).subscribe((data) => {
+        this.hackathon = data;
+      });
       this.indexTracks(params.get('hackathon_id'));
     });
   }
@@ -180,6 +185,22 @@ export class HackathonControlPanelTrackComponent implements OnInit {
   destroyTrack(trackId, index) {
     this.hackathonService.destroyTrack(trackId).subscribe((data) => {
       if (data) this.hackathonTracks.splice(index, 1);
+    });
+  }
+
+  prizeDialogBox(selectedTrackId?: number) {
+    const dialogRef = this.nbDialogService.open(HackathonPrizeFormComponent, {
+      context: {
+        hackathonId: this.hackathon.id,
+        selectedTrackId: selectedTrackId,
+      },
+    });
+
+    dialogRef.onClose.subscribe((result) => {
+      const hackathonTrackIndex = this.hackathonTracks.findIndex((track) => track.id === selectedTrackId);
+      if (hackathonTrackIndex > -1 && this.hackathonTracks[hackathonTrackIndex]) {
+        this.hackathonTracks[hackathonTrackIndex].hackathon_prizes.push(result);
+      }
     });
   }
 }

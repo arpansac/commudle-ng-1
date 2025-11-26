@@ -57,6 +57,11 @@ nb-card-footer {
   .description-scroll {
     @apply com-h-20 com-overflow-y-scroll com-text-sm com-leading-tight;
     max-width: 200px;
+    ::ng-deep {
+      p {
+        @apply com-my-0;
+      }
+    }
   }
 
   .action-btn {

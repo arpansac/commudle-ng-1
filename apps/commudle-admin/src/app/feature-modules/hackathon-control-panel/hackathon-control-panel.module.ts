@@ -57,6 +57,7 @@ import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-overall-stats.component';
 import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
+import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-tracks-prizes/hackathon-prize-form/hackathon-prize-form.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/sr
     HackathonIndividualTeamEmailComponent,
     HackathonControlPanelOverallStatsComponent,
     HackathonControlPanelEmailStatsComponent,
+    HackathonPrizeFormComponent,
   ],
   imports: [
     CommonModule,
