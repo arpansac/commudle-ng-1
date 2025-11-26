@@ -163,7 +163,7 @@
 }
 
 .hackathon-user-response {
-  @apply com-my-3;
+  @apply com-m-0;
 }
 
 .required-field {
@@ -230,4 +230,8 @@
   fa-icon {
     @apply com-h-5 com-w-5 com-ml-4;
   }
+}
+
+.hackathon-user-response-container {
+  @apply com-flex com-flex-col com-gap-3;
 }

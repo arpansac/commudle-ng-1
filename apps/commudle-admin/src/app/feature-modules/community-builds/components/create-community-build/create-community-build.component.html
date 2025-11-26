@@ -236,19 +236,21 @@
               class="field"
             >
               <label class="label">Teammates<span class="required-field">*</span></label>
-              <div
-                *ngFor="let hackathonUserResponse of hackathonUserResponses.user_responses"
-                class="hackathon-user-response"
-              >
-                <input
-                  *ngIf="currentUser && hackathonUserResponse.user_email !== currentUser.email"
-                  [readonly]="true"
-                  [value]="hackathonUserResponse.user_email"
-                  fullWidth
-                  nbInput
-                  size="large"
-                  type="email"
-                />
+              <div class="hackathon-user-response-container">
+                <div
+                  *ngFor="let hackathonUserResponse of hackathonUserResponses.user_responses"
+                  class="hackathon-user-response"
+                >
+                  <input
+                    *ngIf="currentUser && hackathonUserResponse.user_email !== currentUser.email"
+                    [readonly]="true"
+                    [value]="hackathonUserResponse.user_email"
+                    fullWidth
+                    nbInput
+                    size="large"
+                    type="email"
+                  />
+                </div>
               </div>
             </div>
 
@@ -283,7 +285,7 @@
               </div>
             </div>
 
-            <div class="field" formArrayName="team">
+            <div *ngIf="!(parentId && parentType)" class="field" formArrayName="team">
               <div class="field-header">
                 <h3>Teammates</h3>
                 <p>List your collaborators or team members</p>
@@ -323,6 +325,7 @@
                 cBuild &&
                 cBuild.entity_updates.length > 0
               "
+              class="field"
             >
               <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
                 <div class="update-details">
@@ -339,11 +342,15 @@
             </div>
 
             <!-- to post updates for build -->
-            <div [formGroup]="communityBuildUpdateForm">
+            <div *ngIf="parentId && parentType" class="field" [formGroup]="communityBuildUpdateForm">
+              <div class="field-header">
+                <h3>Teammates</h3>
+                <p>List your collaborators or team members</p>
+              </div>
               <div formArrayName="update">
                 <div
                   *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
-                  class="build-updates field"
+                  class="build-updates"
                 >
                   <div [formGroupName]="i" class="build-update">
                     <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
@@ -359,13 +366,7 @@
                     <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
                   </span>
                 </div>
-                <button
-                  (click)="addUpdate()"
-                  *ngIf="parentId && parentType"
-                  class="add-button"
-                  nbButton
-                  status="warning"
-                >
+                <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>
                   <nb-icon icon="plus"></nb-icon>
                   Add Update
                 </button>
