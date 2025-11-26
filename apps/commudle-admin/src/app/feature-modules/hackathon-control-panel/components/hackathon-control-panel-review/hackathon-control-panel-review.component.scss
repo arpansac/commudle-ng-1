@@ -8,7 +8,7 @@
       @apply com-flex com-flex-wrap com-gap-3 com-items-center;
 
       .select {
-        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max;
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max com-min-w-[180px];
         select {
           @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
           &.not-active {

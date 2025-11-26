@@ -3,6 +3,8 @@ import { VoteChannel } from '@commudle/shared-channels';
 import { AuthService, CableService, VoteService } from '@commudle/shared-services';
 import { VotersComponent } from './voters/voters.component';
 import { BehaviorSubject } from 'rxjs';
+import { faThumbsUp, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartOutline } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'commudle-vote',
@@ -13,8 +15,11 @@ import { BehaviorSubject } from 'rxjs';
 export class VoteComponent implements OnInit, OnDestroy {
   @Input() votableType!: string;
   @Input() votableId!: number;
-
+  @Input() icon: 'heart' | 'thumb-up' | 'thumb-up-with-text' = 'heart';
   VotersComponent = VotersComponent;
+  faThumbsUp = faThumbsUp;
+  faHeart = faHeart;
+  faHeartOutline = faHeartOutline;
 
   voteChannel!: VoteChannel;
 

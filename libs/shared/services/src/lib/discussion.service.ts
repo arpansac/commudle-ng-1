@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IPagination, IUserMessage } from '@commudle/shared-models';
+import { IPagination, IPaginationCount, IUserMessage } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -34,6 +34,16 @@ export class DiscussionService {
           ...(last && { last: last.toString() }),
           ...(fromLastRead && { from_last_read: fromLastRead.toString() }),
         },
+      },
+    );
+  }
+
+  getForumsMessages(discussionId: number, count = 10, page = 1): Observable<IPaginationCount<IUserMessage>> {
+    const params = new HttpParams().set('discussion_id', discussionId).set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<IUserMessage>>(
+      this.baseApiService.getRoute(API_ROUTES.DISCUSSIONS.PUBLIC_FORUM_MESSAGES),
+      {
+        params,
       },
     );
   }

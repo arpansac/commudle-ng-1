@@ -1,0 +1,58 @@
+.categories-page {
+  @apply com-px-6 com-pb-4;
+  .categories-header {
+    @apply com-flex com-justify-between com-items-center com-my-6;
+    .categories-title {
+      @apply com-text-2xl com-font-semibold com-m-0;
+    }
+  }
+
+  .forums-grid {
+    @apply com-grid com-grid-cols-1 sm:com-grid-cols-2 md:com-grid-cols-3 lg:com-grid-cols-4 com-gap-6;
+    a {
+      @apply com-no-underline;
+
+      .forum-card {
+        @apply com-bg-white com-m-0 com-h-36;
+        nb-card-body {
+          @apply com-px-3 com-py-4 com-overflow-y-hidden;
+        }
+        .forum-card-header {
+          @apply com-flex com-items-center com-gap-3;
+          .forum-card-title {
+            @apply com-text-base com-font-semibold com-text-Yankees-Blue;
+          }
+          fa-icon {
+            @apply com-text-base com-font-normal;
+          }
+        }
+        .forum-card-category {
+          @apply com-text-xs com-text-gray-600 com-font-medium;
+        }
+        .forum-card-description {
+          @apply com-text-xs com-line-clamp-3 com-text-gray-500 com-m-0;
+        }
+      }
+    }
+  }
+
+  .empty-state {
+    @apply com-text-center com-py-16 com-flex com-flex-col com-items-center com-justify-center;
+
+    .empty-image {
+      @apply com-w-64 com-h-64 com-mx-auto com-mb-6;
+    }
+
+    h3 {
+      @apply com-text-xl com-font-semibold com-text-Yankees-Blue com-mb-2;
+    }
+
+    p {
+      @apply com-text-gray-600 com-mb-6;
+    }
+
+    button {
+      @apply com-px-6 com-py-3;
+    }
+  }
+}

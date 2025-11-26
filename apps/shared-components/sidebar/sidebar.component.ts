@@ -26,7 +26,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() eventName: string;
   @Input() showBorder = false;
-  // text-size correspinding to the propery => medium - base, XL -xl
   @Input() textSize: ESidebarHeading = ESidebarHeading.XL;
 
   ESidebarPosition = ESidebarPosition;
