@@ -17,6 +17,7 @@ import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/go
 import {
   EBuildType,
   EDbModels,
+  EInvitationStatus,
   EPublishStatus,
   EUserRolesUserStatus,
   IAttachedFile,
@@ -69,6 +70,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   moment = moment;
   hasOpenSourceLink = false;
   editBuildForm = false;
+  EInvitationStatus = EInvitationStatus;
 
   tinyMCE = {
     min_height: 500,
@@ -474,9 +476,6 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
       if (this.parentType === EDbModels.HACKATHON_TEAM) {
         this.hackathonService.showUserResponsesByTeam(this.parentId).subscribe((data) => {
           this.hackathonUserResponses = data;
-          console.log(this.hackathonUserResponses);
-          console.log(this.hackathonUserResponses.team);
-          console.log(this.hackathonUserResponses.team.round);
         });
       }
     });

@@ -63,7 +63,7 @@
         </nb-card-body>
       </nb-card>
 
-      <div *ngIf="editBuildForm && !parentId && !parentType" class="edit-build-header">
+      <div *ngIf="editBuildForm" class="edit-build-header">
         <p class="edit-header">Edit Your Build<fa-icon [icon]="faEdit"></fa-icon></p>
       </div>
       <nb-card class="form-card" [ngClass]="{ 'com-rounded-t-none': editBuildForm && !parentId && !parentType }">
@@ -261,7 +261,7 @@
               </div>
             </div>
 
-            <div
+            <!-- <div
               *ngIf="
                 hackathonUserResponses &&
                 hackathonUserResponses.user_responses &&
@@ -286,7 +286,7 @@
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div *ngIf="!(parentId && parentType)" class="field" formArrayName="team">
               <div class="field-header">
@@ -349,30 +349,6 @@
               </div>
             </div>
 
-            <!-- list of entity_updates -->
-            <div
-              *ngIf="
-                hackathonUserResponses &&
-                hackathonUserResponses.user_responses &&
-                cBuild &&
-                cBuild.entity_updates.length > 0
-              "
-              class="field"
-            >
-              <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
-                <div class="update-details">
-                  <div [innerHTML]="update.details"></div>
-                  <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
-                </div>
-                <nb-icon
-                  (click)="removeEntityUpdate(update.id, i)"
-                  class="clickable"
-                  icon="close-circle"
-                  status="danger"
-                ></nb-icon>
-              </div>
-            </div>
-
             <!-- to post updates for build -->
             <div *ngIf="parentId && parentType" class="field" [formGroup]="communityBuildUpdateForm">
               <div class="field-header">
@@ -402,6 +378,40 @@
                   <nb-icon icon="plus"></nb-icon>
                   Add Update
                 </button>
+              </div>
+              <div *ngIf="hackathonUserResponses?.user_responses?.length > 0" class="teammates-list">
+                <div *ngFor="let member of hackathonUserResponses.user_responses; let i = index" class="teammate-item">
+                  <app-user-profile-horizontal
+                    *ngIf="currentUser && member.user_email !== currentUser.email"
+                    [aboutMe]="true"
+                    [user]="member.user"
+                  >
+                  </app-user-profile-horizontal>
+                </div>
+              </div>
+              <!-- list of entity_updates -->
+              <div
+                *ngIf="
+                  hackathonUserResponses &&
+                  hackathonUserResponses.user_responses &&
+                  cBuild &&
+                  cBuild.entity_updates.length > 0
+                "
+                class="teammates-list"
+              >
+                <label class="label">Updates</label>
+                <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
+                  <div class="update-details">
+                    <div [innerHTML]="update.details"></div>
+                    <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+                  </div>
+                  <nb-icon
+                    (click)="removeEntityUpdate(update.id, i)"
+                    class="clickable"
+                    icon="close-circle"
+                    status="danger"
+                  ></nb-icon>
+                </div>
               </div>
             </div>
 
