@@ -338,6 +338,12 @@
           <span>{{ selectedTeamDetails.name }}</span>
           <div class="date">
             {{ moment(selectedTeamDetails.created_at).format('DD MMM YYYY') }}
+            <span *ngIf="selectedTeamDetails.track || selectedTeamDetails.problem_statement"> | </span>
+            <span *ngIf="selectedTeamDetails.track">{{ selectedTeamDetails.track.name }}</span>
+            <span *ngIf="selectedTeamDetails.track && selectedTeamDetails.problem_statement"> / </span>
+            <span *ngIf="selectedTeamDetails.problem_statement"
+              >PS: {{ selectedTeamDetails.problem_statement.display_id }}</span
+            >
           </div>
         </div>
         <div class="project-submit" *ngIf="selectedTeamDetails.community_build">Project Submitted</div>
@@ -597,7 +603,7 @@
           </li>
         </ul>
       </div>
-
+      <!-- 
       <div *ngIf="selectedTeamDetails.track">
         <strong>Track Details:</strong>
         <ul>
@@ -614,7 +620,7 @@
             <p [innerHTML]="selectedTeamDetails.problem_statement.title"></p>
           </li>
         </ul>
-      </div>
+      </div> -->
 
       <div *ngIf="selectedUserDetails.project_description">
         <strong>Project Description:</strong>
