@@ -1,5 +1,14 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
@@ -133,6 +142,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   };
 
   @ViewChildren('noteTextarea') noteTextarea: QueryList<ElementRef>;
+  @ViewChild('problemStatementDialog') problemStatementDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -573,6 +583,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       }
 
       this.closeConfirmationDialogBox();
+    });
+  }
+
+  showProblemStatement(problemStatement: IHackathonProblemStatement) {
+    this.nbDialogService.open(this.problemStatementDialog, {
+      context: { problemStatement },
     });
   }
 }
