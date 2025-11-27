@@ -243,7 +243,21 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
 
   submitTeammateDetails(formData) {
     this.hurService.updateTeamDetails(formData, this.hackathonUserResponse.id).subscribe((data) => {
-      if (data) this.stepper.next();
+      if (data) {
+        // Skip project details step if track/problem statement selection is disabled
+        if (!(this.hackathonResponseGroup.allow_track_problem_statement_selection ?? true)) {
+          if (this.hackathonResponseGroup.data_form_entity_id) {
+            this.stepper.next();
+          } else {
+            this.toastrService.successDialog('Details has been saved');
+            this.hurService.updateHurStatusComplete(this.hackathonUserResponse.id).subscribe();
+            this.dialogRef = this.dialogService.open(PublicHackathonFormConfirmationComponent);
+            this.router.navigate(['submitted'], { relativeTo: this.activatedRoute });
+          }
+        } else {
+          this.stepper.next();
+        }
+      }
     });
   }
 

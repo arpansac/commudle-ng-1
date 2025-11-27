@@ -89,7 +89,10 @@
               </nb-step>
               <nb-step
                 label="Project Details"
-                *ngIf="!hackathonResponseGroup.filled_by_only_team_lead || current_user_is_team_lead"
+                *ngIf="
+                  (hackathonResponseGroup.allow_track_problem_statement_selection ?? true) &&
+                  (!hackathonResponseGroup.filled_by_only_team_lead || current_user_is_team_lead)
+                "
               >
                 <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
                 <div *ngIf="!isLoading && hackathon">
