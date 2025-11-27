@@ -1,8 +1,8 @@
 <div class="base-layout community-build">
   <div class="container">
     <div class="one-column-layout">
-      <nb-card class="page-header">
-        <nb-card-body *ngIf="!(parentId && parentType)">
+      <nb-card *ngIf="!(parentId && parentType) && !editBuildForm" class="page-header">
+        <nb-card-body>
           <div
             class="background-image"
             [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.create_build_background + '\')' }"
@@ -34,7 +34,9 @@
             </div>
           </div>
         </nb-card-body>
-        <nb-card-body *ngIf="parentId && parentType">
+      </nb-card>
+      <nb-card *ngIf="parentId && parentType" class="page-header">
+        <nb-card-body>
           <div
             class="background-image"
             [ngStyle]="{ 'background-image': 'url(\'' + staticAssets.create_hackathon_build_background + '\')' }"
@@ -66,7 +68,7 @@
       <div *ngIf="editBuildForm" class="edit-build-header">
         <p class="edit-header">Edit Your Build<fa-icon [icon]="faEdit"></fa-icon></p>
       </div>
-      <nb-card class="form-card" [ngClass]="{ 'com-rounded-t-none': editBuildForm && !parentId && !parentType }">
+      <nb-card class="form-card" [ngClass]="{ 'com-rounded-t-none': editBuildForm }">
         <nb-card-body>
           <form (keydown.enter)="$event.preventDefault()" [formGroup]="communityBuildForm">
             <div class="field">
