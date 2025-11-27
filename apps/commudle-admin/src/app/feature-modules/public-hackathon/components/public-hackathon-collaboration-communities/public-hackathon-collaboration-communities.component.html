@@ -1,0 +1,19 @@
+<nb-card *ngIf="collaborationCommunities.length > 0" id="collaborations">
+  <nb-card-header>
+    <h6 class="title">
+      <a [routerLink]="'.'" fragment="collaborations">
+        <nb-icon icon="pricetags-outline" status="warning"></nb-icon>Collaborations
+      </a>
+    </h6>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngFor="let cc of collaborationCommunities" class="community">
+      <a [routerLink]="['/communities', cc.community.slug]">
+        <div class="logo">
+          <img alt="{{ cc.community.name }}" src="{{ cc.community.logo_image.i64 }}" title="{{ cc.community.name }}" />
+        </div>
+        <p>{{ cc.community.name }}</p>
+      </a>
+    </div>
+  </nb-card-body>
+</nb-card>

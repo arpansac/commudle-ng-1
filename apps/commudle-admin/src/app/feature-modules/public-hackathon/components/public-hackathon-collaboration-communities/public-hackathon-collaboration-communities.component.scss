@@ -1,0 +1,28 @@
+.community {
+  @apply com-flex com-items-center com-mb-4 com-p-3 com-border com-rounded-lg;
+  @apply hover:com-bg-gray-50;
+
+  a {
+    @apply com-flex com-items-center com-no-underline com-text-inherit;
+
+    .logo {
+      @apply com-mr-3 com-flex-shrink-0;
+
+      img {
+        @apply com-w-12 com-h-12 com-rounded-full com-object-cover;
+      }
+    }
+
+    p {
+      @apply com-m-0 com-font-medium com-text-gray-800;
+    }
+  }
+}
+
+.title {
+  @apply com-flex com-items-center com-gap-2;
+
+  a {
+    @apply com-flex com-items-center com-gap-2 com-no-underline com-text-inherit;
+  }
+}

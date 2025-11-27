@@ -18,6 +18,7 @@ import {
   faUser,
   faLaptopCode,
   faArrowTrendUp,
+  faHandshake,
 } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
 import { AuthService } from '@commudle/shared-services';
@@ -48,6 +49,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
     faUser,
     faLaptopCode,
     faArrowTrendUp,
+    faHandshake,
   };
   isLoading = true;
   showBannerImage = false;
@@ -56,6 +58,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   environment = environment;
   hasDashboardAndChannelAccess = false;
+  hasCollaborationCommunities = false;
 
   private destroy$ = new Subject<void>();
 

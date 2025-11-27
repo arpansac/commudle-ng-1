@@ -18,6 +18,10 @@ a {
         @apply com-flex com-items-center com-justify-between;
         .name {
           @apply com-text-2xl com-text-Dark-Jungle-Green com-font-semibold com-line-clamp-2;
+
+          .collaboration-text {
+            @apply com-block com-text-sm com-text-gray-500 com-font-normal com-mt-1;
+          }
         }
       }
       .date-location-type {

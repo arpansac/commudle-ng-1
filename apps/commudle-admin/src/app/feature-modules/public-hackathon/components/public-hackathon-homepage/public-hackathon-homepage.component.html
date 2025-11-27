@@ -85,6 +85,13 @@
             </a>
           </div>
 
+          <div *ngIf="hasCollaborationCommunities">
+            <a [routerLink]="'.'" fragment="collaborations" [class.active]="activeFragment === 'collaborations'">
+              <fa-icon [icon]="icons.faHandshake"></fa-icon>
+              <p class="name">Collaborations</p>
+            </a>
+          </div>
+
           <!-- TODO Done to be later -->
           <!-- <div>
             <a [routerLink]="['schedule']" routerLinkActive="active">

@@ -38,6 +38,7 @@ export interface IHackathon {
   total_prize_amount: {};
   hackathon_response_group?: IHackathonResponseGroup;
   tags: string[];
+  hackathon_collaboration_communities_count: number;
 }
 
 export enum EParticipateTypes {
