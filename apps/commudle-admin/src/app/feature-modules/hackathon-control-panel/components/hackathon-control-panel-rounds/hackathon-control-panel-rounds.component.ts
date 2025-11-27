@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IRound, EDbModels, IHackathon, ICommunity } from '@commudle/shared-models';
@@ -23,7 +23,7 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
   templateUrl: './hackathon-control-panel-rounds.component.html',
   styleUrls: ['./hackathon-control-panel-rounds.component.scss'],
 })
-export class HackathonControlPanelRoundsComponent implements OnInit {
+export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   roundForm: FormGroup;
   rounds: IRound[];
   hackathon: IHackathon;
