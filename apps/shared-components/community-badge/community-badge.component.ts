@@ -10,6 +10,7 @@ export class CommunityBadgeComponent implements OnInit {
   @Input() community: ICommunity;
   @Input() background: string;
   @Input() size: 'small' | 'medium' = 'medium';
+  @Input() textColor = 'com-text-gray-500';
 
   constructor() {}
 

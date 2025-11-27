@@ -249,9 +249,9 @@ export const staticAssets = {
   create_build_background:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4b2bc162b46a6d579f23982654afa33216a8ced2/Default%20Builds%20BG.png',
 
-  // id: 207
+  // id: 209
   create_hackathon_build_header:
-    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMnZtQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--ac1c9124e74ea1f3e59fa8c7d2b670056a507999/Hackathon%20Builds%20Image%20(1).svg',
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUxvQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--098e8580fd10304eb6cd55847360c810723f9573/Hackathon%20Builds%20Image.png',
 
   // id: 208
   create_hackathon_build_background:

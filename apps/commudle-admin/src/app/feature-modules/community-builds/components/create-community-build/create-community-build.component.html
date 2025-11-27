@@ -24,7 +24,7 @@
                   <li><span>🏅</span>Best one gets Featured!!</li>
                 </ul>
               </div>
-              <div class="header-image">
+              <div class="header-image-builds">
                 <img
                   alt="Create Build Header"
                   src="{{ staticAssets.create_build_header }}"
@@ -46,6 +46,10 @@
                 <h1 class="create-hackathon-build-title">
                   <span>AI Accelerator Hub: A Personalized AI Solution</span>
                 </h1>
+                <app-community-badge
+                  [community]="hackathonUserResponses.team.hackathon?.community"
+                  [textColor]="'com-text-tWhite'"
+                ></app-community-badge>
                 <p class="create-hackathon-build-subtitle">
                   <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team.name }}</span>
                   <span *ngIf="hackathonUserResponses.team.round" class="icon-border"
@@ -53,7 +57,7 @@
                   >
                 </p>
               </div>
-              <div class="header-image">
+              <div class="header-image-hackathons">
                 <img
                   alt="Create Build Header"
                   src="{{ staticAssets.create_hackathon_build_header }}"

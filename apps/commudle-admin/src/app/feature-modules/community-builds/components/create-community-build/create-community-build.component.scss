@@ -1,6 +1,6 @@
 .community-build {
   nb-card.page-header {
-    @apply com-m-0 com-mb-4;
+    @apply com-m-0 com-mb-4 com-rounded-t-none md:com-rounded-b-10 com-rounded-b-none;
     nb-card-body {
       @apply com-p-0;
     }
@@ -12,8 +12,15 @@
         @apply com-flex com-flex-col com-w-full md:com-max-w-[714px] com-max-w-full md:com-py-10 md:com-pl-10 md:com-pr-0 com-px-4 com-py-4;
       }
 
-      .header-image {
-        @apply com-flex com-items-center com-m-0 md:com-mt-auto com-mt-1 md:com-w-[334px] md:com-h-[236px] com-w-full com-h-full com-shrink-0;
+      .header-image-builds {
+        @apply com-flex com-items-center com-m-0 md:com-mt-auto com-mt-1 md:com-w-[334px] md:com-h-[236px] com-w-full com-h-full com-shrink-0  md:com-rounded-b-10 com-rounded-none;
+        img {
+          @apply com-h-full com-w-full;
+        }
+      }
+
+      .header-image-hackathons {
+        @apply com-flex com-items-center com-m-0 md:com-mt-auto com-mt-1 md:com-w-[394px] md:com-h-[236px] com-w-full com-h-full com-shrink-0 md:com-pr-[60px] md:com-pl-0 com-px-5 md:com-rounded-b-10 com-rounded-none;
         img {
           @apply com-h-full com-w-full;
         }
@@ -33,7 +40,7 @@
     }
 
     .create-hackathon-build-title {
-      @apply com-m-0 com-flex com-items-center com-mb-3;
+      @apply com-m-0 com-flex com-items-center com-mb-4;
 
       span {
         @apply md:com-text-4xl com-text-3xl com-font-bold com-text-tWhite;
@@ -41,7 +48,7 @@
     }
 
     .create-hackathon-build-subtitle {
-      @apply com-flex com-flex-row com-items-center md:com-text-lg com-text-sm com-font-normal com-text-tWhite com-m-0 md:com-mt-[76px] com-mt-6 md:com-mb-0 com-mb-9;
+      @apply com-flex com-flex-row com-items-center md:com-text-lg com-text-sm com-font-normal com-text-tWhite com-m-0 md:com-mt-11 com-mt-6 md:com-mb-0 com-mb-9;
 
       span {
         @apply com-flex com-flex-row com-items-center com-pr-3;
@@ -258,7 +265,7 @@
 }
 
 .background-image {
-  @apply com-bg-no-repeat com-bg-cover md:com-h-full com-h-auto com-w-full com-rounded-10;
+  @apply com-bg-no-repeat com-bg-cover md:com-h-full com-h-auto com-w-full md:com-rounded-b-10 com-rounded-b-none;
   img {
     @apply com-h-full com-w-full;
   }
