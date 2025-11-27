@@ -10,7 +10,12 @@
     </nb-card-header>
     <nb-card-body>
       <div class="name-members">
-        <div class="name">{{ hackathon.name }}</div>
+        <div class="name">
+          {{ hackathon.name }}
+          <small *ngIf="hackathon.hackathon_collaboration_communities_count > 0" class="collaboration-text">
+            Collaboration
+          </small>
+        </div>
         <!-- TODO: to be done later -->
         <div class="members"></div>
       </div>

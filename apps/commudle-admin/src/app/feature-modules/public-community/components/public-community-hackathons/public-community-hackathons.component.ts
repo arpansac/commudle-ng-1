@@ -69,7 +69,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   }
 
   setSeoService() {
-    if (this.upcomingHackathons.length > 0 && this.upcomingHackathons[0].start_date) {
+    if (this.upcomingHackathons?.length > 0 && this.upcomingHackathons[0].start_date) {
       const startDate = new Date(this.upcomingHackathons[0].start_date);
       const date = startDate.toDateString();
       this.seoDescription =
