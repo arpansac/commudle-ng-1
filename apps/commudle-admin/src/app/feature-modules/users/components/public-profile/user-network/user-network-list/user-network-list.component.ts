@@ -16,6 +16,7 @@ export class UserNetworkListComponent implements OnInit, OnDestroy {
   network: IUser[] = [];
   page_info: IPageInfo;
   isLoading = true;
+  isLoadingMore = false;
 
   subscriptions: Subscription[] = [];
 
@@ -60,23 +61,33 @@ export class UserNetworkListComponent implements OnInit, OnDestroy {
   }
 
   getFollowers(): void {
-    this.isLoading = true;
+    if (!this.page_info?.end_cursor) {
+      this.isLoading = true;
+    } else {
+      this.isLoadingMore = true;
+    }
     this.subscriptions.push(
       this.appUsersService.getFollowers(this.user.username, this.page_info?.end_cursor).subscribe((value) => {
         this.network = this.network.concat(value.page.reduce((acc, value) => [...acc, value.data], []));
         this.page_info = value.page_info;
         this.isLoading = false;
+        this.isLoadingMore = false;
       }),
     );
   }
 
   getFollowing(): void {
-    this.isLoading = true;
+    if (!this.page_info?.end_cursor) {
+      this.isLoading = true;
+    } else {
+      this.isLoadingMore = true;
+    }
     this.subscriptions.push(
       this.appUsersService.getFollowees(this.user.username, this.page_info?.end_cursor).subscribe((value) => {
         this.network = this.network.concat(value.page.reduce((acc, value) => [...acc, value.data], []));
         this.page_info = value.page_info;
         this.isLoading = false;
+        this.isLoadingMore = false;
       }),
     );
   }
