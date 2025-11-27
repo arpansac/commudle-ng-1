@@ -14,7 +14,7 @@ form {
       @apply com-flex com-flex-col com-gap-2;
 
       .radio-option {
-        @apply com-flex com-items-center com-gap-3 com-px-4 com-py-3 com-border com-border-solid com-border-Bright-Gray com-rounded com-transition-colors com-duration-200;
+        @apply com-flex com-items-start com-gap-3 com-px-4 com-py-3 com-border com-border-solid com-border-Bright-Gray com-rounded com-transition-colors com-duration-200;
         @apply hover:com-border-primary-500;
 
         input[type='radio'] {
@@ -43,6 +43,11 @@ form {
 
             .title {
               @apply com-flex-1;
+              ::ng-deep {
+                p:first-child {
+                  @apply com-mt-0;
+                }
+              }
             }
           }
         }
