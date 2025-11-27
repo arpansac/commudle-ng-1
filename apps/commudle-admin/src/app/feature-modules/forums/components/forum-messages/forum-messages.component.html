@@ -1,0 +1,106 @@
+<div class="forum-messages-container">
+  <div *ngIf="isLoadingUserMessage$ | async" class="loading-state">
+    <commudle-loading-spinner></commudle-loading-spinner>
+    <p>Loading message...</p>
+  </div>
+
+  <div *ngIf="userMessage$ | async as userMessage" class="message-content">
+    <div class="header-section">
+      <div class="back-button" (click)="backToDiscussions()">
+        <fa-icon [icon]="icons.faArrowLeft"></fa-icon> &nbsp;Back to (Category Name)
+      </div>
+
+      <div class="discussion-header">
+        <h2>{{ userMessage.subject }}</h2>
+        <div class="post-meta">
+          <span>Posted on {{ userMessage.created_at | date : 'MMM d, y, h:mm a' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="">
+        <div class="discussion-post">
+          <app-user-profile-card-large [user]="userMessage.user"></app-user-profile-card-large>
+          <div class="post-content">
+            <commudle-editor [content]="userMessage.content" [editable]="false" class="com-w-full"></commudle-editor>
+          </div>
+          <div class="post-actions">
+            <commudle-vote
+              [icon]="'thumb-up-with-text'"
+              [votableId]="userMessage.id"
+              votableType="UserMessage"
+            ></commudle-vote>
+            <!-- <div class="action-item">
+            <fa-icon [icon]="icons.faEye"></fa-icon>
+            <span>Views</span>
+            <span class="count">{{ userMessage.user_messages?.length || 0 }}</span>
+          </div> -->
+          </div>
+        </div>
+
+        <div class="reply-section">
+          <form [formGroup]="replyForm" (ngSubmit)="onSubmit()">
+            <div class="form">
+              <div class="header">
+                <span>Replying to {{ userMessage.user?.name }}</span>
+              </div>
+              <div class="reply-form">
+                <textarea
+                  placeholder="Be the first to reply!!"
+                  formControlName="reply"
+                  nbInput
+                  fullWidth
+                  rows="4"
+                  class="reply-textarea"
+                >
+                </textarea>
+                <commudle-alert
+                  *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.errors?.['required']"
+                  [error]="true"
+                  errorMessage="Reply is required"
+                ></commudle-alert>
+                <commudle-alert
+                  *ngIf="replyForm.get('reply')?.touched && replyForm.get('reply')?.errors?.['maxlength']"
+                  [error]="true"
+                  errorMessage="Reply cannot exceed 1000 characters"
+                ></commudle-alert>
+              </div>
+            </div>
+
+            <div class="reply-actions">
+              <button type="button" nbButton status="primary" outline (click)="replyForm.reset()">Cancel</button>
+              <button type="submit" nbButton status="primary" [disabled]="!replyForm.valid">Reply</button>
+            </div>
+          </form>
+
+          <div class="replies-section" *ngIf="userMessage.user_messages && userMessage.user_messages.length > 0">
+            <h3>Replies</h3>
+            <div *ngFor="let reply of userMessage.user_messages" class="reply-item">
+              <div class="reply-header">
+                <app-user-profile-card-medium [user]="reply.user"></app-user-profile-card-medium>
+                <span class="reply-date">Posted on {{ reply.created_at | date : 'MMM d, y, h:mm a' }}</span>
+              </div>
+              <div class="reply-content">
+                <commudle-editor [content]="reply.content" [editable]="false" class="com-w-full"></commudle-editor>
+              </div>
+              <div class="reply-actions">
+                <commudle-vote
+                  [icon]="'thumb-up-with-text'"
+                  [votableId]="reply.id"
+                  votableType="UserMessage"
+                ></commudle-vote>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <!-- <div class="explore-section">
+        <h3>Explore Top Discussions</h3>
+        Sidebar content will go here
+      </div> -->
+      </div>
+    </div>
+  </div>
+</div>

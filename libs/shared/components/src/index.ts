@@ -23,3 +23,5 @@ export * from './lib/components/user/profile-completion-progress/profile-complet
 export * from './lib/components/user/user-profile-missing-fields/user-profile-missing-fields.component';
 
 export * from './lib/components/add-to-calendar/add-to-calendar.component';
+
+export * from './lib/services/community-channel-handler.service';

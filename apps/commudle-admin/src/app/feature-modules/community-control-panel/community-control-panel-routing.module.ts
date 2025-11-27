@@ -153,16 +153,21 @@ const routes = [
       },
       {
         path: 'forums',
-        component: CommunityChannelsAndForumsComponent,
+        loadChildren: () =>
+          import('apps/commudle-admin/src/app/feature-modules/forums/forums.module').then((m) => m.ForumsModule),
       },
-      {
-        path: 'forums/:community_channel_id',
-        component: CommunityChannelsAndForumsComponent,
-      },
-      {
-        path: 'forums/join/:token',
-        component: CommunityChannelsAndForumsComponent,
-      },
+      // {
+      //   path: 'forums',
+      //   component: CommunityChannelsAndForumsComponent,
+      // },
+      // {
+      //   path: 'forums/:community_channel_id',
+      //   component: CommunityChannelsAndForumsComponent,
+      // },
+      // {
+      //   path: 'forums/join/:token',
+      //   component: CommunityChannelsAndForumsComponent,
+      // },
     ],
   },
 ];

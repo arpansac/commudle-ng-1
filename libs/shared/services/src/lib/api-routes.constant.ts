@@ -85,6 +85,8 @@ export const API_ROUTES = {
   COMMUNITY_CHANNELS: {
     USER_CHANNEL_COMMUNITIES: 'api/v2/community_channels/user_channel_communities',
     INDEX: 'api/v2/community_channels',
+    INDEX_FORUMS: 'api/v2/community_channels/index_forums',
+    SHOW_CATEGORY: 'api/v2/community_channels/show_category',
     CREATE: 'api/v2/community_channels',
     SHOW: 'api/v2/community_channels/show',
     UPDATE: 'api/v2/community_channels',
@@ -98,6 +100,7 @@ export const API_ROUTES = {
     DISCUSSION_MESSAGES_SCROLL: 'api/v2/community_channels/discussion_messages_paginated',
     SEND_MESSAGE_BY_EMAIL_TO_ALL_MEMBERS: 'api/v2/community_channels/send_message_by_email_to_all_members',
     GET_DEFAULT_CHANNEL: 'api/v2/community_channels/get_default_channel',
+    GET_CATEGORIES: 'api/v2/community_channels/get_categories',
     GET_CHANNEL_ADMINS: 'api/v2/community_channels/get_channel_admins',
     MEMBERS: {
       INDEX: 'api/v2/community_channels/members',
@@ -495,6 +498,16 @@ export const API_ROUTES = {
     PUBLIC_INDEX: 'api/v2/event_collaboration_communities/public_index',
   },
 
+  // hackathon_collaboration_communities
+  HACKATHON_COLLABORATION_COMMUNITIES: {
+    INDEX: 'api/v2/hackathon_collaboration_communities',
+    CREATE: 'api/v2/hackathon_collaboration_communities',
+    DELETE: 'api/v2/hackathon_collaboration_communities',
+    RESEND_INVITATION: 'api/v2/hackathon_collaboration_communities/resend_invitation',
+    UPDATE_STATUS: 'api/v2/hackathon_collaboration_communities/update_status',
+    PUBLIC_INDEX: 'api/v2/hackathon_collaboration_communities/public_index',
+  },
+
   EVENT_UPDATES: {
     INDEX: 'api/v2/event_updates',
     CREATE: 'api/v2/event_updates',
@@ -574,6 +587,7 @@ export const API_ROUTES = {
     PUBLIC_GET_OR_CREATE_FOR_COMMUNITY_CHANNEL_CHAT:
       'api/v2/discussions/public_get_or_create_for_community_channel_chat',
     PUBLIC_COMMUNITY_BUILD_MESSAGES: 'api/v2/discussions/public_community_build_messages',
+    PUBLIC_FORUM_MESSAGES: 'api/v2/discussions/public_forum_messages',
     TOGGLE_DISCUSSION_OPEN: 'api/v2/discussions/toggle_discussion_open',
 
     COMMUNITY_CHANNEL: {
@@ -645,6 +659,7 @@ export const API_ROUTES = {
     PUBLIC_TRACK_SLOT_DISCUSSION_MESSAGES: 'api/v2/user_messages/track_slot_discussion_messages',
     PUBLIC_DISCUSSION_CHAT_MESSAGES: 'api/v2/user_messages/public_discussion_chat_messages',
     PUBLIC_COMMUNITY_CHANNEL_DISCUSSION_MESSAGES: 'api/v2/user_messages/public_community_channel_discussion_messages',
+    SHOW_USER_MESSAGE: 'api/v2/user_messages/show_user_message',
   },
 
   USER_MESSAGE_RECEIPTS: {
@@ -868,6 +883,7 @@ export const API_ROUTES = {
     UPDATE_TRACK: 'api/v2/hackathons/update_track', //PUT
     INDEX_TRACKS: 'api/v2/hackathons/index_tracks', //GET
     DESTROY_TRACK: 'api/v2/hackathons/destroy_track', //DELETE
+    INDEX_PROBLEM_STATEMENTS: 'api/v2/hackathons/index_problem_statements', //GET
     CREATE_PRIZE: 'api/v2/hackathons/create_prize', //POST
     UPDATE_PRIZE: 'api/v2/hackathons/update_prize', //PUT
     DESTROY_PRIZE: 'api/v2/hackathons/destroy_prize', //DELETE

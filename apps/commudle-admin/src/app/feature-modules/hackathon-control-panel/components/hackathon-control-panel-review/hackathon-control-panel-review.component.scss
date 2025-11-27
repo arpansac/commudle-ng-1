@@ -8,7 +8,7 @@
       @apply com-flex com-flex-wrap com-gap-3 com-items-center;
 
       .select {
-        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max;
+        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max com-min-w-[180px];
         select {
           @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
           &.not-active {
@@ -60,6 +60,16 @@ table {
   }
   .round-name {
     @apply com-bg-primary-500 com-px-3 com-py-2 com-text-white com-h-max com-rounded-2xl com-font-medium com-text-xs com-w-max;
+  }
+
+  .ps-id {
+    .ps-id-container {
+      @apply com-flex com-items-center;
+
+      .ps-id-link {
+        @apply com-text-primary-500 com-cursor-pointer com-font-medium com-text-sm hover:com-underline;
+      }
+    }
   }
 }
 
@@ -213,4 +223,36 @@ th {
 
 .form-responses-card {
   @apply com-m-0;
+}
+
+.problem-statement-dialog {
+  @apply com-w-full md:com-w-[600px] com-max-h-[90dvh];
+
+  nb-card-header {
+    @apply com-border-b com-border-solid com-border-gray-200;
+  }
+
+  nb-card-body {
+    @apply com-max-h-[70vh] com-overflow-y-auto;
+
+    ::ng-deep {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        @apply com-mt-4 com-mb-2 com-font-semibold;
+      }
+
+      p {
+        @apply com-mb-3 com-leading-relaxed;
+      }
+
+      ul,
+      ol {
+        @apply com-ml-4 com-mb-3;
+      }
+    }
+  }
 }

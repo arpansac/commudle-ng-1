@@ -1,0 +1,35 @@
+<nb-card class="forums-dashboard-container">
+  <nb-card-header>
+    <div class="header-content">
+      <fa-icon (click)="toggleSidebar()" [icon]="faIcons.faBars"></fa-icon>
+      <span>Forums</span>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="sidebar">
+      <commudle-sidebar
+        [eventName]="sidebarEventName"
+        [forWindow]="false"
+        [showExpandedButton]="false"
+        [textSize]="ESidebarHeading.MEDIUM"
+      >
+        <div class="categories-content">
+          <p class="heading">Categories</p>
+          <commudle-loading-spinner *ngIf="isLoadingCategories"></commudle-loading-spinner>
+          <div *ngIf="!isLoadingCategories">
+            @for (category of categories$ | async; track category.slug) {
+            <a [routerLink]="[category.slug]" routerLinkActive="active">
+              <div class="category-item">
+                {{ category.name }}
+              </div>
+            </a>
+            }
+          </div>
+        </div>
+      </commudle-sidebar>
+    </div>
+    <div class="router">
+      <router-outlet></router-outlet>
+    </div>
+  </nb-card-body>
+</nb-card>

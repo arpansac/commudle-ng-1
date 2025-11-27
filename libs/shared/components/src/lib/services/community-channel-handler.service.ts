@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommunityChannelChatChannel } from '@commudle/shared-channels';
 import { IPage, IPageInfo, IPagination, IUserMessage } from '@commudle/shared-models';
-import { CableService, DiscussionService, ToastrService } from '@commudle/shared-services';
+import { CableService, DiscussionService, ForumsStore, ToastrService } from '@commudle/shared-services';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { CommunityChannelsService } from '@commudle/shared-services';
 @Injectable({
@@ -42,6 +42,7 @@ export class CommunityChannelHandlerService {
     private cableService: CableService,
     private toastrService: ToastrService,
     private communityChannelsService: CommunityChannelsService,
+    private forumsStore: ForumsStore,
   ) {}
 
   init(discussionId: number, discussionParent: string, fromLastRead?: boolean, after?: string) {
@@ -87,7 +88,11 @@ export class CommunityChannelHandlerService {
     this.CommunityChannelChatChannel.add(content);
   }
 
-  sendReply(parentId: number, content: string) {
+  sendForumMessage(content: string, subject?: string) {
+    this.CommunityChannelChatChannel.add(content, subject);
+  }
+
+  sendReply(parentId: number | string, content: string) {
     if (this.permittedActions.value.includes('blocked')) {
       return;
     }
@@ -158,15 +163,17 @@ export class CommunityChannelHandlerService {
   }
 
   handleChatChannel() {
-    this.CommunityChannelChatChannel.on('message', (data) => {
+    this.CommunityChannelChatChannel.on('message', (data: any) => {
       switch (data.action) {
         case 'set_permissions':
           this.permittedActions.next(data.permitted_actions);
           break;
         case 'add':
           this.addMessage(data.user_message, data.cursor);
+          this.forumsStore.updateDiscussion(data.user_message);
           break;
         case 'reply':
+          this.forumsStore.updateUserMessage(data.parent_slug, data.user_message);
           this.addReply(data.parent_id, data.user_message);
           break;
         case 'flag':

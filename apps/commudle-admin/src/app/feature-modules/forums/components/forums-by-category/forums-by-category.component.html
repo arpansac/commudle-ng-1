@@ -1,0 +1,82 @@
+<div class="forums-by-category">
+  <div class="back-new-topic">
+    <div class="back-button" (click)="backButton()"><fa-icon [icon]="icons.faArrowLeft"></fa-icon> &nbsp;Go Back</div>
+    <button nbButton status="primary" (click)="openDialogBox()" shape="semi-round">
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; New Topic
+    </button>
+  </div>
+
+  <div class="forums-by-category-header">
+    <span>{{ forumCategory?.name | titlecase }}</span>
+  </div>
+
+  <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+
+  <div class="forums-by-category-list" *ngIf="!isLoading">
+    <div *ngIf="forums.length === 0" class="no-forums">
+      <p>No forums found in this category.</p>
+    </div>
+
+    <ul>
+      <li *ngFor="let forum of forums; let i = index" class="forum">
+        <div class="forum-item">
+          <a [routerLink]="[forum.slug]" class="forum-content">
+            <div class="topic-name">
+              <span>{{ forum.name }}</span>
+            </div>
+            <div class="description-last-message">
+              <span class="description" *ngIf="!forum.last_message && forum.description" [title]="forum.description">{{
+                forum.description
+              }}</span>
+              <span class="last-message" *ngIf="forum.last_message" [title]="forum.last_message">
+                {{ forum.last_message }}
+              </span>
+            </div>
+            @if (forum.total_discussions || forum.total_replies ) {
+            <div class="stats">
+              @if (forum.total_discussions ) {
+              <span class="discussions">
+                {{ forum.total_discussions }} {{ forum.total_discussions === 1 ? 'Discussion' : 'Discussions' }}
+              </span>
+              } @if (forum.total_replies) {
+              <fa-icon [icon]="icons.faCircle"></fa-icon>
+              <span class="reply">
+                {{ forum.total_replies }} {{ forum.total_replies === 1 ? 'Reply' : 'Replies' }}
+              </span>
+              }
+            </div>
+            }
+          </a>
+          <div class="action-buttons">
+            <button class="edit-button" (click)="editForum(forum)" nbButton status="basic" size="small" shape="round">
+              <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit
+            </button>
+
+            <button
+              class="delete-button"
+              (click)="deleteForum(forum, i)"
+              nbButton
+              status="basic"
+              size="small"
+              shape="round"
+              [disabled]="isDeletingForum"
+            >
+              <fa-icon [icon]="icons.faTrash"></fa-icon>&nbsp; Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <app-pagination
+    *ngIf="totalItems > itemsPerPage"
+    [current]="currentPage"
+    [count]="itemsPerPage"
+    [total]="totalItems"
+    (goTo)="onPageChange($event)"
+    (next)="onPageChange($event)"
+    (previous)="onPageChange($event)"
+  >
+  </app-pagination>
+</div>

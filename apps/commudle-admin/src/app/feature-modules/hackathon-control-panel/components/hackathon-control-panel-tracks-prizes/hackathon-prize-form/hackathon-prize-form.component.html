@@ -1,0 +1,110 @@
+<nb-card class="prize-form">
+  <nb-card-header>
+    <span> {{ hackathonPrize ? 'Edit Prize' : 'New Prize' }}</span>
+    <button (click)="closeForm()" ghost nbButton shape="round" size="small">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="prizeForm">
+      <!-- name -->
+      <div>
+        <label for="name">Name*</label>
+        <input formControlName="name" fullWidth id="name" nbInput placeholder="Name" type="text" />
+      </div>
+
+      <!-- hackathon_track_id -->
+      <div>
+        <label for="hackathon_track_id">Select Track</label>
+        <br />
+        <select
+          [ngClass]="{
+            'com-text-[#8E9BB3]': prizeForm.get('hackathon_track_id').value === null
+          }"
+          class="!com-w-full"
+          formControlName="hackathon_track_id"
+          id="hackathon_track_id"
+          name="hackathon_track_id"
+        >
+          <option [value]="null" disabled selected>Select Track</option>
+          <option value="">No Track</option>
+          <option *ngFor="let track of hackathonTracks" [value]="track.id">{{ track.name }}</option>
+        </select>
+      </div>
+
+      <!-- order -->
+      <div>
+        <label for="order">Order*</label>
+        <br />
+        <select
+          [ngClass]="{
+            'com-text-[#8E9BB3]': prizeForm.get('order').value === ''
+          }"
+          class="!com-w-full"
+          formControlName="order"
+          id="order"
+          name="order"
+        >
+          <option disabled selected value="">Select Order</option>
+          <option [value]="1">1</option>
+          <option [value]="2">2</option>
+          <option [value]="3">3</option>
+        </select>
+      </div>
+
+      <!-- prize_amount -->
+      <div>
+        <label for="prize_amount">Prize Amount</label>
+        <div class="prize-amount">
+          <div>
+            <input
+              type="text"
+              id="currency_type"
+              nbInput
+              fullWidth
+              formControlName="currency_type"
+              placeholder="Currency"
+              [nbAutocomplete]="currencyAutocomplete"
+            />
+            <nb-autocomplete #currencyAutocomplete (selectedChange)="selectCurrency($event)">
+              <nb-option *ngFor="let country of currencySuggestions" [value]="country.currency">
+                {{ country.currency }} ({{ country.symbol }})
+              </nb-option>
+            </nb-autocomplete>
+          </div>
+          <input formControlName="prize_amount" fullWidth id="prize_amount" nbInput placeholder="100" type="text" />
+        </div>
+      </div>
+
+      <!-- no_of_winners -->
+      <div>
+        <label for="no_of_winners">Number of winners*</label>
+        <input
+          formControlName="no_of_winners"
+          fullWidth
+          id="no_of_winners"
+          nbInput
+          placeholder="No of winners"
+          type="number"
+        />
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description">Description*</label>
+        <editor [init]="tinyMCE" formControlName="description" id="description"></editor>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      (click)="hackathonPrize ? updatePrize(hackathonPrize.id) : createPrize()"
+      [disabled]="prizeForm.invalid || !prizeForm.dirty"
+      fullWidth
+      nbButton
+      status="primary"
+    >
+      {{ hackathonPrize ? 'update' : 'save' }}
+    </button>
+  </nb-card-footer>
+</nb-card>

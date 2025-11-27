@@ -55,4 +55,7 @@ export * from './lib/contact-info.model';
 export * from './lib/location.model';
 export * from './lib/profile-completion-status.model';
 export * from './lib/user-stats.model';
+export * from './lib/forum.model';
+export * from './lib/channel-category.model';
 export * from './lib/user_community_engagement_data.model';
+export * from './lib/hackathon-collaboration-community.model';
