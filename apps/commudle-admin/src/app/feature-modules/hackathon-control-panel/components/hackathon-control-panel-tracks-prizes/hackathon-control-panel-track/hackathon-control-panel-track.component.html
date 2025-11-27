@@ -6,15 +6,98 @@
 <br />
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-<div class="hackathon-cards" *ngIf="hackathonTracks && hackathonTracks.length > 0; else noTracks">
-  <div *ngFor="let hackathonTrack of hackathonTracks; let i = index">
-    <commudle-hackathon-track-card
-      (destroyTrackEvent)="confirmDeleteDialogBox(deleteTrackDilaogBox, $event, i)"
-      (editTrackEvent)="openSponsorDialogBox(addTracksDialogBox, $event, i)"
-      [hackathonTrack]="hackathonTrack"
-    ></commudle-hackathon-track-card>
-  </div>
-</div>
+<nb-card *ngIf="hackathonTracks && hackathonTracks.length > 0; else noTracks">
+  <nb-card-body>
+    <table class="hackathon-tracks-table">
+      <thead>
+        <tr>
+          <th>Track Name</th>
+          <th>Description</th>
+          <th>Problem Statements</th>
+          <th>Prizes</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hackathonTrack of hackathonTracks; let i = index">
+          <td>{{ hackathonTrack.name }}</td>
+          <td>
+            <div class="description-scroll custom-scrollbar" [innerHTML]="hackathonTrack.description"></div>
+          </td>
+          <td>
+            <div *ngIf="hackathonTrack.hackathon_problem_statements?.length; else addProblemStatements">
+              <button (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)" class="problem-count-btn">
+                {{ hackathonTrack.hackathon_problem_statements.length }}
+              </button>
+            </div>
+            <ng-template #addProblemStatements>
+              <button
+                (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)"
+                nbButton
+                size="tiny"
+                status="primary"
+              >
+                Add Problem Statements
+              </button>
+            </ng-template>
+          </td>
+          <td>
+            <div *ngIf="hackathonTrack.hackathon_prizes?.length; else addPrizes">
+              {{ hackathonTrack.hackathon_prizes.length }} Prize
+            </div>
+            <ng-template #addPrizes>
+              <button (click)="prizeDialogBox(hackathonTrack.id)" nbButton size="tiny" status="primary">
+                Add Prize
+              </button>
+            </ng-template>
+          </td>
+          <td>
+            <button
+              (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)"
+              nbButton
+              size="tiny"
+              status="info"
+              class="action-btn"
+              title="Edit Track"
+            >
+              Edit Track
+            </button>
+            <button
+              nbButton
+              size="tiny"
+              status="success"
+              class="action-btn"
+              title="Add Prize"
+              (click)="prizeDialogBox(hackathonTrack.id)"
+            >
+              Add Prize
+            </button>
+            <button
+              (click)="openSponsorDialogBox(addTracksDialogBox, hackathonTrack, i)"
+              nbButton
+              size="tiny"
+              status="warning"
+              class="action-btn"
+              title="Edit Problem Statements"
+            >
+              Edit PS
+            </button>
+            <button
+              (click)="confirmDeleteDialogBox(deleteTrackDilaogBox, hackathonTrack.id, i)"
+              nbButton
+              size="tiny"
+              status="danger"
+              class="action-btn"
+              title="Delete"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
 <ng-template #noTracks>
   <br />
   <br />
@@ -78,18 +161,29 @@
               class="problem-statement-item"
             >
               <div class="problem-statement-fields">
-                <div class="field-group">
+                <!-- <div class="field-group">
                   <label [for]="'display_id_' + i">Display ID</label>
                   <input [id]="'display_id_' + i" formControlName="display_id" fullWidth nbInput readonly type="text" />
-                </div>
+                </div> -->
 
                 <div class="field-group">
-                  <label [for]="'title_' + i">Title</label>
+                  <label [for]="'title_' + i"
+                    >({{ problemStatement.get('display_id')?.value }}) Problem Statement</label
+                  >
                   <editor [init]="tinyMCE" [id]="'title_' + i" formControlName="title"></editor>
+                  <commudle-alert
+                    *ngIf="
+                      problemStatement.get('title')?.invalid &&
+                      problemStatement.get('title')?.touched &&
+                      problemStatement.get('title')?.hasError('minlength')
+                    "
+                    [error]="true"
+                    errorMessage="Problem Statement must be at least 60 characters long"
+                  ></commudle-alert>
                 </div>
 
                 <div class="field-group">
-                  <label [for]="'max_teams_limit_' + i">Max Teams Limit</label>
+                  <label [for]="'max_teams_limit_' + i">Max No. of Teams Allow to Choose This Problem Statement</label>
                   <input
                     [id]="'max_teams_limit_' + i"
                     formControlName="max_teams_limit"
@@ -97,7 +191,17 @@
                     nbInput
                     placeholder="Maximum number of teams (optional)"
                     type="number"
+                    min="1"
                   />
+                  <commudle-alert
+                    *ngIf="
+                      problemStatement.get('max_teams_limit')?.invalid &&
+                      problemStatement.get('max_teams_limit')?.touched &&
+                      problemStatement.get('max_teams_limit')?.hasError('min')
+                    "
+                    [error]="true"
+                    errorMessage="Max teams limit must be at least 1"
+                  ></commudle-alert>
                 </div>
               </div>
 
