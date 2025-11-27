@@ -25,6 +25,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   dataFormId: number;
   hackathonResponseGroupDetails: IHackathonResponseGroup;
   filled_by_only_team_lead = true;
+  allow_track_problem_statement_selection = true;
   icons = {
     faUpRightFromSquare,
     faArrowRight,
@@ -104,6 +105,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
           this.isFormInclude = true;
         }
         this.filled_by_only_team_lead = data.filled_by_only_team_lead;
+        this.allow_track_problem_statement_selection = data.allow_track_problem_statement_selection ?? true;
         this.userDetailsForm.patchValue({
           name: data.user_details.name,
           designation: data.user_details.designation,
@@ -162,6 +164,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
         this.registrationTypeId,
         `${this.hackathon.name} - Registration`,
         this.filled_by_only_team_lead,
+        this.allow_track_problem_statement_selection,
         data ? data.id : '',
       )
       .subscribe((data) => {
@@ -178,6 +181,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
         JSON.stringify(this.userDetailsForm.value),
         this.hackathonResponseGroupDetails.id,
         this.filled_by_only_team_lead,
+        this.allow_track_problem_statement_selection,
         data ? data.id : '',
       )
       .subscribe((data) => {

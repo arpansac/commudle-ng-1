@@ -1,5 +1,5 @@
 <app-skeleton-cards [cards]="4" *ngIf="isLoading"></app-skeleton-cards>
-<div *ngIf="!isLoading && network.length > 0" class="user-network-list-container">
+<div *ngIf="!isLoading" class="user-network-list-container">
   <nb-list>
     <nb-list-item *ngFor="let user of network">
       <!-- TODO : try fixing line clamp for username instead of using truncateText -->
@@ -11,7 +11,10 @@
       ></app-user-profile-card-large>
     </nb-list-item>
   </nb-list>
-  <div *ngIf="page_info.has_next_page">
+  <div *ngIf="isLoadingMore" class="bottom-loader">
+    <app-skeleton-cards [cards]="4"></app-skeleton-cards>
+  </div>
+  <div *ngIf="page_info.has_next_page && !isLoadingMore">
     <button nbButton fullWidth (click)="checkNetworkType()">View More</button>
   </div>
 </div>

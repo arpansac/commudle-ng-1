@@ -4,7 +4,7 @@
       >Registration<commudle-help-section [helpDictionaryName]="'hackathon-registrations'"></commudle-help-section
     ></span>
     <a
-      *ngIf="parent.id && hackathon && hackathonResponseGroupDetails"
+      *ngIf="parent?.id && hackathon && hackathonResponseGroupDetails"
       target="_blank"
       [routerLink]="[
         '/communities',
@@ -163,6 +163,13 @@
             <nb-radio [value]="true">Only Team Lead</nb-radio>
           </nb-radio-group>
         </div>
+      </div>
+
+      <div>
+        <div class="group-name">TRACK SELECTION</div>
+        <nb-checkbox status="basic" [(ngModel)]="allow_track_problem_statement_selection">
+          Allow track/problem statement selection
+        </nb-checkbox>
       </div>
 
       <div>
