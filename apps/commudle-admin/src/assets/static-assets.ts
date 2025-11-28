@@ -241,6 +241,22 @@ export const staticAssets = {
   student_non_profit_community_support:
     'https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMFVZQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7916707cd97e5efe8a3cd4a53faf20a27867f886/DrawKit%20Vector%20Illustration%20Team%20Work%20(11).png',
 
+  // id: 205
+  create_build_header:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenZtQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--80e490e3cc9f967833a0c20eefd6771c49a6a69e/Default%20Builds%20Image.png',
+
+  // id: 206
+  create_build_background:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBenptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4b2bc162b46a6d579f23982654afa33216a8ced2/Default%20Builds%20BG.png',
+
+  // id: 209
+  create_hackathon_build_header:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeUxvQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--098e8580fd10304eb6cd55847360c810723f9573/Hackathon%20Builds%20Image.png',
+
+  // id: 208
+  create_hackathon_build_background:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMnptQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1a1946f9704cfa4fca0d9948da32f686adb2c681/Hackathon%20Builds%20BG.png',
+
   // id: 203
   message_empty:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkxPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--0913e78822fb31f96bacf5e94d8703df1ad81a33/message_empty.svg',

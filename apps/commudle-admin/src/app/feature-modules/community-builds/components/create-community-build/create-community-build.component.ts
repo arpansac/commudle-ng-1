@@ -12,11 +12,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CommunityBuildsService } from 'apps/commudle-admin/src/app/services/community-builds.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faCircleDot, faEdit, faPenClip, faStar, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import {
   EBuildType,
   EDbModels,
+  EInvitationStatus,
   EPublishStatus,
   EUserRolesUserStatus,
   IAttachedFile,
@@ -31,6 +32,8 @@ import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-respo
 import { AuthService, SeoService, ToastrService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'commudle-create-community-build',
@@ -56,10 +59,18 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   paramsTags = [];
   faEdit = faEdit;
+  faImage = faImage;
+  faPenClip = faPenClip;
+  faUsers = faUsers;
+  faCircleDot = faCircleDot;
+  faStar = faStar;
 
   communityBuildForm;
   communityBuildUpdateForm;
   moment = moment;
+  hasOpenSourceLink = false;
+  editBuildForm = false;
+  EInvitationStatus = EInvitationStatus;
 
   tinyMCE = {
     min_height: 500,
@@ -119,6 +130,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   environment = environment;
   recaptchaToken: string | null = null;
   isSubmitting = false;
+  staticAssets = staticAssets;
 
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
 
@@ -178,6 +190,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
     this.paramsTags = this.activatedRoute.snapshot.queryParamMap.getAll('tags[]');
     this.activatedRoute.snapshot.queryParamMap;
+    this.editBuildForm = this.activatedRoute.snapshot.params.community_build_id ? true : false;
     this.getCommunityBuild();
     this.setBuildType();
     this.linkDisplay();
@@ -441,8 +454,21 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   submitTags() {
     this.communityBuildsService.updateTags(this.cBuild.id, this.tags).subscribe(() => {
-      this.router.navigate(['/builds/my-builds']).then(() => this.toastLogService.successDialog('Saved!'));
-      this.gtmService();
+      if (this.parentType === EDbModels.HACKATHON_TEAM) {
+        this.router
+          .navigate([
+            '/communities',
+            this.hackathonUserResponses.team.hackathon?.community.slug,
+            'hackathons',
+            this.hackathonUserResponses.team.hackathon?.slug,
+            'user-dashboard',
+          ])
+          .then(() => this.toastLogService.successDialog('Saved!'));
+        this.gtmService();
+      } else {
+        this.router.navigate(['/builds/my-builds']).then(() => this.toastLogService.successDialog('Saved!'));
+        this.gtmService();
+      }
     });
   }
 
