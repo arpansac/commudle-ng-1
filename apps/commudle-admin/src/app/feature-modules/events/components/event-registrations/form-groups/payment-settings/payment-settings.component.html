@@ -139,14 +139,7 @@
           </label>
 
           <div *ngIf="commudleFeeAmount > 0">
-            <commudle-alert
-              [info]="true"
-              [message]="
-                'Commudle fees for this ticket will be 1% + GST' +
-                ((paidTicketingForm.controls.paid_ticket_setting.get('currency').value === 'INR' ? '₹' : '$') +
-                  this.commudleFeeAmount)
-              "
-            ></commudle-alert>
+            <commudle-alert [info]="true" [message]="'Commudle fees for this ticket will be 1% + GST'"></commudle-alert>
           </div>
 
           <!-- has_taxes -->
