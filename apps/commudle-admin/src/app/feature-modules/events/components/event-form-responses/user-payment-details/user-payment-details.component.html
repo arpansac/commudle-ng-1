@@ -28,7 +28,7 @@
     <td>{{ detail.transfer_id }}</td>
   </tr>
   <tr *ngFor="let eto of detail.eto_users">
-    <td *ngIf="detail.user.email === eto.email" class="com-italic">Paid By</td>
+    <td *ngIf="detail.user.email === eto.email" class="com-italic">Created By</td>
     <td *ngIf="detail.user.email === eto.email" class="com-flex com-flex-col">
       <span class="com-text-xs"
         ><strong>{{ eto.name }}</strong></span
