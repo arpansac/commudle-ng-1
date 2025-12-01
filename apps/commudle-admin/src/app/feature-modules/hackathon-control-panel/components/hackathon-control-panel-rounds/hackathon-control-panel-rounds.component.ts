@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels, IHackathon, ICommunity } from '@commudle/shared-models';
+import { IRound, EDbModels, IHackathon, ICommunity, ERoundType } from '@commudle/shared-models';
 import { RoundService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
@@ -13,10 +13,14 @@ import {
   faRectangleList,
   faMicrophone,
   faSackDollar,
+  faHashtag,
+  faEdit,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -27,6 +31,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   roundForm: FormGroup;
   rounds: IRound[];
   hackathon: IHackathon;
+  ERoundType = ERoundType;
   icons = {
     faPlus,
     faFileImage,
@@ -35,7 +40,12 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
     faRectangleList,
     faMicrophone,
     faSackDollar,
+    faHashtag,
+    faEdit,
+    faTrash,
   };
+
+  moment = moment;
 
   hackathonSlug = '';
   dialogRef: any;
@@ -60,6 +70,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
+      end_date: [''],
+      round_type: [ERoundType.GENERAL],
+      has_marking_criteria: [true],
     });
   }
 
@@ -102,8 +115,11 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       this.roundForm = this.fb.group({
         name: round.name,
         description: round.description,
-        date: this.datePipe.transform(round.date, 'yyyy-MM-dd'),
+        date: this.formatDateTimeForInput(round.date),
         order: round.order,
+        end_date: this.formatDateTimeForInput(round.end_date),
+        round_type: round.round_type,
+        has_marking_criteria: round.has_marking_criteria ?? true,
       });
     } else {
       this.resetRoundForm();
@@ -175,10 +191,18 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
+      end_date: [''],
+      round_type: ['general'],
+      has_marking_criteria: [true],
     });
   }
 
   setMeta() {
     this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
+  }
+
+  formatDateTimeForInput(dateTime: string): string {
+    if (!dateTime) return '';
+    return moment(dateTime).format('YYYY-MM-DDTHH:mm');
   }
 }

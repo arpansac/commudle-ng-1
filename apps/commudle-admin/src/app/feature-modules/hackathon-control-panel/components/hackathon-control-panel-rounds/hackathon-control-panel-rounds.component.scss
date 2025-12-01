@@ -5,8 +5,69 @@ nb-card {
   @apply com-border-2 com-border-dashed com-border-slate-500 com-rounded-lg com-text-center com-py-5 com-cursor-pointer;
 }
 
-.rounds-card {
-  @apply com-grid com-grid-cols-3 com-gap-4;
+.rounds-table {
+  @apply com-overflow-hidden com-mt-4 com-border com-border-gray-200 com-rounded-lg;
+
+  .table {
+    @apply com-w-full com-border-collapse;
+
+    thead {
+      th {
+        @apply com-bg-gray-50 com-px-4 com-py-3 com-text-left com-text-sm com-font-medium com-text-gray-700;
+        @apply com-border-b com-border-gray-200;
+      }
+    }
+
+    tbody {
+      tr {
+        @apply com-border-b com-border-gray-100;
+        @apply hover:com-bg-gray-50;
+
+        td {
+          @apply com-px-4 com-py-3 com-text-sm;
+        }
+      }
+    }
+
+    .round-name {
+      @apply com-font-medium com-text-gray-900;
+    }
+
+    .round-order {
+      @apply com-text-center com-font-medium com-text-gray-700;
+    }
+
+    .round-date {
+      @apply com-text-gray-600 com-text-xs;
+    }
+
+    .round-end-date {
+      @apply com-text-gray-600 com-text-xs;
+    }
+
+    .round-type {
+      @apply com-text-gray-700 com-text-xs com-font-medium;
+    }
+
+    .round-description {
+      @apply com-max-w-xs;
+
+      .description-content {
+        @apply com-text-gray-700 com-text-sm com-leading-5 com-overflow-y-scroll com-break-words;
+        @apply com-max-h-20;
+      }
+    }
+
+    .round-actions {
+      .action-buttons {
+        @apply com-flex com-gap-2 com-flex-wrap;
+
+        button {
+          @apply com-min-w-0;
+        }
+      }
+    }
+  }
 }
 
 .round-form-dialog-box {
@@ -35,4 +96,18 @@ nb-card-header {
 
 .alert {
   @apply com-mt-3;
+}
+
+select.form-control {
+  @apply com-w-full com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-md;
+  @apply com-bg-white com-text-gray-900 com-text-sm;
+  @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-blue-500 focus:com-border-blue-500;
+}
+
+.date-time-row {
+  @apply com-flex com-gap-4;
+}
+
+.date-time-column {
+  @apply com-flex-1;
 }

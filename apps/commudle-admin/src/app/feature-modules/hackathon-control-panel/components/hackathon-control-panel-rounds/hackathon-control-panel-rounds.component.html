@@ -6,17 +6,84 @@
     <button (click)="openRoundDialogBox(addRoundsDialogBox)" nbButton status="primary">
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Round
     </button>
-    <div class="rounds-card" *ngIf="rounds && rounds.length > 0">
-      <div *ngFor="let round of rounds; let i = index">
-        <commudle-hackathon-control-panel-round-card
-          [round]="round"
-          [communitySlug]="parent?.slug"
-          [hackathonSlug]="hackathonSlug"
-          (destroyRoundEvent)="openConfirmDeleteDialogBox(conformDeleteDialogBox, $event, i)"
-          (editRoundEvent)="openRoundDialogBox(addRoundsDialogBox, $event, i)"
-          (createChannelForRound)="openRoundDialogBox(createChannelDialogBox, $event, i)"
-        ></commudle-hackathon-control-panel-round-card>
-      </div>
+    <div class="rounds-table" *ngIf="rounds && rounds.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Round Name</th>
+            <th>Order</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let round of rounds; let i = index">
+            <td class="round-name">{{ round.name }}</td>
+            <td class="round-order">{{ round.order }}</td>
+            <td class="round-date">{{ moment(round.date).format('DD MMM YYYY HH:mm') }}</td>
+            <td class="round-end-date">
+              {{ round.end_date ? moment(round.end_date).format('DD MMM YYYY HH:mm') : '-' }}
+            </td>
+            <td class="round-type">
+              <span>{{ round.round_type ? (round.round_type | capitalizeAndRemoveUnderscore) : '-' }}</span>
+            </td>
+            <td class="round-description">
+              <div class="description-content custom-scrollbar">{{ round.description }}</div>
+            </td>
+            <td class="round-actions">
+              <div class="action-buttons">
+                <button
+                  nbButton
+                  ghost
+                  status="primary"
+                  size="small"
+                  (click)="openRoundDialogBox(addRoundsDialogBox, round, i)"
+                >
+                  <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit
+                </button>
+                <button
+                  nbButton
+                  ghost
+                  status="danger"
+                  size="small"
+                  (click)="openConfirmDeleteDialogBox(conformDeleteDialogBox, round.id, i)"
+                >
+                  <fa-icon [icon]="icons.faTrash"></fa-icon> &nbsp; Delete
+                </button>
+                <button
+                  nbButton
+                  ghost
+                  status="info"
+                  size="small"
+                  (click)="openRoundDialogBox(createChannelDialogBox, round, i)"
+                  *ngIf="!round.channel_id"
+                >
+                  <fa-icon [icon]="icons.faHashtag"></fa-icon> &nbsp; Create Channel
+                </button>
+                <a
+                  *ngIf="round.channel_id"
+                  [routerLink]="[
+                    '/admin',
+                    'communities',
+                    parent?.slug,
+                    'hackathon-dashboard',
+                    hackathonSlug,
+                    'channels',
+                    round.channel_id
+                  ]"
+                >
+                  <button nbButton ghost status="info" size="small">
+                    <fa-icon [icon]="icons.faHashtag"></fa-icon> &nbsp; Go To Channel
+                  </button>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </nb-card-body>
 </nb-card>
@@ -84,19 +151,25 @@
           ></commudle-alert>
         </div>
 
-        <!-- date -->
-        <div>
-          <label for="name">Round Date*</label>
-          <input id="name" type="date" nbInput fullWidth formControlName="date" [min]="today" />
-          <commudle-alert
-            *ngIf="
-              roundForm.controls['date'].invalid &&
-              roundForm.controls['date'].hasError('required') &&
-              roundForm.controls['date'].touched
-            "
-            [error]="true"
-            errorMessage="Date is required"
-          ></commudle-alert>
+        <!-- start and end date time -->
+        <div class="date-time-row">
+          <div class="date-time-column">
+            <label for="start_datetime">Start Date & Time*</label>
+            <input id="start_datetime" type="datetime-local" nbInput fullWidth formControlName="date" />
+            <commudle-alert
+              *ngIf="
+                roundForm.controls['date'].invalid &&
+                roundForm.controls['date'].hasError('required') &&
+                roundForm.controls['date'].touched
+              "
+              [error]="true"
+              errorMessage="Start date & time is required"
+            ></commudle-alert>
+          </div>
+          <div class="date-time-column">
+            <label for="end_datetime">End Date & Time</label>
+            <input id="end_datetime" type="datetime-local" nbInput fullWidth formControlName="end_date" />
+          </div>
         </div>
 
         <!-- order -->
@@ -148,6 +221,21 @@
             [error]="true"
             errorMessage="Description is required"
           ></commudle-alert>
+        </div>
+
+        <!-- round_type -->
+        <div>
+          <label for="round_type">Round Type</label>
+          <select id="round_type" formControlName="round_type" class="form-control">
+            <option *ngFor="let roundType of ERoundType | keyvalue" [value]="roundType.value">
+              {{ roundType.value | capitalizeAndRemoveUnderscore }}
+            </option>
+          </select>
+        </div>
+
+        <!-- has_marking_criteria -->
+        <div>
+          <nb-checkbox formControlName="has_marking_criteria"> Has Marking Criteria </nb-checkbox>
         </div>
       </form>
     </nb-card-body>
