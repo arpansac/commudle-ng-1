@@ -1,129 +1,160 @@
 <div class="event-edit-form-container">
-  <div class="backButton" *ngIf="type === 'Save'">
+  <div class="back-button" *ngIf="type === 'Save'">
     <commudle-back-button text="Back"></commudle-back-button>
   </div>
 
-  <nb-card class="md:com-min-w-[50vw]">
+  <nb-card class="card-container" [ngClass]="{ 'com-rounded-t-none': type === 'clone' }">
     <nb-card-body>
-      <h3 class="com-mt-0">Edit Event</h3>
+      <h3 *ngIf="type === 'Save'" class="page-title">Edit Event</h3>
 
-      <nb-alert status="info" *ngIf="event && !event.editable && type === 'Save'">
+      <nb-alert status="info" *ngIf="event && !event.editable && type === 'Save'" class="info-alert">
         <p>
           This event is <strong>{{ event.event_status?.name | titlecase }}</strong> and cannot be edited
         </p>
       </nb-alert>
-      <form
-        class="event-create-form"
-        [formGroup]="eventForm"
-        (ngSubmit)="type === 'Save' ? updateEvent() : cloneEvent()"
-      >
+
+      <form class="event-edit-form" [formGroup]="eventForm" (ngSubmit)="type === 'Save' ? updateEvent() : cloneEvent()">
         <div formGroupName="event">
-          <div role="group">
-            <div>
-              <label>
-                Name*
-                <input type="text" nbInput fullWidth formControlName="name" [disabled]="true" />
-              </label>
-              <span
-                *ngIf="
-                  eventForm['controls'].event['controls'].name.touched &&
-                  eventForm['controls'].event['controls'].name.invalid &&
-                  eventForm['controls'].event['controls'].name.errors.required
-                "
-              >
-                <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-              </span>
-            </div>
-          </div>
-          <div class="event-date-details">
-            <label>Timings (Leave empty if you are yet to decide)</label>
-            <div>
-              <div>
-                <input nbInput type="datetime-local" placeholder="Date" formControlName="start_date" />
-              </div>
-            </div>
+          <div class="form-group">
+            <label for="name"> Name <span class="required">*</span> </label>
+            <input
+              id="name"
+              type="text"
+              nbInput
+              fullWidth
+              formControlName="name"
+              [disabled]="true"
+              class="form-input"
+            />
+            <commudle-alert
+              *ngIf="
+                eventForm['controls'].event['controls'].name.touched &&
+                eventForm['controls'].event['controls'].name.invalid &&
+                eventForm['controls'].event['controls'].name.errors.required
+              "
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
           </div>
 
-          <div class="event-date-details">
-            <label>End Date</label>
-            <div>
-              <div>
-                <input nbInput type="datetime-local" placeholder="Date" formControlName="end_date" />
-              </div>
-            </div>
+          <div class="timing-alert">
+            <commudle-alert [info]="true" message="Timings (Leave empty if you are yet to decide)"></commudle-alert>
           </div>
 
-          <div role="group" class="event-date-details">
-            <label>
-              <nb-select placeholder="TimeZone*" formControlName="timezone" status="primary" size="large" hero>
-                <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
-                  {{ tz }}
-                </nb-option>
-              </nb-select>
-            </label>
+          <div class="form-group">
+            <label for="start_date">Start Date</label>
+            <input
+              id="start_date"
+              nbInput
+              type="datetime-local"
+              placeholder="Pick a date"
+              formControlName="start_date"
+              fullWidth
+              class="form-input"
+            />
           </div>
 
-          <div class="event-type">
-            <label>Event Type *</label>
-            <div>
-              <div *ngFor="let type of EEventType | keyvalue">
-                <input [id]="type.key" [value]="type.value" formControlName="event_type" type="radio" />
-                <label [for]="type.key">{{ type.value | titlecase }}</label>
+          <div class="form-group">
+            <label for="end_date">End Date</label>
+            <input
+              id="end_date"
+              nbInput
+              type="datetime-local"
+              placeholder="Pick a date"
+              formControlName="end_date"
+              fullWidth
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <nb-select
+              id="timezone"
+              placeholder="Select Timezone"
+              formControlName="timezone"
+              status="primary"
+              size="large"
+              hero
+              class="form-select"
+            >
+              <nb-option *ngFor="let tz of allTimeZones" [value]="tz">
+                {{ tz }}
+              </nb-option>
+            </nb-select>
+            <commudle-alert
+              *ngIf="
+                eventForm['controls'].event['controls'].timezone.touched &&
+                eventForm['controls'].event['controls'].timezone.invalid &&
+                eventForm['controls'].event['controls'].timezone.errors.required
+              "
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
+          </div>
+
+          <div class="form-group">
+            <label> Event Type <span class="required">*</span> </label>
+            <div class="radio-group">
+              <div *ngFor="let type of EEventType | keyvalue" class="radio-option">
+                <input
+                  [id]="type.key"
+                  [value]="type.value"
+                  formControlName="event_type"
+                  type="radio"
+                  class="radio-input"
+                />
+                <label [for]="type.key" class="radio-label">{{ type.value | titlecase }}</label>
               </div>
             </div>
-            <span
+            <commudle-alert
               *ngIf="
                 eventForm['controls'].event['controls'].event_type.touched &&
                 eventForm['controls'].event['controls'].event_type.invalid &&
                 eventForm['controls'].event['controls'].event_type.errors.required
               "
-            >
-              <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-            </span>
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
           </div>
 
-          <div role="individual">
-            <label> Description* </label>
-            <span
+          <div class="form-group">
+            <label> Description <span class="required">*</span> </label>
+            <commudle-alert
               *ngIf="
                 eventForm['controls'].event['controls'].description.touched &&
                 eventForm['controls'].event['controls'].description.invalid &&
                 eventForm['controls'].event['controls'].description.errors.required
               "
-            >
-              <commudle-alert [error]="true" [errorMessage]="'Required Field'"></commudle-alert>
-            </span>
-            <editor
-              formControlName="description"
-              apiKey="e34vgv7ocd6ttka8t6qcd07g7lifas1y9lyve8ze1013nefs"
-              [init]="tinyMCE"
-            >
-            </editor>
+              [error]="true"
+              [errorMessage]="'Required Field'"
+            ></commudle-alert>
+            <div class="editor-container">
+              <editor
+                formControlName="description"
+                apiKey="e34vgv7ocd6ttka8t6qcd07g7lifas1y9lyve8ze1013nefs"
+                [init]="tinyMCE"
+              >
+              </editor>
+            </div>
           </div>
 
-          <div role="group">
-            <div>
-              <label fullWidth>
-                Tags*
-                <div class="tag">
-                  <app-tag
-                    (tagAdd)="onTagAdd($event)"
-                    (tagDelete)="onTagDelete($event)"
-                    [editable]="true"
-                    [tags]="tags"
-                    [minimumTags]="minimumTags"
-                    [backgroundColor]="'com-bg-tAnti-Flash'"
-                    [fontColor]="'com-text-tYankees-Blue'"
-                    [minimumTags]="minimumTags"
-                    [tags]="tags"
-                  ></app-tag>
-                </div>
-              </label>
+          <div class="form-group">
+            <label> Tags <span class="required">*</span> </label>
+            <div class="tag-container">
+              <app-tag
+                (tagAdd)="onTagAdd($event)"
+                (tagDelete)="onTagDelete($event)"
+                [editable]="true"
+                [tags]="tags"
+                [minimumTags]="minimumTags"
+                [backgroundColor]="'com-bg-tAnti-Flash'"
+                [fontColor]="'com-text-tYankees-Blue'"
+              ></app-tag>
             </div>
           </div>
         </div>
 
-        <div class="save-button-bottom">
+        <div class="form-actions">
           <button
             *ngIf="event && (type === 'clone' || (type === 'Save' && event.editable))"
             [disabled]="tags.length < 3 || submitIsInProcess"
@@ -132,6 +163,7 @@
             fullWidth
             status="info"
             [nbSpinner]="submitIsInProcess"
+            class="submit-button"
           >
             {{ type }}
           </button>
