@@ -178,19 +178,17 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    console.log(formValue);
-
-    // this.eventsService
-    //   .updateEvent(formValue, this.event.slug, this.community ? this.community : this.event.kommunity_id, this.tags)
-    //   .subscribe((data) => {
-    //     this.toastLogService.successDialog('Updated!');
-    //     this.router.navigate([
-    //       '/admin/communities',
-    //       this.community ? this.community.slug : this.event.kommunity_id,
-    //       'event-dashboard',
-    //       data.slug,
-    //     ]);
-    //   });
+    this.eventsService
+      .updateEvent(formValue, this.event.slug, this.community ? this.community : this.event.kommunity_id, this.tags)
+      .subscribe((data) => {
+        this.toastLogService.successDialog('Updated!');
+        this.router.navigate([
+          '/admin/communities',
+          this.community ? this.community.slug : this.event.kommunity_id,
+          'event-dashboard',
+          data.slug,
+        ]);
+      });
   }
 
   setStartDateTime() {
@@ -252,19 +250,17 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    console.log(formValue);
-
-    // this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
-    //   (data) => {
-    //     this.submitIsInProcess = false;
-    //     window.location.reload();
-    //     this.close();
-    //   },
-    //   (error) => {
-    //     this.submitIsInProcess = false;
-    //     this.close();
-    //   },
-    // );
+    this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
+      (data) => {
+        this.submitIsInProcess = false;
+        window.location.reload();
+        this.close();
+      },
+      (error) => {
+        this.submitIsInProcess = false;
+        this.close();
+      },
+    );
   }
   close() {
     this.windowRef.close();
