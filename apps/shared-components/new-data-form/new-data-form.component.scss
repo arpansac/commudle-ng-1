@@ -161,12 +161,12 @@
     @apply com-justify-start com-flex com-w-full md:com-w-auto;
 
     .dropdown {
-      @apply com-flex com-items-center com-text-Yankees-Blue com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full md:com-w-auto;
+      @apply com-flex com-items-center com-text-Yankees-Blue com-h-8 com-p-3 com-cursor-pointer com-bg-white com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-w-full md:com-w-[172px] com-relative;
       nb-icon {
-        @apply com-h-4 com-w-4 com-mr-1;
+        @apply com-h-4 com-w-4 com-mr-1 com-pointer-events-none com-relative com-z-10;
       }
       select {
-        @apply com-border-0 com-bg-white com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium;
+        @apply com-border-0 com-bg-transparent com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium com-absolute com-inset-0 com-pl-8;
         option {
           @apply com-text-sm com-text-Yankees-Blue;
         }
