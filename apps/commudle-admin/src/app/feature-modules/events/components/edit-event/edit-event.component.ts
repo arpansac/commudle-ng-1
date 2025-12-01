@@ -85,6 +85,10 @@ export class EditEventComponent implements OnInit {
         end_time_pick: [''],
         timezone: ['', Validators.required],
         event_type: ['', Validators.required],
+        banner_image: [false],
+        agenda: [false],
+        sponsors: [false],
+        event_forms: [false],
       }),
     });
   }
@@ -157,6 +161,10 @@ export class EditEventComponent implements OnInit {
     const formValue = this.eventForm.get('event').value;
     delete formValue['start_date'];
     delete formValue['end_date'];
+    delete formValue['banner_image'];
+    delete formValue['agenda'];
+    delete formValue['sponsors'];
+    delete formValue['event_forms'];
     formValue['start_time'] = '';
     formValue['end_time'] = '';
 
@@ -170,17 +178,19 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    this.eventsService
-      .updateEvent(formValue, this.event.slug, this.community ? this.community : this.event.kommunity_id, this.tags)
-      .subscribe((data) => {
-        this.toastLogService.successDialog('Updated!');
-        this.router.navigate([
-          '/admin/communities',
-          this.community ? this.community.slug : this.event.kommunity_id,
-          'event-dashboard',
-          data.slug,
-        ]);
-      });
+    console.log(formValue);
+
+    // this.eventsService
+    //   .updateEvent(formValue, this.event.slug, this.community ? this.community : this.event.kommunity_id, this.tags)
+    //   .subscribe((data) => {
+    //     this.toastLogService.successDialog('Updated!');
+    //     this.router.navigate([
+    //       '/admin/communities',
+    //       this.community ? this.community.slug : this.event.kommunity_id,
+    //       'event-dashboard',
+    //       data.slug,
+    //     ]);
+    //   });
   }
 
   setStartDateTime() {
@@ -242,17 +252,19 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
-      (data) => {
-        this.submitIsInProcess = false;
-        window.location.reload();
-        this.close();
-      },
-      (error) => {
-        this.submitIsInProcess = false;
-        this.close();
-      },
-    );
+    console.log(formValue);
+
+    // this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
+    //   (data) => {
+    //     this.submitIsInProcess = false;
+    //     window.location.reload();
+    //     this.close();
+    //   },
+    //   (error) => {
+    //     this.submitIsInProcess = false;
+    //     this.close();
+    //   },
+    // );
   }
   close() {
     this.windowRef.close();
