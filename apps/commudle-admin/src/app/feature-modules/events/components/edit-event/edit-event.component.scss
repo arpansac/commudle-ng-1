@@ -12,7 +12,7 @@
   }
 
   nb-card-body {
-    @apply com-p-6;
+    @apply md:com-p-6 com-px-4 com-pt-6 com-pb-4 com-rounded-10;
   }
 
   .page-title {
@@ -60,6 +60,14 @@
       .radio-label {
         @apply com-text-sm com-font-medium com-text-gray-700 com-m-0 com-cursor-pointer;
       }
+    }
+  }
+
+  .clone-fields-checkboxes {
+    @apply com-flex com-flex-col com-gap-3;
+
+    nb-checkbox {
+      @apply com-text-sm com-text-Yankees-Blue;
     }
   }
 

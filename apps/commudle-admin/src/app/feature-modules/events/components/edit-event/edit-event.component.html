@@ -154,6 +154,16 @@
           </div>
         </div>
 
+        <div class="form-group" *ngIf="type === 'clone'">
+          <label> Which other fields do you want to clone? <span class="required">*</span> </label>
+          <div class="clone-fields-checkboxes">
+            <nb-checkbox formControlName="clone_banner_image" status="basic">Banner Image</nb-checkbox>
+            <nb-checkbox formControlName="clone_agenda" status="basic">Agenda</nb-checkbox>
+            <nb-checkbox formControlName="clone_sponsors" status="basic">Sponsors</nb-checkbox>
+            <nb-checkbox formControlName="clone_forms" status="basic">Forms</nb-checkbox>
+          </div>
+        </div>
+
         <div class="form-actions">
           <button
             *ngIf="event && (type === 'clone' || (type === 'Save' && event.editable))"
