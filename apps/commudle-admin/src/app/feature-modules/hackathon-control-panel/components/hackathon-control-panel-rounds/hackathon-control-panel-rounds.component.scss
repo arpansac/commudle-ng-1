@@ -111,3 +111,39 @@ select.form-control {
 .date-time-column {
   @apply com-flex-1;
 }
+
+.marking-criteria-section {
+  @apply com-border com-border-gray-200 com-rounded-lg com-p-3 com-bg-gray-50;
+
+  .marking-criteria-header {
+    @apply com-flex com-justify-between com-items-center com-mb-3;
+
+    label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+  }
+
+  .criteria-table {
+    @apply com-w-full com-border-collapse com-bg-white com-border com-border-gray-200 com-rounded-md com-overflow-hidden;
+
+    th {
+      @apply com-bg-gray-100 com-px-3 com-py-2 com-text-left com-text-xs com-font-medium com-text-gray-700 com-border-b com-border-gray-200;
+    }
+
+    td {
+      @apply com-px-3 com-py-2 com-border-b com-border-gray-100;
+    }
+
+    tr:last-child td {
+      @apply com-border-b-0;
+    }
+
+    input {
+      @apply com-border-0 com-p-1 com-text-sm;
+    }
+
+    button {
+      @apply com-min-w-0;
+    }
+  }
+}

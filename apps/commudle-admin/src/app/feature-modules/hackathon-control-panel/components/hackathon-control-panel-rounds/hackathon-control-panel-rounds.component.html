@@ -237,6 +237,66 @@
         <div>
           <nb-checkbox formControlName="has_marking_criteria"> Has Marking Criteria </nb-checkbox>
         </div>
+
+        <!-- marking_criteria -->
+        <div *ngIf="roundForm.get('has_marking_criteria')?.value" class="marking-criteria-section">
+          <div class="marking-criteria-header">
+            <label>Marking Criteria</label>
+            <button type="button" nbButton size="small" status="primary" (click)="addMarkingCriteria()">
+              <fa-icon [icon]="icons.faPlus"></fa-icon> Add Criteria
+            </button>
+          </div>
+
+          <table class="criteria-table" *ngIf="markingCriteria.length > 0">
+            <thead>
+              <tr>
+                <th>Criteria Text</th>
+                <th>Min Score</th>
+                <th>Max Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let criteria of markingCriteria; let i = index">
+                <td>
+                  <input
+                    type="text"
+                    nbInput
+                    fullWidth
+                    placeholder="e.g., Innovation"
+                    [value]="criteria.text"
+                    (input)="updateMarkingCriteria(i, 'text', $any($event.target).value)"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    nbInput
+                    fullWidth
+                    min="0"
+                    [value]="criteria.min"
+                    (input)="updateMarkingCriteria(i, 'min', +$any($event.target).value)"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    nbInput
+                    fullWidth
+                    min="1"
+                    [value]="criteria.max"
+                    (input)="updateMarkingCriteria(i, 'max', +$any($event.target).value)"
+                  />
+                </td>
+                <td>
+                  <button type="button" nbButton size="small" status="danger" ghost (click)="removeMarkingCriteria(i)">
+                    <fa-icon [icon]="icons.faTrash"></fa-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </form>
     </nb-card-body>
     <nb-card-footer class="actions">

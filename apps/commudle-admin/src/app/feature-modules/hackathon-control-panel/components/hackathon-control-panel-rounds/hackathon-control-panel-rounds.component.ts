@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels, IHackathon, ICommunity, ERoundType } from '@commudle/shared-models';
+import { IRound, EDbModels, IHackathon, ICommunity, ERoundType, IMarkingCriteria } from '@commudle/shared-models';
 import { RoundService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
@@ -32,6 +32,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   rounds: IRound[];
   hackathon: IHackathon;
   ERoundType = ERoundType;
+  markingCriteria: IMarkingCriteria[] = [];
   icons = {
     faPlus,
     faFileImage,
@@ -78,6 +79,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.seoService.noIndex(true);
+    this.loadDefaultMarkingCriteria();
 
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -121,8 +123,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
         round_type: round.round_type,
         has_marking_criteria: round.has_marking_criteria ?? true,
       });
+      this.markingCriteria = round.marking_criteria ? [...round.marking_criteria] : [];
     } else {
       this.resetRoundForm();
+      this.loadDefaultMarkingCriteria();
     }
 
     this.dialogRef = this.nbDialogService.open(dialog, {
@@ -144,20 +148,26 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   createRound() {
-    this.roundService
-      .createRound(this.roundForm.value, EDbModels.HACKATHON, this.hackathonSlug)
-      .subscribe((data: IRound) => {
-        if (data) {
-          this.rounds.unshift(data);
-          this.toastrService.successDialog('Round Created');
-          this.dialogRef.close();
-          this.resetRoundForm();
-        }
-      });
+    const formData = {
+      ...this.roundForm.value,
+      marking_criteria: this.markingCriteria,
+    };
+    this.roundService.createRound(formData, EDbModels.HACKATHON, this.hackathonSlug).subscribe((data: IRound) => {
+      if (data) {
+        this.rounds.unshift(data);
+        this.toastrService.successDialog('Round Created');
+        this.dialogRef.close();
+        this.resetRoundForm();
+      }
+    });
   }
 
   updateRound(round, index) {
-    this.roundService.updateRound(this.roundForm.value, round.id).subscribe((data) => {
+    const formData = {
+      ...this.roundForm.value,
+      marking_criteria: this.markingCriteria,
+    };
+    this.roundService.updateRound(formData, round.id).subscribe((data) => {
       if (data) {
         this.toastrService.successDialog('Round was updated');
         this.rounds[index] = data;
@@ -184,6 +194,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   resetRoundForm() {
     this.roundForm.reset(); // Reset form completely
     this.roundForm.setValidators(null); // Remove any previous validators
+    this.markingCriteria = []; // Reset marking criteria
 
     // Reinitialize with validators
     this.roundForm = this.fb.group({
@@ -204,5 +215,23 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   formatDateTimeForInput(dateTime: string): string {
     if (!dateTime) return '';
     return moment(dateTime).format('YYYY-MM-DDTHH:mm');
+  }
+
+  addMarkingCriteria() {
+    this.markingCriteria.push({ text: '', min: 0, max: 10 });
+  }
+
+  removeMarkingCriteria(index: number) {
+    this.markingCriteria.splice(index, 1);
+  }
+
+  updateMarkingCriteria(index: number, field: keyof IMarkingCriteria, value: any) {
+    (this.markingCriteria[index] as any)[field] = value;
+  }
+
+  loadDefaultMarkingCriteria() {
+    this.roundService.getMarkingCriteria().subscribe((criteria: IMarkingCriteria[]) => {
+      this.markingCriteria = criteria || [];
+    });
   }
 }

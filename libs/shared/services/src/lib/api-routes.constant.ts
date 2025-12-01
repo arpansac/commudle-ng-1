@@ -976,6 +976,7 @@ export const API_ROUTES = {
     DELETE: 'api/v2/round', //DELETE
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
+    MARKING_CRITERIA: 'api/v2/round/marking_criteria', //GET
     PUBLIC: {
       INDEX: 'api/v2/round/public',
     },
