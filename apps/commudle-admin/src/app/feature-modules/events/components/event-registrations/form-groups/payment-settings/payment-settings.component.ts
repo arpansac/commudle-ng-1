@@ -82,18 +82,32 @@ export class PaymentSettingsComponent implements OnInit {
       },
       {
         validators: [
-          (fb) =>
-            fb.get('paid_ticket_setting').get('has_taxes').value === true &&
-            !fb.get('paid_ticket_setting').get('tax_name').value
-              ? {
-                  tax_name: ['', Validators.required],
-                  tax_percentage: ['', Validators.required],
-                  seller_tax_details: ['', Validators.required],
-                  country: ['', Validators.required],
-                  seller_name: ['', Validators.required],
-                  seller_address: ['', Validators.required],
-                }
-              : null,
+          (fb) => {
+            const paidTicketSetting = fb.get('paid_ticket_setting');
+            const hasTaxes = paidTicketSetting.get('has_taxes').value;
+
+            if (hasTaxes === true) {
+              const requiredFields = [
+                'tax_name',
+                'tax_percentage',
+                'seller_tax_details',
+                'country',
+                'seller_name',
+                'seller_address',
+              ];
+              const missingFields = requiredFields.filter((field) => !paidTicketSetting.get(field).value);
+
+              if (missingFields.length > 0) {
+                const errors = {};
+                missingFields.forEach((field) => {
+                  errors[field] = { required: true };
+                });
+                return errors;
+              }
+            }
+
+            return null;
+          },
         ],
       },
     );
