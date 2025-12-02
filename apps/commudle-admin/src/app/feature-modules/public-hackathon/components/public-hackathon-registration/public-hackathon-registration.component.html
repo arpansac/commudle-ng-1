@@ -29,7 +29,8 @@
           [ngClass]="{
             'round-completed': isRoundCompleted(round),
             'round-current': isCurrentRound(round),
-            'round-upcoming': isUpcomingRound(round)
+            'round-upcoming': isUpcomingRound(round),
+            'round-live': isRoundLive(round)
           }"
         >
           <div class="round-indicator">
@@ -48,9 +49,17 @@
             </div>
           </div>
           <div class="round-status">
-            <div *ngIf="isRoundCompleted(round)" class="status-completed">✓</div>
+            <div *ngIf="isRoundLive(round)" class="status-live">Live</div>
             <div *ngIf="isCurrentRound(round)" class="status-current">Current</div>
-            <div *ngIf="isUpcomingRound(round)" class="status-upcoming">Upcoming</div>
+            <div *ngIf="isRoundCompleted(round)" class="status-completed">✓</div>
+            <div
+              *ngIf="
+                !isRoundLive(round) && !isCurrentRound(round) && !isRoundCompleted(round) && isUpcomingRound(round)
+              "
+              class="status-upcoming"
+            >
+              Upcoming
+            </div>
           </div>
           @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
           EHackathonRegistrationStatus.ACCEPTED && (round.round_type === 'ppt_submission' || round.round_type ===
@@ -58,7 +67,13 @@
           'ppt_submission' && userTeamDetails.hackathon_team_round_submissions &&
           userTeamDetails.hackathon_team_round_submissions.length > 0)) {
           <div class="round-action">
-            <button nbButton status="primary" size="small" (click)="handleRoundSubmission(round)">
+            <button
+              nbButton
+              status="primary"
+              size="small"
+              (click)="handleRoundSubmission(round)"
+              [disabled]="!isRoundLive(round)"
+            >
               @if(round.round_type === ERoundType.PPT_SUBMISSION) { Submit PPT } @else if(round.round_type ===
               ERoundType.PROJECT_SUBMISSION) { Submit Project } @else if(round.round_type ===
               ERoundType.PROJECT_UPDATE_SUBMISSION) { Submit Update } @else { Submit }

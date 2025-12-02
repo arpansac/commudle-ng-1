@@ -75,32 +75,27 @@ export class PublicHackathonRegistrationComponent implements OnInit, OnDestroy {
   }
 
   isRoundCompleted(round: IRound): boolean {
-    if (!this.userTeamDetails?.round) {
-      if (round.end_date) {
-        return new Date(round.end_date) < new Date();
-      }
-      return false;
-    }
-    return round.order < this.userTeamDetails.round.order;
-  }
-
-  isCurrentRound(round: IRound): boolean {
-    if (this.userTeamDetails?.round?.id === round.id) return true;
-    if (!this.userTeamDetails?.round && round.date && round.end_date) {
-      const now = new Date();
-      return new Date(round.date) <= now && now <= new Date(round.end_date);
+    if (round.end_date) {
+      return new Date(round.end_date) < new Date();
     }
     return false;
   }
 
+  isCurrentRound(round: IRound): boolean {
+    return this.userTeamDetails?.round?.id === round.id;
+  }
+
   isUpcomingRound(round: IRound): boolean {
-    if (!this.userTeamDetails?.round) {
-      if (round.date) {
-        return new Date(round.date) > new Date();
-      }
-      return true;
+    if (round.date) {
+      return new Date(round.date) > new Date();
     }
-    return round.order > this.userTeamDetails.round.order;
+    return false;
+  }
+
+  isRoundLive(round: IRound): boolean {
+    if (!round.date || !round.end_date) return false;
+    const now = new Date();
+    return new Date(round.date) <= now && now <= new Date(round.end_date);
   }
 
   handleRoundSubmission(round: IRound) {
