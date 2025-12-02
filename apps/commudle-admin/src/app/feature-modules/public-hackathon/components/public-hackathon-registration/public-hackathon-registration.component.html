@@ -40,7 +40,7 @@
             <div class="round-date" *ngIf="round.date">
               {{ round.date | date : 'MMM dd, yyyy, hh:mm a' }}
               @if(round.end_date) {
-              <span> - {{ round.end_date | date : 'MMM dd, yyyy, hh:mm a' }}</span>
+              <span> -> {{ round.end_date | date : 'MMM dd, yyyy, hh:mm a' }}</span>
               }
             </div>
             <div class="round-description" *ngIf="round.description">

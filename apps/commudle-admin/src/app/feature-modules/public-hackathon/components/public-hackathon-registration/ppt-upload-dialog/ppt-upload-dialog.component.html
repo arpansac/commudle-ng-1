@@ -1,16 +1,34 @@
-<nb-card>
+<nb-card class="upload-dialog">
   <nb-card-header>
-    <h4>Submit PPT - {{ round.name }}</h4>
+    <div class="header-content">
+      <h4 class="dialog-title">Submit Presentation</h4>
+      <button nbButton ghost size="small" (click)="close()" class="close-button">
+        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      </button>
+    </div>
+    <p class="round-name">{{ round.name }}</p>
   </nb-card-header>
+
   <nb-card-body>
-    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-      <div class="upload-section">
-        <label class="upload-label">Upload PowerPoint Presentation</label>
-        <input type="file" #fileInput accept=".ppt,.pptx" (change)="onFileSelected($event)" class="file-input" />
-        <button type="button" nbButton outline status="primary" (click)="fileInput.click()" class="upload-button">
-          Choose File
-        </button>
-        <div *ngIf="selectedFile" class="file-info">Selected: {{ selectedFile.name }}</div>
+    <form [formGroup]="uploadForm">
+      <div class="upload-area" (click)="fileInput.click()" [class.has-file]="selectedFile">
+        <input type="file" #fileInput accept=".ppt,.pptx,.pdf" (change)="onFileSelected($event)" class="file-input" />
+
+        @if(!selectedFile) {
+        <div class="upload-placeholder">
+          <fa-icon [icon]="icons.faUpload" class="upload-icon"></fa-icon>
+          <p class="upload-text">Click to upload or drag and drop</p>
+          <p class="upload-hint">PPT, PPTX, PDF (max 10MB)</p>
+        </div>
+        } @else {
+        <div class="file-selected">
+          <fa-icon [icon]="icons.faFile" class="file-icon"></fa-icon>
+          <div class="file-details">
+            <p class="file-name">{{ selectedFile.name }}</p>
+            <p class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+          </div>
+        </div>
+        }
       </div>
 
       <div class="comments-section">
@@ -21,16 +39,18 @@
           placeholder="Add any comments about your submission..."
           formControlName="comments"
           rows="3"
-        >
-        </textarea>
+        ></textarea>
       </div>
     </form>
   </nb-card-body>
+
   <nb-card-footer>
     <div class="dialog-actions">
       <button nbButton ghost (click)="close()">Cancel</button>
       <button nbButton status="primary" [disabled]="!selectedFile || isUploading" (click)="onSubmit()">
-        {{ isUploading ? 'Uploading...' : 'Submit PPT' }}
+        @if(isUploading) {
+        <nb-icon icon="loader-outline" class="spinning"></nb-icon>
+        Uploading... } @else { Submit Presentation }
       </button>
     </div>
   </nb-card-footer>

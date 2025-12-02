@@ -1,31 +1,87 @@
-.upload-section {
-  @apply com-mb-4;
+:host ::ng-deep {
+  .upload-dialog {
+    @apply com-max-w-lg;
 
-  .upload-label {
-    @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+    .header-content {
+      @apply com-flex com-justify-between com-items-center com-w-full;
+
+      .dialog-title {
+        @apply com-text-xl com-font-semibold com-text-gray-900 com-m-0;
+      }
+
+      .close-button {
+        @apply com-ml-auto;
+      }
+    }
+
+    .round-name {
+      @apply com-text-sm com-text-gray-600 com-mt-1 com-mb-0;
+    }
   }
 
-  .file-input {
-    @apply com-hidden;
+  .upload-area {
+    @apply com-border-2 com-border-dashed com-border-gray-300 com-rounded-lg com-p-8 com-mb-4;
+    @apply com-cursor-pointer com-transition-all com-duration-200;
+    @apply hover:com-border-primary-500 hover:com-bg-primary-100;
+
+    &.has-file {
+      @apply com-border-solid com-border-primary-500 com-bg-primary-100;
+    }
+
+    .file-input {
+      @apply com-hidden;
+    }
+
+    .upload-placeholder {
+      @apply com-text-center;
+
+      .upload-icon {
+        @apply com-text-4xl com-text-gray-400 com-mb-3;
+      }
+
+      .upload-text {
+        @apply com-text-base com-font-medium com-text-gray-700 com-mb-1;
+      }
+
+      .upload-hint {
+        @apply com-text-sm com-text-gray-500 com-m-0;
+      }
+    }
+
+    .file-selected {
+      @apply com-flex com-items-center com-gap-4;
+
+      .file-icon {
+        @apply com-text-3xl com-text-primary-600;
+      }
+
+      .file-details {
+        @apply com-flex-1;
+
+        .file-name {
+          @apply com-text-base com-font-medium com-text-gray-900 com-mb-1 com-truncate;
+        }
+
+        .file-size {
+          @apply com-text-sm com-text-gray-600 com-m-0;
+        }
+      }
+    }
   }
 
-  .upload-button {
-    @apply com-mb-2;
+  .comments-section {
+    @apply com-mb-4;
+
+    .comments-label {
+      @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+    }
   }
 
-  .file-info {
-    @apply com-text-sm com-text-gray-600 com-mt-2;
+  .dialog-actions {
+    @apply com-flex com-justify-end com-gap-2;
   }
-}
 
-.comments-section {
-  @apply com-mb-4;
-
-  .comments-label {
-    @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+  .spinning {
+    @apply com-animate-spin;
   }
-}
-
-.dialog-actions {
-  @apply com-flex com-justify-end com-gap-2;
 }
