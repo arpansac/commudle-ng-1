@@ -229,30 +229,10 @@ th {
   @apply com-w-full md:com-w-[600px] com-max-h-[90dvh];
 
   nb-card-header {
-    @apply com-border-b com-border-solid com-border-gray-200;
+    @apply com-border-b com-border-solid com-border-gray-200 com-flex com-justify-between;
   }
 
   nb-card-body {
     @apply com-max-h-[70vh] com-overflow-y-auto;
-
-    ::ng-deep {
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        @apply com-mt-4 com-mb-2 com-font-semibold;
-      }
-
-      p {
-        @apply com-mb-3 com-leading-relaxed;
-      }
-
-      ul,
-      ol {
-        @apply com-ml-4 com-mb-3;
-      }
-    }
   }
 }

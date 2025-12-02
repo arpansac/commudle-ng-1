@@ -89,3 +89,21 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+.problem-statement-prompt {
+  @apply com-mb-4;
+
+  nb-card-body {
+    @apply com-flex com-items-center com-justify-between;
+
+    p {
+      @apply com-m-0;
+    }
+  }
+}
+
+.problem-statement-dialog {
+  @apply com-max-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
