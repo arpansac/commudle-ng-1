@@ -65,3 +65,10 @@ ssr-deployment-staging.sh
 # nx
 *NX
 .nx/cache
+
+
+#AI
+.kiro
+.kiro/*
+.amazonq
+.amazonq/*

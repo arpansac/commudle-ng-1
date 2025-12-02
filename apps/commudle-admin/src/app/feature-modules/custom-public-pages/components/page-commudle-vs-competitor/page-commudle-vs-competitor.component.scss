@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.page-wrapper {
+  @apply com-min-h-screen com-py-8;
+}
+
+.container {
+  @apply com-max-w-7xl com-mx-auto com-px-4;
+
+  @apply sm:com-px-6;
+
+  @apply lg:com-px-8;
+}
+
+h1 {
+  @apply com-text-4xl com-font-bold com-mb-6 com-text-Yankees-Blue;
+}
+
+.intro-text {
+  @apply com-text-lg com-mb-8 com-text-gray-700;
+}
+
+.comparison-section {
+  @apply com-mt-8;
+}
