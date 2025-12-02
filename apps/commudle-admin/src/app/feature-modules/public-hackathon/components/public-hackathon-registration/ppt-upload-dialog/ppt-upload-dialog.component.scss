@@ -1,0 +1,31 @@
+.upload-section {
+  @apply com-mb-4;
+
+  .upload-label {
+    @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+  }
+
+  .file-input {
+    @apply com-hidden;
+  }
+
+  .upload-button {
+    @apply com-mb-2;
+  }
+
+  .file-info {
+    @apply com-text-sm com-text-gray-600 com-mt-2;
+  }
+}
+
+.comments-section {
+  @apply com-mb-4;
+
+  .comments-label {
+    @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+  }
+}
+
+.dialog-actions {
+  @apply com-flex com-justify-end com-gap-2;
+}

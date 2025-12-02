@@ -20,6 +20,7 @@ export enum ERoundType {
   PPT_SUBMISSION = 'ppt_submission',
   PROJECT_SUBMISSION = 'project_submission',
   PROJECT_UPDATE_SUBMISSION = 'project_update_submission',
+  FINAL_JUDGING = 'final_judging',
 }
 
 export interface IMarkingCriteria {

@@ -33,7 +33,8 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   ERoundType = ERoundType;
   markingCriteria: IMarkingCriteria[] = [];
-  icons = {
+  isLoading = true;
+  readonly icons = {
     faPlus,
     faFileImage,
     faXmark,
@@ -96,8 +97,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   indexRounds(hackathonId) {
+    this.isLoading = true;
     this.roundService.indexRounds(hackathonId, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
       this.rounds = data;
+      this.isLoading = false;
     });
   }
 

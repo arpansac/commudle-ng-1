@@ -59,3 +59,4 @@ export * from './lib/forum.model';
 export * from './lib/channel-category.model';
 export * from './lib/user_community_engagement_data.model';
 export * from './lib/hackathon-collaboration-community.model';
+export * from './lib/hackathon-team-round-submission.model';

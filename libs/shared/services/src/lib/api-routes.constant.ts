@@ -1082,4 +1082,9 @@ export const API_ROUTES = {
     SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
   },
+
+  HACKATHON_TEAM_ROUND_SUBMISSIONS: {
+    CREATE: 'api/v2/hackathon_team_round_submissions', //POST
+    SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET
+  },
 };

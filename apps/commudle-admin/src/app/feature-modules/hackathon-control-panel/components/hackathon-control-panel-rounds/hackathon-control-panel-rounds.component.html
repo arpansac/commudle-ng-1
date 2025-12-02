@@ -6,6 +6,9 @@
     <button (click)="openRoundDialogBox(addRoundsDialogBox)" nbButton status="primary">
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Round
     </button>
+    @if(isLoading){
+    <app-loading-spinner></app-loading-spinner>
+    } @else{
     <div class="rounds-table" *ngIf="rounds && rounds.length > 0">
       <table class="table">
         <thead>
@@ -85,6 +88,7 @@
         </tbody>
       </table>
     </div>
+    }
   </nb-card-body>
 </nb-card>
 
@@ -227,10 +231,42 @@
         <div>
           <label for="round_type">Round Type</label>
           <select id="round_type" formControlName="round_type" class="form-control">
-            <option *ngFor="let roundType of ERoundType | keyvalue" [value]="roundType.value">
-              {{ roundType.value | capitalizeAndRemoveUnderscore }}
+            <option [value]="ERoundType.GENERAL">{{ ERoundType.GENERAL | capitalizeAndRemoveUnderscore }}</option>
+            <option [value]="ERoundType.PPT_SUBMISSION">PPT Submission</option>
+            <option [value]="ERoundType.PROJECT_SUBMISSION">
+              {{ ERoundType.PROJECT_SUBMISSION | capitalizeAndRemoveUnderscore }}
+            </option>
+            <option [value]="ERoundType.PROJECT_UPDATE_SUBMISSION">
+              {{ ERoundType.PROJECT_UPDATE_SUBMISSION | capitalizeAndRemoveUnderscore }}
+            </option>
+            <option [value]="ERoundType.FINAL_JUDGING">
+              {{ ERoundType.FINAL_JUDGING | capitalizeAndRemoveUnderscore }}
             </option>
           </select>
+
+          <div class="alert">
+            @if(roundForm.controls['round_type'].value === ERoundType.PPT_SUBMISSION) {
+            <commudle-alert
+              [info]="true"
+              message="Teams will be able to submit ppt from their dashboard."
+            ></commudle-alert>
+            } @if(roundForm.controls['round_type'].value === ERoundType.PROJECT_SUBMISSION) {
+            <commudle-alert
+              [info]="true"
+              message="Teams will create and submit a project from their dashboard."
+            ></commudle-alert>
+            } @if(roundForm.controls['round_type'].value === ERoundType.PROJECT_UPDATE_SUBMISSION) {
+            <commudle-alert
+              [info]="true"
+              message="Teams can update their projects from the dashboard, these updates will be visible on your admin dashboard under 'Applications & Projects'."
+            ></commudle-alert>
+            } @if(roundForm.controls['round_type'].value === ERoundType.FINAL_JUDGING) {
+            <commudle-alert
+              [info]="true"
+              message="In this round, all the teams will be available for marking to all the judges, however if you want judges to mark only specific teams then request them manually to do so."
+            ></commudle-alert>
+            }
+          </div>
         </div>
 
         <!-- has_marking_criteria -->
@@ -240,17 +276,15 @@
 
         <!-- marking_criteria -->
         <div *ngIf="roundForm.get('has_marking_criteria')?.value" class="marking-criteria-section">
-          <div class="marking-criteria-header">
+          <!-- <div class="marking-criteria-header">
             <label>Marking Criteria</label>
-            <button type="button" nbButton size="small" status="primary" (click)="addMarkingCriteria()">
-              <fa-icon [icon]="icons.faPlus"></fa-icon> Add Criteria
-            </button>
-          </div>
+           
+          </div> -->
 
-          <table class="criteria-table" *ngIf="markingCriteria.length > 0">
+          <table class="criteria-table">
             <thead>
               <tr>
-                <th>Criteria Text</th>
+                <th>Criteria Name</th>
                 <th>Min Score</th>
                 <th>Max Score</th>
                 <th>Action</th>
@@ -296,6 +330,10 @@
               </tr>
             </tbody>
           </table>
+
+          <button type="button" nbButton size="small" status="primary" (click)="addMarkingCriteria()" fullWidth>
+            <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Criteria
+          </button>
         </div>
       </form>
     </nb-card-body>

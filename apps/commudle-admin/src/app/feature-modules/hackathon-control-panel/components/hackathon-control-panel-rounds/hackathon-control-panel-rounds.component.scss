@@ -71,7 +71,7 @@ nb-card {
 }
 
 .round-form-dialog-box {
-  @apply com-w-500px com-max-h-[90dvh];
+  @apply md:com-w-[40dvw] com-max-h-[90dvh];
   form {
     @apply com-flex com-flex-col com-gap-3;
   }
@@ -124,14 +124,32 @@ select.form-control {
   }
 
   .criteria-table {
-    @apply com-w-full com-border-collapse com-bg-white com-border com-border-gray-200 com-rounded-md com-overflow-hidden;
+    @apply com-w-full com-border-collapse com-bg-white com-border com-border-gray-200 com-rounded-md com-overflow-hidden com-mb-3;
 
     th {
       @apply com-bg-gray-100 com-px-3 com-py-2 com-text-left com-text-xs com-font-medium com-text-gray-700 com-border-b com-border-gray-200;
+
+      &:nth-child(1) {
+        @apply com-w-[70%];
+      }
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        @apply com-w-[15%];
+      }
     }
 
     td {
       @apply com-px-3 com-py-2 com-border-b com-border-gray-100;
+
+      &:nth-child(1) {
+        @apply com-w-[70%];
+      }
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        @apply com-w-[15%];
+      }
     }
 
     tr:last-child td {
