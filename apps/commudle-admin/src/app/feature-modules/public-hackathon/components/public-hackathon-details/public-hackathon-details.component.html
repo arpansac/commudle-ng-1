@@ -146,12 +146,14 @@
         </div>
       </nb-card-body>
     </nb-card>
-    <div *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0" class="com-mx-2">
-      <commudle-public-hackathon-registration
-        [hackathon]="hackathon"
-        [hrgId]="hrgId"
-        [userTeamDetails]="userTeamDetails[0]"
-      ></commudle-public-hackathon-registration>
-    </div>
+    <nb-card *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0 && userTeamDetails[0].round">
+      <nb-card-header>Current Round</nb-card-header>
+      <nb-card-body>
+        <div class="round-card">
+          <div class="name">{{ userTeamDetails[0].round.name }}</div>
+          <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
+        </div>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>
