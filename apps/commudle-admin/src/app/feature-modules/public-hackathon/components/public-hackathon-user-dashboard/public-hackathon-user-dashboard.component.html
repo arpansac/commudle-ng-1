@@ -15,6 +15,16 @@
         </button>
       </nb-card-body>
     </nb-card>
+    <nb-card *ngIf="userTeamDetails && userTeamDetails[selectedTeamIndex].track" class="track-details">
+      <nb-card-header>SELECTED TRACK</nb-card-header>
+      <nb-card-body>
+        <div class="track-name">{{ userTeamDetails[selectedTeamIndex].track.name }}</div>
+        <div *ngIf="userTeamDetails[selectedTeamIndex].problem_statement" class="problem-statement-section">
+          <div class="problem-label">Problem Statement:</div>
+          <div [innerHTML]="userTeamDetails[selectedTeamIndex].problem_statement.title" class="problem-name"></div>
+        </div>
+      </nb-card-body>
+    </nb-card>
     <nb-card class="project-details" *ngIf="userTeamDetails && userTeamDetails[selectedTeamIndex].community_build">
       <nb-card-header>PROJECT DETAILS</nb-card-header>
       <nb-card-body>
@@ -200,7 +210,7 @@
         [team]="data.selectedTeam"
         [hidePreviousButton]="true"
         [submitButtonText]="'Submit'"
-        (createOrUpdateProjectDetails)="submitProblemStatement($event, ref)"
+        (createOrUpdateProjectDetails)="submitProjectDetails($event, ref)"
       ></commudle-public-hackathon-project-details-form>
     </nb-card-body>
   </nb-card>

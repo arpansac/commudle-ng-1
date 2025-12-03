@@ -41,6 +41,11 @@
 
     .round-content {
       @apply com-opacity-60;
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
+      }
     }
   }
 
@@ -50,6 +55,13 @@
     .round-indicator {
       .round-number {
         @apply com-bg-yellow-500 com-text-white com-ring-4 com-ring-yellow-200;
+      }
+    }
+    .round-content {
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
       }
     }
   }
