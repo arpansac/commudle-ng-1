@@ -110,6 +110,10 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
 
   openDialogBox(dialog) {
     this.dialogRef = this.nbDialogService.open(dialog);
+    this.dialogRef.onClose.subscribe(() => {
+      this.message = '';
+      this.isLoading = false;
+    });
   }
 
   openDialogBoxForWinnerAnnouncement(hackathonId) {
