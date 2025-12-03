@@ -2,8 +2,8 @@
   <nb-card-header>
     <div class="header-content">
       <h4 class="dialog-title">{{ existingSubmission ? 'Update' : 'Submit' }} Presentation</h4>
-      <button nbButton ghost size="small" (click)="close()" class="close-button">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button nbButton ghost size="small" (click)="close()" class="close-button" shape="round">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </div>
     <p class="round-name">{{ round.name }}</p>

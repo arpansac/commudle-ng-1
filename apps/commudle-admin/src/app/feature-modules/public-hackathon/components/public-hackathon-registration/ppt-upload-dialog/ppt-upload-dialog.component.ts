@@ -84,7 +84,7 @@ export class PptUploadDialogComponent implements OnInit {
     request.subscribe({
       next: (response) => {
         this.isUploading = false;
-        this.close();
+        this.dialogRef.close(response);
       },
       error: (error) => {
         console.error('Error uploading PPT:', error);

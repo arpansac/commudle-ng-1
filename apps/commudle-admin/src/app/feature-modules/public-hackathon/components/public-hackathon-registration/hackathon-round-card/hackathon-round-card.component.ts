@@ -53,12 +53,25 @@ export class HackathonRoundCardComponent implements OnInit {
   }
 
   openPPTUploadDialog() {
-    this.dialogService.open(PptUploadDialogComponent, {
-      context: {
-        round: this.round,
-        teamId: this.userTeamDetails.id,
-        existingSubmission: this.getRoundSubmission(),
-      },
-    });
+    this.dialogService
+      .open(PptUploadDialogComponent, {
+        context: {
+          round: this.round,
+          teamId: this.userTeamDetails.id,
+          existingSubmission: this.getRoundSubmission(),
+        },
+      })
+      .onClose.subscribe((updatedSubmission) => {
+        if (updatedSubmission) {
+          const existingIndex = this.userTeamDetails.hackathon_team_round_submissions.findIndex(
+            (s) => s.round.id === this.round.id,
+          );
+          if (existingIndex !== -1) {
+            this.userTeamDetails.hackathon_team_round_submissions[existingIndex] = updatedSubmission;
+          } else {
+            this.userTeamDetails.hackathon_team_round_submissions.push(updatedSubmission);
+          }
+        }
+      });
   }
 }
