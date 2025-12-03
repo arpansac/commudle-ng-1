@@ -47,13 +47,14 @@
                   <span>AI Accelerator Hub: A Personalized AI Solution</span>
                 </h1>
                 <app-community-badge
+                  *ngIf="hackathonUserResponses?.team?.hackathon?.community"
                   [community]="hackathonUserResponses.team.hackathon?.community"
                   [textColor]="'com-text-tWhite'"
                 ></app-community-badge>
-                <p class="create-hackathon-build-subtitle">
-                  <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team.name }}</span>
-                  <span *ngIf="hackathonUserResponses.team.round" class="icon-border"
-                    ><fa-icon [icon]="faCircleDot"></fa-icon>Round {{ hackathonUserResponses.team.round?.order }}</span
+                <p *ngIf="hackathonUserResponses?.team" class="create-hackathon-build-subtitle">
+                  <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team?.name }}</span>
+                  <span *ngIf="hackathonUserResponses.team?.round" class="icon-border"
+                    ><fa-icon [icon]="faCircleDot"></fa-icon>Round {{ hackathonUserResponses.team?.round?.order }}</span
                   >
                 </p>
               </div>
@@ -139,7 +140,7 @@
                 <p>Upload visuals that best represent your project</p>
               </div>
               <div class="images-container">
-                <label class="label clickable image-container">
+                <label class="clickable image-container">
                   <span class="image-text">
                     <fa-icon class="image-icon" [icon]="faImage"></fa-icon>
                     <p class="image-text-content">
@@ -180,44 +181,8 @@
               </div>
               <div class="links-container">
                 <div class="link-item">
-                  <label class="label"> Link to live project<span class="required-field">*</span> </label>
-                  <input
-                    formControlName="live_app_link"
-                    fullWidth
-                    nbInput
-                    placeholder="Link to live project"
-                    size="large"
-                    type="url"
-                  />
-                  <span *ngIf="communityBuildForm.get('live_app_link').invalid">
-                    <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
-                  </span>
-                  <span
-                    *ngIf="
-                      linkOrLiveAppLinkValue &&
-                      communityBuildForm.get('link').value.length === 0 &&
-                      communityBuildForm.get('live_app_link').value.length === 0
-                    "
-                  >
-                    <commudle-alert
-                      [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
-                      [error]="true"
-                    ></commudle-alert>
-                  </span>
-                </div>
-                <div class="link-item">
-                  <div class="checkbox-container">
-                    <nb-checkbox
-                      #openSourceCheckbox
-                      (change)="hasOpenSourceLink = openSourceCheckbox.checked"
-                      status="primary"
-                    >
-                      Is it an open source project?
-                    </nb-checkbox>
-                  </div>
-                  <div *ngIf="hasOpenSourceLink" class="open-source-link">
-                    <label class="label"> Link to Open Source Code </label>
-                    <!-- <span
+                  <label class="label"> Link to Open Source Code </label>
+                  <!-- <span
                   *ngIf="communityBuildForm.get('build_type').value === EBuildType.slides"
                   [nbPopover]="googleSlidesEmbed"
                   class="text-info clickable"
@@ -225,20 +190,59 @@
                 >
                   How to embed Google Slides
                 </span> -->
+                  <input
+                    formControlName="link"
+                    fullWidth
+                    nbInput
+                    placeholder="Link to Open Source Code"
+                    size="large"
+                    type="url"
+                  />
+
+                  <span *ngIf="communityBuildForm.get('link').invalid">
+                    <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+                  </span>
+                </div>
+                <div class="link-item">
+                  <div class="checkbox-container">
+                    <nb-checkbox
+                      #liveProjectCheckbox
+                      [checked]="hasLiveProjectLink"
+                      (change)="hasLiveProjectLink = liveProjectCheckbox.checked"
+                      status="primary"
+                    >
+                      Link to live project
+                    </nb-checkbox>
+                  </div>
+                  <div *ngIf="hasLiveProjectLink" class="live-project-link">
+                    <label class="label"> Link to live project</label>
                     <input
-                      formControlName="link"
+                      formControlName="live_app_link"
                       fullWidth
                       nbInput
-                      placeholder="Link to Open Source Code"
+                      placeholder="Link to live project"
                       size="large"
                       type="url"
                     />
-
-                    <span *ngIf="communityBuildForm.get('link').invalid">
+                    <span *ngIf="communityBuildForm.get('live_app_link').invalid">
                       <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
                     </span>
                   </div>
                 </div>
+                <span
+                  *ngIf="
+                    linkOrLiveAppLinkValue &&
+                    (!communityBuildForm.get('link').value || communityBuildForm.get('link').value.length === 0) &&
+                    (!hasLiveProjectLink ||
+                      !communityBuildForm.get('live_app_link').value ||
+                      communityBuildForm.get('live_app_link').value.length === 0)
+                  "
+                >
+                  <commudle-alert
+                    [errorMessage]="'Either Open Source Code or Live Project link is required'"
+                    [error]="true"
+                  ></commudle-alert>
+                </span>
               </div>
             </div>
 
@@ -356,67 +360,83 @@
             </div>
 
             <!-- to post updates for build -->
-            <div *ngIf="parentId && parentType" class="field" [formGroup]="communityBuildUpdateForm">
-              <div class="field-header">
-                <h3>Teammates</h3>
-                <p>List your collaborators or team members</p>
-              </div>
-              <div formArrayName="update">
-                <div
-                  *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
-                  class="build-updates"
-                >
-                  <div [formGroupName]="i" class="build-update">
-                    <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
-                    <nb-icon (click)="removeUpdate(i)" class="clickable" icon="close-circle" status="danger"></nb-icon>
+            <div *ngIf="parentId && parentType" [formGroup]="communityBuildUpdateForm">
+              <div *ngIf="hackathonUserResponses?.user_responses" class="field">
+                <div class="field-header">
+                  <h3>Teammates</h3>
+                  <p>List your collaborators or team members</p>
+                </div>
+                <div class="teammates-list">
+                  <div
+                    *ngFor="let member of hackathonUserResponses.user_responses; let i = index"
+                    class="teammate-item"
+                  >
+                    <app-user-profile-horizontal
+                      *ngIf="currentUser && member.user_email !== currentUser.email"
+                      [aboutMe]="true"
+                      [user]="member.user"
+                    >
+                    </app-user-profile-horizontal>
                   </div>
-                  <span
-                    *ngIf="
-                      updateList.controls[i].get('value').touched &&
-                      updateList.controls[i].get('value').invalid &&
-                      updateList.controls[i].get('value').errors.required
-                    "
-                  >
-                    <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                  </span>
-                </div>
-                <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>
-                  <nb-icon icon="plus"></nb-icon>
-                  Add Update
-                </button>
-              </div>
-              <div *ngIf="hackathonUserResponses?.user_responses?.length > 0" class="teammates-list">
-                <div *ngFor="let member of hackathonUserResponses.user_responses; let i = index" class="teammate-item">
-                  <app-user-profile-horizontal
-                    *ngIf="currentUser && member.user_email !== currentUser.email"
-                    [aboutMe]="true"
-                    [user]="member.user"
-                  >
-                  </app-user-profile-horizontal>
                 </div>
               </div>
+
               <!-- list of entity_updates -->
-              <div
-                *ngIf="
-                  hackathonUserResponses &&
-                  hackathonUserResponses.user_responses &&
-                  cBuild &&
-                  cBuild.entity_updates.length > 0
-                "
-                class="teammates-list"
-              >
-                <label class="label">Updates</label>
-                <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
-                  <div class="update-details">
-                    <div [innerHTML]="update.details"></div>
-                    <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+              <div>
+                <div class="teammates-list field">
+                  <h3 class="updates-heading">Updates</h3>
+                  <div
+                    *ngIf="
+                      hackathonUserResponses &&
+                      hackathonUserResponses.user_responses &&
+                      cBuild &&
+                      cBuild.entity_updates.length > 0
+                    "
+                    class="updates-list"
+                  >
+                    <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
+                      <div class="update-details">
+                        <div [innerHTML]="update.details"></div>
+                        <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+                      </div>
+                      <nb-icon
+                        (click)="removeEntityUpdate(update.id, i)"
+                        class="clickable"
+                        icon="close-circle"
+                        status="danger"
+                      ></nb-icon>
+                    </div>
                   </div>
-                  <nb-icon
-                    (click)="removeEntityUpdate(update.id, i)"
-                    class="clickable"
-                    icon="close-circle"
-                    status="danger"
-                  ></nb-icon>
+
+                  <div formArrayName="update">
+                    <div
+                      *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
+                      class="build-updates"
+                    >
+                      <div [formGroupName]="i" class="build-update">
+                        <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
+                        <nb-icon
+                          (click)="removeUpdate(i)"
+                          class="clickable"
+                          icon="close-circle"
+                          status="danger"
+                        ></nb-icon>
+                      </div>
+                      <span
+                        *ngIf="
+                          updateList.controls[i].get('value').touched &&
+                          updateList.controls[i].get('value').invalid &&
+                          updateList.controls[i].get('value').errors.required
+                        "
+                      >
+                        <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                      </span>
+                    </div>
+                    <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>
+                      <nb-icon icon="plus"></nb-icon>
+                      Add Update
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

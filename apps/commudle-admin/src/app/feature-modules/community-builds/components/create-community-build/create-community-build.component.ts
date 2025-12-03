@@ -68,7 +68,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   communityBuildForm;
   communityBuildUpdateForm;
   moment = moment;
-  hasOpenSourceLink = false;
+  hasLiveProjectLink = false;
   editBuildForm = false;
   EInvitationStatus = EInvitationStatus;
 
@@ -151,7 +151,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   ) {
     this.communityBuildForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100), this.noLinkValidator()]],
-      build_type: ['', Validators.required],
+      build_type: ['project', Validators.required],
       description: ['', [Validators.required, Validators.minLength(300)]],
       publish_status: [EPublishStatus.draft, Validators.required],
       link: ['', [this.validateLink()]],
@@ -278,6 +278,8 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   prefillCommunityBuild() {
     this.communityBuildForm.patchValue(this.cBuild);
     this.setBuildType();
+
+    this.hasLiveProjectLink = !!this.cBuild.live_app_link;
 
     for (const img of this.cBuild.images) {
       this.uploadedImagesFiles.push({
