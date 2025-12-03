@@ -215,7 +215,7 @@
                     </nb-checkbox>
                   </div>
                   <div *ngIf="hasLiveProjectLink" class="live-project-link">
-                    <label class="label"> Link to live project<span class="required-field">*</span> </label>
+                    <label class="label"> Link to live project</label>
                     <input
                       formControlName="live_app_link"
                       fullWidth
@@ -227,20 +227,22 @@
                     <span *ngIf="communityBuildForm.get('live_app_link').invalid">
                       <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
                     </span>
-                    <span
-                      *ngIf="
-                        linkOrLiveAppLinkValue &&
-                        communityBuildForm.get('link').value.length === 0 &&
-                        communityBuildForm.get('live_app_link').value.length === 0
-                      "
-                    >
-                      <commudle-alert
-                        [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
-                        [error]="true"
-                      ></commudle-alert>
-                    </span>
                   </div>
                 </div>
+                <span
+                  *ngIf="
+                    linkOrLiveAppLinkValue &&
+                    (!communityBuildForm.get('link').value || communityBuildForm.get('link').value.length === 0) &&
+                    (!hasLiveProjectLink ||
+                      !communityBuildForm.get('live_app_link').value ||
+                      communityBuildForm.get('live_app_link').value.length === 0)
+                  "
+                >
+                  <commudle-alert
+                    [errorMessage]="'Either Open Source Code or Live Project link is required'"
+                    [error]="true"
+                  ></commudle-alert>
+                </span>
               </div>
             </div>
 
