@@ -12,6 +12,11 @@
 
     .round-content {
       @apply com-opacity-75;
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
+      }
     }
   }
 
@@ -61,7 +66,7 @@
     @apply com-flex-1;
 
     .round-name {
-      @apply com-font-semibold com-text-gray-800 com-mb-1;
+      @apply com-font-semibold com-text-Yankees-Blue com-mb-1;
     }
 
     .round-date {
