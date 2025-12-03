@@ -1,9 +1,53 @@
-.project-details-card {
-  @apply com-mx-0;
-  .heading {
-    @apply com-text-green-600 com-text-base com-font-semibold;
+.registration-card {
+  @apply com-mx-0 com-shadow-lg com-border com-border-gray-200;
+
+  .registration-header {
+    @apply com-flex com-justify-between com-items-center com-w-full;
+
+    .status-section {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .registration-title {
+        @apply com-text-lg com-font-semibold com-text-gray-800 com-m-0;
+      }
+
+      .status-badge {
+        @apply com-px-3 com-py-1 com-rounded-full com-text-sm com-font-medium com-w-fit;
+
+        &.status-registered {
+          @apply com-bg-blue-100 com-text-blue-800;
+        }
+
+        &.status-waitlisted {
+          @apply com-bg-orange-100 com-text-orange-800;
+        }
+
+        &.status-accepted {
+          @apply com-bg-green-100 com-text-green-800;
+        }
+
+        &.status-rejected {
+          @apply com-bg-red-100 com-text-red-800;
+        }
+      }
+    }
+
+    .edit-section {
+      .edit-link {
+        @apply com-text-primary-600 com-font-medium com-text-sm hover:com-text-primary-700 com-no-underline;
+      }
+    }
   }
-  .round-details {
-    @apply com-text-orange-400 com-text-base com-font-semibold com-pb-6;
+
+  .rounds-section {
+    @apply com-mb-6;
+
+    .rounds-title {
+      @apply com-text-lg com-font-semibold com-text-gray-800 com-mb-4;
+    }
+
+    .rounds-container {
+      @apply com-space-y-3;
+    }
   }
 }

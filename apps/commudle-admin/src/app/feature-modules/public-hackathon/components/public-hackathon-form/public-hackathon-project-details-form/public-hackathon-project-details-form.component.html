@@ -36,9 +36,9 @@
   </div>
 
   <div class="action-buttons">
-    <button status="primary" nbButton (click)="previousButton()">Previous</button>
+    <button *ngIf="!hidePreviousButton" status="primary" nbButton (click)="previousButton()">Previous</button>
     <button [disabled]="hackathonProjectDetailsForm.invalid" (click)="submitProjectDetails()" nbButton status="primary">
-      Next
+      {{ submitButtonText }}
     </button>
   </div>
 </form>

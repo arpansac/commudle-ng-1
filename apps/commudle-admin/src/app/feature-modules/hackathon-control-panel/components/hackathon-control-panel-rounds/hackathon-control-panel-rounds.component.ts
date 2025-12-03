@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IRound, EDbModels, IHackathon, ICommunity } from '@commudle/shared-models';
+import { IRound, EDbModels, IHackathon, ICommunity, ERoundType, IMarkingCriteria } from '@commudle/shared-models';
 import { RoundService, ToastrService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
@@ -13,10 +13,14 @@ import {
   faRectangleList,
   faMicrophone,
   faSackDollar,
+  faHashtag,
+  faEdit,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-rounds',
@@ -27,7 +31,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   roundForm: FormGroup;
   rounds: IRound[];
   hackathon: IHackathon;
-  icons = {
+  ERoundType = ERoundType;
+  markingCriteria: IMarkingCriteria[] = [];
+  isLoading = true;
+  readonly icons = {
     faPlus,
     faFileImage,
     faXmark,
@@ -35,7 +42,12 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
     faRectangleList,
     faMicrophone,
     faSackDollar,
+    faHashtag,
+    faEdit,
+    faTrash,
   };
+
+  moment = moment;
 
   hackathonSlug = '';
   dialogRef: any;
@@ -60,11 +72,15 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
+      end_date: [''],
+      round_type: [ERoundType.GENERAL],
+      has_marking_criteria: [true],
     });
   }
 
   ngOnInit() {
     this.seoService.noIndex(true);
+    this.loadDefaultMarkingCriteria();
 
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
@@ -81,8 +97,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   indexRounds(hackathonId) {
+    this.isLoading = true;
     this.roundService.indexRounds(hackathonId, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
       this.rounds = data;
+      this.isLoading = false;
     });
   }
 
@@ -102,11 +120,16 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       this.roundForm = this.fb.group({
         name: round.name,
         description: round.description,
-        date: this.datePipe.transform(round.date, 'yyyy-MM-dd'),
+        date: this.formatDateTimeForInput(round.date),
         order: round.order,
+        end_date: this.formatDateTimeForInput(round.end_date),
+        round_type: round.round_type,
+        has_marking_criteria: round.has_marking_criteria ?? true,
       });
+      this.markingCriteria = round.marking_criteria ? [...round.marking_criteria] : [];
     } else {
       this.resetRoundForm();
+      this.loadDefaultMarkingCriteria();
     }
 
     this.dialogRef = this.nbDialogService.open(dialog, {
@@ -128,20 +151,26 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   createRound() {
-    this.roundService
-      .createRound(this.roundForm.value, EDbModels.HACKATHON, this.hackathonSlug)
-      .subscribe((data: IRound) => {
-        if (data) {
-          this.rounds.unshift(data);
-          this.toastrService.successDialog('Round Created');
-          this.dialogRef.close();
-          this.resetRoundForm();
-        }
-      });
+    const formData = {
+      ...this.roundForm.value,
+      marking_criteria: this.markingCriteria,
+    };
+    this.roundService.createRound(formData, EDbModels.HACKATHON, this.hackathonSlug).subscribe((data: IRound) => {
+      if (data) {
+        this.rounds.unshift(data);
+        this.toastrService.successDialog('Round Created');
+        this.dialogRef.close();
+        this.resetRoundForm();
+      }
+    });
   }
 
   updateRound(round, index) {
-    this.roundService.updateRound(this.roundForm.value, round.id).subscribe((data) => {
+    const formData = {
+      ...this.roundForm.value,
+      marking_criteria: this.markingCriteria,
+    };
+    this.roundService.updateRound(formData, round.id).subscribe((data) => {
       if (data) {
         this.toastrService.successDialog('Round was updated');
         this.rounds[index] = data;
@@ -168,6 +197,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   resetRoundForm() {
     this.roundForm.reset(); // Reset form completely
     this.roundForm.setValidators(null); // Remove any previous validators
+    this.markingCriteria = []; // Reset marking criteria
 
     // Reinitialize with validators
     this.roundForm = this.fb.group({
@@ -175,10 +205,36 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       date: ['', Validators.required],
       order: ['', [Validators.required, Validators.min(1)]],
+      end_date: [''],
+      round_type: ['general'],
+      has_marking_criteria: [true],
     });
   }
 
   setMeta() {
     this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
+  }
+
+  formatDateTimeForInput(dateTime: string): string {
+    if (!dateTime) return '';
+    return moment(dateTime).format('YYYY-MM-DDTHH:mm');
+  }
+
+  addMarkingCriteria() {
+    this.markingCriteria.push({ text: '', min: 0, max: 10 });
+  }
+
+  removeMarkingCriteria(index: number) {
+    this.markingCriteria.splice(index, 1);
+  }
+
+  updateMarkingCriteria(index: number, field: keyof IMarkingCriteria, value: any) {
+    (this.markingCriteria[index] as any)[field] = value;
+  }
+
+  loadDefaultMarkingCriteria() {
+    this.roundService.getMarkingCriteria().subscribe((criteria: IMarkingCriteria[]) => {
+      this.markingCriteria = criteria || [];
+    });
   }
 }

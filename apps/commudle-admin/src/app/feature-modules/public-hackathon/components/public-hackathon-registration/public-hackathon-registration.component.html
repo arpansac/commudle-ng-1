@@ -1,33 +1,36 @@
-<nb-card *ngIf="hrgId && userTeamDetails" class="project-details-card">
-  <nb-card-header *ngIf="canEditForm">
-    <div class="heading"></div>
-    <div>
-      Registration Status: {{ userTeamDetails.registration_status | titlecase }}&nbsp;
-      <a [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
-        >Edit your registration form response</a
-      >
+<nb-card *ngIf="hrgId && userTeamDetails" class="registration-card">
+  <nb-card-header>
+    <div class="registration-header">
+      <div class="status-section">
+        <h3 class="registration-title">Registration Status</h3>
+        <div class="status-badge" [ngClass]="'status-' + userTeamDetails.registration_status">
+          {{ userTeamDetails.registration_status | titlecase }}
+        </div>
+      </div>
+      <div *ngIf="canEditForm" class="edit-section">
+        <a
+          [routerLink]="['/communities', hackathon.community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
+          class="edit-link"
+        >
+          Edit Registration
+        </a>
+      </div>
     </div>
   </nb-card-header>
 
   <nb-card-body>
-    @if(userTeamDetails?.round?.name){
-    <div class="round-details">Current Round: {{ userTeamDetails.round.name | titlecase }}</div>
-    }
-    <div *ngIf="userTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED && canSubmitProject">
-      <a
-        *ngIf="!userTeamDetails.community_build"
-        [routerLink]="['/builds', 'create']"
-        [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
-      >
-        <button nbButton status="primary" fullWidth>Submit Project</button>
-      </a>
-      <a
-        *ngIf="userTeamDetails.community_build"
-        [routerLink]="['/builds', userTeamDetails.community_build.slug, 'edit']"
-        [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
-      >
-        <button nbButton status="primary" fullWidth>Update My Build</button>
-      </a>
+    <!-- Rounds Progress Section -->
+    <div class="rounds-section">
+      <h4 class="rounds-title">Hackathon Rounds</h4>
+      <div class="rounds-container">
+        <commudle-hackathon-round-card
+          *ngFor="let round of rounds; let i = index"
+          [round]="round"
+          [index]="i"
+          [userTeamDetails]="userTeamDetails"
+        >
+        </commudle-hackathon-round-card>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

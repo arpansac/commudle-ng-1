@@ -976,6 +976,7 @@ export const API_ROUTES = {
     DELETE: 'api/v2/round', //DELETE
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
+    MARKING_CRITERIA: 'api/v2/round/marking_criteria', //GET
     PUBLIC: {
       INDEX: 'api/v2/round/public',
     },
@@ -1080,5 +1081,11 @@ export const API_ROUTES = {
     SHOW: 'api/v2/product_prices/show', //GET
     SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
+  },
+
+  HACKATHON_TEAM_ROUND_SUBMISSIONS: {
+    CREATE: 'api/v2/hackathon_team_round_submissions', //POST
+    SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET
+    UPDATE: 'api/v2/hackathon_team_round_submissions', //PUT
   },
 };

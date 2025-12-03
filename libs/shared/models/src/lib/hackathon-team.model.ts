@@ -8,6 +8,7 @@ import { IHackathon } from './hackathon.model';
 import { EInvitationStatus, IHackathonUserResponse } from './hackathon-user-response.model';
 import { IHackathonProblemStatement } from './hackathon-problem-statement.model';
 import { IHackathonTrack } from './hackathon-track.model';
+import { IHackathonTeamRoundSubmission } from './hackathon-team-round-submission.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -30,6 +31,7 @@ export interface IHackathonTeam {
   team_leader_hur_status: EInvitationStatus;
   track: IHackathonTrack;
   problem_statement: IHackathonProblemStatement;
+  hackathon_team_round_submissions: IHackathonTeamRoundSubmission[];
 }
 
 export enum EHackathonRegistrationStatus {

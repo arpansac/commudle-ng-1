@@ -13,6 +13,8 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   @Input() hackathon: IHackathon;
   @Input() hackathonUserResponse: IHackathonUserResponse;
   @Input() team: IHackathonUserResponsesGroupByTeam;
+  @Input() hidePreviousButton = false;
+  @Input() submitButtonText = 'Next';
   @Output() createOrUpdateProjectDetails = new EventEmitter<any>();
   @Output() previousButtonEvent = new EventEmitter<any>();
 

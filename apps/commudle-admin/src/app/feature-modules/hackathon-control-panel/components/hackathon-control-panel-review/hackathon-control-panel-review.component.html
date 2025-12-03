@@ -631,6 +631,26 @@
         </ul>
       </div>
 
+      <div
+        *ngIf="
+          selectedTeamDetails.hackathon_team_round_submissions &&
+          selectedTeamDetails.hackathon_team_round_submissions.length > 0
+        "
+      >
+        <strong>Round Submissions:</strong>
+        <ul>
+          <li *ngFor="let submission of selectedTeamDetails.hackathon_team_round_submissions">
+            <div class="submission-item">
+              <!-- <span>{{ submission.round.name }}: </span> -->
+              <a [href]="submission?.file_attachment?.url" target="_blank" rel="noopener noreferrer">
+                View/Download Submission
+                <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <div class="user-response-details">
         <strong>Members:</strong>
         <div class="user-response-tabs custom-scrollbar">

@@ -1,5 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EHackathonRegistrationStatus, IHackathon, IHackathonTeam } from '@commudle/shared-models';
+import {
+  EHackathonRegistrationStatus,
+  IHackathon,
+  IHackathonTeam,
+  IRound,
+  EDbModels,
+  ERoundType,
+} from '@commudle/shared-models';
+import { RoundService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-public-hackathon-registration',
@@ -16,11 +24,25 @@ export class PublicHackathonRegistrationComponent implements OnInit {
   hackathonEndDate: Date;
   canSubmitProject = false;
   canEditForm = false;
+  rounds: IRound[] = [];
+  ERoundType = ERoundType;
 
-  constructor() {}
+  constructor(private roundService: RoundService) {}
 
   ngOnInit() {
     this.calculateHackathonDatesStatus();
+    this.loadRounds();
+  }
+
+  loadRounds() {
+    this.roundService.pIndexRounds(this.hackathon.id, EDbModels.HACKATHON).subscribe({
+      next: (rounds) => {
+        this.rounds = rounds;
+      },
+      error: (error) => {
+        console.error('Error loading rounds:', error);
+      },
+    });
   }
 
   calculateHackathonDatesStatus() {
