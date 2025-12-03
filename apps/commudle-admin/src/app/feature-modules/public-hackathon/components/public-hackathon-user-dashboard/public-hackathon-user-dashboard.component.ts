@@ -161,7 +161,6 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   shouldShowProblemStatementPrompt(): boolean {
     if (!this.userTeamDetails || this.userTeamDetails.length === 0) return false;
     const team = this.userTeamDetails[this.selectedTeamIndex];
-    console.log('🚀 ~ PublicHackathonUserDashboardComponent ~ shouldShowProblemStatementPrompt ~ team:', team);
     return team.registration_status === EHackathonRegistrationStatus.ACCEPTED && !team.problem_statement;
   }
 
@@ -172,35 +171,6 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
         selectedTeam: selectedTeam,
       },
     });
-  }
-
-  submitProblemStatement(formValue: any, dialogRef: any) {
-    if (this.isSubmittingProblemStatement) return;
-
-    this.isSubmittingProblemStatement = true;
-    const formData = new FormData();
-
-    if (formValue.hackathon_track_id)
-      formData.append('hackathon_team[hackathon_track_id]', formValue.hackathon_track_id);
-    if (formValue.hackathon_problem_statement_id)
-      formData.append('hackathon_team[hackathon_problem_statement_id]', formValue.hackathon_problem_statement_id);
-
-    const team = this.userTeamDetails[this.selectedTeamIndex];
-    this.hackathonUserResponseService
-      .updateTeamDetails(formData, team.hackathon_user_responses[0].id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.toasterService.successDialog('Problem statement updated successfully');
-          dialogRef.close();
-          this.getHackathonCurrentRegistrationDetails();
-          this.isSubmittingProblemStatement = false;
-        },
-        error: () => {
-          this.isSubmittingProblemStatement = false;
-          this.toasterService.errorDialog('Failed to update problem statement');
-        },
-      });
   }
 
   submitProjectDetails(formData, dialogRef: any) {
