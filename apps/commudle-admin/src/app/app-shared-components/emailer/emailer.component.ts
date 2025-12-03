@@ -13,6 +13,7 @@ import { EventSimpleRegistrationsService } from 'apps/commudle-admin/src/app/ser
 import { IEventSimpleRegistration } from 'apps/shared-models/event_simple_registration.model';
 import { Subscription } from 'rxjs';
 import { EmailerPreviewService } from '@commudle/shared-services';
+import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 
 @Component({
   selector: 'app-emailer',
@@ -50,6 +51,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   isEmailSending = false;
   selectedEventId: number;
+  imagesList = [];
 
   tinyMCE = {
     height: 200,
@@ -64,6 +66,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
       'lists',
       'link',
       'image',
+      'emoticons',
       'charmap',
       'preview',
       'anchor',
@@ -79,10 +82,13 @@ export class EmailerComponent implements OnInit, OnDestroy {
       'wordcount',
     ],
     toolbar:
-      'h2  h3  h4  h5 fontsize | undo redo | formatselect | bold italic backcolor forecolor | \
+      'h2  h3  h4  h5 fontsize | undo redo | formatselect | image emoticons | bold italic backcolor forecolor | \
         alignleft aligncenter alignright alignjustify | \
         bullist numlist outdent indent | removeformat | help',
     font_size_formats: '8px 10px 12px 14px 16px 18px 20px 22px 24px',
+    image_list: this.imagesList,
+    image_advtab: true,
+    images_upload_handler: this.uploadTextImage.bind(this),
     license_key: 'gpl',
   };
 
@@ -259,6 +265,7 @@ export class EmailerComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private emailerPreviewService: EmailerPreviewService,
     protected windowRef: NbWindowRef,
+    private newsletterService: NewsletterService,
   ) {
     this.eMailForm = this.fb.group({
       members: ['', Validators.required],
@@ -564,5 +571,23 @@ export class EmailerComponent implements OnInit, OnDestroy {
       closeOnEsc: true,
       closeOnBackdropClick: false,
     });
+  }
+
+  uploadTextImage(blobInfo, progress) {
+    const promise = new Promise<any>((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('image', blobInfo.blob(), blobInfo.filename());
+
+      this.newsletterService.attachImage(formData).subscribe({
+        next: (res: any) => {
+          this.imagesList.push({ value: res });
+          resolve(res);
+        },
+        error: (err: any) => {
+          reject(err);
+        },
+      });
+    });
+    return promise;
   }
 }
