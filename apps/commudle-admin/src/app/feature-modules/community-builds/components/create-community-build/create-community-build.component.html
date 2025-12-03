@@ -181,44 +181,8 @@
               </div>
               <div class="links-container">
                 <div class="link-item">
-                  <label class="label"> Link to live project<span class="required-field">*</span> </label>
-                  <input
-                    formControlName="live_app_link"
-                    fullWidth
-                    nbInput
-                    placeholder="Link to live project"
-                    size="large"
-                    type="url"
-                  />
-                  <span *ngIf="communityBuildForm.get('live_app_link').invalid">
-                    <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
-                  </span>
-                  <span
-                    *ngIf="
-                      linkOrLiveAppLinkValue &&
-                      communityBuildForm.get('link').value.length === 0 &&
-                      communityBuildForm.get('live_app_link').value.length === 0
-                    "
-                  >
-                    <commudle-alert
-                      [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
-                      [error]="true"
-                    ></commudle-alert>
-                  </span>
-                </div>
-                <div class="link-item">
-                  <div class="checkbox-container">
-                    <nb-checkbox
-                      #openSourceCheckbox
-                      (change)="hasOpenSourceLink = openSourceCheckbox.checked"
-                      status="primary"
-                    >
-                      Is it an open source project?
-                    </nb-checkbox>
-                  </div>
-                  <div *ngIf="hasOpenSourceLink" class="open-source-link">
-                    <label class="label"> Link to Open Source Code </label>
-                    <!-- <span
+                  <label class="label"> Link to Open Source Code </label>
+                  <!-- <span
                   *ngIf="communityBuildForm.get('build_type').value === EBuildType.slides"
                   [nbPopover]="googleSlidesEmbed"
                   class="text-info clickable"
@@ -226,17 +190,54 @@
                 >
                   How to embed Google Slides
                 </span> -->
+                  <input
+                    formControlName="link"
+                    fullWidth
+                    nbInput
+                    placeholder="Link to Open Source Code"
+                    size="large"
+                    type="url"
+                  />
+
+                  <span *ngIf="communityBuildForm.get('link').invalid">
+                    <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+                  </span>
+                </div>
+                <div class="link-item">
+                  <div class="checkbox-container">
+                    <nb-checkbox
+                      #liveProjectCheckbox
+                      [checked]="hasLiveProjectLink"
+                      (change)="hasLiveProjectLink = liveProjectCheckbox.checked"
+                      status="primary"
+                    >
+                      Link to live project
+                    </nb-checkbox>
+                  </div>
+                  <div *ngIf="hasLiveProjectLink" class="live-project-link">
+                    <label class="label"> Link to live project<span class="required-field">*</span> </label>
                     <input
-                      formControlName="link"
+                      formControlName="live_app_link"
                       fullWidth
                       nbInput
-                      placeholder="Link to Open Source Code"
+                      placeholder="Link to live project"
                       size="large"
                       type="url"
                     />
-
-                    <span *ngIf="communityBuildForm.get('link').invalid">
+                    <span *ngIf="communityBuildForm.get('live_app_link').invalid">
                       <commudle-alert [errorMessage]="'Invalid link'" [error]="true"></commudle-alert>
+                    </span>
+                    <span
+                      *ngIf="
+                        linkOrLiveAppLinkValue &&
+                        communityBuildForm.get('link').value.length === 0 &&
+                        communityBuildForm.get('live_app_link').value.length === 0
+                      "
+                    >
+                      <commudle-alert
+                        [errorMessage]="'Both Open Source Code and Live Project cannot be empty'"
+                        [error]="true"
+                      ></commudle-alert>
                     </span>
                   </div>
                 </div>

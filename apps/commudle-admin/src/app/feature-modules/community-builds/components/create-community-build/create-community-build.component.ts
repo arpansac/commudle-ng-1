@@ -68,7 +68,7 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   communityBuildForm;
   communityBuildUpdateForm;
   moment = moment;
-  hasOpenSourceLink = false;
+  hasLiveProjectLink = false;
   editBuildForm = false;
   EInvitationStatus = EInvitationStatus;
 
@@ -278,6 +278,8 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   prefillCommunityBuild() {
     this.communityBuildForm.patchValue(this.cBuild);
     this.setBuildType();
+
+    this.hasLiveProjectLink = !!this.cBuild.live_app_link;
 
     for (const img of this.cBuild.images) {
       this.uploadedImagesFiles.push({
