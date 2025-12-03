@@ -23,4 +23,13 @@ export class HackathonTeamRoundSubmissionService {
       { params },
     );
   }
+
+  updateSubmission(formData: FormData, submissionId: number): Observable<IHackathonTeamRoundSubmission> {
+    const params = new HttpParams().set('submission_id', submissionId);
+    return this.http.put<IHackathonTeamRoundSubmission>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SUBMISSIONS.UPDATE),
+      formData,
+      { params },
+    );
+  }
 }

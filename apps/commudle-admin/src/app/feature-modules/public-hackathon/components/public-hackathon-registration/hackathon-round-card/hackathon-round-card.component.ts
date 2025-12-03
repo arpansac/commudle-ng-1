@@ -57,6 +57,7 @@ export class HackathonRoundCardComponent implements OnInit {
       context: {
         round: this.round,
         teamId: this.userTeamDetails.id,
+        existingSubmission: this.getRoundSubmission(),
       },
     });
   }

@@ -1,7 +1,7 @@
 <nb-card class="upload-dialog">
   <nb-card-header>
     <div class="header-content">
-      <h4 class="dialog-title">Submit Presentation</h4>
+      <h4 class="dialog-title">{{ existingSubmission ? 'Update' : 'Submit' }} Presentation</h4>
       <button nbButton ghost size="small" (click)="close()" class="close-button">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
@@ -11,13 +11,24 @@
 
   <nb-card-body>
     <form [formGroup]="uploadForm">
+      @if(existingSubmission?.file_attachment) {
+      <div class="existing-file">
+        <p class="existing-label">Current File:</p>
+        <a [href]="existingSubmission.file_attachment.url" target="_blank" class="existing-link">
+          {{ existingSubmission.file_attachment.name }}
+        </a>
+      </div>
+      }
+
       <div class="upload-area" (click)="fileInput.click()" [class.has-file]="selectedFile">
         <input type="file" #fileInput accept=".ppt,.pptx,.pdf" (change)="onFileSelected($event)" class="file-input" />
 
         @if(!selectedFile) {
         <div class="upload-placeholder">
           <fa-icon [icon]="icons.faUpload" class="upload-icon"></fa-icon>
-          <p class="upload-text">Click to upload or drag and drop</p>
+          <p class="upload-text">
+            {{ existingSubmission ? 'Upload new file (optional)' : 'Click to upload or drag and drop' }}
+          </p>
           <p class="upload-hint">PPT, PPTX, PDF (max 10MB)</p>
         </div>
         } @else {
@@ -47,10 +58,15 @@
   <nb-card-footer>
     <div class="dialog-actions">
       <button nbButton ghost (click)="close()">Cancel</button>
-      <button nbButton status="primary" [disabled]="!selectedFile || isUploading" (click)="onSubmit()">
+      <button
+        nbButton
+        status="primary"
+        [disabled]="(!selectedFile && !existingSubmission) || isUploading"
+        (click)="onSubmit()"
+      >
         @if(isUploading) {
         <nb-icon icon="loader-outline" class="spinning"></nb-icon>
-        Uploading... } @else { Submit Presentation }
+        Uploading... } @else { {{ existingSubmission ? 'Update' : 'Submit' }} Presentation }
       </button>
     </div>
   </nb-card-footer>

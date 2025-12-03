@@ -1086,5 +1086,6 @@ export const API_ROUTES = {
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {
     CREATE: 'api/v2/hackathon_team_round_submissions', //POST
     SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET
+    UPDATE: 'api/v2/hackathon_team_round_submissions', //PUT
   },
 };

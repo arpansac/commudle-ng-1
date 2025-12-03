@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IRound } from '@commudle/shared-models';
+import { IRound, IHackathonTeamRoundSubmission } from '@commudle/shared-models';
 
 import { Subject } from 'rxjs';
 import { faUpload, faFile, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -12,9 +12,10 @@ import { HackathonTeamRoundSubmissionService } from '@commudle/shared-services';
   templateUrl: './ppt-upload-dialog.component.html',
   styleUrls: ['./ppt-upload-dialog.component.scss'],
 })
-export class PptUploadDialogComponent {
+export class PptUploadDialogComponent implements OnInit {
   @Input() round: IRound;
   @Input() teamId: number;
+  @Input() existingSubmission: IHackathonTeamRoundSubmission;
 
   uploadForm: FormGroup;
   selectedFile: File | null = null;
@@ -35,6 +36,14 @@ export class PptUploadDialogComponent {
     this.uploadForm = this.fb.group({
       comments: [''],
     });
+  }
+
+  ngOnInit() {
+    if (this.existingSubmission) {
+      this.uploadForm.patchValue({
+        comments: this.existingSubmission.comments || '',
+      });
+    }
   }
 
   onFileSelected(event: any) {
@@ -60,14 +69,19 @@ export class PptUploadDialogComponent {
   }
 
   onSubmit() {
-    if (!this.selectedFile) return;
-
     this.isUploading = true;
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
+
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
     formData.append('hackathon_team_round_submission[comments]', this.uploadForm.get('comments')?.value || '');
 
-    this.submissionService.createSubmission(formData, this.teamId, this.round.id).subscribe({
+    const request = this.existingSubmission
+      ? this.submissionService.updateSubmission(formData, this.existingSubmission.id)
+      : this.submissionService.createSubmission(formData, this.teamId, this.round.id);
+
+    request.subscribe({
       next: (response) => {
         this.isUploading = false;
         this.close();
