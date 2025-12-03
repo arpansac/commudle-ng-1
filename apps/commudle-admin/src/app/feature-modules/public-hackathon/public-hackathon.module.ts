@@ -39,6 +39,7 @@ import { PublicHackathonFormConfirmationComponent } from 'apps/commudle-admin/sr
 import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/hackathon-cards/hackathon-registered-card/hackathon-registered-card.component';
 import { PublicHackathonCollaborationCommunitiesComponent } from './components/public-hackathon-collaboration-communities/public-hackathon-collaboration-communities.component';
 import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/ppt-upload-dialog/ppt-upload-dialog.component';
+import { HackathonRoundCardComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/hackathon-round-card/hackathon-round-card.component';
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-mo
     PublicHackathonFormConfirmationComponent,
     PublicHackathonCollaborationCommunitiesComponent,
     PptUploadDialogComponent,
+    HackathonRoundCardComponent,
   ],
 })
 export class PublicHackathonModule {}

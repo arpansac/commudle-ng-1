@@ -1,3 +1,4 @@
+import { IRound } from './round.model';
 import { IAttachedFile } from './attached-file.model';
 
 export interface IHackathonTeamRoundSubmission {
@@ -9,4 +10,5 @@ export interface IHackathonTeamRoundSubmission {
   created_at: Date;
   updated_at: Date;
   file_attachment: IAttachedFile;
+  round: IRound;
 }

@@ -23,64 +23,13 @@
     <div class="rounds-section">
       <h4 class="rounds-title">Hackathon Rounds</h4>
       <div class="rounds-container">
-        <div
+        <commudle-hackathon-round-card
           *ngFor="let round of rounds; let i = index"
-          class="round-item"
-          [ngClass]="{
-            'round-completed': isRoundCompleted(round),
-            'round-current': isCurrentRound(round),
-            'round-upcoming': isUpcomingRound(round),
-            'round-live': isRoundLive(round)
-          }"
+          [round]="round"
+          [index]="i"
+          [userTeamDetails]="userTeamDetails"
         >
-          <div class="round-indicator">
-            <div class="round-number">{{ i + 1 }}</div>
-          </div>
-          <div class="round-content">
-            <div class="round-name">{{ round.name | titlecase }}</div>
-            <div class="round-date" *ngIf="round.date">
-              {{ round.date | date : 'MMM dd, yyyy, hh:mm a' }}
-              @if(round.end_date) {
-              <span> -> {{ round.end_date | date : 'MMM dd, yyyy, hh:mm a' }}</span>
-              }
-            </div>
-            <div class="round-description" *ngIf="round.description">
-              {{ round.description }}
-            </div>
-          </div>
-          <div class="round-status">
-            <div *ngIf="isRoundLive(round)" class="status-live">Live</div>
-            <div *ngIf="isCurrentRound(round)" class="status-current">Current</div>
-            <div *ngIf="isRoundCompleted(round)" class="status-completed">✓</div>
-            <div
-              *ngIf="
-                !isRoundLive(round) && !isCurrentRound(round) && !isRoundCompleted(round) && isUpcomingRound(round)
-              "
-              class="status-upcoming"
-            >
-              Upcoming
-            </div>
-          </div>
-          @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
-          EHackathonRegistrationStatus.ACCEPTED && (round.round_type === 'ppt_submission' || round.round_type ===
-          'project_submission' || round.round_type === 'project_update_submission') && !(round.round_type ===
-          'ppt_submission' && userTeamDetails.hackathon_team_round_submissions &&
-          userTeamDetails.hackathon_team_round_submissions.length > 0)) {
-          <div class="round-action">
-            <button
-              nbButton
-              status="primary"
-              size="small"
-              (click)="handleRoundSubmission(round)"
-              [disabled]="!isRoundLive(round)"
-            >
-              @if(round.round_type === ERoundType.PPT_SUBMISSION) { Submit PPT } @else if(round.round_type ===
-              ERoundType.PROJECT_SUBMISSION) { Submit Project } @else if(round.round_type ===
-              ERoundType.PROJECT_UPDATE_SUBMISSION) { Submit Update } @else { Submit }
-            </button>
-          </div>
-          }
-        </div>
+        </commudle-hackathon-round-card>
       </div>
     </div>
   </nb-card-body>
