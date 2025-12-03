@@ -120,9 +120,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       this.roundForm = this.fb.group({
         name: round.name,
         description: round.description,
-        date: this.formatDateTimeForInput(round.date),
+        date: this.datePipe.transform(round.date, 'yyyy-MM-ddTHH:mm:ss'),
         order: round.order,
-        end_date: this.formatDateTimeForInput(round.end_date),
+        end_date: this.datePipe.transform(round.end_date, 'yyyy-MM-ddTHH:mm:ss'),
         round_type: round.round_type,
         has_marking_criteria: round.has_marking_criteria ?? true,
       });
@@ -153,6 +153,8 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   createRound() {
     const formData = {
       ...this.roundForm.value,
+      date: this.convertDateToLocal(this.roundForm.value.date),
+      end_date: this.roundForm.value.end_date ? this.convertDateToLocal(this.roundForm.value.end_date) : null,
       marking_criteria: this.markingCriteria,
     };
     this.roundService.createRound(formData, EDbModels.HACKATHON, this.hackathonSlug).subscribe((data: IRound) => {
@@ -168,6 +170,8 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   updateRound(round, index) {
     const formData = {
       ...this.roundForm.value,
+      date: this.convertDateToLocal(this.roundForm.value.date),
+      end_date: this.roundForm.value.end_date ? this.convertDateToLocal(this.roundForm.value.end_date) : null,
       marking_criteria: this.markingCriteria,
     };
     this.roundService.updateRound(formData, round.id).subscribe((data) => {
@@ -215,11 +219,6 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
     this.seoService.setTitle(`Rounds | Dashboard | ${this.hackathon.name} | ${this.parent.name}`);
   }
 
-  formatDateTimeForInput(dateTime: string): string {
-    if (!dateTime) return '';
-    return moment(dateTime).format('YYYY-MM-DDTHH:mm');
-  }
-
   addMarkingCriteria() {
     this.markingCriteria.push({ text: '', min: 0, max: 10 });
   }
@@ -236,5 +235,9 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
     this.roundService.getMarkingCriteria().subscribe((criteria: IMarkingCriteria[]) => {
       this.markingCriteria = criteria || [];
     });
+  }
+
+  convertDateToLocal(dateTime: string): string {
+    return new Date(dateTime).toISOString();
   }
 }
