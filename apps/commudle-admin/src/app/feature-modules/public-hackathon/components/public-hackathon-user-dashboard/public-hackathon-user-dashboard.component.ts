@@ -161,6 +161,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   shouldShowProblemStatementPrompt(): boolean {
     if (!this.userTeamDetails || this.userTeamDetails.length === 0) return false;
     const team = this.userTeamDetails[this.selectedTeamIndex];
+    console.log('🚀 ~ PublicHackathonUserDashboardComponent ~ shouldShowProblemStatementPrompt ~ team:', team);
     return team.registration_status === EHackathonRegistrationStatus.ACCEPTED && !team.problem_statement;
   }
 
@@ -199,6 +200,20 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
           this.isSubmittingProblemStatement = false;
           this.toasterService.errorDialog('Failed to update problem statement');
         },
+      });
+  }
+
+  submitProjectDetails(formData, dialogRef: any) {
+    const team = this.userTeamDetails[this.selectedTeamIndex];
+    this.hackathonUserResponseService
+      .updateProjectDetails(formData, team.hackathon_user_responses[0].id)
+      .subscribe((data) => {
+        if (data) {
+          this.toasterService.successDialog('Problem statement updated successfully');
+          dialogRef.close();
+          this.getHackathonCurrentRegistrationDetails();
+          this.isSubmittingProblemStatement = false;
+        }
       });
   }
 }

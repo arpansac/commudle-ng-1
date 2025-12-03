@@ -23,13 +23,12 @@
     <div class="rounds-section">
       <h4 class="rounds-title">Hackathon Rounds</h4>
       <div class="rounds-container">
-        <commudle-hackathon-round-card
-          *ngFor="let round of rounds; let i = index"
-          [round]="round"
-          [index]="i"
-          [userTeamDetails]="userTeamDetails"
-        >
-        </commudle-hackathon-round-card>
+        @for(round of rounds; track round.id; let i = $index){
+        <div class="com-my-1">
+          <commudle-hackathon-round-card [round]="round" [index]="i" [userTeamDetails]="userTeamDetails">
+          </commudle-hackathon-round-card>
+        </div>
+        }
       </div>
     </div>
   </nb-card-body>
