@@ -47,13 +47,14 @@
                   <span>AI Accelerator Hub: A Personalized AI Solution</span>
                 </h1>
                 <app-community-badge
+                  *ngIf="hackathonUserResponses?.team?.hackathon?.community"
                   [community]="hackathonUserResponses.team.hackathon?.community"
                   [textColor]="'com-text-tWhite'"
                 ></app-community-badge>
-                <p class="create-hackathon-build-subtitle">
-                  <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team.name }}</span>
-                  <span *ngIf="hackathonUserResponses.team.round" class="icon-border"
-                    ><fa-icon [icon]="faCircleDot"></fa-icon>Round {{ hackathonUserResponses.team.round?.order }}</span
+                <p *ngIf="hackathonUserResponses?.team" class="create-hackathon-build-subtitle">
+                  <span><fa-icon [icon]="faUsers"></fa-icon>{{ hackathonUserResponses.team?.name }}</span>
+                  <span *ngIf="hackathonUserResponses.team?.round" class="icon-border"
+                    ><fa-icon [icon]="faCircleDot"></fa-icon>Round {{ hackathonUserResponses.team?.round?.order }}</span
                   >
                 </p>
               </div>
@@ -356,67 +357,83 @@
             </div>
 
             <!-- to post updates for build -->
-            <div *ngIf="parentId && parentType" class="field" [formGroup]="communityBuildUpdateForm">
-              <div class="field-header">
-                <h3>Teammates</h3>
-                <p>List your collaborators or team members</p>
-              </div>
-              <div formArrayName="update">
-                <div
-                  *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
-                  class="build-updates"
-                >
-                  <div [formGroupName]="i" class="build-update">
-                    <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
-                    <nb-icon (click)="removeUpdate(i)" class="clickable" icon="close-circle" status="danger"></nb-icon>
+            <div *ngIf="parentId && parentType" [formGroup]="communityBuildUpdateForm">
+              <div *ngIf="hackathonUserResponses?.user_responses" class="field">
+                <div class="field-header">
+                  <h3>Teammates</h3>
+                  <p>List your collaborators or team members</p>
+                </div>
+                <div class="teammates-list">
+                  <div
+                    *ngFor="let member of hackathonUserResponses.user_responses; let i = index"
+                    class="teammate-item"
+                  >
+                    <app-user-profile-horizontal
+                      *ngIf="currentUser && member.user_email !== currentUser.email"
+                      [aboutMe]="true"
+                      [user]="member.user"
+                    >
+                    </app-user-profile-horizontal>
                   </div>
-                  <span
-                    *ngIf="
-                      updateList.controls[i].get('value').touched &&
-                      updateList.controls[i].get('value').invalid &&
-                      updateList.controls[i].get('value').errors.required
-                    "
-                  >
-                    <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
-                  </span>
-                </div>
-                <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>
-                  <nb-icon icon="plus"></nb-icon>
-                  Add Update
-                </button>
-              </div>
-              <div *ngIf="hackathonUserResponses?.user_responses?.length > 0" class="teammates-list">
-                <div *ngFor="let member of hackathonUserResponses.user_responses; let i = index" class="teammate-item">
-                  <app-user-profile-horizontal
-                    *ngIf="currentUser && member.user_email !== currentUser.email"
-                    [aboutMe]="true"
-                    [user]="member.user"
-                  >
-                  </app-user-profile-horizontal>
                 </div>
               </div>
+
               <!-- list of entity_updates -->
-              <div
-                *ngIf="
-                  hackathonUserResponses &&
-                  hackathonUserResponses.user_responses &&
-                  cBuild &&
-                  cBuild.entity_updates.length > 0
-                "
-                class="teammates-list"
-              >
-                <label class="label">Updates</label>
-                <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
-                  <div class="update-details">
-                    <div [innerHTML]="update.details"></div>
-                    <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+              <div>
+                <div class="teammates-list field">
+                  <h3 class="updates-heading">Updates</h3>
+                  <div
+                    *ngIf="
+                      hackathonUserResponses &&
+                      hackathonUserResponses.user_responses &&
+                      cBuild &&
+                      cBuild.entity_updates.length > 0
+                    "
+                    class="updates-list"
+                  >
+                    <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
+                      <div class="update-details">
+                        <div [innerHTML]="update.details"></div>
+                        <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
+                      </div>
+                      <nb-icon
+                        (click)="removeEntityUpdate(update.id, i)"
+                        class="clickable"
+                        icon="close-circle"
+                        status="danger"
+                      ></nb-icon>
+                    </div>
                   </div>
-                  <nb-icon
-                    (click)="removeEntityUpdate(update.id, i)"
-                    class="clickable"
-                    icon="close-circle"
-                    status="danger"
-                  ></nb-icon>
+
+                  <div formArrayName="update">
+                    <div
+                      *ngFor="let update of communityBuildUpdateForm.controls.update['controls']; let i = index"
+                      class="build-updates"
+                    >
+                      <div [formGroupName]="i" class="build-update">
+                        <editor [init]="tinyMCEForUpdate" formControlName="value"></editor>
+                        <nb-icon
+                          (click)="removeUpdate(i)"
+                          class="clickable"
+                          icon="close-circle"
+                          status="danger"
+                        ></nb-icon>
+                      </div>
+                      <span
+                        *ngIf="
+                          updateList.controls[i].get('value').touched &&
+                          updateList.controls[i].get('value').invalid &&
+                          updateList.controls[i].get('value').errors.required
+                        "
+                      >
+                        <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                      </span>
+                    </div>
+                    <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>
+                      <nb-icon icon="plus"></nb-icon>
+                      Add Update
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
