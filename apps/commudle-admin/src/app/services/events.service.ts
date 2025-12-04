@@ -29,8 +29,13 @@ export class EventsService {
       tags: tags,
     });
   }
-  cloneEvent(event, eventId, tags): Observable<IEvent> {
-    const params = new HttpParams().set('event_id', eventId);
+  cloneEvent(event, eventId, tags, bannerImage, agenda, sponsors, eventForms): Observable<IEvent> {
+    const params = new HttpParams()
+      .set('event_id', eventId)
+      .set('banner_image', bannerImage)
+      .set('agenda', agenda)
+      .set('sponsors', sponsors)
+      .set('event_forms', eventForms);
     return this.http.post<IEvent>(
       this.apiRoutesService.getRoute(API_ROUTES.EVENTS.CLONE),
       {

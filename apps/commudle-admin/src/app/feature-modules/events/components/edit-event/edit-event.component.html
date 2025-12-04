@@ -156,10 +156,18 @@
           <div class="form-group" *ngIf="type === 'clone'">
             <label> Which other fields do you want to clone? <span class="required">*</span> </label>
             <div class="clone-fields-checkboxes">
-              <nb-checkbox formControlName="banner_image" status="basic">Banner Image</nb-checkbox>
-              <nb-checkbox formControlName="agenda" status="basic">Agenda</nb-checkbox>
-              <nb-checkbox formControlName="sponsors" status="basic">Sponsors</nb-checkbox>
-              <nb-checkbox formControlName="event_forms" status="basic">Forms</nb-checkbox>
+              <nb-checkbox [(ngModel)]="bannerImage" [ngModelOptions]="{ standalone: true }" status="basic"
+                >Banner Image</nb-checkbox
+              >
+              <nb-checkbox [(ngModel)]="agenda" [ngModelOptions]="{ standalone: true }" status="basic"
+                >Agenda</nb-checkbox
+              >
+              <nb-checkbox [(ngModel)]="sponsors" [ngModelOptions]="{ standalone: true }" status="basic"
+                >Sponsors</nb-checkbox
+              >
+              <nb-checkbox [(ngModel)]="eventForms" [ngModelOptions]="{ standalone: true }" status="basic"
+                >Forms</nb-checkbox
+              >
             </div>
           </div>
         </div>

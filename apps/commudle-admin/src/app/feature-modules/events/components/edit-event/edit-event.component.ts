@@ -50,6 +50,10 @@ export class EditEventComponent implements OnInit {
 
   faChevronLeft = faChevronLeft;
   submitIsInProcess = false;
+  bannerImage = false;
+  agenda = false;
+  sponsors = false;
+  eventForms = false;
 
   tinyMCE = {
     height: 300,
@@ -85,10 +89,6 @@ export class EditEventComponent implements OnInit {
         end_time_pick: [''],
         timezone: ['', Validators.required],
         event_type: ['', Validators.required],
-        banner_image: [false],
-        agenda: [false],
-        sponsors: [false],
-        event_forms: [false],
       }),
     });
   }
@@ -161,10 +161,6 @@ export class EditEventComponent implements OnInit {
     const formValue = this.eventForm.get('event').value;
     delete formValue['start_date'];
     delete formValue['end_date'];
-    delete formValue['banner_image'];
-    delete formValue['agenda'];
-    delete formValue['sponsors'];
-    delete formValue['event_forms'];
     formValue['start_time'] = '';
     formValue['end_time'] = '';
 
@@ -250,17 +246,19 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
-      (data) => {
-        this.submitIsInProcess = false;
-        window.location.reload();
-        this.close();
-      },
-      (error) => {
-        this.submitIsInProcess = false;
-        this.close();
-      },
-    );
+    this.eventsService
+      .cloneEvent(formValue, this.event.slug, this.tags, this.bannerImage, this.agenda, this.sponsors, this.eventForms)
+      .subscribe(
+        (data) => {
+          this.submitIsInProcess = false;
+          window.location.reload();
+          this.close();
+        },
+        (error) => {
+          this.submitIsInProcess = false;
+          this.close();
+        },
+      );
   }
   close() {
     this.windowRef.close();
