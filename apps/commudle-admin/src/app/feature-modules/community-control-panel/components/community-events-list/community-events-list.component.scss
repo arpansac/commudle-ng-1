@@ -119,10 +119,10 @@
 
 // Empty State
 .empty-state {
-  @apply com-flex com-flex-col com-items-center com-justify-center com-pt-20;
+  @apply com-flex com-flex-col com-items-center com-justify-center md:com-pt-20 com-pt-14;
 
   .empty-state-icon {
-    @apply com-w-full com-h-[114px] com-mb-8;
+    @apply com-w-full com-h-[114px] md:com-mb-8 com-mb-10;
   }
 
   .empty-state-title {
@@ -130,7 +130,7 @@
   }
 
   .empty-state-description {
-    @apply com-text-base com-font-medium com-text-gray-500 com-m-0 com-mb-8 com-text-center com-max-w-[320px];
+    @apply com-text-base com-font-medium com-text-gray-500 com-m-0 md:com-mb-8 com-mb-0 com-text-center com-max-w-[320px];
   }
 
   .empty-state-button {

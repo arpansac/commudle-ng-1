@@ -13,11 +13,25 @@
   </div>
 
   <!-- Empty State -->
+  <div *ngIf="!isLoading && (!events || events.length === 0)">
+    <a
+      *appBreakpoints="'<=lg'"
+      nbButton
+      status="primary"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      class="empty-state-button"
+      fullWidth
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEW EVENT
+    </a>
+  </div>
   <div *ngIf="!isLoading && (!events || events.length === 0)" class="empty-state">
     <img [src]="staticAssets.events_admin_empty_state" alt="No Events" class="empty-state-icon" />
     <h2 class="empty-state-title">No Events Added</h2>
     <p class="empty-state-description">You can create one by clicking the "Create New Event" button</p>
     <a
+      *appBreakpoints="'>lg'"
       nbButton
       status="primary"
       [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
