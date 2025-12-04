@@ -10,6 +10,7 @@ import { ICommunity, IEvent } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import { NbDialogService, NbMenuService } from '@commudle/theme';
 import moment from 'moment';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-community-events-list',
@@ -33,6 +34,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
     faArrowUpRightFromSquare,
     faTableList,
   };
+  staticAssets = staticAssets;
 
   total = 0;
   count = 10;
