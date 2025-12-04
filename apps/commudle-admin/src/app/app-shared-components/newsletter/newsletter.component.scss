@@ -169,3 +169,24 @@ nb-card {
 .schedule-time {
   @apply com-text-xs com-text-Yankees-Blue com-m-0;
 }
+
+// Empty State
+.empty-state {
+  @apply com-flex com-flex-col com-items-center com-justify-center md:com-pt-20 com-pt-14;
+
+  .empty-state-icon {
+    @apply com-w-full com-h-[114px] md:com-mb-8 com-mb-10;
+  }
+
+  .empty-state-title {
+    @apply com-text-2xl com-font-medium com-text-Yankees-Blue com-m-0 com-mb-2 com-text-center;
+  }
+
+  .empty-state-description {
+    @apply com-text-base com-font-medium com-text-gray-500 com-m-0 md:com-mb-8 com-mb-0 com-text-center com-max-w-[320px];
+  }
+
+  .empty-state-button {
+    @apply com-rounded-lg;
+  }
+}

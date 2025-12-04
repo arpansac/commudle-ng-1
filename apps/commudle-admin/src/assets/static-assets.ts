@@ -275,6 +275,10 @@ export const staticAssets = {
   //id: 212
   surveys_admin_empty_state:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1gyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--889a72625bc1f6c7eb354c8907c215d1be125a05/Surveys.svg',
+
+  //id: 213
+  newsletters_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNXYyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--abb2bdbc099ea4b80ad9c0ca3f380270846be5ac/Newsletters.svg',
 };
 
 export const AwsS3Bucket = {
