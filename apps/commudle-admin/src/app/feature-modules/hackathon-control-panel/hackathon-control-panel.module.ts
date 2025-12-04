@@ -59,6 +59,7 @@ import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/
 import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
 import { HackathonCollaborationCommunitiesComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-collaboration-communities/hackathon-collaboration-communities.component';
 import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-tracks-prizes/hackathon-prize-form/hackathon-prize-form.component';
+import { HackathonControlPanelMentorsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentors/hackathon-control-panel-mentors.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
     HackathonControlPanelEmailStatsComponent,
     HackathonCollaborationCommunitiesComponent,
     HackathonPrizeFormComponent,
+    HackathonControlPanelMentorsComponent,
   ],
   imports: [
     CommonModule,

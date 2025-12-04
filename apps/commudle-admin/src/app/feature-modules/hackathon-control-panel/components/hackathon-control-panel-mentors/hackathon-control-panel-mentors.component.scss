@@ -1,0 +1,100 @@
+.header {
+  @apply com-flex com-items-center com-gap-2;
+}
+
+.round-selector {
+  @apply com-flex com-items-center com-gap-4 com-mb-6 com-p-4 com-bg-gray-50 com-rounded com-border com-border-gray-200;
+
+  label {
+    @apply com-font-semibold;
+  }
+
+  select {
+    @apply com-px-4 com-py-2 com-border com-border-gray-300 com-rounded com-flex-1 com-max-w-xs;
+  }
+
+  button {
+    @apply com-flex com-items-center com-gap-2;
+  }
+}
+
+.loading-spinner {
+  @apply com-flex com-justify-center com-items-center com-py-12;
+}
+
+table {
+  @apply com-w-full com-border-collapse;
+
+  thead {
+    tr {
+      @apply com-bg-gray-100;
+
+      th {
+        @apply com-p-4 com-text-left com-font-semibold com-border com-border-gray-300;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      @apply com-border-b com-border-gray-200;
+
+      &:hover {
+        @apply com-bg-gray-50;
+      }
+
+      td {
+        @apply com-p-4 com-border com-border-gray-300;
+      }
+    }
+  }
+
+  .mentor-cell {
+    @apply com-w-1/4;
+
+    .mentor-info {
+      @apply com-flex com-items-center com-gap-3;
+
+      img {
+        @apply com-w-12 com-h-12 com-rounded-full com-object-cover;
+      }
+
+      .mentor-name {
+        @apply com-font-semibold;
+      }
+
+      .mentor-designation {
+        @apply com-text-sm com-text-gray-600;
+      }
+    }
+  }
+
+  .teams-cell {
+    @apply com-w-1/2;
+
+    .team-tags {
+      @apply com-flex com-flex-wrap com-gap-2;
+
+      .no-teams {
+        @apply com-text-sm com-text-gray-500 com-italic;
+      }
+    }
+  }
+
+  .actions-cell {
+    @apply com-w-1/4;
+
+    select {
+      @apply com-px-4 com-py-2 com-border com-border-gray-300 com-rounded com-w-full;
+    }
+  }
+}
+
+.no-mentors,
+.select-round-message {
+  @apply com-text-center com-py-12 com-text-gray-600;
+
+  p {
+    @apply com-text-lg;
+  }
+}

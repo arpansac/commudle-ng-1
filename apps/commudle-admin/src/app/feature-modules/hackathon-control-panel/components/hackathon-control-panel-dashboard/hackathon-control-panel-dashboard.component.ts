@@ -22,6 +22,7 @@ import {
   faEnvelope,
   faArrowUpRightFromSquare,
   faHandshake,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
@@ -56,6 +57,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
     faEnvelope,
     faArrowUpRightFromSquare,
     faHandshake,
+    faUserGroup,
   };
 
   hackathonStatuses: string[] = Object.values(EHackathonStatus);
