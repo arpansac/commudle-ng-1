@@ -7,6 +7,7 @@ import { ICustomPage } from 'apps/shared-models/custom-page.model';
 import { Subscription } from 'rxjs';
 import { faPlus, faArrowUpRightFromSquare, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { EDbModels } from '@commudle/shared-models';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-custom-page',
@@ -26,6 +27,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     faEdit,
     faTrash,
   };
+  staticAssets = staticAssets;
 
   constructor(
     private customPageService: CustomPageService,
