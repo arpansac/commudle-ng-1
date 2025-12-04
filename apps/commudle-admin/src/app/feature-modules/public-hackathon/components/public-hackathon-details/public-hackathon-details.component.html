@@ -136,7 +136,13 @@
         ></commudle-public-hackathon-details-mini-card
       ></nb-card-body>
     </nb-card>
-
+    <nb-card *ngIf="!userTeamDetails || userTeamDetails.length === 0">
+      <nb-card-body class="com-p-0">
+        <a [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]">
+          <button nbButton status="primary" fullWidth>Register Now</button>
+        </a>
+      </nb-card-body>
+    </nb-card>
     <nb-card *ngIf="rounds && rounds.length > 0">
       <nb-card-header> Rounds </nb-card-header>
       <nb-card-body>
@@ -146,7 +152,7 @@
         </div>
       </nb-card-body>
     </nb-card>
-    <nb-card *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0">
+    <nb-card *ngIf="userTeamDetails && userTeamDetails.length > 0">
       <nb-card-header>Registration Status</nb-card-header>
       <nb-card-body>
         <div class="status-info">
@@ -156,6 +162,12 @@
           <div class="name">{{ userTeamDetails[0].round.name }}</div>
           <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
         </div>
+        <a
+          [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
+          class="edit-link"
+        >
+          <button nbButton status="primary" size="small" fullWidth>Edit Registration</button>
+        </a>
       </nb-card-body>
     </nb-card>
   </div>
