@@ -267,6 +267,10 @@ export const staticAssets = {
   //id: 210
   events_admin_empty_state:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMVgyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--716f712bd8679fc24644ba987fab60b902d79315/Events.svg',
+
+  //id: 211
+  hackathons_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM0QyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7c97fd895401bc3488bc4e92386e010a819bf989/Hackathons.svg"',
 };
 
 export const AwsS3Bucket = {
