@@ -282,7 +282,7 @@ export const staticAssets = {
 
   //id: 214
   page_builder_admin_empty_state:
-    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBK24yQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--9345e53657926048031ad10351aff52ef1a43550/Page%20builder.svg',
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzMyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--b5139d939cc49faa24d7ccbeee351886eb64bc3f/Forms%20Data.svg',
 };
 
 export const AwsS3Bucket = {
