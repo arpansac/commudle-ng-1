@@ -146,10 +146,13 @@
         </div>
       </nb-card-body>
     </nb-card>
-    <nb-card *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0 && userTeamDetails[0].round">
-      <nb-card-header>Current Round</nb-card-header>
+    <nb-card *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0">
+      <nb-card-header>Registration Status</nb-card-header>
       <nb-card-body>
-        <div class="round-card">
+        <div class="status-info">
+          <div class="status-badge">{{ userTeamDetails[0].registration_status | capitalizeAndRemoveUnderscore }}</div>
+        </div>
+        <div *ngIf="userTeamDetails[0].round" class="round-card">
           <div class="name">{{ userTeamDetails[0].round.name }}</div>
           <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
         </div>

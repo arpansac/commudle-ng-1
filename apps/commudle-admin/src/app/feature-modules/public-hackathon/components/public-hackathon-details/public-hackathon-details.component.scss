@@ -100,4 +100,12 @@
       @apply com-text-orange-400 com-text-base com-font-semibold com-pb-6;
     }
   }
+
+  .status-info {
+    @apply com-mb-3;
+
+    .status-badge {
+      @apply com-inline-block com-px-3 com-py-1 com-rounded-full com-text-sm com-font-semibold com-bg-primary-100 com-text-primary-600;
+    }
+  }
 }
