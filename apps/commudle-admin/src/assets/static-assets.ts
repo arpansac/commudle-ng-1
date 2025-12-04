@@ -270,7 +270,11 @@ export const staticAssets = {
 
   //id: 211
   hackathons_admin_empty_state:
-    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM0QyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7c97fd895401bc3488bc4e92386e010a819bf989/Hackathons.svg"',
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM0QyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7c97fd895401bc3488bc4e92386e010a819bf989/Hackathons.svg',
+
+  //id: 212
+  surveys_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1gyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--889a72625bc1f6c7eb354c8907c215d1be125a05/Surveys.svg',
 };
 
 export const AwsS3Bucket = {
