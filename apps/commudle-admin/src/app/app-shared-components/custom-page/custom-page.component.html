@@ -1,69 +1,98 @@
 <div class="page-builder-container">
   <div class="header-section">
     <h1 class="page-title">Page Builder</h1>
-    <a nbButton status="primary" shape="semi-round" [routerLink]="['new']"
-      ><fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Page
+    <a
+      *ngIf="isLoading || (pages && pages.length > 0)"
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['new']"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Page
     </a>
   </div>
-  <section class="pages-list-container">
-    <div class="table-wrapper">
-      <div *ngIf="isLoading" class="loading-row">
-        <app-loading-spinner></app-loading-spinner>
-      </div>
-      <table *ngIf="pages && pages.length > 0" class="pages-table">
-        <thead>
-          <tr class="table-header">
-            <th>NAME</th>
-            <th>PUBLISH</th>
-            <th>CREATED BY</th>
-            <th>ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="!isLoading">
-            <tr *ngFor="let page of pages; let i = index" class="page-row">
-              <td>
-                <div class="page-name">
-                  <a (click)="redirectTo(page.slug)" [ngClass]="{ disableAnchorTag: !page.published }" class="page-link"
-                    >{{ page.title }}
-                    <fa-icon *ngIf="page.published" [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div class="publish-control">
-                  <nb-toggle
-                    (click)="onToggleClick($event, page.id, i)"
-                    [checked]="page.published"
-                    labelPosition="end"
-                    status="success"
-                    size="tiny"
-                  >
-                    Publish
-                  </nb-toggle>
-                </div>
-              </td>
-              <td>
-                <div class="created-by">
-                  <app-user-profile-card-small [user]="page.user"></app-user-profile-card-small>
-                </div>
-              </td>
-              <td>
-                <div class="page-actions">
-                  <a [routerLink]="['edit', page.slug]" class="edit-link">
-                    <fa-icon [icon]="icons.faEdit"></fa-icon> Edit
-                  </a>
-                  <a (click)="openConfirmDialogBox(deleteDialog, page.id, i)" class="delete-link">
-                    <fa-icon [icon]="icons.faTrash"></fa-icon> Delete
-                  </a>
-                </div>
-              </td>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && (!pages || pages.length === 0)">
+    <a *appBreakpoints="'<=lg'" nbButton status="primary" [routerLink]="['new']" class="empty-state-button" fullWidth>
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEW PAGE
+    </a>
+  </div>
+  <div *ngIf="!isLoading && (!pages || pages.length === 0)" class="empty-state">
+    <img [src]="staticAssets.page_builder_admin_empty_state" alt="No Pages" class="empty-state-icon" />
+    <h2 class="empty-state-title">No Pages Added</h2>
+    <p class="empty-state-description">You can create one by clicking the "Create New Page" button</p>
+    <a *appBreakpoints="'>lg'" nbButton status="primary" [routerLink]="['new']" class="empty-state-button">
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEW PAGE
+    </a>
+  </div>
+
+  <ng-container *ngIf="isLoading || (pages && pages.length > 0)">
+    <section class="pages-list-container">
+      <div class="table-wrapper">
+        <div *ngIf="isLoading" class="loading-row">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <table *ngIf="pages && pages.length > 0" class="pages-table">
+          <thead>
+            <tr class="table-header">
+              <th>NAME</th>
+              <th>PUBLISH</th>
+              <th>CREATED BY</th>
+              <th>ACTIONS</th>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-  </section>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="!isLoading">
+              <tr *ngFor="let page of pages; let i = index" class="page-row">
+                <td>
+                  <div class="page-name">
+                    <a
+                      (click)="redirectTo(page.slug)"
+                      [ngClass]="{ disableAnchorTag: !page.published }"
+                      class="page-link"
+                      >{{ page.title }}
+                      <fa-icon *ngIf="page.published" [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <div class="publish-control">
+                    <nb-toggle
+                      (click)="onToggleClick($event, page.id, i)"
+                      [checked]="page.published"
+                      labelPosition="end"
+                      status="success"
+                      size="tiny"
+                    >
+                      Publish
+                    </nb-toggle>
+                  </div>
+                </td>
+                <td>
+                  <div class="created-by">
+                    <app-user-profile-card-small [user]="page.user"></app-user-profile-card-small>
+                  </div>
+                </td>
+                <td>
+                  <div class="page-actions">
+                    <a [routerLink]="['edit', page.slug]" class="edit-link">
+                      <fa-icon [icon]="icons.faEdit"></fa-icon> Edit
+                    </a>
+                    <a (click)="openConfirmDialogBox(deleteDialog, page.id, i)" class="delete-link">
+                      <fa-icon [icon]="icons.faTrash"></fa-icon> Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </ng-container>
 </div>
 
 <ng-template #deleteDialog let-data let-ref="dialogRef">

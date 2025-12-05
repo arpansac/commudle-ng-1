@@ -20,6 +20,7 @@ import {
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-newsletter',
@@ -47,6 +48,7 @@ export class NewsletterComponent implements OnInit, OnDestroy {
     faTrash,
   };
   moment = moment;
+  staticAssets = staticAssets;
   testEmailsForms;
   constructor(
     private newsletterService: NewsletterService,

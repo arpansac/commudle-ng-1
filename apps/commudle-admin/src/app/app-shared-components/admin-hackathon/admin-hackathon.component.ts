@@ -8,6 +8,7 @@ import { debounceTime, switchMap, takeUntil, filter } from 'rxjs/operators';
 import { faPlus, faArrowUpRightFromSquare, faTableList, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { NbMenuService } from '@commudle/theme';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-admin-hackathon',
@@ -50,6 +51,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
     faTableList,
     faArrowRight,
   };
+  staticAssets = staticAssets;
 
   constructor(
     private hackathonService: HackathonService,

@@ -263,6 +263,26 @@ export const staticAssets = {
 
   folder_empty:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkRPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2dbfa83c67668c9571746d1b9517c40b459312da/Folder_empty.svg',
+
+  //id: 210
+  events_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMVgyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--716f712bd8679fc24644ba987fab60b902d79315/Events.svg',
+
+  //id: 211
+  hackathons_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM0QyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--7c97fd895401bc3488bc4e92386e010a819bf989/Hackathons.svg',
+
+  //id: 212
+  surveys_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBM1gyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--889a72625bc1f6c7eb354c8907c215d1be125a05/Surveys.svg',
+
+  //id: 213
+  newsletters_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNXYyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--abb2bdbc099ea4b80ad9c0ca3f380270846be5ac/Newsletters.svg',
+
+  //id: 214
+  page_builder_admin_empty_state:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzMyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--b5139d939cc49faa24d7ccbeee351886eb64bc3f/Forms%20Data.svg',
 };
 
 export const AwsS3Bucket = {

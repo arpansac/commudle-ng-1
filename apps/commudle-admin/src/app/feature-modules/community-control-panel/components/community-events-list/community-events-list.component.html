@@ -2,6 +2,7 @@
   <div class="header-section">
     <h1 class="page-title">Events</h1>
     <a
+      *ngIf="isLoading || (events && events.length > 0)"
       nbButton
       status="primary"
       shape="semi-round"
@@ -11,117 +12,93 @@
     </a>
   </div>
 
-  <!-- angular2 smart table -kept for reference-->
-
-  <!-- <div> 
-  <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> 
-  </div> -->
-
-  <!-- Search and Filter Section -->
-  <div class="search-filter-section">
-    <div class="status-filter">
-      <nb-select
-        placeholder="Status"
-        multiple
-        [selected]="activeEventStatuses"
-        (selectedChange)="onStatusFilterChange($event)"
-        class="status-multi-select"
-      >
-        <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
-          {{ eventStatus | titlecase }}
-        </nb-option>
-      </nb-select>
-    </div>
-    <form [formGroup]="searchForm" class="search-form">
-      <div>
-        <nb-form-field>
-          <nb-icon icon="search" nbPrefix></nb-icon>
-          <input
-            [disabled]="isLoading"
-            fieldSize="medium"
-            formControlName="name"
-            fullWidth
-            nbInput
-            placeholder="Search by name, email, designation or tags"
-            type="text"
-          />
-        </nb-form-field>
-      </div>
-    </form>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && (!events || events.length === 0)">
+    <a
+      *appBreakpoints="'<=lg'"
+      nbButton
+      status="primary"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      class="empty-state-button"
+      fullWidth
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEW EVENT
+    </a>
+  </div>
+  <div *ngIf="!isLoading && (!events || events.length === 0)" class="empty-state">
+    <img [src]="staticAssets.events_admin_empty_state" alt="No Events" class="empty-state-icon" />
+    <h2 class="empty-state-title">No Events Added</h2>
+    <p class="empty-state-description">You can create one by clicking the "Create New Event" button</p>
+    <a
+      *appBreakpoints="'>lg'"
+      nbButton
+      status="primary"
+      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      class="empty-state-button"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEW EVENT
+    </a>
   </div>
 
-  <!-- Events Table Section -->
-  <section class="event-list-container">
-    <div class="table-wrapper">
-      <table *ngIf="events && events.length > 0" class="events-table">
-        <thead>
-          <tr class="table-header">
-            <th>NAME</th>
-            <th>DATE</th>
-            <th>STATUS</th>
-            <th>ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="isLoading" class="loading-row">
-            <td colspan="4" class="loading-cell">
-              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-            </td>
-          </tr>
-          <ng-container *ngIf="!isLoading">
-            <tr *ngFor="let event of events" class="event-row">
-              <td class="event-name-container">
-                <a
-                  class="event-name"
-                  [routerLink]="
-                    event.status === EEventStatuses.OPEN
-                      ? ['event-dashboard', event.slug, 'registrations']
-                      : event.status === EEventStatuses.COMPLETED
-                      ? ['event-dashboard', event.slug, 'stats']
-                      : ['event-dashboard', event.slug]
-                  "
-                  >{{ event.name }}
-                </a>
-                <app-badge
-                  *ngIf="moment(event.start_time) > moment() && event.status === 'open'"
-                  [text]="moment(event.start_time).fromNow() | titlecase"
-                  [fontSize]="'small'"
-                  [borderRadius]="'round'"
-                  [color]="'com-bg-red-500'"
-                  [fontColor]="'com-text-tWhite'"
-                ></app-badge>
+  <ng-container *ngIf="isLoading || (events && events.length > 0)">
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+      <div class="status-filter">
+        <nb-select
+          placeholder="Status"
+          multiple
+          [selected]="activeEventStatuses"
+          (selectedChange)="onStatusFilterChange($event)"
+          class="status-multi-select"
+        >
+          <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
+            {{ eventStatus | titlecase }}
+          </nb-option>
+        </nb-select>
+      </div>
+      <form [formGroup]="searchForm" class="search-form">
+        <div>
+          <nb-form-field>
+            <nb-icon icon="search" nbPrefix></nb-icon>
+            <input
+              [disabled]="isLoading"
+              fieldSize="medium"
+              formControlName="name"
+              fullWidth
+              nbInput
+              placeholder="Search by name, email, designation or tags"
+              type="text"
+            />
+          </nb-form-field>
+        </div>
+      </form>
+    </div>
+
+    <!-- Events Table Section -->
+    <section class="event-list-container">
+      <div class="table-wrapper">
+        <table *ngIf="events && events.length > 0" class="events-table">
+          <thead>
+            <tr class="table-header">
+              <th>NAME</th>
+              <th>DATE</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="isLoading" class="loading-row">
+              <td colspan="4" class="loading-cell">
+                <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
               </td>
-              <td class="date-column">
-                <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
-              </td>
-              <td>
-                <app-badge
-                  [text]="event.status | titlecase"
-                  [fontSize]="'small'"
-                  [borderRadius]="'round'"
-                  [color]="
-                    event.status === EEventStatuses.OPEN
-                      ? 'com-bg-blue-100'
-                      : event.status === EEventStatuses.DRAFT
-                      ? 'com-bg-gray-100'
-                      : event.status === EEventStatuses.COMPLETED
-                      ? 'com-bg-green-100'
-                      : 'com-bg-red-100'
-                  "
-                  [fontColor]="
-                    event.status === EEventStatuses.OPEN
-                      ? 'com-text-Ultramarine-Blue'
-                      : event.status === EEventStatuses.DRAFT
-                      ? 'com-text-gray-500'
-                      : event.status === EEventStatuses.COMPLETED
-                      ? 'com-text-green-700'
-                      : 'com-text-Infra-Red'
-                  "
-                ></app-badge>
-              </td>
-              <td class="action-buttons">
-                <div class="event-dashboard-actions">
+            </tr>
+            <ng-container *ngIf="!isLoading">
+              <tr *ngFor="let event of events" class="event-row">
+                <td class="event-name-container">
                   <a
+                    class="event-name"
                     [routerLink]="
                       event.status === EEventStatuses.OPEN
                         ? ['event-dashboard', event.slug, 'registrations']
@@ -129,43 +106,93 @@
                         ? ['event-dashboard', event.slug, 'stats']
                         : ['event-dashboard', event.slug]
                     "
-                    nbButton
-                    status="basic"
-                    shape="semi-round"
-                    size="small"
-                    ><fa-icon [icon]="icons.faTableList"></fa-icon>&nbsp; Dashboard
+                    >{{ event.name }}
                   </a>
-                  <button
-                    (click)="setContextEvent(event)"
-                    [nbContextMenu]="contextMenuItems"
-                    class="context-menu-button"
-                    nbButton
-                    nbContextMenuTag="community-event-context-menu"
-                    size="small"
-                    shape="semi-round"
-                    status="basic"
-                  >
-                    <nb-icon icon="more-vertical"></nb-icon>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
+                  <app-badge
+                    *ngIf="moment(event.start_time) > moment() && event.status === 'open'"
+                    [text]="moment(event.start_time).fromNow() | titlecase"
+                    [fontSize]="'small'"
+                    [borderRadius]="'round'"
+                    [color]="'com-bg-red-500'"
+                    [fontColor]="'com-text-tWhite'"
+                  ></app-badge>
+                </td>
+                <td class="date-column">
+                  <app-community-events-list-date [eventData]="event"></app-community-events-list-date>
+                </td>
+                <td>
+                  <app-badge
+                    [text]="event.status | titlecase"
+                    [fontSize]="'small'"
+                    [borderRadius]="'round'"
+                    [color]="
+                      event.status === EEventStatuses.OPEN
+                        ? 'com-bg-blue-100'
+                        : event.status === EEventStatuses.DRAFT
+                        ? 'com-bg-gray-100'
+                        : event.status === EEventStatuses.COMPLETED
+                        ? 'com-bg-green-100'
+                        : 'com-bg-red-100'
+                    "
+                    [fontColor]="
+                      event.status === EEventStatuses.OPEN
+                        ? 'com-text-Ultramarine-Blue'
+                        : event.status === EEventStatuses.DRAFT
+                        ? 'com-text-gray-500'
+                        : event.status === EEventStatuses.COMPLETED
+                        ? 'com-text-green-700'
+                        : 'com-text-Infra-Red'
+                    "
+                  ></app-badge>
+                </td>
+                <td class="action-buttons">
+                  <div class="event-dashboard-actions">
+                    <a
+                      [routerLink]="
+                        event.status === EEventStatuses.OPEN
+                          ? ['event-dashboard', event.slug, 'registrations']
+                          : event.status === EEventStatuses.COMPLETED
+                          ? ['event-dashboard', event.slug, 'stats']
+                          : ['event-dashboard', event.slug]
+                      "
+                      nbButton
+                      status="basic"
+                      shape="semi-round"
+                      size="small"
+                      ><fa-icon [icon]="icons.faTableList"></fa-icon>&nbsp; Dashboard
+                    </a>
+                    <button
+                      (click)="setContextEvent(event)"
+                      [nbContextMenu]="contextMenuItems"
+                      class="context-menu-button"
+                      nbButton
+                      nbContextMenuTag="community-event-context-menu"
+                      size="small"
+                      shape="semi-round"
+                      status="basic"
+                    >
+                      <nb-icon icon="more-vertical"></nb-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
 
-    <app-pagination
-      class="pagination"
-      (goTo)="page = $event; getCommunityEvents()"
-      (next)="page = $event; getCommunityEvents()"
-      (previous)="page = $event; getCommunityEvents()"
-      *ngIf="total > 0"
-      [count]="count"
-      [current]="page"
-      [total]="total"
-    ></app-pagination>
-  </section>
+      <app-pagination
+        class="pagination"
+        (goTo)="page = $event; getCommunityEvents()"
+        (next)="page = $event; getCommunityEvents()"
+        (previous)="page = $event; getCommunityEvents()"
+        *ngIf="total > 0"
+        [count]="count"
+        [current]="page"
+        [total]="total"
+      ></app-pagination>
+    </section>
+  </ng-container>
 </div>
 
 <ng-template #cloneEvent let-data let-ref="dialogRef">
@@ -181,3 +208,9 @@
     </nb-card-body>
   </nb-card>
 </ng-template>
+
+<!-- angular2 smart table -kept for reference-->
+
+<!-- <div> 
+  <angular2-smart-table [settings]="tableSettings" [source]="events"></angular2-smart-table> 
+  </div> -->
