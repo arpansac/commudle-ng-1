@@ -41,6 +41,7 @@ export const API_ROUTES = {
       INDEX: 'api/v2/communities/public',
       SPEAKERS: 'api/v2/communities/public/speakers',
     },
+    ACTIVITY_SCORE_THRESHOLDS: 'api/v2/communities/public/activity_score_thresholds',
   },
 
   COMMUNITY_AUTH_TOKENS: {

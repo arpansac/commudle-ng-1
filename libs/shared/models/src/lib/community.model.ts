@@ -49,3 +49,22 @@ export interface ICommunities {
   count: number;
   total: number;
 }
+
+export interface IActivityScoreThresholds {
+  dormant: {
+    min: number;
+    max: number;
+  };
+  low_active: {
+    min: number;
+    max: number;
+  };
+  moderately_active: {
+    min: number;
+    max: number;
+  };
+  highly_active: {
+    min: number;
+    max: number;
+  };
+}

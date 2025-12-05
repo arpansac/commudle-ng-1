@@ -154,10 +154,27 @@
             }
 
             .activity-indicator {
-              @apply com-flex com-items-center com-space-x-2 com-flex-nowrap;
+              @apply com-flex com-items-start com-space-x-2 com-flex-nowrap;
 
               fa-icon {
-                @apply com-flex com-justify-center com-items-center com-mr-1 com-h-4 com-w-4;
+                @apply com-flex com-justify-center com-items-center com-h-4 com-w-4 com-cursor-pointer;
+
+                &.dormant {
+                  @apply com-text-gray-custom-1;
+                }
+                &.low_active {
+                  @apply com-text-Infra-Red;
+                }
+                &.moderately_active {
+                  @apply com-text-Tigers-Eye;
+                }
+                &.highly_active {
+                  @apply com-text-Crayola-Green;
+                }
+              }
+
+              span {
+                @apply com-cursor-pointer;
               }
             }
 

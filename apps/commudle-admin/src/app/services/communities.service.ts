@@ -176,4 +176,8 @@ export class CommunitiesService {
       params,
     });
   }
+
+  getActivityScoreThresholds(): Observable<any> {
+    return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITIES.ACTIVITY_SCORE_THRESHOLDS));
+  }
 }
