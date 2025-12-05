@@ -136,13 +136,7 @@
         ></commudle-public-hackathon-details-mini-card
       ></nb-card-body>
     </nb-card>
-    <nb-card *ngIf="(!userTeamDetails || userTeamDetails.length === 0) && hackathonStatus !== 'Closed'">
-      <nb-card-body class="com-p-0">
-        <a [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]">
-          <button nbButton status="primary" fullWidth>Register Now</button>
-        </a>
-      </nb-card-body>
-    </nb-card>
+
     <nb-card *ngIf="rounds && rounds.length > 0">
       <nb-card-header> Rounds </nb-card-header>
       <nb-card-body>
