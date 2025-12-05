@@ -923,6 +923,9 @@ export const API_ROUTES = {
       IS_MEMBER_OF_PARENT: 'api/v2/hackathons/public/is_member_of_parent', //GET
       HACKATHONS: 'api/v2/hackathons/public/all_hackathons', //GET
     },
+    TEAMS: {
+      INDEX: 'api/v2/hackathons/teams/index', //GET
+    },
   },
 
   FAQ: {
@@ -1094,7 +1097,9 @@ export const API_ROUTES = {
     SHOW: 'api/v2/hackathon_team_round_scores/show', //GET
     UPDATE: 'api/v2/hackathon_team_round_scores', //PUT
     DESTROY: 'api/v2/hackathon_team_round_scores', //DELETE
+    UNASSIGN_MENTOR: 'api/v2/hackathon_team_round_scores/unassign_mentor', //DELETE
     ASSIGN_JUDGE: 'api/v2/hackathon_team_round_scores/assign_judge', //POST
     BULK_ASSIGN_JUDGES: 'api/v2/hackathon_team_round_scores/bulk_assign_judges', //POST
+    ASSIGNMENT_SUMMARY: 'api/v2/hackathon_team_round_scores/assignment_summary', //GET
   },
 };

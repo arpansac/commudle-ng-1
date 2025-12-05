@@ -1,76 +1,74 @@
+:host {
+  @apply com-block com-overflow-hidden;
+}
+
 .header {
-  @apply com-flex com-items-center com-gap-2;
+  @apply com-text-2xl com-font-bold;
 }
 
-.round-selector {
-  @apply com-flex com-items-center com-gap-4 com-mb-6 com-p-4 com-bg-gray-50 com-rounded com-border com-border-gray-200;
+commudle-data-table {
+  @apply com-block com-overflow-hidden;
+  height: 70vh;
+  max-width: 100%;
+}
 
-  label {
-    @apply com-font-semibold;
+.mentor-info {
+  @apply com-flex com-items-center com-gap-3;
+
+  img {
+    @apply com-w-10 com-h-10 com-rounded-full com-object-cover;
   }
 
-  select {
-    @apply com-px-4 com-py-2 com-border com-border-gray-300 com-rounded com-flex-1 com-max-w-xs;
-  }
-
-  button {
-    @apply com-flex com-items-center com-gap-2;
+  span {
+    @apply com-font-medium;
   }
 }
 
-.loading-spinner {
-  @apply com-flex com-justify-center com-items-center com-py-12;
-}
+.team-assignments-compact {
+  @apply com-cursor-pointer com-p-2 com-rounded;
+  @apply hover:com-bg-gray-100;
 
-table {
-  @apply com-w-full com-border-collapse;
+  .team-summary {
+    @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-bg-blue-100 com-text-blue-700 com-rounded;
 
-  thead {
-    tr {
-      @apply com-bg-gray-100;
+    .team-name {
+      @apply com-font-medium com-text-sm;
+    }
 
-      th {
-        @apply com-p-4 com-text-left com-font-semibold com-border com-border-gray-300;
-      }
+    .team-count {
+      @apply com-px-2 com-py-1 com-bg-blue-200 com-rounded com-text-xs com-font-semibold;
     }
   }
 
-  tbody {
-    tr {
-      @apply com-border-b com-border-gray-200;
+  .no-teams-compact {
+    @apply com-text-center com-text-gray-500 com-text-sm com-py-2;
+  }
+}
 
-      &:hover {
-        @apply com-bg-gray-50;
-      }
+.no-mentors,
+.no-rounds {
+  @apply com-text-center com-py-12 com-text-gray-600;
 
-      td {
-        @apply com-p-4 com-border com-border-gray-300;
-      }
+  p {
+    @apply com-text-lg;
+  }
+}
+
+.sidebar-content {
+  @apply com-p-4 com-flex com-flex-col com-gap-4;
+
+  .sidebar-info {
+    @apply com-p-4 com-bg-gray-100 com-rounded;
+
+    p {
+      @apply com-mb-2;
     }
   }
 
-  .mentor-cell {
-    @apply com-w-1/4;
-
-    .mentor-info {
-      @apply com-flex com-items-center com-gap-3;
-
-      img {
-        @apply com-w-12 com-h-12 com-rounded-full com-object-cover;
-      }
-
-      .mentor-name {
-        @apply com-font-semibold;
-      }
-
-      .mentor-designation {
-        @apply com-text-sm com-text-gray-600;
-      }
+  .assigned-teams {
+    h3 {
+      @apply com-text-lg com-font-semibold com-mb-3;
     }
-  }
-
-  .teams-cell {
-    @apply com-w-1/2;
 
     .team-tags {
       @apply com-flex com-flex-wrap com-gap-2;
@@ -81,20 +79,26 @@ table {
     }
   }
 
-  .actions-cell {
-    @apply com-w-1/4;
-
-    select {
-      @apply com-px-4 com-py-2 com-border com-border-gray-300 com-rounded com-w-full;
+  .search-section {
+    h3 {
+      @apply com-text-lg com-font-semibold com-mb-3;
     }
   }
-}
 
-.no-mentors,
-.select-round-message {
-  @apply com-text-center com-py-12 com-text-gray-600;
+  .teams-list {
+    @apply com-flex com-flex-col com-gap-2 com-max-h-96 com-overflow-y-auto;
 
-  p {
-    @apply com-text-lg;
+    .team-item {
+      @apply com-flex com-justify-between com-items-center com-p-3 com-border com-border-gray-300 com-rounded com-cursor-pointer;
+      @apply hover:com-bg-gray-50;
+
+      span {
+        @apply com-font-medium;
+      }
+    }
+
+    .no-teams {
+      @apply com-text-center com-py-8 com-text-gray-500;
+    }
   }
 }

@@ -32,6 +32,7 @@ export interface IHackathonTeam {
   track: IHackathonTrack;
   problem_statement: IHackathonProblemStatement;
   hackathon_team_round_submissions: IHackathonTeamRoundSubmission[];
+  team_members_count: number;
 }
 
 export enum EHackathonRegistrationStatus {

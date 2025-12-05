@@ -41,6 +41,14 @@ export class HackathonTeamRoundScoreService {
     );
   }
 
+  assignmentSummary(hackathonId: number | string): Observable<any[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<any[]>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.ASSIGNMENT_SUMMARY),
+      { params },
+    );
+  }
+
   index(hackathonId: number | string): Observable<IHackathonTeamRoundScore[]> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<IHackathonTeamRoundScore[]>(
@@ -71,5 +79,18 @@ export class HackathonTeamRoundScoreService {
     return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.DESTROY), {
       params,
     });
+  }
+
+  unassignJudge(mentorId: number, teamId: number, roundId: number): Observable<boolean> {
+    const params = new HttpParams()
+      .set('hackathon_judge_id', mentorId)
+      .set('hackathon_team_id', teamId)
+      .set('round_id', roundId);
+    return this.http.delete<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.UNASSIGN_MENTOR),
+      {
+        params,
+      },
+    );
   }
 }

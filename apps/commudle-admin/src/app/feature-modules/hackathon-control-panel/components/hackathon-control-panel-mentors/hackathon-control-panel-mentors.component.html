@@ -1,89 +1,93 @@
 <nb-card>
   <nb-card-header>
-    <div class="header">Mentor Assignment</div>
+    <span> Mentor Team Allocation Interface </span>
+    <!-- <commudle-help-section [helpDictionaryName]="'hackathon-dates'"></commudle-help-section> -->
   </nb-card-header>
   <nb-card-body>
-    <div class="round-selector">
-      <label>Select Round:</label>
-      <select
-        #roundSelect
-        (change)="onRoundChange(+roundSelect.value)"
-        [disabled]="isLoading"
-        [value]="selectedRound?.id"
-      >
-        <option value="">-- Select a Round --</option>
-        <option *ngFor="let round of rounds" [value]="round.id" [selected]="selectedRound?.id === round.id">
-          {{ round.name }}
-        </option>
-      </select>
-      <!-- <button
-        nbButton
-        status="primary"
-        size="small"
-        (click)="shiftTeamsToNextRound()"
-        [disabled]="!selectedRound || isLoading"
-      >
-        <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-        Shift All Teams to Next Round
-      </button> -->
-    </div>
-
-    <div *ngIf="isLoading" class="loading-spinner">
-      <nb-spinner></nb-spinner>
-    </div>
-
-    <div *ngIf="!isLoading && selectedRound && mentors.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th>Mentor</th>
-            <th>Assigned Teams</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let mentor of mentors">
-            <td class="mentor-cell">
-              <div class="mentor-info">
-                <img *ngIf="mentor.photo?.url" [src]="mentor.photo.url" [alt]="mentor.name" />
-                <div>
-                  <div class="mentor-name">{{ mentor.name }}</div>
-                  <div class="mentor-designation">{{ mentor.designation }} at {{ mentor.company }}</div>
-                </div>
-              </div>
-            </td>
-            <td class="teams-cell">
-              <div class="team-tags">
-                <nb-tag
-                  *ngFor="let team of getAssignedTeams(mentor.id)"
-                  status="success"
-                  [removable]="true"
-                  (remove)="removeTeamFromMentor(mentor.id, team.id)"
-                  [text]="team.name"
-                >
-                </nb-tag>
-                <span *ngIf="getAssignedTeams(mentor.id).length === 0" class="no-teams">No teams assigned</span>
-              </div>
-            </td>
-            <td class="actions-cell">
-              <select #teamSelect (change)="addTeamToMentor(mentor.id, +teamSelect.value); teamSelect.value = ''">
-                <option value="">Add Team</option>
-                <option *ngFor="let team of getUnassignedTeams(mentor.id)" [value]="team.id">
-                  {{ team.name }}
-                </option>
-              </select>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div *ngIf="!isLoading && selectedRound && mentors.length === 0" class="no-mentors">
-      <p>No mentors found. Please add mentors from the "Judges, Speakers & Mentors" section.</p>
-    </div>
-
-    <div *ngIf="!selectedRound && !isLoading" class="select-round-message">
-      <p>Please select a round to view and assign teams to mentors.</p>
-    </div>
+    <commudle-data-table
+      *ngIf="rounds.length > 0 && mentors.length > 0"
+      [columns]="tableColumns"
+      [rows]="tableRows"
+      [config]="tableConfig"
+      [isLoading]="isLoading"
+    >
+    </commudle-data-table>
   </nb-card-body>
 </nb-card>
+
+<ng-template #mentorCellTemplate let-row="row" let-column="column" let-judge="value">
+  <div class="mentor-info">
+    <img *ngIf="judge.photo?.i320" [src]="judge.photo.i320" [alt]="judge.name" />
+    <span>{{ judge.name }}</span>
+  </div>
+</ng-template>
+
+<ng-template #roundCellTemplate let-row="row" let-column="column" let-value="value">
+  <div
+    class="team-assignments-compact"
+    (click)="openTeamSelector(value.mentorId, value.roundId, value.mentorName, value.roundName)"
+  >
+    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-summary">
+      <span class="team-name">{{ teamAssignmentData[value.mentorId][value.roundId].assignedTeams[0].name }}</span>
+      <span class="team-count" *ngIf="teamAssignmentData[value.mentorId][value.roundId].count > 1">
+        +{{ teamAssignmentData[value.mentorId][value.roundId].count - 1 }}
+      </span>
+    </div>
+    <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">+0</div>
+  </div>
+</ng-template>
+
+<commudle-sidebar
+  [heading]="'Assign Teams'"
+  [position]="ESidebarPosition.RIGHT"
+  [expandedWidth]="ESidebarWidth.XXL"
+  [forWindow]="true"
+  [eventName]="sidebarEventName"
+  (toggleSidebar)="closeSidebar()"
+>
+  <div class="sidebar-content">
+    <div class="sidebar-info">
+      <p><strong>Mentor:</strong> {{ selectedMentorName || 'No mentor selected' }}</p>
+      <p><strong>Round:</strong> {{ selectedRoundName || 'No round selected' }}</p>
+    </div>
+
+    <div class="assigned-teams" *ngIf="selectedMentorId && selectedRoundId">
+      <h3>Assigned Teams</h3>
+      <div class="team-tags">
+        <nb-tag
+          *ngFor="let team of teamAssignmentData[selectedMentorId]?.[selectedRoundId]?.assignedTeams"
+          status="success"
+          [removable]="true"
+          (remove)="removeTeamFromMentor(selectedMentorId, team.id, selectedRoundId)"
+          [text]="team.name"
+        >
+        </nb-tag>
+        <span *ngIf="!teamAssignmentData[selectedMentorId]?.[selectedRoundId]?.count" class="no-teams">
+          No teams assigned yet
+        </span>
+      </div>
+    </div>
+
+    <div class="search-section">
+      <h3>Add Teams</h3>
+      <input
+        nbInput
+        fullWidth
+        type="text"
+        placeholder="Search teams..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="teams-list">
+      <div *ngFor="let team of filteredUnassignedTeams" class="team-item">
+        <span>{{ team.name }}</span>
+        <button nbButton size="tiny" status="primary" (click)="assignTeam(team.id)">Add</button>
+      </div>
+      <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
+        <p>No teams available</p>
+      </div>
+    </div>
+  </div>
+</commudle-sidebar>
