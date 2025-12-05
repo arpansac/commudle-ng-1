@@ -9,6 +9,7 @@ export enum ESidebarWidth {
   MEDIUM = 'medium',
   LARGE = 'large',
   XL = 'xl',
+  XXL = 'xxl',
 }
 
 export enum ESidebarHeading {
