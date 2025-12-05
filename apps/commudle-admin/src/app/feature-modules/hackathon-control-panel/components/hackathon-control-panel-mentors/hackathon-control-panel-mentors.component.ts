@@ -197,7 +197,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
 
   removeTeamFromMentor(mentorId: number, teamId: number, roundId: number): void {
     this.hackathonTeamRoundScoreService
-      .unassignJudge(mentorId, teamId, roundId)
+      .unassignMentor(mentorId, teamId, roundId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

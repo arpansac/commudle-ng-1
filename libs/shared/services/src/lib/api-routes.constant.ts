@@ -1093,13 +1093,8 @@ export const API_ROUTES = {
   },
 
   HACKATHON_TEAM_ROUND_SCORES: {
-    INDEX: 'api/v2/hackathon_team_round_scores', //GET
-    SHOW: 'api/v2/hackathon_team_round_scores/show', //GET
-    UPDATE: 'api/v2/hackathon_team_round_scores', //PUT
-    DESTROY: 'api/v2/hackathon_team_round_scores', //DELETE
     UNASSIGN_MENTOR: 'api/v2/hackathon_team_round_scores/unassign_mentor', //DELETE
     ASSIGN_JUDGE: 'api/v2/hackathon_team_round_scores/assign_judge', //POST
-    BULK_ASSIGN_JUDGES: 'api/v2/hackathon_team_round_scores/bulk_assign_judges', //POST
     ASSIGNMENT_SUMMARY: 'api/v2/hackathon_team_round_scores/assignment_summary', //GET
   },
 };

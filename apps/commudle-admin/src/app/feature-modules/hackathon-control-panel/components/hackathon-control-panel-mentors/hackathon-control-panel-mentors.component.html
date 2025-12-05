@@ -81,9 +81,9 @@
     </div>
 
     <div class="teams-list">
-      <div *ngFor="let team of filteredUnassignedTeams" class="team-item">
+      <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
         <span>{{ team.name }}</span>
-        <button nbButton size="tiny" status="primary" (click)="assignTeam(team.id)">Add</button>
+        <button nbButton size="tiny" status="primary">Add</button>
       </div>
       <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
         <p>No teams available</p>
