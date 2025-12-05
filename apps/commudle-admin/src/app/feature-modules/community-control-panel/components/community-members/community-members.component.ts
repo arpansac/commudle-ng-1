@@ -576,7 +576,6 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   getActivityScoreThresholds() {
     this.communityService.getActivityScoreThresholds().subscribe((data) => {
       this.activityScoreThresholds = data;
-      console.log(this.activityScoreThresholds);
     });
   }
 
