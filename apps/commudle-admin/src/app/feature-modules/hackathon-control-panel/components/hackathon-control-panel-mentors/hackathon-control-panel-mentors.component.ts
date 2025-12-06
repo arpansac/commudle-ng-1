@@ -10,7 +10,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { faPlus, faMinus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faArrowRight, faUserCircle, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
+import * as moment from 'moment';
 import { EDbModels, IHackathonTeam, IRound } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { ToastrService, SeoService, RoundService, HackathonTeamRoundScoreService } from '@commudle/shared-services';
@@ -44,20 +45,19 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     frozenColumns: true,
     resizableColumns: true,
   };
-
   @ViewChild('roundCellTemplate') roundCellTemplate!: TemplateRef<unknown>;
   @ViewChild('mentorCellTemplate') mentorCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('roundHeaderTemplate') roundHeaderTemplate!: TemplateRef<unknown>;
 
   selectedMentorId: number;
   selectedRoundId: number;
   selectedRoundName: string;
-  selectedMentorName: string;
+  selectedMentor: IHackathonJudge;
   searchQuery = '';
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
   sidebarEventName = 'mentor-team-assignment';
 
-  // Computed data object for template
   teamAssignmentData: {
     [mentorId: number]: {
       [roundId: number]: {
@@ -67,13 +67,21 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     };
   } = {};
 
+  teamMentorCounts: Map<number, number> = new Map();
   filteredUnassignedTeams: IHackathonTeam[] = [];
 
   readonly icons = {
     faPlus,
     faMinus,
     faArrowRight,
+    faUserCircle,
+    faExpand,
+    faCompress,
   };
+
+  isFullscreen = false;
+
+  moment = moment;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -221,6 +229,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
 
   buildTeamAssignmentData(): void {
     this.teamAssignmentData = {};
+    this.teamMentorCounts.clear();
+
     this.mentors.forEach((mentor) => {
       this.teamAssignmentData[mentor.id] = {};
       this.rounds.forEach((round) => {
@@ -231,6 +241,10 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
           assignedTeams,
           count: assignedTeams.length,
         };
+
+        teamIds.forEach((teamId) => {
+          this.teamMentorCounts.set(teamId, (this.teamMentorCounts.get(teamId) || 0) + 1);
+        });
       });
     });
   }
@@ -241,11 +255,11 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     return this.teams.filter((team) => !teamIds.includes(team.id));
   }
 
-  openTeamSelector(mentorId: number, roundId: number, mentorName: string, roundName: string): void {
+  openTeamSelector(mentorId: number, roundId: number, mentor: IHackathonJudge, roundName: string): void {
     this.selectedMentorId = mentorId;
     this.selectedRoundId = roundId;
     this.selectedRoundName = roundName;
-    this.selectedMentorName = mentorName;
+    this.selectedMentor = mentor;
     this.searchQuery = '';
     this.updateFilteredTeams();
     this.sidebarService.openSidebar(this.sidebarEventName);
@@ -257,7 +271,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     this.selectedMentorId = null;
     this.selectedRoundId = null;
     this.selectedRoundName = null;
-    this.selectedMentorName = null;
+    this.selectedMentor = null;
     this.searchQuery = '';
     this.filteredUnassignedTeams = [];
     this.cdr.markForCheck();
@@ -305,6 +319,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         title: round.name,
         width: '200px',
         cellTemplate: this.roundCellTemplate,
+        headerTemplate: this.roundHeaderTemplate,
+        round: round,
       })),
     ];
   }
@@ -317,11 +333,16 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         acc[`round_${round.id}`] = {
           mentorId: mentor.id,
           roundId: round.id,
-          mentorName: mentor.name,
+          mentor: mentor,
           roundName: round.name,
         };
         return acc;
       }, {}),
     }));
+  }
+
+  toggleFullscreen(): void {
+    this.isFullscreen = !this.isFullscreen;
+    this.cdr.markForCheck();
   }
 }

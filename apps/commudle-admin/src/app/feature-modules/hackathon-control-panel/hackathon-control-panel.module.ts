@@ -61,7 +61,6 @@ import { HackathonCollaborationCommunitiesComponent } from 'apps/commudle-admin/
 import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-tracks-prizes/hackathon-prize-form/hackathon-prize-form.component';
 import { HackathonControlPanelMentorsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentors/hackathon-control-panel-mentors.component';
 import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
-import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 
 @NgModule({
   declarations: [
@@ -113,6 +112,7 @@ import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/
     //components
     SidebarComponent,
     HelpSectionComponent,
+    DataTableComponent,
     //nebular
     NbButtonModule,
     NbInputModule,
@@ -127,7 +127,6 @@ import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/
     NbTagModule,
     NbTooltipModule,
     NbAutocompleteModule,
-    DataTableComponent,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

@@ -1,7 +1,13 @@
-<nb-card>
+<nb-card [ngClass]="{ 'fullscreen-card': isFullscreen }">
   <nb-card-header>
     <span> Mentor Team Allocation Interface </span>
-    <!-- <commudle-help-section [helpDictionaryName]="'hackathon-dates'"></commudle-help-section> -->
+    <button
+      (click)="toggleFullscreen()"
+      class="fullscreen-button"
+      [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+    >
+      <fa-icon [icon]="isFullscreen ? icons.faCompress : icons.faExpand"></fa-icon>
+    </button>
   </nb-card-header>
   <nb-card-body>
     <commudle-data-table
@@ -15,25 +21,45 @@
   </nb-card-body>
 </nb-card>
 
+<ng-template #roundHeaderTemplate let-column="column">
+  <div class="round-header">
+    <span class="round-header-name">{{ column.round.name }}</span>
+    <span class="round-header-datetime">
+      {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
+    </span>
+    <span class="round-header-datetime" *ngIf="column.round.end_date">
+      {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
+    </span>
+  </div>
+</ng-template>
+
 <ng-template #mentorCellTemplate let-row="row" let-column="column" let-judge="value">
   <div class="mentor-info">
-    <img *ngIf="judge.photo?.i320" [src]="judge.photo.i320" [alt]="judge.name" />
-    <span>{{ judge.name }}</span>
+    <img *ngIf="judge.photo?.i320" [src]="judge.photo.i320" [alt]="judge.name" class="mentor-avatar" />
+    <div *ngIf="!judge.photo?.i320" class="mentor-avatar-placeholder">
+      <span>{{ judge.name.charAt(0).toUpperCase() }}</span>
+    </div>
+    <div class="mentor-details">
+      <span class="mentor-name">{{ judge.name }}</span>
+      <span class="mentor-designation" *ngIf="judge.designation">{{ judge.designation }}</span>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #roundCellTemplate let-row="row" let-column="column" let-value="value">
   <div
     class="team-assignments-compact"
-    (click)="openTeamSelector(value.mentorId, value.roundId, value.mentorName, value.roundName)"
+    (click)="openTeamSelector(value.mentorId, value.roundId, value.mentor, value.roundName)"
   >
-    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-summary">
-      <span class="team-name">{{ teamAssignmentData[value.mentorId][value.roundId].assignedTeams[0].name }}</span>
-      <span class="team-count" *ngIf="teamAssignmentData[value.mentorId][value.roundId].count > 1">
-        +{{ teamAssignmentData[value.mentorId][value.roundId].count - 1 }}
-      </span>
+    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-summary custom-scrollbar">
+      @for(team of teamAssignmentData[value.mentorId][value.roundId].assignedTeams; track team.id){
+      <span class="team-name">{{ team.name }}</span>
+      }
     </div>
-    <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">+0</div>
+    <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      Add teams
+    </div>
   </div>
 </ng-template>
 
@@ -47,7 +73,23 @@
 >
   <div class="sidebar-content">
     <div class="sidebar-info">
-      <p><strong>Mentor:</strong> {{ selectedMentorName || 'No mentor selected' }}</p>
+      @if (selectedMentor) {
+      <div class="mentor-info">
+        <img
+          *ngIf="selectedMentor.photo?.i320"
+          [src]="selectedMentor.photo.i320"
+          [alt]="selectedMentor.name"
+          class="mentor-avatar"
+        />
+        <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
+          <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+        </div>
+        <div class="mentor-details">
+          <span class="mentor-name">{{ selectedMentor.name }}</span>
+          <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+        </div>
+      </div>
+      }
       <p><strong>Round:</strong> {{ selectedRoundName || 'No round selected' }}</p>
     </div>
 
@@ -82,7 +124,18 @@
 
     <div class="teams-list">
       <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
-        <span>{{ team.name }}</span>
+        <div class="team-info">
+          <span>{{ team.name }}</span>
+          <fa-icon
+            *ngIf="teamMentorCounts.get(team.id) > 0"
+            [icon]="icons.faUserCircle"
+            class="mentor-icon"
+            [nbTooltip]="
+              teamMentorCounts.get(team.id) + ' mentor' + (teamMentorCounts.get(team.id) > 1 ? 's' : '') + ' assigned'
+            "
+            nbTooltipPlacement="top"
+          ></fa-icon>
+        </div>
         <button nbButton size="tiny" status="primary">Add</button>
       </div>
       <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
