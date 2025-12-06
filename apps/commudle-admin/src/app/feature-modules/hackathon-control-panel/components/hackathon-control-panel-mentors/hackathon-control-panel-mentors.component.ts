@@ -309,7 +309,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     this.tableColumns = [
       {
         key: 'mentor',
-        title: 'Mentors',
+        title: 'Mentors ⬇️ / Rounds ➡️',
         width: '250px',
         frozen: true,
         cellTemplate: this.mentorCellTemplate,
