@@ -1,0 +1,87 @@
+<nb-card class="scoring-dialog">
+  <nb-card-header>
+    <div class="header-content">
+      <h4 class="dialog-title">Score Team</h4>
+      <button nbButton ghost size="small" (click)="close()" class="close-button" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </div>
+    <div class="team-info-header">
+      <p class="team-name">{{ teamData?.team_name }}</p>
+      <span class="round-badge">{{ teamData?.round_name }}</span>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div *ngIf="isLoadingCriteria" class="loading-section">
+      <nb-icon icon="loader-outline" class="spinning"></nb-icon>
+      <p>Loading marking criteria...</p>
+    </div>
+
+    <div *ngIf="!isLoadingCriteria" class="info-section">
+      <div class="info-item">
+        <span class="info-label">Track:</span>
+        <span class="info-value">{{ teamData?.track_name || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Members:</span>
+        <span class="info-value">{{ teamData?.team_members_count }}</span>
+      </div>
+    </div>
+
+    <form *ngIf="!isLoadingCriteria" [formGroup]="scoreForm" class="score-form">
+      <div *ngIf="hasMarkingCriteria && markingCriteria.length > 0" class="criteria-section">
+        <div class="section-header">
+          <h5 class="section-title">Marking Criteria</h5>
+          <div class="total-score-display">
+            <span class="total-label">Total Score:</span>
+            <span class="total-value">{{ totalScore }}</span>
+          </div>
+        </div>
+        <div *ngFor="let criteria of markingCriteria; let i = index" class="criteria-item">
+          <label class="criteria-label">
+            {{ criteria.text }}
+            <span class="criteria-range">({{ criteria.min }} - {{ criteria.max }})</span>
+          </label>
+          <select class="score-select" [formControlName]="'criteria_' + i">
+            <option value="" disabled selected>Select score</option>
+            <option *ngFor="let score of getScoreOptions(criteria.min, criteria.max)" [value]="score">
+              {{ score }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="!hasMarkingCriteria || markingCriteria.length === 0" class="total-score-section">
+        <label class="score-label">Total Score (0 - 100)</label>
+        <select class="score-select" formControlName="total_score">
+          <option value="" disabled selected>Select score</option>
+          <option *ngFor="let score of getScoreOptions(0, 100)" [value]="score">
+            {{ score }}
+          </option>
+        </select>
+      </div>
+
+      <div class="feedback-section">
+        <label class="feedback-label">Feedback (Optional)</label>
+        <textarea
+          nbInput
+          fullWidth
+          placeholder="Add your feedback for the team..."
+          formControlName="feedback"
+          rows="4"
+        ></textarea>
+      </div>
+    </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="dialog-actions">
+      <button nbButton ghost (click)="close()" [disabled]="isSubmitting">Cancel</button>
+      <button nbButton status="primary" [disabled]="isSubmitting || scoreForm.invalid" (click)="submitScore()">
+        <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Submit Score' }}
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

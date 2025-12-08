@@ -1,0 +1,67 @@
+<nb-card>
+  <nb-card-header>
+    <div class="header-content">
+      <span>Mentor Dashboard</span>
+      <select *ngIf="rounds.length > 0" [value]="selectedRoundId" (change)="onRoundChange($event)" class="round-select">
+        <option *ngFor="let round of rounds" [value]="round.id">
+          {{ round.name }}
+        </option>
+      </select>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="isLoading" class="loading-state">
+      <p>Loading teams...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredTeams.length === 0" class="empty-state">
+      <p>No teams assigned for this round</p>
+    </div>
+
+    <table *ngIf="!isLoading && filteredTeams.length > 0" class="teams-table">
+      <thead>
+        <tr>
+          <th>Team Name</th>
+          <th>Track</th>
+          <th>Members count</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teamData of filteredTeams">
+          <td class="team-name">{{ teamData.team.name }}</td>
+          <td>{{ teamData.team.track?.name || 'N/A' }}</td>
+          <td>{{ teamData.team.team_members_count }}</td>
+          <td>
+            <span
+              class="status-badge"
+              [class.submitted]="teamData.score?.status === 'submitted'"
+              [class.draft]="teamData.score?.status === 'draft'"
+            >
+              @if(teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED){
+              <nb-icon icon="checkmark-circle-outline"></nb-icon>
+              Submitted } @else if(teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT){
+              <nb-icon icon="clock-outline"></nb-icon>
+              Draft } @else {
+              <nb-icon icon="minus-circle-outline"></nb-icon>
+              Not Scored }
+            </span>
+          </td>
+          <td>
+            <button
+              *ngIf="selectedRound?.has_marking_criteria"
+              nbButton
+              size="small"
+              status="primary"
+              (click)="openScoringDialog(teamData)"
+            >
+              {{ teamData.score ? 'Update Score' : 'Score Team' }}
+            </button>
+            <span *ngIf="!selectedRound?.has_marking_criteria" class="no-scoring">-</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>

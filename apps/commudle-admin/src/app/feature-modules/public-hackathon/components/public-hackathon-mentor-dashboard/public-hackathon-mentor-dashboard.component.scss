@@ -1,0 +1,71 @@
+.header-content {
+  @apply com-flex com-justify-between com-items-center com-gap-4;
+
+  .round-select {
+    @apply com-min-w-[250px] com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
+    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+  }
+}
+
+.loading-state {
+  @apply com-text-center com-py-12;
+
+  p {
+    @apply com-text-gray-500;
+  }
+}
+
+.empty-state {
+  @apply com-text-center com-py-12 com-bg-gray-100 com-rounded-lg;
+
+  p {
+    @apply com-text-gray-600;
+  }
+}
+
+.teams-table {
+  @apply com-w-full com-border-collapse;
+
+  thead {
+    @apply com-bg-gray-100;
+
+    tr {
+      th {
+        @apply com-px-4 com-py-3 com-text-left com-text-sm com-font-semibold com-text-gray-700;
+        @apply com-border-b com-border-gray-200;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      @apply com-border-b com-border-gray-200;
+      @apply hover:com-bg-gray-50 com-transition-colors;
+
+      td {
+        @apply com-px-4 com-py-3 com-text-sm com-text-gray-700;
+
+        &.team-name {
+          @apply com-font-medium com-text-gray-900;
+        }
+
+        .status-badge {
+          @apply com-inline-block com-px-2 com-py-1 com-rounded com-text-xs com-font-medium;
+          @apply com-bg-gray-100 com-text-gray-600;
+
+          &.draft {
+            @apply com-bg-yellow-100 com-text-yellow-800;
+          }
+
+          &.submitted {
+            @apply com-bg-green-100 com-text-green-800;
+          }
+        }
+
+        .no-scoring {
+          @apply com-text-gray-400;
+        }
+      }
+    }
+  }
+}

@@ -6,10 +6,11 @@ export interface IHackathonTeamRoundScore {
   score: any;
   created_at: Date;
   updated_at: Date;
+  status: EHackathonTeamRoundScoreStatus;
 }
 
-export interface IBulkAssignmentResponse {
-  created_assignments: IHackathonTeamRoundScore[];
-  errors: string[];
-  total_created: number;
+export enum EHackathonTeamRoundScoreStatus {
+  NOT_CREATED = 'not_created',
+  DRAFT = 'draft',
+  SUBMITTED = 'submitted',
 }

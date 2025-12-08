@@ -980,6 +980,7 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
     MARKING_CRITERIA: 'api/v2/round/marking_criteria', //GET
+    SHOW_MARKING_CRITERIA: 'api/v2/round/show_marking_criteria', //GET
     PUBLIC: {
       INDEX: 'api/v2/round/public',
     },
@@ -1096,5 +1097,7 @@ export const API_ROUTES = {
     UNASSIGN_MENTOR: 'api/v2/hackathon_team_round_scores/unassign_mentor', //DELETE
     ASSIGN_JUDGE: 'api/v2/hackathon_team_round_scores/assign_judge', //POST
     ASSIGNMENT_SUMMARY: 'api/v2/hackathon_team_round_scores/assignment_summary', //GET
+    TEAMS_BY_ROUND: 'api/v2/hackathon_team_round_scores/teams_by_round', //GET
+    SUBMIT_SCORE: 'api/v2/hackathon_team_round_scores/submit_score', //PUT
   },
 };

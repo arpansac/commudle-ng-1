@@ -10,6 +10,8 @@ import {
   NbStepperModule,
   NbIconModule,
   NbTooltipModule,
+  NbDialogModule,
+  NbSelectModule,
 } from '@commudle/theme';
 import { PublicHackathonHomepageComponent } from './components/public-hackathon-homepage/public-hackathon-homepage.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -40,6 +42,8 @@ import { HackathonRegisteredCardComponent } from 'apps/commudle-admin/src/app/ap
 import { PublicHackathonCollaborationCommunitiesComponent } from './components/public-hackathon-collaboration-communities/public-hackathon-collaboration-communities.component';
 import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/ppt-upload-dialog/ppt-upload-dialog.component';
 import { HackathonRoundCardComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/hackathon-round-card/hackathon-round-card.component';
+import { PublicHackathonMentorDashboardComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-mentor-dashboard/public-hackathon-mentor-dashboard.component';
+import { MentorScoringDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-mentor-dashboard/mentor-scoring-dialog/mentor-scoring-dialog.component';
 
 @NgModule({
   imports: [
@@ -54,6 +58,8 @@ import { HackathonRoundCardComponent } from 'apps/commudle-admin/src/app/feature
     NbStepperModule,
     NbIconModule,
     NbTooltipModule,
+    NbDialogModule,
+    NbSelectModule,
     FontAwesomeModule,
     SharedComponentsModule,
     NewSharedComponentsModule,
@@ -85,6 +91,8 @@ import { HackathonRoundCardComponent } from 'apps/commudle-admin/src/app/feature
     PublicHackathonCollaborationCommunitiesComponent,
     PptUploadDialogComponent,
     HackathonRoundCardComponent,
+    PublicHackathonMentorDashboardComponent,
+    MentorScoringDialogComponent,
   ],
 })
 export class PublicHackathonModule {}
