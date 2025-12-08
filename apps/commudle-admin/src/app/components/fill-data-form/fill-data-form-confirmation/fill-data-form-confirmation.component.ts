@@ -139,7 +139,11 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   }
 
   private seoTags(data) {
-    this.seoService.setTitle(` Submitted | ${data.name}`);
+    let title = `Submitted | ${data?.name}`;
+    if (this.event && this.event.kommunity) {
+      title = `Submitted |  ${this.event.name} | ${this.event.kommunity.name} | ${data.name}`;
+    }
+    this.seoService.setTitle(title);
   }
 
   //get form entityType
@@ -169,6 +173,7 @@ export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
       this.approvalBased = this.dataFormEntity.event_data_form_entity_group.approval_based_payments;
       this.getSpeakers();
       this.getVolunteers();
+      this.seoTags(this.dataFormEntity);
       this.isLoading = false;
     });
   }

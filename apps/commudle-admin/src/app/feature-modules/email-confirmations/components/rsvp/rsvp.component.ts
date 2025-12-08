@@ -100,6 +100,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
         this.event = data;
         this.communitiesService.pGetCommunityDetails(this.event.kommunity_id).subscribe((data) => {
           this.community = data;
+          this.updateSEOTitle();
           this.fetchCommunityDetails();
           this.getVolunteers();
           this.onAcceptRoleButton();
@@ -113,6 +114,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
       this.event = data.event;
       this.community = data.community;
       this.dferg = data.data_form_entity_response_group;
+      this.updateSEOTitle();
       this.fetchCommunityDetails();
       this.getVolunteers();
       this.showConfirmationDialog = true;
@@ -124,6 +126,7 @@ export class RsvpComponent implements OnInit, OnDestroy {
       this.community = data.community;
       this.event = data.event;
       this.dferg = data.user_event_registration;
+      this.updateSEOTitle();
       this.fetchCommunityDetails();
       this.getVolunteers();
       this.showConfirmationDialog = true;
@@ -189,5 +192,11 @@ export class RsvpComponent implements OnInit, OnDestroy {
       this.communityLeaders = data.users;
       this.isLoadingCommunityLeaders = false;
     });
+  }
+
+  private updateSEOTitle() {
+    if (this.event && this.community) {
+      this.seoService.setTitle(`RSVP | ${this.event.name} | ${this.community.name}`);
+    }
   }
 }
