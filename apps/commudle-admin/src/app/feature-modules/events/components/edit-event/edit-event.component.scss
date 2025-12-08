@@ -3,66 +3,83 @@
     @apply com-mx-0;
   }
 
-  .save-button-top {
-    margin: 0 0 1.5rem 0;
-  }
-  .save-button-bottom {
-    margin: 1.5rem 0 0 0;
+  .back-button {
+    @apply com-mt-6 com-mb-4;
   }
 
-  div[role='group'],
-  div[role='individual'] {
+  .card-container {
+    @apply com-m-0 md:com-min-w-[50vw];
+  }
+
+  nb-card-body {
+    @apply md:com-p-6 com-px-4 com-pt-6 com-pb-4 com-rounded-10;
+  }
+
+  .page-title {
+    @apply com-text-3xl com-font-bold com-text-Yankees-Blue com-m-0 com-mb-7;
+  }
+
+  .info-alert {
     @apply com-mb-5;
-  }
 
-  nb-alert {
     p {
-      color: white;
+      @apply com-text-white com-m-0;
     }
   }
 
-  .event-date-details {
-    @apply com-mb-5;
-    > div {
-      display: flex;
-      flex-wrap: wrap;
-      > div {
-        margin-right: 1.5rem;
+  .event-edit-form {
+    @apply com-w-full;
+  }
+
+  .form-group {
+    @apply com-mb-6;
+
+    label {
+      @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue com-mb-3;
+
+      .required {
+        @apply com-text-Infra-Red;
+      }
+    }
+
+    .form-input {
+      @apply com-rounded-lg;
+    }
+  }
+
+  .radio-group {
+    @apply com-flex com-flex-col com-gap-3;
+
+    .radio-option {
+      @apply com-flex com-items-center com-gap-2;
+
+      .radio-input {
+        @apply com-w-4 com-h-4 com-text-primary-500 com-border-gray-300 focus:com-ring-2 focus:com-ring-primary-500;
       }
 
-      @media screen and (max-width: 640px) {
-        > div {
-          margin: 0.5rem 0;
-        }
+      .radio-label {
+        @apply com-text-sm com-font-medium com-text-gray-700 com-m-0 com-cursor-pointer;
       }
     }
-    .required::after {
-      content: ' *';
+  }
+
+  .clone-fields-checkboxes {
+    @apply com-flex com-flex-col com-gap-3;
+
+    nb-checkbox {
+      @apply com-text-sm com-text-Yankees-Blue;
+    }
+  }
+
+  .form-actions {
+    @apply com-mt-6 com-pt-6 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+    .submit-button {
+      @apply com-text-base com-font-medium com-rounded-lg;
     }
   }
 }
 
-.backButton {
-  @apply com-mt-6 com-mb-2;
-}
-
-nb-card {
-  @apply com-m-0;
-}
-
-.event-type {
-  @apply com-mb-5;
-  > div {
-    @apply com-mt-2;
-    > div {
-      @apply com-flex com-gap-2 com-items-center;
-    }
-  }
-}
-
-input,
-.tox-editor-container,
-editor,
-.tag {
-  @apply com-mt-2;
+.timing-alert {
+  @apply com-mb-6;
 }
