@@ -1,4 +1,10 @@
-<nb-card [ngClass]="{ 'fullscreen-card': isFullscreen }">
+<nb-card
+  [ngClass]="{
+    'fullscreen-card': isFullscreen,
+    'sidebar-expanded': mainSidebarExpanded,
+    'sidebar-collapsed': !mainSidebarExpanded
+  }"
+>
   <nb-card-header>
     <span> Mentor Team Allocation Interface </span>
     <button
@@ -10,14 +16,16 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <commudle-data-table
-      *ngIf="rounds.length > 0 && mentors.length > 0"
-      [columns]="tableColumns"
-      [rows]="tableRows"
-      [config]="tableConfig"
-      [isLoading]="isLoading"
-    >
-    </commudle-data-table>
+    <div class="data-table com-overflow-hidden com-w-full com-h-[70dvh] com-relative">
+      <commudle-data-table
+        *ngIf="rounds.length > 0 && mentors.length > 0"
+        [columns]="tableColumns"
+        [rows]="tableRows"
+        [config]="tableConfig"
+        [isLoading]="isLoading"
+      >
+      </commudle-data-table>
+    </div>
   </nb-card-body>
 </nb-card>
 

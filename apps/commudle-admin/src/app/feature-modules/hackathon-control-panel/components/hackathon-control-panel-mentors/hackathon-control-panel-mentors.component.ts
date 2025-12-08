@@ -82,6 +82,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   isFullscreen = false;
 
   moment = moment;
+  mainSidebarEventName = 'hackathonDashboard';
+  mainSidebarExpanded = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -97,6 +99,10 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   ngOnInit(): void {
     this.seoService.noIndex(true);
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true, ESidebarPosition.RIGHT);
+    this.sidebarService.getSidebarVisibility(this.mainSidebarEventName).subscribe((data) => {
+      this.mainSidebarExpanded = data;
+      this.cdr.markForCheck();
+    });
     this.activatedRoute.parent.parent.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
       this.loadRounds();
