@@ -59,10 +59,14 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
         } else {
           this.onAcceptRoleButton();
         }
+        if (this.hackathon && this.hackathon.community) {
+          this.seoService.setTitle(`Confirm Role | ${this.hackathon.name} | ${this.hackathon.community.name}`);
+        } else {
+          this.seoService.setTitle(`Confirm Role`);
+        }
       });
     });
     this.fetchCurrentUserDetails();
-    this.seoService.setTitle('Confirm Role');
     this.seoService.noIndex(true);
   }
 

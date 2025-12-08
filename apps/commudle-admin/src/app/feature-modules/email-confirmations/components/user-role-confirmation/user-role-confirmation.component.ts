@@ -72,11 +72,14 @@ export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
         this.parentName = data.user_roles_user.parent_name;
         this.communityName = data.community?.name;
         this.eventName = data.event?.name;
+        if (this.communityName && this.eventName) {
+          this.seoService.setTitle(`Confirm Role | ${this.eventName} | ${this.communityName}`);
+        } else {
+          this.seoService.setTitle(`Confirm Role`);
+        }
         this.onAcceptRoleButton();
       });
     });
-
-    this.seoService.setTitle('Confirm Role');
     this.seoService.noIndex(true);
   }
 
