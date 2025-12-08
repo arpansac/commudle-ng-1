@@ -135,8 +135,7 @@ export class SearchBoxComponent implements OnInit {
   }
 
   onSubmit() {
-    const currentQuery = this.inputFormControl.value || this.query;
-    this.query = currentQuery;
+    this.query = this.inputFormControl.value?.name || this.inputFormControl.value || this.query;
     this.router.navigate(['/search', this.query]);
     this.showSearchBox = false;
   }
