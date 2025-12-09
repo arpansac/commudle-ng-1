@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@commudle/theme';
-import { IMarkingCriteria } from '@commudle/shared-models';
+import { IHackathon, IHackathonTeamRoundScore, IHackathonTeamScore, IMarkingCriteria } from '@commudle/shared-models';
 import { HackathonTeamRoundScoreService, ToastrService, RoundService } from '@commudle/shared-services';
 
 @Component({
@@ -10,7 +10,8 @@ import { HackathonTeamRoundScoreService, ToastrService, RoundService } from '@co
   styleUrls: ['./mentor-scoring-dialog.component.scss'],
 })
 export class MentorScoringDialogComponent implements OnInit {
-  @Input() teamData: any;
+  @Input() teamData: IHackathonTeamScore;
+  @Input() hackathon: IHackathon;
 
   scoreForm: FormGroup;
   isSubmitting = false;
@@ -32,7 +33,7 @@ export class MentorScoringDialogComponent implements OnInit {
   }
 
   loadMarkingCriteria(): void {
-    this.roundService.showMarkingCriteria(this.teamData.round_id).subscribe({
+    this.roundService.showMarkingCriteria(this.teamData.team.round.id).subscribe({
       next: (response) => {
         this.hasMarkingCriteria = response.has_marking_criteria;
         this.markingCriteria = response.marking_criteria || [];
@@ -48,19 +49,23 @@ export class MentorScoringDialogComponent implements OnInit {
 
   initForm(): void {
     const formControls = {};
+    const existingScore = this.teamData?.score;
 
     if (this.hasMarkingCriteria && this.markingCriteria.length > 0) {
       this.markingCriteria.forEach((criteria: IMarkingCriteria, index: number) => {
-        formControls[`criteria_${index}`] = ['', [Validators.required]];
+        const existingValue = existingScore?.score?.[index]?.score || '';
+        formControls[`criteria_${index}`] = [existingValue, [Validators.required]];
       });
     } else {
-      formControls['total_score'] = ['', [Validators.required]];
+      const existingTotal = existingScore?.total_score || '';
+      formControls['total_score'] = [existingTotal, [Validators.required]];
     }
 
-    formControls['feedback'] = [''];
+    formControls['remarks'] = [existingScore?.remarks || ''];
     this.scoreForm = this.fb.group(formControls);
 
     if (this.hasMarkingCriteria && this.markingCriteria.length > 0) {
+      this.calculateTotalScore();
       this.scoreForm.valueChanges.subscribe(() => this.calculateTotalScore());
     }
   }
@@ -84,40 +89,40 @@ export class MentorScoringDialogComponent implements OnInit {
     return options;
   }
 
-  submitScore(): void {
-    if (this.scoreForm.invalid) {
+  submitScore(status: 'submitted' | 'draft'): void {
+    if (status === 'submitted' && this.scoreForm.invalid) {
       this.toastrService.warningDialog('Please fill all required fields');
       return;
     }
 
     this.isSubmitting = true;
-    const scoreData = this.prepareScoreData();
+    const scoreData = this.prepareScoreData(status);
 
-    this.hackathonTeamRoundScoreService
-      .submitScore(this.teamData.team_id, this.teamData.round_id, scoreData)
-      .subscribe({
-        next: () => {
-          this.toastrService.successDialog('Score submitted successfully');
-          this.dialogRef.close(true);
-        },
-        error: () => {
-          this.toastrService.errorDialog('Failed to submit score');
-          this.isSubmitting = false;
-        },
-      });
+    this.hackathonTeamRoundScoreService.submitScore(scoreData, this.teamData.score.id, this.hackathon.id).subscribe({
+      next: () => {
+        this.toastrService.successDialog(
+          status === 'submitted' ? 'Score submitted successfully' : 'Score saved as draft',
+        );
+        this.dialogRef.close(true);
+      },
+      error: () => {
+        this.toastrService.errorDialog(status === 'submitted' ? 'Failed to submit score' : 'Failed to save draft');
+        this.isSubmitting = false;
+      },
+    });
   }
 
-  prepareScoreData(): any {
+  prepareScoreData(status: 'submitted' | 'draft'): any {
     const formValue = this.scoreForm.value;
     const scoreData: any = {
-      feedback: formValue.feedback,
+      remarks: formValue.remarks,
+      status: status,
     };
 
     if (this.hasMarkingCriteria && this.markingCriteria.length > 0) {
-      scoreData.criteria_scores = this.markingCriteria.map((criteria: IMarkingCriteria, index: number) => ({
+      scoreData.score = this.markingCriteria.map((criteria: IMarkingCriteria, index: number) => ({
         text: criteria.text,
         score: formValue[`criteria_${index}`],
-        max: criteria.max,
       }));
       scoreData.total_score = this.totalScore;
     } else {

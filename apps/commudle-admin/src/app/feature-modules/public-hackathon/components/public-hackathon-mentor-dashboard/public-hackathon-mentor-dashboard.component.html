@@ -11,7 +11,7 @@
   </nb-card-header>
   <nb-card-body>
     <div *ngIf="isLoading" class="loading-state">
-      <p>Loading teams...</p>
+      <app-loading-spinner></app-loading-spinner>
     </div>
 
     <div *ngIf="!isLoading && filteredTeams.length === 0" class="empty-state">
@@ -24,6 +24,7 @@
           <th>Team Name</th>
           <th>Track</th>
           <th>Members count</th>
+          <th>Total Score</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -31,8 +32,13 @@
       <tbody>
         <tr *ngFor="let teamData of filteredTeams">
           <td class="team-name">{{ teamData.team.name }}</td>
-          <td>{{ teamData.team.track?.name || 'N/A' }}</td>
+          <td>{{ teamData.team.track?.name || 'N/A' }} ({{ teamData.team.problem_statement?.display_id }})</td>
           <td>{{ teamData.team.team_members_count }}</td>
+          <td>
+            @if(teamData.score?.total_score !== null && teamData.score?.total_score !== undefined) {
+            {{ teamData.score.total_score }} / {{ getMaxScore() }}
+            } @else { - }
+          </td>
           <td>
             <span
               class="status-badge"
@@ -43,9 +49,9 @@
               <nb-icon icon="checkmark-circle-outline"></nb-icon>
               Submitted } @else if(teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT){
               <nb-icon icon="clock-outline"></nb-icon>
-              Draft } @else {
+              Draft } @else if(teamData.score?.status === EHackathonTeamRoundScoreStatus.NOT_CREATED){
               <nb-icon icon="minus-circle-outline"></nb-icon>
-              Not Scored }
+              Pending }
             </span>
           </td>
           <td>
@@ -56,7 +62,7 @@
               status="primary"
               (click)="openScoringDialog(teamData)"
             >
-              {{ teamData.score ? 'Update Score' : 'Score Team' }}
+              {{ teamData.score.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Score Team' }}
             </button>
             <span *ngIf="!selectedRound?.has_marking_criteria" class="no-scoring">-</span>
           </td>

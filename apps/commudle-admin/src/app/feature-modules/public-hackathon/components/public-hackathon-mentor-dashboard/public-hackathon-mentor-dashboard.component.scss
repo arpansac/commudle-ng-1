@@ -1,3 +1,6 @@
+nb-card {
+  @apply com-mx-0;
+}
 .header-content {
   @apply com-flex com-justify-between com-items-center com-gap-4;
 
@@ -50,7 +53,7 @@
         }
 
         .status-badge {
-          @apply com-inline-block com-px-2 com-py-1 com-rounded com-text-xs com-font-medium;
+          @apply com-flex com-items-center com-px-2 com-py-1 com-rounded com-text-xs com-font-medium com-w-max com-gap-1;
           @apply com-bg-gray-100 com-text-gray-600;
 
           &.draft {

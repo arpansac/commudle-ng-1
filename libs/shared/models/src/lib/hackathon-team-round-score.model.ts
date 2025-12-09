@@ -7,6 +7,8 @@ export interface IHackathonTeamRoundScore {
   created_at: Date;
   updated_at: Date;
   status: EHackathonTeamRoundScoreStatus;
+  remarks: string;
+  total_score: number;
 }
 
 export enum EHackathonTeamRoundScoreStatus {

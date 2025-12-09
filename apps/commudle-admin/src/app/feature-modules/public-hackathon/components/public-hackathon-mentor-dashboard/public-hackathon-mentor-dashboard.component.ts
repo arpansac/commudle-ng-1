@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathon, IRound, EHackathonTeamRoundScoreStatus } from '@commudle/shared-models';
+import { IHackathon, IRound, EHackathonTeamRoundScoreStatus, IHackathonTeamScore } from '@commudle/shared-models';
 import { HackathonTeamRoundScoreService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,7 +17,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   rounds: IRound[] = [];
   selectedRoundId: number;
   selectedRound: IRound;
-  filteredTeams: any[] = [];
+  filteredTeams: IHackathonTeamScore[] = [];
   isLoading = true;
 
   EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
@@ -51,7 +51,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.roundsData = data;
           this.rounds = data.map((item) => item.round);
           if (this.rounds.length > 0) {
-            this.selectedRoundId = this.rounds[0].id;
+            this.selectedRoundId = this.getActiveRoundId();
             this.filterTeamsByRound();
           }
           this.isLoading = false;
@@ -60,6 +60,16 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.isLoading = false;
         },
       });
+  }
+
+  getActiveRoundId(): number {
+    const now = new Date();
+    const activeRound = this.rounds.find((round) => {
+      const startDate = new Date(round.date);
+      const endDate = new Date(round.end_date);
+      return now >= startDate && now <= endDate;
+    });
+    return activeRound ? activeRound.id : this.rounds[0].id;
   }
 
   filterTeamsByRound(): void {
@@ -73,18 +83,11 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     this.filterTeamsByRound();
   }
 
-  openScoringDialog(teamData: any): void {
+  openScoringDialog(teamData: IHackathonTeamScore): void {
     const dialogRef = this.dialogService.open(MentorScoringDialogComponent, {
       context: {
-        teamData: {
-          team_id: teamData.team.id,
-          team_name: teamData.team.name,
-          round_id: this.selectedRoundId,
-          round_name: this.rounds.find((r) => r.id === this.selectedRoundId)?.name,
-          track_name: teamData.team.track?.name,
-          team_members_count: teamData.team.team_members_count,
-          score: teamData.score,
-        },
+        teamData: teamData,
+        hackathon: this.hackathon,
       },
     });
 
@@ -93,5 +96,10 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         this.loadTeamsByRound();
       }
     });
+  }
+
+  getMaxScore(): number {
+    if (!this.selectedRound?.marking_criteria) return 0;
+    return this.selectedRound.marking_criteria.reduce((sum, criteria) => sum + criteria.max, 0);
   }
 }

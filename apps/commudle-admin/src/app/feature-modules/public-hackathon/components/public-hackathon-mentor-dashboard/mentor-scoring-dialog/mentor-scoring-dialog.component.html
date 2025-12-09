@@ -7,25 +7,25 @@
       </button>
     </div>
     <div class="team-info-header">
-      <p class="team-name">{{ teamData?.team_name }}</p>
-      <span class="round-badge">{{ teamData?.round_name }}</span>
+      <p class="team-name">{{ teamData?.team.name }}</p>
+      <span class="round-badge">{{ teamData?.team.round.name }}</span>
     </div>
   </nb-card-header>
 
   <nb-card-body>
     <div *ngIf="isLoadingCriteria" class="loading-section">
-      <nb-icon icon="loader-outline" class="spinning"></nb-icon>
+      <app-loading-spinner></app-loading-spinner>
       <p>Loading marking criteria...</p>
     </div>
 
     <div *ngIf="!isLoadingCriteria" class="info-section">
       <div class="info-item">
         <span class="info-label">Track:</span>
-        <span class="info-value">{{ teamData?.track_name || 'N/A' }}</span>
+        <span class="info-value">{{ teamData?.team.track.name || 'N/A' }}</span>
       </div>
       <div class="info-item">
-        <span class="info-label">Members:</span>
-        <span class="info-value">{{ teamData?.team_members_count }}</span>
+        <span class="info-label">Problem Statement:</span>
+        <span class="info-value">{{ teamData?.team.problem_statement.display_id || 'N/A' }}</span>
       </div>
     </div>
 
@@ -56,19 +56,19 @@
         <label class="score-label">Total Score (0 - 100)</label>
         <select class="score-select" formControlName="total_score">
           <option value="" disabled selected>Select score</option>
-          <option *ngFor="let score of getScoreOptions(0, 100)" [value]="score">
+          <option *ngFor="let score of getScoreOptions(1, 10)" [value]="score">
             {{ score }}
           </option>
         </select>
       </div>
 
-      <div class="feedback-section">
-        <label class="feedback-label">Feedback (Optional)</label>
+      <div class="remarks-section">
+        <label class="remarks-label">remarks (Optional)</label>
         <textarea
           nbInput
           fullWidth
-          placeholder="Add your feedback for the team..."
-          formControlName="feedback"
+          placeholder="Add your remarks for the team..."
+          formControlName="remarks"
           rows="4"
         ></textarea>
       </div>
@@ -78,9 +78,18 @@
   <nb-card-footer>
     <div class="dialog-actions">
       <button nbButton ghost (click)="close()" [disabled]="isSubmitting">Cancel</button>
-      <button nbButton status="primary" [disabled]="isSubmitting || scoreForm.invalid" (click)="submitScore()">
+      <button nbButton status="basic" [disabled]="isSubmitting" (click)="submitScore('draft')">
         <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
-        {{ isSubmitting ? 'Submitting...' : 'Submit Score' }}
+        {{ isSubmitting ? 'Saving...' : 'Save as Draft' }}
+      </button>
+      <button
+        nbButton
+        status="primary"
+        [disabled]="isSubmitting || scoreForm?.invalid"
+        (click)="submitScore('submitted')"
+      >
+        <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Submit' }}
       </button>
     </div>
   </nb-card-footer>

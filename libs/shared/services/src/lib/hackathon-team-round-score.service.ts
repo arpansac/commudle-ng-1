@@ -42,11 +42,11 @@ export class HackathonTeamRoundScoreService {
     );
   }
 
-  submitScore(score: IHackathonTeamRoundScore, scoreId: number): Observable<IHackathonTeamRoundScore> {
-    const params = new HttpParams().set('hackathon_team_round_score_id', scoreId);
+  submitScore(score: any, scoreId: number, hackathonId: number | string): Observable<IHackathonTeamRoundScore> {
+    const params = new HttpParams().set('hackathon_team_round_score_id', scoreId).set('hackathon_id', hackathonId);
     return this.http.put<IHackathonTeamRoundScore>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.SUBMIT_SCORE),
-      { score: score },
+      { hackathon_team_round_score: score },
       { params },
     );
   }

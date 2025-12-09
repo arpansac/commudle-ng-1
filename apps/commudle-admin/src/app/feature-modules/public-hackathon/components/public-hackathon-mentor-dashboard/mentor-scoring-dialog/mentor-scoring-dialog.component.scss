@@ -1,5 +1,5 @@
 .scoring-dialog {
-  @apply com-min-w-[500px] com-max-w-[600px];
+  @apply com-min-w-[500px] com-max-w-[600px] com-max-h-90dvh;
 
   nb-card-header {
     @apply com-pb-4;
@@ -116,8 +116,8 @@
         }
       }
 
-      .feedback-section {
-        .feedback-label {
+      .remarks-section {
+        .remarks-label {
           @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
         }
       }
