@@ -139,6 +139,7 @@
     </nb-card>
 
     <div class="submit-button" *ngIf="showSubmitButton">
+      <app-loading-spinner *ngIf="isFormSubmitting || submitButtonLoading"></app-loading-spinner>
       <button
         fullWidth
         nbButton
@@ -146,7 +147,6 @@
         status="primary"
         type="submit"
         [disabled]="isFormSubmitting || submitButtonLoading"
-        [nbSpinner]="isFormSubmitting || submitButtonLoading"
       >
         {{ submitButtonText }}
       </button>
