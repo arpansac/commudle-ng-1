@@ -51,7 +51,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.roundsData = data;
           this.rounds = data.map((item) => item.round);
           if (this.rounds.length > 0) {
-            this.selectedRoundId = this.getActiveRoundId();
+            this.selectedRoundId = this.rounds[0].id;
             this.filterTeamsByRound();
           }
           this.isLoading = false;
@@ -60,16 +60,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.isLoading = false;
         },
       });
-  }
-
-  getActiveRoundId(): number {
-    const now = new Date();
-    const activeRound = this.rounds.find((round) => {
-      const startDate = new Date(round.date);
-      const endDate = new Date(round.end_date);
-      return now >= startDate && now <= endDate;
-    });
-    return activeRound ? activeRound.id : this.rounds[0].id;
   }
 
   filterTeamsByRound(): void {
@@ -96,10 +86,5 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         this.loadTeamsByRound();
       }
     });
-  }
-
-  getMaxScore(): number {
-    if (!this.selectedRound?.marking_criteria) return 0;
-    return this.selectedRound.marking_criteria.reduce((sum, criteria) => sum + criteria.max, 0);
   }
 }

@@ -19,9 +19,12 @@ import {
   faLaptopCode,
   faArrowTrendUp,
   faHandshake,
+  faUserTie,
+  faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
 import { AuthService } from '@commudle/shared-services';
+import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
@@ -50,6 +53,8 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
     faLaptopCode,
     faArrowTrendUp,
     faHandshake,
+    faUserTie,
+    faChalkboardTeacher,
   };
   isLoading = true;
   showBannerImage = false;
@@ -59,6 +64,11 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
   environment = environment;
   hasDashboardAndChannelAccess = false;
   hasCollaborationCommunities = false;
+  userRoles = {
+    is_judge: false,
+    is_speaker: false,
+    is_mentor: false,
+  };
 
   private destroy$ = new Subject<void>();
 
@@ -68,6 +78,7 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
     private router: Router,
     private seoService: SeoService,
     private authService: AuthService,
+    private hackathonJudgeService: HackathonJudgeService,
   ) {}
 
   ngOnInit() {
@@ -80,7 +91,10 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
     });
 
     this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
-      if (currentUser) this.getHackathonCurrentRegistrationDetails();
+      if (currentUser) {
+        this.getHackathonCurrentRegistrationDetails();
+        this.getUserRoles();
+      }
     });
   }
 
@@ -197,5 +211,13 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
         },
       });
     }
+  }
+
+  getUserRoles() {
+    this.subscriptions.push(
+      this.hackathonJudgeService.getUserRoles(this.hackathon.id).subscribe((roles) => {
+        this.userRoles = roles;
+      }),
+    );
   }
 }

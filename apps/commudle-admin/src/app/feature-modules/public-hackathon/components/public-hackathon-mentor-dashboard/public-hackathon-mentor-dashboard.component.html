@@ -36,7 +36,7 @@
           <td>{{ teamData.team.team_members_count }}</td>
           <td>
             @if(teamData.score?.total_score !== null && teamData.score?.total_score !== undefined) {
-            {{ teamData.score.total_score }} / {{ getMaxScore() }}
+            {{ teamData.score.total_score }}
             } @else { - }
           </td>
           <td>
