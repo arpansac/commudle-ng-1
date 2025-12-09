@@ -89,6 +89,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   moment = moment;
   Math = Math;
   activityScoreThresholds: IActivityScoreThresholds;
+  isMobileView = false;
 
   options = ['active', 'contributor', 'content_creator', 'speaker'];
 
@@ -134,6 +135,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isMobileView = window.innerWidth <= 640;
     this.seoService.noIndex(true);
     const params = this.activatedRoute.snapshot.queryParams;
     if (Object.keys(params).length > 0) {
