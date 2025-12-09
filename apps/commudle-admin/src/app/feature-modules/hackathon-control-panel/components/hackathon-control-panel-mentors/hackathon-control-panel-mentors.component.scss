@@ -1,9 +1,21 @@
-:host {
-  @apply com-block com-overflow-hidden;
-}
-
 nb-card {
-  @apply com-relative;
+  @apply com-relative com-transition-all com-duration-300;
+
+  &.sidebar-expanded:not(.fullscreen-card) {
+    width: calc(100dvw - 360px);
+  }
+
+  &.sidebar-collapsed:not(.fullscreen-card) {
+    width: calc(100dvw - 130px);
+  }
+
+  &.fullscreen-card {
+    @apply com-fixed com-top-navbar-desktop com-left-0 com-w-full com-h-[calc(100dvh-68px)] com-z-50 com-bg-white com-m-0;
+
+    commudle-data-table {
+      @apply com-h-[calc(100dvh-68px)];
+    }
+  }
 }
 
 nb-card-header {
@@ -15,33 +27,25 @@ nb-card-header {
   @apply hover:com-text-primary-500 hover:com-bg-gray-100 com-rounded com-transition-colors;
 }
 
-.fullscreen-card {
-  @apply com-fixed com-top-navbar-desktop com-left-0 com-w-full com-h-[calc(100dvh-68px)] com-z-50 com-bg-white com-m-0;
-
-  commudle-data-table {
-    @apply com-h-[calc(100dvh-68px)];
-  }
-}
-
 .header {
   @apply com-text-2xl com-font-bold;
 }
 
-commudle-data-table {
-  @apply com-block com-overflow-hidden;
-  height: 70vh;
-  max-width: 100%;
+// commudle-data-table {
+//   @apply com-block com-overflow-hidden;
+//   height: 70vh;
+//   max-width: 100%;
 
-  ::ng-deep {
-    th {
-      @apply com-p-0;
-    }
+//   ::ng-deep {
+//     th {
+//       @apply com-p-0;
+//     }
 
-    td {
-      @apply com-p-0;
-    }
-  }
-}
+//     td {
+//       @apply com-p-0;
+//     }
+//   }
+// }
 
 .round-header {
   @apply com-flex com-flex-col com-items-start com-gap-1 com-py-2;
