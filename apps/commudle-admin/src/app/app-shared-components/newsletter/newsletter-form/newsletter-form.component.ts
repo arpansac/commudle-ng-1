@@ -20,7 +20,7 @@ import { EDbModels } from '@commudle/shared-models';
 export class NewsletterFormComponent implements OnInit, AfterViewInit {
   newsletterForm: FormGroup;
   parentId: string;
-  parentType: string;
+  parentType: EDbModels;
   pageSlug: string;
   subscriptions: Subscription[] = [];
   imagePreview;
@@ -144,11 +144,11 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
         this.pageSlug = data.newsletter_slug;
         if (params.get('community_id')) {
           this.parentId = params.get('community_id');
-          this.parentType = 'Kommunity';
+          this.parentType = EDbModels.KOMMUNITY;
         }
         if (params.get('community_group_id')) {
           this.parentId = params.get('community_group_id');
-          this.parentType = 'CommunityGroup';
+          this.parentType = EDbModels.COMMUNITY_GROUP;
         }
 
         if (this.pageSlug) {
@@ -299,7 +299,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
       const formData: any = new FormData();
       formData.append('image', new Blob([uint8Array], { type: 'image/png' }));
 
-      this.newsletterService.attachImage(formData).subscribe(
+      this.newsletterService.attachImage(formData, this.parentId, this.parentType).subscribe(
         (data) => {
           this.imageUrl = data;
           resolve(this.imageUrl);
@@ -316,7 +316,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
     const promise = new Promise<any>((resolve, reject) => {
       const formData: any = new FormData();
       formData.append('image', blobInfo.blob());
-      this.newsletterService.attachImage(formData).subscribe({
+      this.newsletterService.attachImage(formData, this.parentId, this.parentType).subscribe({
         next: (res: any) => {
           this.imagesList.push({ value: res });
           resolve(res);
