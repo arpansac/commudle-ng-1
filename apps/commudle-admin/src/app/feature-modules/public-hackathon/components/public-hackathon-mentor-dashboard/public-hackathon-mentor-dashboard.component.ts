@@ -79,9 +79,11 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     const roundData = this.roundsData.find((item) => item.round.id === this.selectedRoundId);
     this.filteredTeams = roundData ? roundData.teams : [];
     this.selectedRound = this.rounds.find((r) => r.id === this.selectedRoundId);
+    this.isLoading = false;
   }
 
   onRoundChange(event: any): void {
+    this.isLoading = true;
     this.selectedRoundId = Number(event.target.value);
     this.filterTeamsByRound();
   }

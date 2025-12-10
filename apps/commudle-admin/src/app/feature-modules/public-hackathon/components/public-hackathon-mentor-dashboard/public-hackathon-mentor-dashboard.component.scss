@@ -81,6 +81,32 @@ nb-card {
           @apply com-text-primary-500 com-cursor-pointer com-underline;
           @apply hover:com-text-primary-600;
         }
+
+        .inner-score-table {
+          @apply com-w-full com-border-collapse;
+
+          tbody {
+            tr {
+              @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+              &:last-child {
+                @apply com-border-b-0;
+              }
+
+              td {
+                @apply com-px-2 com-py-1 com-text-xs com-text-gray-700;
+
+                &:first-child {
+                  @apply com-font-medium;
+                }
+
+                &:last-child {
+                  @apply com-text-right com-font-semibold;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

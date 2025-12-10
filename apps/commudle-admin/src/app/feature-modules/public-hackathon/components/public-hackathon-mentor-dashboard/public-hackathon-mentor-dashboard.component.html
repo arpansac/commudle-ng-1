@@ -39,6 +39,7 @@
           <th>Problem Statement</th>
           <th>Members count</th>
           <th>Total Score</th>
+          <th>Score Details</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -64,6 +65,23 @@
             } @else { - }
           </td>
           <td>
+            @if(teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED || teamData.score?.status ===
+            EHackathonTeamRoundScoreStatus.DRAFT) { @if(teamData.score?.score && teamData.score.score.length > 0) {
+            <table class="inner-score-table">
+              <tbody>
+                @for(item of teamData.score.score; track item.text) {
+                <tr>
+                  <td>{{ item.text }}</td>
+                  <td>{{ item.score }}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            } @else {
+            {{ teamData.score.total_score }}
+            } } @else { - }
+          </td>
+          <td>
             <span
               class="status-badge"
               [class.submitted]="teamData.score?.status === 'submitted'"
@@ -85,7 +103,7 @@
               size="small"
               status="primary"
               (click)="openScoringDialog(teamData)"
-              [disabled]="moment().isAfter(moment(selectedRound?.end_date))"
+              [disabled]="!moment().isBetween(moment(selectedRound?.date), moment(selectedRound?.end_date), null, '[]')"
             >
               {{ teamData.score.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Add Score' }}
             </button>
