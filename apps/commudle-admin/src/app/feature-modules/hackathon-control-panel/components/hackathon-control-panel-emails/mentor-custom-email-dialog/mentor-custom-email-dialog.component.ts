@@ -25,20 +25,8 @@ export class MentorCustomEmailDialogComponent implements OnInit {
     placeholder: 'Write your message',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
-    plugins: [
-      'emoticons',
-      'advlist',
-      'lists',
-      'autolink',
-      'link',
-      'charmap',
-      'preview',
-      'code',
-      'codesample',
-      'autoresize',
-    ],
-    toolbar:
-      'bold italic | codesample emoticons | link | alignleft aligncenter alignright | bullist numlist | removeformat | code',
+    plugins: ['emoticons', 'advlist', 'lists', 'autolink', 'link', 'charmap', 'preview', 'autoresize'],
+    toolbar: 'bold italic | emoticons | link | alignleft aligncenter alignright | bullist numlist | removeformat',
     default_link_target: '_blank',
     branding: false,
     license_key: 'gpl',

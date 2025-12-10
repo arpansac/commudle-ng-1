@@ -73,12 +73,12 @@
               <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
               <ng-container *ngIf="!isLoading && hackathonJudges?.length > 0">
                 <div *ngFor="let user of hackathonJudges" class="leader">
-                  <!-- <app-user-profile-card-large
+                  <app-user-profile-card-large
                     [alignFollowToRight]="true"
                     [showFollowButton]="true"
                     [user]="user"
                     appearanceOfFollowButton="outline"
-                  ></app-user-profile-card-large> -->
+                  ></app-user-profile-card-large>
                 </div>
               </ng-container>
             </div>

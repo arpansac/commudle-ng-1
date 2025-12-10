@@ -34,14 +34,6 @@ export class HackathonTeamRoundScoreService {
     );
   }
 
-  getMentorAssignedTeams(hackathonId: number | string, mentorId: number): Observable<any[]> {
-    const params = new HttpParams().set('hackathon_id', hackathonId).set('mentor_id', mentorId);
-    return this.http.get<any[]>(
-      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.ASSIGNMENT_SUMMARY),
-      { params },
-    );
-  }
-
   submitScore(score: any, scoreId: number, hackathonId: number | string): Observable<IHackathonTeamRoundScore> {
     const params = new HttpParams().set('hackathon_team_round_score_id', scoreId).set('hackathon_id', hackathonId);
     return this.http.put<IHackathonTeamRoundScore>(

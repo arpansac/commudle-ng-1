@@ -24,7 +24,7 @@ export class MentorDashboardLinkDialogComponent {
     placeholder: 'Add an optional message for mentors',
     content_style:
       "@import url('https://fonts.googleapis.com/css?family=Inter'); body {font-family: 'Inter'; font-size: 16px !important;}",
-    plugins: ['advlist', 'lists', 'autolink', 'link', 'charmap', 'preview', 'code', 'autoresize'],
+    plugins: ['advlist', 'lists', 'autolink', 'link', 'charmap', 'preview', 'autoresize'],
     toolbar: 'bold italic | link | alignleft aligncenter alignright | bullist numlist | removeformat',
     default_link_target: '_blank',
     branding: false,
