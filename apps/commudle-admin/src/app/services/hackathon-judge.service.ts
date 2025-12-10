@@ -28,4 +28,34 @@ export class HackathonJudgeService {
       params,
     });
   }
+
+  sendDashboardLink(hackathonJudgeId: number, message?: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_DASHBOARD_LINK), {
+      hackathon_judge_id: hackathonJudgeId,
+      message,
+    });
+  }
+
+  sendCustomEmail(hackathonJudgeId: number, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_CUSTOM_EMAIL), {
+      hackathon_judge_id: hackathonJudgeId,
+      subject,
+      message,
+    });
+  }
+
+  sendDashboardLinkToAll(hackathonId: number, message?: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_DASHBOARD_LINK), {
+      hackathon_id: hackathonId,
+      message,
+    });
+  }
+
+  sendCustomEmailToAll(hackathonId: number, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_CUSTOM_EMAIL), {
+      hackathon_id: hackathonId,
+      subject,
+      message,
+    });
+  }
 }

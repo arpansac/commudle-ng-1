@@ -14,7 +14,12 @@ import { faPlus, faMinus, faArrowRight, faUserCircle, faExpand, faCompress } fro
 import * as moment from 'moment';
 import { EDbModels, IHackathonTeam, IRound } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
+import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { ToastrService, SeoService, RoundService, HackathonTeamRoundScoreService } from '@commudle/shared-services';
+import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
+import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
+import { MentorCustomEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
+import { filter, map } from 'rxjs/operators';
 import { EHackathonJudgeType, EInvitationStatus, IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import {
   DataTableColumn,
@@ -94,6 +99,9 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     private hackathonTeamRoundScoreService: HackathonTeamRoundScoreService,
     private sidebarService: SidebarService,
     private cdr: ChangeDetectorRef,
+    private dialogService: NbDialogService,
+    private hackathonJudgeService: HackathonJudgeService,
+    private nbMenuService: NbMenuService,
   ) {}
 
   ngOnInit(): void {
@@ -108,6 +116,35 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       this.loadRounds();
       this.loadMentors();
     });
+    this.setupContextMenuListener();
+  }
+
+  setupContextMenuListener(): void {
+    this.nbMenuService
+      .onItemClick()
+      .pipe(
+        filter(({ tag }) => tag.startsWith('mentor-') || tag === 'header-actions'),
+        map(({ item, tag }) => ({ item, tag })),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(({ item, tag }) => {
+        if (tag === 'header-actions') {
+          const index = item.data.index;
+          if (index === 0) {
+            this.openBulkDashboardLinkDialog();
+          } else if (index === 1) {
+            this.openBulkCustomEmailDialog();
+          }
+        } else {
+          const mentor = item.data.mentor;
+          const index = item.data.index;
+          if (index === 0) {
+            this.openIndividualDashboardLinkDialog(mentor);
+          } else if (index === 1) {
+            this.openIndividualCustomEmailDialog(mentor);
+          }
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -352,5 +389,73 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   toggleFullscreen(): void {
     this.isFullscreen = !this.isFullscreen;
     this.cdr.markForCheck();
+  }
+
+  getMentorActions(mentor: IHackathonJudge): NbMenuItem[] {
+    return [
+      {
+        title: 'Send Dashboard Link',
+        icon: 'link-outline',
+      },
+      {
+        title: 'Send Custom Email',
+        icon: 'email-outline',
+      },
+    ].map((item, index) => ({
+      ...item,
+      data: { mentor, index },
+    }));
+  }
+
+  getHeaderActions(): NbMenuItem[] {
+    return [
+      {
+        title: 'Send Dashboard Link to All',
+        icon: 'link-2-outline',
+      },
+      {
+        title: 'Send Email to All',
+        icon: 'email-outline',
+      },
+    ].map((item, index) => ({
+      ...item,
+      data: { index },
+    }));
+  }
+
+  openBulkDashboardLinkDialog(): void {
+    this.dialogService.open(MentorDashboardLinkDialogComponent, {
+      context: {
+        hackathonId: Number(this.hackathonId),
+        isBulk: true,
+      },
+    });
+  }
+
+  openBulkCustomEmailDialog(): void {
+    this.dialogService.open(MentorCustomEmailDialogComponent, {
+      context: {
+        hackathonId: Number(this.hackathonId),
+        isBulk: true,
+      },
+    });
+  }
+
+  openIndividualDashboardLinkDialog(mentor: IHackathonJudge): void {
+    this.dialogService.open(MentorDashboardLinkDialogComponent, {
+      context: {
+        mentor,
+        isBulk: false,
+      },
+    });
+  }
+
+  openIndividualCustomEmailDialog(mentor: IHackathonJudge): void {
+    this.dialogService.open(MentorCustomEmailDialogComponent, {
+      context: {
+        mentor,
+        isBulk: false,
+      },
+    });
   }
 }

@@ -20,6 +20,14 @@ nb-card {
 
 nb-card-header {
   @apply com-flex com-justify-between com-items-center;
+
+  .header-actions {
+    @apply com-flex com-items-center com-gap-2;
+  }
+}
+
+.actions-row {
+  @apply com-flex com-gap-3 com-mb-4 com-p-4 com-bg-gray-50 com-rounded;
 }
 
 .fullscreen-button {

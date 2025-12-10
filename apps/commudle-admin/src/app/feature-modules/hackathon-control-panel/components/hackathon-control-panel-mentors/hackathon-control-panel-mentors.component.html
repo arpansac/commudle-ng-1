@@ -7,15 +7,27 @@
 >
   <nb-card-header>
     <span> Mentor Team Allocation Interface </span>
-    <button
-      (click)="toggleFullscreen()"
-      class="fullscreen-button"
-      [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
-    >
-      <fa-icon [icon]="isFullscreen ? icons.faCompress : icons.faExpand"></fa-icon>
-    </button>
+    <div class="header-actions">
+      <button
+        (click)="toggleFullscreen()"
+        class="fullscreen-button"
+        [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+      >
+        <fa-icon [icon]="isFullscreen ? icons.faCompress : icons.faExpand"></fa-icon>
+      </button>
+    </div>
   </nb-card-header>
   <nb-card-body>
+    <!-- <button
+      nbButton
+      status="primary"
+      size="small"
+      [nbContextMenu]="getHeaderActions()"
+      nbContextMenuTag="header-actions"
+      nbContextMenuTrigger="click"
+    >
+      Actions
+    </button> -->
     <div class="data-table com-overflow-hidden com-w-full com-h-[70dvh] com-relative">
       <commudle-data-table
         *ngIf="rounds.length > 0 && mentors.length > 0"
@@ -51,6 +63,16 @@
       <span class="mentor-name">{{ judge.name }}</span>
       <span class="mentor-designation" *ngIf="judge.designation">{{ judge.designation }}</span>
     </div>
+    <button
+      nbButton
+      ghost
+      size="tiny"
+      [nbContextMenu]="getMentorActions(judge)"
+      [nbContextMenuTag]="'mentor-' + judge.id"
+      nbContextMenuTrigger="click"
+    >
+      <nb-icon icon="more-vertical-outline"></nb-icon>
+    </button>
   </div>
 </ng-template>
 

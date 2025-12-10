@@ -1,0 +1,35 @@
+<nb-card class="mail-popup">
+  <nb-card-header>
+    <span>{{ isBulk ? 'Send Custom Email to All Mentors' : 'Send Custom Email to ' + mentor.name + '' }}</span>
+    <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <commudle-alert [info]="true" message="This will send a pre-formatted email "></commudle-alert>
+    <form [formGroup]="emailForm">
+      <div class="form-group">
+        <label for="subject">Subject *</label>
+        <input nbInput fullWidth id="subject" formControlName="subject" placeholder="Enter email subject" />
+      </div>
+
+      <div class="message-field">
+        <label for="message" class="message">Message *</label>
+        <editor [init]="tinyMCE" formControlName="message"></editor>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      nbButton
+      status="primary"
+      shape="semi-round"
+      fullWidth
+      (click)="sendCustomEmail()"
+      [nbSpinner]="isSubmitting"
+      [disabled]="isSubmitting || emailForm.invalid"
+    >
+      Send
+    </button>
+  </nb-card-footer>
+</nb-card>
