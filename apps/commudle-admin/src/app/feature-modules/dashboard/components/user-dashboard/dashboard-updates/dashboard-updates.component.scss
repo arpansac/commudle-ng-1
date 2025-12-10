@@ -1,5 +1,5 @@
 nb-card {
-  @apply com-m-0 com-bg-gray-100;
+  @apply com-m-0 com-bg-gray-50;
 
   .plus-icon {
     @apply com-text-xs;
@@ -9,7 +9,7 @@ nb-card {
     @apply md:com-p-4 com-px-0 com-pt-4 md:com-pb-0 com-flex com-flex-col com-items-center com-justify-center com-text-center com-sticky com-top-[50px] com-z-10 com-border-0  com-cursor-pointer;
 
     h2 {
-      @apply com-text-sm com-font-medium com-text-Yankees-Blue  com-rounded-t-lg com-w-full com-bg-white com-p-2;
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-rounded-t-lg com-w-full com-bg-white com-p-2 com-border com-border-solid com-border-Bright-Gray;
       fa-icon {
         @apply com-ml-2;
       }
@@ -23,12 +23,12 @@ nb-card {
       @apply com-flex com-flex-row com-gap-3 com-py-4 md:com-px-0 com-px-3;
 
       button {
-        @apply com-text-gray-800 com-bg-gray-300;
+        @apply com-text-gray-600 com-bg-gray-100;
       }
     }
 
     .active {
-      @apply com-border com-border-solid com-border-gray-800;
+      @apply com-border com-border-solid com-border-Cadet-Grey;
     }
 
     .registrations {
@@ -47,11 +47,11 @@ nb-card {
     }
 
     .event-registration-heading {
-      @apply com-text-sm com-font-semibold com-text-black com-m-0 com-mb-3 com-px-2;
+      @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
     }
 
     .event-title {
-      @apply com-text-sm com-font-medium com-text-Dark-Jungle-Green com-flex com-items-start com-m-0 com-cursor-pointer;
+      @apply com-text-sm com-font-medium com-text-Yankees-Blue com-flex com-items-start com-m-0 com-cursor-pointer com-mb-2px;
 
       fa-icon {
         @apply com-mr-1 com-text-primary-500 com-text-xs  com-mt-1;
@@ -63,7 +63,7 @@ nb-card {
     }
 
     .table-heading {
-      @apply com-text-xs com-font-normal com-text-gray-500;
+      @apply com-text-xs com-font-normal com-text-gray-custom-1;
     }
 
     .date-desktop {
@@ -103,7 +103,7 @@ nb-card {
     }
 
     .registered {
-      @apply com-text-black;
+      @apply com-text-Yankees-Blue;
     }
 
     .waiting {
@@ -159,54 +159,24 @@ nb-card {
 }
 
 .post-content {
-  @apply com-bg-white com-m-0 com-p-4 com-w-full com-rounded-t-none;
+  @apply com-bg-gray-50 com-m-0 com-p-4 com-w-full com-rounded-t-none com-border-t-0;
 
   nb-card-body {
     @apply com-p-0;
   }
 
   .content-list {
-    @apply com-grid md:com-grid-cols-2 com-grid-cols-1 com-gap-4;
+    @apply com-grid md:com-grid-cols-3 com-grid-cols-1 com-gap-4;
 
-    .publish-build {
-      button {
-        @apply com-flex com-w-full com-p-3 com-justify-start com-rounded-lg com-border com-border-solid com-border-yellow-700 com-bg-yellow-50 com-h-10;
+    button {
+      @apply com-flex com-w-full com-p-3 com-justify-start com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white com-h-10;
 
-        span {
-          @apply com-text-sm com-font-medium com-text-yellow-700;
-        }
-
-        fa-icon {
-          @apply com-text-yellow-700;
-        }
+      span {
+        @apply com-text-xs com-font-medium com-text-Yankees-Blue;
       }
-    }
 
-    .upload-content {
-      button {
-        @apply com-flex com-w-full com-p-3 com-justify-start com-rounded-lg com-border com-border-solid com-border-Azure com-bg-blue-50 com-h-10;
-
-        span {
-          @apply com-text-sm com-font-medium com-text-Azure;
-        }
-
-        fa-icon {
-          @apply com-text-Azure;
-        }
-      }
-    }
-
-    .publish-lab {
-      button {
-        @apply com-flex com-w-full com-p-3 com-justify-start com-rounded-lg com-border com-border-solid com-border-Catalina-Blue com-bg-Alice-Blue-Dark com-h-10;
-
-        span {
-          @apply com-text-sm com-font-medium com-text-Catalina-Blue;
-        }
-
-        fa-icon {
-          @apply com-text-Catalina-Blue;
-        }
+      fa-icon {
+        @apply com-flex com-h-6 com-w-6 com-justify-center com-items-center com-mr-1;
       }
     }
 
@@ -214,8 +184,22 @@ nb-card {
       @apply com-no-underline;
     }
 
-    fa-icon {
-      @apply com-text-base com-mr-1;
+    .publish-build {
+      fa-icon {
+        @apply com-text-Tigers-Eye;
+      }
+    }
+
+    .upload-content {
+      fa-icon {
+        @apply com-text-Azure;
+      }
+    }
+
+    .publish-lab {
+      fa-icon {
+        @apply com-text-Ultramarine-Blue;
+      }
     }
   }
 }
@@ -230,11 +214,15 @@ canvas {
 }
 
 .registration-header {
-  @apply md:com-grid com-grid-cols-4 com-gap-3 com-hidden com-px-2;
+  @apply md:com-grid com-grid-cols-4 com-gap-3 com-hidden com-px-2 com-mr-4;
+
+  .table-heading:last-child {
+    @apply md:com-justify-self-end;
+  }
 }
 
 .registration-row {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-100 com-rounded-lg com-items-center com-mr-2;
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-50 com-rounded-lg com-items-center com-mr-4;
 }
 
 .highlighted-row {
@@ -251,7 +239,7 @@ canvas {
 
 .desktop-qr,
 .action-btn-desktop {
-  @apply md:com-flex com-hidden;
+  @apply md:com-flex com-hidden md:com-justify-self-end;
 }
 
 .mobile-qr,
