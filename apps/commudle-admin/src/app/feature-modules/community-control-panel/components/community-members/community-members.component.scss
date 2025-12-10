@@ -154,10 +154,31 @@
             }
 
             .activity-indicator {
-              @apply com-flex com-items-center com-space-x-2 com-flex-nowrap;
+              @apply com-flex com-items-start com-space-x-2 com-flex-nowrap;
 
               fa-icon {
-                @apply com-flex com-justify-center com-items-center com-mr-1 com-h-4 com-w-4;
+                @apply com-flex com-justify-center com-items-center com-h-4 com-w-4 com-cursor-pointer;
+
+                &.dormant {
+                  @apply com-text-gray-custom-1;
+                  animation: electricPulse 1s infinite alternate ease-in-out;
+                }
+                &.low_active {
+                  @apply com-text-Infra-Red;
+                  animation: electricPulse 1s infinite alternate ease-in-out;
+                }
+                &.moderately_active {
+                  @apply com-text-Tigers-Eye;
+                  animation: electricPulse 1s infinite alternate ease-in-out;
+                }
+                &.highly_active {
+                  @apply com-text-Crayola-Green;
+                  animation: electricPulse 1s infinite alternate ease-in-out;
+                }
+              }
+
+              span {
+                @apply com-cursor-pointer;
               }
             }
 
@@ -269,4 +290,19 @@ canvas {
 
 .loading-row {
   @apply com-h-[70vh];
+}
+
+@keyframes electricPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

@@ -7,7 +7,14 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { Subject, takeUntil, Subscription, distinctUntilChanged } from 'rxjs';
-import { EDomain, EExperienceLevel, ICommunity, IUser, IUserRolesUser } from '@commudle/shared-models';
+import {
+  EDomain,
+  EExperienceLevel,
+  IActivityScoreThresholds,
+  ICommunity,
+  IUser,
+  IUserRolesUser,
+} from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 import {
   faBolt,
@@ -80,6 +87,9 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   community: ICommunity;
   loadingData = false;
   moment = moment;
+  Math = Math;
+  activityScoreThresholds: IActivityScoreThresholds;
+  isMobileView = false;
 
   options = ['active', 'contributor', 'content_creator', 'speaker'];
 
@@ -125,6 +135,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isMobileView = window.innerWidth <= 640;
     this.seoService.noIndex(true);
     const params = this.activatedRoute.snapshot.queryParams;
     if (Object.keys(params).length > 0) {
@@ -203,6 +214,7 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
           this.getExperienceLevelDistribution();
           this.setMeta();
           this.loadNewMembersCount();
+          this.getActivityScoreThresholds();
         }
       }),
     );
@@ -561,6 +573,12 @@ export class CommunityMembersComponent implements OnInit, OnDestroy {
       this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     }
     this.generateParams();
+  }
+
+  getActivityScoreThresholds() {
+    this.communityService.getActivityScoreThresholds().subscribe((data) => {
+      this.activityScoreThresholds = data;
+    });
   }
 
   clearAllFilters() {
