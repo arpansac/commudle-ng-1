@@ -81,10 +81,13 @@
     class="team-assignments-compact"
     (click)="openTeamSelector(value.mentorId, value.roundId, value.mentor, value.roundName)"
   >
-    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-summary custom-scrollbar">
-      @for(team of teamAssignmentData[value.mentorId][value.roundId].assignedTeams; track team.id){
-      <span class="team-name">{{ team.name }}</span>
-      }
+    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-cell-wrapper">
+      <div class="team-count-badge">{{ teamAssignmentData[value.mentorId][value.roundId].count }}</div>
+      <div class="team-summary custom-scrollbar">
+        @for(team of teamAssignmentData[value.mentorId][value.roundId].assignedTeams; track team.id){
+        <span class="team-name">{{ team.name }}</span>
+        }
+      </div>
     </div>
     <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">
       <fa-icon [icon]="icons.faPlus"></fa-icon>

@@ -83,11 +83,19 @@ nb-card-header {
   @apply com-cursor-pointer com-h-full com-flex com-items-center com-justify-center;
   @apply hover:com-bg-gray-100;
 
-  .team-summary {
-    @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
+  .team-cell-wrapper {
+    @apply com-relative com-w-full com-h-full;
 
-    .team-name {
-      @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
+    .team-count-badge {
+      @apply com-absolute com-top-1 com-right-1 com-bg-primary-500 com-text-white com-rounded-full com-w-6 com-h-6 com-flex com-items-center com-justify-center com-text-xs com-font-bold com-z-[2] com-shadow-md;
+    }
+
+    .team-summary {
+      @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
+
+      .team-name {
+        @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
+      }
     }
   }
 
