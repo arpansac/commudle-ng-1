@@ -43,23 +43,26 @@
             {{ criteria.text }}
             <span class="criteria-range">({{ criteria.min }} - {{ criteria.max }})</span>
           </label>
-          <select class="score-select" [formControlName]="'criteria_' + i">
-            <option value="" disabled selected>Select score</option>
-            <option *ngFor="let score of getScoreOptions(criteria.min, criteria.max)" [value]="score">
-              {{ score }}
-            </option>
-          </select>
+          <div class="slider-container">
+            <input
+              type="range"
+              class="score-slider"
+              [formControlName]="'criteria_' + i"
+              [min]="criteria.min"
+              [max]="criteria.max"
+              [step]="1"
+            />
+            <span class="slider-value">{{ scoreForm.get('criteria_' + i)?.value || criteria.min }}</span>
+          </div>
         </div>
       </div>
 
       <div *ngIf="!hasMarkingCriteria || markingCriteria.length === 0" class="total-score-section">
-        <label class="score-label">Total Score (0 - 100)</label>
-        <select class="score-select" formControlName="total_score">
-          <option value="" disabled selected>Select score</option>
-          <option *ngFor="let score of getScoreOptions(1, 10)" [value]="score">
-            {{ score }}
-          </option>
-        </select>
+        <label class="score-label">Total Score (1 - 10)</label>
+        <div class="slider-container">
+          <input type="range" class="score-slider" formControlName="total_score" [min]="1" [max]="10" [step]="1" />
+          <span class="slider-value">{{ scoreForm.get('total_score')?.value || 1 }}</span>
+        </div>
       </div>
 
       <div class="remarks-section">

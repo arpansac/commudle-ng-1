@@ -53,11 +53,11 @@ export class MentorScoringDialogComponent implements OnInit {
 
     if (this.hasMarkingCriteria && this.markingCriteria.length > 0) {
       this.markingCriteria.forEach((criteria: IMarkingCriteria, index: number) => {
-        const existingValue = existingScore?.score?.[index]?.score || '';
+        const existingValue = existingScore?.score?.[index]?.score || criteria.min;
         formControls[`criteria_${index}`] = [existingValue, [Validators.required]];
       });
     } else {
-      const existingTotal = existingScore?.total_score || '';
+      const existingTotal = existingScore?.total_score || 1;
       formControls['total_score'] = [existingTotal, [Validators.required]];
     }
 
