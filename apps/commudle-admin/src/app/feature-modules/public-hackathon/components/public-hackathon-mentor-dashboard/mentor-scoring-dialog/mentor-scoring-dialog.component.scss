@@ -76,11 +76,11 @@
             @apply com-flex com-items-center com-gap-2 com-px-4 com-py-2 com-bg-primary-100 com-rounded-lg;
 
             .total-label {
-              @apply com-text-sm com-font-medium com-text-gray-700;
+              @apply com-text-sm com-font-medium com-text-Yankees-Blue;
             }
 
             .total-value {
-              @apply com-text-lg com-font-bold com-text-primary-700;
+              @apply com-text-base com-font-bold com-text-primary-500;
             }
           }
         }
@@ -105,7 +105,7 @@
             }
 
             .slider-value {
-              @apply com-min-w-2 com-text-center com-text-lg com-font-semibold com-text-primary-700;
+              @apply com-min-w-2 com-text-center com-text-base com-font-semibold com-text-primary-500;
               @apply com-px-3 com-py-1 com-bg-primary-100 com-rounded-lg;
             }
           }

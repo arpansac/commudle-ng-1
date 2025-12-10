@@ -288,7 +288,9 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       this.filteredUnassignedTeams = [];
       return;
     }
-    const teams = this.getUnassignedTeamsForRound(this.selectedMentorId, this.selectedRoundId);
+    const teams = this.getUnassignedTeamsForRound(this.selectedMentorId, this.selectedRoundId).filter(
+      (team) => team.round?.id === this.selectedRoundId,
+    );
     if (!this.searchQuery) {
       this.filteredUnassignedTeams = teams;
     } else {

@@ -1,10 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IHackathon, IRound, EHackathonTeamRoundScoreStatus, IHackathonTeamScore } from '@commudle/shared-models';
+import {
+  IHackathon,
+  IRound,
+  EHackathonTeamRoundScoreStatus,
+  IHackathonTeamScore,
+  IHackathonProblemStatement,
+} from '@commudle/shared-models';
 import { HackathonTeamRoundScoreService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
+import moment from 'moment';
 
 @Component({
   selector: 'commudle-public-hackathon-mentor-dashboard',
@@ -19,9 +26,12 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   selectedRound: IRound;
   filteredTeams: IHackathonTeamScore[] = [];
   isLoading = true;
+  moment = moment;
 
   EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
   private destroy$ = new Subject<void>();
+
+  @ViewChild('ProblemStatementView') problemStatementView: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,7 +61,10 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.roundsData = data;
           this.rounds = data.map((item) => item.round);
           if (this.rounds.length > 0) {
-            this.selectedRoundId = this.rounds[0].id;
+            const now = moment();
+            const ongoingRound = this.rounds.find((r) => now.isBetween(moment(r.date), moment(r.end_date), null, '[]'));
+            const upcomingRound = this.rounds.find((r) => now.isBefore(moment(r.date)));
+            this.selectedRoundId = ongoingRound?.id || upcomingRound?.id || this.rounds[0].id;
             this.filterTeamsByRound();
           }
           this.isLoading = false;
@@ -85,6 +98,12 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       if (result) {
         this.loadTeamsByRound();
       }
+    });
+  }
+
+  showProblemStatement(ps: IHackathonProblemStatement): void {
+    this.dialogService.open(this.problemStatementView, {
+      context: { ps },
     });
   }
 }

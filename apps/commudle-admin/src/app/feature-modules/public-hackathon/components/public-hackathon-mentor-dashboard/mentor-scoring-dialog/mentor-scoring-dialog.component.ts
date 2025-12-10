@@ -19,6 +19,7 @@ export class MentorScoringDialogComponent implements OnInit {
   markingCriteria: IMarkingCriteria[] = [];
   hasMarkingCriteria = false;
   totalScore = 0;
+  maxTotalScore = 0;
 
   constructor(
     private dialogRef: NbDialogRef<MentorScoringDialogComponent>,
@@ -37,6 +38,7 @@ export class MentorScoringDialogComponent implements OnInit {
       next: (response) => {
         this.hasMarkingCriteria = response.has_marking_criteria;
         this.markingCriteria = response.marking_criteria || [];
+        this.maxTotalScore = this.markingCriteria.reduce((sum, criteria) => sum + criteria.max, 0);
         this.isLoadingCriteria = false;
         this.initForm();
       },

@@ -31,22 +31,6 @@ nb-card-header {
   @apply com-text-2xl com-font-bold;
 }
 
-// commudle-data-table {
-//   @apply com-block com-overflow-hidden;
-//   height: 70vh;
-//   max-width: 100%;
-
-//   ::ng-deep {
-//     th {
-//       @apply com-p-0;
-//     }
-
-//     td {
-//       @apply com-p-0;
-//     }
-//   }
-// }
-
 .round-header {
   @apply com-flex com-flex-col com-items-start com-gap-1 com-py-2;
 

@@ -2,11 +2,17 @@
   <nb-card-header>
     <div class="header-content">
       <span>Mentor Dashboard</span>
-      <select *ngIf="rounds.length > 0" [value]="selectedRoundId" (change)="onRoundChange($event)" class="round-select">
-        <option *ngFor="let round of rounds" [value]="round.id">
-          {{ round.name }}
-        </option>
-      </select>
+      <div *ngIf="rounds.length > 0" class="round-selector">
+        <label>Select Round:</label>
+        <select [(ngModel)]="selectedRoundId" (change)="onRoundChange($event)" class="round-select">
+          <option *ngFor="let round of rounds" [value]="round.id">
+            {{ round.name }}
+            @if(round.date && round.end_date) { @if(moment().isAfter(moment(round.end_date))) { - Completed } @else
+            if(moment().isBetween(moment(round.date), moment(round.end_date), null, '[]')) { - Ongoing } @else { -
+            Upcoming } }
+          </option>
+        </select>
+      </div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -23,6 +29,7 @@
         <tr>
           <th>Team Name</th>
           <th>Track</th>
+          <th>Problem Statement</th>
           <th>Members count</th>
           <th>Total Score</th>
           <th>Status</th>
@@ -32,7 +39,17 @@
       <tbody>
         <tr *ngFor="let teamData of filteredTeams">
           <td class="team-name">{{ teamData.team.name }}</td>
-          <td>{{ teamData.team.track?.name || 'N/A' }} ({{ teamData.team.problem_statement?.display_id }})</td>
+          <td>{{ teamData.team.track?.name || 'N/A' }}</td>
+          <td>
+            <span
+              *ngIf="teamData.team.problem_statement"
+              class="ps-link"
+              (click)="showProblemStatement(teamData.team.problem_statement)"
+            >
+              {{ teamData.team.problem_statement.display_id }}
+            </span>
+            <span *ngIf="!teamData.team.problem_statement">N/A</span>
+          </td>
           <td>{{ teamData.team.team_members_count }}</td>
           <td>
             @if(teamData.score?.total_score !== null && teamData.score?.total_score !== undefined) {
@@ -61,8 +78,9 @@
               size="small"
               status="primary"
               (click)="openScoringDialog(teamData)"
+              [disabled]="moment().isAfter(moment(selectedRound?.end_date))"
             >
-              {{ teamData.score.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Score Team' }}
+              {{ teamData.score.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Add Score' }}
             </button>
             <span *ngIf="!selectedRound?.has_marking_criteria" class="no-scoring">-</span>
           </td>
@@ -71,3 +89,20 @@
     </table>
   </nb-card-body>
 </nb-card>
+
+<ng-template #ProblemStatementView let-data let-ref="dialogRef">
+  <nb-card class="problem-statement-dialog">
+    <nb-card-header>
+      <div>{{ data.ps.display_id }}</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p [innerHTML]="data.ps.title | safeHtml"></p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" outline (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

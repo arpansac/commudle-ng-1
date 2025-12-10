@@ -4,9 +4,17 @@ nb-card {
 .header-content {
   @apply com-flex com-justify-between com-items-center com-gap-4;
 
-  .round-select {
-    @apply com-min-w-[250px] com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
-    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+  .round-selector {
+    @apply com-flex com-items-center com-gap-2;
+
+    label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+
+    .round-select {
+      @apply com-min-w-[250px] com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
+      @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+    }
   }
 }
 
@@ -68,7 +76,28 @@ nb-card {
         .no-scoring {
           @apply com-text-gray-400;
         }
+
+        .ps-link {
+          @apply com-text-primary-500 com-cursor-pointer com-underline;
+          @apply hover:com-text-primary-600;
+        }
       }
     }
+  }
+}
+
+.problem-statement-dialog {
+  @apply com-w-[600px] com-max-h-[500px];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    @apply com-max-h-[350px] com-overflow-y-auto;
+  }
+
+  nb-card-footer {
+    @apply com-flex com-justify-end;
   }
 }
