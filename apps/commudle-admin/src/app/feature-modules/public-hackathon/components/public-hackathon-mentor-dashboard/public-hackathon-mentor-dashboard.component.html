@@ -7,9 +7,16 @@
         <select [(ngModel)]="selectedRoundId" (change)="onRoundChange($event)" class="round-select">
           <option *ngFor="let round of rounds" [value]="round.id">
             {{ round.name }}
-            @if(round.date && round.end_date) { @if(moment().isAfter(moment(round.end_date))) { - Completed } @else
-            if(moment().isBetween(moment(round.date), moment(round.end_date), null, '[]')) { - Ongoing } @else { -
-            Upcoming } }
+            <!-- prettier-ignore -->
+            @if(round.date && round.end_date) {
+              @if(moment().isAfter(moment(round.end_date))) {
+                - Completed
+              } @else if(moment().isBetween(moment(round.date), moment(round.end_date), null, '[]')) {
+                - Ongoing
+              } @else {
+                - Upcoming
+            }
+          }
           </option>
         </select>
       </div>
