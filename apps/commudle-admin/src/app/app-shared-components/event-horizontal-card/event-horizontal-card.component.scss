@@ -19,7 +19,7 @@ nb-card {
         }
 
         .upcoming-card-details-desktop {
-          @apply md:com-pl-4 md:com-pr-0 md:com-py-3 com-px-0 com-py-3 com-overflow-hidden com-flex com-flex-col com-w-full;
+          @apply md:com-pl-3 md:com-pr-0 md:com-py-0 com-px-0 com-py-3 com-overflow-hidden com-flex com-flex-col com-w-full;
 
           .time-badge {
             @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2;
@@ -37,13 +37,14 @@ nb-card {
                 }
               }
             }
-
-            .event-time {
-              @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
-            }
           }
+
+          .event-time {
+            @apply com-text-xs com-font-normal com-m-0 com-text-gray-500 com-mb-4;
+          }
+
           .event-title {
-            @apply md:com-text-base com-text-lg com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-3 com-mr-3 com-line-clamp-1;
+            @apply md:com-text-base com-text-lg com-font-medium com-text-Yankees-Blue com-m-0 com-mt-0 com-mr-3 com-line-clamp-1;
           }
 
           .community-badge {

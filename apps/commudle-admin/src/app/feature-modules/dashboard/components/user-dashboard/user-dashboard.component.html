@@ -37,11 +37,9 @@
         </div>
         <div class="main-column">
           <commudle-dashboard-updates></commudle-dashboard-updates>
-          <!-- <div class="two-column"> -->
-          <!-- <div class="center-right-column-wrapper"> -->
           <div class="center-column">
             <div class="upcoming-events">
-              <h2>Upcoming</h2>
+              <h2 class="upcoming-events-heading">Upcoming</h2>
               <app-loading-spinner *ngIf="loading"></app-loading-spinner>
               <div *ngIf="upcomingEventsHackathons.length > 0 && !loading">
                 <div
@@ -74,7 +72,7 @@
               ></app-pagination>
             </div>
             <div class="recent-activity">
-              <h2>Recent Activity</h2>
+              <h2 class="recent-activity-heading">Recent Activity</h2>
               <app-loading-spinner *ngIf="loadActivity"></app-loading-spinner>
               <div *ngIf="activityFeed.length > 0">
                 <div
@@ -86,41 +84,48 @@
                   <div *ngFor="let feed of activityFeed">
                     <ng-container [ngSwitch]="feed.actionable_type">
                       <ng-container *ngSwitchCase="EDbModels.VOTE">
-                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                          <nb-card-header
-                            ><h2 class="user">
-                              <img
-                                [src]="
-                                  feed.performer_type === EDbModels.USER
-                                    ? feed.performer.photo?.i32
-                                    : feed.performer.logo_image?.i64
-                                "
-                              />
-                              <span class="performer-name">{{ feed.performer.name }}</span>
-                              <span class="action-text"
-                                >{{ feed.action_text }}
-                                <span
-                                  class="action-text"
-                                  *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
-                                  >a build</span
-                                >
-                                <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
-                                  >a lab</span
-                                >
-                              </span>
-                            </h2>
-                          </nb-card-header>
-                          <nb-card-body>
-                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
-                              <app-community-build-card
-                                [communityBuild]="feed.actionable.object_data"
-                              ></app-community-build-card>
-                            </ng-container>
-                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
-                              <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
-                            </ng-container>
-                          </nb-card-body>
-                        </nb-card>
+                        <ng-container
+                          *ngIf="
+                            feed.actionable.object_type === EDbModels.COMMUNITY_BUILD ||
+                            feed.actionable.object_type === EDbModels.LAB
+                          "
+                        >
+                          <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                            <nb-card-header
+                              ><h2 class="user">
+                                <img
+                                  [src]="
+                                    feed.performer_type === EDbModels.USER
+                                      ? feed.performer.photo?.i32
+                                      : feed.performer.logo_image?.i64
+                                  "
+                                />
+                                <span class="performer-name">{{ feed.performer.name }}</span>
+                                <span class="action-text"
+                                  >{{ feed.action_text }}
+                                  <span
+                                    class="action-text"
+                                    *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
+                                    >a build</span
+                                  >
+                                  <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
+                                    >a lab</span
+                                  >
+                                </span>
+                              </h2>
+                            </nb-card-header>
+                            <nb-card-body>
+                              <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
+                                <app-community-build-card
+                                  [communityBuild]="feed.actionable.object_data"
+                                ></app-community-build-card>
+                              </ng-container>
+                              <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
+                                <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
+                              </ng-container>
+                            </nb-card-body>
+                          </nb-card>
+                        </ng-container>
                       </ng-container>
 
                       <ng-container *ngSwitchCase="EDbModels.COMMUNITY_BUILD">
@@ -240,8 +245,6 @@
                 <h3>No Recent Activity</h3>
               </div>
             </div>
-            <!-- </div> -->
-            <!-- </div> -->
           </div>
         </div>
         <div class="right-column" *appBreakpoints="'>md'">

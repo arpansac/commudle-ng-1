@@ -25,10 +25,7 @@
         </div>
         <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div class="time-badge">
-            <p class="event-time">
-              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
-              {{ momentTimezone.tz(event.timezone).format('z') }}
-            </p>
+            <p class="event-title">{{ event.name }}</p>
             <div class="interested-members" *ngIf="event.interested_members_count > 0">
               <app-badge
                 [text]="event.interested_members_count"
@@ -40,7 +37,10 @@
               ></app-badge>
             </div>
           </div>
-          <p class="event-title">{{ event.name }}</p>
+          <p class="event-time">
+            {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
+            {{ momentTimezone.tz(event.timezone).format('z') }}
+          </p>
           <div *ngIf="community" class="community-badge">
             <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
           </div>
