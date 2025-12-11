@@ -315,6 +315,8 @@ export class HackathonService {
     onlyWinners?: boolean,
     trackId?: number,
     problemStatementId?: number,
+    sortBy?: string,
+    sortOrder?: string,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
@@ -335,6 +337,12 @@ export class HackathonService {
     }
     if (problemStatementId) {
       params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (sortBy) {
+      params = params.set('sort_by', sortBy);
+    }
+    if (sortOrder) {
+      params = params.set('sort_order', sortOrder);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),

@@ -141,6 +141,8 @@
       >
         Clear All Filters
       </div>
+
+      <div class="clear-filter" (click)="clearSorting()" *ngIf="sortByTotalScore">Clear Sorting</div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -161,6 +163,27 @@
             <th width="300px">Name</th>
             <th width="100px">PS ID</th>
             <th>Round</th>
+            <th width="120px" class="sortable-header">
+              <span> Total Score </span>
+              <div class="sort-icons">
+                <fa-icon
+                  *ngIf="sortByTotalScore !== 'asc'"
+                  (click)="sortTotalScore('asc')"
+                  title="Sort by Total Score Ascending"
+                  [icon]="icons.faSortUp"
+                  class="sort-icon-asc"
+                >
+                </fa-icon>
+                <fa-icon
+                  *ngIf="sortByTotalScore !== 'desc'"
+                  (click)="sortTotalScore('desc')"
+                  title="Sort by Total Score Descending"
+                  [icon]="icons.faSortDown"
+                  class="sort-icon-desc"
+                >
+                </fa-icon>
+              </div>
+            </th>
             <th width="200px">Updates</th>
             <th width="200px">Notes</th>
             <th>Application Status</th>
@@ -220,10 +243,30 @@
             </td>
 
             <!-- ROUND NAME -->
-            <td>
-              <div *ngIf="userResponse.team.round" class="round-name">
-                {{ userResponse.team.round?.name }}
+            <td (click)="$event.stopPropagation()">
+              <div
+                *ngIf="userResponse.team.registration_status === EHackathonRegistrationStatus.ACCEPTED"
+                class="round-select-wrapper"
+              >
+                <select
+                  [id]="'round-select-table-' + userResponse.team.id"
+                  (mousedown)="storeOriginalRoundValue(userResponse.team.round.id)"
+                  (change)="
+                    openRoundConfirmationDialogBox(roundChangedConfirmationDialogBox, $event, userResponse.team.id, i)
+                  "
+                  [(ngModel)]="userResponse.team.round.id"
+                  class="round-select"
+                >
+                  <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
+                    {{ hackathonRound.name }}
+                  </option>
+                </select>
               </div>
+            </td>
+
+            <!-- TOTAL SCORE -->
+            <td class="total-score">
+              {{ userResponse.team.total_score || 0 }}
             </td>
 
             <!-- UPDATED -->
@@ -927,7 +970,11 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="confirmRoundChange(data.teamId, data.index, data.newValue)">
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmRoundChange(data.teamId, data.index, data.newValue); ref.close()"
+      >
         Confirm
       </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>
