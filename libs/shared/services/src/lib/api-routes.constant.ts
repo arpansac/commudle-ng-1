@@ -1016,6 +1016,7 @@ export const API_ROUTES = {
     CREATE_TRANSFER: 'api/v2/razorpay/create_transfer', //GET
     GET_TRANSFER_DETAILS: 'api/v2/razorpay/get_transfer_details', //GET
     CREATE_MISSING_RZP_PAYMENT: 'api/v2/razorpay/create_missing_rzp_payment', //GET
+    GET_PAYMENT_INFO: 'api/v2/razorpay/get_payment_info', //GET
   },
 
   FEED: {

@@ -126,4 +126,9 @@ export class RazorpayService {
       { payment_id: paymentId },
     );
   }
+
+  getPaymentInfo(rzpPaymentId: string, fromApi = false): Observable<any> {
+    const params = new HttpParams().set('rzp_payment_id', rzpPaymentId).set('from_api', fromApi);
+    return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.RAZORPAY.GET_PAYMENT_INFO), { params });
+  }
 }

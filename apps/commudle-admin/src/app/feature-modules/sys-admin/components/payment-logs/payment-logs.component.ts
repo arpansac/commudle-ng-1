@@ -9,6 +9,10 @@ import { NbDialogService } from '@commudle/theme';
 })
 export class PaymentLogsComponent {
   rzpPaymentId: '';
+  paymentInfo: any;
+  fromApi = true;
+  isLoading = false;
+
   constructor(
     private nbDialogService: NbDialogService,
     private rzpService: RazorpayService,
@@ -25,6 +29,26 @@ export class PaymentLogsComponent {
       if (data) {
         this.toastrService.successDialog('Payment details linked successfully');
       }
+    });
+  }
+
+  openPaymentInfoDialog(template) {
+    this.rzpPaymentId = '';
+    this.paymentInfo = null;
+    this.fromApi = true;
+    this.nbDialogService.open(template);
+  }
+
+  fetchPaymentInfo(fromApi: boolean) {
+    this.isLoading = true;
+    this.rzpService.getPaymentInfo(this.rzpPaymentId, fromApi).subscribe({
+      next: (data) => {
+        this.paymentInfo = data;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
     });
   }
 }
