@@ -27,17 +27,18 @@
       <app-loading-spinner></app-loading-spinner>
     </div>
 
-    <div *ngIf="!isLoading && filteredTeams.length === 0" class="empty-state">
+    <div *ngIf="!isLoading && teamDetails.length === 0" class="empty-state">
       <p>No teams assigned for this round</p>
     </div>
 
-    <table *ngIf="!isLoading && filteredTeams.length > 0" class="teams-table">
+    <table *ngIf="!isLoading && teamDetails.length > 0" class="teams-table">
       <thead>
         <tr>
           <th>Team Name</th>
           <th>Track</th>
           <th>Problem Statement</th>
           <th>Members count</th>
+          <th>Submission & Updates</th>
           <th>Total Score</th>
           <th>Score Details</th>
           <th>Status</th>
@@ -45,7 +46,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let teamData of filteredTeams">
+        <tr *ngFor="let teamData of teamDetails">
           <td class="team-name">{{ teamData.team.name }}</td>
           <td>{{ teamData.team.track?.name || 'N/A' }}</td>
           <td>
@@ -59,6 +60,41 @@
             <span *ngIf="!teamData.team.problem_statement">N/A</span>
           </td>
           <td>{{ teamData.team.team_members_count }}</td>
+          <td>
+            <div class="submission-details">
+              @if(teamData.submission?.file_attachment) {
+              <div class="ppt-link">
+                <strong>PPT Link:</strong>
+                <a [href]="teamData.submission.file_attachment.url" target="_blank">
+                  {{ teamData.submission.file_attachment.name }}
+                </a>
+                <span class="date-time">({{ teamData.submission.created_at | date : 'short' }})</span>
+              </div>
+              } @if(teamData.team.community_build) {
+              <div class="project-link">
+                <strong>Project:</strong>
+                <a [routerLink]="['/builds', teamData.team.community_build.slug]" target="_blank">
+                  {{ teamData.team.community_build.name }}
+                </a>
+              </div>
+              } @if(teamData.team.entity_updates && teamData.team.entity_updates.length > 0) {
+              <div class="updates-list">
+                <strong>Updates:</strong>
+                <ol>
+                  @for(update of teamData.team.entity_updates; track update.id) {
+                  <li>
+                    <span class="update-details" [innerHTML]="update.details | safeHtml"></span>
+                    <span class="date-time">({{ update.created_at | date : 'short' }})</span>
+                  </li>
+                  }
+                </ol>
+              </div>
+              } @if(!teamData.submission?.file_attachment && !teamData.team.community_build &&
+              (!teamData.team.entity_updates || teamData.team.entity_updates.length === 0)) {
+              <span class="no-submission">No submission</span>
+              }
+            </div>
+          </td>
           <td>
             @if(teamData.score?.total_score !== null && teamData.score?.total_score !== undefined) {
             {{ teamData.score.total_score }}
@@ -105,7 +141,7 @@
               (click)="openScoringDialog(teamData)"
               [disabled]="!moment().isBetween(moment(selectedRound?.date), moment(selectedRound?.end_date), null, '[]')"
             >
-              {{ teamData.score.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Add Score' }}
+              {{ teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Add Score' }}
             </button>
             <span *ngIf="!selectedRound?.has_marking_criteria" class="no-scoring">-</span>
           </td>

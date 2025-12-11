@@ -82,6 +82,68 @@ nb-card {
           @apply hover:com-text-primary-600;
         }
 
+        .submission-link {
+          @apply com-text-primary-500 com-underline com-break-all;
+          @apply hover:com-text-primary-600;
+        }
+
+        .submission-comments {
+          @apply com-text-xs com-text-gray-500 com-mt-1 com-italic;
+        }
+
+        .no-submission {
+          @apply com-text-gray-400 com-text-xs;
+        }
+
+        .submission-details {
+          @apply com-flex com-flex-col com-gap-2;
+
+          .ppt-link,
+          .project-link,
+          .updates-list {
+            @apply com-flex com-flex-col com-gap-1;
+
+            strong {
+              @apply com-text-xs com-font-semibold com-text-gray-700;
+            }
+
+            a {
+              @apply com-text-primary-500 com-underline com-text-xs;
+              @apply hover:com-text-primary-600;
+            }
+
+            .update-details {
+              ::ng-deep {
+                p {
+                  @apply com-m-0;
+                }
+              }
+            }
+
+            .date-time {
+              @apply com-text-xs com-text-gray-500 com-ml-1;
+            }
+          }
+
+          .updates-list {
+            ol {
+              @apply com-m-0 com-pl-4;
+
+              li {
+                @apply com-text-xs com-text-gray-700 com-mb-1;
+
+                span {
+                  @apply com-p-0;
+                }
+
+                .date-time {
+                  @apply com-text-xs com-text-gray-500 com-ml-1;
+                }
+              }
+            }
+          }
+        }
+
         .inner-score-table {
           @apply com-w-full com-border-collapse;
 

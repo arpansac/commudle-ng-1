@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@commudle/theme';
-import { IHackathon, IHackathonTeamRoundScore, IHackathonTeamScore, IMarkingCriteria } from '@commudle/shared-models';
+import { IHackathon, IHackathonTeamRoundScore, IMarkingCriteria } from '@commudle/shared-models';
 import { HackathonTeamRoundScoreService, ToastrService, RoundService } from '@commudle/shared-services';
 
 @Component({
@@ -10,7 +10,7 @@ import { HackathonTeamRoundScoreService, ToastrService, RoundService } from '@co
   styleUrls: ['./mentor-scoring-dialog.component.scss'],
 })
 export class MentorScoringDialogComponent implements OnInit {
-  @Input() teamData: IHackathonTeamScore;
+  @Input() teamData: any;
   @Input() hackathon: IHackathon;
 
   scoreForm: FormGroup;
@@ -101,11 +101,11 @@ export class MentorScoringDialogComponent implements OnInit {
     const scoreData = this.prepareScoreData(status);
 
     this.hackathonTeamRoundScoreService.submitScore(scoreData, this.teamData.score.id, this.hackathon.id).subscribe({
-      next: () => {
+      next: (score: IHackathonTeamRoundScore) => {
         this.toastrService.successDialog(
           status === 'submitted' ? 'Score submitted successfully' : 'Score saved as draft',
         );
-        this.dialogRef.close(true);
+        this.dialogRef.close(score);
       },
       error: () => {
         this.toastrService.errorDialog(status === 'submitted' ? 'Failed to submit score' : 'Failed to save draft');

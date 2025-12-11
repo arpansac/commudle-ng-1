@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IHackathonTeamRoundScore } from '@commudle/shared-models';
+import { IHackathonTeamRoundScore, IHackathonTeamWithScoreAndSubmissions } from '@commudle/shared-models';
 import { BaseApiService } from './base-api.service';
 import { API_ROUTES } from './api-routes.constant';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -61,5 +60,13 @@ export class HackathonTeamRoundScoreService {
     return this.http.get<any[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.TEAMS_BY_ROUND), {
       params,
     });
+  }
+
+  showDetails(hackathonId: number | string, roundId: number): Observable<IHackathonTeamWithScoreAndSubmissions[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('round_id', roundId);
+    return this.http.get<IHackathonTeamWithScoreAndSubmissions[]>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.SHOW_DETAILS),
+      { params },
+    );
   }
 }

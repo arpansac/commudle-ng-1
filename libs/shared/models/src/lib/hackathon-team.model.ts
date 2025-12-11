@@ -50,7 +50,8 @@ export enum EHackathonRegistrationStatusColor {
   rejected = 'com-bg-red-500',
 }
 
-export interface IHackathonTeamScore {
-  team: IHackathonTeam;
+export interface IHackathonTeamWithScoreAndSubmissions {
   score: IHackathonTeamRoundScore;
+  team: IHackathonTeam;
+  submission: IHackathonTeamRoundSubmission;
 }
