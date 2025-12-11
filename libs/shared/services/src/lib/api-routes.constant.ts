@@ -1103,5 +1103,6 @@ export const API_ROUTES = {
     TEAMS_BY_ROUND: 'api/v2/hackathon_team_round_scores/teams_by_round', //GET
     SUBMIT_SCORE: 'api/v2/hackathon_team_round_scores/submit_score', //PUT
     SHOW_DETAILS: 'api/v2/hackathon_team_round_scores/show_details', //GET
+    DISTRIBUTE_TEAMS_EVENLY: 'api/v2/hackathon_team_round_scores/distribute_teams_evenly', //POST
   },
 };

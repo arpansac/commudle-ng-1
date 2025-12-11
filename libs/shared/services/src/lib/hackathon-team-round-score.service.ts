@@ -69,4 +69,14 @@ export class HackathonTeamRoundScoreService {
       { params },
     );
   }
+
+  distributeTeamsEvenly(hackathonId: number | string, roundId: number): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.DISTRIBUTE_TEAMS_EVENLY),
+      {
+        hackathon_id: hackathonId,
+        round_id: roundId,
+      },
+    );
+  }
 }

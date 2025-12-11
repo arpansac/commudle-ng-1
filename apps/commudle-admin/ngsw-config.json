@@ -28,8 +28,8 @@
     }
   ],
   "appData": {
-    "version": "1.1.2",
+    "version": "1.1.6",
     "releaseNotes": "",
-    "critical": false
+    "critical": true
   }
 }

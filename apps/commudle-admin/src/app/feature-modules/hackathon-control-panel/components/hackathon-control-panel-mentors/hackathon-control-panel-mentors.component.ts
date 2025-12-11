@@ -53,6 +53,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   @ViewChild('roundCellTemplate') roundCellTemplate!: TemplateRef<unknown>;
   @ViewChild('mentorCellTemplate') mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('roundHeaderTemplate') roundHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('distributeTeamsEvenly') distributeTeamsEvenlyTemplate!: TemplateRef<unknown>;
+  @ViewChild('fullScreenLoading') fullScreenLoadingTemplate!: TemplateRef<unknown>;
 
   selectedMentorId: number;
   selectedRoundId: number;
@@ -370,6 +372,42 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     ];
   }
 
+  onRoundActionChange(event: Event, roundId: number): void {
+    const select = event.target as HTMLSelectElement;
+    const action = select.value;
+
+    if (action === 'distribute') {
+      this.openDistributeTeamsDialog(roundId);
+    }
+
+    select.value = '';
+  }
+
+  openDistributeTeamsDialog(roundId: number): void {
+    this.dialogService.open(this.distributeTeamsEvenlyTemplate, {
+      context: { roundId },
+    });
+  }
+
+  confirmDistributeTeams(roundId: number): void {
+    const dialogRef = this.dialogService.open(this.fullScreenLoadingTemplate);
+    this.hackathonTeamRoundScoreService
+      .distributeTeamsEvenly(this.hackathonId, roundId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Teams distributed successfully');
+          this.loadExistingAssignments();
+          dialogRef.close();
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to distribute teams');
+          dialogRef.close();
+        },
+      });
+  }
+
   buildTableData(): void {
     this.tableRows = this.mentors.map((mentor) => ({
       id: mentor.id,
@@ -457,5 +495,19 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         isBulk: false,
       },
     });
+  }
+
+  areAllTeamsAssignedForRound(roundId: number): boolean {
+    const teamsInRound = this.teams.filter((team) => team.round?.id === roundId);
+    if (teamsInRound.length === 0) return true;
+
+    const assignedTeamIds = new Set<number>();
+    this.mentorAssignments.forEach((teamIds, key) => {
+      if (key.endsWith(`_${roundId}`)) {
+        teamIds.forEach((id) => assignedTeamIds.add(id));
+      }
+    });
+
+    return teamsInRound.every((team) => assignedTeamIds.has(team.id));
   }
 }

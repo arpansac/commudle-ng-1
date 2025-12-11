@@ -40,18 +40,36 @@ nb-card-header {
 }
 
 .round-header {
-  @apply com-flex com-flex-col com-items-start com-gap-1 com-py-2;
+  @apply com-flex com-flex-col com-min-h-[140px] com-py-2;
 
   .round-label {
     @apply com-text-xs com-font-bold com-text-primary-500 com-uppercase com-mb-1;
   }
 
+  .round-header-content {
+    @apply com-flex com-flex-col com-gap-1 com-flex-1;
+  }
+
   .round-header-name {
-    @apply com-font-semibold com-text-gray-900 com-text-sm com-mb-1;
+    @apply com-font-semibold com-text-gray-900 com-text-sm com-mb-1 com-text-center;
   }
 
   .round-header-datetime {
     @apply com-text-xs com-text-gray-600 com-text-center;
+  }
+
+  .round-actions {
+    @apply com-mt-auto com-flex com-justify-center com-pt-2;
+  }
+
+  .round-actions-select {
+    @apply com-px-2 com-py-1 com-text-xs com-border com-border-gray-300 com-rounded com-bg-white;
+    @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
+    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
+
+    option {
+      @apply com-py-2 com-px-3;
+    }
   }
 }
 
@@ -110,6 +128,26 @@ nb-card-header {
 
   p {
     @apply com-text-lg;
+  }
+}
+
+.fullscreen-loader {
+  @apply com-bg-opacity-50 com-flex com-items-center com-justify-center;
+
+  .loader-content {
+    @apply com-bg-white com-rounded-lg com-p-8 com-shadow-2xl com-text-center com-max-w-md;
+
+    h3 {
+      @apply com-text-xl com-font-bold com-text-gray-900 com-mt-4 com-mb-2;
+    }
+
+    p {
+      @apply com-text-gray-600 com-mb-2;
+    }
+
+    .warning-text {
+      @apply com-text-sm com-text-orange-600 com-font-medium com-mt-4;
+    }
   }
 }
 

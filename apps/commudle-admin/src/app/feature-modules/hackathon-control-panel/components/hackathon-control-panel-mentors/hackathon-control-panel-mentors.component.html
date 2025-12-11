@@ -43,13 +43,25 @@
 
 <ng-template #roundHeaderTemplate let-column="column">
   <div class="round-header">
-    <span class="round-header-name">{{ column.round.name }}</span>
-    <span class="round-header-datetime">
-      {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
-    </span>
-    <span class="round-header-datetime" *ngIf="column.round.end_date">
-      {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
-    </span>
+    <div class="round-header-content">
+      <span class="round-header-name">{{ column.round.name }}</span>
+      <span class="round-header-datetime">
+        {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+      <span class="round-header-datetime" *ngIf="column.round.end_date">
+        {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+    </div>
+    <div class="round-actions">
+      <select
+        class="round-actions-select"
+        (change)="onRoundActionChange($event, column.round.id)"
+        [disabled]="areAllTeamsAssignedForRound(column.round.id)"
+      >
+        <option value="">Actions</option>
+        <option value="distribute">Distribute Teams Evenly</option>
+      </select>
+    </div>
   </div>
 </ng-template>
 
@@ -92,6 +104,29 @@
     <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">
       <fa-icon [icon]="icons.faPlus"></fa-icon>
       Add teams
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #distributeTeamsEvenly let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Distribute Teams Evenly</nb-card-header>
+    <nb-card-body>
+      <p>This will distribute the teams evenly among all mentors for the selected round.</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmDistributeTeams(data.roundId); ref.close()">Confirm</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #fullScreenLoading>
+  <div class="fullscreen-loader">
+    <div class="loader-content">
+      <app-loading-spinner></app-loading-spinner>
+      <p>Please wait while we distribute the teams evenly among mentors.</p>
+      <p class="warning-text">This may take a few seconds. Don't close or refresh this window.</p>
     </div>
   </div>
 </ng-template>
