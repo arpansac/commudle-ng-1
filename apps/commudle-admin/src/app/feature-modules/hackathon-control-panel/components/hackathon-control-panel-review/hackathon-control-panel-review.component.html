@@ -243,9 +243,24 @@
             </td>
 
             <!-- ROUND NAME -->
-            <td>
-              <div *ngIf="userResponse.team.round" class="round-name">
-                {{ userResponse.team.round?.name }}
+            <td (click)="$event.stopPropagation()">
+              <div
+                *ngIf="userResponse.team.registration_status === EHackathonRegistrationStatus.ACCEPTED"
+                class="round-select-wrapper"
+              >
+                <select
+                  [id]="'round-select-table-' + userResponse.team.id"
+                  (mousedown)="storeOriginalRoundValue(userResponse.team.round.id)"
+                  (change)="
+                    openRoundConfirmationDialogBox(roundChangedConfirmationDialogBox, $event, userResponse.team.id, i)
+                  "
+                  [(ngModel)]="userResponse.team.round.id"
+                  class="round-select"
+                >
+                  <option *ngFor="let hackathonRound of hackathonRounds" [value]="hackathonRound.id">
+                    {{ hackathonRound.name }}
+                  </option>
+                </select>
               </div>
             </td>
 
@@ -955,7 +970,11 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="confirmRoundChange(data.teamId, data.index, data.newValue)">
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmRoundChange(data.teamId, data.index, data.newValue); ref.close()"
+      >
         Confirm
       </button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>

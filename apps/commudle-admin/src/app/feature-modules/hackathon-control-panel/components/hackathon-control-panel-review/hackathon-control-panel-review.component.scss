@@ -96,6 +96,12 @@ th {
   @apply com-font-semibold com-text-gray-900;
 }
 
+.round-select-wrapper {
+  .round-select {
+    @apply com-bg-primary-500 com-px-3 com-py-2 com-text-white com-rounded-2xl com-font-medium com-text-xs com-border-0 com-cursor-pointer;
+  }
+}
+
 .select-wrapper {
   @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-28 com-cursor-pointer;
   select {
