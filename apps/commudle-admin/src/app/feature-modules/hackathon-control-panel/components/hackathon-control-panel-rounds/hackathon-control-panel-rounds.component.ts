@@ -151,6 +151,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   createRound() {
+    if (this.roundForm.value.has_marking_criteria && this.markingCriteria.length === 0) {
+      this.toastrService.warningDialog('Please add at least one marking criteria or uncheck Has Marking Criteria');
+      return;
+    }
     const formData = {
       ...this.roundForm.value,
       date: this.convertDateToLocal(this.roundForm.value.date),
@@ -168,6 +172,10 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   }
 
   updateRound(round, index) {
+    if (this.roundForm.value.has_marking_criteria && this.markingCriteria.length === 0) {
+      this.toastrService.warningDialog('Please add at least one marking criteria or uncheck Has Marking Criteria');
+      return;
+    }
     const formData = {
       ...this.roundForm.value,
       date: this.convertDateToLocal(this.roundForm.value.date),

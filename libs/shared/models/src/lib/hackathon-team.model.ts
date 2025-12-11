@@ -9,6 +9,7 @@ import { EInvitationStatus, IHackathonUserResponse } from './hackathon-user-resp
 import { IHackathonProblemStatement } from './hackathon-problem-statement.model';
 import { IHackathonTrack } from './hackathon-track.model';
 import { IHackathonTeamRoundSubmission } from './hackathon-team-round-submission.model';
+import { IHackathonTeamRoundScore } from './hackathon-team-round-score.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -32,6 +33,7 @@ export interface IHackathonTeam {
   track: IHackathonTrack;
   problem_statement: IHackathonProblemStatement;
   hackathon_team_round_submissions: IHackathonTeamRoundSubmission[];
+  team_members_count: number;
 }
 
 export enum EHackathonRegistrationStatus {
@@ -46,4 +48,10 @@ export enum EHackathonRegistrationStatusColor {
   waitlisted = 'com-bg-orange-400',
   accepted = 'com-bg-green-500',
   rejected = 'com-bg-red-500',
+}
+
+export interface IHackathonTeamWithScoreAndSubmissions {
+  score: IHackathonTeamRoundScore;
+  team: IHackathonTeam;
+  submission: IHackathonTeamRoundSubmission;
 }

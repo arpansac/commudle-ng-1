@@ -263,6 +263,9 @@
       }
     }
   }
+  .resizable-column:not(:first-child) {
+    @apply com-align-baseline;
+  }
 
   /* // Resizing state */
   .resizing {

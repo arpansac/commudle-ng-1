@@ -924,6 +924,9 @@ export const API_ROUTES = {
       IS_MEMBER_OF_PARENT: 'api/v2/hackathons/public/is_member_of_parent', //GET
       HACKATHONS: 'api/v2/hackathons/public/all_hackathons', //GET
     },
+    TEAMS: {
+      INDEX: 'api/v2/hackathons/teams/index', //GET
+    },
   },
 
   FAQ: {
@@ -978,6 +981,7 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
     MARKING_CRITERIA: 'api/v2/round/marking_criteria', //GET
+    SHOW_MARKING_CRITERIA: 'api/v2/round/show_marking_criteria', //GET
     PUBLIC: {
       INDEX: 'api/v2/round/public',
     },
@@ -1000,6 +1004,9 @@ export const API_ROUTES = {
 
   HACKATHON_JUDGE: {
     RESEND_INVITE: 'api/v2/hackathon_judge/resend_invite', //PUT
+    ROLES: 'api/v2/hackathon_judge/roles', //GET
+    SEND_DASHBOARD_LINK: 'api/v2/hackathon_judge/send_dashboard_link', //POST
+    SEND_CUSTOM_EMAIL: 'api/v2/hackathon_judge/send_custom_email', //POST
   },
 
   EXPERTS: {
@@ -1089,5 +1096,15 @@ export const API_ROUTES = {
     CREATE: 'api/v2/hackathon_team_round_submissions', //POST
     SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET
     UPDATE: 'api/v2/hackathon_team_round_submissions', //PUT
+  },
+
+  HACKATHON_TEAM_ROUND_SCORES: {
+    UNASSIGN_MENTOR: 'api/v2/hackathon_team_round_scores/unassign_mentor', //DELETE
+    ASSIGN_JUDGE: 'api/v2/hackathon_team_round_scores/assign_judge', //POST
+    ASSIGNMENT_SUMMARY: 'api/v2/hackathon_team_round_scores/assignment_summary', //GET
+    TEAMS_BY_ROUND: 'api/v2/hackathon_team_round_scores/teams_by_round', //GET
+    SUBMIT_SCORE: 'api/v2/hackathon_team_round_scores/submit_score', //PUT
+    SHOW_DETAILS: 'api/v2/hackathon_team_round_scores/show_details', //GET
+    DISTRIBUTE_TEAMS_EVENLY: 'api/v2/hackathon_team_round_scores/distribute_teams_evenly', //POST
   },
 };

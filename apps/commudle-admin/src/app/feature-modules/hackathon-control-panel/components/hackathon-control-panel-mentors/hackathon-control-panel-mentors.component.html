@@ -1,0 +1,214 @@
+<nb-card
+  [ngClass]="{
+    'fullscreen-card': isFullscreen,
+    'sidebar-expanded': mainSidebarExpanded,
+    'sidebar-collapsed': !mainSidebarExpanded
+  }"
+>
+  <nb-card-header>
+    <span> Mentor Team Allocation Interface </span>
+    <div class="header-actions">
+      <button
+        (click)="toggleFullscreen()"
+        class="fullscreen-button"
+        [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+      >
+        <fa-icon [icon]="isFullscreen ? icons.faCompress : icons.faExpand"></fa-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <!-- <button
+      nbButton
+      status="primary"
+      size="small"
+      [nbContextMenu]="getHeaderActions()"
+      nbContextMenuTag="header-actions"
+      nbContextMenuTrigger="click"
+    >
+      Actions
+    </button> -->
+    <div class="data-table com-overflow-hidden com-w-full com-h-[70dvh] com-relative">
+      <commudle-data-table
+        *ngIf="rounds.length > 0 && mentors.length > 0"
+        [columns]="tableColumns"
+        [rows]="tableRows"
+        [config]="tableConfig"
+        [isLoading]="isLoading"
+      >
+      </commudle-data-table>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #roundHeaderTemplate let-column="column">
+  <div class="round-header">
+    <div class="round-header-content">
+      <span class="round-header-name">{{ column.round.name }}</span>
+      <span class="round-header-datetime">
+        {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+      <span class="round-header-datetime" *ngIf="column.round.end_date">
+        {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+    </div>
+    <div class="round-actions">
+      <select
+        class="round-actions-select"
+        (change)="onRoundActionChange($event, column.round.id)"
+        [disabled]="areAllTeamsAssignedForRound(column.round.id)"
+      >
+        <option value="">Actions</option>
+        <option value="distribute">Distribute Teams Evenly</option>
+      </select>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mentorCellTemplate let-row="row" let-column="column" let-judge="value">
+  <div class="mentor-info">
+    <img *ngIf="judge.photo?.i320" [src]="judge.photo.i320" [alt]="judge.name" class="mentor-avatar" />
+    <div *ngIf="!judge.photo?.i320" class="mentor-avatar-placeholder">
+      <span>{{ judge.name.charAt(0).toUpperCase() }}</span>
+    </div>
+    <div class="mentor-details">
+      <span class="mentor-name">{{ judge.name }}</span>
+      <span class="mentor-designation" *ngIf="judge.designation">{{ judge.designation }}</span>
+    </div>
+    <button
+      nbButton
+      ghost
+      size="tiny"
+      [nbContextMenu]="getMentorActions(judge)"
+      [nbContextMenuTag]="'mentor-' + judge.id"
+      nbContextMenuTrigger="click"
+    >
+      <nb-icon icon="more-vertical-outline"></nb-icon>
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #roundCellTemplate let-row="row" let-column="column" let-value="value">
+  <div
+    class="team-assignments-compact"
+    (click)="openTeamSelector(value.mentorId, value.roundId, value.mentor, value.roundName)"
+  >
+    <div *ngIf="teamAssignmentData[value.mentorId]?.[value.roundId]?.count > 0" class="team-cell-wrapper">
+      <div class="team-count-badge">{{ teamAssignmentData[value.mentorId][value.roundId].count }}</div>
+      <div class="team-summary custom-scrollbar">
+        @for(team of teamAssignmentData[value.mentorId][value.roundId].assignedTeams; track team.id){
+        <span class="team-name">{{ team.name }}</span>
+        }
+      </div>
+    </div>
+    <div *ngIf="!teamAssignmentData[value.mentorId]?.[value.roundId]?.count" class="no-teams-compact">
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      Add teams
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #distributeTeamsEvenly let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Distribute Teams Evenly</nb-card-header>
+    <nb-card-body>
+      <p>This will distribute the teams evenly among all mentors for the selected round.</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmDistributeTeams(data.roundId); ref.close()">Confirm</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #fullScreenLoading>
+  <div class="fullscreen-loader">
+    <div class="loader-content">
+      <app-loading-spinner></app-loading-spinner>
+      <p>Please wait while we distribute the teams evenly among mentors.</p>
+      <p class="warning-text">This may take a few seconds. Don't close or refresh this window.</p>
+    </div>
+  </div>
+</ng-template>
+
+<commudle-sidebar
+  [heading]="'Assign Teams'"
+  [position]="ESidebarPosition.RIGHT"
+  [expandedWidth]="ESidebarWidth.XXL"
+  [forWindow]="true"
+  [eventName]="sidebarEventName"
+  (toggleSidebar)="closeSidebar()"
+>
+  <div class="sidebar-content">
+    <div class="sidebar-info">
+      @if (selectedMentor) {
+      <div class="mentor-info">
+        <img
+          *ngIf="selectedMentor.photo?.i320"
+          [src]="selectedMentor.photo.i320"
+          [alt]="selectedMentor.name"
+          class="mentor-avatar"
+        />
+        <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
+          <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+        </div>
+        <div class="mentor-details">
+          <span class="mentor-name">{{ selectedMentor.name }}</span>
+          <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+        </div>
+      </div>
+      }
+      <p><strong>Round:</strong> {{ selectedRoundName || 'No round selected' }}</p>
+    </div>
+
+    <div class="assigned-teams" *ngIf="selectedMentorId && selectedRoundId">
+      <h3>Assigned Teams</h3>
+      <div class="team-tags">
+        <nb-tag
+          *ngFor="let team of teamAssignmentData[selectedMentorId]?.[selectedRoundId]?.assignedTeams"
+          status="success"
+          [removable]="true"
+          (remove)="removeTeamFromMentor(selectedMentorId, team.id, selectedRoundId)"
+          [text]="team.name"
+        >
+        </nb-tag>
+        <span *ngIf="!teamAssignmentData[selectedMentorId]?.[selectedRoundId]?.count" class="no-teams">
+          No teams assigned yet
+        </span>
+      </div>
+    </div>
+
+    <div class="search-section">
+      <h3>Add Teams</h3>
+      <input
+        nbInput
+        fullWidth
+        type="text"
+        placeholder="Search teams..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="teams-list">
+      <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
+        <div class="team-info">
+          <span>{{ team.name }}</span>
+          <fa-icon
+            *ngIf="teamMentorCounts.get(team.id) > 0"
+            [icon]="icons.faUserCircle"
+            class="mentor-icon"
+            [nbTooltip]="
+              teamMentorCounts.get(team.id) + ' mentor' + (teamMentorCounts.get(team.id) > 1 ? 's' : '') + ' assigned'
+            "
+            nbTooltipPlacement="top"
+          ></fa-icon>
+        </div>
+        <button nbButton size="tiny" status="primary">Add</button>
+      </div>
+      <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
+        <p>No teams available</p>
+      </div>
+    </div>
+  </div>
+</commudle-sidebar>

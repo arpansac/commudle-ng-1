@@ -292,8 +292,14 @@ export class HackathonService {
     return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.DESTROY_JUDGE), { params });
   }
 
-  indexJudge(hackathonId): Observable<IHackathonJudge[]> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
+  indexJudge(hackathonId, judgeType?: string, inviteStatus?: string): Observable<IHackathonJudge[]> {
+    let params = new HttpParams().set('hackathon_id', hackathonId);
+    if (judgeType) {
+      params = params.set('judge_type', judgeType);
+    }
+    if (inviteStatus) {
+      params = params.set('invite_status', inviteStatus);
+    }
     return this.http.get<IHackathonJudge[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_JUDGES), {
       params,
     });
@@ -559,5 +565,12 @@ export class HackathonService {
   pShowHackathon(hackathonId): Observable<IHackathon> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<IHackathon>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.SHOW), { params });
+  }
+
+  indexTeams(hackathonId: string | number): Observable<IHackathonTeam[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<IHackathonTeam[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.INDEX), {
+      params,
+    });
   }
 }

@@ -1,0 +1,156 @@
+.scoring-dialog {
+  @apply com-min-w-[500px] com-max-w-[600px] com-max-h-90dvh;
+
+  nb-card-header {
+    @apply com-pb-4;
+
+    .header-content {
+      @apply com-flex com-justify-between com-items-center com-mb-3;
+
+      .dialog-title {
+        @apply com-text-xl com-font-semibold com-text-gray-900 com-m-0;
+      }
+
+      .close-button {
+        @apply com-ml-auto;
+      }
+    }
+
+    .team-info-header {
+      @apply com-flex com-items-center com-gap-3;
+
+      .team-name {
+        @apply com-text-base com-font-medium com-text-gray-700 com-m-0;
+      }
+
+      .round-badge {
+        @apply com-inline-block com-px-3 com-py-1 com-rounded-full com-text-xs com-font-medium;
+        @apply com-bg-primary-100 com-text-primary-700;
+      }
+    }
+  }
+
+  nb-card-body {
+    @apply com-py-4;
+
+    .loading-section {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-py-8 com-gap-3;
+
+      .spinning {
+        @apply com-animate-spin com-text-2xl com-text-primary-500;
+      }
+
+      p {
+        @apply com-text-gray-600 com-m-0;
+      }
+    }
+
+    .info-section {
+      @apply com-flex com-gap-6 com-mb-6 com-p-4 com-bg-gray-100 com-rounded-lg;
+
+      .info-item {
+        @apply com-flex com-gap-2;
+
+        .info-label {
+          @apply com-font-medium com-text-gray-700;
+        }
+
+        .info-value {
+          @apply com-text-gray-900;
+        }
+      }
+    }
+
+    .score-form {
+      .criteria-section {
+        @apply com-mb-6;
+
+        .section-header {
+          @apply com-flex com-justify-between com-items-center com-mb-4;
+
+          .section-title {
+            @apply com-text-base com-font-semibold com-text-gray-900 com-m-0;
+          }
+
+          .total-score-display {
+            @apply com-flex com-items-center com-gap-2 com-px-4 com-py-2 com-bg-primary-100 com-rounded-lg;
+
+            .total-label {
+              @apply com-text-sm com-font-medium com-text-Yankees-Blue;
+            }
+
+            .total-value {
+              @apply com-text-base com-font-bold com-text-primary-500;
+            }
+          }
+        }
+
+        .criteria-item {
+          @apply com-mb-4;
+
+          .criteria-label {
+            @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+
+            .criteria-range {
+              @apply com-text-gray-500 com-font-normal;
+            }
+          }
+
+          .slider-container {
+            @apply com-flex com-items-center com-gap-4;
+
+            .score-slider {
+              @apply com-flex-1 com-h-2 com-rounded-lg com-appearance-none;
+              @apply com-bg-gray-200;
+            }
+
+            .slider-value {
+              @apply com-min-w-2 com-text-center com-text-base com-font-semibold com-text-primary-500;
+              @apply com-px-3 com-py-1 com-bg-primary-100 com-rounded-lg;
+            }
+          }
+        }
+      }
+
+      .total-score-section {
+        @apply com-mb-6;
+
+        .score-label {
+          @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+        }
+
+        .slider-container {
+          @apply com-flex com-items-center com-gap-4;
+
+          .score-slider {
+            @apply com-flex-1 com-h-2 com-rounded-lg com-appearance-none;
+            @apply com-bg-gray-200;
+          }
+
+          .slider-value {
+            @apply com-min-w-2 com-text-center com-text-lg com-font-semibold com-text-primary-700;
+            @apply com-px-3 com-py-1 com-bg-primary-100 com-rounded-lg;
+          }
+        }
+      }
+
+      .remarks-section {
+        .remarks-label {
+          @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+        }
+      }
+    }
+  }
+
+  nb-card-footer {
+    @apply com-pt-4;
+
+    .dialog-actions {
+      @apply com-flex com-justify-end com-gap-3;
+
+      .spinning {
+        @apply com-animate-spin;
+      }
+    }
+  }
+}

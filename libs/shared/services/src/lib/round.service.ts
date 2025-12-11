@@ -58,4 +58,14 @@ export class RoundService {
   getMarkingCriteria(): Observable<IMarkingCriteria[]> {
     return this.http.get<IMarkingCriteria[]>(this.baseApiService.getRoute(API_ROUTES.ROUND.MARKING_CRITERIA));
   }
+
+  showMarkingCriteria(
+    roundId: number,
+  ): Observable<{ has_marking_criteria: boolean; marking_criteria: IMarkingCriteria[] }> {
+    const params = new HttpParams().set('round_id', roundId);
+    return this.http.get<{ has_marking_criteria: boolean; marking_criteria: IMarkingCriteria[] }>(
+      this.baseApiService.getRoute(API_ROUTES.ROUND.SHOW_MARKING_CRITERIA),
+      { params },
+    );
+  }
 }
