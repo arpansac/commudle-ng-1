@@ -141,7 +141,12 @@
               (click)="openScoringDialog(teamData)"
               [disabled]="!moment().isBetween(moment(selectedRound?.date), moment(selectedRound?.end_date), null, '[]')"
             >
-              {{ teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED ? 'Update Score' : 'Add Score' }}
+              {{
+                teamData.score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED ||
+                teamData.score?.status === EHackathonTeamRoundScoreStatus.DRAFT
+                  ? 'Update Score'
+                  : 'Add Score'
+              }}
             </button>
             <span *ngIf="!selectedRound?.has_marking_criteria" class="no-scoring">-</span>
           </td>
