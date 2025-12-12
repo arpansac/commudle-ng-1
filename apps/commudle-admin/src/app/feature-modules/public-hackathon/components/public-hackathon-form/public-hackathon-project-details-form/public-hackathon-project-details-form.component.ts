@@ -25,8 +25,8 @@ export class PublicHackathonProjectDetailsFormComponent implements OnInit {
 
   constructor(private hackathonService: HackathonService, private fb: FormBuilder) {
     this.hackathonProjectDetailsForm = this.fb.group({
-      hackathon_track_id: '',
-      hackathon_problem_statement_id: '',
+      hackathon_track_id: ['', Validators.required],
+      hackathon_problem_statement_id: ['', Validators.required],
     });
   }
 

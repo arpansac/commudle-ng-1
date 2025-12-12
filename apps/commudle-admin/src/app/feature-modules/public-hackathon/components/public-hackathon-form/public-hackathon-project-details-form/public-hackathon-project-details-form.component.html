@@ -1,6 +1,6 @@
 <form [formGroup]="hackathonProjectDetailsForm">
   <div *ngIf="hackathonTracks && hackathonTracks.length > 0">
-    <label for="hackathon_track_id">Select Track (Optional)</label>
+    <label for="hackathon_track_id">Select Track</label>
     <br />
     <select
       formControlName="hackathon_track_id"
@@ -17,19 +17,25 @@
   </div>
 
   <div *ngIf="selectedTrackProblemStatements.length > 0" class="problem-statements-container">
-    <label>Select Problem Statement (Optional)</label>
+    <label>Select Problem Statement</label>
     <div class="radio-group">
-      <div *ngFor="let ps of selectedTrackProblemStatements" class="radio-option">
+      <div
+        *ngFor="let ps of selectedTrackProblemStatements"
+        class="radio-option"
+        [class.disabled-option]="!ps.can_team_select"
+      >
         <input
           type="radio"
           [id]="'ps-' + ps.id"
           formControlName="hackathon_problem_statement_id"
           [value]="ps.id"
           name="hackathon_problem_statement_id"
+          [disabled]="!ps.can_team_select"
         />
-        <label [for]="'ps-' + ps.id" class="problem-statement-label">
+        <label [for]="'ps-' + ps.id" class="problem-statement-label" [class.disabled]="!ps.can_team_select">
           <span class="display-id" *ngIf="ps.display_id">{{ ps.display_id }}</span>
           <span class="title" [innerHTML]="ps.title"></span>
+          <span *ngIf="!ps.can_team_select" class="limit-reached">(Limit Reached)</span>
         </label>
       </div>
     </div>
