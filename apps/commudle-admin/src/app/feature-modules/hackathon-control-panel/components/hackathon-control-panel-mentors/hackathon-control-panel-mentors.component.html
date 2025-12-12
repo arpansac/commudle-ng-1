@@ -53,13 +53,12 @@
       </span>
     </div>
     <div class="round-actions">
-      <select
-        class="round-actions-select"
-        (change)="onRoundActionChange($event, column.round.id)"
-        [disabled]="areAllTeamsAssignedForRound(column.round.id)"
-      >
+      <select class="round-actions-select" (change)="onRoundActionChange($event, column.round.id)">
         <option value="">Actions</option>
-        <option value="distribute">Distribute Teams Evenly</option>
+        <option value="distribute" [disabled]="areAllTeamsAssignedForRound(column.round.id)">
+          Distribute Teams Evenly
+        </option>
+        <option value="promote">Promote Teams to Next Round</option>
       </select>
     </div>
   </div>
@@ -116,6 +115,24 @@
     </nb-card-body>
     <nb-card-footer>
       <button nbButton status="primary" (click)="confirmDistributeTeams(data.roundId); ref.close()">Confirm</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #promoteTeams let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Promote Teams to Next Round</nb-card-header>
+    <nb-card-body>
+      <p>
+        This will promote teams and their evaluator assignments to <strong>{{ data.nextRoundName }}</strong
+        >.
+      </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmShiftTeams(data.previousRoundId, data.nextRoundId, ref)">
+        Confirm
+      </button>
       <button nbButton (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
