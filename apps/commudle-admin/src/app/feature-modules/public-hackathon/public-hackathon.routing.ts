@@ -71,6 +71,11 @@ const routes: Routes = [
             component: PublicHackathonMentorDashboardComponent,
             canActivate: [AuthGuard],
           },
+          {
+            path: 'judge-dashboard',
+            component: PublicHackathonMentorDashboardComponent,
+            canActivate: [AuthGuard],
+          },
         ],
       },
       {
