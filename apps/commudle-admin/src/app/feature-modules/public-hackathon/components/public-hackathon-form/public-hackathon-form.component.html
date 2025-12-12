@@ -102,6 +102,7 @@
                     [team]="selectedTeam"
                     (createOrUpdateProjectDetails)="submitProjectDetails($event)"
                     (previousButtonEvent)="previousStepper()"
+                    [submitButtonText]="hackathonResponseGroup.data_form_entity_id ? 'Next' : 'Submit'"
                   ></commudle-public-hackathon-project-details-form>
                 </div>
               </nb-step>
