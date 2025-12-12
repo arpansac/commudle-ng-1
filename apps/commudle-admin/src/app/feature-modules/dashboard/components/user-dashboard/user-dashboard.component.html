@@ -50,6 +50,7 @@
                   <commudle-event-horizontal-card
                     *ngSwitchCase="EDbModels.EVENT"
                     [event]="upcomingEventHackathon.data"
+                    [headerImageWidth]="'214px'"
                   ></commudle-event-horizontal-card>
                   <commudle-hackathon-horizontal-card
                     *ngSwitchCase="EDbModels.HACKATHON"
@@ -84,48 +85,58 @@
                   <div *ngFor="let feed of activityFeed">
                     <ng-container [ngSwitch]="feed.actionable_type">
                       <ng-container *ngSwitchCase="EDbModels.VOTE">
-                        <ng-container
+                        <!-- <ng-container
                           *ngIf="
                             feed.actionable.object_type === EDbModels.COMMUNITY_BUILD ||
                             feed.actionable.object_type === EDbModels.LAB
                           "
-                        >
-                          <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                            <nb-card-header
-                              ><h2 class="user">
-                                <img
-                                  [src]="
-                                    feed.performer_type === EDbModels.USER
-                                      ? feed.performer.photo?.i32
-                                      : feed.performer.logo_image?.i64
-                                  "
-                                />
-                                <span class="performer-name">{{ feed.performer.name }}</span>
-                                <span class="action-text"
-                                  >{{ feed.action_text }}
-                                  <span
-                                    class="action-text"
-                                    *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
-                                    >a build</span
-                                  >
-                                  <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
-                                    >a lab</span
-                                  >
-                                </span>
-                              </h2>
-                            </nb-card-header>
-                            <nb-card-body>
-                              <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
-                                <app-community-build-card
-                                  [communityBuild]="feed.actionable.object_data"
-                                ></app-community-build-card>
-                              </ng-container>
-                              <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
-                                <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
-                              </ng-container>
-                            </nb-card-body>
-                          </nb-card>
-                        </ng-container>
+                        > -->
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2 class="user">
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span>
+                              <span class="action-text"
+                                >{{ feed.action_text }}
+                                <span
+                                  class="action-text"
+                                  *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
+                                  >a build</span
+                                >
+                                <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
+                                  >a lab</span
+                                >
+                                <span
+                                  class="action-text"
+                                  *ngIf="feed.actionable.object_type === EDbModels.SOCIAL_RESOURCE"
+                                  >a social resource</span
+                                >
+                              </span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
+                              <app-community-build-card
+                                [communityBuild]="feed.actionable.object_data"
+                              ></app-community-build-card>
+                            </ng-container>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
+                              <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
+                            </ng-container>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.SOCIAL_RESOURCE">
+                              <commudle-event-content-card
+                                [speakersContent]="feed.actionable.object_data"
+                              ></commudle-event-content-card>
+                            </ng-container>
+                          </nb-card-body>
+                        </nb-card>
+                        <!-- </ng-container> -->
                       </ng-container>
 
                       <ng-container *ngSwitchCase="EDbModels.COMMUNITY_BUILD">

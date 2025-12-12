@@ -29,6 +29,7 @@ import * as momentTimezone from 'moment-timezone';
 })
 export class EventHorizontalCardComponent implements OnInit {
   @Input() event: IEvent;
+  @Input() headerImageWidth = '388px';
   community: ICommunity;
   moment = moment;
   tags: string[] = [];

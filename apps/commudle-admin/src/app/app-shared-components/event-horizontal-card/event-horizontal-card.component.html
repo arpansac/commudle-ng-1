@@ -3,7 +3,7 @@
     <div class="upcoming-card">
       <a [routerLink]="['/communities', event.kommunity_slug, 'events', event.slug]" class="upcoming-card-link">
         <div *ngIf="event.header_image">
-          <div *appBreakpoints="'>lg'" class="upcoming-card-image">
+          <div *appBreakpoints="'>md'" class="upcoming-card-image" [ngStyle]="{ width: headerImageWidth }">
             <commudle-banner-image
               [headerImagePath]="event.header_image.i350"
               [name]="event.name"
@@ -11,7 +11,7 @@
               [bottomRightCurve]="false"
             ></commudle-banner-image>
           </div>
-          <div *appBreakpoints="'<=lg'" class="upcoming-card-image">
+          <div *appBreakpoints="'<=md'" class="upcoming-card-image com-w-full">
             <commudle-banner-image
               [headerImagePath]="event.header_image.i350"
               [name]="event.name"

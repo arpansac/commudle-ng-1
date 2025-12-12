@@ -204,17 +204,12 @@ nb-card {
   }
 }
 
-canvas {
-  @apply com-w-full com-h-full com-object-cover;
-  image-rendering: pixelated;
-}
-
 .registration-grid {
   @apply com-grid com-gap-2 com-w-full;
 }
 
 .registration-header {
-  @apply md:com-grid com-grid-cols-4 com-gap-3 com-hidden com-px-2 com-mr-4;
+  @apply md:com-grid com-grid-cols-4 com-gap-3 com-hidden com-px-2;
 
   .table-heading:last-child {
     @apply md:com-justify-self-end;
@@ -222,7 +217,7 @@ canvas {
 }
 
 .registration-row {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-50 com-rounded-lg com-items-center com-mr-4;
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-2 md:com-gap-3 com-gap-x-6px com-gap-y-6px com-py-1 com-px-2 hover:com-bg-gray-50 com-rounded-lg com-items-center;
 }
 
 .highlighted-row {
@@ -273,30 +268,37 @@ canvas {
 }
 
 .template {
-  @apply com-h-[60dvh] md:com-w-[40dvw] com-w-[90dvw];
+  @apply md:com-h-[46dvh] com-h-[60dvh] md:com-w-[28dvw] com-w-[90dvw] com-bg-white;
   nb-card-header {
     @apply com-flex com-flex-row com-justify-between com-items-center;
     p {
-      @apply com-text-2xl com-font-semibold com-m-0;
+      @apply com-text-lg com-font-semibold com-m-0 com-text-Yankees-Blue;
+      span {
+        @apply com-text-gray-custom-1;
+      }
     }
 
     nb-icon {
-      @apply com-h-4 com-w-4;
+      @apply com-h-4 com-w-4 com-text-Yankees-Blue;
     }
-  }
-
-  .qr-code-template {
-    @apply com-m-0 com-w-full com-h-full;
 
     nb-card-body {
-      @apply com-rounded-lg com-bg-tWhite com-flex com-flex-col com-items-center com-p-0;
-    }
-    .qr-unique-code-template {
-      @apply com-text-2xl com-font-medium com-my-2 com-text-tblack;
-    }
-    #template-qr {
-      @apply com-w-auto com-h-full;
-      image-rendering: pixelated;
+      @apply com-flex com-justify-center com-items-center com-p-6;
     }
   }
+
+  // .qr-code-template {
+  //   @apply com-m-0 com-w-full com-h-full;
+
+  //   nb-card-body {
+  //     @apply com-rounded-lg com-bg-tWhite com-flex com-flex-col com-items-center com-p-0;
+  //   }
+  .qr-unique-code-template {
+    @apply com-text-xl com-font-bold com-mt-[18px] com-text-Yankees-Blue;
+  }
+  #template-qr {
+    @apply com-w-full com-h-full com-border com-border-solid com-border-Bright-Gray com-bg-gray-50 com-rounded-2xl com-object-cover;
+    image-rendering: pixelated;
+  }
 }
+// }

@@ -7,7 +7,7 @@ nb-card {
         @apply com-flex com-w-full com-no-underline md:com-flex-row com-flex-col;
 
         .upcoming-card-image {
-          @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-flex com-justify-center com-items-center com-overflow-hidden md:com-w-[389px] md:com-h-[143px] com-w-full com-h-full;
+          @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-flex com-justify-center com-items-center com-overflow-hidden;
         }
 
         .no-image-header {
