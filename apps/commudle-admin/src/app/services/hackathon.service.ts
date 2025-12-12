@@ -292,10 +292,12 @@ export class HackathonService {
     return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.DESTROY_JUDGE), { params });
   }
 
-  indexJudge(hackathonId, judgeType?: string, inviteStatus?: string): Observable<IHackathonJudge[]> {
+  indexJudge(hackathonId, judgeType?: string[], inviteStatus?: string): Observable<IHackathonJudge[]> {
     let params = new HttpParams().set('hackathon_id', hackathonId);
-    if (judgeType) {
-      params = params.set('judge_type', judgeType);
+    if (judgeType?.length) {
+      judgeType.forEach((type) => {
+        params = params.append('judge_type[]', type);
+      });
     }
     if (inviteStatus) {
       params = params.set('invite_status', inviteStatus);

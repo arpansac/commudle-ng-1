@@ -65,6 +65,21 @@
   </div>
 </ng-template>
 
+<ng-template #mentorHeaderTemplate let-column="column">
+  <div class="mentor-header">
+    <span>Mentors ⬇️ / Rounds ➡️</span>
+    <select
+      class="mentor-filter-select"
+      [value]="mentorFilter"
+      (change)="onMentorFilterChange($any($event.target).value)"
+    >
+      <option value="all">All</option>
+      <option value="mentors">Mentors</option>
+      <option value="judges">Judges</option>
+    </select>
+  </div>
+</ng-template>
+
 <ng-template #mentorCellTemplate let-row="row" let-column="column" let-judge="value">
   <div class="mentor-info">
     <img *ngIf="judge.photo?.i320" [src]="judge.photo.i320" [alt]="judge.name" class="mentor-avatar" />
