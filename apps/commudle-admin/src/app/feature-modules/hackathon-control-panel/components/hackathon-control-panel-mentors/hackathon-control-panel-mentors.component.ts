@@ -432,14 +432,13 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.toastrService.successDialog('Teams promoted successfully');
+          this.toastrService.successDialog('Teams shifted successfully');
           this.loadExistingAssignments();
           ref.close();
           dialogRef.close();
           this.cdr.markForCheck();
         },
         error: () => {
-          this.toastrService.warningDialog('Failed to promote teams');
           ref.close();
           dialogRef.close();
         },

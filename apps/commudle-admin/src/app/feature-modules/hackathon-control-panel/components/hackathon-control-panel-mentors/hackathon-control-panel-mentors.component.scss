@@ -59,11 +59,11 @@ nb-card-header {
   }
 
   .round-actions {
-    @apply com-mt-auto com-flex com-justify-center com-pt-2;
+    @apply com-mt-auto com-flex com-justify-center com-pt-2 com-w-full;
   }
 
   .round-actions-select {
-    @apply com-px-2 com-py-1 com-text-xs com-border com-border-gray-300 com-rounded com-bg-white;
+    @apply com-px-2 com-py-1 com-text-xs com-border com-text-Yankees-Blue com-border-gray-300 com-rounded com-bg-white com-w-[80%];
     @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
     @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
 
