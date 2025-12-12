@@ -7,7 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { faPlus, faMinus, faArrowRight, faUserCircle, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
@@ -52,6 +52,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   };
   @ViewChild('roundCellTemplate') roundCellTemplate!: TemplateRef<unknown>;
   @ViewChild('mentorCellTemplate') mentorCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('mentorHeaderTemplate') mentorHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('roundHeaderTemplate') roundHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('distributeTeamsEvenly') distributeTeamsEvenlyTemplate!: TemplateRef<unknown>;
   @ViewChild('fullScreenLoading') fullScreenLoadingTemplate!: TemplateRef<unknown>;
@@ -91,6 +92,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   moment = moment;
   mainSidebarEventName = 'hackathonDashboard';
   mainSidebarExpanded = true;
+  mentorFilter: 'all' | 'mentors' | 'judges' = 'all';
+  filteredMentors: IHackathonJudge[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -104,6 +107,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     private dialogService: NbDialogService,
     private hackathonJudgeService: HackathonJudgeService,
     private nbMenuService: NbMenuService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -116,8 +120,14 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     this.activatedRoute.parent.parent.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
       this.loadRounds();
-      this.loadMentors();
     });
+
+    this.activatedRoute.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const filter = params.get('filter') as 'all' | 'mentors' | 'judges';
+      this.mentorFilter = filter || 'all';
+      this.applyMentorFilter();
+    });
+
     this.setupContextMenuListener();
   }
 
@@ -156,11 +166,20 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   }
 
   loadMentors(): void {
+    let query: string[];
+    if (this.mentorFilter === 'all') {
+      query = [EHackathonJudgeType.MENTOR, EHackathonJudgeType.JUDGE];
+    } else if (this.mentorFilter === 'judges') {
+      query = [EHackathonJudgeType.JUDGE];
+    } else if (this.mentorFilter === 'mentors') {
+      query = [EHackathonJudgeType.MENTOR];
+    }
     this.hackathonService
-      .indexJudge(this.hackathonId, EHackathonJudgeType.MENTOR, EInvitationStatus.ACCEPTED)
+      .indexJudge(this.hackathonId, query, EInvitationStatus.ACCEPTED)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.mentors = data;
+        this.filteredMentors = data;
         this.buildTableDataIfReady();
         this.cdr.markForCheck();
       });
@@ -360,6 +379,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         width: '250px',
         frozen: true,
         cellTemplate: this.mentorCellTemplate,
+        headerTemplate: this.mentorHeaderTemplate,
       },
       ...this.rounds.map((round) => ({
         key: `round_${round.id}`,
@@ -391,8 +411,16 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
 
   confirmDistributeTeams(roundId: number): void {
     const dialogRef = this.dialogService.open(this.fullScreenLoadingTemplate);
+    let judgeTypes: string[];
+    if (this.mentorFilter === 'all') {
+      judgeTypes = [EHackathonJudgeType.MENTOR, EHackathonJudgeType.JUDGE];
+    } else if (this.mentorFilter === 'judges') {
+      judgeTypes = [EHackathonJudgeType.JUDGE];
+    } else {
+      judgeTypes = [EHackathonJudgeType.MENTOR];
+    }
     this.hackathonTeamRoundScoreService
-      .distributeTeamsEvenly(this.hackathonId, roundId)
+      .distributeTeamsEvenly(this.hackathonId, roundId, judgeTypes)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -409,7 +437,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   }
 
   buildTableData(): void {
-    this.tableRows = this.mentors.map((mentor) => ({
+    this.tableRows = this.filteredMentors.map((mentor) => ({
       id: mentor.id,
       mentor: mentor,
       ...this.rounds.reduce((acc, round) => {
@@ -422,6 +450,20 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         return acc;
       }, {}),
     }));
+  }
+
+  onMentorFilterChange(filter: 'all' | 'mentors' | 'judges'): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { filter },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  applyMentorFilter(): void {
+    if (this.hackathonId) {
+      this.loadMentors();
+    }
   }
 
   toggleFullscreen(): void {

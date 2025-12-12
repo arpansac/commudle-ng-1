@@ -39,6 +39,20 @@ nb-card-header {
   @apply com-text-2xl com-font-bold;
 }
 
+.mentor-header {
+  @apply com-flex com-flex-col com-gap-2 com-items-start com-py-2;
+
+  span {
+    @apply com-font-semibold com-text-gray-900 com-text-sm;
+  }
+
+  .mentor-filter-select {
+    @apply com-px-3 com-py-1 com-text-xs com-border com-border-gray-300 com-rounded com-bg-white com-w-full;
+    @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
+    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
+  }
+}
+
 .round-header {
   @apply com-flex com-flex-col com-min-h-[140px] com-py-2;
 
