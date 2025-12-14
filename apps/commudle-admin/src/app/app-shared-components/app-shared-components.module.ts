@@ -57,6 +57,7 @@ import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shar
 import { LinkyModule } from 'ngx-linky';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { EventRegisteredCardComponent } from './event-cards/event-registered-card/event-registered-card.component';
+import { EventLargeCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-large-card/event-large-card.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { EventRegisteredCardComponent } from './event-cards/event-registered-car
     EventHackathonRegistrationsComponent,
     EmailPreviewComponent,
     EventRegisteredCardComponent,
+    EventLargeCardComponent,
   ],
   imports: [
     CommonModule,
@@ -135,6 +137,7 @@ import { EventRegisteredCardComponent } from './event-cards/event-registered-car
     BackButtonComponent,
     UserPersonalConnectComponent,
     ListingPageHeaderComponent,
+    EventLargeCardComponent,
 
     // Nebular
     NbRadioModule,

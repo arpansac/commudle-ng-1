@@ -45,6 +45,7 @@ import { NewslettersComponent } from 'apps/commudle-admin/src/app/feature-module
 import { BackButtonComponent } from 'apps/shared-components/back-button/back-button.component';
 import { PublicCommunityHackathonsComponent } from 'apps/commudle-admin/src/app/feature-modules/public-community/components/public-community-hackathons/public-community-hackathons.component';
 import { EventHorizontalCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-horizontal-card/event-horizontal-card.component';
+import { EventLargeCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-large-card/event-large-card.component';
 import { SharedComponentsModule as newSharedComponentModule } from '@commudle/shared-components';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
@@ -100,6 +101,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     SkeletonVerticalCardsComponent,
     BackButtonComponent,
     EventHorizontalCardComponent,
+    EventLargeCardComponent,
     UserPersonalConnectComponent,
     UserExpertTickComponent,
     NbFormFieldModule,
