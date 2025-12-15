@@ -67,8 +67,16 @@
             >
               Back
             </button>
-            <button nbButton status="primary" shape="semi-round" fullWidth [routerLink]="'/dashboard'">
-              Go to Dashboard
+            <button
+              nbButton
+              status="primary"
+              shape="semi-round"
+              fullWidth
+              (click)="startCountdown()"
+              [disabled]="countdownValue !== null"
+            >
+              <span *ngIf="countdownValue === null">Go to Dashboard</span>
+              <span *ngIf="countdownValue !== null">Going to dashboard in {{ countdownValue }}</span>
             </button>
           </div>
         </div>

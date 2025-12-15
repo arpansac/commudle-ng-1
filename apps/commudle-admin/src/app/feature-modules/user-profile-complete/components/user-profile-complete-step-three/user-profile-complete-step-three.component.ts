@@ -24,6 +24,8 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
   query = '';
   mini = true;
   speakers: IUser[] = [];
+  countdownValue: number | null = null;
+  private countdownInterval: any;
 
   constructor(
     private router: Router,
@@ -41,6 +43,9 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
 
   ngOnDestroy() {
     this.profileStatusBarService.changeProfileBarStatus(true);
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
   }
 
   finishProcess() {
@@ -49,6 +54,24 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
 
   goToPreviousStep() {
     this.router.navigate(['/user-profile-complete/step-two']);
+  }
+
+  startCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+
+    this.countdownValue = 3;
+
+    this.countdownInterval = setInterval(() => {
+      if (this.countdownValue && this.countdownValue > 1) {
+        this.countdownValue--;
+      } else {
+        clearInterval(this.countdownInterval);
+        this.countdownValue = null;
+        this.router.navigate(['/dashboard']);
+      }
+    }, 1000);
   }
 
   getPopularCommunities(): void {
