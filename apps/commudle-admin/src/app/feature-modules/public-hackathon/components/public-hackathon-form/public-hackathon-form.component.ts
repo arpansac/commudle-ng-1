@@ -149,7 +149,7 @@ export class PublicHackathonFormComponent implements OnInit, OnDestroy {
       .getExistingHackathonUserResponses(this.hackathonResponseGroup.id)
       .subscribe((data: IHackathonUserResponsesGroupByTeam[]) => {
         if (data.length > 0) {
-          this.hackathonUserResponsesByTeam = data;
+          this.hackathonUserResponsesByTeam = data.filter((hur) => hur.hackathon_team != null);
           if (this.hackathonUserResponsesByTeam.length > 0) {
             this.switchTeam(0); // default to first team
           }

@@ -245,7 +245,10 @@
             <!-- ROUND NAME -->
             <td (click)="$event.stopPropagation()">
               <div
-                *ngIf="userResponse.team.registration_status === EHackathonRegistrationStatus.ACCEPTED"
+                *ngIf="
+                  userResponse.team.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
+                  userResponse.team.round
+                "
                 class="round-select-wrapper"
               >
                 <select
