@@ -268,7 +268,7 @@ nb-card {
 }
 
 .template {
-  @apply md:com-h-[46dvh] com-h-[60dvh] md:com-w-[28dvw] com-w-[90dvw] com-bg-white;
+  @apply md:com-w-[28dvw] com-w-[90dvw] com-bg-white com-overflow-hidden;
   nb-card-header {
     @apply com-flex com-flex-row com-justify-between com-items-center;
     p {
@@ -281,23 +281,17 @@ nb-card {
     nb-icon {
       @apply com-h-4 com-w-4 com-text-Yankees-Blue;
     }
-
-    nb-card-body {
-      @apply com-flex com-justify-center com-items-center com-p-6;
-    }
   }
 
-  // .qr-code-template {
-  //   @apply com-m-0 com-w-full com-h-full;
+  nb-card-body {
+    @apply com-flex com-flex-col com-justify-center com-items-center com-p-6 com-overflow-hidden;
+  }
 
-  //   nb-card-body {
-  //     @apply com-rounded-lg com-bg-tWhite com-flex com-flex-col com-items-center com-p-0;
-  //   }
   .qr-unique-code-template {
-    @apply com-text-xl com-font-bold com-mt-[18px] com-text-Yankees-Blue;
+    @apply com-text-xl com-font-bold com-m-0 com-mt-[18px] com-text-Yankees-Blue;
   }
   #template-qr {
-    @apply com-w-full com-h-full com-border com-border-solid com-border-Bright-Gray com-bg-gray-50 com-rounded-2xl com-object-cover;
+    @apply com-w-full com-h-auto com-max-w-full com-max-h-[24dvh] com-border com-border-solid com-border-Bright-Gray com-bg-gray-50 com-rounded-2xl com-object-contain;
     image-rendering: pixelated;
   }
 }
