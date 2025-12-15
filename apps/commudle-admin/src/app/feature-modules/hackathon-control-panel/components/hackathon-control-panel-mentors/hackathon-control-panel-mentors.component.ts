@@ -428,7 +428,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   confirmShiftTeams(previousRoundId: number, nextRoundId: number, ref: any): void {
     const dialogRef = this.dialogService.open(this.fullScreenLoadingTemplate);
     this.hackathonTeamRoundScoreService
-      .shiftTeamsToNextRound(this.hackathonId, previousRoundId, nextRoundId)
+      .copyTeamsFromPreviousRound(this.hackathonId, previousRoundId, nextRoundId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
