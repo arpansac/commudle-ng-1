@@ -114,8 +114,8 @@
                                 >
                                 <span
                                   class="action-text"
-                                  *ngIf="feed.actionable.object_type === EDbModels.SOCIAL_RESOURCE"
-                                  >a social resource</span
+                                  *ngIf="feed.actionable.object_type === EDbModels.SPEAKER_RESOURCE"
+                                  >a speaker resource</span
                                 >
                               </span>
                             </h2>
@@ -129,7 +129,7 @@
                             <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
                               <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
                             </ng-container>
-                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.SOCIAL_RESOURCE">
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.SPEAKER_RESOURCE">
                               <commudle-event-content-card
                                 [speakersContent]="feed.actionable.object_data"
                               ></commudle-event-content-card>
