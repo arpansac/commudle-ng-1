@@ -28,6 +28,7 @@ import {
   ICommunity,
   EParticipateTypes,
   IHackathonProblemStatement,
+  EOfflineInviteStatus,
 } from '@commudle/shared-models';
 import {
   faXmark,
@@ -61,6 +62,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   moment = moment;
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   EHackathonRegistrationStatusColor = EHackathonRegistrationStatusColor;
+  EOfflineInviteStatus = EOfflineInviteStatus;
   hackathonRounds: IRound[];
   hackathonTracks: IHackathonTrack[];
   hackathonProblemStatements: IHackathonProblemStatement[];
@@ -111,6 +113,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   };
   private originalStatusValue: EHackathonRegistrationStatus;
   private originalRoundValue: number;
+  private originalOfflineInviteStatusValue: EOfflineInviteStatus;
 
   tinyMCE = {
     height: 200,
@@ -608,6 +611,21 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   showProblemStatement(problemStatement: IHackathonProblemStatement) {
     this.nbDialogService.open(this.problemStatementDialog, {
       context: { problemStatement },
+    });
+  }
+
+  storeOriginalOfflineInviteStatusValue(value: EOfflineInviteStatus) {
+    this.originalOfflineInviteStatusValue = value;
+  }
+
+  changeOfflineInviteStatus(teamId: number, index: number, event) {
+    const newValue = event.target.value;
+    this.hackathonService.changeTeamOfflineInviteStatus(teamId, newValue).subscribe((data) => {
+      this.toastrService.successDialog('Offline invite status updated successfully');
+      this.userResponses[index].team.offline_invite_status = data.offline_invite_status;
+      if (this.selectedTeamDetails) {
+        this.selectedTeamDetails.offline_invite_status = data.offline_invite_status;
+      }
     });
   }
 }

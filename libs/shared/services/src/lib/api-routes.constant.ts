@@ -926,6 +926,7 @@ export const API_ROUTES = {
     },
     TEAMS: {
       INDEX: 'api/v2/hackathons/teams/index', //GET
+      UPDATE_OFFLINE_INVITE_STATUS: 'api/v2/hackathons/teams/update_offline_invite_status', //PUT
     },
   },
 

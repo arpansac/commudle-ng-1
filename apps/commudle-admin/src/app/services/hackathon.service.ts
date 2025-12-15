@@ -403,6 +403,16 @@ export class HackathonService {
     );
   }
 
+  changeTeamOfflineInviteStatus(teamId, offlineInviteStatus): Observable<IHackathonTeam> {
+    return this.http.put<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_OFFLINE_INVITE_STATUS),
+      {
+        id: teamId,
+        offline_invite_status: offlineInviteStatus,
+      },
+    );
+  }
+
   getHackathonCurrentRegistrationDetails(hackathonId): Observable<IHackathonTeam[]> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<IHackathonTeam[]>(

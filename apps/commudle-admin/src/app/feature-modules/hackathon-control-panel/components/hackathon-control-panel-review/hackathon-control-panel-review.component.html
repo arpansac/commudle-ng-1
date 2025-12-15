@@ -187,6 +187,7 @@
             <th width="200px">Updates</th>
             <th width="200px">Notes</th>
             <th>Application Status</th>
+            <th>Offline Invite Status</th>
             <th>Actions</th>
           </tr>
           <tr
@@ -335,6 +336,21 @@
                   </option>
                   <option [value]="EHackathonRegistrationStatus.REJECTED">
                     {{ EHackathonRegistrationStatus.REJECTED | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </td>
+
+            <!-- OFFLINE INVITE STATUS -->
+            <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
+              <div class="select-wrapper">
+                <select
+                  [id]="'offline-invite-status-select-' + userResponse.team.id"
+                  (change)="changeOfflineInviteStatus(userResponse.team.id, i, $event)"
+                  [value]="userResponse.team.offline_invite_status || EOfflineInviteStatus.PENDING"
+                >
+                  <option *ngFor="let inviteStatus of EOfflineInviteStatus | keyvalue" [value]="inviteStatus.value">
+                    {{ inviteStatus.value | titlecase }}
                   </option>
                 </select>
               </div>

@@ -17,6 +17,7 @@ export interface IHackathonTeam {
   slug: string;
   created_at: Date;
   registration_status: EHackathonRegistrationStatus;
+  offline_invite_status: EOfflineInviteStatus;
   round?: IRound;
   community_build?: ICommunityBuild;
   entity_updates?: IEntityUpdate[];
@@ -49,6 +50,13 @@ export enum EHackathonRegistrationStatusColor {
   waitlisted = 'com-bg-orange-400',
   accepted = 'com-bg-green-500',
   rejected = 'com-bg-red-500',
+}
+
+export enum EOfflineInviteStatus {
+  PENDING = 'pending',
+  SHORTLISTED = 'shortlisted',
+  CONFIRMED = 'confirmed',
+  CANCELLED = 'cancelled',
 }
 
 export interface IHackathonTeamWithScoreAndSubmissions {
