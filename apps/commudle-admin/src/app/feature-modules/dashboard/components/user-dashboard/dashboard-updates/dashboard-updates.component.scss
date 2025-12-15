@@ -1,12 +1,12 @@
 nb-card {
-  @apply com-m-0 com-bg-gray-50;
+  @apply md:com-m-0 com-mx-3 com-bg-gray-50;
 
   .plus-icon {
     @apply com-text-xs;
   }
 
   .header {
-    @apply md:com-p-4 com-px-0 com-pt-4 md:com-pb-0 com-flex com-flex-col com-items-center com-justify-center com-text-center com-sticky com-top-[50px] com-z-10 com-border-0  com-cursor-pointer;
+    @apply md:com-p-4 com-px-3 com-pt-4 md:com-pb-0 com-flex com-flex-col com-items-center com-justify-center com-text-center com-sticky com-top-[50px] com-z-10 com-border-0  com-cursor-pointer;
 
     h2 {
       @apply com-text-sm com-font-medium com-text-Yankees-Blue com-rounded-t-lg com-w-full com-bg-white com-p-2 com-border com-border-solid com-border-Bright-Gray;
@@ -17,7 +17,7 @@ nb-card {
   }
 
   .main-body {
-    @apply com-flex com-flex-col md:com-p-4 com-p-0 md:com-pt-0 com-w-full;
+    @apply com-flex com-flex-col md:com-p-4 com-px-3 md:com-pt-0 com-w-full;
 
     .tabs {
       @apply com-flex com-flex-row com-gap-3 com-py-4 md:com-px-0 com-px-3;
@@ -32,7 +32,7 @@ nb-card {
     }
 
     .registrations {
-      @apply com-bg-white;
+      @apply com-m-0 com-bg-white;
       .registrations-container {
         @apply com-flex com-flex-col md:com-items-start com-items-center com-w-full md:com-p-4 com-p-3;
       }
@@ -295,4 +295,7 @@ nb-card {
     image-rendering: pixelated;
   }
 }
-// }
+
+.campaign-container {
+  @apply com-flex com-justify-center com-items-center;
+}
