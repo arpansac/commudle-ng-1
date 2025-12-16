@@ -5,6 +5,8 @@ import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communi
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { ProfileStatusBarService } from 'apps/commudle-admin/src/app/services/profile-status-bar.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'commudle-user-profile-complete-step-three',
@@ -26,6 +28,11 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
   speakers: IUser[] = [];
   countdownValue: number | null = null;
   private countdownInterval: any;
+  isFromHomepage = false;
+  referrerUrl: string | null = null;
+  displayReferrerUrl = '';
+  showDashboardButton = true;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -36,20 +43,49 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
 
   ngOnInit() {
     this.profileStatusBarService.changeProfileBarStatus(false);
+
+    // Subscribe to referrerUrl observable to get the latest value
+    this.profileStatusBarService.referrerUrl$.pipe(takeUntil(this.destroy$)).subscribe((url) => {
+      this.referrerUrl = url || '/'; // Default to '/' if null
+      console.log('referrerUrl', this.referrerUrl);
+
+      if (this.referrerUrl && this.referrerUrl !== '/' && this.referrerUrl !== '') {
+        this.displayReferrerUrl = this.referrerUrl.startsWith('/') ? this.referrerUrl.substring(1) : this.referrerUrl;
+      } else {
+        this.displayReferrerUrl = '';
+      }
+
+      if (this.referrerUrl && (this.referrerUrl === '/' || this.referrerUrl === '')) {
+        this.showDashboardButton = true;
+      } else {
+        this.showDashboardButton = false;
+      }
+
+      // Start countdown automatically when referrerUrl is set
+      this.startCountdown();
+    });
+
     this.getPopularCommunities();
     this.getAllSpeakersList();
     this.getUpcomingEvents();
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.profileStatusBarService.changeProfileBarStatus(true);
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
     }
+    this.profileStatusBarService.clearReferrerUrl();
   }
 
   finishProcess() {
-    this.router.navigate(['/dashboard']);
+    if (this.referrerUrl && this.showDashboardButton === false) {
+      this.router.navigateByUrl(this.referrerUrl);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   goToPreviousStep() {
@@ -61,7 +97,7 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
       clearInterval(this.countdownInterval);
     }
 
-    this.countdownValue = 3;
+    this.countdownValue = 5; // Start with 5 seconds
 
     this.countdownInterval = setInterval(() => {
       if (this.countdownValue && this.countdownValue > 1) {
@@ -69,7 +105,7 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
       } else {
         clearInterval(this.countdownInterval);
         this.countdownValue = null;
-        this.router.navigate(['/dashboard']);
+        this.finishProcess();
       }
     }, 1000);
   }
