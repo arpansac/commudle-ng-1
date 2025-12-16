@@ -37,6 +37,24 @@
         [isLoading]="isLoading"
       >
       </commudle-data-table>
+      <div *ngIf="rounds.length > 0 && mentors.length === 0 && !isLoading" class="no-mentors-message">
+        <p>
+          No
+          {{
+            mentorFilter === 'mentors' ? 'mentors' : mentorFilter === 'judges' ? 'judges' : 'mentors or judges'
+          }}
+          found.
+        </p>
+        <div *ngIf="mentorFilter !== 'all'" class="filter-switch">
+          <p>Try switching to:</p>
+          <select class="filter-switch-select" (change)="onMentorFilterChange($any($event.target).value)">
+            <option value="" disabled selected>Select filter</option>
+            <option *ngIf="mentorFilter !== 'mentors'" value="mentors">Mentors</option>
+            <option *ngIf="mentorFilter !== 'judges'" value="judges">Judges</option>
+          </select>
+        </div>
+        <p *ngIf="mentorFilter === 'all'">Please add mentors or judges to start assigning teams.</p>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

@@ -178,8 +178,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       .indexJudge(this.hackathonId, query, EInvitationStatus.ACCEPTED)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        this.mentors = data;
-        this.filteredMentors = data;
+        this.mentors = data || [];
+        this.filteredMentors = data || [];
         this.buildTableDataIfReady();
         this.cdr.markForCheck();
       });
@@ -236,9 +236,9 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   }
 
   buildTableDataIfReady(): void {
-    if (this.mentors.length > 0 && this.rounds.length > 0) {
+    if (this.rounds.length > 0) {
       this.buildTableData();
-      if (this.teams.length > 0) {
+      if (this.teams.length > 0 && this.mentors.length > 0) {
         this.buildTeamAssignmentData();
       }
     }
