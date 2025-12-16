@@ -1,0 +1,115 @@
+<div class="hackathon-rsvp-container">
+  <div class="base-layout thin">
+    <div class="container">
+      <div class="one-column-layout">
+        <commudle-loading-spinner *ngIf="isLoading"></commudle-loading-spinner>
+
+        <div *ngIf="!isLoading && team" class="confirmation-card">
+          <div *ngIf="team.offline_invite_status === EOfflineInviteStatus.CONFIRMED" class="confirmation-header">
+            <div class="check-icon">🎉</div>
+            <h1 class="title">RSVP <span>Confirmed</span>!</h1>
+            <h3 class="sub-heading">See you at the hackathon — stay tuned for updates!</h3>
+          </div>
+
+          <div *ngIf="team.offline_invite_status === EOfflineInviteStatus.CANCELLED" class="confirmation-header">
+            <div class="check-icon">❌</div>
+            <h1 class="title">RSVP <span>Declined</span></h1>
+            <h3 class="sub-heading">You have declined the hackathon invitation.</h3>
+          </div>
+
+          <div *ngIf="team" class="details-card-container">
+            <h2 class="card-heading">Team Details</h2>
+            <div class="team-info">
+              <p><strong>Team Name:</strong> {{ team.name }}</p>
+              <div *ngIf="team.hackathon_user_responses?.length > 0">
+                <div *ngFor="let member of team.hackathon_user_responses" class="team-member">
+                  <app-user-profile-card-medium [user]="member.user"></app-user-profile-card-medium>
+                </div>
+              </div>
+              <br />
+              <button
+                *ngIf="
+                  team.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
+                  team.offline_invite_status === EOfflineInviteStatus.CONFIRMED
+                "
+                [routerLink]="['/communities', hackathon.community?.slug, 'hackathons', hackathon?.slug, 'dashboard']"
+                nbButton
+                outline
+                status="primary"
+              >
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="hackathon" class="details-card-container">
+            <h2 class="card-heading">Hackathon Details</h2>
+            <commudle-hackathon-registered-card
+              [hackathon]="hackathon"
+              [showRegisteredIcon]="true"
+              [showAddToCalendarButton]="true"
+            ></commudle-hackathon-registered-card>
+          </div>
+
+          <div *ngIf="hackathon" class="profile-card-container">
+            <ng-container *ngIf="currentUser && isProfileCompleted">
+              <div class="profile-card">
+                <div class="profile-preview-card">
+                  <div class="card-heading">Profile Card Preview</div>
+                  <app-user-profile-card-large [user]="currentUser"></app-user-profile-card-large>
+                </div>
+
+                <div class="profile-completion-card">
+                  <div class="card-heading">Profile's Progress</div>
+                  <commudle-profile-completion-progress></commudle-profile-completion-progress>
+                </div>
+              </div>
+
+              <div class="missing-field-card">
+                <commudle-user-profile-missing-fields></commudle-user-profile-missing-fields>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="currentUser && !isProfileCompleted">
+              <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
+              <commudle-userprofile-details
+                [userProfileDetails]="userProfileDetails"
+                [username]="currentUser.username"
+              ></commudle-userprofile-details>
+            </ng-container>
+          </div>
+
+          <div *ngIf="hackathon?.judges_count > 0 || isLoadingJudges" class="leaders-card">
+            <h2 class="card-heading">Follow Hackathon Judges</h2>
+            <commudle-loading-spinner *ngIf="isLoadingJudges"></commudle-loading-spinner>
+            <ng-container *ngIf="!isLoadingJudges && hackathonJudges?.length > 0">
+              <div *ngFor="let user of hackathonJudges" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="false"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="communityLeaders?.length > 0 || isLoadingCommunityLeaders" class="leaders-card">
+            <h2 class="card-heading">Follow Community Leaders</h2>
+            <commudle-loading-spinner *ngIf="isLoadingCommunityLeaders"></commudle-loading-spinner>
+            <ng-container *ngIf="!isLoadingCommunityLeaders && communityLeaders?.length > 0">
+              <div *ngFor="let user of communityLeaders" class="leader">
+                <app-user-profile-card-large
+                  [alignFollowToRight]="true"
+                  [showFollowButton]="true"
+                  [user]="user"
+                  appearanceOfFollowButton="outline"
+                ></app-user-profile-card-large>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

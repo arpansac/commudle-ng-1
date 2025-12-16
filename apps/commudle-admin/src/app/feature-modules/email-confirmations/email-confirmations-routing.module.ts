@@ -8,6 +8,7 @@ import { UserRoleConfirmationComponent } from './components/user-role-confirmati
 import { HackathonJudgeConfirmationComponent } from './components/hackathon-judge-confirmation/hackathon-judge-confirmation.component';
 import { HackathonTeamConfirmationComponent } from './components/hackathon-team-confirmation/hackathon-team-confirmation.component';
 import { HackathonCollaborationCommunityComponent } from './components/hackathon-collaboration-community/hackathon-collaboration-community.component';
+import { HackathonRsvpComponent } from './components/hackathon-rsvp/hackathon-rsvp.component';
 
 const routes = [
   {
@@ -33,6 +34,10 @@ const routes = [
   {
     path: 'hackathon-collaboration-community',
     component: HackathonCollaborationCommunityComponent,
+  },
+  {
+    path: 'hackathon-rsvp',
+    component: HackathonRsvpComponent,
   },
   {
     path: 'subscription/:eug',

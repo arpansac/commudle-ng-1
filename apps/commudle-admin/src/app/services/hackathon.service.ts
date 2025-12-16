@@ -509,6 +509,16 @@ export class HackathonService {
     });
   }
 
+  updateRsvpByToken(rsvpToken: string, rsvpStatus: number): Observable<IHackathonTeam> {
+    return this.http.put<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_RSVP_BY_TOKEN),
+      {
+        rsvp_token: rsvpToken,
+        rsvp_status: rsvpStatus,
+      },
+    );
+  }
+
   // PUBLIC APIS
 
   pIndexHackathonTracks(hackathonId): Observable<IHackathonTrack[]> {
@@ -590,6 +600,13 @@ export class HackathonService {
   indexTeams(hackathonId: string | number): Observable<IHackathonTeam[]> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<IHackathonTeam[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.INDEX), {
+      params,
+    });
+  }
+
+  showTeamByToken(token: string): Observable<IHackathonTeam> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get<IHackathonTeam>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SHOW_BY_TOKEN), {
       params,
     });
   }

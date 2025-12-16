@@ -927,6 +927,8 @@ export const API_ROUTES = {
     TEAMS: {
       INDEX: 'api/v2/hackathons/teams/index', //GET
       UPDATE_OFFLINE_INVITE_STATUS: 'api/v2/hackathons/teams/update_offline_invite_status', //PUT
+      SHOW_BY_TOKEN: 'api/v2/hackathons/teams/show_by_token', //GET
+      UPDATE_RSVP_BY_TOKEN: 'api/v2/hackathons/teams/update_rsvp_by_token', //PUT
     },
   },
 
