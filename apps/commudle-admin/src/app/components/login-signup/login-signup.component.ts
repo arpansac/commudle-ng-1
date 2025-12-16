@@ -97,7 +97,11 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   }
 
   redirect(): void {
-    window.location.href = this.redirectUrl ? window.location.origin + this.redirectUrl : window.location.origin || '/';
+    let targetUrl = this.redirectUrl || '/';
+    if (targetUrl === '/') {
+      targetUrl = '/dashboard';
+    }
+    window.location.href = window.location.origin + targetUrl;
   }
 
   closeDialog(): void {
