@@ -124,9 +124,9 @@
                               <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
                             </ng-container>
                             <ng-container *ngIf="feed.actionable.object_type === EDbModels.SPEAKER_RESOURCE">
-                              <commudle-event-content-card
-                                [speakersContent]="feed.actionable.object_data"
-                              ></commudle-event-content-card>
+                              <commudle-tech-sessions-card
+                                [session]="feed.actionable.object_data"
+                              ></commudle-tech-sessions-card>
                             </ng-container>
                           </nb-card-body>
                         </nb-card>
