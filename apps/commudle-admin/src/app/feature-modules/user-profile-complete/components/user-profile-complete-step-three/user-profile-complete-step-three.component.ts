@@ -28,7 +28,6 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
   speakers: IUser[] = [];
   countdownValue: number | null = null;
   private countdownInterval: any;
-  isFromHomepage = false;
   referrerUrl: string | null = null;
   displayReferrerUrl = '';
   showDashboardButton = true;
@@ -44,10 +43,8 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
   ngOnInit() {
     this.profileStatusBarService.changeProfileBarStatus(false);
 
-    // Subscribe to referrerUrl observable to get the latest value
     this.profileStatusBarService.referrerUrl$.pipe(takeUntil(this.destroy$)).subscribe((url) => {
-      this.referrerUrl = url || '/'; // Default to '/' if null
-      console.log('referrerUrl', this.referrerUrl);
+      this.referrerUrl = url || '/';
 
       if (this.referrerUrl && this.referrerUrl !== '/' && this.referrerUrl !== '') {
         this.displayReferrerUrl = this.referrerUrl.startsWith('/') ? this.referrerUrl.substring(1) : this.referrerUrl;
@@ -61,7 +58,6 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
         this.showDashboardButton = false;
       }
 
-      // Start countdown automatically when referrerUrl is set
       this.startCountdown();
     });
 
@@ -97,7 +93,7 @@ export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy 
       clearInterval(this.countdownInterval);
     }
 
-    this.countdownValue = 5; // Start with 5 seconds
+    this.countdownValue = 5;
 
     this.countdownInterval = setInterval(() => {
       if (this.countdownValue && this.countdownValue > 1) {
