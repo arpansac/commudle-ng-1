@@ -16,6 +16,7 @@ export class HackathonEntryPassEmailComponent implements OnInit {
   entryPassForm: FormGroup;
   hackathon: IHackathon;
   hackathonUserResponses: IHackathonUserResponses;
+  isBulkEmail = false;
 
   tinyMCE = {
     min_height: 300,
@@ -40,7 +41,7 @@ export class HackathonEntryPassEmailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const subject = `🎟️ Entry Pass: ${this.hackathon.name} | Team ${this.hackathonUserResponses.team.name}`;
+    const subject = `🎟️ Entry Pass:: ${this.hackathon.name}`;
     this.entryPassForm = this.fb.group({
       subject: [subject, Validators.required],
       message: [''],
@@ -49,18 +50,24 @@ export class HackathonEntryPassEmailComponent implements OnInit {
 
   sendEntryPassEmail() {
     if (this.entryPassForm.invalid) return;
-    this.hackathonService
-      .sendEntryPassEmail(
-        this.hackathonUserResponses.team.id,
-        this.entryPassForm.value.subject,
-        this.entryPassForm.value.message,
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.toastrService.successDialog('Entry pass email sent successfully!');
-          this.dialogRef.close();
-        }
-      });
+    const apiCall = this.isBulkEmail
+      ? this.hackathonService.sendEntryPassesToAllTeams(
+          this.hackathon.id,
+          this.entryPassForm.value.subject,
+          this.entryPassForm.value.message,
+        )
+      : this.hackathonService.sendEntryPassEmail(
+          this.hackathonUserResponses.team.id,
+          this.entryPassForm.value.subject,
+          this.entryPassForm.value.message,
+        );
+
+    apiCall.subscribe((data) => {
+      if (data) {
+        this.toastrService.successDialog('Entry pass email sent successfully!');
+        this.dialogRef.close();
+      }
+    });
   }
 
   close() {

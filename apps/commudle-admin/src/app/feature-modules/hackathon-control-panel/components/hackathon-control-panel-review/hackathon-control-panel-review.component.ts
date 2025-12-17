@@ -648,4 +648,22 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  openBulkRsvpEmailDialog() {
+    this.nbDialogService.open(HackathonRsvpEmailComponent, {
+      context: {
+        hackathon: this.hackathon,
+        isBulkEmail: true,
+      },
+    });
+  }
+
+  openBulkEntryPassEmailDialog() {
+    this.nbDialogService.open(HackathonEntryPassEmailComponent, {
+      context: {
+        hackathon: this.hackathon,
+        isBulkEmail: true,
+      },
+    });
+  }
 }

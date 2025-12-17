@@ -11,12 +11,12 @@
       [message]="'This will send a pre-formatted email, you can add any additional message and change the subject'"
     ></commudle-alert>
     <br />
-    <div *ngIf="team" class="team-info">
+    <div *ngIf="team && !isBulkEmail" class="team-info">
       <p><strong>Team Name:</strong> {{ team.name }}</p>
     </div>
     <form [formGroup]="rsvpForm">
       <div class="form-field">
-        <label>Subject</label>
+        <label>Subject <span class="required">*</span></label>
         <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
       </div>
       <div class="form-field">

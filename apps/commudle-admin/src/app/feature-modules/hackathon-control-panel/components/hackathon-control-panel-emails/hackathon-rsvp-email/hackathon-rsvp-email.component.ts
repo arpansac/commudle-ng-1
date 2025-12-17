@@ -15,6 +15,7 @@ export class HackathonRsvpEmailComponent implements OnInit {
   rsvpForm: FormGroup;
   team: IHackathonTeam;
   hackathon: IHackathon;
+  isBulkEmail = false;
 
   tinyMCE = {
     min_height: 300,
@@ -39,7 +40,7 @@ export class HackathonRsvpEmailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const subject = `🚀 Confirm Your Participation: Team ${this.team.name} | ${this.hackathon.name}`;
+    const subject = `🚀 Confirm Your Participation | ${this.hackathon.name}`;
     this.rsvpForm = this.fb.group({
       subject: [subject, Validators.required],
       message: [''],
@@ -48,14 +49,20 @@ export class HackathonRsvpEmailComponent implements OnInit {
 
   sendRsvpEmail() {
     if (this.rsvpForm.invalid) return;
-    this.hackathonService
-      .sendRsvpEmail(this.team.id, this.rsvpForm.value.subject, this.rsvpForm.value.message)
-      .subscribe((data) => {
-        if (data) {
-          this.toastrService.successDialog('RSVP email sent successfully!');
-          this.dialogRef.close();
-        }
-      });
+    const apiCall = this.isBulkEmail
+      ? this.hackathonService.sendRsvpToAllTeams(
+          this.hackathon.id,
+          this.rsvpForm.value.subject,
+          this.rsvpForm.value.message,
+        )
+      : this.hackathonService.sendRsvpEmail(this.team.id, this.rsvpForm.value.subject, this.rsvpForm.value.message);
+
+    apiCall.subscribe((data) => {
+      if (data) {
+        this.toastrService.successDialog('RSVP email sent successfully!');
+        this.dialogRef.close();
+      }
+    });
   }
 
   close() {

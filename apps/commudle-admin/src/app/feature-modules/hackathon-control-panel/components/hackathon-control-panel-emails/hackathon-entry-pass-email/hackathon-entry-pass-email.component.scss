@@ -32,6 +32,10 @@
     .form-field {
       @apply com-mb-4;
 
+      .required {
+        @apply com-text-red-500 com-ml-1;
+      }
+
       label {
         @apply com-block com-mb-2 com-font-semibold;
       }

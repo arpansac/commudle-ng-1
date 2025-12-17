@@ -538,6 +538,25 @@ export class HackathonService {
     );
   }
 
+  sendRsvpToAllTeams(hackathonId: number | string, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_TO_ALL_TEAMS), {
+      hackathon_id: hackathonId,
+      subject: subject,
+      message: message,
+    });
+  }
+
+  sendEntryPassesToAllTeams(hackathonId: number | string, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_TO_ALL_TEAMS),
+      {
+        hackathon_id: hackathonId,
+        subject: subject,
+        message: message,
+      },
+    );
+  }
+
   // PUBLIC APIS
 
   pIndexHackathonTracks(hackathonId): Observable<IHackathonTrack[]> {

@@ -12,7 +12,7 @@
     ></commudle-alert>
     <br />
     <div>
-      <div *ngIf="hackathonUserResponses?.team" class="team-info">
+      <div *ngIf="hackathonUserResponses?.team && !isBulkEmail" class="team-info">
         <p><strong>Team Name:</strong> {{ hackathonUserResponses?.team.name }}</p>
         <div *ngIf="hackathonUserResponses?.user_responses?.length > 0" class="team-members">
           <h4>Team Members & Entry Pass Codes:</h4>
@@ -30,7 +30,7 @@
 
       <form [formGroup]="entryPassForm">
         <div class="form-field">
-          <label>Subject</label>
+          <label>Subject <span class="required">*</span></label>
           <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
         </div>
         <div class="form-field">
