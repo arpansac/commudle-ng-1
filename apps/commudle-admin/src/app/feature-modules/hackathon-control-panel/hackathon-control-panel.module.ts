@@ -64,6 +64,8 @@ import { HackathonControlPanelMentorsComponent } from 'apps/commudle-admin/src/a
 import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 import { MentorDashboardLinkDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
 import { MentorCustomEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
+import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
+import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +103,8 @@ import { MentorCustomEmailDialogComponent } from 'apps/commudle-admin/src/app/fe
     HackathonControlPanelMentorsComponent,
     MentorDashboardLinkDialogComponent,
     MentorCustomEmailDialogComponent,
+    HackathonRsvpEmailComponent,
+    HackathonEntryPassEmailComponent,
   ],
   imports: [
     CommonModule,

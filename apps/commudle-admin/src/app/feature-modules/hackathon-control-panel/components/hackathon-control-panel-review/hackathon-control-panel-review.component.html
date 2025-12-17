@@ -43,6 +43,12 @@
       >
         Send Application Status Emails
       </button>
+      <button nbButton status="primary" (click)="openBulkRsvpEmailDialog()" size="small" class="com-w-max">
+        Send RSVP to All Teams
+      </button>
+      <button nbButton status="primary" (click)="openBulkEntryPassEmailDialog()" class="com-w-max" size="small">
+        Send Entry Passes to All Teams
+      </button>
 
       <button
         *ngIf="userResponses && userResponses.length > 0"
@@ -187,6 +193,7 @@
             <th width="200px">Updates</th>
             <th width="200px">Notes</th>
             <th>Application Status</th>
+            <th width="300px">Offline Invite Status</th>
             <th>Actions</th>
           </tr>
           <tr
@@ -338,6 +345,52 @@
                   </option>
                 </select>
               </div>
+            </td>
+
+            <!-- OFFLINE INVITE STATUS -->
+            <td (click)="$event.stopPropagation()" class="com-cursor-pointer">
+              <div class="offline-invite-select-wrapper">
+                <select
+                  [id]="'offline-invite-status-select-' + userResponse.team.id"
+                  (change)="changeOfflineInviteStatus(userResponse.team.id, i, $event)"
+                  [(ngModel)]="userResponse.team.offline_invite_status"
+                  class="offline-invite-select"
+                >
+                  <option [value]="EOfflineInviteStatus.PENDING">
+                    {{ EOfflineInviteStatus.PENDING | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.SHORTLISTED">
+                    {{ EOfflineInviteStatus.SHORTLISTED | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.CONFIRMED">
+                    {{ EOfflineInviteStatus.CONFIRMED | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.CANCELLED">
+                    {{ EOfflineInviteStatus.CANCELLED | titlecase }}
+                  </option>
+                </select>
+              </div>
+              <button
+                *ngIf="userResponse.team.offline_invite_status === EOfflineInviteStatus.SHORTLISTED"
+                nbButton
+                status="info"
+                size="tiny"
+                (click)="openSendRsvpDialog(userResponse.team); $event.stopPropagation()"
+              >
+                <nb-icon icon="email-outline"></nb-icon>
+                Send RSVP
+              </button>
+              <button
+                *ngIf="userResponse.team.offline_invite_status === EOfflineInviteStatus.CONFIRMED"
+                nbButton
+                status="success"
+                size="tiny"
+                class="!com-bg-green-500"
+                (click)="openSendEntryPassDialog(userResponse); $event.stopPropagation()"
+              >
+                <nb-icon icon="file-text-outline"></nb-icon>
+                Send Entry Pass
+              </button>
             </td>
 
             <!-- EMAIL ACTION -->

@@ -102,10 +102,22 @@ th {
   }
 }
 
+.offline-invite-select-wrapper {
+  .offline-invite-select {
+    @apply com-px-3 com-py-2 com-font-medium com-text-xs com-border-0 com-cursor-pointer com-text-Yankees-Blue com-bg-transparent;
+  }
+}
+
 .select-wrapper {
   @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-28 com-cursor-pointer;
   select {
     @apply com-text-white com-px-1 com-py-1 com-border-0 com-w-24 com-font-semibold com-rounded com-cursor-pointer com-text-xs;
+  }
+}
+
+.actions {
+  button {
+    @apply com-whitespace-nowrap com-font-medium;
   }
 }
 

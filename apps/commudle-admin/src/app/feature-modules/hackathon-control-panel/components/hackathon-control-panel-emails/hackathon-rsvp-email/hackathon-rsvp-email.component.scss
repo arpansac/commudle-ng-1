@@ -1,0 +1,36 @@
+.send-rsvp-dialog-box {
+  @apply md:com-w-[40dvw] com-max-h-[90dvh] com-w-full;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    .team-info {
+      @apply com-mb-4 com-p-3 com-bg-gray-100 com-rounded;
+
+      p {
+        @apply com-m-0;
+      }
+    }
+
+    .form-field {
+      @apply com-mb-4;
+
+      .required {
+        @apply com-text-red-500 com-ml-1;
+      }
+      label {
+        @apply com-block com-mb-2 com-font-semibold;
+      }
+
+      input,
+      textarea {
+        @apply com-w-full;
+      }
+    }
+  }
+
+  nb-card-footer {
+    @apply com-flex com-gap-2 com-justify-end;
+  }
+}
