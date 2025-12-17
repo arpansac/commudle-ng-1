@@ -7,8 +7,8 @@
       </button>
     </div>
     <div class="team-info-header">
-      <p class="team-name">{{ teamData?.team.name }}</p>
-      <span class="round-badge">{{ teamData?.team.round.name }}</span>
+      <p class="team-name">{{ teamData?.team?.name }}</p>
+      <span class="round-badge">{{ teamData?.team?.round?.name }}</span>
     </div>
   </nb-card-header>
 
@@ -21,11 +21,11 @@
     <div *ngIf="!isLoadingCriteria" class="info-section">
       <div class="info-item">
         <span class="info-label">Track:</span>
-        <span class="info-value">{{ teamData?.team.track.name || 'N/A' }}</span>
+        <span class="info-value">{{ teamData?.team?.track?.name || 'N/A' }}</span>
       </div>
       <div class="info-item">
         <span class="info-label">Problem Statement:</span>
-        <span class="info-value">{{ teamData?.team.problem_statement.display_id || 'N/A' }}</span>
+        <span class="info-value">{{ teamData?.team?.problem_statement?.display_id || 'N/A' }}</span>
       </div>
     </div>
 
