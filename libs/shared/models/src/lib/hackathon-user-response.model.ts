@@ -1,3 +1,4 @@
+import { IHackathonEntryPass } from './hackathon-entry-pass.model';
 import { IHackathonTeam } from './hackathon-team.model';
 import { IUser } from './user.model';
 
@@ -13,6 +14,7 @@ export interface IHackathonUserResponse extends IUser {
   current_user_is_team_lead: boolean;
   user: IUser;
   team_leader: boolean;
+  hackathon_entry_pass: IHackathonEntryPass;
 }
 
 export enum EInvitationStatus {

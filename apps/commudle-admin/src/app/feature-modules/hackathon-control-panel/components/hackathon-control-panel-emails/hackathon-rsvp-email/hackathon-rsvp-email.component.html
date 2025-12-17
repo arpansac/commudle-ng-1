@@ -1,0 +1,26 @@
+<nb-card class="send-rsvp-dialog-box">
+  <nb-card-header>
+    <span>Send RSVP Email</span>
+    <button nbButton ghost (click)="close()" shape="round">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <div *ngIf="team" class="team-info">
+      <p><strong>Team Name:</strong> {{ team.name }}</p>
+    </div>
+    <form [formGroup]="rsvpForm">
+      <div class="form-field">
+        <label>Subject</label>
+        <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
+      </div>
+      <div class="form-field">
+        <label>Message (Optional)</label>
+        <editor formControlName="message" [init]="tinyMCE"></editor>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton status="primary" (click)="sendRsvpEmail()" [disabled]="rsvpForm.invalid" fullWidth>Send</button>
+  </nb-card-footer>
+</nb-card>

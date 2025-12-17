@@ -48,6 +48,8 @@ import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
+import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -626,6 +628,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       if (this.selectedTeamDetails) {
         this.selectedTeamDetails.offline_invite_status = data.offline_invite_status;
       }
+    });
+  }
+
+  openSendRsvpDialog(team: IHackathonTeam) {
+    this.nbDialogService.open(HackathonRsvpEmailComponent, {
+      context: {
+        team,
+        hackathon: this.hackathon,
+      },
+    });
+  }
+
+  openSendEntryPassDialog(hurs: IHackathonUserResponses) {
+    this.nbDialogService.open(HackathonEntryPassEmailComponent, {
+      context: {
+        hackathonUserResponses: hurs,
+        hackathon: this.hackathon,
+      },
     });
   }
 }

@@ -187,7 +187,7 @@
             <th width="200px">Updates</th>
             <th width="200px">Notes</th>
             <th>Application Status</th>
-            <th>Offline Invite Status</th>
+            <th width="300px">Offline Invite Status</th>
             <th>Actions</th>
           </tr>
           <tr
@@ -350,11 +350,41 @@
                   [(ngModel)]="userResponse.team.offline_invite_status"
                   class="offline-invite-select"
                 >
-                  <option *ngFor="let inviteStatus of EOfflineInviteStatus | keyvalue" [value]="inviteStatus.value">
-                    {{ inviteStatus.value | titlecase }}
+                  <option [value]="EOfflineInviteStatus.PENDING">
+                    {{ EOfflineInviteStatus.PENDING | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.SHORTLISTED">
+                    {{ EOfflineInviteStatus.SHORTLISTED | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.CONFIRMED">
+                    {{ EOfflineInviteStatus.CONFIRMED | titlecase }}
+                  </option>
+                  <option [value]="EOfflineInviteStatus.CANCELLED">
+                    {{ EOfflineInviteStatus.CANCELLED | titlecase }}
                   </option>
                 </select>
               </div>
+              <button
+                *ngIf="userResponse.team.offline_invite_status === EOfflineInviteStatus.SHORTLISTED"
+                nbButton
+                status="info"
+                size="tiny"
+                (click)="openSendRsvpDialog(userResponse.team); $event.stopPropagation()"
+              >
+                <nb-icon icon="email-outline"></nb-icon>
+                Send RSVP
+              </button>
+              <button
+                *ngIf="userResponse.team.offline_invite_status === EOfflineInviteStatus.CONFIRMED"
+                nbButton
+                status="success"
+                size="tiny"
+                class="!com-bg-green-500"
+                (click)="openSendEntryPassDialog(userResponse); $event.stopPropagation()"
+              >
+                <nb-icon icon="file-text-outline"></nb-icon>
+                Send Entry Pass
+              </button>
             </td>
 
             <!-- EMAIL ACTION -->

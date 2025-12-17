@@ -407,7 +407,7 @@ export class HackathonService {
     return this.http.put<IHackathonTeam>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_OFFLINE_INVITE_STATUS),
       {
-        id: teamId,
+        team_id: teamId,
         offline_invite_status: offlineInviteStatus,
       },
     );
@@ -515,6 +515,25 @@ export class HackathonService {
       {
         rsvp_token: rsvpToken,
         rsvp_status: rsvpStatus,
+      },
+    );
+  }
+
+  sendRsvpEmail(teamId: number, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_EMAIL), {
+      team_id: teamId,
+      subject: subject,
+      message: message,
+    });
+  }
+
+  sendEntryPassEmail(teamId: number, subject: string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_EMAIL),
+      {
+        team_id: teamId,
+        subject: subject,
+        message: message,
       },
     );
   }
