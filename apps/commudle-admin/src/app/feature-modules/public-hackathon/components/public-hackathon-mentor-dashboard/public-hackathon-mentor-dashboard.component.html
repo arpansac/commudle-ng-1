@@ -159,13 +159,13 @@
 <ng-template #ProblemStatementView let-data let-ref="dialogRef">
   <nb-card class="problem-statement-dialog">
     <nb-card-header>
-      <div>{{ data.ps.display_id }}</div>
+      <div>{{ data.ps?.display_id }}</div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <p [innerHTML]="data.ps.title | safeHtml"></p>
+      <p [innerHTML]="data.ps?.title | safeHtml"></p>
     </nb-card-body>
     <nb-card-footer>
       <button nbButton status="primary" outline (click)="ref.close()">Close</button>
