@@ -55,6 +55,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   @ViewChild('mentorHeaderTemplate') mentorHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('roundHeaderTemplate') roundHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('distributeTeamsEvenly') distributeTeamsEvenlyTemplate!: TemplateRef<unknown>;
+  @ViewChild('promoteTeams') promoteTeamsTemplate!: TemplateRef<unknown>;
   @ViewChild('fullScreenLoading') fullScreenLoadingTemplate!: TemplateRef<unknown>;
 
   selectedMentorId: number;
@@ -398,6 +399,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
 
     if (action === 'distribute') {
       this.openDistributeTeamsDialog(roundId);
+    } else if (action === 'promote') {
+      this.openShiftTeamsDialog(roundId);
     }
 
     select.value = '';
@@ -406,6 +409,20 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   openDistributeTeamsDialog(roundId: number): void {
     this.dialogService.open(this.distributeTeamsEvenlyTemplate, {
       context: { roundId },
+    });
+  }
+
+  openShiftTeamsDialog(roundId: number): void {
+    const currentRoundIndex = this.rounds.findIndex((r) => r.id === roundId);
+    const nextRound = this.rounds[currentRoundIndex + 1];
+
+    if (!nextRound) {
+      this.toastrService.warningDialog('No next round available');
+      return;
+    }
+
+    this.dialogService.open(this.promoteTeamsTemplate, {
+      context: { previousRoundId: roundId, nextRoundId: nextRound.id, nextRoundName: nextRound.name },
     });
   }
 
@@ -431,6 +448,26 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         },
         error: () => {
           this.toastrService.warningDialog('Failed to distribute teams');
+          dialogRef.close();
+        },
+      });
+  }
+
+  confirmShiftTeams(previousRoundId: number, nextRoundId: number, ref: any): void {
+    const dialogRef = this.dialogService.open(this.fullScreenLoadingTemplate);
+    this.hackathonTeamRoundScoreService
+      .copyTeamsFromPreviousRound(this.hackathonId, previousRoundId, nextRoundId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Teams shifted successfully');
+          this.loadExistingAssignments();
+          ref.close();
+          dialogRef.close();
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          ref.close();
           dialogRef.close();
         },
       });

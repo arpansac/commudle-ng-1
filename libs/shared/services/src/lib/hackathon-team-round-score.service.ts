@@ -86,4 +86,19 @@ export class HackathonTeamRoundScoreService {
       { params },
     );
   }
+
+  copyTeamsFromPreviousRound(
+    hackathonId: number | string,
+    previousRoundId: number,
+    nextRoundId: number,
+  ): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.COPY_TEAMS_FROM_PREVIOUS_ROUND),
+      {
+        hackathon_id: hackathonId,
+        previous_round_id: previousRoundId,
+        next_round_id: nextRoundId,
+      },
+    );
+  }
 }
