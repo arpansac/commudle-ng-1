@@ -16,6 +16,7 @@ export class HackathonRsvpEmailComponent implements OnInit {
   team: IHackathonTeam;
   hackathon: IHackathon;
   isBulkEmail = false;
+  resend = false;
 
   tinyMCE = {
     min_height: 300,
@@ -40,10 +41,11 @@ export class HackathonRsvpEmailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const subject = `🚀 Confirm Your Participation | ${this.hackathon.name}`;
+    const subject = `🚀 Confirm Your Participation:: ${this.hackathon.name}`;
     this.rsvpForm = this.fb.group({
       subject: [subject, Validators.required],
       message: [''],
+      resend: [false],
     });
   }
 
@@ -54,8 +56,14 @@ export class HackathonRsvpEmailComponent implements OnInit {
           this.hackathon.id,
           this.rsvpForm.value.subject,
           this.rsvpForm.value.message,
+          this.rsvpForm.value.resend,
         )
-      : this.hackathonService.sendRsvpEmail(this.team.id, this.rsvpForm.value.subject, this.rsvpForm.value.message);
+      : this.hackathonService.sendRsvpEmail(
+          this.team.id,
+          this.rsvpForm.value.subject,
+          this.rsvpForm.value.message,
+          this.rsvpForm.value.resend,
+        );
 
     apiCall.subscribe((data) => {
       if (data) {

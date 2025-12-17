@@ -41,10 +41,11 @@ export class HackathonEntryPassEmailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const subject = `🎟️ Entry Pass:: ${this.hackathon.name}`;
+    const subject = `🎟️ Entry Pass: ${this.hackathon.name}`;
     this.entryPassForm = this.fb.group({
       subject: [subject, Validators.required],
       message: [''],
+      resend: [false],
     });
   }
 
@@ -55,11 +56,13 @@ export class HackathonEntryPassEmailComponent implements OnInit {
           this.hackathon.id,
           this.entryPassForm.value.subject,
           this.entryPassForm.value.message,
+          this.entryPassForm.value.resend,
         )
       : this.hackathonService.sendEntryPassEmail(
           this.hackathonUserResponses.team.id,
           this.entryPassForm.value.subject,
           this.entryPassForm.value.message,
+          this.entryPassForm.value.resend,
         );
 
     apiCall.subscribe((data) => {

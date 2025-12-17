@@ -30,6 +30,9 @@
 
       <form [formGroup]="entryPassForm">
         <div class="form-field">
+          <nb-checkbox formControlName="resend">Resend to members who already received</nb-checkbox>
+        </div>
+        <div class="form-field">
           <label>Subject <span class="required">*</span></label>
           <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
         </div>

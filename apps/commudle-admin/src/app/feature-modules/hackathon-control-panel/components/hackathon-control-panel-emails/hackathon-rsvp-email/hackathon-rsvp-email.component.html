@@ -16,6 +16,9 @@
     </div>
     <form [formGroup]="rsvpForm">
       <div class="form-field">
+        <nb-checkbox formControlName="resend">Resend to teams who already received</nb-checkbox>
+      </div>
+      <div class="form-field">
         <label>Subject <span class="required">*</span></label>
         <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
       </div>

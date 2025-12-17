@@ -519,40 +519,54 @@ export class HackathonService {
     );
   }
 
-  sendRsvpEmail(teamId: number, subject: string, message: string): Observable<boolean> {
+  sendRsvpEmail(teamId: number, subject: string, message: string, resend: boolean): Observable<boolean> {
     return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_EMAIL), {
       team_id: teamId,
       subject: subject,
       message: message,
+      resend: resend,
     });
   }
 
-  sendEntryPassEmail(teamId: number, subject: string, message: string): Observable<boolean> {
+  sendEntryPassEmail(teamId: number, subject: string, message: string, resend: boolean): Observable<boolean> {
     return this.http.post<boolean>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_EMAIL),
       {
         team_id: teamId,
         subject: subject,
         message: message,
+        resend: resend,
       },
     );
   }
 
-  sendRsvpToAllTeams(hackathonId: number | string, subject: string, message: string): Observable<boolean> {
+  sendRsvpToAllTeams(
+    hackathonId: number | string,
+    subject: string,
+    message: string,
+    resend: boolean,
+  ): Observable<boolean> {
     return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_TO_ALL_TEAMS), {
       hackathon_id: hackathonId,
       subject: subject,
       message: message,
+      resend: resend,
     });
   }
 
-  sendEntryPassesToAllTeams(hackathonId: number | string, subject: string, message: string): Observable<boolean> {
+  sendEntryPassesToAllTeams(
+    hackathonId: number | string,
+    subject: string,
+    message: string,
+    resend: boolean,
+  ): Observable<boolean> {
     return this.http.post<boolean>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_TO_ALL_TEAMS),
       {
         hackathon_id: hackathonId,
         subject: subject,
         message: message,
+        resend: resend,
       },
     );
   }
