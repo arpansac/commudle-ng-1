@@ -6,6 +6,11 @@
     </button>
   </nb-card-header>
   <nb-card-body>
+    <commudle-alert
+      [info]="true"
+      [message]="'This will send a pre-formatted email, you can add any additional message and change the subject'"
+    ></commudle-alert>
+    <br />
     <div *ngIf="team" class="team-info">
       <p><strong>Team Name:</strong> {{ team.name }}</p>
     </div>
