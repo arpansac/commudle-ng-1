@@ -3,7 +3,7 @@ a {
 }
 
 .main-container {
-  @apply com-p-4 com-m-0;
+  @apply com-p-3 com-m-0;
   .profile-visited {
     @apply com-flex com-flex-row com-justify-between com-mb-3;
 
@@ -76,7 +76,7 @@ a {
   .content-published,
   .attended-events,
   .social-links {
-    @apply com-flex com-flex-row com-justify-between com-mb-4;
+    @apply com-flex com-flex-row com-justify-between com-mb-3;
 
     .labs-published-text,
     .builds-published-text,

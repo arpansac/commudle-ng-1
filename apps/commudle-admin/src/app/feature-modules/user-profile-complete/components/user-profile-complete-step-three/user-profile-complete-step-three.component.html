@@ -67,8 +67,12 @@
             >
               Back
             </button>
-            <button nbButton status="primary" shape="semi-round" fullWidth [routerLink]="'/dashboard'">
-              Go to Dashboard
+            <button nbButton status="primary" shape="semi-round" fullWidth [disabled]="countdownValue !== null">
+              <span>{{
+                showDashboardButton
+                  ? 'Redirecting to dashboard in ' + countdownValue
+                  : 'Redirecting to ' + displayReferrerUrl + ' in ' + countdownValue
+              }}</span>
             </button>
           </div>
         </div>

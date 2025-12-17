@@ -3,7 +3,7 @@
     <div class="upcoming-card">
       <a [routerLink]="['/communities', event.kommunity_slug, 'events', event.slug]" class="upcoming-card-link">
         <div *ngIf="event.header_image">
-          <div *appBreakpoints="'>lg'" class="upcoming-card-image">
+          <div *appBreakpoints="'>md'" class="upcoming-card-image" [ngStyle]="{ width: headerImageWidth }">
             <commudle-banner-image
               [headerImagePath]="event.header_image.i350"
               [name]="event.name"
@@ -11,7 +11,7 @@
               [bottomRightCurve]="false"
             ></commudle-banner-image>
           </div>
-          <div *appBreakpoints="'<=lg'" class="upcoming-card-image">
+          <div *appBreakpoints="'<=md'" class="upcoming-card-image com-w-full">
             <commudle-banner-image
               [headerImagePath]="event.header_image.i350"
               [name]="event.name"
@@ -25,10 +25,7 @@
         </div>
         <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div class="time-badge">
-            <p class="event-time">
-              {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
-              {{ momentTimezone.tz(event.timezone).format('z') }}
-            </p>
+            <p class="event-title">{{ event.name }}</p>
             <div class="interested-members" *ngIf="event.interested_members_count > 0">
               <app-badge
                 [text]="event.interested_members_count"
@@ -40,7 +37,10 @@
               ></app-badge>
             </div>
           </div>
-          <p class="event-title">{{ event.name }}</p>
+          <p class="event-time">
+            {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY') }}
+            {{ momentTimezone.tz(event.timezone).format('z') }}
+          </p>
           <div *ngIf="community" class="community-badge">
             <app-community-badge [community]="community" [size]="'small'"></app-community-badge>
           </div>

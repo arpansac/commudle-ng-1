@@ -19,11 +19,11 @@
     }
 
     .user-designation {
-      @apply com-text-xs com-font-medium com-text-Dark-Jungle-Green com-m-0 com-mb-4;
+      @apply com-text-xs com-font-medium com-text-Yankees-Blue com-m-0 com-mb-[26px];
     }
 
     .count {
-      @apply com-flex com-flex-row com-gap-x-3 com-mb-5;
+      @apply com-flex com-flex-row com-gap-x-3 com-mb-6;
 
       span {
         @apply com-text-xs com-font-medium com-text-black com-mr-1;

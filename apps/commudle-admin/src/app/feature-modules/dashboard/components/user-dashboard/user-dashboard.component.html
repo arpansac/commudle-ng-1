@@ -1,7 +1,7 @@
 <div class="dashboard">
   <div class="base-layout">
     <div class="container">
-      <div class="two-column-layout">
+      <div class="three-column-layout">
         <div class="left-column">
           <commudle-user-profile [currentUser]="currentUser"></commudle-user-profile>
           <nb-card class="user-profile-details" *appBreakpoints="'>lg'">
@@ -37,217 +37,222 @@
         </div>
         <div class="main-column">
           <commudle-dashboard-updates></commudle-dashboard-updates>
-          <div class="two-column">
-            <div class="center-right-column-wrapper">
-              <div class="center-column">
-                <div class="upcoming-events">
-                  <h2>Upcoming</h2>
-                  <app-loading-spinner *ngIf="loading"></app-loading-spinner>
-                  <div *ngIf="upcomingEventsHackathons.length > 0 && !loading">
-                    <div
-                      *ngFor="let upcomingEventHackathon of upcomingEventsHackathons"
-                      class="event-horizontal-card"
-                      [ngSwitch]="upcomingEventHackathon.object_type"
-                    >
-                      <commudle-event-horizontal-card
-                        *ngSwitchCase="EDbModels.EVENT"
-                        [event]="upcomingEventHackathon.data"
-                      ></commudle-event-horizontal-card>
-                      <commudle-hackathon-horizontal-card
-                        *ngSwitchCase="EDbModels.HACKATHON"
-                        [hackathon]="upcomingEventHackathon.data"
-                      ></commudle-hackathon-horizontal-card>
-                    </div>
-                  </div>
-                  <div class="no-upcoming-events" *ngIf="upcomingEventsHackathons.length === 0 && !loading">
-                    <h3>No Upcoming Events</h3>
-                  </div>
-                </div>
-                <div *ngIf="total > 0" class="pagination">
-                  <app-pagination
-                    (goTo)="page = $event; getUpcomingEventsHackathons()"
-                    (next)="page = $event; getUpcomingEventsHackathons()"
-                    (previous)="page = $event; getUpcomingEventsHackathons()"
-                    [count]="count"
-                    [current]="page"
-                    [total]="total"
-                  ></app-pagination>
-                </div>
-                <div class="recent-activity">
-                  <h2>Recent Activity</h2>
-                  <app-loading-spinner *ngIf="loadActivity"></app-loading-spinner>
-                  <div *ngIf="activityFeed.length > 0">
-                    <div
-                      (scrolled)="getActivityFeed()"
-                      [infiniteScrollDisabled]="activityFeed.length >= activityTotal"
-                      appInfiniteScroll
-                      class="activity-feed"
-                    >
-                      <div *ngFor="let feed of activityFeed">
-                        <ng-container [ngSwitch]="feed.actionable_type">
-                          <ng-container *ngSwitchCase="EDbModels.VOTE">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2 class="user">
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span>
-                                  <span class="action-text"
-                                    >{{ feed.action_text }}
-                                    <span
-                                      class="action-text"
-                                      *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
-                                      >a build</span
-                                    >
-                                    <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
-                                      >a lab</span
-                                    >
-                                  </span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
-                                  <app-community-build-card
-                                    [communityBuild]="feed.actionable.object_data"
-                                  ></app-community-build-card>
-                                </ng-container>
-                                <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
-                                  <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
-                                </ng-container>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-
-                          <ng-container *ngSwitchCase="EDbModels.COMMUNITY_BUILD">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2>
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span
-                                  ><span class="action-text">{{ feed.action_text }}</span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <app-community-build-card [communityBuild]="feed.actionable"></app-community-build-card>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-
-                          <ng-container *ngSwitchCase="EDbModels.EVENT">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2>
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span
-                                  ><span class="action-text">{{ feed.action_text }}</span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <commudle-event-horizontal-card
-                                  [event]="feed.actionable"
-                                ></commudle-event-horizontal-card>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-
-                          <ng-container *ngSwitchCase="EDbModels.HACKATHON">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2>
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span
-                                  ><span class="action-text">{{ feed.action_text }}</span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <commudle-hackathon-large-card
-                                  [hackathon]="feed.actionable"
-                                ></commudle-hackathon-large-card>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-
-                          <ng-container *ngSwitchCase="EDbModels.LAB">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2>
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span
-                                  ><span class="action-text">{{ feed.action_text }}</span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <app-labs-card [lab]="feed.actionable"></app-labs-card>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-
-                          <ng-container *ngSwitchCase="EDbModels.SOCIAL_RESOURCE">
-                            <nb-card class="activity-cards" appActivityFeed [feed]="feed">
-                              <nb-card-header
-                                ><h2>
-                                  <img
-                                    [src]="
-                                      feed.performer_type === EDbModels.USER
-                                        ? feed.performer.photo?.i32
-                                        : feed.performer.logo_image?.i64
-                                    "
-                                  />
-                                  <span class="performer-name">{{ feed.performer.name }}</span
-                                  ><span class="action-text">{{ feed.action_text }}</span>
-                                </h2>
-                              </nb-card-header>
-                              <nb-card-body>
-                                <commudle-event-content-card
-                                  [speakersContent]="feed.actionable"
-                                ></commudle-event-content-card>
-                              </nb-card-body>
-                            </nb-card>
-                          </ng-container>
-                        </ng-container>
-                      </div>
-                      <app-loading-spinner *ngIf="loadingActivity"></app-loading-spinner>
-                    </div>
-                  </div>
-                  <div class="no-upcoming-events" *ngIf="activityFeed.length === 0 && !loadingActivity">
-                    <h3>No Recent Activity</h3>
-                  </div>
+          <div class="center-column">
+            <div class="upcoming-events">
+              <h2 class="upcoming-events-heading">Upcoming</h2>
+              <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+              <div *ngIf="upcomingEventsHackathons.length > 0 && !loading">
+                <div
+                  *ngFor="let upcomingEventHackathon of upcomingEventsHackathons"
+                  class="event-horizontal-card"
+                  [ngSwitch]="upcomingEventHackathon.object_type"
+                >
+                  <commudle-event-horizontal-card
+                    *ngSwitchCase="EDbModels.EVENT"
+                    [event]="upcomingEventHackathon.data"
+                    [headerImageWidth]="'214px'"
+                  ></commudle-event-horizontal-card>
+                  <commudle-hackathon-horizontal-card
+                    *ngSwitchCase="EDbModels.HACKATHON"
+                    [hackathon]="upcomingEventHackathon.data"
+                  ></commudle-hackathon-horizontal-card>
                 </div>
               </div>
-              <div class="right-column" *appBreakpoints="'>md'">
-                <commudle-user-dashboard-campaign></commudle-user-dashboard-campaign>
+              <div class="no-upcoming-events" *ngIf="upcomingEventsHackathons.length === 0 && !loading">
+                <h3>No Upcoming Events</h3>
+              </div>
+            </div>
+            <div *ngIf="total > 0" class="pagination">
+              <app-pagination
+                (goTo)="page = $event; getUpcomingEventsHackathons()"
+                (next)="page = $event; getUpcomingEventsHackathons()"
+                (previous)="page = $event; getUpcomingEventsHackathons()"
+                [count]="count"
+                [current]="page"
+                [total]="total"
+              ></app-pagination>
+            </div>
+            <div class="recent-activity">
+              <h2 class="recent-activity-heading">Recent Activity</h2>
+              <app-loading-spinner *ngIf="loadActivity"></app-loading-spinner>
+              <div *ngIf="activityFeed.length > 0">
+                <div
+                  (scrolled)="getActivityFeed()"
+                  [infiniteScrollDisabled]="activityFeed.length >= activityTotal"
+                  appInfiniteScroll
+                  class="activity-feed"
+                >
+                  <div *ngFor="let feed of activityFeed">
+                    <ng-container [ngSwitch]="feed.actionable_type">
+                      <ng-container *ngSwitchCase="EDbModels.VOTE">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2 class="user">
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span>
+                              <span class="action-text"
+                                >{{ feed.action_text }}
+                                <span
+                                  class="action-text"
+                                  *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD"
+                                  >a build</span
+                                >
+                                <span class="action-text" *ngIf="feed.actionable.object_type === EDbModels.LAB"
+                                  >a lab</span
+                                >
+                                <span
+                                  class="action-text"
+                                  *ngIf="feed.actionable.object_type === EDbModels.SPEAKER_RESOURCE"
+                                  >a speaker resource</span
+                                >
+                              </span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.COMMUNITY_BUILD">
+                              <app-community-build-card
+                                [communityBuild]="feed.actionable.object_data"
+                              ></app-community-build-card>
+                            </ng-container>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.LAB">
+                              <app-labs-card [lab]="feed.actionable.object_data"></app-labs-card>
+                            </ng-container>
+                            <ng-container *ngIf="feed.actionable.object_type === EDbModels.SPEAKER_RESOURCE">
+                              <commudle-tech-sessions-card
+                                [session]="feed.actionable.object_data"
+                              ></commudle-tech-sessions-card>
+                            </ng-container>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="EDbModels.COMMUNITY_BUILD">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2>
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span
+                              ><span class="action-text">{{ feed.action_text }}</span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <app-community-build-card [communityBuild]="feed.actionable"></app-community-build-card>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="EDbModels.EVENT">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2>
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span
+                              ><span class="action-text">{{ feed.action_text }}</span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <commudle-event-large-card [event]="feed.actionable"></commudle-event-large-card>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="EDbModels.HACKATHON">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2>
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span
+                              ><span class="action-text">{{ feed.action_text }}</span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <commudle-hackathon-large-card
+                              [hackathon]="feed.actionable"
+                            ></commudle-hackathon-large-card>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="EDbModels.LAB">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2>
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span
+                              ><span class="action-text">{{ feed.action_text }}</span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <app-labs-card [lab]="feed.actionable"></app-labs-card>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+
+                      <ng-container *ngSwitchCase="EDbModels.SOCIAL_RESOURCE">
+                        <nb-card class="activity-cards" appActivityFeed [feed]="feed">
+                          <nb-card-header
+                            ><h2>
+                              <img
+                                [src]="
+                                  feed.performer_type === EDbModels.USER
+                                    ? feed.performer.photo?.i32
+                                    : feed.performer.logo_image?.i64
+                                "
+                              />
+                              <span class="performer-name">{{ feed.performer.name }}</span
+                              ><span class="action-text">{{ feed.action_text }}</span>
+                            </h2>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <commudle-event-content-card
+                              [speakersContent]="feed.actionable"
+                            ></commudle-event-content-card>
+                          </nb-card-body>
+                        </nb-card>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <app-loading-spinner *ngIf="loadingActivity"></app-loading-spinner>
+                </div>
+              </div>
+              <div class="no-upcoming-events" *ngIf="activityFeed.length === 0 && !loadingActivity">
+                <h3>No Recent Activity</h3>
               </div>
             </div>
           </div>
+        </div>
+        <div class="right-column" *appBreakpoints="'>md'">
+          <commudle-user-dashboard-campaign></commudle-user-dashboard-campaign>
         </div>
       </div>
     </div>

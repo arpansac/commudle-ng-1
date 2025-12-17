@@ -1,6 +1,11 @@
 <nb-card>
   <nb-card-header (click)="togglePostContentDropdown()" class="header"
-    ><h2 [ngClass]="{ 'com-rounded-b-none': isPostContentOpen, 'com-rounded-b-lg': !isPostContentOpen }">
+    ><h2
+      [ngClass]="{
+        'com-rounded-b-none': isPostContentOpen,
+        'com-rounded-b-lg': !isPostContentOpen
+      }"
+    >
       Post content<fa-icon class="plus-icon" [icon]="faPlus"></fa-icon>
     </h2>
     <nb-card *ngIf="isPostContentOpen" class="post-content">
@@ -11,19 +16,20 @@
               <fa-icon class="icon" [icon]="faLightbulb"></fa-icon><span>Publish A Project</span>
             </button></a
           >
-          <a [routerLink]="['/labs/create']" class="publish-lab"
-            ><button nbButton><fa-icon [icon]="faFlask"></fa-icon><span>Publish A Lab</span></button></a
-          >
 
           <a [routerLink]="['/users', currentUser.username]" [fragment]="'content'" class="upload-content"
-            ><button nbButton><fa-icon [icon]="faFileText"></fa-icon><span>Upload an External Content</span></button></a
+            ><button nbButton><fa-icon [icon]="faFileText"></fa-icon><span>Upload a Content</span></button></a
+          >
+
+          <a [routerLink]="['/labs/create']" class="publish-lab"
+            ><button nbButton><fa-icon [icon]="faFlask"></fa-icon><span>Publish A Lab</span></button></a
           >
         </div>
       </nb-card-body>
     </nb-card>
   </nb-card-header>
   <nb-card-body class="main-body">
-    <div *appBreakpoints="'<=md'">
+    <div *appBreakpoints="'<=md'" class="campaign-container">
       <commudle-user-dashboard-campaign></commudle-user-dashboard-campaign>
     </div>
     <div class="tabs">
@@ -139,7 +145,14 @@
                     status="primary"
                     shape="round"
                     size="tiny"
-                    (click)="toggleEntryPass(i, registration.entry_pass.unique_code, 'qr-code-desktop')"
+                    (click)="
+                      openQrCode(
+                        qrCodePopup,
+                        registration.event.name,
+                        registration.event_data_form_entity_group?.name,
+                        registration.entry_pass.unique_code
+                      )
+                    "
                   >
                     View Pass
                   </button>
@@ -193,7 +206,14 @@
                   status="primary"
                   shape="round"
                   size="tiny"
-                  (click)="toggleEntryPass(i, registration.entry_pass.unique_code, 'qr-code-mobile')"
+                  (click)="
+                    openQrCode(
+                      qrCodePopup,
+                      registration.event.name,
+                      registration.event_data_form_entity_group?.name,
+                      registration.entry_pass.unique_code
+                    )
+                  "
                 >
                   View Pass
                 </button>
@@ -309,18 +329,16 @@
 <ng-template #qrCodePopup let-data let-ref="dialogRef">
   <nb-card class="template">
     <nb-card-header>
-      <p>{{ data.eventName }}&nbsp; ({{ data.formName }})</p>
+      <p>
+        Entry Pass <span>{{ data.eventName }}&nbsp; ({{ data.formName }})</span>
+      </p>
       <button ghost nbButton size="small" (click)="ref.close()">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <nb-card class="qr-code-template">
-        <nb-card-body>
-          <canvas id="template-qr"></canvas>
-          <p class="qr-unique-code-template">{{ data.entryPassCode }}</p>
-        </nb-card-body>
-      </nb-card>
+      <canvas id="template-qr"></canvas>
+      <p class="qr-unique-code-template">{{ data.entryPassCode }}</p>
     </nb-card-body>
   </nb-card>
 </ng-template>
