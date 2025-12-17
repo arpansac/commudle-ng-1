@@ -15,11 +15,6 @@ import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirec
 import { InitResolver } from './resolvers/init.resolver';
 
 const routes: Routes = [
-  {
-    path: 'p',
-    loadChildren: () =>
-      import('./feature-modules/custom-public-pages/custom-public-pages.module').then((m) => m.CustomPublicPagesModule),
-  },
   // TODO: discuss in future for order of paths
   {
     path: 'login',

@@ -4,6 +4,8 @@ import { Error404PageComponent } from 'apps/lib-error-handler/src/public-api';
 import { PageCommudleVsCompetitorComponent } from './components/page-commudle-vs-competitor/page-commudle-vs-competitor.component';
 import { PageUniversityPlanComponent } from './components/page-university-plan/page-university-plan.component';
 import { PagePaidTicketingComponent } from './components/page-paid-ticketing/page-paid-ticketing.component';
+import { PageAdCampaignsComponent } from './components/page-ad-campaigns/page-ad-campaigns.component';
+import { PageHackathonManagementPlatformComponent } from '../homepage/components/custom-pages/page-hackathon-management-platform/page-hackathon-management-platform.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,14 @@ const routes: Routes = [
   {
     path: 'paid-ticketing',
     component: PagePaidTicketingComponent,
+  },
+  {
+    path: 'advertise',
+    component: PageAdCampaignsComponent,
+  },
+  {
+    path: 'hackathon-platform',
+    component: PageHackathonManagementPlatformComponent,
   },
   {
     path: '**',

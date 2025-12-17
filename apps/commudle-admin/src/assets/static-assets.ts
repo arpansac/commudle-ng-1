@@ -263,6 +263,12 @@ export const staticAssets = {
 
   folder_empty:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkRPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2dbfa83c67668c9571746d1b9517c40b459312da/Folder_empty.svg',
+
+  // id: 217
+  hackathon_platform: {
+    hero_image:
+      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd1lGQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2cdc96080458ee198f602db2d45a47edb1d22fe2/hackathon-hero.png',
+  },
 };
 
 export const AwsS3Bucket = {
