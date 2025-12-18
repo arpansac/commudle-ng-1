@@ -66,6 +66,9 @@ import { MentorDashboardLinkDialogComponent } from 'apps/commudle-admin/src/app/
 import { MentorCustomEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
 import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
+import { HackathonEntryPassScanComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-entry-pass-scan/hackathon-entry-pass-scan.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 
 @NgModule({
   declarations: [
@@ -105,6 +108,7 @@ import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/fe
     MentorCustomEmailDialogComponent,
     HackathonRsvpEmailComponent,
     HackathonEntryPassEmailComponent,
+    HackathonEntryPassScanComponent,
   ],
   imports: [
     CommonModule,
@@ -137,6 +141,8 @@ import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/fe
     NbTooltipModule,
     NbAutocompleteModule,
     NbContextMenuModule,
+    ZXingScannerModule,
+    MiniUserProfileModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

@@ -1115,4 +1115,10 @@ export const API_ROUTES = {
     DISTRIBUTE_TEAMS_EVENLY: 'api/v2/hackathon_team_round_scores/distribute_teams_evenly', //POST
     COPY_TEAMS_FROM_PREVIOUS_ROUND: 'api/v2/hackathon_team_round_scores/copy_teams_from_previous_round', //POST
   },
+
+  HACKATHON_ENTRY_PASSES: {
+    SCAN_ENTRY_PASS: 'api/v2/hackathon_entry_passes/scan_entry_pass', //GET
+    UPDATE_ATTENDANCE: 'api/v2/hackathon_entry_passes/update_attendance', //PUT
+    ATTENDANCE_STATS: 'api/v2/hackathon_entry_passes/attendance_stats', //GET
+  },
 };
