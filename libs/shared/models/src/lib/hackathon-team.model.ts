@@ -36,6 +36,7 @@ export interface IHackathonTeam {
   hackathon_team_round_submissions: IHackathonTeamRoundSubmission[];
   team_members_count: number;
   total_score: number;
+  checked_in_members_count?: number;
 }
 
 export enum EHackathonRegistrationStatus {

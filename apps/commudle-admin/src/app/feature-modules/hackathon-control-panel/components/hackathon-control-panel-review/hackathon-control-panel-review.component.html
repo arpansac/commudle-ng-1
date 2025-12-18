@@ -391,6 +391,14 @@
                 <nb-icon icon="file-text-outline"></nb-icon>
                 Send Entry Pass
               </button>
+              <div class="attendance-info">
+                <span
+                  class="attendance-link"
+                  (click)="openTeamAttendanceDialog(userResponse); $event.stopPropagation()"
+                >
+                  {{ userResponse.team.checked_in_members_count }}/{{ userResponse.user_responses?.length }} Checked In
+                </span>
+              </div>
             </td>
 
             <!-- EMAIL ACTION -->
@@ -1052,5 +1060,56 @@
         <strong>Max Teams Limit:</strong> {{ data.problemStatement.max_teams_limit }}
       </div>
     </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #teamAttendanceDialog let-ref="dialogRef" let-data>
+  <nb-card>
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>{{ data.selectedTeam.team.name }} - Attendance Details</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <table class="team-attendance-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Check-in Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of data.selectedTeam?.user_responses">
+            <td>
+              <app-user-profile-card-small [user]="member?.user"></app-user-profile-card-small>
+            </td>
+            <td>
+              @if(data.selectedTeam.team.user_id === member.user_id){
+              <span class="role">Team Lead</span>
+              } @else{
+              <span class="role">Member</span>
+              }
+            </td>
+            <td>
+              <span class="status" [class.checked-in]="member?.hackathon_entry_pass?.attendance">
+                {{ member?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="member?.hackathon_entry_pass?.checkin_time" class="time">
+                {{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}
+              </span>
+              <span *ngIf="!member?.hackathon_entry_pass?.checkin_time">-</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+    <nb-card-footer>
+      <button (click)="ref.close()" nbButton status="basic">Close</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

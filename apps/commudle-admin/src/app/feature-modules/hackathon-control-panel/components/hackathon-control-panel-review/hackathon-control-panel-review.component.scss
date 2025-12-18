@@ -271,3 +271,55 @@ th {
     @apply com-max-h-[70vh] com-overflow-y-auto;
   }
 }
+
+.attendance-info {
+  @apply com-mb-2;
+
+  .attendance-link {
+    @apply com-text-primary-500 com-cursor-pointer com-underline com-text-sm com-font-medium;
+    @apply hover:com-text-primary-600;
+  }
+}
+
+.team-attendance-table {
+  @apply com-w-full;
+  border-collapse: collapse;
+
+  thead {
+    th {
+      @apply com-bg-gray-100 com-font-semibold com-text-sm com-text-gray-700 com-border-b com-border-gray-300;
+      padding: 12px 8px;
+    }
+  }
+
+  tbody {
+    tr {
+      @apply com-border-b com-border-gray-200;
+
+      &:last-child {
+        @apply com-border-b-0;
+      }
+
+      td {
+        padding: 12px 8px;
+        @apply com-align-middle;
+
+        .role {
+          @apply com-text-xs com-font-medium com-text-gray-500;
+        }
+
+        .status {
+          @apply com-text-sm com-font-semibold com-text-gray-600;
+
+          &.checked-in {
+            @apply com-text-green-600;
+          }
+        }
+
+        .time {
+          @apply com-text-xs com-text-gray-500;
+        }
+      }
+    }
+  }
+}
