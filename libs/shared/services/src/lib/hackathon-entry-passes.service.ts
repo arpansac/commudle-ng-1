@@ -31,8 +31,8 @@ export class HackathonEntryPassesService {
     );
   }
 
-  attendanceStats(hackathonId: number): Observable<any> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
+  attendanceStats(hackathonId: number | string, count = 10, page = 1): Observable<any> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('count', count).set('page', page);
     return this.http.get<any>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_ENTRY_PASSES.ATTENDANCE_STATS), {
       params,
     });

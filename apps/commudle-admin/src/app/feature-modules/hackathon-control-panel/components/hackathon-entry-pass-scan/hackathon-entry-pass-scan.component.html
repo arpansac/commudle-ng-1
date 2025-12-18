@@ -2,7 +2,15 @@
   <div class="page-container">
     <nb-card>
       <nb-card-header>
-        <h2>Entry Pass Scanner - {{ hackathon?.name }}</h2>
+        <div class="header-wrapper">
+          <h2>Entry Pass Scanner - {{ hackathon?.name }}</h2>
+          <a [routerLink]="['checked-in-list']">
+            <button nbButton status="info" size="small">
+              <nb-icon icon="list-outline"></nb-icon>
+              View Check-in List
+            </button>
+          </a>
+        </div>
       </nb-card-header>
 
       <nb-card-body>

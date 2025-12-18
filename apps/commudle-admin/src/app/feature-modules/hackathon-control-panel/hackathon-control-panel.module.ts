@@ -67,6 +67,7 @@ import { MentorCustomEmailDialogComponent } from 'apps/commudle-admin/src/app/fe
 import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 import { HackathonEntryPassScanComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-entry-pass-scan/hackathon-entry-pass-scan.component';
+import { HackathonCheckedInListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-checked-in-list/hackathon-checked-in-list.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 
@@ -109,6 +110,7 @@ import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/min
     HackathonRsvpEmailComponent,
     HackathonEntryPassEmailComponent,
     HackathonEntryPassScanComponent,
+    HackathonCheckedInListComponent,
   ],
   imports: [
     CommonModule,

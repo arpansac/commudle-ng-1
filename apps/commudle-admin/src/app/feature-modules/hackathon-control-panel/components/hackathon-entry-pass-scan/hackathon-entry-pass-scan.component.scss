@@ -4,8 +4,12 @@
 
     nb-card {
       nb-card-header {
-        h2 {
-          @apply com-m-0 com-text-xl com-font-semibold;
+        .header-wrapper {
+          @apply com-flex com-items-center com-justify-between com-gap-4;
+
+          h2 {
+            @apply com-m-0 com-text-xl com-font-semibold;
+          }
         }
       }
 
