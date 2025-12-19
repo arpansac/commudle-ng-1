@@ -39,70 +39,72 @@
             <h3>Checked-in Teams ({{ attendanceStats.checked_in_teams?.total }})</h3>
           </div>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Team Name</th>
-                <th>Member Name</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Attendance</th>
-                <th>Check-in Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngIf="isLoadingData">
-                <tr class="loading-row">
-                  <td colspan="6">
-                    <div class="loading">
-                      <app-loading-spinner></app-loading-spinner>
-                    </div>
-                  </td>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Team Name</th>
+                  <th>Member Name</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Attendance</th>
+                  <th>Check-in Time</th>
                 </tr>
-              </ng-container>
-              <ng-container *ngIf="!isLoadingData">
-                <ng-container *ngFor="let team of attendanceStats.checked_in_teams?.values">
-                  <!-- Team Leader -->
-                  <tr class="team-leader-row">
-                    <td class="team-name" [attr.rowspan]="team.team_members?.length + 1">
-                      <div class="team-info">
-                        <strong>{{ team.name }}</strong>
-                        <span class="team-count"
-                          >{{ team.checked_in_members_count }}/{{ team.team_members_count }} Checked In</span
-                        >
+              </thead>
+              <tbody>
+                <ng-container *ngIf="isLoadingData">
+                  <tr class="loading-row">
+                    <td colspan="6">
+                      <div class="loading">
+                        <app-loading-spinner></app-loading-spinner>
                       </div>
                     </td>
-                    <td>
-                      <app-user-profile-card-small [user]="team.team_leader?.user"></app-user-profile-card-small>
-                    </td>
-                    <td><span class="role-badge leader">Leader</span></td>
-                    <td>{{ team.team_leader?.invite_status | capitalizeAndRemoveUnderscore }}</td>
-                    <td>
-                      <span class="attendance" [class.present]="team.team_leader?.hackathon_entry_pass?.attendance">
-                        {{ team.team_leader?.hackathon_entry_pass?.attendance ? 'Present' : 'Absent' }}
-                      </span>
-                    </td>
-                    <td>{{ team.team_leader?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>
-                  </tr>
-
-                  <!-- Team Members -->
-                  <tr *ngFor="let member of team.team_members; let last = last" [class.team-end]="last">
-                    <td>
-                      <app-user-profile-card-small [user]="member?.user"></app-user-profile-card-small>
-                    </td>
-                    <td><span class="role-badge member">Member</span></td>
-                    <td>{{ member?.invite_status | capitalizeAndRemoveUnderscore }}</td>
-                    <td>
-                      <span class="attendance" [class.present]="member?.hackathon_entry_pass?.attendance">
-                        {{ member?.hackathon_entry_pass?.attendance ? 'Present' : 'Absent' }}
-                      </span>
-                    </td>
-                    <td>{{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>
                   </tr>
                 </ng-container>
-              </ng-container>
-            </tbody>
-          </table>
+                <ng-container *ngIf="!isLoadingData">
+                  <ng-container *ngFor="let team of attendanceStats.checked_in_teams?.values">
+                    <!-- Team Leader -->
+                    <tr class="team-leader-row">
+                      <td class="team-name" [attr.rowspan]="team.team_members?.length + 1">
+                        <div class="team-info">
+                          <strong>{{ team.name }}</strong>
+                          <span class="team-count"
+                            >{{ team.checked_in_members_count }}/{{ team.team_members_count }} Checked In</span
+                          >
+                        </div>
+                      </td>
+                      <td>
+                        <app-user-profile-card-small [user]="team.team_leader?.user"></app-user-profile-card-small>
+                      </td>
+                      <td><span class="role-badge leader">Leader</span></td>
+                      <td>{{ team.team_leader?.invite_status | capitalizeAndRemoveUnderscore }}</td>
+                      <td>
+                        <span class="attendance" [class.present]="team.team_leader?.hackathon_entry_pass?.attendance">
+                          {{ team.team_leader?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
+                        </span>
+                      </td>
+                      <td>{{ team.team_leader?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>
+                    </tr>
+
+                    <!-- Team Members -->
+                    <tr *ngFor="let member of team.team_members; let last = last" [class.team-end]="last">
+                      <td>
+                        <app-user-profile-card-small [user]="member?.user"></app-user-profile-card-small>
+                      </td>
+                      <td><span class="role-badge member">Member</span></td>
+                      <td>{{ member?.invite_status | capitalizeAndRemoveUnderscore }}</td>
+                      <td>
+                        <span class="attendance" [class.present]="member?.hackathon_entry_pass?.attendance">
+                          {{ member?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
+                        </span>
+                      </td>
+                      <td>{{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
 
           <app-pagination
             class="pagination"
