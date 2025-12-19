@@ -79,7 +79,7 @@
                     <td>{{ team.team_leader?.invite_status | capitalizeAndRemoveUnderscore }}</td>
                     <td>
                       <span class="attendance" [class.present]="team.team_leader?.hackathon_entry_pass?.attendance">
-                        {{ team.team_leader?.hackathon_entry_pass?.attendance ? 'Present' : 'Absent' }}
+                        {{ team.team_leader?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
                       </span>
                     </td>
                     <td>{{ team.team_leader?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>
@@ -94,7 +94,7 @@
                     <td>{{ member?.invite_status | capitalizeAndRemoveUnderscore }}</td>
                     <td>
                       <span class="attendance" [class.present]="member?.hackathon_entry_pass?.attendance">
-                        {{ member?.hackathon_entry_pass?.attendance ? 'Present' : 'Absent' }}
+                        {{ member?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
                       </span>
                     </td>
                     <td>{{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}</td>

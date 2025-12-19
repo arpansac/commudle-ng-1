@@ -112,22 +112,25 @@
         <div class="pass-owner-section">
           <app-user-profile-card-large [user]="entryPass?.hackathon_user_response?.user"></app-user-profile-card-large>
 
-          <div class="detail-row">
-            <span class="label">Status:</span>
-            <span
-              class="value"
-              [class.status-accepted]="
-                entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.APPLICATION_COMPLETE
-              "
-              [class.status-pending]="
-                entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION
-              "
-              [class.status-rejected]="entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.REJECTED"
-            >
-              {{ entryPass?.hackathon_user_response?.invite_status | capitalizeAndRemoveUnderscore }}
-            </span>
-          </div>
           <div class="owner-details">
+            <div class="detail-item">
+              <span class="label">Status:</span>
+              <span
+                class="value"
+                [class.status-accepted]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.APPLICATION_COMPLETE
+                "
+                [class.status-pending]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION
+                "
+                [class.status-rejected]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.REJECTED
+                "
+              >
+                {{ entryPass?.hackathon_user_response?.invite_status | capitalizeAndRemoveUnderscore }}
+              </span>
+            </div>
+
             <div class="detail-item" *ngIf="entryPass?.attendance !== null">
               <span class="label">Attendance:</span>
               <span
@@ -135,7 +138,7 @@
                 [class.attended]="entryPass?.attendance"
                 [class.not-attended]="!entryPass?.attendance"
               >
-                {{ entryPass?.attendance ? 'Present Marked' : 'Pending' }}
+                {{ entryPass?.attendance ? 'Checked In' : 'Not Checked In' }}
               </span>
             </div>
 
@@ -152,42 +155,53 @@
             <span class="team-count"> Team Members </span>
           </div>
 
-          <div class="team-members-list">
-            <div *ngFor="let member of entryPass?.hackathon_team?.hackathon_user_responses" class="member-item">
-              @if(member.id !== entryPass.hackathon_user_response.id){
-              <app-user-profile-card-medium [user]="member?.user"></app-user-profile-card-medium>
-
-              <div class="member-details">
-                <div class="detail-row">
-                  <span class="label">Status:</span>
-                  <span
-                    class="value"
-                    [class.status-accepted]="member?.invite_status === EInvitationStatus.APPLICATION_COMPLETE"
-                    [class.status-pending]="member?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION"
-                    [class.status-rejected]="member?.invite_status === EInvitationStatus.REJECTED"
-                  >
-                    {{ member?.invite_status | capitalizeAndRemoveUnderscore }}
-                  </span>
-                </div>
-
-                <div class="detail-row" *ngIf="member?.hackathon_entry_pass">
-                  <span class="label">Attendance:</span>
-                  <span
-                    class="value"
-                    [class.attended]="member?.hackathon_entry_pass?.attendance"
-                    [class.not-attended]="!member?.hackathon_entry_pass?.attendance"
-                  >
-                    {{ member?.hackathon_entry_pass?.attendance ? 'Marked Present' : 'Pending' }}
-                  </span>
-                </div>
-
-                <div class="detail-row" *ngIf="member?.hackathon_entry_pass?.checkin_time">
-                  <span class="label">Check-in:</span>
-                  <span class="value">{{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}</span>
-                </div>
-              </div>
-              }
-            </div>
+          <div class="table-wrapper">
+            <table class="team-members-table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Status</th>
+                  <th>Attendance</th>
+                  <th>Check-in Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of entryPass?.hackathon_team?.hackathon_user_responses">
+                  @if(member.id !== entryPass.hackathon_user_response.id){
+                  <td>
+                    <app-user-profile-card-medium [user]="member?.user"></app-user-profile-card-medium>
+                  </td>
+                  <td>
+                    <span
+                      class="value"
+                      [class.status-accepted]="member?.invite_status === EInvitationStatus.APPLICATION_COMPLETE"
+                      [class.status-pending]="member?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION"
+                      [class.status-rejected]="member?.invite_status === EInvitationStatus.REJECTED"
+                    >
+                      {{ member?.invite_status | capitalizeAndRemoveUnderscore }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      *ngIf="member?.hackathon_entry_pass"
+                      class="value"
+                      [class.attended]="member?.hackathon_entry_pass?.attendance"
+                      [class.not-attended]="!member?.hackathon_entry_pass?.attendance"
+                    >
+                      {{ member?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
+                    </span>
+                    <span *ngIf="!member?.hackathon_entry_pass">-</span>
+                  </td>
+                  <td>
+                    <span *ngIf="member?.hackathon_entry_pass?.checkin_time">
+                      {{ member?.hackathon_entry_pass?.checkin_time | date : 'dd/MM/yyyy hh:mm a' }}
+                    </span>
+                    <span *ngIf="!member?.hackathon_entry_pass?.checkin_time">-</span>
+                  </td>
+                  }
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

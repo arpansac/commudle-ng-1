@@ -391,12 +391,16 @@
                 <nb-icon icon="file-text-outline"></nb-icon>
                 Send Entry Pass
               </button>
-              <div class="attendance-info">
+              <div
+                class="attendance-info"
+                *ngIf="userResponse.team.offline_invite_status === EOfflineInviteStatus.CONFIRMED"
+              >
                 <span
                   class="attendance-link"
                   (click)="openTeamAttendanceDialog(userResponse); $event.stopPropagation()"
                 >
-                  {{ userResponse.team.checked_in_members_count }}/{{ userResponse.user_responses?.length }} Checked In
+                  {{ userResponse.team.checked_in_members_count || 0 }}/{{ userResponse.user_responses?.length }}
+                  Checked In
                 </span>
               </div>
             </td>
@@ -1100,7 +1104,7 @@
             </td>
             <td>
               <span *ngIf="member?.hackathon_entry_pass?.checkin_time" class="time">
-                {{ member?.hackathon_entry_pass?.checkin_time | date : 'short' }}
+                {{ member?.hackathon_entry_pass?.checkin_time | date : 'dd/MM/yyyy hh:mm a' }}
               </span>
               <span *ngIf="!member?.hackathon_entry_pass?.checkin_time">-</span>
             </td>
