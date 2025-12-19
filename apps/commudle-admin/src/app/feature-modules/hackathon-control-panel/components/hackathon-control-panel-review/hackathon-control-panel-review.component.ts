@@ -153,6 +153,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   @ViewChildren('noteTextarea') noteTextarea: QueryList<ElementRef>;
   @ViewChild('problemStatementDialog') problemStatementDialog: TemplateRef<any>;
+  @ViewChild('teamAttendanceDialog') teamAttendanceDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -654,6 +655,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       context: {
         hackathon: this.hackathon,
         isBulkEmail: true,
+      },
+    });
+  }
+
+  openTeamAttendanceDialog(team: IHackathonUserResponses) {
+    this.nbDialogService.open(this.teamAttendanceDialog, {
+      context: {
+        selectedTeam: team,
       },
     });
   }

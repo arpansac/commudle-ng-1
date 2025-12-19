@@ -1,0 +1,51 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { BaseApiService } from './base-api.service';
+import { API_ROUTES } from './api-routes.constant';
+import { IHackathonEntryPass, IHackathonEntryPassAttendanceStats } from '@commudle/shared-models';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HackathonEntryPassesService {
+  constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
+
+  scanEntryPass(hackathonId: number, entryPassCode: string): Observable<IHackathonEntryPass> {
+    const params = new HttpParams().set('hackathon_id', hackathonId).set('entry_pass_code', entryPassCode);
+    return this.http.get<IHackathonEntryPass>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_ENTRY_PASSES.SCAN_ENTRY_PASS),
+      { params },
+    );
+  }
+
+  updateAttendance(hackathonId: number, entryPassCode: string, attendance: boolean): Observable<IHackathonEntryPass> {
+    const params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('entry_pass_code', entryPassCode)
+      .set('attendance', attendance);
+    return this.http.put<IHackathonEntryPass>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_ENTRY_PASSES.UPDATE_ATTENDANCE),
+      {},
+      { params },
+    );
+  }
+
+  attendanceStats(
+    hackathonId: number | string,
+    count = 10,
+    page = 1,
+    q = '',
+  ): Observable<IHackathonEntryPassAttendanceStats> {
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('count', count).set('page', page);
+    if (q) {
+      params = params.set('q', q);
+    }
+    return this.http.get<IHackathonEntryPassAttendanceStats>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_ENTRY_PASSES.ATTENDANCE_STATS),
+      {
+        params,
+      },
+    );
+  }
+}
