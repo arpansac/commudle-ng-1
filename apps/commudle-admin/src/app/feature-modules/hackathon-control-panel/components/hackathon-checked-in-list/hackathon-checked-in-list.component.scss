@@ -1,6 +1,4 @@
 .checked-in-list-page {
-  @apply com-p-4;
-
   nb-card {
     nb-card-header {
       h2 {
@@ -51,96 +49,100 @@
             @apply com-mt-6;
           }
 
-          table {
-            @apply com-w-full com-border-collapse;
+          .table-wrapper {
+            @apply com-overflow-x-auto;
 
-            thead {
-              @apply com-bg-gray-100;
+            table {
+              @apply com-w-full com-border-collapse;
 
-              tr {
-                th {
-                  @apply com-p-3 com-text-left com-text-sm com-font-semibold com-text-gray-700 com-border com-border-Bright-Gray  com-border-solid;
+              thead {
+                @apply com-bg-gray-100;
+
+                tr {
+                  th {
+                    @apply com-p-3 com-text-left com-text-sm com-font-semibold com-text-gray-700 com-border com-border-Bright-Gray  com-border-solid;
+                  }
                 }
               }
-            }
 
-            tbody {
-              tr {
-                @apply com-border-0 com-border-b com-border-Bright-Gray com-border-solid;
+              tbody {
+                tr {
+                  @apply com-border-0 com-border-b com-border-Bright-Gray com-border-solid;
 
-                &.loading-row {
+                  &.loading-row {
+                    td {
+                      @apply com-p-0 com-border-0;
+
+                      .loading {
+                        @apply com-flex com-justify-center com-py-8;
+                      }
+                    }
+                  }
+
+                  &.no-data-row {
+                    td.no-data {
+                      @apply com-text-center com-py-8 com-text-gray-500;
+                    }
+                  }
+
+                  &.team-leader-row {
+                    @apply com-bg-blue-50;
+                  }
+
+                  &.team-end {
+                    @apply com-border-b-2 com-border-b-Bright-Gray;
+                  }
+
                   td {
-                    @apply com-p-0 com-border-0;
+                    @apply com-p-3 com-text-sm com-border com-border-Bright-Gray com-border-solid;
 
-                    .loading {
-                      @apply com-flex com-justify-center com-py-8;
-                    }
-                  }
-                }
+                    &.team-name {
+                      @apply com-bg-gray-50 com-font-medium com-align-top;
 
-                &.no-data-row {
-                  td.no-data {
-                    @apply com-text-center com-py-8 com-text-gray-500;
-                  }
-                }
+                      .team-info {
+                        @apply com-flex com-flex-col com-gap-2;
 
-                &.team-leader-row {
-                  @apply com-bg-blue-50;
-                }
-
-                &.team-end {
-                  @apply com-border-b-2 com-border-b-Bright-Gray;
-                }
-
-                td {
-                  @apply com-p-3 com-text-sm com-border com-border-Bright-Gray com-border-solid;
-
-                  &.team-name {
-                    @apply com-bg-gray-50 com-font-medium com-align-top;
-
-                    .team-info {
-                      @apply com-flex com-flex-col com-gap-2;
-
-                      strong {
-                        @apply com-text-base;
-                      }
-
-                      .team-status {
-                        @apply com-text-xs com-px-2 com-py-1 com-rounded com-bg-gray-200 com-text-gray-700 com-w-fit;
-
-                        &.accepted {
-                          @apply com-bg-green-100 com-text-green-700;
+                        strong {
+                          @apply com-text-base;
                         }
-                      }
 
-                      .team-count {
-                        @apply com-text-xs com-text-gray-600;
+                        .team-status {
+                          @apply com-text-xs com-px-2 com-py-1 com-rounded com-bg-gray-200 com-text-gray-700 com-w-fit;
 
-                        &.clickable {
-                          @apply com-cursor-pointer com-text-primary-500 com-underline;
-                          @apply hover:com-text-primary-600;
+                          &.accepted {
+                            @apply com-bg-green-100 com-text-green-700;
+                          }
+                        }
+
+                        .team-count {
+                          @apply com-text-xs com-text-gray-600;
+
+                          &.clickable {
+                            @apply com-cursor-pointer com-text-primary-500 com-underline;
+                            @apply hover:com-text-primary-600;
+                          }
                         }
                       }
                     }
-                  }
 
-                  .role-badge {
-                    @apply com-text-xs com-px-2 com-py-1 com-rounded com-font-medium;
+                    .role-badge {
+                      @apply com-text-xs com-px-2 com-py-1 com-rounded com-font-medium;
 
-                    &.leader {
-                      @apply com-bg-purple-100 com-text-purple-700;
+                      &.leader {
+                        @apply com-bg-purple-100 com-text-purple-700;
+                      }
+
+                      &.member {
+                        @apply com-bg-blue-100 com-text-blue-700;
+                      }
                     }
 
-                    &.member {
-                      @apply com-bg-blue-100 com-text-blue-700;
-                    }
-                  }
+                    .attendance {
+                      @apply com-font-medium;
 
-                  .attendance {
-                    @apply com-font-medium;
-
-                    &.present {
-                      @apply com-text-green-600;
+                      &.present {
+                        @apply com-text-green-600;
+                      }
                     }
                   }
                 }
