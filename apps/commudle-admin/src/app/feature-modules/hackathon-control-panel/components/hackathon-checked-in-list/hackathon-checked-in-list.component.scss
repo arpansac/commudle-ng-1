@@ -20,37 +20,31 @@
           @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
 
           .stat-card {
-            @apply com-p-4 com-bg-gray-100 com-rounded-lg com-flex com-flex-col com-gap-2;
+            @apply com-border com-border-solid com-border-Bright-Gray com-p-4 com-rounded-lg com-flex com-flex-col com-gap-2;
 
             .label {
-              @apply com-text-sm com-text-tYankees-Blue;
+              @apply com-text-sm com-text-Yankees-Blue;
             }
 
             .value {
               @apply com-text-2xl com-font-bold com-text-gray-900;
             }
-
-            &.checked-in {
-              @apply com-bg-green-100;
-
-              .value {
-                @apply com-text-green-700;
-              }
-            }
-
-            &.not-checked-in {
-              @apply com-bg-yellow-100;
-
-              .value {
-                @apply com-text-yellow-700;
-              }
-            }
           }
         }
 
+        .search-input {
+          @apply com-w-full com-px-4 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-bg-transparent com-text-Yankees-Blue;
+          @apply focus:com-outline-none focus:com-border-primary-500 focus:com-ring-2 focus:com-ring-primary-200;
+          @apply com-text-sm;
+        }
+
         .teams-table {
-          h3 {
-            @apply com-text-lg com-font-semibold com-mb-4;
+          .table-header {
+            @apply com-flex com-flex-col md:com-flex-row com-justify-between com-items-start md:com-items-center com-gap-4 com-mb-4;
+
+            h3 {
+              @apply com-text-lg com-font-semibold com-m-0;
+            }
           }
 
           .pagination {
@@ -73,6 +67,22 @@
             tbody {
               tr {
                 @apply com-border-0 com-border-b com-border-Bright-Gray com-border-solid;
+
+                &.loading-row {
+                  td {
+                    @apply com-p-0 com-border-0;
+
+                    .loading {
+                      @apply com-flex com-justify-center com-py-8;
+                    }
+                  }
+                }
+
+                &.no-data-row {
+                  td.no-data {
+                    @apply com-text-center com-py-8 com-text-gray-500;
+                  }
+                }
 
                 &.team-leader-row {
                   @apply com-bg-blue-50;

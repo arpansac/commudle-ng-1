@@ -37,6 +37,8 @@ export interface IHackathonTeam {
   team_members_count: number;
   total_score: number;
   checked_in_members_count?: number;
+  team_members?: IHackathonUserResponse[];
+  team_leader?: IHackathonUserResponse;
 }
 
 export enum EHackathonRegistrationStatus {

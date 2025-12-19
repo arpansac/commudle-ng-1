@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { HackathonEntryPassesService } from '@commudle/shared-services';
-import { IHackathon } from '@commudle/shared-models';
+import { IHackathon, IHackathonEntryPassAttendanceStats } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
@@ -13,12 +13,15 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 export class HackathonCheckedInListComponent implements OnInit, OnDestroy {
   hackathonId: number | string;
   hackathon: IHackathon;
-  attendanceStats: any;
+  attendanceStats: IHackathonEntryPassAttendanceStats;
   isLoading = true;
+  isLoadingData = false;
   page = 1;
   count = 10;
   total = 0;
+  searchQuery = '';
   private destroy$ = new Subject<void>();
+  private searchSubject$ = new Subject<string>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,6 +37,12 @@ export class HackathonCheckedInListComponent implements OnInit, OnDestroy {
         this.loadAttendanceStats();
       });
     });
+
+    this.searchSubject$.pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((query) => {
+      this.searchQuery = query;
+      this.page = 1;
+      this.loadAttendanceStats();
+    });
   }
 
   ngOnDestroy(): void {
@@ -41,16 +50,26 @@ export class HackathonCheckedInListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onSearchChange(query: string): void {
+    this.searchSubject$.next(query);
+  }
+
   loadAttendanceStats(): void {
-    this.isLoading = true;
+    if (this.attendanceStats) {
+      this.isLoadingData = true;
+    } else {
+      this.isLoading = true;
+    }
+
     this.hackathonEntryPassesService
-      .attendanceStats(this.hackathonId, this.count, this.page)
+      .attendanceStats(this.hackathonId, this.count, this.page, this.searchQuery)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((response) => {
+      .subscribe((response: IHackathonEntryPassAttendanceStats) => {
         this.attendanceStats = response;
         this.total = response.checked_in_teams?.total || 0;
         this.count = response.checked_in_teams?.count || 10;
         this.isLoading = false;
+        this.isLoadingData = false;
       });
   }
 }
