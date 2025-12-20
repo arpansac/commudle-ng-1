@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbDialogRef } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { IHackathonTeam } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { ToastrService } from '@commudle/shared-services';
+import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   selector: 'commudle-hackathon-rsvp-email',
@@ -17,6 +18,9 @@ export class HackathonRsvpEmailComponent implements OnInit {
   hackathon: IHackathon;
   isBulkEmail = false;
   resend = false;
+  previewData: string;
+  showPreviewSpinner = false;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -38,6 +42,8 @@ export class HackathonRsvpEmailComponent implements OnInit {
     private dialogRef: NbDialogRef<HackathonRsvpEmailComponent>,
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -70,6 +76,37 @@ export class HackathonRsvpEmailComponent implements OnInit {
         this.toastrService.successDialog('RSVP email sent successfully!');
         this.dialogRef.close();
       }
+    });
+  }
+
+  previewEmail() {
+    if (this.rsvpForm.invalid) {
+      this.toastrService.warningDialog('Please fill all required fields');
+      return;
+    }
+
+    this.showPreviewSpinner = true;
+    const previewData = {
+      message: this.rsvpForm.value.message,
+      subject: this.rsvpForm.value.subject,
+      hackathon_team_id: this.team.id,
+    };
+    this.emailerPreviewService.hackathonTeamRsvpEmailPreview(previewData, this.hackathon.id).subscribe({
+      next: (result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      },
+      error: () => {
+        this.toastrService.errorDialog('Failed to generate email preview');
+        this.showPreviewSpinner = false;
+      },
+    });
+  }
+
+  openEmailPreviewTemplate(previewData) {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
     });
   }
 

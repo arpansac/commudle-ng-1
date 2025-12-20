@@ -29,6 +29,15 @@
     </form>
   </nb-card-body>
   <nb-card-footer>
+    <button
+      nbButton
+      status="primary"
+      (click)="previewEmail()"
+      [disabled]="rsvpForm.invalid || showPreviewSpinner"
+      [nbSpinner]="showPreviewSpinner"
+    >
+      Preview Email
+    </button>
     <button nbButton status="primary" (click)="sendRsvpEmail()" [disabled]="rsvpForm.invalid" fullWidth>Send</button>
   </nb-card-footer>
 </nb-card>
