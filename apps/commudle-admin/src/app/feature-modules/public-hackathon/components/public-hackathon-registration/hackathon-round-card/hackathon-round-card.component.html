@@ -26,22 +26,25 @@
     </div>
     <div class="round-evaluators" *ngIf="getRoundEvaluators().length > 0">
       <div class="evaluator-card" *ngFor="let evaluator of getRoundEvaluators()">
-        <!-- <img
+        <img
           *ngIf="evaluator.photo?.url"
           [src]="evaluator.photo.url"
           [alt]="evaluator.name"
           class="evaluator-avatar"
+          appMiniUserProfile
         />
-        <div class="evaluator-info">
+        <div class="evaluator-info" appMiniUserProfile>
           <div class="evaluator-name">{{ evaluator.name }}</div>
           <div class="evaluator-role">{{ evaluator.judge_type | titlecase }}</div>
-        </div> -->
-        <!-- <app-user-profile-card-medium
-          [user]="evaluator"
-          [openInNewTab]="true"
-          [showHiringLookingTags]="true"
-          [maxDesignationLineClamp]="2"
-        ></app-user-profile-card-medium> -->
+        </div>
+        <app-user-follow
+          [username]="evaluator.username"
+          [name]="evaluator.name"
+          [userId]="evaluator.id"
+          [isMobileWidthFull]="false"
+          [appearance]="'outline'"
+          class="follow-btn"
+        ></app-user-follow>
       </div>
     </div>
   </div>
