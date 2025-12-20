@@ -19,7 +19,10 @@
       }
     </div>
     <div class="round-description" *ngIf="round.description">
-      {{ round.description }}
+      <span #descriptionSpan [innerHTML]="round.description" [class.expanded]="isDescriptionExpanded"></span>
+      <button class="read-more-btn" (click)="toggleDescription()" *ngIf="isDescriptionTruncated">
+        {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
+      </button>
     </div>
   </div>
   <div class="round-status">

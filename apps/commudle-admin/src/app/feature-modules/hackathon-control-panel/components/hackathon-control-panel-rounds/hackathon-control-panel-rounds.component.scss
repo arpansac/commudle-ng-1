@@ -53,8 +53,9 @@ nb-card {
       @apply com-max-w-xs;
 
       .description-content {
-        @apply com-text-gray-700 com-text-sm com-leading-5 com-overflow-y-scroll com-break-words;
+        @apply com-text-gray-700 com-text-sm com-leading-5 com-overflow-y-scroll;
         @apply com-max-h-20;
+        white-space: pre-wrap;
       }
     }
 

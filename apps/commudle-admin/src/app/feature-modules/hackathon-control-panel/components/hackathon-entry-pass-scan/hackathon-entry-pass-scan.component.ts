@@ -105,6 +105,9 @@ export class HackathonEntryPassScanComponent implements OnInit, OnDestroy {
   onCamerasFound(devices: MediaDeviceInfo[]): void {
     this.availableDevices = devices;
     this.hasDevices = Boolean(devices && devices.length);
+    if (devices?.length && !this.deviceSelected) {
+      this.deviceSelected = devices[0].deviceId;
+    }
   }
 
   onCodeResult(resultString: string): void {
@@ -125,11 +128,7 @@ export class HackathonEntryPassScanComponent implements OnInit, OnDestroy {
   }
 
   onDeviceChange(device: MediaDeviceInfo): void {
-    const selectedStr = device?.deviceId || '';
-    if (this.deviceSelected === selectedStr) {
-      return;
-    }
-    this.deviceSelected = selectedStr;
+    this.deviceSelected = device?.deviceId || '';
     this.deviceCurrent = device || undefined;
   }
 

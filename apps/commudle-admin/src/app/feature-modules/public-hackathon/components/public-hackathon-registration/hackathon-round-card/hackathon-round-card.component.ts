@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { IRound, IHackathonTeam, EHackathonRegistrationStatus, ERoundType } from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/ppt-upload-dialog/ppt-upload-dialog.component';
@@ -9,13 +9,16 @@ import * as moment from 'moment';
   templateUrl: './hackathon-round-card.component.html',
   styleUrls: ['./hackathon-round-card.component.scss'],
 })
-export class HackathonRoundCardComponent implements OnInit {
+export class HackathonRoundCardComponent implements OnInit, AfterViewInit {
   @Input() round: IRound;
   @Input() index: number;
   @Input() userTeamDetails: IHackathonTeam;
+  @ViewChild('descriptionSpan') descriptionSpan: ElementRef;
   isCompleted: boolean;
   isUpcoming: boolean;
   isLive: boolean;
+  isDescriptionExpanded = false;
+  isDescriptionTruncated = false;
   moment = moment;
 
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
@@ -50,6 +53,21 @@ export class HackathonRoundCardComponent implements OnInit {
     }
     const now = new Date();
     this.isLive = new Date(this.round.date) <= now && now <= new Date(this.round.end_date);
+  }
+
+  ngAfterViewInit() {
+    this.checkIfTruncated();
+  }
+
+  checkIfTruncated() {
+    if (this.descriptionSpan) {
+      const element = this.descriptionSpan.nativeElement;
+      this.isDescriptionTruncated = element.scrollHeight > element.clientHeight;
+    }
+  }
+
+  toggleDescription() {
+    this.isDescriptionExpanded = !this.isDescriptionExpanded;
   }
 
   openPPTUploadDialog() {
