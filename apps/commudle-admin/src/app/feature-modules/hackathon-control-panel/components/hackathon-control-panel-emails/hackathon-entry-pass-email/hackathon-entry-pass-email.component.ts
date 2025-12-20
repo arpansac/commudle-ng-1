@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
-import { IHackathonTeam } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
