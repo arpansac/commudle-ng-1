@@ -28,20 +28,21 @@
       <a
         class="evaluator-card"
         *ngFor="let evaluator of getRoundEvaluators()"
-        [routerLink]="['/users', evaluator.username]"
+        [routerLink]="['/users', evaluator?.username]"
       >
         <img
           *ngIf="evaluator.photo?.url"
           [src]="evaluator.photo.url"
           [alt]="evaluator.name"
           class="evaluator-avatar"
-          [username]="evaluator.username"
+          [username]="evaluator?.username"
           appMiniUserProfile
         />
-        <div class="evaluator-info" appMiniUserProfile [username]="evaluator.username">
+        <div class="evaluator-info" appMiniUserProfile [username]="evaluator?.username">
           <div class="evaluator-name">{{ evaluator.name }}</div>
           <div class="evaluator-role">{{ evaluator.judge_type | titlecase }}</div>
         </div>
+        @if(evaluator?.username){
         <app-user-follow
           [username]="evaluator.username"
           [name]="evaluator.name"
@@ -51,6 +52,7 @@
           class="follow-btn"
           (click)="$event.stopPropagation(); $event.preventDefault()"
         ></app-user-follow>
+        }
       </a>
     </div>
   </div>
