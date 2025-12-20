@@ -31,7 +31,7 @@
   }
 
   &.round-upcoming {
-    @apply com-bg-gray-50 com-border-gray-200;
+    @apply com-bg-gray-200 com-border-gray-200;
 
     .round-indicator {
       .round-number {
@@ -108,8 +108,7 @@
       @apply com-flex com-flex-wrap com-gap-3 com-mt-3;
 
       .evaluator-card {
-        @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-bg-white com-border com-border-gray-200 com-rounded-lg;
-        @apply hover:com-border-primary-300 com-transition-colors;
+        @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-border com-border-Bright-Gray com-rounded-lg com-no-underline com-text-tYankees-Blue;
 
         .evaluator-avatar {
           @apply com-w-8 com-h-8 com-rounded-full com-object-cover;
@@ -119,11 +118,11 @@
           @apply com-flex com-flex-col;
 
           .evaluator-name {
-            @apply com-text-sm com-font-medium com-text-gray-900;
+            @apply com-text-sm com-font-medium com-text-tYankees-Blue;
           }
 
           .evaluator-role {
-            @apply com-text-xs com-text-gray-500;
+            @apply com-text-xs com-text-tYankees-Blue;
           }
         }
       }

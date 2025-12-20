@@ -43,7 +43,7 @@ export class HackathonRoundCardComponent implements OnInit, AfterViewInit {
       (submission) => submission.round.id === this.round.id,
     );
   }
-
+  // TODO: optimize it, try to not use return function which was called from html
   getRoundEvaluators(): IHackathonJudge[] {
     if (!this.userTeamDetails?.hackathon_team_round_scores) return [];
     return this.userTeamDetails.hackathon_team_round_scores
