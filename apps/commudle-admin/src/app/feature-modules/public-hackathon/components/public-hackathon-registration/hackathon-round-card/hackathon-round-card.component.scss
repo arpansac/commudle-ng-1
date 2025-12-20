@@ -31,7 +31,7 @@
   }
 
   &.round-upcoming {
-    @apply com-bg-gray-50 com-border-gray-200;
+    @apply com-bg-gray-200 com-border-gray-200;
 
     .round-indicator {
       .round-number {
@@ -101,6 +101,30 @@
       .read-more-btn {
         @apply com-text-primary-500 com-text-xs com-font-medium com-mt-1 com-cursor-pointer com-bg-transparent com-border-0 com-p-0;
         @apply hover:com-text-primary-600 hover:com-underline;
+      }
+    }
+
+    .round-evaluators {
+      @apply com-flex com-flex-wrap com-gap-3 com-mt-3;
+
+      .evaluator-card {
+        @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-border com-border-Bright-Gray com-rounded-lg com-no-underline com-text-tYankees-Blue;
+
+        .evaluator-avatar {
+          @apply com-w-8 com-h-8 com-rounded-full com-object-cover;
+        }
+
+        .evaluator-info {
+          @apply com-flex com-flex-col;
+
+          .evaluator-name {
+            @apply com-text-sm com-font-medium com-text-tYankees-Blue;
+          }
+
+          .evaluator-role {
+            @apply com-text-xs com-text-tYankees-Blue;
+          }
+        }
       }
     }
   }

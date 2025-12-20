@@ -1,3 +1,5 @@
+import { IHackathonJudge } from './hackathon-judge.model';
+
 export interface IHackathonTeamRoundScore {
   id: number;
   evaluator_id: number;
@@ -9,6 +11,7 @@ export interface IHackathonTeamRoundScore {
   status: EHackathonTeamRoundScoreStatus;
   remarks: string;
   total_score: number;
+  evaluator: IHackathonJudge;
 }
 
 export enum EHackathonTeamRoundScoreStatus {
