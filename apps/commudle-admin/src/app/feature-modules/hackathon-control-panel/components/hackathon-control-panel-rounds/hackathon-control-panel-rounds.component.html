@@ -34,7 +34,9 @@
               <span>{{ round.round_type ? (round.round_type | capitalizeAndRemoveUnderscore) : '-' }}</span>
             </td>
             <td class="round-description">
-              <div class="description-content custom-scrollbar">{{ round.description }}</div>
+              <div class="description-content custom-scrollbar">
+                <div [innerHTML]="round.description"></div>
+              </div>
             </td>
             <td class="round-actions">
               <div class="action-buttons">

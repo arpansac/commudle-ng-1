@@ -86,7 +86,22 @@
     }
 
     .round-description {
-      @apply com-text-sm com-text-gray-500 com-line-clamp-2;
+      @apply com-text-sm com-text-gray-500;
+
+      span {
+        white-space: pre-wrap;
+        overflow: hidden;
+        @apply com-line-clamp-2;
+
+        &.expanded {
+          display: block;
+        }
+      }
+
+      .read-more-btn {
+        @apply com-text-primary-500 com-text-xs com-font-medium com-mt-1 com-cursor-pointer com-bg-transparent com-border-0 com-p-0;
+        @apply hover:com-text-primary-600 hover:com-underline;
+      }
     }
   }
 
