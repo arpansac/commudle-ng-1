@@ -24,6 +24,26 @@
         {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
       </button>
     </div>
+    <div class="round-evaluators" *ngIf="getRoundEvaluators().length > 0">
+      <div class="evaluator-card" *ngFor="let evaluator of getRoundEvaluators()">
+        <!-- <img
+          *ngIf="evaluator.photo?.url"
+          [src]="evaluator.photo.url"
+          [alt]="evaluator.name"
+          class="evaluator-avatar"
+        />
+        <div class="evaluator-info">
+          <div class="evaluator-name">{{ evaluator.name }}</div>
+          <div class="evaluator-role">{{ evaluator.judge_type | titlecase }}</div>
+        </div> -->
+        <!-- <app-user-profile-card-medium
+          [user]="evaluator"
+          [openInNewTab]="true"
+          [showHiringLookingTags]="true"
+          [maxDesignationLineClamp]="2"
+        ></app-user-profile-card-medium> -->
+      </div>
+    </div>
   </div>
   <div class="round-status">
     <div *ngIf="isLive" class="status-live">Live</div>

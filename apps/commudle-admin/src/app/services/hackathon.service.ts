@@ -3,7 +3,6 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
-import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -20,6 +19,7 @@ import {
   IHackathonProblemStatement,
   IPagination,
   IPaginationCount,
+  IHackathonJudge,
 } from '@commudle/shared-models';
 
 @Injectable({

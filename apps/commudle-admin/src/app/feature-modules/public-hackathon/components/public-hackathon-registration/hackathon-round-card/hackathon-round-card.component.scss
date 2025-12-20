@@ -103,6 +103,31 @@
         @apply hover:com-text-primary-600 hover:com-underline;
       }
     }
+
+    .round-evaluators {
+      @apply com-flex com-flex-wrap com-gap-3 com-mt-3;
+
+      .evaluator-card {
+        @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-bg-white com-border com-border-gray-200 com-rounded-lg;
+        @apply hover:com-border-primary-300 com-transition-colors;
+
+        .evaluator-avatar {
+          @apply com-w-8 com-h-8 com-rounded-full com-object-cover;
+        }
+
+        .evaluator-info {
+          @apply com-flex com-flex-col;
+
+          .evaluator-name {
+            @apply com-text-sm com-font-medium com-text-gray-900;
+          }
+
+          .evaluator-role {
+            @apply com-text-xs com-text-gray-500;
+          }
+        }
+      }
+    }
   }
 
   .round-status {

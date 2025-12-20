@@ -12,7 +12,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { faPlus, faMinus, faArrowRight, faUserCircle, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
-import { EDbModels, IHackathonTeam, IRound } from '@commudle/shared-models';
+import {
+  EDbModels,
+  EHackathonJudgeType,
+  EJudgeInvitationStatus,
+  IHackathonJudge,
+  IHackathonTeam,
+  IRound,
+} from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { ToastrService, SeoService, RoundService, HackathonTeamRoundScoreService } from '@commudle/shared-services';
@@ -20,7 +27,6 @@ import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
 import { MentorCustomEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
 import { filter, map } from 'rxjs/operators';
-import { EHackathonJudgeType, EInvitationStatus, IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import {
   DataTableColumn,
   DataTableRow,
@@ -176,7 +182,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       query = [EHackathonJudgeType.MENTOR];
     }
     this.hackathonService
-      .indexJudge(this.hackathonId, query, EInvitationStatus.ACCEPTED)
+      .indexJudge(this.hackathonId, query, EJudgeInvitationStatus.ACCEPTED)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.mentors = data || [];

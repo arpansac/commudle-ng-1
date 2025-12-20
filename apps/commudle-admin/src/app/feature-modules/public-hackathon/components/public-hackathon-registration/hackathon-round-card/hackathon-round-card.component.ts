@@ -1,5 +1,11 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { IRound, IHackathonTeam, EHackathonRegistrationStatus, ERoundType } from '@commudle/shared-models';
+import {
+  IRound,
+  IHackathonTeam,
+  EHackathonRegistrationStatus,
+  ERoundType,
+  IHackathonJudge,
+} from '@commudle/shared-models';
 import { NbDialogService } from '@commudle/theme';
 import { PptUploadDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/public-hackathon/components/public-hackathon-registration/ppt-upload-dialog/ppt-upload-dialog.component';
 import * as moment from 'moment';
@@ -36,6 +42,14 @@ export class HackathonRoundCardComponent implements OnInit, AfterViewInit {
     return this.userTeamDetails?.hackathon_team_round_submissions?.find(
       (submission) => submission.round.id === this.round.id,
     );
+  }
+
+  getRoundEvaluators(): IHackathonJudge[] {
+    if (!this.userTeamDetails?.hackathon_team_round_scores) return [];
+    return this.userTeamDetails.hackathon_team_round_scores
+      .filter((score) => score.round_id === this.round.id)
+      .map((score) => score.evaluator)
+      .filter((evaluator) => evaluator != null);
   }
 
   isRoundCompleted() {

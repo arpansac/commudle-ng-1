@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { ToastrService } from '@commudle/shared-services';
-import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
+import { IHackathonJudge } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-mentor-dashboard-link-dialog',

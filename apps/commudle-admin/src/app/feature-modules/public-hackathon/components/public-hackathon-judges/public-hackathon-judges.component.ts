@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { faLinkedinIn, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { IHackathonJudge } from '@commudle/shared-models';
 @Component({
   selector: 'commudle-public-hackathon-judges',
   templateUrl: './public-hackathon-judges.component.html',
