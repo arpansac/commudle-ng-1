@@ -33,11 +33,9 @@ p {
     @apply com-mt-8 com-mx-0;
 
     .community-build-embed {
-      // @apply com-w-9 com-overflow-auto;
-
-      // iframe {
-      //   width: 100% !important;
-      // }
+      iframe {
+        @apply com-w-full;
+      }
     }
 
     .community-build-link {
@@ -56,6 +54,71 @@ p {
 
         img {
           @apply com-w-full;
+        }
+      }
+    }
+  }
+
+  .commudle-build-images-carousel {
+    @apply com-mt-6 com-relative;
+
+    .carousel-container {
+      @apply com-relative com-overflow-hidden com-rounded-lg;
+
+      &:hover {
+        .carousel-nav {
+          @apply com-opacity-80;
+
+          &:hover {
+            @apply com-opacity-100;
+          }
+        }
+      }
+
+      .carousel-wrapper {
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-4 com-scroll-smooth com-items-center;
+        scroll-snap-type: x mandatory;
+      }
+
+      .carousel-slide {
+        @apply com-flex-shrink-0 com-overflow-hidden com-cursor-pointer com-w-[360px];
+        scroll-snap-align: start;
+
+        img {
+          @apply com-h-auto com-object-cover com-w-full com-rounded-lg;
+          aspect-ratio: 16 / 9;
+        }
+      }
+
+      .carousel-nav {
+        @apply com-absolute com-top-1/2 -com-translate-y-1/2 com-rounded-[50%] com-w-10 com-h-10 com-flex com-items-center com-justify-center com-shadow-md com-opacity-0 com-transition-opacity com-z-10;
+
+        &.carousel-nav-left {
+          @apply com-left-3;
+        }
+
+        &.carousel-nav-right {
+          @apply com-right-3;
+        }
+
+        &:disabled {
+          @apply com-opacity-0 com-cursor-default;
+        }
+      }
+    }
+
+    .carousel-dots {
+      @apply com-flex com-justify-center com-gap-2 com-mt-4;
+
+      .carousel-dot {
+        @apply com-w-2 com-h-2 com-rounded-full com-border-none com-cursor-pointer com-transition-all com-bg-gray-300 com-p-0;
+
+        &.active {
+          @apply com-bg-primary-500 com-w-8;
+        }
+
+        &:hover {
+          @apply com-bg-primary-400;
         }
       }
     }

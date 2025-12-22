@@ -18,36 +18,47 @@
   </div>
   <div *ngIf="cBuild.images.length > 0" class="commudle-build-images-carousel">
     <div class="carousel-container">
-      <!-- <button
-          *ngIf="cBuild.images.length > 1"
-          (click)="previousImage()"
-          class="carousel-nav carousel-nav-left"
-          type="button"
-        >
-          <nb-icon icon="arrow-ios-back-outline"></nb-icon>
-        </button> -->
-      <!-- <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentImageIndex * 100 + '%)'">
-          <div (click)="openImage(image)" *ngFor="let image of cBuild.images" class="carousel-slide clickable">
-            <img alt="{{ cBuild.name }}" src="{{ image.url }}" title="{{ cBuild.name }}" />
-          </div>
-        </div> -->
-      <!-- <button
-          *ngIf="cBuild.images.length > 1"
-          (click)="nextImage()"
-          class="carousel-nav carousel-nav-right"
-          type="button"
-        >
-          <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
-        </button> -->
+      <div class="carousel-wrapper" (scroll)="checkScrollPosition($event)">
+        <div (click)="openImage(image)" *ngFor="let image of cBuild.images" class="carousel-slide clickable">
+          <img alt="{{ cBuild.name }}" src="{{ image.url }}" title="{{ cBuild.name }}" />
+        </div>
+      </div>
+      <button
+        *ngIf="cBuild.images.length > 1"
+        nbButton
+        status="primary"
+        size="small"
+        class="carousel-nav carousel-nav-left"
+        [disabled]="isLeftScrollDisabled"
+        (click)="scrollImages('left')"
+        aria-label="Scroll left"
+        type="button"
+      >
+        <nb-icon icon="arrow-left-outline"></nb-icon>
+      </button>
+      <button
+        *ngIf="cBuild.images.length > 1"
+        nbButton
+        status="primary"
+        size="small"
+        class="carousel-nav carousel-nav-right"
+        [disabled]="isRightScrollDisabled"
+        (click)="scrollImages('right')"
+        aria-label="Scroll right"
+        type="button"
+      >
+        <nb-icon icon="arrow-right-outline"></nb-icon>
+      </button>
     </div>
     <div *ngIf="cBuild.images.length > 1" class="carousel-dots">
-      <!-- <button
-          *ngFor="let image of cBuild.images; let i = index"
-          (click)="goToImage(i)"
-          [class.active]="i === currentImageIndex"
-          class="carousel-dot"
-          type="button"
-        ></button> -->
+      <button
+        *ngFor="let image of cBuild.images; let i = index"
+        (click)="goToImage(i)"
+        [class.active]="i === currentImageIndex"
+        class="carousel-dot"
+        type="button"
+        [attr.aria-label]="'Go to image ' + (i + 1)"
+      ></button>
     </div>
   </div>
   <div *ngIf="embedCode" class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">

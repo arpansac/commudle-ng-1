@@ -33,6 +33,9 @@ export class CommunityBuildDetailsComponent implements OnInit {
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
   currentUser: ICurrentUser;
   faCalendar = faCalendar;
+  currentImageIndex = 0;
+  isLeftScrollDisabled = true;
+  isRightScrollDisabled = true;
 
   moment = moment;
 
@@ -109,5 +112,37 @@ export class CommunityBuildDetailsComponent implements OnInit {
       },
       applicationCategory: 'Software Engineering',
     });
+  }
+
+  scrollImages(direction: 'left' | 'right') {
+    const carouselWrapper = document.querySelector('.carousel-wrapper') as HTMLElement;
+    if (carouselWrapper) {
+      const scrollAmount = direction === 'left' ? -400 : 400;
+      carouselWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
+
+  checkScrollPosition(event: Event) {
+    const target = event.target as HTMLElement;
+    this.isLeftScrollDisabled = target.scrollLeft <= 0;
+    this.isRightScrollDisabled = target.scrollLeft + target.clientWidth >= target.scrollWidth - 5;
+
+    // Simple calculation for current image index
+    const slides = target.querySelectorAll('.carousel-slide');
+    if (slides.length > 0) {
+      const slideWidth = (slides[0] as HTMLElement).offsetWidth;
+      this.currentImageIndex = Math.round(target.scrollLeft / slideWidth);
+    }
+  }
+
+  goToImage(index: number) {
+    const carouselWrapper = document.querySelector('.carousel-wrapper') as HTMLElement;
+    if (carouselWrapper) {
+      const slides = carouselWrapper.querySelectorAll('.carousel-slide');
+      if (slides[index]) {
+        (slides[index] as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        this.currentImageIndex = index;
+      }
+    }
   }
 }
