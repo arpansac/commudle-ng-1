@@ -14,9 +14,9 @@ p {
 }
 
 .community-build-details {
-  @apply com-m-0;
+  @apply com-m-0 md:com-mx-0 com-mx-4;
   .community-build-name {
-    @apply com-text-[28px] com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
+    @apply md:com-text-[28px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
   }
 
   .community-build-tags {
@@ -81,7 +81,7 @@ p {
       }
 
       .carousel-slide {
-        @apply com-flex-shrink-0 com-overflow-hidden com-cursor-pointer com-w-[360px];
+        @apply com-flex-shrink-0 com-overflow-hidden com-cursor-pointer md:com-w-[360px] com-w-full;
         scroll-snap-align: start;
 
         img {

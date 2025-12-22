@@ -43,19 +43,22 @@
       </div>
       <div *appBreakpoints="'<=lg'" class="one-column-layout">
         <nb-card>
-          <nb-card-body>
+          <nb-card-body class="created-container">
+            <h3>Created by</h3>
             <app-user-profile-card-large
               [showFollowButton]="true"
+              [alignFollowToRight]="true"
+              [appearanceOfFollowButton]="'outline'"
               [user]="communityBuild.user"
             ></app-user-profile-card-large>
             <ng-container *ngIf="communityBuild.user_roles_users.length > 0">
               <p class="fs-p1">Teammates</p>
-              <ng-container *ngFor="let teammate of communityBuild.user_roles_users">
+              <div *ngFor="let teammate of communityBuild.user_roles_users">
                 <app-user-profile-card-small
                   [user]="teammate.user"
                   class="com-block com-mt-2"
                 ></app-user-profile-card-small>
-              </ng-container>
+              </div>
             </ng-container>
           </nb-card-body>
         </nb-card>

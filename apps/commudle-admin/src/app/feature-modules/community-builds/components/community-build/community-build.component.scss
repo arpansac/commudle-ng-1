@@ -30,3 +30,18 @@
 .right-column {
   @apply com-m-0 md:com-mb-4 com-mb-0 com-pl-6 com-pt-0;
 }
+
+.one-column-layout {
+  @apply com-m-0;
+
+  nb-card {
+    @apply com-m-0 com-mb-4;
+  }
+}
+
+.created-container {
+  @apply com-p-4;
+  h3 {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-6;
+  }
+}
