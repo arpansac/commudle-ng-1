@@ -3,6 +3,7 @@ p {
 }
 
 .community-build-discussion {
+  @apply com-m-0 com-mt-10;
   nb-card-body {
     @apply com-p-0;
 
@@ -13,8 +14,9 @@ p {
 }
 
 .community-build-details {
+  @apply com-m-0;
   .community-build-name {
-    @apply com-my-5 com-mx-0;
+    @apply com-text-[28px] com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
   }
 
   .community-build-tags {
@@ -28,7 +30,7 @@ p {
   }
 
   .community-build-content {
-    @apply com-my-5 com-mx-0;
+    @apply com-mt-8 com-mx-0;
 
     .community-build-embed {
       // @apply com-w-9 com-overflow-auto;
@@ -39,7 +41,7 @@ p {
     }
 
     .community-build-link {
-      @apply com-my-2 com-mx-0;
+      @apply com-text-base com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
     }
   }
 
@@ -57,10 +59,6 @@ p {
         }
       }
     }
-  }
-
-  app-share-button {
-    @apply com-absolute com-right-[15px] com-bottom-[10px];
   }
 }
 
@@ -121,11 +119,50 @@ p {
 }
 
 .date-edit-btn {
-  @apply com-flex com-flex-row com-items-center;
+  @apply com-flex com-flex-row com-items-center com-mb-3;
   .date {
-    @apply com-text-sm com-m-0;
+    @apply com-text-xs com-font-medium com-text-Yankees-Blue com-m-0;
+
+    fa-icon {
+      @apply com-h-4 com-w-4 com-text-Cadet-Grey com-mr-2;
+    }
   }
   nb-icon {
     @apply com-ml-4 com-text-Yankees-Blue com-cursor-pointer;
+  }
+}
+
+.community-build-description {
+  &::ng-deep {
+    p {
+      @apply com-text-base com-font-normal com-text-gray-500 com-m-0 com-mb-4;
+    }
+
+    ul,
+    ol {
+      li {
+        @apply com-text-base com-font-normal com-text-gray-500 com-m-0 com-mb-2;
+      }
+    }
+
+    h2,
+    h3,
+    h4 {
+      @apply com-text-base com-font-medium com-text-Yankees-Blue com-m-0 com-mb-2;
+    }
+  }
+}
+
+.votes-share-container {
+  @apply com-flex com-justify-between com-items-center com-mt-4 com-pt-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+  .votes-display {
+    app-votes-display {
+      @apply com-inline-block com-mr-2;
+    }
+
+    span {
+      @apply com-text-xs com-font-normal com-text-gray-500 com-m-0;
+    }
   }
 }

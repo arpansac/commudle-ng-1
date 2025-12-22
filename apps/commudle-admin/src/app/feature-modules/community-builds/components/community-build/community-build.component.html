@@ -1,14 +1,17 @@
-<div *ngIf="communityBuild" class="base-layout community-build-container">
-  <div class="container">
-    <div *appBreakpoints="'>lg'" class="two-column-layout wide">
-      <div class="main-column">
-        <app-community-build-details [cBuild]="communityBuild"></app-community-build-details>
-      </div>
-      <div class="right-column">
-        <nb-card>
-          <nb-card-body>
+<div *ngIf="communityBuild" class="com-bg-white">
+  <div class="base-layout community-build-container">
+    <div class="container">
+      <div *appBreakpoints="'>lg'" class="two-column-layout medium">
+        <div class="main-column">
+          <app-community-build-details [cBuild]="communityBuild"></app-community-build-details>
+        </div>
+        <div class="right-column">
+          <div class="created-by-container">
+            <h3>Created by</h3>
             <app-user-profile-card-large
               [showFollowButton]="true"
+              [alignFollowToRight]="true"
+              [appearanceOfFollowButton]="'outline'"
               [user]="communityBuild.user"
             ></app-user-profile-card-large>
             <ng-container *ngIf="communityBuild.user_roles_users.length > 0">
@@ -20,42 +23,45 @@
                 ></app-user-profile-card-small>
               </div>
             </ng-container>
-          </nb-card-body>
-        </nb-card>
-        <commudle-show-more-builds [user]="communityBuild.user" [curBuild]="communityBuild"></commudle-show-more-builds>
-        <nb-card class="updates" *ngIf="communityBuild.entity_updates.length > 0">
-          <nb-card-header>Updates</nb-card-header>
-          <nb-card-body>
-            <ul>
-              <li *ngFor="let updates of communityBuild.entity_updates">
-                <div [innerHTML]="updates.details"></div>
-                <span class="date">{{ moment(updates.created_at).format('dddd, MMM Do, YYYY') }}</span>
-              </li>
-            </ul>
-          </nb-card-body>
-        </nb-card>
-      </div>
-    </div>
-    <div *appBreakpoints="'<=lg'" class="one-column-layout">
-      <nb-card>
-        <nb-card-body>
-          <app-user-profile-card-large
-            [showFollowButton]="true"
+          </div>
+          <commudle-show-more-builds
             [user]="communityBuild.user"
-          ></app-user-profile-card-large>
-          <ng-container *ngIf="communityBuild.user_roles_users.length > 0">
-            <p class="fs-p1">Teammates</p>
-            <ng-container *ngFor="let teammate of communityBuild.user_roles_users">
-              <app-user-profile-card-small
-                [user]="teammate.user"
-                class="com-block com-mt-2"
-              ></app-user-profile-card-small>
+            [curBuild]="communityBuild"
+          ></commudle-show-more-builds>
+          <nb-card class="updates" *ngIf="communityBuild.entity_updates.length > 0">
+            <nb-card-header>Updates</nb-card-header>
+            <nb-card-body>
+              <ul>
+                <li *ngFor="let updates of communityBuild.entity_updates">
+                  <div [innerHTML]="updates.details"></div>
+                  <span class="date">{{ moment(updates.created_at).format('dddd, MMM Do, YYYY') }}</span>
+                </li>
+              </ul>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+      <div *appBreakpoints="'<=lg'" class="one-column-layout">
+        <nb-card>
+          <nb-card-body>
+            <app-user-profile-card-large
+              [showFollowButton]="true"
+              [user]="communityBuild.user"
+            ></app-user-profile-card-large>
+            <ng-container *ngIf="communityBuild.user_roles_users.length > 0">
+              <p class="fs-p1">Teammates</p>
+              <ng-container *ngFor="let teammate of communityBuild.user_roles_users">
+                <app-user-profile-card-small
+                  [user]="teammate.user"
+                  class="com-block com-mt-2"
+                ></app-user-profile-card-small>
+              </ng-container>
             </ng-container>
-          </ng-container>
-        </nb-card-body>
-      </nb-card>
-      <app-community-build-details [cBuild]="communityBuild"></app-community-build-details>
-      <commudle-show-more-builds [user]="communityBuild.user" [curBuild]="communityBuild"></commudle-show-more-builds>
+          </nb-card-body>
+        </nb-card>
+        <app-community-build-details [cBuild]="communityBuild"></app-community-build-details>
+        <commudle-show-more-builds [user]="communityBuild.user" [curBuild]="communityBuild"></commudle-show-more-builds>
+      </div>
     </div>
   </div>
 </div>

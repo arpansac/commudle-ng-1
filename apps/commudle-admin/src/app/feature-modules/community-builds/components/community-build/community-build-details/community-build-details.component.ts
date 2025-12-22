@@ -12,6 +12,7 @@ import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-community-build-details',
@@ -31,6 +32,7 @@ export class CommunityBuildDetailsComponent implements OnInit {
   singleImage: boolean;
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
   currentUser: ICurrentUser;
+  faCalendar = faCalendar;
 
   moment = moment;
 
