@@ -127,63 +127,96 @@ section {
           }
 
           &.third {
-            .component-container {
-              @apply com-flex com-flex-col com-justify-center com-items-center;
-              p {
-                @apply com-my-0 com-text-center;
+            p {
+              @apply com-text-2xl com-font-normal com-text-tWhite com-m-0 com-text-center;
+            }
+            .content {
+              @apply com-flex com-flex-col com-justify-center com-items-center com-gap-5;
+              .text {
+                @apply com-text-2xl com-font-normal com-text-tWhite com-m-0 com-text-center;
               }
-
-              .event-attended-count {
-                @apply com-text-6xl com-font-extrabold com-mb-1;
-              }
-
-              .first-line,
-              .title {
-                @apply com-text-2xl com-font-medium;
-              }
-              .first-line {
-                @apply com-mb-12;
-              }
-
-              .event-name {
-                @apply com-text-xl com-mb-4;
+              .count {
+                @apply com-text-[100px] com-italic com-font-[900] com-leading-[120px] com-mb-10;
               }
             }
           }
 
           &.fourth {
-            .component-container {
-              @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
-              p {
-                @apply com-my-0 com-text-center;
+            .communities-joined-count {
+              @apply com-text-[100px] com-italic com-font-[900] com-leading-[120px] com-m-0 com-mb-4 com-text-tWhite;
+            }
+
+            .title {
+              @apply com-text-[32px] com-m-0 com-mb-10 com-font-normal com-italic com-text-tWhite;
+            }
+
+            .registered-events,
+            .registered-hackathons {
+              @apply com-text-xl com-font-normal com-text-tWhite com-m-0 com-mb-5 com-text-center;
+
+              span {
+                @apply com-text-[28px] com-font-semibold com-italic com-text-tWhite;
               }
-              .content {
-                .count {
-                  @apply com-font-extrabold com-text-[64px] com-mb-5;
-                }
-                .text {
-                  @apply com-font-medium com-text-2xl com-mb-5;
-                }
+            }
+
+            .attended-events,
+            .attended-hackathons {
+              @apply com-text-xl com-font-normal com-text-tWhite com-m-0 com-mb-10 com-text-center;
+
+              span {
+                @apply com-text-[28px] com-font-semibold com-italic com-text-tWhite;
               }
             }
           }
 
           &.fifth {
-            .component-container {
-              @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
-              p {
-                @apply com-my-0 com-text-center;
-              }
-              .content {
-                .count {
-                  @apply com-font-extrabold com-text-[64px] com-mb-5;
-                }
-                .text {
-                  @apply com-font-medium com-text-2xl com-mb-5;
-                }
+            .expert-image {
+              @apply com-w-40 com-h-40 com-mb-[60px];
+              img {
+                @apply com-object-cover com-overflow-hidden com-w-full com-h-full;
               }
             }
+            .expert-title {
+              @apply com-text-tWhite com-text-xl com-font-semibold com-text-center com-m-0;
+            }
+            .expert-description {
+              @apply com-text-tWhite com-text-lg com-font-normal com-text-center com-m-0 com-mt-5;
+            }
           }
+
+          //   &.fourth {
+          //     .component-container {
+          //       @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
+          //       p {
+          //         @apply com-text-center;
+          //       }
+          //       .content {
+          //         .count {
+          //           @apply com-font-extrabold com-text-[64px] com-mb-5;
+          //         }
+          //         .text {
+          //           @apply com-font-medium com-text-2xl com-mb-5;
+          //         }
+          //       }
+          //     }
+          //   }
+
+          //   &.fifth {
+          //     .component-container {
+          //       @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
+          //       p {
+          //         @apply com-my-0 com-text-center;
+          //       }
+          //       .content {
+          //         .count {
+          //           @apply com-font-extrabold com-text-[64px] com-mb-5;
+          //         }
+          //         .text {
+          //           @apply com-font-medium com-text-2xl com-mb-5;
+          //         }
+          //       }
+          //     }
+          //   }
 
           &.thank-you {
             .component-container {

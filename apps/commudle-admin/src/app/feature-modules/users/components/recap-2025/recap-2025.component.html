@@ -85,6 +85,136 @@
           </div>
         </div>
 
+        <!-- Profile Summary-->
+        <div class="component-container-wrapper third">
+          <div
+            class="component-container"
+            *ngIf="
+              statsData.total_communities_joined === 0 &&
+                statsData.total_followed_users === 0 &&
+                statsData.total_followers_gained === 0;
+              else networkingData
+            "
+            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
+          >
+            <div class="content-wrapper">
+              <div class="content">
+                <p class="text">2026 will be the year to create & grow your amazing developer network!</p>
+              </div>
+              <div class="screen-footer">
+                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                <p class="footer-text">Commuddle Recap 2025</p>
+              </div>
+            </div>
+          </div>
+          <ng-template #networkingData>
+            <div
+              class="component-container"
+              style.background-image="url({{ staticAssets.recap_2025.recap_profile_summary_background }})"
+            >
+              <div class="content-wrapper">
+                <!-- <div class="content" *ngIf="statsData.total_communities_joined">
+                <p class="count">
+                  {{ statsData.total_communities_joined }}
+                </p>
+                <p class="text">🌐 Communities joined by you</p>
+              </div> -->
+                <div class="content" *ngIf="statsData.total_followed_users">
+                  <p class="text">People you followed</p>
+                  <p class="count">
+                    {{ statsData.total_followed_users }}
+                  </p>
+                </div>
+                <div class="content" *ngIf="statsData.total_followers_gained">
+                  <p class="text">People who followed you</p>
+                  <p class="count">
+                    {{ statsData.total_followers_gained }}
+                  </p>
+                </div>
+                <div class="content" *ngIf="statsData.total_followers_gained">
+                  <p class="text">Content Posted</p>
+                  <p class="count">
+                    {{ statsData.total_followers_gained }}
+                  </p>
+                </div>
+                <div class="screen-footer">
+                  <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                  <p class="footer-text">Commuddle Recap 2025</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- Community Activity-->
+        <div class="component-container-wrapper fourth">
+          <div
+            class="component-container"
+            style.background-image="url({{ staticAssets.recap_2025.recap_community_activity_background }})"
+          >
+            <div class="content-wrapper">
+              <p class="communities-joined-count" *ngIf="statsData.total_communities_joined > 0">
+                {{ statsData.total_communities_joined }}
+              </p>
+              <p class="title" *ngIf="statsData.total_communities_joined > 0">communities joined</p>
+              <p class="registered-events" *ngIf="statsData.total_events_attended > 0">
+                You registered for <span>{{ statsData.total_events_attended }} </span>events
+              </p>
+              <p class="attended-events" *ngIf="statsData.total_events_attended > 0">
+                You attended <span>{{ statsData.total_events_attended }} </span>events
+              </p>
+              <p class="title" *ngIf="statsData.total_events_attended === 0">
+                This year you attended events and can now be a champion at hackathons too!
+              </p>
+              <p class="registered-hackathons" *ngIf="statsData.total_events_attended > 0">
+                You registered for <span>{{ statsData.total_events_attended }} </span>hackathons
+              </p>
+              <p class="attended-hackathons" *ngIf="statsData.total_events_attended > 0">
+                You participated <span>{{ statsData.total_events_attended }} </span>hackathons
+              </p>
+              <p class="registered-events com-mb-0" *ngIf="statsData.total_events_attended > 0">
+                You attended events with <span>{{ statsData.total_events_attended }} </span>people
+              </p>
+              <div class="screen-footer">
+                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                <p class="footer-text">Commuddle Recap 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Expert Tick-->
+        <div class="component-container-wrapper fifth">
+          <div
+            class="component-container"
+            style.background-image="url({{ staticAssets.recap_2025.recap_experts_background }})"
+          >
+            <div class="content-wrapper">
+              <div class="expert-image">
+                <img [src]="staticAssets.recap_2025.expert_blue_tick" [alt]="statsData?.user.name" />
+              </div>
+              <p *ngIf="statsData?.user.is_expert" class="expert-title">You earned this blue tick!! 🎉</p>
+              <p *ngIf="!statsData?.user.is_expert" class="expert-title">
+                You’re on the path to becoming an Expert! 🎉
+              </p>
+              <p *ngIf="statsData?.user.is_expert" class="expert-description">
+                The community recognises your contributions and trusts your expertise!!
+              </p>
+              <p *ngIf="!statsData?.user.is_expert" class="expert-description">
+                As you explore communities, attend events, and contribute in your own way, you move closer to earning it
+                too
+              </p>
+              <p *ngIf="!statsData?.user.is_expert" class="expert-description">
+                Every expert on commudle started exactly where you are
+              </p>
+              <div class="screen-footer">
+                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                <p class="footer-text">Commuddle Recap 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Learning -->
         <div class="component-container-wrapper third">
           <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
