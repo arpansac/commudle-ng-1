@@ -151,8 +151,8 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
 
   checkRecapParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      if (params['recap2024']) {
-        const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2024';
+      if (params['recap2025']) {
+        const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2025';
         this.router.navigate([url]);
       }
     });

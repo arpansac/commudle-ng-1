@@ -11,11 +11,11 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-  selector: 'commudle-recap-2024',
-  templateUrl: './recap-2024.component.html',
-  styleUrls: ['./recap-2024.component.scss'],
+  selector: 'commudle-recap-2025',
+  templateUrl: './recap-2025.component.html',
+  styleUrls: ['./recap-2025.component.scss'],
 })
-export class RecapComponent implements OnInit, OnDestroy {
+export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;
   slidesCount = 7;
   statsData: IUserRecapStats;
@@ -46,7 +46,7 @@ export class RecapComponent implements OnInit, OnDestroy {
     this.footerService.changeMiniFooterStatus(false);
     this.startConfetti();
     this.getUserService();
-    this.startAutoSlide();
+    // this.startAutoSlide(); // Commented out for testing
   }
 
   ngOnDestroy(): void {
@@ -66,7 +66,7 @@ export class RecapComponent implements OnInit, OnDestroy {
       if (this.currentSlide === this.slidesCount - 1) {
         this.thankYouConfetti();
       }
-      this.startAutoSlide();
+      // this.startAutoSlide(); // Commented out for testing
     } else {
       this.clearAutoSlide(); // Stop auto-sliding at the last slide
     }
@@ -75,7 +75,7 @@ export class RecapComponent implements OnInit, OnDestroy {
   prevSlide() {
     if (this.currentSlide > 0) {
       this.currentSlide--;
-      this.startAutoSlide();
+      // this.startAutoSlide(); // Commented out for testing
     }
   }
 
@@ -94,8 +94,8 @@ export class RecapComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.statsData.user.name + '- Recap 2024',
-      "Here's a community recap for " + this.statsData.user.name + '  for 2024',
+      this.statsData.user.name + '- Recap 2025',
+      "Here's a community recap for " + this.statsData.user.name + '  for 2025',
       this.statsData.user.photo.url,
     );
   }
@@ -152,7 +152,7 @@ export class RecapComponent implements OnInit, OnDestroy {
   }
 
   copyTextToClipboard(): void {
-    const content = environment.app_url + '/users/' + this.statsData.user.username + '/recap-2024';
+    const content = environment.app_url + '/users/' + this.statsData.user.username + '/recap-2025';
     if (!this.navigatorShareService.canShare()) {
       if (this.clipboard.copy(content)) {
         this.libToastLogService.successDialog('Copied the message successfully!');
@@ -162,8 +162,8 @@ export class RecapComponent implements OnInit, OnDestroy {
 
     this.navigatorShareService
       .share({
-        title: this.statsData.user.name + ' - Recap 2024',
-        text: this.statsData.user.name + ' - Recap 2024',
+        title: this.statsData.user.name + ' - Recap 2025',
+        text: this.statsData.user.name + ' - Recap 2025',
         url: content,
       })
       .then(() => {

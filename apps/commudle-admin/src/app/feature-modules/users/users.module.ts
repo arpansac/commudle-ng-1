@@ -65,7 +65,7 @@ import { CommunicationPreferencesComponent } from './components/public-profile/u
 import { CookiePreferencesComponent } from './components/public-profile/user-basic-details/cookie-preferences/cookie-preferences.component';
 import { AccountManagementComponent } from './components/public-profile/user-basic-details/account-management/account-management.component';
 import { EventMiniCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-mini-card/event-mini-card.component';
-import { RecapComponent } from './components/recap-2024/recap-2024.component';
+import { Recap2025Component } from './components/recap-2025/recap-2025.component';
 import { PublicProfileCampaignComponent } from 'apps/commudle-admin/src/app/feature-modules/users/components/public-profile/public-profile-campaign/public-profile-campaign.component';
 import { SharedComponentsModule as newSharedComponentsModule } from '@commudle/shared-components';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
@@ -109,7 +109,7 @@ import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modu
     CommunicationPreferencesComponent,
     CookiePreferencesComponent,
     AccountManagementComponent,
-    RecapComponent,
+    Recap2025Component,
     PublicProfileCampaignComponent,
   ],
   imports: [

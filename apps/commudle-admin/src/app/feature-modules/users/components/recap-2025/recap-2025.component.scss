@@ -24,75 +24,105 @@ section {
         @apply com-flex com-transition-transform com-duration-700 com-w-full com-h-full;
         .component-container-wrapper {
           @apply com-min-w-full com-h-full;
-          .component-container {
-            @apply com-w-full com-h-full com-px-6 com-py-6;
-            p {
-              @apply com-text-tblack;
-            }
+
+          .content-wrapper {
+            @apply com-flex com-flex-col com-items-center com-pt-[100px] com-pb-8 com-px-5 com-w-full com-h-full;
           }
+          .component-container {
+            @apply com-w-full com-h-full;
+          }
+
+          &.first,
+          &.second,
+          &.third,
+          &.fourth,
+          &.fifth,
+          &.sixth,
+          &.welcome {
+            @apply com-bg-tblack;
+          }
+          &.first,
+          &.second,
+          &.third,
+          &.fourth,
+          &.fifth,
+          &.sixth,
           &.welcome {
             .component-container {
               background-size: 100% 100%;
             }
-            .commudle-logo,
-            .recap-screen {
-              @apply com-w-full  com-flex com-justify-center;
-            }
-            .commudle-logo {
-              @apply com-animate-fade-left com-animate-delay-100 com-animate-ease-in com-mb-28;
-            }
-            .recap-screen {
-              @apply com-animate-fade-left com-animate-delay-200 com-animate-ease-in com-h-full;
-              img {
-                @apply com-h-4/6;
+          }
+
+          &.welcome {
+            .welcome-content {
+              @apply com-flex com-flex-col com-items-center com-justify-center com-text-center com-text-tWhite com-flex-shrink-0 com-w-full;
+              .welcome-line-1 {
+                @apply com-text-[32px] com-font-medium com-m-0 com-text-tWhite com-leading-10;
+              }
+              .welcome-line-2 {
+                @apply com-text-[32px] com-font-medium com-m-0 com-text-tWhite com-leading-10;
+              }
+              .welcome-year {
+                @apply com-text-[120px] com-m-0 com-mt-[10px] com-mb-10 com-text-tWhite com-leading-[140px];
+
+                .year-digit-two {
+                  @apply com-italic com-font-semibold  com-tracking-[-7.2px];
+                }
+                .year-digit-two-bold {
+                  @apply com-italic com-font-[900] com-tracking-[-7.2px];
+                }
+                .year-digit-zero {
+                  @apply com-font-light com-tracking-[-7.2px];
+                }
+                .year-digit-five {
+                  @apply com-font-bold com-tracking-[-7.2px];
+                }
+              }
+              .welcome-description {
+                @apply com-text-2xl com-font-normal com-text-tWhite com-m-0 com-leading-8;
               }
             }
-          }
-          &.first,
-          &.second,
-          &.third,
-          &.fourth,
-          &.fifth,
-          &.sixth {
-            @apply com-bg-tWhite;
-          }
-          &.first,
-          &.second,
-          &.third,
-          &.fourth,
-          &.fifth,
-          &.sixth {
-            .component-container {
-              background-size: 100% 100%;
+            .start-recap-button {
+              @apply com-w-full com-bg-tWhite com-text-tblack com-font-medium com-text-lg com-cursor-pointer com-flex-shrink-0;
             }
           }
 
           &.first {
-            .component-container {
-              @apply com-flex com-flex-col com-justify-center com-items-center;
-            }
             .profile-image {
-              @apply com-border com-border-solid com-border-Bright-Gray com-rounded-full com-w-40 com-h-40 com-shadow-md com-overflow-hidden;
+              @apply com-border com-border-solid com-border-Bright-Gray com-w-40 com-h-40 com-shadow-md com-rounded-full com-mb-10;
               img {
-                @apply com-object-contain com-overflow-hidden com-w-full;
+                @apply com-object-cover com-overflow-hidden com-w-full com-rounded-full com-h-full;
               }
             }
-            p {
-              @apply com-text-3xl com-text-center;
+            .profile-name {
+              @apply com-text-tWhite com-text-2xl com-font-semibold com-text-center com-m-0;
+            }
+            .profile-description {
+              @apply com-text-tWhite com-text-lg com-font-normal com-text-center com-m-0 com-mt-5;
             }
           }
 
           &.second {
-            .component-container {
-              @apply com-flex com-flex-col com-justify-center com-items-center;
-              .first-line,
-              .second-line,
-              .third-line {
-                @apply com-text-2xl com-text-center com-my-0;
-              }
-              .page-visit-count {
-                @apply com-font-bold com-text-[40px];
-              }
+            .first-line,
+            .second-line,
+            .third-line {
+              @apply com-font-normal com-text-tWhite com-text-center com-m-0;
+            }
+
+            .first-line {
+              @apply com-text-2xl com-mb-6;
+            }
+
+            .page-visit-count {
+              @apply com-font-[900] com-leading-[120px] com-m-0 com-text-[100px] com-text-tWhite com-italic;
+            }
+
+            .second-line {
+              @apply com-text-[32px] com-mb-[60px] com-italic;
+            }
+
+            .third-line {
+              @apply com-text-lg;
             }
           }
 
@@ -197,5 +227,15 @@ section {
         }
       }
     }
+  }
+}
+
+.screen-footer {
+  @apply com-flex com-justify-between com-items-center com-mt-auto com-gap-2 com-w-full;
+  img {
+    @apply com-w-[72px] com-h-5;
+  }
+  .footer-text {
+    @apply com-m-0 com-text-tWhite com-text-sm com-font-normal;
   }
 }

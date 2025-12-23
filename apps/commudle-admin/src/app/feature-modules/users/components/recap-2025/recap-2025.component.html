@@ -17,42 +17,71 @@
       >
         <!-- Welcome Screen -->
         <div class="component-container-wrapper welcome">
-          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_1 }})">
-            <div class="commudle-logo">
-              <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" />
-            </div>
-            <div class="recap-screen">
-              <img [src]="staticAssets.recap_2024_screen" title="recap 2024" />
+          <div
+            class="component-container"
+            style.background-image="url({{ staticAssets.recap_2025.recap_home_background }})"
+          >
+            <div class="content-wrapper com-justify-between">
+              <div class="welcome-content">
+                <p class="welcome-line-1">Your</p>
+                <p class="welcome-line-2">Commudle Recap</p>
+                <p class="welcome-year">
+                  <span class="year-digit-two-bold">2</span><span class="year-digit-zero">0</span
+                  ><span class="year-digit-two">2</span><span class="year-digit-five">5</span>
+                </p>
+                <p class="welcome-description">A look at how you explored, connected, and built this year</p>
+              </div>
+              <button nbButton shape="round" size="medium" class="start-recap-button" (click)="nextSlide()">
+                Start My Recap
+              </button>
             </div>
           </div>
         </div>
 
         <!-- first Screen -->
         <div class="component-container-wrapper first">
-          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-            <div class="profile-image">
-              <img [src]="statsData?.user.photo.url" [alt]="statsData?.user.name" />
+          <div
+            class="component-container"
+            style.background-image="url({{ staticAssets.recap_2025.recap_hello_user_background }})"
+          >
+            <div class="content-wrapper">
+              <div class="profile-image">
+                <img [src]="statsData?.user.photo.url" [alt]="statsData?.user.name" />
+              </div>
+              <p class="profile-name">Hey {{ statsData?.user.name }} 👋</p>
+              <p class="profile-description">
+                Over the past year, you explored communities, attended events, and connected with people who care about
+                building and learning just like you
+              </p>
+              <p class="profile-description">
+                This recap brings together the moments that shaped your time on Commudle this year
+              </p>
+              <div class="screen-footer">
+                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                <p class="footer-text">Commuddle Recap 2025</p>
+              </div>
             </div>
-            <p>
-              Hey 👋 <br />
-              <strong>{{ statsData?.user.name }}!</strong> <br />
-              Let's take a look at your community journey in 2024!
-            </p>
           </div>
         </div>
 
         <!-- Profile Visits -->
         <div class="component-container-wrapper second">
-          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-            <p class="first-line">So many curious people..</p>
-            <p>
-              <img [src]="staticAssets.fire_illustration" />
-            </p>
-            <p class="second-line">Your profile was visited</p>
-            <p class="page-visit-count">
-              {{ statsData?.total_page_visits }}
-            </p>
-            <p class="third-line">times by the techies</p>
+          <div
+            class="component-container"
+            style.background-image="url({{ staticAssets.recap_2025.recap_user_visit_background }})"
+          >
+            <div class="content-wrapper">
+              <p class="first-line">You visited commudle</p>
+              <p class="page-visit-count">
+                {{ statsData?.total_page_visits }}
+              </p>
+              <p class="second-line">times</p>
+              <p class="third-line">Thanks for showing up!! 😄</p>
+              <div class="screen-footer">
+                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
+                <p class="footer-text">Commuddle Recap 2025</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -114,7 +143,7 @@
           >
             <div class="content">
               <p class="text">
-                2025 is the year when you can give your first Tech Talk and share your knowledge with the developer
+                2026 is the year when you can give your first Tech Talk and share your knowledge with the developer
                 community!
               </p>
             </div>
@@ -141,7 +170,7 @@
             </div>
             <div class="content">
               <p class="text">
-                2025 is the year when you can give your first Tech Talk and share your knowledge with the developer
+                2026 is the year when you can give your first Tech Talk and share your knowledge with the developer
                 community!
               </p>
             </div>
@@ -162,7 +191,7 @@
               <p class="text">🎤 Tech talks given</p>
             </div>
             <div class="content">
-              <p class="text">2025 is the year when you can share your projects with the techies of the world!</p>
+              <p class="text">2026 is the year when you can share your projects with the techies of the world!</p>
             </div>
           </div>
         </div>
@@ -180,7 +209,7 @@
             style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
           >
             <div class="content">
-              <p class="text">2025 will be the year to create & grow your amazing developer network!</p>
+              <p class="text">2026 will be the year to create & grow your amazing developer network!</p>
             </div>
           </div>
           <ng-template #networkingData>
@@ -217,7 +246,7 @@
               <p class="new-year-text">
                 Wish You A Very
                 <br />
-                Happy New Year <br />2025
+                Happy New Year <br />2026
               </p>
               <img [src]="staticAssets.heart_illustration" />
               <div class="text">
