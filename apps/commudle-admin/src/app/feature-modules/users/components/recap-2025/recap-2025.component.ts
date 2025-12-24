@@ -179,4 +179,13 @@ export class Recap2025Component implements OnInit, OnDestroy {
     const url = environment.app_url + '/users/' + this.statsData.user.username;
     window.open(url, '_blank');
   }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'ArrowRight') {
+      this.nextSlide(); // Call nextSlide on Right Arrow key press
+    } else if (event.key === 'ArrowLeft') {
+      this.prevSlide(); // Call prevSlide on Left Arrow key press
+    }
+  }
 }
