@@ -138,12 +138,12 @@ section {
           &.ninth,
           &.seventh {
             .content {
-              @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center com-gap-5;
+              @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center com-gap-4;
               .count {
                 @apply md:com-text-[100px] com-text-[72px] com-italic com-text-tWhite com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0;
               }
               .text-margin {
-                @apply com-text-xl com-font-normal com-text-tWhite com-text-center com-m-0 com-mt-10;
+                @apply com-text-xl com-font-normal com-text-tWhite com-text-center com-m-0 com-mt-8;
               }
             }
 
