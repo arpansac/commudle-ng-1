@@ -115,11 +115,14 @@
             style.background-image="url({{ staticAssets.recap_2025.recap_projects_background }})"
           >
             <div class="content-wrapper">
-              <p *ngIf="statsData.builds === 0 && statsData.labs === 0 && statsData.links === 0" class="text">
+              <p
+                *ngIf="statsData.builds === 0 && statsData.labs === 0 && statsData.social_resources === 0"
+                class="text"
+              >
                 ⏰<br />It's the right time to start sharing your Builds, Labs and Content you have created on your
                 Commudle Profile!
               </p>
-              <p *ngIf="statsData.builds > 0 || statsData.labs > 0 || statsData.links > 0" class="text">
+              <p *ngIf="statsData.builds > 0 || statsData.labs > 0 || statsData.social_resources > 0" class="text">
                 You Published
               </p>
               <div class="content">
@@ -141,11 +144,11 @@
                 </p>
               </div>
               <div class="content">
-                <p *ngIf="statsData.links > 0" class="count com-mb-8">
-                  {{ statsData.links }}
+                <p *ngIf="statsData.social_resources > 0" class="count com-mb-8">
+                  {{ statsData.social_resources }}
                 </p>
-                <p *ngIf="statsData.links > 0" class="text">Links</p>
-                <p *ngIf="statsData.links === 0" class="text-description">
+                <p *ngIf="statsData.social_resources > 0" class="text">Social Resources</p>
+                <p *ngIf="statsData.social_resources === 0" class="text-description">
                   Your content from beyond Commudle is very valuable, share it on your profile.
                 </p>
               </div>

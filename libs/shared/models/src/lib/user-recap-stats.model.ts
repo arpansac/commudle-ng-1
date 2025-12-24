@@ -20,7 +20,7 @@ export interface IUserRecapStats {
   total_network: number;
   user: IUser;
   volunteered_events: number;
-  links: number;
+  social_resources: number;
   hackathons_mentored: number;
 }
 interface IEventsAttended {
