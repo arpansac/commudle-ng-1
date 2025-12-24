@@ -26,7 +26,7 @@ section {
           @apply com-min-w-full com-h-full;
 
           .content-wrapper {
-            @apply com-flex com-flex-col com-items-center com-pt-[100px] com-pb-8 com-px-5 com-w-full com-h-full;
+            @apply com-flex com-flex-col com-items-center md:com-pt-[100px] com-pt-10 com-pb-8 com-px-5 com-w-full com-h-full;
           }
           .component-container {
             @apply com-w-full com-h-full;
@@ -67,21 +67,25 @@ section {
               }
               .welcome-line-2 {
                 @apply com-text-[32px] com-font-medium com-m-0 com-text-tWhite com-leading-10;
+
+                img {
+                  @apply com-w-[100px] com-h-auto;
+                }
               }
               .welcome-year {
-                @apply com-text-[120px] com-m-0 com-mt-[10px] com-mb-10 com-text-tWhite com-leading-[140px];
+                @apply md:com-text-[100px] com-text-[72px] com-m-0 com-mt-[10px] com-mb-10 com-text-tWhite md:com-leading-[100px] com-leading-[80px];
 
                 .year-digit-two {
-                  @apply com-italic com-font-semibold  com-tracking-[-7.2px];
+                  @apply com-italic com-font-semibold com-tracking-[6px];
                 }
                 .year-digit-two-bold {
-                  @apply com-italic com-font-[900] com-tracking-[-7.2px];
+                  @apply com-italic com-font-[900] com-tracking-[6px];
                 }
                 .year-digit-zero {
-                  @apply com-font-light com-tracking-[-7.2px];
+                  @apply com-font-light com-tracking-[-10px];
                 }
                 .year-digit-five {
-                  @apply com-font-bold com-tracking-[-7.2px];
+                  @apply com-font-bold com-tracking-[6px];
                 }
               }
               .welcome-description {
@@ -95,16 +99,16 @@ section {
 
           &.first {
             .profile-image {
-              @apply com-border com-border-solid com-border-Bright-Gray com-w-40 com-h-40 com-shadow-md com-rounded-full com-mb-10;
+              @apply com-border com-border-solid com-border-Bright-Gray com-w-40 com-h-40 com-shadow-md com-rounded-full com-mb-9;
               img {
                 @apply com-object-cover com-overflow-hidden com-w-full com-rounded-full com-h-full;
               }
             }
             .profile-name {
-              @apply com-text-tWhite com-text-2xl com-font-semibold com-text-center com-m-0;
+              @apply com-text-tWhite com-text-xl com-font-semibold com-text-center com-m-0;
             }
             .profile-description {
-              @apply com-text-tWhite com-text-lg com-font-normal com-text-center com-m-0 com-mt-5;
+              @apply com-text-tWhite com-text-base com-font-normal com-text-center com-m-0 com-mt-4;
             }
           }
 
@@ -116,15 +120,15 @@ section {
             }
 
             .first-line {
-              @apply com-text-2xl com-mb-6;
+              @apply com-text-xl com-mb-5;
             }
 
             .page-visit-count {
-              @apply com-font-[900] com-leading-[120px] com-m-0 com-text-[100px] com-mb-[60px] com-text-tWhite com-italic;
+              @apply com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0 md:com-text-[100px] com-text-[72px] com-mb-12 com-text-tWhite com-italic;
             }
 
             .second-line {
-              @apply com-text-[32px] com-italic;
+              @apply com-text-3xl com-italic;
             }
           }
 
@@ -136,173 +140,105 @@ section {
             .content {
               @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center com-gap-5;
               .count {
-                @apply com-text-[100px] com-italic com-text-tWhite com-font-[900] com-leading-[120px];
+                @apply md:com-text-[100px] com-text-[72px] com-italic com-text-tWhite com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0;
               }
             }
 
             .text {
-              @apply com-text-2xl com-font-normal com-text-tWhite com-m-0 com-text-center;
+              @apply com-text-xl com-font-normal com-text-tWhite com-m-0 com-text-center;
             }
 
             .description {
-              @apply com-text-tWhite com-text-lg com-font-normal com-m-0;
+              @apply com-text-tWhite com-text-base com-font-normal com-m-0 com-text-center com-mt-4;
+            }
+
+            .text-description {
+              @apply com-text-tWhite com-text-lg com-font-normal com-m-0 com-text-center com-mt-4;
             }
           }
 
           &.fifth {
             .communities-joined-count {
-              @apply com-text-[100px] com-italic com-font-[900] com-leading-[120px] com-m-0 com-mb-4 com-text-tWhite;
+              @apply md:com-text-[100px] com-text-[72px] com-italic com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0 com-mb-4 com-text-tWhite;
             }
 
             .title {
-              @apply com-text-[32px] com-m-0 com-mb-10 com-font-normal com-italic com-text-tWhite;
+              @apply com-text-2xl com-leading-8 com-m-0 com-mb-9 com-font-normal com-italic com-text-tWhite com-text-center;
             }
 
             .registered-events,
             .registered-hackathons {
-              @apply com-text-xl com-font-normal com-text-tWhite com-m-0 com-mb-5 com-text-center;
+              @apply com-text-lg com-font-normal com-text-tWhite com-m-0 com-mb-4 com-text-center;
 
               span {
-                @apply com-text-[28px] com-font-semibold com-italic com-text-tWhite;
+                @apply com-text-2xl com-font-semibold com-italic com-text-tWhite;
               }
             }
 
             .attended-events,
             .attended-hackathons {
-              @apply com-text-xl com-font-normal com-text-tWhite com-m-0 com-mb-10 com-text-center;
+              @apply com-text-lg com-font-normal com-text-tWhite com-m-0 com-mb-9 com-text-center;
 
               span {
-                @apply com-text-[28px] com-font-semibold com-italic com-text-tWhite;
+                @apply com-text-2xl com-font-semibold com-italic com-text-tWhite;
               }
             }
           }
 
           &.eighth {
             .expert-image {
-              @apply com-w-40 com-h-40 com-mb-[60px];
+              @apply com-w-40 com-h-auto com-mb-12;
               img {
                 @apply com-object-cover com-overflow-hidden com-w-full com-h-full;
               }
             }
             .expert-title {
-              @apply com-text-tWhite com-text-xl com-font-semibold com-text-center com-m-0;
+              @apply com-text-tWhite com-text-lg com-font-semibold com-text-center com-m-0 com-mb-4;
             }
             .expert-description {
-              @apply com-text-tWhite com-text-lg com-font-normal com-text-center com-m-0 com-mt-5;
+              @apply com-text-tWhite com-text-base com-font-normal com-text-center com-m-0;
             }
           }
-
-          //   &.sixth {
-          //     .connections-content {
-          //       @apply com-flex com-flex-col com-items-center com-text-center com-justify-center;
-          //       .connections-total-count {
-          //         @apply com-m-0 com-text-tWhite com-text-[100px] md:com-text-[120px] com-font-[900] com-italic com-leading-[120px] com-mb-5;
-          //       }
-          //       .connections-total-text {
-          //         @apply com-text-tWhite com-text-xl com-font-semibold com-m-0 com-mb-5;
-          //       }
-          //       .connections-description {
-          //         @apply com-text-tWhite com-text-lg com-font-normal com-m-0 com-mb-[60px];
-          //       }
-          //       .connections-cards {
-          //         @apply com-flex md:com-flex-row com-flex-col com-gap-2 com-w-full com-justify-between;
-          //         .connection-card {
-          //           @apply com-rounded-xl com-p-4 com-bg-tWhite;
-          //           .connection-card-title {
-          //             @apply com-text-sm com-font-semibold com-text-indigo-800 com-m-0 com-mb-[26px];
-          //           }
-          //           .connection-card-count {
-          //             @apply com-text-indigo-800 com-text-[40px] com-font-[900] com-italic com-m-0;
-          //           }
-          //         }
-          //       }
-          //     }
-          //   }
 
           &.tenth {
             .day-count-number {
-              @apply com-m-0 com-text-tWhite com-text-[100px] com-font-[900] com-italic com-leading-[120px];
+              @apply com-m-0 com-text-tWhite md:com-text-[100px] com-text-5xl com-font-[900] com-italic md:com-leading-[100px] com-leading-[80px];
             }
             .day-count-label {
-              @apply com-m-0 com-text-tWhite com-text-[32px] com-font-normal com-mb-[40px];
+              @apply com-m-0 com-text-tWhite com-text-2xl com-font-normal com-mb-6;
             }
             .day-count-description {
-              @apply com-m-0 com-text-tWhite com-text-lg com-font-normal com-text-center com-mb-[40px];
+              @apply com-m-0 com-text-tWhite com-text-base com-font-normal com-text-center com-mb-6;
             }
             .day-count-meme {
-              @apply com-w-full com-mb-[40px];
+              @apply com-w-full com-mb-6;
               img {
                 @apply com-w-full com-h-auto com-rounded-lg com-object-cover;
-                max-height: 300px;
               }
             }
             .day-count-message {
-              @apply com-m-0 com-text-tWhite com-text-lg com-font-normal com-text-center;
+              @apply com-m-0 com-text-tWhite com-text-base com-font-normal com-text-center;
             }
           }
 
-          //   &.fourth {
-          //     .component-container {
-          //       @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
-          //       p {
-          //         @apply com-text-center;
-          //       }
-          //       .content {
-          //         .count {
-          //           @apply com-font-extrabold com-text-[64px] com-mb-5;
-          //         }
-          //         .text {
-          //           @apply com-font-medium com-text-2xl com-mb-5;
-          //         }
-          //       }
-          //     }
-          //   }
-
-          //   &.fifth {
-          //     .component-container {
-          //       @apply com-flex com-flex-col com-justify-center com-items-center com-gap-10;
-          //       p {
-          //         @apply com-my-0 com-text-center;
-          //       }
-          //       .content {
-          //         .count {
-          //           @apply com-font-extrabold com-text-[64px] com-mb-5;
-          //         }
-          //         .text {
-          //           @apply com-font-medium com-text-2xl com-mb-5;
-          //         }
-          //       }
-          //     }
-          //   }
-
           &.thank-you {
             .thank-you-heart {
-              @apply com-mb-10 com-w-40 com-h-40;
+              @apply md:com-mb-10 com-mb-4 com-w-40 com-h-40;
               img {
                 @apply com-w-full com-h-full com-object-contain;
               }
             }
 
-            //   @keyframes heartFloat {
-            //     0%,
-            //     100% {
-            //       transform: rotate(-5deg) perspective(1000px) rotateY(-5deg) translateY(0);
-            //     }
-            //     50% {
-            //       transform: rotate(-5deg) perspective(1000px) rotateY(-5deg) translateY(-10px);
-            //     }
-            //   }
-
             .thank-you-message {
-              @apply com-text-tWhite com-text-2xl com-font-semibold com-mb-8;
+              @apply com-text-tWhite com-text-center com-text-xl com-font-semibold com-m-0 md:com-mb-8 com-mb-5;
             }
 
             .thank-you-question {
-              @apply com-text-tWhite com-text-lg com-font-normal com-mb-[60px];
+              @apply com-text-tWhite com-text-base com-text-center com-font-normal com-m-0 md:com-mt-10 com-mt-4 com-mb-4;
             }
 
             .thank-you-share-button {
-              @apply com-bg-gray-800 com-text-tWhite com-font-medium com-text-lg;
+              @apply com-bg-gray-700 com-text-tWhite com-font-medium com-text-lg com-border-0;
               .share-arrow {
                 @apply com-text-tWhite com-text-base com-ml-3;
               }

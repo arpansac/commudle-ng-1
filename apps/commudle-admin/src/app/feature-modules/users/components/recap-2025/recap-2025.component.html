@@ -24,7 +24,9 @@
             <div class="content-wrapper com-justify-between">
               <div class="welcome-content">
                 <p class="welcome-line-1">Your</p>
-                <p class="welcome-line-2">Commudle Recap</p>
+                <p class="welcome-line-2">
+                  <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" /> Recap
+                </p>
                 <p class="welcome-year">
                   <span class="year-digit-two-bold">2</span><span class="year-digit-zero">0</span
                   ><span class="year-digit-two">2</span><span class="year-digit-five">5</span>
@@ -68,7 +70,7 @@
           >
             <div class="content-wrapper">
               <p class="first-line">Your Commudle Profile got</p>
-              <p class="page-visit-count">{{ statsData?.total_page_visits }}45</p>
+              <p class="page-visit-count">{{ statsData?.profile_visits }}</p>
               <p class="first-line">Visits. You inspire the world 🌎</p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
@@ -85,27 +87,19 @@
             style.background-image="url({{ staticAssets.recap_2025.recap_profile_summary_background }})"
           >
             <div class="content-wrapper">
-              <div
-                *ngIf="statsData.total_followed_users === 0 && statsData.total_followers_gained === 0"
-                class="content"
-              >
-                <p class="text">2026 will be the year to create & grow your amazing developer network!</p>
-              </div>
-              <div class="content" *ngIf="statsData.total_followers_gained > 0">
+              <div class="content">
                 <p class="text">People who followed you</p>
                 <p class="count com-mb-10">
-                  {{ statsData.total_followers_gained }}
+                  {{ statsData.total_followers }}
                 </p>
               </div>
-              <div class="content" *ngIf="statsData.total_followed_users > 0">
+              <div class="content">
                 <p class="text">You are connected to</p>
                 <p class="count com-mb-10">
-                  {{ statsData.total_followed_users }}
+                  {{ statsData.total_network }}
                 </p>
               </div>
-              <p *ngIf="statsData.total_followed_users > 0 || statsData.total_followers_gained > 0" class="description">
-                From your followers to those you follow, your network is growing fast.
-              </p>
+              <p class="description">From your followers to those you follow, your network is growing fast.</p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
                 <p class="footer-text">Commuddle Recap 2025</p>
@@ -121,51 +115,37 @@
             style.background-image="url({{ staticAssets.recap_2025.recap_projects_background }})"
           >
             <div class="content-wrapper">
-              <p
-                *ngIf="
-                  statsData.total_labs_published === 0 &&
-                  statsData.total_builds_published === 0 &&
-                  statsData.total_content_posted === 0
-                "
-                class="text"
-              >
+              <p *ngIf="statsData.builds === 0 && statsData.labs === 0 && statsData.links === 0" class="text">
                 ⏰<br />It's the right time to start sharing your Builds, Labs and Content you have created on your
                 Commudle Profile!
               </p>
-              <p
-                *ngIf="
-                  statsData.total_builds_published > 0 ||
-                  statsData.total_labs_published > 0 ||
-                  statsData.total_content_posted > 0
-                "
-                class="text"
-              >
+              <p *ngIf="statsData.builds > 0 || statsData.labs > 0 || statsData.links > 0" class="text">
                 You Published
               </p>
               <div class="content">
-                <p *ngIf="statsData.total_builds_published > 0" class="count com-mb-8">
-                  {{ statsData.total_builds_published }}
+                <p *ngIf="statsData.builds > 0" class="count com-mb-8">
+                  {{ statsData.builds }}
                 </p>
-                <p *ngIf="statsData.total_builds_published > 0" class="text">Builds</p>
-                <p *ngIf="statsData.total_builds_published === 0" class="description">
+                <p *ngIf="statsData.builds > 0" class="text">Builds</p>
+                <p *ngIf="statsData.builds === 0" class="text-description">
                   Share what you are building through builds with the world.
                 </p>
               </div>
               <div class="content">
-                <p *ngIf="statsData.total_labs_published > 0" class="count com-mb-8">
-                  {{ statsData.total_labs_published }}
+                <p *ngIf="statsData.labs > 0" class="count com-mb-8">
+                  {{ statsData.labs }}
                 </p>
-                <p *ngIf="statsData.total_labs_published > 0" class="text">Labs</p>
-                <p *ngIf="statsData.total_labs_published === 0" class="description">
+                <p *ngIf="statsData.labs > 0" class="text">Labs</p>
+                <p *ngIf="statsData.labs === 0" class="text-description">
                   Teach them with step-by-step Labs from what you have learnt.
                 </p>
               </div>
               <div class="content">
-                <p *ngIf="statsData.total_content_posted > 0" class="count com-mb-8">
-                  {{ statsData.total_content_posted }}
+                <p *ngIf="statsData.links > 0" class="count com-mb-8">
+                  {{ statsData.links }}
                 </p>
-                <p *ngIf="statsData.total_content_posted > 0" class="text">Links</p>
-                <p *ngIf="statsData.total_content_posted === 0" class="description">
+                <p *ngIf="statsData.links > 0" class="text">Links</p>
+                <p *ngIf="statsData.links === 0" class="text-description">
                   Your content from beyond Commudle is very valuable, share it on your profile.
                 </p>
               </div>
@@ -184,32 +164,26 @@
             style.background-image="url({{ staticAssets.recap_2025.recap_community_activity_background }})"
           >
             <div class="content-wrapper">
-              <p class="communities-joined-count" *ngIf="statsData.total_communities_joined > 0">
-                {{ statsData.total_communities_joined }}
+              <p class="communities-joined-count" *ngIf="statsData.joined_communities > 0">
+                {{ statsData.joined_communities }}
               </p>
-              <p class="title" *ngIf="statsData.total_communities_joined > 0">Communities Joined</p>
-              <p class="title" *ngIf="statsData.total_communities_joined === 0">
+              <p class="title" *ngIf="statsData.joined_communities > 0">Communities Joined</p>
+              <p class="title" *ngIf="statsData.joined_communities === 0">
                 Join your first community and start building your network
               </p>
-              <p class="attended-events" *ngIf="statsData.total_events_attended > 0">
-                You Attended <span>{{ statsData.total_events_attended }} </span>Events
+              <p class="title" *ngIf="statsData.attended_events > 0">
+                You Attended <span>{{ statsData.attended_events }} </span>Events
               </p>
-              <p
-                class="registered-events"
-                *ngIf="statsData.total_events_attended > 0 && statsData.total_events_attended === 0"
-              >
-                You Registered for <span>{{ statsData.total_events_attended }} </span>Events
+              <p class="title" *ngIf="statsData.registered_events > 0 && statsData.attended_events === 0">
+                You Registered for <span>{{ statsData.registered_events }} </span>Events
               </p>
-              <p class="title" *ngIf="statsData.total_events_attended === 0 && statsData.total_events_attended === 0">
+              <p class="title" *ngIf="statsData.attended_events === 0 && statsData.registered_events === 0">
                 This year has been all about AI, find your next event and register now!
               </p>
-              <p class="title" *ngIf="statsData.total_events_attended === 0">
-                This year you attended events and can now be a champion at hackathons too!
+              <p class="title" *ngIf="statsData.registered_hackathons > 0">
+                Participated in <span>{{ statsData.registered_hackathons }} </span>Hackathons
               </p>
-              <p class="attended-hackathons" *ngIf="statsData.total_events_attended > 0">
-                Participated in <span>{{ statsData.total_events_attended }} </span>Hackathons
-              </p>
-              <p class="title" *ngIf="statsData.total_events_attended === 0">
+              <p class="title" *ngIf="statsData.registered_hackathons === 0">
                 Hackathons await someone like you to build the next big thing.
               </p>
               <div class="screen-footer">
@@ -229,9 +203,9 @@
             <div class="content-wrapper">
               <p
                 *ngIf="
-                  statsData.total_talks_delivered === 0 &&
-                  statsData.total_hackathons_mentored === 0 &&
-                  statsData.total_events_voluntered === 0
+                  statsData.speaker_events === 0 &&
+                  statsData.hackathons_mentored === 0 &&
+                  statsData.volunteered_events === 0
                 "
                 class="text"
               >
@@ -239,37 +213,33 @@
               </p>
               <p
                 *ngIf="
-                  statsData.total_talks_delivered > 0 ||
-                  statsData.total_hackathons_mentored > 0 ||
-                  statsData.total_events_voluntered > 0
+                  statsData.speaker_events > 0 || statsData.hackathons_mentored > 0 || statsData.volunteered_events > 0
                 "
                 class="text"
               >
                 🎤<br />You Are The Enabler
               </p>
               <div class="content">
-                <p *ngIf="statsData.total_talks_delivered > 0" class="count com-mb-8">
-                  {{ statsData.total_talks_delivered }}
+                <p *ngIf="statsData.speaker_events > 0" class="count com-mb-8">
+                  {{ statsData.speaker_events }}
                 </p>
-                <p *ngIf="statsData.total_talks_delivered > 0" class="text">Talks Delivered at Events</p>
+                <p *ngIf="statsData.speaker_events > 0" class="text">Talks Delivered at Events</p>
               </div>
               <div class="content">
-                <p *ngIf="statsData.total_hackathons_mentored > 0" class="count com-mb-8">
-                  {{ statsData.total_hackathons_mentored }}
+                <p *ngIf="statsData.hackathons_mentored > 0" class="count com-mb-8">
+                  {{ statsData.hackathons_mentored }}
                 </p>
-                <p *ngIf="statsData.total_hackathons_mentored > 0" class="text">Hackathons Mentored</p>
+                <p *ngIf="statsData.hackathons_mentored > 0" class="text">Hackathons Mentored</p>
               </div>
               <div class="content">
-                <p *ngIf="statsData.total_events_voluntered > 0" class="count com-mb-8">
-                  {{ statsData.total_events_voluntered }}
+                <p *ngIf="statsData.volunteered_events > 0" class="count com-mb-8">
+                  {{ statsData.volunteered_events }}
                 </p>
-                <p *ngIf="statsData.total_events_voluntered > 0" class="text">Events Volunteered</p>
+                <p *ngIf="statsData.volunteered_events > 0" class="text">Events Volunteered</p>
               </div>
               <p
                 *ngIf="
-                  statsData.total_talks_delivered > 0 ||
-                  statsData.total_hackathons_mentored > 0 ||
-                  statsData.total_events_voluntered > 0
+                  statsData.speaker_events > 0 || statsData.hackathons_mentored > 0 || statsData.volunteered_events > 0
                 "
                 class="description"
               >
@@ -292,9 +262,9 @@
             <div class="content-wrapper">
               <div class="content">
                 <p class="count com-mb-8">
-                  {{ statsData.total_talks_delivered }}
+                  {{ statsData.people_met_at_events }}
                 </p>
-                <p class="text">People you attended events with {{ statsData.total_talks_delivered }} people 👏</p>
+                <p class="text">People you attended events with {{ statsData.people_met_at_events }} people 👏</p>
               </div>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
@@ -341,19 +311,19 @@
               <div class="content">
                 <p class="text">Total Members Gained</p>
                 <p class="count com-mb-8">
-                  {{ statsData.total_talks_delivered }}
+                  {{ statsData.total_members_gained }}
                 </p>
               </div>
               <div class="content">
                 <p class="text">Total Community Events Organized</p>
                 <p class="count com-mb-8">
-                  {{ statsData.total_hackathons_mentored }}
+                  {{ statsData.total_community_events_organized }}
                 </p>
               </div>
               <div class="content">
                 <p class="text">Total Hackathons Organized</p>
                 <p class="count com-mb-8">
-                  {{ statsData.total_events_voluntered }}
+                  {{ statsData.total_community_hackathons_organized }}
                 </p>
               </div>
               <div class="screen-footer">
@@ -371,9 +341,11 @@
             style.background-image="url({{ staticAssets.recap_2025.recap_day_count_background }})"
           >
             <div class="content-wrapper">
-              <p class="day-count-number">90</p>
+              <p class="day-count-number">{{ statsData.days_on_commudle }}</p>
               <p class="day-count-label">days</p>
-              <p class="day-count-description">It's been 90 days since you've been on commudle 🤓</p>
+              <p class="day-count-description">
+                It's been {{ statsData.days_on_commudle }} days since you've been on commudle 🤓
+              </p>
               <div class="day-count-meme">
                 <img [src]="staticAssets.recap_2025.recap_day_count_meme_image" alt="Meme" />
               </div>
@@ -404,19 +376,25 @@
                 nbButton
                 size="medium"
                 shape="round"
+                fullWidth
                 class="thank-you-share-button"
                 (click)="copyTextToClipboard()"
               >
                 Share this recap
-                <fa-icon [icon]="icons.faChevronRight" class="share-arrow"></fa-icon>
+                <fa-icon [icon]="icons.faShare" class="share-arrow"></fa-icon>
               </button>
 
               <p class="thank-you-question">Want to share your community story and get featured?</p>
-              <a [routerLink]="['/fill-form', 4315]">
-                <button nbButton size="medium" shape="round" class="thank-you-share-button">
-                  Share my story
-                  <fa-icon [icon]="icons.faChevronRight" class="share-arrow"></fa-icon>
-                </button>
+              <a
+                nbButton
+                size="medium"
+                shape="round"
+                fullWidth
+                class="thank-you-share-button"
+                [routerLink]="['/fill-form', 4315]"
+              >
+                Share my story
+                <fa-icon [icon]="icons.faShare" class="share-arrow"></fa-icon>
               </a>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
@@ -425,237 +403,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Connections -->
-        <!-- <div class="component-container-wrapper sixth">
-          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-            <div class="content-wrapper">
-              <div class="connections-content">
-                <p class="connections-total-count">680</p>
-                <p class="connections-total-text">You're connected to 680 people</p>
-                <p class="connections-description">
-                  This includes people you're directly connected with, and people connected to them through communities
-                  and events
-                </p>
-                <div class="connections-cards">
-                  <div class="connection-card">
-                    <p class="connection-card-title">Direct connections</p>
-                    <p class="connection-card-count">80</p>
-                  </div>
-                  <div class="connection-card">
-                    <p class="connection-card-title">Indirect connections</p>
-                    <p class="connection-card-count">600</p>
-                  </div>
-                </div>
-              </div>
-              <div class="screen-footer">
-                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- Community Admin-->
-        <!-- <div class="component-container-wrapper eighth">
-          <div
-            class="component-container"
-            *ngIf="statsData.total_labs_published === 0 && statsData.total_builds_published === 0; else communityAdmin"
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-          >
-            <div class="content-wrapper">
-              <div class="content">
-                <p class="text">2026 will be the year to create & grow your amazing builds and labs!</p>
-              </div>
-              <div class="screen-footer">
-                <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
-              </div>
-            </div>
-          </div>
-          <ng-template #communityAdmin>
-            <div
-              class="component-container"
-              style.background-image="url({{ staticAssets.recap_2025.recap_profile_summary_background }})"
-            >
-              <div class="content-wrapper">
-                <div class="content" *ngIf="statsData.total_builds_published > 0">
-                  <p class="text">Total events hosted</p>
-                  <p class="count com-mb-10">
-                    {{ statsData.total_builds_published }}
-                  </p>
-                </div>
-                <div class="content" *ngIf="statsData.total_labs_published > 0">
-                  <p class="text">Total hackathons hosted</p>
-                  <p class="count com-mb-10">
-                    {{ statsData.total_labs_published }}
-                  </p>
-                </div>
-                <div class="content" *ngIf="statsData.total_labs_published > 0">
-                  <p class="text">Total members gained</p>
-                  <p class="count">
-                    {{ statsData.total_labs_published }}
-                  </p>
-                </div>
-                <div class="screen-footer">
-                  <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                  <p class="footer-text">Commuddle Recap 2025</p>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </div> -->
-
-        <!-- Learning -->
-        <!-- <div class="component-container-wrapper third">
-          <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-            <p class="title" *ngIf="statsData.total_events_attended > 0">You Attended</p>
-            <p class="event-attended-count" *ngIf="statsData.total_events_attended > 0">
-              {{ statsData.total_events_attended }}
-            </p>
-            <p class="first-line" *ngIf="statsData.total_events_attended > 0">📅 Events & 🏆 Hackathons</p>
-            <p class="title" *ngIf="statsData.total_events_attended === 0">
-              This year you attended events and can now be a champion at hackathons too!
-            </p>
-            <p class="event-name" *ngFor="let event_attended of statsData?.events_attended">
-              {{ event_attended.name }}
-            </p>
-          </div>
-        </div> -->
-
-        <!-- Sharing Knowledge & Inspiring Others -->
-        <!-- <div class="component-container-wrapper fourth">
-          <div
-            class="component-container"
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-            *ngIf="
-              statsData.total_labs_published > 0 &&
-              statsData.total_builds_published > 0 &&
-              statsData.total_speaker_events > 0
-            "
-          >
-            <div class="content">
-              <p class="count">
-                {{ statsData.total_speaker_events }}
-              </p>
-              <p class="text">🎤 Tech talks given</p>
-            </div>
-            <div class="content">
-              <p class="count">
-                {{ statsData.total_builds_published }}
-              </p>
-              <p class="text">💡 Builds published</p>
-            </div>
-            <div class="content">
-              <p class="count">
-                {{ statsData.total_labs_published }}
-              </p>
-              <p class="text">🔮 Labs published</p>
-            </div>
-          </div>
-          <div
-            class="component-container"
-            *ngIf="
-              statsData.total_labs_published === 0 &&
-              statsData.total_builds_published === 0 &&
-              statsData.total_speaker_events === 0
-            "
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-          >
-            <div class="content">
-              <p class="text">
-                2026 is the year when you can give your first Tech Talk and share your knowledge with the developer
-                community!
-              </p>
-            </div>
-          </div>
-          <div
-            class="component-container"
-            *ngIf="
-              statsData.total_speaker_events === 0 &&
-              (statsData.total_labs_published !== 0 || statsData.total_builds_published !== 0)
-            "
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-          >
-            <div class="content" *ngIf="statsData.total_builds_published > 0">
-              <p class="count">
-                {{ statsData.total_builds_published }}
-              </p>
-              <p class="text">💡 Builds published</p>
-            </div>
-            <div class="content" *ngIf="statsData.total_labs_published > 0">
-              <p class="count">
-                {{ statsData.total_labs_published }}
-              </p>
-              <p class="text">🔮 Labs published</p>
-            </div>
-            <div class="content">
-              <p class="text">
-                2026 is the year when you can give your first Tech Talk and share your knowledge with the developer
-                community!
-              </p>
-            </div>
-          </div>
-          <div
-            class="component-container"
-            *ngIf="
-              statsData.total_speaker_events > 0 &&
-              statsData.total_labs_published === 0 &&
-              statsData.total_builds_published === 0
-            "
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-          >
-            <div class="content" *ngIf="statsData.total_speaker_events > 0">
-              <p class="count">
-                {{ statsData.total_speaker_events }}
-              </p>
-              <p class="text">🎤 Tech talks given</p>
-            </div>
-            <div class="content">
-              <p class="text">2026 is the year when you can share your projects with the techies of the world!</p>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- Networking -->
-        <!-- <div class="component-container-wrapper fifth">
-          <div
-            class="component-container"
-            *ngIf="
-              statsData.total_communities_joined === 0 &&
-                statsData.total_followed_users === 0 &&
-                statsData.total_followers_gained === 0;
-              else networkingData
-            "
-            style.background-image="url({{ staticAssets.recap_background_screen_2 }})"
-          >
-            <div class="content">
-              <p class="text">2026 will be the year to create & grow your amazing developer network!</p>
-            </div>
-          </div>
-          <ng-template #networkingData>
-            <div class="component-container" style.background-image="url({{ staticAssets.recap_background_screen_2 }})">
-              <div class="content" *ngIf="statsData.total_communities_joined">
-                <p class="count">
-                  {{ statsData.total_communities_joined }}
-                </p>
-                <p class="text">🌐 Communities joined by you</p>
-              </div>
-              <div class="content" *ngIf="statsData.total_followed_users">
-                <p class="count">
-                  {{ statsData.total_followed_users }}
-                </p>
-                <p class="text">🙌 People you followed</p>
-              </div>
-              <div class="content" *ngIf="statsData.total_followers_gained">
-                <p class="count">
-                  {{ statsData.total_followers_gained }}
-                </p>
-                <p class="text">🤩 People followed you</p>
-              </div>
-            </div>
-          </ng-template>
-        </div> -->
       </div>
     </div>
 

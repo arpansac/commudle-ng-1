@@ -17,7 +17,7 @@ import { environment } from '@commudle/shared-environments';
 })
 export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;
-  slidesCount = 14;
+  slidesCount = 12;
   statsData: IUserRecapStats;
   staticAssets = staticAssets;
   private timeoutId: any;
@@ -46,7 +46,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
     this.footerService.changeMiniFooterStatus(false);
     this.startConfetti();
     this.getUserService();
-    // this.startAutoSlide(); // Commented out for testing
+    this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
@@ -56,8 +56,13 @@ export class Recap2025Component implements OnInit, OnDestroy {
   getUserService() {
     this.userService.getRecapSummary(this.activatedRoute.snapshot.params.username).subscribe((data) => {
       this.statsData = data;
+      this.calculateSlidesCount();
       this.setMeta();
     });
+  }
+
+  private calculateSlidesCount() {
+    this.slidesCount = this.statsData?.user?.is_community_leader ? 12 : 11;
   }
 
   nextSlide() {
@@ -66,7 +71,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
       if (this.currentSlide === this.slidesCount - 1) {
         this.thankYouConfetti();
       }
-      // this.startAutoSlide(); // Commented out for testing
+      this.startAutoSlide();
     } else {
       this.clearAutoSlide(); // Stop auto-sliding at the last slide
     }
@@ -75,7 +80,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
   prevSlide() {
     if (this.currentSlide > 0) {
       this.currentSlide--;
-      // this.startAutoSlide(); // Commented out for testing
+      this.startAutoSlide();
     }
   }
 
@@ -173,25 +178,5 @@ export class Recap2025Component implements OnInit, OnDestroy {
   redirectToProfile() {
     const url = environment.app_url + '/users/' + this.statsData.user.username;
     window.open(url, '_blank');
-  }
-
-  getDaysSinceJoined(): number {
-    if (!this.statsData?.created_at && !this.statsData?.user?.created_at) {
-      return 0;
-    }
-    const createdDate = new Date(this.statsData.created_at || this.statsData.user.created_at);
-    const today = new Date();
-    const diffTime = Math.abs(today.getTime() - createdDate.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'ArrowRight') {
-      this.nextSlide(); // Call nextSlide on Right Arrow key press
-    } else if (event.key === 'ArrowLeft') {
-      this.prevSlide(); // Call prevSlide on Left Arrow key press
-    }
   }
 }

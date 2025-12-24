@@ -339,11 +339,11 @@ export const staticAssets = {
 
     //id: 232
     recap_day_count_meme_image:
-      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNWNCQkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4f019af13cdd9381bf1e7fc9371fde5f1ba7ea9f/Eye%20Animated%20Icon%20(3).gif',
+      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzBMQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--606bf28a8f7a011e5c28caae9840ae3e71887770/Excited%20GIF.gif',
 
     //id: 233
     recap_thank_you_heart_image:
-      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNWNCQkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4f019af13cdd9381bf1e7fc9371fde5f1ba7ea9f/Eye%20Animated%20Icon%20(3).gif',
+      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzhMQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--28e643163cdc04a7801e7c58499d01c08b8d5992/Red%20Heart.png',
   },
 };
 
