@@ -17,7 +17,7 @@ import { environment } from '@commudle/shared-environments';
 })
 export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;
-  slidesCount = 7;
+  slidesCount = 14;
   statsData: IUserRecapStats;
   staticAssets = staticAssets;
   private timeoutId: any;
@@ -173,6 +173,17 @@ export class Recap2025Component implements OnInit, OnDestroy {
   redirectToProfile() {
     const url = environment.app_url + '/users/' + this.statsData.user.username;
     window.open(url, '_blank');
+  }
+
+  getDaysSinceJoined(): number {
+    if (!this.statsData?.created_at && !this.statsData?.user?.created_at) {
+      return 0;
+    }
+    const createdDate = new Date(this.statsData.created_at || this.statsData.user.created_at);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - createdDate.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   }
 
   @HostListener('document:keydown', ['$event'])

@@ -13,6 +13,10 @@ export interface IUserRecapStats {
   total_followers_gained: number;
   total_followed_users: number;
   total_votes: number;
+  total_content_posted: number;
+  total_talks_delivered: number;
+  total_hackathons_mentored: number;
+  total_events_voluntered: number;
 }
 
 interface IEventsAttended {
