@@ -62,7 +62,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
   }
 
   private calculateSlidesCount() {
-    this.slidesCount = this.statsData?.user?.is_community_leader ? 12 : 11;
+    // this.slidesCount = this.statsData?.is_community_leader ? 12 : 11;
   }
 
   nextSlide() {
@@ -99,9 +99,9 @@ export class Recap2025Component implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.statsData.user.name + '- Recap 2025',
-      "Here's a community recap for " + this.statsData.user.name + '  for 2025',
-      this.statsData.user.photo.url,
+      this.statsData.name + '- Recap 2025',
+      "Here's a community recap for " + this.statsData.name + '  for 2025',
+      this.statsData.photo.url,
     );
   }
 
@@ -157,7 +157,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
   }
 
   copyTextToClipboard(): void {
-    const content = environment.app_url + '/users/' + this.statsData.user.username + '/recap-2025';
+    const content = environment.app_url + '/users/' + this.statsData.username + '/recap-2025';
     if (!this.navigatorShareService.canShare()) {
       if (this.clipboard.copy(content)) {
         this.libToastLogService.successDialog('Copied the message successfully!');
@@ -167,8 +167,8 @@ export class Recap2025Component implements OnInit, OnDestroy {
 
     this.navigatorShareService
       .share({
-        title: this.statsData.user.name + ' - Recap 2025',
-        text: this.statsData.user.name + ' - Recap 2025',
+        title: this.statsData.name + ' - Recap 2025',
+        text: this.statsData.name + ' - Recap 2025',
         url: content,
       })
       .then(() => {
@@ -176,7 +176,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
       });
   }
   redirectToProfile() {
-    const url = environment.app_url + '/users/' + this.statsData.user.username;
+    const url = environment.app_url + '/users/' + this.statsData.username;
     window.open(url, '_blank');
   }
 

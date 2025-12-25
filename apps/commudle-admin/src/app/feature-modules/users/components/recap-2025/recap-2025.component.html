@@ -45,9 +45,9 @@
           >
             <div class="content-wrapper">
               <div class="profile-image">
-                <img [src]="statsData?.user.photo.url" [alt]="statsData?.user.name" />
+                <img [src]="statsData?.photo.url" [alt]="statsData?.name" />
               </div>
-              <p class="profile-name">Hey {{ statsData?.user.name }}</p>
+              <p class="profile-name">Hey {{ statsData?.name }}</p>
               <p class="profile-description">
                 Here's a cheers to an amazing 2024 where you contributed so much to the Developer Ecosystem!
               </p>
@@ -56,7 +56,7 @@
               </p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -71,10 +71,10 @@
             <div class="content-wrapper">
               <p class="first-line">Your Commudle Profile got</p>
               <p class="page-visit-count">{{ statsData?.profile_visits }}</p>
-              <p class="first-line">Visits. You inspire the world 🌎</p>
+              <p class="first-line">Visit{{ statsData?.profile_visits > 1 ? 's' : '' }}. You inspire the world 🌎</p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@
               <p class="description">From your followers to those you follow, your network is growing fast.</p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -126,35 +126,39 @@
                 You Published
               </p>
               <div class="content">
-                <p *ngIf="statsData.builds > 0" class="count com-mb-8">
+                <p *ngIf="statsData.builds > 0" class="count">
                   {{ statsData.builds }}
                 </p>
-                <p *ngIf="statsData.builds > 0" class="text">Builds</p>
+                <p *ngIf="statsData.builds > 0" class="text">Build{{ statsData.builds > 1 ? 's' : '' }}</p>
                 <p *ngIf="statsData.builds === 0" class="text-description">
                   Share what you are building through builds with the world.
                 </p>
               </div>
+              <br /><br />
               <div class="content">
-                <p *ngIf="statsData.labs > 0" class="count com-mb-8">
+                <p *ngIf="statsData.labs > 0" class="count">
                   {{ statsData.labs }}
                 </p>
-                <p *ngIf="statsData.labs > 0" class="text">Labs</p>
+                <p *ngIf="statsData.labs > 0" class="text">Lab{{ statsData.labs > 1 ? 's' : '' }}</p>
                 <p *ngIf="statsData.labs === 0" class="text-description">
                   Teach them with step-by-step Labs from what you have learnt.
                 </p>
               </div>
+              <br /><br />
               <div class="content">
-                <p *ngIf="statsData.social_resources > 0" class="count com-mb-8">
+                <p *ngIf="statsData.social_resources > 0" class="count">
                   {{ statsData.social_resources }}
                 </p>
-                <p *ngIf="statsData.social_resources > 0" class="text">Social Resources</p>
+                <p *ngIf="statsData.social_resources > 0" class="text">
+                  Social Resource{{ statsData.social_resources > 1 ? 's' : '' }}
+                </p>
                 <p *ngIf="statsData.social_resources === 0" class="text-description">
                   Your content from beyond Commudle is very valuable, share it on your profile.
                 </p>
               </div>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -170,28 +174,36 @@
               <p class="communities-joined-count" *ngIf="statsData.joined_communities > 0">
                 {{ statsData.joined_communities }}
               </p>
-              <p class="title" *ngIf="statsData.joined_communities > 0">Communities Joined</p>
+              <p class="title" *ngIf="statsData.joined_communities > 0">
+                Communit{{ statsData.joined_communities > 1 ? 'ies' : 'y' }} Joined
+              </p>
               <p class="title" *ngIf="statsData.joined_communities === 0">
                 Join your first community and start building your network
               </p>
               <p class="title" *ngIf="statsData.attended_events > 0">
-                You Attended <span>{{ statsData.attended_events }} </span>Events
+                You Attended <span>{{ statsData.attended_events }} </span>Event{{
+                  statsData.attended_events > 1 ? 's' : ''
+                }}
               </p>
               <p class="title" *ngIf="statsData.registered_events > 0 && statsData.attended_events === 0">
-                You Registered for <span>{{ statsData.registered_events }} </span>Events
+                You Registered for <span>{{ statsData.registered_events }} </span>Event{{
+                  statsData.registered_events > 1 ? 's' : ''
+                }}
               </p>
               <p class="title" *ngIf="statsData.attended_events === 0 && statsData.registered_events === 0">
                 This year has been all about AI, find your next event and register now!
               </p>
               <p class="title" *ngIf="statsData.registered_hackathons > 0">
-                Participated in <span>{{ statsData.registered_hackathons }} </span>Hackathons
+                Participated in <span>{{ statsData.registered_hackathons }} </span>Hackathon{{
+                  statsData.registered_hackathons > 1 ? 's' : ''
+                }}
               </p>
               <p class="title" *ngIf="statsData.registered_hackathons === 0">
                 Hackathons await someone like you to build the next big thing.
               </p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -207,7 +219,7 @@
               <p
                 *ngIf="
                   statsData.speaker_events === 0 &&
-                  statsData.hackathons_mentored === 0 &&
+                  statsData.hackathon_judges === 0 &&
                   statsData.volunteered_events === 0
                 "
                 class="text"
@@ -216,33 +228,44 @@
               </p>
               <p
                 *ngIf="
-                  statsData.speaker_events > 0 || statsData.hackathons_mentored > 0 || statsData.volunteered_events > 0
+                  statsData.speaker_events > 0 || statsData.hackathon_judges > 0 || statsData.volunteered_events > 0
                 "
                 class="text"
               >
                 🎤<br />You Are The Enabler
               </p>
+              <br />
               <div class="content">
                 <p *ngIf="statsData.speaker_events > 0" class="count com-mb-8">
                   {{ statsData.speaker_events }}
                 </p>
-                <p *ngIf="statsData.speaker_events > 0" class="text">Talks Delivered at Events</p>
-              </div>
-              <div class="content">
-                <p *ngIf="statsData.hackathons_mentored > 0" class="count com-mb-8">
-                  {{ statsData.hackathons_mentored }}
+                <p *ngIf="statsData.speaker_events > 0" class="text">
+                  Talk{{ statsData.speaker_events > 1 ? 's' : '' }} Delivered at Event{{
+                    statsData.speaker_events > 1 ? 's' : ''
+                  }}
                 </p>
-                <p *ngIf="statsData.hackathons_mentored > 0" class="text">Hackathons Mentored</p>
               </div>
+              <br />
+              <div class="content">
+                <p *ngIf="statsData.hackathon_judges > 0" class="count com-mb-8">
+                  {{ statsData.hackathon_judges }}
+                </p>
+                <p *ngIf="statsData.hackathon_judges > 0" class="text">
+                  Hackathon{{ statsData.hackathon_judges > 1 ? 's' : '' }} Mentored
+                </p>
+              </div>
+              <br />
               <div class="content">
                 <p *ngIf="statsData.volunteered_events > 0" class="count com-mb-8">
                   {{ statsData.volunteered_events }}
                 </p>
-                <p *ngIf="statsData.volunteered_events > 0" class="text">Events Volunteered</p>
+                <p *ngIf="statsData.volunteered_events > 0" class="text">
+                  Event{{ statsData.volunteered_events > 1 ? 's' : '' }} Volunteered
+                </p>
               </div>
               <p
                 *ngIf="
-                  statsData.speaker_events > 0 || statsData.hackathons_mentored > 0 || statsData.volunteered_events > 0
+                  statsData.speaker_events > 0 || statsData.hackathon_judges > 0 || statsData.volunteered_events > 0
                 "
                 class="description"
               >
@@ -250,7 +273,7 @@
               </p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -271,7 +294,7 @@
               </div>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -285,26 +308,26 @@
           >
             <div class="content-wrapper">
               <div class="expert-image">
-                <img [src]="staticAssets.recap_2025.expert_blue_tick" [alt]="statsData?.user.name" />
+                <img [src]="staticAssets.recap_2025.expert_blue_tick" [alt]="statsData?.name" />
               </div>
-              <p *ngIf="statsData?.user.is_expert" class="expert-title">You earned this!</p>
-              <p *ngIf="statsData?.user.is_expert" class="expert-description">
+              <p *ngIf="statsData?.expert_badges.length > 0" class="expert-title">You earned this!</p>
+              <p *ngIf="statsData?.expert_badges.length > 0" class="expert-description">
                 The community recognizes all your contributions and trusts your expertise.
               </p>
-              <p *ngIf="!statsData?.user.is_expert" class="expert-description">
+              <p *ngIf="statsData?.expert_badges.length === 0" class="expert-description">
                 We know you're learning and building new things with AI, apply now to get listed amongst the top experts
                 on Commudle.
               </p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Community Leader-->
-        <div *ngIf="statsData?.user.is_community_leader" class="component-container-wrapper ninth">
+        <div *ngIf="statsData?.is_community_leader" class="component-container-wrapper ninth">
           <div
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_community_leader_background }})"
@@ -312,26 +335,30 @@
             <div class="content-wrapper">
               <p class="text">Your Communities Are Growing</p>
               <div class="content">
-                <p class="text-margin">Total Members Gained</p>
+                <p class="text-margin">Total Member{{ statsData.total_members_gained > 1 ? 's' : '' }} Gained</p>
                 <p class="count">
                   {{ statsData.total_members_gained }}
                 </p>
               </div>
               <div class="content">
-                <p class="text-margin">Total Community Events Organized</p>
+                <p class="text-margin">
+                  Total Community Event{{ statsData.total_community_events_organized > 1 ? 's' : '' }} Organized
+                </p>
                 <p class="count">
                   {{ statsData.total_community_events_organized }}
                 </p>
               </div>
               <div class="content">
-                <p class="text-margin">Total Hackathons Organized</p>
+                <p class="text-margin">
+                  Total Hackathon{{ statsData.total_community_hackathons_organized > 1 ? 's' : '' }} Organized
+                </p>
                 <p class="count">
                   {{ statsData.total_community_hackathons_organized }}
                 </p>
               </div>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -355,7 +382,7 @@
               <p class="day-count-message">Let's make more impact together.</p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>
@@ -401,7 +428,7 @@
               </a>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
-                <p class="footer-text">Commuddle Recap 2025</p>
+                <p class="footer-text">Commudle Recap 2025</p>
               </div>
             </div>
           </div>

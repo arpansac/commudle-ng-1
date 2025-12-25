@@ -1,4 +1,4 @@
-import { IUser } from './user.model';
+import { IAttachedFile } from './attached-file.model';
 
 export interface IUserRecapStats {
   attended_events: number;
@@ -18,10 +18,13 @@ export interface IUserRecapStats {
   total_followers: number;
   total_members_gained: number;
   total_network: number;
-  user: IUser;
   volunteered_events: number;
   social_resources: number;
-  hackathons_mentored: number;
+  hackathon_judges: number;
+  name: string;
+  photo: IAttachedFile;
+  is_community_leader: boolean;
+  username: string;
 }
 interface IEventsAttended {
   name: string;
