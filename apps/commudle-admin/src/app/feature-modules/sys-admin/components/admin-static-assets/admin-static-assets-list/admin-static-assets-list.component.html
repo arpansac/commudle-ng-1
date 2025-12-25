@@ -9,9 +9,20 @@
     </div>
   </nb-card-header>
   <nb-card-body>
+    <div class="search-container">
+      <input
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="filterAssets()"
+        type="text"
+        nbInput
+        fullWidth
+        placeholder="Search by name or ID..."
+        fieldSize="small"
+      />
+    </div>
     <div class="assets-list-container">
       <nb-list>
-        <nb-list-item *ngFor="let asset of assets" class="d-flex justify-content-space-between">
+        <nb-list-item *ngFor="let asset of filteredAssets" class="d-flex justify-content-space-between">
           <div class="assets-details">
             <p class="title">
               {{ asset.name }}
@@ -21,10 +32,28 @@
               <img alt="{{ asset.name }}" src="{{ asset.file.url }}" title="{{ asset.name }}" />
             </div>
           </div>
-          <div class="controls d-flex">
-            <div *ngIf="asset.file">
-              <a href="{{ asset.file.url }}" nbButton outline size="small" status="primary" target="_blank"> Link </a>
-            </div>
+          <div class="controls">
+            <a
+              *ngIf="asset.file"
+              href="{{ asset.file.url }}"
+              nbButton
+              outline
+              size="small"
+              status="primary"
+              target="_blank"
+            >
+              Link
+            </a>
+            <button
+              *ngIf="asset.file"
+              (click)="openCopyLinkDialog(copyLinkDialog, asset.file.url)"
+              nbButton
+              outline
+              size="small"
+              status="info"
+            >
+              Copy Link
+            </button>
           </div>
         </nb-list-item>
       </nb-list>
@@ -32,3 +61,20 @@
     </div>
   </nb-card-body>
 </nb-card>
+
+<ng-template #copyLinkDialog let-data let-ref="dialogRef">
+  <nb-card class="copy-link-card">
+    <nb-card-header>Copy Asset Link</nb-card-header>
+    <nb-card-body>
+      <div class="copy-link-container">
+        <div class="link-wrapper" (click)="copyLink(data.url)">
+          <p class="link-text">{{ data.url }}</p>
+          <nb-icon icon="copy-outline" class="copy-icon"></nb-icon>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="d-flex justify-content-end">
+      <button (click)="ref.close()" nbButton size="small" status="primary">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
