@@ -29,7 +29,14 @@ section {
           @apply com-min-w-full com-h-full;
 
           .content-wrapper {
-            @apply com-flex com-flex-col com-items-center md:com-pt-[100px] com-pt-10 com-pb-8 com-px-5 com-w-full com-h-full;
+            @apply com-flex com-flex-col com-items-center com-pb-8 com-px-5 com-w-full com-h-full;
+          }
+
+          .content-padding {
+            @apply md:com-pt-[200px] com-pt-10 #{!important};
+          }
+          .content-padding-mobile {
+            @apply md:com-pt-[100px] com-pt-10 #{!important};
           }
           .component-container {
             @apply com-w-full com-h-full;
@@ -203,6 +210,10 @@ section {
             }
             .expert-description {
               @apply com-text-tWhite com-text-base com-font-normal com-text-center com-m-0;
+
+              span {
+                @apply com-text-2xl com-font-bold;
+              }
             }
           }
 

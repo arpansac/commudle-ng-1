@@ -23,6 +23,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
   staticAssets = staticAssets;
   private timeoutId: any;
   animationFrameId: number; // To track the requestAnimationFrame ID
+  isFirstScreenImageLoaded = false;
 
   icons = {
     faChevronLeft,
@@ -55,15 +56,21 @@ export class Recap2025Component implements OnInit, OnDestroy {
   }
 
   getUserService() {
+    this.isFirstScreenImageLoaded = false;
     this.userService.getRecapSummary(this.activatedRoute.snapshot.params.username).subscribe((data) => {
       this.statsData = data;
+      this.isFirstScreenImageLoaded = true;
       this.calculateSlidesCount();
       this.setMeta();
     });
   }
 
   private calculateSlidesCount() {
-    this.slidesCount = this.statsData?.is_community_leader ? 12 : 11;
+    let baseCount = this.statsData?.is_community_leader ? 12 : 11;
+    if (this.statsData?.people_met_at_events === 0) {
+      baseCount--;
+    }
+    this.slidesCount = baseCount;
   }
 
   nextSlide() {

@@ -17,24 +17,29 @@
       >
         <!-- Welcome Screen -->
         <div class="component-container-wrapper welcome">
-          <div
-            class="component-container"
-            style.background-image="url({{ staticAssets.recap_2025.recap_home_background }})"
-          >
-            <div class="content-wrapper com-justify-between">
-              <div class="welcome-content">
-                <p class="welcome-line-1">Your</p>
-                <p class="welcome-line-2">
-                  <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" /> Recap
-                </p>
-                <p class="welcome-year">
-                  <span class="year-digit-two-bold">2</span><span class="year-digit-zero">0</span
-                  ><span class="year-digit-two">2</span><span class="year-digit-five">5</span>
-                </p>
-                <p class="welcome-description">A look at your remarkable contributions to the Developer Ecosystem</p>
+          <ng-container *ngIf="!isFirstScreenImageLoaded">
+            <app-loading-spinner></app-loading-spinner>
+          </ng-container>
+          <ng-container *ngIf="isFirstScreenImageLoaded">
+            <div
+              class="component-container"
+              style.background-image="url({{ staticAssets.recap_2025.recap_home_background }})"
+            >
+              <div class="content-wrapper content-padding-mobile">
+                <div class="welcome-content">
+                  <p class="welcome-line-1">Your</p>
+                  <p class="welcome-line-2">
+                    <img [src]="staticAssets.commudle_white_full_logo" title="commudle logo" /> Recap
+                  </p>
+                  <p class="welcome-year">
+                    <span class="year-digit-two-bold">2</span><span class="year-digit-zero">0</span
+                    ><span class="year-digit-two">2</span><span class="year-digit-five">5</span>
+                  </p>
+                  <p class="welcome-description">A look at your remarkable contributions to the Developer Ecosystem</p>
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </div>
 
         <!-- first Screen -->
@@ -43,7 +48,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_hello_user_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <div class="profile-image">
                 <img [src]="statsData?.photo.url" [alt]="statsData?.name" />
               </div>
@@ -68,7 +73,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_user_visit_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding">
               <p class="first-line">Your Commudle Profile got</p>
               <p class="page-visit-count">{{ statsData?.profile_visits }}</p>
               <p class="first-line">Visit{{ statsData?.profile_visits > 1 ? 's' : '' }}. You inspire the world 🌎</p>
@@ -84,9 +89,9 @@
         <div class="component-container-wrapper third">
           <div
             class="component-container"
-            style.background-image="url({{ staticAssets.recap_2025.recap_profile_summary_background }})"
+            style.background-image="url({{ staticAssets.recap_2025.recap_connections_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding">
               <div class="content">
                 <p class="text">People who followed you</p>
                 <p class="count">
@@ -114,7 +119,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_projects_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <p
                 *ngIf="statsData.builds === 0 && statsData.labs === 0 && statsData.social_resources === 0"
                 class="text"
@@ -134,7 +139,7 @@
                   Share what you are building through builds with the world.
                 </p>
               </div>
-              <br />
+              <br /><br />
               <div class="content">
                 <p *ngIf="statsData.labs > 0" class="count">
                   {{ statsData.labs }}
@@ -144,7 +149,7 @@
                   Teach them with step-by-step Labs from what you have learnt.
                 </p>
               </div>
-              <br />
+              <br /><br />
               <div class="content">
                 <p *ngIf="statsData.social_resources > 0" class="count">
                   {{ statsData.social_resources }}
@@ -156,6 +161,7 @@
                   Your content from beyond Commudle is very valuable, share it on your profile.
                 </p>
               </div>
+              <br />
               <p *ngIf="statsData.total_content_page_visits > 0" class="text-description">
                 Your content got {{ statsData.total_content_page_visits }} visits this year!
               </p>
@@ -173,7 +179,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_community_activity_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <p class="communities-joined-count" *ngIf="statsData.joined_communities > 0">
                 {{ statsData.joined_communities }}
               </p>
@@ -183,23 +189,20 @@
               <p class="title" *ngIf="statsData.joined_communities === 0">
                 Join your first community and start building your network
               </p>
-              <p class="title" *ngIf="statsData.attended_events > 0">
-                You Attended <span>{{ statsData.attended_events }} </span>Event{{
-                  statsData.attended_events > 1 ? 's' : ''
-                }}
+              <p *ngIf="statsData.attended_events > 0" class="communities-joined-count">
+                {{ statsData.attended_events }}
               </p>
-              <p class="title" *ngIf="statsData.registered_events > 0 && statsData.attended_events === 0">
-                You Registered for <span>{{ statsData.registered_events }} </span>Event{{
-                  statsData.registered_events > 1 ? 's' : ''
-                }}
+              <p *ngIf="statsData.attended_events > 0" class="title">
+                Event{{ statsData.attended_events > 1 ? 's' : '' }} Attended
               </p>
-              <p class="title" *ngIf="statsData.attended_events === 0 && statsData.registered_events === 0">
-                This year has been all about AI, find your next event and register now!
+              <p *ngIf="statsData.attended_events === 0" class="title">
+                Attend your first event and start building your network
+              </p>
+              <p class="communities-joined-count" *ngIf="statsData.registered_hackathons > 0">
+                {{ statsData.registered_hackathons }}
               </p>
               <p class="title" *ngIf="statsData.registered_hackathons > 0">
-                Participated in <span>{{ statsData.registered_hackathons }} </span>Hackathon{{
-                  statsData.registered_hackathons > 1 ? 's' : ''
-                }}
+                Hackathon{{ statsData.registered_hackathons > 1 ? 's' : '' }} Registered
               </p>
               <p class="title" *ngIf="statsData.registered_hackathons === 0">
                 Hackathons await someone like you to build the next big thing.
@@ -218,7 +221,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_profile_summary_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <p
                 *ngIf="
                   statsData.speaker_events === 0 &&
@@ -283,12 +286,12 @@
         </div>
 
         <!-- Attended Events-->
-        <div class="component-container-wrapper seventh">
+        <div *ngIf="statsData?.people_met_at_events > 0" class="component-container-wrapper seventh">
           <div
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_connections_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <div class="content">
                 <p class="count com-mb-8">
                   {{ statsData.people_met_at_events }}
@@ -309,7 +312,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_experts_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <div class="expert-image">
                 <img [src]="staticAssets.recap_2025.expert_blue_tick" [alt]="statsData?.name" />
               </div>
@@ -319,7 +322,8 @@
                 The community recognizes all your contributions and trusts your expertise.
               </p>
               <p *ngIf="statsData?.expert_badges.length === 0" class="expert-description">
-                We know you're learning and building new things with AI, apply now to get listed amongst the top experts
+                We know you're learning and building new things with AI, apply now to get listed amongst the top
+                <span>experts</span>
                 on Commudle.
               </p>
               <div class="screen-footer">
@@ -336,7 +340,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_community_leader_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <p class="text">Your Communities Are Growing</p>
               <div class="content">
                 <p class="text-margin">Total Member{{ statsData.total_members_gained > 1 ? 's' : '' }} Gained</p>
@@ -374,7 +378,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_day_count_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <p class="day-count-number">{{ statsData.days_on_commudle }}</p>
               <p class="day-count-label">days</p>
               <p class="day-count-description">
@@ -398,7 +402,7 @@
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_thank_you_background }})"
           >
-            <div class="content-wrapper">
+            <div class="content-wrapper content-padding-mobile">
               <div class="thank-you-heart">
                 <img [src]="staticAssets.recap_2025.recap_thank_you_heart_image" alt="Heart" />
               </div>
