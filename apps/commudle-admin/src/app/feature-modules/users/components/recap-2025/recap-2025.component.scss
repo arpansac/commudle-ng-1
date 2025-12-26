@@ -264,13 +264,13 @@ section {
         }
       }
     }
-  }
-  .action-buttons-mobile {
-    @apply md:com-hidden com-grid com-grid-cols-2 com-absolute com-bottom-0 com-w-full;
-    button {
-      @apply com-opacity-30 com-bg-tblack #{!important};
-      fa-icon {
-        @apply com-text-tWhite;
+    .action-buttons-mobile {
+      @apply md:com-hidden com-grid com-grid-cols-2 com-absolute com-bottom-0 com-w-full com-px-1 com-gap-0;
+      button {
+        @apply com-opacity-30 com-bg-tblack #{!important};
+        fa-icon {
+          @apply com-text-tWhite;
+        }
       }
     }
   }
