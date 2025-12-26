@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUserRecapStats } from '@commudle/shared-models';
 import { AppUsersService, SeoService, ToastrService } from '@commudle/shared-services';
@@ -14,6 +14,7 @@ import { environment } from '@commudle/shared-environments';
   selector: 'commudle-recap-2025',
   templateUrl: './recap-2025.component.html',
   styleUrls: ['./recap-2025.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;
@@ -168,7 +169,6 @@ export class Recap2025Component implements OnInit, OnDestroy {
     this.navigatorShareService
       .share({
         title: this.statsData.name + ' - Recap 2025',
-        text: this.statsData.name + ' - Recap 2025',
         url: content,
       })
       .then(() => {

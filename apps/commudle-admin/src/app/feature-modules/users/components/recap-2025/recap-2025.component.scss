@@ -1,3 +1,6 @@
+.router-outlet {
+  @apply com-min-h-[calc(100dvh-68px-68px)];
+}
 section {
   @apply com-h-[calc(100dvh-136px)] md:com-h-[100dvh] com-bg-tblack;
   #confetti {
@@ -254,7 +257,7 @@ section {
   .action-buttons-mobile {
     @apply md:com-hidden com-grid com-grid-cols-2 com-absolute com-bottom-0 com-w-full;
     button {
-      @apply com-opacity-30 com-bg-tblack;
+      @apply com-opacity-30 com-bg-tblack #{!important};
       fa-icon {
         @apply com-text-tWhite;
       }
