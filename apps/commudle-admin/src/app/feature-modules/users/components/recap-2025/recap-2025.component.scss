@@ -150,10 +150,10 @@ section {
             .content {
               @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center md:com-gap-3 com-gap-2;
               .count {
-                @apply md:com-text-[80px] com-text-[64px] com-italic com-text-tWhite com-font-[900] md:com-leading-[88px] com-leading-[64px] com-m-0;
+                @apply md:com-text-[80px] com-text-[56px] com-italic com-text-tWhite com-font-[900] md:com-leading-[88px] com-leading-[56px] com-m-0;
               }
               .text-margin {
-                @apply com-text-xl com-font-normal com-text-tWhite com-text-center com-m-0 com-mt-8;
+                @apply md:com-text-xl com-text-lg com-font-normal com-text-tWhite com-text-center com-m-0 com-mt-8;
               }
             }
 
@@ -172,7 +172,7 @@ section {
 
           &.fifth {
             .communities-joined-count {
-              @apply md:com-text-[100px] com-text-[72px] com-italic com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0 com-mb-4 com-text-tWhite;
+              @apply md:com-text-[100px] com-text-[56px] com-italic com-font-[900] md:com-leading-[100px] com-leading-[56px] com-m-0 com-mb-4 com-text-tWhite;
             }
 
             .title {
