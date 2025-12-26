@@ -62,7 +62,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
   }
 
   private calculateSlidesCount() {
-    // this.slidesCount = this.statsData?.is_community_leader ? 12 : 11;
+    this.slidesCount = this.statsData?.is_community_leader ? 12 : 11;
   }
 
   nextSlide() {

@@ -99,7 +99,7 @@ section {
 
           &.first {
             .profile-image {
-              @apply com-border com-border-solid com-border-Bright-Gray com-w-40 com-h-40 com-shadow-md com-rounded-full com-mb-9;
+              @apply com-border-[6px] com-border-solid com-border-[#ffffff1a] com-w-40 com-h-40 com-shadow-md com-rounded-full com-mb-9;
               img {
                 @apply com-object-cover com-overflow-hidden com-w-full com-rounded-full com-h-full;
               }
@@ -138,9 +138,9 @@ section {
           &.ninth,
           &.seventh {
             .content {
-              @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center com-gap-4;
+              @apply com-flex com-flex-col com-justify-center com-text-tWhite com-items-center md:com-gap-3 com-gap-2;
               .count {
-                @apply md:com-text-[100px] com-text-[72px] com-italic com-text-tWhite com-font-[900] md:com-leading-[100px] com-leading-[80px] com-m-0;
+                @apply md:com-text-[80px] com-text-[64px] com-italic com-text-tWhite com-font-[900] md:com-leading-[88px] com-leading-[64px] com-m-0;
               }
               .text-margin {
                 @apply com-text-xl com-font-normal com-text-tWhite com-text-center com-m-0 com-mt-8;

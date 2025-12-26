@@ -1,11 +1,12 @@
 import { IAttachedFile } from './attached-file.model';
+import { IBadge } from './badge.model';
 
 export interface IUserRecapStats {
   attended_events: number;
   attended_hackathons: number;
   builds: number;
   days_on_commudle: number;
-  expert_badges: [];
+  expert_badges: IBadge[];
   joined_communities: number;
   labs: number;
   people_met_at_events: number;
@@ -25,6 +26,7 @@ export interface IUserRecapStats {
   photo: IAttachedFile;
   is_community_leader: boolean;
   username: string;
+  total_content_page_visits: number;
 }
 interface IEventsAttended {
   name: string;

@@ -123,7 +123,7 @@
                 Commudle Profile!
               </p>
               <p *ngIf="statsData.builds > 0 || statsData.labs > 0 || statsData.social_resources > 0" class="text">
-                You Published
+                You Published<br />
               </p>
               <div class="content">
                 <p *ngIf="statsData.builds > 0" class="count">
@@ -134,7 +134,7 @@
                   Share what you are building through builds with the world.
                 </p>
               </div>
-              <br /><br />
+              <br />
               <div class="content">
                 <p *ngIf="statsData.labs > 0" class="count">
                   {{ statsData.labs }}
@@ -144,7 +144,7 @@
                   Teach them with step-by-step Labs from what you have learnt.
                 </p>
               </div>
-              <br /><br />
+              <br />
               <div class="content">
                 <p *ngIf="statsData.social_resources > 0" class="count">
                   {{ statsData.social_resources }}
@@ -156,6 +156,9 @@
                   Your content from beyond Commudle is very valuable, share it on your profile.
                 </p>
               </div>
+              <p *ngIf="statsData.total_content_page_visits > 0" class="text-description">
+                Your content got {{ statsData.total_content_page_visits }} visits this year!
+              </p>
               <div class="screen-footer">
                 <img [src]="staticAssets.commudle_logo_dark_mode" title="commudle logo" />
                 <p class="footer-text">Commudle Recap 2025</p>
@@ -311,6 +314,7 @@
                 <img [src]="staticAssets.recap_2025.expert_blue_tick" [alt]="statsData?.name" />
               </div>
               <p *ngIf="statsData?.expert_badges.length > 0" class="expert-title">You earned this!</p>
+              <p *ngFor="let badge of statsData?.expert_badges" class="expert-title">{{ badge.name }}<br /></p>
               <p *ngIf="statsData?.expert_badges.length > 0" class="expert-description">
                 The community recognizes all your contributions and trusts your expertise.
               </p>
