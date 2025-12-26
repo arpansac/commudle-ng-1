@@ -17,7 +17,6 @@ export class AdminStaticAssetsListComponent implements OnInit {
     private toastrService: ToastrService,
   ) {}
   assets: IStaticAsset[] = [];
-  filteredAssets: IStaticAsset[] = [];
   searchQuery = '';
   page = 1;
   count = 5;
@@ -31,9 +30,8 @@ export class AdminStaticAssetsListComponent implements OnInit {
   getAsset(): void {
     if (this.assets.length !== this.total) {
       this.subscriptions.push(
-        this.adminStaticAssetsService.getAssets(this.page, this.count).subscribe((value) => {
+        this.adminStaticAssetsService.getAssets(this.page, this.count, this.searchQuery).subscribe((value) => {
           this.assets = this.assets.concat(value.static_assets);
-          this.filteredAssets = [...this.assets];
           this.page = +value.page;
           this.total = +value.total;
           this.page += 1;
@@ -43,14 +41,10 @@ export class AdminStaticAssetsListComponent implements OnInit {
   }
 
   filterAssets(): void {
-    const query = this.searchQuery.toLowerCase().trim();
-    if (!query) {
-      this.filteredAssets = [...this.assets];
-      return;
-    }
-    this.filteredAssets = this.assets.filter(
-      (asset) => asset.name.toLowerCase().includes(query) || asset.id.toString().includes(query),
-    );
+    this.assets = [];
+    this.page = 1;
+    this.total = -1;
+    this.getAsset();
   }
 
   openCopyLinkDialog(dialogTemplate, url: string): void {
