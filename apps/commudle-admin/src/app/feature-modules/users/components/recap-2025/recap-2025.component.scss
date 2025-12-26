@@ -33,7 +33,7 @@ section {
           }
 
           .content-padding {
-            @apply md:com-pt-[200px] com-pt-10 #{!important};
+            @apply md:com-pt-[120px] com-pt-10 #{!important};
           }
           .content-padding-mobile {
             @apply md:com-pt-[100px] com-pt-10 #{!important};
@@ -115,10 +115,10 @@ section {
               }
             }
             .profile-name {
-              @apply com-text-tWhite com-text-xl com-font-semibold com-text-center com-m-0;
+              @apply com-text-tWhite com-text-2xl com-font-semibold com-text-center com-m-0;
             }
             .profile-description {
-              @apply com-text-tWhite com-text-base com-font-normal com-text-center com-m-0 com-mt-4;
+              @apply com-text-tWhite com-text-lg com-font-normal com-text-center com-m-0 com-mt-4;
             }
           }
 
@@ -166,7 +166,7 @@ section {
             }
 
             .text-description {
-              @apply com-text-tWhite com-text-lg com-font-normal com-m-0 com-text-center com-mt-4;
+              @apply com-text-tWhite com-text-lg com-font-normal com-m-0 com-text-center;
             }
           }
 
@@ -206,10 +206,10 @@ section {
               }
             }
             .expert-title {
-              @apply com-text-tWhite com-text-lg com-font-semibold com-text-center com-m-0 com-mb-4;
+              @apply com-text-tWhite com-text-2xl com-font-semibold com-text-center com-m-0 com-mb-4;
             }
             .expert-description {
-              @apply com-text-tWhite com-text-base com-font-normal com-text-center com-m-0;
+              @apply com-text-tWhite com-text-xl com-font-normal com-text-center com-m-0;
 
               span {
                 @apply com-text-2xl com-font-bold;
