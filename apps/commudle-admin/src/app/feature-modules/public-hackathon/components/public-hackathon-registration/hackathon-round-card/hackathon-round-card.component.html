@@ -68,8 +68,9 @@
     </div>
   </div>
   @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
-  EHackathonRegistrationStatus.ACCEPTED && (round.round_type === 'ppt_submission' || round.round_type ===
-  'project_submission' || round.round_type === 'project_update_submission')) {
+  EHackathonRegistrationStatus.ACCEPTED && (round.round_type === ERoundType.PPT_SUBMISSION || round.round_type ===
+  ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION || round.round_type ===
+  ERoundType.FINAL_JUDGING)) {
   <div class="round-action">
     @if(round.round_type === ERoundType.PPT_SUBMISSION){ @if(getRoundSubmission()?.file_attachment) {
     <a
@@ -84,7 +85,7 @@
     <button nbButton status="primary" size="small" (click)="openPPTUploadDialog()" [disabled]="!isLive">
       {{ getRoundSubmission() ? 'Update PPT' : 'Submit PPT' }}
     </button>
-    } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION) {
+    } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.FINAL_JUDGING) {
     <a
       nbButton
       status="primary"
