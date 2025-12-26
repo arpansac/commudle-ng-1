@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUserRecapStats } from '@commudle/shared-models';
 import { AppUsersService, SeoService, ToastrService } from '@commudle/shared-services';
@@ -11,17 +11,19 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-  selector: 'commudle-recap-2024',
-  templateUrl: './recap-2024.component.html',
-  styleUrls: ['./recap-2024.component.scss'],
+  selector: 'commudle-recap-2025',
+  templateUrl: './recap-2025.component.html',
+  styleUrls: ['./recap-2025.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
-export class RecapComponent implements OnInit, OnDestroy {
+export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;
-  slidesCount = 7;
+  slidesCount = 12;
   statsData: IUserRecapStats;
   staticAssets = staticAssets;
   private timeoutId: any;
   animationFrameId: number; // To track the requestAnimationFrame ID
+  isFirstScreenImageLoaded = false;
 
   icons = {
     faChevronLeft,
@@ -54,10 +56,21 @@ export class RecapComponent implements OnInit, OnDestroy {
   }
 
   getUserService() {
+    this.isFirstScreenImageLoaded = false;
     this.userService.getRecapSummary(this.activatedRoute.snapshot.params.username).subscribe((data) => {
       this.statsData = data;
+      this.isFirstScreenImageLoaded = true;
+      this.calculateSlidesCount();
       this.setMeta();
     });
+  }
+
+  private calculateSlidesCount() {
+    let baseCount = this.statsData?.is_community_leader ? 12 : 11;
+    if (this.statsData?.people_met_at_events === 0) {
+      baseCount--;
+    }
+    this.slidesCount = baseCount;
   }
 
   nextSlide() {
@@ -94,9 +107,9 @@ export class RecapComponent implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.statsData.user.name + '- Recap 2024',
-      "Here's a community recap for " + this.statsData.user.name + '  for 2024',
-      this.statsData.user.photo.url,
+      this.statsData.name + '- Recap 2025',
+      "Here's a community recap for " + this.statsData.name + '  for 2025',
+      this.statsData.photo.url,
     );
   }
 
@@ -152,7 +165,7 @@ export class RecapComponent implements OnInit, OnDestroy {
   }
 
   copyTextToClipboard(): void {
-    const content = environment.app_url + '/users/' + this.statsData.user.username + '/recap-2024';
+    const content = environment.app_url + '/users/' + this.statsData.username + '/recap-2025';
     if (!this.navigatorShareService.canShare()) {
       if (this.clipboard.copy(content)) {
         this.libToastLogService.successDialog('Copied the message successfully!');
@@ -162,8 +175,7 @@ export class RecapComponent implements OnInit, OnDestroy {
 
     this.navigatorShareService
       .share({
-        title: this.statsData.user.name + ' - Recap 2024',
-        text: this.statsData.user.name + ' - Recap 2024',
+        title: this.statsData.name + ' - Recap 2025',
         url: content,
       })
       .then(() => {
@@ -171,7 +183,7 @@ export class RecapComponent implements OnInit, OnDestroy {
       });
   }
   redirectToProfile() {
-    const url = environment.app_url + '/users/' + this.statsData.user.username;
+    const url = environment.app_url + '/users/' + this.statsData.username;
     window.open(url, '_blank');
   }
 

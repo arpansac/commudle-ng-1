@@ -3,20 +3,20 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { RecapComponent } from './recap-2024.component';
+import { Recap2025Component } from './recap-2025.component';
 
-describe('RecapComponent', () => {
-  let component: RecapComponent;
-  let fixture: ComponentFixture<RecapComponent>;
+describe('Recap2025Component', () => {
+  let component: Recap2025Component;
+  let fixture: ComponentFixture<Recap2025Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RecapComponent],
+      declarations: [Recap2025Component],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RecapComponent);
+    fixture = TestBed.createComponent(Recap2025Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
