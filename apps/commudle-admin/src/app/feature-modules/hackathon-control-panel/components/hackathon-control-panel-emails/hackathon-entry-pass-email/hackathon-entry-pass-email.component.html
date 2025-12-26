@@ -44,6 +44,15 @@
     </div>
   </nb-card-body>
   <nb-card-footer>
+    <button
+      nbButton
+      status="primary"
+      (click)="previewEmail()"
+      [disabled]="entryPassForm.invalid || showPreviewSpinner"
+      [nbSpinner]="showPreviewSpinner"
+    >
+      Preview Email
+    </button>
     <button nbButton status="primary" (click)="sendEntryPassEmail()" [disabled]="entryPassForm.invalid" fullWidth>
       Send
     </button>

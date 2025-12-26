@@ -454,6 +454,8 @@ export const API_ROUTES = {
         'api/v2/email_previews/hackathon_emails/hackathon_team_individual_general_email',
       HACKATHON_SEND_TEAM_STATUS_EMAIL_BY_FILTER:
         'api/v2/email_previews/hackathon_emails/send_team_status_email_by_filter',
+      HACKATHON_TEAM_RSVP_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_team_rsvp_email',
+      HACKATHON_ENTRY_PASS_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_entry_pass_email',
     },
   },
 

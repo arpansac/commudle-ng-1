@@ -653,6 +653,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   openBulkRsvpEmailDialog() {
     this.nbDialogService.open(HackathonRsvpEmailComponent, {
       context: {
+        team: this.userResponses[0].team,
         hackathon: this.hackathon,
         isBulkEmail: true,
       },
@@ -671,6 +672,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.nbDialogService.open(HackathonEntryPassEmailComponent, {
       context: {
         hackathon: this.hackathon,
+        hackathonUserResponses: this.userResponses[0],
         isBulkEmail: true,
       },
     });

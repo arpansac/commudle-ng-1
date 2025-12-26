@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbDialogRef } from '@commudle/theme';
-import { IHackathonTeam } from '@commudle/shared-models';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { ToastrService } from '@commudle/shared-services';
+import { EmailerPreviewService, ToastrService } from '@commudle/shared-services';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   selector: 'commudle-hackathon-entry-pass-email',
@@ -17,6 +17,8 @@ export class HackathonEntryPassEmailComponent implements OnInit {
   hackathon: IHackathon;
   hackathonUserResponses: IHackathonUserResponses;
   isBulkEmail = false;
+  showPreviewSpinner = false;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 300,
@@ -38,6 +40,8 @@ export class HackathonEntryPassEmailComponent implements OnInit {
     private dialogRef: NbDialogRef<HackathonEntryPassEmailComponent>,
     private hackathonService: HackathonService,
     private toastrService: ToastrService,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -70,6 +74,33 @@ export class HackathonEntryPassEmailComponent implements OnInit {
         this.toastrService.successDialog('Entry pass email sent successfully!');
         this.dialogRef.close();
       }
+    });
+  }
+
+  previewEmail() {
+    if (this.entryPassForm.invalid) {
+      this.toastrService.warningDialog('Please fill all required fields');
+      return;
+    }
+
+    this.showPreviewSpinner = true;
+    const previewData = {
+      message: this.entryPassForm.value.message,
+      subject: this.entryPassForm.value.subject,
+      hackathon_team_id: this.hackathonUserResponses.team.id,
+      hackathon_user_response_id: this.hackathonUserResponses.user_responses[0]?.id,
+    };
+    this.emailerPreviewService.hackathonEntryPassEmailPreview(previewData, this.hackathon.id).subscribe({
+      next: (result) => {
+        this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+          context: { previewData: result.preview },
+        });
+        this.showPreviewSpinner = false;
+      },
+      error: () => {
+        this.toastrService.errorDialog('Failed to generate email preview');
+        this.showPreviewSpinner = false;
+      },
     });
   }
 
