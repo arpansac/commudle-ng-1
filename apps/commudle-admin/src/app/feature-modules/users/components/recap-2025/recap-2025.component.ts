@@ -66,7 +66,13 @@ export class Recap2025Component implements OnInit, OnDestroy {
   }
 
   private calculateSlidesCount() {
-    let baseCount = this.statsData?.is_community_leader ? 12 : 11;
+    let baseCount =
+      this.statsData?.is_community_leader &&
+      (this.statsData.total_members_gained > 0 ||
+        this.statsData.total_community_events_organized > 0 ||
+        this.statsData.total_community_hackathons_organized > 0)
+        ? 12
+        : 11;
     if (this.statsData?.people_met_at_events === 0) {
       baseCount--;
     }
@@ -107,7 +113,7 @@ export class Recap2025Component implements OnInit, OnDestroy {
 
   setMeta() {
     this.seoService.setTags(
-      this.statsData.name + '- Recap 2025',
+      this.statsData.name + ' | Recap 2025',
       "Here's a community recap for " + this.statsData.name + '  for 2025',
       this.statsData.photo.url,
     );
