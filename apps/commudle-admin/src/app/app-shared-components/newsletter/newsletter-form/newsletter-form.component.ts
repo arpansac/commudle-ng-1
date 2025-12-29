@@ -313,20 +313,39 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
 
   // upload_inline_images
   uploadTextImage(blobInfo, progress) {
-    const promise = new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
+      const blob = blobInfo.blob();
+      const filename = blobInfo.filename();
+
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+
+      if (!allowedTypes.includes(blob.type)) {
+        const errorMsg = 'Invalid file type. Only PNG, JPG, and JPEG are allowed.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
+      if (blob.size > maxSize) {
+        const errorMsg = 'File size exceeds 2 MB limit.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
       const formData: any = new FormData();
-      formData.append('image', blobInfo.blob());
+      formData.append('image', blob, filename);
+
       this.newsletterService.attachImage(formData, this.parentId, this.parentType).subscribe({
-        next: (res: any) => {
+        next: (res) => {
           this.imagesList.push({ value: res });
+          progress(100);
           resolve(res);
         },
-        error: (err: any) => {
-          reject(err);
+        error: (err) => {
+          reject({ message: 'Upload failed', remove: true });
         },
       });
     });
-    return promise;
   }
 
   create(sendTestEmail?) {

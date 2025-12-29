@@ -575,9 +575,27 @@ export class EmailerComponent implements OnInit, OnDestroy {
   }
 
   uploadTextImage(blobInfo, progress) {
-    const promise = new Promise<any>((resolve, reject) => {
-      const formData = new FormData();
-      formData.append('image', blobInfo.blob(), blobInfo.filename());
+    return new Promise<any>((resolve, reject) => {
+      const blob = blobInfo.blob();
+      const filename = blobInfo.filename();
+
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+
+      if (!allowedTypes.includes(blob.type)) {
+        const errorMsg = 'Invalid file type. Only PNG, JPG, and JPEG are allowed.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
+      if (blob.size > maxSize) {
+        const errorMsg = 'File size exceeds 2 MB limit.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
+      const formData: any = new FormData();
+      formData.append('image', blob, filename);
 
       this.customPageService.attachImage(formData, this.community.id, EDbModels.KOMMUNITY).subscribe({
         next: (res: any) => {
@@ -589,6 +607,5 @@ export class EmailerComponent implements OnInit, OnDestroy {
         },
       });
     });
-    return promise;
   }
 }
