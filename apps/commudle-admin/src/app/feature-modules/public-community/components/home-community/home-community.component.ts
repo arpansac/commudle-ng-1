@@ -82,6 +82,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe((data) => {
       this.community = data.community;
+      this.setSchema();
       this.getCustomPages();
       this.updateHeaderVariation();
       this.newsletterService.getPIndex(this.community.id, 'Kommunity').subscribe((data) => {
@@ -192,5 +193,37 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
     } else {
       this.showMiniHeader = false;
     }
+  }
+
+  setSchema() {
+    const socialMediaLinks = [
+      this.community.facebook,
+      this.community.github,
+      this.community.linkedin,
+      this.community.twitter,
+      this.community.website,
+      this.community.instagram,
+    ].filter((link) => link !== null && link !== undefined);
+    this.seoService.setSchema({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${environment.app_url}/communities/${this.community.slug}`,
+      name: this.community.name,
+      description: this.community.mini_description || this.community.about,
+      url: `${environment.app_url}/communities/${this.community.slug}`,
+      logo: this.community.logo_image_path?.url,
+      image: this.community.banner_image?.url || this.community.logo_image_path?.url,
+      sameAs: socialMediaLinks,
+      email: this.community.contact_email,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: this.community.location,
+      },
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/JoinAction',
+        userInteractionCount: this.community.members_count || 0,
+      },
+    });
   }
 }

@@ -10,6 +10,7 @@ import { ISessions } from 'apps/shared-models/sessions.model';
 import { INewsletter } from 'apps/shared-models/newsletter.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model';
+import { environment } from '@commudle/shared-environments';
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
@@ -92,6 +93,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       this.searchLoader = true;
       this.query = params.query;
       this.updateSeoTitle();
+      this.setSchema();
 
       this.filters = [];
       this.selectedFilters = ['All'];
@@ -444,5 +446,24 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.cmsService.getDataBySlug(update).subscribe((value) => {
       this.locationPageHeader = value;
     });
+  }
+
+  setSchema(): void {
+    const websiteSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Commudle',
+      url: environment.app_url + '/search?q=' + this.query,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: environment.app_url + '/search?q=' + this.query,
+        },
+        'query-input': 'required name=' + this.query,
+      },
+    };
+
+    this.seoService.setSchema(websiteSchema);
   }
 }
