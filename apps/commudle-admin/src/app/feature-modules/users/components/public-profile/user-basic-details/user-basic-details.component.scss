@@ -71,10 +71,6 @@ p {
 
         a {
           @apply com-text-base hover:com-underline com-text-Yankees-Blue com-no-underline;
-
-          span {
-            @apply com-font-semibold;
-          }
         }
       }
 

@@ -77,10 +77,7 @@ nb-card {
           .count-and-location {
             @apply com-flex com-items-center com-m-0 com-h-[18px] com-mt-3 com-overflow-hidden;
             .followers-count {
-              @apply com-text-xs com-font-medium com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0;
-              span {
-                @apply com-text-Yankees-Blue;
-              }
+              @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0;
             }
 
             .location {
