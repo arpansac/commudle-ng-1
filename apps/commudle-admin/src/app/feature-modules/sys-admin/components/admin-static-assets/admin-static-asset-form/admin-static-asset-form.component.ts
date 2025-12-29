@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IAttachedFile } from '@commudle/shared-models';
+import { ToastrService } from '@commudle/shared-services';
+import { AdminStaticAssetsService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/admin-static-assets.service';
 import { IStaticAsset } from 'apps/shared-models/assets.model';
-import { IAttachedFile } from 'apps/shared-models/attached-file.model';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
-import { AdminStaticAssetsService } from '../../../services/admin-static-assets.service';
 
 @Component({
-  selector: 'app-admin-static-asset-form',
+  selector: 'commudle-admin-static-asset-form',
   templateUrl: './admin-static-asset-form.component.html',
   styleUrls: ['./admin-static-asset-form.component.scss'],
 })
@@ -26,7 +26,7 @@ export class AdminStaticAssetFormComponent implements OnInit {
     private adminStaticAssetsService: AdminStaticAssetsService,
     private fb: FormBuilder,
     private router: Router,
-    private libToastLogService: LibToastLogService,
+    private libToastLogService: ToastrService,
     private activatedRoute: ActivatedRoute,
   ) {
     this.assetForm = this.fb.group({

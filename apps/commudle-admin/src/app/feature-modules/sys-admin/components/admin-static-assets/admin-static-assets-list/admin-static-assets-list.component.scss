@@ -10,6 +10,10 @@
   nb-card-body {
     @apply com-p-0;
 
+    .search-container {
+      @apply com-p-4 com-border-b;
+    }
+
     .assets-list-container {
       nb-list {
         nb-list-item {
@@ -38,10 +42,10 @@
           }
 
           .controls {
-            @apply com-gap-4;
+            @apply com-flex com-gap-2 com-items-center com-flex-shrink-0;
 
             @media screen and (max-width: $tab-width) {
-              @apply com-m-5;
+              @apply com-mt-4 com-w-full com-justify-center;
             }
           }
         }
@@ -65,4 +69,23 @@
 }
 .asset-image img {
   @apply com-h-[200px];
+}
+
+.copy-link-card {
+  @apply com-w-[500px] com-max-w-[90vw];
+
+  .copy-link-container {
+    .link-wrapper {
+      @apply com-flex com-items-start com-gap-3 com-p-3 com-bg-gray-100 com-rounded com-cursor-pointer;
+      @apply hover:com-bg-gray-200 com-transition-colors;
+
+      .link-text {
+        @apply com-break-all com-select-all com-text-sm com-flex-1 com-m-0 com-leading-relaxed;
+      }
+
+      .copy-icon {
+        @apply com-text-primary-500 com-text-xl com-flex-shrink-0 com-mt-[2px];
+      }
+    }
+  }
 }
