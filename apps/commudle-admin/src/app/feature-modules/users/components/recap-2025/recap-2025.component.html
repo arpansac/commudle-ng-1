@@ -368,7 +368,15 @@
         </div>
 
         <!-- Community Leader-->
-        <div *ngIf="statsData?.is_community_leader" class="component-container-wrapper ninth">
+        <div
+          *ngIf="
+            statsData?.is_community_leader &&
+            (statsData.total_members_gained > 0 ||
+              statsData.total_community_events_organized > 0 ||
+              statsData.total_community_hackathons_organized > 0)
+          "
+          class="component-container-wrapper ninth"
+        >
           <div
             class="component-container"
             style.background-image="url({{ staticAssets.recap_2025.recap_community_leader_background }})"
@@ -378,24 +386,26 @@
                 Your Communities Are Growing
               </p>
               <div class="content">
-                <p class="text-margin">Total Member{{ statsData.total_members_gained > 1 ? 's' : '' }} Gained 📈</p>
-                <p class="count">
+                <p *ngIf="statsData.total_members_gained > 0" class="text-margin">
+                  Total Member{{ statsData.total_members_gained > 1 ? 's' : '' }} Gained 📈
+                </p>
+                <p *ngIf="statsData.total_members_gained > 0" class="count">
                   {{ statsData.total_members_gained }}
                 </p>
               </div>
               <div class="content">
-                <p class="text-margin">
+                <p *ngIf="statsData.total_community_events_organized > 0" class="text-margin">
                   Total Community Event{{ statsData.total_community_events_organized > 1 ? 's' : '' }} Organized 👏
                 </p>
-                <p class="count">
+                <p *ngIf="statsData.total_community_events_organized > 0" class="count">
                   {{ statsData.total_community_events_organized }}
                 </p>
               </div>
               <div class="content">
-                <p class="text-margin">
+                <p *ngIf="statsData.total_community_hackathons_organized > 0" class="text-margin">
                   Total Hackathon{{ statsData.total_community_hackathons_organized > 1 ? 's' : '' }} Organized 🏁
                 </p>
-                <p class="count">
+                <p *ngIf="statsData.total_community_hackathons_organized > 0" class="count">
                   {{ statsData.total_community_hackathons_organized }}
                 </p>
               </div>
