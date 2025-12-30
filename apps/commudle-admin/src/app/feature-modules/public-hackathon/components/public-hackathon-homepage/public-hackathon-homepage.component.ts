@@ -209,6 +209,11 @@ export class PublicHackathonHomepageComponent implements OnInit, OnDestroy {
           name: this.community.name,
           url: environment.app_url + '/communities/' + this.community.slug,
         },
+        interactionStatistic: {
+          '@type': 'InteractionCounter',
+          interactionType: 'https://schema.org/RegisterAction',
+          userInteractionCount: this.hackathon.number_of_participants || 0,
+        },
       });
     }
   }
