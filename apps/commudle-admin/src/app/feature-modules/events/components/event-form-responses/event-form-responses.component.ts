@@ -478,7 +478,8 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   getQuestionIndex(columnKey: string): number {
     if (!columnKey.startsWith('question_')) return -1;
     const questionId = parseInt(columnKey.replace('question_', ''));
-    return this.questions?.findIndex((q) => q.id === questionId) || -1;
+    const index = this.questions?.findIndex((q) => q.id === questionId);
+    return index !== undefined ? index : -1;
   }
 
   getExpandedRowData(): any {
