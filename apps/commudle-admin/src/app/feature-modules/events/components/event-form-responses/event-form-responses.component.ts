@@ -221,7 +221,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
       .subscribe((data) => {
         this.dataForm = data;
         this.questions = this.dataForm.questions;
-        this.setupTableColumns();
       });
 
     this.getResponses();
@@ -241,6 +240,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
       .getEventDataFormEntityGroup(this.eventDataFormEntityGroupId)
       .subscribe((data) => {
         this.eventDataFormEntityGroup = data;
+        this.setupTableColumns();
         if (
           this.eventDataFormEntityGroup.registration_type.name === RegistrationTypeNames.SPEAKER &&
           fetchEventLocationTrack
