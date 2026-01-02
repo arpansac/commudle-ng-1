@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { IForum } from '@commudle/shared-models';
+import { takeUntil, debounceTime } from 'rxjs/operators';
+import { IForum, IUserMessage } from '@commudle/shared-models';
 import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { ForumsStore } from '@commudle/shared-services';
+import { ForumsStore, SeoService } from '@commudle/shared-services';
+import { environment } from '@commudle/shared-environments';
 import { NewDiscussionFormComponent } from 'apps/commudle-admin/src/app/feature-modules/forums/components/new-discussion-form/new-discussion-form.component';
 
 @Component({
@@ -34,12 +35,19 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly dialogService: NbDialogService,
     private readonly forumsStore: ForumsStore,
+    private readonly seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.forum = data.forum;
       this.forumsStore.loadDiscussions(this.forum.discussion_id);
+    });
+
+    this.userMessages$.pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((messages) => {
+      if (messages && messages.length > 0) {
+        this.setSeoSchema(messages);
+      }
     });
   }
 
@@ -64,5 +72,69 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
 
   backToCategory(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  setSeoSchema(messages: IUserMessage[]): void {
+    if (!messages || messages.length === 0 || !this.forum) {
+      return;
+    }
+
+    const commentsArray = messages.map((message: IUserMessage) => ({
+      '@type': 'Comment',
+      text: this.seoService.removeHtmlTags(message.content),
+      datePublished: message.created_at,
+      author: {
+        '@type': 'Person',
+        name: message.user?.name ? message.user.name : message.user.username,
+        url: `https://www.commudle.com/users/${message.user?.username}`,
+      },
+      comment: message.user_messages ? this.getUserMessages(message) : [],
+    }));
+
+    const shareLink = `${environment.app_url}${window.location.pathname}`;
+    const firstMessageDate = messages.length > 0 ? messages[0].created_at : new Date().toISOString();
+
+    const discussionSchema: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      url: shareLink,
+      headline: `Discussion - ${this.forum.name}`,
+      author: {
+        '@type': 'Person',
+        name: this.forum.name,
+        url: shareLink,
+      },
+      datePublished: firstMessageDate,
+      comment: commentsArray,
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/CommentAction',
+        userInteractionCount: messages.length || 0,
+      },
+    };
+
+    this.seoService.setSchema(discussionSchema);
+  }
+
+  getUserMessages(message: IUserMessage) {
+    const resultArray = [];
+    for (const userMessage of message.user_messages) {
+      if (userMessage && userMessage.user) {
+        const transformedMessage = {
+          '@type': 'Comment',
+          text: this.seoService.removeHtmlTags(userMessage.content),
+          author: {
+            '@type': 'Person',
+            name: userMessage.user.name ? userMessage.user.name : userMessage.user.username,
+            url: `https://www.commudle.com/users/${userMessage.user.username}`,
+          },
+          datePublished: userMessage.created_at,
+        };
+
+        resultArray.push(transformedMessage);
+      }
+    }
+
+    return resultArray;
   }
 }
