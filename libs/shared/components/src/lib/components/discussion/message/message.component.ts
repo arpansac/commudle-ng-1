@@ -40,7 +40,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.seoSchema();
+    // this.seoSchema();
   }
 
   ngAfterViewInit(): void {
