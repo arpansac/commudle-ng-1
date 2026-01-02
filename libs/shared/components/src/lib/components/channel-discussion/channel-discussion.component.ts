@@ -13,15 +13,18 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { IEditorValidator } from '@commudle/editor';
 import { InfiniteScrollDirective } from '@commudle/infinite-scroll';
-import { EUserRoles, ICommunityChannel, IUserMessage } from '@commudle/shared-models';
+import { EUserRoles, ICommunityChannel, IUserMessage, IPage } from '@commudle/shared-models';
 import {
   AuthService,
   CommunityChannelsService,
   ToastrService,
   CommunityChannelManagerService,
+  SeoService,
 } from '@commudle/shared-services';
 import { CommunityChannelHandlerService } from '../../services/community-channel-handler.service';
 import { EditorComponent } from '@commudle/editor';
+import { environment } from '@commudle/shared-environments';
+import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'commudle-channel-discussion',
@@ -63,6 +66,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     private communityChannelManagerService: CommunityChannelManagerService,
     private communityChannelsService: CommunityChannelsService,
     private toastLogService: ToastrService,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +87,12 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     );
     this.communityChannelHandlerService.pinnedMessage(this.channelOrForum.id);
     this.getPinnedMessages();
+
+    this.communityChannelHandlerService.messages$.pipe(debounceTime(500)).subscribe((messagesPages) => {
+      if (messagesPages && messagesPages.length > 0) {
+        this.setSchema(messagesPages);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -126,5 +136,76 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     this.communityChannelHandlerService.pinnedMessages$.subscribe((data) => {
       this.pinnedMessages = data;
     });
+  }
+
+  setSchema(messagesPages: IPage<IUserMessage>[]): void {
+    if (!messagesPages || messagesPages.length === 0) {
+      return;
+    }
+    const allMessages: IUserMessage[] = messagesPages
+      .map((page) => page.data)
+      .filter((message) => message !== null && message !== undefined);
+
+    if (allMessages.length === 0) {
+      return;
+    }
+
+    const commentsArray = allMessages.map((message: IUserMessage) => ({
+      '@type': 'Comment',
+      text: this.seoService.removeHtmlTags(message.content),
+      datePublished: message.created_at,
+      author: {
+        '@type': 'Person',
+        name: message.user?.name ? message.user.name : message.user.username,
+        url: `https://www.commudle.com/users/${message.user?.username}`,
+      },
+      comment: message.user_messages ? this.getUserMessages(message) : '',
+    }));
+
+    const shareLink = `${environment.app_url}${window.location.pathname}`;
+    const firstMessageDate = allMessages.length > 0 ? allMessages[0].created_at : new Date().toISOString();
+
+    const discussionSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      url: shareLink,
+      author: {
+        '@type': 'Person',
+        name: this.channelOrForum.name,
+        url: shareLink,
+      },
+      datePublished: firstMessageDate,
+      headline: this.channelOrForum.description || this.channelOrForum.name,
+      comment: commentsArray,
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/CommentAction',
+        userInteractionCount: allMessages.length || 0,
+      },
+    };
+
+    this.seoService.setSchema(discussionSchema);
+  }
+
+  getUserMessages(message: IUserMessage) {
+    const resultArray = [];
+    for (const userMessage of message.user_messages) {
+      if (userMessage) {
+        const transformedMessage = {
+          '@type': 'Comment',
+          text: this.seoService.removeHtmlTags(userMessage.content),
+          author: {
+            '@type': 'Person',
+            name: userMessage.user.name ? userMessage.user.name : userMessage.user.username,
+            url: `https://www.commudle.com/users/${userMessage.user.username}`,
+          },
+          datePublished: userMessage.created_at,
+        };
+
+        resultArray.push(transformedMessage);
+      }
+    }
+
+    return resultArray;
   }
 }
