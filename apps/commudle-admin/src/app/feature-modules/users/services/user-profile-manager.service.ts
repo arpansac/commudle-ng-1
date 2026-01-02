@@ -43,6 +43,7 @@ export class UserProfileManagerService {
       designation: ['', [Validators.required, Validators.maxLength(300)]],
       experience_level: [''],
       user_domain: [''],
+      twitter: [''],
       location: [''],
       gender: [''],
       personal_website: [''],
@@ -143,6 +144,7 @@ export class UserProfileManagerService {
       youtube: currentUser.youtube,
       phone: currentUser.phone,
       instagram: currentUser.instagram,
+      twitter: currentUser.twitter,
     });
   }
 }
