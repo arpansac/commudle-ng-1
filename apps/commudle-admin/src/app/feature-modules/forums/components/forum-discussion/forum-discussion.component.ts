@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { IForum, IUserMessage } from '@commudle/shared-models';
 import { faArrowLeft, faComment, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
@@ -44,7 +44,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
       this.forumsStore.loadDiscussions(this.forum.discussion_id);
     });
 
-    this.userMessages$.pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe((messages) => {
+    this.userMessages$.pipe(takeUntil(this.destroy$)).subscribe((messages) => {
       if (messages && messages.length > 0) {
         this.setSeoSchema(messages);
       }

@@ -127,7 +127,6 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
     const hackathonUrl = communitySlug
       ? `${environment.app_url}/communities/${communitySlug}/hackathons/${this.hackathon.slug}`
       : `${environment.app_url}/hackathons/${this.hackathon.slug}`;
-    const firstMessageDate = allMessages.length > 0 ? allMessages[0].created_at : this.hackathon.created_at;
     const communityName = this.community?.name || this.hackathon.community?.name;
 
     const discussionSchema: Record<string, unknown> = {
@@ -140,7 +139,7 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
         name: communityName,
         url: communitySlug ? `${environment.app_url}/communities/${communitySlug}` : environment.app_url,
       },
-      datePublished: firstMessageDate,
+      datePublished: this.hackathon.start_date,
       comment: commentsArray,
       interactionStatistic: {
         '@type': 'InteractionCounter',

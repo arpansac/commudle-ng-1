@@ -24,7 +24,7 @@ import {
 import { CommunityChannelHandlerService } from '../../services/community-channel-handler.service';
 import { EditorComponent } from '@commudle/editor';
 import { environment } from '@commudle/shared-environments';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-channel-discussion',
@@ -54,6 +54,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     maxLength: 200,
     noWhitespace: true,
   };
+  private readonly destroy$ = new Subject<void>();
 
   @ViewChild(InfiniteScrollDirective) infiniteScrollDirective;
   @ViewChildren('messagesListRef', { read: ViewContainerRef }) messagesListRefs: QueryList<HTMLDivElement>;
@@ -88,7 +89,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     this.communityChannelHandlerService.pinnedMessage(this.channelOrForum.id);
     this.getPinnedMessages();
 
-    this.communityChannelHandlerService.messages$.pipe(debounceTime(500)).subscribe((messagesPages) => {
+    this.communityChannelHandlerService.messages$.pipe(takeUntil(this.destroy$)).subscribe((messagesPages) => {
       if (messagesPages && messagesPages.length > 0) {
         this.setSchema(messagesPages);
       }
