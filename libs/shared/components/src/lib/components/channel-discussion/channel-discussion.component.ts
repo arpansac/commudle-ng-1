@@ -164,7 +164,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     }));
 
     const shareLink = `${environment.app_url}${window.location.pathname}`;
-    const firstMessageDate = allMessages.length > 0 ? allMessages[0].created_at : new Date().toISOString();
+    const firstMessageDate = this.channelOrForum.created_at;
 
     const discussionSchema = {
       '@context': 'https://schema.org',

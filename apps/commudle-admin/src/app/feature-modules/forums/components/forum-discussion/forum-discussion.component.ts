@@ -92,7 +92,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     }));
 
     const shareLink = `${environment.app_url}${window.location.pathname}`;
-    const firstMessageDate = messages.length > 0 ? messages[0].created_at : new Date().toISOString();
+    const firstMessageDate = this.forum.created_at;
 
     const discussionSchema: Record<string, unknown> = {
       '@context': 'https://schema.org',

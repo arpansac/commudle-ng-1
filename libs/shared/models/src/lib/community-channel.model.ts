@@ -32,6 +32,7 @@ export interface ICommunityChannel {
   default: boolean;
   parent_type: EDbModels;
   parent: ICommunity | IHackathon;
+  created_at: Date;
 }
 
 export interface IGroupedChannels {
