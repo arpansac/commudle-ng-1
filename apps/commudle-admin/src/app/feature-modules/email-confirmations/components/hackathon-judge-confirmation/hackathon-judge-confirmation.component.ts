@@ -57,12 +57,9 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
         this.judge = data.judge;
         this.getJudges();
         this.fetchCommunityDetails();
-        if (this.judge.invite_status === EJudgeInvitationStatus.INVITED || Number(params.status) === 1) {
-          this.onAcceptRoleButton();
-        }
         if (Number(params.status) === 2) {
           this.activateRole(this.token, EJudgeInvitationStatus.REJECTED);
-        } else {
+        } else if (this.judge.invite_status === EJudgeInvitationStatus.INVITED || Number(params.status) === 1) {
           this.onAcceptRoleButton();
         }
         if (this.hackathon && this.hackathon.community) {
