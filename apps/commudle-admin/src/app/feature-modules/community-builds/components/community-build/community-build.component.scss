@@ -3,6 +3,10 @@
     @apply com-mb-0;
   }
 }
+
+.build-container {
+  @apply com-bg-white com-overflow-hidden;
+}
 .updates {
   nb-card-body {
     @apply com-pl-0;
@@ -34,8 +38,8 @@
 .one-column-layout {
   @apply com-m-0;
 
-  nb-card {
-    @apply com-m-0 com-mb-4;
+  .created-by-card {
+    @apply md:com-m-0 md:com-mb-4 com-m-4;
   }
 }
 

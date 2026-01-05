@@ -1,4 +1,4 @@
-<div *ngIf="communityBuild" class="com-bg-white">
+<div *ngIf="communityBuild" class="build-container">
   <div class="base-layout community-build-container">
     <div class="container">
       <div *appBreakpoints="'>lg'" class="two-column-layout medium">
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div *appBreakpoints="'<=lg'" class="one-column-layout">
-        <nb-card>
+        <nb-card class="created-by-card">
           <nb-card-body class="created-container">
             <h3>Created by</h3>
             <app-user-profile-card-large
