@@ -1,16 +1,9 @@
 <div *ngIf="cBuild" class="community-build-details">
-  <div class="com-flex com-justify-between com-items-center">
-    <app-badge
-      [color]="CBuildTypeDisplay[cBuild.build_type].color"
-      [nbIcon]="CBuildTypeDisplay[cBuild.build_type].icon"
-      [text]="cBuild.build_type | titlecase"
-    ></app-badge>
-    <div class="date-edit-btn">
-      <p class="date"><fa-icon [icon]="faCalendar"></fa-icon> {{ cBuild.created_at | date }}</p>
-      <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
-        <nb-icon icon="edit"></nb-icon>
-      </a>
-    </div>
+  <div class="date-edit-btn">
+    <p class="date"><fa-icon [icon]="faCalendar"></fa-icon> {{ cBuild.created_at | date }}</p>
+    <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
+      <nb-icon icon="edit"></nb-icon>
+    </a>
   </div>
   <h1 class="community-build-name">{{ cBuild.name }}</h1>
   <div class="community-build-tags">
@@ -113,7 +106,10 @@
   </div>
   <div class="votes-share-container">
     <div class="votes-display">
-      <app-votes-display [votableId]="cBuild.id" icon="star" votableType="CommunityBuild"></app-votes-display>
+      <div class="votes-views">
+        <app-votes-display [votableId]="cBuild.id" icon="star" votableType="CommunityBuild"></app-votes-display>
+        <p class="views-count"><fa-icon [icon]="faEye"></fa-icon> {{ cBuild.total_visitors }}</p>
+      </div>
       <span>Give a star to encourage!</span>
     </div>
     <app-share-button
@@ -123,14 +119,14 @@
       [url]="environment.app_url + '/builds/' + cBuild.slug"
     ></app-share-button>
   </div>
-</div>
 
-<nb-card *ngIf="discussionChat" class="community-build-discussion">
-  <nb-card-header>Discussion</nb-card-header>
-  <nb-card-body>
-    <commudle-discussion [discussionId]="discussionChat.id" discussionParent="builds"></commudle-discussion>
-  </nb-card-body>
-</nb-card>
+  <nb-card *ngIf="discussionChat" class="community-build-discussion">
+    <nb-card-header>Discussion</nb-card-header>
+    <nb-card-body>
+      <commudle-discussion [discussionId]="discussionChat.id" discussionParent="builds"></commudle-discussion>
+    </nb-card-body>
+  </nb-card>
+</div>
 
 <ng-template #imageTemplate let-ref="dialogRef">
   <nb-card class="image-window">

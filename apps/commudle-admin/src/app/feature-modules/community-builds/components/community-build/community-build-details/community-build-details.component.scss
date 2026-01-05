@@ -220,8 +220,17 @@ p {
   @apply com-flex com-justify-between com-items-center com-mt-4 com-pt-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
 
   .votes-display {
+    @apply com-flex com-flex-col com-items-center com-gap-4;
+
+    .votes-views {
+      @apply com-flex com-items-center;
+    }
     app-votes-display {
-      @apply com-inline-block com-mr-2;
+      @apply com-inline-block com-mr-4;
+    }
+
+    .views-count {
+      @apply com-flex com-items-center com-text-base com-font-medium com-text-gray-500 com-border-0 com-border-l com-gap-2 com-border-solid com-border-Bright-Gray com-pl-4;
     }
 
     span {

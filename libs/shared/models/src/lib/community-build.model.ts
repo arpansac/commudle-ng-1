@@ -27,6 +27,7 @@ export interface ICommunityBuild {
   hackathon_team: IHackathonTeam;
   entity_updates?: IEntityUpdate[];
   thumbnail_image: IAttachedFile;
+  total_visitors: number;
 }
 
 export interface ICommunityBuildSearch extends ICommunityBuild {

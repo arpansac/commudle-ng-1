@@ -7,7 +7,7 @@ import { CBuildTypeDisplay, EBuildType, ICommunityBuild } from 'apps/shared-mode
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpRightFromSquare, faEye } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -36,6 +36,7 @@ export class CommunityBuildDetailsComponent implements OnInit {
   currentImageIndex = 0;
   isLeftScrollDisabled = true;
   isRightScrollDisabled = true;
+  faEye = faEye;
 
   moment = moment;
 
