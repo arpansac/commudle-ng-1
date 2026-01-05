@@ -140,11 +140,15 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         identifier: this.user.username,
         description: this.user.about_me,
         image: this.user.photo.url,
-        dateCreated: this.user.created_at,
         sameAs: socialMediaLinks.map((links) => links),
         gender: this.user.gender,
         jobTitle: this.user.designation,
         address: this.user.location,
+        interactionStatistic: {
+          '@type': 'InteractionCounter',
+          interactionType: 'https://schema.org/FollowAction',
+          userInteractionCount: this.user.followers_count || 0,
+        },
       },
     });
   }

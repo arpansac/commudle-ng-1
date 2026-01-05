@@ -107,9 +107,6 @@ export class HomeEventComponent implements OnInit, OnDestroy {
       this.community = community;
       this.isOrganizerCheck(this.community.slug);
       this.getDiscussionChat();
-      if (!this.event.custom_agenda) {
-        this.setSchema();
-      }
 
       this.seoService.setTags(
         `${this.event.name} | ${this.community.name}`,
@@ -123,6 +120,9 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     this.eventService.pGetEventsInterestedMembers(this.event.id).subscribe((res) => {
       this.interestedUsers = res.users;
       this.interestedUsersCount = res.total_count;
+      if (!this.event.custom_agenda && this.community && this.interestedUsersCount) {
+        this.setSchema();
+      }
     });
   }
 
@@ -151,6 +151,11 @@ export class HomeEventComponent implements OnInit, OnDestroy {
           '@type': 'Offer',
           name: this.event.name,
           url: environment.app_url + '/communities/' + this.community.slug + '/events/' + this.event.slug,
+        },
+        interactionStatistic: {
+          '@type': 'InteractionCounter',
+          interactionType: 'https://schema.org/JoinAction',
+          userInteractionCount: this.interestedUsersCount || 0,
         },
       });
     }
