@@ -22,6 +22,7 @@ export class ShareButtonComponent implements OnInit {
   @Input() appearance: NbButtonAppearance = 'filled';
   @Input() fullWidth: boolean = false;
   @Input() status: NbComponentStatus = 'info';
+  @Input() customShareButton: boolean = false;
 
   constructor(
     private navigatorShareService: NavigatorShareService,
