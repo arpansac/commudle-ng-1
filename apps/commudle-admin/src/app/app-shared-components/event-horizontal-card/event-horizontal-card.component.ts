@@ -10,6 +10,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
 import * as momentTimezone from 'moment-timezone';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-event-horizontal-card',
@@ -34,6 +35,7 @@ export class EventHorizontalCardComponent implements OnInit {
   moment = moment;
   tags: string[] = [];
   momentTimezone = momentTimezone;
+  staticAssets = staticAssets;
 
   constructor(private communitiesService: CommunitiesService) {}
 

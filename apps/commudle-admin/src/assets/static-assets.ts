@@ -353,6 +353,14 @@ export const staticAssets = {
   //id: 236
   empty_state_mobile_past_events:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNTBXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e9c54ba849485839da8f52ffd8a296cef4629c8e/Past%20-%20Mobile.png',
+
+  //id: 237
+  empty_state_mobile_upcoming_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNk1XQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c4ccce312c7e3a5bb5ab8b4b525addfc2a3591f6/Upcoming%20-%20Mobile.png',
+
+  //id: 238
+  empty_state_desktop_upcoming_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNklXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--78a99d83aaf09d50069300bf97d344a7b93790a4/Upcoming%20-%20Desktop.png',
 };
 
 export const AwsS3Bucket = {

@@ -20,8 +20,21 @@
             ></commudle-banner-image>
           </div>
         </div>
-        <div *ngIf="!event.header_image" class="no-image-header">
-          <nb-icon icon="link" status="primary"></nb-icon>
+        <div *ngIf="!event.header_image">
+          <div *appBreakpoints="'>md'" class="no-image-header-desktop">
+            <img
+              alt="{{ event.name }}"
+              src="{{ staticAssets.empty_state_desktop_upcoming_events }}"
+              title="{{ event.name }}"
+            />
+          </div>
+          <div *appBreakpoints="'<=md'" class="no-image-header-mobile">
+            <img
+              alt="{{ event.name }}"
+              src="{{ staticAssets.empty_state_mobile_upcoming_events }}"
+              title="{{ event.name }}"
+            />
+          </div>
         </div>
         <div *appBreakpoints="'>lg'" class="upcoming-card-details-desktop">
           <div class="time-badge">
