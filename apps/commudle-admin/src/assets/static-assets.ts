@@ -345,6 +345,14 @@ export const staticAssets = {
     recap_thank_you_heart_image:
       'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzhMQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--28e643163cdc04a7801e7c58499d01c08b8d5992/Red%20Heart.png',
   },
+
+  //id: 235
+  empty_state_desktop_past_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNFVXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1f889659a8620e4294907a286f7435213b5e8d55/Past%20-%20Desktop.png',
+
+  //id: 236
+  empty_state_mobile_past_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNTBXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e9c54ba849485839da8f52ffd8a296cef4629c8e/Past%20-%20Mobile.png',
 };
 
 export const AwsS3Bucket = {
