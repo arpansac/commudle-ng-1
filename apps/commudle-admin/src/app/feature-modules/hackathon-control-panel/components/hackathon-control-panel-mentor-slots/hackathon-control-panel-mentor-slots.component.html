@@ -1,0 +1,118 @@
+<nb-card>
+  <nb-card-header>
+    <span>Mentor Slot Booking</span>
+  </nb-card-header>
+  <nb-card-body>
+    <commudle-data-table
+      *ngIf="rounds.length > 0 && mentors.length > 0"
+      [columns]="tableColumns"
+      [rows]="tableRows"
+      [config]="tableConfig"
+      [isLoading]="isLoading"
+    >
+    </commudle-data-table>
+
+    <div *ngIf="isLoading" class="loading-container">
+      <nb-spinner></nb-spinner>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #mentorCellTemplate let-row="row" let-value="value">
+  <div class="mentor-info">
+    <img *ngIf="value.photo?.i320" [src]="value.photo.i320" [alt]="value.name" class="mentor-avatar" />
+    <div *ngIf="!value.photo?.i320" class="mentor-avatar-placeholder">
+      <span>{{ value.name.charAt(0).toUpperCase() }}</span>
+    </div>
+    <div class="mentor-details">
+      <span class="mentor-name">{{ value.name }}</span>
+      <span class="mentor-designation" *ngIf="value.designation">{{ value.designation }}</span>
+    </div>
+  </div>
+  @if(value.meeting_location){ @if(value.meeting_location.startsWith('http://') ||
+  value.meeting_location.startsWith('https://')){
+  <div class="meeting-location">
+    <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer">
+      {{ value.meeting_location }}
+    </a>
+  </div>
+  }@else {
+  <div class="meeting-location">
+    {{ value.meeting_location }}
+  </div>
+  } }@else {
+  <button
+    nbButton
+    size="small"
+    status="basic"
+    class="add-meeting-btn"
+    (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value.id)"
+  >
+    <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
+  </button>
+  }
+</ng-template>
+
+<ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
+  <div class="slots-container">SLOTS</div>
+</ng-template>
+
+<ng-template #roundHeaderTemplate let-column="column">
+  <div class="round-header">
+    <div class="round-header-content">
+      <span class="round-header-name">{{ column.round.name }}</span>
+      <span class="round-header-datetime">
+        {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+      <span class="round-header-datetime" *ngIf="column.round.end_date">
+        {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
+      </span>
+    </div>
+    <div class="round-actions">
+      <button nbButton ghost size="tiny" (click)="openSlotRulesDialog(updateSlotRules, column.round.id)">
+        <nb-icon icon="settings-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #updateMentorMeetingUrl let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>Update Meeting URL</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form-group">
+        <label for="meetingUrl">Meeting URL</label>
+        <input type="text" id="meetingUrl" nbInput fullWidth [(ngModel)]="meetingUrl" placeholder="Enter meeting URL" />
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="updateMeetingUrl(data.mentorId, ref)" [disabled]="!meetingUrl">
+        Update
+      </button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #updateSlotRules let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>Add/Update Slot Rules</div>
+      <button ghost nbButton size="small" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Slot rules configuration for Round {{ data.roundId }}</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="ref.close()">Save</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

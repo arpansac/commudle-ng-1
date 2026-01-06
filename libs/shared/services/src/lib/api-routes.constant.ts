@@ -1016,6 +1016,7 @@ export const API_ROUTES = {
     ROLES: 'api/v2/hackathon_judge/roles', //GET
     SEND_DASHBOARD_LINK: 'api/v2/hackathon_judge/send_dashboard_link', //POST
     SEND_CUSTOM_EMAIL: 'api/v2/hackathon_judge/send_custom_email', //POST
+    UPDATE_MEETING_URL: 'api/v2/hackathon_judge/update_meeting_url', //PUT
   },
 
   EXPERTS: {

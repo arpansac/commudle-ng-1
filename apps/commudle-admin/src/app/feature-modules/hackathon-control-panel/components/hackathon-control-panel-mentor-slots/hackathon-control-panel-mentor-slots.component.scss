@@ -1,0 +1,63 @@
+.mentor-info {
+  @apply com-flex com-items-center com-gap-3;
+
+  .mentor-avatar {
+    @apply com-w-10 com-h-10 com-rounded-full com-object-cover;
+  }
+
+  .mentor-avatar-placeholder {
+    @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center com-text-white com-font-semibold;
+  }
+
+  .mentor-details {
+    @apply com-flex com-flex-col com-flex-1;
+
+    .mentor-name {
+      @apply com-font-medium com-text-gray-900;
+    }
+
+    .mentor-designation {
+      @apply com-text-sm com-text-gray-600;
+    }
+  }
+}
+
+.add-meeting-btn {
+  @apply com-text-xs com-mt-2;
+}
+
+.meeting-location {
+  @apply com-mt-2 com-text-sm;
+
+  a {
+    @apply com-text-primary-500 com-underline;
+
+    &:hover {
+      @apply com-text-primary-600;
+    }
+  }
+}
+
+.slots-container {
+  @apply com-flex com-justify-around com-items-center com-gap-2;
+}
+
+.round-header {
+  @apply com-flex com-flex-col com-gap-1;
+
+  .round-header-content {
+    @apply com-flex com-flex-col com-gap-1;
+
+    .round-header-name {
+      @apply com-font-semibold com-text-base;
+    }
+
+    .round-header-datetime {
+      @apply com-text-xs com-text-gray-500 com-font-normal;
+    }
+  }
+}
+
+.loading-container {
+  @apply com-flex com-justify-center com-items-center com-py-12;
+}

@@ -15,6 +15,7 @@ export interface IHackathonJudge {
   photo?: IAttachedFile;
   invite_status: EJudgeInvitationStatus;
   judge_type: EHackathonJudgeType;
+  meeting_location: string;
 }
 
 export enum EJudgeInvitationStatus {

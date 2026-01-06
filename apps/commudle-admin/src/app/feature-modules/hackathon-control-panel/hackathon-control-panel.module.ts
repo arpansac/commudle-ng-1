@@ -70,6 +70,7 @@ import { HackathonEntryPassScanComponent } from 'apps/commudle-admin/src/app/fea
 import { HackathonCheckedInListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-checked-in-list/hackathon-checked-in-list.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
+import { HackathonControlPanelMentorSlotsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentor-slots/hackathon-control-panel-mentor-slots.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/min
     HackathonEntryPassEmailComponent,
     HackathonEntryPassScanComponent,
     HackathonCheckedInListComponent,
+    HackathonControlPanelMentorSlotsComponent,
   ],
   imports: [
     CommonModule,

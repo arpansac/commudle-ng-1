@@ -58,4 +58,11 @@ export class HackathonJudgeService {
       message,
     });
   }
+
+  updateMeetingUrl(hackathonJudgeId: number, meetingUrl: string): Observable<boolean> {
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.UPDATE_MEETING_URL), {
+      hackathon_judge_id: hackathonJudgeId,
+      meeting_url: meetingUrl,
+    });
+  }
 }
