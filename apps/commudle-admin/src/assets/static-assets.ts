@@ -271,6 +271,11 @@ export const staticAssets = {
     experts_team_image:
       'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd3NIQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4be2ccc4d2b95b1cd7409268a34b4f9da8a6862c/experts-team.png',
   },
+
+  widgets: {
+    cdn_logo:
+      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmtXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--cba183ace87063d17cf07c6ef59ae389c5cd86a7/cdn%20logo.png',
+  },
 };
 
 export const AwsS3Bucket = {

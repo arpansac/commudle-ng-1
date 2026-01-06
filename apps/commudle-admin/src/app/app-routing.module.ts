@@ -17,6 +17,10 @@ import { InitResolver } from './resolvers/init.resolver';
 const routes: Routes = [
   // TODO: discuss in future for order of paths
   {
+    path: 'widgets',
+    loadChildren: () => import('./feature-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },
