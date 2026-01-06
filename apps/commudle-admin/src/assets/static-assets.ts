@@ -268,6 +268,8 @@ export const staticAssets = {
   hackathon_platform: {
     hero_image:
       'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd1lGQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2cdc96080458ee198f602db2d45a47edb1d22fe2/hackathon-hero.png',
+    experts_team_image:
+      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd3NIQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4be2ccc4d2b95b1cd7409268a34b4f9da8a6862c/experts-team.png',
   },
 };
 

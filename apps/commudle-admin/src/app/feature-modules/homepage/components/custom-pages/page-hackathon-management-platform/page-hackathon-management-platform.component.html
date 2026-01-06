@@ -5,13 +5,18 @@
 
   <!-- Hero Section -->
   <section id="main-content" class="hero-section" tabindex="-1">
+    <!-- Decorative Elements -->
+    <div class="hero-decoration code-block-1"></div>
+    <div class="hero-decoration code-block-2"></div>
+    <div class="hero-decoration code-block-3"></div>
+
     <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
       <div class="com-flex com-w-full md:com-flex-row com-flex-col-reverse com-gap-12 com-items-center">
         <!-- Left Content -->
         <div class="hero-content">
           <div class="hero-badge">
             <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-            Trusted by 500K+ developers worldwide
+            Trusted by top developer communities worldwide
           </div>
           <h1 class="hero-title">
             Reach developers ready to build
@@ -19,24 +24,25 @@
           </h1>
           <p class="hero-description"></p>
           <div class="hero-cta">
-            <button nbButton status="danger" size="large" class="cta-primary">
-              <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-              Host a Hackathon
-            </button>
-            <button nbButton status="basic" outline size="large" class="cta-secondary">Get Started</button>
+            <a [routerLink]="['/pricing']">
+              <button nbButton status="danger" size="large" class="cta-primary">
+                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+                Host a Hackathon
+              </button>
+            </a>
           </div>
           <div class="hero-stats">
             <div class="stat-item">
-              <span class="stat-number">500K+</span>
-              <span class="stat-label">Active Developers</span>
+              <span class="stat-number">250,000+</span>
+              <span class="stat-label">Developers & Designers</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">2,500+</span>
-              <span class="stat-label">Hackathons Hosted</span>
+              <span class="stat-number">500,000+</span>
+              <span class="stat-label">Community Members</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">98%</span>
-              <span class="stat-label">Success Rate</span>
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Focus on Developer Communities</span>
             </div>
           </div>
         </div>
@@ -55,7 +61,8 @@
       <div class="section-header">
         <h2 class="section-title">Everything you need to run successful hackathons</h2>
         <p class="section-description">
-          From registration to judging, our platform handles every aspect of hackathon management
+          From registration to judging, our platform handles every aspect of hackathon management for offline, online
+          and hybrid hackathons
         </p>
       </div>
 
@@ -66,7 +73,7 @@
           </div>
           <h3 class="feature-title">Smart Registration</h3>
           <p class="feature-description">
-            Streamlined registration process with custom forms, team formation tools, and automated confirmations.
+            Streamlined registration process with custom forms, team formation tools, and automated confirmations
           </p>
         </div>
 
@@ -75,9 +82,7 @@
             <fa-icon [icon]="faUsers" class="com-text-Caribbean-Green"></fa-icon>
           </div>
           <h3 class="feature-title">Team Management</h3>
-          <p class="feature-description">
-            Advanced team formation algorithms, skill matching, and collaboration tools for better team dynamics.
-          </p>
+          <p class="feature-description">Individual and team hackathon registrations with profile management</p>
         </div>
 
         <div class="feature-card">
@@ -85,9 +90,7 @@
             <fa-icon [icon]="faCode" class="com-text-Infra-Red"></fa-icon>
           </div>
           <h3 class="feature-title">Project Submission</h3>
-          <p class="feature-description">
-            Secure project submission system with version control integration and automated testing capabilities.
-          </p>
+          <p class="feature-description">Built-in project & PPT submission system with featured projects</p>
         </div>
 
         <div class="feature-card">
@@ -96,7 +99,7 @@
           </div>
           <h3 class="feature-title">Judging Platform</h3>
           <p class="feature-description">
-            Comprehensive judging system with scoring rubrics, real-time feedback, and transparent evaluation process.
+            Comprehensive judging system with scoring rubrics, feedback, and evaluation process
           </p>
         </div>
 
@@ -106,7 +109,7 @@
           </div>
           <h3 class="feature-title">Analytics Dashboard</h3>
           <p class="feature-description">
-            Real-time analytics and insights to track participation, engagement, and event success metrics.
+            Analytics and insights to track participation, engagement, and hackathon success metrics.
           </p>
         </div>
 
@@ -116,7 +119,7 @@
           </div>
           <h3 class="feature-title">Marketing Tools</h3>
           <p class="feature-description">
-            Built-in marketing suite with social media integration, email campaigns, and promotional materials.
+            Collaboration with most active communities and boost outreach using self-serve advertising portal.
           </p>
         </div>
       </div>
@@ -219,15 +222,15 @@
         <div class="community-content">
           <div class="community-badge">
             <fa-icon [icon]="faUsers" class="com-mr-2"></fa-icon>
-            Build Your Community
+            Build Your Developer Community
           </div>
           <h2 class="community-title">
             Launch your own
             <span class="com-text-primary-600">community hackathon</span>
           </h2>
           <p class="community-description">
-            Empower your developer community with engaging hackathons. Our platform provides everything you need to
-            create, manage, and grow successful community-driven events that bring developers together.
+            Empower your developer community with engaging hackathons, bundled with your community. Our platform
+            provides everything you need to create, manage, and grow successful developer programs.
           </p>
 
           <div class="community-features">
@@ -235,7 +238,7 @@
               <fa-icon [icon]="faRocket" class="feature-icon"></fa-icon>
               <div class="feature-content">
                 <h4 class="feature-title">Quick Setup</h4>
-                <p class="feature-description">Launch your hackathon in minutes with our intuitive setup wizard</p>
+                <p class="feature-description">Launch your hackathon in minutes with our simple setup flow</p>
               </div>
             </div>
 
@@ -251,7 +254,7 @@
               <fa-icon [icon]="faChartLine" class="feature-icon"></fa-icon>
               <div class="feature-content">
                 <h4 class="feature-title">Growth Analytics</h4>
-                <p class="feature-description">Track engagement and grow your community with detailed insights</p>
+                <p class="feature-description">Track member activity and engagement to find the top contributors</p>
               </div>
             </div>
           </div>
@@ -261,7 +264,9 @@
               <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
               Start Your Community
             </button>
-            <button nbButton status="basic" outline size="large" class="cta-secondary">View Examples</button>
+            <a [routerLink]="['/communities']">
+              <button nbButton status="basic" outline size="large" class="cta-secondary">All Communities</button>
+            </a>
           </div>
         </div>
       </div>
@@ -276,14 +281,16 @@
         <div class="sponsor-content">
           <h2 class="sponsor-title">Sponsor a hackathon</h2>
           <p class="sponsor-description">
-            Break free from the rigidity of Monday. Commudle gives you more freedom to customize projects as you like,
-            track, and more.
+            Hackathon hosts are looking to partner with brands who want to boost their presence, get early adopters,
+            looking to hire or solve their problem statements.
           </p>
           <div class="sponsor-cta">
-            <button nbButton status="primary" size="large" class="cta-primary">
-              <fa-icon [icon]="faTrophy" class="com-mr-2"></fa-icon>
-              Become a Sponsor
-            </button>
+            <a [routerLink]="['/hackathons']">
+              <button nbButton status="primary" size="large" class="cta-primary">
+                <fa-icon [icon]="faTrophy" class="com-mr-2"></fa-icon>
+                Become a Sponsor
+              </button>
+            </a>
           </div>
         </div>
 
@@ -397,16 +404,16 @@
           </h2>
           <p class="managed-description">
             Let our expert team handle everything for you. From concept to execution, we provide end-to-end hackathon
-            management services, ensuring your event runs flawlessly while you focus on what matters most.
+            management services.
           </p>
 
           <div class="managed-services">
             <div class="service-item">
               <fa-icon [icon]="faClipboardList" class="service-icon"></fa-icon>
               <div class="service-content">
-                <h4 class="service-title">Event Planning & Strategy</h4>
+                <h4 class="service-title">Planning & Strategy</h4>
                 <p class="service-description">
-                  Complete event conceptualization, timeline planning, and strategic execution
+                  Conceptualization, timeline planning, problem statement formation & platform setup
                 </p>
               </div>
             </div>
@@ -416,7 +423,7 @@
               <div class="service-content">
                 <h4 class="service-title">Participant Management</h4>
                 <p class="service-description">
-                  Registration handling, team formation, and participant engagement throughout
+                  Outreach, registration management, team formation, and participant engagement throughout
                 </p>
               </div>
             </div>
@@ -425,19 +432,18 @@
               <fa-icon [icon]="faHeadset" class="service-icon"></fa-icon>
               <div class="service-content">
                 <h4 class="service-title">24/7 Support & Monitoring</h4>
-                <p class="service-description">
-                  Dedicated support team ensuring smooth operations and quick issue resolution
-                </p>
+                <p class="service-description">Dedicated team ensures smooth operations and quick issue resolution</p>
               </div>
             </div>
           </div>
 
           <div class="managed-cta">
-            <button nbButton status="primary" size="large" class="cta-primary">
-              <fa-icon [icon]="faEnvelope" class="com-mr-2"></fa-icon>
-              Request Consultation
-            </button>
-            <button nbButton status="basic" outline size="large" class="cta-secondary">Learn More</button>
+            <a [routerLink]="['/fill-form/4296']">
+              <button nbButton status="primary" size="large" class="cta-primary">
+                <fa-icon [icon]="faEnvelope" class="com-mr-2"></fa-icon>
+                Speak With An Expert
+              </button>
+            </a>
           </div>
         </div>
 
@@ -486,7 +492,7 @@
               </div>
             </div>
 
-            <div class="process-stats">
+            <!-- <div class="process-stats">
               <div class="stat-item">
                 <span class="stat-number">100+</span>
                 <span class="stat-label">Managed Events</span>
@@ -499,7 +505,7 @@
                 <span class="stat-number">50K+</span>
                 <span class="stat-label">Participants</span>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -602,8 +608,8 @@
             <span class="com-text-primary-600">with targeted ads</span>
           </h2>
           <p class="boost-description">
-            Reach the right developers at the right time with our self-serve advertising portal. Create, manage, and
-            optimize your hackathon campaigns with real-time analytics and performance insights.
+            Reach the right people at the right time with our self serve advertising portal. Create, manage and optimize
+            your outreach campaigns with analytics and performance insights.
           </p>
 
           <div class="boost-features">
@@ -612,7 +618,7 @@
               <div class="feature-content">
                 <h4 class="feature-title">Precise Targeting</h4>
                 <p class="feature-description">
-                  Target developers by skills, location, experience level, and interests
+                  Target developers by skills, location, experience level, and communities
                 </p>
               </div>
             </div>
@@ -629,20 +635,20 @@
               <fa-icon [icon]="faDollarSign" class="feature-icon"></fa-icon>
               <div class="feature-content">
                 <h4 class="feature-title">Flexible Budgets</h4>
-                <p class="feature-description">Set daily or campaign budgets with full control over your spending</p>
+                <p class="feature-description">Set campaign budgets with full control over your spending</p>
               </div>
             </div>
           </div>
 
           <div class="boost-stats">
             <div class="stat-highlight">
-              <span class="stat-number">2.5x</span>
-              <span class="stat-description">Average increase in registrations with targeted ads</span>
+              <span class="stat-number">100%</span>
+              <span class="stat-description">People using Commudle are techies.</span>
             </div>
           </div>
 
           <div class="boost-cta">
-            <a href="/p/advertise" class="cta-link">
+            <a [routerLink]="['/ad-campaigns']" class="cta-link">
               <button nbButton status="primary" size="large" class="cta-primary">
                 <fa-icon [icon]="faBullhorn" class="com-mr-2"></fa-icon>
                 Start Advertising
@@ -741,10 +747,8 @@
         <div class="cta-content">
           <!-- Left side - Image -->
           <div class="cta-image-section">
-            <div class="image-placeholder"></div>
-            <div class="decorative-elements">
-              <div class="element-1"></div>
-              <div class="element-2"></div>
+            <div class="experts-image">
+              <img title="hackathon-experts-team" [src]="hackathonImages.experts_team_image" />
             </div>
           </div>
 
@@ -755,7 +759,9 @@
             </h2>
             <a [routerLink]="['/fill-form/4296']">
               <button class="cta-button">
-                <span class="button-icon"></span>
+                <span class="button-icon">
+                  <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+                </span>
                 Speak with an Expert
               </button>
             </a>
