@@ -1,4 +1,16 @@
-<li>
-  <p class="title">{{ update.title }}</p>
+<li *ngIf="update">
+  <p class="title">
+    <span>{{ update.title }}</span
+    >&nbsp;<app-badge
+      [color]="'com-bg-green-100'"
+      [fontSize]="'small'"
+      [text]="'New'"
+      [borderRadius]="'semi-round'"
+      [fontColor]="'com-text-gray-700'"
+    ></app-badge>
+  </p>
+  <div *ngIf="update?.image" class="image-container">
+    <img [src]="imageUrl(update.image)?.url()" [alt]="update.title" />
+  </div>
   <div [innerHTML]="richText" class="content"></div>
 </li>

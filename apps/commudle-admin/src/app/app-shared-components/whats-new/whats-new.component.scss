@@ -1,55 +1,54 @@
-.card {
-  @apply com-fixed com-top-20 md:com-w-[480px] com-h-[228px] md:com-right-auto com-right-4 md:com-left-auto com-left-4;
-  z-index: 9999;
+.popup-overlay {
+  @apply com-fixed com-inset-0 com-flex com-items-center com-justify-center com-z-[9999] com-bg-[#36445580] com-backdrop-blur-sm;
 }
 
-.base-layout {
-  @apply com-min-h-0;
+.popup-container {
+  @apply com-w-full com-max-w-2xl com-max-h-[90vh] md:com-w-[50dvw] com-overflow-auto;
 }
 
-.container {
-  @apply com-flex com-justify-end;
-}
-
-.gradient-border {
-  @apply com-bg-gradient-to-r com-from-[#9360FF] com-to-[#3366ff] com-p-2px com-rounded-xl;
-}
-
-nb-card {
-  @apply com-m-0 com-h-full com-w-full com-bg-white;
+.card-info-popup {
+  @apply com-m-0 com-h-full com-w-full com-bg-white com-rounded-[10px] com-border-none;
 }
 
 nb-card-header {
-  @apply com-flex com-justify-between com-items-center com-px-4 com-py-2 com-border-Bright-Gray;
+  @apply com-flex com-justify-between com-items-center com-pr-4 com-pl-5 com-py-5 com-bg-gradient-to-r com-from-[#3366ff] com-to-[#9360FF] com-rounded-t-[10px];
   .heading {
-    @apply com-flex;
+    @apply com-flex com-items-center com-flex-1;
 
     .heading-icon {
-      @apply com-mr-2 com-h-4 com-w-4 com-text-black;
+      @apply com-mr-[14px] com-h-10 com-w-10 com-flex-shrink-0;
+    }
+
+    .heading-content {
+      @apply com-flex com-flex-col com-gap-1;
     }
 
     .heading-text {
-      @apply com-text-black com-text-base com-font-semibold com-m-0;
+      @apply com-text-white com-text-lg com-font-bold com-m-0;
+    }
+
+    .heading-subtitle {
+      @apply com-text-gray-50 com-text-xs com-font-medium com-m-0;
     }
   }
 
   .cross-icon {
-    @apply com-h-4 com-w-4 com-text-black;
+    @apply com-h-6 com-w-6 com-text-tWhite;
   }
 }
 
 nb-card-body {
-  @apply com-px-4 com-py-3;
+  @apply com-px-5 com-py-1;
 
   ul {
-    @apply com-m-0 com-px-4 com-py-0;
+    @apply com-m-0 com-px-3 com-py-0;
   }
 }
 
 nb-card-footer {
-  @apply com-flex com-justify-between com-py-2 com-px-4;
-}
+  @apply com-flex com-justify-between com-py-3 com-px-5;
 
-.card-info-popup {
-  @apply com-max-h-[90dvh] md:com-w-[50dvw] com-bg-white;
+  button {
+    @apply com-text-xs com-font-medium com-bg-Yankees-Blue com-text-tWhite com-rounded-lg #{!important};
+  }
 }

@@ -1,15 +1,28 @@
 li {
-  @apply com-mb-4;
+  @apply com-py-4 com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-list-none;
+
+  &:last-child {
+    @apply com-border-b-0;
+  }
 }
 
 .title {
-  @apply com-m-0 com-mb-2 com-text-base com-font-bold com-text-Yankees-Blue;
+  @apply com-m-0 com-mb-2 com-text-base com-font-semibold com-text-Yankees-Blue com-flex com-items-center com-gap-1;
+}
+
+.image-container {
+  @apply md:com-w-[120px] com-h-[86px] com-w-full com-mt-3 com-rounded-lg com-overflow-hidden com-border com-border-solid com-border-Bright-Gray;
+
+  img {
+    @apply com-w-full com-h-auto com-object-cover com-rounded-lg;
+  }
 }
 
 .content {
+  @apply com-m-0 com-text-sm com-font-normal com-text-gray-custom-1;
   &::ng-deep {
     p {
-      @apply com-m-0 com-text-gray-400;
+      @apply com-m-0 com-text-sm com-font-normal com-text-gray-custom-1;
     }
   }
 }

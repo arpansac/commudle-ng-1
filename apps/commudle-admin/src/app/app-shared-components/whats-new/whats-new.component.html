@@ -1,3 +1,4 @@
+<!-- 
 <div class="base-layout">
   <div class="container">
     <div *ngIf="showPopup && showWhatsNewPopup" class="gradient-border card">
@@ -34,21 +35,23 @@
       </nb-card>
     </div>
   </div>
-</div>
+</div> -->
 
-<ng-template #cardInfoDialog let-ref="dialogRef">
-  <div class="gradient-border">
+<div class="popup-overlay">
+  <div class="popup-container">
     <nb-card class="card-info-popup">
       <nb-card-header>
         <div class="heading">
-          <fa-icon [icon]="faBullhorn" class="heading-icon"></fa-icon>
-          <p class="heading-text">What’s New</p>
+          <img [src]="staticAssets.emojis.stars" class="heading-icon" alt="Stars" />
+          <div class="heading-content">
+            <p class="heading-text">What's New In Commudle?</p>
+            <p class="heading-subtitle">We have added new features, enhancements & bug fixes</p>
+          </div>
         </div>
-        <button nbButton ghost (click)="setCookie(); ref.close()">
+        <button nbButton ghost (click)="setCookie(); closePopup()">
           <fa-icon [icon]="faXmark" class="cross-icon"></fa-icon></button
       ></nb-card-header>
       <nb-card-body>
-        <p class="new-features">New Features, enhancements & Bug fixes</p>
         <div *ngFor="let update of newUpdates">
           <ul>
             <commudle-whats-new-card [update]="update"></commudle-whats-new-card>
@@ -56,10 +59,10 @@
         </div>
       </nb-card-body>
       <nb-card-footer
-        ><button nbButton status="primary" size="medium" ghost (click)="setCookie(); ref.close()">
-          Got it
+        ><button nbButton size="medium" ghost fullWidth (click)="setCookie(); closePopup()">
+          Close
         </button></nb-card-footer
       >
     </nb-card>
   </div>
-</ng-template>
+</div>
