@@ -91,4 +91,4 @@ const environments: { [type: string]: Environment } = {
   },
 };
 
-export const environment = environments['staging'];
+export const environment = environments['production'];
