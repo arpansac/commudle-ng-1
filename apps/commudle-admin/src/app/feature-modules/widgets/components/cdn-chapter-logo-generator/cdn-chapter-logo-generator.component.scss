@@ -21,10 +21,10 @@
 
   .preview-card {
     @apply com-border com-border-Bright-Gray com-rounded-lg com-shadow-lg;
-    @apply com-bg-tWhite;
+    @apply com-bg-white;
 
     nb-card-header {
-      @apply com-bg-gray-50 com-border-b com-border-Bright-Gray;
+      @apply com-bg-gray-100 com-border-b com-border-Bright-Gray;
       @apply com-p-6;
     }
 
@@ -41,10 +41,10 @@
 
   .form-card {
     @apply com-border com-border-Bright-Gray com-rounded-lg com-shadow-lg;
-    @apply com-bg-tWhite com-sticky com-top-8;
+    @apply com-bg-white com-sticky com-top-8;
 
     nb-card-header {
-      @apply com-bg-primary-100 com-border-b com-border-Bright-Gray;
+      @apply com-bg-primary-500 com-border-b com-border-Bright-Gray;
       @apply com-p-6;
     }
 
@@ -87,14 +87,14 @@
   @apply com-space-y-2;
 
   .input-label {
-    @apply com-block com-text-sm com-font-medium com-text-tYankees-Blue;
+    @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue;
     @apply com-mb-2;
   }
 
   .city-input {
     @apply com-w-full com-px-4 com-py-3 com-border com-border-Bright-Gray com-rounded-md;
     @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
-    @apply com-text-lg com-text-tYankees-Blue;
+    @apply com-text-lg com-text-Yankees-Blue;
     @apply com-transition-all com-duration-200;
 
     &::placeholder {
@@ -117,7 +117,7 @@
 
 // Preview Info
 .preview-info {
-  @apply com-p-4 com-bg-primary-100 com-rounded-md com-border com-border-primary-200;
+  @apply com-p-4 com-bg-primary-500 com-rounded-md com-border com-border-primary-200;
 }
 
 // Download Section
@@ -130,7 +130,7 @@
 
     code {
       @apply com-bg-gray-100 com-px-2 com-py-1 com-rounded com-text-xs;
-      @apply com-font-mono com-text-tYankees-Blue;
+      @apply com-font-mono com-text-Yankees-Blue;
     }
   }
 }
@@ -176,7 +176,7 @@
 // Nebular Component Overrides
 nb-card {
   nb-card-body {
-    @apply com-bg-tWhite;
+    @apply com-bg-white;
   }
 }
 

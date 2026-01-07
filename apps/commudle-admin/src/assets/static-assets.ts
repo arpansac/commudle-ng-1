@@ -274,7 +274,7 @@ export const staticAssets = {
 
   widgets: {
     cdn_logo:
-      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmtXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--cba183ace87063d17cf07c6ef59ae389c5cd86a7/cdn%20logo.png',
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmtXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--cba183ace87063d17cf07c6ef59ae389c5cd86a7/cdn%20logo.png',
   },
 };
 

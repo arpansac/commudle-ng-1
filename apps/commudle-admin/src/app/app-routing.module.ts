@@ -17,10 +17,6 @@ import { InitResolver } from './resolvers/init.resolver';
 const routes: Routes = [
   // TODO: discuss in future for order of paths
   {
-    path: 'widgets',
-    loadChildren: () => import('./feature-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
-  },
-  {
     path: 'login',
     component: LoginComponent,
   },
@@ -256,6 +252,10 @@ const routes: Routes = [
       import('./feature-modules/user-profile-complete/user-profile-complete.module').then(
         (m) => m.UserProfileCompleteModule,
       ),
+  },
+  {
+    path: 'widgets',
+    loadChildren: () => import('./feature-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
   },
   {
     path: 'admin',

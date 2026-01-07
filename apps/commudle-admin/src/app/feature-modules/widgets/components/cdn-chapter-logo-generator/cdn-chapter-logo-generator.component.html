@@ -4,8 +4,8 @@
     <div class="com-max-w-7xl com-mx-auto">
       <!-- Page Header -->
       <div class="com-text-center com-mb-8">
-        <h1 class="com-text-32 com-font-bold com-text-tYankees-Blue com-mb-4">CDN Chapter Logo Generator</h1>
-        <p class="com-text-16 com-text-tYankees-Blue com-opacity-80">
+        <h1 class="com-text-32 com-font-bold com-text-Yankees-Blue com-mb-4">CDN Chapter Logo Generator</h1>
+        <p class="com-text-16 com-text-Yankees-Blue com-opacity-80">
           Create custom chapter logos for your community with your city or college name
         </p>
       </div>
@@ -21,11 +21,11 @@
         <div class="preview-container">
           <nb-card class="preview-card">
             <nb-card-header class="com-text-center">
-              <h2 class="com-text-xl com-font-semibold com-text-tYankees-Blue com-m-2">
+              <h2 class="com-text-xl com-font-semibold com-text-Yankees-Blue com-m-2">
                 <fa-icon [icon]="faImage" class="com-mr-2"></fa-icon>
                 Logo Preview
               </h2>
-              <p class="com-text-14 com-text-tYankees-Blue com-opacity-70">
+              <p class="com-text-14 com-text-Yankees-Blue com-opacity-70">
                 {{ previewText }}
               </p>
             </nb-card-header>
@@ -34,7 +34,7 @@
               <!-- Loading Spinner -->
               <div *ngIf="isImageLoading" class="loading-container">
                 <nb-spinner size="large" status="primary"></nb-spinner>
-                <p class="com-text-14 com-text-tYankees-Blue com-mt-4">Loading background image...</p>
+                <p class="com-text-14 com-text-Yankees-Blue com-mt-4">Loading background image...</p>
               </div>
 
               <!-- Canvas Preview -->
@@ -50,7 +50,7 @@
               <!-- Error State -->
               <div *ngIf="!isImageLoading && !backgroundImage && errorMessage" class="error-state">
                 <fa-icon [icon]="faImage" class="error-icon"></fa-icon>
-                <p class="com-text-14 com-text-tYankees-Blue com-opacity-70">Unable to load preview</p>
+                <p class="com-text-14 com-text-Yankees-Blue com-opacity-70">Unable to load preview</p>
               </div>
             </nb-card-body>
           </nb-card>
@@ -60,7 +60,7 @@
         <div class="form-container">
           <nb-card class="form-card">
             <nb-card-header>
-              <h2 class="com-text-20 com-font-semibold com-text-tYankees-Blue">Customize Your Logo</h2>
+              <h2 class="com-text-20 com-font-semibold com-text-Yankees-Blue">Customize Your Logo</h2>
             </nb-card-header>
 
             <nb-card-body class="form-body">
@@ -87,7 +87,7 @@
 
               <!-- Real-time Preview Info -->
               <div class="preview-info">
-                <p class="com-text-14 com-text-tYankees-Blue com-opacity-70">
+                <p class="com-text-14 com-text-tWhite">
                   <fa-icon [icon]="faImage" class="com-mr-2"></fa-icon>
                   Preview updates automatically as you type
                 </p>

@@ -7,6 +7,7 @@ import { faDownload, faImage, faRedo } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { SeoService } from 'apps/shared-services/seo.service';
 
 interface LogoGeneratorConfig {
   backgroundImageUrl?: string;
@@ -61,10 +62,19 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private seoService: SeoService) {}
 
   ngOnInit(): void {
+    this.setMeta();
     this.loadBackgroundImage();
+  }
+
+  private setMeta(): void {
+    this.seoService.setTags(
+      'CDN Chapter Logo Generator',
+      'Generate your chapter logo for your CDN community. Add the chapter name and download it directly!',
+      'https://commudle.com/assets/images/commudle-logo192.png',
+    );
   }
 
   ngAfterViewInit(): void {
@@ -88,48 +98,73 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
     this.isImageLoading = true;
     this.errorMessage = '';
 
-    // Try loading without CORS first
-    this.tryLoadImage(false);
+    // Use fetch to get image as blob to prevent canvas tainting
+    this.fetchImageAsBlob();
   }
 
-  private tryLoadImage(withCORS: boolean): void {
-    const img = new Image();
+  private async fetchImageAsBlob(): Promise<void> {
+    try {
+      this.isImageLoading = true;
 
-    if (withCORS) {
-      img.crossOrigin = 'anonymous';
-      console.log('Attempting to load image WITH CORS:', this.config.backgroundImageUrl);
-    } else {
-      console.log('Attempting to load image WITHOUT CORS:', this.config.backgroundImageUrl);
-    }
+      // 1. Fetch from Rails with a cache buster
+      const railsUrl =
+        this.config.backgroundImageUrl +
+        (this.config.backgroundImageUrl.includes('?') ? '&' : '?') +
+        'cb=' +
+        Date.now();
 
-    img.onload = () => {
-      console.log('Image loaded successfully:', this.config.backgroundImageUrl);
-      console.log('Image dimensions:', img.width, 'x', img.height);
-      this.backgroundImage = img;
-      this.isImageLoading = false;
-      this.errorMessage = '';
-      // Use setTimeout to ensure canvas is available
-      setTimeout(() => {
-        this.updatePreview();
-      }, 0);
-      this.cdr.detectChanges();
-    };
+      // Use standard 'follow' but with a fresh URL
+      const initialResponse = await fetch(railsUrl, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+      });
 
-    img.onerror = (error) => {
-      console.error(`Failed to load image ${withCORS ? 'WITH' : 'WITHOUT'} CORS:`, error);
+      // 2. Extract the S3 URL from the response
+      // If the browser followed the redirect, initialResponse.url is the S3 URL
+      const s3Url = initialResponse.url;
 
-      if (!withCORS) {
-        // Try with CORS
-        console.log('Retrying with CORS...');
-        this.tryLoadImage(true);
-      } else {
-        // Both attempts failed, create fallback
-        console.log('Both attempts failed, creating fallback...');
-        this.createFallbackImage();
+      // 3. IMPORTANT: Add a second cache-buster to the S3 URL
+      // to force a fresh handshake that ignores the 'null' origin cache
+      const cleanS3Url = s3Url + (s3Url.includes('?') ? '&' : '?') + 's3_cb=' + Date.now();
+
+      console.log('Fetching from S3 with fresh context:', cleanS3Url);
+
+      // 4. Fetch the actual blob from S3
+      const s3Response = await fetch(cleanS3Url, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+      });
+
+      if (!s3Response.ok) {
+        throw new Error(`S3 Error: ${s3Response.status}`);
       }
-    };
 
-    img.src = this.config.backgroundImageUrl;
+      const blob = await s3Response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+
+      img.onload = () => {
+        this.backgroundImage = img;
+        this.isImageLoading = false;
+        URL.revokeObjectURL(objectUrl);
+        setTimeout(() => this.updatePreview(), 0);
+        this.cdr.detectChanges();
+      };
+
+      img.onerror = (err) => {
+        console.error('Canvas Image decode failed', err);
+        this.createFallbackImage();
+      };
+
+      img.src = objectUrl;
+    } catch (error) {
+      console.error('Final CORS attempt failed:', error);
+      this.createFallbackImage();
+    }
   }
 
   private createFallbackImage(): void {
@@ -161,11 +196,11 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
     ctx.font = 'bold 48px Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('COMMUDLE', canvas.width / 2, canvas.height / 2 - 30);
+    ctx.fillText('CDN', canvas.width / 2, canvas.height / 2 - 30);
 
     ctx.font = '24px Arial, sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fillText('Chapter Logo', canvas.width / 2, canvas.height / 2 + 20);
+    ctx.fillText('Commudle Developer Network', canvas.width / 2, canvas.height / 2 + 20);
 
     // Convert canvas to image
     canvas.toBlob((blob) => {
@@ -295,26 +330,11 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
     this.errorMessage = '';
 
     try {
-      // Create a new canvas for final output
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (!ctx) {
-        throw new Error('Canvas context not available');
-      }
-
-      // Set canvas dimensions
-      canvas.width = this.backgroundImage.width;
-      canvas.height = this.backgroundImage.height;
-
-      // Draw background image
-      ctx.drawImage(this.backgroundImage, 0, 0);
-
-      // Draw text overlay
-      this.drawTextOverlay(ctx, canvas.width, canvas.height);
+      // Use the preview canvas directly instead of creating a new one
+      const previewCanvas = this.previewCanvasRef.nativeElement;
 
       // Convert to blob and download
-      canvas.toBlob((blob) => {
+      previewCanvas.toBlob((blob) => {
         if (!blob) {
           this.errorMessage = 'Failed to generate image';
           this.isDownloading = false;
@@ -335,7 +355,7 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
         this.cdr.detectChanges();
       }, 'image/png');
     } catch (error) {
-      this.errorMessage = 'Failed to download logo';
+      this.errorMessage = 'Failed to download logo due to security restrictions';
       this.isDownloading = false;
       console.error('Download error:', error);
     }
