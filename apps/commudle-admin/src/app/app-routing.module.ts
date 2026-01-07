@@ -254,6 +254,10 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'widgets',
+    loadChildren: () => import('./feature-modules/widgets/widgets.module').then((m) => m.WidgetsModule),
+  },
+  {
     path: 'admin',
     children: [
       // {

@@ -1,0 +1,360 @@
+<div class="page-wrapper">
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <!-- Subtle Bubble Decorations -->
+      <div class="bubble-decoration bubble-1"></div>
+      <div class="bubble-decoration bubble-2"></div>
+      <div class="bubble-decoration bubble-3"></div>
+      <div class="bubble-decoration bubble-4"></div>
+      <div class="bubble-decoration bubble-5"></div>
+      <div class="bubble-decoration bubble-6"></div>
+
+      <h1>Sell Tickets. Grow Your Events.</h1>
+      <p class="intro-text">
+        Accept payments from anywhere in the world. Get payouts in T+2 days. Available for Indian event organizers.
+      </p>
+      <div class="hero-cta">
+        <button nbButton status="primary" size="large" shape="semi-round">Start Selling Tickets</button>
+        <p class="hero-note">✓ No setup fees • ✓ Transparent pricing • ✓ Fast payouts</p>
+      </div>
+    </div>
+
+    <!-- Availability Notice -->
+    <div class="availability-notice">
+      <div class="notice-content">
+        <span class="notice-icon">🇮🇳</span>
+        <div>
+          <p class="notice-title">Currently Available in India</p>
+          <p class="notice-text">Accept payments from attendees worldwide • Payouts in INR to Indian bank accounts</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing Calculator Section -->
+    <div class="pricing-calculator-section">
+      <h2>Transparent Pricing Calculator</h2>
+      <p class="section-description">See exactly what you'll pay. No hidden fees, no surprises.</p>
+
+      <div class="calculator-container">
+        <!-- Input Section with Icon -->
+        <div class="calculator-input-section">
+          <div class="input-icon">💰</div>
+          <div class="input-wrapper">
+            <label for="ticketPrice">Enter Ticket Price</label>
+            <div class="input-group">
+              <span class="currency-symbol">₹</span>
+              <input
+                type="number"
+                id="ticketPrice"
+                [(ngModel)]="ticketPrice"
+                (input)="calculateFees()"
+                placeholder="1000"
+                min="1"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Divider -->
+        <div class="calculator-divider"></div>
+
+        <!-- Breakdown Section -->
+        <div class="calculator-breakdown">
+          <h3 class="breakdown-title">
+            <span class="title-icon">📊</span>
+            Fee Breakdown
+          </h3>
+
+          <div class="breakdown-grid">
+            <!-- Fee Items -->
+            <div class="breakdown-item fee-item">
+              <div class="item-label">
+                <span class="label-dot"></span>
+                <span>Ticket Price</span>
+              </div>
+              <span class="item-value">₹{{ ticketPrice || 0 }}</span>
+            </div>
+
+            <div class="breakdown-item fee-item">
+              <div class="item-label">
+                <span class="label-dot"></span>
+                <span>Payment Gateway</span>
+                <span class="fee-badge">2% + GST</span>
+              </div>
+              <span class="item-value negative">-₹{{ paymentGatewayFee }}</span>
+            </div>
+
+            <div class="breakdown-item fee-item">
+              <div class="item-label">
+                <span class="label-dot"></span>
+                <span>Commudle Fee</span>
+                <span class="fee-badge">1% + GST</span>
+              </div>
+              <span class="item-value negative">-₹{{ commudleFee }}</span>
+            </div>
+
+            <div class="breakdown-item fee-item">
+              <div class="item-label">
+                <span class="label-dot"></span>
+                <span>Razorpay Fee</span>
+                <span class="fee-badge">0.25% + GST</span>
+              </div>
+              <span class="item-value negative">-₹{{ razorpayFee }}</span>
+            </div>
+
+            <!-- Total Fees -->
+            <div class="breakdown-item total-fees">
+              <div class="item-label">
+                <span class="label-icon">💸</span>
+                <span>Total Fees</span>
+              </div>
+              <span class="item-value">₹{{ totalFees }}</span>
+            </div>
+          </div>
+
+          <!-- Payout Highlight -->
+          <div class="payout-highlight">
+            <div class="payout-content">
+              <div class="payout-label">
+                <span class="payout-icon">✨</span>
+                <span>You Receive</span>
+              </div>
+              <div class="payout-value">₹{{ youReceive }}</div>
+            </div>
+            <div class="payout-percentage">
+              {{ ((+youReceive / (ticketPrice || 1)) * 100).toFixed(1) }}% of ticket price
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Note -->
+        <div class="calculator-note">
+          <div class="note-icon">ℹ️</div>
+          <div class="note-content">
+            <p class="note-text">
+              <strong>Payout:</strong> T+2 bank working days after event •
+              <a href="https://razorpay.com/pricing/" target="_blank" rel="noopener noreferrer" class="note-link">
+                View pricing →
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+      <h2>Everything You Need</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"
+            alt="Secure payments"
+            class="feature-image"
+          />
+          <h3>Secure Payments</h3>
+          <p>Accept credit cards, debit cards, UPI, and wallets. Industry-standard security.</p>
+        </div>
+        <div class="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop"
+            alt="Real-time analytics"
+            class="feature-image"
+          />
+          <h3>Real-Time Analytics</h3>
+          <p>Track sales, revenue, and attendee data instantly. Make data-driven decisions.</p>
+        </div>
+        <div class="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop"
+            alt="QR code check-in"
+            class="feature-image"
+          />
+          <h3>QR Code Check-In</h3>
+          <p>Fast, contactless check-in. Works on any mobile device. No app required.</p>
+        </div>
+        <div class="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop"
+            alt="Automated emails"
+            class="feature-image"
+          />
+          <h3>Automated Emails</h3>
+          <p>Confirmations, reminders, and updates sent automatically. Keep attendees informed.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="how-it-works-section">
+      <h2>How It Works</h2>
+      <p class="section-subtitle">Get started in 3 simple steps</p>
+      <div class="steps-container">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon-wrapper">
+            <fa-icon [icon]="faBuildingColumns" class="step-icon"></fa-icon>
+          </div>
+          <h3 class="step-title">Link Your Bank Account</h3>
+          <p class="step-description">
+            Connect your Indian bank account securely through Razorpay for seamless payouts
+          </p>
+        </div>
+
+        <div class="step-connector">
+          <fa-icon [icon]="faArrowRight"></fa-icon>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon-wrapper">
+            <fa-icon [icon]="faTicket" class="step-icon"></fa-icon>
+          </div>
+          <h3 class="step-title">Create & Sell Tickets</h3>
+          <p class="step-description">Set up your event, create ticket tiers, and start accepting payments instantly</p>
+        </div>
+
+        <div class="step-connector">
+          <fa-icon [icon]="faArrowRight"></fa-icon>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon-wrapper">
+            <fa-icon [icon]="faSackDollar" class="step-icon"></fa-icon>
+          </div>
+          <h3 class="step-title">Receive Payouts Directly</h3>
+          <p class="step-description">
+            Get funds transferred to your bank account in T+2 working days after event completion
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced Features Section -->
+    <div class="advanced-features-section">
+      <h2>Built for Tech Communities</h2>
+      <p class="section-description">
+        Commudle is designed specifically for developer communities, hackathons, and tech events.
+      </p>
+      <div class="advanced-features-grid">
+        <div class="advanced-feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Approval-Based Payments</h3>
+          <p>
+            Review and approve registrations before charging attendees. Perfect for selective events, workshops with
+            prerequisites, or capacity-limited sessions.
+          </p>
+          <ul class="feature-benefits">
+            <li>Manual approval workflow</li>
+            <li>Automatic payment collection after approval</li>
+            <li>Rejection notifications with refunds</li>
+          </ul>
+        </div>
+
+        <div class="advanced-feature-card">
+          <div class="feature-icon">🎫</div>
+          <h3>Custom Discount Coupons</h3>
+          <p>
+            Create unlimited discount codes with flexible rules. Reward early birds, sponsors, speakers, or community
+            members.
+          </p>
+          <ul class="feature-benefits">
+            <li>Percentage or fixed amount discounts</li>
+            <li>Usage limits and expiry dates</li>
+            <li>Track coupon performance</li>
+          </ul>
+        </div>
+
+        <div class="advanced-feature-card">
+          <div class="feature-icon">💼</div>
+          <h3>Priority Support</h3>
+          <p>
+            Get dedicated support for your events. Our team understands tech communities and is here to help you
+            succeed.
+          </p>
+          <ul class="feature-benefits">
+            <li>Email support within 24 hours</li>
+            <li>Event setup assistance</li>
+            <li>Technical troubleshooting</li>
+          </ul>
+        </div>
+
+        <div class="advanced-feature-card">
+          <div class="feature-icon">↩️</div>
+          <h3>Custom Refund Policies</h3>
+          <p>Set your own refund rules. Full control over when and how refunds are processed for your events.</p>
+          <ul class="feature-benefits">
+            <li>Define refund deadlines</li>
+            <li>Partial or full refund options</li>
+            <li>Automated refund processing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Community Benefits Section -->
+    <div class="tech-community-section">
+      <h2>Optimized for Developer Communities</h2>
+      <div class="community-benefits-grid">
+        <div class="community-benefit">
+          <div class="benefit-icon">👥</div>
+          <h3>Community-First Design</h3>
+          <p>
+            Built by community organizers, for community organizers. We understand the unique needs of tech events,
+            hackathons, and developer meetups.
+          </p>
+        </div>
+
+        <div class="community-benefit">
+          <div class="benefit-icon">🔗</div>
+          <h3>Seamless Integration</h3>
+          <p>
+            Integrate with your existing Commudle community page. Attendees can see your past events, builds, and
+            community activity.
+          </p>
+        </div>
+
+        <div class="community-benefit">
+          <div class="benefit-icon">📊</div>
+          <h3>Community Analytics</h3>
+          <p>
+            Track repeat attendees, community growth, and engagement metrics. Understand your community better with
+            detailed insights.
+          </p>
+        </div>
+
+        <div class="community-benefit">
+          <div class="benefit-icon">🎓</div>
+          <h3>Student-Friendly Pricing</h3>
+          <p>
+            Special pricing for student communities and non-profit organizations. We support the next generation of
+            developers.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2>Common Questions</h2>
+      <div class="faq-container">
+        <commudle-faq-card *ngFor="let faq of faqs" [faq]="faq"></commudle-faq-card>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2>Ready to Start Selling Tickets?</h2>
+      <p>
+        Join thousands of event organizers who trust Commudle for their paid ticketing needs. Set up your first paid
+        event in minutes.
+      </p>
+      <div class="cta-buttons">
+        <button nbButton status="primary" size="large" shape="semi-round">Create Paid Event</button>
+        <button nbButton status="info" size="large" shape="semi-round" outline>View Demo</button>
+      </div>
+    </div>
+  </div>
+</div>
