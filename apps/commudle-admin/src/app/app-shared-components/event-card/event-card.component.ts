@@ -8,6 +8,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-event-card',
@@ -20,6 +21,7 @@ export class EventCardComponent implements OnInit {
   @Input() event: IEvent;
   @Input() horizontalScroll = false;
   community: ICommunity;
+  staticAssets = staticAssets;
 
   moment = moment;
   constructor(private communitiesService: CommunitiesService) {}
