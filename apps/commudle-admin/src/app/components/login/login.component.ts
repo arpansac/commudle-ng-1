@@ -14,10 +14,21 @@ export class LoginComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
-    this.redirectUrl = this.activatedRoute.snapshot.queryParams?.redirect || '/';
+    const redirectParam = this.activatedRoute.snapshot.queryParams?.redirect || '/';
+    this.redirectUrl = this.isValidRedirectUrl(redirectParam) ? redirectParam : '/';
     this.currentUrl = this.activatedRoute.snapshot.url[0]?.path || '';
     this.heading = this.currentUrl === 'signup' ? 'Sign In' : 'Welcome Back!';
     this.setMeta();
+  }
+
+  private isValidRedirectUrl(url: string): boolean {
+    if (!url || url === '/' || url.startsWith('/')) return true;
+
+    if (url.includes('://') || url.includes('@') || url.startsWith('//')) return false;
+
+    if (url.match(/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/)) return false;
+
+    return true;
   }
 
   setMeta() {
