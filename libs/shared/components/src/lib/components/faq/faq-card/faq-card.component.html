@@ -18,6 +18,6 @@
         </div>
       </div>
     </div>
-    <p class="answer" *ngIf="showAnswer">{{ faq.answer }}</p>
+    <p class="answer" [ngClass]="showAnswer ? 'com-flex' : 'com-hidden'">{{ faq.answer }}</p>
   </nb-card-body>
 </nb-card>

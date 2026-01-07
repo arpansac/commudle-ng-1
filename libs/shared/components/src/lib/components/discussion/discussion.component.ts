@@ -14,8 +14,11 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { IEditorValidator } from '@commudle/editor';
 import { InfiniteScrollDirective } from '@commudle/infinite-scroll';
-import { AuthService } from '@commudle/shared-services';
+import { AuthService, SeoService } from '@commudle/shared-services';
 import { DiscussionHandlerService } from '../../services/discussion-handler.service';
+import { environment } from '@commudle/shared-environments';
+import { Subject, takeUntil } from 'rxjs';
+import { ICommunity, IHackathon } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-discussion',
@@ -29,6 +32,9 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() fromLastRead = false;
 
   hasRequestedFirstTime = true;
+  hackathon: IHackathon;
+  community: ICommunity;
+  private destroy$ = new Subject<void>();
 
   validators: IEditorValidator = {
     required: true,
@@ -45,6 +51,7 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
     public authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
+    private seoService: SeoService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +61,19 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fromLastRead,
       this.activatedRoute.snapshot.queryParamMap.get('after'),
     );
+
+    if (this.discussionParent === 'hackathon') {
+      this.activatedRoute.parent?.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+        this.hackathon = data.hackathon;
+        this.community = data.community;
+      });
+    }
+
+    this.discussionHandlerService.messages$.subscribe((messages) => {
+      if (messages && messages.length > 0) {
+        this.setSeoSchema(messages);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -76,5 +96,83 @@ export class DiscussionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.discussionHandlerService.destroy();
+  }
+
+  setSeoSchema(messagesPages): void {
+    if (!this.hackathon || !messagesPages || messagesPages.length === 0) {
+      return;
+    }
+
+    const allMessages = messagesPages
+      .map((page) => page.data)
+      .filter((message) => message !== null && message !== undefined);
+
+    if (allMessages.length === 0) {
+      return;
+    }
+
+    const commentsArray = allMessages.map((message) => ({
+      '@type': 'Comment',
+      text: this.seoService.removeHtmlTags(message.content),
+      datePublished: message.created_at,
+      author: {
+        '@type': 'Person',
+        name: message.user?.name ? message.user.name : message.user.username,
+        url: `https://www.commudle.com/users/${message.user?.username}`,
+      },
+      comment: message.user_messages ? this.getUserMessages(message) : [],
+    }));
+
+    const communitySlug = this.community?.slug || this.hackathon.community?.slug;
+    const hackathonUrl = communitySlug
+      ? `${environment.app_url}/communities/${communitySlug}/hackathons/${this.hackathon.slug}`
+      : `${environment.app_url}/hackathons/${this.hackathon.slug}`;
+    const communityName = this.community?.name || this.hackathon.community?.name;
+
+    const discussionSchema: Record<string, unknown> = {
+      '@context': 'https://schema.org',
+      '@type': 'DiscussionForumPosting',
+      url: hackathonUrl,
+      headline: `Discussion - ${this.hackathon.name}`,
+      author: {
+        '@type': 'Organization',
+        name: communityName,
+        url: communitySlug ? `${environment.app_url}/communities/${communitySlug}` : environment.app_url,
+      },
+      datePublished: this.hackathon.start_date,
+      comment: commentsArray,
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/CommentAction',
+        userInteractionCount: allMessages.length,
+      },
+    };
+
+    this.seoService.setSchema(discussionSchema);
+  }
+
+  getUserMessages(message) {
+    const resultArray = [];
+
+    if (message.user_messages) {
+      for (const userMessage of message.user_messages) {
+        if (userMessage) {
+          const transformedMessage = {
+            '@type': 'Comment',
+            text: this.seoService.removeHtmlTags(userMessage.content),
+            author: {
+              '@type': 'Person',
+              name: userMessage.user?.name ? userMessage.user.name : userMessage.user.username,
+              url: `https://www.commudle.com/users/${userMessage.user?.username}`,
+            },
+            datePublished: userMessage.created_at,
+          };
+
+          resultArray.push(transformedMessage);
+        }
+      }
+    }
+
+    return resultArray;
   }
 }

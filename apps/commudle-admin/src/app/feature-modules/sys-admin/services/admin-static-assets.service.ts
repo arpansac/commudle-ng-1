@@ -12,13 +12,16 @@ import { Observable } from 'rxjs';
 export class AdminStaticAssetsService {
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
 
-  getAssets(page?: number, count?: number): Observable<IStaticAssets> {
+  getAssets(page?: number, count?: number, q?: string): Observable<IStaticAssets> {
     let params = new HttpParams();
     if (page) {
-      params = params.append('page', String(page));
+      params = params.append('page', page);
     }
     if (count) {
-      params = params.append('count', String(count));
+      params = params.append('count', count);
+    }
+    if (q) {
+      params = params.append('q', q);
     }
     return this.http.get<IStaticAssets>(this.apiRoutesService.getRoute(API_ROUTES.STATIC_ASSETS.SHOW), { params });
   }

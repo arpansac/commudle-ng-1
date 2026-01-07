@@ -1,139 +1,164 @@
 <div class="newsletter-container">
   <div class="header-section">
     <h1 class="page-title">Newsletters</h1>
-    <a nbButton status="primary" shape="semi-round" [routerLink]="['new']"
-      ><fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create Newsletter
+    <a
+      *ngIf="isLoading || (newsletters && newsletters.length > 0)"
+      nbButton
+      status="primary"
+      shape="semi-round"
+      [routerLink]="['new']"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create Newsletter
     </a>
   </div>
 
-  <!-- Newsletters Table Section -->
-  <section class="newsletters-list-container">
-    <div class="table-wrapper">
-      <div *ngIf="isLoading" class="loading-row">
-        <app-loading-spinner></app-loading-spinner>
-      </div>
-      <table *ngIf="newsletters && newsletters.length > 0" class="newsletters-table">
-        <thead>
-          <tr class="table-header">
-            <th colspan="2">NAME</th>
-            <th>STATS</th>
-            <th>ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="!isLoading">
-            <tr *ngFor="let newsletter of newsletters; let i = index" class="newsletter-row">
-              <td colspan="2">
-                <div class="newsletter-name">
-                  <div *ngIf="newsletter.banner_image" class="newsletter-image">
-                    <commudle-banner-image
-                      [name]="newsletter.title"
-                      [headerImagePath]="newsletter.banner_image?.i160"
-                      [aspectRatio]="'16/9'"
-                    ></commudle-banner-image>
-                  </div>
-                  <a
-                    (click)="redirectTo(newsletter.slug)"
-                    [ngClass]="{ disableAnchorTag: !newsletter.published }"
-                    class="newsletter-link"
-                    >{{ newsletter.title }}
-                    <fa-icon *ngIf="newsletter.published" [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                  </a>
-                </div>
-              </td>
-              <td>
-                <div class="newsletter-stats">
-                  <div class="stat-item">
-                    <div class="stat-item-icon">
-                      <fa-icon [icon]="icons.faListCheck"></fa-icon>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && (!newsletters || newsletters.length === 0)">
+    <a *appBreakpoints="'<=lg'" nbButton status="primary" [routerLink]="['new']" class="empty-state-button" fullWidth>
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEWSLETTER
+    </a>
+  </div>
+  <div *ngIf="!isLoading && (!newsletters || newsletters.length === 0)" class="empty-state">
+    <img [src]="staticAssets.newsletters_admin_empty_state" alt="No Newsletters" class="empty-state-icon" />
+    <h2 class="empty-state-title">No Newsletters Added</h2>
+    <p class="empty-state-description">You can create one by clicking the "Create Newsletter" button</p>
+    <a *appBreakpoints="'>lg'" nbButton status="primary" [routerLink]="['new']" class="empty-state-button">
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      &nbsp; CREATE NEWSLETTER
+    </a>
+  </div>
+
+  <ng-container *ngIf="isLoading || (newsletters && newsletters.length > 0)">
+    <!-- Newsletters Table Section -->
+    <section class="newsletters-list-container">
+      <div class="table-wrapper">
+        <div *ngIf="isLoading" class="loading-row">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <table *ngIf="newsletters && newsletters.length > 0" class="newsletters-table">
+          <thead>
+            <tr class="table-header">
+              <th colspan="2">NAME</th>
+              <th>STATS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="!isLoading">
+              <tr *ngFor="let newsletter of newsletters; let i = index" class="newsletter-row">
+                <td colspan="2">
+                  <div class="newsletter-name">
+                    <div *ngIf="newsletter.banner_image" class="newsletter-image">
+                      <commudle-banner-image
+                        [name]="newsletter.title"
+                        [headerImagePath]="newsletter.banner_image?.i160"
+                        [aspectRatio]="'16/9'"
+                      ></commudle-banner-image>
                     </div>
-                    <span>Total Sent : {{ newsletter.stats?.total }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-item-icon">
-                      <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
-                    </div>
-                    <span>Delivered : {{ newsletter.stats?.delivered }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-item-icon">
-                      <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
-                    </div>
-                    <span>Opened : {{ newsletter.stats?.opened }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <div class="stat-item-icon">
-                      <fa-icon [icon]="icons.faMousePointer"></fa-icon>
-                    </div>
-                    <span>Clicked : {{ newsletter.stats?.clicked }}</span>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="newsletter-actions">
-                  <div class="publish-controls">
-                    <div class="publish-toggle">
-                      <nb-toggle
-                        (checkedChange)="togglePublished(newsletter.id, i)"
-                        [checked]="newsletter.published"
-                        labelPosition="end"
-                        status="success"
-                        size="tiny"
-                      >
-                        Publish
-                      </nb-toggle>
-                    </div>
-                    <div class="edit-and-test-email-links">
-                      <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
-                        <fa-icon [icon]="icons.faEdit"></fa-icon>
-                        &nbsp; Edit
-                      </a>
-                      <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
-                        <fa-icon [icon]="icons.faEnvelope"></fa-icon>
-                        &nbsp; Send Test Email
-                      </a>
-                    </div>
-                  </div>
-                  <div class="action-links">
-                    <div class="schedule-and-reset-links">
-                      <button
-                        *ngIf="newsletter.published && newsletter.scheduled_for"
-                        outline
-                        nbButton
-                        size="small"
-                        class="reset-button"
-                        (click)="openScheduleDialogBox(scheduleResetDialogBox, newsletter.id, i)"
-                      >
-                        <fa-icon [icon]="icons.faClock"></fa-icon>
-                        Reset
-                      </button>
-                      <button
-                        *ngIf="newsletter.published && !newsletter.scheduled_for"
-                        outline
-                        nbButton
-                        size="small"
-                        class="schedule-button"
-                        (click)="openScheduleDialogBox(scheduleDialogBox, newsletter.id, i)"
-                      >
-                        <fa-icon [icon]="icons.faClock"></fa-icon>
-                        Set Email Schedule
-                      </button>
-                      <p *ngIf="newsletter.published && newsletter.scheduled_for" class="schedule-time">
-                        {{ moment(newsletter.scheduled_for).format('MMMM Do YYYY |  h:mm a') }}
-                      </p>
-                    </div>
-                    <a (click)="openConfirmDialogBox(deleteDialog, newsletter.id, i)" class="delete-link">
-                      <nb-icon icon="trash"></nb-icon>&nbsp; Delete
+                    <a
+                      (click)="redirectTo(newsletter.slug)"
+                      [ngClass]="{ disableAnchorTag: !newsletter.published }"
+                      class="newsletter-link"
+                      >{{ newsletter.title }}
+                      <fa-icon *ngIf="newsletter.published" [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                     </a>
                   </div>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-  </section>
+                </td>
+                <td>
+                  <div class="newsletter-stats">
+                    <div class="stat-item">
+                      <div class="stat-item-icon">
+                        <fa-icon [icon]="icons.faListCheck"></fa-icon>
+                      </div>
+                      <span>Total Sent : {{ newsletter.stats?.total }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-item-icon">
+                        <fa-icon [icon]="icons.faEnvelopeCircleCheck"></fa-icon>
+                      </div>
+                      <span>Delivered : {{ newsletter.stats?.delivered }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-item-icon">
+                        <fa-icon [icon]="icons.faEnvelopeOpen"></fa-icon>
+                      </div>
+                      <span>Opened : {{ newsletter.stats?.opened }}</span>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-item-icon">
+                        <fa-icon [icon]="icons.faMousePointer"></fa-icon>
+                      </div>
+                      <span>Clicked : {{ newsletter.stats?.clicked }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="newsletter-actions">
+                    <div class="publish-controls">
+                      <div class="publish-toggle">
+                        <nb-toggle
+                          (checkedChange)="togglePublished(newsletter.id, i)"
+                          [checked]="newsletter.published"
+                          labelPosition="end"
+                          status="success"
+                          size="tiny"
+                        >
+                          Publish
+                        </nb-toggle>
+                      </div>
+                      <div class="edit-and-test-email-links">
+                        <a [routerLink]="['./edit', newsletter.slug]" class="edit-link">
+                          <fa-icon [icon]="icons.faEdit"></fa-icon>
+                          &nbsp; Edit
+                        </a>
+                        <a (click)="openConfirmDialogBox(testEmailsBox, newsletter.id, i)" class="test-email-link">
+                          <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+                          &nbsp; Send Test Email
+                        </a>
+                      </div>
+                    </div>
+                    <div class="action-links">
+                      <div class="schedule-and-reset-links">
+                        <button
+                          *ngIf="newsletter.published && newsletter.scheduled_for"
+                          outline
+                          nbButton
+                          size="small"
+                          class="reset-button"
+                          (click)="openScheduleDialogBox(scheduleResetDialogBox, newsletter.id, i)"
+                        >
+                          <fa-icon [icon]="icons.faClock"></fa-icon>
+                          Reset
+                        </button>
+                        <button
+                          *ngIf="newsletter.published && !newsletter.scheduled_for"
+                          outline
+                          nbButton
+                          size="small"
+                          class="schedule-button"
+                          (click)="openScheduleDialogBox(scheduleDialogBox, newsletter.id, i)"
+                        >
+                          <fa-icon [icon]="icons.faClock"></fa-icon>
+                          Set Email Schedule
+                        </button>
+                        <p *ngIf="newsletter.published && newsletter.scheduled_for" class="schedule-time">
+                          {{ moment(newsletter.scheduled_for).format('MMMM Do YYYY |  h:mm a') }}
+                        </p>
+                      </div>
+                      <a (click)="openConfirmDialogBox(deleteDialog, newsletter.id, i)" class="delete-link">
+                        <nb-icon icon="trash"></nb-icon>&nbsp; Delete
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </ng-container>
   <ng-template #deleteDialog let-data let-ref="dialogRef">
     <nb-card>
       <nb-card-header>

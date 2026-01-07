@@ -21,6 +21,21 @@
                   If you did this by mistake, please contact the person who sent you the invite
                 </h3>
               </div>
+              <button
+                class="com-mt-2"
+                *ngIf="judge.invite_status === EInvitationStatus.ACCEPTED && judge.judge_type === 'mentor'"
+                nbButton
+                status="primary"
+                [routerLink]="[
+                  '/communities',
+                  hackathon.community.slug,
+                  'hackathons',
+                  hackathon.slug,
+                  'mentor-dashboard'
+                ]"
+              >
+                Go to Mentor Dashboard
+              </button>
             </div>
 
             <!-- User profile section -->

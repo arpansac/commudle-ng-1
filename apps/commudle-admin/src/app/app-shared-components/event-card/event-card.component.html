@@ -24,10 +24,18 @@
         </div>
         <div *ngIf="!(event.header_image_path || event.header_image)">
           <div *appBreakpoints="'>lg'" class="without-header-image-desktop">
-            <nb-icon icon="link" status="primary"></nb-icon>
+            <img
+              alt="{{ event.name }}"
+              src="{{ staticAssets.empty_state_desktop_past_events }}"
+              title="{{ event.name }}"
+            />
           </div>
           <div *appBreakpoints="'<=lg'" class="without-header-image-mobile">
-            <nb-icon icon="link" status="primary"></nb-icon>
+            <img
+              alt="{{ event.name }}"
+              src="{{ staticAssets.empty_state_mobile_past_events }}"
+              title="{{ event.name }}"
+            />
           </div>
         </div>
         <div *appBreakpoints="'>lg'" class="details-container">

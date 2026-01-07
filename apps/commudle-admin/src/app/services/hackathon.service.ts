@@ -3,7 +3,6 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IHackathonSponsor, IHackathonSponsorGroupedByTierName } from 'apps/shared-models/hackathon-sponsor';
 import { IContactInfo } from 'apps/shared-models/contact-info.model';
-import { IHackathonJudge } from 'apps/shared-models/hackathon-judge.model';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -20,6 +19,7 @@ import {
   IHackathonProblemStatement,
   IPagination,
   IPaginationCount,
+  IHackathonJudge,
 } from '@commudle/shared-models';
 
 @Injectable({
@@ -292,8 +292,16 @@ export class HackathonService {
     return this.http.delete<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.DESTROY_JUDGE), { params });
   }
 
-  indexJudge(hackathonId): Observable<IHackathonJudge[]> {
-    const params = new HttpParams().set('hackathon_id', hackathonId);
+  indexJudge(hackathonId, judgeType?: string[], inviteStatus?: string): Observable<IHackathonJudge[]> {
+    let params = new HttpParams().set('hackathon_id', hackathonId);
+    if (judgeType?.length) {
+      judgeType.forEach((type) => {
+        params = params.append('judge_type[]', type);
+      });
+    }
+    if (inviteStatus) {
+      params = params.set('invite_status', inviteStatus);
+    }
     return this.http.get<IHackathonJudge[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_JUDGES), {
       params,
     });
@@ -309,6 +317,8 @@ export class HackathonService {
     onlyWinners?: boolean,
     trackId?: number,
     problemStatementId?: number,
+    sortBy?: string,
+    sortOrder?: string,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
@@ -329,6 +339,12 @@ export class HackathonService {
     }
     if (problemStatementId) {
       params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (sortBy) {
+      params = params.set('sort_by', sortBy);
+    }
+    if (sortOrder) {
+      params = params.set('sort_order', sortOrder);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),
@@ -383,6 +399,16 @@ export class HackathonService {
       {
         team_id: teamId,
         round_id: roundId,
+      },
+    );
+  }
+
+  changeTeamOfflineInviteStatus(teamId, offlineInviteStatus): Observable<IHackathonTeam> {
+    return this.http.put<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_OFFLINE_INVITE_STATUS),
+      {
+        team_id: teamId,
+        offline_invite_status: offlineInviteStatus,
       },
     );
   }
@@ -483,6 +509,68 @@ export class HackathonService {
     });
   }
 
+  updateRsvpByToken(rsvpToken: string, rsvpStatus: number): Observable<IHackathonTeam> {
+    return this.http.put<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_RSVP_BY_TOKEN),
+      {
+        rsvp_token: rsvpToken,
+        rsvp_status: rsvpStatus,
+      },
+    );
+  }
+
+  sendRsvpEmail(teamId: number, subject: string, message: string, resend: boolean): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_EMAIL), {
+      team_id: teamId,
+      subject: subject,
+      message: message,
+      resend: resend,
+    });
+  }
+
+  sendEntryPassEmail(teamId: number, subject: string, message: string, resend: boolean): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_EMAIL),
+      {
+        team_id: teamId,
+        subject: subject,
+        message: message,
+        resend: resend,
+      },
+    );
+  }
+
+  sendRsvpToAllTeams(
+    hackathonId: number | string,
+    subject: string,
+    message: string,
+    resend: boolean,
+  ): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_RSVP_TO_ALL_TEAMS), {
+      hackathon_id: hackathonId,
+      subject: subject,
+      message: message,
+      resend: resend,
+    });
+  }
+
+  sendEntryPassesToAllTeams(
+    hackathonId: number | string,
+    subject: string,
+    message: string,
+    resend: boolean,
+  ): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SEND_ENTRY_PASSES_TO_ALL_TEAMS),
+      {
+        hackathon_id: hackathonId,
+        subject: subject,
+        message: message,
+        resend: resend,
+      },
+    );
+  }
+
   // PUBLIC APIS
 
   pIndexHackathonTracks(hackathonId): Observable<IHackathonTrack[]> {
@@ -559,5 +647,19 @@ export class HackathonService {
   pShowHackathon(hackathonId): Observable<IHackathon> {
     const params = new HttpParams().set('hackathon_id', hackathonId);
     return this.http.get<IHackathon>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.PUBLIC.SHOW), { params });
+  }
+
+  indexTeams(hackathonId: string | number): Observable<IHackathonTeam[]> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<IHackathonTeam[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.INDEX), {
+      params,
+    });
+  }
+
+  showTeamByToken(token: string): Observable<IHackathonTeam> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get<IHackathonTeam>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SHOW_BY_TOKEN), {
+      params,
+    });
   }
 }

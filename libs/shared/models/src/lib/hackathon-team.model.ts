@@ -8,6 +8,8 @@ import { IHackathon } from './hackathon.model';
 import { EInvitationStatus, IHackathonUserResponse } from './hackathon-user-response.model';
 import { IHackathonProblemStatement } from './hackathon-problem-statement.model';
 import { IHackathonTrack } from './hackathon-track.model';
+import { IHackathonTeamRoundSubmission } from './hackathon-team-round-submission.model';
+import { IHackathonTeamRoundScore } from './hackathon-team-round-score.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -15,6 +17,7 @@ export interface IHackathonTeam {
   slug: string;
   created_at: Date;
   registration_status: EHackathonRegistrationStatus;
+  offline_invite_status: EOfflineInviteStatus;
   round?: IRound;
   community_build?: ICommunityBuild;
   entity_updates?: IEntityUpdate[];
@@ -30,6 +33,13 @@ export interface IHackathonTeam {
   team_leader_hur_status: EInvitationStatus;
   track: IHackathonTrack;
   problem_statement: IHackathonProblemStatement;
+  hackathon_team_round_submissions: IHackathonTeamRoundSubmission[];
+  team_members_count: number;
+  total_score: number;
+  checked_in_members_count?: number;
+  team_members?: IHackathonUserResponse[];
+  team_leader?: IHackathonUserResponse;
+  hackathon_team_round_scores: IHackathonTeamRoundScore[];
 }
 
 export enum EHackathonRegistrationStatus {
@@ -44,4 +54,17 @@ export enum EHackathonRegistrationStatusColor {
   waitlisted = 'com-bg-orange-400',
   accepted = 'com-bg-green-500',
   rejected = 'com-bg-red-500',
+}
+
+export enum EOfflineInviteStatus {
+  PENDING = 'pending',
+  SHORTLISTED = 'shortlisted',
+  CONFIRMED = 'confirmed',
+  CANCELLED = 'cancelled',
+}
+
+export interface IHackathonTeamWithScoreAndSubmissions {
+  score: IHackathonTeamRoundScore;
+  team: IHackathonTeam;
+  submission: IHackathonTeamRoundSubmission;
 }

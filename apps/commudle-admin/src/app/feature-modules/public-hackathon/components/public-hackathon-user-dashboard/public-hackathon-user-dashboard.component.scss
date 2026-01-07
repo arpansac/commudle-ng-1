@@ -89,3 +89,47 @@ nb-card {
     @apply com-flex com-justify-between com-items-center;
   }
 }
+.problem-statement-prompt {
+  @apply com-mb-4;
+
+  nb-card-body {
+    @apply com-flex com-items-center com-justify-between;
+
+    p {
+      @apply com-m-0;
+    }
+  }
+}
+
+.problem-statement-dialog {
+  @apply com-max-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+}
+
+.track-details {
+  @apply com-mb-4;
+
+  nb-card-header {
+    @apply com-text-primary-500;
+  }
+
+  nb-card-body {
+    .track-name {
+      @apply com-text-Yankees-Blue com-text-lg com-font-semibold com-mb-3;
+    }
+
+    .problem-statement-section {
+      @apply com-mt-2 com-p-3 com-bg-gray-100 com-rounded-lg;
+
+      .problem-label {
+        @apply com-text-sm com-font-medium com-text-gray-700 com-mb-1;
+      }
+
+      .problem-name {
+        @apply com-text-base com-text-Yankees-Blue com-font-medium;
+      }
+    }
+  }
+}

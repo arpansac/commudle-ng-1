@@ -7,19 +7,27 @@ nb-card {
         @apply com-flex com-w-full com-no-underline md:com-flex-row com-flex-col;
 
         .upcoming-card-image {
-          @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-flex com-justify-center com-items-center com-overflow-hidden md:com-w-[389px] md:com-h-[143px] com-w-full com-h-full;
+          @apply com-border com-border-solid com-border-Bright-Gray com-rounded-xl com-flex com-justify-center com-items-center com-overflow-hidden;
         }
 
-        .no-image-header {
-          @apply md:com-w-[389px] md:com-h-[143px]  com-w-full com-h-[145px] com-flex com-items-center com-justify-center com-flex-shrink-0;
+        .no-image-header-desktop {
+          @apply md:com-w-[389px] md:com-h-[143px] com-w-full com-h-[145px] com-flex com-items-center com-justify-center com-flex-shrink-0;
 
-          nb-icon {
-            @apply com-text-5xl;
+          img {
+            @apply com-h-full com-w-full com-object-contain com-rounded-tl-lg com-rounded-bl-lg;
+          }
+        }
+
+        .no-image-header-mobile {
+          @apply md:com-w-[389px] md:com-h-[143px] com-w-full com-h-[145px] com-flex com-items-center com-justify-center com-flex-shrink-0;
+
+          img {
+            @apply com-w-full com-object-contain com-rounded-lg;
           }
         }
 
         .upcoming-card-details-desktop {
-          @apply md:com-pl-4 md:com-pr-0 md:com-py-3 com-px-0 com-py-3 com-overflow-hidden com-flex com-flex-col com-w-full;
+          @apply md:com-pl-3 md:com-pr-0 md:com-py-0 com-px-0 com-py-3 com-overflow-hidden com-flex com-flex-col com-w-full;
 
           .time-badge {
             @apply com-flex com-flex-row com-justify-between com-items-center com-mb-2;
@@ -37,13 +45,14 @@ nb-card {
                 }
               }
             }
-
-            .event-time {
-              @apply com-text-sm com-font-medium com-m-0 com-text-gray-500;
-            }
           }
+
+          .event-time {
+            @apply com-text-xs com-font-normal com-m-0 com-text-gray-500 com-mb-4;
+          }
+
           .event-title {
-            @apply md:com-text-base com-text-lg com-font-medium com-text-Yankees-Blue com-mt-0 com-mb-3 com-mr-3 com-line-clamp-1;
+            @apply md:com-text-base com-text-lg com-font-medium com-text-Yankees-Blue com-m-0 com-mt-0 com-mr-3 com-line-clamp-1;
           }
 
           .community-badge {

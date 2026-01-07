@@ -75,7 +75,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.seoSchema();
+    // this.seoSchema();
     this.channelOrForumId = this.activatedRoute.snapshot.params.community_channel_id;
     this.communityChannelManagerService.allChannelRoles$.subscribe((data) => {
       this.channelsRoles = data;

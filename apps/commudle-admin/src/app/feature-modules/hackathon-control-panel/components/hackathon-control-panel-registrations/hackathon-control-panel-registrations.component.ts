@@ -25,7 +25,7 @@ export class HackathonControlPanelRegistrationsComponent implements OnInit, OnDe
   dataFormId: number;
   hackathonResponseGroupDetails: IHackathonResponseGroup;
   filled_by_only_team_lead = true;
-  allow_track_problem_statement_selection = true;
+  allow_track_problem_statement_selection = false;
   icons = {
     faUpRightFromSquare,
     faArrowRight,

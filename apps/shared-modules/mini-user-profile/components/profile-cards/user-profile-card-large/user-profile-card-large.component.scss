@@ -87,10 +87,7 @@ app-badge {
 }
 
 .followers-count {
-  @apply com-text-xs com-font-medium com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0 com-mt-2;
-  span {
-    @apply com-text-Yankees-Blue;
-  }
+  @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-mr-2 com-flex-shrink-0 com-mt-2;
 }
 
 .leader {

@@ -1,4 +1,4 @@
-import { IAttachedFile } from '@commudle/shared-models';
+import { IAttachedFile } from './attached-file.model';
 
 export interface IHackathonJudge {
   id: number;
@@ -13,11 +13,11 @@ export interface IHackathonJudge {
   username: string;
   judge_user_id: number;
   photo?: IAttachedFile;
-  invite_status: EInvitationStatus;
+  invite_status: EJudgeInvitationStatus;
   judge_type: EHackathonJudgeType;
 }
 
-export enum EInvitationStatus {
+export enum EJudgeInvitationStatus {
   INVITED = 'invited',
   ACCEPTED = 'accepted',
   REMOVED = 'removed',

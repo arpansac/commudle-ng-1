@@ -103,6 +103,14 @@
         }
       }
 
+      .updates-heading {
+        @apply com-flex com-flex-col com-m-0 com-mb-4 com-text-2xl com-font-bold com-text-Yankees-Blue;
+      }
+
+      .updates-list {
+        @apply com-mb-3;
+      }
+
       .actions {
         @apply com-flex com-flex-row com-flex-wrap com-gap-4 md:com-pt-10 com-pt-8;
 
@@ -170,6 +178,13 @@
 .entity-update {
   @apply com-flex com-justify-between com-items-center com-py-1;
   .update-details {
+    div {
+      ::ng-deep {
+        p {
+          @apply com-m-0;
+        }
+      }
+    }
     .date {
       @apply com-text-xs com-text-Auro-Metal-Saurus;
     }
@@ -243,7 +258,7 @@
 }
 
 .add-button {
-  @apply com-bg-black com-text-white com-w-max com-rounded-lg com-mt-2 #{!important};
+  @apply com-bg-black com-text-white com-w-max com-rounded-lg #{!important};
 }
 
 .image {
@@ -272,7 +287,7 @@
 }
 
 .teammates-list {
-  @apply com-flex com-flex-col com-mt-6;
+  @apply com-flex com-flex-col;
 }
 
 .teammate-item {

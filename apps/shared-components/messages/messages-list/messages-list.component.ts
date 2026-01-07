@@ -115,6 +115,11 @@ export class MessagesListComponent implements OnInit, AfterViewInit {
       datePublished: this.parentData.created_at ? this.parentData.created_at : this.parentData.start_time,
       headline: this.parentData.name,
       comment: commentsArray,
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/CommentAction',
+        userInteractionCount: this.messages.length || 0,
+      },
     };
 
     this.seoService.setSchema(discussionSchema);

@@ -3,20 +3,20 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { HackathonControlPanelRoundCardComponent } from './hackathon-control-panel-round-card.component';
+import { Recap2025Component } from './recap-2025.component';
 
-describe('HackathonControlPanelRoundCardComponent', () => {
-  let component: HackathonControlPanelRoundCardComponent;
-  let fixture: ComponentFixture<HackathonControlPanelRoundCardComponent>;
+describe('Recap2025Component', () => {
+  let component: Recap2025Component;
+  let fixture: ComponentFixture<Recap2025Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HackathonControlPanelRoundCardComponent],
+      declarations: [Recap2025Component],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HackathonControlPanelRoundCardComponent);
+    fixture = TestBed.createComponent(Recap2025Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

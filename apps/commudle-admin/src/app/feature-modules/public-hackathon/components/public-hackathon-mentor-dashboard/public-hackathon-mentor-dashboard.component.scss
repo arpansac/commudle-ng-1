@@ -1,0 +1,191 @@
+nb-card {
+  @apply com-mx-0;
+}
+.header-content {
+  @apply com-flex com-justify-between com-items-center com-gap-4;
+
+  .round-selector {
+    @apply com-flex com-items-center com-gap-2;
+
+    label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+
+    .round-select {
+      @apply com-min-w-[250px] com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
+      @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+    }
+  }
+}
+
+.loading-state {
+  @apply com-text-center com-py-12;
+
+  p {
+    @apply com-text-gray-500;
+  }
+}
+
+.empty-state {
+  @apply com-text-center com-py-12 com-bg-gray-100 com-rounded-lg;
+
+  p {
+    @apply com-text-gray-600;
+  }
+}
+
+.teams-table {
+  @apply com-w-full com-border-collapse;
+
+  thead {
+    @apply com-bg-gray-100;
+
+    tr {
+      th {
+        @apply com-px-4 com-py-3 com-text-left com-text-sm com-font-semibold com-text-gray-700;
+        @apply com-border-b com-border-gray-200;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      @apply com-border-b com-border-gray-200;
+      @apply hover:com-bg-gray-50 com-transition-colors;
+
+      td {
+        @apply com-px-4 com-py-3 com-text-sm com-text-gray-700;
+
+        &.team-name {
+          @apply com-font-medium com-text-gray-900;
+        }
+
+        .status-badge {
+          @apply com-flex com-items-center com-px-2 com-py-1 com-rounded com-text-xs com-font-medium com-w-max com-gap-1;
+          @apply com-bg-gray-100 com-text-gray-600;
+
+          &.draft {
+            @apply com-bg-yellow-100 com-text-yellow-800;
+          }
+
+          &.submitted {
+            @apply com-bg-green-100 com-text-green-800;
+          }
+        }
+
+        .no-scoring {
+          @apply com-text-gray-400;
+        }
+
+        .ps-link {
+          @apply com-text-primary-500 com-cursor-pointer com-underline;
+          @apply hover:com-text-primary-600;
+        }
+
+        .submission-link {
+          @apply com-text-primary-500 com-underline com-break-all;
+          @apply hover:com-text-primary-600;
+        }
+
+        .submission-comments {
+          @apply com-text-xs com-text-gray-500 com-mt-1 com-italic;
+        }
+
+        .no-submission {
+          @apply com-text-gray-400 com-text-xs;
+        }
+
+        .submission-details {
+          @apply com-flex com-flex-col com-gap-2;
+
+          .ppt-link,
+          .project-link,
+          .updates-list {
+            @apply com-flex com-flex-col com-gap-1;
+
+            strong {
+              @apply com-text-xs com-font-semibold com-text-gray-700;
+            }
+
+            a {
+              @apply com-text-primary-500 com-underline com-text-xs;
+              @apply hover:com-text-primary-600;
+            }
+
+            .update-details {
+              ::ng-deep {
+                p {
+                  @apply com-m-0;
+                }
+              }
+            }
+
+            .date-time {
+              @apply com-text-xs com-text-gray-500 com-ml-1;
+            }
+          }
+
+          .updates-list {
+            ol {
+              @apply com-m-0 com-pl-4;
+
+              li {
+                @apply com-text-xs com-text-gray-700 com-mb-1;
+
+                span {
+                  @apply com-p-0;
+                }
+
+                .date-time {
+                  @apply com-text-xs com-text-gray-500 com-ml-1;
+                }
+              }
+            }
+          }
+        }
+
+        .inner-score-table {
+          @apply com-w-full com-border-collapse;
+
+          tbody {
+            tr {
+              @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+
+              &:last-child {
+                @apply com-border-b-0;
+              }
+
+              td {
+                @apply com-px-2 com-py-1 com-text-xs com-text-gray-700;
+
+                &:first-child {
+                  @apply com-font-medium;
+                }
+
+                &:last-child {
+                  @apply com-text-right com-font-semibold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.problem-statement-dialog {
+  @apply com-w-[600px] com-max-h-[500px];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    @apply com-max-h-[350px] com-overflow-y-auto;
+  }
+
+  nb-card-footer {
+    @apply com-flex com-justify-end;
+  }
+}

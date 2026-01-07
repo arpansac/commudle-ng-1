@@ -43,6 +43,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   hrgId: number;
   isOrganizer = false;
+  hackathonStatus: string;
   icons = {
     faPencil,
     faAward,
@@ -69,6 +70,7 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
       this.activatedRoute.parent.data.subscribe((data) => {
         this.hackathon = data.hackathon;
         this.community = data.community;
+        this.calculateHackathonDatesStatus();
         this.getSponsors();
         this.getFaqs();
         this.getTracks();
@@ -191,6 +193,19 @@ export class PublicHackathonDetailsComponent implements OnInit, OnDestroy {
         }
       }),
     );
+  }
+
+  calculateHackathonDatesStatus() {
+    const currentDate = new Date();
+    const hackathonApplicationStartDate = new Date(this.hackathon.application_start_date);
+    const hackathonApplicationEndDate = new Date(this.hackathon.application_end_date);
+    if (currentDate < hackathonApplicationStartDate) {
+      this.hackathonStatus = 'Upcoming';
+    } else if (currentDate >= hackathonApplicationStartDate && currentDate <= hackathonApplicationEndDate) {
+      this.hackathonStatus = 'Outgoing';
+    } else if (currentDate > hackathonApplicationEndDate) {
+      this.hackathonStatus = 'Closed';
+    }
   }
 
   setSchema() {

@@ -1,0 +1,73 @@
+<nb-card class="upload-dialog">
+  <nb-card-header>
+    <div class="header-content">
+      <h4 class="dialog-title">{{ existingSubmission ? 'Update' : 'Submit' }} Presentation</h4>
+      <button nbButton ghost size="small" (click)="close()" class="close-button" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </div>
+    <p class="round-name">{{ round.name }}</p>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form [formGroup]="uploadForm">
+      @if(existingSubmission?.file_attachment) {
+      <div class="existing-file">
+        <p class="existing-label">Current File:</p>
+        <a [href]="existingSubmission.file_attachment.url" target="_blank" class="existing-link">
+          {{ existingSubmission.file_attachment.name }}
+        </a>
+      </div>
+      }
+
+      <div class="upload-area" (click)="fileInput.click()" [class.has-file]="selectedFile">
+        <input type="file" #fileInput accept=".ppt,.pptx,.pdf" (change)="onFileSelected($event)" class="file-input" />
+
+        @if(!selectedFile) {
+        <div class="upload-placeholder">
+          <fa-icon [icon]="icons.faUpload" class="upload-icon"></fa-icon>
+          <p class="upload-text">
+            {{ existingSubmission ? 'Upload new file (optional)' : 'Click to upload or drag and drop' }}
+          </p>
+          <p class="upload-hint">PPT, PPTX, PDF (max 10MB)</p>
+        </div>
+        } @else {
+        <div class="file-selected">
+          <fa-icon [icon]="icons.faFile" class="file-icon"></fa-icon>
+          <div class="file-details">
+            <p class="file-name">{{ selectedFile.name }}</p>
+            <p class="file-size">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="comments-section">
+        <label class="comments-label">Comments (Optional)</label>
+        <textarea
+          nbInput
+          fullWidth
+          placeholder="Add any comments about your submission..."
+          formControlName="comments"
+          rows="3"
+        ></textarea>
+      </div>
+    </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="dialog-actions">
+      <button nbButton ghost (click)="close()">Cancel</button>
+      <button
+        nbButton
+        status="primary"
+        [disabled]="(!selectedFile && !existingSubmission) || isUploading"
+        (click)="onSubmit()"
+      >
+        @if(isUploading) {
+        <nb-icon icon="loader-outline" class="spinning"></nb-icon>
+        Uploading... } @else { {{ existingSubmission ? 'Update' : 'Submit' }} Presentation }
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

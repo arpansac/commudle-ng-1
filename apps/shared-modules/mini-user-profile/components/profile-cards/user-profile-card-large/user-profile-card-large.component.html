@@ -63,7 +63,7 @@
           {{ user.designation || '--' }}
         </p>
         <p *ngIf="user.followers_count > 0 && showFollowersCount" class="followers-count">
-          <span>{{ user.followers_count }}</span> Follower{{ user.followers_count > 1 ? 's' : '' }}
+          {{ user.followers_count }} Follower{{ user.followers_count > 1 ? 's' : '' }}
         </p>
         <div *ngIf="user.company_name && showCompanyName" class="user-company">
           <fa-icon class="user-company-icon" [icon]="faBriefcase"></fa-icon>

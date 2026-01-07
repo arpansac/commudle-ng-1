@@ -69,11 +69,17 @@ a {
 }
 
 .main-column {
-  .upcoming-events,
+  .upcoming-events {
+    @apply com-mt-6;
+    .upcoming-events-heading {
+      @apply com-m-0 com-pb-6 com-text-xl com-font-medium com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+    }
+  }
+
   .recent-activity {
-    @apply com-mt-6 com-mb-3;
+    @apply com-mt-8;
     .recent-activity-heading {
-      @apply com-m-0 com-mb-3 com-text-xl com-font-semibold com-text-Yankees-Blue;
+      @apply com-m-0 com-pb-6 com-mb-4 com-text-xl com-font-medium com-text-Yankees-Blue com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
     }
   }
 }
@@ -82,11 +88,7 @@ a {
 }
 
 .right-column {
-  @apply com-col-span-1 md:com-pl-6 com-pt-6 com-w-full;
-}
-
-.center-right-column-wrapper {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-1;
+  @apply md:com-pl-6 com-w-full;
 }
 
 .event-horizontal-card {
@@ -98,7 +100,7 @@ a {
 }
 
 .center-column {
-  @apply com-w-full com-pt-6 md:com-px-0 com-px-3 md:com-col-span-3 com-col-span-1;
+  @apply com-w-full md:com-px-0 com-px-3 md:com-col-span-3 com-col-span-1;
 }
 
 .no-upcoming-events {
@@ -116,7 +118,7 @@ a {
   @apply com-m-0;
 
   nb-card-header {
-    @apply com-p-3 com-flex com-flex-row com-bg-gray-50 com-items-center;
+    @apply com-p-3 com-flex com-flex-row com-items-center;
 
     .user {
       @apply com-m-0;
@@ -124,7 +126,7 @@ a {
   }
 
   nb-card-body {
-    @apply com-p-3;
+    @apply com-p-4;
   }
 }
 
@@ -136,15 +138,15 @@ a {
   }
 
   .performer-name {
-    @apply com-text-xs com-font-semibold com-text-gray-600 com-mr-1;
+    @apply com-text-xs com-font-medium com-text-gray-600 com-mr-2;
   }
 
   .action-text {
-    @apply com-text-xs com-font-normal com-text-Auro-Metal-Saurus;
+    @apply com-text-xs com-font-normal com-text-Cadet-Grey;
   }
 
   img {
-    @apply com-w-4 com-h-4 com-mr-2 com-rounded-full com-object-contain;
+    @apply com-w-5 com-h-5 com-mr-2 com-rounded-full com-object-contain;
   }
 }
 

@@ -36,6 +36,8 @@ export class ProfileStatusBarComponent implements OnInit, OnDestroy {
 
   showStepper() {
     this.gtm.dataLayerPushEvent('click_open_complete_profile_popup', {});
+    const currentUrl = this.router.url;
+    this.profileStatusBarService.setReferrerUrl(currentUrl);
     this.router.navigate(['/user-profile-complete/step-one']);
   }
 

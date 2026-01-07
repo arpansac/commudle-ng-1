@@ -5,6 +5,7 @@ import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
 import { Observable } from 'rxjs';
 import { INewsletter } from 'apps/shared-models/newsletter.model';
 import { IEmailStatsOverview } from 'apps/shared-models/email-stats-overview.model';
+import { EDbModels } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
@@ -125,7 +126,20 @@ export class NewsletterService {
     });
   }
 
-  attachImage(image): Observable<string> {
-    return this.http.put<string>(this.apiRoutesService.getRoute(API_ROUTES.NEWSLETTER.ATTACH_TEXT_IMAGE), image);
+  attachImage(image, parentId: number | string, parentType: EDbModels): Observable<string> {
+    let params = new HttpParams();
+    switch (parentType) {
+      case 'Kommunity': {
+        params = params.set('community_id', parentId);
+        break;
+      }
+      case 'CommunityGroup': {
+        params = params.set('community_group_id', parentId);
+        break;
+      }
+    }
+    return this.http.put<string>(this.apiRoutesService.getRoute(API_ROUTES.NEWSLETTER.ATTACH_TEXT_IMAGE), image, {
+      params,
+    });
   }
 }

@@ -136,6 +136,12 @@
                     </div>
                     <div *ngIf="sidebarExpanded" class="action-button-name">Judges, Speakers & Mentors</div>
                   </a>
+                  <a class="action-button" [routerLink]="['mentors']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faUserGroup"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Mentor Assignment</div>
+                  </a>
                   <a class="action-button" [routerLink]="['faqs']" routerLinkActive="active">
                     <div class="icon">
                       <fa-icon [icon]="icons.faCircleQuestion"></fa-icon>
@@ -172,6 +178,12 @@
                       <fa-icon [icon]="icons.faEnvelope"></fa-icon>
                     </div>
                     <div *ngIf="sidebarExpanded" class="action-button-name">Communications</div>
+                  </a>
+                  <a class="action-button" [routerLink]="['entry-pass-scan']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faQrcode"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Entry Pass Scanner</div>
                   </a>
                 </div>
               </div>

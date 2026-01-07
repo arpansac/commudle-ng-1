@@ -393,25 +393,109 @@
           </td>
           <td>
             <span class="activity-indicator">
-              <fa-icon *ngIf="userRole.community_activeness === 'dormant'" class="dormant" [icon]="faSkull"></fa-icon>
               <fa-icon
-                *ngIf="userRole.community_activeness === 'low_active'"
+                *ngIf="userRole.community_activeness === 'dormant' && !isMobileView"
+                class="dormant"
+                [icon]="faSkull"
+                [nbTooltip]="
+                  'Has very little recent activity. More active than only ' +
+                  Math.round(activityScoreThresholds.dormant.min * 100) +
+                  '-' +
+                  Math.round(activityScoreThresholds.dormant.max * 100) +
+                  '% of members.'
+                "
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'dormant' && isMobileView"
+                class="dormant"
+                [icon]="faSkull"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'low_active' && !isMobileView"
+                class="low_active"
+                [icon]="faHourglassHalf"
+                [nbTooltip]="
+                  'Occasionally active with limited recent engagement. More active than ' +
+                  Math.round(activityScoreThresholds.low_active.min * 100) +
+                  '-' +
+                  Math.round(activityScoreThresholds.low_active.max * 100) +
+                  '% of members.'
+                "
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'low_active' && isMobileView"
                 class="low_active"
                 [icon]="faHourglassHalf"
               ></fa-icon>
               <fa-icon
-                *ngIf="userRole.community_activeness === 'moderately_active'"
+                *ngIf="userRole.community_activeness === 'moderately_active' && !isMobileView"
+                class="moderately_active"
+                [icon]="faFire"
+                [nbTooltip]="
+                  'Regular, recent participation. More active than ' +
+                  Math.round(activityScoreThresholds.moderately_active.min * 100) +
+                  '-' +
+                  Math.round(activityScoreThresholds.moderately_active.max * 100) +
+                  '% of members.'
+                "
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'moderately_active' && isMobileView"
                 class="moderately_active"
                 [icon]="faFire"
               ></fa-icon>
               <fa-icon
-                *ngIf="userRole.community_activeness === 'highly_active'"
+                *ngIf="userRole.community_activeness === 'highly_active' && !isMobileView"
+                class="highly_active"
+                [icon]="faBolt"
+                [nbTooltip]="
+                  'Very frequent recent engagement. More active than ' +
+                  Math.round(activityScoreThresholds.highly_active.min * 100) +
+                  '-' +
+                  Math.round(activityScoreThresholds.highly_active.max * 100) +
+                  '% of members.'
+                "
+              ></fa-icon>
+              <fa-icon
+                *ngIf="userRole.community_activeness === 'highly_active' && isMobileView"
                 class="highly_active"
                 [icon]="faBolt"
               ></fa-icon>
-              {{
-                userRole.community_activeness ? (userRole.community_activeness | capitalizeAndRemoveUnderscore) : '--'
-              }}
+              <span
+                *ngIf="userRole.community_activeness && !isMobileView"
+                [nbTooltip]="
+                  userRole.community_activeness === 'dormant'
+                    ? 'Has very little recent activity. More active than only ' +
+                      Math.round(activityScoreThresholds.dormant.min * 100) +
+                      '-' +
+                      Math.round(activityScoreThresholds.dormant.max * 100) +
+                      '% of members.'
+                    : userRole.community_activeness === 'low_active'
+                    ? 'Occasionally active with limited recent engagement. More active than ' +
+                      Math.round(activityScoreThresholds.low_active.min * 100) +
+                      '-' +
+                      Math.round(activityScoreThresholds.low_active.max * 100) +
+                      '% of members.'
+                    : userRole.community_activeness === 'moderately_active'
+                    ? 'Regular, recent participation. More active than ' +
+                      Math.round(activityScoreThresholds.moderately_active.min * 100) +
+                      '-' +
+                      Math.round(activityScoreThresholds.moderately_active.max * 100) +
+                      '% of members.'
+                    : userRole.community_activeness === 'highly_active'
+                    ? 'Very frequent recent engagement. More active than ' +
+                      Math.round(activityScoreThresholds.highly_active.min * 100) +
+                      '-' +
+                      Math.round(activityScoreThresholds.highly_active.max * 100) +
+                      '% of members.'
+                    : null
+                "
+                >{{ userRole.community_activeness | capitalizeAndRemoveUnderscore }}</span
+              >
+              <span *ngIf="userRole.community_activeness && isMobileView">{{
+                userRole.community_activeness | capitalizeAndRemoveUnderscore
+              }}</span>
+              <span *ngIf="!userRole.community_activeness">--</span>
             </span>
           </td>
           <td>

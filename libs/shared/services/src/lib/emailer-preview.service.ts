@@ -90,4 +90,24 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonTeamRsvpEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.HACKATHON_TEAM_RSVP_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: hackathonId,
+      },
+    );
+  }
+
+  hackathonEntryPassEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.HACKATHON_ENTRY_PASS_EMAIL),
+      {
+        email_form: formData,
+        hackathon_id: String(hackathonId),
+      },
+    );
+  }
 }

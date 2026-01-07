@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EUserRoles, IProfileCompletionStatus, IUser, IUserStat } from '@commudle/shared-models';
+import {
+  EJudgeInvitationStatus,
+  EUserRoles,
+  IHackathonJudge,
+  IProfileCompletionStatus,
+  IUser,
+  IUserStat,
+} from '@commudle/shared-models';
 import { AppUsersService, AuthService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user_roles_users.service';
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
-import { IHackathonJudge, EInvitationStatus } from 'apps/shared-models/hackathon-judge.model';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
@@ -20,7 +26,7 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
   token: string;
   hackathon: IHackathon;
   judge: IHackathonJudge;
-  EInvitationStatus = EInvitationStatus;
+  EInvitationStatus = EJudgeInvitationStatus;
   showPageDetails = false;
   isLoading = true;
   currentUser: IUser;
@@ -51,18 +57,19 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
         this.judge = data.judge;
         this.getJudges();
         this.fetchCommunityDetails();
-        if (this.judge.invite_status === EInvitationStatus.INVITED || Number(params.status) === 1) {
+        if (Number(params.status) === 2) {
+          this.activateRole(this.token, EJudgeInvitationStatus.REJECTED);
+        } else if (this.judge.invite_status === EJudgeInvitationStatus.INVITED || Number(params.status) === 1) {
           this.onAcceptRoleButton();
         }
-        if (Number(params.status) === 2) {
-          this.activateRole(this.token, EInvitationStatus.REJECTED);
+        if (this.hackathon && this.hackathon.community) {
+          this.seoService.setTitle(`Confirm Role | ${this.hackathon.name} | ${this.hackathon.community.name}`);
         } else {
-          this.onAcceptRoleButton();
+          this.seoService.setTitle(`Confirm Role`);
         }
       });
     });
     this.fetchCurrentUserDetails();
-    this.seoService.setTitle('Confirm Role');
     this.seoService.noIndex(true);
   }
 
@@ -118,14 +125,14 @@ export class HackathonJudgeConfirmationComponent implements OnInit {
     dialogRef.componentRef.instance.consentOutput.subscribe((result) => {
       dialogRef.close();
       if (result === 'rejected') {
-        this.activateRole(this.token, EInvitationStatus.REJECTED);
+        this.activateRole(this.token, EJudgeInvitationStatus.REJECTED);
       } else {
-        this.activateRole(this.token, EInvitationStatus.ACCEPTED);
+        this.activateRole(this.token, EJudgeInvitationStatus.ACCEPTED);
       }
     });
   }
 
-  activateRole(token, inviteStatus?: EInvitationStatus) {
+  activateRole(token, inviteStatus?: EJudgeInvitationStatus) {
     this.hackathonService.updateInvitationTokenJudge(token, inviteStatus).subscribe((data) => {
       this.showPageDetails = true;
       if (data) {

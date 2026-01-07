@@ -22,6 +22,9 @@ import { HackathonControlPanelStatsComponent } from 'apps/commudle-admin/src/app
 import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-overall-stats.component';
 import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
 import { HackathonCollaborationCommunitiesComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-collaboration-communities/hackathon-collaboration-communities.component';
+import { HackathonControlPanelMentorsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentors/hackathon-control-panel-mentors.component';
+import { HackathonEntryPassScanComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-entry-pass-scan/hackathon-entry-pass-scan.component';
+import { HackathonCheckedInListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-checked-in-list/hackathon-checked-in-list.component';
 
 const routes: Routes = [
   {
@@ -68,6 +71,10 @@ const routes: Routes = [
           {
             path: 'speakers',
             component: HackathonControlPanelSpeakerJudgeComponent,
+          },
+          {
+            path: 'mentors',
+            component: HackathonControlPanelMentorsComponent,
           },
           {
             path: 'faqs',
@@ -128,6 +135,14 @@ const routes: Routes = [
             ],
           },
         ],
+      },
+      {
+        path: 'entry-pass-scan',
+        component: HackathonEntryPassScanComponent,
+      },
+      {
+        path: 'entry-pass-scan/checked-in-list',
+        component: HackathonCheckedInListComponent,
       },
     ],
   },

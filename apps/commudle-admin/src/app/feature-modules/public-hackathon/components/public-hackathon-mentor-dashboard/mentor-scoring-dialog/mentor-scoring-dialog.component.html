@@ -1,0 +1,91 @@
+<nb-card class="scoring-dialog">
+  <nb-card-header>
+    <div class="header-content">
+      <h4 class="dialog-title">Score Team</h4>
+      <button nbButton ghost size="small" (click)="close()" class="close-button" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </div>
+    <div class="team-info-header">
+      <p class="team-name">{{ teamData?.team?.name }}</p>
+      <span class="round-badge">{{ teamData?.team?.round?.name }}</span>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div *ngIf="isLoadingCriteria" class="loading-section">
+      <app-loading-spinner></app-loading-spinner>
+      <p>Loading marking criteria...</p>
+    </div>
+
+    <div *ngIf="!isLoadingCriteria" class="info-section">
+      <div class="info-item">
+        <span class="info-label">Track:</span>
+        <span class="info-value">{{ teamData?.team?.track?.name || 'N/A' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Problem Statement:</span>
+        <span class="info-value">{{ teamData?.team?.problem_statement?.display_id || 'N/A' }}</span>
+      </div>
+    </div>
+
+    <form *ngIf="!isLoadingCriteria" [formGroup]="scoreForm" class="score-form">
+      <div *ngIf="hasMarkingCriteria && markingCriteria.length > 0" class="criteria-section">
+        <div class="section-header">
+          <h5 class="section-title">Marking Criteria</h5>
+          <div class="total-score-display">
+            <span class="total-label">Total Score:</span>
+            <span class="total-value">{{ totalScore }} / {{ maxTotalScore }}</span>
+          </div>
+        </div>
+        <div *ngFor="let criteria of markingCriteria; let i = index" class="criteria-item">
+          <label class="criteria-label">
+            {{ criteria.text }}
+            <span class="criteria-range">({{ criteria.min }} - {{ criteria.max }})</span>
+          </label>
+          <div class="slider-container">
+            <input
+              type="range"
+              class="score-slider"
+              [formControlName]="'criteria_' + i"
+              [min]="criteria.min"
+              [max]="criteria.max"
+              [step]="1"
+            />
+            <span class="slider-value">{{ scoreForm.get('criteria_' + i)?.value || criteria.min }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="remarks-section">
+        <label class="remarks-label">Remarks (Optional)</label>
+        <textarea
+          nbInput
+          fullWidth
+          placeholder="Add your remarks for the team..."
+          formControlName="remarks"
+          rows="4"
+        ></textarea>
+      </div>
+    </form>
+  </nb-card-body>
+
+  <nb-card-footer>
+    <div class="dialog-actions">
+      <button nbButton ghost (click)="close()" [disabled]="isSubmitting">Cancel</button>
+      <button nbButton status="basic" [disabled]="isSubmitting" (click)="submitScore('draft')">
+        <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
+        {{ isSubmitting ? 'Saving...' : 'Save as Draft' }}
+      </button>
+      <button
+        nbButton
+        status="primary"
+        [disabled]="isSubmitting || scoreForm?.invalid"
+        (click)="submitScore('submitted')"
+      >
+        <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
+        {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

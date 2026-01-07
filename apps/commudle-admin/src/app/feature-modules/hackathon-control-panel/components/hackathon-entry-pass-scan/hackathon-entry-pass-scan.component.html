@@ -1,0 +1,225 @@
+<div class="entry-pass-scan-page">
+  <div class="page-container">
+    <nb-card>
+      <nb-card-header>
+        <div class="header-wrapper">
+          <h2>Entry Pass Scanner - {{ hackathon?.name }}</h2>
+          <a [routerLink]="['checked-in-list']">
+            <button nbButton status="info" size="small">
+              <nb-icon icon="list-outline"></nb-icon>
+              View Check-in List
+            </button>
+          </a>
+        </div>
+      </nb-card-header>
+
+      <nb-card-body>
+        <!-- Scanner Controls -->
+        <div *ngIf="hasPermission; else noPermission" class="controls-section">
+          <div *ngIf="hasDevices; else noDevices" class="device-controls">
+            <div class="scanner-toggle">
+              <label>Enable Scanner</label>
+              <input type="checkbox" [(ngModel)]="isScannerEnabled" />
+            </div>
+
+            <div *ngIf="deviceSelected && availableDevices.length > 0" class="device-selector">
+              <select (change)="onDeviceSelectChange($event.target)" [value]="deviceSelected">
+                <option *ngFor="let device of availableDevices" [value]="device.deviceId">
+                  {{ device.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <ng-template #noDevices>
+            <commudle-alert [info]="true" message="No cameras found."></commudle-alert>
+          </ng-template>
+        </div>
+
+        <ng-template #noPermission>
+          <commudle-alert
+            [info]="true"
+            message="Please give permission to use the camera to scan the pass."
+          ></commudle-alert>
+        </ng-template>
+
+        <!-- Scanner Area -->
+        <div class="scanner-area">
+          @if(isLoadingEntryPass){
+          <app-loading-spinner></app-loading-spinner>
+          <p>Loading entry pass...</p>
+          } @else {
+          <div *ngIf="isScannerEnabled">
+            <zxing-scanner
+              (camerasFound)="onCamerasFound($event)"
+              (deviceChange)="onDeviceChange($event)"
+              (permissionResponse)="onHasPermission($event)"
+              (scanSuccess)="onCodeResult($event)"
+              [device]="deviceCurrent"
+              [formats]="formatsEnabled"
+              previewFitMode="cover"
+            ></zxing-scanner>
+          </div>
+          }
+
+          <div *ngIf="!isScannerEnabled" class="scanner-disabled">
+            <p>Scanner is disabled</p>
+          </div>
+
+          <audio #correctSound>
+            <source
+              src="https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb1FkIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--9255d1e05be35d9fb971bfb38d1a67d8c39c8b0f/success_sound.mp3"
+              type="audio/mp3"
+            />
+          </audio>
+          <audio #incorrectSound>
+            <source
+              src="https://json.commudle.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb1VkIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--52910f934db167843387e03f3500aeff6be3a366/error_sound.mp3"
+              type="audio/mp3"
+            />
+          </audio>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span>OR</span>
+        </div>
+
+        <!-- Manual Entry -->
+        <div class="manual-entry">
+          <form (ngSubmit)="onSubmit(manualEntryPassInput.value); manualEntryPassInput.value = ''">
+            <input #manualEntryPassInput placeholder="Enter pass code" type="text" nbInput autofocus />
+            <button [disabled]="!manualEntryPassInput.value" type="submit" nbButton status="primary">Submit</button>
+          </form>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<ng-template #entryPassDetailsDialogBox let-ref="dialogRef">
+  <nb-card class="entry-pass-dialog">
+    <nb-card-header>
+      <div class="header-content">
+        <h3>Entry Pass for team: {{ entryPass.hackathon_team.name }}</h3>
+        <div class="pass-code">{{ entryPass.entry_pass_code }}</div>
+      </div>
+    </nb-card-header>
+
+    <nb-card-body>
+      <div class="entry-pass-content">
+        <!-- Pass Owner -->
+        <div class="pass-owner-section">
+          <app-user-profile-card-large [user]="entryPass?.hackathon_user_response?.user"></app-user-profile-card-large>
+
+          <div class="owner-details">
+            <div class="detail-item">
+              <span class="label">Status:</span>
+              <span
+                class="value"
+                [class.status-accepted]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.APPLICATION_COMPLETE
+                "
+                [class.status-pending]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION
+                "
+                [class.status-rejected]="
+                  entryPass?.hackathon_user_response?.invite_status === EInvitationStatus.REJECTED
+                "
+              >
+                {{ entryPass?.hackathon_user_response?.invite_status | capitalizeAndRemoveUnderscore }}
+              </span>
+            </div>
+
+            <div class="detail-item" *ngIf="entryPass?.attendance !== null">
+              <span class="label">Attendance:</span>
+              <span
+                class="value"
+                [class.attended]="entryPass?.attendance"
+                [class.not-attended]="!entryPass?.attendance"
+              >
+                {{ entryPass?.attendance ? 'Checked In' : 'Not Checked In' }}
+              </span>
+            </div>
+
+            <div class="detail-item" *ngIf="entryPass?.checkin_time">
+              <span class="label">Check-in Time:</span>
+              <span class="value">{{ entryPass?.checkin_time | date : 'medium' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Information -->
+        <div *ngIf="entryPass?.hackathon_team" class="team-section">
+          <div class="team-header">
+            <span class="team-count"> Team Members </span>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="team-members-table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Status</th>
+                  <th>Attendance</th>
+                  <th>Check-in Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of entryPass?.hackathon_team?.hackathon_user_responses">
+                  @if(member.id !== entryPass.hackathon_user_response.id){
+                  <td>
+                    <app-user-profile-card-medium [user]="member?.user"></app-user-profile-card-medium>
+                  </td>
+                  <td>
+                    <span
+                      class="value"
+                      [class.status-accepted]="member?.invite_status === EInvitationStatus.APPLICATION_COMPLETE"
+                      [class.status-pending]="member?.invite_status === EInvitationStatus.INCOMPLETE_APPLICATION"
+                      [class.status-rejected]="member?.invite_status === EInvitationStatus.REJECTED"
+                    >
+                      {{ member?.invite_status | capitalizeAndRemoveUnderscore }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      *ngIf="member?.hackathon_entry_pass"
+                      class="value"
+                      [class.attended]="member?.hackathon_entry_pass?.attendance"
+                      [class.not-attended]="!member?.hackathon_entry_pass?.attendance"
+                    >
+                      {{ member?.hackathon_entry_pass?.attendance ? 'Checked In' : 'Not Checked In' }}
+                    </span>
+                    <span *ngIf="!member?.hackathon_entry_pass">-</span>
+                  </td>
+                  <td>
+                    <span *ngIf="member?.hackathon_entry_pass?.checkin_time">
+                      {{ member?.hackathon_entry_pass?.checkin_time | date : 'dd/MM/yyyy hh:mm a' }}
+                    </span>
+                    <span *ngIf="!member?.hackathon_entry_pass?.checkin_time">-</span>
+                  </td>
+                  }
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+
+    <nb-card-footer class="dialog-actions">
+      <button (click)="ref.close()" nbButton status="basic" ghost>
+        <nb-icon icon="close-outline"></nb-icon>
+        Cancel
+      </button>
+      <button *ngIf="entryPass?.attendance" (click)="unmarkAttendance(); ref.close()" nbButton status="warning">
+        <nb-icon icon="close-circle-outline"></nb-icon>
+        Unmark Attendance
+      </button>
+      <button (click)="handleOk(); ref.close()" nbButton status="success" autofocus>
+        <nb-icon icon="checkmark-outline"></nb-icon>
+        Confirm Entry
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

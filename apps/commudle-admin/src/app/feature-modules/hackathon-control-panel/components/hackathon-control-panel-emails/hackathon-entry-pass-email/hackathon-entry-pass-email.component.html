@@ -1,0 +1,60 @@
+<nb-card class="send-entry-pass-dialog-box">
+  <nb-card-header>
+    <span>Send Entry Pass Email</span>
+    <button nbButton ghost (click)="close()" shape="round">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <commudle-alert
+      [info]="true"
+      [message]="'This will send a pre-formatted email, you can add any additional message and change the subject'"
+    ></commudle-alert>
+    <br />
+    <div>
+      <div *ngIf="hackathonUserResponses?.team && !isBulkEmail" class="team-info">
+        <p><strong>Team Name:</strong> {{ hackathonUserResponses?.team.name }}</p>
+        <div *ngIf="hackathonUserResponses?.user_responses?.length > 0" class="team-members">
+          <h4>Team Members & Entry Pass Codes:</h4>
+          <div *ngFor="let member of hackathonUserResponses.user_responses" class="member-entry">
+            <p>
+              <strong>{{ member.name || member.user_email }}</strong>
+            </p>
+            <p>Email: {{ member.user_email }}</p>
+            <p *ngIf="member.hackathon_entry_pass?.entry_pass_code">
+              Entry Pass Code: <strong>{{ member.hackathon_entry_pass.entry_pass_code }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="entryPassForm">
+        <div class="form-field">
+          <nb-checkbox formControlName="resend">Resend if already sent</nb-checkbox>
+        </div>
+        <div class="form-field">
+          <label>Subject <span class="required">*</span></label>
+          <input formControlName="subject" nbInput fullWidth placeholder="Enter email subject" />
+        </div>
+        <div class="form-field">
+          <label>Message (Optional)</label>
+          <editor formControlName="message" [init]="tinyMCE"></editor>
+        </div>
+      </form>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      nbButton
+      status="primary"
+      (click)="previewEmail()"
+      [disabled]="entryPassForm.invalid || showPreviewSpinner"
+      [nbSpinner]="showPreviewSpinner"
+    >
+      Preview Email
+    </button>
+    <button nbButton status="primary" (click)="sendEntryPassEmail()" [disabled]="entryPassForm.invalid" fullWidth>
+      Send
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -97,7 +97,23 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   }
 
   redirect(): void {
-    window.location.href = this.redirectUrl ? window.location.origin + this.redirectUrl : window.location.origin || '/';
+    let targetUrl = this.redirectUrl || '/';
+    targetUrl = this.isValidRedirectUrl(targetUrl) ? targetUrl : '/';
+
+    if (targetUrl === '/') {
+      targetUrl = '/dashboard';
+    }
+    window.location.href = window.location.origin + targetUrl;
+  }
+
+  private isValidRedirectUrl(url: string): boolean {
+    if (!url || url === '/' || url.startsWith('/')) return true;
+
+    if (url.includes('://') || url.includes('@') || url.startsWith('//')) return false;
+
+    if (url.match(/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/)) return false;
+
+    return true;
   }
 
   closeDialog(): void {

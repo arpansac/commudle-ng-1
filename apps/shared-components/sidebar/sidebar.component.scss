@@ -45,6 +45,9 @@
     &.extraLarge {
       @apply com-w-80;
     }
+    &.xxl {
+      width: 600px;
+    }
     .header {
       h1 {
         @apply com-flex com-ml-0 com-cursor-pointer;

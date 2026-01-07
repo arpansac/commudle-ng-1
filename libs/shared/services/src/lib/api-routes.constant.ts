@@ -41,6 +41,7 @@ export const API_ROUTES = {
       INDEX: 'api/v2/communities/public',
       SPEAKERS: 'api/v2/communities/public/speakers',
     },
+    ACTIVITY_SCORE_THRESHOLDS: 'api/v2/communities/public/activity_score_thresholds',
   },
 
   COMMUNITY_AUTH_TOKENS: {
@@ -453,6 +454,8 @@ export const API_ROUTES = {
         'api/v2/email_previews/hackathon_emails/hackathon_team_individual_general_email',
       HACKATHON_SEND_TEAM_STATUS_EMAIL_BY_FILTER:
         'api/v2/email_previews/hackathon_emails/send_team_status_email_by_filter',
+      HACKATHON_TEAM_RSVP_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_team_rsvp_email',
+      HACKATHON_ENTRY_PASS_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_entry_pass_email',
     },
   },
 
@@ -923,6 +926,16 @@ export const API_ROUTES = {
       IS_MEMBER_OF_PARENT: 'api/v2/hackathons/public/is_member_of_parent', //GET
       HACKATHONS: 'api/v2/hackathons/public/all_hackathons', //GET
     },
+    TEAMS: {
+      INDEX: 'api/v2/hackathons/teams/index', //GET
+      UPDATE_OFFLINE_INVITE_STATUS: 'api/v2/hackathons/teams/update_offline_invite_status', //PUT
+      SHOW_BY_TOKEN: 'api/v2/hackathons/teams/show_by_token', //GET
+      UPDATE_RSVP_BY_TOKEN: 'api/v2/hackathons/teams/update_rsvp_by_token', //PUT
+      SEND_RSVP_EMAIL: 'api/v2/hackathons/teams/send_rsvp_email', //POST
+      SEND_ENTRY_PASSES_EMAIL: 'api/v2/hackathons/teams/send_entry_passes_email', //POST
+      SEND_RSVP_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_rsvp_to_all_teams', //POST
+      SEND_ENTRY_PASSES_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_entry_passes_to_all_teams', //POST
+    },
   },
 
   FAQ: {
@@ -976,6 +989,8 @@ export const API_ROUTES = {
     DELETE: 'api/v2/round', //DELETE
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
+    MARKING_CRITERIA: 'api/v2/round/marking_criteria', //GET
+    SHOW_MARKING_CRITERIA: 'api/v2/round/show_marking_criteria', //GET
     PUBLIC: {
       INDEX: 'api/v2/round/public',
     },
@@ -998,6 +1013,9 @@ export const API_ROUTES = {
 
   HACKATHON_JUDGE: {
     RESEND_INVITE: 'api/v2/hackathon_judge/resend_invite', //PUT
+    ROLES: 'api/v2/hackathon_judge/roles', //GET
+    SEND_DASHBOARD_LINK: 'api/v2/hackathon_judge/send_dashboard_link', //POST
+    SEND_CUSTOM_EMAIL: 'api/v2/hackathon_judge/send_custom_email', //POST
   },
 
   EXPERTS: {
@@ -1014,6 +1032,7 @@ export const API_ROUTES = {
     CREATE_TRANSFER: 'api/v2/razorpay/create_transfer', //GET
     GET_TRANSFER_DETAILS: 'api/v2/razorpay/get_transfer_details', //GET
     CREATE_MISSING_RZP_PAYMENT: 'api/v2/razorpay/create_missing_rzp_payment', //GET
+    GET_PAYMENT_INFO: 'api/v2/razorpay/get_payment_info', //GET
   },
 
   FEED: {
@@ -1080,5 +1099,28 @@ export const API_ROUTES = {
     SHOW: 'api/v2/product_prices/show', //GET
     SHOW_BY_ID: 'api/v2/product_prices/show_by_id', //GET
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
+  },
+
+  HACKATHON_TEAM_ROUND_SUBMISSIONS: {
+    CREATE: 'api/v2/hackathon_team_round_submissions', //POST
+    SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET
+    UPDATE: 'api/v2/hackathon_team_round_submissions', //PUT
+  },
+
+  HACKATHON_TEAM_ROUND_SCORES: {
+    UNASSIGN_MENTOR: 'api/v2/hackathon_team_round_scores/unassign_mentor', //DELETE
+    ASSIGN_JUDGE: 'api/v2/hackathon_team_round_scores/assign_judge', //POST
+    ASSIGNMENT_SUMMARY: 'api/v2/hackathon_team_round_scores/assignment_summary', //GET
+    TEAMS_BY_ROUND: 'api/v2/hackathon_team_round_scores/teams_by_round', //GET
+    SUBMIT_SCORE: 'api/v2/hackathon_team_round_scores/submit_score', //PUT
+    SHOW_DETAILS: 'api/v2/hackathon_team_round_scores/show_details', //GET
+    DISTRIBUTE_TEAMS_EVENLY: 'api/v2/hackathon_team_round_scores/distribute_teams_evenly', //POST
+    COPY_TEAMS_FROM_PREVIOUS_ROUND: 'api/v2/hackathon_team_round_scores/copy_teams_from_previous_round', //POST
+  },
+
+  HACKATHON_ENTRY_PASSES: {
+    SCAN_ENTRY_PASS: 'api/v2/hackathon_entry_passes/scan_entry_pass', //GET
+    UPDATE_ATTENDANCE: 'api/v2/hackathon_entry_passes/update_attendance', //PUT
+    ATTENDANCE_STATS: 'api/v2/hackathon_entry_passes/attendance_stats', //GET
   },
 };

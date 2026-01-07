@@ -28,6 +28,7 @@ import {
   ICommunity,
   EParticipateTypes,
   IHackathonProblemStatement,
+  EOfflineInviteStatus,
 } from '@commudle/shared-models';
 import {
   faXmark,
@@ -36,6 +37,8 @@ import {
   faUpRightFromSquare,
   faEnvelope,
   faExclamationTriangle,
+  faSortUp,
+  faSortDown,
 } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
@@ -45,6 +48,8 @@ import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { HackathonIndividualTeamEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-individual-team-email/hackathon-individual-team-email.component';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
+import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
+import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -59,6 +64,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   moment = moment;
   EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   EHackathonRegistrationStatusColor = EHackathonRegistrationStatusColor;
+  EOfflineInviteStatus = EOfflineInviteStatus;
   hackathonRounds: IRound[];
   hackathonTracks: IHackathonTrack[];
   hackathonProblemStatements: IHackathonProblemStatement[];
@@ -70,6 +76,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faUpRightFromSquare,
     faEnvelope,
     faExclamationTriangle,
+    faSortUp,
+    faSortDown,
   };
   notesForm: FormGroup;
   notes: INote[];
@@ -93,6 +101,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   selectedTrackForFilter = '';
   selectProblemStatementForFilter = '';
   showOnlyWinnerEntry = false;
+  sortByTotalScore: 'asc' | 'desc' | null = null;
 
   dialogReference: NbDialogRef<any>;
   sendEmailDialogRef: NbDialogRef<any>;
@@ -106,6 +115,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   };
   private originalStatusValue: EHackathonRegistrationStatus;
   private originalRoundValue: number;
+  private originalOfflineInviteStatusValue: EOfflineInviteStatus;
 
   tinyMCE = {
     height: 200,
@@ -143,6 +153,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   @ViewChildren('noteTextarea') noteTextarea: QueryList<ElementRef>;
   @ViewChild('problemStatementDialog') problemStatementDialog: TemplateRef<any>;
+  @ViewChild('teamAttendanceDialog') teamAttendanceDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -222,6 +233,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.showOnlyWinnerEntry,
         Number(this.selectedTrackForFilter),
         Number(this.selectProblemStatementForFilter),
+        this.sortByTotalScore ? 'total_score' : null,
+        this.sortByTotalScore,
       )
       .subscribe((data) => {
         this.userResponses = data.values;
@@ -229,6 +242,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.total = data.total;
         this.isLoading = false;
       });
+  }
+
+  sortTotalScore(order: 'asc' | 'desc') {
+    this.sortByTotalScore = order;
+    this.page = 1;
+    this.fetchUserResponses();
   }
 
   optionChanged(event, teamId: number, index: number) {
@@ -428,6 +447,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     }
   }
 
+  clearSorting() {
+    this.sortByTotalScore = null;
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
   openIndividualTeamEmailDialogBox(hackathonTeam: IHackathonTeam) {
     this.nbDialogService.open(HackathonIndividualTeamEmailComponent, {
       context: {
@@ -589,6 +614,67 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   showProblemStatement(problemStatement: IHackathonProblemStatement) {
     this.nbDialogService.open(this.problemStatementDialog, {
       context: { problemStatement },
+    });
+  }
+
+  storeOriginalOfflineInviteStatusValue(value: EOfflineInviteStatus) {
+    this.originalOfflineInviteStatusValue = value;
+  }
+
+  changeOfflineInviteStatus(teamId: number, index: number, event) {
+    const newValue = event.target.value;
+    this.hackathonService.changeTeamOfflineInviteStatus(teamId, newValue).subscribe((data) => {
+      this.toastrService.successDialog('Offline invite status updated successfully');
+      this.userResponses[index].team.offline_invite_status = data.offline_invite_status;
+      if (this.selectedTeamDetails) {
+        this.selectedTeamDetails.offline_invite_status = data.offline_invite_status;
+      }
+    });
+  }
+
+  openSendRsvpDialog(team: IHackathonTeam) {
+    this.nbDialogService.open(HackathonRsvpEmailComponent, {
+      context: {
+        team,
+        hackathon: this.hackathon,
+      },
+    });
+  }
+
+  openSendEntryPassDialog(hurs: IHackathonUserResponses) {
+    this.nbDialogService.open(HackathonEntryPassEmailComponent, {
+      context: {
+        hackathonUserResponses: hurs,
+        hackathon: this.hackathon,
+      },
+    });
+  }
+
+  openBulkRsvpEmailDialog() {
+    this.nbDialogService.open(HackathonRsvpEmailComponent, {
+      context: {
+        team: this.userResponses[0].team,
+        hackathon: this.hackathon,
+        isBulkEmail: true,
+      },
+    });
+  }
+
+  openTeamAttendanceDialog(team: IHackathonUserResponses) {
+    this.nbDialogService.open(this.teamAttendanceDialog, {
+      context: {
+        selectedTeam: team,
+      },
+    });
+  }
+
+  openBulkEntryPassEmailDialog() {
+    this.nbDialogService.open(HackathonEntryPassEmailComponent, {
+      context: {
+        hackathon: this.hackathon,
+        hackathonUserResponses: this.userResponses[0],
+        isBulkEmail: true,
+      },
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { EJudgeInvitationStatus, IHackathonJudge } from '@commudle/shared-models';
 import { ToastrService } from '@commudle/shared-services';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
-import { IHackathonJudge, EInvitationStatus } from 'apps/shared-models/hackathon-judge.model';
 
 @Component({
   selector: 'commudle-hackathon-judge-card',
@@ -12,7 +12,7 @@ export class HackathonJudgeCardComponent {
   @Input() judge: IHackathonJudge;
   @Output() editJudgeEvent: EventEmitter<IHackathonJudge> = new EventEmitter();
   @Output() destroyJudgeEvent: EventEmitter<number> = new EventEmitter();
-  EInvitationStatus = EInvitationStatus;
+  EInvitationStatus = EJudgeInvitationStatus;
   constructor(private hackathonJudgeService: HackathonJudgeService, private toastrService: ToastrService) {}
 
   editJudge(judge) {

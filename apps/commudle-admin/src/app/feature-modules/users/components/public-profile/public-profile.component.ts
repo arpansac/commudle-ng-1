@@ -140,19 +140,23 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
         identifier: this.user.username,
         description: this.user.about_me,
         image: this.user.photo.url,
-        dateCreated: this.user.created_at,
         sameAs: socialMediaLinks.map((links) => links),
         gender: this.user.gender,
         jobTitle: this.user.designation,
         address: this.user.location,
+        interactionStatistic: {
+          '@type': 'InteractionCounter',
+          interactionType: 'https://schema.org/FollowAction',
+          userInteractionCount: this.user.followers_count || 0,
+        },
       },
     });
   }
 
   checkRecapParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      if (params['recap2024']) {
-        const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2024';
+      if (params['recap2025']) {
+        const url = '/users/' + this.activatedRoute.snapshot.params.username + '/recap-2025';
         this.router.navigate([url]);
       }
     });

@@ -33,3 +33,6 @@ export * from './lib/add-to-calender.service';
 export * from './lib/forum.service';
 export * from './lib/forums.store';
 export * from './lib/hackathon-collaboration-communities.service';
+export * from './lib/hackathon-team-round-submission.service';
+export * from './lib/hackathon-team-round-score.service';
+export * from './lib/hackathon-entry-passes.service';

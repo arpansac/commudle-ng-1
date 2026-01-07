@@ -59,6 +59,10 @@
 
     .menu-item {
       @apply com-flex com-font-normal com-items-center com-text-sm com-text-gray-500 com-px-0 com-pt-2 com-cursor-pointer;
+
+      app-badge {
+        @apply com-ml-2 com-flex-shrink-0;
+      }
     }
   }
 }

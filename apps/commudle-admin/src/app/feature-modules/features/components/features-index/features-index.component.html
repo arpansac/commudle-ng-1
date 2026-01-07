@@ -17,12 +17,14 @@
                   {{ feature.title }}
                 </h2>
               </div>
-              <div *ngIf="showSubHeading[i] && feature.features" class="sub-heading">
+              <div [ngClass]="showSubHeading[i] && feature.features ? 'com-flex' : 'com-hidden'" class="sub-heading">
                 <ul *ngFor="let subheading of feature.features">
                   <li>{{ subheading }}</li>
                 </ul>
               </div>
-              <p *ngIf="showSubHeading[i]" class="description">{{ feature.description }}</p>
+              <p [ngClass]="showSubHeading[i] ? 'com-flex' : 'com-hidden'" class="description">
+                {{ feature.description }}
+              </p>
             </div>
             <div *ngIf="feature.features">
               <fa-icon [icon]="showSubHeading[i] ? faMinus : faAdd"></fa-icon>

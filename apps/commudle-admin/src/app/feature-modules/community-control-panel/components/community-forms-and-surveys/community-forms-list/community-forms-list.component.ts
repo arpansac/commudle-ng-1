@@ -12,6 +12,7 @@ import { SeoService } from '@commudle/shared-services';
 import { FormResponsesComponent } from 'apps/shared-components/form-responses/form-responses.component';
 import { NbWindowService } from '@commudle/theme';
 import { FormBuilder } from '@angular/forms';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'app-community-forms-list',
@@ -33,6 +34,7 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   page = 1;
   query = '';
   destroy$ = new Subject<void>();
+  staticAssets = staticAssets;
 
   // tableSettings: Settings = {
   //   actions: false,

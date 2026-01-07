@@ -21,8 +21,10 @@ select environment in "local" "test" "staging" "production"; do
   esac
 done
 
-echo "Selected environment: $environment"
-echo ""
+echo "Environment Selected"
+echo "Environment: $environment"
+echo " "
+echo " "
 
 # Update environment in environments.ts
 echo "Updating environment configuration..."

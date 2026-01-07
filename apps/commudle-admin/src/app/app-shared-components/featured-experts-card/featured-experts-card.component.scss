@@ -20,12 +20,16 @@ a {
 
       .name-header {
         @apply com-flex com-flex-row com-justify-between com-items-center com-w-full com-overflow-hidden;
+
+        > a {
+          @apply com-overflow-hidden;
+        }
       }
 
       .expert-name {
-        @apply com-flex com-flex-row com-items-center com-m-0 com-mb-1 com-mr-4 com-flex-shrink com-overflow-hidden com-whitespace-nowrap;
+        @apply com-flex com-flex-row com-items-center com-m-0 com-mb-1 com-mr-4 com-overflow-hidden;
         .name {
-          @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0;
+          @apply md:com-text-base com-text-sm com-font-medium com-text-Yankees-Blue com-m-0 com-truncate;
         }
       }
 
@@ -50,7 +54,7 @@ a {
       }
 
       app-user-follow {
-        @apply md:com-ml-0 com-ml-4;
+        @apply md:com-ml-0 com-ml-4 com-flex-shrink-0;
       }
     }
   }

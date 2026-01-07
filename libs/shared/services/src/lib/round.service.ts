@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { IRound, EDbModels } from '@commudle/shared-models';
+import { IRound, EDbModels, IMarkingCriteria } from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -53,5 +53,19 @@ export class RoundService {
   pIndexRounds(parentId: number | string, parentType: EDbModels): Observable<IRound[]> {
     const params = new HttpParams().set('parent_id', parentId).set('parent_type', parentType);
     return this.http.get<IRound[]>(this.baseApiService.getRoute(API_ROUTES.ROUND.PUBLIC.INDEX), { params });
+  }
+
+  getMarkingCriteria(): Observable<IMarkingCriteria[]> {
+    return this.http.get<IMarkingCriteria[]>(this.baseApiService.getRoute(API_ROUTES.ROUND.MARKING_CRITERIA));
+  }
+
+  showMarkingCriteria(
+    roundId: number,
+  ): Observable<{ has_marking_criteria: boolean; marking_criteria: IMarkingCriteria[] }> {
+    const params = new HttpParams().set('round_id', roundId);
+    return this.http.get<{ has_marking_criteria: boolean; marking_criteria: IMarkingCriteria[] }>(
+      this.baseApiService.getRoute(API_ROUTES.ROUND.SHOW_MARKING_CRITERIA),
+      { params },
+    );
   }
 }

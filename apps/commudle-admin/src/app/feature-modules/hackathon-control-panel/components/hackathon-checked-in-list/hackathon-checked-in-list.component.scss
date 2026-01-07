@@ -1,0 +1,188 @@
+.checked-in-list-page {
+  nb-card {
+    nb-card-header {
+      h2 {
+        @apply com-m-0 com-text-xl com-font-semibold;
+      }
+    }
+
+    nb-card-body {
+      .loading {
+        @apply com-flex com-justify-center com-py-8;
+      }
+
+      .content {
+        @apply com-space-y-6;
+
+        .stats-summary {
+          @apply com-grid com-grid-cols-1 md:com-grid-cols-3 com-gap-4;
+
+          .stat-card {
+            @apply com-border com-border-solid com-border-Bright-Gray com-p-4 com-rounded-lg com-flex com-flex-col com-gap-2;
+
+            .label {
+              @apply com-text-sm com-text-Yankees-Blue;
+            }
+
+            .value {
+              @apply com-text-2xl com-font-bold com-text-gray-900;
+            }
+          }
+        }
+
+        .search-input {
+          @apply com-w-full com-px-4 com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-bg-transparent com-text-Yankees-Blue;
+          @apply focus:com-outline-none focus:com-border-primary-500 focus:com-ring-2 focus:com-ring-primary-200;
+          @apply com-text-sm;
+        }
+
+        .teams-table {
+          .table-header {
+            @apply com-flex com-flex-col md:com-flex-row com-justify-between com-items-start md:com-items-center com-gap-4 com-mb-4;
+
+            h3 {
+              @apply com-text-lg com-font-semibold com-m-0;
+            }
+          }
+
+          .pagination {
+            @apply com-mt-6;
+          }
+
+          .table-wrapper {
+            @apply com-overflow-x-auto;
+
+            table {
+              @apply com-w-full com-border-collapse;
+
+              thead {
+                @apply com-bg-gray-100;
+
+                tr {
+                  th {
+                    @apply com-p-3 com-text-left com-text-sm com-font-semibold com-text-gray-700 com-border com-border-Bright-Gray  com-border-solid;
+                  }
+                }
+              }
+
+              tbody {
+                tr {
+                  @apply com-border-0 com-border-b com-border-Bright-Gray com-border-solid;
+
+                  &.loading-row {
+                    td {
+                      @apply com-p-0 com-border-0;
+
+                      .loading {
+                        @apply com-flex com-justify-center com-py-8;
+                      }
+                    }
+                  }
+
+                  &.no-data-row {
+                    td.no-data {
+                      @apply com-text-center com-py-8 com-text-gray-500;
+                    }
+                  }
+
+                  &.team-leader-row {
+                    @apply com-bg-blue-50;
+                  }
+
+                  &.team-end {
+                    @apply com-border-b-2 com-border-b-Bright-Gray;
+                  }
+
+                  td {
+                    @apply com-p-3 com-text-sm com-border com-border-Bright-Gray com-border-solid;
+
+                    &.team-name {
+                      @apply com-bg-gray-50 com-font-medium com-align-top;
+
+                      .team-info {
+                        @apply com-flex com-flex-col com-gap-2;
+
+                        strong {
+                          @apply com-text-base;
+                        }
+
+                        .team-status {
+                          @apply com-text-xs com-px-2 com-py-1 com-rounded com-bg-gray-200 com-text-gray-700 com-w-fit;
+
+                          &.accepted {
+                            @apply com-bg-green-100 com-text-green-700;
+                          }
+                        }
+
+                        .team-count {
+                          @apply com-text-xs com-text-gray-600;
+
+                          &.clickable {
+                            @apply com-cursor-pointer com-text-primary-500 com-underline;
+                            @apply hover:com-text-primary-600;
+                          }
+                        }
+                      }
+                    }
+
+                    .role-badge {
+                      @apply com-text-xs com-px-2 com-py-1 com-rounded com-font-medium;
+
+                      &.leader {
+                        @apply com-bg-purple-100 com-text-purple-700;
+                      }
+
+                      &.member {
+                        @apply com-bg-blue-100 com-text-blue-700;
+                      }
+                    }
+
+                    .attendance {
+                      @apply com-font-medium;
+
+                      &.present {
+                        @apply com-text-green-600;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.team-details-dialog {
+  @apply com-space-y-4;
+
+  .member-detail {
+    @apply com-flex com-items-start com-gap-3 com-pb-3 com-border-b com-border-gray-200;
+
+    &:last-child {
+      @apply com-border-b-0;
+    }
+
+    .details {
+      @apply com-flex com-flex-col com-gap-1;
+
+      .role {
+        @apply com-text-xs com-font-medium com-text-gray-500;
+      }
+
+      .status {
+        @apply com-text-sm com-font-semibold com-text-gray-600;
+
+        &.checked-in {
+          @apply com-text-green-600;
+        }
+      }
+
+      .time {
+        @apply com-text-xs com-text-gray-500;
+      }
+    }
+  }
+}

@@ -20,7 +20,7 @@ import { EDbModels } from '@commudle/shared-models';
 export class NewsletterFormComponent implements OnInit, AfterViewInit {
   newsletterForm: FormGroup;
   parentId: string;
-  parentType: string;
+  parentType: EDbModels;
   pageSlug: string;
   subscriptions: Subscription[] = [];
   imagePreview;
@@ -144,11 +144,11 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
         this.pageSlug = data.newsletter_slug;
         if (params.get('community_id')) {
           this.parentId = params.get('community_id');
-          this.parentType = 'Kommunity';
+          this.parentType = EDbModels.KOMMUNITY;
         }
         if (params.get('community_group_id')) {
           this.parentId = params.get('community_group_id');
-          this.parentType = 'CommunityGroup';
+          this.parentType = EDbModels.COMMUNITY_GROUP;
         }
 
         if (this.pageSlug) {
@@ -299,7 +299,7 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
       const formData: any = new FormData();
       formData.append('image', new Blob([uint8Array], { type: 'image/png' }));
 
-      this.newsletterService.attachImage(formData).subscribe(
+      this.newsletterService.attachImage(formData, this.parentId, this.parentType).subscribe(
         (data) => {
           this.imageUrl = data;
           resolve(this.imageUrl);
@@ -313,20 +313,39 @@ export class NewsletterFormComponent implements OnInit, AfterViewInit {
 
   // upload_inline_images
   uploadTextImage(blobInfo, progress) {
-    const promise = new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
+      const blob = blobInfo.blob();
+      const filename = blobInfo.filename();
+
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      const maxSize = 2 * 1024 * 1024; // 2 MB
+
+      if (!allowedTypes.includes(blob.type)) {
+        const errorMsg = 'Invalid file type. Only PNG, JPG, and JPEG are allowed.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
+      if (blob.size > maxSize) {
+        const errorMsg = 'File size exceeds 2 MB limit.';
+        reject({ message: errorMsg, remove: true });
+        return;
+      }
+
       const formData: any = new FormData();
-      formData.append('image', blobInfo.blob());
-      this.newsletterService.attachImage(formData).subscribe({
-        next: (res: any) => {
+      formData.append('image', blob, filename);
+
+      this.newsletterService.attachImage(formData, this.parentId, this.parentType).subscribe({
+        next: (res) => {
           this.imagesList.push({ value: res });
+          progress(100);
           resolve(res);
         },
-        error: (err: any) => {
-          reject(err);
+        error: (err) => {
+          reject({ message: 'Upload failed', remove: true });
         },
       });
     });
-    return promise;
   }
 
   create(sendTestEmail?) {

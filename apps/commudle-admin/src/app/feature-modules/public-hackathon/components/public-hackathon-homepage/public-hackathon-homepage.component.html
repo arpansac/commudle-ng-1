@@ -130,6 +130,20 @@
               </button>
             </a>
           </div>
+          <div *ngIf="userRoles.is_mentor">
+            <a [routerLink]="['mentor-dashboard']">
+              <button nbButton status="primary" size="tiny" shape="semi-round">
+                <fa-icon [icon]="icons.faChalkboardTeacher"></fa-icon> &nbsp; Mentor Dashboard
+              </button>
+            </a>
+          </div>
+          <div *ngIf="userRoles.is_judge">
+            <a [routerLink]="['judge-dashboard']">
+              <button nbButton status="primary" size="tiny" shape="semi-round">
+                <fa-icon [icon]="icons.faChalkboardTeacher"></fa-icon> &nbsp; Judge Dashboard
+              </button>
+            </a>
+          </div>
         </nb-card-body>
       </nb-card>
       <div class="router" *ngIf="!isLoading">

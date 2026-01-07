@@ -221,7 +221,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
       .subscribe((data) => {
         this.dataForm = data;
         this.questions = this.dataForm.questions;
-        this.setupTableColumns();
       });
 
     this.getResponses();
@@ -241,6 +240,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
       .getEventDataFormEntityGroup(this.eventDataFormEntityGroupId)
       .subscribe((data) => {
         this.eventDataFormEntityGroup = data;
+        this.setupTableColumns();
         if (
           this.eventDataFormEntityGroup.registration_type.name === RegistrationTypeNames.SPEAKER &&
           fetchEventLocationTrack
@@ -478,7 +478,8 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   getQuestionIndex(columnKey: string): number {
     if (!columnKey.startsWith('question_')) return -1;
     const questionId = parseInt(columnKey.replace('question_', ''));
-    return this.questions?.findIndex((q) => q.id === questionId) || -1;
+    const index = this.questions?.findIndex((q) => q.id === questionId);
+    return index !== undefined ? index : -1;
   }
 
   getExpandedRowData(): any {

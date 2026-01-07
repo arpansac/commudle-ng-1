@@ -1,0 +1,163 @@
+.round-item {
+  @apply com-flex com-items-center com-p-4 com-rounded-lg com-border com-transition-all com-duration-200;
+
+  &.round-completed {
+    @apply com-bg-green-50 com-border-green-200 com-cursor-not-allowed;
+
+    .round-indicator {
+      .round-number {
+        @apply com-bg-green-500 com-text-white;
+      }
+    }
+
+    .round-content {
+      @apply com-opacity-75;
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
+      }
+    }
+  }
+
+  &.round-current {
+    @apply com-bg-primary-100 com-border-primary-500 com-border-2;
+
+    .round-indicator {
+      .round-number {
+        @apply com-bg-primary-500 com-text-white com-ring-4 com-ring-primary-200;
+      }
+    }
+  }
+
+  &.round-upcoming {
+    @apply com-bg-gray-200 com-border-gray-200;
+
+    .round-indicator {
+      .round-number {
+        @apply com-bg-gray-300 com-text-gray-600;
+      }
+    }
+
+    .round-content {
+      @apply com-opacity-60;
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
+      }
+    }
+  }
+
+  &.round-live {
+    @apply com-bg-yellow-50 com-border-yellow-400 com-border-2;
+
+    .round-indicator {
+      .round-number {
+        @apply com-bg-yellow-500 com-text-white com-ring-4 com-ring-yellow-200;
+      }
+    }
+    .round-content {
+      .round-name,
+      .round-date,
+      .round-description {
+        @apply com-text-tYankees-Blue;
+      }
+    }
+  }
+
+  .round-indicator {
+    @apply com-flex-shrink-0 com-mr-4;
+
+    .round-number {
+      @apply com-w-10 com-h-10 com-rounded-full com-flex com-items-center com-justify-center com-text-sm com-font-bold com-transition-all com-duration-200;
+    }
+  }
+
+  .round-content {
+    @apply com-flex-1;
+
+    .round-name {
+      @apply com-font-semibold com-text-Yankees-Blue com-mb-1;
+    }
+
+    .round-date {
+      @apply com-text-sm com-text-gray-600 com-mb-1;
+    }
+
+    .round-description {
+      @apply com-text-sm com-text-gray-500;
+
+      span {
+        white-space: pre-wrap;
+        overflow: hidden;
+        @apply com-line-clamp-2;
+
+        &.expanded {
+          display: block;
+        }
+      }
+
+      .read-more-btn {
+        @apply com-text-primary-500 com-text-xs com-font-medium com-mt-1 com-cursor-pointer com-bg-transparent com-border-0 com-p-0;
+        @apply hover:com-text-primary-600 hover:com-underline;
+      }
+    }
+
+    .round-evaluators {
+      @apply com-mt-3;
+
+      .evaluator-card {
+        @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-border com-border-Bright-Gray com-rounded-lg com-no-underline com-text-tYankees-Blue;
+
+        .evaluator-avatar {
+          @apply com-w-8 com-h-8 com-rounded-full com-object-cover;
+        }
+
+        .evaluator-info {
+          @apply com-flex com-flex-col;
+
+          .evaluator-name {
+            @apply com-text-sm com-font-medium com-text-tYankees-Blue;
+          }
+
+          .evaluator-role {
+            @apply com-text-xs com-text-tYankees-Blue;
+          }
+        }
+      }
+    }
+  }
+
+  .round-status {
+    @apply com-flex-shrink-0 com-ml-4 com-flex com-gap-2;
+
+    .status-completed {
+      @apply com-w-6 com-h-6 com-bg-green-500 com-text-white com-rounded-full com-flex com-items-center com-justify-center com-text-sm com-font-bold;
+    }
+
+    .status-current {
+      @apply com-px-2 com-py-1 com-bg-primary-500 com-text-white com-rounded-full com-text-xs com-font-medium;
+    }
+
+    .status-upcoming {
+      @apply com-px-2 com-py-1 com-bg-gray-300 com-text-gray-600 com-rounded-full com-text-xs com-font-medium;
+    }
+
+    .status-live {
+      @apply com-px-2 com-py-1 com-bg-yellow-500 com-text-white com-rounded-full com-text-xs com-font-medium;
+    }
+  }
+
+  .round-action {
+    @apply com-flex-shrink-0 com-ml-2 com-flex com-gap-2 com-items-center;
+
+    .view-ppt-link {
+      @apply com-text-primary-500 com-underline hover:com-text-primary-600 com-text-sm com-font-medium;
+    }
+
+    a.disabled {
+      @apply com-pointer-events-none com-opacity-50;
+    }
+  }
+}

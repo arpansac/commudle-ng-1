@@ -90,7 +90,12 @@ export class SeoService {
     this.meta.removeTag(`name="${tag}"`);
   }
 
-  setTags(title: string, description: string, image: string, contentType = 'website') {
+  setTags(
+    title: string,
+    description: string,
+    image = 'https://commudle.com/assets/images/commudle-logo192.png',
+    contentType = 'website',
+  ) {
     this.setTitle(title);
     this.setTag('description', description);
     this.setTag('image', image);

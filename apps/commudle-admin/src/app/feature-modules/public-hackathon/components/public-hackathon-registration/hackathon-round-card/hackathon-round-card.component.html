@@ -1,0 +1,117 @@
+<div
+  class="round-item"
+  [ngClass]="{
+    'round-completed': isCompleted,
+    'round-current': this.userTeamDetails?.round?.id === round.id,
+    'round-upcoming': isUpcoming,
+    'round-live': isLive
+  }"
+>
+  <div class="round-indicator">
+    <div class="round-number">{{ index + 1 }}</div>
+  </div>
+  <div class="round-content">
+    <div class="round-name">{{ round.name | titlecase }}</div>
+    <div class="round-date" *ngIf="round.date">
+      {{ moment(round.date).format('MMM DD, YYYY, hh:mm A') }}
+      @if(round.end_date) {
+      <span> -> {{ moment(round.end_date).format('MMM DD, YYYY, hh:mm A') }}</span>
+      }
+    </div>
+    <div class="round-description" *ngIf="round.description">
+      <span #descriptionSpan [innerHTML]="round.description" [class.expanded]="isDescriptionExpanded"></span>
+      <button class="read-more-btn" (click)="toggleDescription()" *ngIf="isDescriptionTruncated">
+        {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
+      </button>
+    </div>
+    <div class="round-evaluators" *ngIf="getRoundEvaluators().length > 0">
+      <a
+        class="evaluator-card"
+        *ngFor="let evaluator of getRoundEvaluators()"
+        [routerLink]="['/users', evaluator?.username]"
+      >
+        <img
+          *ngIf="evaluator.photo?.url"
+          [src]="evaluator.photo.url"
+          [alt]="evaluator.name"
+          class="evaluator-avatar"
+          [username]="evaluator?.username"
+          appMiniUserProfile
+        />
+        <div class="evaluator-info" appMiniUserProfile [username]="evaluator?.username">
+          <div class="evaluator-name">{{ evaluator.name }}</div>
+          <div class="evaluator-role">{{ evaluator.judge_type | titlecase }}</div>
+        </div>
+        @if(evaluator?.username){
+        <app-user-follow
+          [username]="evaluator.username"
+          [name]="evaluator.name"
+          [userId]="evaluator.judge_user_id"
+          [isMobileWidthFull]="false"
+          [appearance]="'outline'"
+          class="follow-btn"
+          (click)="$event.stopPropagation(); $event.preventDefault()"
+        ></app-user-follow>
+        }
+      </a>
+    </div>
+  </div>
+  <div class="round-status">
+    <div *ngIf="isLive" class="status-live">Live</div>
+    <div *ngIf="this.userTeamDetails?.round?.id === round.id" class="status-current">👉 You are here</div>
+    <div *ngIf="isCompleted" class="status-completed">✓</div>
+    <div
+      *ngIf="!isLive && this.userTeamDetails?.round?.id !== round.id && !isCompleted && isUpcoming"
+      class="status-upcoming"
+    >
+      Upcoming
+    </div>
+  </div>
+  @if(userTeamDetails?.round?.id === round.id && userTeamDetails.registration_status ===
+  EHackathonRegistrationStatus.ACCEPTED && (round.round_type === ERoundType.PPT_SUBMISSION || round.round_type ===
+  ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION || round.round_type ===
+  ERoundType.FINAL_JUDGING)) {
+  <div class="round-action">
+    @if(round.round_type === ERoundType.PPT_SUBMISSION){ @if(getRoundSubmission()?.file_attachment) {
+    <a
+      class="view-ppt-link"
+      [href]="getRoundSubmission().file_attachment.url"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View PPT
+    </a>
+    }
+    <button nbButton status="primary" size="small" (click)="openPPTUploadDialog()" [disabled]="!isLive">
+      {{ getRoundSubmission() ? 'Update PPT' : 'Submit PPT' }}
+    </button>
+    } @else if (round.round_type === ERoundType.PROJECT_SUBMISSION || round.round_type === ERoundType.FINAL_JUDGING) {
+    <a
+      nbButton
+      status="primary"
+      size="small"
+      [routerLink]="
+        userTeamDetails.community_build ? ['/builds', userTeamDetails.community_build.slug, 'edit'] : ['/builds/create']
+      "
+      [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
+      [class.disabled]="!isLive"
+    >
+      Submit Project
+    </a>
+    } @else if (round.round_type === ERoundType.PROJECT_UPDATE_SUBMISSION) {
+    <a
+      nbButton
+      status="primary"
+      size="small"
+      [routerLink]="
+        userTeamDetails.community_build ? ['/builds', userTeamDetails.community_build.slug, 'edit'] : ['/builds/create']
+      "
+      [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails.id }"
+      [class.disabled]="!isLive"
+    >
+      Submit Update
+    </a>
+    }
+  </div>
+  }
+</div>

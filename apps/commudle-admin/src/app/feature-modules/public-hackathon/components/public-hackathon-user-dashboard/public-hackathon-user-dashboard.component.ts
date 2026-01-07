@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   EDbModels,
   EDiscussionType,
+  EHackathonRegistrationStatus,
   EInvitationStatus,
   EParticipateTypes,
   ICommunityChannel,
@@ -31,6 +32,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     faXmark,
     faEdit,
   };
+  EHackathonRegistrationStatus = EHackathonRegistrationStatus;
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
   userTeamDetails: IHackathonTeam[];
@@ -42,8 +44,10 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   EInvitationStatus = EInvitationStatus;
   hackathonResponseGroup: IHackathonResponseGroup;
   hasTeammateOption = false;
+  isSubmittingProblemStatement = false;
 
   @ViewChild('editTeamMembersDialog') editTeamMembersDialogRef: TemplateRef<any>;
+  @ViewChild('problemStatementDialog') problemStatementDialogRef: TemplateRef<any>;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -152,5 +156,34 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
         this.toasterService.successDialog('Team members updated successfully');
       }
     });
+  }
+
+  shouldShowProblemStatementPrompt(): boolean {
+    if (!this.userTeamDetails || this.userTeamDetails.length === 0) return false;
+    const team = this.userTeamDetails[this.selectedTeamIndex];
+    return team.registration_status === EHackathonRegistrationStatus.ACCEPTED && !team.problem_statement;
+  }
+
+  openProblemStatementDialog() {
+    const selectedTeam = this.userTeamDetails[this.selectedTeamIndex];
+    this.nbDialogService.open(this.problemStatementDialogRef, {
+      context: {
+        selectedTeam: selectedTeam,
+      },
+    });
+  }
+
+  submitProjectDetails(formData, dialogRef: any) {
+    const team = this.userTeamDetails[this.selectedTeamIndex];
+    this.hackathonUserResponseService
+      .updateProjectDetails(formData, team.hackathon_user_responses[0].id)
+      .subscribe((data) => {
+        if (data) {
+          this.toasterService.successDialog('Problem statement updated successfully');
+          dialogRef.close();
+          this.getHackathonCurrentRegistrationDetails();
+          this.isSubmittingProblemStatement = false;
+        }
+      });
   }
 }

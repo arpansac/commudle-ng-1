@@ -34,6 +34,15 @@
         <li [routerLink]="['/builds/my-builds']" class="menu-item">My Builds</li>
         <li [routerLink]="['/labs/my-labs']" class="menu-item">My Labs</li>
         <li [routerLink]="['/jobs/my-applications']" class="menu-item">Job Applications</li>
+        <li [routerLink]="['/dashboard']" class="menu-item">
+          Dashboard
+          <app-badge
+            [color]="'com-bg-primary-500'"
+            [fontSize]="'xx-small'"
+            [text]="'New'"
+            [borderRadius]="'semi-round'"
+          ></app-badge>
+        </li>
       </ul>
     </div>
     <div class="section">

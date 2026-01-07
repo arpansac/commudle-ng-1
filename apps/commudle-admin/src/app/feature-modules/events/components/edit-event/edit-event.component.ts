@@ -50,6 +50,10 @@ export class EditEventComponent implements OnInit {
 
   faChevronLeft = faChevronLeft;
   submitIsInProcess = false;
+  bannerImage = false;
+  agenda = false;
+  sponsors = false;
+  eventForms = false;
 
   tinyMCE = {
     height: 300,
@@ -242,17 +246,19 @@ export class EditEventComponent implements OnInit {
       }
     }
 
-    this.eventsService.cloneEvent(formValue, this.event.slug, this.tags).subscribe(
-      (data) => {
-        this.submitIsInProcess = false;
-        window.location.reload();
-        this.close();
-      },
-      (error) => {
-        this.submitIsInProcess = false;
-        this.close();
-      },
-    );
+    this.eventsService
+      .cloneEvent(formValue, this.event.slug, this.tags, this.bannerImage, this.agenda, this.sponsors, this.eventForms)
+      .subscribe(
+        (data) => {
+          this.submitIsInProcess = false;
+          window.location.reload();
+          this.close();
+        },
+        (error) => {
+          this.submitIsInProcess = false;
+          this.close();
+        },
+      );
   }
   close() {
     this.windowRef.close();

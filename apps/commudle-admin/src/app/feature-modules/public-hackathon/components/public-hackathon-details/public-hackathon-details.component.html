@@ -146,12 +146,23 @@
         </div>
       </nb-card-body>
     </nb-card>
-    <div *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0" class="com-mx-2">
-      <commudle-public-hackathon-registration
-        [hackathon]="hackathon"
-        [hrgId]="hrgId"
-        [userTeamDetails]="userTeamDetails[0]"
-      ></commudle-public-hackathon-registration>
-    </div>
+    <nb-card *ngIf="userTeamDetails && userTeamDetails.length > 0">
+      <nb-card-header>Registration Status</nb-card-header>
+      <nb-card-body>
+        <div class="status-info">
+          <div class="status-badge">{{ userTeamDetails[0].registration_status | capitalizeAndRemoveUnderscore }}</div>
+        </div>
+        <div *ngIf="userTeamDetails[0].round" class="round-card">
+          <div class="name">{{ userTeamDetails[0].round.name }}</div>
+          <div class="date">{{ moment(userTeamDetails[0].round.date).format('DD MMM YYYY') }}</div>
+        </div>
+        <a
+          [routerLink]="['/communities', community.slug, 'hackathons', hackathon.slug, 'fill-form', hrgId]"
+          class="edit-link"
+        >
+          <button nbButton status="primary" size="small" fullWidth>Edit Registration</button>
+        </a>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>

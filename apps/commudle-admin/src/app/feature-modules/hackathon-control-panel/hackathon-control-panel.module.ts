@@ -22,6 +22,7 @@ import {
   NbTagModule,
   NbTooltipModule,
   NbAutocompleteModule,
+  NbContextMenuModule,
 } from '@commudle/theme';
 import { HackathonControlPanelContactDetailsFormComponent } from './components/hackathon-control-panel-contact-details-form/hackathon-control-panel-contact-details-form.component';
 import { HackathonControlPanelDatesFormComponent } from './components/hackathon-control-panel-dates-form/hackathon-control-panel-dates-form.component';
@@ -42,7 +43,7 @@ import { HackathonControlPanelUpdatesComponent } from 'apps/commudle-admin/src/a
 import { EditorModule as NewEditorModule } from '@commudle/editor';
 import { HackathonControlPanelReviewComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-review/hackathon-control-panel-review.component';
 import { HackathonControlPanelRoundsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-rounds/hackathon-control-panel-rounds.component';
-import { HackathonControlPanelRoundCardComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-rounds/hackathon-control-panel-round-card/hackathon-control-panel-round-card.component';
+
 import { HackathonControlPanelEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-control-panel-emails.component';
 import { HackathonWinnerAnnouncementEmailerComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-winner-announcement-emailer/hackathon-winner-announcement-emailer.component';
 import { HackathonStatusFilterGeneralEmailsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-status-filter-general-emails/hackathon-status-filter-general-emails.component';
@@ -59,6 +60,16 @@ import { HackathonControlPanelOverallStatsComponent } from 'apps/commudle-admin/
 import { HackathonControlPanelEmailStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-overall-stats/hackathon-control-panel-email-stats/hackathon-control-panel-email-stats.component';
 import { HackathonCollaborationCommunitiesComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-collaboration-communities/hackathon-collaboration-communities.component';
 import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-tracks-prizes/hackathon-prize-form/hackathon-prize-form.component';
+import { HackathonControlPanelMentorsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentors/hackathon-control-panel-mentors.component';
+import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
+import { MentorDashboardLinkDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
+import { MentorCustomEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
+import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
+import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
+import { HackathonEntryPassScanComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-entry-pass-scan/hackathon-entry-pass-scan.component';
+import { HackathonCheckedInListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-checked-in-list/hackathon-checked-in-list.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 
 @NgModule({
   declarations: [
@@ -81,7 +92,6 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
     HackathonControlPanelUpdatesComponent,
     HackathonControlPanelReviewComponent,
     HackathonControlPanelRoundsComponent,
-    HackathonControlPanelRoundCardComponent,
     HackathonControlPanelEmailsComponent,
     HackathonWinnerAnnouncementEmailerComponent,
     HackathonStatusFilterGeneralEmailsComponent,
@@ -94,6 +104,13 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
     HackathonControlPanelEmailStatsComponent,
     HackathonCollaborationCommunitiesComponent,
     HackathonPrizeFormComponent,
+    HackathonControlPanelMentorsComponent,
+    MentorDashboardLinkDialogComponent,
+    MentorCustomEmailDialogComponent,
+    HackathonRsvpEmailComponent,
+    HackathonEntryPassEmailComponent,
+    HackathonEntryPassScanComponent,
+    HackathonCheckedInListComponent,
   ],
   imports: [
     CommonModule,
@@ -110,6 +127,7 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
     //components
     SidebarComponent,
     HelpSectionComponent,
+    DataTableComponent,
     //nebular
     NbButtonModule,
     NbInputModule,
@@ -124,6 +142,9 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
     NbTagModule,
     NbTooltipModule,
     NbAutocompleteModule,
+    NbContextMenuModule,
+    ZXingScannerModule,
+    MiniUserProfileModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
