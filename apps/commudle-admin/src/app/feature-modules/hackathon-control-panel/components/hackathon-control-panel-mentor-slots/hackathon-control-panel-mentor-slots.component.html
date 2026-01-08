@@ -1,6 +1,22 @@
-<nb-card>
+<nb-card
+  class="main-card-container"
+  [ngClass]="{
+    'fullscreen-card': isFullscreen,
+    'sidebar-expanded': mainSidebarExpanded,
+    'sidebar-collapsed': !mainSidebarExpanded
+  }"
+>
   <nb-card-header>
     <span>Mentor Slot Booking</span>
+    <div class="header-actions">
+      <button
+        (click)="toggleFullscreen()"
+        class="fullscreen-button"
+        [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+      >
+        <fa-icon [icon]="isFullscreen ? icons.faExpand : icons.faCompress"></fa-icon>
+      </button>
+    </div>
   </nb-card-header>
   <nb-card-body>
     <commudle-data-table

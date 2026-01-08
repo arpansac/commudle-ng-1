@@ -21,7 +21,6 @@ import {
   IRound,
 } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
-import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { ToastrService, SeoService, RoundService, HackathonTeamRoundScoreService } from '@commudle/shared-services';
 import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
@@ -112,7 +111,6 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     private sidebarService: SidebarService,
     private cdr: ChangeDetectorRef,
     private dialogService: NbDialogService,
-    private hackathonJudgeService: HackathonJudgeService,
     private nbMenuService: NbMenuService,
     private router: Router,
   ) {}

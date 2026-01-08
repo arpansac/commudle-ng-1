@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { faPlus, faEdit, faTrash, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faLocationDot, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
 import {
   EDbModels,
   EHackathonJudgeType,
@@ -31,6 +31,7 @@ import {
   DataTableConfig,
 } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 import moment from 'moment';
+import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-mentor-slots',
@@ -46,6 +47,9 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   rounds: IRound[] = [];
   // mentorSlots: Map<string, IMentorSlot[]> = new Map();
   isLoading = false;
+  isFullscreen = false;
+  mainSidebarExpanded = true;
+  mainSidebarEventName = 'hackathonDashboard';
   tableColumns: DataTableColumn[] = [];
   tableRows: DataTableRow[] = [];
   tableConfig: DataTableConfig = {
@@ -67,6 +71,8 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     faEdit,
     faTrash,
     faLocationDot,
+    faExpand,
+    faCompress,
   };
 
   constructor(
@@ -80,6 +86,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private dialogService: NbDialogService,
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
+    private sidebarService: SidebarService,
   ) {
     this.slotRuleForm = this.fb.group(
       {
@@ -99,6 +106,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       this.hackathonId = params.get('hackathon_id');
       this.loadData();
     });
+    this.checkMainSidebarState();
   }
 
   ngAfterViewInit(): void {
@@ -328,5 +336,16 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const end = moment(ends_at);
 
     return end.isAfter(start) ? null : { dateRange: true };
+  }
+
+  toggleFullscreen(): void {
+    this.isFullscreen = !this.isFullscreen;
+  }
+
+  private checkMainSidebarState(): void {
+    this.sidebarService.getSidebarVisibility(this.mainSidebarEventName).subscribe((data) => {
+      this.mainSidebarExpanded = data;
+      this.cdr.markForCheck();
+    });
   }
 }
