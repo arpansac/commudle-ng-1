@@ -43,7 +43,6 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
     if (!this.seoService.isBot) {
       setTimeout(() => {
         this.newUpdates = [];
-        const currentDate = new Date();
         this.cookieCreationTime = this.whatsNewService.getCookieByName(this.cookieName);
 
         if (this.cookieCreationTime) {
@@ -55,9 +54,14 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
           }
         }
 
-        currentDate.setMonth(currentDate.getMonth() - 2);
-        const formattedPastTime = currentDate.toISOString();
+        // For testing: show all whats-new items regardless of age
+        // Set to a very old date to bypass the date filter
+        const formattedPastTime = new Date('1970-01-01').toISOString();
         const date = this.cookieCreationTime ? this.cookieCreationTime : formattedPastTime;
+
+        // Original code (commented for testing):
+        // currentDate.setMonth(currentDate.getMonth() - 2);
+        // const formattedPastTime = currentDate.toISOString();
         this.whatsNewService.getNewUpdates(date).subscribe((data) => {
           if (data.length > 0) {
             this.newUpdates = data;

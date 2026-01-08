@@ -5,4 +5,5 @@ export interface IWhatsNew {
   date: string;
   content: any;
   image?: SanityImageObject;
+  images?: SanityImageObject[];
 }
