@@ -62,10 +62,11 @@
     <div class="round-header-content">
       <span class="round-header-name">{{ column.round.name }}</span>
       <span class="round-header-datetime">
-        {{ moment(column.round.date).format('MMM D, YYYY [at] h:mm A') }}
-      </span>
-      <span class="round-header-datetime" *ngIf="column.round.end_date">
-        {{ moment(column.round.end_date).format('MMM D, YYYY [at] h:mm A') }}
+        <span class="start-date">{{ moment(column.round.date).format('MMM D, YYYY | h:mm A') }}</span>
+        <ng-container *ngIf="column.round.end_date">
+          →
+          <span class="end-date">{{ moment(column.round.end_date).format('MMM D, YYYY | h:mm A') }}</span></ng-container
+        >
       </span>
     </div>
     <div class="round-actions">
@@ -77,10 +78,10 @@
 </ng-template>
 
 <ng-template #updateMentorMeetingUrl let-data let-ref="dialogRef">
-  <nb-card>
+  <nb-card class="dialog-box-card">
     <nb-card-header>
       <div>Update Meeting URL</div>
-      <button ghost nbButton size="small" (click)="ref.close()">
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
@@ -100,18 +101,76 @@
 </ng-template>
 
 <ng-template #updateSlotRules let-data let-ref="dialogRef">
-  <nb-card>
+  <nb-card class="dialog-box-card" [formGroup]="slotRuleForm">
     <nb-card-header>
       <div>Add/Update Slot Rules</div>
-      <button ghost nbButton size="small" (click)="ref.close()">
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <p>Slot rules configuration for Round {{ data.roundId }}</p>
+      <div class="form-group">
+        <nb-checkbox formControlName="booking_open">Booking Open</nb-checkbox>
+      </div>
+      <div class="form-group">
+        <label for="startsAt">Starts At <span class="required">*</span></label>
+        <input type="datetime-local" id="startsAt" nbInput fullWidth formControlName="starts_at" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['starts_at'].touched && slotRuleForm.controls['starts_at'].errors?.['required'] && slotRuleForm.controls['starts_at'].invalid"
+          [error]="true"
+          errorMessage="Start date is required"
+        ></commudle-alert>
+      </div>
+      <div class="form-group">
+        <label for="endsAt">Ends At <span class="required">*</span></label>
+        <input type="datetime-local" id="endsAt" nbInput fullWidth formControlName="ends_at" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['ends_at'].touched && slotRuleForm.controls['ends_at'].errors?.['required'] && slotRuleForm.controls['ends_at'].invalid"
+          [error]="true"
+          errorMessage="End date is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.errors?.['dateRange'] && (slotRuleForm.controls['starts_at'].touched || slotRuleForm.controls['ends_at'].touched)"
+          [error]="true"
+          errorMessage="End date must be after start date"
+        ></commudle-alert>
+      </div>
+      <div class="form-group">
+        <label for="slotLength">Slot Length (minutes) <span class="required">*</span></label>
+        <input type="number" id="slotLength" nbInput fullWidth formControlName="slot_length" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['required'] && slotRuleForm.controls['slot_length'].invalid"
+          [error]="true"
+          errorMessage="Slot length is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['min']"
+          [error]="true"
+          errorMessage="Slot length must be at least 1 minute"
+        ></commudle-alert>
+      </div>
+      <div class="slot-info" *ngIf="calculateTotalSlots() > 0">
+        <p>
+          Total slots: <strong>{{ calculateTotalSlots() }}</strong>
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="maxTeams">Max Teams Per Slot <span class="required">*</span></label>
+        <input type="number" id="maxTeams" nbInput fullWidth formControlName="max_teams_per_slot" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['max_teams_per_slot'].touched && slotRuleForm.controls['max_teams_per_slot'].errors?.['required'] && slotRuleForm.controls['max_teams_per_slot'].invalid"
+          [error]="true"
+          errorMessage="Max teams is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['max_teams_per_slot'].touched && slotRuleForm.controls['max_teams_per_slot'].errors?.['min']"
+          [error]="true"
+          errorMessage="Max teams must be at least 1"
+        ></commudle-alert>
+      </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="ref.close()">Save</button>
+      <button nbButton status="primary" (click)="saveSlotRules(ref)" [disabled]="slotRuleForm.invalid">Save</button>
       <button nbButton (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>

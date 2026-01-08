@@ -1124,4 +1124,12 @@ export const API_ROUTES = {
     UPDATE_ATTENDANCE: 'api/v2/hackathon_entry_passes/update_attendance', //PUT
     ATTENDANCE_STATS: 'api/v2/hackathon_entry_passes/attendance_stats', //GET
   },
+
+  ROUND_MENTOR_SLOT_RULES: {
+    CREATE: 'api/v2/mentor_slot_rules', //POST
+    UPDATE: 'api/v2/mentor_slot_rules', //PUT
+    SHOW: 'api/v2/mentor_slot_rules', //GET
+    SHOW_BY_ROUND: 'api/v2/mentor_slot_rules/show_by_round', //GET
+    DELETE: 'api/v2/mentor_slot_rules', //DELETE
+  },
 };

@@ -49,15 +49,46 @@
     @apply com-flex com-flex-col com-gap-1;
 
     .round-header-name {
-      @apply com-font-semibold com-text-base;
+      @apply com-text-Yankees-Blue com-text-sm com-font-semibold;
     }
 
     .round-header-datetime {
-      @apply com-text-xs com-text-gray-500 com-font-normal;
+      @apply com-text-xs com-font-medium;
+
+      .start-date {
+        @apply com-text-gray-custom-1;
+      }
+
+      .end-date {
+        @apply com-text-Yankees-Blue;
+      }
     }
   }
 }
 
 .loading-container {
   @apply com-flex com-justify-center com-items-center com-py-12;
+}
+
+.slot-info {
+  @apply com-mt-2 com-p-3 com-bg-blue-100 com-rounded com-text-sm;
+
+  p {
+    @apply com-m-0 com-text-blue-800;
+
+    strong {
+      @apply com-font-semibold;
+    }
+  }
+}
+
+.required {
+  @apply com-text-red-600;
+}
+
+.dialog-box-card {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
 }

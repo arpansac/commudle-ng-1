@@ -9,6 +9,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { faPlus, faEdit, faTrash, faLocationDot } from '@fortawesome/free-solid-svg-icons';
@@ -18,10 +19,11 @@ import {
   EJudgeInvitationStatus,
   IHackathonJudge,
   IRound,
+  IRoundMentorSlotRule,
 } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
-import { ToastrService, SeoService, RoundService } from '@commudle/shared-services';
+import { ToastrService, SeoService, RoundService, RoundMentorSlotRulesService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
   DataTableColumn,
@@ -52,6 +54,9 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   };
   meetingUrl = '';
   moment = moment;
+  slotRuleForm: FormGroup;
+  currentRoundId: number;
+  currentSlotRule: IRoundMentorSlotRule;
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -69,11 +74,24 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private hackathonService: HackathonService,
     private hackathonJudgeService: HackathonJudgeService,
     private roundService: RoundService,
+    private roundMentorSlotRulesService: RoundMentorSlotRulesService,
     private toastrService: ToastrService,
     private seoService: SeoService,
     private dialogService: NbDialogService,
     private cdr: ChangeDetectorRef,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.slotRuleForm = this.fb.group(
+      {
+        booking_open: [false],
+        starts_at: ['', Validators.required],
+        ends_at: ['', Validators.required],
+        slot_length: [30, [Validators.required, Validators.min(1)]],
+        max_teams_per_slot: [1, [Validators.required, Validators.min(1)]],
+      },
+      { validators: this.dateRangeValidator },
+    );
+  }
 
   ngOnInit(): void {
     this.seoService.noIndex(true);
@@ -134,6 +152,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       ...this.rounds.map((round) => ({
         key: `round_${round.id}`,
         title: round.name,
+        width: '464px',
         cellTemplate: this.slotCellTemplate,
         headerTemplate: this.roundHeaderTemplate,
         round: round,
@@ -202,8 +221,112 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   openSlotRulesDialog(template: TemplateRef<unknown>, roundId: number): void {
+    this.currentRoundId = roundId;
+    this.loadSlotRule(roundId);
     this.dialogService.open(template, {
       context: { roundId },
     });
+  }
+
+  loadSlotRule(roundId: number): void {
+    const currentRound = this.rounds.find((r) => r.id === roundId);
+    this.roundMentorSlotRulesService.showByRound(roundId).subscribe({
+      next: (data) => {
+        this.currentSlotRule = data;
+        if (this.currentSlotRule) {
+          this.slotRuleForm.patchValue({
+            booking_open: data.booking_open,
+            starts_at: moment.utc(data.starts_at).local().format('YYYY-MM-DDTHH:mm'),
+            ends_at: moment.utc(data.ends_at).local().format('YYYY-MM-DDTHH:mm'),
+            slot_length: data.slot_length,
+            max_teams_per_slot: data.max_teams_per_slot,
+          });
+        } else {
+          this.slotRuleForm.patchValue({
+            booking_open: false,
+            starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
+            ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
+            slot_length: 30,
+            max_teams_per_slot: 1,
+          });
+        }
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.slotRuleForm.patchValue({
+          booking_open: false,
+          starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
+          ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
+          slot_length: 30,
+          max_teams_per_slot: 1,
+        });
+        this.currentSlotRule = null;
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  saveSlotRules(dialogRef: any): void {
+    if (this.slotRuleForm.invalid) {
+      this.slotRuleForm.markAllAsTouched();
+      this.toastrService.warningDialog('Please fill all required fields correctly');
+      return;
+    }
+
+    const formData = {
+      ...this.slotRuleForm.value,
+      starts_at: moment(this.slotRuleForm.value.starts_at).toISOString(),
+      ends_at: moment(this.slotRuleForm.value.ends_at).toISOString(),
+    };
+
+    if (this.currentSlotRule) {
+      this.roundMentorSlotRulesService.update(this.currentRoundId, this.currentSlotRule.id, formData).subscribe({
+        next: () => {
+          this.toastrService.successDialog('Slot rules updated successfully');
+          dialogRef.close();
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to update slot rules');
+        },
+      });
+    } else {
+      this.roundMentorSlotRulesService.create(this.currentRoundId, formData).subscribe({
+        next: () => {
+          this.toastrService.successDialog('Slot rules created successfully');
+          dialogRef.close();
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to create slot rules');
+        },
+      });
+    }
+  }
+
+  calculateTotalSlots(): number {
+    const starts_at = this.slotRuleForm.get('starts_at')?.value;
+    const ends_at = this.slotRuleForm.get('ends_at')?.value;
+    const slot_length = this.slotRuleForm.get('slot_length')?.value;
+
+    if (!starts_at || !ends_at || !slot_length) {
+      return 0;
+    }
+    const start = moment(starts_at);
+    const end = moment(ends_at);
+    const durationMinutes = end.diff(start, 'minutes');
+    return Math.floor(durationMinutes / slot_length);
+  }
+
+  private dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+    const starts_at = control.get('starts_at')?.value;
+    const ends_at = control.get('ends_at')?.value;
+
+    if (!starts_at || !ends_at) {
+      return null;
+    }
+
+    const start = moment(starts_at);
+    const end = moment(ends_at);
+
+    return end.isAfter(start) ? null : { dateRange: true };
   }
 }

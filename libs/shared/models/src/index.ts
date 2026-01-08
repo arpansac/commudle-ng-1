@@ -63,3 +63,4 @@ export * from './lib/hackathon-team-round-submission.model';
 export * from './lib/hackathon-team-round-score.model';
 export * from './lib/hackathon-entry-pass.model';
 export * from './lib/hackathon-judge.model';
+export * from './lib/round-mentor-slot-rule.model';
