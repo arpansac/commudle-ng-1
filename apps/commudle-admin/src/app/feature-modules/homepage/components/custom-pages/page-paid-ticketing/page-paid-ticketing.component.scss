@@ -57,7 +57,7 @@ h3 {
 
 // Hero Section
 .hero-section {
-  @apply com-text-center com-mb-12 com-py-16 com-relative com-overflow-hidden;
+  @apply com-text-center com-mb-12 com-py-16 com-relative com-overflow-hidden com-rounded-10;
   @apply com-bg-gradient-to-br com-from-gray-50 com-via-gray-100 com-to-gray-200;
 
   // Decorative background
@@ -101,10 +101,10 @@ h3 {
   }
 
   .notice-content {
-    @apply com-flex com-items-start com-gap-3 com-relative com-z-10;
+    @apply com-flex com-justify-center com-gap-3 com-relative;
 
     .notice-icon {
-      @apply com-text-2xl com-flex-shrink-0;
+      @apply com-text-2xl com-flex-shrink-0 com-mt-2;
     }
 
     .notice-title {
@@ -123,6 +123,11 @@ h3 {
   @apply com-rounded-xl com-relative com-overflow-hidden;
   @apply com-bg-gradient-to-br com-from-gray-50 com-to-gray-100;
 
+  h2,
+  .section-description {
+    @apply com-text-center;
+  }
+
   &::before {
     content: '';
     @apply com-absolute com-inset-0 com-pointer-events-none com-opacity-50;
@@ -137,7 +142,7 @@ h3 {
 
   .calculator-input-section {
     @apply com-p-8 com-flex com-items-start com-gap-4;
-    @apply com-bg-gradient-to-r com-from-primary-50 com-to-primary-100;
+    @apply com-bg-gradient-to-r com-from-primary-100 com-to-primary-200;
 
     .input-icon {
       @apply com-text-4xl com-w-14 com-h-14 com-flex com-items-center com-justify-center;
@@ -246,7 +251,7 @@ h3 {
 
   .payout-highlight {
     @apply com-p-6 com-rounded-xl com-relative com-overflow-hidden;
-    @apply com-bg-gradient-to-r com-from-primary-100 com-to-primary-200 com-border-2 com-border-primary-300;
+    @apply com-bg-gradient-to-r com-from-primary-300 com-to-primary-500 com-border-2 com-border-primary-300;
 
     &::before {
       content: '';
@@ -257,10 +262,10 @@ h3 {
     }
 
     .payout-content {
-      @apply com-flex com-justify-between com-items-center com-mb-2 com-relative com-z-10;
+      @apply com-flex com-justify-between com-items-center com-mb-2 com-relative com-z-10 com-text-tWhite;
 
       .payout-label {
-        @apply com-flex com-items-center com-gap-2 com-text-base com-font-bold com-text-Yankees-Blue;
+        @apply com-flex com-items-center com-gap-2 com-text-base com-font-bold;
 
         .payout-icon {
           @apply com-text-2xl;
@@ -268,13 +273,13 @@ h3 {
       }
 
       .payout-value {
-        @apply com-text-4xl com-font-black com-text-primary-600;
+        @apply com-text-4xl;
         text-shadow: 0 2px 4px rgba(51, 102, 255, 0.2);
       }
     }
 
     .payout-percentage {
-      @apply com-text-sm com-text-Yankees-Blue com-opacity-70 com-text-right com-relative com-z-10;
+      @apply com-text-sm com-opacity-70 com-text-right com-relative com-z-10 com-text-tWhite;
     }
   }
 
@@ -310,30 +315,6 @@ h3 {
 .card-base {
   @apply com-bg-white com-rounded-lg com-border com-border-gray-200 com-overflow-hidden;
   @apply com-transition-all com-duration-200 hover:com-shadow-lg hover:com-border-primary-500;
-}
-
-.features-section {
-  @extend .section-base;
-
-  .features-grid {
-    @apply com-grid com-grid-cols-1 com-gap-8 md:com-grid-cols-2 lg:com-grid-cols-4;
-  }
-
-  .feature-card {
-    @extend .card-base;
-
-    .feature-image {
-      @apply com-w-full com-h-48 com-object-cover;
-    }
-
-    h3 {
-      @apply com-px-4 com-pt-4 com-mb-2;
-    }
-
-    p {
-      @apply com-text-gray-600 com-px-4 com-pb-4;
-    }
-  }
 }
 
 // Steps Section

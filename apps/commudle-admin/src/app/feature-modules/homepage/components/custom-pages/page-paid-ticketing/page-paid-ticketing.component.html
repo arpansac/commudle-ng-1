@@ -15,7 +15,9 @@
         Accept payments from anywhere in the world. Get payouts in T+2 days. Available for Indian event organizers.
       </p>
       <div class="hero-cta">
-        <button nbButton status="primary" size="large" shape="semi-round">Start Selling Tickets</button>
+        <a [routerLink]="['/pricing']">
+          <button nbButton status="primary" size="large" shape="semi-round">Start Selling Tickets</button>
+        </a>
         <p class="hero-note">✓ No setup fees • ✓ Transparent pricing • ✓ Fast payouts</p>
       </div>
     </div>
@@ -25,7 +27,7 @@
       <div class="notice-content">
         <span class="notice-icon">🇮🇳</span>
         <div>
-          <p class="notice-title">Currently Available in India</p>
+          <p class="notice-title">Currently Available for Indian bank accounts</p>
           <p class="notice-text">Accept payments from attendees worldwide • Payouts in INR to Indian bank accounts</p>
         </div>
       </div>
@@ -135,53 +137,13 @@
             <p class="note-text">
               <strong>Payout:</strong> T+2 bank working days after event •
               <a href="https://razorpay.com/pricing/" target="_blank" rel="noopener noreferrer" class="note-link">
-                View pricing →
+                View Payment Gateway Pricing →
               </a>
+              <br />
+              This calculator depicts standard pricing mentioned by Razorpay, charges may vary for different payment
+              modes
             </p>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Features Section -->
-    <div class="features-section">
-      <h2>Everything You Need</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <img
-            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"
-            alt="Secure payments"
-            class="feature-image"
-          />
-          <h3>Secure Payments</h3>
-          <p>Accept credit cards, debit cards, UPI, and wallets. Industry-standard security.</p>
-        </div>
-        <div class="feature-card">
-          <img
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop"
-            alt="Real-time analytics"
-            class="feature-image"
-          />
-          <h3>Real-Time Analytics</h3>
-          <p>Track sales, revenue, and attendee data instantly. Make data-driven decisions.</p>
-        </div>
-        <div class="feature-card">
-          <img
-            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop"
-            alt="QR code check-in"
-            class="feature-image"
-          />
-          <h3>QR Code Check-In</h3>
-          <p>Fast, contactless check-in. Works on any mobile device. No app required.</p>
-        </div>
-        <div class="feature-card">
-          <img
-            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop"
-            alt="Automated emails"
-            class="feature-image"
-          />
-          <h3>Automated Emails</h3>
-          <p>Confirmations, reminders, and updates sent automatically. Keep attendees informed.</p>
         </div>
       </div>
     </div>
@@ -197,9 +159,7 @@
             <fa-icon [icon]="faBuildingColumns" class="step-icon"></fa-icon>
           </div>
           <h3 class="step-title">Link Your Bank Account</h3>
-          <p class="step-description">
-            Connect your Indian bank account securely through Razorpay for seamless payouts
-          </p>
+          <p class="step-description">Connect your bank account securely through Razorpay for seamless payouts.</p>
         </div>
 
         <div class="step-connector">
@@ -226,7 +186,7 @@
           </div>
           <h3 class="step-title">Receive Payouts Directly</h3>
           <p class="step-description">
-            Get funds transferred to your bank account in T+2 working days after event completion
+            Funds get transferred to your bank account in T+2 bank working days automatically
           </p>
         </div>
       </div>
@@ -243,13 +203,13 @@
           <div class="feature-icon">🎯</div>
           <h3>Approval-Based Payments</h3>
           <p>
-            Review and approve registrations before charging attendees. Perfect for selective events, workshops with
-            prerequisites, or capacity-limited sessions.
+            Option to sell directly or review and approve registrations before charging attendees. Perfect for selective
+            events, workshops with prerequisites, or capacity-limited sessions.
           </p>
           <ul class="feature-benefits">
             <li>Manual approval workflow</li>
             <li>Automatic payment collection after approval</li>
-            <li>Rejection notifications with refunds</li>
+            <li>Waitlist management</li>
           </ul>
         </div>
 
@@ -271,24 +231,23 @@
           <div class="feature-icon">💼</div>
           <h3>Priority Support</h3>
           <p>
-            Get dedicated support for your events. Our team understands tech communities and is here to help you
+            Get dedicated support for your paid tickets. Our team understands tech communities and is here to help you
             succeed.
           </p>
           <ul class="feature-benefits">
-            <li>Email support within 24 hours</li>
-            <li>Event setup assistance</li>
+            <li>Email support within 6 working hours</li>
+            <li>Issue resolution on priority</li>
             <li>Technical troubleshooting</li>
           </ul>
         </div>
 
         <div class="advanced-feature-card">
           <div class="feature-icon">↩️</div>
-          <h3>Custom Refund Policies</h3>
+          <h3>Custom</h3>
           <p>Set your own refund rules. Full control over when and how refunds are processed for your events.</p>
           <ul class="feature-benefits">
-            <li>Define refund deadlines</li>
-            <li>Partial or full refund options</li>
-            <li>Automated refund processing</li>
+            <li>Define custom refund policies</li>
+            <li>Independence to choose refund amount</li>
           </ul>
         </div>
       </div>
@@ -300,19 +259,16 @@
       <div class="community-benefits-grid">
         <div class="community-benefit">
           <div class="benefit-icon">👥</div>
-          <h3>Community-First Design</h3>
-          <p>
-            Built by community organizers, for community organizers. We understand the unique needs of tech events,
-            hackathons, and developer meetups.
-          </p>
+          <h3>Dev Community-First Design</h3>
+          <p>Commudle's paid ticketing is built with a focus on developer community leaders and managers.</p>
         </div>
 
         <div class="community-benefit">
           <div class="benefit-icon">🔗</div>
           <h3>Seamless Integration</h3>
           <p>
-            Integrate with your existing Commudle community page. Attendees can see your past events, builds, and
-            community activity.
+            The payment gateway comes integrated with your community dashboard. Just start seamlessly by linking your
+            bank account within minutes.
           </p>
         </div>
 
@@ -349,11 +305,12 @@
       <h2>Ready to Start Selling Tickets?</h2>
       <p>
         Join thousands of event organizers who trust Commudle for their paid ticketing needs. Set up your first paid
-        event in minutes.
+        event in minutes. Start your community now.
       </p>
       <div class="cta-buttons">
-        <button nbButton status="primary" size="large" shape="semi-round">Create Paid Event</button>
-        <button nbButton status="info" size="large" shape="semi-round" outline>View Demo</button>
+        <a [routerLink]="['/pricing']">
+          <button nbButton status="primary" size="large" shape="semi-round">Create Paid Event</button>
+        </a>
       </div>
     </div>
   </div>
