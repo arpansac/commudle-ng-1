@@ -267,9 +267,17 @@ export const staticAssets = {
   // id: 217
   hackathon_platform: {
     hero_image:
-      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd1lGQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2cdc96080458ee198f602db2d45a47edb1d22fe2/hackathon-hero.png',
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNmdaQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5a15bfe973d79bc218239eb85cd3abe5ee72c6fa/hero%20(5).png',
     experts_team_image:
-      'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd3NIQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4be2ccc4d2b95b1cd7409268a34b4f9da8a6862c/experts-team.png',
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2tZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--d4cf5d0ca1d26b2a1c2de58ef78e631217af5a5b/Gemini_Generated_Image_3ce9vc3ce9vc3ce9.png',
+    boost_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL3dZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--84680c9889186c6d2cae166fe7773b9bc7bd3004/Boost%20your%20hackathons%20with%20targeted%20ads.png',
+    commudle_managed_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzBZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--fb90c0c92303e280afbf96451d83550becf534e2/Commudle%20Managed%20Hackathons.png',
+    sponsor_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzhZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--00bdbcb1029e4b2b43e742fa33d0b341b34dbd01/sponsor%20a%20hackathon.png',
+    launch_your_community_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd0FaQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--202370f2295bd42256edd3fc2840e5ca270ce02a/launch%20your%20community%20hackathon.png',
   },
 
   widgets: {

@@ -10,7 +10,7 @@ const routes = [
     component: HomepageComponent,
   },
   {
-    path: 'hackathon-platform',
+    path: 'hackathon-management-platform',
     component: PageHackathonManagementPlatformComponent,
   },
   {
