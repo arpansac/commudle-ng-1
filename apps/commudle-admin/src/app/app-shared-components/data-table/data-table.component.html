@@ -60,6 +60,10 @@
         <td
           [class.frozen-column]="column.frozen && config.frozenColumns"
           [class.frozen-shadow]="column.frozen && config.frozenColumns && $index === 0"
+          [class.no-padding]="column.noPadding || config.noCellPadding"
+          [class.border-right]="config.cellBorders === 'right'"
+          [class.border-bottom]="config.cellBorders === 'bottom'"
+          [class.border-right-bottom]="config.cellBorders === 'both'"
           [attr.data-column]="column.key"
         >
           @if (column.cellTemplate) {

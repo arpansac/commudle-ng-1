@@ -986,6 +986,7 @@ export const API_ROUTES = {
   ROUND: {
     CREATE: 'api/v2/round', //POST
     INDEX: 'api/v2/round', //GET
+    MENTOR_SLOT_INDEX: 'api/v2/round/mentor_slot_index', //GET
     DELETE: 'api/v2/round', //DELETE
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST

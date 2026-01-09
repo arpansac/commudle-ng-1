@@ -26,7 +26,8 @@
       "@commudle/shared-environments": ["libs/shared/environments/src/index.ts"],
       "@commudle/shared-models": ["libs/shared/models/src/index.ts"],
       "@commudle/shared-services": ["libs/shared/services/src/index.ts"],
-      "@commudle/shared-validators": ["libs/shared/validators/src/index.ts"]
+      "@commudle/shared-validators": ["libs/shared/validators/src/index.ts"],
+      "@commudle/data-table": ["apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -62,7 +62,30 @@
 }
 
 .slots-container {
-  @apply com-flex com-justify-around com-items-center com-gap-2;
+  @apply com-flex com-flex-col com-gap-2 com-p-2;
+}
+
+.slots-grid {
+  @apply com-flex com-gap-2;
+}
+
+.slot-item {
+  @apply com-flex com-flex-col com-gap-2 com-p-2;
+
+  .slot-btn {
+    @apply com-w-full com-flex com-flex-col com-items-center com-gap-1 com-py-3;
+
+    fa-icon {
+      @apply com-text-lg;
+    }
+
+    span {
+      @apply com-text-xs;
+    }
+  }
+  &:not(:last-child) {
+    @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+  }
 }
 
 .round-header {

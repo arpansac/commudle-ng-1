@@ -43,6 +43,11 @@ export class RoundService {
     return this.http.get<IRound[]>(this.baseApiService.getRoute(API_ROUTES.ROUND.INDEX), { params });
   }
 
+  mentorSlotIndex(parentId: number | string, parentType: EDbModels): Observable<IRound[]> {
+    const params = new HttpParams().set('parent_id', parentId).set('parent_type', parentType);
+    return this.http.get<IRound[]>(this.baseApiService.getRoute(API_ROUTES.ROUND.MENTOR_SLOT_INDEX), { params });
+  }
+
   destroyRound(roundId): Observable<boolean> {
     const params = new HttpParams().set('round_id', roundId);
     return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.ROUND.DELETE), { params });

@@ -12,7 +12,16 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { faPlus, faEdit, faTrash, faLocationDot, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faEdit,
+  faTrash,
+  faLocationDot,
+  faExpand,
+  faCompress,
+  faCross,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import {
   EDbModels,
   EHackathonJudgeType,
@@ -25,11 +34,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import { ToastrService, SeoService, RoundService, RoundMentorSlotRulesService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import {
-  DataTableColumn,
-  DataTableRow,
-  DataTableConfig,
-} from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
+import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
@@ -55,6 +60,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   tableConfig: DataTableConfig = {
     frozenColumns: true,
     resizableColumns: true,
+    cellBorders: 'both',
   };
   meetingUrl = '';
   moment = moment;
@@ -73,6 +79,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     faLocationDot,
     faExpand,
     faCompress,
+    faXmark,
   };
 
   constructor(
@@ -120,6 +127,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   loadData(): void {
+    this.isLoading = true;
     this.loadRounds();
     this.loadMentors();
   }
@@ -131,18 +139,26 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       .subscribe((data) => {
         this.mentors = data || [];
         this.buildTableData();
+        this.checkLoadingComplete();
         this.cdr.markForCheck();
       });
   }
 
   loadRounds(): void {
-    this.roundService.indexRounds(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
+    this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
       this.rounds = data;
       if (this.mentorCellTemplate) {
         this.buildTableColumns();
       }
+      this.checkLoadingComplete();
       this.cdr.markForCheck();
     });
+  }
+
+  private checkLoadingComplete(): void {
+    if (this.mentors.length >= 0 && this.rounds.length >= 0) {
+      this.isLoading = false;
+    }
   }
 
   buildTableColumns(): void {
@@ -157,14 +173,20 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         width: '250px',
         cellTemplate: this.mentorCellTemplate,
       },
-      ...this.rounds.map((round) => ({
-        key: `round_${round.id}`,
-        title: round.name,
-        width: '464px',
-        cellTemplate: this.slotCellTemplate,
-        headerTemplate: this.roundHeaderTemplate,
-        round: round,
-      })),
+      ...this.rounds.map((round) => {
+        const slotCount = round.round_mentor_slot_rule ? this.getSlots(round.round_mentor_slot_rule).length : 1;
+        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(464, slotCount * 200)}px` : '464px';
+
+        return {
+          key: `round_${round.id}`,
+          title: round.name,
+          width: calculatedWidth,
+          cellTemplate: this.slotCellTemplate,
+          headerTemplate: this.roundHeaderTemplate,
+          noPadding: true,
+          round: round,
+        };
+      }),
     ];
     this.buildTableData();
   }
@@ -292,6 +314,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         next: () => {
           this.toastrService.successDialog('Slot rules updated successfully');
           dialogRef.close();
+          this.loadRounds();
         },
         error: () => {
           this.toastrService.warningDialog('Failed to update slot rules');
@@ -302,6 +325,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         next: () => {
           this.toastrService.successDialog('Slot rules created successfully');
           dialogRef.close();
+          this.loadRounds();
         },
         error: () => {
           this.toastrService.warningDialog('Failed to create slot rules');
@@ -347,5 +371,35 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       this.mainSidebarExpanded = data;
       this.cdr.markForCheck();
     });
+  }
+
+  getSlots(slotRule: IRoundMentorSlotRule): { time: string }[] {
+    if (!slotRule) return [];
+
+    const start = moment(slotRule.starts_at);
+    const end = moment(slotRule.ends_at);
+    const slotLength = slotRule.slot_length;
+    const slots = [];
+
+    let current = start.clone();
+    while (current.isBefore(end)) {
+      const slotEnd = current.clone().add(slotLength, 'minutes');
+      slots.push({
+        time: `${current.format('h:mm A')} - ${slotEnd.format('h:mm A')}`,
+      });
+      current = slotEnd;
+    }
+
+    return slots;
+  }
+
+  addTeamToSlot(mentorId: number, roundId: number, slotIndex: number): void {
+    // TODO: Implement add team logic
+    console.log('Add team to slot', { mentorId, roundId, slotIndex });
+  }
+
+  cancelSlot(mentorId: number, roundId: number, slotIndex: number): void {
+    // TODO: Implement cancel slot logic
+    console.log('Cancel slot', { mentorId, roundId, slotIndex });
   }
 }

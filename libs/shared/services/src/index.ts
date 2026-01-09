@@ -37,3 +37,4 @@ export * from './lib/hackathon-team-round-submission.service';
 export * from './lib/hackathon-team-round-score.service';
 export * from './lib/hackathon-entry-passes.service';
 export * from './lib/round-mentor-slot-rules.service';
+export * from './lib/round-mentor-slot.service';

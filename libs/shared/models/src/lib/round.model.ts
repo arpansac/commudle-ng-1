@@ -1,3 +1,6 @@
+import { IRoundMentorSlotRule } from './round-mentor-slot-rule.model';
+import { IRoundMentorSlot } from './round-mentor-slot.model';
+
 export interface IRound {
   id: number;
   name: string;
@@ -13,6 +16,8 @@ export interface IRound {
   round_type: ERoundType;
   end_date: string;
   has_marking_criteria: boolean;
+  round_mentor_slot_rule?: IRoundMentorSlotRule;
+  round_mentor_slots?: IRoundMentorSlot[];
 }
 
 export enum ERoundType {

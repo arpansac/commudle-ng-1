@@ -19,18 +19,15 @@
     </div>
   </nb-card-header>
   <nb-card-body>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
     <commudle-data-table
-      *ngIf="rounds.length > 0 && mentors.length > 0"
+      *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
       [columns]="tableColumns"
       [rows]="tableRows"
       [config]="tableConfig"
       [isLoading]="isLoading"
     >
     </commudle-data-table>
-
-    <div *ngIf="isLoading" class="loading-container">
-      <nb-spinner></nb-spinner>
-    </div>
   </nb-card-body>
 </nb-card>
 
@@ -70,7 +67,43 @@
 </ng-template>
 
 <ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
-  <div class="slots-container">SLOTS</div>
+  <div class="slots-container">
+    <button
+      *ngIf="!column.round.round_mentor_slot_rule"
+      nbButton
+      size="small"
+      status="primary"
+      (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+    >
+      <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
+    </button>
+    <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
+      <div *ngFor="let slot of getSlots(column.round.round_mentor_slot_rule); let i = index" class="slot-item">
+        {{ slot.time }}
+        <button
+          nbButton
+          size="small"
+          (click)="addTeamToSlot(value.mentorId, column.round.id, i)"
+          class="slot-btn"
+          ghost
+        >
+          <fa-icon [icon]="icons.faPlus"></fa-icon>
+          <span>Add Teams</span>
+        </button>
+        <button
+          nbButton
+          size="small"
+          (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+          class="slot-btn"
+          ghost
+          status="danger"
+        >
+          <fa-icon [icon]="icons.faXmark"></fa-icon>
+          <span>Cancel Slot</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #roundHeaderTemplate let-column="column">
