@@ -147,3 +147,40 @@
   @apply com-bg-transparent com-border-none com-cursor-pointer com-p-2 com-text-gray-600;
   @apply hover:com-text-primary-500 hover:com-bg-gray-100 com-rounded com-transition-colors;
 }
+
+.sidebar-content {
+  @apply com-p-4 com-flex com-flex-col com-gap-4;
+
+  .sidebar-info {
+    @apply com-p-3 com-bg-gray-100 com-rounded com-flex com-flex-col com-gap-2;
+
+    p {
+      @apply com-mb-0 com-text-sm;
+    }
+  }
+
+  .search-section {
+    h3 {
+      @apply com-text-lg com-font-semibold com-mb-3;
+    }
+  }
+
+  .teams-list {
+    @apply com-flex com-flex-col com-gap-2 com-max-h-96 com-overflow-y-auto;
+
+    .team-item {
+      @apply com-flex com-justify-between com-items-center com-p-3 com-border com-border-gray-300 com-rounded com-cursor-pointer;
+      @apply hover:com-bg-gray-50;
+
+      .team-info {
+        span {
+          @apply com-font-medium;
+        }
+      }
+    }
+
+    .no-teams {
+      @apply com-text-center com-py-8 com-text-gray-500;
+    }
+  }
+}

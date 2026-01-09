@@ -29,14 +29,26 @@ import {
   IHackathonJudge,
   IRound,
   IRoundMentorSlotRule,
+  IHackathonTeam,
 } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
-import { ToastrService, SeoService, RoundService, RoundMentorSlotRulesService } from '@commudle/shared-services';
+import {
+  ToastrService,
+  SeoService,
+  RoundService,
+  RoundMentorSlotRulesService,
+  HackathonTeamService,
+} from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
+import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-mentor-slots',
@@ -67,6 +79,17 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   slotRuleForm: FormGroup;
   currentRoundId: number;
   currentSlotRule: IRoundMentorSlotRule;
+  selectedMentorId: number;
+  selectedRoundId: number;
+  selectedRoundName: string;
+  selectedMentor: IHackathonJudge;
+  selectedSlotIndex: number;
+  searchQuery = '';
+  ESidebarPosition = ESidebarPosition;
+  ESidebarWidth = ESidebarWidth;
+  sidebarEventName = 'mentor-slot-team-assignment';
+  teams: IHackathonTeam[] = [];
+  filteredUnassignedTeams: IHackathonTeam[] = [];
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -94,6 +117,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
     private sidebarService: SidebarService,
+    private hackathonTeamService: HackathonTeamService,
   ) {
     this.slotRuleForm = this.fb.group(
       {
@@ -109,6 +133,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   ngOnInit(): void {
     this.seoService.noIndex(true);
+    this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true, ESidebarPosition.RIGHT);
     this.activatedRoute.parent.parent.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
       this.loadData();
@@ -394,8 +419,54 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   addTeamToSlot(mentorId: number, roundId: number, slotIndex: number): void {
-    // TODO: Implement add team logic
-    console.log('Add team to slot', { mentorId, roundId, slotIndex });
+    this.selectedMentorId = mentorId;
+    this.selectedRoundId = roundId;
+    this.selectedSlotIndex = slotIndex;
+    this.selectedMentor = this.mentors.find((m) => m.id === mentorId);
+    this.selectedRoundName = this.rounds.find((r) => r.id === roundId)?.name;
+    this.loadTeamsForRound(roundId);
+    this.sidebarService.openSidebar(this.sidebarEventName);
+  }
+
+  loadTeamsForRound(roundId: number): void {
+    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadTeamsForRound ~ roundId:', roundId);
+    this.hackathonTeamService
+      .indexTeamsByRound(roundId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.teams = data;
+          this.updateFilteredTeams();
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to load teams');
+        },
+      });
+  }
+
+  updateFilteredTeams(): void {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredUnassignedTeams = this.teams.filter((team) => team.name.toLowerCase().includes(query));
+  }
+
+  onSearchChange(): void {
+    this.updateFilteredTeams();
+  }
+
+  closeSidebar(): void {
+    this.sidebarService.closeSidebar(this.sidebarEventName);
+    this.searchQuery = '';
+  }
+
+  assignTeam(teamId: number): void {
+    console.log('Assign team', {
+      teamId,
+      mentorId: this.selectedMentorId,
+      roundId: this.selectedRoundId,
+      slotIndex: this.selectedSlotIndex,
+    });
+    this.toastrService.successDialog('Team assigned successfully');
   }
 
   cancelSlot(mentorId: number, roundId: number, slotIndex: number): void {

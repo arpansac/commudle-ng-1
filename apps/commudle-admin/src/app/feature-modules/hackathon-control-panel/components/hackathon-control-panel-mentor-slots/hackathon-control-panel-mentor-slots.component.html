@@ -224,3 +224,60 @@
     </nb-card-footer>
   </nb-card>
 </ng-template>
+
+<commudle-sidebar
+  [heading]="'Assign Teams to Slot'"
+  [position]="ESidebarPosition.RIGHT"
+  [expandedWidth]="ESidebarWidth.XXL"
+  [forWindow]="true"
+  [eventName]="sidebarEventName"
+  (toggleSidebar)="closeSidebar()"
+>
+  <div class="sidebar-content">
+    <div class="sidebar-info">
+      @if (selectedMentor) {
+      <div class="mentor-info">
+        <img
+          *ngIf="selectedMentor.photo?.i320"
+          [src]="selectedMentor.photo.i320"
+          [alt]="selectedMentor.name"
+          class="mentor-avatar"
+        />
+        <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
+          <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+        </div>
+        <div class="mentor-details">
+          <span class="mentor-name">{{ selectedMentor.name }}</span>
+          <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+        </div>
+      </div>
+      }
+      <p><strong>Round:</strong> {{ selectedRoundName || 'No round selected' }}</p>
+      <p><strong>Slot:</strong> {{ selectedSlotIndex + 1 }}</p>
+    </div>
+
+    <div class="search-section">
+      <h3>Add Teams</h3>
+      <input
+        nbInput
+        fullWidth
+        type="text"
+        placeholder="Search teams..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="teams-list">
+      <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
+        <div class="team-info">
+          <span>{{ team.name }}</span>
+        </div>
+        <button nbButton size="tiny" status="primary">Add</button>
+      </div>
+      <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
+        <p>No teams available</p>
+      </div>
+    </div>
+  </div>
+</commudle-sidebar>
