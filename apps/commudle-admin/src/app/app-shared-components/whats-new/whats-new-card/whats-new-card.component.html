@@ -3,7 +3,7 @@
     <span>{{ update.title }}</span>
     <app-badge
       [color]="'com-bg-green-100'"
-      [fontSize]="'x-small'"
+      [fontSize]="'xx-small'"
       [text]="'New'"
       [borderRadius]="'semi-round'"
       [fontColor]="'com-text-green-700'"
@@ -24,5 +24,12 @@
         <img [src]="data.image" [alt]="data.title" />
       </div>
     </nb-card-body>
+    <nb-card-footer class="close-button-footer">
+      <div class="close-button-container">
+        <button nbButton size="medium" class="close-button" (click)="ref.close()" aria-label="Close">
+          <nb-icon icon="close" class="close-icon"></nb-icon>
+        </button>
+      </div>
+    </nb-card-footer>
   </nb-card>
 </ng-template>

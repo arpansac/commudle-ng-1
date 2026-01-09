@@ -3,7 +3,7 @@
 }
 
 .popup-container {
-  @apply com-flex com-w-full com-max-w-2xl com-max-h-[52vh] md:com-w-[50dvw];
+  @apply com-flex com-w-full com-max-w-2xl md:com-max-h-[52vh] com-h-[66vh] md:com-w-[50dvw];
 }
 
 .card-info-popup {
@@ -24,11 +24,11 @@ nb-card-header {
     }
 
     .heading-text {
-      @apply com-text-white com-text-lg com-font-bold com-m-0;
+      @apply com-text-tWhite com-text-lg com-font-bold com-m-0;
     }
 
     .heading-subtitle {
-      @apply com-text-gray-50 com-text-xs com-font-medium com-m-0;
+      @apply com-text-[#f9fafb] com-text-xs com-font-medium com-m-0;
     }
   }
 
@@ -57,6 +57,6 @@ nb-card-footer {
   @apply com-flex com-justify-between com-py-3 com-px-5 com-flex-shrink-0 com-bg-white com-rounded-b-[10px] com-border-t com-border-solid com-border-Bright-Gray com-sticky com-bottom-0 com-z-10;
 
   button {
-    @apply com-text-xs com-font-medium com-bg-Yankees-Blue com-text-tWhite com-rounded-lg #{!important};
+    @apply com-text-xs com-font-medium com-bg-Yankees-Blue com-text-white com-rounded-lg #{!important};
   }
 }

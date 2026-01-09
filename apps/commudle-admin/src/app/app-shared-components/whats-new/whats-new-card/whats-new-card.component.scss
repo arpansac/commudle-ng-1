@@ -15,10 +15,10 @@ li {
 }
 
 .image-container {
-  @apply com-flex md:com-w-[120px] com-h-[86px] com-w-full com-rounded-lg com-overflow-hidden com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-transition-transform hover:com-scale-105;
+  @apply com-flex md:com-w-[120px] com-h-[86px] com-w-full com-rounded-lg com-overflow-hidden com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-transition-transform hover:com-scale-105 com-bg-tWhite;
 
   img {
-    @apply com-w-full com-h-auto com-rounded-lg;
+    @apply com-w-full com-h-auto com-rounded-lg com-object-contain;
   }
 }
 
@@ -33,13 +33,13 @@ li {
       @apply com-m-0 com-text-sm com-font-normal com-text-gray-custom-1;
     }
     img {
-      @apply md:com-w-[120px] com-h-[86px] com-w-full com-mt-3 com-rounded-lg com-overflow-hidden com-border com-border-solid com-flex com-border-Bright-Gray com-cursor-pointer com-transition-transform hover:com-scale-105;
+      @apply md:com-w-[120px] com-h-[86px] com-w-full com-mt-3 com-rounded-lg com-overflow-hidden com-border com-border-solid com-flex com-border-Bright-Gray com-cursor-pointer com-transition-transform hover:com-scale-105 com-bg-tWhite;
     }
   }
 }
 
 .image-popup {
-  @apply com-w-[90dvw] com-h-[80dvh] md:com-h-[48dvh] md:com-w-[40dvw] com-z-[999];
+  @apply com-w-[90dvw] com-h-[56dvh] md:com-h-[48dvh] md:com-w-[40dvw] com-z-[999];
 
   nb-card-body {
     @apply com-p-4 com-flex com-items-center com-justify-center com-h-full com-overflow-auto;
@@ -49,6 +49,18 @@ li {
 
       img {
         @apply com-max-w-full com-max-h-full com-object-contain com-rounded-lg;
+      }
+    }
+  }
+
+  .close-button-footer {
+    @apply com-flex com-justify-center com-items-center com-py-4 com-px-4 com-bg-transparent com-border-none;
+
+    .close-button {
+      @apply com-flex com-items-center com-justify-center com-w-6 com-h-6 com-rounded-full com-bg-gray-700 com-border-none com-cursor-pointer;
+
+      .close-icon {
+        @apply com-flex com-shrink-0 com-text-white com-w-4 com-h-4;
       }
     }
   }
