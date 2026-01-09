@@ -152,51 +152,6 @@ export class PageHackathonManagementPlatformComponent implements OnInit, OnDestr
     this.setStructuredData();
   }
 
-  private setCanonicalUrl(): void {
-    // Set canonical URL for the hackathon management platform page
-    this.seoService.setCanonical();
-  }
-
-  /**
-   * Scroll to a specific section on the page with smooth animation
-   * @param sectionId - The ID of the section to scroll to
-   */
-  scrollToSection(sectionId: string): void {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      });
-    }
-  }
-
-  /**
-   * Handle keyboard events for audience cards (Enter and Space)
-   * @param event - The keyboard event
-   * @param sectionId - The ID of the section to scroll to
-   */
-  onCardKeydown(event: KeyboardEvent, sectionId: string): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.scrollToSection(sectionId);
-    }
-  }
-
-  /**
-   * Skip to main content functionality for keyboard navigation
-   * @param event - The click event
-   */
-  skipToMainContent(event: Event): void {
-    event.preventDefault();
-    const mainContent = document.getElementById('main-content');
-    if (mainContent) {
-      mainContent.focus();
-      mainContent.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
   /**
    * Set structured data for search engines
    */
@@ -208,15 +163,10 @@ export class PageHackathonManagementPlatformComponent implements OnInit, OnDestr
       description: 'Comprehensive platform for creating, managing, and participating in hackathons',
       applicationCategory: 'BusinessApplication',
       operatingSystem: 'Web',
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-      },
       provider: {
         '@type': 'Organization',
         name: 'Commudle',
-        url: 'https://commudle.com',
+        url: 'https://www.commudle.com',
       },
     };
 

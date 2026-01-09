@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  AfterViewInit,
-  Renderer2,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -24,11 +16,12 @@ import {
   faArrowRight,
   faBuildingColumns,
 } from '@fortawesome/free-solid-svg-icons';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'commudle-page-paid-ticketing',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedComponentsModule, NbButtonModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, SharedComponentsModule, NbButtonModule, FontAwesomeModule, RouterModule],
   templateUrl: './page-paid-ticketing.component.html',
   styleUrls: ['./page-paid-ticketing.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,16 +50,17 @@ export class PagePaidTicketingComponent implements OnInit, OnDestroy {
     {
       question: 'What is the fee if I am on a community subscription plan?',
       answer:
-        'There is no platform fee when you are on a community subscription plan. However, the payment gateway charges still apply.',
+        'Standard payment gateway fee applies to all payments. There is no platform fee for enterprise plan subscribers.',
     },
     {
       question: 'When do I receive my payout?',
-      answer: 'Payouts are processed in T+2 bank working days after your event concludes.',
+      answer:
+        'For Razorpay, the payouts are processed in T+2 bank working days after your event concludes. More details are available on the website of the payment gateway.',
     },
     {
       question: 'Can I accept international payments?',
       answer:
-        'Yes! While paid ticketing is currently available only for Indian organizers, you can accept payments from attendees worldwide. Payouts are made in INR to your Indian bank account.',
+        'Yes! You can accept payments from attendees worldwide from the countries supported by the payment gateway. Check this link for Razorpay (https://razorpay.com/docs/payments/international-payments). Payouts are made in INR to your Indian bank account.',
     },
     {
       question: 'Are there any setup fees?',
@@ -75,20 +69,38 @@ export class PagePaidTicketingComponent implements OnInit, OnDestroy {
     {
       question: 'How do I offer refunds?',
       answer:
-        'Refunds are managed off the platform, you can choose to deduct a fee or do a complete refund as per your discretion.',
+        'Refunds are managed outside the platform, you can choose to deduct a fee or do a complete refund as per your discretion.',
     },
     {
       question: 'What payment methods are supported?',
       answer: 'Credit cards, debit cards, UPI, net banking, and popular digital wallets.',
     },
+    {
+      question: 'Where all can I use paid ticketing?',
+      answer: 'You can create and sell tickets in your community events. It comes integrated in your dashboard.',
+    },
+    {
+      question: 'Can I create discount coupons also?',
+      answer:
+        'Yes, you can create discount coupons. These can be created per ticket, combined for tickets. Discount coupons can be limited by time, number of people who apply it, group ticketing discounts and can be either fixed amount or percentage discounts as well.',
+    },
+    {
+      question: 'What is the turn around time for support requests?',
+      answer:
+        'Queries related to paid ticketing are considered as top priority and get resolved within 6 working hours. In case of any reconciliation or payments not reflecting on dashboard, they get resolved within 24 working hours.',
+    },
+    {
+      question: 'Can I use multiple bank accounts with multiple tickets or communities?',
+      answer:
+        'Yes, you can link multiple bank accounts into your dashboard. You can use different accounts for each ticket.',
+    },
+    {
+      question: 'Is there any limit on the number of tickets I can sell for my event?',
+      answer: 'No, there is no limit, you can sell thousands of tickets for your events.',
+    },
   ];
 
-  constructor(
-    private seoService: SeoService,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private footerService: FooterService,
-  ) {}
+  constructor(private seoService: SeoService, private cdr: ChangeDetectorRef, private footerService: FooterService) {}
 
   ngOnInit(): void {
     this.setPageMeta();
@@ -140,8 +152,8 @@ export class PagePaidTicketingComponent implements OnInit, OnDestroy {
   private setPageMeta(): void {
     // Set comprehensive SEO meta tags
     this.seoService.setTags(
-      'Paid Ticketing - Seamless Event Registration & Payment Processing | Commudle',
-      "Streamline your event ticketing with Commudle's paid ticketing solution. Accept payments, manage registrations, and track attendance all in one platform.",
+      'Paid Ticketing - Seamless Event Registration & Payment Processing',
+      "Streamline your event ticketing with Commudle's paid ticketing solution for events. Accept payments, create discount coupons, manage registrations & track attendance, all in one platform.",
       'https://commudle.com/assets/images/commudle-logo-192.png',
       'website',
     );
