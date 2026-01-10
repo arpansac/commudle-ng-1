@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbButtonModule, NbCardModule, NbDialogService } from '@commudle/theme';
-import { faBullhorn, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { WhatsNewService } from 'apps/shared-services/whats-new.service';
 import { WhatsNewCardComponent } from './whats-new-card/whats-new-card.component';
 import { IWhatsNew } from 'apps/shared-models/whats-new.model';
 import { Subject, takeUntil } from 'rxjs';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
   selector: 'commudle-whats-new',
@@ -24,10 +25,10 @@ export class WhatsNewComponent implements OnInit, OnDestroy {
   cookieCreationTime;
   lastUpdatedDate: string;
   newUpdates: IWhatsNew[];
-  faBullhorn = faBullhorn;
   faXmark = faXmark;
   cookieName = 'com_last_whats_new_seen';
   showWhatsNewPopup: boolean;
+  staticAssets = staticAssets;
 
   constructor(
     private whatsNewService: WhatsNewService,
