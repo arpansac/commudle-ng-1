@@ -15,11 +15,11 @@ export class HelpDictionaryIframeComponent implements OnInit, OnDestroy {
   helpDictionaryUrl: string;
   faXmark = faXmark;
   faBars = faBars;
-  private subscription: Subscription;
+  private subscription?: Subscription;
   constructor(private helpDictionaryService: HelpDictionaryService, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    this.helpDictionaryService.helpDictionary$.subscribe((data) => {
+    this.subscription = this.helpDictionaryService.helpDictionary$.subscribe((data) => {
       if (data) {
         this.helpDictionaryUrl = data;
       }
@@ -27,7 +27,7 @@ export class HelpDictionaryIframeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   closeSidebar() {

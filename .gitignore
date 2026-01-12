@@ -38,6 +38,7 @@ speed-measure-plugin*.json
 .amazonq/
 .kiro/
 .claude/
+.serena/
 
 # misc
 .angular

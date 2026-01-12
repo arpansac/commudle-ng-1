@@ -2,6 +2,43 @@
   width: 100%;
 }
 
+// Default (no data-theme / light): show light assets.
+// Use !important to override any UI library styles that might force display.
+.logo-dark {
+  display: none !important;
+}
+
+.toggle-dark-mode {
+  .theme-toggle-to-light {
+    display: none !important;
+  }
+  .theme-toggle-to-dark {
+    display: inline-flex !important;
+  }
+}
+
+// Dark theme: swap visible assets.
+:host-context([data-theme='dark']) {
+  .logo-light,
+  .theme-toggle-to-dark {
+    display: none !important;
+  }
+
+  .logo-dark,
+  .theme-toggle-to-light {
+    display: block !important;
+  }
+
+  .toggle-dark-mode {
+    .theme-toggle-to-light {
+      display: inline-flex !important;
+    }
+    .theme-toggle-to-dark {
+      display: none !important;
+    }
+  }
+}
+
 .home-navbar {
   @apply com-w-full com-grid com-grid-cols-5 md:com-grid-cols-3 com-items-center com-gap-2;
 

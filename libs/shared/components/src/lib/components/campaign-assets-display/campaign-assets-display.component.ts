@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
 import {
@@ -33,6 +34,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
 
   private hasTrackedCampaignView = false;
   private hasTrackedDefaultImageView = false;
+  private isBrowser: boolean;
 
   constructor(
     private campaignService: CampaignService,
@@ -40,7 +42,9 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
     private fb: FormBuilder,
     private gtmService: GoogleTagManagerService,
     private seoService: SeoService,
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.userEngagementRecordForm = this.fb.group({
       url: '',
       event_type: '',
@@ -51,22 +55,30 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   ngOnInit() {
-    // if (this.campaignTypeSlug) {
-    //   this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
-    //     if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-    //       this.campaign = data;
-    //       this.slidesCount = this.campaign.campaign_assets.length;
-    //       this.startAutoSlide();
-    //       this.userEngagementRecordForm.patchValue({
-    //         parent_id: this.campaign.id,
-    //         parent_type: EDbModels.CAMPAIGN,
-    //       });
-    //     }
-    //   });
-    // }
+    if (this.campaignTypeSlug) {
+      this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+        if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+          this.campaign = data;
+          this.slidesCount = this.campaign.campaign_assets.length;
+          // SSR-safe: avoid starting intervals on the server.
+          if (this.isBrowser) {
+            this.startAutoSlide();
+          }
+          this.userEngagementRecordForm.patchValue({
+            parent_id: this.campaign.id,
+            parent_type: EDbModels.CAMPAIGN,
+          });
+        }
+      });
+    }
   }
 
   ngAfterViewInit() {
+    // SSR-safe: IntersectionObserver/window/document do not exist on the server.
+    if (!this.isBrowser || typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
     this.campaignObserver = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -106,6 +118,9 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   private checkAndTriggerIfVisible(element: HTMLElement, observer: IntersectionObserver) {
+    if (!this.isBrowser) {
+      return;
+    }
     const rect = element.getBoundingClientRect();
     const inViewport =
       rect.top >= 0 &&
@@ -158,7 +173,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
         event_type: eventType,
         parent_id: this.campaign.id,
         parent_type: EDbModels.CAMPAIGN,
-        url: window.location.href,
+        url: this.isBrowser ? window.location.href : '',
       });
 
       if (!this.seoService.isBot) {
@@ -169,7 +184,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
               com_campaign_id: this.campaign.id,
               com_campaign_name: this.campaign.name,
               com_campaign_type: this.campaign.campaign_type,
-              com_current_page_url: window.location.href,
+              com_current_page_url: this.isBrowser ? window.location.href : '',
               com_event_type: eventType,
             }),
           );
@@ -180,11 +195,11 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   createUserEngagementForDefaultImage(eventType) {
     this.userEngagementRecordForm.patchValue({
       event_type: eventType,
-      url: window.location.href,
+      url: this.isBrowser ? window.location.href : '',
     });
 
     this.gtmService.dataLayerPushEvent('default_ad_campaign', {
-      com_current_page_url: window.location.href,
+      com_current_page_url: this.isBrowser ? window.location.href : '',
       com_event_type: eventType,
       com_campaign_type_slug: this.campaignTypeSlug,
     });

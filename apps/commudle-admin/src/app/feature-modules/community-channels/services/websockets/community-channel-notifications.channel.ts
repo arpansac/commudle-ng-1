@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import * as actionCable from 'actioncable';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
@@ -17,7 +16,6 @@ export class CommunityChannelNotificationsChannel {
     NEW_MESSAGE: 'new_message'
   };
 
-  actionCable = actionCable;
   private cableSubscription;
   private subscription;
   private subscriberCount = 0;

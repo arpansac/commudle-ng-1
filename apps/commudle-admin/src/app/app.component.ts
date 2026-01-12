@@ -127,6 +127,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   themeCheck() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.darkModeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
       document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');

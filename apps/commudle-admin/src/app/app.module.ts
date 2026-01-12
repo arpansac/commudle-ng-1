@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -318,6 +318,7 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
       inject(TraceService);
     }),
     provideHttpClient(withInterceptorsFromDi()),
+    provideClientHydration(withEventReplay()),
   ],
 })
 export class AppModule {}

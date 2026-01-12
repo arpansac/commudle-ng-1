@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import * as actionCable from 'actioncable';
 import { ActionCableConnectionSocket } from '../../../shared-services/action-cable-connection.socket';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -20,7 +19,6 @@ export class DiscussionQnAChannel {
     ERROR: 'error'
   };
 
-  actionCable = actionCable;
   private cableConnection;
 
   private subscription;

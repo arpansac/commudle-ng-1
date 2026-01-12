@@ -16,7 +16,7 @@
             "externals": "replace"
           }
         },
-        "outputPath": "dist/apps/commudle-admin",
+        "outputPath": "dist/apps/commudle-admin/browser",
         "index": "apps/commudle-admin/src/index.html",
         "main": "apps/commudle-admin/src/main.ts",
         "polyfills": ["zone.js"],
@@ -134,6 +134,67 @@
           "exportFormat": "json"
         }
       }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nx/angular:webpack-server",
+      "options": {
+        "outputPath": "dist/apps/commudle-admin/server",
+        "main": "apps/commudle-admin/src/server.ts",
+        "tsConfig": "apps/commudle-admin/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/commudle-admin/src/environments/environment.ts",
+              "with": "apps/commudle-admin/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "continuous": true,
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "commudle-admin:build:development",
+          "serverTarget": "commudle-admin:server:development"
+        },
+        "production": {
+          "browserTarget": "commudle-admin:build:production",
+          "serverTarget": "commudle-admin:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "commudle-admin:build:development",
+          "serverTarget": "commudle-admin:server:development"
+        },
+        "production": {
+          "browserTarget": "commudle-admin:build:production",
+          "serverTarget": "commudle-admin:server:production"
+        }
+      },
+      "defaultConfiguration": "production"
     }
   }
 }

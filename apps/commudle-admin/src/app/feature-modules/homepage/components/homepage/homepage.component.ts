@@ -9,7 +9,7 @@ import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { SeoService } from 'apps/shared-services/seo.service';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Observable, Subscription, of, timer } from 'rxjs';
 
 @Component({
     selector: 'app-homepage',
@@ -49,7 +49,9 @@ export class HomepageComponent implements OnInit, OnDestroy, AfterViewInit {
     public isBrowserService: IsBrowserService,
     private footerService: FooterService,
   ) {
-    this.timer$ = timer(0, 3000);
+    // NOTE: On the server, a periodic timer keeps the Zone unstable and SSR never completes.
+    // Emit once during SSR and run the periodic timer only in the browser.
+    this.timer$ = this.isBrowserService.isBrowser() ? timer(0, 3000) : of(0);
   }
 
   ngOnInit(): void {

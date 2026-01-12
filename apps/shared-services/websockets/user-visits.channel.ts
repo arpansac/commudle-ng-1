@@ -1,6 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import * as actionCable from 'actioncable';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { isPlatformBrowser } from '@angular/common';
@@ -21,7 +20,6 @@ export class UserVisitsChannel {
     PING: 'ping',
   };
 
-  actionCable = actionCable;
   private cableConnection;
 
   private subscription;

@@ -11,6 +11,9 @@
     },
     {
       "path": "./tsconfig.editor.json"
+    },
+    {
+      "path": "apps/commudle-admin/tsconfig.server.json"
     }
   ],
   "compilerOptions": {
