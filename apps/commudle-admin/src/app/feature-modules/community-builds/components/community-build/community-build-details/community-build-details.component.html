@@ -107,7 +107,7 @@
   <div class="votes-share-container">
     <div class="votes-views">
       <app-votes-display [votableId]="cBuild.id" icon="star" votableType="CommunityBuild"></app-votes-display>
-      <p class="views-count"><fa-icon [icon]="faEye"></fa-icon> {{ cBuild.total_visitors }}</p>
+      <!-- <p class="views-count"><fa-icon [icon]="faEye"></fa-icon> {{ cBuild.total_visitors }}</p> -->
     </div>
     <app-share-button
       [content]="environment.app_url + '/builds/' + cBuild.slug"
