@@ -8,4 +8,16 @@ export interface IRoundMentorSlotRule {
   created_by_id: number;
   round_id: number;
   total_slots: number;
+  metadata?: ISlotMetadata;
+}
+
+export interface ISlotMetadata {
+  slots: ISlot[];
+}
+
+export interface ISlot {
+  uuid: string;
+  status: string;
+  start_time: string;
+  end_time: string;
 }

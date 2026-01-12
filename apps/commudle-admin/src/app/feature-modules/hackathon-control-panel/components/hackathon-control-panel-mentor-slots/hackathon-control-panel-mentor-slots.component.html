@@ -78,26 +78,18 @@
       <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
     </button>
     <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
-      <div *ngFor="let slot of getSlots(column.round.round_mentor_slot_rule); let i = index" class="slot-item">
-        {{ slot.time }}
+      <div *ngFor="let slot of column.round.round_mentor_slot_rule.metadata?.slots; let i = index" class="slot-item">
         <button
           nbButton
           size="small"
-          (click)="addTeamToSlot(value.mentorId, column.round.id, i)"
+          (click)="addTeamToSlot(value.mentorId, column.round.id, i, slot.uuid)"
           class="slot-btn"
           ghost
         >
           <fa-icon [icon]="icons.faPlus"></fa-icon>
-          <span>Add Teams</span>
+          <span>Add Teams {{ slot.uuid }}</span>
         </button>
-        <button
-          nbButton
-          size="small"
-          (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
-          class="slot-btn"
-          ghost
-          status="danger"
-        >
+        <button nbButton size="small" class="slot-btn" ghost status="danger">
           <fa-icon [icon]="icons.faXmark"></fa-icon>
           <span>Cancel Slot</span>
         </button>
@@ -123,6 +115,13 @@
         <nb-icon icon="settings-outline"></nb-icon>
       </button>
     </div>
+    @if(column.round.round_mentor_slot_rule?.metadata?.slots) {
+    <div class="slots-info">
+      @for(slot of column.round.round_mentor_slot_rule.metadata.slots; track slot.uuid) {
+      <div class="slot-time">{{ moment(slot.start_time).format('MMM D | h:mm A') }}</div>
+      }
+    </div>
+    }
   </div>
 </ng-template>
 
@@ -252,8 +251,8 @@
         </div>
       </div>
       }
-      <p><strong>Round:</strong> {{ selectedRoundName || 'No round selected' }}</p>
-      <p><strong>Slot:</strong> {{ selectedSlotIndex + 1 }}</p>
+      <p><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</p>
+      <p><strong>Slot:</strong> {{ selectedSlot || selectedSlotUUID }}</p>
     </div>
 
     <div class="search-section">

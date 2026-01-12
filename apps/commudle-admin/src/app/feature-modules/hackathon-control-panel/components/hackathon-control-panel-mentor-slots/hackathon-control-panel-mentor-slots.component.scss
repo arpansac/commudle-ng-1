@@ -70,13 +70,13 @@
 }
 
 .slot-item {
-  @apply com-flex com-flex-col com-gap-2 com-p-2;
+  @apply com-flex com-flex-col com-w-[150px];
 
   .slot-btn {
     @apply com-w-full com-flex com-flex-col com-items-center com-gap-1 com-py-3;
 
     fa-icon {
-      @apply com-text-lg;
+      @apply com-text-sm;
     }
 
     span {
@@ -108,6 +108,15 @@
       .end-date {
         @apply com-text-Yankees-Blue;
       }
+    }
+  }
+
+  .slots-info {
+    @apply com-flex com-gap-1 com-mt-2;
+
+    .slot-time {
+      @apply com-text-xs com-text-gray-600 com-bg-gray-100 com-px-2 com-py-1 com-rounded;
+      width: 142px;
     }
   }
 }

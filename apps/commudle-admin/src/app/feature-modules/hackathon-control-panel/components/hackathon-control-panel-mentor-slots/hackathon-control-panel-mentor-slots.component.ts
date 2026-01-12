@@ -81,9 +81,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   currentSlotRule: IRoundMentorSlotRule;
   selectedMentorId: number;
   selectedRoundId: number;
-  selectedRoundName: string;
+  selectedRound: IRound;
   selectedMentor: IHackathonJudge;
-  selectedSlotIndex: number;
+  selectedSlotUUID: string;
+  selectedSlot: string;
+  // TODO: add model
   searchQuery = '';
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
@@ -199,7 +201,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         cellTemplate: this.mentorCellTemplate,
       },
       ...this.rounds.map((round) => {
-        const slotCount = round.round_mentor_slot_rule ? this.getSlots(round.round_mentor_slot_rule).length : 1;
+        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.metadata.slots.length : 1;
         const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(464, slotCount * 200)}px` : '464px';
 
         return {
@@ -398,32 +400,12 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     });
   }
 
-  getSlots(slotRule: IRoundMentorSlotRule): { time: string }[] {
-    if (!slotRule) return [];
-
-    const start = moment(slotRule.starts_at);
-    const end = moment(slotRule.ends_at);
-    const slotLength = slotRule.slot_length;
-    const slots = [];
-
-    let current = start.clone();
-    while (current.isBefore(end)) {
-      const slotEnd = current.clone().add(slotLength, 'minutes');
-      slots.push({
-        time: `${current.format('h:mm A')} - ${slotEnd.format('h:mm A')}`,
-      });
-      current = slotEnd;
-    }
-
-    return slots;
-  }
-
-  addTeamToSlot(mentorId: number, roundId: number, slotIndex: number): void {
+  addTeamToSlot(mentorId: number, roundId: number, slotIndex: number, slotUUID: string): void {
     this.selectedMentorId = mentorId;
     this.selectedRoundId = roundId;
-    this.selectedSlotIndex = slotIndex;
+    this.selectedSlotUUID = slotUUID;
     this.selectedMentor = this.mentors.find((m) => m.id === mentorId);
-    this.selectedRoundName = this.rounds.find((r) => r.id === roundId)?.name;
+    this.selectedRound = this.rounds.find((r) => r.id === roundId);
     this.loadTeamsForRound(roundId);
     this.sidebarService.openSidebar(this.sidebarEventName);
   }
@@ -464,7 +446,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       teamId,
       mentorId: this.selectedMentorId,
       roundId: this.selectedRoundId,
-      slotIndex: this.selectedSlotIndex,
+      slotUUID: this.selectedSlotUUID,
     });
     this.toastrService.successDialog('Team assigned successfully');
   }
