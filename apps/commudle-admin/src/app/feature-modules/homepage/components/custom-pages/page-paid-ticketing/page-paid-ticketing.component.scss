@@ -58,32 +58,21 @@ h3 {
 // Hero Section
 .hero-section {
   @apply com-text-center com-mb-12 com-py-16 com-relative com-overflow-hidden com-rounded-10;
-  @apply com-bg-gradient-to-br com-from-gray-50 com-via-gray-100 com-to-gray-200;
-
-  // Decorative background
-  &::before {
-    content: '';
-    @apply com-absolute com-inset-0 com-opacity-60;
-    background-image: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 60%),
-      radial-gradient(circle at 70% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 45%);
-    background-size: 800px 800px, 600px 600px, 700px 700px;
-    animation: bubbleFloat 20s ease-in-out infinite;
-  }
+  @apply com-bg-gradient-to-br com-from-blue-200 com-via-purple-500 com-to-purple-400;
 
   h1 {
-    @apply com-relative com-z-10;
+    @apply com-relative com-z-10 com-text-tWhite;
   }
 
   .intro-text {
-    @apply com-text-xl com-text-gray-600 com-max-w-2xl com-mx-auto com-mb-8 com-relative com-z-10;
+    @apply com-text-xl com-max-w-2xl com-mx-auto com-mb-8 com-relative com-z-10 com-text-tWhite;
   }
 
   .hero-cta {
     @apply com-flex com-flex-col com-items-center com-gap-4 com-relative com-z-10;
 
     .hero-note {
-      @apply com-text-sm com-text-gray-500;
+      @apply com-text-sm com-text-tWhite com-font-semibold;
     }
   }
 }
@@ -120,12 +109,13 @@ h3 {
 // Calculator Section
 .pricing-calculator-section {
   @extend .section-base;
+  @apply com-pb-0 sm:com-pb-12 com-border com-border-gray-100 com-border-solid;
   @apply com-rounded-xl com-relative com-overflow-hidden;
   @apply com-bg-gradient-to-br com-from-blue-400 com-via-violet-400 com-to-blue-400;
 
   h2,
   .section-description {
-    @apply com-text-center com-text-tWhite;
+    @apply com-text-center com-text-tWhite com-px-2;
   }
 
   &::before {
@@ -416,7 +406,7 @@ h3 {
 // Community Section
 .tech-community-section {
   @extend .section-base;
-  @apply com-rounded-xl com-bg-gradient-to-br com-from-gray-50 com-to-gray-100;
+  @apply com-rounded-xl com-bg-gradient-to-br com-from-gray-50 com-to-gray-100 com-px-2 sm:com-px-0;
 
   h2,
   .section-description {
