@@ -170,90 +170,94 @@
         </div>
       </div>
       <div class="right-column">
-        <div class="com-mt-5 com-ml-3" *ngIf="isOrganizer">
-          <a
-            nbButton
-            status="danger"
-            [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug]"
-          >
-            Event Admin Panel
-            <nb-icon icon="edit-outline"></nb-icon>
-          </a>
-        </div>
-        <nb-card *ngIf="event.start_time && event.end_time" class="event-date-time-card">
-          <nb-card-body class="event-date-time-container">
-            <div
-              class="event-date-time"
-              *ngIf="
-                moment(event.start_time).format('MMM Do, YYYY') === moment(event.end_time).format('MMM Do, YYYY');
-                else multiDate
-              "
+        <div class="event-date-time-card">
+          <div class="organizer-panel" *ngIf="isOrganizer">
+            <a
+              nbButton
+              status="danger"
+              [routerLink]="['/admin', 'communities', community.slug, 'event-dashboard', event.slug]"
             >
-              <div class="event-date">
-                <fa-icon [icon]="faCalendar" class="event-date-icon"></fa-icon>
-                <span class="event-date-text">
-                  {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
-                </span>
-              </div>
-              <div *ngIf="event.timezone" class="event-timing">
-                <fa-icon [icon]="faClockFour" class="event-timing-icon"></fa-icon>
-                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-timing-text">
-                  {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm A') }} -
-                  {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('h:mm A') }}
-                  {{ momentTimezone.tz(event.timezone).format('z') }}
-                </p>
-              </div>
-              <div *ngIf="event.event_type" class="event-type">
-                <fa-icon [icon]="faGlobe" class="event-type-icon"></fa-icon>
-                <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-type-text">
-                  {{ event.event_type }}
-                </p>
-              </div>
-            </div>
-            <ng-template #multiDate>
-              <strong>
-                {{
-                  momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a')
-                }}
-                {{ momentTimezone.tz(event.timezone).format('z') }} to
-                {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a') }}
-                {{ momentTimezone.tz(event.timezone).format('z') }}
-              </strong>
-            </ng-template>
-            <div *ngIf="interestedUsersCount" class="attending-members">
-              <commudle-interested-members
-                [users]="interestedUsers"
-                [totalCount]="interestedUsersCount"
-                [showHeading]="false"
-              ></commudle-interested-members>
-            </div>
-            <div *ngIf="moment() >= moment(event.start_time)" class="view-attended-members-button">
-              <button
-                [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
-                fullWidth
-                nbButton
-                outline
-                size="small"
-                status="info"
+              Event Admin Panel
+              <nb-icon icon="edit-outline"></nb-icon>
+            </a>
+          </div>
+          <nb-card *ngIf="event.start_time && event.end_time" class="organizer-panel">
+            <nb-card-body class="event-date-time-container">
+              <div
+                class="event-date-time"
+                *ngIf="
+                  moment(event.start_time).format('MMM Do, YYYY') === moment(event.end_time).format('MMM Do, YYYY');
+                  else multiDate
+                "
               >
-                View attended members
-              </button>
-            </div>
-          </nb-card-body>
-        </nb-card>
-        <nb-card *ngIf="moment() >= moment(event.end_time) && !event.custom_agenda">
-          <nb-card-body>
-            <p class="text-info">
-              <a [routerLink]="['/communities', community.slug, 'events', event.slug, 'session']">
-                <small>
-                  <nb-icon icon="monitor-outline"></nb-icon>
-                </small>
-                <br />
-                Click here to view event session
-              </a>
-            </p>
-          </nb-card-body>
-        </nb-card>
+                <div class="event-date">
+                  <fa-icon [icon]="faCalendar" class="event-date-icon"></fa-icon>
+                  <span class="event-date-text">
+                    {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, Do MMM, YYYY') }}
+                  </span>
+                </div>
+                <div *ngIf="event.timezone" class="event-timing">
+                  <fa-icon [icon]="faClockFour" class="event-timing-icon"></fa-icon>
+                  <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-timing-text">
+                    {{ momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('h:mm A') }} -
+                    {{ momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('h:mm A') }}
+                    {{ momentTimezone.tz(event.timezone).format('z') }}
+                  </p>
+                </div>
+                <div *ngIf="event.event_type" class="event-type">
+                  <fa-icon [icon]="faGlobe" class="event-type-icon"></fa-icon>
+                  <p *ngIf="event.end_time.getDate === event.start_time.getDate" class="event-type-text">
+                    {{ event.event_type }}
+                  </p>
+                </div>
+              </div>
+              <ng-template #multiDate>
+                <strong>
+                  {{
+                    momentTimezone.tz(moment.utc(event.start_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a')
+                  }}
+                  {{ momentTimezone.tz(event.timezone).format('z') }} to
+                  {{
+                    momentTimezone.tz(moment.utc(event.end_time), event.timezone).format('dddd, MMM Do, YYYY- h:mm a')
+                  }}
+                  {{ momentTimezone.tz(event.timezone).format('z') }}
+                </strong>
+              </ng-template>
+              <div *ngIf="interestedUsersCount" class="attending-members">
+                <commudle-interested-members
+                  [users]="interestedUsers"
+                  [totalCount]="interestedUsersCount"
+                  [showHeading]="false"
+                ></commudle-interested-members>
+              </div>
+              <div *ngIf="moment() >= moment(event.start_time)" class="view-attended-members-button">
+                <button
+                  [routerLink]="['/communities', community.slug, 'events', event.slug, 'attended-members']"
+                  fullWidth
+                  nbButton
+                  outline
+                  size="small"
+                  status="info"
+                >
+                  View attended members
+                </button>
+              </div>
+            </nb-card-body>
+          </nb-card>
+          <nb-card *ngIf="moment() >= moment(event.end_time) && !event.custom_agenda" class="organizer-panel">
+            <nb-card-body>
+              <p class="text-info">
+                <a [routerLink]="['/communities', community.slug, 'events', event.slug, 'session']">
+                  <small>
+                    <nb-icon icon="monitor-outline"></nb-icon>
+                  </small>
+                  <br />
+                  Click here to view event session
+                </a>
+              </p>
+            </nb-card-body>
+          </nb-card>
+        </div>
       </div>
     </div>
   </div>

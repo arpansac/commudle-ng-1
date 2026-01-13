@@ -80,7 +80,7 @@
       }
 
       .event-date-time-card {
-        @apply com-mb-0 com-mx-0 md:com-ml-4 com-ml-0 md:com-rounded-[10px] com-rounded-none com-flex md:com-sticky md:com-top-32;
+        @apply com-mb-0 com-mx-0 com-ml-3 md:com-mt-2 md:com-rounded-[10px] com-rounded-none com-flex com-flex-col md:com-sticky md:com-top-32;
         .event-date-time {
           @apply com-p-0;
           .event-date,
@@ -112,7 +112,7 @@
 }
 
 .event-date-time-container {
-  @apply com-p-6;
+  @apply com-p-6 md:com-mt-5;
 }
 
 .event-date-icon,
@@ -157,4 +157,8 @@
       @apply com-px-6 com-py-4 com-bg-gray-50 com-rounded-10;
     }
   }
+}
+
+.organizer-panel {
+  @apply com-m-0 com-mt-4;
 }
