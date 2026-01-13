@@ -170,6 +170,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',
       url: shareLink,
+      text: this.channelOrForum.description || this.channelOrForum.name,
       author: {
         '@type': 'Person',
         name: this.channelOrForum.name,
