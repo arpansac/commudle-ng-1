@@ -1134,4 +1134,8 @@ export const API_ROUTES = {
     SHOW_BY_ROUND: 'api/v2/mentor_slot_rules/show_by_round', //GET
     DELETE: 'api/v2/mentor_slot_rules', //DELETE
   },
+
+  ROUND_MENTOR_SLOT_BOOKINGS: {
+    CREATE: 'api/v2/round_mentor_slot_bookings', //POST
+  },
 };

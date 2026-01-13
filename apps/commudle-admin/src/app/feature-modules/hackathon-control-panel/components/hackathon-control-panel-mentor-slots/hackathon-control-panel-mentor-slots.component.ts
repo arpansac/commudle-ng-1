@@ -40,6 +40,7 @@ import {
   RoundService,
   RoundMentorSlotRulesService,
   HackathonTeamService,
+  RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import {
@@ -92,6 +93,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   sidebarEventName = 'mentor-slot-team-assignment';
   teams: IHackathonTeam[] = [];
   filteredUnassignedTeams: IHackathonTeam[] = [];
+  slotAssignmentData: {
+    [mentorId: number]: {
+      [roundId: number]: { [slotUUID: string]: { count: number; assignedTeams: IHackathonTeam[] } };
+    };
+  } = {};
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -120,6 +126,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private fb: FormBuilder,
     private sidebarService: SidebarService,
     private hackathonTeamService: HackathonTeamService,
+    private roundMentorSlotBookingService: RoundMentorSlotBookingService,
   ) {
     this.slotRuleForm = this.fb.group(
       {
@@ -174,6 +181,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   loadRounds(): void {
     this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
       this.rounds = data;
+      this.buildSlotAssignmentData();
       if (this.mentorCellTemplate) {
         this.buildTableColumns();
       }
@@ -186,6 +194,28 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     if (this.mentors.length >= 0 && this.rounds.length >= 0) {
       this.isLoading = false;
     }
+  }
+
+  buildSlotAssignmentData(): void {
+    this.slotAssignmentData = {};
+    this.rounds.forEach((round) => {
+      if (round.round_mentor_slot_rule?.metadata?.slots) {
+        this.mentors.forEach((mentor) => {
+          if (!this.slotAssignmentData[mentor.id]) {
+            this.slotAssignmentData[mentor.id] = {};
+          }
+          if (!this.slotAssignmentData[mentor.id][round.id]) {
+            this.slotAssignmentData[mentor.id][round.id] = {};
+          }
+          round.round_mentor_slot_rule.metadata.slots.forEach((slot) => {
+            this.slotAssignmentData[mentor.id][round.id][slot.uuid] = {
+              count: slot.bookings?.length || 0,
+              assignedTeams: slot.bookings?.map((b) => b.hackathon_team) || [],
+            };
+          });
+        });
+      }
+    });
   }
 
   buildTableColumns(): void {
@@ -411,7 +441,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   loadTeamsForRound(roundId: number): void {
-    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadTeamsForRound ~ roundId:', roundId);
     this.hackathonTeamService
       .indexTeamsByRound(roundId)
       .pipe(takeUntil(this.destroy$))
@@ -442,14 +471,42 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   assignTeam(teamId: number): void {
-    console.log('Assign team', {
-      teamId: teamId,
-      mentorId: this.selectedMentorId,
-      roundId: this.selectedRoundId,
-      slotUUID: this.selectedSlotUUID,
-      slot: this.selectedSlot,
-    });
-    this.toastrService.successDialog('Team assigned successfully');
+    const round = this.rounds.find((r) => r.id === this.selectedRoundId);
+    const slotRule = round?.round_mentor_slot_rule;
+    const slot = { id: null };
+
+    this.roundMentorSlotBookingService
+      .createBooking(slotRule.id, this.selectedSlotUUID, teamId, slot?.id, this.selectedMentorId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Team assigned successfully');
+          const assignedTeam = this.teams.find((t) => t.id === teamId);
+          this.teams = this.teams.filter((team) => team.id !== teamId);
+          this.updateFilteredTeams();
+          if (!this.slotAssignmentData[this.selectedMentorId]) {
+            this.slotAssignmentData[this.selectedMentorId] = {};
+          }
+          if (!this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId]) {
+            this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId] = {};
+          }
+          if (!this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID]) {
+            this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID] = {
+              count: 0,
+              assignedTeams: [],
+            };
+          }
+          this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID].count++;
+          this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][
+            this.selectedSlotUUID
+          ].assignedTeams.push(assignedTeam);
+          this.loadRounds();
+          this.cdr.markForCheck();
+        },
+        error: (error) => {
+          this.toastrService.warningDialog(error?.error?.errors?.[0] || 'Failed to assign team');
+        },
+      });
   }
 
   cancelSlot(mentorId: number, roundId: number, slotIndex: number): void {

@@ -24,6 +24,7 @@ import {
   faHandshake,
   faUserGroup,
   faQrcode,
+  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
@@ -60,6 +61,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
     faHandshake,
     faUserGroup,
     faQrcode,
+    faClock,
   };
 
   hackathonStatuses: string[] = Object.values(EHackathonStatus);
