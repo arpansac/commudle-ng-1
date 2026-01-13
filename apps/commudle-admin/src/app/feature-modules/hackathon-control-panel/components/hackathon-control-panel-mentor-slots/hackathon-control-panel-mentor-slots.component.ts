@@ -30,6 +30,7 @@ import {
   IRound,
   IRoundMentorSlotRule,
   IHackathonTeam,
+  IRoundMentorSlot,
 } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
@@ -84,8 +85,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   selectedRound: IRound;
   selectedMentor: IHackathonJudge;
   selectedSlotUUID: string;
-  selectedSlot: string;
-  // TODO: add model
+  selectedSlot: IRoundMentorSlot;
   searchQuery = '';
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
@@ -202,7 +202,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       },
       ...this.rounds.map((round) => {
         const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.metadata.slots.length : 1;
-        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(464, slotCount * 200)}px` : '464px';
+        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(464, slotCount * 160)}px` : '464px';
 
         return {
           key: `round_${round.id}`,
@@ -443,10 +443,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   assignTeam(teamId: number): void {
     console.log('Assign team', {
-      teamId,
+      teamId: teamId,
       mentorId: this.selectedMentorId,
       roundId: this.selectedRoundId,
       slotUUID: this.selectedSlotUUID,
+      slot: this.selectedSlot,
     });
     this.toastrService.successDialog('Team assigned successfully');
   }

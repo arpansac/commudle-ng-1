@@ -1,7 +1,7 @@
 export interface IRoundMentorSlot {
   id: number;
-  starts_at: string;
-  ends_at: string;
+  starts_at: Date;
+  ends_at: Date;
   status: ERoundMentorSlotStatus;
   hackathon_judge_id: number;
   round_id: number;
