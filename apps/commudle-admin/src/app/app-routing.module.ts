@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Error404PageComponent, LibErrorHandlerComponent } from 'apps/lib-error-handler/src/public-api';
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 import { AuthGuard } from 'apps/shared-services/lib-authwatch.guard';
+import { RoleGuard } from 'apps/shared-services/lib-role.guard';
 import { AboutComponent } from './components/about/about.component';
 import { CheckFillDataFormComponent } from './components/fill-data-form/check-fill-data-form/check-fill-data-form.component';
 import { FillDataFormConfirmationComponent } from './components/fill-data-form/fill-data-form-confirmation/fill-data-form-confirmation.component';
@@ -201,7 +202,10 @@ const routes: Routes = [
   {
     path: 'sys-admin',
     loadChildren: () => import('./feature-modules/sys-admin/sys-admin.module').then((m) => m.SysAdminModule),
-    canActivate: [AuthGuard],
+    canActivate: [RoleGuard],
+    data: {
+      expectedRoles: [EUserRoles.SYSTEM_ADMINISTRATOR],
+    },
   },
   {
     path: 'builds',
