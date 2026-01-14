@@ -7,16 +7,12 @@ import {
   TemplateRef,
   ViewChild,
   OnInit,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { NbDialogService, NbToastrService } from '@commudle/theme';
-import { IHackathonJudge, IHackathonTeam, IRound } from '@commudle/shared-models';
+import { NbDialogService } from '@commudle/theme';
+import { IHackathonJudge, IRound, IRoundMentorSlot } from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
-
-interface SlotAssignment {
-  count: number;
-  assignedTeams: IHackathonTeam[];
-}
 
 @Component({
   selector: 'commudle-mentor-slot-team-assignment',
@@ -25,12 +21,14 @@ interface SlotAssignment {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MentorSlotTeamAssignmentComponent implements OnInit {
-  @Input() slotAssignment: SlotAssignment | null = null;
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
   @Input() slotUUID: string;
-  @Output() slotClick = new EventEmitter<void>();
+  @Input() index: number;
+  @Output() slotClick = new EventEmitter<IRoundMentorSlot>();
   @Output() cancelSlot = new EventEmitter<void>();
+
+  roundMentorSlots: IRoundMentorSlot[];
 
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
 
@@ -40,16 +38,25 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
     private dialogService: NbDialogService,
     private roundMentorSlotService: RoundMentorSlotService,
     private toastrService: ToastrService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
     this.roundMentorSlotService.indexByRoundMentor(this.round.id, this.mentor.id).subscribe((slots) => {
-      console.log('Round mentor slots:', slots);
+      this.roundMentorSlots = slots;
+      this.cdr.markForCheck();
     });
   }
 
   onSlotClick(): void {
-    this.slotClick.emit();
+    if (
+      this.roundMentorSlots[this.index]?.round_mentor_slot_bookings?.length >=
+      this.round.round_mentor_slot_rule.max_teams_per_slot
+    ) {
+      this.toastrService.warningDialog('This slot has reached maximum capacity');
+      return;
+    }
+    this.slotClick.emit(this.roundMentorSlots[this.index] ? this.roundMentorSlots[this.index] : null);
   }
 
   onCancelSlot(event: Event): void {
@@ -75,6 +82,7 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
     this.roundMentorSlotService.create(data).subscribe({
       next: () => {
         this.toastrService.successDialog('Slot was canceled');
+        this.cdr.markForCheck();
       },
     });
   }

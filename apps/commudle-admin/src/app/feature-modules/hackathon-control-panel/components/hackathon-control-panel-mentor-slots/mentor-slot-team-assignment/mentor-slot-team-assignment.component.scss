@@ -7,19 +7,19 @@
   @apply com-transition-colors;
 
   .team-cell-wrapper {
-    @apply com-relative com-cursor-pointer;
+    @apply com-relative com-cursor-pointer com-w-full com-h-full;
     @apply hover:com-border-primary-500;
 
     .team-count-badge {
-      @apply com-absolute com-top-0 com-left-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold;
+      @apply com-absolute com-top-0 com-right-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold;
       @apply com-rounded-full com-w-5 com-h-5 com-flex com-items-center com-justify-center com-z-10;
     }
 
     .team-summary {
-      @apply com-flex com-flex-col com-gap-1 com-max-h-[100px] com-overflow-y-auto com-pt-2;
+      @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
 
       .team-name {
-        @apply com-text-xs com-text-gray-700 com-bg-gray-100 com-px-2 com-py-1 com-rounded com-truncate;
+        @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
       }
     }
   }

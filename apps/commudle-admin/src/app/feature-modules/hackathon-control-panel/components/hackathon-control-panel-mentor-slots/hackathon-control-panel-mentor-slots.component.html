@@ -83,11 +83,11 @@
     <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
       <div *ngFor="let slot of column.round.round_mentor_slot_rule.metadata?.slots; let i = index" class="slot-item">
         <commudle-mentor-slot-team-assignment
-          [slotAssignment]="slotAssignmentData[value.mentorId]?.[column.round.id]?.[slot.uuid]"
           [slotUUID]="column.round.round_mentor_slot_rule.metadata?.slots[i].uuid"
           [round]="column.round"
           [mentor]="value.mentor"
-          (slotClick)="addTeamToSlot(value.mentorId, column.round.id, i, slot.uuid)"
+          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i, slot.uuid)"
+          [index]="i"
         ></commudle-mentor-slot-team-assignment>
       </div>
     </div>
@@ -248,7 +248,7 @@
       </div>
       }
       <p><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</p>
-      <p><strong>Slot:</strong> {{ selectedSlot || selectedSlotUUID }}</p>
+      <p><strong>Slot:</strong> {{ selectedSlot?.id || selectedSlotUUID }}</p>
     </div>
 
     <div class="search-section">

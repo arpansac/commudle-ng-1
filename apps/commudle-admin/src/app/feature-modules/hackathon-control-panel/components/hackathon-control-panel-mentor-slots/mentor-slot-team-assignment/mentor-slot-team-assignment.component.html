@@ -1,20 +1,23 @@
 <div class="team-assignments-compact">
-  @if(slotAssignment?.count > 0) {
+  @if(roundMentorSlots[index]?.round_mentor_slot_bookings && roundMentorSlots[index]?.round_mentor_slot_bookings?.length
+  > 0) {
   <div class="team-cell-wrapper" (click)="onSlotClick()">
     <div class="team-count-badge">
-      {{ slotAssignment.count }}
+      {{ roundMentorSlots[index]?.round_mentor_slot_bookings?.length }}
     </div>
     <div class="team-summary custom-scrollbar">
-      @for(team of slotAssignment.assignedTeams; track team.id) {
-      <span class="team-name">{{ team.name }}</span>
+      @for(rmsb of roundMentorSlots[index].round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
+      <span class="team-name">{{ rmsb.hackathon_team.name }}</span>
       }
     </div>
   </div>
   } @else {
   <div class="no-teams-actions">
     <button class="no-teams-compact add-btn" (click)="onSlotClick()">
-      <fa-icon [icon]="icons.faPlus"></fa-icon> {{ slotUUID }}
-      Add teams
+      <fa-icon [icon]="icons.faPlus"></fa-icon>
+      @if(roundMentorSlots){
+      {{ roundMentorSlots[index]?.id }}
+      } Add teams
     </button>
     <button class="no-teams-compact cancel-btn" (click)="onCancelSlot($event)">
       <fa-icon [icon]="icons.faXmark"></fa-icon>

@@ -424,7 +424,8 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     });
   }
 
-  addTeamToSlot(mentorId: number, roundId: number, slotIndex: number, slotUUID: string): void {
+  addTeamToSlot(slot: IRoundMentorSlot, mentorId: number, roundId: number, slotIndex: number, slotUUID: string): void {
+    this.selectedSlot = slot;
     this.selectedMentorId = mentorId;
     this.selectedRoundId = roundId;
     this.selectedSlotUUID = slotUUID;
@@ -443,9 +444,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.teams = data;
           this.updateFilteredTeams();
           this.cdr.markForCheck();
-        },
-        error: () => {
-          this.toastrService.warningDialog('Failed to load teams');
         },
       });
   }
@@ -467,7 +465,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   assignTeam(teamId: number): void {
     const round = this.rounds.find((r) => r.id === this.selectedRoundId);
     const slotRule = round?.round_mentor_slot_rule;
-    const slot = { id: null };
+    const slot = this.selectedSlot;
 
     this.roundMentorSlotBookingService
       .createBooking(slotRule.id, this.selectedSlotUUID, teamId, slot?.id, this.selectedMentorId)
@@ -496,9 +494,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           ].assignedTeams.push(assignedTeam);
           this.loadRounds();
           this.cdr.markForCheck();
-        },
-        error: (error) => {
-          this.toastrService.warningDialog(error?.error?.errors?.[0] || 'Failed to assign team');
         },
       });
   }

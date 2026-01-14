@@ -1,3 +1,5 @@
+import { IRoundMentorSlotBooking } from './round-mentor-slot-booking.model';
+
 export interface IRoundMentorSlot {
   id: number;
   starts_at: Date;
@@ -5,6 +7,7 @@ export interface IRoundMentorSlot {
   status: ERoundMentorSlotStatus;
   hackathon_judge_id: number;
   round_id: number;
+  round_mentor_slot_bookings: IRoundMentorSlotBooking[];
 }
 
 export enum ERoundMentorSlotStatus {
