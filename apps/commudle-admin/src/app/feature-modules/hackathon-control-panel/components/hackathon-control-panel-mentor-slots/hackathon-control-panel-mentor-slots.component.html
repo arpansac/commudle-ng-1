@@ -79,28 +79,10 @@
     </button>
     <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
       <div *ngFor="let slot of column.round.round_mentor_slot_rule.metadata?.slots; let i = index" class="slot-item">
-        <div class="team-assignments-compact" (click)="addTeamToSlot(value.mentorId, column.round.id, i, slot.uuid)">
-          <div
-            *ngIf="slotAssignmentData[value.mentorId]?.[column.round.id]?.[slot.uuid]?.count > 0"
-            class="team-cell-wrapper"
-          >
-            <div class="team-count-badge">
-              {{ slotAssignmentData[value.mentorId][column.round.id][slot.uuid].count }}
-            </div>
-            <div class="team-summary custom-scrollbar">
-              @for(team of slotAssignmentData[value.mentorId][column.round.id][slot.uuid].assignedTeams; track team.id){
-              <span class="team-name">{{ team.name }}</span>
-              }
-            </div>
-          </div>
-          <div
-            *ngIf="!slotAssignmentData[value.mentorId]?.[column.round.id]?.[slot.uuid]?.count"
-            class="no-teams-compact"
-          >
-            <fa-icon [icon]="icons.faPlus"></fa-icon>
-            Add teams
-          </div>
-        </div>
+        <commudle-mentor-slot-team-assignment
+          [slotAssignment]="slotAssignmentData[value.mentorId]?.[column.round.id]?.[slot.uuid]"
+          (slotClick)="addTeamToSlot(value.mentorId, column.round.id, i, slot.uuid)"
+        ></commudle-mentor-slot-team-assignment>
       </div>
     </div>
   </div>

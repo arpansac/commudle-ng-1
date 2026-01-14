@@ -208,10 +208,10 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
             this.slotAssignmentData[mentor.id][round.id] = {};
           }
           round.round_mentor_slot_rule.metadata.slots.forEach((slot) => {
-            this.slotAssignmentData[mentor.id][round.id][slot.uuid] = {
-              count: slot.bookings?.length || 0,
-              assignedTeams: slot.bookings?.map((b) => b.hackathon_team) || [],
-            };
+            // this.slotAssignmentData[mentor.id][round.id][slot.uuid] = {
+            //   // count: slot.bookings?.length || 0,
+            //   // assignedTeams: slot.bookings?.map((b) => b.hackathon_team) || [],
+            // };
           });
         });
       }

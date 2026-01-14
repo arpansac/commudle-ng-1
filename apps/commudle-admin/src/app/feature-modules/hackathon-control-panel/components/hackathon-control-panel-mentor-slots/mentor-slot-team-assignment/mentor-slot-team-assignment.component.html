@@ -1,0 +1,19 @@
+<div class="team-assignments-compact" (click)="onSlotClick()">
+  @if(slotAssignment?.count > 0) {
+  <div class="team-cell-wrapper">
+    <div class="team-count-badge">
+      {{ slotAssignment.count }}
+    </div>
+    <div class="team-summary custom-scrollbar">
+      @for(team of slotAssignment.assignedTeams; track team.id) {
+      <span class="team-name">{{ team.name }}</span>
+      }
+    </div>
+  </div>
+  } @else {
+  <div class="no-teams-compact">
+    <fa-icon [icon]="icons.faPlus"></fa-icon>
+    Add teams
+  </div>
+  }
+</div>
