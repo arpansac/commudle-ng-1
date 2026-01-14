@@ -1128,14 +1128,19 @@ export const API_ROUTES = {
   },
 
   ROUND_MENTOR_SLOT_RULES: {
-    CREATE: 'api/v2/mentor_slot_rules', //POST
-    UPDATE: 'api/v2/mentor_slot_rules', //PUT
-    SHOW: 'api/v2/mentor_slot_rules', //GET
-    SHOW_BY_ROUND: 'api/v2/mentor_slot_rules/show_by_round', //GET
-    DELETE: 'api/v2/mentor_slot_rules', //DELETE
+    CREATE: 'api/v2/round_mentor_slot_rules', //POST
+    UPDATE: 'api/v2/round_mentor_slot_rules', //PUT
+    SHOW: 'api/v2/round_mentor_slot_rules', //GET
+    SHOW_BY_ROUND: 'api/v2/round_mentor_slot_rules/show_by_round', //GET
+    DELETE: 'api/v2/round_mentor_slot_rules', //DELETE
   },
 
   ROUND_MENTOR_SLOT_BOOKINGS: {
     CREATE: 'api/v2/round_mentor_slot_bookings', //POST
+  },
+
+  ROUND_MENTOR_SLOTS: {
+    INDEX_BY_ROUND_MENTOR: 'api/v2/round_mentor_slots/index_by_round_mentor', //GET
+    CREATE: 'api/v2/round_mentor_slots', //POST
   },
 };

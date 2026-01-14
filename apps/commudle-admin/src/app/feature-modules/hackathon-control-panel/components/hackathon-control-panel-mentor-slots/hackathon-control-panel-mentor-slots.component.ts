@@ -130,7 +130,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   ) {
     this.slotRuleForm = this.fb.group(
       {
-        booking_open: [false],
+        booking_open: [true],
         starts_at: ['', Validators.required],
         ends_at: ['', Validators.required],
         slot_length: [30, [Validators.required, Validators.min(1)]],
@@ -232,7 +232,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       },
       ...this.rounds.map((round) => {
         const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.metadata.slots.length : 1;
-        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(464, slotCount * 160)}px` : '464px';
+        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(400, slotCount * 160)}px` : '400px';
 
         return {
           key: `round_${round.id}`,
@@ -330,7 +330,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           });
         } else {
           this.slotRuleForm.patchValue({
-            booking_open: false,
+            booking_open: true,
             starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
             ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
             slot_length: 30,
@@ -373,9 +373,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           dialogRef.close();
           this.loadRounds();
         },
-        error: () => {
-          this.toastrService.warningDialog('Failed to update slot rules');
-        },
       });
     } else {
       this.roundMentorSlotRulesService.create(this.currentRoundId, formData).subscribe({
@@ -383,9 +380,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.toastrService.successDialog('Slot rules created successfully');
           dialogRef.close();
           this.loadRounds();
-        },
-        error: () => {
-          this.toastrService.warningDialog('Failed to create slot rules');
         },
       });
     }

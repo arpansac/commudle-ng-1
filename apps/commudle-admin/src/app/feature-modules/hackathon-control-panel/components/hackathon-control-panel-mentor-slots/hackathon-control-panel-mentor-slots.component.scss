@@ -63,6 +63,10 @@
 
 .slots-container {
   @apply com-flex com-flex-col com-gap-2 com-p-2;
+
+  .full-size-btn {
+    @apply com-w-full com-h-full com-min-h-[60px];
+  }
 }
 
 .slots-grid {
@@ -190,6 +194,7 @@
 }
 
 .dialog-box-card {
+  @apply com-max-h-[90dvh];
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;

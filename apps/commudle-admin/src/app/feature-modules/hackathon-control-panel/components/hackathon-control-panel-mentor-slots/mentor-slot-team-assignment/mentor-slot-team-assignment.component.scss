@@ -3,11 +3,12 @@
 }
 
 .team-assignments-compact {
-  @apply com-relative com-cursor-pointer com-border com-border-gray-300 com-rounded com-p-2 com-min-h-[60px];
-  @apply hover:com-border-primary-500 com-transition-colors;
+  @apply com-relative com-border com-border-gray-300 com-rounded com-p-2 com-min-h-[60px];
+  @apply com-transition-colors;
 
   .team-cell-wrapper {
-    @apply com-relative;
+    @apply com-relative com-cursor-pointer;
+    @apply hover:com-border-primary-500;
 
     .team-count-badge {
       @apply com-absolute com-top-0 com-left-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold;
@@ -23,11 +24,27 @@
     }
   }
 
-  .no-teams-compact {
-    @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1 com-text-gray-500 com-text-xs;
+  .no-teams-actions {
+    @apply com-flex com-gap-2 com-flex-col;
 
-    fa-icon {
-      @apply com-text-sm;
+    .no-teams-compact {
+      @apply com-flex com-flex-1 com-flex-col com-items-center com-justify-center com-gap-1 com-text-xs;
+      @apply com-border-none com-bg-transparent com-cursor-pointer com-rounded com-p-2;
+      @apply com-transition-colors;
+
+      fa-icon {
+        @apply com-text-sm;
+      }
+
+      &.add-btn {
+        @apply com-text-primary-500;
+        @apply hover:com-bg-primary-100;
+      }
+
+      &.cancel-btn {
+        @apply com-text-red-500;
+        @apply hover:com-bg-red-100;
+      }
     }
   }
 }
@@ -46,6 +63,19 @@
 
     &:hover {
       @apply com-bg-gray-500;
+    }
+  }
+}
+
+.dialog-box-card {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    p {
+      @apply com-text-gray-700 com-mb-0;
     }
   }
 }

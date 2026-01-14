@@ -11,40 +11,25 @@ import { BaseApiService } from './base-api.service';
 export class RoundMentorSlotService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  // index(roundId: number): Observable<IRoundMentorSlot[]> {
-  //   const params = new HttpParams().set('round_id', roundId);
-  //   return this.http.get<IRoundMentorSlot[]>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT.INDEX), {
-  //     params,
-  //   });
-  // }
+  indexByRoundMentor(roundId: number, hackathonJudgeId: number): Observable<IRoundMentorSlot[]> {
+    const params = new HttpParams().set('round_id', roundId).set('hackathon_judge_id', hackathonJudgeId);
+    return this.http.get<IRoundMentorSlot[]>(
+      this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOTS.INDEX_BY_ROUND_MENTOR),
+      { params },
+    );
+  }
 
-  // show(slotId: number): Observable<IRoundMentorSlot> {
-  //   const params = new HttpParams().set('slot_id', slotId);
-  //   return this.http.get<IRoundMentorSlot>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT.SHOW), {
-  //     params,
-  //   });
-  // }
-
-  // create(roundId: number, mentorId: number, formData: any): Observable<IRoundMentorSlot> {
-  //   const params = new HttpParams().set('round_id', roundId).set('mentor_id', mentorId);
-  //   return this.http.post<IRoundMentorSlot>(
-  //     this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT.CREATE),
-  //     formData,
-  //     { params },
-  //   );
-  // }
-
-  // update(slotId: number, formData: any): Observable<IRoundMentorSlot> {
-  //   const params = new HttpParams().set('slot_id', slotId);
-  //   return this.http.put<IRoundMentorSlot>(
-  //     this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT.UPDATE),
-  //     formData,
-  //     { params },
-  //   );
-  // }
-
-  // destroy(slotId: number): Observable<boolean> {
-  //   const params = new HttpParams().set('slot_id', slotId);
-  //   return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT.DELETE), { params });
-  // }
+  create(data: {
+    round_mentor_slot_rule_id?: number;
+    slot_uuid?: string;
+    round_id: number;
+    round_mentor_slot: {
+      hackathon_judge_id: number;
+      starts_at?: string;
+      ends_at?: string;
+      status?: string;
+    };
+  }): Observable<IRoundMentorSlot> {
+    return this.http.post<IRoundMentorSlot>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOTS.CREATE), data);
+  }
 }

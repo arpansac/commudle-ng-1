@@ -73,6 +73,9 @@
       nbButton
       size="small"
       status="primary"
+      ghost
+      class="full-size-btn"
+      outline
       (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
     >
       <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
@@ -81,6 +84,9 @@
       <div *ngFor="let slot of column.round.round_mentor_slot_rule.metadata?.slots; let i = index" class="slot-item">
         <commudle-mentor-slot-team-assignment
           [slotAssignment]="slotAssignmentData[value.mentorId]?.[column.round.id]?.[slot.uuid]"
+          [slotUUID]="column.round.round_mentor_slot_rule.metadata?.slots[i].uuid"
+          [round]="column.round"
+          [mentor]="value.mentor"
           (slotClick)="addTeamToSlot(value.mentorId, column.round.id, i, slot.uuid)"
         ></commudle-mentor-slot-team-assignment>
       </div>
