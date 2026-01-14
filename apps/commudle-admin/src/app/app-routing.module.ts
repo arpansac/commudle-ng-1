@@ -275,6 +275,10 @@ const routes: Routes = [
         path: 'newsletters',
         loadChildren: () =>
           import('./feature-modules/main-newsletters/main-newsletters.module').then((m) => m.MainNewslettersModule),
+        canActivate: [RoleGuard],
+        data: {
+          expectedRoles: [EUserRoles.NEWSLETTER],
+        },
       },
       {
         path: 'communities/:community_id/hackathon-dashboard',
