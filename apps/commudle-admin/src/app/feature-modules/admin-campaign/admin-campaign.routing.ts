@@ -11,18 +11,18 @@ const routes: Routes = [
   { path: '', component: CampaignDashboardComponent },
   {
     path: 'new',
-    component: CampaignFormComponent,
-    children: [
-      { path: '', component: CampaignFormSelectCampaignComponent },
-      // {
-      //   path: 'order-setup',
-      //   component: CampaignFormOrderSetupComponent,
-      // },
-      // {
-      //   path: 'order-confirmation',
-      //   component: CampaignFormOrderConfirmationComponent,
-      // },
-    ],
+    component: CampaignFormOrderSetupComponent,
+    // children: [
+    //   { path: '', component: CampaignFormOrderSetupComponent },
+    // {
+    //   path: 'order-setup',
+    //   component: CampaignFormOrderSetupComponent,
+    // },
+    // {
+    //   path: 'order-confirmation',
+    //   component: CampaignFormOrderConfirmationComponent,
+    // },
+    // ],
   },
   {
     path: 'edit/:campaign_id',

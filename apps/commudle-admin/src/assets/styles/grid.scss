@@ -139,6 +139,13 @@ HTML Emmet's
       }
     }
 
+    &.equal-columns {
+      .left-column,
+      .right-column {
+        @apply com-col-span-12;
+      }
+    }
+
     &.mobile-reverse {
       .main-column {
         @apply com-row-start-1;

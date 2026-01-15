@@ -3,7 +3,18 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, V
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
 import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
-import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faXmark,
+  faArrowRight,
+  faFileImage,
+  faRectangleAd,
+  faUsers,
+  faMapMarkerAlt,
+  faTag,
+  faEnvelope,
+  faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
 @Component({
@@ -20,12 +31,21 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     faXmark,
     faArrowRight,
     faFileImage,
+    faRectangleAd,
+    faUsers,
+    faMapMarkerAlt,
+    faTag,
+    faEnvelope,
+    faChevronDown,
   };
   campaign: ICampaign;
   imagePreview = [];
   tags = [];
+  estimatedRuntime = '3 days 24 minutes';
+  dailySpending = 600;
 
   formSubscription: Subscription;
+  gstInvoiceSubscription: Subscription;
   ECampaignTypeSlug = ECampaignTypeSlug;
 
   constructor(
@@ -43,11 +63,22 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         contact_name: ['', Validators.required],
         contact_email: ['', [Validators.required, Validators.email]],
         company_name: ['', Validators.required],
+        gst_invoice: [false],
+        gst_number: [''],
+        billing_address: [''],
+        billing_address_line2: [''],
+        state: [''],
+        set_end_date: [false],
         start_time: [''],
         end_time: [''],
         start_date: [''],
         end_date: [''],
         budget: [0, Validators.required],
+        total_budget: [500, [Validators.required, Validators.min(50)]],
+        location: ['', Validators.required],
+        communities: [''],
+        skills: [''],
+        email_reminder: [false],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
       {
@@ -96,6 +127,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.checkFragment();
     this.subscribeToFormChanges();
+    this.subscribeToGstInvoiceChanges();
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
       this.patchCampaignForm();
@@ -108,7 +140,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.formSubscription.unsubscribe();
+    if (this.formSubscription) {
+      this.formSubscription.unsubscribe();
+    }
+    if (this.gstInvoiceSubscription) {
+      this.gstInvoiceSubscription.unsubscribe();
+    }
   }
 
   patchCampaignForm() {
@@ -118,11 +155,22 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         contact_name: this.campaign.contact_name,
         contact_email: this.campaign.contact_email,
         company_name: this.campaign.company_name,
+        gst_invoice: (this.campaign as any).gst_invoice || false,
+        gst_number: (this.campaign as any).gst_number || '',
+        billing_address: (this.campaign as any).billing_address || '',
+        billing_address_line2: (this.campaign as any).billing_address_line2 || '',
+        state: (this.campaign as any).state || '',
+        set_end_date: !!this.campaign.end_date, // Set to true if end_date exists
         start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
         end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
         start_date: this.campaign.start_date,
         end_date: this.campaign.end_date,
         budget: this.campaign.budget,
+        total_budget: (this.campaign as any).total_budget || 500,
+        location: (this.campaign as any).location || '',
+        communities: (this.campaign as any).communities || '',
+        skills: (this.campaign as any).skills || '',
+        email_reminder: (this.campaign as any).email_reminder || false,
       });
       if (this.campaign.tags) {
         this.tags = this.campaign.tags;
@@ -143,11 +191,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
-      this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
-        this.campaignForm.patchValue({ budget: data });
-      });
-    }
+    // if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
+    //   this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
+    //     this.campaignForm.patchValue({ budget: data });
+    //   });
+    // }
   }
 
   private convertUtcTimeToLocalString(timeStr: string): string {
@@ -186,32 +234,32 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     // Check for image dimensions
     const img = new Image();
     img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      if (
-        img.width !== this.campaign.campaign_type.image_dimension?.width ||
-        img.height !== this.campaign.campaign_type.image_dimension?.height
-      ) {
-        this.toasterService.warningDialog(
-          'Image must be exactly ' +
-            this.campaign.campaign_type.image_dimension.width +
-            ' X ' +
-            this.campaign.campaign_type.image_dimension.height +
-            ' pixels.',
-        );
-        event.target.value = ''; // Reset input field
-        return;
-      }
+    // img.onload = () => {
+    //   if (
+    //     img.width !== this.campaign.campaign_type.image_dimension?.width ||
+    //     img.height !== this.campaign.campaign_type.image_dimension?.height
+    //   ) {
+    //     this.toasterService.warningDialog(
+    //       'Image must be exactly ' +
+    //         this.campaign.campaign_type.image_dimension.width +
+    //         ' X ' +
+    //         this.campaign.campaign_type.image_dimension.height +
+    //         ' pixels.',
+    //     );
+    //     event.target.value = ''; // Reset input field
+    //     return;
+    //   }
 
-      // Ensure `campaignAssets` is correctly accessed as FormArray
-      const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
-      if (campaignAssets && campaignAssets.at(index)) {
-        campaignAssets.at(index).patchValue({ image: file });
-        campaignAssets.at(index).get('image')?.updateValueAndValidity();
+    //   // Ensure `campaignAssets` is correctly accessed as FormArray
+    //   const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
+    //   if (campaignAssets && campaignAssets.at(index)) {
+    //     campaignAssets.at(index).patchValue({ image: file });
+    //     campaignAssets.at(index).get('image')?.updateValueAndValidity();
 
-        // Display image preview
-        this.previewImage(file, index);
-      }
-    };
+    //     // Display image preview
+    //     this.previewImage(file, index);
+    //   }
+    // };
 
     img.onerror = () => {
       this.toasterService.warningDialog('Invalid image file.');
@@ -248,6 +296,16 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[contact_name]', formValue.contact_name);
     formData.append('campaign[contact_email]', formValue.contact_email);
     formData.append('campaign[company_name]', formValue.company_name);
+    formData.append('campaign[gst_invoice]', formValue.gst_invoice);
+
+    // Append GST fields if GST invoice is required
+    if (formValue.gst_invoice) {
+      formData.append('campaign[gst_number]', formValue.gst_number || '');
+      formData.append('campaign[billing_address]', formValue.billing_address || '');
+      formData.append('campaign[billing_address_line2]', formValue.billing_address_line2 || '');
+      formData.append('campaign[state]', formValue.state || '');
+      formData.append('campaign[contact_email]', formValue.contact_email || '');
+    }
 
     const combinedStart = `${formValue.start_date}T${formValue.start_time}:00`; // add seconds
     const combinedEnd = `${formValue.end_date}T${formValue.end_time}:00`;
@@ -264,6 +322,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[start_date]', formValue.start_date);
     formData.append('campaign[end_date]', formValue.end_date);
     formData.append('campaign[budget]', formValue.budget);
+    formData.append('campaign[total_budget]', formValue.total_budget || '');
+    formData.append('campaign[location]', formValue.location || '');
+    formData.append('campaign[communities]', formValue.communities || '');
+    formData.append('campaign[skills]', formValue.skills || '');
+    formData.append('campaign[email_reminder]', formValue.email_reminder || false);
 
     // Append campaign assets
     formValue.campaign_assets.forEach((asset, index) => {
@@ -280,7 +343,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       if (data) {
         this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
           com_campaign_id: this.campaign.id,
-          com_campaign_type_name: this.campaign.campaign_type.name,
+          // com_campaign_type_name: this.campaign.campaign_type.name,
         });
         this.submitTags();
       }
@@ -357,6 +420,33 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       });
   }
 
+  subscribeToGstInvoiceChanges(): void {
+    this.gstInvoiceSubscription = this.campaignForm.get('gst_invoice').valueChanges.subscribe((value: boolean) => {
+      const gstNumberControl = this.campaignForm.get('gst_number');
+      const billingAddressControl = this.campaignForm.get('billing_address');
+      const stateControl = this.campaignForm.get('state');
+
+      if (value) {
+        // Add required validators when GST invoice is checked
+        gstNumberControl?.setValidators([Validators.required]);
+        billingAddressControl?.setValidators([Validators.required]);
+        stateControl?.setValidators([Validators.required]);
+      } else {
+        // Remove validators and clear values when unchecked
+        gstNumberControl?.clearValidators();
+        gstNumberControl?.setValue('');
+        billingAddressControl?.clearValidators();
+        billingAddressControl?.setValue('');
+        stateControl?.clearValidators();
+        stateControl?.setValue('');
+      }
+
+      gstNumberControl?.updateValueAndValidity({ emitEvent: false });
+      billingAddressControl?.updateValueAndValidity({ emitEvent: false });
+      stateControl?.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
   calculateEstimatedAmount() {
     const startDate = this.campaignForm.get('start_date').value;
     const endDate = this.campaignForm.get('end_date').value;
@@ -374,5 +464,20 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
     this.gtm.dataLayerPushEvent(eventName, eventData);
+  }
+
+  onSetEndDateChange() {
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const endDateControl = this.campaignForm.get('end_date');
+
+    if (endDateControl) {
+      if (setEndDate) {
+        endDateControl.setValidators([Validators.required]);
+      } else {
+        endDateControl.clearValidators();
+        endDateControl.setValue('');
+      }
+      endDateControl.updateValueAndValidity();
+    }
   }
 }
