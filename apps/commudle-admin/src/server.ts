@@ -2,15 +2,37 @@ import 'zone.js/node';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr/node';
+import compression from 'compression';
 import * as express from 'express';
+import * as expressStaticGzip from 'express-static-gzip';
 import { existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import AppServerModule from './main.server';
+import { shouldServeSsr } from './ssr-bot-detection';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/apps/commudle-admin/browser');
+
+  // Serve CSR for normal users, SSR only for bots/crawlers.
+  // Bot detection is implemented locally (vendored UA list), so this server
+  // does not depend on the prerender-node middleware.
+
+  // Resolve browser output folder for both:
+  // 1) local Nx workspace execution (cwd is repo root)
+  // 2) Elastic Beanstalk unzip (cwd is the deployed bundle root)
+  const distFolderCandidates = [
+    join(process.cwd(), 'dist/apps/commudle-admin/browser'),
+    join(process.cwd(), 'commudle-admin/browser'),
+    // When running the compiled server bundle directly, resolve relative to the bundle directory.
+    join(dirname(__filename), '../browser'),
+  ];
+
+  const distFolder = distFolderCandidates.find((p) => existsSync(join(p, 'index.html')));
+  if (!distFolder) {
+    throw new Error(`Could not find commudle-admin browser output. Tried: ${distFolderCandidates.join(', ')}`);
+  }
+
   const indexHtml = existsSync(join(distFolder, 'index.original.html'))
     ? join(distFolder, 'index.original.html')
     : join(distFolder, 'index.html');
@@ -20,18 +42,36 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', distFolder);
 
+  // Compress dynamic responses (SSR HTML). Static assets are handled separately below.
+  server.use(compression());
+
+  // Health check endpoint for load balancers/EB.
+  server.get('/health', (_req, res) => {
+    res.status(200).send('ok');
+  });
+
+  // Backward-compatible health check route (used by legacy/prerender deployment).
+  server.get('/health-check', (_req, res) => {
+    res.status(200).send({ health: 'good' });
+  });
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get(
-    '*.*',
-    express.static(distFolder, {
-      maxAge: '1y',
-    }),
-  );
+  server.get('*.*', expressStaticGzip(distFolder, { enableBrotli: true, serveStatic: { maxAge: '1y' } }));
 
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
+    // Ensure caches don't mix bot SSR HTML with user CSR HTML.
+    res.setHeader('Vary', 'User-Agent');
+
+    // Non-bots get the client-rendered app (fast + avoids SSR cost).
+    // Bots/crawlers (and special prerender signals like `_escaped_fragment_`) get SSR.
+    const shouldSsr = shouldServeSsr(req);
+    if (!shouldSsr) {
+      return res.sendFile('index.html', { root: distFolder });
+    }
+
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
@@ -50,7 +90,8 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  // Elastic Beanstalk sets PORT (commonly 8080). Keep 8080 as a safe default.
+  const port = Number(process.env['PORT'] || 8080);
 
   // Start up the Node server
   const server = app();

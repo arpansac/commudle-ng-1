@@ -10,6 +10,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 
 @Component({
   selector: 'commudle-hackathon-entry-pass-scan',
+  standalone: false,
   templateUrl: './hackathon-entry-pass-scan.component.html',
   styleUrls: ['./hackathon-entry-pass-scan.component.scss'],
 })

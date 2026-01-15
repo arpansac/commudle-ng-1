@@ -195,6 +195,22 @@
         }
       },
       "defaultConfiguration": "production"
+    },
+    "release": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/builders/release.js"
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        },
+        {
+          "target": "server",
+          "projects": "self"
+        }
+      ]
     }
   }
 }

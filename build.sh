@@ -64,9 +64,11 @@ echo ""
 echo "Resetting Nx cache..."
 npx nx reset && echo "Reset complete."
 
-# Run npx nx run prerender:release
-echo "Running prerender build..."
-npx nx run prerender:release && echo "Prerender build complete."
+# Run commudle-admin:release
+# This packages the Angular SSR server (commudle-admin/server) and browser assets
+# into prod-server.zip for Elastic Beanstalk deployment.
+echo "Running SSR release build..."
+npx nx run commudle-admin:release && echo "SSR release build complete."
 
 # Final message
-echo "Build complete! You can now upload 'prod-server.zip' to the AWS server for deployment."
+echo "Build complete! You can now upload 'prod-server.zip' to Elastic Beanstalk for deployment."

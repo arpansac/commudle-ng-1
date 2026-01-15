@@ -18,6 +18,7 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 
 @Component({
   selector: 'commudle-hackathon-rsvp',
+  standalone: false,
   templateUrl: './hackathon-rsvp.component.html',
   styleUrls: ['./hackathon-rsvp.component.scss'],
 })
