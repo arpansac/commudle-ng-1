@@ -1,6 +1,6 @@
 <div class="team-assignments-compact">
-  @if(roundMentorSlots[index]?.round_mentor_slot_bookings && roundMentorSlots[index]?.round_mentor_slot_bookings?.length
-  > 0) {
+  @if(roundMentorSlots && roundMentorSlots[index]?.round_mentor_slot_bookings &&
+  roundMentorSlots[index]?.round_mentor_slot_bookings?.length > 0) {
   <div class="team-cell-wrapper" (click)="onSlotClick()">
     <div class="team-count-badge">
       {{ roundMentorSlots[index]?.round_mentor_slot_bookings?.length }}
