@@ -1,5 +1,5 @@
 <div class="event-updates">
-  <div *ngFor="let eu of updates" class="event-update">
+  <div *ngFor="let eu of entities" class="event-update">
     <div class="details">
       <nb-icon icon="star" status="warning"></nb-icon>
       <div class="com-w-4/5">
@@ -16,7 +16,7 @@
       <app-votes-display
         [icon]="'heart-outline'"
         [votableId]="eu.id"
-        votableType="EventUpdate"
+        [votableType]="EDbModels.ENTITY_UPDATE"
         [textAlignment]="'after'"
       ></app-votes-display>
     </div>

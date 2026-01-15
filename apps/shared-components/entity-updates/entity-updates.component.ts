@@ -13,7 +13,8 @@ import { EntityUpdatesService } from 'apps/commudle-admin/src/app/services/entit
 export class EntityUpdatesComponent implements OnInit {
   @Input() entityId: number;
   @Input() entityType: EDbModels;
-  updates: IEntityUpdate[] = [];
+  EDbModels = EDbModels;
+  entities: IEntityUpdate[] = [];
   moment = moment;
   page_info: IPageInfo;
   limit = 5;
@@ -30,7 +31,7 @@ export class EntityUpdatesComponent implements OnInit {
   getUpdates() {
     this.subscriptions.push(
       this.entityUpdatesService.pGetEntityUpdates(this.entityId, this.entityType).subscribe((data) => {
-        this.updates = this.updates.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
+        this.entities = this.entities.concat(data.page.reduce((acc, value) => [...acc, value.data], []));
         this.page_info = data.page_info;
       }),
     );
