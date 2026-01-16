@@ -131,12 +131,26 @@ nb-accordion {
           }
 
           .budget-info-row {
-            @apply com-flex com-flex-col com-bg-gray-50 com-rounded-lg com-p-4 com-gap-1 com-mb-5;
+            @apply com-flex com-flex-row com-bg-gray-50 com-rounded-lg com-p-4;
+
             .info-label {
-              @apply com-text-xs com-font-medium com-text-tYankees-Blue;
+              @apply com-m-0 com-text-xs com-font-medium com-text-tYankees-Blue;
             }
+
             .info-value {
-              @apply com-text-lg com-font-semibold com-text-tYankees-Blue;
+              @apply com-m-0 com-text-lg com-font-semibold com-text-tYankees-Blue;
+            }
+
+            .budget-info-value {
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Crayola-Green;
+            }
+
+            .time-info-value {
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Ultramarine-Blue;
+            }
+
+            .cost-container {
+              @apply com-flex com-flex-col com-gap-3;
             }
           }
         }

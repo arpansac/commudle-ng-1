@@ -311,9 +311,11 @@
               <div class="form">
                 <form [formGroup]="campaignForm">
                   <!-- Est. Impressions -->
-                  <div class="budget-info-row">
-                    <label for="est_impressions">Est. Impressions:</label>
-                    <span class="info-value">100k-250k</span>
+                  <div class="budget-info-row com-mb-5">
+                    <div class="cost-container">
+                      <label for="est_impressions">Est. Impressions:</label>
+                      <span class="info-value">100k-250k</span>
+                    </div>
                   </div>
 
                   <!-- Total Budget -->
@@ -351,94 +353,67 @@
                   <!-- Location -->
                   <div>
                     <label for="location"> Location<span class="required"> *</span> </label>
-                    <div class="input-with-icon input-with-left-icon">
-                      <div class="input-icon-left">
-                        <fa-icon [icon]="icons.faMapMarkerAlt"></fa-icon>
-                      </div>
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Enter Region, City, Country'"
-                          [inputValue]="campaignForm.get('location').value"
-                          (blurEvent)="campaignForm.get('location').markAsTouched()"
-                          (valueChange)="handleInput($event, 'location')"
-                        ></commudle-input>
-                      </div>
-                      <div class="input-icon-right">
-                        <fa-icon [icon]="icons.faUsers"></fa-icon>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'Enter Region, City, Country'"
+                        [inputValue]="campaignForm.get('location').value"
+                        (blurEvent)="campaignForm.get('location').markAsTouched()"
+                        (valueChange)="handleInput($event, 'location')"
+                      ></commudle-input>
+                      <div
+                        *ngIf="
+                          campaignForm.get('location')?.invalid &&
+                          campaignForm.get('location')?.touched &&
+                          campaignForm.get('location')?.hasError('required')
+                        "
+                      >
+                        <commudle-alert [error]="true" errorMessage="Location is required"></commudle-alert>
                       </div>
                     </div>
-                    <commudle-alert
-                      [error]="
-                        campaignForm.get('location')?.invalid &&
-                        campaignForm.get('location')?.touched &&
-                        campaignForm.get('location')?.hasError('required')
-                      "
-                      errorMessage="Location is required"
-                    ></commudle-alert>
                   </div>
 
                   <!-- Communities -->
                   <div>
                     <label for="communities">Communities</label>
-                    <div class="input-with-icon input-with-dropdown">
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Select communities you wanna target'"
-                          [inputValue]="campaignForm.get('communities').value"
-                          (blurEvent)="campaignForm.get('communities').markAsTouched()"
-                          (valueChange)="handleInput($event, 'communities')"
-                        ></commudle-input>
-                      </div>
-                      <div class="input-icon-right">
-                        <fa-icon [icon]="icons.faUsers"></fa-icon>
-                      </div>
-                      <div class="dropdown-arrow">
-                        <fa-icon [icon]="icons.faChevronDown"></fa-icon>
-                      </div>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'Select communities you wanna target'"
+                        [inputValue]="campaignForm.get('communities').value"
+                        (blurEvent)="campaignForm.get('communities').markAsTouched()"
+                        (valueChange)="handleInput($event, 'communities')"
+                      ></commudle-input>
                     </div>
                   </div>
 
                   <!-- Skills -->
                   <div>
                     <label for="skills">Skills</label>
-                    <div class="input-with-icon">
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Add skills you wanna target'"
-                          [inputValue]="campaignForm.get('skills').value"
-                          (blurEvent)="campaignForm.get('skills').markAsTouched()"
-                          (valueChange)="handleInput($event, 'skills')"
-                        ></commudle-input>
-                      </div>
-                      <div class="input-icon-right">
-                        <fa-icon [icon]="icons.faUsers"></fa-icon>
-                      </div>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'Add skills you wanna target'"
+                        [inputValue]="campaignForm.get('skills').value"
+                        (blurEvent)="campaignForm.get('skills').markAsTouched()"
+                        (valueChange)="handleInput($event, 'skills')"
+                      ></commudle-input>
                     </div>
                   </div>
 
                   <!-- Est. cost -->
-                  <div class="budget-info-row">
-                    <span class="info-label">Est. cost:</span>
-                    <span class="info-value">
-                      $1.00
-                      <fa-icon [icon]="icons.faUsers" class="inline-icon"></fa-icon>
-                      per
-                    </span>
+                  <div class="budget-info-row com-mb-2 com-gap-10">
+                    <div class="cost-container">
+                      <span>Est. cost:</span>
+                      <span class="budget-info-value">$1.00 per<span class="small-info-text"> per view</span></span>
+                    </div>
+                    <div class="cost-container">
+                      <span>Est. runtime ~ X days/hours/minutes :</span>
+                      <span class="time-info-value">3 days 24 minutes</span>
+                    </div>
                   </div>
 
-                  <!-- Est. runtime -->
-                  <div class="budget-info-row">
-                    <span class="info-label">Est. runtime ~ X days/hours/minutes:</span>
-                    <span class="info-value runtime">{{ estimatedRuntime }}</span>
-                  </div>
-
-                  <!-- Additional Information -->
-                  <div class="budget-info-row additional-info">
-                    <span>You will end up spending ${{ dailySpending }} per day</span>
-                  </div>
+                  <p class="small-info-text">You will end up spending ${{ dailySpending }} per day</p>
 
                   <!-- Email Reminder -->
-                  <div>
+                  <div class="com-mt-5">
                     <label>Email Reminder?</label>
                     <div class="checkbox-container">
                       <nb-checkbox formControlName="email_reminder" labelPosition="right" size="tiny" status="basic">
