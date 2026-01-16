@@ -94,6 +94,7 @@ module.exports = {
         'Ghost-White': 'var(--color-Ghost-White)',
         'slate-100': 'var(--color-slate-100)',
         'Cadet-Grey': '#8F9BB3',
+        'Custom-Select-Background': 'var(--color-custom-select-background)',
       },
 
       lineClamp: {

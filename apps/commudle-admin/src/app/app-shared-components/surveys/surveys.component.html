@@ -24,7 +24,14 @@
         <div class="data-form-type-select">
           <label fullWidth> Select Form*</label>
           <div class="dropdown">
-            <select formControlName="data_form_id" class="com-border-0" (change)="optionChanged($event)">
+            <select
+              formControlName="data_form_id"
+              class="com-border-0 com-text-Yankees-Blue"
+              [ngClass]="{
+                'com-text-gray-custom-1': createSurveyForm.controls.survey.get('data_form_id').value === ''
+              }"
+              (change)="optionChanged($event)"
+            >
               <option value="" selected disabled>Select Form</option>
               <option value="createNewForm">+ Create New Form</option>
               <option *ngFor="let qt of dataForms" [value]="qt.id">
@@ -84,7 +91,14 @@
       <div class="data-form-type-select">
         <label fullWidth> Select Form*</label>
         <div class="dropdown">
-          <select formControlName="data_form_id" class="com-border-0" (change)="optionChanged($event)">
+          <select
+            formControlName="data_form_id"
+            class="com-border-0 com-text-Yankees-Blue"
+            [ngClass]="{
+              'com-text-Cadet-Grey': createSurveyForm.controls.survey.get('data_form_id').value === ''
+            }"
+            (change)="optionChanged($event)"
+          >
             <option value="" selected disabled>Select Form</option>
             <option value="createNewForm">+ Create New Form</option>
             <option *ngFor="let qt of dataForms" [value]="qt.id">
