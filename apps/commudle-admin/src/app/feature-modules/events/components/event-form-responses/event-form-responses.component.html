@@ -469,10 +469,10 @@
       <div class="com-flex com-gap-4">
         <div class="dropdown">
           <select
-            class="com-border-0"
             (change)="changeFromRegistrationStatus($event)"
+            class="com-border-0 com-text-Yankees-Blue"
             [ngClass]="{
-              'com-text-[#8E9BB3]': fromRegistrationStatus === undefined
+              'com-text-Cadet-Grey': fromRegistrationStatus === undefined
             }"
           >
             <option selected disabled>From</option>
@@ -483,10 +483,10 @@
         </div>
         <div class="dropdown">
           <select
-            class="com-border-0"
+            class="com-border-0 com-text-Yankees-Blue"
             (change)="changeToRegistrationStatus($event)"
             [ngClass]="{
-              'com-text-[#8E9BB3]': toRegistrationStatus === undefined
+              'com-text-Cadet-Grey': toRegistrationStatus === undefined
             }"
           >
             <option selected disabled>To</option>
@@ -561,8 +561,9 @@
             <div class="select">
               <select
                 formControlName="attended_events_attendance"
+                class="com-text-Yankees-Blue"
                 [ngClass]="{
-                  'com-text-[#8E9BB3]': userEngagementFilter.controls['attended_events_attendance'].value === ''
+                  'com-text-Cadet-Grey': userEngagementFilter.controls['attended_events_attendance'].value === ''
                 }"
               >
                 <option value="" selected disabled>Select attendee type</option>
@@ -573,8 +574,9 @@
             <div class="select">
               <select
                 formControlName="attended_events_slugs"
+                class="com-text-Yankees-Blue"
                 [ngClass]="{
-                  'com-text-[#8E9BB3]': userEngagementFilter.controls['attended_events_slugs'].value === ''
+                  'com-text-Cadet-Grey': userEngagementFilter.controls['attended_events_slugs'].value === ''
                 }"
               >
                 <option value="" disabled>Select event slugs</option>
