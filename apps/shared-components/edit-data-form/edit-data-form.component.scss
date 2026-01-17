@@ -156,7 +156,7 @@
       }
 
       select {
-        @apply com-border-0 com-bg-transparent com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium com-absolute com-inset-0 com-pl-8;
+        @apply com-border-0 com-bg-white com-rounded-lg com-cursor-pointer com-text-sm com-w-full md:com-w-auto com-text-Yankees-Blue com-font-medium com-absolute com-inset-0 com-pl-8;
         option {
           @apply com-text-sm com-text-Yankees-Blue;
         }
