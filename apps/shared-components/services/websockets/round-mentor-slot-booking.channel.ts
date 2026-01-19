@@ -13,9 +13,7 @@ export class RoundMentorSlotBookingChannel {
     SET_PERMISSIONS: 'set_permissions',
     BOOK: 'book',
     CANCEL: 'cancel',
-    UPDATE: 'update',
-    ERROR: 'error',
-    BLOCKED: 'blocked',
+    DESTROY: 'destroy',
   };
 
   actionCable = actionCable;

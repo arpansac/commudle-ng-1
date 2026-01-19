@@ -125,7 +125,7 @@
         <commudle-mentor-slot-team-assignment
           [round]="column.round"
           [mentor]="value.mentor"
-          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i, slot)"
+          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i)"
           [index]="i"
         ></commudle-mentor-slot-team-assignment>
       </div>
@@ -260,7 +260,7 @@
       </div>
       }
       <p><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</p>
-      <p><strong>Slot:</strong> {{ selectedSlot?.id || selectedSlotUUID }}</p>
+      <p><strong>Slot:</strong> {{ selectedSlot?.id }}</p>
     </div>
 
     <div class="search-section">

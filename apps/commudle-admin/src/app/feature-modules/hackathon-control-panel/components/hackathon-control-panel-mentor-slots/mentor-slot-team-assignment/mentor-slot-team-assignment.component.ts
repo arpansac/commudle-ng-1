@@ -8,11 +8,14 @@ import {
   ViewChild,
   OnInit,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
-import { IHackathonJudge, IRound, IRoundMentorSlot } from '@commudle/shared-models';
+import { IHackathonJudge, IRound, IRoundMentorSlot, IRoundMentorSlotBooking } from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
+import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'commudle-mentor-slot-team-assignment',
@@ -20,7 +23,7 @@ import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services
   styleUrls: ['./mentor-slot-team-assignment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MentorSlotTeamAssignmentComponent implements OnInit {
+export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
   @Input() index: number;
@@ -32,12 +35,14 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
 
   readonly icons = { faPlus, faXmark };
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dialogService: NbDialogService,
     private roundMentorSlotService: RoundMentorSlotService,
     private toastrService: ToastrService,
     private cdr: ChangeDetectorRef,
+    private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
   ) {}
 
   ngOnInit() {
@@ -45,6 +50,12 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
       this.roundMentorSlots = slots;
       this.cdr.markForCheck();
     });
+    this.receivedChannelData();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onSlotClick(): void {
@@ -65,6 +76,29 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
         this.cancelMentorSlot();
       }
     });
+  }
+
+  private receivedChannelData() {
+    this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      if (data) {
+        this.handleChannelData(data);
+      }
+    });
+  }
+
+  private handleChannelData(data: any): void {
+    switch (data.action) {
+      case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
+      case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL: {
+        const booking: IRoundMentorSlotBooking = data.booking;
+        const slot = this.roundMentorSlots?.find((s) => s.id === booking.round_mentor_slot_id);
+        if (slot) {
+          slot.round_mentor_slot_bookings.unshift(booking);
+          this.cdr.markForCheck();
+        }
+        break;
+      }
+    }
   }
 
   cancelMentorSlot(): void {

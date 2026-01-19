@@ -11,10 +11,13 @@ import { BaseApiService } from './base-api.service';
 export class HackathonTeamService {
   constructor(private http: HttpClient, private apiRoutesService: BaseApiService) {}
 
-  indexTeamsByRound(roundId: string | number): Observable<IHackathonTeam[]> {
-    const params = new HttpParams().set('round_id', roundId);
-    return this.http.get<IHackathonTeam[]>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAMS_BY_ROUND), {
-      params,
-    });
+  teamsByEvaluator(roundId: number, hackathonJudgeId: number): Observable<IHackathonTeam[]> {
+    const params = new HttpParams().set('round_id', roundId).set('hackathon_judge_id', hackathonJudgeId);
+    return this.http.get<IHackathonTeam[]>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAMS_BY_EVALUATOR),
+      {
+        params,
+      },
+    );
   }
 }

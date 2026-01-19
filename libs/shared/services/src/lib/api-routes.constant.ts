@@ -935,7 +935,7 @@ export const API_ROUTES = {
       SEND_ENTRY_PASSES_EMAIL: 'api/v2/hackathons/teams/send_entry_passes_email', //POST
       SEND_RSVP_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_rsvp_to_all_teams', //POST
       SEND_ENTRY_PASSES_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_entry_passes_to_all_teams', //POST
-      TEAMS_BY_ROUND: 'api/v2/hackathons/teams/teams_by_round', //POST
+      TEAMS_BY_EVALUATOR: 'api/v2/hackathons/teams/teams_by_evaluator', //POST
     },
   },
 

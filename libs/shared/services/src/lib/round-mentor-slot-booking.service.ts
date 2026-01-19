@@ -13,7 +13,6 @@ export class RoundMentorSlotBookingService {
 
   createBooking(
     roundMentorSlotRuleId: number,
-    slotUuid: string,
     hackathonTeamId: number,
     roundMentorSlotId: number,
     hackathonJudgeId: number,
@@ -22,7 +21,6 @@ export class RoundMentorSlotBookingService {
       this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_BOOKINGS.CREATE),
       {
         round_mentor_slot_rule_id: roundMentorSlotRuleId,
-        slot_uuid: slotUuid,
         hackathon_team_id: hackathonTeamId,
         round_mentor_slot_id: roundMentorSlotId,
         hackathon_judge_id: hackathonJudgeId,

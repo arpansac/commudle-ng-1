@@ -30,6 +30,7 @@ import {
   IRoundMentorSlotRule,
   IHackathonTeam,
   IRoundMentorSlot,
+  IRoundMentorSlotBooking,
 } from '@commudle/shared-models';
 // TODO: try to shift this inside lib
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
@@ -85,7 +86,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   selectedRoundId: number;
   selectedRound: IRound;
   selectedMentor: IHackathonJudge;
-  selectedSlotUUID: string;
   selectedSlot: IRoundMentorSlot;
   searchQuery = '';
   ESidebarPosition = ESidebarPosition;
@@ -156,35 +156,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     this.unsubscribeFromChannels();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private loadRoundAndMentors(): void {
-    this.isLoading = true;
-    this.loadRounds();
-    this.loadMentors();
-  }
-
-  private loadMentors(): void {
-    this.hackathonService
-      .indexJudge(this.hackathonId, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.mentors = data || [];
-        this.buildTableData();
-        this.cdr.markForCheck();
-      });
-  }
-
-  private loadRounds(): void {
-    this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
-      this.rounds = data;
-      if (this.mentorCellTemplate) {
-        this.buildTableColumns();
-      }
-      this.isLoading = false;
-      this.subscribeToChannels();
-      this.cdr.markForCheck();
-    });
   }
 
   buildTableColumns(): void {
@@ -357,58 +328,40 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     return Math.floor(durationMinutes / slot_length);
   }
 
-  private dateRangeValidator(control: AbstractControl): ValidationErrors | null {
-    const starts_at = control.get('starts_at')?.value;
-    const ends_at = control.get('ends_at')?.value;
-
-    if (!starts_at || !ends_at) {
-      return null;
-    }
-
-    const start = moment(starts_at);
-    const end = moment(ends_at);
-
-    return end.isAfter(start) ? null : { dateRange: true };
-  }
-
   toggleFullscreen(): void {
     this.isFullscreen = !this.isFullscreen;
   }
 
-  private checkMainSidebarState(): void {
-    this.sidebarService.getSidebarVisibility(this.mainSidebarEventName).subscribe((data) => {
-      this.mainSidebarExpanded = data;
-      this.cdr.markForCheck();
-    });
-  }
-
-  addTeamToSlot(slot: IRoundMentorSlot, mentorId: number, roundId: number, slotIndex: number, slotUUID: string): void {
+  addTeamToSlot(slot: IRoundMentorSlot, mentorId: number, roundId: number, slotIndex: number): void {
     this.selectedSlot = slot;
+    const bookings = slot.round_mentor_slot_bookings;
     this.selectedMentorId = mentorId;
     this.selectedRoundId = roundId;
-    this.selectedSlotUUID = slotUUID;
     this.selectedMentor = this.mentors.find((m) => m.id === mentorId);
     this.selectedRound = this.rounds.find((r) => r.id === roundId);
-    this.loadTeamsForRound(roundId);
+    this.loadTeamsForRound(roundId, mentorId, bookings);
     this.sidebarService.openSidebar(this.sidebarEventName);
   }
 
-  loadTeamsForRound(roundId: number): void {
+  loadTeamsForRound(roundId: number, mentorId: number, bookings: IRoundMentorSlotBooking[]): void {
     this.hackathonTeamService
-      .indexTeamsByRound(roundId)
+      .teamsByEvaluator(roundId, mentorId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           this.teams = data;
-          this.updateFilteredTeams();
+          this.updateFilteredTeams(bookings);
           this.cdr.markForCheck();
         },
       });
   }
 
-  updateFilteredTeams(): void {
+  updateFilteredTeams(bookings?: IRoundMentorSlotBooking[]): void {
     const query = this.searchQuery.toLowerCase();
-    this.filteredUnassignedTeams = this.teams.filter((team) => team.name.toLowerCase().includes(query));
+    const bookedTeamIds = bookings?.map((b) => b.hackathon_team_id) || [];
+    this.filteredUnassignedTeams = this.teams.filter(
+      (team) => team.name.toLowerCase().includes(query) && !bookedTeamIds.includes(team.id),
+    );
   }
 
   onSearchChange(): void {
@@ -426,7 +379,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const slot = this.selectedSlot;
 
     this.roundMentorSlotBookingService
-      .createBooking(slotRule.id, this.selectedSlotUUID, teamId, slot?.id, this.selectedMentorId)
+      .createBooking(slotRule.id, teamId, slot.id, this.selectedMentorId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -438,30 +391,62 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       });
   }
 
+  private loadRoundAndMentors(): void {
+    this.isLoading = true;
+    this.loadRounds();
+    this.loadMentors();
+  }
+
+  private loadMentors(): void {
+    this.hackathonService
+      .indexJudge(this.hackathonId, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.mentors = data || [];
+        this.buildTableData();
+        this.cdr.markForCheck();
+      });
+  }
+
+  private loadRounds(): void {
+    this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
+      this.rounds = data;
+      if (this.mentorCellTemplate) {
+        this.buildTableColumns();
+      }
+      this.isLoading = false;
+      this.subscribeToChannels();
+      this.cdr.markForCheck();
+    });
+  }
+
   private subscribeToChannels(): void {
     this.roundMentorSlotBookingChannel.subscribe(this.hackathonId);
-
-    this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      if (data) {
-        this.handleChannelData(data);
-      }
-    });
   }
 
   private unsubscribeFromChannels(): void {
     this.roundMentorSlotBookingChannel.unsubscribe();
   }
 
-  private handleChannelData(data: any): void {
-    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ handleChannelData ~ data:', data);
-    // TODO: think about where to call this and update data in real time
-    switch (data.action) {
-      case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
-      case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL:
-      case this.roundMentorSlotBookingChannel.ACTIONS.UPDATE:
-        // this.loadRounds();
-        break;
+  private checkMainSidebarState(): void {
+    this.sidebarService.getSidebarVisibility(this.mainSidebarEventName).subscribe((data) => {
+      this.mainSidebarExpanded = data;
+      this.cdr.markForCheck();
+    });
+  }
+
+  private dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+    const starts_at = control.get('starts_at')?.value;
+    const ends_at = control.get('ends_at')?.value;
+
+    if (!starts_at || !ends_at) {
+      return null;
     }
+
+    const start = moment(starts_at);
+    const end = moment(ends_at);
+
+    return end.isAfter(start) ? null : { dateRange: true };
   }
 }
 
