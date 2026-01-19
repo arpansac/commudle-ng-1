@@ -68,8 +68,13 @@ nb-accordion {
   nb-accordion-item {
     @apply com-mb-5 com-rounded-[10px] com-border com-border-solid com-border-Bright-Gray;
 
+    &.collapsed nb-accordion-item-header {
+      @apply com-border-0;
+    }
+
     nb-accordion-item-header {
       @apply com-px-4 com-py-3;
+
       .accordion-header-content {
         @apply com-flex com-items-center com-gap-4;
 
@@ -78,14 +83,12 @@ nb-accordion {
         }
 
         .accordion-title {
-          @apply com-text-base com-font-bold com-text-tYankees-Blue;
+          @apply com-text-base com-font-bold com-text-Yankees-Blue;
         }
       }
     }
 
     nb-accordion-item-body {
-      @apply com-px-5 com-py-6;
-
       ::ng-deep {
         .item-body {
           @apply com-p-0;
@@ -93,9 +96,10 @@ nb-accordion {
       }
 
       .form {
+        @apply com-px-5 com-py-6;
         form {
           .label {
-            @apply com-flex com-text-xs com-font-medium com-text-tYankees-Blue com-mb-2;
+            @apply com-flex com-text-xs com-font-medium com-text-Yankees-Blue com-mb-2;
           }
 
           .small-info-text {
@@ -134,11 +138,11 @@ nb-accordion {
             @apply com-flex com-flex-row com-bg-gray-50 com-rounded-lg com-p-4;
 
             .info-label {
-              @apply com-m-0 com-text-xs com-font-medium com-text-tYankees-Blue;
+              @apply com-m-0 com-text-xs com-font-medium com-text-Yankees-Blue;
             }
 
             .info-value {
-              @apply com-m-0 com-text-lg com-font-semibold com-text-tYankees-Blue;
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
             }
 
             .budget-info-value {
