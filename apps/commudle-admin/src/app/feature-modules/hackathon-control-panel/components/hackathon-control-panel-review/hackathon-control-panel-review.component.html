@@ -228,7 +228,7 @@
                   >
                 </div>
                 <div class="date">
-                  {{ moment(userResponse.team.created_at).format('DD MMM YYYY') }}
+                  {{ moment(userResponse.team.created_at).format('DD MMM YYYY, h:mm A') }}
                 </div>
                 <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
                   Link to project:
