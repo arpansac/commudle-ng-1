@@ -31,6 +31,7 @@ import {
   IHackathonTeam,
   IRoundMentorSlot,
 } from '@commudle/shared-models';
+// TODO: try to shift this inside lib
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import {
@@ -42,6 +43,7 @@ import {
   RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
+// TODO: define path inside app config
 import {
   DataTableColumn,
   DataTableRow,
@@ -59,12 +61,10 @@ import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/w
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
+  // TODO: recheck all this and remove extra variables if any
   hackathonId: string;
   mentors: IHackathonJudge[] = [];
   rounds: IRound[] = [];
-  // mentorSlots: Map<string, IMentorSlot[]> = new Map();
   isLoading = false;
   isFullscreen = false;
   mainSidebarExpanded = true;
@@ -107,6 +107,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     faCompress,
     faXmark,
   };
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -141,7 +142,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true, ESidebarPosition.RIGHT);
     this.activatedRoute.parent.parent.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.hackathonId = params.get('hackathon_id');
-      this.loadData();
+      this.loadRoundAndMentors();
     });
     this.checkMainSidebarState();
   }
@@ -157,40 +158,33 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     this.destroy$.complete();
   }
 
-  loadData(): void {
+  private loadRoundAndMentors(): void {
     this.isLoading = true;
     this.loadRounds();
     this.loadMentors();
   }
 
-  loadMentors(): void {
+  private loadMentors(): void {
     this.hackathonService
       .indexJudge(this.hackathonId, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.mentors = data || [];
         this.buildTableData();
-        this.checkLoadingComplete();
         this.cdr.markForCheck();
       });
   }
 
-  loadRounds(): void {
+  private loadRounds(): void {
     this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
       this.rounds = data;
       if (this.mentorCellTemplate) {
         this.buildTableColumns();
       }
-      this.checkLoadingComplete();
+      this.isLoading = false;
       this.subscribeToChannels();
       this.cdr.markForCheck();
     });
-  }
-
-  private checkLoadingComplete(): void {
-    if (this.mentors.length >= 0 && this.rounds.length >= 0) {
-      this.isLoading = false;
-    }
   }
 
   buildTableColumns(): void {
@@ -243,19 +237,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     this.cdr.markForCheck();
   }
 
-  addSlot(mentorId: number, roundId: number): void {
-    // const key = `${mentorId}_${roundId}`;
-    // const slots = this.mentorSlots.get(key) || [];
-    // const newSlot: IMentorSlot = {
-    //   mentor_id: mentorId,
-    //   round_id: roundId,
-    //   slot_name: `Slot ${slots.length + 1}`,
-    // };
-    // slots.push(newSlot);
-    // this.mentorSlots.set(key, slots);
-    // this.cdr.markForCheck();
-  }
-
   openUpdateMeetingUrlDialog(template: TemplateRef<unknown>, mentorId: number): void {
     this.meetingUrl = '';
     this.dialogService.open(template, {
@@ -263,6 +244,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     });
   }
 
+  // TODO: add option to delete and update meeting url
   updateMeetingUrl(mentorId: number, dialogRef: any): void {
     if (!this.meetingUrl.trim()) {
       this.toastrService.warningDialog('Please enter a meeting URL');
@@ -292,6 +274,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   loadSlotRule(roundId: number): void {
     const currentRound = this.rounds.find((r) => r.id === roundId);
+    // TODO: get data from round api and remove show by round or extra service to all api
     this.roundMentorSlotRulesService.showByRound(roundId).subscribe({
       next: (data) => {
         this.currentSlotRule = data;
@@ -449,8 +432,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         next: () => {
           this.toastrService.successDialog('Team assigned successfully');
           this.teams = this.teams.filter((team) => team.id !== teamId);
-          this.updateFilteredTeams();
-          // this.loadRounds();
+          // TODO: when  team was added the remove it from list like mentor assignment
           this.cdr.markForCheck();
         },
       });
@@ -472,6 +454,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   private handleChannelData(data: any): void {
     console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ handleChannelData ~ data:', data);
+    // TODO: think about where to call this and update data in real time
     switch (data.action) {
       case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
       case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL:
@@ -481,3 +464,5 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     }
   }
 }
+
+// TODO: check all service and all new api remove if not needed from backend as well

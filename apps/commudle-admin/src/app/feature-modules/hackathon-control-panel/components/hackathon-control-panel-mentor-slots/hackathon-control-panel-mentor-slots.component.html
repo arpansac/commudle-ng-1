@@ -117,6 +117,7 @@
 <ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
   <div class="slots-container">
     <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
+      <!-- TODO: create new component and make loop call inside that component -->
       <div
         *ngFor="let slot of [].constructor(column.round.round_mentor_slot_rule.total_slots); let i = index"
         class="slot-item"

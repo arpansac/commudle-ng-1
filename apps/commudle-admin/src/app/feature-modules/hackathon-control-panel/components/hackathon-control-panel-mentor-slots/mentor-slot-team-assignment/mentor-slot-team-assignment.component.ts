@@ -55,33 +55,19 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
       this.toastrService.warningDialog('This slot has reached maximum capacity');
       return;
     }
-    this.slotClick.emit(this.roundMentorSlots[this.index] ? this.roundMentorSlots[this.index] : null);
+    this.slotClick.emit(this.roundMentorSlots[this.index]);
   }
 
   onCancelSlot(event: Event): void {
     event.stopPropagation();
     this.dialogService.open(this.cancelConfirmDialog).onClose.subscribe((confirmed) => {
       if (confirmed) {
-        this.createMentorSlot();
+        this.cancelMentorSlot();
       }
     });
   }
 
-  createMentorSlot(): void {
-    //   const data = {
-    //     round_mentor_slot_rule_id: this.round.round_mentor_slot_rule?.id,
-    //     slot_uuid: this.slotUUID,
-    //     round_id: this.round.id,
-    //     round_mentor_slot: {
-    //       hackathon_judge_id: this.mentor.id,
-    //       status: 'cancelled_by_mentor',
-    //     },
-    //   };
-    //   this.roundMentorSlotService.create(data).subscribe({
-    //     next: () => {
-    //       this.toastrService.successDialog('Slot was canceled');
-    //       this.cdr.markForCheck();
-    //     },
-    //   });
+  cancelMentorSlot(): void {
+    // TODO: call api and get data from anycable and disable add team button in case of slot was cancel
   }
 }

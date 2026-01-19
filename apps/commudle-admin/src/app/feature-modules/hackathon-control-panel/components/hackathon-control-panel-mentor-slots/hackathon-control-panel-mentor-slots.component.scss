@@ -122,24 +122,6 @@
   }
 }
 
-.custom-scrollbar {
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    @apply com-bg-gray-200 com-rounded;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    @apply com-bg-gray-400 com-rounded;
-
-    &:hover {
-      @apply com-bg-gray-500;
-    }
-  }
-}
-
 .round-header {
   @apply com-flex com-flex-col com-gap-1 com-relative com-w-full;
 
