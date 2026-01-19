@@ -35,12 +35,12 @@ export class RoundMentorSlotBookingChannel {
     });
   }
 
-  subscribe(roundId: number) {
+  subscribe(hackathonId: string) {
     if (this.cableConnection) {
       this.subscription = this.cableConnection.subscriptions.create(
         {
           channel: APPLICATION_CABLE_CHANNELS.ROUND_MENTOR_SLOT_BOOKING_CHANNEL,
-          round_id: roundId,
+          hackathon_id: hackathonId,
           app_token: this.authWatchService.getAppToken(),
         },
         {

@@ -66,34 +66,6 @@
   }
 </ng-template>
 
-<ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
-  <div class="slots-container">
-    <button
-      *ngIf="!column.round.round_mentor_slot_rule"
-      nbButton
-      size="small"
-      status="primary"
-      ghost
-      class="full-size-btn"
-      outline
-      (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
-    >
-      <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
-    </button>
-    <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
-      <div *ngFor="let slot of column.round.round_mentor_slot_rule.metadata?.slots; let i = index" class="slot-item">
-        <commudle-mentor-slot-team-assignment
-          [slotUUID]="column.round.round_mentor_slot_rule.metadata?.slots[i].uuid"
-          [round]="column.round"
-          [mentor]="value.mentor"
-          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i, slot.uuid)"
-          [index]="i"
-        ></commudle-mentor-slot-team-assignment>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
 <ng-template #roundHeaderTemplate let-column="column">
   <div class="round-header">
     <div class="round-header-content">
@@ -111,13 +83,52 @@
         <nb-icon icon="settings-outline"></nb-icon>
       </button>
     </div>
-    @if(column.round.round_mentor_slot_rule?.metadata?.slots) {
-    <div class="slots-info">
-      @for(slot of column.round.round_mentor_slot_rule.metadata.slots; track slot.uuid) {
-      <div class="slot-time">{{ moment(slot.start_time).format('MMM D | h:mm A') }}</div>
-      }
+    @if(column.round.round_mentor_slot_rule){
+
+    <button
+      nbButton
+      size="small"
+      status="primary"
+      ghost
+      class="full-size-btn"
+      outline
+      (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+    >
+      <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit Slot Rule
+    </button>
+    }@else {
+    <div class="slot-rules-action">
+      <button
+        nbButton
+        size="small"
+        status="primary"
+        ghost
+        class="full-size-btn"
+        outline
+        (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+      >
+        <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
+      </button>
     </div>
     }
+  </div>
+</ng-template>
+
+<ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
+  <div class="slots-container">
+    <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
+      <div
+        *ngFor="let slot of [].constructor(column.round.round_mentor_slot_rule.total_slots); let i = index"
+        class="slot-item"
+      >
+        <commudle-mentor-slot-team-assignment
+          [round]="column.round"
+          [mentor]="value.mentor"
+          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i, slot)"
+          [index]="i"
+        ></commudle-mentor-slot-team-assignment>
+      </div>
+    </div>
   </div>
 </ng-template>
 

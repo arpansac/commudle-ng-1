@@ -23,7 +23,6 @@ import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services
 export class MentorSlotTeamAssignmentComponent implements OnInit {
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
-  @Input() slotUUID: string;
   @Input() index: number;
   @Output() slotClick = new EventEmitter<IRoundMentorSlot>();
   @Output() cancelSlot = new EventEmitter<void>();
@@ -69,21 +68,20 @@ export class MentorSlotTeamAssignmentComponent implements OnInit {
   }
 
   createMentorSlot(): void {
-    const data = {
-      round_mentor_slot_rule_id: this.round.round_mentor_slot_rule?.id,
-      slot_uuid: this.slotUUID,
-      round_id: this.round.id,
-      round_mentor_slot: {
-        hackathon_judge_id: this.mentor.id,
-        status: 'cancelled_by_mentor',
-      },
-    };
-
-    this.roundMentorSlotService.create(data).subscribe({
-      next: () => {
-        this.toastrService.successDialog('Slot was canceled');
-        this.cdr.markForCheck();
-      },
-    });
+    //   const data = {
+    //     round_mentor_slot_rule_id: this.round.round_mentor_slot_rule?.id,
+    //     slot_uuid: this.slotUUID,
+    //     round_id: this.round.id,
+    //     round_mentor_slot: {
+    //       hackathon_judge_id: this.mentor.id,
+    //       status: 'cancelled_by_mentor',
+    //     },
+    //   };
+    //   this.roundMentorSlotService.create(data).subscribe({
+    //     next: () => {
+    //       this.toastrService.successDialog('Slot was canceled');
+    //       this.cdr.markForCheck();
+    //     },
+    //   });
   }
 }

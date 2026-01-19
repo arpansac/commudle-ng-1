@@ -141,7 +141,7 @@
 }
 
 .round-header {
-  @apply com-flex com-flex-col com-gap-1;
+  @apply com-flex com-flex-col com-gap-1 com-relative com-w-full;
 
   .round-header-content {
     @apply com-flex com-flex-col com-gap-1;
@@ -170,6 +170,10 @@
       @apply com-text-xs com-text-gray-600 com-bg-gray-100 com-px-2 com-py-1 com-rounded;
       width: 142px;
     }
+  }
+
+  .slot-rules-action {
+    @apply com-absolute -com-bottom-20 com-left-0 com-right-0;
   }
 }
 

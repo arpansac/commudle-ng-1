@@ -19,7 +19,6 @@ import {
   faLocationDot,
   faExpand,
   faCompress,
-  faCross,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -51,6 +50,7 @@ import {
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
+import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-mentor-slots',
@@ -93,11 +93,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   sidebarEventName = 'mentor-slot-team-assignment';
   teams: IHackathonTeam[] = [];
   filteredUnassignedTeams: IHackathonTeam[] = [];
-  slotAssignmentData: {
-    [mentorId: number]: {
-      [roundId: number]: { [slotUUID: string]: { count: number; assignedTeams: IHackathonTeam[] } };
-    };
-  } = {};
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -127,6 +122,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private sidebarService: SidebarService,
     private hackathonTeamService: HackathonTeamService,
     private roundMentorSlotBookingService: RoundMentorSlotBookingService,
+    private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
   ) {
     this.slotRuleForm = this.fb.group(
       {
@@ -156,6 +152,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
+    this.unsubscribeFromChannels();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -181,11 +178,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   loadRounds(): void {
     this.roundService.mentorSlotIndex(this.hackathonId, EDbModels.HACKATHON).subscribe((data) => {
       this.rounds = data;
-      this.buildSlotAssignmentData();
       if (this.mentorCellTemplate) {
         this.buildTableColumns();
       }
       this.checkLoadingComplete();
+      this.subscribeToChannels();
       this.cdr.markForCheck();
     });
   }
@@ -194,28 +191,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     if (this.mentors.length >= 0 && this.rounds.length >= 0) {
       this.isLoading = false;
     }
-  }
-
-  buildSlotAssignmentData(): void {
-    this.slotAssignmentData = {};
-    this.rounds.forEach((round) => {
-      if (round.round_mentor_slot_rule?.metadata?.slots) {
-        this.mentors.forEach((mentor) => {
-          if (!this.slotAssignmentData[mentor.id]) {
-            this.slotAssignmentData[mentor.id] = {};
-          }
-          if (!this.slotAssignmentData[mentor.id][round.id]) {
-            this.slotAssignmentData[mentor.id][round.id] = {};
-          }
-          round.round_mentor_slot_rule.metadata.slots.forEach((slot) => {
-            // this.slotAssignmentData[mentor.id][round.id][slot.uuid] = {
-            //   // count: slot.bookings?.length || 0,
-            //   // assignedTeams: slot.bookings?.map((b) => b.hackathon_team) || [],
-            // };
-          });
-        });
-      }
-    });
   }
 
   buildTableColumns(): void {
@@ -231,7 +206,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         cellTemplate: this.mentorCellTemplate,
       },
       ...this.rounds.map((round) => {
-        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.metadata.slots.length : 1;
+        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.total_slots : 1;
         const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(400, slotCount * 160)}px` : '400px';
 
         return {
@@ -473,33 +448,36 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       .subscribe({
         next: () => {
           this.toastrService.successDialog('Team assigned successfully');
-          const assignedTeam = this.teams.find((t) => t.id === teamId);
           this.teams = this.teams.filter((team) => team.id !== teamId);
           this.updateFilteredTeams();
-          if (!this.slotAssignmentData[this.selectedMentorId]) {
-            this.slotAssignmentData[this.selectedMentorId] = {};
-          }
-          if (!this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId]) {
-            this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId] = {};
-          }
-          if (!this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID]) {
-            this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID] = {
-              count: 0,
-              assignedTeams: [],
-            };
-          }
-          this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][this.selectedSlotUUID].count++;
-          this.slotAssignmentData[this.selectedMentorId][this.selectedRoundId][
-            this.selectedSlotUUID
-          ].assignedTeams.push(assignedTeam);
-          this.loadRounds();
+          // this.loadRounds();
           this.cdr.markForCheck();
         },
       });
   }
 
-  cancelSlot(mentorId: number, roundId: number, slotIndex: number): void {
-    // TODO: Implement cancel slot logic
-    console.log('Cancel slot', { mentorId, roundId, slotIndex });
+  private subscribeToChannels(): void {
+    this.roundMentorSlotBookingChannel.subscribe(this.hackathonId);
+
+    this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      if (data) {
+        this.handleChannelData(data);
+      }
+    });
+  }
+
+  private unsubscribeFromChannels(): void {
+    this.roundMentorSlotBookingChannel.unsubscribe();
+  }
+
+  private handleChannelData(data: any): void {
+    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ handleChannelData ~ data:', data);
+    switch (data.action) {
+      case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
+      case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL:
+      case this.roundMentorSlotBookingChannel.ACTIONS.UPDATE:
+        // this.loadRounds();
+        break;
+    }
   }
 }
