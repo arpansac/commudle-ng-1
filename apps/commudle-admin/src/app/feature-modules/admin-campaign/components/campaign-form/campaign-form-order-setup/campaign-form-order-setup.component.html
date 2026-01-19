@@ -4,57 +4,6 @@
       <div class="left-column">
         <h3 class="heading"><fa-icon [icon]="icons.faRectangleAd"></fa-icon> Build your Ad campaign</h3>
 
-        <div class="form">
-          <form [formGroup]="campaignForm">
-            <div>
-              <label for="contact_name">Name<span class="required"> *</span></label>
-              <br />
-              <div class="input">
-                <commudle-input
-                  placeholder="Name"
-                  [inputValue]="campaignForm.get('contact_name').value"
-                  (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
-                  (valueChange)="handleInput($event, 'contact_name'); generateCampaignName()"
-                ></commudle-input>
-              </div>
-              <commudle-alert
-                [error]="
-                  campaignForm.get('contact_name')?.invalid &&
-                  campaignForm.get('contact_name')?.touched &&
-                  campaignForm.get('contact_name')?.hasError('required')
-                "
-                errorMessage="Contact Name is required"
-              ></commudle-alert>
-            </div>
-            <div>
-              <label for="contact_email">Email Address <span class="required"> *</span></label>
-              <br />
-              <div class="input">
-                <commudle-input
-                  placeholder="Email"
-                  [inputValue]="campaignForm.get('contact_email').value"
-                  (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
-                  (valueChange)="handleInput($event, 'contact_email')"
-                ></commudle-input>
-              </div>
-              <commudle-alert
-                [error]="
-                  campaignForm.get('contact_email')?.invalid &&
-                  campaignForm.get('contact_email')?.touched &&
-                  campaignForm.get('contact_email')?.hasError('required')
-                "
-                errorMessage="Email is required"
-              ></commudle-alert>
-              <commudle-alert
-                [error]="
-                  campaignForm.get('contact_email')?.touched && campaignForm.get('contact_email')?.hasError('email')
-                "
-                errorMessage="Invalid Email address"
-              ></commudle-alert>
-            </div>
-          </form>
-        </div>
-
         <!-- Campaign Form Accordion -->
         <nb-accordion>
           <!-- Campaign Details Section -->
@@ -69,7 +18,52 @@
               <div class="form">
                 <form [formGroup]="campaignForm">
                   <div>
-                    <label for="name">Campaign Name<span class="required"> *</span></label>
+                    <label class="label" for="contact_name">Name<span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        placeholder="Name"
+                        [inputValue]="campaignForm.get('contact_name').value"
+                        (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
+                        (valueChange)="handleInput($event, 'contact_name'); generateCampaignName()"
+                      ></commudle-input>
+                      <commudle-alert
+                        [error]="
+                          campaignForm.get('contact_name')?.invalid &&
+                          campaignForm.get('contact_name')?.touched &&
+                          campaignForm.get('contact_name')?.hasError('required')
+                        "
+                        errorMessage="Contact Name is required"
+                      ></commudle-alert>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="label" for="contact_email">Email Address <span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        placeholder="Email"
+                        [inputValue]="campaignForm.get('contact_email').value"
+                        (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
+                        (valueChange)="handleInput($event, 'contact_email')"
+                      ></commudle-input>
+                      <commudle-alert
+                        [error]="
+                          campaignForm.get('contact_email')?.invalid &&
+                          campaignForm.get('contact_email')?.touched &&
+                          campaignForm.get('contact_email')?.hasError('required')
+                        "
+                        errorMessage="Email is required"
+                      ></commudle-alert>
+                      <commudle-alert
+                        [error]="
+                          campaignForm.get('contact_email')?.touched &&
+                          campaignForm.get('contact_email')?.hasError('email')
+                        "
+                        errorMessage="Invalid Email address"
+                      ></commudle-alert>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="label" for="name">Campaign Name<span class="required"> *</span></label>
                     <div class="input">
                       <commudle-input
                         [placeholder]="'Enter your campaign name'"
@@ -100,7 +94,7 @@
                     </div>
                   </div>
                   <div>
-                    <label for="company_name">Company Name<span class="required"> *</span></label>
+                    <label class="label" for="company_name">Company Name<span class="required"> *</span></label>
                     <div class="input">
                       <commudle-input
                         [placeholder]="'Name of your company'"
@@ -444,62 +438,93 @@
                       [formGroupName]="i"
                     >
                       <!-- Image Upload -->
-                      <label for="image-{{ i }}">Attach Image <span class="required"> *</span></label>
-                      <br />
-                      <div class="preview-image" *ngIf="imagePreview[i]">
-                        <img [src]="imagePreview[i]" />
+                      <div class="images-container">
+                        <label class="clickable image-container">
+                          <span class="image-text">
+                            <fa-icon class="image-icon" [icon]="icons.faFileImage"></fa-icon>
+                            <p class="image-text-content">
+                              <span>Drag and drop images</span><span class="browse-text"> or Browse</span>
+                            </p>
+                          </span>
+                          <input
+                            class="image-input"
+                            (change)="addImages($event)"
+                            accept="image/*"
+                            fullWidth
+                            multiple
+                            nbInput
+                            type="file"
+                          />
+                          <div class="images">
+                            <p class="image-size-text">
+                              <span class="image-size">1280 x 720px or higher recommended</span
+                              ><span class="image-type">JPG, JPEG, PNG</span>
+                            </p>
+                            <div class="images-list">
+                              <div *ngFor="let image of uploadedImagesFiles; let i = index">
+                                <div *ngIf="!uploadedImagesFiles[i]['delete']" class="image">
+                                  <img
+                                    alt="{{ uploadedImages[i]?.name || 'Image' }}"
+                                    src="{{ uploadedImages[i] }}"
+                                    title="{{ uploadedImages[i]?.name || 'Image' }}"
+                                  />
+                                  <p class="clickable">
+                                    <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </label>
                       </div>
-                      <div class="image-upload-container">
-                        <input
-                          id="image-{{ i }}"
-                          type="file"
-                          (change)="onFileChange($event, i)"
-                          accept="image/png, image/jpeg, image/jpg"
-                        />
+
+                      <!-- Headline -->
+                      <div>
+                        <label class="label" for="headline-{{ i }}">Description <span class="required"> *</span></label>
+                        <div class="input">
+                          <commudle-input
+                            id="headline-{{ i }}"
+                            placeholder="Add a brief description, it help with SEO"
+                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.headline')?.value"
+                            (valueChange)="handleArrayFormInput($event, 'headline', i, 'campaign_assets')"
+                            [type]="'text'"
+                          ></commudle-input>
+                        </div>
                       </div>
-                      <!-- <p class="image-info" *ngIf="campaign.campaign_type.image_dimension">
-                        (Allowed {{ campaign.campaign_type.image_dimension.width }} X
-                        {{ campaign.campaign_type.image_dimension.height }}, PNG, JPG, max 2MB)
-                      </p> -->
-                      <br />
-                      <!-- Description -->
-                      <label for="headline-{{ i }}">Description <span class="required"> *</span></label>
-                      <br />
-                      <div class="creative-assets-input">
-                        <textarea
-                          id="headline-{{ i }}"
-                          placeholder="Add a brief description, it help with SEO"
-                          formControlName="headline"
-                        ></textarea>
+
+                      <!-- Call To Action -->
+                      <div>
+                        <label class="label" for="call-to-action-{{ i }}"
+                          >Call To Action <span class="required"> *</span></label
+                        >
+                        <div class="input">
+                          <commudle-input
+                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.call_to_action')?.value"
+                            (valueChange)="handleArrayFormInput($event, 'call_to_action', i, 'campaign_assets')"
+                            placeholder="eg: Learn More"
+                            [type]="'text'"
+                          ></commudle-input>
+                        </div>
                       </div>
-                      <br />
 
                       <!-- url -->
-                      <label for="url-{{ i }}"
-                        >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
-                        <span class="required"> *</span></label
-                      >
-                      <br />
-                      <div class="creative-assets-input">
-                        <commudle-input
-                          [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
-                          (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
-                          placeholder="eg: https://www.commudle.com/"
-                          [type]="'text'"
-                        ></commudle-input>
+                      <div>
+                        <label class="label" for="url-{{ i }}"
+                          >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
+                          <span class="required"> *</span></label
+                        >
+                        <div class="creative-assets-input">
+                          <commudle-input
+                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
+                            (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
+                            placeholder="eg: https://www.commudle.com/"
+                            [type]="'text'"
+                          ></commudle-input>
+                        </div>
                       </div>
-
-                      <br />
-                      <hr />
                     </div>
                   </div>
                 </form>
-                <div>
-                  <button nbButton outline type="button" (click)="addCampaignAsset()">
-                    <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add another Asset
-                  </button>
-                  <p>Add another image which will keep rotating with above image</p>
-                </div>
               </div>
             </nb-accordion-item-body>
           </nb-accordion-item>
@@ -540,7 +565,11 @@
           </button>
         </div>
       </div>
-      <div class="right-column">hello</div>
+      <!-- <div class="right-column"><commudle-campaign-assets-display
+        [defaultImageUrl]="defaultUrl"
+        [defaultImage]="staticAssets.campaign_user_notification_default"
+        [campaignTypeSlug]="ECampaignTypeSlug.USER_NOTIFICATION_RIGHT_SIDEBAR_IMAGE"
+      ></commudle-campaign-assets-display></div> -->
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, ECampaignTypeSlug, IAttachedFile } from '@commudle/shared-models';
 import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
 import {
   faPlus,
@@ -14,6 +14,7 @@ import {
   faTag,
   faEnvelope,
   faChevronDown,
+  faImage,
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
 
@@ -37,6 +38,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     faTag,
     faEnvelope,
     faChevronDown,
+    faImage,
   };
   campaign: ICampaign;
   imagePreview = [];
@@ -47,6 +49,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   formSubscription: Subscription;
   gstInvoiceSubscription: Subscription;
   ECampaignTypeSlug = ECampaignTypeSlug;
+  uploadedImagesFiles: IAttachedFile[] = [];
+  uploadedImages = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -478,6 +482,43 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         endDateControl.setValue('');
       }
       endDateControl.updateValueAndValidity();
+    }
+  }
+
+  addImages(event) {
+    if (event.target.files && event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        const maxSize = 3 * 1024 * 1024; // 3 MB in bytes
+        if (file.size > maxSize) {
+          this.toasterService.warningDialog('Image should be less than 3 Mb', 3000);
+          return;
+        }
+        if (!allowedTypes.includes(file.type)) {
+          this.toasterService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
+          return;
+        }
+        const imgFile: IAttachedFile = {
+          id: null,
+          file: file,
+          url: null,
+          name: null,
+          type: null,
+        };
+        this.uploadedImagesFiles.push(imgFile);
+        const reader = new FileReader();
+        reader.onload = () => this.uploadedImages.push(reader.result);
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  removeImage(index) {
+    if (this.uploadedImagesFiles[index]['id']) {
+      this.uploadedImagesFiles[index]['delete'] = true;
+    } else {
+      this.uploadedImagesFiles.splice(index, 1);
+      this.uploadedImages.splice(index, 1);
     }
   }
 }

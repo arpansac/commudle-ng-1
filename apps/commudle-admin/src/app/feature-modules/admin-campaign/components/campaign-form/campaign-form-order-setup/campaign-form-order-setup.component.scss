@@ -60,7 +60,7 @@ input[type='file'] {
 }
 
 .left-column {
-  @apply com-bg-white com-p-8;
+  @apply com-bg-white com-p-8 com-rounded-b-md;
 }
 
 nb-accordion {
@@ -94,7 +94,7 @@ nb-accordion {
 
       .form {
         form {
-          label {
+          .label {
             @apply com-flex com-text-xs com-font-medium com-text-tYankees-Blue com-mb-2;
           }
 
@@ -173,4 +173,83 @@ nb-accordion {
 
 .info-container {
   @apply com-flex com-mt-2 com-mb-4;
+}
+
+.images-container {
+  @apply com-flex com-flex-col com-mb-4;
+}
+
+.image-container {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-w-full com-h-full com-border com-border-dashed com-border-Cadet-Grey com-bg-white com-rounded-md com-text-sm com-font-medium com-text-Yankees-Blue com-p-4;
+
+  .image-text {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-gap-3;
+  }
+
+  nb-icon {
+    @apply com-w-10 com-h-8 com-text-Cadet-Grey;
+  }
+}
+
+.images {
+  @apply com-flex com-flex-row com-justify-start com-flex-wrap;
+  > div {
+    > div {
+      @apply com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative;
+      img {
+        @apply com-w-full;
+      }
+
+      p {
+        @apply com-absolute com-bottom-0 com-m-0 com-mt-6px;
+        nb-icon:hover {
+          @apply com-rounded-full com-bg-white;
+        }
+      }
+    }
+  }
+}
+
+.image-icon {
+  @apply com-flex com-flex-shrink-0 com-text-5xl com-text-Cadet-Grey;
+}
+
+.image-text-content {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-text-sm com-font-medium com-text-Yankees-Blue com-gap-1 com-m-0;
+}
+
+.images-list {
+  @apply com-flex com-flex-row com-mt-auto com-gap-4;
+}
+
+.browse-text {
+  @apply com-font-normal com-text-primary-500;
+}
+
+.image-size-text {
+  @apply com-flex com-flex-row com-text-xs com-font-normal com-text-gray-custom-1 com-m-0 com-mt-4;
+}
+
+.image-size {
+  @apply com-pr-2 com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+}
+
+.image-type {
+  @apply com-pl-2 com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+}
+
+.image {
+  @apply com-flex com-items-center com-justify-center;
+}
+
+.image-input {
+  @apply com-hidden;
+}
+
+.next-button {
+  @apply com-flex com-p-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-sticky com-bottom-0 com-bg-white com-z-10;
+}
+
+.right-column {
+  @apply com-mx-10 com-mt-[108px] com-bg-white com-px-32 com-py-10 com-h-[470px] com-rounded-md;
 }
