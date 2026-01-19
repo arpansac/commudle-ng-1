@@ -516,7 +516,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
-        amount: (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths,
+        amount: this.purchaseOrder.amount * this.quantity * this.subscriptionMonths,
         usersCount: 1,
         edfegId: null,
         eventId: null,
@@ -529,8 +529,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             this.discountAmount = result.discount_amount;
             this.discountCodeApplied = true;
             this.discountType = result.discount_type;
-            this.finalDiscountAmount =
-              this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
+            this.finalDiscountAmount = this.discountAmount;
             this.updatePurchaseOrder();
             if (callback) callback(true);
           } else {
