@@ -29,13 +29,6 @@ export class RoundMentorSlotRulesService {
     );
   }
 
-  show(ruleId: number): Observable<IRoundMentorSlotRule> {
-    const params = new HttpParams().set('round_mentor_slot_rule_id', ruleId);
-    return this.http.get<IRoundMentorSlotRule>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_RULES.SHOW), {
-      params,
-    });
-  }
-
   showByRound(roundId: number): Observable<IRoundMentorSlotRule> {
     const params = new HttpParams().set('round_id', roundId);
     return this.http.get<IRoundMentorSlotRule>(
@@ -44,12 +37,5 @@ export class RoundMentorSlotRulesService {
         params,
       },
     );
-  }
-
-  delete(roundId: number, ruleId: number): Observable<void> {
-    const params = new HttpParams().set('round_id', roundId).set('round_mentor_slot_rule_id', ruleId);
-    return this.http.delete<void>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_RULES.DELETE), {
-      params,
-    });
   }
 }
