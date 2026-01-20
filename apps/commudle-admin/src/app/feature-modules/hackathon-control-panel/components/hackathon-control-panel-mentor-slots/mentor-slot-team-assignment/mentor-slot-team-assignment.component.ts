@@ -12,7 +12,13 @@ import {
 } from '@angular/core';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
-import { IHackathonJudge, IRound, IRoundMentorSlot, IRoundMentorSlotBooking } from '@commudle/shared-models';
+import {
+  ERoundMentorSlotStatus,
+  IHackathonJudge,
+  IRound,
+  IRoundMentorSlot,
+  IRoundMentorSlotBooking,
+} from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,6 +37,7 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
   @Output() cancelSlot = new EventEmitter<void>();
 
   roundMentorSlots: IRoundMentorSlot[];
+  isSlotCancelled = false;
 
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
 
@@ -48,6 +55,7 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.roundMentorSlotService.indexByRoundMentor(this.round.id, this.mentor.id).subscribe((slots) => {
       this.roundMentorSlots = slots;
+      this.isSlotCancelled = slots[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
       this.cdr.markForCheck();
     });
     this.receivedChannelData();
@@ -59,6 +67,8 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
   }
 
   onSlotClick(): void {
+    if (this.isSlotCancelled) return;
+
     if (
       this.roundMentorSlots[this.index]?.round_mentor_slot_bookings?.length >=
       this.round.round_mentor_slot_rule.max_teams_per_slot
@@ -102,6 +112,19 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
   }
 
   cancelMentorSlot(): void {
-    // TODO: call api and get data from anycable and disable add team button in case of slot was cancel
+    const slot = this.roundMentorSlots[this.index];
+    if (!slot) return;
+
+    this.roundMentorSlotService
+      .updateStatus(slot.id, ERoundMentorSlotStatus.CANCELLED)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.isSlotCancelled = true;
+          this.toastrService.successDialog('Slot cancelled successfully');
+          this.cdr.markForCheck();
+          this.cancelSlot.emit();
+        },
+      });
   }
 }

@@ -1142,5 +1142,6 @@ export const API_ROUTES = {
   ROUND_MENTOR_SLOTS: {
     INDEX_BY_ROUND_MENTOR: 'api/v2/round_mentor_slots/index_by_round_mentor', //GET
     CREATE: 'api/v2/round_mentor_slots', //POST
+    UPDATE_STATUS: 'api/v2/round_mentor_slots/update_status', //PUT
   },
 };

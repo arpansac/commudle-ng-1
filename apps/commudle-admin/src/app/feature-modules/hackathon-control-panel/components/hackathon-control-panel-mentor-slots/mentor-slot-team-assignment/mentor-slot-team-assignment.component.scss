@@ -6,8 +6,13 @@
     @apply com-relative com-cursor-pointer com-w-full com-h-full;
     @apply hover:com-border-primary-500;
 
+    &.disabled {
+      @apply com-cursor-not-allowed com-opacity-50;
+      @apply hover:com-border-gray-300;
+    }
+
     .team-count-badge {
-      @apply com-absolute com-top-0 com-right-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold com-rounded-full com-w-5 com-h-5 com-flex com-items-center com-justify-center com-z-10;
+      @apply com-absolute com-top-0 com-right-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold com-rounded-full com-w-5 com-h-5 com-flex com-items-center com-justify-center com-z-[2];
     }
 
     .team-summary {
@@ -37,6 +42,11 @@
       &.cancel-btn {
         @apply com-text-red-500;
         @apply hover:com-bg-red-100;
+      }
+
+      &:disabled {
+        @apply com-cursor-not-allowed com-opacity-50;
+        @apply hover:com-bg-transparent;
       }
     }
   }

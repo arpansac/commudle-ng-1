@@ -156,6 +156,9 @@
 
   .slot-rules-action {
     @apply com-absolute -com-bottom-20 com-left-0 com-right-0;
+    button {
+      @apply com-z-[2];
+    }
   }
 }
 

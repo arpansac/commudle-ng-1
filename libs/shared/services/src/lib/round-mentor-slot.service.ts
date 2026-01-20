@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IRoundMentorSlot } from '@commudle/shared-models';
+import { ERoundMentorSlotStatus, IRoundMentorSlot } from '@commudle/shared-models';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 
@@ -31,5 +31,12 @@ export class RoundMentorSlotService {
     };
   }): Observable<IRoundMentorSlot> {
     return this.http.post<IRoundMentorSlot>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOTS.CREATE), data);
+  }
+
+  updateStatus(roundMentorSlotId: number, status: ERoundMentorSlotStatus): Observable<boolean> {
+    return this.http.put<boolean>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOTS.UPDATE_STATUS), {
+      round_mentor_slot_id: roundMentorSlotId,
+      status,
+    });
   }
 }
