@@ -9,4 +9,8 @@
   span {
     @apply com-ml-1;
   }
+
+  &.custom-share-button {
+    @apply com-bg-transparent com-text-sm com-font-medium com-text-gray-500 com-border-none;
+  }
 }

@@ -3,6 +3,10 @@
     @apply com-mb-0;
   }
 }
+
+.build-container {
+  @apply com-bg-white com-overflow-hidden;
+}
 .updates {
   nb-card-body {
     @apply com-pl-0;
@@ -14,4 +18,38 @@
       @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-pb-2;
     }
   }
+}
+
+.created-by-container {
+  @apply com-m-0 com-mb-8;
+  h3 {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-6;
+  }
+}
+
+.main-column {
+  @apply com-p-0 md:com-pr-6 md:com-mb-8 com-border-0 md:com-border-r com-border-r-0 com-border-solid com-border-Bright-Gray;
+}
+
+.right-column {
+  @apply com-m-0 md:com-mb-4 com-mb-0 com-pl-6 com-pt-0;
+}
+
+.one-column-layout {
+  @apply com-m-0;
+
+  .created-by-card {
+    @apply md:com-m-0 md:com-mb-4 com-m-4;
+  }
+}
+
+.created-container {
+  @apply com-p-4;
+  h3 {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-6;
+  }
+}
+
+.two-column-layout {
+  @apply md:com-pt-10 com-pt-6;
 }

@@ -1,117 +1,131 @@
-<nb-card *ngIf="cBuild" class="community-build-details">
-  <nb-card-body>
-    <div class="com-flex com-justify-between com-items-center">
-      <app-badge
-        [color]="CBuildTypeDisplay[cBuild.build_type].color"
-        [nbIcon]="CBuildTypeDisplay[cBuild.build_type].icon"
-        [text]="cBuild.build_type | titlecase"
-      ></app-badge>
-      <div class="date-edit-btn">
-        <p class="date">{{ cBuild.created_at | date }}</p>
-        <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
-          <nb-icon icon="edit"></nb-icon>
-        </a>
-      </div>
-    </div>
-    <h1 class="fs-h2 community-build-name">{{ cBuild.name }}</h1>
-    <div class="community-build-author com-my-4">
-      <span class="com-text-sm">Created by</span>
-      <app-user-profile-card-small
-        [user]="cBuild.user"
-        class="com-inline-block com-align-middle com-ml-2"
-      ></app-user-profile-card-small>
-      <span *ngIf="cBuild.user_roles_users.length > 0" class="com-text-sm com-text-gray-500">
-        + {{ cBuild.user_roles_users.length }} others
-      </span>
-    </div>
-    <div class="community-build-tags">
-      <app-tag
-        [tags]="cBuild.tags"
-        [backgroundColor]="'com-bg-Azureish-White'"
-        [fontColor]="'com-text-tYankees-Blue'"
-      ></app-tag>
-    </div>
-    <div class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
-      <div *ngIf="embedCode" class="com-aspect-[16/10] com-overflow-hidden">
-        <div [innerHTML]="embedCode" class="community-build-embed"></div>
-      </div>
-    </div>
-    <div *ngIf="cBuild.images.length > 0" class="commudle-build-images">
-      <div class="commudle-build-images-stripe">
-        <div (click)="openImage(image)" *ngFor="let image of cBuild.images" class="commudle-build-image clickable">
+<div *ngIf="cBuild" class="community-build-details">
+  <div class="date-edit-btn">
+    <p class="date"><fa-icon [icon]="faCalendar"></fa-icon> {{ cBuild.created_at | date }}</p>
+    <a *ngIf="cBuild.user.username === currentUser?.username" [routerLink]="['edit']" title="edit">
+      <nb-icon icon="edit"></nb-icon>
+    </a>
+  </div>
+  <h1 class="community-build-name">{{ cBuild.name }}</h1>
+  <div class="community-build-tags">
+    <app-tag [tags]="cBuild.tags" [backgroundColor]="'com-bg-gray-100'" [fontColor]="'com-text-gray-500'"></app-tag>
+  </div>
+  <div *ngIf="cBuild.images.length > 0" class="commudle-build-images-carousel">
+    <div class="carousel-container">
+      <div class="carousel-wrapper" (scroll)="checkScrollPosition($event)">
+        <div (click)="openImage(image)" *ngFor="let image of cBuild.images" class="carousel-slide clickable">
           <img alt="{{ cBuild.name }}" src="{{ image.url }}" title="{{ cBuild.name }}" />
         </div>
       </div>
+      <button
+        *ngIf="cBuild.images.length > 1"
+        nbButton
+        status="primary"
+        size="small"
+        class="carousel-nav carousel-nav-left"
+        [disabled]="isLeftScrollDisabled"
+        (click)="scrollImages('left')"
+        aria-label="Scroll left"
+        type="button"
+      >
+        <nb-icon icon="arrow-left-outline"></nb-icon>
+      </button>
+      <button
+        *ngIf="cBuild.images.length > 1"
+        nbButton
+        status="primary"
+        size="small"
+        class="carousel-nav carousel-nav-right"
+        [disabled]="isRightScrollDisabled"
+        (click)="scrollImages('right')"
+        aria-label="Scroll right"
+        type="button"
+      >
+        <nb-icon icon="arrow-right-outline"></nb-icon>
+      </button>
     </div>
-    <div class="community-build-content">
-      <ng-container *ngIf="cBuild.link">
-        <p class="community-build-link">
-          Link to open source:
-          <a [href]="cBuild.link | completeurl" rel="noreferrer" target="_blank">
-            {{ cBuild.link }}
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-        </p>
-      </ng-container>
-      <ng-container *ngIf="cBuild.live_app_link">
-        <p class="community-build-link">
-          Link to Live Project:
-          <a [href]="cBuild.live_app_link | completeurl" rel="noreferrer" target="_blank">
-            {{ cBuild.live_app_link }}
-            <nb-icon icon="external-link"></nb-icon>
-          </a>
-        </p>
-      </ng-container>
-      <div [innerHTML]="cBuild.description"></div>
-      <div *ngIf="cBuild.hackathon_team" class="hackathon-badge">
-        <p>This build was uploaded as a hackathon project</p>
-        <div class="badge-name">
-          <app-badge
-            [text]="'Hackathon'"
-            [fontColor]="'com-text-yellow-700'"
-            [fontSize]="'small'"
-            [borderRadius]="'round'"
-            [color]="'com-bg-gray-100'"
-          ></app-badge>
-          <p>{{ cBuild.hackathon_team.hackathon.name }}</p>
-          <a
-            *ngIf="cBuild.hackathon_team.community"
-            [routerLink]="[
-              '/communities',
-              cBuild.hackathon_team.community.slug,
-              'hackathons',
-              cBuild.hackathon_team.hackathon.slug,
-              'projects'
-            ]"
-            >View All Projects<fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon
-          ></a>
-        </div>
+    <div *ngIf="cBuild.images.length > 1" class="carousel-dots">
+      <button
+        *ngFor="let image of cBuild.images; let i = index"
+        (click)="goToImage(i)"
+        [class.active]="i === currentImageIndex"
+        class="carousel-dot"
+        type="button"
+        [attr.aria-label]="'Go to image ' + (i + 1)"
+      ></button>
+    </div>
+  </div>
+  <div *ngIf="embedCode" class="com-w-80 com-mt-7 com-overflow-hidden com-h-max">
+    <div class="com-aspect-[16/10] com-overflow-hidden">
+      <div [innerHTML]="embedCode" class="community-build-embed"></div>
+    </div>
+  </div>
+  <div class="community-build-content">
+    <ng-container *ngIf="cBuild.link">
+      <p class="community-build-link">
+        Link to open source:
+        <a [href]="cBuild.link | completeurl" rel="noreferrer" target="_blank">
+          {{ cBuild.link }}
+          <nb-icon icon="external-link"></nb-icon>
+        </a>
+      </p>
+    </ng-container>
+    <ng-container *ngIf="cBuild.live_app_link">
+      <p class="community-build-link">
+        Link to Live Project:
+        <a [href]="cBuild.live_app_link | completeurl" rel="noreferrer" target="_blank">
+          {{ cBuild.live_app_link }}
+          <nb-icon icon="external-link"></nb-icon>
+        </a>
+      </p>
+    </ng-container>
+    <div class="community-build-description" [innerHTML]="cBuild.description"></div>
+    <div *ngIf="cBuild.hackathon_team" class="hackathon-badge">
+      <p>This build was uploaded as a hackathon project</p>
+      <div class="badge-name">
+        <app-badge
+          [text]="'Hackathon'"
+          [fontColor]="'com-text-yellow-700'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-gray-100'"
+        ></app-badge>
+        <p>{{ cBuild.hackathon_team.hackathon.name }}</p>
+        <a
+          *ngIf="cBuild.hackathon_team.community"
+          [routerLink]="[
+            '/communities',
+            cBuild.hackathon_team.community.slug,
+            'hackathons',
+            cBuild.hackathon_team.hackathon.slug,
+            'projects'
+          ]"
+          >View All Projects<fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon
+        ></a>
       </div>
     </div>
-    <div class="com-mt-8">
-      <app-votes-display
-        [votableId]="cBuild.id"
-        class="com-inline-block com-mr-2"
-        icon="star"
-        votableType="CommunityBuild"
-      ></app-votes-display>
-      <span>Give a star to encourage!</span>
+  </div>
+  <div class="votes-share-container">
+    <div class="votes-views">
+      <app-votes-display [votableId]="cBuild.id" icon="star" votableType="CommunityBuild"></app-votes-display>
+      <!-- <p class="views-count"><fa-icon [icon]="faEye"></fa-icon> {{ cBuild.total_visitors }}</p> -->
     </div>
     <app-share-button
       [content]="environment.app_url + '/builds/' + cBuild.slug"
       [showText]="true"
       [title]="cBuild.name"
       [url]="environment.app_url + '/builds/' + cBuild.slug"
+      [customShareButton]="true"
     ></app-share-button>
-  </nb-card-body>
-</nb-card>
+  </div>
+  <span class="votes-encouragement">Give a star to encourage!</span>
 
-<nb-card *ngIf="discussionChat" class="community-build-discussion">
-  <nb-card-header>Discussion</nb-card-header>
-  <nb-card-body>
-    <commudle-discussion [discussionId]="discussionChat.id" discussionParent="builds"></commudle-discussion>
-  </nb-card-body>
-</nb-card>
+  <nb-card *ngIf="discussionChat" class="community-build-discussion">
+    <nb-card-header>Discussion</nb-card-header>
+    <nb-card-body>
+      <commudle-discussion [discussionId]="discussionChat.id" discussionParent="builds"></commudle-discussion>
+    </nb-card-body>
+  </nb-card>
+</div>
 
 <ng-template #imageTemplate let-ref="dialogRef">
   <nb-card class="image-window">
