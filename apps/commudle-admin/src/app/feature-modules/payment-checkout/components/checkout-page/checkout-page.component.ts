@@ -560,11 +560,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private updateTotalPrice(): void {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
 
-    if (this.discountCodeApplied && this.finalDiscountAmount > this.totalPrice) {
+    if (this.discountCodeApplied && this.finalDiscountAmount / 100 > this.totalPrice) {
       this.calcTotalPrice();
       this.removePromoCode();
     } else {
-      this.calcTotalPrice(this.discountCodeApplied ? this.finalDiscountAmount : 0);
+      this.calcTotalPrice(this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0);
     }
   }
 
