@@ -208,6 +208,26 @@
     p {
       @apply com-mb-0 com-text-sm;
     }
+
+    .assigned-teams {
+      @apply com-mt-3;
+
+      h4 {
+        @apply com-text-sm com-font-semibold com-mb-2;
+      }
+
+      .team-tags {
+        @apply com-flex com-flex-wrap com-gap-2;
+
+        nb-tag {
+          @apply com-mb-2;
+        }
+
+        .no-teams {
+          @apply com-text-sm com-text-gray-500 com-italic;
+        }
+      }
+    }
   }
 
   .search-section {

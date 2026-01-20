@@ -349,7 +349,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.teams = data;
+          this.teams = data.filter((team) => !team.slot_assigned);
           this.updateFilteredTeams(bookings);
           this.cdr.markForCheck();
         },
@@ -385,7 +385,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         next: () => {
           this.toastrService.successDialog('Team assigned successfully');
           this.teams = this.teams.filter((team) => team.id !== teamId);
-          // TODO: when  team was added the remove it from list like mentor assignment
+          this.updateFilteredTeams(slot.round_mentor_slot_bookings);
           this.cdr.markForCheck();
         },
       });

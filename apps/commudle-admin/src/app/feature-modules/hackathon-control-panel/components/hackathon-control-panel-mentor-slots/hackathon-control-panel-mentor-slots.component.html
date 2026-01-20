@@ -251,6 +251,19 @@
       <p><strong>Slot:</strong> {{ selectedSlot?.id }}</p>
     </div>
 
+    <div class="assigned-teams">
+      <h4>Assigned Teams</h4>
+      <div class="team-tags">
+        <nb-tag
+          *ngFor="let booking of selectedSlot?.round_mentor_slot_bookings"
+          status="success"
+          [text]="booking.hackathon_team.name"
+        >
+        </nb-tag>
+        <span *ngIf="!selectedSlot?.round_mentor_slot_bookings?.length" class="no-teams"> No teams assigned yet </span>
+      </div>
+    </div>
+
     <div class="search-section">
       <h3>Add Teams</h3>
       <input
