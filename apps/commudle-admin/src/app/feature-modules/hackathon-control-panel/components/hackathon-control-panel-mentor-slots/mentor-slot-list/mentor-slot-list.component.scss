@@ -1,0 +1,11 @@
+.slots-grid {
+  @apply com-flex com-gap-2;
+}
+
+.slot-item {
+  @apply com-flex com-flex-col com-w-[150px];
+
+  &:not(:last-child) {
+    @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+  }
+}

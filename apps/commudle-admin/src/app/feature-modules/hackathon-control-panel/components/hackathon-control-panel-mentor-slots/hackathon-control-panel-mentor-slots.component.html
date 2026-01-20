@@ -78,11 +78,6 @@
         >
       </span>
     </div>
-    <div class="round-actions">
-      <button nbButton ghost size="tiny" (click)="openSlotRulesDialog(updateSlotRules, column.round.id)">
-        <nb-icon icon="settings-outline"></nb-icon>
-      </button>
-    </div>
     @if(column.round.round_mentor_slot_rule){
 
     <button
@@ -116,20 +111,13 @@
 
 <ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
   <div class="slots-container">
-    <div *ngIf="column.round.round_mentor_slot_rule" class="slots-grid">
-      <!-- TODO: create new component and make loop call inside that component -->
-      <div
-        *ngFor="let slot of [].constructor(column.round.round_mentor_slot_rule.total_slots); let i = index"
-        class="slot-item"
-      >
-        <commudle-mentor-slot-team-assignment
-          [round]="column.round"
-          [mentor]="value.mentor"
-          (slotClick)="addTeamToSlot($event, value.mentorId, column.round.id, i)"
-          [index]="i"
-        ></commudle-mentor-slot-team-assignment>
-      </div>
-    </div>
+    <commudle-mentor-slot-list
+      *ngIf="column.round.round_mentor_slot_rule"
+      [round]="column.round"
+      [mentor]="value.mentor"
+      [mentorId]="value.mentorId"
+      (slotClick)="addTeamToSlot($event.slot, value.mentorId, column.round.id, $event.index)"
+    ></commudle-mentor-slot-list>
   </div>
 </ng-template>
 

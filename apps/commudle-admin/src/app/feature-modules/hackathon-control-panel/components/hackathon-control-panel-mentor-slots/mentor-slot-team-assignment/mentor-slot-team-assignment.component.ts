@@ -9,18 +9,13 @@ import {
   OnInit,
   ChangeDetectorRef,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
-import {
-  ERoundMentorSlotStatus,
-  IHackathonJudge,
-  IRound,
-  IRoundMentorSlot,
-  IRoundMentorSlotBooking,
-} from '@commudle/shared-models';
+import { ERoundMentorSlotStatus, IHackathonJudge, IRound, IRoundMentorSlot } from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
-import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -29,14 +24,14 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./mentor-slot-team-assignment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
+export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
   @Input() index: number;
+  @Input() roundMentorSlots: IRoundMentorSlot[];
   @Output() slotClick = new EventEmitter<IRoundMentorSlot>();
   @Output() cancelSlot = new EventEmitter<void>();
 
-  roundMentorSlots: IRoundMentorSlot[];
   isSlotCancelled = false;
 
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
@@ -49,16 +44,17 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
     private roundMentorSlotService: RoundMentorSlotService,
     private toastrService: ToastrService,
     private cdr: ChangeDetectorRef,
-    private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
   ) {}
 
   ngOnInit() {
-    this.roundMentorSlotService.indexByRoundMentor(this.round.id, this.mentor.id).subscribe((slots) => {
-      this.roundMentorSlots = slots;
-      this.isSlotCancelled = slots[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
+    this.isSlotCancelled = this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['roundMentorSlots']) {
+      this.isSlotCancelled = this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
       this.cdr.markForCheck();
-    });
-    this.receivedChannelData();
+    }
   }
 
   ngOnDestroy(): void {
@@ -86,29 +82,6 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnDestroy {
         this.cancelMentorSlot();
       }
     });
-  }
-
-  private receivedChannelData() {
-    this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      if (data) {
-        this.handleChannelData(data);
-      }
-    });
-  }
-
-  private handleChannelData(data: any): void {
-    switch (data.action) {
-      case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
-      case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL: {
-        const booking: IRoundMentorSlotBooking = data.booking;
-        const slot = this.roundMentorSlots?.find((s) => s.id === booking.round_mentor_slot_id);
-        if (slot) {
-          slot.round_mentor_slot_bookings.unshift(booking);
-          this.cdr.markForCheck();
-        }
-        break;
-      }
-    }
   }
 
   cancelMentorSlot(): void {
