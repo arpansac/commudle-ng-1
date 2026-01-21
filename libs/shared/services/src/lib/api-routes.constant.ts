@@ -914,6 +914,7 @@ export const API_ROUTES = {
     REGISTRATION_DETAILS_CSV: 'api/v2/hackathons/registration_details_csv', //POST
     ROUND_GENERAL_MAILER: 'api/v2/hackathons/round_general_mailer', //POST
     USERS_CHANNELS: 'api/v2/hackathons/users_channels', //GET
+    SEND_REJECTION_EMAILS: 'api/v2/send_rejection_emails', //POST
     PUBLIC: {
       SHOW: 'api/v2/hackathons/public/show', //GET
       INDEX: 'api/v2/hackathons/public/index', //GET

@@ -9,6 +9,8 @@
         <button nbButton status="primary" (click)="openDialogBox(SendRegistrationsByMail)">
           Send Registration Invite
         </button>
+        &nbsp; &nbsp;
+        <button nbButton status="primary" (click)="openDialogBox(SendRejectionEmails)">Send Rejection Emails</button>
       </div>
     </div>
     <div>
@@ -69,6 +71,37 @@
         shape="semi-round"
         fullWidth
         (click)="SendRegistrationsMailer()"
+        [nbSpinner]="isLoading"
+        [disabled]="isLoading"
+      >
+        Send
+      </button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #SendRejectionEmails let-ref="dialogRef">
+  <nb-card class="mail-popup">
+    <nb-card-header>
+      <span>Send Rejection Emails</span>
+      <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <commudle-alert [info]="true" message="This will send rejection emails to all rejected teams"></commudle-alert>
+      <div class="message-field">
+        <label for="message" class="message">Message (Optional)</label>
+        <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        fullWidth
+        (click)="sendRejectionEmails()"
         [nbSpinner]="isLoading"
         [disabled]="isLoading"
       >

@@ -149,6 +149,21 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
     );
   }
 
+  sendRejectionEmails() {
+    this.isLoading = true;
+    this.hackathonService.sendRejectionEmails(this.hackathonId, this.message).subscribe(
+      (data) => {
+        if (data) {
+          this.toasterService.successDialog('Rejection emails sent successfully!');
+        }
+        this.closeDialogBox();
+      },
+      () => {
+        this.closeDialogBox();
+      },
+    );
+  }
+
   closeDialogBox() {
     this.message = '';
     this.isLoading = false;

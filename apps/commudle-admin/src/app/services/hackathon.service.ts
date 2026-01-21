@@ -571,6 +571,13 @@ export class HackathonService {
     );
   }
 
+  sendRejectionEmails(hackathonId: number | string, message: string): Observable<boolean> {
+    return this.http.post<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.SEND_REJECTION_EMAILS), {
+      hackathon_id: hackathonId,
+      message: message,
+    });
+  }
+
   // PUBLIC APIS
 
   pIndexHackathonTracks(hackathonId): Observable<IHackathonTrack[]> {
