@@ -11,10 +11,8 @@ import { BaseApiService } from './base-api.service';
 export class CampaignService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  createCampaign(campaignTypeId: number): Observable<ICampaign> {
-    return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE), {
-      campaign_type_id: campaignTypeId,
-    });
+  createCampaign(campaignData: any): Observable<ICampaign> {
+    return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS_NEW.CREATE), campaignData);
   }
 
   indexCampaigns(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {

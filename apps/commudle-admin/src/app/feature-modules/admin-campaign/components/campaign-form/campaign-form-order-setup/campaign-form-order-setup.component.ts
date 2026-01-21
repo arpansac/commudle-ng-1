@@ -51,6 +51,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   ECampaignTypeSlug = ECampaignTypeSlug;
   uploadedImagesFiles: IAttachedFile[] = [];
   uploadedImages = [];
+  Form1Invalid = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -64,36 +65,141 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     this.campaignForm = this._fb.group(
       {
         name: ['', [Validators.required, Validators.pattern(/^\S*$/)]], //campaign name
-        contact_name: ['', Validators.required],
-        contact_email: ['', [Validators.required, Validators.email]],
-        company_name: ['', Validators.required],
-        gst_invoice: [false],
-        gst_number: [''],
-        billing_address: [''],
-        billing_address_line2: [''],
-        state: [''],
+        start_at: ['', Validators.required],
+        end_at: [''],
         set_end_date: [false],
-        start_time: [''],
-        end_time: [''],
-        start_date: [''],
-        end_date: [''],
-        budget: [0, Validators.required],
-        total_budget: [500, [Validators.required, Validators.min(50)]],
-        location: ['', Validators.required],
+        budget: [0, [Validators.required, Validators.min(50)]],
+        locations: ['', Validators.required],
         communities: [''],
-        skills: [''],
-        email_reminder: [false],
+        tags: [''],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
+        // id: [13],
+        // status: null,
+        // created_at: [''],
+        // user: this._fb.group({
+        //   name: [''],
+        //   username: [''],
+        // }),
+        // currency_type: [''],
+        // unapproved_reasons: this._fb.array([]),
+
+        // contact_name: ['', Validators.required],
+        // contact_email: ['', [Validators.required, Validators.email]],
+        // company_name: ['', Validators.required],
+        // gst_invoice: [false],
+        // gst_number: [''],
+        // billing_address: [''],
+        // billing_address_line2: [''],
+        // state: [''],
+        // email_reminder: [false],
       },
       {
-        validator: this.endDateValidator, // Add the custom validator
+        validators: [this.endDateValidator],
       },
     );
   }
 
+  ngOnInit() {
+    if (this.router.url.includes('/edit/')) {
+      this.seoService.setTags(
+        `Edit ${this.campaign.name} Campaign`,
+        `Edit your campaign ${this.campaign.name}`,
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
+    } else {
+      this.seoService.setTags(
+        'Create a Campaign',
+        'Create a new campaign to boost outreach to thousands of developers on Commudle. Choose a campaign type to start',
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
+    }
+    // this.checkFragment();
+    // this.subscribeToFormChanges();
+    // this.subscribeToGstInvoiceChanges();
+    // this.activatedRoute.parent.data.subscribe((data) => {
+    //   this.campaign = data['campaign'];
+    //   this.patchCampaignForm();
+    // });
+  }
+
+  ngOnDestroy(): void {
+    // if (this.formSubscription) {
+    //   this.formSubscription.unsubscribe();
+    // }
+    // if (this.gstInvoiceSubscription) {
+    //   this.gstInvoiceSubscription.unsubscribe();
+    // }
+  }
+
+  createCampaign() {
+    console.log(this.campaignForm.value, 'campaignForm');
+    // if (!this.campaignForm.valid) {
+    //   this.campaignForm.markAllAsTouched();
+    //   return;
+    // }
+
+    // const formData = new FormData();
+    // const formValue = this.campaignForm.value;
+
+    // Append form fields to FormData
+    // formData.append('campaign[name]', formValue.name || '');
+    // formData.append('campaign[start_at]', formValue.start_at || '');
+    // formData.append('campaign[end_at]', formValue.end_at || '');
+    // formData.append('campaign[budget]', formValue.budget || 0);
+    // formData.append('campaign[locations]', formValue.locations || '');
+    // formData.append('campaign[communities]', formValue.communities || '');
+    // formData.append('campaign[tags]', formValue.tags || '');
+
+    // if (formValue.campaign_assets && formValue.campaign_assets.length > 0) {
+    // formValue.campaign_assets.forEach((asset, index) => {
+    //   formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline || '');
+    //   formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url || '');
+
+    //   // Handle image: can be a File (new upload) or a string/url (existing)
+    //   if (asset.image instanceof File) {
+    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
+    //   } else if (asset.image) {
+    //     // If it's a string/url, append it as a string value
+    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
+    //   }
+    // });
+    // }
+
+    // Append uploaded images if any (from the separate image upload section)
+    // if (this.uploadedImagesFiles && this.uploadedImagesFiles.length > 0) {
+    //   this.uploadedImagesFiles.forEach((imgFile, index) => {
+    //     if (imgFile.file && !(imgFile as any).delete) {
+    //       formData.append(`campaign[images][${index}]`, imgFile.file);
+    //     }
+    //   });
+    // }
+
+    const campaignData: any = {
+      campaign: {
+        name: this.campaignForm.value.name,
+        start_at: this.campaignForm.value.start_at || null,
+      },
+    };
+
+    if (this.campaignForm.get('set_end_date')?.value) {
+      campaignData.campaign.end_at = this.campaignForm.value.end_at || null;
+    }
+
+    this.campaignService.createCampaign(campaignData).subscribe((res: ICampaign) => {
+      if (res) {
+        console.log(res, 'res');
+        this.campaign = res; // Store the created campaign
+        this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
+          com_campaign_id: res.id,
+          // com_campaign_type_name: res.campaign_type?.name,
+        });
+      }
+    });
+  }
+
   endDateValidator(formGroup: AbstractControl): ValidationErrors | null {
-    const startDate = formGroup.get('start_date')?.value;
-    const endDate = formGroup.get('end_date')?.value;
+    const startDate = formGroup.get('start_at')?.value;
+    const endDate = formGroup.get('end_at')?.value;
 
     if (!startDate || !endDate) return null; // No validation if either date is missing
 
@@ -126,30 +232,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   removeCampaignAsset(index: number) {
     this.campaignAssets.removeAt(index);
-  }
-
-  ngOnInit() {
-    this.checkFragment();
-    this.subscribeToFormChanges();
-    this.subscribeToGstInvoiceChanges();
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.campaign = data['campaign'];
-      this.patchCampaignForm();
-      this.seoService.setTags(
-        `Edit ${this.campaign.name} Campaign - Set Time & Budget`,
-        'Set the campaign name, time, budget, tags and other details.',
-        'https://commudle.com/assets/images/commudle-logo192.png',
-      );
-    });
-  }
-
-  ngOnDestroy(): void {
-    if (this.formSubscription) {
-      this.formSubscription.unsubscribe();
-    }
-    if (this.gstInvoiceSubscription) {
-      this.gstInvoiceSubscription.unsubscribe();
-    }
   }
 
   patchCampaignForm() {
@@ -354,22 +436,22 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     });
   }
 
-  checkFragment() {
-    this.activatedRoute.fragment.subscribe((fragment) => {
-      if (fragment) {
-        requestAnimationFrame(() => {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-              inline: 'nearest',
-            });
-          }
-        });
-      }
-    });
-  }
+  // checkFragment() {
+  //   this.activatedRoute.fragment.subscribe((fragment) => {
+  //     if (fragment) {
+  //       requestAnimationFrame(() => {
+  //         const element = document.getElementById(fragment);
+  //         if (element) {
+  //           element.scrollIntoView({
+  //             behavior: 'smooth',
+  //             block: 'start',
+  //             inline: 'nearest',
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   generateCampaignName() {
     const companyName = this.campaignForm.get('company_name')?.value?.trim().replace(/\s+/g, '-') || '';
@@ -472,7 +554,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   onSetEndDateChange() {
     const setEndDate = this.campaignForm.get('set_end_date')?.value;
-    const endDateControl = this.campaignForm.get('end_date');
+    const endDateControl = this.campaignForm.get('end_at');
 
     if (endDateControl) {
       if (setEndDate) {
@@ -519,6 +601,41 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     } else {
       this.uploadedImagesFiles.splice(index, 1);
       this.uploadedImages.splice(index, 1);
+    }
+  }
+
+  isForm1Invalid(): boolean {
+    const nameControl = this.campaignForm.get('name');
+    const startAtControl = this.campaignForm.get('start_at');
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const endAtControl = this.campaignForm.get('end_at');
+
+    if (nameControl?.invalid || startAtControl?.invalid) {
+      nameControl.markAsTouched();
+      startAtControl.markAsTouched();
+      return true;
+    }
+
+    if (setEndDate && (endAtControl?.invalid || this.campaignForm.hasError('endDateValidator'))) {
+      endAtControl.markAsTouched();
+      return true;
+    }
+
+    return false;
+  }
+
+  onAccordion2Click(event: MouseEvent) {
+    console.log('onAccordion2Click');
+    if (this.isForm1Invalid()) {
+      console.log('Form1Invalid is true');
+      this.Form1Invalid = true;
+      return;
+    } else {
+      console.log('Form1Invalid is false');
+      event.preventDefault();
+      event.stopPropagation();
+      this.Form1Invalid = false;
+      this.createCampaign();
     }
   }
 }

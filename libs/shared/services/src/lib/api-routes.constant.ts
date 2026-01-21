@@ -1069,7 +1069,7 @@ export const API_ROUTES = {
 
   CAMPAIGNS: {
     INDEX: 'api/v2/campaigns', //GET
-    CREATE: 'api/v2/campaigns', //POST
+    // CREATE: 'api/v2/campaigns', //POST  //DEPRECATED
     UPDATE: 'api/v2/campaigns', //PUT
     UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
     SHOW: 'api/v2/campaigns/show', //GET
@@ -1094,6 +1094,10 @@ export const API_ROUTES = {
         INDEX: 'api/v2/campaigns/campaign_types/public', //GET
       },
     },
+  },
+
+  CAMPAIGNS_NEW: {
+    CREATE: 'api/v2/campaigns_new', //POST
   },
 
   PURCHASE_ORDER: {
