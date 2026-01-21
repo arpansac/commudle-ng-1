@@ -21,7 +21,8 @@ export interface ICampaign {
   updated_at: Date;
   tags: string[];
   main_newsletter_id: number;
-
+  start_at: string;
+  end_at: string;
   status: ECampaignStatus;
 
   user: IUser;

@@ -30,17 +30,17 @@ const routes: Routes = [
       campaign: CampaignResolver,
     },
     runGuardsAndResolvers: 'always',
-    component: CampaignFormComponent,
+    // component: CampaignFormComponent,
     children: [
-      { path: '', component: CampaignFormSelectCampaignComponent },
-      {
-        path: 'order-setup',
-        component: CampaignFormOrderSetupComponent,
-      },
-      {
-        path: 'order-confirmation',
-        component: CampaignFormOrderConfirmationComponent,
-      },
+      { path: '', component: CampaignFormOrderSetupComponent },
+      // {
+      //   path: 'order-setup',
+      //   component: CampaignFormOrderSetupComponent,
+      // },
+      // {
+      //   path: 'order-confirmation',
+      //   component: CampaignFormOrderConfirmationComponent,
+      // },
     ],
   },
   {

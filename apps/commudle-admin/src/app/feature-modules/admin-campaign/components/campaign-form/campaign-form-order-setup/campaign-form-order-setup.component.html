@@ -117,7 +117,7 @@
           </nb-accordion-item>
 
           <!-- Budget Section -->
-          <nb-accordion-item [disabled]="Form1Invalid" (click)="onAccordion2Click($event)">
+          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="!Form1Invalid" (click)="onAccordion2Click($event)">
             <nb-accordion-item-header>
               <div class="accordion-header-content">
                 <span class="accordion-number">2</span>

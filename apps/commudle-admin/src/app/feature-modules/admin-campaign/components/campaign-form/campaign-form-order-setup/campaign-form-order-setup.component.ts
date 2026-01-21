@@ -101,11 +101,27 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.router.url.includes('/edit/')) {
-      this.seoService.setTags(
-        `Edit ${this.campaign.name} Campaign`,
-        `Edit your campaign ${this.campaign.name}`,
-        'https://commudle.com/assets/images/commudle-logo192.png',
-      );
+      this.activatedRoute.parent?.data.subscribe((data) => {
+        console.log(data, 'data');
+        if (data['campaign']) {
+          console.log(data['campaign'], 'data');
+          this.campaign = data['campaign'];
+          this.patchCampaignForm();
+          setTimeout(() => {
+            if (this.campaignForm.get('set_end_date')?.value) {
+              this.onSetEndDateChange();
+            }
+            if (!this.isForm1Invalid()) {
+              this.Form1Invalid = false;
+            }
+          });
+          this.seoService.setTags(
+            `Edit ${this.campaign.name} Campaign`,
+            `Edit your campaign ${this.campaign.name}`,
+            'https://commudle.com/assets/images/commudle-logo192.png',
+          );
+        }
+      });
     } else {
       this.seoService.setTags(
         'Create a Campaign',
@@ -116,10 +132,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     // this.checkFragment();
     // this.subscribeToFormChanges();
     // this.subscribeToGstInvoiceChanges();
-    // this.activatedRoute.parent.data.subscribe((data) => {
-    //   this.campaign = data['campaign'];
-    //   this.patchCampaignForm();
-    // });
   }
 
   ngOnDestroy(): void {
@@ -189,6 +201,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       if (res) {
         console.log(res, 'res');
         this.campaign = res; // Store the created campaign
+        this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
         this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
           com_campaign_id: res.id,
           // com_campaign_type_name: res.campaign_type?.name,
@@ -238,25 +251,28 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     if (this.campaign.name) {
       this.campaignForm.patchValue({
         name: this.campaign.name,
-        contact_name: this.campaign.contact_name,
-        contact_email: this.campaign.contact_email,
-        company_name: this.campaign.company_name,
-        gst_invoice: (this.campaign as any).gst_invoice || false,
-        gst_number: (this.campaign as any).gst_number || '',
-        billing_address: (this.campaign as any).billing_address || '',
-        billing_address_line2: (this.campaign as any).billing_address_line2 || '',
-        state: (this.campaign as any).state || '',
-        set_end_date: !!this.campaign.end_date, // Set to true if end_date exists
-        start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
-        end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
-        start_date: this.campaign.start_date,
-        end_date: this.campaign.end_date,
-        budget: this.campaign.budget,
-        total_budget: (this.campaign as any).total_budget || 500,
-        location: (this.campaign as any).location || '',
-        communities: (this.campaign as any).communities || '',
-        skills: (this.campaign as any).skills || '',
-        email_reminder: (this.campaign as any).email_reminder || false,
+        start_at: this.formatDateTimeForInput(this.campaign.start_at),
+        end_at: this.formatDateTimeForInput(this.campaign.end_at),
+        set_end_date: !!this.campaign.end_at,
+        // contact_name: this.campaign.contact_name,
+        // contact_email: this.campaign.contact_email,
+        // company_name: this.campaign.company_name,
+        // gst_invoice: (this.campaign as any).gst_invoice || false,
+        // gst_number: (this.campaign as any).gst_number || '',
+        // billing_address: (this.campaign as any).billing_address || '',
+        // billing_address_line2: (this.campaign as any).billing_address_line2 || '',
+        // state: (this.campaign as any).state || '',
+        // set_end_date: !!this.campaign.end_date, // Set to true if end_date exists
+        // start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
+        // end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
+        // start_date: this.campaign.start_date,
+        // end_date: this.campaign.end_date,
+        // budget: this.campaign.budget,
+        // total_budget: (this.campaign as any).total_budget || 500,
+        // location: (this.campaign as any).location || '',
+        // communities: (this.campaign as any).communities || '',
+        // skills: (this.campaign as any).skills || '',
+        // email_reminder: (this.campaign as any).email_reminder || false,
       });
       if (this.campaign.tags) {
         this.tags = this.campaign.tags;
@@ -282,6 +298,13 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     //     this.campaignForm.patchValue({ budget: data });
     //   });
     // }
+  }
+
+  private formatDateTimeForInput(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const isoString = date.toISOString();
+    return isoString.substring(0, 16);
   }
 
   private convertUtcTimeToLocalString(timeStr: string): string {
