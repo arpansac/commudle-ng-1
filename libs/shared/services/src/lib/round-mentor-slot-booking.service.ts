@@ -12,7 +12,6 @@ export class RoundMentorSlotBookingService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
   createBooking(
-    roundMentorSlotRuleId: number,
     hackathonTeamId: number,
     roundMentorSlotId: number,
     hackathonJudgeId: number,
@@ -20,7 +19,6 @@ export class RoundMentorSlotBookingService {
     return this.http.post<IRoundMentorSlotBooking>(
       this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_BOOKINGS.CREATE),
       {
-        round_mentor_slot_rule_id: roundMentorSlotRuleId,
         hackathon_team_id: hackathonTeamId,
         round_mentor_slot_id: roundMentorSlotId,
         hackathon_judge_id: hackathonJudgeId,

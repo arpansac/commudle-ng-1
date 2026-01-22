@@ -14,8 +14,7 @@
   } @else {
   <div class="no-teams-actions">
     <button class="no-teams-compact add-btn" (click)="onSlotClick()" [disabled]="isSlotCancelled">
-      <fa-icon [icon]="icons.faPlus"></fa-icon>
-      @if(roundMentorSlots){ {{ isSlotCancelled }}} Add teams
+      <fa-icon [icon]="icons.faPlus"></fa-icon>Add teams
     </button>
     <button class="no-teams-compact cancel-btn" (click)="onCancelSlot($event)" [disabled]="isSlotCancelled">
       <fa-icon [icon]="icons.faXmark"></fa-icon>

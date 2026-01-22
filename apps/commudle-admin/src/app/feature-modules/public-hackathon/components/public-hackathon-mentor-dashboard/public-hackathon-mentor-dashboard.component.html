@@ -29,7 +29,7 @@
     <!-- Mentor Slots Section -->
     <div *ngIf="currentMentor && roundMentorSlots?.length > 0" class="mentor-slots-section">
       <h3>My Booking Slots</h3>
-      <div class="slots-table-wrapper">
+      <div class="slots-table-wrapper custom-scrollbar">
         <table class="slots-table">
           <thead>
             <tr>
@@ -46,32 +46,53 @@
           <tbody>
             <tr>
               <td *ngFor="let slot of roundMentorSlots; let i = index">
-                <div *ngIf="slot?.round_mentor_slot_bookings?.length > 0" class="teams-list">
-                  <div *ngFor="let booking of slot.round_mentor_slot_bookings" class="team-badge">
-                    {{ booking.hackathon_team.name }}
+                <div
+                  *ngIf="slot?.round_mentor_slot_bookings?.length > 0"
+                  class="team-cell-wrapper"
+                  (click)="openAddTeamDialog(slot, i)"
+                >
+                  <div class="team-count-badge">{{ slot.round_mentor_slot_bookings.length }}</div>
+                  <div class="team-summary custom-scrollbar">
+                    @for(booking of slot.round_mentor_slot_bookings; track booking.id){
+                    <span class="team-name">{{ booking.hackathon_team.name }}</span>
+                    }
                   </div>
                 </div>
-                <div *ngIf="!slot?.round_mentor_slot_bookings?.length" class="no-teams-actions">
+                @if(!slot?.round_mentor_slot_bookings?.length){
+                <div class="no-teams-actions">
                   <button
-                    nbButton
-                    size="tiny"
-                    status="primary"
+                    class="no-teams-compact add-btn"
                     (click)="openAddTeamDialog(slot, i)"
-                    [disabled]="isSlotCancelled(slot)"
+                    [disabled]="
+                      slot.status === ERoundMentorSlotStatus.CANCELLED ||
+                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
+                    "
                   >
-                    Add Team
+                    <fa-icon [icon]="icons.faPlus"></fa-icon>
+                    Add teams
                   </button>
                   <button
-                    nbButton
-                    size="tiny"
-                    status="danger"
+                    class="no-teams-compact cancel-btn"
                     (click)="openCancelSlotDialog(slot, i)"
-                    [disabled]="isSlotCancelled(slot)"
+                    [disabled]="
+                      slot.status === ERoundMentorSlotStatus.CANCELLED ||
+                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
+                    "
                   >
-                    Cancel Slot
+                    <fa-icon [icon]="icons.faXmark"></fa-icon>
+                    Cancel slot
                   </button>
                 </div>
-                <div *ngIf="isSlotCancelled(slot)" class="slot-cancelled">Cancelled</div>
+                }
+                <div
+                  *ngIf="
+                    slot.status === ERoundMentorSlotStatus.CANCELLED ||
+                    slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
+                  "
+                  class="slot-cancelled"
+                >
+                  Cancelled
+                </div>
               </td>
             </tr>
           </tbody>
@@ -254,7 +275,7 @@
   <nb-card class="dialog-box-card">
     <nb-card-header>
       <div>Cancel Slot</div>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
@@ -262,8 +283,8 @@
       <p>Are you sure you want to cancel this slot?</p>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="danger" (click)="cancelSlot(ref)">Yes, Cancel</button>
-      <button nbButton (click)="ref.close()">No</button>
+      <button nbButton status="danger" (click)="ref.close(true)">Yes, Cancel</button>
+      <button nbButton (click)="ref.close(false)">No</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

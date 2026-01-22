@@ -374,12 +374,10 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   assignTeam(teamId: number): void {
-    const round = this.rounds.find((r) => r.id === this.selectedRoundId);
-    const slotRule = round?.round_mentor_slot_rule;
     const slot = this.selectedSlot;
 
     this.roundMentorSlotBookingService
-      .createBooking(slotRule.id, teamId, slot.id, this.selectedMentorId)
+      .createBooking(teamId, slot.id, this.selectedMentorId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

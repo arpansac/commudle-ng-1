@@ -28,6 +28,7 @@ import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
 import moment from 'moment';
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-public-hackathon-mentor-dashboard',
@@ -49,7 +50,14 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   selectedSlot: IRoundMentorSlot;
   selectedSlotIndex: number;
 
+  protected ERoundMentorSlotStatus = ERoundMentorSlotStatus;
+
   private destroy$ = new Subject<void>();
+
+  protected readonly icons = {
+    faPlus,
+    faXmark,
+  };
 
   @ViewChild('ProblemStatementView') problemStatementView: TemplateRef<any>;
   @ViewChild('addTeamDialog') addTeamDialog: TemplateRef<any>;
@@ -71,9 +79,8 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   ngOnInit(): void {
     this.activatedRoute.parent.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.hackathon = data.hackathon;
-      this.loadCurrentMentor();
+
       this.fetchRounds();
-      this.fetchRoundsWithSlots();
     });
   }
 
@@ -90,6 +97,8 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         const ongoingRound = this.rounds.find((r) => now.isBetween(moment(r.date), moment(r.end_date), null, '[]'));
         const upcomingRound = this.rounds.find((r) => now.isBefore(moment(r.date)));
         this.selectedRound = ongoingRound || upcomingRound || this.rounds[0];
+        this.loadCurrentMentor();
+
         this.selectedRoundId = this.selectedRound.id;
         this.fetchTeams();
       }
@@ -140,20 +149,13 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         .pipe(takeUntil(this.destroy$))
         .subscribe((mentors) => {
           this.currentMentor = mentors.find((m) => m.judge_user_id === currentUserId);
+          this.loadMentorSlots();
         });
     });
   }
 
-  fetchRoundsWithSlots(): void {
-    // this.roundService.mentorSlotIndex(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
-    //   this.roundsWithSlots = data.filter((r) => r.round_mentor_slot_rule);
-    //   // this.loadMentorSlots();
-    // });
-  }
-
   loadMentorSlots(): void {
     if (!this.currentMentor) return;
-
     this.roundMentorSlotService
       .indexByRoundMentor(this.selectedRound.id, this.currentMentor.id)
       .pipe(takeUntil(this.destroy$))
@@ -180,9 +182,8 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   }
 
   assignTeam(teamId: number, dialogRef: any): void {
-    const slotRule = this.selectedRound.round_mentor_slot_rule;
     this.roundMentorSlotBookingService
-      .createBooking(slotRule.id, teamId, this.selectedSlot.id, this.currentMentor.id)
+      .createBooking(teamId, this.selectedSlot.id, this.currentMentor.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -204,7 +205,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
 
   cancelSlot(dialogRef: any): void {
     this.roundMentorSlotService
-      .updateStatus(this.selectedSlot.id, ERoundMentorSlotStatus.CANCELLED)
+      .updateStatus(this.selectedSlot.id, ERoundMentorSlotStatus.CANCELLED_BY_MENTOR)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -216,9 +217,5 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.toastrService.errorDialog('Failed to cancel slot');
         },
       });
-  }
-
-  isSlotCancelled(slot: IRoundMentorSlot): boolean {
-    return slot?.status === ERoundMentorSlotStatus.CANCELLED;
   }
 }

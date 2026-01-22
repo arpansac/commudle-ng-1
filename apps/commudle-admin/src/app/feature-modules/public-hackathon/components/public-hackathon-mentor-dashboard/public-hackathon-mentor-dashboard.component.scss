@@ -59,20 +59,44 @@ nb-card {
           @apply com-px-4 com-py-3 com-border com-border-gray-300 com-align-top;
           @apply com-min-w-[180px];
 
-          .teams-list {
-            @apply com-flex com-flex-col com-gap-2;
+          .team-cell-wrapper {
+            @apply com-relative com-w-full com-min-h-28 com-cursor-pointer;
+            .team-count-badge {
+              @apply com-absolute com-top-1 com-right-1 com-bg-primary-500 com-text-white com-rounded-full com-w-6 com-h-6 com-flex com-items-center com-justify-center com-text-xs com-font-bold com-z-[2] com-shadow-md;
+            }
+            .team-summary {
+              @apply com-flex com-flex-col com-gap-2 com-h-full com-overflow-y-auto com-p-2 com-w-full;
 
-            .team-badge {
-              @apply com-px-3 com-py-2 com-bg-primary-100 com-text-primary-800 com-rounded com-text-sm;
-              @apply com-break-words com-text-center;
+              .team-name {
+                @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
+              }
             }
           }
 
           .no-teams-actions {
-            @apply com-flex com-flex-col com-gap-2;
+            @apply com-flex com-gap-2 com-flex-col;
 
-            button {
-              @apply com-w-full;
+            .no-teams-compact {
+              @apply com-flex com-flex-1 com-flex-col com-items-center com-justify-center com-gap-1 com-text-xs com-border-none com-bg-transparent com-cursor-pointer com-rounded com-p-2;
+
+              fa-icon {
+                @apply com-text-sm;
+              }
+
+              &.add-btn {
+                @apply com-text-primary-500;
+                @apply hover:com-bg-primary-100;
+              }
+
+              &.cancel-btn {
+                @apply com-text-red-500;
+                @apply hover:com-bg-red-100;
+              }
+
+              &:disabled {
+                @apply com-cursor-not-allowed com-opacity-50;
+                @apply hover:com-bg-transparent;
+              }
             }
           }
 
@@ -292,5 +316,18 @@ nb-card {
 
   nb-card-footer {
     @apply com-flex com-justify-end;
+  }
+}
+
+.dialog-box-card {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    p {
+      @apply com-text-gray-700 com-mb-0;
+    }
   }
 }
