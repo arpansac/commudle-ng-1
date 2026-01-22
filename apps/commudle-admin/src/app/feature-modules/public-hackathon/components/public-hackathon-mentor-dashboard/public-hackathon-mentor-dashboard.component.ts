@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   IHackathon,
@@ -13,6 +13,7 @@ import {
   IRoundMentorSlot,
   ERoundMentorSlotStatus,
   IHackathonTeam,
+  IRoundMentorSlotBooking,
 } from '@commudle/shared-models';
 import {
   HackathonTeamRoundScoreService,
@@ -29,6 +30,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
 import moment from 'moment';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 
 @Component({
   selector: 'commudle-public-hackathon-mentor-dashboard',
@@ -74,6 +76,8 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     private hackathonTeamService: HackathonTeamService,
     private roundMentorSlotBookingService: RoundMentorSlotBookingService,
     private toastrService: ToastrService,
+    private cdr: ChangeDetectorRef,
+    private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
   ) {}
 
   ngOnInit(): void {
@@ -81,10 +85,12 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       this.hackathon = data.hackathon;
 
       this.fetchRounds();
+      this.subscribeToChannel();
     });
   }
 
   ngOnDestroy(): void {
+    this.roundMentorSlotBookingChannel.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -140,7 +146,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       context: { ps },
     });
   }
-
+  // TODO: remove this api and get new or think
   loadCurrentMentor(): void {
     this.authService.currentUser$.subscribe((user) => {
       const currentUserId = user.id;
@@ -217,5 +223,30 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.toastrService.errorDialog('Failed to cancel slot');
         },
       });
+  }
+
+  private subscribeToChannel(): void {
+    this.roundMentorSlotBookingChannel.subscribe(this.hackathon.slug);
+    this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      if (data) {
+        this.handleChannelData(data);
+      }
+    });
+  }
+
+  private handleChannelData(data: any): void {
+    switch (data.action) {
+      case this.roundMentorSlotBookingChannel.ACTIONS.BOOK:
+      case this.roundMentorSlotBookingChannel.ACTIONS.CANCEL: {
+        const booking: IRoundMentorSlotBooking = data.booking;
+        const slot = this.roundMentorSlots?.find((s) => s.id === booking.round_mentor_slot_id);
+        if (slot) {
+          slot.round_mentor_slot_bookings = [booking, ...slot.round_mentor_slot_bookings];
+          this.roundMentorSlots = [...this.roundMentorSlots];
+          this.cdr.markForCheck();
+        }
+        break;
+      }
+    }
   }
 }

@@ -53,8 +53,8 @@
                 >
                   <div class="team-count-badge">{{ slot.round_mentor_slot_bookings.length }}</div>
                   <div class="team-summary custom-scrollbar">
-                    @for(booking of slot.round_mentor_slot_bookings; track booking.id){
-                    <span class="team-name">{{ booking.hackathon_team.name }}</span>
+                    @for(booking of slot.round_mentor_slot_bookings; track booking.id; let idx = $index){
+                    <span class="team-name"> {{ idx + 1 }}, {{ booking.hackathon_team.name }} </span>
                     }
                   </div>
                 </div>
