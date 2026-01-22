@@ -1,7 +1,112 @@
 nb-card {
   @apply com-mx-0;
 }
+
 .header-content {
+  @apply com-flex com-justify-between com-items-center com-gap-4;
+
+  .round-selector {
+    @apply com-flex com-items-center com-gap-2;
+
+    label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+
+    .round-select {
+      @apply com-min-w-[250px] com-px-3 com-py-2 com-border com-border-gray-300 com-rounded;
+      @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+    }
+  }
+}
+
+.mentor-slots-section {
+  @apply com-mb-8 com-pb-8 com-border-b com-border-gray-200;
+
+  h3 {
+    @apply com-text-lg com-font-semibold com-mb-4 com-text-gray-900;
+  }
+
+  .slots-table-wrapper {
+    @apply com-overflow-x-auto com-w-full;
+
+    .slots-table {
+      @apply com-w-full com-border-collapse com-min-w-max;
+
+      thead {
+        @apply com-bg-gray-100;
+
+        th {
+          @apply com-px-4 com-py-3 com-text-center com-text-sm com-font-semibold com-text-gray-700;
+          @apply com-border com-border-gray-300 com-whitespace-nowrap;
+          @apply com-min-w-[180px];
+
+          .slot-header {
+            @apply com-flex com-flex-col com-gap-1;
+
+            .slot-number {
+              @apply com-font-semibold com-text-sm;
+            }
+
+            .slot-time {
+              @apply com-text-xs com-font-normal com-text-gray-600;
+            }
+          }
+        }
+      }
+
+      tbody {
+        td {
+          @apply com-px-4 com-py-3 com-border com-border-gray-300 com-align-top;
+          @apply com-min-w-[180px];
+
+          .teams-list {
+            @apply com-flex com-flex-col com-gap-2;
+
+            .team-badge {
+              @apply com-px-3 com-py-2 com-bg-primary-100 com-text-primary-800 com-rounded com-text-sm;
+              @apply com-break-words com-text-center;
+            }
+          }
+
+          .no-teams-actions {
+            @apply com-flex com-flex-col com-gap-2;
+
+            button {
+              @apply com-w-full;
+            }
+          }
+
+          .slot-cancelled {
+            @apply com-text-sm com-text-red-600 com-font-semibold com-text-center;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dialog-box-card {
+  @apply com-min-w-[400px];
+
+  .no-teams-message {
+    @apply com-text-center com-py-4 com-text-gray-600;
+  }
+
+  .teams-list-dialog {
+    @apply com-flex com-flex-col com-gap-2 com-max-h-[400px] com-overflow-y-auto;
+
+    .team-item {
+      @apply com-flex com-justify-between com-items-center com-p-3 com-border com-border-gray-300 com-rounded;
+      @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
+
+      span {
+        @apply com-text-sm com-text-gray-800;
+      }
+    }
+  }
+}
+
+.loading-state {
   @apply com-flex com-justify-between com-items-center com-gap-4;
 
   .round-selector {

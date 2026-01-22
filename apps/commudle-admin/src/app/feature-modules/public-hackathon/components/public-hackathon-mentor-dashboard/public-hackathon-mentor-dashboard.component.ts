@@ -7,8 +7,23 @@ import {
   IHackathonProblemStatement,
   EDbModels,
   IHackathonTeamWithScoreAndSubmissions,
+  IHackathonJudge,
+  EHackathonJudgeType,
+  EJudgeInvitationStatus,
+  IRoundMentorSlot,
+  ERoundMentorSlotStatus,
+  IHackathonTeam,
 } from '@commudle/shared-models';
-import { HackathonTeamRoundScoreService, RoundService } from '@commudle/shared-services';
+import {
+  HackathonTeamRoundScoreService,
+  RoundService,
+  AuthService,
+  RoundMentorSlotService,
+  HackathonTeamService,
+  RoundMentorSlotBookingService,
+  ToastrService,
+} from '@commudle/shared-services';
+import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
@@ -27,23 +42,38 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   teamDetails: IHackathonTeamWithScoreAndSubmissions[] = [];
   isLoading = true;
   moment = moment;
-
+  currentMentor: IHackathonJudge;
   EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
+  roundMentorSlots: IRoundMentorSlot[];
+  availableTeams: IHackathonTeam[] = [];
+  selectedSlot: IRoundMentorSlot;
+  selectedSlotIndex: number;
+
   private destroy$ = new Subject<void>();
 
   @ViewChild('ProblemStatementView') problemStatementView: TemplateRef<any>;
+  @ViewChild('addTeamDialog') addTeamDialog: TemplateRef<any>;
+  @ViewChild('cancelSlotDialog') cancelSlotDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private hackathonTeamRoundScoreService: HackathonTeamRoundScoreService,
     private dialogService: NbDialogService,
     private roundService: RoundService,
+    private hackathonService: HackathonService,
+    private authService: AuthService,
+    private roundMentorSlotService: RoundMentorSlotService,
+    private hackathonTeamService: HackathonTeamService,
+    private roundMentorSlotBookingService: RoundMentorSlotBookingService,
+    private toastrService: ToastrService,
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.parent.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.hackathon = data.hackathon;
+      this.loadCurrentMentor();
       this.fetchRounds();
+      this.fetchRoundsWithSlots();
     });
   }
 
@@ -77,6 +107,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     this.isLoading = true;
     this.selectedRoundId = Number(event.target.value);
     this.selectedRound = this.rounds.find((r) => r.id === this.selectedRoundId);
+    this.loadMentorSlots();
     this.fetchTeams();
   }
 
@@ -99,5 +130,95 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     this.dialogService.open(this.problemStatementView, {
       context: { ps },
     });
+  }
+
+  loadCurrentMentor(): void {
+    this.authService.currentUser$.subscribe((user) => {
+      const currentUserId = user.id;
+      this.hackathonService
+        .indexJudge(this.hackathon.id, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((mentors) => {
+          this.currentMentor = mentors.find((m) => m.judge_user_id === currentUserId);
+        });
+    });
+  }
+
+  fetchRoundsWithSlots(): void {
+    // this.roundService.mentorSlotIndex(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
+    //   this.roundsWithSlots = data.filter((r) => r.round_mentor_slot_rule);
+    //   // this.loadMentorSlots();
+    // });
+  }
+
+  loadMentorSlots(): void {
+    if (!this.currentMentor) return;
+
+    this.roundMentorSlotService
+      .indexByRoundMentor(this.selectedRound.id, this.currentMentor.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((slots) => {
+        this.roundMentorSlots = slots;
+      });
+  }
+
+  openAddTeamDialog(slot: IRoundMentorSlot, index: number): void {
+    this.selectedSlot = slot;
+    this.selectedSlotIndex = index;
+    this.loadAvailableTeams();
+    this.dialogService.open(this.addTeamDialog);
+  }
+
+  loadAvailableTeams(): void {
+    this.hackathonTeamService
+      .teamsByEvaluator(this.selectedRound.id, this.currentMentor.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((teams) => {
+        const bookedTeamIds = this.selectedSlot?.round_mentor_slot_bookings?.map((b) => b.hackathon_team_id) || [];
+        this.availableTeams = teams.filter((team) => !team.slot_assigned && !bookedTeamIds.includes(team.id));
+      });
+  }
+
+  assignTeam(teamId: number, dialogRef: any): void {
+    const slotRule = this.selectedRound.round_mentor_slot_rule;
+    this.roundMentorSlotBookingService
+      .createBooking(slotRule.id, teamId, this.selectedSlot.id, this.currentMentor.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Team assigned successfully');
+          this.loadMentorSlots();
+          dialogRef.close();
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to assign team');
+        },
+      });
+  }
+
+  openCancelSlotDialog(slot: IRoundMentorSlot, index: number): void {
+    this.selectedSlot = slot;
+    this.selectedSlotIndex = index;
+    this.dialogService.open(this.cancelSlotDialog);
+  }
+
+  cancelSlot(dialogRef: any): void {
+    this.roundMentorSlotService
+      .updateStatus(this.selectedSlot.id, ERoundMentorSlotStatus.CANCELLED)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Slot cancelled successfully');
+          this.loadMentorSlots();
+          dialogRef.close();
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to cancel slot');
+        },
+      });
+  }
+
+  isSlotCancelled(slot: IRoundMentorSlot): boolean {
+    return slot?.status === ERoundMentorSlotStatus.CANCELLED;
   }
 }
