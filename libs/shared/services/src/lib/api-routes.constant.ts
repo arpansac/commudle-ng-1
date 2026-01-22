@@ -1070,7 +1070,7 @@ export const API_ROUTES = {
   CAMPAIGNS: {
     INDEX: 'api/v2/campaigns', //GET
     // CREATE: 'api/v2/campaigns', //POST  //DEPRECATED
-    UPDATE: 'api/v2/campaigns', //PUT
+    UPDATE: 'api/v2/campaigns', //PUT //DEPRECATED
     UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
     SHOW: 'api/v2/campaigns/show', //GET
     CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
@@ -1098,6 +1098,7 @@ export const API_ROUTES = {
 
   CAMPAIGNS_NEW: {
     CREATE: 'api/v2/campaigns_new', //POST
+    UPDATE: 'api/v2/campaigns_new', //PUT
   },
 
   PURCHASE_ORDER: {

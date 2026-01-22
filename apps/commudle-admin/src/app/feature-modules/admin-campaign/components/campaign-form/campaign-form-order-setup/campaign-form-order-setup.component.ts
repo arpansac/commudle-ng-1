@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICampaign, ICampaignAsset, ECampaignTypeSlug, IAttachedFile } from '@commudle/shared-models';
 import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import {
   faPlus,
   faXmark,
@@ -25,6 +26,8 @@ import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
     standalone: false
 })
 export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
+  @ViewChild('addressInputElement', { read: ElementRef }) addressInputElement: ElementRef;
+  // autocompleteInput: ElementRef;
   fragment: string;
   campaignForm: FormGroup;
   icons = {
@@ -52,6 +55,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   uploadedImagesFiles: IAttachedFile[] = [];
   uploadedImages = [];
   Form1Invalid = true;
+  campaignCreated = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -61,6 +65,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     private router: Router,
     private seoService: SeoService,
     private gtm: GoogleTagManagerService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -71,8 +76,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         budget: [0, [Validators.required, Validators.min(50)]],
         locations: ['', Validators.required],
         communities: [''],
-        tags: [''],
-        campaign_assets: this._fb.array([this.createCampaignAsset()]),
+        // campaign_assets: this._fb.array([this.createCampaignAsset()]),
         // id: [13],
         // status: null,
         // created_at: [''],
@@ -101,6 +105,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.router.url.includes('/edit/')) {
+      this.campaignCreated = true;
       this.activatedRoute.parent?.data.subscribe((data) => {
         console.log(data, 'data');
         if (data['campaign']) {
@@ -132,6 +137,13 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     // this.checkFragment();
     // this.subscribeToFormChanges();
     // this.subscribeToGstInvoiceChanges();
+
+    // Initialize Google Maps autocomplete for location input
+    // this.initAutocomplete();
+  }
+
+  ngAfterViewInit() {
+    this.initAutocomplete();
   }
 
   ngOnDestroy(): void {
@@ -201,6 +213,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       if (res) {
         console.log(res, 'res');
         this.campaign = res; // Store the created campaign
+        this.campaignCreated = true;
         this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
         this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
           com_campaign_id: res.id,
@@ -235,25 +248,37 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     });
   }
 
-  get campaignAssets(): FormArray {
-    return this.campaignForm.get('campaign_assets') as FormArray;
-  }
+  // get campaignAssets(): FormArray {
+  //   return this.campaignForm.get('campaign_assets') as FormArray;
+  // }
 
-  addCampaignAsset() {
-    this.campaignAssets.push(this.createCampaignAsset());
-  }
+  // addCampaignAsset() {
+  //   this.campaignAssets.push(this.createCampaignAsset());
+  // }
 
-  removeCampaignAsset(index: number) {
-    this.campaignAssets.removeAt(index);
-  }
+  // removeCampaignAsset(index: number) {
+  //   this.campaignAssets.removeAt(index);
+  // }
 
   patchCampaignForm() {
     if (this.campaign.name) {
+      const locationValues = this.campaign.locations
+        ? this.campaign.locations.map((loc: any) => loc.location || loc).join(', ')
+        : '';
+
+      const communityValues = this.campaign.communities
+        ? this.campaign.communities.map((community: any) => community.name || community.slug || community).join(', ')
+        : '';
+
       this.campaignForm.patchValue({
         name: this.campaign.name,
         start_at: this.formatDateTimeForInput(this.campaign.start_at),
         end_at: this.formatDateTimeForInput(this.campaign.end_at),
         set_end_date: !!this.campaign.end_at,
+        budget: this.campaign.budget,
+        locations: locationValues,
+        communities: communityValues,
+
         // contact_name: this.campaign.contact_name,
         // contact_email: this.campaign.contact_email,
         // company_name: this.campaign.company_name,
@@ -267,30 +292,27 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
         // end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
         // start_date: this.campaign.start_date,
         // end_date: this.campaign.end_date,
-        // budget: this.campaign.budget,
         // total_budget: (this.campaign as any).total_budget || 500,
-        // location: (this.campaign as any).location || '',
-        // communities: (this.campaign as any).communities || '',
         // skills: (this.campaign as any).skills || '',
         // email_reminder: (this.campaign as any).email_reminder || false,
       });
-      if (this.campaign.tags) {
-        this.tags = this.campaign.tags;
-      }
+      // if (this.campaign.tags) {
+      //   this.tags = this.campaign.tags;
+      // }
 
-      if (this.campaign.campaign_assets.length > 0) {
-        // Patch Campaign Assets (FormArray)
-        const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+      // if (this.campaign.campaign_assets.length > 0) {
+      //   // Patch Campaign Assets (FormArray)
+      //   const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
 
-        // Clear existing items in the FormArray
-        campaignAssetsFormArray.clear();
+      //   // Clear existing items in the FormArray
+      //   campaignAssetsFormArray.clear();
 
-        // Loop through campaign_assets and add them to the FormArray
-        this.campaign.campaign_assets.forEach((asset, index) => {
-          campaignAssetsFormArray.push(this.createCampaignAsset(asset));
-          this.imagePreview[index] = asset.image.url;
-        });
-      }
+      //   // Loop through campaign_assets and add them to the FormArray
+      //   this.campaign.campaign_assets.forEach((asset, index) => {
+      //     campaignAssetsFormArray.push(this.createCampaignAsset(asset));
+      //     this.imagePreview[index] = asset.image.url;
+      //   });
+      // }
     }
 
     // if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
@@ -397,6 +419,23 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   }
 
   updateCampaign() {
+    console.log(this.campaignForm.value, 'update Called');
+    const campaignData: any = {
+      campaign: {
+        name: this.campaignForm.value.name,
+        budget: this.campaignForm.value.budget,
+        locations: this.campaignForm.value.locations ? this.campaignForm.value.locations.split(', ') : [],
+        communities: this.campaignForm.value.communities ? this.campaignForm.value.communities.split(', ') : [],
+        start_at: this.campaignForm.value.start_at,
+        end_at: this.campaignForm.value.end_at,
+      },
+    };
+    this.campaignService.updateCampaign(campaignData, this.campaign.id).subscribe((res) => {
+      console.log(res, 'res');
+    });
+  }
+
+  updateCampaign1() {
     const formData = new FormData();
     const formValue = this.campaignForm.value;
 
@@ -406,15 +445,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[contact_email]', formValue.contact_email);
     formData.append('campaign[company_name]', formValue.company_name);
     formData.append('campaign[gst_invoice]', formValue.gst_invoice);
-
-    // Append GST fields if GST invoice is required
-    if (formValue.gst_invoice) {
-      formData.append('campaign[gst_number]', formValue.gst_number || '');
-      formData.append('campaign[billing_address]', formValue.billing_address || '');
-      formData.append('campaign[billing_address_line2]', formValue.billing_address_line2 || '');
-      formData.append('campaign[state]', formValue.state || '');
-      formData.append('campaign[contact_email]', formValue.contact_email || '');
-    }
 
     const combinedStart = `${formValue.start_date}T${formValue.start_time}:00`; // add seconds
     const combinedEnd = `${formValue.end_date}T${formValue.end_time}:00`;
@@ -438,15 +468,15 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     formData.append('campaign[email_reminder]', formValue.email_reminder || false);
 
     // Append campaign assets
-    formValue.campaign_assets.forEach((asset, index) => {
-      formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline);
-      formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url);
-      formData.append(`campaign[campaign_assets[${index}][id]]`, asset.id);
+    // formValue.campaign_assets.forEach((asset, index) => {
+    //   formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline);
+    //   formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url);
+    //   formData.append(`campaign[campaign_assets[${index}][id]]`, asset.id);
 
-      if (asset.image instanceof File) {
-        formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
-      }
-    });
+    //   if (asset.image instanceof File) {
+    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
+    //   }
+    // });
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       if (data) {
@@ -649,6 +679,17 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   onAccordion2Click(event: MouseEvent) {
     console.log('onAccordion2Click');
+
+    // Skip if URL contains 'edit' (we're in edit mode)
+    if (this.router.url.includes('/edit/')) {
+      return;
+    }
+
+    // Skip if campaign has already been created
+    if (this.campaignCreated) {
+      return;
+    }
+
     if (this.isForm1Invalid()) {
       console.log('Form1Invalid is true');
       this.Form1Invalid = true;
@@ -658,7 +699,27 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       event.preventDefault();
       event.stopPropagation();
       this.Form1Invalid = false;
+      this.campaignCreated = true;
       this.createCampaign();
     }
+  }
+
+  initAutocomplete() {
+    console.log('initAutocomplete');
+    const inputElement = this.addressInputElement.nativeElement.querySelector('input');
+    console.log('inputElement', inputElement);
+    if (inputElement) {
+      console.log('inputElement found');
+      this.googlePlacesAutocompleteService.initAutocomplete(inputElement, 'establishment');
+      this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+        console.log('place', place);
+        this.onLocationPlaceSelected(place);
+      });
+    }
+  }
+
+  onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+    console.log('onLocationPlaceSelected', place);
+    this.campaignForm.get('locations').setValue(place.formatted_address);
   }
 }

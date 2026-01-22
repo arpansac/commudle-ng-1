@@ -24,6 +24,8 @@ export interface ICampaign {
   start_at: string;
   end_at: string;
   status: ECampaignStatus;
+  locations: [];
+  communities: [];
 
   user: IUser;
   campaign_type: ICampaignType;

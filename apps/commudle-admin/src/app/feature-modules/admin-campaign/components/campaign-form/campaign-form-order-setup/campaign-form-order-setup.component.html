@@ -170,6 +170,8 @@
                     <label for="locations"> Location<span class="required"> *</span> </label>
                     <div class="input">
                       <commudle-input
+                        #addressInputElement
+                        [id]="'addressInput'"
                         [placeholder]="'Enter Region, City, Country'"
                         [inputValue]="campaignForm.get('locations').value"
                         (blurEvent)="campaignForm.get('locations').markAsTouched()"
@@ -200,19 +202,6 @@
                     </div>
                   </div>
 
-                  <!-- Skills -->
-                  <div>
-                    <label for="tags">Skills</label>
-                    <div class="input">
-                      <commudle-input
-                        [placeholder]="'Add skills you wanna target'"
-                        [inputValue]="campaignForm.get('tags').value"
-                        (blurEvent)="campaignForm.get('tags').markAsTouched()"
-                        (valueChange)="handleInput($event, 'tags')"
-                      ></commudle-input>
-                    </div>
-                  </div>
-
                   <!-- Est. cost -->
                   <div class="budget-info-row com-mb-2 com-gap-10">
                     <div class="cost-container">
@@ -226,16 +215,6 @@
                   </div>
 
                   <p class="small-info-text">You will end up spending ${{ dailySpending }} per day</p>
-
-                  <!-- Email Reminder -->
-                  <!-- <div class="com-mt-5">
-                    <label>Email Reminder?</label>
-                    <div class="checkbox-container">
-                      <nb-checkbox formControlName="email_reminder" labelPosition="right" size="tiny" status="basic">
-                        Send email reminders
-                      </nb-checkbox>
-                    </div>
-                  </div> -->
                 </form>
               </div>
             </nb-accordion-item-body>
@@ -251,14 +230,13 @@
             </nb-accordion-item-header>
             <nb-accordion-item-body>
               <div class="form creative-assets">
-                <form [formGroup]="campaignForm">
+                <!-- <form [formGroup]="campaignForm">
                   <div formArrayName="campaign_assets">
                     <div
                       class="creative-assets-controller"
                       *ngFor="let asset of campaignAssets.controls; let i = index"
                       [formGroupName]="i"
                     >
-                      <!-- Image Upload -->
                       <div class="images-container">
                         <label class="clickable image-container">
                           <span class="image-text">
@@ -298,8 +276,7 @@
                           </div>
                         </label>
                       </div>
-
-                      <!-- Headline -->
+                      
                       <div>
                         <label class="label" for="headline-{{ i }}">Description <span class="required"> *</span></label>
                         <div class="input">
@@ -312,8 +289,7 @@
                           ></commudle-input>
                         </div>
                       </div>
-
-                      <!-- Call To Action -->
+                      
                       <div>
                         <label class="label" for="call-to-action-{{ i }}"
                           >Call To Action <span class="required"> *</span></label
@@ -327,8 +303,7 @@
                           ></commudle-input>
                         </div>
                       </div>
-
-                      <!-- url -->
+                      
                       <div>
                         <label class="label" for="url-{{ i }}"
                           >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
@@ -345,7 +320,7 @@
                       </div>
                     </div>
                   </div>
-                </form>
+                </form> -->
               </div>
             </nb-accordion-item-body>
           </nb-accordion-item>
@@ -373,14 +348,9 @@
           </nb-card-body>
         </nb-card> -->
 
+        <!-- [disabled]="!campaignForm.valid" -->
         <div class="next-button">
-          <button
-            nbButton
-            status="primary"
-            shape="semi-round"
-            [disabled]="!campaignForm.valid"
-            (click)="updateCampaign()"
-          >
+          <button nbButton status="primary" shape="semi-round" (click)="updateCampaign()">
             Submit For Approval &nbsp;
             <fa-icon [icon]="icons.faArrowRight"></fa-icon>
           </button>
