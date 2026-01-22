@@ -193,12 +193,39 @@
                   <div>
                     <label for="communities">Communities</label>
                     <div class="input">
-                      <commudle-input
-                        [placeholder]="'Select communities you wanna target'"
-                        [inputValue]="campaignForm.get('communities').value"
-                        (blurEvent)="campaignForm.get('communities').markAsTouched()"
-                        (valueChange)="handleInput($event, 'communities')"
-                      ></commudle-input>
+                      <nb-form-field>
+                        <input
+                          #searchInput
+                          [formControl]="communitiesFormControl"
+                          [nbAutocomplete]="communitiesAutoNgModel"
+                          fullWidth
+                          nbInput
+                          placeholder="Search communities (type at least 3 characters)"
+                          type="text"
+                        />
+                      </nb-form-field>
+                      <nb-autocomplete #communitiesAutoNgModel>
+                        <nb-option
+                          *ngFor="let result of communitiesSearchResult"
+                          (click)="onCommunitySelected(result.id, result.name, result.slug)"
+                        >
+                          {{ result.name }}
+                        </nb-option>
+                      </nb-autocomplete>
+                      <!-- Display selected communities as chips -->
+                      <div
+                        *ngIf="selectedCommunities.length > 0"
+                        class="selected-communities"
+                        style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px"
+                      >
+                        <nb-tag
+                          *ngFor="let community of selectedCommunities; let i = index"
+                          [text]="community.name"
+                          [removable]="true"
+                          (remove)="removeCommunity(i)"
+                          status="info"
+                        ></nb-tag>
+                      </div>
                     </div>
                   </div>
 

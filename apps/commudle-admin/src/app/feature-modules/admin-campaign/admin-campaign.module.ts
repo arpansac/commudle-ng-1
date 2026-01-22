@@ -12,6 +12,9 @@ import {
   NbCheckboxModule,
   NbIconModule,
   NbTagModule,
+  NbFormFieldModule,
+  NbAutocompleteModule,
+  NbInputModule,
 } from '@commudle/theme';
 import { CampaignFormSelectCampaignComponent } from './components/campaign-form/campaign-form-select-campaign/campaign-form-select-campaign.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,10 +37,8 @@ import { AdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature
     NewSharedComponentsModule,
     SharedPipesModule,
     LinkyModule,
-
     //Standalone components
     SidebarComponent,
-
     //nebular
     NbCardModule,
     NbButtonModule,
@@ -45,6 +46,9 @@ import { AdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature
     NbTagModule,
     NbIconModule,
     NbAccordionModule,
+    NbFormFieldModule,
+    NbAutocompleteModule,
+    NbInputModule,
   ],
   declarations: [
     CampaignFormComponent,

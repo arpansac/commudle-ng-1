@@ -1,9 +1,19 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignTypeSlug, IAttachedFile } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, ECampaignTypeSlug, IAttachedFile, EDbModels } from '@commudle/shared-models';
 import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
+import { ISearch } from 'apps/shared-models/search.model';
 import {
   faPlus,
   faXmark,
@@ -17,7 +27,7 @@ import {
   faChevronDown,
   faImage,
 } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, Subscription, switchMap } from 'rxjs';
 
 @Component({
     selector: 'commudle-campaign-form-order-setup',
@@ -25,7 +35,7 @@ import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
     styleUrls: ['./campaign-form-order-setup.component.scss'],
     standalone: false
 })
-export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
+export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('addressInputElement', { read: ElementRef }) addressInputElement: ElementRef;
   // autocompleteInput: ElementRef;
   fragment: string;
@@ -57,6 +67,16 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   Form1Invalid = true;
   campaignCreated = false;
 
+  // Communities autocomplete
+  communitiesFormControl = new FormControl('');
+  communitiesSearchResult = [];
+  selectedCommunities: Array<{ id: number; name: string; slug: string }> = [];
+  communitiesPage = 1;
+  communitiesCount = 10;
+  EDbModels = EDbModels;
+  page = 1;
+  count = 10;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
@@ -66,6 +86,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private gtm: GoogleTagManagerService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private searchService: SearchService,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -144,6 +165,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.initAutocomplete();
+    this.observeCommunitiesInput();
   }
 
   ngOnDestroy(): void {
@@ -269,6 +291,20 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
       const communityValues = this.campaign.communities
         ? this.campaign.communities.map((community: any) => community.name || community.slug || community).join(', ')
         : '';
+
+      // Set selected communities for autocomplete (support multiple)
+      if (this.campaign.communities && this.campaign.communities.length > 0) {
+        this.selectedCommunities = this.campaign.communities.map((community: any) => ({
+          id: community.id || community,
+          name: community.name || community,
+          slug: community.slug || community,
+        }));
+
+        const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+        this.campaignForm.patchValue({
+          communities: communitySlugs,
+        });
+      }
 
       this.campaignForm.patchValue({
         name: this.campaign.name,
@@ -420,12 +456,23 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
 
   updateCampaign() {
     console.log(this.campaignForm.value, 'update Called');
+
+    // Ensure communities is an array of slugs
+    let communitiesArray: string[] = [];
+    if (this.campaignForm.value.communities) {
+      if (Array.isArray(this.campaignForm.value.communities)) {
+        communitiesArray = this.campaignForm.value.communities;
+      } else if (typeof this.campaignForm.value.communities === 'string') {
+        communitiesArray = this.campaignForm.value.communities.split(', ').filter((slug: string) => slug.trim());
+      }
+    }
+
     const campaignData: any = {
       campaign: {
         name: this.campaignForm.value.name,
         budget: this.campaignForm.value.budget,
         locations: this.campaignForm.value.locations ? this.campaignForm.value.locations.split(', ') : [],
-        communities: this.campaignForm.value.communities ? this.campaignForm.value.communities.split(', ') : [],
+        communities: communitiesArray,
         start_at: this.campaignForm.value.start_at,
         end_at: this.campaignForm.value.end_at,
       },
@@ -721,5 +768,50 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
     console.log('onLocationPlaceSelected', place);
     this.campaignForm.get('locations').setValue(place.formatted_address);
+  }
+
+  observeCommunitiesInput() {
+    console.log('observeCommunitiesInput');
+    this.communitiesFormControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((value: string) =>
+          this.searchService.getSearchResultsByScope(value || '', this.page, this.count, EDbModels.KOMMUNITY),
+        ),
+      )
+      .subscribe((value: ISearch) => {
+        console.log('value search results', value);
+        this.communitiesSearchResult = value.results;
+      });
+  }
+
+  onCommunitySelected(communityId: number, communityName: string, communitySlug: string) {
+    console.log('onCommunitySelected', communityId, communityName, communitySlug);
+
+    // Check if community is already selected
+    const isAlreadySelected = this.selectedCommunities.some(
+      (community) => community.id === communityId || community.slug === communitySlug,
+    );
+
+    if (!isAlreadySelected) {
+      // Add to selected communities array
+      this.selectedCommunities.push({
+        id: communityId,
+        name: communityName,
+        slug: communitySlug,
+      });
+
+      // Update form with array of slugs
+      const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+      this.campaignForm.get('communities').setValue(communitySlugs);
+
+      this.communitiesFormControl.setValue('', { emitEvent: false });
+    }
+  }
+
+  removeCommunity(index: number) {
+    this.selectedCommunities.splice(index, 1);
+    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+    this.campaignForm.get('communities').setValue(communitySlugs.length > 0 ? communitySlugs : '');
   }
 }
