@@ -1086,6 +1086,7 @@ export const API_ROUTES = {
     INDEX_BY_ORDERABLE_TYPE: 'api/v2/purchase_orders/index_by_orderable_type', //GET
     CONTACT_INFO: 'api/v2/purchase_orders/create_contact_info', //POST
     UPDATE: 'api/v2/purchase_orders', //PUT
+    MARK_PAID_FOR_FULLY_DISCOUNTED: 'api/v2/purchase_orders/mark_paid_for_fully_discounted', //PUT
   },
 
   USER_ENGAGEMENT_RECORDS: {

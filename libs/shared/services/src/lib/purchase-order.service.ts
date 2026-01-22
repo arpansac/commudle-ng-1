@@ -48,4 +48,11 @@ export class PurchaseOrderService {
       ...data,
     });
   }
+
+  markPaidForFullyDiscounted(purchaseOrderUuid: string): Observable<IPurchaseOrder> {
+    return this.http.put<IPurchaseOrder>(
+      this.baseApiService.getRoute(API_ROUTES.PURCHASE_ORDER.MARK_PAID_FOR_FULLY_DISCOUNTED),
+      { purchase_order_uuid: purchaseOrderUuid },
+    );
+  }
 }
