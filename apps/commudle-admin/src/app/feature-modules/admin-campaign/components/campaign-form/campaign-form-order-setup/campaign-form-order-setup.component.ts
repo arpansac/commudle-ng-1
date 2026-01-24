@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -26,6 +26,7 @@ import {
   faEnvelope,
   faChevronDown,
   faImage,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, distinctUntilChanged, filter, Subscription, switchMap } from 'rxjs';
 
@@ -37,8 +38,6 @@ import { combineLatest, debounceTime, distinctUntilChanged, filter, Subscription
 })
 export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('addressInputElement', { read: ElementRef }) addressInputElement: ElementRef;
-  // autocompleteInput: ElementRef;
-  fragment: string;
   campaignForm: FormGroup;
   icons = {
     faPlus,
@@ -52,30 +51,28 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     faEnvelope,
     faChevronDown,
     faImage,
+    faTrash,
   };
   campaign: ICampaign;
-  imagePreview = [];
-  tags = [];
   estimatedRuntime = '3 days 24 minutes';
   dailySpending = 600;
 
-  formSubscription: Subscription;
-  gstInvoiceSubscription: Subscription;
   ECampaignTypeSlug = ECampaignTypeSlug;
-  uploadedImagesFiles: IAttachedFile[] = [];
-  uploadedImages = [];
+  // uploadedImagesFiles: IAttachedFile[] = [];
+  // uploadedImages = [];
   Form1Invalid = true;
   campaignCreated = false;
+  savedAssets = [];
+  // : Array<{ image: string; headline: string; url: string; file: File | string; index: number }>
 
-  // Communities autocomplete
   communitiesFormControl = new FormControl('');
   communitiesSearchResult = [];
   selectedCommunities: Array<{ id: number; name: string; slug: string }> = [];
-  communitiesPage = 1;
-  communitiesCount = 10;
   EDbModels = EDbModels;
   page = 1;
   count = 10;
+  imagePreview = [];
+  assetSavedStatus: boolean[] = [false];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -87,6 +84,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     private gtm: GoogleTagManagerService,
     private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
     private searchService: SearchService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.campaignForm = this._fb.group(
       {
@@ -96,27 +94,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         set_end_date: [false],
         budget: [0, [Validators.required, Validators.min(50)]],
         locations: ['', Validators.required],
-        communities: [''],
-        // campaign_assets: this._fb.array([this.createCampaignAsset()]),
-        // id: [13],
-        // status: null,
-        // created_at: [''],
-        // user: this._fb.group({
-        //   name: [''],
-        //   username: [''],
-        // }),
-        // currency_type: [''],
-        // unapproved_reasons: this._fb.array([]),
-
-        // contact_name: ['', Validators.required],
-        // contact_email: ['', [Validators.required, Validators.email]],
-        // company_name: ['', Validators.required],
-        // gst_invoice: [false],
-        // gst_number: [''],
-        // billing_address: [''],
-        // billing_address_line2: [''],
-        // state: [''],
-        // email_reminder: [false],
+        communities: [],
+        campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
       {
         validators: [this.endDateValidator],
@@ -128,9 +107,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     if (this.router.url.includes('/edit/')) {
       this.campaignCreated = true;
       this.activatedRoute.parent?.data.subscribe((data) => {
-        console.log(data, 'data');
         if (data['campaign']) {
-          console.log(data['campaign'], 'data');
           this.campaign = data['campaign'];
           this.patchCampaignForm();
           setTimeout(() => {
@@ -155,12 +132,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         'https://commudle.com/assets/images/commudle-logo192.png',
       );
     }
-    // this.checkFragment();
-    // this.subscribeToFormChanges();
-    // this.subscribeToGstInvoiceChanges();
-
-    // Initialize Google Maps autocomplete for location input
-    // this.initAutocomplete();
   }
 
   ngAfterViewInit() {
@@ -168,58 +139,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     this.observeCommunitiesInput();
   }
 
-  ngOnDestroy(): void {
-    // if (this.formSubscription) {
-    //   this.formSubscription.unsubscribe();
-    // }
-    // if (this.gstInvoiceSubscription) {
-    //   this.gstInvoiceSubscription.unsubscribe();
-    // }
-  }
+  ngOnDestroy(): void {}
 
   createCampaign() {
-    console.log(this.campaignForm.value, 'campaignForm');
-    // if (!this.campaignForm.valid) {
-    //   this.campaignForm.markAllAsTouched();
-    //   return;
-    // }
-
-    // const formData = new FormData();
-    // const formValue = this.campaignForm.value;
-
-    // Append form fields to FormData
-    // formData.append('campaign[name]', formValue.name || '');
-    // formData.append('campaign[start_at]', formValue.start_at || '');
-    // formData.append('campaign[end_at]', formValue.end_at || '');
-    // formData.append('campaign[budget]', formValue.budget || 0);
-    // formData.append('campaign[locations]', formValue.locations || '');
-    // formData.append('campaign[communities]', formValue.communities || '');
-    // formData.append('campaign[tags]', formValue.tags || '');
-
-    // if (formValue.campaign_assets && formValue.campaign_assets.length > 0) {
-    // formValue.campaign_assets.forEach((asset, index) => {
-    //   formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline || '');
-    //   formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url || '');
-
-    //   // Handle image: can be a File (new upload) or a string/url (existing)
-    //   if (asset.image instanceof File) {
-    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
-    //   } else if (asset.image) {
-    //     // If it's a string/url, append it as a string value
-    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
-    //   }
-    // });
-    // }
-
-    // Append uploaded images if any (from the separate image upload section)
-    // if (this.uploadedImagesFiles && this.uploadedImagesFiles.length > 0) {
-    //   this.uploadedImagesFiles.forEach((imgFile, index) => {
-    //     if (imgFile.file && !(imgFile as any).delete) {
-    //       formData.append(`campaign[images][${index}]`, imgFile.file);
-    //     }
-    //   });
-    // }
-
     const campaignData: any = {
       campaign: {
         name: this.campaignForm.value.name,
@@ -233,14 +155,13 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
 
     this.campaignService.createCampaign(campaignData).subscribe((res: ICampaign) => {
       if (res) {
-        console.log(res, 'res');
         this.campaign = res; // Store the created campaign
         this.campaignCreated = true;
         this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
-        this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
-          com_campaign_id: res.id,
-          // com_campaign_type_name: res.campaign_type?.name,
-        });
+        // this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
+        //   com_campaign_id: res.id,
+        //   com_campaign_type_name: this.campaign.campaign_type.name,
+        // });
       }
     });
   }
@@ -270,17 +191,58 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     });
   }
 
-  // get campaignAssets(): FormArray {
-  //   return this.campaignForm.get('campaign_assets') as FormArray;
-  // }
+  get campaignAssets(): FormArray {
+    return this.campaignForm.get('campaign_assets') as FormArray;
+  }
 
   // addCampaignAsset() {
+  //   if((this.campaignForm.get('campaign_assets') as FormArray).invalid) {
+  //     (this.campaignForm.get('campaign_assets') as FormArray).markAllAsTouched();
+  //     return;
+  //   }
+  //   this.assetSavedStatus[index] = true;
   //   this.campaignAssets.push(this.createCampaignAsset());
+  //   this.assetSavedStatus.push(false);
   // }
 
-  // removeCampaignAsset(index: number) {
-  //   this.campaignAssets.removeAt(index);
-  // }
+  // 1. Update addCampaignAsset to move data to savedAssets array
+  addCampaignAsset(event: Event, index: number) {
+    console.log(index, 'called');
+    console.log(event, 'event');
+    const formArray = this.campaignAssets;
+    const currentAssetForm = formArray.at(index) as FormGroup; // We only use index 0 for the active form
+
+    if (currentAssetForm.invalid) {
+      currentAssetForm.markAllAsTouched();
+      return;
+    }
+    // Push current form values to the savedAssets array
+    const assetData = currentAssetForm.value;
+    console.log(assetData, 'assetData');
+    this.savedAssets.push({
+      id: assetData.id || null,
+      image: assetData.image, // The Base64 preview string
+      headline: assetData.headline,
+      url: assetData.url,
+      // file: ,          // The actual File object for API
+    });
+    console.log(this.savedAssets, 'savedAssets');
+
+    // Reset the form and the single preview slot for the next entry
+    currentAssetForm.reset();
+    this.imagePreview[index] = null;
+
+    this.cdr.detectChanges();
+  }
+
+  // 2. Remove from saved list
+  removeSavedAsset(index: number) {
+    this.savedAssets.splice(index, 1);
+  }
+
+  removeCampaignAsset(index: number) {
+    this.campaignAssets.removeAt(index);
+  }
 
   patchCampaignForm() {
     if (this.campaign.name) {
@@ -288,22 +250,14 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         ? this.campaign.locations.map((loc: any) => loc.location || loc).join(', ')
         : '';
 
-      const communityValues = this.campaign.communities
-        ? this.campaign.communities.map((community: any) => community.name || community.slug || community).join(', ')
-        : '';
-
-      // Set selected communities for autocomplete (support multiple)
+      let communitySlugs: string[] = [];
       if (this.campaign.communities && this.campaign.communities.length > 0) {
         this.selectedCommunities = this.campaign.communities.map((community: any) => ({
           id: community.id || community,
           name: community.name || community,
           slug: community.slug || community,
         }));
-
-        const communitySlugs = this.selectedCommunities.map((c) => c.slug);
-        this.campaignForm.patchValue({
-          communities: communitySlugs,
-        });
+        communitySlugs = this.selectedCommunities.map((c) => c.slug);
       }
 
       this.campaignForm.patchValue({
@@ -313,49 +267,36 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         set_end_date: !!this.campaign.end_at,
         budget: this.campaign.budget,
         locations: locationValues,
-        communities: communityValues,
-
-        // contact_name: this.campaign.contact_name,
-        // contact_email: this.campaign.contact_email,
-        // company_name: this.campaign.company_name,
-        // gst_invoice: (this.campaign as any).gst_invoice || false,
-        // gst_number: (this.campaign as any).gst_number || '',
-        // billing_address: (this.campaign as any).billing_address || '',
-        // billing_address_line2: (this.campaign as any).billing_address_line2 || '',
-        // state: (this.campaign as any).state || '',
-        // set_end_date: !!this.campaign.end_date, // Set to true if end_date exists
-        // start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
-        // end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
-        // start_date: this.campaign.start_date,
-        // end_date: this.campaign.end_date,
-        // total_budget: (this.campaign as any).total_budget || 500,
-        // skills: (this.campaign as any).skills || '',
-        // email_reminder: (this.campaign as any).email_reminder || false,
+        communities: communitySlugs,
       });
-      // if (this.campaign.tags) {
-      //   this.tags = this.campaign.tags;
-      // }
 
-      // if (this.campaign.campaign_assets.length > 0) {
-      //   // Patch Campaign Assets (FormArray)
-      //   const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+      if (this.campaign.campaign_assets && this.campaign.campaign_assets.length > 0) {
+        this.savedAssets = [];
 
-      //   // Clear existing items in the FormArray
-      //   campaignAssetsFormArray.clear();
+        this.campaign.campaign_assets.forEach((asset) => {
+          console.log(asset, 'asset');
+          this.savedAssets.push({
+            id: asset.id || null,
+            image: asset.image?.url, // Existing URL from server
+            headline: asset.headline,
+            url: asset.url,
+            // file: asset.image?.url, // Keep string URL if not changed
+          });
+        });
 
-      //   // Loop through campaign_assets and add them to the FormArray
-      //   this.campaign.campaign_assets.forEach((asset, index) => {
-      //     campaignAssetsFormArray.push(this.createCampaignAsset(asset));
-      //     this.imagePreview[index] = asset.image.url;
-      //   });
-      // }
+        const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+        campaignAssetsFormArray.clear();
+        campaignAssetsFormArray.push(this.createCampaignAsset());
+        this.imagePreview = [null];
+
+        // this.campaign.campaign_assets.forEach((asset, index) => {
+        //   campaignAssetsFormArray.push(this.createCampaignAsset(asset));
+        //   if (asset.image && asset.image.url) {
+        //     this.imagePreview[index] = asset.image.url;
+        //   }
+        // });
+      }
     }
-
-    // if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
-    //   this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
-    //     this.campaignForm.patchValue({ budget: data });
-    //   });
-    // }
   }
 
   private formatDateTimeForInput(dateString: string): string {
@@ -365,22 +306,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     return isoString.substring(0, 16);
   }
 
-  private convertUtcTimeToLocalString(timeStr: string): string {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-
-    // Create a Date in UTC
-    const utcDate = new Date();
-    utcDate.setUTCHours(hours, minutes, 0, 0);
-
-    // Convert to local time
-    const localHours = utcDate.getHours().toString().padStart(2, '0');
-    const localMinutes = utcDate.getMinutes().toString().padStart(2, '0');
-
-    return `${localHours}:${localMinutes}`;
-  }
-
   onFileChange(event: any, index: number) {
+    console.log(index);
+    console.log(event);
     const file = (event.target as HTMLInputElement).files?.[0];
+    console.log(file);
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     const maxSize = 2 * 1024 * 1024; // 2 MB
 
@@ -401,32 +331,25 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     // Check for image dimensions
     const img = new Image();
     img.src = URL.createObjectURL(file);
-    // img.onload = () => {
-    //   if (
-    //     img.width !== this.campaign.campaign_type.image_dimension?.width ||
-    //     img.height !== this.campaign.campaign_type.image_dimension?.height
-    //   ) {
-    //     this.toasterService.warningDialog(
-    //       'Image must be exactly ' +
-    //         this.campaign.campaign_type.image_dimension.width +
-    //         ' X ' +
-    //         this.campaign.campaign_type.image_dimension.height +
-    //         ' pixels.',
-    //     );
-    //     event.target.value = ''; // Reset input field
-    //     return;
-    //   }
+    console.log(img);
+    console.log(img.src);
+    img.onload = () => {
+      console.log(img.width);
+      console.log(img.height);
 
-    //   // Ensure `campaignAssets` is correctly accessed as FormArray
-    //   const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
-    //   if (campaignAssets && campaignAssets.at(index)) {
-    //     campaignAssets.at(index).patchValue({ image: file });
-    //     campaignAssets.at(index).get('image')?.updateValueAndValidity();
+      const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
+      console.log(campaignAssets);
+      console.log(campaignAssets.at(index));
+      if (campaignAssets && campaignAssets.at(index)) {
+        campaignAssets.at(index).get('image').setValue(file);
+        console.log(campaignAssets.at(index).get('image'), 'arshdeep');
+        console.log(campaignAssets.at(index), 'arshdeep 1');
+        campaignAssets.at(index).get('image')?.updateValueAndValidity();
 
-    //     // Display image preview
-    //     this.previewImage(file, index);
-    //   }
-    // };
+        // Display image preview
+        this.previewImage(file, index);
+      }
+    };
 
     img.onerror = () => {
       this.toasterService.warningDialog('Invalid image file.');
@@ -435,9 +358,14 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   previewImage(file: File, i) {
+    console.log(i);
+    console.log(file);
     const reader = new FileReader();
     reader.onload = () => {
+      console.log(reader.result);
       this.imagePreview[i] = reader.result as string;
+      console.log(this.imagePreview[i]);
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }
@@ -455,17 +383,50 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   updateCampaign() {
-    console.log(this.campaignForm.value, 'update Called');
+    const formData = new FormData();
+    const formValue = this.campaignForm.value;
 
-    // Ensure communities is an array of slugs
-    let communitiesArray: string[] = [];
-    if (this.campaignForm.value.communities) {
-      if (Array.isArray(this.campaignForm.value.communities)) {
-        communitiesArray = this.campaignForm.value.communities;
-      } else if (typeof this.campaignForm.value.communities === 'string') {
-        communitiesArray = this.campaignForm.value.communities.split(', ').filter((slug: string) => slug.trim());
-      }
+    // Append non-file fields to FormData
+    formData.append('campaign[name]', formValue.name);
+    formData.append('campaign[budget]', formValue.budget.toString());
+    formData.append('campaign[start_at]', formValue.start_at);
+    if (formValue.end_at) {
+      formData.append('campaign[end_at]', formValue.end_at);
     }
+
+    const locations = formValue.locations ? formValue.locations.split(',').map((l) => l.trim()) : [];
+    locations.forEach((loc) => formData.append('campaign[locations][]', loc));
+
+    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+    communitySlugs.forEach((slug) => formData.append('campaign[communities][]', slug));
+
+    this.savedAssets.forEach((asset, index) => {
+      formData.append(`campaign[campaign_assets][${index}][headline]`, asset.headline);
+      formData.append(`campaign[campaign_assets][${index}][url]`, asset.url);
+
+      if (asset.id) {
+        formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
+      }
+
+      console.log(asset, 'asset arshdeep');
+      if (asset.image instanceof File) {
+        console.log(asset.image, 'asset file arshdeep');
+        formData.append(`campaign[campaign_assets][${index}][image]`, asset.image);
+      }
+    });
+
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
+      if (data) {
+        //Call Submit Api Here
+        // this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
+        //   com_campaign_id: this.campaign.id,
+        // });
+      }
+    });
+  }
+
+  updateCampaign12() {
+    const communitiesArray = this.selectedCommunities.map((c) => c.slug);
 
     const campaignData: any = {
       campaign: {
@@ -477,175 +438,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         end_at: this.campaignForm.value.end_at,
       },
     };
-    this.campaignService.updateCampaign(campaignData, this.campaign.id).subscribe((res) => {
-      console.log(res, 'res');
-    });
-  }
-
-  updateCampaign1() {
-    const formData = new FormData();
-    const formValue = this.campaignForm.value;
-
-    // Append non-file fields to FormData
-    formData.append('campaign[name]', formValue.name);
-    formData.append('campaign[contact_name]', formValue.contact_name);
-    formData.append('campaign[contact_email]', formValue.contact_email);
-    formData.append('campaign[company_name]', formValue.company_name);
-    formData.append('campaign[gst_invoice]', formValue.gst_invoice);
-
-    const combinedStart = `${formValue.start_date}T${formValue.start_time}:00`; // add seconds
-    const combinedEnd = `${formValue.end_date}T${formValue.end_time}:00`;
-
-    const startTimeUtc = new Date(combinedStart).toISOString();
-    const endTimeUtc = new Date(combinedEnd).toISOString();
-
-    formData.append('campaign[start_time]', startTimeUtc);
-    formData.append('campaign[end_time]', endTimeUtc);
-
-    // formData.append('campaign[start_time]', formValue.start_time);
-    // formData.append('campaign[end_time]', formValue.end_time);
-
-    formData.append('campaign[start_date]', formValue.start_date);
-    formData.append('campaign[end_date]', formValue.end_date);
-    formData.append('campaign[budget]', formValue.budget);
-    formData.append('campaign[total_budget]', formValue.total_budget || '');
-    formData.append('campaign[location]', formValue.location || '');
-    formData.append('campaign[communities]', formValue.communities || '');
-    formData.append('campaign[skills]', formValue.skills || '');
-    formData.append('campaign[email_reminder]', formValue.email_reminder || false);
-
-    // Append campaign assets
-    // formValue.campaign_assets.forEach((asset, index) => {
-    //   formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline);
-    //   formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url);
-    //   formData.append(`campaign[campaign_assets[${index}][id]]`, asset.id);
-
-    //   if (asset.image instanceof File) {
-    //     formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
-    //   }
-    // });
-
-    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
-      if (data) {
-        this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
-          com_campaign_id: this.campaign.id,
-          // com_campaign_type_name: this.campaign.campaign_type.name,
-        });
-        this.submitTags();
-      }
-    });
-  }
-
-  // checkFragment() {
-  //   this.activatedRoute.fragment.subscribe((fragment) => {
-  //     if (fragment) {
-  //       requestAnimationFrame(() => {
-  //         const element = document.getElementById(fragment);
-  //         if (element) {
-  //           element.scrollIntoView({
-  //             behavior: 'smooth',
-  //             block: 'start',
-  //             inline: 'nearest',
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
-  generateCampaignName() {
-    const companyName = this.campaignForm.get('company_name')?.value?.trim().replace(/\s+/g, '-') || '';
-    const contactName = this.campaignForm.get('contact_name')?.value?.trim().replace(/\s+/g, '-') || '';
-
-    let campaignName = '';
-
-    if (companyName && contactName) {
-      campaignName = `${companyName}-${contactName}`;
-    } else if (companyName) {
-      campaignName = companyName;
-    } else if (contactName) {
-      campaignName = contactName;
-    }
-
-    this.campaignForm.patchValue({
-      name: campaignName,
-    });
-
-    this.campaignForm.get('name')?.updateValueAndValidity(); // Ensures validation updates
-  }
-
-  onTagAdd(value: string) {
-    if (!this.tags.includes(value)) {
-      this.tags.push(value);
-    }
-  }
-
-  onTagDelete(value: string) {
-    this.tags = this.tags.filter((tag: string) => tag !== value);
-  }
-
-  submitTags() {
-    this.campaignService.updateTags(this.campaign.id, this.tags).subscribe(() => {
-      this.router.navigate(['campaigns', 'edit', this.campaign.id, 'order-confirmation']);
-    });
-  }
-
-  subscribeToFormChanges(): void {
-    this.formSubscription = combineLatest([
-      this.campaignForm.get('start_date').valueChanges,
-      this.campaignForm.get('end_date').valueChanges,
-      this.campaignForm.get('start_time').valueChanges,
-      this.campaignForm.get('end_time').valueChanges,
-    ])
-      .pipe(
-        debounceTime(300), // Prevents too many calls
-        filter(([startDate, endDate, startTime, endTime]) => startDate && endDate && startTime && endTime), // Ensure all values are present
-      )
-      .subscribe(() => {
-        this.calculateEstimatedAmount();
-      });
-  }
-
-  subscribeToGstInvoiceChanges(): void {
-    this.gstInvoiceSubscription = this.campaignForm.get('gst_invoice').valueChanges.subscribe((value: boolean) => {
-      const gstNumberControl = this.campaignForm.get('gst_number');
-      const billingAddressControl = this.campaignForm.get('billing_address');
-      const stateControl = this.campaignForm.get('state');
-
-      if (value) {
-        // Add required validators when GST invoice is checked
-        gstNumberControl?.setValidators([Validators.required]);
-        billingAddressControl?.setValidators([Validators.required]);
-        stateControl?.setValidators([Validators.required]);
-      } else {
-        // Remove validators and clear values when unchecked
-        gstNumberControl?.clearValidators();
-        gstNumberControl?.setValue('');
-        billingAddressControl?.clearValidators();
-        billingAddressControl?.setValue('');
-        stateControl?.clearValidators();
-        stateControl?.setValue('');
-      }
-
-      gstNumberControl?.updateValueAndValidity({ emitEvent: false });
-      billingAddressControl?.updateValueAndValidity({ emitEvent: false });
-      stateControl?.updateValueAndValidity({ emitEvent: false });
-    });
-  }
-
-  calculateEstimatedAmount() {
-    const startDate = this.campaignForm.get('start_date').value;
-    const endDate = this.campaignForm.get('end_date').value;
-    const startTime = this.campaignForm.get('start_time').value;
-    const endTime = this.campaignForm.get('end_time').value;
-    if (!startDate || !endDate || !startTime || !endTime) {
-      return;
-    }
-    this.campaignService.calculateBudget(this.campaign.id, startDate, endDate, startTime, endTime).subscribe((data) => {
-      this.campaignForm.patchValue({
-        budget: data,
-      });
-    });
+    this.campaignService.updateCampaign(campaignData, this.campaign.id).subscribe((res) => {});
   }
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
@@ -664,43 +457,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         endDateControl.setValue('');
       }
       endDateControl.updateValueAndValidity();
-    }
-  }
-
-  addImages(event) {
-    if (event.target.files && event.target.files.length > 0) {
-      for (const file of event.target.files) {
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-        const maxSize = 3 * 1024 * 1024; // 3 MB in bytes
-        if (file.size > maxSize) {
-          this.toasterService.warningDialog('Image should be less than 3 Mb', 3000);
-          return;
-        }
-        if (!allowedTypes.includes(file.type)) {
-          this.toasterService.warningDialog('Please upload a valid image file (PNG, JPG, JPEG)');
-          return;
-        }
-        const imgFile: IAttachedFile = {
-          id: null,
-          file: file,
-          url: null,
-          name: null,
-          type: null,
-        };
-        this.uploadedImagesFiles.push(imgFile);
-        const reader = new FileReader();
-        reader.onload = () => this.uploadedImages.push(reader.result);
-        reader.readAsDataURL(file);
-      }
-    }
-  }
-
-  removeImage(index) {
-    if (this.uploadedImagesFiles[index]['id']) {
-      this.uploadedImagesFiles[index]['delete'] = true;
-    } else {
-      this.uploadedImagesFiles.splice(index, 1);
-      this.uploadedImages.splice(index, 1);
     }
   }
 
@@ -725,24 +481,18 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   onAccordion2Click(event: MouseEvent) {
-    console.log('onAccordion2Click');
-
-    // Skip if URL contains 'edit' (we're in edit mode)
     if (this.router.url.includes('/edit/')) {
       return;
     }
 
-    // Skip if campaign has already been created
     if (this.campaignCreated) {
       return;
     }
 
     if (this.isForm1Invalid()) {
-      console.log('Form1Invalid is true');
       this.Form1Invalid = true;
       return;
     } else {
-      console.log('Form1Invalid is false');
       event.preventDefault();
       event.stopPropagation();
       this.Form1Invalid = false;
@@ -752,26 +502,20 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   initAutocomplete() {
-    console.log('initAutocomplete');
     const inputElement = this.addressInputElement.nativeElement.querySelector('input');
-    console.log('inputElement', inputElement);
     if (inputElement) {
-      console.log('inputElement found');
       this.googlePlacesAutocompleteService.initAutocomplete(inputElement, 'establishment');
       this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
-        console.log('place', place);
         this.onLocationPlaceSelected(place);
       });
     }
   }
 
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
-    console.log('onLocationPlaceSelected', place);
     this.campaignForm.get('locations').setValue(place.formatted_address);
   }
 
   observeCommunitiesInput() {
-    console.log('observeCommunitiesInput');
     this.communitiesFormControl.valueChanges
       .pipe(
         distinctUntilChanged(),
@@ -780,28 +524,22 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         ),
       )
       .subscribe((value: ISearch) => {
-        console.log('value search results', value);
         this.communitiesSearchResult = value.results;
       });
   }
 
   onCommunitySelected(communityId: number, communityName: string, communitySlug: string) {
-    console.log('onCommunitySelected', communityId, communityName, communitySlug);
-
-    // Check if community is already selected
     const isAlreadySelected = this.selectedCommunities.some(
       (community) => community.id === communityId || community.slug === communitySlug,
     );
 
     if (!isAlreadySelected) {
-      // Add to selected communities array
       this.selectedCommunities.push({
         id: communityId,
         name: communityName,
         slug: communitySlug,
       });
 
-      // Update form with array of slugs
       const communitySlugs = this.selectedCommunities.map((c) => c.slug);
       this.campaignForm.get('communities').setValue(communitySlugs);
 
@@ -812,6 +550,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   removeCommunity(index: number) {
     this.selectedCommunities.splice(index, 1);
     const communitySlugs = this.selectedCommunities.map((c) => c.slug);
-    this.campaignForm.get('communities').setValue(communitySlugs.length > 0 ? communitySlugs : '');
+    this.campaignForm.get('communities').setValue(communitySlugs);
   }
 }

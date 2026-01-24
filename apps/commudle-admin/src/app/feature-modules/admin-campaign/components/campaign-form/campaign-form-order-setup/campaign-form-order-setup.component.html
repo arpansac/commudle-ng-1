@@ -212,10 +212,9 @@
                           {{ result.name }}
                         </nb-option>
                       </nb-autocomplete>
-                      <!-- Display selected communities as chips -->
+                      <!-- Display selected communities as tags -->
                       <div
                         *ngIf="selectedCommunities.length > 0"
-                        class="selected-communities"
                         style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px"
                       >
                         <nb-tag
@@ -223,7 +222,8 @@
                           [text]="community.name"
                           [removable]="true"
                           (remove)="removeCommunity(i)"
-                          status="info"
+                          [size]="'tiny'"
+                          status="basic"
                         ></nb-tag>
                       </div>
                     </div>
@@ -248,7 +248,7 @@
           </nb-accordion-item>
 
           <!-- Creatives and Destination URL Section -->
-          <nb-accordion-item [expanded]="false">
+          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="!Form1Invalid" (click)="onAccordion2Click($event)">
             <nb-accordion-item-header>
               <div class="accordion-header-content">
                 <span class="accordion-number">3</span>
@@ -257,7 +257,30 @@
             </nb-accordion-item-header>
             <nb-accordion-item-body>
               <div class="form creative-assets">
-                <!-- <form [formGroup]="campaignForm">
+                <div class="saved-assets-container" *ngIf="savedAssets.length > 0">
+                  <div *ngFor="let asset of savedAssets; let i = index" class="saved-asset-item">
+                    <div class="saved-asset-content">
+                      <div class="saved-image-preview">
+                        <img [src]="asset.image" alt="Asset preview" />
+                      </div>
+                      <div class="saved-asset-details">
+                        <p class="saved-headline">{{ asset.headline }}</p>
+                        <!-- <p class="saved-url"><strong>URL:</strong> {{ asset.url }}</p> -->
+                      </div>
+                      <button
+                        class="action-btn"
+                        nbButton
+                        ghost
+                        status="basic"
+                        size="small"
+                        (click)="removeSavedAsset(i)"
+                      >
+                        <fa-icon [icon]="icons.faTrash"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <form [formGroup]="campaignForm">
                   <div formArrayName="campaign_assets">
                     <div
                       class="creative-assets-controller"
@@ -265,7 +288,7 @@
                       [formGroupName]="i"
                     >
                       <div class="images-container">
-                        <label class="clickable image-container">
+                        <label for="image-{{ i }}" class="clickable image-container">
                           <span class="image-text">
                             <fa-icon class="image-icon" [icon]="icons.faFileImage"></fa-icon>
                             <p class="image-text-content">
@@ -273,69 +296,56 @@
                             </p>
                           </span>
                           <input
-                            class="image-input"
-                            (change)="addImages($event)"
-                            accept="image/*"
-                            fullWidth
-                            multiple
-                            nbInput
+                            id="image-{{ i }}"
                             type="file"
+                            (change)="onFileChange($event, i)"
+                            accept="image/png, image/jpeg, image/jpg"
+                            class="image-input"
+                            fullWidth
+                            nbInput
                           />
                           <div class="images">
                             <p class="image-size-text">
                               <span class="image-size">1280 x 720px or higher recommended</span
                               ><span class="image-type">JPG, JPEG, PNG</span>
                             </p>
-                            <div class="images-list">
-                              <div *ngFor="let image of uploadedImagesFiles; let i = index">
-                                <div *ngIf="!uploadedImagesFiles[i]['delete']" class="image">
-                                  <img
-                                    alt="{{ uploadedImages[i]?.name || 'Image' }}"
-                                    src="{{ uploadedImages[i] }}"
-                                    title="{{ uploadedImages[i]?.name || 'Image' }}"
-                                  />
-                                  <p class="clickable">
-                                    <nb-icon (click)="removeImage(i)" icon="close-circle" status="danger"></nb-icon>
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                         </label>
                       </div>
-                      
+
+                      <div *ngIf="imagePreview[i]" class="image">
+                        <div class="image-preview">
+                          <img [src]="imagePreview[i]" alt="Asset preview" />
+                        </div>
+                        <p class="clickable">
+                          <nb-icon (click)="removeCampaignAsset(i)" icon="close-circle" status="danger"></nb-icon>
+                        </p>
+                      </div>
+
                       <div>
-                        <label class="label" for="headline-{{ i }}">Description <span class="required"> *</span></label>
+                        <label class="label" for="headline-{{ i }}">Headline <span class="required"> *</span></label>
                         <div class="input">
                           <commudle-input
                             id="headline-{{ i }}"
-                            placeholder="Add a brief description, it help with SEO"
+                            placeholder="Enter Your Headline Text"
                             [inputValue]="campaignForm.get('campaign_assets.' + i + '.headline')?.value"
                             (valueChange)="handleArrayFormInput($event, 'headline', i, 'campaign_assets')"
                             [type]="'text'"
                           ></commudle-input>
+                          <div
+                            *ngIf="
+                              campaignForm.get('campaign_assets.' + i + '.headline')?.invalid &&
+                              campaignForm.get('campaign_assets.' + i + '.headline')?.touched
+                            "
+                            class="alert-container"
+                          >
+                            <commudle-alert [error]="true" errorMessage="Headline is required"></commudle-alert>
+                          </div>
                         </div>
                       </div>
-                      
+
                       <div>
-                        <label class="label" for="call-to-action-{{ i }}"
-                          >Call To Action <span class="required"> *</span></label
-                        >
-                        <div class="input">
-                          <commudle-input
-                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.call_to_action')?.value"
-                            (valueChange)="handleArrayFormInput($event, 'call_to_action', i, 'campaign_assets')"
-                            placeholder="eg: Learn More"
-                            [type]="'text'"
-                          ></commudle-input>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label class="label" for="url-{{ i }}"
-                          >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
-                          <span class="required"> *</span></label
-                        >
+                        <label class="label" for="url-{{ i }}">Destination URL <span class="required"> *</span></label>
                         <div class="creative-assets-input">
                           <commudle-input
                             [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
@@ -343,11 +353,40 @@
                             placeholder="eg: https://www.commudle.com/"
                             [type]="'text'"
                           ></commudle-input>
+                          <div
+                            *ngIf="
+                              campaignForm.get('campaign_assets.' + i + '.url')?.invalid &&
+                              campaignForm.get('campaign_assets.' + i + '.url')?.touched
+                            "
+                            class="alert-container"
+                          >
+                            <commudle-alert
+                              [error]="true"
+                              errorMessage="Valid URL is required (must start with http:// or https://)"
+                            ></commudle-alert>
+                          </div>
+                          <p class="small-info-text">
+                            The call to action button will take the user on this destination
+                          </p>
                         </div>
+                      </div>
+
+                      <!-- Save button -->
+                      <div class="save-button-container">
+                        <button
+                          type="button"
+                          nbButton
+                          status="primary"
+                          shape="semi-round"
+                          (click)="addCampaignAsset($event, i)"
+                          [disabled]="campaignAssets.at(i).invalid"
+                        >
+                          Save Asset
+                        </button>
                       </div>
                     </div>
                   </div>
-                </form> -->
+                </form>
               </div>
             </nb-accordion-item-body>
           </nb-accordion-item>
@@ -569,3 +608,17 @@
                       </div>
                     </div>
                   </div> -->
+
+<!-- <div>
+                        <label class="label" for="call-to-action-{{ i }}"
+                          >Call To Action <span class="required"> *</span></label
+                        >
+                        <div class="input">
+                          <commudle-input
+                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.call_to_action')?.value"
+                            (valueChange)="handleArrayFormInput($event, 'call_to_action', i, 'campaign_assets')"
+                            placeholder="eg: Learn More"
+                            [type]="'text'"
+                          ></commudle-input>
+                        </div>
+                      </div> -->

@@ -60,7 +60,7 @@ input[type='file'] {
 }
 
 .left-column {
-  @apply com-bg-white com-p-8 com-rounded-b-md;
+  @apply com-bg-Bright-Gray com-p-8 com-rounded-b-md;
 }
 
 nb-accordion {
@@ -195,21 +195,24 @@ nb-accordion {
   }
 }
 
+.uploaded-image {
+  @apply com-flex com-flex-col com-gap-1;
+}
+
 .images {
   @apply com-flex com-flex-row com-justify-start com-flex-wrap;
-  > div {
-    > div {
-      @apply com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative;
-      img {
-        @apply com-w-full;
-      }
+}
 
-      p {
-        @apply com-absolute com-bottom-0 com-m-0 com-mt-6px;
-        nb-icon:hover {
-          @apply com-rounded-full com-bg-white;
-        }
-      }
+.image {
+  @apply com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative com-mb-6;
+  img {
+    @apply com-w-full;
+  }
+
+  p {
+    @apply com-absolute com-bottom-0 com-m-0 com-mt-6px;
+    nb-icon:hover {
+      @apply com-rounded-full com-bg-white;
     }
   }
 }
@@ -223,7 +226,7 @@ nb-accordion {
 }
 
 .images-list {
-  @apply com-flex com-flex-row com-mt-auto com-gap-4;
+  @apply com-flex com-flex-row com-mt-4 com-gap-4;
 }
 
 .browse-text {
@@ -242,10 +245,6 @@ nb-accordion {
   @apply com-pl-2 com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
 }
 
-.image {
-  @apply com-flex com-items-center com-justify-center;
-}
-
 .image-input {
   @apply com-hidden;
 }
@@ -256,4 +255,39 @@ nb-accordion {
 
 .right-column {
   @apply com-mx-10 com-mt-[108px] com-bg-white com-px-32 com-py-10 com-h-[470px] com-rounded-md;
+}
+
+.saved-assets-container {
+  @apply com-flex com-flex-col com-gap-4 com-mb-5;
+
+  .saved-asset-item {
+    @apply com-flex com-flex-row com-gap-4;
+
+    .saved-asset-content {
+      @apply com-flex com-flex-row com-gap-4 com-pr-6 com-pl-4 com-py-3 com-border com-border-solid com-border-Bright-Gray com-rounded-md com-bg-Ghost-White com-w-full com-items-center;
+    }
+
+    .saved-image-preview {
+      @apply com-w-[120px] com-h-[76px] com-rounded-lg com-overflow-hidden com-flex com-items-center com-justify-center;
+      img {
+        @apply com-w-full;
+      }
+    }
+
+    .saved-asset-details {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .saved-headline {
+        @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+
+      .saved-url {
+        @apply com-m-0 com-text-xs com-font-medium com-text-gray-custom-1;
+      }
+    }
+  }
+}
+
+.action-btn {
+  @apply com-ml-auto;
 }
