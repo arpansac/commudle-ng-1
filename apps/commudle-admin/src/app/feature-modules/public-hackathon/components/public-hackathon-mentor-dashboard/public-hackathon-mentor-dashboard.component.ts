@@ -31,6 +31,7 @@ import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-sco
 import moment from 'moment';
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
+import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 
 @Component({
   selector: 'commudle-public-hackathon-mentor-dashboard',
@@ -78,12 +79,12 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     private toastrService: ToastrService,
     private cdr: ChangeDetectorRef,
     private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
+    private hackathonJudgeService: HackathonJudgeService,
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.parent.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.hackathon = data.hackathon;
-
       this.fetchRounds();
       this.subscribeToChannel();
     });
@@ -96,16 +97,15 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   }
 
   fetchRounds() {
-    this.roundService.pIndexRounds(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
+    this.roundService.mentorSlotIndex(this.hackathon.id, EDbModels.HACKATHON).subscribe((data) => {
       this.rounds = data;
       if (this.rounds.length > 0) {
         const now = moment();
         const ongoingRound = this.rounds.find((r) => now.isBetween(moment(r.date), moment(r.end_date), null, '[]'));
         const upcomingRound = this.rounds.find((r) => now.isBefore(moment(r.date)));
         this.selectedRound = ongoingRound || upcomingRound || this.rounds[0];
-        this.loadCurrentMentor();
-
         this.selectedRoundId = this.selectedRound.id;
+        this.roleDetails();
         this.fetchTeams();
       }
     });
@@ -146,19 +146,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       context: { ps },
     });
   }
-  // TODO: remove this api and get new or think
-  loadCurrentMentor(): void {
-    this.authService.currentUser$.subscribe((user) => {
-      const currentUserId = user.id;
-      this.hackathonService
-        .indexJudge(this.hackathon.id, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((mentors) => {
-          this.currentMentor = mentors.find((m) => m.judge_user_id === currentUserId);
-          this.loadMentorSlots();
-        });
-    });
-  }
 
   loadMentorSlots(): void {
     if (!this.currentMentor) return;
@@ -166,6 +153,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       .indexByRoundMentor(this.selectedRound.id, this.currentMentor.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((slots) => {
+        console.log('🚀 ~ PublicHackathonMentorDashboardComponent ~ loadMentorSlots ~ slots:', slots);
         this.roundMentorSlots = slots;
       });
   }
@@ -194,7 +182,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       .subscribe({
         next: () => {
           this.toastrService.successDialog('Team assigned successfully');
-          this.loadMentorSlots();
           dialogRef.close();
         },
         error: () => {
@@ -225,6 +212,15 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       });
   }
 
+  private roleDetails() {
+    this.hackathonJudgeService.roleDetails(this.hackathon.id).subscribe((data) => {
+      if (data) {
+        this.currentMentor = data.mentor;
+        this.loadMentorSlots();
+      }
+    });
+  }
+
   private subscribeToChannel(): void {
     this.roundMentorSlotBookingChannel.subscribe(this.hackathon.slug);
     this.roundMentorSlotBookingChannel.channelData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -241,7 +237,12 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         const booking: IRoundMentorSlotBooking = data.booking;
         const slot = this.roundMentorSlots?.find((s) => s.id === booking.round_mentor_slot_id);
         if (slot) {
-          slot.round_mentor_slot_bookings = [booking, ...slot.round_mentor_slot_bookings];
+          const existingIndex = slot.round_mentor_slot_bookings.findIndex((b) => b.id === booking.id);
+          if (existingIndex !== -1) {
+            slot.round_mentor_slot_bookings[existingIndex] = booking;
+          } else {
+            slot.round_mentor_slot_bookings = [booking, ...slot.round_mentor_slot_bookings];
+          }
           this.roundMentorSlots = [...this.roundMentorSlots];
           this.cdr.markForCheck();
         }

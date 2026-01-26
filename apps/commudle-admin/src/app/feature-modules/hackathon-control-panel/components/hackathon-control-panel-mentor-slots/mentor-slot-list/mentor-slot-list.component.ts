@@ -59,7 +59,12 @@ export class MentorSlotListComponent implements OnInit, OnDestroy {
         const booking: IRoundMentorSlotBooking = data.booking;
         const slot = this.roundMentorSlots?.find((s) => s.id === booking.round_mentor_slot_id);
         if (slot) {
-          slot.round_mentor_slot_bookings = [booking, ...slot.round_mentor_slot_bookings];
+          const existingIndex = slot.round_mentor_slot_bookings.findIndex((b) => b.id === booking.id);
+          if (existingIndex !== -1) {
+            slot.round_mentor_slot_bookings[existingIndex] = booking;
+          } else {
+            slot.round_mentor_slot_bookings = [booking, ...slot.round_mentor_slot_bookings];
+          }
           this.roundMentorSlots = [...this.roundMentorSlots];
           this.cdr.markForCheck();
         }
