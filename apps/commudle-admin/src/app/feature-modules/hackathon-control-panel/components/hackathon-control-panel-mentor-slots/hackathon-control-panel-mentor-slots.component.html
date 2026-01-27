@@ -53,13 +53,17 @@
   <div class="meeting-location">
     {{ value.meeting_location }}
   </div>
-  } }@else {
+  } &nbsp;
+  <button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+    <fa-icon [icon]="icons.faEdit"></fa-icon>
+  </button>
+  }@else {
   <button
     nbButton
     size="small"
     status="basic"
     class="add-meeting-btn"
-    (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value.id)"
+    (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)"
   >
     <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
   </button>
@@ -141,9 +145,7 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="updateMeetingUrl(data.mentorId, ref)" [disabled]="!meetingUrl">
-        Update
-      </button>
+      <button nbButton status="primary" (click)="updateMeetingUrl(data.mentorId, ref)">Update</button>
       <button nbButton (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>

@@ -24,10 +24,10 @@
         {{ isDescriptionExpanded ? 'Show less' : 'Read more' }}
       </button>
     </div>
-    <div class="round-evaluators" *ngIf="getRoundEvaluators().length > 0">
+    <div class="round-evaluators" *ngIf="roundEvaluators.length > 0">
       <a
         class="evaluator-card"
-        *ngFor="let evaluator of getRoundEvaluators()"
+        *ngFor="let evaluator of roundEvaluators"
         [routerLink]="['/users', evaluator?.username]"
       >
         <img
@@ -52,6 +52,43 @@
           class="follow-btn"
           (click)="$event.stopPropagation(); $event.preventDefault()"
         ></app-user-follow>
+        } @if(bookedSlotByMentor.get(evaluator.id)) {
+        <div class="slot-booked">
+          <div>
+            <nb-icon icon="calendar-outline"></nb-icon>
+            <span>
+              {{ moment(bookedSlotByMentor.get(evaluator.id).starts_at).format('MMM DD, hh:mm A') }} -
+              {{ moment(bookedSlotByMentor.get(evaluator.id).ends_at).format('hh:mm A') }}
+            </span>
+          </div>
+          @if(mentorSlotsByMentor.get(evaluator.id)?.[0]?.hackathon_judge?.meeting_location) {
+          @if(mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location.startsWith('http://') ||
+          mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location.startsWith('https://')) {
+          <a
+            [href]="mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="meeting-link"
+            (click)="$event.stopPropagation()"
+          >
+            <nb-icon icon="video-outline"></nb-icon> Join Meeting
+          </a>
+          } @else {
+          <span class="meeting-location-text">
+            <nb-icon icon="pin-outline"></nb-icon>
+            {{ mentorSlotsByMentor.get(evaluator.id)[0].hackathon_judge.meeting_location }}
+          </span>
+          } }
+        </div>
+        } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0) {
+        <button
+          nbButton
+          size="tiny"
+          status="primary"
+          (click)="$event.stopPropagation(); $event.preventDefault(); openBookSlotDialog(evaluator.id)"
+        >
+          Book Slot
+        </button>
         }
       </a>
     </div>
@@ -115,3 +152,27 @@
   </div>
   }
 </div>
+
+<ng-template #bookSlotDialog let-ref="dialogRef">
+  <nb-card class="book-slot-dialog-card">
+    <nb-card-header>
+      <span>Book Mentor Slot</span>
+      <button nbButton size="small" shape="round" (click)="ref.close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="slot-item">
+        @if(selectedMentorSlots.length > 0) {
+        <div *ngFor="let slot of selectedMentorSlots">
+          <button nbButton fullWidth status="basic" (click)="bookSlot(slot.id, ref)">
+            {{ moment(slot.starts_at).format('MMM DD, YYYY hh:mm A') }} - {{ moment(slot.ends_at).format('hh:mm A') }}
+          </button>
+        </div>
+        } @else {
+        <p>No slots available yet!</p>
+        }
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

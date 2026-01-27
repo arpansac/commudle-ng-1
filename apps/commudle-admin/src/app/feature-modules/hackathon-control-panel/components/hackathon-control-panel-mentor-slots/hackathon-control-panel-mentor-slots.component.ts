@@ -208,29 +208,21 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     this.cdr.markForCheck();
   }
 
-  openUpdateMeetingUrlDialog(template: TemplateRef<unknown>, mentorId: number): void {
-    this.meetingUrl = '';
+  openUpdateMeetingUrlDialog(template: TemplateRef<unknown>, mentor: IHackathonJudge): void {
+    this.meetingUrl = mentor.meeting_location ? mentor.meeting_location : '';
+
     this.dialogService.open(template, {
-      context: { mentorId },
+      context: { mentorId: mentor.id },
     });
   }
 
-  // TODO: add option to delete and update meeting url
   updateMeetingUrl(mentorId: number, dialogRef: any): void {
-    if (!this.meetingUrl.trim()) {
-      this.toastrService.warningDialog('Please enter a meeting URL');
-      return;
-    }
-
     this.hackathonJudgeService.updateMeetingUrl(mentorId, this.meetingUrl).subscribe({
       next: () => {
         this.toastrService.successDialog('Meeting URL updated successfully');
         dialogRef.close();
         this.mentors.find((mentor) => mentor.id === mentorId).meeting_location = this.meetingUrl;
         this.cdr.markForCheck();
-      },
-      error: () => {
-        this.toastrService.warningDialog('Failed to update meeting URL');
       },
     });
   }
@@ -245,10 +237,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   loadSlotRule(roundId: number): void {
     const currentRound = this.rounds.find((r) => r.id === roundId);
+    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadSlotRule ~ currentRound:', currentRound);
     // TODO: get data from round api and remove show by round or extra service to all api
     this.roundMentorSlotRulesService.showByRound(roundId).subscribe({
       next: (data) => {
-        this.currentSlotRule = data;
+        this.currentSlotRule = currentRound.round_mentor_slot_rule;
         if (this.currentSlotRule) {
           this.slotRuleForm.patchValue({
             booking_open: data.booking_open,

@@ -331,3 +331,23 @@ nb-card {
     }
   }
 }
+
+.meeting-location-display {
+  @apply com-mb-4 com-p-3 com-bg-gray-100 com-rounded;
+
+  strong {
+    @apply com-mr-2;
+  }
+
+  a {
+    @apply com-text-primary-500 com-underline;
+
+    &:hover {
+      @apply com-text-primary-600;
+    }
+  }
+}
+
+.meeting-location-add {
+  @apply com-mb-4;
+}

@@ -27,7 +27,7 @@ import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
 import moment from 'moment';
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 
@@ -58,11 +58,15 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   protected readonly icons = {
     faPlus,
     faXmark,
+    faEdit,
   };
 
   @ViewChild('ProblemStatementView') problemStatementView: TemplateRef<any>;
   @ViewChild('addTeamDialog') addTeamDialog: TemplateRef<any>;
   @ViewChild('cancelSlotDialog') cancelSlotDialog: TemplateRef<any>;
+  @ViewChild('updateMeetingLocationDialog') updateMeetingLocationDialog: TemplateRef<any>;
+
+  meetingLocation = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -200,6 +204,24 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.selectedSlot.status = ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
         },
       });
+  }
+
+  openAddMeetingLocationDialog(): void {
+    this.meetingLocation = this.currentMentor?.meeting_location || '';
+    this.dialogService.open(this.updateMeetingLocationDialog);
+  }
+
+  updateMeetingLocation(dialogRef: any): void {
+    this.hackathonJudgeService.updateMeetingUrl(this.currentMentor.id, this.meetingLocation.trim()).subscribe({
+      next: () => {
+        this.toastrService.successDialog('Meeting location updated successfully');
+        this.currentMentor.meeting_location = this.meetingLocation;
+        dialogRef.close();
+      },
+      error: () => {
+        this.toastrService.errorDialog('Failed to update meeting location');
+      },
+    });
   }
 
   private roleDetails() {

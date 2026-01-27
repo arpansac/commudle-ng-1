@@ -1,3 +1,4 @@
+import { IHackathonJudge } from './hackathon-judge.model';
 import { IRoundMentorSlotBooking } from './round-mentor-slot-booking.model';
 
 export interface IRoundMentorSlot {
@@ -8,6 +9,7 @@ export interface IRoundMentorSlot {
   hackathon_judge_id: number;
   round_id: number;
   round_mentor_slot_bookings: IRoundMentorSlotBooking[];
+  hackathon_judge: IHackathonJudge;
 }
 
 export enum ERoundMentorSlotStatus {
