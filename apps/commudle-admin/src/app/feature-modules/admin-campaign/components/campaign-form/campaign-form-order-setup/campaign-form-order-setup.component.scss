@@ -261,8 +261,28 @@ nb-accordion {
   }
 }
 
+.learn-more-button {
+  @apply com-border-Yankees-Blue com-text-Yankees-Blue #{!important};
+}
+
 .right-column {
-  @apply com-mx-10 com-mt-[108px] com-bg-white com-px-32 com-py-10 com-h-[470px] com-rounded-md;
+  @apply com-flex com-ml-10 com-mt-[108px] com-px-32 com-bg-white com-py-10 com-rounded-md com-w-full com-h-max;
+}
+
+.right-column-content {
+  @apply com-flex com-justify-center com-items-center com-rounded-md com-w-full com-h-full;
+}
+
+.right-column-container {
+  @apply com-flex com-flex-col com-gap-3;
+}
+
+.right-column-links {
+  @apply com-flex com-flex-row com-justify-between com-items-center com-gap-4;
+}
+
+.right-column-url {
+  @apply com-m-0 com-text-xs com-font-normal com-text-Yankees-Blue;
 }
 
 .saved-assets-container {

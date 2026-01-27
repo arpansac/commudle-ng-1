@@ -29,6 +29,8 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { combineLatest, debounceTime, distinctUntilChanged, filter, Subscription, switchMap } from 'rxjs';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { environment } from '@commudle/shared-environments';
 
 @Component({
     selector: 'commudle-campaign-form-order-setup',
@@ -72,6 +74,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   count = 10;
   imagePreview = [];
   assetSavedStatus: boolean[] = [false];
+  staticAssets = staticAssets;
+  defaultUrl = environment.app_url + '/campaigns/new';
 
   constructor(
     private activatedRoute: ActivatedRoute,

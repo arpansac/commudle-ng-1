@@ -452,11 +452,22 @@
           </button>
         </div>
       </div>
-      <!-- <div class="right-column"><commudle-campaign-assets-display
-        [defaultImageUrl]="defaultUrl"
-        [defaultImage]="staticAssets.campaign_user_notification_default"
-        [campaignTypeSlug]="ECampaignTypeSlug.USER_NOTIFICATION_RIGHT_SIDEBAR_IMAGE"
-      ></commudle-campaign-assets-display></div> -->
+      <div class="right-column">
+        <div class="right-column-container">
+          <div class="right-column-content">
+            <commudle-campaign-assets-display
+              [defaultImageUrl]="defaultUrl"
+              [defaultImage]="staticAssets.campaign_default_image"
+            ></commudle-campaign-assets-display>
+          </div>
+          <div class="right-column-links">
+            <p class="right-column-url">{{ defaultUrl }}</p>
+            <a [href]="defaultUrl" class="learn-more-button" size="small" outline nbButton shape="semi-round"
+              >Learn More</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
