@@ -238,7 +238,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
       this.loadCampaignAssetsFromApi();
       this.resetAssetForm();
       this.cdr.detectChanges();
-      this.toasterService.successDialog('Asset saved successfully.');
     });
   }
 
