@@ -62,8 +62,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   // uploadedImages = [];
   Form1Invalid = true;
   campaignCreated = false;
-  savedAssets = [];
-  // : Array<{ image: string; headline: string; url: string; file: File | string; index: number }>
+  accordion3Expanded = true;
 
   communitiesFormControl = new FormControl('');
   communitiesSearchResult = [];
@@ -195,53 +194,142 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     return this.campaignForm.get('campaign_assets') as FormArray;
   }
 
-  // addCampaignAsset() {
-  //   if((this.campaignForm.get('campaign_assets') as FormArray).invalid) {
-  //     (this.campaignForm.get('campaign_assets') as FormArray).markAllAsTouched();
-  //     return;
-  //   }
-  //   this.assetSavedStatus[index] = true;
-  //   this.campaignAssets.push(this.createCampaignAsset());
-  //   this.assetSavedStatus.push(false);
-  // }
+  addAsset(index: number) {
+    const currentGroup = this.campaignAssets.at(index) as FormGroup;
 
-  // 1. Update addCampaignAsset to move data to savedAssets array
-  addCampaignAsset(event: Event, index: number) {
-    console.log(index, 'called');
-    console.log(event, 'event');
-    const formArray = this.campaignAssets;
-    const currentAssetForm = formArray.at(index) as FormGroup; // We only use index 0 for the active form
-
-    if (currentAssetForm.invalid) {
-      currentAssetForm.markAllAsTouched();
+    // Validate the current asset before saving
+    if (currentGroup.invalid) {
+      currentGroup.markAllAsTouched();
+      this.toasterService.warningDialog('Please complete the current asset details.');
       return;
     }
-    // Push current form values to the savedAssets array
-    const assetData = currentAssetForm.value;
-    console.log(assetData, 'assetData');
-    this.savedAssets.push({
-      id: assetData.id || null,
-      image: assetData.image, // The Base64 preview string
-      headline: assetData.headline,
-      url: assetData.url,
-      // file: ,          // The actual File object for API
-    });
-    console.log(this.savedAssets, 'savedAssets');
 
-    // Reset the form and the single preview slot for the next entry
-    currentAssetForm.reset();
-    this.imagePreview[index] = null;
+    if (!this.campaign?.id) {
+      this.toasterService.warningDialog('Campaign must be created first.');
+      return;
+    }
+
+    // Prepare FormData for the single asset
+    const formData = new FormData();
+    const assetData = currentGroup.value;
+
+    formData.append('campaign[campaign_assets][0][headline]', assetData.headline);
+    formData.append('campaign[campaign_assets][0][url]', assetData.url);
+
+    if (assetData.id) {
+      formData.append('campaign[campaign_assets][0][id]', assetData.id.toString());
+    }
+
+    if (assetData.image instanceof File) {
+      formData.append('campaign[campaign_assets][0][image]', assetData.image);
+    }
+
+    // Save the asset to API
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
+      // Create a new object reference with a new array reference to ensure change detection
+      this.campaign = {
+        ...updatedCampaign,
+        campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
+      };
+      this.loadCampaignAssetsFromApi();
+      this.resetAssetForm();
+      this.cdr.detectChanges();
+      this.toasterService.successDialog('Asset saved successfully.');
+    });
+  }
+
+  private loadCampaignAssetsFromApi() {
+    const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+    campaignAssetsFormArray.clear();
+    this.imagePreview = [];
+
+    // Add all saved assets from API
+    if (this.campaign?.campaign_assets && this.campaign.campaign_assets.length > 0) {
+      this.campaign.campaign_assets.forEach((asset) => {
+        const assetForm = this.createCampaignAsset(asset);
+        campaignAssetsFormArray.push(assetForm);
+        // Set image preview if available
+        if (asset.image?.url) {
+          this.imagePreview.push(asset.image.url);
+        } else {
+          this.imagePreview.push(null);
+        }
+      });
+    }
+
+    // Always add one empty form for new asset entry
+    campaignAssetsFormArray.push(this.createCampaignAsset());
+    this.imagePreview.push(null);
 
     this.cdr.detectChanges();
   }
 
-  // 2. Remove from saved list
-  removeSavedAsset(index: number) {
-    this.savedAssets.splice(index, 1);
+  private resetAssetForm() {
+    const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+    const lastIndex = campaignAssetsFormArray.length - 1;
+
+    if (lastIndex >= 0) {
+      // Reset the last form (the empty one)
+      campaignAssetsFormArray.at(lastIndex).reset();
+      this.imagePreview[lastIndex] = null;
+    } else {
+      // If no forms exist, create one
+      campaignAssetsFormArray.push(this.createCampaignAsset());
+      this.imagePreview.push(null);
+    }
+
+    this.cdr.detectChanges();
   }
 
   removeCampaignAsset(index: number) {
-    this.campaignAssets.removeAt(index);
+    if (!this.campaign?.id) {
+      this.toasterService.warningDialog('Campaign must be created first.');
+      return;
+    }
+
+    if (!this.campaign.campaign_assets || index >= this.campaign.campaign_assets.length) {
+      return;
+    }
+
+    const assetToRemove = this.campaign.campaign_assets[index];
+    const assetId = assetToRemove.id;
+
+    if (!assetId) {
+      return;
+    }
+
+    // Remove from API by updating campaign without this asset
+    const formData = new FormData();
+    const remainingAssets = this.campaign.campaign_assets.filter((asset) => {
+      console.log(asset, 'asset prerna');
+      console.log(asset.id, 'asset.id prerna');
+      console.log(assetId, 'assetId prerna');
+      return asset.id !== assetId;
+    });
+    console.log(remainingAssets, 'remainingAssets prerna');
+
+    // Rebuild FormData with all assets except the one being deleted
+    remainingAssets.forEach((asset, idx) => {
+      formData.append(`campaign[campaign_assets][${idx}][headline]`, asset.headline);
+      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url);
+      if (asset.id) {
+        formData.append(`campaign[campaign_assets][${idx}][id]`, asset.id.toString());
+      }
+    });
+
+    console.log(formData, 'formData prerna');
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
+      console.log(updatedCampaign, 'updatedCampaign prerna');
+      // Create a new object reference with a new array reference to ensure change detection
+      this.campaign = {
+        ...updatedCampaign,
+        campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
+      };
+      console.log(this.campaign, 'campaign prerna');
+      this.loadCampaignAssetsFromApi();
+      this.cdr.detectChanges();
+      this.toasterService.successDialog('Asset removed successfully.');
+    });
   }
 
   patchCampaignForm() {
@@ -270,32 +358,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         communities: communitySlugs,
       });
 
-      if (this.campaign.campaign_assets && this.campaign.campaign_assets.length > 0) {
-        this.savedAssets = [];
-
-        this.campaign.campaign_assets.forEach((asset) => {
-          console.log(asset, 'asset');
-          this.savedAssets.push({
-            id: asset.id || null,
-            image: asset.image?.url, // Existing URL from server
-            headline: asset.headline,
-            url: asset.url,
-            // file: asset.image?.url, // Keep string URL if not changed
-          });
-        });
-
-        const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
-        campaignAssetsFormArray.clear();
-        campaignAssetsFormArray.push(this.createCampaignAsset());
-        this.imagePreview = [null];
-
-        // this.campaign.campaign_assets.forEach((asset, index) => {
-        //   campaignAssetsFormArray.push(this.createCampaignAsset(asset));
-        //   if (asset.image && asset.image.url) {
-        //     this.imagePreview[index] = asset.image.url;
-        //   }
-        // });
-      }
+      // Load campaign assets from API
+      this.loadCampaignAssetsFromApi();
     }
   }
 
@@ -383,6 +447,65 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   updateCampaign() {
+    // Validation
+    if (!this.campaign?.id) {
+      this.toasterService.warningDialog('Campaign ID is missing.');
+      return;
+    }
+
+    const formData = new FormData();
+    const formValue = this.campaignForm.value;
+
+    // Append basic campaign info with null checks
+    if (formValue.name) formData.append('campaign[name]', formValue.name);
+    if (formValue.budget) formData.append('campaign[budget]', formValue.budget.toString());
+    if (formValue.start_at) formData.append('campaign[start_at]', formValue.start_at);
+    if (formValue.end_at) formData.append('campaign[end_at]', formValue.end_at);
+
+    // Append locations and communities
+    const locations = formValue.locations
+      ? formValue.locations
+          .split(',')
+          .map((l) => l.trim())
+          .filter((l) => l)
+      : [];
+    locations.forEach((loc) => formData.append('campaign[locations][]', loc));
+
+    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+    communitySlugs.forEach((slug) => formData.append('campaign[communities][]', slug));
+
+    // Send saved assets from API
+    if (this.campaign?.campaign_assets) {
+      this.campaign.campaign_assets.forEach((asset, index) => {
+        if (asset.headline && asset.url) {
+          formData.append(`campaign[campaign_assets][${index}][headline]`, asset.headline);
+          formData.append(`campaign[campaign_assets][${index}][url]`, asset.url);
+          if (asset.id) {
+            formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
+          }
+          // Note: Image files are handled when assets are saved individually via addAsset()
+        }
+      });
+    }
+
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe({
+      next: (data) => {
+        if (data) {
+          // Update local state
+          this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
+          this.loadCampaignAssetsFromApi();
+          this.cdr.detectChanges();
+          this.toasterService.successDialog('Campaign updated successfully');
+        }
+      },
+      error: (error) => {
+        this.toasterService.errorDialog('Failed to update campaign. Please try again.');
+        console.error('Error updating campaign:', error);
+      },
+    });
+  }
+
+  updateCampaign1() {
     const formData = new FormData();
     const formValue = this.campaignForm.value;
 
@@ -400,20 +523,34 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     const communitySlugs = this.selectedCommunities.map((c) => c.slug);
     communitySlugs.forEach((slug) => formData.append('campaign[communities][]', slug));
 
-    this.savedAssets.forEach((asset, index) => {
+    // Get all saved campaign assets from API
+    const campaignAssets = this.campaign?.campaign_assets || [];
+
+    // Check if there's a new asset in the form that hasn't been saved yet (last form in the array)
+    const lastFormIndex = this.campaignAssets.length - 1;
+    const lastForm = this.campaignAssets.at(lastFormIndex) as FormGroup;
+    const lastFormValue = lastForm?.value;
+
+    // Include all saved assets from API
+    campaignAssets.forEach((asset, index) => {
       formData.append(`campaign[campaign_assets][${index}][headline]`, asset.headline);
       formData.append(`campaign[campaign_assets][${index}][url]`, asset.url);
 
       if (asset.id) {
         formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
       }
-
-      console.log(asset, 'asset arshdeep');
-      if (asset.image instanceof File) {
-        console.log(asset.image, 'asset file arshdeep');
-        formData.append(`campaign[campaign_assets][${index}][image]`, asset.image);
-      }
     });
+
+    // If the last form has valid data, include it as a new asset
+    if (lastForm && lastForm.valid && lastFormValue.headline && lastFormValue.url) {
+      const newAssetIndex = campaignAssets.length;
+      formData.append(`campaign[campaign_assets][${newAssetIndex}][headline]`, lastFormValue.headline);
+      formData.append(`campaign[campaign_assets][${newAssetIndex}][url]`, lastFormValue.url);
+
+      if (lastFormValue.image instanceof File) {
+        formData.append(`campaign[campaign_assets][${newAssetIndex}][image]`, lastFormValue.image);
+      }
+    }
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       if (data) {
@@ -498,6 +635,39 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
       this.Form1Invalid = false;
       this.campaignCreated = true;
       this.createCampaign();
+    }
+  }
+
+  isForm2Invalid(): boolean {
+    const budgetControl = this.campaignForm.get('budget');
+    const locationsControl = this.campaignForm.get('locations');
+
+    if (budgetControl?.invalid || locationsControl?.invalid) {
+      budgetControl?.markAsTouched();
+      locationsControl?.markAsTouched();
+      return true;
+    }
+
+    return false;
+  }
+
+  onAccordion3Click(event: MouseEvent) {
+    // Prevent default accordion toggle behavior and event bubbling
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Ensure accordion stays open
+    this.accordion3Expanded = true;
+
+    if (!this.campaignCreated || !this.campaign?.id) {
+      return;
+    }
+
+    const isAccordion1Valid = !this.isForm1Invalid();
+    const isAccordion2Valid = !this.isForm2Invalid();
+
+    if (isAccordion1Valid || isAccordion2Valid) {
+      this.updateCampaign();
     }
   }
 

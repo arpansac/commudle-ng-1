@@ -68,6 +68,10 @@ nb-accordion {
   nb-accordion-item {
     @apply com-mb-5 com-rounded-[10px] com-border com-border-solid com-border-Bright-Gray;
 
+    &:last-child {
+      @apply com-mb-0 com-rounded-b-none;
+    }
+
     &.collapsed nb-accordion-item-header {
       @apply com-border-0;
     }
@@ -251,6 +255,10 @@ nb-accordion {
 
 .next-button {
   @apply com-flex com-p-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-sticky com-bottom-0 com-bg-white com-z-10;
+
+  button {
+    @apply com-bg-Yankees-Blue com-text-white #{!important};
+  }
 }
 
 .right-column {

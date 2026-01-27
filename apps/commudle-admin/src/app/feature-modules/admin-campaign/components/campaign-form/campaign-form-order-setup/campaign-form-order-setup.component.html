@@ -248,8 +248,8 @@
           </nb-accordion-item>
 
           <!-- Creatives and Destination URL Section -->
-          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="!Form1Invalid" (click)="onAccordion2Click($event)">
-            <nb-accordion-item-header>
+          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="accordion3Expanded || !Form1Invalid">
+            <nb-accordion-item-header (click)="onAccordion3Click($event)">
               <div class="accordion-header-content">
                 <span class="accordion-number">3</span>
                 <span class="accordion-title">Creatives and Destination URL</span>
@@ -257,15 +257,19 @@
             </nb-accordion-item-header>
             <nb-accordion-item-body>
               <div class="form creative-assets">
-                <div class="saved-assets-container" *ngIf="savedAssets.length > 0">
-                  <div *ngFor="let asset of savedAssets; let i = index" class="saved-asset-item">
+                <!-- Display saved assets from API -->
+                <div
+                  class="saved-assets-container"
+                  *ngIf="campaign?.campaign_assets && campaign.campaign_assets.length > 0"
+                >
+                  <div *ngFor="let asset of campaign.campaign_assets; let i = index" class="saved-asset-item">
                     <div class="saved-asset-content">
-                      <div class="saved-image-preview">
-                        <img [src]="asset.image" alt="Asset preview" />
+                      <div class="saved-image-preview" *ngIf="asset.image?.url">
+                        <img [src]="asset.image.url" alt="Asset preview" />
                       </div>
                       <div class="saved-asset-details">
                         <p class="saved-headline">{{ asset.headline }}</p>
-                        <!-- <p class="saved-url"><strong>URL:</strong> {{ asset.url }}</p> -->
+                        <p class="saved-url"><strong>URL:</strong> {{ asset.url }}</p>
                       </div>
                       <button
                         class="action-btn"
@@ -273,22 +277,24 @@
                         ghost
                         status="basic"
                         size="small"
-                        (click)="removeSavedAsset(i)"
+                        (click)="removeCampaignAsset(i)"
                       >
                         <fa-icon [icon]="icons.faTrash"></fa-icon>
                       </button>
                     </div>
                   </div>
                 </div>
+
+                <!-- Single form container for adding new asset -->
                 <form [formGroup]="campaignForm">
                   <div formArrayName="campaign_assets">
                     <div
                       class="creative-assets-controller"
-                      *ngFor="let asset of campaignAssets.controls; let i = index"
-                      [formGroupName]="i"
+                      *ngIf="campaignAssets.length > 0"
+                      [formGroupName]="campaignAssets.length - 1"
                     >
                       <div class="images-container">
-                        <label for="image-{{ i }}" class="clickable image-container">
+                        <label [for]="'image-' + (campaignAssets.length - 1)" class="clickable image-container">
                           <span class="image-text">
                             <fa-icon class="image-icon" [icon]="icons.faFileImage"></fa-icon>
                             <p class="image-text-content">
@@ -296,9 +302,10 @@
                             </p>
                           </span>
                           <input
-                            id="image-{{ i }}"
+                            [id]="'image-' + (campaignAssets.length - 1)"
                             type="file"
-                            (change)="onFileChange($event, i)"
+                            [attr.data-index]="campaignAssets.length - 1"
+                            (change)="onFileChange($event, campaignAssets.length - 1)"
                             accept="image/png, image/jpeg, image/jpg"
                             class="image-input"
                             fullWidth
@@ -313,29 +320,46 @@
                         </label>
                       </div>
 
-                      <div *ngIf="imagePreview[i]" class="image">
+                      <div *ngIf="imagePreview[campaignAssets.length - 1]" class="image">
                         <div class="image-preview">
-                          <img [src]="imagePreview[i]" alt="Asset preview" />
+                          <img [src]="imagePreview[campaignAssets.length - 1]" alt="Asset preview" />
                         </div>
                         <p class="clickable">
-                          <nb-icon (click)="removeCampaignAsset(i)" icon="close-circle" status="danger"></nb-icon>
+                          <nb-icon
+                            (click)="
+                              imagePreview[campaignAssets.length - 1] = null;
+                              campaignAssets
+                                .at(campaignAssets.length - 1)
+                                .get('image')
+                                .setValue(null)
+                            "
+                            icon="close-circle"
+                            status="danger"
+                          ></nb-icon>
                         </p>
                       </div>
 
                       <div>
-                        <label class="label" for="headline-{{ i }}">Headline <span class="required"> *</span></label>
+                        <label [for]="'headline-' + (campaignAssets.length - 1)" class="label"
+                          >Headline <span class="required"> *</span></label
+                        >
                         <div class="input">
                           <commudle-input
-                            id="headline-{{ i }}"
+                            [id]="'headline-' + (campaignAssets.length - 1)"
                             placeholder="Enter Your Headline Text"
-                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.headline')?.value"
-                            (valueChange)="handleArrayFormInput($event, 'headline', i, 'campaign_assets')"
+                            [inputValue]="
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')?.value
+                            "
+                            (valueChange)="
+                              handleArrayFormInput($event, 'headline', campaignAssets.length - 1, 'campaign_assets')
+                            "
                             [type]="'text'"
                           ></commudle-input>
                           <div
                             *ngIf="
-                              campaignForm.get('campaign_assets.' + i + '.headline')?.invalid &&
-                              campaignForm.get('campaign_assets.' + i + '.headline')?.touched
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')
+                                ?.invalid &&
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')?.touched
                             "
                             class="alert-container"
                           >
@@ -345,18 +369,24 @@
                       </div>
 
                       <div>
-                        <label class="label" for="url-{{ i }}">Destination URL <span class="required"> *</span></label>
+                        <label [for]="'url-' + (campaignAssets.length - 1)" class="label"
+                          >Destination URL <span class="required"> *</span></label
+                        >
                         <div class="creative-assets-input">
                           <commudle-input
-                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
-                            (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
+                            [inputValue]="
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.value
+                            "
+                            (valueChange)="
+                              handleArrayFormInput($event, 'url', campaignAssets.length - 1, 'campaign_assets')
+                            "
                             placeholder="eg: https://www.commudle.com/"
                             [type]="'text'"
                           ></commudle-input>
                           <div
                             *ngIf="
-                              campaignForm.get('campaign_assets.' + i + '.url')?.invalid &&
-                              campaignForm.get('campaign_assets.' + i + '.url')?.touched
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.invalid &&
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.touched
                             "
                             class="alert-container"
                           >
@@ -378,8 +408,8 @@
                           nbButton
                           status="primary"
                           shape="semi-round"
-                          (click)="addCampaignAsset($event, i)"
-                          [disabled]="campaignAssets.at(i).invalid"
+                          (click)="addAsset(campaignAssets.length - 1)"
+                          [disabled]="campaignAssets.at(campaignAssets.length - 1).invalid"
                         >
                           Save Asset
                         </button>
@@ -416,7 +446,7 @@
 
         <!-- [disabled]="!campaignForm.valid" -->
         <div class="next-button">
-          <button nbButton status="primary" shape="semi-round" (click)="updateCampaign()">
+          <button nbButton shape="semi-round" (click)="updateCampaign()">
             Submit For Approval &nbsp;
             <fa-icon [icon]="icons.faArrowRight"></fa-icon>
           </button>
