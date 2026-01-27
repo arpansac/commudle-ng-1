@@ -93,28 +93,20 @@
                     <fa-icon [icon]="icons.faPlus"></fa-icon>
                     Add teams
                   </button>
-                  <button
-                    class="no-teams-compact cancel-btn"
-                    (click)="openCancelSlotDialog(slot, i)"
-                    [disabled]="
-                      slot.status === ERoundMentorSlotStatus.CANCELLED ||
-                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
-                    "
-                  >
+                  @if(slot.status === ERoundMentorSlotStatus.CANCELLED || slot.status ===
+                  ERoundMentorSlotStatus.CANCELLED_BY_MENTOR) {
+                  <button class="no-teams-compact activate-btn" (click)="openActivateSlotDialog(slot, i)">
+                    <fa-icon [icon]="icons.faCheck"></fa-icon>
+                    Activate slot
+                  </button>
+                  } @else {
+                  <button class="no-teams-compact cancel-btn" (click)="openCancelSlotDialog(slot, i)">
                     <fa-icon [icon]="icons.faXmark"></fa-icon>
                     Cancel slot
                   </button>
+                  }
                 </div>
                 }
-                <div
-                  *ngIf="
-                    slot.status === ERoundMentorSlotStatus.CANCELLED ||
-                    slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
-                  "
-                  class="slot-cancelled"
-                >
-                  Cancelled
-                </div>
               </td>
             </tr>
           </tbody>
@@ -335,6 +327,24 @@
     <nb-card-footer>
       <button nbButton status="primary" (click)="updateMeetingLocation(ref)">Update</button>
       <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #activateSlotDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Activate Slot</div>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to activate this slot?</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" (click)="activateSlot(); ref.close(false)">Yes, Activate</button>
+      <button nbButton (click)="ref.close(false)">No</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

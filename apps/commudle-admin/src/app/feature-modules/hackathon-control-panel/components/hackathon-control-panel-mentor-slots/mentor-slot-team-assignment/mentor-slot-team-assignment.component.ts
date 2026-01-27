@@ -12,7 +12,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import { ERoundMentorSlotStatus, IHackathonJudge, IRound, IRoundMentorSlot } from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
@@ -35,8 +35,9 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   isSlotCancelled = false;
 
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
+  @ViewChild('activateConfirmDialog') activateConfirmDialog: TemplateRef<any>;
 
-  readonly icons = { faPlus, faXmark };
+  readonly icons = { faPlus, faXmark, faCheck };
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -82,6 +83,32 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
         this.cancelMentorSlot();
       }
     });
+  }
+
+  onActivateSlot(event: Event): void {
+    event.stopPropagation();
+    this.dialogService.open(this.activateConfirmDialog).onClose.subscribe((confirmed) => {
+      if (confirmed) {
+        this.activateMentorSlot();
+      }
+    });
+  }
+
+  activateMentorSlot(): void {
+    const slot = this.roundMentorSlots[this.index];
+    if (!slot) return;
+
+    this.roundMentorSlotService
+      .updateStatus(slot.id, ERoundMentorSlotStatus.OPEN)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.isSlotCancelled = false;
+          this.toastrService.successDialog('Slot activated successfully');
+          this.cdr.markForCheck();
+          this.cancelSlot.emit();
+        },
+      });
   }
 
   cancelMentorSlot(): void {

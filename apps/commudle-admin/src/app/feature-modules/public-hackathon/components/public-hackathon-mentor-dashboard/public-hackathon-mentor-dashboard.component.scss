@@ -93,6 +93,11 @@ nb-card {
                 @apply hover:com-bg-red-100;
               }
 
+              &.activate-btn {
+                @apply com-text-green-500;
+                @apply hover:com-bg-green-100;
+              }
+
               &:disabled {
                 @apply com-cursor-not-allowed com-opacity-50;
                 @apply hover:com-bg-transparent;

@@ -27,7 +27,7 @@ import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';
 import moment from 'moment';
-import { faEdit, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 
@@ -59,11 +59,13 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     faPlus,
     faXmark,
     faEdit,
+    faCheck,
   };
 
   @ViewChild('ProblemStatementView') problemStatementView: TemplateRef<any>;
   @ViewChild('addTeamDialog') addTeamDialog: TemplateRef<any>;
   @ViewChild('cancelSlotDialog') cancelSlotDialog: TemplateRef<any>;
+  @ViewChild('activateSlotDialog') activateSlotDialog: TemplateRef<any>;
   @ViewChild('updateMeetingLocationDialog') updateMeetingLocationDialog: TemplateRef<any>;
 
   meetingLocation = '';
@@ -202,6 +204,24 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         next: () => {
           this.toastrService.successDialog('Slot cancelled successfully');
           this.selectedSlot.status = ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
+        },
+      });
+  }
+
+  openActivateSlotDialog(slot: IRoundMentorSlot, index: number): void {
+    this.selectedSlot = slot;
+    this.selectedSlotIndex = index;
+    this.dialogService.open(this.activateSlotDialog);
+  }
+
+  activateSlot(): void {
+    this.roundMentorSlotService
+      .updateStatus(this.selectedSlot.id, ERoundMentorSlotStatus.OPEN)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.toastrService.successDialog('Slot activated successfully');
+          this.selectedSlot.status = ERoundMentorSlotStatus.OPEN;
         },
       });
   }

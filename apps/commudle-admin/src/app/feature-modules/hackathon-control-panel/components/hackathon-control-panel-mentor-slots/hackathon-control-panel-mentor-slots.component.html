@@ -45,19 +45,19 @@
   @if(value.meeting_location){ @if(value.meeting_location.startsWith('http://') ||
   value.meeting_location.startsWith('https://')){
   <div class="meeting-location">
-    <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer">
-      {{ value.meeting_location }}
-    </a>
+    <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer"> {{ value.meeting_location }} </a
+    ><button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+      <fa-icon [icon]="icons.faEdit"></fa-icon>
+    </button>
   </div>
   }@else {
   <div class="meeting-location">
     {{ value.meeting_location }}
+    <button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+      <fa-icon [icon]="icons.faEdit"></fa-icon>
+    </button>
   </div>
-  } &nbsp;
-  <button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
-    <fa-icon [icon]="icons.faEdit"></fa-icon>
-  </button>
-  }@else {
+  } }@else {
   <button
     nbButton
     size="small"
@@ -85,13 +85,13 @@
     @if(column.round?.round_mentor_slot_rule?.slot_times){
     <button
       nbButton
-      size="small"
+      size="tiny"
       status="primary"
       ghost
       outline
       (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
     >
-      <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit Slot Rule
+      <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit Slot Rules
     </button>
     <div class="slot-rule-times">
       <div class="slot-times-list">
@@ -265,7 +265,8 @@
     </div>
 
     <div class="assigned-teams">
-      <h4>Assigned Teams</h4>
+      <h4 class="com-my-1">Assigned Teams</h4>
+
       <div class="team-tags">
         <nb-tag
           *ngFor="let booking of selectedSlot?.round_mentor_slot_bookings"
@@ -278,6 +279,7 @@
     </div>
 
     <div class="search-section">
+      <commudle-alert [info]="true" message="Only teams allocated to this mentor are visible here."></commudle-alert>
       <h3>Add Teams</h3>
       <input
         nbInput

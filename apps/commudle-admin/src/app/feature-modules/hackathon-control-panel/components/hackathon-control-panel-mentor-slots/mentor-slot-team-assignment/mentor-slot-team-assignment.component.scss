@@ -19,7 +19,7 @@
       @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
 
       .team-name {
-        @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
+        @apply com-px-3 com-text-primary-500 com-font-medium com-text-xs;
       }
     }
   }
@@ -42,6 +42,11 @@
       &.cancel-btn {
         @apply com-text-red-500;
         @apply hover:com-bg-red-100;
+      }
+
+      &.activate-btn {
+        @apply com-text-green-500;
+        @apply hover:com-bg-green-100;
       }
 
       &:disabled {
