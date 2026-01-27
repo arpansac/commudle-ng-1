@@ -8,4 +8,5 @@ export interface IRoundMentorSlotRule {
   created_by_id: number;
   round_id: number;
   total_slots: number;
+  slot_times: { starts_at: Date; ends_at: Date }[];
 }

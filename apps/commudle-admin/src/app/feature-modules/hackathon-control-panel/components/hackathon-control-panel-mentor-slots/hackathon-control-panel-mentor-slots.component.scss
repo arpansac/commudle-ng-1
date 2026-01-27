@@ -22,7 +22,7 @@
 }
 
 .mentor-info {
-  @apply com-flex com-items-center com-gap-3;
+  @apply com-flex com-items-center com-gap-3 com-z-20;
 
   .mentor-avatar {
     @apply com-w-10 com-h-10 com-rounded-full com-object-cover;
@@ -62,10 +62,10 @@
 }
 
 .slots-container {
-  @apply com-flex com-flex-col com-gap-2 com-p-2;
+  @apply com-flex com-flex-col com-gap-2 com-py-2 com-px-4;
 
   .full-size-btn {
-    @apply com-w-full com-h-full com-min-h-[60px];
+    @apply com-w-max com-h-full com-min-h-[60px];
   }
 }
 
@@ -123,10 +123,10 @@
 }
 
 .round-header {
-  @apply com-flex com-flex-col com-gap-1 com-relative com-w-full;
+  @apply com-relative com-w-full;
 
   .round-header-content {
-    @apply com-flex com-flex-col com-gap-1;
+    @apply com-flex com-flex-col com-gap-1 com-mb-1;
 
     .round-header-name {
       @apply com-text-Yankees-Blue com-text-sm com-font-semibold;
@@ -154,10 +154,26 @@
     }
   }
 
+  .slot-rule-times {
+    @apply com-mt-2;
+
+    .slot-time-label {
+      @apply com-text-xs com-font-semibold com-text-gray-700 com-mb-2 com-block;
+    }
+
+    .slot-times-list {
+      @apply com-flex com-gap-4;
+
+      .slot-time-item {
+        @apply com-text-xs com-text-gray-600 com-bg-gray-100 com-px-1 com-py-1 com-rounded com-text-center com-w-36;
+      }
+    }
+  }
+
   .slot-rules-action {
-    @apply com-absolute -com-bottom-20 com-left-0 com-right-0;
+    @apply com-absolute -com-bottom-40 com-left-0 com-right-0 com-z-[2];
     button {
-      @apply com-z-[2];
+      @apply com-w-full com-h-32;
     }
   }
 }

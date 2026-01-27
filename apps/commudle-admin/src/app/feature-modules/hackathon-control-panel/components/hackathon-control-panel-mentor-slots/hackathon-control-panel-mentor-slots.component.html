@@ -78,19 +78,24 @@
         >
       </span>
     </div>
-    @if(column.round.round_mentor_slot_rule){
-
+    @if(column.round?.round_mentor_slot_rule?.slot_times){
     <button
       nbButton
       size="small"
       status="primary"
       ghost
-      class="full-size-btn"
       outline
       (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
     >
       <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit Slot Rule
     </button>
+    <div class="slot-rule-times">
+      <div class="slot-times-list">
+        <span *ngFor="let slotTime of column.round.round_mentor_slot_rule.slot_times" class="slot-time-item">
+          {{ moment(slotTime.starts_at).format('h:mm A') }} - {{ moment(slotTime.ends_at).format('h:mm A') }}
+        </span>
+      </div>
+    </div>
     }@else {
     <div class="slot-rules-action">
       <button
@@ -230,7 +235,7 @@
 >
   <div class="sidebar-content">
     <div class="sidebar-info">
-      @if (selectedMentor) {
+      @if (selectedMentor && selectedSlot) {
       <div class="mentor-info">
         <img
           *ngIf="selectedMentor.photo?.i320"
@@ -246,9 +251,15 @@
           <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
         </div>
       </div>
+
+      <span><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</span>
+      <span>
+        <strong>Slot:</strong>
+        <span class="slot-time-item">
+          {{ moment(selectedSlot?.starts_at).format('h:mm A') }} - {{ moment(selectedSlot?.ends_at).format('h:mm A') }}
+        </span>
+      </span>
       }
-      <p><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</p>
-      <p><strong>Slot:</strong> {{ selectedSlot?.id }}</p>
     </div>
 
     <div class="assigned-teams">
