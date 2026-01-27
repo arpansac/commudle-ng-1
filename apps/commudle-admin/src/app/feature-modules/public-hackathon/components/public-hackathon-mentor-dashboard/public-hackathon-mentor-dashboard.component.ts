@@ -8,8 +8,6 @@ import {
   EDbModels,
   IHackathonTeamWithScoreAndSubmissions,
   IHackathonJudge,
-  EHackathonJudgeType,
-  EJudgeInvitationStatus,
   IRoundMentorSlot,
   ERoundMentorSlotStatus,
   IHackathonTeam,
@@ -153,7 +151,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       .indexByRoundMentor(this.selectedRound.id, this.currentMentor.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((slots) => {
-        console.log('🚀 ~ PublicHackathonMentorDashboardComponent ~ loadMentorSlots ~ slots:', slots);
         this.roundMentorSlots = slots;
       });
   }
@@ -184,9 +181,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.toastrService.successDialog('Team assigned successfully');
           dialogRef.close();
         },
-        error: () => {
-          this.toastrService.errorDialog('Failed to assign team');
-        },
       });
   }
 
@@ -196,18 +190,14 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     this.dialogService.open(this.cancelSlotDialog);
   }
 
-  cancelSlot(dialogRef: any): void {
+  cancelSlot(): void {
     this.roundMentorSlotService
       .updateStatus(this.selectedSlot.id, ERoundMentorSlotStatus.CANCELLED_BY_MENTOR)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.toastrService.successDialog('Slot cancelled successfully');
-          this.loadMentorSlots();
-          dialogRef.close();
-        },
-        error: () => {
-          this.toastrService.errorDialog('Failed to cancel slot');
+          this.selectedSlot.status = ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
         },
       });
   }

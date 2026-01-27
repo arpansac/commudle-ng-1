@@ -283,7 +283,7 @@
       <p>Are you sure you want to cancel this slot?</p>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="danger" (click)="ref.close(true)">Yes, Cancel</button>
+      <button nbButton status="danger" (click)="cancelSlot(); ref.close(false)">Yes, Cancel</button>
       <button nbButton (click)="ref.close(false)">No</button>
     </nb-card-footer>
   </nb-card>
