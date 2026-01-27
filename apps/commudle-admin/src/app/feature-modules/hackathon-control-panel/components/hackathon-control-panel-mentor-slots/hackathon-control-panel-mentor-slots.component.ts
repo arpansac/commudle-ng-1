@@ -237,42 +237,26 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   loadSlotRule(roundId: number): void {
     const currentRound = this.rounds.find((r) => r.id === roundId);
-    console.log('🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadSlotRule ~ currentRound:', currentRound);
-    // TODO: get data from round api and remove show by round or extra service to all api
-    this.roundMentorSlotRulesService.showByRound(roundId).subscribe({
-      next: (data) => {
-        this.currentSlotRule = currentRound.round_mentor_slot_rule;
-        if (this.currentSlotRule) {
-          this.slotRuleForm.patchValue({
-            booking_open: data.booking_open,
-            starts_at: moment.utc(data.starts_at).local().format('YYYY-MM-DDTHH:mm'),
-            ends_at: moment.utc(data.ends_at).local().format('YYYY-MM-DDTHH:mm'),
-            slot_length: data.slot_length,
-            max_teams_per_slot: data.max_teams_per_slot,
-          });
-        } else {
-          this.slotRuleForm.patchValue({
-            booking_open: true,
-            starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
-            ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
-            slot_length: 30,
-            max_teams_per_slot: 1,
-          });
-        }
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.slotRuleForm.patchValue({
-          booking_open: false,
-          starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
-          ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
-          slot_length: 30,
-          max_teams_per_slot: 1,
-        });
-        this.currentSlotRule = null;
-        this.cdr.markForCheck();
-      },
-    });
+    this.currentSlotRule = currentRound?.round_mentor_slot_rule || null;
+
+    if (this.currentSlotRule) {
+      this.slotRuleForm.patchValue({
+        booking_open: this.currentSlotRule.booking_open,
+        starts_at: moment.utc(this.currentSlotRule.starts_at).local().format('YYYY-MM-DDTHH:mm'),
+        ends_at: moment.utc(this.currentSlotRule.ends_at).local().format('YYYY-MM-DDTHH:mm'),
+        slot_length: this.currentSlotRule.slot_length,
+        max_teams_per_slot: this.currentSlotRule.max_teams_per_slot,
+      });
+    } else {
+      this.slotRuleForm.patchValue({
+        booking_open: true,
+        starts_at: currentRound?.date ? moment(currentRound.date).format('YYYY-MM-DDTHH:mm') : '',
+        ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
+        slot_length: 30,
+        max_teams_per_slot: 1,
+      });
+    }
+    this.cdr.markForCheck();
   }
 
   saveSlotRules(dialogRef: any): void {
