@@ -1,5 +1,5 @@
 .heading {
-  @apply com-font-semibold com-text-lg com-text-Yankees-Blue com-m-0 com-mb-10;
+  @apply com-font-semibold com-text-lg com-text-Yankees-Blue com-m-0 com-mb-5 md:com-mb-10;
 }
 
 // .form {
@@ -60,7 +60,7 @@ input[type='file'] {
 }
 
 .left-column {
-  @apply com-bg-Bright-Gray com-p-8 com-rounded-b-md;
+  @apply com-bg-Bright-Gray com-p-4 md:com-p-8 com-rounded-b-md;
 }
 
 nb-accordion {
