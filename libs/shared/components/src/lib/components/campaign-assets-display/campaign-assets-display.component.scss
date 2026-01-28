@@ -17,8 +17,12 @@
     @apply com-w-full com-flex-shrink-0 com-flex-grow-0 com-rounded-md;
     flex: 0 0 100%; /* Each slide takes full width */
 
+    a {
+      @apply com-no-underline;
+    }
+
     .slider-image {
-      @apply com-w-full com-h-full com-cursor-pointer com-object-contain com-overflow-hidden com-rounded-md;
+      @apply com-w-full com-cursor-pointer com-object-contain com-overflow-hidden com-rounded-md;
     }
   }
 }
@@ -28,4 +32,20 @@
   img {
     @apply com-h-full com-mx-auto;
   }
+}
+
+.campaign-image-footer {
+  @apply com-flex com-flex-row com-justify-between com-items-center com-gap-4;
+}
+
+.campaign-url {
+  @apply com-m-0 com-text-xs com-font-normal com-text-Yankees-Blue;
+}
+
+.learn-more-button {
+  @apply com-border-Yankees-Blue com-text-Yankees-Blue #{!important};
+}
+
+.default-image-container {
+  @apply com-flex com-flex-col com-gap-3;
 }

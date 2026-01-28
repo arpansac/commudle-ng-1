@@ -453,11 +453,14 @@
         </div>
       </div>
       <div class="right-column">
-        <commudle-campaign-assets-display
-          [defaultImageUrl]="defaultUrl"
-          [defaultImage]="staticAssets.campaign_default_image"
-          [campaignWithoutType]="true"
-        ></commudle-campaign-assets-display>
+        <div class="right-column-container">
+          <commudle-campaign-assets-display
+            [defaultImageUrl]="defaultUrl"
+            [defaultImage]="staticAssets.campaign_default_image"
+            [campaignPreview]="campaign"
+            [showCampaignPreview]="true"
+          ></commudle-campaign-assets-display>
+        </div>
       </div>
     </div>
   </div>

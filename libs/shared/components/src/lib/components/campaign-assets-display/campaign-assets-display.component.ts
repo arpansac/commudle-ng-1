@@ -4,10 +4,12 @@ import {
   Component,
   ElementRef,
   Inject,
+  PLATFORM_ID,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -26,10 +28,12 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./campaign-assets-display.component.scss'],
   standalone: false,
 })
-export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() defaultImage: string;
   @Input() defaultImageUrl: string;
   @Input() campaignTypeSlug: string;
+  @Input() showCampaignPreview = false;
+  @Input() campaignPreview: ICampaign;
   campaign: ICampaign;
   currentSlide = 0;
   slidesCount = 0;
@@ -65,22 +69,49 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   ngOnInit() {
-    // if (this.campaignTypeSlug) {
-    //   this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
-    //     if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-    //       this.campaign = data;
-    //       this.slidesCount = this.campaign.campaign_assets.length;
-    //       // SSR-safe: avoid starting intervals on the server.
-    //       if (this.isBrowser) {
-    //         this.startAutoSlide();
-    //       }
-    //       this.userEngagementRecordForm.patchValue({
-    //         parent_id: this.campaign.id,
-    //         parent_type: EDbModels.CAMPAIGN,
-    //       });
-    //     }
-    //   });
-    // }
+    if (this.showCampaignPreview && this.campaignPreview) {
+      console.log('campaignPreview', this.campaignPreview);
+      this.applyCampaignFromInput();
+    }
+    if (!this.campaign && this.campaignTypeSlug) {
+      console.log('campaignTypeSlug', this.campaignTypeSlug);
+      this.fetchCampaignBySlug();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['campaignPreview'] && this.showCampaignPreview) {
+      this.applyCampaignFromInput();
+    }
+  }
+
+  private applyCampaignFromInput(): void {
+    const source = this.campaignPreview;
+    if (!source.campaign_assets?.length) {
+      return;
+    }
+    console.log('source', source);
+    this.campaign = source;
+    this.slidesCount = source.campaign_assets.length;
+    this.startAutoSlide();
+    this.userEngagementRecordForm.patchValue({
+      parent_id: source.id,
+      parent_type: EDbModels.CAMPAIGN,
+    });
+  }
+
+  private fetchCampaignBySlug(): void {
+    this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+      if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+        this.campaign = data;
+        this.slidesCount = this.campaign.campaign_assets.length;
+        this.startAutoSlide();
+        this.userEngagementRecordForm.patchValue({
+          parent_id: this.campaign.id,
+          parent_type: EDbModels.CAMPAIGN,
+        });
+      }
+    });
   }
 
   ngAfterViewInit() {
