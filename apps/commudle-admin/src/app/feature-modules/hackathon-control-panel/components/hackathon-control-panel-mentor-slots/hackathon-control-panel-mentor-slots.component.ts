@@ -32,7 +32,6 @@ import {
   IRoundMentorSlot,
   IRoundMentorSlotBooking,
 } from '@commudle/shared-models';
-// TODO: try to shift this inside lib
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
 import {
@@ -44,12 +43,7 @@ import {
   RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-// TODO: define path inside app config
-import {
-  DataTableColumn,
-  DataTableRow,
-  DataTableConfig,
-} from '../../../../app-shared-components/data-table/data-table.component';
+import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
@@ -62,7 +56,6 @@ import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/w
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterViewInit, OnDestroy {
-  // TODO: recheck all this and remove extra variables if any
   hackathonId: string;
   mentors: IHackathonJudge[] = [];
   rounds: IRound[] = [];
@@ -441,5 +434,3 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     return end.isAfter(start) ? null : { dateRange: true };
   }
 }
-
-// TODO: check all service and all new api remove if not needed from backend as well
