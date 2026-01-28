@@ -2,59 +2,6 @@
   @apply com-font-semibold com-text-lg com-text-Yankees-Blue com-m-0 com-mb-5 md:com-mb-10;
 }
 
-// .form {
-//   form {
-//     @apply com-grid com-grid-cols-2 com-gap-8;
-//     div {
-//       label {
-//         @apply com-pb-1;
-//         .required {
-//           @apply com-text-red-500;
-//         }
-//       }
-//       .input {
-//         @apply com-mt-1 com-w-full;
-//       }
-//     }
-//     .image-info {
-//       @apply com-text-sm com-italic com-font-medium com-text-gray-500 com-mb-0;
-//     }
-//     .image-upload-container {
-//       @apply com-border com-border-solid com-border-Bright-Gray com-w-full  com-rounded-md com-px-5 com-py-2;
-//     }
-//   }
-//   &.creative-assets {
-//     form {
-//       @apply com-block;
-//       .creative-assets-input {
-//         @apply com-mt-1 com-w-full;
-//         textarea {
-//           @apply com-w-full com-bg-transparent placeholder:com-text-gray-400 com-text-black com-text-sm com-border com-border-solid com-border-slate-200 com-rounded-md com-px-3 com-py-2 com-transition com-duration-300  focus:com-outline-none focus:com-border-primary-500 hover:com-border-primary-300;
-//         }
-//       }
-//       .creative-assets-controller {
-//         @apply com-mb-4;
-//         .preview-image {
-//           @apply com-aspect-[16/9] com-h-40 com-mb-2 com-border com-border-solid com-border-Bright-Gray com-p-1 com-rounded-md com-flex com-justify-center com-items-center;
-//           img {
-//             @apply com-w-full com-h-full com-object-contain;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-// .budget-amount {
-//   @apply com-flex com-gap-1 com-items-center;
-//   .budget {
-//     @apply com-font-bold com-text-3xl com-text-green-600;
-//   }
-//   .per-day {
-//     @apply com-rounded-2xl com-border com-border-solid com-border-Bright-Gray com-bg-gray-500 com-font-medium com-text-sm com-text-white com-px-1;
-//   }
-// }
-
 input[type='file'] {
   @apply com-bg-transparent;
 }
@@ -118,20 +65,8 @@ nb-accordion {
             @apply com-mb-2 com-w-full;
           }
 
-          .checkbox-container {
-            @apply com-mb-4;
-          }
-
-          .time-input {
-            @apply com-mt-2;
-          }
-
           .end-date-input {
             @apply com-mt-2;
-          }
-
-          select {
-            @apply com-w-full com-bg-transparent placeholder:com-text-gray-400 com-text-black com-text-sm com-border com-border-solid com-border-slate-200 com-rounded-md com-px-3 com-py-2 com-transition com-duration-300 focus:com-outline-none focus:com-border-primary-500 hover:com-border-primary-300;
           }
 
           .total-budget-container {
@@ -140,10 +75,6 @@ nb-accordion {
 
           .budget-info-row {
             @apply com-flex com-flex-row com-bg-gray-50 com-rounded-lg com-p-4;
-
-            .info-label {
-              @apply com-m-0 com-text-xs com-font-medium com-text-Yankees-Blue;
-            }
 
             .info-value {
               @apply com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
@@ -171,10 +102,6 @@ nb-accordion {
   @apply com-text-Infra-Red;
 }
 
-.gst-container {
-  @apply com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-pt-5;
-}
-
 .alert-container {
   @apply com-flex com-mt-2;
 }
@@ -187,6 +114,10 @@ nb-accordion {
   @apply com-flex com-flex-col com-mb-4;
 }
 
+.selected-communities-container {
+  @apply com-flex com-flex-row com-gap-2 com-mt-2 com-flex-wrap;
+}
+
 .image-container {
   @apply com-flex com-flex-col com-items-center com-justify-center com-w-full com-h-full com-border com-border-dashed com-border-Cadet-Grey com-bg-white com-rounded-md com-text-sm com-font-medium com-text-Yankees-Blue com-p-4;
 
@@ -197,10 +128,6 @@ nb-accordion {
   nb-icon {
     @apply com-w-10 com-h-8 com-text-Cadet-Grey;
   }
-}
-
-.uploaded-image {
-  @apply com-flex com-flex-col com-gap-1;
 }
 
 .images {
@@ -227,10 +154,6 @@ nb-accordion {
 
 .image-text-content {
   @apply com-flex com-flex-col com-items-center com-justify-center com-text-sm com-font-medium com-text-Yankees-Blue com-gap-1 com-m-0;
-}
-
-.images-list {
-  @apply com-flex com-flex-row com-mt-4 com-gap-4;
 }
 
 .browse-text {

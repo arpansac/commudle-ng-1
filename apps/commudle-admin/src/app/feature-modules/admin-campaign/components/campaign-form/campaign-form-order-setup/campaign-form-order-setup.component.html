@@ -171,7 +171,6 @@
                     <div class="input">
                       <commudle-input
                         #addressInputElement
-                        [id]="'addressInput'"
                         [placeholder]="'Enter Region, City, Country'"
                         [inputValue]="campaignForm.get('locations').value"
                         (blurEvent)="campaignForm.get('locations').markAsTouched()"
@@ -213,10 +212,7 @@
                         </nb-option>
                       </nb-autocomplete>
                       <!-- Display selected communities as tags -->
-                      <div
-                        *ngIf="selectedCommunities.length > 0"
-                        style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px"
-                      >
+                      <div *ngIf="selectedCommunities.length > 0" class="selected-communities-container">
                         <nb-tag
                           *ngFor="let community of selectedCommunities; let i = index"
                           [text]="community.name"
@@ -422,31 +418,8 @@
           </nb-accordion-item>
         </nb-accordion>
 
-        <!-- Tags
-        <nb-card>
-          <nb-card-header>
-            <a [routerLink]="[]" fragment="tags">
-              <span class="left">Tags</span>
-            </a>
-          </nb-card-header>
-          <nb-card-body>
-            <app-tag
-              (tagAdd)="onTagAdd($event)"
-              (tagDelete)="onTagDelete($event)"
-              [backgroundColor]="'com-bg-tAnti-Flash'"
-              [editable]="true"
-              [fontColor]="'com-text-tYankees-Blue'"
-              [tags]="tags"
-              [minTagLimit]="false"
-              [showAutoSuggestDropDown]="true"
-              [showSuggestedTags]="true"
-            ></app-tag>
-          </nb-card-body>
-        </nb-card> -->
-
-        <!-- [disabled]="!campaignForm.valid" -->
         <div class="next-button">
-          <button nbButton shape="semi-round" (click)="updateCampaign()">
+          <button nbButton shape="semi-round" [disabled]="!campaignForm.valid" (click)="updateCampaign()">
             Submit For Approval &nbsp;
             <fa-icon [icon]="icons.faArrowRight"></fa-icon>
           </button>
@@ -465,184 +438,6 @@
     </div>
   </div>
 </div>
-
-<!-- <div>
-                    <label class="label" for="contact_name">Name<span class="required"> *</span></label>
-                    <div class="input">
-                      <commudle-input
-                        placeholder="Name"
-                        [inputValue]="campaignForm.get('contact_name').value"
-                        (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
-                        (valueChange)="handleInput($event, 'contact_name'); generateCampaignName()"
-                      ></commudle-input>
-                      <commudle-alert
-                        [error]="
-                          campaignForm.get('contact_name')?.invalid &&
-                          campaignForm.get('contact_name')?.touched &&
-                          campaignForm.get('contact_name')?.hasError('required')
-                        "
-                        errorMessage="Contact Name is required"
-                      ></commudle-alert>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="label" for="contact_email">Email Address <span class="required"> *</span></label>
-                    <div class="input">
-                      <commudle-input
-                        placeholder="Email"
-                        [inputValue]="campaignForm.get('contact_email').value"
-                        (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
-                        (valueChange)="handleInput($event, 'contact_email')"
-                      ></commudle-input>
-                      <commudle-alert
-                        [error]="
-                          campaignForm.get('contact_email')?.invalid &&
-                          campaignForm.get('contact_email')?.touched &&
-                          campaignForm.get('contact_email')?.hasError('required')
-                        "
-                        errorMessage="Email is required"
-                      ></commudle-alert>
-                      <commudle-alert
-                        [error]="
-                          campaignForm.get('contact_email')?.touched &&
-                          campaignForm.get('contact_email')?.hasError('email')
-                        "
-                        errorMessage="Invalid Email address"
-                      ></commudle-alert>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="label" for="company_name">Company Name<span class="required"> *</span></label>
-                    <div class="input">
-                      <commudle-input
-                        [placeholder]="'Name of your company'"
-                        [inputValue]="campaignForm.get('company_name').value"
-                        (blurEvent)="campaignForm.get('company_name').markAsTouched()"
-                        (valueChange)="handleInput($event, 'company_name'); generateCampaignName()"
-                      ></commudle-input>
-                      <div
-                        *ngIf="
-                          campaignForm.get('company_name')?.invalid &&
-                          campaignForm.get('company_name')?.touched &&
-                          campaignForm.get('company_name')?.hasError('required')
-                        "
-                        class="alert-container"
-                      >
-                        <commudle-alert [error]="true" errorMessage="Company name is required"></commudle-alert>
-                      </div>
-                    </div>
-                  </div> -->
-<!-- <div>
-                    <label>Need GST Invoice?<span class="required"> *</span></label>
-                    <div class="checkbox-container">
-                      <nb-checkbox formControlName="gst_invoice" labelPosition="right" size="tiny" status="basic">
-                        I need a GST Invoice
-                      </nb-checkbox>
-                    </div>
-                  </div> -->
-<!-- GST Invoice Fields -->
-<!-- <div
-                    *ngIf="campaignForm.get('gst_invoice').value"
-                    [ngClass]="{ 'gst-container': campaignForm.get('gst_invoice').value }"
-                  >
-                    <div>
-                      <label for="gst_number">GST Number<span class="required"> *</span></label>
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Enter your 15-digit GSTIN'"
-                          [inputValue]="campaignForm.get('gst_number').value"
-                          (blurEvent)="campaignForm.get('gst_number').markAsTouched()"
-                          (valueChange)="handleInput($event, 'gst_number')"
-                        ></commudle-input>
-                        <div
-                          *ngIf="
-                            campaignForm.get('gst_number')?.invalid &&
-                            campaignForm.get('gst_number')?.touched &&
-                            campaignForm.get('gst_number')?.hasError('required')
-                          "
-                          class="alert-container"
-                        ></div>
-                        <commudle-alert [error]="true" errorMessage="GST Number is required"></commudle-alert>
-                      </div>
-                    </div>
-                    <div>
-                      <label for="billing_address">Billing Address<span class="required"> *</span></label>
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Enter billing address'"
-                          [inputValue]="campaignForm.get('billing_address').value"
-                          (blurEvent)="campaignForm.get('billing_address').markAsTouched()"
-                          (valueChange)="handleInput($event, 'billing_address')"
-                        ></commudle-input>
-                        <div
-                          *ngIf="
-                            campaignForm.get('billing_address')?.invalid &&
-                            campaignForm.get('billing_address')?.touched &&
-                            campaignForm.get('billing_address')?.hasError('required')
-                          "
-                          class="alert-container"
-                        >
-                          <commudle-alert [error]="true" errorMessage="Billing address is required"></commudle-alert>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="input">
-                      <commudle-input
-                        [placeholder]="'Address Line 2'"
-                        [inputValue]="campaignForm.get('billing_address_line2').value"
-                        (blurEvent)="campaignForm.get('billing_address_line2').markAsTouched()"
-                        (valueChange)="handleInput($event, 'billing_address_line2')"
-                      ></commudle-input>
-                    </div>
-                    <div>
-                      <label for="state">Select Your State<span class="required"> *</span></label>
-                      <div class="input">
-                        <select formControlName="state" (blur)="campaignForm.get('state').markAsTouched()">
-                          <option value="" disabled>Select your state</option>
-                          <option *ngFor="let state of indianStates" [value]="state">{{ state }}</option>
-                        </select>
-                        <div
-                          *ngIf="
-                            campaignForm.get('state')?.invalid &&
-                            campaignForm.get('state')?.touched &&
-                            campaignForm.get('state')?.hasError('required')
-                          "
-                          class="alert-container"
-                        ></div>
-                        <commudle-alert [error]="true" errorMessage="State is required"></commudle-alert>
-                      </div>
-                    </div>
-                    <div>
-                      <label for="contact_email">Email for Invoice<span class="required"> *</span></label>
-                      <div class="input">
-                        <commudle-input
-                          [placeholder]="'Enter your email for invoice'"
-                          [inputValue]="campaignForm.get('contact_email').value"
-                          (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
-                          (valueChange)="handleInput($event, 'contact_email')"
-                        ></commudle-input>
-                        <div
-                          *ngIf="
-                            campaignForm.get('contact_email')?.invalid &&
-                            campaignForm.get('contact_email')?.touched &&
-                            campaignForm.get('contact_email')?.hasError('required')
-                          "
-                          class="alert-container"
-                        >
-                          <commudle-alert [error]="true" errorMessage="Email for invoice is required"></commudle-alert>
-                        </div>
-                        <div
-                          *ngIf="
-                            campaignForm.get('contact_email')?.touched &&
-                            campaignForm.get('contact_email')?.hasError('email')
-                          "
-                          class="alert-container"
-                        >
-                          <commudle-alert [error]="true" errorMessage="Invalid Email address"></commudle-alert>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
 
 <!-- <div>
                         <label class="label" for="call-to-action-{{ i }}"

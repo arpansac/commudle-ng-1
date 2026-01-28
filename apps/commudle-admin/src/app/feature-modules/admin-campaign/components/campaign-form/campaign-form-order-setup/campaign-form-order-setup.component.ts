@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -9,26 +9,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignTypeSlug, IAttachedFile, EDbModels } from '@commudle/shared-models';
+import { ICampaign, ICampaignAsset, EDbModels } from '@commudle/shared-models';
 import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
 import { ISearch } from 'apps/shared-models/search.model';
-import {
-  faPlus,
-  faXmark,
-  faArrowRight,
-  faFileImage,
-  faRectangleAd,
-  faUsers,
-  faMapMarkerAlt,
-  faTag,
-  faEnvelope,
-  faChevronDown,
-  faImage,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, Subscription, switchMap } from 'rxjs';
+import { faArrowRight, faFileImage, faRectangleAd, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { distinctUntilChanged, switchMap } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { environment } from '@commudle/shared-environments';
 
@@ -38,32 +25,19 @@ import { environment } from '@commudle/shared-environments';
     styleUrls: ['./campaign-form-order-setup.component.scss'],
     standalone: false
 })
-export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   @ViewChild('addressInputElement', { read: ElementRef }) addressInputElement: ElementRef;
   campaignForm: FormGroup;
   icons = {
-    faPlus,
-    faXmark,
     faArrowRight,
     faFileImage,
     faRectangleAd,
-    faUsers,
-    faMapMarkerAlt,
-    faTag,
-    faEnvelope,
-    faChevronDown,
-    faImage,
     faTrash,
   };
   campaign: ICampaign;
-  estimatedRuntime = '3 days 24 minutes';
-  dailySpending = 600;
-
-  ECampaignTypeSlug = ECampaignTypeSlug;
-  // uploadedImagesFiles: IAttachedFile[] = [];
-  // uploadedImages = [];
+  estimatedRuntime: string;
+  dailySpending: number;
   Form1Invalid = true;
-  campaignCreated = false;
   accordion3Expanded = true;
 
   communitiesFormControl = new FormControl('');
@@ -73,7 +47,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   page = 1;
   count = 10;
   imagePreview = [];
-  assetSavedStatus: boolean[] = [false];
   staticAssets = staticAssets;
   defaultUrl = environment.app_url + '/campaigns/new';
 
@@ -108,7 +81,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
 
   ngOnInit() {
     if (this.router.url.includes('/edit/')) {
-      this.campaignCreated = true;
       this.activatedRoute.parent?.data.subscribe((data) => {
         if (data['campaign']) {
           this.campaign = data['campaign'];
@@ -142,8 +114,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     this.observeCommunitiesInput();
   }
 
-  ngOnDestroy(): void {}
-
   createCampaign() {
     const campaignData: any = {
       campaign: {
@@ -159,7 +129,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     this.campaignService.createCampaign(campaignData).subscribe((res: ICampaign) => {
       if (res) {
         this.campaign = res; // Store the created campaign
-        this.campaignCreated = true;
         this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
         // this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
         //   com_campaign_id: res.id,
@@ -204,12 +173,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     // Validate the current asset before saving
     if (currentGroup.invalid) {
       currentGroup.markAllAsTouched();
-      this.toasterService.warningDialog('Please complete the current asset details.');
-      return;
-    }
-
-    if (!this.campaign?.id) {
-      this.toasterService.warningDialog('Campaign must be created first.');
       return;
     }
 
@@ -285,11 +248,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   removeCampaignAsset(index: number) {
-    if (!this.campaign?.id) {
-      this.toasterService.warningDialog('Campaign must be created first.');
-      return;
-    }
-
     if (!this.campaign.campaign_assets || index >= this.campaign.campaign_assets.length) {
       return;
     }
@@ -304,12 +262,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     // Remove from API by updating campaign without this asset
     const formData = new FormData();
     const remainingAssets = this.campaign.campaign_assets.filter((asset) => {
-      console.log(asset, 'asset prerna');
-      console.log(asset.id, 'asset.id prerna');
-      console.log(assetId, 'assetId prerna');
       return asset.id !== assetId;
     });
-    console.log(remainingAssets, 'remainingAssets prerna');
 
     // Rebuild FormData with all assets except the one being deleted
     remainingAssets.forEach((asset, idx) => {
@@ -320,15 +274,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
       }
     });
 
-    console.log(formData, 'formData prerna');
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
-      console.log(updatedCampaign, 'updatedCampaign prerna');
       // Create a new object reference with a new array reference to ensure change detection
       this.campaign = {
         ...updatedCampaign,
         campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
       };
-      console.log(this.campaign, 'campaign prerna');
       this.loadCampaignAssetsFromApi();
       this.cdr.detectChanges();
       this.toasterService.successDialog('Asset removed successfully.');
@@ -374,10 +325,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   onFileChange(event: any, index: number) {
-    console.log(index);
-    console.log(event);
     const file = (event.target as HTMLInputElement).files?.[0];
-    console.log(file);
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
     const maxSize = 2 * 1024 * 1024; // 2 MB
 
@@ -398,19 +346,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     // Check for image dimensions
     const img = new Image();
     img.src = URL.createObjectURL(file);
-    console.log(img);
-    console.log(img.src);
     img.onload = () => {
-      console.log(img.width);
-      console.log(img.height);
-
       const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
-      console.log(campaignAssets);
-      console.log(campaignAssets.at(index));
       if (campaignAssets && campaignAssets.at(index)) {
         campaignAssets.at(index).get('image').setValue(file);
-        console.log(campaignAssets.at(index).get('image'), 'arshdeep');
-        console.log(campaignAssets.at(index), 'arshdeep 1');
         campaignAssets.at(index).get('image')?.updateValueAndValidity();
 
         // Display image preview
@@ -425,13 +364,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
   }
 
   previewImage(file: File, i) {
-    console.log(i);
-    console.log(file);
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result);
       this.imagePreview[i] = reader.result as string;
-      console.log(this.imagePreview[i]);
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
@@ -486,7 +421,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
           if (asset.id) {
             formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
           }
-          // Note: Image files are handled when assets are saved individually via addAsset()
         }
       });
     }
@@ -494,7 +428,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe({
       next: (data) => {
         if (data) {
-          // Update local state
           this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
           this.loadCampaignAssetsFromApi();
           this.cdr.detectChanges();
@@ -506,79 +439,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
         console.error('Error updating campaign:', error);
       },
     });
-  }
-
-  updateCampaign1() {
-    const formData = new FormData();
-    const formValue = this.campaignForm.value;
-
-    // Append non-file fields to FormData
-    formData.append('campaign[name]', formValue.name);
-    formData.append('campaign[budget]', formValue.budget.toString());
-    formData.append('campaign[start_at]', formValue.start_at);
-    if (formValue.end_at) {
-      formData.append('campaign[end_at]', formValue.end_at);
-    }
-
-    const locations = formValue.locations ? formValue.locations.split(',').map((l) => l.trim()) : [];
-    locations.forEach((loc) => formData.append('campaign[locations][]', loc));
-
-    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
-    communitySlugs.forEach((slug) => formData.append('campaign[communities][]', slug));
-
-    // Get all saved campaign assets from API
-    const campaignAssets = this.campaign?.campaign_assets || [];
-
-    // Check if there's a new asset in the form that hasn't been saved yet (last form in the array)
-    const lastFormIndex = this.campaignAssets.length - 1;
-    const lastForm = this.campaignAssets.at(lastFormIndex) as FormGroup;
-    const lastFormValue = lastForm?.value;
-
-    // Include all saved assets from API
-    campaignAssets.forEach((asset, index) => {
-      formData.append(`campaign[campaign_assets][${index}][headline]`, asset.headline);
-      formData.append(`campaign[campaign_assets][${index}][url]`, asset.url);
-
-      if (asset.id) {
-        formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
-      }
-    });
-
-    // If the last form has valid data, include it as a new asset
-    if (lastForm && lastForm.valid && lastFormValue.headline && lastFormValue.url) {
-      const newAssetIndex = campaignAssets.length;
-      formData.append(`campaign[campaign_assets][${newAssetIndex}][headline]`, lastFormValue.headline);
-      formData.append(`campaign[campaign_assets][${newAssetIndex}][url]`, lastFormValue.url);
-
-      if (lastFormValue.image instanceof File) {
-        formData.append(`campaign[campaign_assets][${newAssetIndex}][image]`, lastFormValue.image);
-      }
-    }
-
-    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
-      if (data) {
-        //Call Submit Api Here
-        // this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
-        //   com_campaign_id: this.campaign.id,
-        // });
-      }
-    });
-  }
-
-  updateCampaign12() {
-    const communitiesArray = this.selectedCommunities.map((c) => c.slug);
-
-    const campaignData: any = {
-      campaign: {
-        name: this.campaignForm.value.name,
-        budget: this.campaignForm.value.budget,
-        locations: this.campaignForm.value.locations ? this.campaignForm.value.locations.split(', ') : [],
-        communities: communitiesArray,
-        start_at: this.campaignForm.value.start_at,
-        end_at: this.campaignForm.value.end_at,
-      },
-    };
-    this.campaignService.updateCampaign(campaignData, this.campaign.id).subscribe((res) => {});
   }
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
@@ -625,10 +485,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
       return;
     }
 
-    if (this.campaignCreated) {
-      return;
-    }
-
     if (this.isForm1Invalid()) {
       this.Form1Invalid = true;
       return;
@@ -636,7 +492,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
       event.preventDefault();
       event.stopPropagation();
       this.Form1Invalid = false;
-      this.campaignCreated = true;
       this.createCampaign();
     }
   }
@@ -662,7 +517,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy, After
     // Ensure accordion stays open
     this.accordion3Expanded = true;
 
-    if (!this.campaignCreated || !this.campaign?.id) {
+    if (!this.campaign?.id) {
       return;
     }
 
