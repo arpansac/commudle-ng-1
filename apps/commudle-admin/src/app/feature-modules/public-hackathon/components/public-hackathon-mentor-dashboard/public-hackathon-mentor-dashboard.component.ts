@@ -67,6 +67,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
   @ViewChild('cancelSlotDialog') cancelSlotDialog: TemplateRef<any>;
   @ViewChild('activateSlotDialog') activateSlotDialog: TemplateRef<any>;
   @ViewChild('updateMeetingLocationDialog') updateMeetingLocationDialog: TemplateRef<any>;
+  @ViewChild('removeBookingDialog') removeBookingDialog: TemplateRef<any>;
 
   meetingLocation = '';
 
@@ -185,7 +186,7 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
       .subscribe({
         next: () => {
           this.toastrService.successDialog('Team assigned successfully');
-          dialogRef.close();
+          this.loadAvailableTeams();
         },
       });
   }
@@ -224,6 +225,23 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.selectedSlot.status = ERoundMentorSlotStatus.OPEN;
         },
       });
+  }
+
+  removeTeamBooking(bookingId: number): void {
+    this.dialogService.open(this.removeBookingDialog).onClose.subscribe((confirmed) => {
+      if (confirmed) {
+        this.roundMentorSlotBookingService
+          .destroy(bookingId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.toastrService.successDialog('Team removed successfully');
+              this.loadAvailableTeams();
+              this.cdr.markForCheck();
+            },
+          });
+      }
+    });
   }
 
   openAddMeetingLocationDialog(): void {
@@ -278,6 +296,15 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
           this.roundMentorSlots = [...this.roundMentorSlots];
           this.cdr.markForCheck();
         }
+        break;
+      }
+      case this.roundMentorSlotBookingChannel.ACTIONS.DESTROY: {
+        const bookingId = data.booking_id;
+        this.roundMentorSlots?.forEach((slot) => {
+          slot.round_mentor_slot_bookings = slot.round_mentor_slot_bookings.filter((b) => b.id !== bookingId);
+        });
+        this.roundMentorSlots = [...this.roundMentorSlots];
+        this.cdr.markForCheck();
         break;
       }
     }

@@ -235,8 +235,8 @@
       .team-tags {
         @apply com-flex com-flex-wrap com-gap-2;
 
-        nb-tag {
-          @apply com-mb-2;
+        .tag {
+          @apply com-m-2 com-p-3;
         }
 
         .no-teams {

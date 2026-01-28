@@ -356,3 +356,14 @@ nb-card {
 .meeting-location-add {
   @apply com-mb-4;
 }
+
+.assign-team {
+  @apply com-w-full md:com-w-[40dvw] com-max-h-90dvh;
+
+  .team-tags {
+    @apply com-flex com-flex-wrap;
+    .tag {
+      @apply com-p-1;
+    }
+  }
+}

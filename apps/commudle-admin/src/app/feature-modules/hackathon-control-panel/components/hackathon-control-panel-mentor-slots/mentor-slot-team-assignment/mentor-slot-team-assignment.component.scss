@@ -14,6 +14,9 @@
     .team-count-badge {
       @apply com-absolute com-top-0 com-right-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold com-rounded-full com-w-5 com-h-5 com-flex com-items-center com-justify-center com-z-[2];
     }
+    .team-count-badge-full {
+      @apply com-absolute com-top-0 com-right-0 com-bg-primary-500 com-text-white com-text-xs com-font-semibold com-rounded-full com-h-5 com-px-2 com-flex com-items-center com-justify-center com-z-[2];
+    }
 
     .team-summary {
       @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;

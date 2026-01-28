@@ -97,6 +97,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
   @ViewChild('roundHeaderTemplate', { static: false }) roundHeaderTemplate!: TemplateRef<unknown>;
+  @ViewChild('removeBookingDialog') removeBookingDialog: TemplateRef<any>;
 
   readonly icons = {
     faPlus,
@@ -364,6 +365,22 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.cdr.markForCheck();
         },
       });
+  }
+
+  removeTeamBooking(bookingId: number): void {
+    this.dialogService.open(this.removeBookingDialog).onClose.subscribe((confirmed) => {
+      if (confirmed) {
+        this.roundMentorSlotBookingService
+          .destroy(bookingId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.toastrService.successDialog('Team removed successfully');
+              this.cdr.markForCheck();
+            },
+          });
+      }
+    });
   }
 
   private loadRoundAndMentors(): void {

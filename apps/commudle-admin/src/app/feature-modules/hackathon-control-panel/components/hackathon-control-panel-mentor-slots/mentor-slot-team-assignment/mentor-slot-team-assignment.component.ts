@@ -65,14 +65,6 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
 
   onSlotClick(): void {
     if (this.isSlotCancelled) return;
-
-    if (
-      this.roundMentorSlots[this.index]?.round_mentor_slot_bookings?.length >=
-      this.round.round_mentor_slot_rule.max_teams_per_slot
-    ) {
-      this.toastrService.warningDialog('This slot has reached maximum capacity');
-      return;
-    }
     this.slotClick.emit(this.roundMentorSlots[this.index]);
   }
 

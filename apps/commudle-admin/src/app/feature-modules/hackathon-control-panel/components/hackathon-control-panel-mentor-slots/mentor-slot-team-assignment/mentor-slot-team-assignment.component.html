@@ -2,9 +2,14 @@
   @if(roundMentorSlots && roundMentorSlots[index]?.round_mentor_slot_bookings &&
   roundMentorSlots[index]?.round_mentor_slot_bookings?.length > 0) {
   <div class="team-cell-wrapper" [class.disabled]="isSlotCancelled" (click)="onSlotClick()">
+    @if(round.round_mentor_slot_rule.max_teams_per_slot ===
+    roundMentorSlots[index]?.round_mentor_slot_bookings?.length){
+    <div class="team-count-badge-full">Filled</div>
+    }@else {
     <div class="team-count-badge">
       {{ roundMentorSlots[index]?.round_mentor_slot_bookings?.length }}
     </div>
+    }
     <div class="team-summary custom-scrollbar">
       @for(rmsb of roundMentorSlots[index].round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
       <span class="team-name">{{ rmsb.hackathon_team.name }}</span>

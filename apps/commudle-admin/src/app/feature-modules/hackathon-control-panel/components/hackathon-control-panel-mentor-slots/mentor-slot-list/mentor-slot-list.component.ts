@@ -70,6 +70,15 @@ export class MentorSlotListComponent implements OnInit, OnDestroy {
         }
         break;
       }
+      case this.roundMentorSlotBookingChannel.ACTIONS.DESTROY: {
+        const bookingId = data.booking_id;
+        this.roundMentorSlots?.forEach((slot) => {
+          slot.round_mentor_slot_bookings = slot.round_mentor_slot_bookings.filter((b) => b.id !== bookingId);
+        });
+        this.roundMentorSlots = [...this.roundMentorSlots];
+        this.cdr.markForCheck();
+        break;
+      }
     }
   }
 }
