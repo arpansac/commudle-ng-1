@@ -48,12 +48,16 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   ) {}
 
   ngOnInit() {
-    this.isSlotCancelled = this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
+    this.isSlotCancelled =
+      this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED ||
+      this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['roundMentorSlots']) {
-      this.isSlotCancelled = this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED;
+      this.isSlotCancelled =
+        this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED ||
+        this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
       this.cdr.markForCheck();
     }
   }

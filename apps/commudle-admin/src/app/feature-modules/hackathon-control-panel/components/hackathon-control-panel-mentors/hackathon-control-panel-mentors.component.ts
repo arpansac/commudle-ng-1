@@ -26,11 +26,7 @@ import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
 import { MentorCustomEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
 import { filter, map } from 'rxjs/operators';
-import {
-  DataTableColumn,
-  DataTableRow,
-  DataTableConfig,
-} from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
+import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 

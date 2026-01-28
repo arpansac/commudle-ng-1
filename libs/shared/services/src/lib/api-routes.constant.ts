@@ -929,7 +929,6 @@ export const API_ROUTES = {
     TEAMS: {
       INDEX: 'api/v2/hackathons/teams/index', //GET
       UPDATE_OFFLINE_INVITE_STATUS: 'api/v2/hackathons/teams/update_offline_invite_status', //PUT
-      SHOW_BY_TOKEN: 'api/v2/hackathons/teams/show_by_token', //GET
       UPDATE_RSVP_BY_TOKEN: 'api/v2/hackathons/teams/update_rsvp_by_token', //PUT
       SEND_RSVP_EMAIL: 'api/v2/hackathons/teams/send_rsvp_email', //POST
       SEND_ENTRY_PASSES_EMAIL: 'api/v2/hackathons/teams/send_entry_passes_email', //POST

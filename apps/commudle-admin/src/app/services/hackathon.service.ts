@@ -655,11 +655,4 @@ export class HackathonService {
       params,
     });
   }
-
-  showTeamByToken(token: string): Observable<IHackathonTeam> {
-    const params = new HttpParams().set('token', token);
-    return this.http.get<IHackathonTeam>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.SHOW_BY_TOKEN), {
-      params,
-    });
-  }
 }

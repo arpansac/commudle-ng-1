@@ -280,7 +280,6 @@
       <div class="assigned-teams" *ngIf="selectedSlot?.round_mentor_slot_bookings?.length > 0">
         <h4>Assigned Teams</h4>
         <div class="team-tags">
-          <!--  *ngFor="let booking of selectedSlot?.round_mentor_slot_bookings" -->
           @for(booking of selectedSlot?.round_mentor_slot_bookings; track booking.id){
           <div class="tag">
             <nb-tag
