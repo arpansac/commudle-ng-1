@@ -37,7 +37,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   campaign: ICampaign;
   estimatedRuntime: string;
   dailySpending: number;
-  Form1Invalid = true;
+  form1Invalid = true;
   accordion3Expanded = true;
 
   communitiesFormControl = new FormControl('');
@@ -90,7 +90,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
               this.onSetEndDateChange();
             }
             if (!this.isForm1Invalid()) {
-              this.Form1Invalid = false;
+              this.form1Invalid = false;
             }
           });
           this.seoService.setTags(
@@ -486,12 +486,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     }
 
     if (this.isForm1Invalid()) {
-      this.Form1Invalid = true;
+      this.form1Invalid = true;
       return;
     } else {
       event.preventDefault();
       event.stopPropagation();
-      this.Form1Invalid = false;
+      this.form1Invalid = false;
       this.createCampaign();
     }
   }

@@ -117,7 +117,7 @@
           </nb-accordion-item>
 
           <!-- Budget Section -->
-          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="!Form1Invalid" (click)="onAccordion2Click($event)">
+          <nb-accordion-item [disabled]="form1Invalid" [expanded]="!form1Invalid" (click)="onAccordion2Click($event)">
             <nb-accordion-item-header>
               <div class="accordion-header-content">
                 <span class="accordion-number">2</span>
@@ -244,7 +244,7 @@
           </nb-accordion-item>
 
           <!-- Creatives and Destination URL Section -->
-          <nb-accordion-item [disabled]="Form1Invalid" [expanded]="accordion3Expanded || !Form1Invalid">
+          <nb-accordion-item [disabled]="form1Invalid" [expanded]="accordion3Expanded || !form1Invalid">
             <nb-accordion-item-header (click)="onAccordion3Click($event)">
               <div class="accordion-header-content">
                 <span class="accordion-number">3</span>
