@@ -18,7 +18,7 @@
     flex: 0 0 100%; /* Each slide takes full width */
 
     a {
-      @apply com-no-underline;
+      @apply com-no-underline com-flex com-flex-col com-gap-3;
     }
 
     .slider-image {
@@ -39,11 +39,11 @@
 }
 
 .campaign-url {
-  @apply com-m-0 com-text-xs com-font-normal com-text-Yankees-Blue;
+  @apply com-m-0 com-min-w-0 com-flex-1 com-text-xs com-font-normal com-text-Yankees-Blue com-break-all;
 }
 
 .learn-more-button {
-  @apply com-border-Yankees-Blue com-text-Yankees-Blue #{!important};
+  @apply com-shrink-0 com-whitespace-nowrap com-border-Yankees-Blue com-text-Yankees-Blue #{!important};
 }
 
 .default-image-container {

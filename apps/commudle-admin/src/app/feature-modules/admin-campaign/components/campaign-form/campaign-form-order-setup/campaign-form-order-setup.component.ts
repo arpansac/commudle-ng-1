@@ -38,7 +38,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   estimatedRuntime: string;
   dailySpending: number;
   form1Invalid = true;
-  accordion3Expanded = true;
+  form2Invalid = true;
 
   communitiesFormControl = new FormControl('');
   communitiesSearchResult = [];
@@ -91,6 +91,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
             }
             if (!this.isForm1Invalid()) {
               this.form1Invalid = false;
+            }
+            if (!this.isForm2Invalid()) {
+              this.form2Invalid = false;
             }
           });
           this.seoService.setTags(
@@ -384,7 +387,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateCampaign() {
+  updateCampaign(callSubmitButton = false) {
     // Validation
     if (!this.campaign?.id) {
       this.toasterService.warningDialog('Campaign ID is missing.');
@@ -398,7 +401,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     if (formValue.name) formData.append('campaign[name]', formValue.name);
     if (formValue.budget) formData.append('campaign[budget]', formValue.budget.toString());
     if (formValue.start_at) formData.append('campaign[start_at]', formValue.start_at);
-    if (formValue.end_at) formData.append('campaign[end_at]', formValue.end_at);
+    if (formValue.set_end_date && formValue.end_at) {
+      formData.append('campaign[end_at]', formValue.end_at);
+    } else {
+      formData.append('campaign[end_at]', '');
+    }
 
     // Append locations and communities
     const locations = formValue.locations
@@ -429,9 +436,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
       next: (data) => {
         if (data) {
           this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
+          if (this.campaign && callSubmitButton) {
+            this.callSubmitForApproval();
+          }
           this.loadCampaignAssetsFromApi();
           this.cdr.detectChanges();
-          this.toasterService.successDialog('Campaign updated successfully');
         }
       },
       error: (error) => {
@@ -441,8 +450,33 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     });
   }
 
+  callSubmitForApproval() {
+    this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
+      if (data) {
+        this.toasterService.successDialog('Campaign submitted for approval successfully');
+      }
+    });
+  }
+
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
     this.gtm.dataLayerPushEvent(eventName, eventData);
+  }
+
+  isSubmitForApprovalEnabled(): boolean {
+    const name = this.campaignForm.get('name')?.valid;
+    const startAt = this.campaignForm.get('start_at')?.valid;
+    const budget = this.campaignForm.get('budget')?.valid;
+    const locations = this.campaignForm.get('locations')?.valid;
+    const campaignAssets = (this.campaignForm.get('campaign_assets') as FormArray).length > 0;
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const communities = this.campaignForm.get('communities')?.valid;
+    const endAt = this.campaignForm.get('end_at');
+    const endDateValid = !setEndDate || (endAt?.valid && !this.campaignForm.hasError('endDateValidator'));
+
+    if (!name || !startAt || !budget || !locations || !endDateValid || !campaignAssets || !communities) {
+      return false;
+    }
+    return true;
   }
 
   onSetEndDateChange() {
@@ -510,21 +544,20 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   onAccordion3Click(event: MouseEvent) {
-    // Prevent default accordion toggle behavior and event bubbling
-    event.preventDefault();
-    event.stopPropagation();
-
-    // Ensure accordion stays open
-    this.accordion3Expanded = true;
-
-    if (!this.campaign?.id) {
-      return;
-    }
-
-    const isAccordion1Valid = !this.isForm1Invalid();
-    const isAccordion2Valid = !this.isForm2Invalid();
-
-    if (isAccordion1Valid || isAccordion2Valid) {
+    if (this.isForm1Invalid() || this.isForm2Invalid()) {
+      if (this.isForm1Invalid()) {
+        this.form1Invalid = true;
+        return;
+      }
+      if (this.isForm2Invalid()) {
+        this.form2Invalid = true;
+        return;
+      }
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      this.form1Invalid = false;
+      this.form2Invalid = false;
       this.updateCampaign();
     }
   }
@@ -532,7 +565,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   initAutocomplete() {
     const inputElement = this.addressInputElement.nativeElement.querySelector('input');
     if (inputElement) {
-      this.googlePlacesAutocompleteService.initAutocomplete(inputElement, 'establishment');
+      this.googlePlacesAutocompleteService.initAutocomplete(inputElement, '(regions)');
       this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
         this.onLocationPlaceSelected(place);
       });
@@ -540,8 +573,28 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
-    this.campaignForm.get('locations').setValue(place.formatted_address);
+    // administrative_area_level_1 corresponds to State
+    // country corresponds to Country
+    const allowedTypes = ['country', 'administrative_area_level_1'];
+
+    // Check if the selected place is either a State or a Country
+    const isValidType = place.types?.some((type) => allowedTypes.includes(type));
+
+    if (isValidType) {
+      this.campaignForm.get('locations').setValue(place.formatted_address);
+    } else {
+      // If they pick a city/sector, show a warning and clear the input
+      this.toasterService.warningDialog('Please select a valid State or Country only.');
+      this.campaignForm.get('locations').setValue('');
+
+      // Optional: Clear the HTML input element text manually if needed
+      this.addressInputElement.nativeElement.querySelector('input').value = '';
+    }
   }
+
+  // onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+  //   this.campaignForm.get('locations').setValue(place.formatted_address);
+  // }
 
   observeCommunitiesInput() {
     this.communitiesFormControl.valueChanges

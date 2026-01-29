@@ -94,6 +94,12 @@ HTML Emmet's
     }
   }
 
+  &.mobile-reverse-equal-columns {
+    .right-column {
+      @apply com-row-start-1;
+    }
+  }
+
   @screen lg {
     @include grid-layout(24);
 

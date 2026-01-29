@@ -181,11 +181,15 @@ nb-accordion {
 
   button {
     @apply com-bg-Yankees-Blue com-text-white #{!important};
+
+    &:disabled {
+      @apply com-cursor-not-allowed;
+    }
   }
 }
 
 .right-column {
-  @apply com-flex com-ml-10 com-mt-[108px] com-px-32 com-bg-white com-py-10 com-rounded-md com-w-full com-h-max com-sticky com-top-24 com-self-start;
+  @apply com-flex com-m-0 md:com-ml-10 md:com-mt-[108px] md:com-px-32 com-bg-white md:com-py-10 com-rounded-md com-w-full com-h-max md:com-sticky md:com-top-24 com-self-start com-px-4 com-py-6;
 }
 
 .right-column-container {

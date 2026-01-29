@@ -29,6 +29,12 @@ export class CampaignService {
     });
   }
 
+  submitForApproval(campaignId: number): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS_NEW.SUBMIT_FOR_APPROVAL), {
+      campaign_id: campaignId,
+    });
+  }
+
   fetchCampaign(campaignId: number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });

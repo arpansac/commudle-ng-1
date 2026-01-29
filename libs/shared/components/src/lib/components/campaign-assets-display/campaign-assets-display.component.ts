@@ -87,17 +87,15 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
 
   private applyCampaignFromInput(): void {
     const source = this.campaignPreview;
-    if (!source.campaign_assets?.length) {
-      return;
-    }
-    console.log('source', source);
     this.campaign = source;
-    this.slidesCount = source.campaign_assets.length;
-    this.startAutoSlide();
-    this.userEngagementRecordForm.patchValue({
-      parent_id: source.id,
-      parent_type: EDbModels.CAMPAIGN,
-    });
+    if (source && source.campaign_assets && source.campaign_assets.length > 0) {
+      this.slidesCount = source.campaign_assets.length;
+      this.startAutoSlide();
+      this.userEngagementRecordForm.patchValue({
+        parent_id: source.id,
+        parent_type: EDbModels.CAMPAIGN,
+      });
+    }
   }
 
   private fetchCampaignBySlug(): void {
