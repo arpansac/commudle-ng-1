@@ -70,11 +70,9 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
 
   ngOnInit() {
     if (this.showCampaignPreview && this.campaignPreview) {
-      console.log('campaignPreview', this.campaignPreview);
       this.applyCampaignFromInput();
     }
     if (!this.campaign && this.campaignTypeSlug) {
-      console.log('campaignTypeSlug', this.campaignTypeSlug);
       this.fetchCampaignBySlug();
     }
   }

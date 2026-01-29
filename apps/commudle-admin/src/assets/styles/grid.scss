@@ -95,8 +95,11 @@ HTML Emmet's
   }
 
   &.mobile-reverse-equal-columns {
+    .left-column {
+      @apply com-order-2 md:com-order-1;
+    }
     .right-column {
-      @apply com-row-start-1;
+      @apply com-order-1 md:com-order-2;
     }
   }
 

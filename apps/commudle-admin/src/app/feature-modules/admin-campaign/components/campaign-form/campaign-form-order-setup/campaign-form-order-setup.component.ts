@@ -171,6 +171,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   addAsset(index: number) {
+    const savedCount = this.campaign?.campaign_assets?.length;
+    if (savedCount >= 5) {
+      this.toasterService.warningDialog(`Maximum 5 campaign assets allowed. Remove an asset to add a new one.`);
+      return;
+    }
+
     const currentGroup = this.campaignAssets.at(index) as FormGroup;
 
     // Validate the current asset before saving
