@@ -570,8 +570,14 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
   initAutocomplete() {
     const inputElement = this.addressInputElement.nativeElement.querySelector('input');
+
     if (inputElement) {
-      this.googlePlacesAutocompleteService.initAutocomplete(inputElement, '(regions)');
+      const autocompleteOptions: google.maps.places.AutocompleteOptions = {
+        types: ['locality', 'administrative_area_level_1', 'country'],
+      };
+
+      this.googlePlacesAutocompleteService.initAutocompleteWithTypeRestrictions(inputElement, autocompleteOptions);
+
       this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
         this.onLocationPlaceSelected(place);
       });
@@ -579,28 +585,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
-    // administrative_area_level_1 corresponds to State
-    // country corresponds to Country
-    const allowedTypes = ['country', 'administrative_area_level_1'];
-
-    // Check if the selected place is either a State or a Country
-    const isValidType = place.types?.some((type) => allowedTypes.includes(type));
-
-    if (isValidType) {
-      this.campaignForm.get('locations').setValue(place.formatted_address);
-    } else {
-      // If they pick a city/sector, show a warning and clear the input
-      this.toasterService.warningDialog('Please select a valid State or Country only.');
-      this.campaignForm.get('locations').setValue('');
-
-      // Optional: Clear the HTML input element text manually if needed
-      this.addressInputElement.nativeElement.querySelector('input').value = '';
-    }
+    this.campaignForm.get('locations').setValue(place.formatted_address);
   }
-
-  // onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
-  //   this.campaignForm.get('locations').setValue(place.formatted_address);
-  // }
 
   observeCommunitiesInput() {
     this.communitiesFormControl.valueChanges

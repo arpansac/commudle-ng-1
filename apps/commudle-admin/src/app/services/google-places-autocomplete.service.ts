@@ -21,4 +21,16 @@ export class GooglePlacesAutocompleteService {
       this.placeChanged.emit(selectedPlace);
     });
   }
+
+  initAutocompleteWithTypeRestrictions(
+    inputElement: HTMLInputElement,
+    options: google.maps.places.AutocompleteOptions,
+  ) {
+    this.autocomplete = new google.maps.places.Autocomplete(inputElement, options);
+
+    this.autocomplete.addListener('place_changed', () => {
+      const selectedPlace: google.maps.places.PlaceResult = this.autocomplete.getPlace();
+      this.placeChanged.emit(selectedPlace);
+    });
+  }
 }
