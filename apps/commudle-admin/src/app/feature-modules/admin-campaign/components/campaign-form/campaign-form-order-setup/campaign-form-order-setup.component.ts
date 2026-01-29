@@ -26,7 +26,7 @@ import { environment } from '@commudle/shared-environments';
     standalone: false
 })
 export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
-  @ViewChild('addressInputElement', { read: ElementRef }) addressInputElement: ElementRef;
+  @ViewChild('locationSearchInput', { read: ElementRef }) locationSearchInput: ElementRef;
   campaignForm: FormGroup;
   icons = {
     faArrowRight,
@@ -43,6 +43,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   communitiesFormControl = new FormControl('');
   communitiesSearchResult = [];
   selectedCommunities: Array<{ id: number; name: string; slug: string }> = [];
+  locationsFormControl = new FormControl('');
+  selectedLocations: string[] = [];
   EDbModels = EDbModels;
   page = 1;
   count = 10;
@@ -69,7 +71,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
         end_at: [''],
         set_end_date: [false],
         budget: [0, [Validators.required, Validators.min(50)]],
-        locations: ['', Validators.required],
+        locations: [],
         communities: [],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
@@ -297,9 +299,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
   patchCampaignForm() {
     if (this.campaign.name) {
-      const locationValues = this.campaign.locations
-        ? this.campaign.locations.map((loc: any) => loc.location || loc).join(', ')
-        : '';
+      this.selectedLocations =
+        this.campaign.locations?.map((loc: { location?: string } | string) =>
+          typeof loc === 'string' ? loc : loc.location ?? '',
+        ) ?? [];
 
       let communitySlugs: string[] = [];
       if (this.campaign.communities && this.campaign.communities.length > 0) {
@@ -317,7 +320,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
         end_at: this.formatDateTimeForInput(this.campaign.end_at),
         set_end_date: !!this.campaign.end_at,
         budget: this.campaign.budget,
-        locations: locationValues,
+        locations: this.selectedLocations,
         communities: communitySlugs,
       });
 
@@ -414,12 +417,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     }
 
     // Append locations and communities
-    const locations = formValue.locations
-      ? formValue.locations
-          .split(',')
-          .map((l) => l.trim())
-          .filter((l) => l)
-      : [];
+    const locations = Array.isArray(formValue.locations) ? formValue.locations : [];
     locations.forEach((loc) => formData.append('campaign[locations][]', loc));
 
     const communitySlugs = this.selectedCommunities.map((c) => c.slug);
@@ -569,14 +567,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   initAutocomplete() {
-    const inputElement = this.addressInputElement.nativeElement.querySelector('input');
+    const inputElement = this.locationSearchInput?.nativeElement;
 
     if (inputElement) {
-      const autocompleteOptions: google.maps.places.AutocompleteOptions = {
+      this.googlePlacesAutocompleteService.initAutocompleteWithTypeRestrictions(inputElement, {
         types: ['locality', 'administrative_area_level_1', 'country'],
-      };
-
-      this.googlePlacesAutocompleteService.initAutocompleteWithTypeRestrictions(inputElement, autocompleteOptions);
+      });
 
       this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
         this.onLocationPlaceSelected(place);
@@ -585,7 +581,23 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
-    this.campaignForm.get('locations').setValue(place.formatted_address);
+    const address = place.formatted_address;
+    if (!address) return;
+    if (this.selectedLocations.includes(address)) return;
+    this.selectedLocations.push(address);
+    this.syncLocationsForm();
+    this.locationsFormControl.setValue('', { emitEvent: false });
+  }
+
+  removeLocation(index: number) {
+    this.selectedLocations.splice(index, 1);
+    this.syncLocationsForm();
+  }
+
+  private syncLocationsForm(): void {
+    this.campaignForm.get('locations').setValue([...this.selectedLocations]);
+    this.campaignForm.get('locations').updateValueAndValidity();
+    this.cdr.detectChanges();
   }
 
   observeCommunitiesInput() {

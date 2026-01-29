@@ -165,25 +165,43 @@
                     ></commudle-alert>
                   </div>
 
-                  <!-- Location -->
+                  <!-- Location (add one, shown as tag below; add more like communities) -->
                   <div>
-                    <label for="locations"> Location<span class="required"> *</span> </label>
+                    <label for="locationSearchInput"> Location<span class="required"> *</span> </label>
                     <div class="input">
-                      <commudle-input
-                        #addressInputElement
-                        [placeholder]="'Enter Region, City, Country'"
-                        [inputValue]="campaignForm.get('locations').value"
-                        (blurEvent)="campaignForm.get('locations').markAsTouched()"
-                        (valueChange)="handleInput($event, 'locations')"
-                      ></commudle-input>
+                      <nb-form-field>
+                        <input
+                          #locationSearchInput
+                          [formControl]="locationsFormControl"
+                          fullWidth
+                          nbInput
+                          placeholder="Enter Region, City, Country (select from dropdown)"
+                          type="text"
+                        />
+                      </nb-form-field>
+                      <!-- Display selected locations as tags -->
+                      <div *ngIf="selectedLocations.length > 0" class="selected-communities-container com-mt-2">
+                        <nb-tag
+                          *ngFor="let location of selectedLocations; let i = index"
+                          [text]="location"
+                          [removable]="true"
+                          (remove)="removeLocation(i)"
+                          [size]="'tiny'"
+                          status="basic"
+                        ></nb-tag>
+                      </div>
                       <div
                         *ngIf="
                           campaignForm.get('locations')?.invalid &&
                           campaignForm.get('locations')?.touched &&
                           campaignForm.get('locations')?.hasError('required')
                         "
+                        class="alert-container"
                       >
-                        <commudle-alert [error]="true" errorMessage="Location is required"></commudle-alert>
+                        <commudle-alert
+                          [error]="true"
+                          errorMessage="At least one location is required"
+                        ></commudle-alert>
                       </div>
                     </div>
                   </div>
