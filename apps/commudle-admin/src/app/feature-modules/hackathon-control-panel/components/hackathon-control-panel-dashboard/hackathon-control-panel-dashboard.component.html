@@ -1,4 +1,7 @@
 <section class="hackathon-details">
+  <button *ngIf="isMobileView" nbButton ghost size="small" (click)="toggleSidebar()" class="toggle-sidebar-btn">
+    <fa-icon [icon]="icons.faRightLeft"></fa-icon>
+  </button>
   <h1>{{ hackathon?.name }}</h1>
   <div class="badge">
     <p>Hackathon</p>
@@ -31,7 +34,7 @@
   <div class="sidebar">
     <commudle-sidebar
       [expandedWidth]="sidebarExpanded ? ESidebarWidth.XL : ESidebarWidth.XSMALL"
-      [forWindow]="false"
+      [forWindow]="isMobileView ? true : false"
       [showExpandedButton]="true"
       [eventName]="sidebarEventName"
       [heading]="'Hackathon Dashboard'"
