@@ -74,11 +74,16 @@ nb-card {
 }
 
 .team-selector {
-  @apply com-mt-4;
+  @apply com-mt-4 com-mb-4;
+
+  .team-selector-label {
+    @apply com-block com-text-base com-font-semibold com-text-Yankees-Blue com-mb-2;
+  }
+
   .select {
-    @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-10 com-cursor-pointer com-bg-white hover:com-bg-white-opacity-40  com-border com-border-solid com-border-Bright-Gray  com-w-full com-text-Yankees-Blue;
+    @apply com-flex com-items-center com-gap-2 com-h-10 com-p-2 com-text-base com-rounded-10 com-cursor-pointer com-bg-white hover:com-bg-white-opacity-40 com-border com-border-solid com-border-Bright-Gray com-w-full com-text-Yankees-Blue;
     select {
-      @apply com-bg-white hover:com-bg-white-opacity-40  com-cursor-pointer com-border-0 com-w-full com-text-Yankees-Blue;
+      @apply com-bg-white hover:com-bg-white-opacity-40 com-cursor-pointer com-border-0 com-w-full com-text-Yankees-Blue;
     }
   }
 }

@@ -1,9 +1,19 @@
 <div class="two-column-layout medium">
   <div class="main-column com-mr-2">
-    <div *ngIf="userTeamDetails && userTeamDetails.length > 1" class="team-selector">
-      <div class="select">
-        <select placeholder="Select Team" [(ngModel)]="selectedTeamIndex" name="teamSelect" fullWidth>
-          <option *ngFor="let team of userTeamDetails; let i = index" [value]="i">{{ team.name }}</option>
+    <div *ngIf="userTeamDetails && userTeamDetails.length > 0" class="team-selector">
+      <label class="team-selector-label">
+        Selected Team: <strong>{{ selectedTeam?.name }}</strong>
+      </label>
+      <div *ngIf="userTeamDetails.length > 1" class="select">
+        <select
+          [(ngModel)]="selectedTeamId"
+          (ngModelChange)="onTeamSelectionChange()"
+          class="team-select-large"
+          fullWidth
+        >
+          <option *ngFor="let team of userTeamDetails" [ngValue]="team.id">
+            {{ team.name }}
+          </option>
         </select>
       </div>
     </div>
@@ -15,36 +25,36 @@
         </button>
       </nb-card-body>
     </nb-card>
-    <nb-card *ngIf="userTeamDetails && userTeamDetails[selectedTeamIndex].track" class="track-details">
+    <nb-card *ngIf="userTeamDetails && selectedTeam?.track" class="track-details">
       <nb-card-header>SELECTED TRACK</nb-card-header>
       <nb-card-body>
-        <div class="track-name">{{ userTeamDetails[selectedTeamIndex].track.name }}</div>
-        <div *ngIf="userTeamDetails[selectedTeamIndex].problem_statement" class="problem-statement-section">
+        <div class="track-name">{{ selectedTeam.track.name }}</div>
+        <div *ngIf="selectedTeam.problem_statement" class="problem-statement-section">
           <div class="problem-label">Problem Statement:</div>
-          <div [innerHTML]="userTeamDetails[selectedTeamIndex].problem_statement.title" class="problem-name"></div>
+          <div [innerHTML]="selectedTeam.problem_statement.title" class="problem-name"></div>
         </div>
       </nb-card-body>
     </nb-card>
-    <nb-card class="project-details" *ngIf="userTeamDetails && userTeamDetails[selectedTeamIndex].community_build">
+    <nb-card class="project-details" *ngIf="userTeamDetails && selectedTeam?.community_build">
       <nb-card-header>PROJECT DETAILS</nb-card-header>
       <nb-card-body>
-        <div class="project-name">{{ userTeamDetails[selectedTeamIndex].community_build.name }}</div>
-        <div [innerHTML]="userTeamDetails[selectedTeamIndex].community_build.description"></div>
+        <div class="project-name">{{ selectedTeam.community_build.name }}</div>
+        <div [innerHTML]="selectedTeam.community_build.description"></div>
       </nb-card-body>
       <nb-card-footer>
         <a
-          [routerLink]="['/builds', userTeamDetails[selectedTeamIndex].community_build.slug, 'edit']"
-          [queryParams]="{ parent_type: 'HackathonTeam', parent_id: userTeamDetails[selectedTeamIndex].id }"
+          [routerLink]="['/builds', selectedTeam.community_build.slug, 'edit']"
+          [queryParams]="{ parent_type: 'HackathonTeam', parent_id: selectedTeam.id }"
           target="_blank"
           >Post Updates &nbsp; <fa-icon [icon]="icons.faArrowRight"></fa-icon
         ></a>
       </nb-card-footer>
     </nb-card>
-    <div *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0">
+    <div *ngIf="hrgId && selectedTeam">
       <commudle-public-hackathon-registration
         [hackathon]="hackathon"
         [hrgId]="hrgId"
-        [userTeamDetails]="userTeamDetails[selectedTeamIndex]"
+        [userTeamDetails]="selectedTeam"
       ></commudle-public-hackathon-registration>
     </div>
     <div class="user-channels-list">
@@ -67,19 +77,16 @@
   </div>
 
   <div class="right-column">
-    <div *ngIf="hrgId && userTeamDetails && userTeamDetails.length > 0">
+    <div *ngIf="hrgId && selectedTeam">
       <nb-card class="team-details-container">
         <nb-card-header>
-          <h5>{{ userTeamDetails[selectedTeamIndex].name }}</h5>
+          <h5>{{ selectedTeam.name }}</h5>
           <button nbButton ghost status="primary" (click)="openEditTeamMembersDialog()">
             <fa-icon [icon]="icons.faEdit"></fa-icon> &nbsp; Edit Team Members
           </button>
         </nb-card-header>
         <nb-card-body>
-          <div
-            *ngFor="let hur of userTeamDetails[selectedTeamIndex].hackathon_user_responses; let i = index"
-            class="team-detail"
-          >
+          <div *ngFor="let hur of selectedTeam.hackathon_user_responses; let i = index" class="team-detail">
             <div class="details">
               <span>{{ hur.name }}</span>
               <span>{{ hur.user_email }}</span>
@@ -106,8 +113,8 @@
                 nbButton
                 ghost
                 status="danger"
-                (click)="openDialogBox(resendInvite, hur, userTeamDetails[selectedTeamIndex], i, selectedTeamIndex)"
-                *ngIf="userTeamDetails[selectedTeamIndex].user_id !== hur.user_id"
+                (click)="openDialogBox(resendInvite, hur, selectedTeam, i)"
+                *ngIf="selectedTeam?.user_id !== hur.user_id"
               >
                 Resend Invite
               </button>
