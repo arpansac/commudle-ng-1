@@ -10,8 +10,10 @@
               <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Campaign
             </button>
           </div>
-          <commudle-campaign-list [campaigns]="campaigns"></commudle-campaign-list>
-
+          <commudle-campaign-list
+            [campaigns]="campaigns"
+            (refreshRequested)="fetchCampaigns()"
+          ></commudle-campaign-list>
           <app-pagination
             *ngIf="pagination.total > 0"
             (goTo)="pagination.page = $event; fetchCampaigns()"

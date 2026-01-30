@@ -1,9 +1,9 @@
 .dashboard-header {
-  @apply com-flex com-justify-between com-items-center com-mb-10;
+  @apply com-flex com-justify-between com-items-center com-my-10;
 }
 
 .page-title {
-  @apply com-text-[32px] com-font-semibold com-text-Yankees-Blue;
+  @apply com-m-0 com-text-[32px] com-font-semibold com-text-Yankees-Blue;
 }
 
 .create-new-campaign-button {
@@ -33,4 +33,9 @@ th {
 
 tr:not(:last-child) {
   @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+}
+
+commudle-loading-spinner,
+app-pagination {
+  @apply com-mt-6;
 }
