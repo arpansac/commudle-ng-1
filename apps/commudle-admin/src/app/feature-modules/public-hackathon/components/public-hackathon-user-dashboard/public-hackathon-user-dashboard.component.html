@@ -1,10 +1,10 @@
 <div class="two-column-layout medium">
   <div class="main-column com-mr-2">
-    <div *ngIf="userTeamDetails && userTeamDetails.length > 0" class="team-selector">
+    <div *ngIf="userTeamDetails && userTeamDetails.length > 1" class="team-selector">
       <label class="team-selector-label">
         Selected Team: <strong>{{ selectedTeam?.name }}</strong>
       </label>
-      <div *ngIf="userTeamDetails.length > 1" class="select">
+      <div class="select">
         <select
           [(ngModel)]="selectedTeamId"
           (ngModelChange)="onTeamSelectionChange()"
