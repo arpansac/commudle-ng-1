@@ -23,7 +23,9 @@
           <div>
             <p class="event-name">
               {{ event.name }}
-              <span *ngIf="event.kommunity_id !== community.id" class="collaboration">(Collaboration)</span>
+              <span *ngIf="hostCommunity && hostCommunity.id !== event.kommunity_id" class="collaboration"
+                >(Collaboration)</span
+              >
             </p>
             <p class="event-timing">
               <span *ngIf="event.end_time !== null">
