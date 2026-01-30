@@ -458,13 +458,16 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     this.communityBuildsService.updateTags(this.cBuild.id, this.tags).subscribe(() => {
       if (this.parentType === EDbModels.HACKATHON_TEAM) {
         this.router
-          .navigate([
-            '/communities',
-            this.hackathonUserResponses.team.hackathon?.community.slug,
-            'hackathons',
-            this.hackathonUserResponses.team.hackathon?.slug,
-            'user-dashboard',
-          ])
+          .navigate(
+            [
+              '/communities',
+              this.hackathonUserResponses.team.hackathon?.community.slug,
+              'hackathons',
+              this.hackathonUserResponses.team.hackathon?.slug,
+              'user-dashboard',
+            ],
+            { queryParams: { team_id: this.hackathonUserResponses?.team?.id } },
+          )
           .then(() => this.toastLogService.successDialog('Saved!'));
         this.gtmService();
       } else {

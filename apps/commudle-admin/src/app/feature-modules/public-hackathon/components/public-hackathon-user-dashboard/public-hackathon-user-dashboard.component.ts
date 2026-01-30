@@ -72,13 +72,8 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
         }
         this.getChannels();
         this.activatedRoute.queryParams.subscribe((params) => {
-          if (params['teamId']) {
-            this.selectedTeamId = +params['teamId'];
-            this.selectedTeam = this.userTeamDetails?.find((t) => t.id === this.selectedTeamId);
-          } else {
-            this.selectedTeamId = this.userTeamDetails?.[0].id;
-            this.selectedTeam = this.userTeamDetails?.[0];
-          }
+          this.selectedTeamId = params['team_id'] ? Number(params['team_id']) : null;
+          this.syncSelectedTeam();
         });
         this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
           if (currentUser) this.getHackathonCurrentRegistrationDetails();
@@ -103,15 +98,25 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
         .subscribe((data: IHackathonTeam[]) => {
           if (data) {
             this.userTeamDetails = data;
-            if (this.selectedTeamId) {
-              this.selectedTeam = this.userTeamDetails.find((t) => t.id === this.selectedTeamId);
-            } else {
-              this.selectedTeamId = this.userTeamDetails[0].id;
-              this.selectedTeam = this.userTeamDetails[0];
-            }
+            this.syncSelectedTeam();
           }
         }),
     );
+  }
+
+  syncSelectedTeam() {
+    if (!this.userTeamDetails || this.userTeamDetails.length === 0) return;
+    this.selectedTeam = this.userTeamDetails.find((t) => t.id === this.selectedTeamId);
+    if (!this.selectedTeam) {
+      this.selectedTeamId = this.userTeamDetails[0].id;
+
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { team_id: this.selectedTeamId },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
   }
 
   getChannels() {
@@ -123,7 +128,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   onTeamSelectionChange() {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { teamId: this.selectedTeamId },
+      queryParams: { team_id: this.selectedTeamId },
       queryParamsHandling: 'merge',
     });
   }
@@ -192,9 +197,8 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   }
 
   submitProjectDetails(formData, dialogRef: any) {
-    const team = this.selectedTeam;
     this.hackathonUserResponseService
-      .updateProjectDetails(formData, team.hackathon_user_responses[0].id)
+      .updateProjectDetails(formData, this.selectedTeam.hackathon_user_responses[0].id)
       .subscribe((data) => {
         if (data) {
           this.toasterService.successDialog('Problem statement updated successfully');
