@@ -279,10 +279,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   indexTracks(hackathonId) {
     this.hackathonService.indexTracks(hackathonId).subscribe((data) => {
       this.hackathonTracks = data;
-      console.log(
-        '🚀 ~ HackathonControlPanelReviewComponent ~ indexTracks ~ this.hackathonTracks:',
-        this.hackathonTracks,
-      );
     });
   }
 
