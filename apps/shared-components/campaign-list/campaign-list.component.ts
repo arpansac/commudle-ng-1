@@ -134,27 +134,4 @@ export class CampaignListComponent implements OnChanges {
   //   if (this.statusFilter == null) return this.campaigns;
   //   return this.campaigns.filter((c) => c.status === this.statusFilter);
   // }
-
-  onExportCsv() {}
-
-  isSelected(campaign: ICampaign) {
-    return false;
-    return this.campaigns.find((c) => c.id === campaign.id);
-  }
-
-  canShowToggle(campaign: ICampaign) {
-    return this.campaigns.find((c) => c.id === campaign.id)?.status === ECampaignStatus.SUBMITTED;
-  }
-
-  isToggleChecked(campaign: ICampaign) {
-    return this.campaigns.find((c) => c.id === campaign.id);
-  }
-
-  toggleSelect(campaign: ICampaign) {
-    // this.campaigns.find((c) => c.id === campaign.id) = !this.campaigns.find((c) => c.id === campaign.id);
-  }
-
-  onToggleChange(campaign: ICampaign, event: any) {
-    // this.campaigns.find((c) => c.id === campaign.id) = event.checked;
-  }
 }

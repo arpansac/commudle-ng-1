@@ -1,6 +1,6 @@
 // KPI Cards
 .kpi-cards {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-1 com-gap-4 com-mb-6;
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-1 com-gap-4 com-mb-6 md:com-mx-0 com-mx-4;
 
   .kpi-card {
     @apply com-bg-white com-rounded-[10px] com-p-4 com-border com-border-solid com-border-Bright-Gray;
@@ -17,7 +17,7 @@
 
 // Table panel
 .table-panel {
-  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border-0;
+  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border-0 md:com-mx-0 com-mx-4;
 
   nb-card-body {
     @apply com-p-0;
@@ -101,6 +101,10 @@
     @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
   }
 
+  .created-column {
+    @apply com-whitespace-nowrap;
+  }
+
   .border-left {
     @apply com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
   }
@@ -113,7 +117,7 @@
     @apply com-flex com-flex-wrap com-justify-center com-items-center com-gap-2;
 
     .action-btn-icon {
-      @apply com-text-base com-px-10px com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-bg-white;
+      @apply com-text-sm com-p-6px com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-bg-white;
     }
 
     .edit-btn {

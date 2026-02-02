@@ -42,12 +42,12 @@
           </select>
         </div> -->
       </div>
-      <div class="toolbar-right">
+      <!-- <div class="toolbar-right">
         <button nbButton size="small" (click)="onExportCsv()" class="toolbar-btn">
           <fa-icon [icon]="icons.faDownload"></fa-icon>
           Export CSV
         </button>
-      </div>
+      </div> -->
     </div>
 
     <!-- Table -->
@@ -59,12 +59,12 @@
             <th class="com-text-left com-bg-gray-50">STATUS</th>
             <th class="com-text-left com-bg-gray-50">BUDGET</th>
             <th class="com-text-left com-bg-gray-50">DURATION</th>
-            <th class="com-text-left com-bg-gray-50 border-right">CREATED</th>
+            <th class="com-text-left com-bg-gray-50 border-right created-column">CREATED</th>
             <!-- Pending <th *ngIf="isCampaignAdmin" class="com-text-left com-bg-gray-50">PAYMENT</th> -->
             <th class="com-text-right">IMPRESSIONS/VIEWS</th>
             <th class="com-text-right">CLICKS</th>
-            <th class="com-text-right">CTR</th>
-            <th class="com-bg-gray-50 border-left">ACTIONS</th>
+            <th class="com-text-right border-right">CTR</th>
+            <th class="com-bg-gray-50">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
@@ -217,8 +217,8 @@
                 <span>{{ moment.utc(campaign.end_time, 'HH:mm').local().format('HH:mm') }}</span>
               </div>
             </td>
-            <td class="data-cell border-right">
-              {{ moment(campaign.created_at).format('MMM D, YYYY') }}
+            <td class="data-cell border-right created-column">
+              <span>{{ moment(campaign.created_at).format('MMM D, YYYY') }}</span>
               <span class="time-created"> | {{ moment(campaign.created_at).format('h:mm A') }}</span>
               <div *ngIf="isCampaignAdmin">
                 <!-- Pending <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini> -->
@@ -228,7 +228,7 @@
             <!--pending -->
             <td class="data-cell com-text-right">{{ campaign.budget }}</td>
             <!--pending -->
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <td class="data-cell com-text-right border-right">{{ campaign.budget }}</td>
             <!--pending -->
             <!-- Pending <td *ngIf="isCampaignAdmin">
               <span *ngIf="campaign.purchase_order">
@@ -244,24 +244,23 @@
                 Resend payment link
               </button>
             </td> -->
-            <td class="border-left">
-              <div class="action-buttons">
-                <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
-                  <button
-                    nbButton
-                    [disabled]="
-                      campaign.status === ECampaignStatus.APPROVED ||
-                      campaign.status === ECampaignStatus.LIVE ||
-                      campaign.status === ECampaignStatus.COMPLETE
-                    "
-                    outline
-                    size="small"
-                    class="action-btn-icon edit-btn"
-                  >
-                    <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
-                  </button>
-                </a>
-                <!-- Pending <a
+            <td class="action-buttons">
+              <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
+                <button
+                  nbButton
+                  [disabled]="
+                    campaign.status === ECampaignStatus.APPROVED ||
+                    campaign.status === ECampaignStatus.LIVE ||
+                    campaign.status === ECampaignStatus.COMPLETE
+                  "
+                  outline
+                  size="small"
+                  class="action-btn-icon edit-btn"
+                >
+                  <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
+                </button>
+              </a>
+              <!-- Pending <a
                 *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
                 [routerLink]="['/checkout', campaign.purchase_order.uuid]"
                 (click)="$event.stopPropagation()"
@@ -279,16 +278,16 @@
                   &nbsp; Pay Now
                 </button>
               </a> -->
-                <a
-                  *ngIf="campaign.status === ECampaignStatus.LIVE || campaign.status === ECampaignStatus.COMPLETE"
-                  [routerLink]="['stats', campaign.id]"
-                  (click)="$event.stopPropagation()"
-                >
-                  <button nbButton status="success" size="small" class="action-btn-icon" outline>
-                    <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
-                  </button>
-                </a>
-                <!-- Pending <button
+              <a
+                *ngIf="campaign.status === ECampaignStatus.LIVE || campaign.status === ECampaignStatus.COMPLETE"
+                [routerLink]="['stats', campaign.id]"
+                (click)="$event.stopPropagation()"
+              >
+                <button nbButton status="success" size="small" class="action-btn-icon" outline>
+                  <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                </button>
+              </a>
+              <!-- Pending <button
                 *ngIf="isCampaignAdmin && campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER"
                 nbButton
                 status="info"
@@ -298,22 +297,23 @@
               >
                 Update Newsletter
               </button> -->
-                <button
-                  *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
-                  nbButton
-                  status="danger"
-                  size="small"
-                  (click)="$event.stopPropagation(); openDestroyCampaignPopup(destroyCampaign, campaign)"
-                  class="action-btn-icon"
-                  outline
-                >
-                  <fa-icon [icon]="icons.faTrash"></fa-icon>
-                </button>
-              </div>
+              <button
+                *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
+                nbButton
+                status="danger"
+                size="small"
+                (click)="$event.stopPropagation(); openDestroyCampaignPopup(destroyCampaign, campaign)"
+                class="action-btn-icon"
+                outline
+              >
+                <fa-icon [icon]="icons.faTrash"></fa-icon>
+              </button>
             </td>
           </tr>
           <!-- Total row -->
           <tr *ngIf="campaigns?.length" class="total-row">
+            <td class="total-row-th"></td>
+            <td class="total-row-th"></td>
             <td class="total-row-th"></td>
             <td class="total-row-th"></td>
             <th class="total-row-th border-right">TOTAL</th>
