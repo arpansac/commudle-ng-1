@@ -669,7 +669,8 @@
         class="problem-statement-select"
         *ngIf="
           selectedTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
-          hackathonProblemStatements.length > 0
+          selectedTeamDetails.track &&
+          getTrackProblemStatements(selectedTeamDetails.track.id).length > 0
         "
       >
         <label>Problem Statement:</label>
@@ -688,7 +689,7 @@
             [(ngModel)]="selectedTeamDetails.problem_statement.id"
           >
             <option
-              *ngFor="let hackathonProblemStatement of hackathonProblemStatements"
+              *ngFor="let hackathonProblemStatement of getTrackProblemStatements(selectedTeamDetails.track.id)"
               [value]="hackathonProblemStatement.id"
             >
               #{{ hackathonProblemStatement.display_id }}
@@ -710,7 +711,7 @@
           >
             <option selected disabled [value]="null">Select a problem statement</option>
             <option
-              *ngFor="let hackathonProblemStatement of hackathonProblemStatements"
+              *ngFor="let hackathonProblemStatement of getTrackProblemStatements(selectedTeamDetails.track.id)"
               [value]="hackathonProblemStatement.id"
             >
               #{{ hackathonProblemStatement.display_id }}
@@ -1147,6 +1148,11 @@
           Are you sure you want to change this team's track to <strong>{{ data.trackName }}</strong
           >?
         </p>
+        <commudle-alert
+          [error]="true"
+          errorMessage="Changing the track will remove their current problem statement. You'll need to select a
+          new problem statement from this track."
+        ></commudle-alert>
       </div>
     </nb-card-body>
     <nb-card-footer>

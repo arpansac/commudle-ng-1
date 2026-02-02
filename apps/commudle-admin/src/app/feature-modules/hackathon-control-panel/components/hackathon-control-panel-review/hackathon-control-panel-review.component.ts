@@ -279,6 +279,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   indexTracks(hackathonId) {
     this.hackathonService.indexTracks(hackathonId).subscribe((data) => {
       this.hackathonTracks = data;
+      console.log(
+        '🚀 ~ HackathonControlPanelReviewComponent ~ indexTracks ~ this.hackathonTracks:',
+        this.hackathonTracks,
+      );
     });
   }
 
@@ -784,5 +788,10 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         isBulkEmail: true,
       },
     });
+  }
+
+  getTrackProblemStatements(trackId: number) {
+    const track = this.hackathonTracks.find((t) => t.id === trackId);
+    return track?.hackathon_problem_statements || [];
   }
 }
