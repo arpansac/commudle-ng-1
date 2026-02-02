@@ -28,10 +28,19 @@
           <fa-icon [icon]="icons.faSync"></fa-icon>
           Refresh
         </button>
-        <button nbButton size="small" (click)="onFilter()" class="toolbar-btn">
-          <fa-icon [icon]="icons.faFilter"></fa-icon>
-          Filter
-        </button>
+        <!-- <div class="filter-by-status">
+          <fa-icon [icon]="icons.faFilter" class="filter-icon"></fa-icon>
+          <select
+            class="status-filter-select"
+            [ngModel]="statusFilter"
+            (ngModelChange)="statusFilter = $event"
+          >
+            <option [ngValue]="null">All statuses</option>
+            <option *ngFor="let status of statusOptions" [ngValue]="status">
+              {{ status | capitalizeAndRemoveUnderscore }}
+            </option>
+          </select>
+        </div> -->
       </div>
       <div class="toolbar-right">
         <button nbButton size="small" (click)="onExportCsv()" class="toolbar-btn">
@@ -85,11 +94,11 @@
               </div>
             </td>
             <td>
-              <h1>{{ campaign.status }}</h1>
-              <h1>{{ campaign.status | capitalizeAndRemoveUnderscore }}</h1>
               <app-badge
                 *ngIf="campaign.status && !isCampaignAdmin"
                 [text]="campaign.status | capitalizeAndRemoveUnderscore"
+                [fontSize]="'small'"
+                [borderRadius]="'round'"
                 [color]="
                   campaign.status === ECampaignStatus.INCOMPLETE
                     ? 'com-bg-gray-100'

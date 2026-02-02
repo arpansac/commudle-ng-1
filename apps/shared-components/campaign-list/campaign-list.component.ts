@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import {
   ICampaign,
   ECampaignStatus,
@@ -24,9 +24,10 @@ import * as moment from 'moment';
     styleUrls: ['./campaign-list.component.scss'],
     standalone: false
 })
-export class CampaignListComponent {
+export class CampaignListComponent implements OnChanges {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
+  @Output() refreshRequested = new EventEmitter<void>();
   moment = moment;
   icons = { faEdit, faReceipt, faArrowUpRightFromSquare, faSync, faFilter, faDownload, faTrash };
   ECampaignStatus = ECampaignStatus;
@@ -35,6 +36,8 @@ export class CampaignListComponent {
   EPurchaseOrderStatus = EPurchaseOrderStatus;
   noteTexts: { [campaignId: number]: string } = {};
   newsletterId: number | null;
+  statusFilter: ECampaignStatus | null = null;
+  // statusOptions = Object.values(ECampaignStatus) as ECampaignStatus[];
 
   constructor(
     private campaignService: CampaignService,
@@ -42,6 +45,12 @@ export class CampaignListComponent {
     private dialogService: NbDialogService,
     private noteService: NoteService,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['campaigns'] && !changes['campaigns'].firstChange) {
+      this.statusFilter = null;
+    }
+  }
 
   updateStatus(event, campaignId) {
     this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
@@ -116,9 +125,15 @@ export class CampaignListComponent {
     });
   }
 
-  onRefresh() {}
+  onRefresh() {
+    this.refreshRequested.emit();
+  }
 
-  onFilter() {}
+  // get filteredCampaigns(): ICampaign[] {
+  //   if (!this.campaigns) return [];
+  //   if (this.statusFilter == null) return this.campaigns;
+  //   return this.campaigns.filter((c) => c.status === this.statusFilter);
+  // }
 
   onExportCsv() {}
 
