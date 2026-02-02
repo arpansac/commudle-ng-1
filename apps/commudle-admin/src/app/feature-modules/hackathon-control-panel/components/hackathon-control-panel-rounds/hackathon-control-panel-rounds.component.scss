@@ -72,7 +72,7 @@ nb-card {
 }
 
 .round-form-dialog-box {
-  @apply md:com-w-[40dvw] com-max-h-[90dvh];
+  @apply com-h-full com-w-[100dvw] md:com-h-[90dvh] md:com-w-[70dvw] com-mx-0;
   form {
     @apply com-flex com-flex-col com-gap-3;
   }
@@ -106,7 +106,7 @@ select.form-control {
 }
 
 .date-time-row {
-  @apply com-flex com-gap-4;
+  @apply com-flex com-gap-4 com-flex-wrap;
 }
 
 .date-time-column {

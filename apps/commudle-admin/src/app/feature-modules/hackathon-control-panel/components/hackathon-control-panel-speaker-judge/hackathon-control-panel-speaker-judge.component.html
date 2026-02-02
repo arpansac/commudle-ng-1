@@ -78,8 +78,8 @@
   <nb-card class="speaker-form">
     <nb-card-header class="actions">
       <span> Add New {{ speakerRegistrationForm.controls['judge_type'].value | titlecase }}</span>
-      <button nbButton ghost shape="round" size="tiny" (click)="ref.close(); resetSpeakerRegistrationForm()">
-        <fa-icon [icon]="icons.faXmark"></fa-icon>
+      <button (click)="ref.close(); resetSpeakerRegistrationForm()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>

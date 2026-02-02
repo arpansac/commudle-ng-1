@@ -1,5 +1,5 @@
 .prize-form {
-  @apply com-w-full com-h-full md:com-max-h-[90dvh] md:com-w-500px;
+  @apply com-w-[100dvw] com-mx-0 md:com-max-h-[90dvh] md:com-w-500px;
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }

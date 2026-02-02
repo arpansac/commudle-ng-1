@@ -12,7 +12,7 @@
   }
 }
 .speaker-form {
-  @apply md:com-w-500px com-h-[90dvh];
+  @apply com-h-full com-w-[100dvw] md:com-h-[90dvh] md:com-w-[70dvw] com-mx-0;
   form {
     @apply com-flex com-flex-col com-gap-3;
     .profile-image {
