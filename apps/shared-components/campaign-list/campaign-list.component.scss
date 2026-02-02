@@ -101,10 +101,14 @@
 
   .action-buttons {
     @apply com-flex com-flex-wrap com-justify-center com-items-center com-gap-2;
-  }
 
-  .action-btn-icon {
-    @apply com-p-2;
+    .action-btn-icon {
+      @apply com-text-base com-px-10px com-py-2 com-border com-border-solid com-border-Bright-Gray com-rounded-lg com-bg-white;
+    }
+
+    .edit-btn {
+      @apply com-text-Yankees-Blue;
+    }
   }
 
   .stats-btn-icon {
