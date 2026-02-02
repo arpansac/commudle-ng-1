@@ -1,4 +1,5 @@
 .review-section {
+  @apply com-mx-0 md:com-mx-2;
   nb-card-header {
     .header {
       @apply com-flex com-items-center com-mb-2;

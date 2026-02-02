@@ -426,7 +426,8 @@
         <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
       </ng-template>
     </div>
-
+  </nb-card-body>
+  <nb-card-footer>
     <!-- PAGINATION -->
     <div *ngIf="total > 0" class="pagination">
       <app-pagination
@@ -436,9 +437,11 @@
         (goTo)="page = $event; fetchUserResponses()"
         (next)="page = $event; fetchUserResponses()"
         (previous)="page = $event; fetchUserResponses()"
+        [showJumpTo]="true"
+        [showCount]="true"
       ></app-pagination>
     </div>
-  </nb-card-body>
+  </nb-card-footer>
 </nb-card>
 
 <ng-template #userResponseDetailsDialogBox let-ref="dialogRef" let-data>

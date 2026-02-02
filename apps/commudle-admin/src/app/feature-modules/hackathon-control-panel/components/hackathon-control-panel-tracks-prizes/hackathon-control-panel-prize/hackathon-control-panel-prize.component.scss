@@ -1,5 +1,5 @@
 .hackathon-prize-cards {
-  @apply com-grid com-grid-cols-2 com-gap-x-3;
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-x-3;
 }
 
 nb-card-header,

@@ -6,7 +6,7 @@ nb-card {
 }
 
 .rounds-table {
-  @apply com-overflow-hidden com-mt-4 com-border com-border-gray-200 com-rounded-lg;
+  @apply com-overflow-x-auto md:com-overflow-hidden com-mt-4 com-border com-border-gray-200 com-rounded-lg;
 
   .table {
     @apply com-w-full com-border-collapse;

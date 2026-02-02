@@ -1,3 +1,13 @@
+.communication-section {
+  @apply com-mx-0 md:com-mx-2;
+  .group-name {
+    @apply com-my-4;
+  }
+
+  .group-values {
+    @apply com-flex com-flex-wrap com-gap-4;
+  }
+}
 .mail-popup {
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
@@ -21,9 +31,6 @@
   nb-card-body {
     @apply com-p-6;
   }
-}
-.group-name {
-  @apply com-my-4;
 }
 
 .mail-popup {
