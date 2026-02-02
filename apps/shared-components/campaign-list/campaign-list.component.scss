@@ -100,7 +100,7 @@
   }
 
   .action-buttons {
-    @apply com-flex com-items-center com-gap-2;
+    @apply com-flex com-flex-wrap com-justify-center com-items-center com-gap-2;
   }
 
   .action-btn-icon {
@@ -151,40 +151,44 @@
 //   }
 // }
 
-// .campaign-details {
-//   @apply com-h-full md:com-h-[90dvh];
-//   nb-card-header {
-//     @apply com-flex com-justify-between;
-//   }
-// }
+.campaign-details {
+  @apply com-h-full md:com-h-[90dvh];
+  nb-card-header {
+    @apply com-flex com-justify-between;
+  }
+}
 
-// .select {
-//   @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
-//   select {
-//     @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
-//   }
-// }
+.select {
+  @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
+  select {
+    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+  }
+}
 
-// .resend-payment-button {
-//   @apply com-mt-2;
-// }
+.resend-payment-button {
+  @apply com-mt-2;
+}
 
-// .notes-table {
-//   @apply com-mx-0 com-rounded;
-//   nb-card-body {
-//     @apply com-p-0;
-//   }
-//   table {
-//     @apply com-w-full com-border-collapse;
-//     td,
-//     th {
-//       @apply com-text-left com-p-2;
-//     }
-//     th {
-//       @apply com-bg-Bright-Gray;
-//     }
-//     tr {
-//       @apply hover:com-bg-gray-50;
-//     }
-//   }
-// }
+.notes-table {
+  @apply com-mx-0 com-rounded;
+  nb-card-body {
+    @apply com-p-0;
+  }
+  table {
+    @apply com-w-full com-border-collapse;
+    td,
+    th {
+      @apply com-text-left com-p-2;
+    }
+    th {
+      @apply com-bg-Bright-Gray;
+    }
+    tr {
+      @apply hover:com-bg-gray-50;
+    }
+  }
+
+  .notes-container {
+    @apply com-flex com-gap-1;
+  }
+}

@@ -1097,9 +1097,11 @@ export const API_ROUTES = {
   },
 
   CAMPAIGNS_NEW: {
+    INDEX: 'api/v2/campaigns_new', //GET
     CREATE: 'api/v2/campaigns_new', //POST
     UPDATE: 'api/v2/campaigns_new', //PUT
     SUBMIT_FOR_APPROVAL: 'api/v2/campaigns_new/submit_for_approval', //PUT
+    CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns_new/index_admin', //GET
   },
 
   PURCHASE_ORDER: {

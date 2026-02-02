@@ -44,7 +44,7 @@ export class SysAdminCampaignService {
   index(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
     const params = new HttpParams().set('page', page).set('count', count);
     return this.http.get<IPaginationCount<ICampaign>>(
-      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_INDEX),
+      this.apiRoutesService.getRoute(API_ROUTES.CAMPAIGNS_NEW.CAMPAIGN_ADMIN_INDEX),
       { params },
     );
   }

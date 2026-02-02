@@ -56,11 +56,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let campaign of campaigns">
+          <tr
+            *ngFor="let campaign of campaigns"
+            (click)="openPopup(showCampaignDetails, campaign)"
+            [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
+          >
             <td>
               <div class="name-cell-content">
                 <!-- <nb-checkbox
-                  [checked]="isSelected(campaign)"
+                  [checked]="isCampaignActive(campaign)"
                   (checkedChange)="toggleSelect(campaign)"
                   status="primary"
                   class="name-cell-checkbox"
@@ -79,6 +83,7 @@
             </td>
             <td>
               <app-badge
+                *ngIf="campaign.status && !isCampaignAdmin"
                 [text]="campaign.status | capitalizeAndRemoveUnderscore"
                 [color]="
                   campaign.status === ECampaignStatus.INCOMPLETE
@@ -119,8 +124,23 @@
                     : 'com-text-gray-700'
                 "
               ></app-badge>
+              <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
+                <select
+                  [disabled]="
+                    campaign.status === ECampaignStatus.COMPLETE ||
+                    campaign.status === ECampaignStatus.LIVE ||
+                    campaign.status === ECampaignStatus.INCOMPLETE
+                  "
+                  [(ngModel)]="campaign.status"
+                  (change)="updateStatus($event, campaign.id)"
+                >
+                  <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
+                    {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
+                  </option>
+                </select>
+              </div>
             </td>
-            <!-- <nb-card class="notes-table" *ngIf="campaign.unapproved_reasons.length > 0">
+            <nb-card class="notes-table" *ngIf="campaign.unapproved_reasons.length > 0">
               <nb-card-body>
                 <table>
                   <tr>
@@ -141,49 +161,40 @@
                   </tr>
                 </table>
               </nb-card-body>
-            </nb-card> -->
-            <!-- <div
-            *ngIf="
-              isCampaignAdmin &&
-              (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
-            "
-            class="com-flex com-gap-1"
-          >
-            <label for="notes">
-              <input
-                fieldSize="small"
-                type="text"
-                placeholder="Write Note"
-                nbInput
-                [(ngModel)]="noteTexts[campaign.id]"
-                (click)="$event.stopPropagation()"
-              />
-            </label>
-            <button nbButton size="tiny" (click)="updateNotes(campaign.id); $event.stopPropagation()">Save</button>
-          </div> -->
-            <!-- <button
-            class="resend-payment-button"
-            *ngIf="
-              isCampaignAdmin &&
-              (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
-            "
-            nbButton
-            status="info"
-            [disabled]="campaign.unapproved_reasons.length === 0"
-            (click)="campaignUnapprovedChangesMail(campaign.id); $event.stopPropagation()"
-          >
-            Send mail
-          </button> -->
-            <td class="data-cell border-right">
-              {{ moment(campaign.created_at).format('MMM D, YYYY') }}
-              <span class="time-created"> | {{ moment(campaign.created_at).format('h:mm A') }}</span>
-              <!-- <div *ngIf="isCampaignAdmin">
-                <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini>
-              </div> -->
-            </td>
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            </nb-card>
+            <div
+              *ngIf="
+                isCampaignAdmin &&
+                (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
+              "
+              class="notes-container"
+            >
+              <label for="notes">
+                <input
+                  fieldSize="small"
+                  type="text"
+                  placeholder="Write Note"
+                  nbInput
+                  [(ngModel)]="noteTexts[campaign.id]"
+                  (click)="$event.stopPropagation()"
+                />
+              </label>
+              <button nbButton size="tiny" (click)="updateNotes(campaign.id); $event.stopPropagation()">Save</button>
+            </div>
+            <button
+              class="resend-payment-button"
+              *ngIf="
+                isCampaignAdmin &&
+                (campaign.status === ECampaignStatus.CHANGES_REQUIRED || campaign.status === ECampaignStatus.REJECTED)
+              "
+              nbButton
+              status="info"
+              [disabled]="campaign.unapproved_reasons.length === 0"
+              (click)="campaignUnapprovedChangesMail(campaign.id); $event.stopPropagation()"
+            >
+              Send mail
+            </button>
+            <!-- <td *ngIf="campaign.budget">{{ campaign.budget | currency : campaign.currency_type }}</td> -->
             <!-- <td class="duration-time">
               <div *ngIf="campaign.start_date">
                 From <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span> to
@@ -192,6 +203,33 @@
                 <span>{{ moment.utc(campaign.end_time, 'HH:mm').local().format('HH:mm') }}</span>
               </div>
             </td> -->
+            <td class="data-cell border-right">
+              {{ moment(campaign.created_at).format('MMM D, YYYY') }}
+              <span class="time-created"> | {{ moment(campaign.created_at).format('h:mm A') }}</span>
+              <div *ngIf="isCampaignAdmin">
+                <!-- <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini> -->
+              </div>
+            </td>
+            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <!--pending -->
+            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <!--pending -->
+            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <!--pending -->
+            <td *ngIf="isCampaignAdmin">
+              <span *ngIf="campaign.purchase_order">
+                {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
+              </span>
+              <button
+                class="resend-payment-button"
+                *ngIf="campaign?.purchase_order?.status === EPurchaseOrderStatus.UNPAID"
+                nbButton
+                status="info"
+                (click)="resendPaymentLink(campaign.id); $event.stopPropagation()"
+              >
+                Resend payment link
+              </button>
+            </td>
             <td class="border-left">
               <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
                 <button
@@ -208,7 +246,7 @@
                   &nbsp; Edit
                 </button>
               </a>
-              <a
+              <!-- <a
                 *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
                 [routerLink]="['/checkout', campaign.purchase_order.uuid]"
                 (click)="$event.stopPropagation()"
@@ -223,7 +261,7 @@
                   <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
                   &nbsp; Pay Now
                 </button>
-              </a>
+              </a> -->
               <a
                 *ngIf="campaign.status === ECampaignStatus.LIVE || campaign.status === ECampaignStatus.COMPLETE"
                 [routerLink]="['stats', campaign.id]"
@@ -234,14 +272,14 @@
                   &nbsp; Stats
                 </button>
               </a>
-              <button
+              <!-- <button
                 *ngIf="isCampaignAdmin && campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER"
                 nbButton
                 status="info"
                 (click)="$event.stopPropagation(); openPopup(updateNewsletter, campaign)"
               >
                 Update Newsletter
-              </button>
+              </button> -->
               <button
                 *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
                 nbButton
@@ -283,7 +321,7 @@
   </nb-card>
 </ng-template>
 
-<ng-template #updateNewsletter let-data let-ref="dialogRef">
+<!-- <ng-template #updateNewsletter let-data let-ref="dialogRef">
   <nb-card class="update-newsletter">
     <nb-card-header>
       <div>
@@ -304,7 +342,7 @@
       <button nbButton status="danger" (click)="ref.close()">Close</button>
     </nb-card-footer>
   </nb-card>
-</ng-template>
+</ng-template> -->
 
 <!-- Destroy campaign dialog -->
 <ng-template #destroyCampaign let-data let-ref="dialogRef">
