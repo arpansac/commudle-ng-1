@@ -36,3 +36,4 @@ export * from './lib/hackathon-collaboration-communities.service';
 export * from './lib/hackathon-team-round-submission.service';
 export * from './lib/hackathon-team-round-score.service';
 export * from './lib/hackathon-entry-passes.service';
+export * from './lib/hackathon-team.service';

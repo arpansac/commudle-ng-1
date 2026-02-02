@@ -636,6 +636,89 @@
         </div>
       </div>
 
+      <div
+        class="track-select"
+        *ngIf="
+          selectedTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
+          hackathonTracks.length > 0
+        "
+      >
+        <label>Track:</label>
+        <div *ngIf="selectedTeamDetails.track">
+          <select
+            [id]="'track-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalTrackValue(selectedTeamDetails.track.id)"
+            (change)="
+              openTrackConfirmationDialogBox(
+                trackChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+            [(ngModel)]="selectedTeamDetails.track.id"
+          >
+            <option *ngFor="let hackathonTrack of hackathonTracks" [value]="hackathonTrack.id">
+              {{ hackathonTrack.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="problem-statement-select"
+        *ngIf="
+          selectedTeamDetails.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
+          hackathonProblemStatements.length > 0
+        "
+      >
+        <label>Problem Statement:</label>
+        <div *ngIf="selectedTeamDetails.problem_statement">
+          <select
+            [id]="'problem-statement-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalProblemStatementValue(selectedTeamDetails.problem_statement.id)"
+            (change)="
+              openProblemStatementConfirmationDialogBox(
+                problemStatementChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+            [(ngModel)]="selectedTeamDetails.problem_statement.id"
+          >
+            <option
+              *ngFor="let hackathonProblemStatement of hackathonProblemStatements"
+              [value]="hackathonProblemStatement.id"
+            >
+              #{{ hackathonProblemStatement.display_id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="!selectedTeamDetails.problem_statement">
+          <select
+            [id]="'problem-statement-select-' + selectedTeamDetails.id"
+            (mousedown)="storeOriginalProblemStatementValue(selectedTeamDetails?.problem_statement?.id || null)"
+            (change)="
+              openProblemStatementConfirmationDialogBox(
+                problemStatementChangedConfirmationDialogBox,
+                $event,
+                selectedTeamDetails.id,
+                data.index
+              )
+            "
+          >
+            <option selected disabled [value]="null">Select a problem statement</option>
+            <option
+              *ngFor="let hackathonProblemStatement of hackathonProblemStatements"
+              [value]="hackathonProblemStatement.id"
+            >
+              #{{ hackathonProblemStatement.display_id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
       <div [formGroup]="notesForm" class="notes-form">
         <div formArrayName="note" class="field">
           <label>Notes:</label>
@@ -1042,6 +1125,65 @@
         nbButton
         status="primary"
         (click)="confirmRoundChange(data.teamId, data.index, data.newValue); ref.close()"
+      >
+        Confirm
+      </button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #trackChangedConfirmationDialogBox let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-track-dialog-box">
+    <nb-card-header>
+      <span>Confirm Track Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to change this team's track to <strong>{{ data.trackName }}</strong
+          >?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmTrackChange(data.teamId, data.index, data.newValue); ref.close()"
+      >
+        Confirm
+      </button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #problemStatementChangedConfirmationDialogBox let-ref="dialogRef" let-data>
+  <nb-card class="confirmation-problem-statement-dialog-box">
+    <nb-card-header>
+      <span>Confirm Problem Statement Change</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="confirmation-content">
+        <p>
+          Are you sure you want to change this team's problem statement to
+          <strong>#{{ data.problemStatementName }}</strong
+          >?
+        </p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button
+        nbButton
+        status="primary"
+        (click)="confirmProblemStatementChange(data.teamId, data.index, data.newValue); ref.close()"
       >
         Confirm
       </button>

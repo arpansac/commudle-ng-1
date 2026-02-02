@@ -13,7 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import * as moment from 'moment';
-import { RoundService, ToastrService, NoteService, EmailerPreviewService, SeoService } from '@commudle/shared-services';
+import {
+  RoundService,
+  ToastrService,
+  NoteService,
+  EmailerPreviewService,
+  SeoService,
+  HackathonTeamService,
+} from '@commudle/shared-services';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import {
   EDbModels,
@@ -115,6 +122,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   };
   private originalStatusValue: EHackathonRegistrationStatus;
   private originalRoundValue: number;
+  private originalTrackValue: number;
+  private originalProblemStatementValue: number;
   private originalOfflineInviteStatusValue: EOfflineInviteStatus;
 
   tinyMCE = {
@@ -167,6 +176,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     private hackathonEmailPreview: EmailerPreviewService,
     private router: Router,
     private seoService: SeoService,
+    private hackathonTeamService: HackathonTeamService,
   ) {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
@@ -514,6 +524,14 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.originalRoundValue = value;
   }
 
+  storeOriginalTrackValue(value: number) {
+    this.originalTrackValue = value;
+  }
+
+  storeOriginalProblemStatementValue(value: number) {
+    this.originalProblemStatementValue = value;
+  }
+
   trackByTeamId(index: number, item: any): any {
     return item.team.id + '-' + item.team.registration_status;
   }
@@ -605,6 +623,96 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       const selectElement = document.getElementById(`round-select-${teamId}`) as HTMLSelectElement;
       if (selectElement) {
         selectElement.value = data.round.id.toString();
+      }
+
+      this.closeConfirmationDialogBox();
+    });
+  }
+
+  openTrackConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
+    const selectedTrackId = event.target.value;
+    const selectedTrack = this.hackathonTracks.find((track) => track.id == selectedTrackId);
+    const previousValue = this.originalTrackValue;
+
+    // Revert the model first
+    if (this.selectedTeamDetails && previousValue) {
+      this.selectedTeamDetails.track = this.hackathonTracks.find((track) => track.id == previousValue);
+    }
+
+    // Then revert the visible select
+    event.target.value = previousValue?.toString() || '';
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        event: selectedTrackId,
+        trackName: selectedTrack?.name,
+        teamId: teamId,
+        index: index,
+        previousValue: previousValue,
+        newValue: selectedTrackId,
+      },
+    });
+  }
+
+  confirmTrackChange(teamId: number, index: number, newTrackId: number) {
+    this.hackathonTeamService.updateTrack(teamId, newTrackId).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      if (index >= 0) {
+        this.userResponses[index].team = data;
+      }
+      this.selectedTeamDetails = data;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`track-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.track.id.toString();
+      }
+
+      this.closeConfirmationDialogBox();
+    });
+  }
+
+  openProblemStatementConfirmationDialogBox(templateRef, event, teamId: number, index: number) {
+    const selectedProblemStatementId = event.target.value;
+    const selectedProblemStatement = this.hackathonProblemStatements.find((ps) => ps.id == selectedProblemStatementId);
+    const previousValue = this.originalProblemStatementValue;
+
+    // Revert the model first
+    if (this.selectedTeamDetails && previousValue) {
+      this.selectedTeamDetails.problem_statement = this.hackathonProblemStatements.find((ps) => ps.id == previousValue);
+    }
+
+    // Then revert the visible select
+    event.target.value = previousValue?.toString() || '';
+
+    this.confirmationDialogReference = this.nbDialogService.open(templateRef, {
+      context: {
+        event: selectedProblemStatementId,
+        problemStatementName: selectedProblemStatement?.display_id,
+        teamId: teamId,
+        index: index,
+        previousValue: previousValue,
+        newValue: selectedProblemStatementId,
+      },
+    });
+  }
+
+  confirmProblemStatementChange(teamId: number, index: number, newProblemStatementId: number) {
+    this.hackathonTeamService.updateProblemStatement(teamId, newProblemStatementId).subscribe((data) => {
+      this.toastrService.successDialog('Details has been updated successfully');
+
+      // Update the model
+      if (index >= 0) {
+        this.userResponses[index].team.problem_statement = data.problem_statement;
+      }
+      this.selectedTeamDetails.problem_statement = data.problem_statement;
+
+      // Force DOM update
+      const selectElement = document.getElementById(`problem-statement-select-${teamId}`) as HTMLSelectElement;
+      if (selectElement) {
+        selectElement.value = data.problem_statement.id.toString();
       }
 
       this.closeConfirmationDialogBox();
