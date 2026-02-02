@@ -1,4 +1,6 @@
 .sponsors-container {
+  @apply com-mx-0 md:com-mx-2;
+
   nb-card-body {
     .sponsors-cards-container {
       h6 {
