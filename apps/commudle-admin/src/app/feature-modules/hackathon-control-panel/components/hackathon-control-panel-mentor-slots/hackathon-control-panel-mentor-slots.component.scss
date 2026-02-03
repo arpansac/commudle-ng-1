@@ -263,6 +263,9 @@
         span {
           @apply com-font-medium;
         }
+        .scored {
+          @apply com-text-green-600 com-font-semibold;
+        }
       }
     }
 

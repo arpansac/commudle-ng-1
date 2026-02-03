@@ -31,6 +31,7 @@ import {
   IHackathonTeam,
   IRoundMentorSlot,
   IRoundMentorSlotBooking,
+  EHackathonTeamRoundScoreStatus,
 } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
@@ -101,6 +102,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     faCompress,
     faXmark,
   };
+  EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -332,6 +334,10 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const bookedTeamIds = bookings?.map((b) => b.hackathon_team_id) || [];
     this.filteredUnassignedTeams = this.teams.filter(
       (team) => team.name.toLowerCase().includes(query) && !bookedTeamIds.includes(team.id),
+    );
+    console.log(
+      '🚀 ~ HackathonControlPanelMentorSlotsComponent ~ updateFilteredTeams ~  this.filteredUnassignedTeams:',
+      this.filteredUnassignedTeams,
     );
   }
 

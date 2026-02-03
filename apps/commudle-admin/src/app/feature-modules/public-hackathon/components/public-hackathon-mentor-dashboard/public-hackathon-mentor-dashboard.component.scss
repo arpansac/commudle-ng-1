@@ -69,6 +69,9 @@ nb-card {
 
               .team-name {
                 @apply com-px-3 com-text-primary-500 com-font-medium com-text-sm;
+                .scored {
+                  @apply com-text-green-600 com-font-semibold;
+                }
               }
             }
           }
@@ -130,6 +133,9 @@ nb-card {
 
       span {
         @apply com-text-sm com-text-gray-800;
+      }
+      .scored {
+        @apply com-text-green-600 com-font-semibold;
       }
     }
   }

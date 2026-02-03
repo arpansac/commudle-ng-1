@@ -81,7 +81,17 @@
                   <div class="team-count-badge">{{ slot.round_mentor_slot_bookings.length }}</div>
                   <div class="team-summary custom-scrollbar">
                     @for(booking of slot.round_mentor_slot_bookings; track booking.id; let idx = $index){
-                    <span class="team-name"> {{ idx + 1 }}, {{ booking.hackathon_team.name }} </span>
+                    <span class="team-name">
+                      {{ idx + 1 }}, {{ booking.hackathon_team.name }}
+                      @if(booking.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+                      <span
+                        class="scored"
+                        [title]="'Current round score: ' + booking.hackathon_team_round_score.total_score"
+                      >
+                        {{ booking.hackathon_team_round_score.total_score }}
+                      </span>
+                      }
+                    </span>
                     }
                   </div>
                 </div>
@@ -296,7 +306,14 @@
       <div *ngIf="availableTeams.length > 0" class="teams-list-dialog">
         <h4>Available Teams</h4>
         <div *ngFor="let team of availableTeams" class="team-item" (click)="assignTeam(team.id, ref)">
-          <span>{{ team.name }}</span>
+          <span
+            >{{ team.name }}
+            @if(team.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+            <span class="scored" [title]="'Current round score: ' + team.hackathon_team_round_score.total_score">
+              {{ team.hackathon_team_round_score.total_score }}
+            </span>
+            }
+          </span>
           <button nbButton size="tiny" status="primary">Assign</button>
         </div>
       </div>

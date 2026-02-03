@@ -296,7 +296,14 @@
     <div class="teams-list">
       <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
         <div class="team-info">
-          <span>{{ team.name }}</span>
+          <span
+            >{{ team.name }}
+            @if(team.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+            <span class="scored" [title]="'Current round score: ' + team.hackathon_team_round_score.total_score">
+              {{ team.hackathon_team_round_score.total_score }}
+            </span>
+            }
+          </span>
         </div>
         <button nbButton size="tiny" status="primary">Add</button>
       </div>

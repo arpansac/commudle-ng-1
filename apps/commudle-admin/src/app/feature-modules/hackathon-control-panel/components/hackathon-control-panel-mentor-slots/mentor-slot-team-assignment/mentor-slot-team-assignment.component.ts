@@ -14,7 +14,13 @@ import {
 } from '@angular/core';
 import { faPlus, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
-import { ERoundMentorSlotStatus, IHackathonJudge, IRound, IRoundMentorSlot } from '@commudle/shared-models';
+import {
+  EHackathonTeamRoundScoreStatus,
+  ERoundMentorSlotStatus,
+  IHackathonJudge,
+  IRound,
+  IRoundMentorSlot,
+} from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -31,6 +37,7 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   @Input() roundMentorSlots: IRoundMentorSlot[];
   @Output() slotClick = new EventEmitter<IRoundMentorSlot>();
   @Output() cancelSlot = new EventEmitter<void>();
+  EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
 
   isSlotCancelled = false;
 

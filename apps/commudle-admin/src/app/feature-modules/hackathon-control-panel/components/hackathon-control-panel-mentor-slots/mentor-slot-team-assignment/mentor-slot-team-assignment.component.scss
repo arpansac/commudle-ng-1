@@ -23,6 +23,10 @@
 
       .team-name {
         @apply com-px-3 com-text-primary-500 com-font-medium com-text-xs;
+
+        .scored {
+          @apply com-text-green-600 com-font-semibold;
+        }
       }
     }
   }

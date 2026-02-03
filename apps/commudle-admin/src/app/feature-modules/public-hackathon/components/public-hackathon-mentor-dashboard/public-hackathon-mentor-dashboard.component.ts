@@ -76,8 +76,6 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
     private hackathonTeamRoundScoreService: HackathonTeamRoundScoreService,
     private dialogService: NbDialogService,
     private roundService: RoundService,
-    private hackathonService: HackathonService,
-    private authService: AuthService,
     private roundMentorSlotService: RoundMentorSlotService,
     private hackathonTeamService: HackathonTeamService,
     private roundMentorSlotBookingService: RoundMentorSlotBookingService,
