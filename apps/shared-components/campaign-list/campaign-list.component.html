@@ -94,50 +94,51 @@
               </div>
             </td>
             <td>
-              <app-badge
-                *ngIf="campaign.status && !isCampaignAdmin"
-                [text]="campaign.status | capitalizeAndRemoveUnderscore"
-                [fontSize]="'small'"
-                [borderRadius]="'round'"
-                [color]="
-                  campaign.status === ECampaignStatus.INCOMPLETE
-                    ? 'com-bg-gray-100'
-                    : campaign.status === ECampaignStatus.DRAFT
-                    ? 'com-bg-gray-500'
-                    : campaign.status === ECampaignStatus.SUBMITTED
-                    ? 'com-bg-blue-100'
-                    : campaign.status === ECampaignStatus.APPROVED
-                    ? 'com-bg-emerald-100'
-                    : campaign.status === ECampaignStatus.REJECTED
-                    ? 'com-bg-red-100'
-                    : campaign.status === ECampaignStatus.CHANGES_REQUIRED
-                    ? 'com-bg-amber-100'
-                    : campaign.status === ECampaignStatus.LIVE
-                    ? 'com-bg-white'
-                    : campaign.status === ECampaignStatus.COMPLETE
-                    ? 'com-bg-sky-100'
-                    : 'com-bg-gray-100'
-                "
-                [fontColor]="
-                  campaign.status === ECampaignStatus.INCOMPLETE
-                    ? 'com-text-gray-700'
-                    : campaign.status === ECampaignStatus.DRAFT
-                    ? 'com-text-white'
-                    : campaign.status === ECampaignStatus.SUBMITTED
-                    ? 'com-text-blue-700'
-                    : campaign.status === ECampaignStatus.APPROVED
-                    ? 'com-text-emerald-700'
-                    : campaign.status === ECampaignStatus.REJECTED
-                    ? 'com-text-red-700'
-                    : campaign.status === ECampaignStatus.CHANGES_REQUIRED
-                    ? 'com-text-amber-700'
-                    : campaign.status === ECampaignStatus.LIVE
-                    ? 'com-text-green-500'
-                    : campaign.status === ECampaignStatus.COMPLETE
-                    ? 'com-text-sky-700'
-                    : 'com-text-gray-700'
-                "
-              ></app-badge>
+              <div *ngIf="campaign.status && !isCampaignAdmin">
+                <app-badge
+                  [text]="campaign.status | capitalizeAndRemoveUnderscore"
+                  [fontSize]="'small'"
+                  [borderRadius]="'round'"
+                  [color]="
+                    campaign.status === ECampaignStatus.INCOMPLETE
+                      ? 'com-bg-gray-100'
+                      : campaign.status === ECampaignStatus.DRAFT
+                      ? 'com-bg-gray-500'
+                      : campaign.status === ECampaignStatus.SUBMITTED
+                      ? 'com-bg-blue-100'
+                      : campaign.status === ECampaignStatus.APPROVED
+                      ? 'com-bg-gray-500'
+                      : campaign.status === ECampaignStatus.REJECTED
+                      ? 'com-bg-red-100'
+                      : campaign.status === ECampaignStatus.CHANGES_REQUIRED
+                      ? 'com-bg-amber-100'
+                      : campaign.status === ECampaignStatus.LIVE
+                      ? 'com-bg-emerald-100'
+                      : campaign.status === ECampaignStatus.COMPLETE
+                      ? 'com-bg-sky-100'
+                      : 'com-bg-gray-100'
+                  "
+                  [fontColor]="
+                    campaign.status === ECampaignStatus.INCOMPLETE
+                      ? 'com-text-gray-700'
+                      : campaign.status === ECampaignStatus.DRAFT
+                      ? 'com-text-gray-700'
+                      : campaign.status === ECampaignStatus.SUBMITTED
+                      ? 'com-text-gray-700'
+                      : campaign.status === ECampaignStatus.APPROVED
+                      ? 'com-text-amber-700'
+                      : campaign.status === ECampaignStatus.REJECTED
+                      ? 'com-text-gray-700'
+                      : campaign.status === ECampaignStatus.CHANGES_REQUIRED
+                      ? 'com-text-emerald-700'
+                      : campaign.status === ECampaignStatus.LIVE
+                      ? 'com-text-red-700'
+                      : campaign.status === ECampaignStatus.COMPLETE
+                      ? 'com-text-gray-700'
+                      : 'com-text-gray-700'
+                  "
+                ></app-badge>
+              </div>
               <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
                 <select
                   [disabled]="

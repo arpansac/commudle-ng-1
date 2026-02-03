@@ -1,21 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef } from '@angular/core';
-import {
-  ICampaign,
-  ECampaignStatus,
-  EPurchaseOrderStatus,
-  EDbModels,
-  ECampaignTypeSlug,
-} from '@commudle/shared-models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ICampaign, ECampaignStatus, EDbModels } from '@commudle/shared-models';
 import { CampaignService, NoteService, ToastrService } from '@commudle/shared-services';
-import {
-  faEdit,
-  faReceipt,
-  faArrowUpRightFromSquare,
-  faSync,
-  faFilter,
-  faDownload,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faArrowUpRightFromSquare, faSync, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
 @Component({
@@ -24,20 +10,14 @@ import * as moment from 'moment';
     styleUrls: ['./campaign-list.component.scss'],
     standalone: false
 })
-export class CampaignListComponent implements OnChanges {
+export class CampaignListComponent {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
   @Output() refreshRequested = new EventEmitter<void>();
   moment = moment;
-  icons = { faEdit, faReceipt, faArrowUpRightFromSquare, faSync, faFilter, faDownload, faTrash };
+  icons = { faEdit, faArrowUpRightFromSquare, faSync, faTrash };
   ECampaignStatus = ECampaignStatus;
-  ECampaignTypeSlug = ECampaignTypeSlug;
-
-  EPurchaseOrderStatus = EPurchaseOrderStatus;
   noteTexts: { [campaignId: number]: string } = {};
-  newsletterId: number | null;
-  statusFilter: ECampaignStatus | null = null;
-  // statusOptions = Object.values(ECampaignStatus) as ECampaignStatus[];
 
   constructor(
     private campaignService: CampaignService,
@@ -45,12 +25,6 @@ export class CampaignListComponent implements OnChanges {
     private dialogService: NbDialogService,
     private noteService: NoteService,
   ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['campaigns'] && !changes['campaigns'].firstChange) {
-      this.statusFilter = null;
-    }
-  }
 
   updateStatus(event, campaignId) {
     this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
@@ -64,11 +38,11 @@ export class CampaignListComponent implements OnChanges {
 
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
-      if (campaign.main_newsletter_id) {
-        this.newsletterId = campaign.main_newsletter_id;
-      } else {
-        this.newsletterId = null;
-      }
+      // if (campaign.main_newsletter_id) {
+      //   this.newsletterId = campaign.main_newsletter_id;
+      // } else {
+      //   this.newsletterId = null;
+      // }
       this.dialogService.open(dialog, { context: { campaignId: campaign.id } });
     }
   }
@@ -86,24 +60,6 @@ export class CampaignListComponent implements OnChanges {
       const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
       this.campaigns[index].unapproved_reasons.push(note);
       this.noteTexts[campaignId] = '';
-    });
-  }
-
-  updateNewsletterWithCampaign(campaignId) {
-    this.campaignService.updateNewsletterWithCampaign(campaignId, Number(this.newsletterId)).subscribe((res) => {
-      if (res) {
-        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
-        this.campaigns[index].main_newsletter_id = this.newsletterId;
-        this.toasterService.successDialog('Campaign updated successfully');
-      }
-    });
-  }
-
-  resendPaymentLink(campaignId) {
-    this.campaignService.resendPaymentLink(campaignId).subscribe((res) => {
-      if (res) {
-        this.toasterService.successDialog('Payment Link Sent');
-      }
     });
   }
 
@@ -133,5 +89,38 @@ export class CampaignListComponent implements OnChanges {
   //   if (!this.campaigns) return [];
   //   if (this.statusFilter == null) return this.campaigns;
   //   return this.campaigns.filter((c) => c.status === this.statusFilter);
+  // }
+
+  // statusFilter: ECampaignStatus | null = null;
+  // statusOptions = Object.values(ECampaignStatus) as ECampaignStatus[];
+  // faReceipt,
+  // faFilter,
+  // faDownload,
+  // ECampaignTypeSlug = ECampaignTypeSlug;
+  // EPurchaseOrderStatus = EPurchaseOrderStatus;
+  // newsletterId: number | null;
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['campaigns'] && !changes['campaigns'].firstChange) {
+  //     this.statusFilter = null;
+  //   }
+  // }
+
+  // updateNewsletterWithCampaign(campaignId) {
+  //   this.campaignService.updateNewsletterWithCampaign(campaignId, Number(this.newsletterId)).subscribe((res) => {
+  //     if (res) {
+  //       const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+  //       this.campaigns[index].main_newsletter_id = this.newsletterId;
+  //       this.toasterService.successDialog('Campaign updated successfully');
+  //     }
+  //   });
+  // }
+
+  // resendPaymentLink(campaignId) {
+  //   this.campaignService.resendPaymentLink(campaignId).subscribe((res) => {
+  //     if (res) {
+  //       this.toasterService.successDialog('Payment Link Sent');
+  //     }
+  //   });
   // }
 }
