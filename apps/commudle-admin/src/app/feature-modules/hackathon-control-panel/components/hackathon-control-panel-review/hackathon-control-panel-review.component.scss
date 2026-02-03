@@ -134,10 +134,12 @@ th {
   }
 }
 
-.round-select {
+.round-select,
+.track-select,
+.problem-statement-select {
   @apply com-my-4;
   select {
-    @apply com-border com-border-solid com-border-[#e4e9f2] com-px-2 com-py-2  com-rounded com-cursor-pointer com-w-full;
+    @apply com-bg-Custom-Select-Background com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3 com-text-Yankees-Blue;
   }
 }
 
@@ -249,14 +251,6 @@ th {
   }
 }
 
-.confirmation-application-dialog-box,
-.confirmation-round-dialog-box {
-  nb-card-header,
-  nb-card-footer {
-    @apply com-flex com-justify-between com-items-center;
-  }
-}
-
 .form-responses-card {
   @apply com-m-0;
 }
@@ -322,5 +316,15 @@ th {
         }
       }
     }
+  }
+}
+
+.confirmation-application-dialog-box,
+.confirmation-round-dialog-box,
+.confirmation-track-dialog-box,
+.confirmation-problem-statement-dialog-box {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
   }
 }

@@ -903,6 +903,8 @@ export const API_ROUTES = {
     GENERATE_TEAM_REGISTRATION_STATUS_NOTIFICATION: 'api/v2/hackathons/generate_team_registration_status_notification', //POST
     SEND_TEAM_STATUS_EMAIL_BY_FILTER: 'api/v2/hackathons/send_team_status_email_by_filter', //POST
     CHANGE_TEAM_ROUND_STATUS: 'api/v2/hackathons/change_team_round_status', //PUT
+    CHANGE_TEAM_TRACK_STATUS: 'api/v2/hackathons/change_team_track_status', //PUT
+    CHANGE_TEAM_PROBLEM_STATEMENT_STATUS: 'api/v2/hackathons/change_team_problem_statement_status', //PUT
     GET_HACKATHON_CURRENT_REGISTRATION_DETAILS: 'api/v2/hackathons/get_hackathon_current_registration_details', //GET
     UPDATE_STATUS: 'api/v2/hackathons/update_status', //PUT
     VERIFY_INVITATION_TOKEN_JUDGE: 'api/v2/hackathons/verify_invitation_token_judge', //GET
@@ -935,6 +937,9 @@ export const API_ROUTES = {
       SEND_ENTRY_PASSES_EMAIL: 'api/v2/hackathons/teams/send_entry_passes_email', //POST
       SEND_RSVP_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_rsvp_to_all_teams', //POST
       SEND_ENTRY_PASSES_TO_ALL_TEAMS: 'api/v2/hackathons/teams/send_entry_passes_to_all_teams', //POST
+      TEAMS_BY_EVALUATOR: 'api/v2/hackathons/teams/teams_by_evaluator', //POST
+      UPDATE_TRACK: 'api/v2/hackathons/teams/update_track', //POST
+      UPDATE_PROBLEM_STATEMENT: 'api/v2/hackathons/teams/update_problem_statement',
     },
   },
 
