@@ -60,7 +60,6 @@
             <th class="com-text-left com-bg-gray-50">BUDGET</th>
             <th class="com-text-left com-bg-gray-50">DURATION</th>
             <th class="com-text-left com-bg-gray-50 border-right created-column">CREATED</th>
-            <!-- Pending <th *ngIf="isCampaignAdmin" class="com-text-left com-bg-gray-50">PAYMENT</th> -->
             <th class="com-text-right">IMPRESSIONS/VIEWS</th>
             <th class="com-text-right">CLICKS</th>
             <th class="com-text-right border-right">CTR</th>
@@ -110,7 +109,7 @@
                       : campaign.status === ECampaignStatus.APPROVED
                       ? 'com-bg-gray-500'
                       : campaign.status === ECampaignStatus.REJECTED
-                      ? 'com-bg-red-100'
+                      ? 'com-bg-gray-500'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
                       ? 'com-bg-amber-100'
                       : campaign.status === ECampaignStatus.LIVE
@@ -127,7 +126,7 @@
                       : campaign.status === ECampaignStatus.SUBMITTED
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.APPROVED
-                      ? 'com-text-amber-700'
+                      ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.REJECTED
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
@@ -232,20 +231,6 @@
             <!--pending -->
             <td class="data-cell com-text-right border-right">{{ campaign.budget }}</td>
             <!--pending -->
-            <!-- Pending <td *ngIf="isCampaignAdmin">
-              <span *ngIf="campaign.purchase_order">
-                {{ campaign.purchase_order.status | capitalizeAndRemoveUnderscore }}
-              </span>
-              <button
-                class="resend-payment-button"
-                *ngIf="campaign?.purchase_order?.status === EPurchaseOrderStatus.UNPAID"
-                nbButton
-                status="info"
-                (click)="resendPaymentLink(campaign.id); $event.stopPropagation()"
-              >
-                Resend payment link
-              </button>
-            </td> -->
             <td class="action-buttons">
               <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
                 <button
@@ -262,24 +247,6 @@
                   <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
                 </button>
               </a>
-              <!-- Pending <a
-                *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.APPROVED"
-                [routerLink]="['/checkout', campaign.purchase_order.uuid]"
-                (click)="$event.stopPropagation()"
-                target="_blank"
-              >
-                <button
-                  nbButton
-                  status="primary"
-                  [disabled]="campaign?.purchase_order.status === EPurchaseOrderStatus.PAID"
-                  size="small"
-                  class="action-btn-icon"
-                  outline
-                >
-                  <fa-icon [icon]="icons.faReceipt" shape="semi-round"></fa-icon>
-                  &nbsp; Pay Now
-                </button>
-              </a> -->
               <a
                 *ngIf="campaign.status === ECampaignStatus.LIVE || campaign.status === ECampaignStatus.COMPLETE"
                 [routerLink]="['stats', campaign.id]"
@@ -289,16 +256,6 @@
                   <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 </button>
               </a>
-              <!-- Pending <button
-                *ngIf="isCampaignAdmin && campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER"
-                nbButton
-                status="info"
-                (click)="$event.stopPropagation(); openPopup(updateNewsletter, campaign)"
-                class="action-btn-icon"
-                outline
-              >
-                Update Newsletter
-              </button> -->
               <button
                 *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
                 nbButton
@@ -343,29 +300,6 @@
     </nb-card-body>
   </nb-card>
 </ng-template>
-
-<!-- Pending<ng-template #updateNewsletter let-data let-ref="dialogRef">
-  <nb-card class="update-newsletter">
-    <nb-card-header>
-      <div>
-        Update Newsletter for Campaign
-        {{ data.campaignId }}
-      </div>
-      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
-        <nb-icon icon="close"></nb-icon>
-      </button>
-    </nb-card-header>
-    <nb-card-body>
-      <input type="number" nbInput placeholder="Newsletter ID" [(ngModel)]="newsletterId" />
-    </nb-card-body>
-    <nb-card-footer>
-      <button nbButton status="primary" (click)="updateNewsletterWithCampaign(data.campaignId); ref.close()">
-        Update
-      </button>
-      <button nbButton status="danger" (click)="ref.close()">Close</button>
-    </nb-card-footer>
-  </nb-card>
-</ng-template> -->
 
 <!-- Destroy campaign dialog -->
 <ng-template #destroyCampaign let-data let-ref="dialogRef">

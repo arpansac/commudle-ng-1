@@ -13,10 +13,10 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.authService.getAuthCookie()}`,
+          'Com-An': `Unbearer ${this.authService.getAnonId()}`,
         },
       });
     }
-
     return next.handle(request);
   }
 }

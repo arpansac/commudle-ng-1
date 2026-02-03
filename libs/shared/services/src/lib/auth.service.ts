@@ -45,6 +45,22 @@ export class AuthService {
     return this.appToken;
   }
 
+  getAnonId() {
+    let anonId = null;
+    if (environment.anon_id_cookie_name) {
+      anonId = this.cookieService.get(environment.anon_id_cookie_name);
+    }
+    if (!anonId) {
+      anonId = uuidv4();
+      this.cookieService.set(environment.anon_id_cookie_name, anonId, {
+        ...(environment.production && { domain: '.commudle.com' }),
+        expires: 7,
+        path: '/',
+      });
+    }
+    return anonId;
+  }
+
   getCurrentUser(): IUser {
     return this.currentUser.getValue();
   }

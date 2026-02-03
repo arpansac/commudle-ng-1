@@ -1,6 +1,7 @@
 type Environment = {
   production: boolean;
   session_cookie_name: string;
+  anon_id_cookie_name?: string;
   app_url: string;
   base_url: string;
   action_cable_url: string;
@@ -20,6 +21,7 @@ const environments: { [type: string]: Environment } = {
   local: {
     production: false,
     session_cookie_name: 'cmdle_sess',
+    anon_id_cookie_name: 'commudle_anon_id',
     app_url: 'http://localhost:4200',
     base_url: 'http://localhost:3000',
     action_cable_url: 'http://localhost:3000/live',
@@ -38,6 +40,7 @@ const environments: { [type: string]: Environment } = {
   test: {
     production: false,
     session_cookie_name: 'cmdle_sess',
+    anon_id_cookie_name: 'commudle_anon_id',
     app_url: 'https://test.commudle.com',
     base_url: 'https://t.commudle.com',
     action_cable_url: 'https://t.commudle.com/live',
@@ -56,6 +59,7 @@ const environments: { [type: string]: Environment } = {
   staging: {
     production: false,
     session_cookie_name: 'cmdle_sess',
+    anon_id_cookie_name: 'commudle_anon_id',
     app_url: 'http://localhost:4200',
     base_url: 'https://json.commudle.com',
     action_cable_url: 'https://json.commudle.com/live',
@@ -74,6 +78,7 @@ const environments: { [type: string]: Environment } = {
   production: {
     production: true,
     session_cookie_name: 'cmdle_sess',
+    anon_id_cookie_name: 'commudle_anon_id',
     app_url: 'https://www.commudle.com',
     base_url: 'https://json.commudle.com',
     action_cable_url: 'https://json.commudle.com/live',
