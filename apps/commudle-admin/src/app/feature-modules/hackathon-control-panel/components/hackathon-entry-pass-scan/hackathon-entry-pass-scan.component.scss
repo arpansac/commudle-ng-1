@@ -3,6 +3,8 @@
     @apply com-mx-auto;
 
     nb-card {
+      @apply com-mx-0 md:com-mx-2 com-mt-0 com-pt-4;
+
       nb-card-header {
         .header-wrapper {
           @apply com-flex com-items-center com-justify-between com-gap-4;

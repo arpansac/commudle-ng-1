@@ -1,4 +1,5 @@
 .review-section {
+  @apply com-mx-0 md:com-mx-2;
   nb-card-header {
     .header {
       @apply com-flex com-items-center com-mb-2;
@@ -122,7 +123,7 @@ th {
 }
 
 .response-dialog-box {
-  @apply com-w-full com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
+  @apply com-w-auto com-mx-0 com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
   nb-card-body {
     @apply com-overflow-x-hidden;
   }
@@ -235,7 +236,7 @@ th {
   }
 }
 .send-application-status-dialog-box {
-  @apply com-w-full md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
+  @apply com-w-auto md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;

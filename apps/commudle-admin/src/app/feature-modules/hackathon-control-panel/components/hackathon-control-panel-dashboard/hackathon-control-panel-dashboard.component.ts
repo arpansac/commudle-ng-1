@@ -68,6 +68,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   ESidebarHeading = ESidebarHeading;
   sidebarEventName = 'hackathonDashboard';
   sidebarExpanded = true;
+  isMobileView = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -79,6 +80,8 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   ) {}
 
   ngOnInit() {
+    this.checkMobileView();
+    window.addEventListener('resize', () => this.checkMobileView());
     this.seoService.noIndex(true);
     this.footerService.changeMiniFooterStatus(false);
     this.activatedRoute.params.subscribe((params) => {
@@ -93,7 +96,11 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
           this.hackathon = data;
         });
     });
-    this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    if (this.isMobileView) {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
+    } else {
+      this.sidebarService.setSidebarVisibility(this.sidebarEventName, true);
+    }
     // eslint-disable-next-line no-prototype-builtins
     if (this.sidebarService.setSidebar$.hasOwnProperty(this.sidebarEventName)) {
       this.sidebarService.setSidebar$[this.sidebarEventName].subscribe((data) => {
@@ -103,9 +110,18 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy() {
+    window.removeEventListener('resize', () => this.checkMobileView());
     this.seoService.noIndex(false);
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.footerService.changeMiniFooterStatus(true);
+  }
+
+  checkMobileView() {
+    this.isMobileView = window.innerWidth < 768;
+    console.log(
+      '🚀 ~ HackathonControlPanelDashboardComponent ~ checkMobileView ~  this.isMobileView:',
+      this.isMobileView,
+    );
   }
 
   updateStatus(hackathonStatus) {
