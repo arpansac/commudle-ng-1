@@ -72,6 +72,7 @@
             *ngFor="let campaign of campaigns"
             (click)="openPopup(showCampaignDetails, campaign)"
             [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
+            class="campaign-row"
           >
             <td>
               <div class="name-cell-content">

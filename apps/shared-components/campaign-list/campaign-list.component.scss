@@ -17,7 +17,7 @@
 
 // Table panel
 .table-panel {
-  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border-0 md:com-mx-0 com-mx-4;
+  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border com-border-solid com-border-Bright-Gray md:com-mx-0 com-mx-4;
 
   nb-card-body {
     @apply com-p-0;
@@ -58,7 +58,7 @@
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
   }
 
-  tbody tr {
+  .campaign-row {
     @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
 
     &:hover {
@@ -173,10 +173,10 @@
       @apply hover:com-bg-gray-50;
     }
   }
+}
 
-  .notes-container {
-    @apply com-flex com-gap-1;
-  }
+.notes-container {
+  @apply com-flex com-gap-2;
 }
 
 // Pending
