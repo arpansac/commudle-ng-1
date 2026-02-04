@@ -189,11 +189,11 @@ nb-accordion {
 }
 
 .right-column {
-  @apply com-flex com-m-0 md:com-ml-10 md:com-mt-[108px] md:com-px-32 com-bg-white md:com-py-10 com-rounded-md com-w-full com-h-max md:com-sticky md:com-top-24 com-self-start com-px-4 com-py-6;
+  @apply com-flex com-flex-col com-m-0 md:com-ml-10 md:com-mt-[108px] md:com-px-32 com-bg-white md:com-py-10 com-rounded-md com-w-full com-h-max md:com-sticky md:com-top-24 com-self-start com-px-4 com-py-6;
 }
 
 .right-column-container {
-  @apply com-w-full;
+  @apply com-aspect-1 com-rounded-md;
 }
 
 .saved-assets-container {

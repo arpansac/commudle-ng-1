@@ -37,15 +37,6 @@
                       >
                         <commudle-alert [error]="true" errorMessage="Campaign name is required"></commudle-alert>
                       </div>
-                      <div
-                        *ngIf="campaignForm.get('name')?.touched && campaignForm.get('name')?.hasError('pattern')"
-                        class="alert-container"
-                      >
-                        <commudle-alert
-                          [error]="true"
-                          errorMessage="Campaign name should not have any space"
-                        ></commudle-alert>
-                      </div>
                     </div>
                   </div>
                   <div>
@@ -249,10 +240,6 @@
                       <span>Est. cost:</span>
                       <span class="budget-info-value">$1.00 per<span class="small-info-text"> per view</span></span>
                     </div>
-                    <div class="cost-container">
-                      <span>Est. runtime ~ X days/hours/minutes :</span>
-                      <span class="time-info-value">3 days 24 minutes</span>
-                    </div>
                   </div>
 
                   <p class="small-info-text">You will end up spending ${{ dailySpending }} per day</p>
@@ -449,6 +436,7 @@
         </div>
       </div>
       <div class="right-column">
+        <h3 class="heading">Campaign Preview</h3>
         <div class="right-column-container">
           <commudle-campaign-assets-display
             [defaultImageUrl]="defaultUrl"

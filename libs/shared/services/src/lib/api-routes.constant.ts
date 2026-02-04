@@ -1102,7 +1102,7 @@ export const API_ROUTES = {
     UPDATE: 'api/v2/campaigns_new', //PUT
     SUBMIT_FOR_APPROVAL: 'api/v2/campaigns_new/submit_for_approval', //PUT
     CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns_new/index_admin', //GET
-    // CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns_new/campaign_admin_status_update', //PUT
+    CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
   },
 
   PURCHASE_ORDER: {

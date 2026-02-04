@@ -66,7 +66,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   ) {
     this.campaignForm = this._fb.group(
       {
-        name: ['', [Validators.required, Validators.pattern(/^\S*$/)]], //campaign name
+        name: ['', Validators.required],
         start_at: ['', Validators.required],
         end_at: [''],
         set_end_date: [false],
