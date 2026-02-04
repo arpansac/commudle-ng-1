@@ -110,4 +110,14 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  hackathonRejectionEmailPreview(formData, hackathonId): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.SEND_REJECTION_EMAILS),
+      {
+        email_form: formData,
+        hackathon_id: hackathonId,
+      },
+    );
+  }
 }

@@ -183,6 +183,19 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  previewRejectionEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+    });
+    this.emailerPreviewService
+      .hackathonRejectionEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
   openEmailPreviewTemplate(previewData) {
     this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
       context: { previewData },

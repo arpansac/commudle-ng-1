@@ -97,6 +97,16 @@
     </nb-card-body>
     <nb-card-footer>
       <button
+        (click)="previewRejectionEmail(hackathonId); showPreviewSpinner = true"
+        nbButton
+        status="primary"
+        shape="semi-round"
+        [nbSpinner]="showPreviewSpinner"
+        type="button"
+      >
+        Preview Email
+      </button>
+      <button
         nbButton
         status="primary"
         shape="semi-round"
