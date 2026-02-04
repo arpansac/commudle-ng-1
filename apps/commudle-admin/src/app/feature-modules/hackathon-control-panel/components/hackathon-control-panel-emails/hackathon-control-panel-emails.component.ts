@@ -12,6 +12,15 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 import { ICommunity, IHackathon } from '@commudle/shared-models';
+import {
+  faEnvelope,
+  faTimes,
+  faTrophy,
+  faFilter,
+  faEye,
+  faPaperPlane,
+  faBullhorn,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
@@ -31,6 +40,16 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
   parent: ICommunity | ICommunityGroup;
+
+  readonly icons = {
+    faEnvelope,
+    faTimes,
+    faTrophy,
+    faFilter,
+    faBullhorn,
+    faEye,
+    faPaperPlane,
+  };
 
   tinyMCE = {
     min_height: 300,

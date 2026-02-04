@@ -1,36 +1,54 @@
 <nb-card>
   <nb-card-header>
-    Communications <commudle-help-section [helpDictionaryName]="'hackathon-communications'"></commudle-help-section
-  ></nb-card-header>
+    <div class="header-section">
+      <h2 class="page-title">Communications</h2>
+      <commudle-help-section [helpDictionaryName]="'hackathon-communications'"></commudle-help-section>
+    </div>
+  </nb-card-header>
   <nb-card-body>
-    <div>
-      <div class="group-name">Registrations</div>
-      <div class="group-values">
-        <button nbButton status="primary" (click)="openDialogBox(SendRegistrationsByMail)">
-          Send Registration Invite
-        </button>
-        &nbsp; &nbsp;
-        <button nbButton status="primary" (click)="openDialogBox(SendRejectionEmails)">Send Rejection Emails</button>
+    <div class="email-sections">
+      <div class="email-section">
+        <div class="section-header">
+          <h3 class="section-title">Registration Management</h3>
+        </div>
+        <div class="action-buttons">
+          <button nbButton status="primary" size="medium" (click)="openDialogBox(SendRegistrationsByMail)">
+            <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+            &nbsp; Send Registration Invite
+          </button>
+          <button nbButton status="danger" size="medium" (click)="openDialogBox(SendRejectionEmails)">
+            <fa-icon [icon]="icons.faTimes"></fa-icon>
+            &nbsp; Send Rejection Emails
+          </button>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="group-name">Winner</div>
-      <div class="group-values">
-        <button nbButton status="primary" (click)="openDialogBoxForWinnerAnnouncement(hackathonId)">
-          Send Winner Announcement Email
-        </button>
+
+      <div class="email-section">
+        <div class="section-header">
+          <h3 class="section-title">Winner Announcements</h3>
+        </div>
+        <div class="action-buttons">
+          <button nbButton status="success" size="medium" (click)="openDialogBoxForWinnerAnnouncement(hackathonId)">
+            <fa-icon [icon]="icons.faTrophy"></fa-icon>
+            &nbsp; Send Winner Announcement
+          </button>
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="group-name">General Mailer</div>
-      <div class="group-values">
-        <button nbButton status="primary" (click)="openDialogBoxForStatusFilterGeneralEmail(hackathonId)">
-          Status filter general email
-        </button>
-        &nbsp; &nbsp;
-        <button nbButton status="primary" (click)="openDialogBoxForRoundGeneralEmail(hackathonId)">
-          Round general email
-        </button>
+
+      <div class="email-section">
+        <div class="section-header">
+          <h3 class="section-title">General Communications</h3>
+        </div>
+        <div class="action-buttons">
+          <button nbButton status="info" size="medium" (click)="openDialogBoxForStatusFilterGeneralEmail(hackathonId)">
+            <fa-icon [icon]="icons.faFilter"></fa-icon>
+            &nbsp; Status Filter Email
+          </button>
+          <button nbButton status="info" size="medium" (click)="openDialogBoxForRoundGeneralEmail(hackathonId)">
+            <fa-icon [icon]="icons.faBullhorn"></fa-icon>
+            &nbsp; Round Specific Email
+          </button>
+        </div>
       </div>
     </div>
   </nb-card-body>
@@ -40,7 +58,7 @@
   <nb-card class="mail-popup">
     <nb-card-header>
       <span>Registration Invite Email</span>
-      <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+      <button nbButton size="small" shape="round" (click)="closeDialogBox()" ghost>
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
@@ -63,7 +81,8 @@
         [nbSpinner]="showPreviewSpinner"
         type="button"
       >
-        Preview Email
+        <fa-icon [icon]="icons.faEye"></fa-icon>
+        &nbsp; Preview Email
       </button>
       <button
         nbButton
@@ -74,7 +93,8 @@
         [nbSpinner]="isLoading"
         [disabled]="isLoading"
       >
-        Send
+        <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
+        &nbsp; Send
       </button>
     </nb-card-footer>
   </nb-card>
@@ -84,7 +104,7 @@
   <nb-card class="mail-popup">
     <nb-card-header>
       <span>Send Rejection Emails</span>
-      <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+      <button nbButton size="small" shape="round" (click)="closeDialogBox()" ghost>
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
@@ -104,7 +124,8 @@
         [nbSpinner]="showPreviewSpinner"
         type="button"
       >
-        Preview Email
+        <fa-icon [icon]="icons.faEye"></fa-icon>
+        &nbsp; Preview Email
       </button>
       <button
         nbButton
@@ -115,7 +136,8 @@
         [nbSpinner]="isLoading"
         [disabled]="isLoading"
       >
-        Send
+        <fa-icon [icon]="icons.faPaperPlane"></fa-icon>
+        &nbsp; Send
       </button>
     </nb-card-footer>
   </nb-card>
