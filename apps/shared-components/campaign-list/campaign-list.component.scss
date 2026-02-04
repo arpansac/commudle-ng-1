@@ -156,7 +156,7 @@
 }
 
 .notes-table {
-  @apply com-mx-0 com-rounded;
+  @apply com-mx-0 com-mt-4 com-mb-0 com-rounded;
   nb-card-body {
     @apply com-p-0;
   }
@@ -176,7 +176,7 @@
 }
 
 .notes-container {
-  @apply com-flex com-gap-2;
+  @apply com-flex com-gap-2 com-mt-2;
 }
 
 // Pending
