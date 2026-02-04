@@ -18,6 +18,8 @@ export class CampaignListComponent {
   icons = { faEdit, faArrowUpRightFromSquare, faSync, faTrash };
   ECampaignStatus = ECampaignStatus;
   noteTexts: { [campaignId: number]: string } = {};
+  // statusFilter: ECampaignStatus | null = null;
+  // faFilter,
 
   constructor(
     private campaignService: CampaignService,
@@ -38,11 +40,6 @@ export class CampaignListComponent {
 
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
-      // if (campaign.main_newsletter_id) {
-      //   this.newsletterId = campaign.main_newsletter_id;
-      // } else {
-      //   this.newsletterId = null;
-      // }
       this.dialogService.open(dialog, { context: { campaignId: campaign.id } });
     }
   }
@@ -84,43 +81,4 @@ export class CampaignListComponent {
   onRefresh() {
     this.refreshRequested.emit();
   }
-
-  // get filteredCampaigns(): ICampaign[] {
-  //   if (!this.campaigns) return [];
-  //   if (this.statusFilter == null) return this.campaigns;
-  //   return this.campaigns.filter((c) => c.status === this.statusFilter);
-  // }
-
-  // statusFilter: ECampaignStatus | null = null;
-  // statusOptions = Object.values(ECampaignStatus) as ECampaignStatus[];
-  // faReceipt,
-  // faFilter,
-  // faDownload,
-  // ECampaignTypeSlug = ECampaignTypeSlug;
-  // EPurchaseOrderStatus = EPurchaseOrderStatus;
-  // newsletterId: number | null;
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['campaigns'] && !changes['campaigns'].firstChange) {
-  //     this.statusFilter = null;
-  //   }
-  // }
-
-  // updateNewsletterWithCampaign(campaignId) {
-  //   this.campaignService.updateNewsletterWithCampaign(campaignId, Number(this.newsletterId)).subscribe((res) => {
-  //     if (res) {
-  //       const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
-  //       this.campaigns[index].main_newsletter_id = this.newsletterId;
-  //       this.toasterService.successDialog('Campaign updated successfully');
-  //     }
-  //   });
-  // }
-
-  // resendPaymentLink(campaignId) {
-  //   this.campaignService.resendPaymentLink(campaignId).subscribe((res) => {
-  //     if (res) {
-  //       this.toasterService.successDialog('Payment Link Sent');
-  //     }
-  //   });
-  // }
 }
