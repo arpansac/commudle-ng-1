@@ -1,4 +1,5 @@
 .review-section {
+  @apply com-mx-0 md:com-mx-2;
   nb-card-header {
     .header {
       @apply com-flex com-items-center com-mb-2;
@@ -122,7 +123,7 @@ th {
 }
 
 .response-dialog-box {
-  @apply com-w-full com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
+  @apply com-w-auto com-mx-0 com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
   nb-card-body {
     @apply com-overflow-x-hidden;
   }
@@ -133,10 +134,12 @@ th {
   }
 }
 
-.round-select {
+.round-select,
+.track-select,
+.problem-statement-select {
   @apply com-my-4;
   select {
-    @apply com-border com-border-solid com-border-[#e4e9f2] com-px-2 com-py-2  com-rounded com-cursor-pointer com-w-full;
+    @apply com-bg-Custom-Select-Background com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3 com-text-Yankees-Blue;
   }
 }
 
@@ -235,7 +238,7 @@ th {
   }
 }
 .send-application-status-dialog-box {
-  @apply com-w-full md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
+  @apply com-w-auto md:com-w-[40dvw] md:com-max-h-[90dvh] com-max-h-full;
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
@@ -245,14 +248,6 @@ th {
     .email-buttons {
       @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-3;
     }
-  }
-}
-
-.confirmation-application-dialog-box,
-.confirmation-round-dialog-box {
-  nb-card-header,
-  nb-card-footer {
-    @apply com-flex com-justify-between com-items-center;
   }
 }
 
@@ -321,5 +316,15 @@ th {
         }
       }
     }
+  }
+}
+
+.confirmation-application-dialog-box,
+.confirmation-round-dialog-box,
+.confirmation-track-dialog-box,
+.confirmation-problem-statement-dialog-box {
+  nb-card-header,
+  nb-card-footer {
+    @apply com-flex com-justify-between com-items-center;
   }
 }

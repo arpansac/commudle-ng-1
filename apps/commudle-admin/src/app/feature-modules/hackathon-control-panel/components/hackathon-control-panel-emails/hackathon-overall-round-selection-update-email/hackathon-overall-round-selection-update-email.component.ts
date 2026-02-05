@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EDbModels, IHackathon, IRound } from '@commudle/shared-models';
+import { EDbModels, IRound } from '@commudle/shared-models';
 import { RoundService, ToastrService, EmailerPreviewService } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';

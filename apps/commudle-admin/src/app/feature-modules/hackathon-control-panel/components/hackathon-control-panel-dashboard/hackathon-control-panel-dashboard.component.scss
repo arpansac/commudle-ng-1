@@ -1,5 +1,10 @@
 .hackathon-details {
-  @apply com-p-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-flex com-gap-3 com-items-center;
+  @apply com-p-2 com-bg-white com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-flex com-gap-3 com-items-center com-flex-wrap;
+
+  .toggle-sidebar-btn {
+    @apply com-mr-2;
+  }
+
   h1 {
     @apply com-text-3xl com-m-0;
   }
@@ -15,7 +20,7 @@
 }
 
 .sidebar {
-  @apply com-sticky com-top-16 com-h-[calc(100vh-70px)];
+  @apply md:com-sticky com-top-16 com-h-[calc(100vh-70px)];
 
   a {
     @apply com-text-inherit com-no-underline;
@@ -92,7 +97,7 @@ a {
 }
 
 .router {
-  @apply com-w-full com-my-2 com-mx-4;
+  @apply com-w-full com-my-2 com-mx-0 md:com-mx-4;
 }
 
 .header-icons {
