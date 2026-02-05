@@ -12,6 +12,15 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 import { ICommunity, IHackathon } from '@commudle/shared-models';
+import {
+  faEnvelope,
+  faTimes,
+  faTrophy,
+  faFilter,
+  faEye,
+  faPaperPlane,
+  faBullhorn,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-emails',
@@ -31,6 +40,16 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
   parent: ICommunity | ICommunityGroup;
+
+  readonly icons = {
+    faEnvelope,
+    faTimes,
+    faTrophy,
+    faFilter,
+    faBullhorn,
+    faEye,
+    faPaperPlane,
+  };
 
   tinyMCE = {
     min_height: 300,
@@ -149,6 +168,21 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
     );
   }
 
+  sendRejectionEmails() {
+    this.isLoading = true;
+    this.hackathonService.sendRejectionEmails(this.hackathonId, this.message).subscribe(
+      (data) => {
+        if (data) {
+          this.toasterService.successDialog('Rejection emails sent successfully!');
+        }
+        this.closeDialogBox();
+      },
+      () => {
+        this.closeDialogBox();
+      },
+    );
+  }
+
   closeDialogBox() {
     this.message = '';
     this.isLoading = false;
@@ -161,6 +195,19 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
     });
     this.emailerPreviewService
       .hackathonInviteRegistrationEmailPreview(this.previewEmailForm.value, hackathonId)
+      .subscribe((result) => {
+        this.previewData = result.preview;
+        this.openEmailPreviewTemplate(this.previewData);
+        this.showPreviewSpinner = false;
+      });
+  }
+
+  previewRejectionEmail(hackathonId) {
+    this.previewEmailForm.patchValue({
+      body: this.message,
+    });
+    this.emailerPreviewService
+      .hackathonRejectionEmailPreview(this.previewEmailForm.value, hackathonId)
       .subscribe((result) => {
         this.previewData = result.preview;
         this.openEmailPreviewTemplate(this.previewData);

@@ -456,6 +456,7 @@ export const API_ROUTES = {
         'api/v2/email_previews/hackathon_emails/send_team_status_email_by_filter',
       HACKATHON_TEAM_RSVP_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_team_rsvp_email',
       HACKATHON_ENTRY_PASS_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_entry_pass_email',
+      SEND_REJECTION_EMAILS: 'api/v2/email_previews/hackathon_emails/send_rejection_emails', //POST
     },
   },
 
@@ -916,6 +917,7 @@ export const API_ROUTES = {
     REGISTRATION_DETAILS_CSV: 'api/v2/hackathons/registration_details_csv', //POST
     ROUND_GENERAL_MAILER: 'api/v2/hackathons/round_general_mailer', //POST
     USERS_CHANNELS: 'api/v2/hackathons/users_channels', //GET
+    SEND_REJECTION_EMAILS: 'api/v2/hackathons/send_rejection_emails', //POST
     PUBLIC: {
       SHOW: 'api/v2/hackathons/public/show', //GET
       INDEX: 'api/v2/hackathons/public/index', //GET
