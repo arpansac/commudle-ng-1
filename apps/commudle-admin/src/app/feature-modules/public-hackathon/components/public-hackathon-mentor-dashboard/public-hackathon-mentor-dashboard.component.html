@@ -26,6 +26,108 @@
     <div *ngIf="isLoading" class="loading-state">
       <app-loading-spinner></app-loading-spinner>
     </div>
+    <!-- Mentor Slots Section -->
+    <div *ngIf="currentMentor && roundMentorSlots?.length > 0" class="mentor-slots-section">
+      <h3>My Mentorship Slot Timings</h3>
+      <commudle-alert
+        [info]="true"
+        message="Mentorship slot length and the number of teams in a particular slot are decided by the hackathon managers. You can choose to cancel a particular slot if you are not available. If you need more slots to be enabled, please connect with the hackathon managers."
+      ></commudle-alert>
+      <br />
+      @if(currentMentor.meeting_location) {
+      <div class="meeting-location-display">
+        <strong>Meeting Location:</strong>
+        @if(currentMentor.meeting_location.startsWith('http://') ||
+        currentMentor.meeting_location.startsWith('https://')) {
+        <a [href]="currentMentor.meeting_location" target="_blank" rel="noopener noreferrer">
+          {{ currentMentor.meeting_location }}
+        </a>
+        } @else {
+        <span>{{ currentMentor.meeting_location }}</span>
+        }&nbsp;
+        <button nbButton size="tiny" status="basic" (click)="openAddMeetingLocationDialog()">
+          <fa-icon [icon]="icons.faEdit"></fa-icon>
+        </button>
+      </div>
+      } @else {
+      <div class="meeting-location-add">
+        <button nbButton size="small" status="basic" (click)="openAddMeetingLocationDialog()">
+          <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
+        </button>
+      </div>
+      }
+      <div class="slots-table-wrapper custom-scrollbar">
+        <table class="slots-table">
+          <thead>
+            <tr>
+              <th *ngFor="let slot of roundMentorSlots; let i = index">
+                <div class="slot-header">
+                  <div class="slot-number">Slot {{ i + 1 }}</div>
+                  <div class="slot-time">
+                    {{ moment(slot.starts_at).format('h:mm A') }} - {{ moment(slot.ends_at).format('h:mm A') }}
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td *ngFor="let slot of roundMentorSlots; let i = index">
+                <div
+                  *ngIf="slot?.round_mentor_slot_bookings?.length > 0"
+                  class="team-cell-wrapper"
+                  (click)="openAddTeamDialog(slot, i)"
+                >
+                  <div class="team-count-badge">{{ slot.round_mentor_slot_bookings.length }}</div>
+                  <div class="team-summary custom-scrollbar">
+                    @for(booking of slot.round_mentor_slot_bookings; track booking.id; let idx = $index){
+                    <span class="team-name">
+                      {{ idx + 1 }}, {{ booking.hackathon_team.name }}
+                      @if(booking.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+                      <span
+                        class="scored"
+                        [title]="'Current round score: ' + booking.hackathon_team_round_score.total_score"
+                      >
+                        {{ booking.hackathon_team_round_score.total_score }}
+                      </span>
+                      }
+                    </span>
+                    }
+                  </div>
+                </div>
+                @if(!slot?.round_mentor_slot_bookings?.length){
+                <div class="no-teams-actions">
+                  <button
+                    class="no-teams-compact add-btn"
+                    (click)="openAddTeamDialog(slot, i)"
+                    [disabled]="
+                      slot.status === ERoundMentorSlotStatus.CANCELLED ||
+                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
+                    "
+                  >
+                    <fa-icon [icon]="icons.faPlus"></fa-icon>
+                    Add teams
+                  </button>
+                  @if(slot.status === ERoundMentorSlotStatus.CANCELLED || slot.status ===
+                  ERoundMentorSlotStatus.CANCELLED_BY_MENTOR) {
+                  <button class="no-teams-compact activate-btn" (click)="openActivateSlotDialog(slot, i)">
+                    <fa-icon [icon]="icons.faCheck"></fa-icon>
+                    Activate slot
+                  </button>
+                  } @else {
+                  <button class="no-teams-compact cancel-btn" (click)="openCancelSlotDialog(slot, i)">
+                    <fa-icon [icon]="icons.faXmark"></fa-icon>
+                    Cancel slot
+                  </button>
+                  }
+                </div>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <div *ngIf="!isLoading && teamDetails.length === 0" class="empty-state">
       <p>No teams assigned for this round</p>
@@ -169,6 +271,137 @@
     </nb-card-body>
     <nb-card-footer>
       <button nbButton status="primary" outline (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #addTeamDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card assign-team">
+    <nb-card-header>
+      <div>Add Team to Slot</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="availableTeams.length === 0" class="no-teams-message">
+        <p>No teams available to assign</p>
+      </div>
+      <div class="assigned-teams" *ngIf="selectedSlot?.round_mentor_slot_bookings?.length > 0">
+        <h4>Assigned Teams</h4>
+        <div class="team-tags">
+          @for(booking of selectedSlot?.round_mentor_slot_bookings; track booking.id){
+          <div class="tag">
+            <nb-tag
+              status="success"
+              [text]="booking.hackathon_team.name"
+              [removable]="true"
+              (remove)="removeTeamBooking(booking.id)"
+            >
+            </nb-tag>
+          </div>
+          }
+        </div>
+      </div>
+      <div *ngIf="availableTeams.length > 0" class="teams-list-dialog">
+        <h4>Available Teams</h4>
+        <div *ngFor="let team of availableTeams" class="team-item" (click)="assignTeam(team.id, ref)">
+          <span
+            >{{ team.name }}
+            @if(team.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+            <span class="scored" [title]="'Current round score: ' + team.hackathon_team_round_score.total_score">
+              {{ team.hackathon_team_round_score.total_score }}
+            </span>
+            }
+          </span>
+          <button nbButton size="tiny" status="primary">Assign</button>
+        </div>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #cancelSlotDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Cancel Slot</div>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to cancel this slot?</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="danger" (click)="cancelSlot(); ref.close(false)">Yes, Cancel</button>
+      <button nbButton (click)="ref.close(false)">No</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #updateMeetingLocationDialog let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Update Meeting Location</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form-group">
+        <label for="meetingLocation">Meeting Location/URL</label>
+        <input
+          type="text"
+          id="meetingLocation"
+          nbInput
+          fullWidth
+          [(ngModel)]="meetingLocation"
+          placeholder="Enter meeting URL or location (leave blank to delete)"
+        />
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="updateMeetingLocation(ref)">Update</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #activateSlotDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Activate Slot</div>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to activate this slot?</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="success" (click)="activateSlot(); ref.close(false)">Yes, Activate</button>
+      <button nbButton (click)="ref.close(false)">No</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #removeBookingDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Remove Team</div>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to remove this team from the slot?</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="danger" (click)="ref.close(true)">Yes, Remove</button>
+      <button nbButton (click)="ref.close(false)">No</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

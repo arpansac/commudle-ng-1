@@ -1,0 +1,333 @@
+<nb-card
+  class="main-card-container"
+  [ngClass]="{
+    'fullscreen-card': isFullscreen,
+    'sidebar-expanded': mainSidebarExpanded,
+    'sidebar-collapsed': !mainSidebarExpanded
+  }"
+>
+  <nb-card-header>
+    <span>Mentor Slot Booking</span>
+    <div class="header-actions">
+      <button
+        (click)="toggleFullscreen()"
+        class="fullscreen-button"
+        [title]="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+      >
+        <fa-icon [icon]="isFullscreen ? icons.faExpand : icons.faCompress"></fa-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+    <commudle-data-table
+      *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
+      [columns]="tableColumns"
+      [rows]="tableRows"
+      [config]="tableConfig"
+      [isLoading]="isLoading"
+    >
+    </commudle-data-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #mentorCellTemplate let-row="row" let-value="value">
+  <div class="mentor-info">
+    <img *ngIf="value.photo?.i320" [src]="value.photo.i320" [alt]="value.name" class="mentor-avatar" />
+    <div *ngIf="!value.photo?.i320" class="mentor-avatar-placeholder">
+      <span>{{ value.name.charAt(0).toUpperCase() }}</span>
+    </div>
+    <div class="mentor-details">
+      <span class="mentor-name">{{ value.name }}</span>
+      <span class="mentor-designation" *ngIf="value.designation">{{ value.designation }}</span>
+    </div>
+  </div>
+  @if(value.meeting_location){ @if(value.meeting_location.startsWith('http://') ||
+  value.meeting_location.startsWith('https://')){
+  <div class="meeting-location">
+    <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer"> {{ value.meeting_location }} </a
+    ><button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+      <fa-icon [icon]="icons.faEdit"></fa-icon>
+    </button>
+  </div>
+  }@else {
+  <div class="meeting-location">
+    {{ value.meeting_location }}
+    <button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+      <fa-icon [icon]="icons.faEdit"></fa-icon>
+    </button>
+  </div>
+  } }@else {
+  <button
+    nbButton
+    size="small"
+    status="basic"
+    class="add-meeting-btn"
+    (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)"
+  >
+    <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
+  </button>
+  }
+</ng-template>
+
+<ng-template #roundHeaderTemplate let-column="column">
+  <div class="round-header">
+    <div class="round-header-content">
+      <span class="round-header-name">{{ column.round.name }}</span>
+      <span class="round-header-datetime">
+        <span class="start-date">{{ moment(column.round.date).format('MMM D, YYYY | h:mm A') }}</span>
+        <ng-container *ngIf="column.round.end_date">
+          →
+          <span class="end-date">{{ moment(column.round.end_date).format('MMM D, YYYY | h:mm A') }}</span></ng-container
+        >
+      </span>
+    </div>
+    @if(column.round?.round_mentor_slot_rule?.slot_times){
+    <button
+      nbButton
+      size="tiny"
+      status="primary"
+      ghost
+      outline
+      (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+    >
+      <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit Slot Rules
+    </button>
+    <div class="slot-rule-times">
+      <div class="slot-times-list">
+        <span *ngFor="let slotTime of column.round.round_mentor_slot_rule.slot_times" class="slot-time-item">
+          {{ moment(slotTime.starts_at).format('h:mm A') }} - {{ moment(slotTime.ends_at).format('h:mm A') }}
+        </span>
+      </div>
+    </div>
+    }@else {
+    <div class="slot-rules-action">
+      <button
+        nbButton
+        size="small"
+        status="primary"
+        ghost
+        class="full-size-btn"
+        outline
+        (click)="openSlotRulesDialog(updateSlotRules, column.round.id)"
+      >
+        <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Slot Rule
+      </button>
+    </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #slotCellTemplate let-row="row" let-column="column" let-value="value">
+  <div class="slots-container">
+    <commudle-mentor-slot-list
+      *ngIf="column.round.round_mentor_slot_rule"
+      [round]="column.round"
+      [mentor]="value.mentor"
+      [mentorId]="value.mentorId"
+      (slotClick)="addTeamToSlot($event.slot, value.mentorId, column.round.id, $event.index)"
+    ></commudle-mentor-slot-list>
+  </div>
+</ng-template>
+
+<ng-template #updateMentorMeetingUrl let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Update Meeting URL</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form-group">
+        <label for="meetingUrl">Meeting URL</label>
+        <input type="text" id="meetingUrl" nbInput fullWidth [(ngModel)]="meetingUrl" placeholder="Enter meeting URL" />
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="updateMeetingUrl(data.mentorId, ref)">Update</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #updateSlotRules let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card" [formGroup]="slotRuleForm">
+    <nb-card-header>
+      <div>Add/Update Slot Rules</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div class="form-group">
+        <nb-checkbox formControlName="booking_open">Booking Open</nb-checkbox>
+      </div>
+      <div class="form-group">
+        <label for="startsAt">Starts At <span class="required">*</span></label>
+        <input type="datetime-local" id="startsAt" nbInput fullWidth formControlName="starts_at" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['starts_at'].touched && slotRuleForm.controls['starts_at'].errors?.['required'] && slotRuleForm.controls['starts_at'].invalid"
+          [error]="true"
+          errorMessage="Start date is required"
+        ></commudle-alert>
+      </div>
+      <div class="form-group">
+        <label for="endsAt">Ends At <span class="required">*</span></label>
+        <input type="datetime-local" id="endsAt" nbInput fullWidth formControlName="ends_at" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['ends_at'].touched && slotRuleForm.controls['ends_at'].errors?.['required'] && slotRuleForm.controls['ends_at'].invalid"
+          [error]="true"
+          errorMessage="End date is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.errors?.['dateRange'] && (slotRuleForm.controls['starts_at'].touched || slotRuleForm.controls['ends_at'].touched)"
+          [error]="true"
+          errorMessage="End date must be after start date"
+        ></commudle-alert>
+      </div>
+      <div class="form-group">
+        <label for="slotLength">Slot Length (minutes) <span class="required">*</span></label>
+        <input type="number" id="slotLength" nbInput fullWidth formControlName="slot_length" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['required'] && slotRuleForm.controls['slot_length'].invalid"
+          [error]="true"
+          errorMessage="Slot length is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['slot_length'].touched && slotRuleForm.controls['slot_length'].errors?.['min']"
+          [error]="true"
+          errorMessage="Slot length must be at least 1 minute"
+        ></commudle-alert>
+      </div>
+      <div class="slot-info" *ngIf="calculateTotalSlots() > 0">
+        <p>
+          Total slots: <strong>{{ calculateTotalSlots() }}</strong>
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="maxTeams">Max Teams Per Slot <span class="required">*</span></label>
+        <input type="number" id="maxTeams" nbInput fullWidth formControlName="max_teams_per_slot" />
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['max_teams_per_slot'].touched && slotRuleForm.controls['max_teams_per_slot'].errors?.['required'] && slotRuleForm.controls['max_teams_per_slot'].invalid"
+          [error]="true"
+          errorMessage="Max teams is required"
+        ></commudle-alert>
+        <commudle-alert
+          *ngIf="slotRuleForm.controls['max_teams_per_slot'].touched && slotRuleForm.controls['max_teams_per_slot'].errors?.['min']"
+          [error]="true"
+          errorMessage="Max teams must be at least 1"
+        ></commudle-alert>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="saveSlotRules(ref)" [disabled]="slotRuleForm.invalid">Save</button>
+      <button nbButton (click)="ref.close()">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<commudle-sidebar
+  [heading]="'Assign Teams to Slot'"
+  [position]="ESidebarPosition.RIGHT"
+  [expandedWidth]="ESidebarWidth.XXL"
+  [forWindow]="true"
+  [eventName]="sidebarEventName"
+  (toggleSidebar)="closeSidebar()"
+>
+  <div class="sidebar-content">
+    <div class="sidebar-info">
+      @if (selectedMentor && selectedSlot) {
+      <div class="mentor-info">
+        <img
+          *ngIf="selectedMentor.photo?.i320"
+          [src]="selectedMentor.photo.i320"
+          [alt]="selectedMentor.name"
+          class="mentor-avatar"
+        />
+        <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
+          <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+        </div>
+        <div class="mentor-details">
+          <span class="mentor-name">{{ selectedMentor.name }}</span>
+          <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+        </div>
+      </div>
+
+      <span><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</span>
+      <span>
+        <strong>Slot:</strong>
+        <span class="slot-time-item">
+          {{ moment(selectedSlot?.starts_at).format('h:mm A') }} - {{ moment(selectedSlot?.ends_at).format('h:mm A') }}
+        </span>
+      </span>
+      }
+    </div>
+
+    <div class="assigned-teams">
+      <h4 class="com-my-1">Assigned Teams</h4>
+
+      <div class="team-tags">
+        <nb-tag
+          *ngFor="let booking of selectedSlot?.round_mentor_slot_bookings"
+          status="success"
+          [text]="booking.hackathon_team.name"
+          [removable]="true"
+          (remove)="removeTeamBooking(booking.id)"
+        >
+        </nb-tag>
+        <span *ngIf="!selectedSlot?.round_mentor_slot_bookings?.length" class="no-teams"> No teams assigned yet </span>
+      </div>
+    </div>
+
+    <div class="search-section">
+      <commudle-alert [info]="true" message="Only teams allocated to this mentor are visible here."></commudle-alert>
+      <h3>Add Teams</h3>
+      <input
+        nbInput
+        fullWidth
+        type="text"
+        placeholder="Search teams..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="teams-list">
+      <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
+        <div class="team-info">
+          <span
+            >{{ team.name }}
+            @if(team.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+            <span class="scored" [title]="'Current round score: ' + team.hackathon_team_round_score.total_score">
+              {{ team.hackathon_team_round_score.total_score }}
+            </span>
+            }
+          </span>
+        </div>
+        <button nbButton size="tiny" status="primary">Add</button>
+      </div>
+      <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
+        <p>No teams available</p>
+      </div>
+    </div>
+  </div>
+</commudle-sidebar>
+
+<ng-template #removeBookingDialog let-data let-ref="dialogRef">
+  <nb-card class="dialog-box-card">
+    <nb-card-header>
+      <div>Remove Team</div>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to remove this team from the slot?</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="danger" (click)="ref.close(true)">Yes, Remove</button>
+      <button nbButton (click)="ref.close(false)">No</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

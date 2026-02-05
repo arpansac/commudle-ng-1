@@ -12,6 +12,7 @@ import {
   NbTooltipModule,
   NbDialogModule,
   NbSelectModule,
+  NbTagModule,
 } from '@commudle/theme';
 import { PublicHackathonHomepageComponent } from './components/public-hackathon-homepage/public-hackathon-homepage.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -60,6 +61,7 @@ import { MentorScoringDialogComponent } from 'apps/commudle-admin/src/app/featur
     NbTooltipModule,
     NbDialogModule,
     NbSelectModule,
+    NbTagModule,
     FontAwesomeModule,
     SharedComponentsModule,
     NewSharedComponentsModule,

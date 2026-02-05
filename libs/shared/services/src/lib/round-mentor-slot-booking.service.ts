@@ -1,0 +1,35 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IRoundMentorSlotBooking } from '@commudle/shared-models';
+import { BaseApiService } from './base-api.service';
+import { API_ROUTES } from './api-routes.constant';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class RoundMentorSlotBookingService {
+  constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
+
+  createBooking(
+    hackathonTeamId: number,
+    roundMentorSlotId: number,
+    hackathonJudgeId: number,
+  ): Observable<IRoundMentorSlotBooking> {
+    return this.http.post<IRoundMentorSlotBooking>(
+      this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_BOOKINGS.CREATE),
+      {
+        hackathon_team_id: hackathonTeamId,
+        round_mentor_slot_id: roundMentorSlotId,
+        hackathon_judge_id: hackathonJudgeId,
+      },
+    );
+  }
+
+  destroy(bookingId: number): Observable<boolean> {
+    const params = new HttpParams().set('booking_id', bookingId);
+    return this.http.delete<boolean>(this.baseApiService.getRoute(API_ROUTES.ROUND_MENTOR_SLOT_BOOKINGS.DESTROY), {
+      params,
+    });
+  }
+}

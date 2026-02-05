@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
-
 import { Observable } from 'rxjs';
 
 interface IHackathonUserRoles {
@@ -56,6 +55,20 @@ export class HackathonJudgeService {
       hackathon_id: hackathonId,
       subject,
       message,
+    });
+  }
+
+  updateMeetingUrl(hackathonJudgeId: number, meetingUrl: string): Observable<boolean> {
+    return this.http.put<boolean>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.UPDATE_MEETING_URL), {
+      hackathon_judge_id: hackathonJudgeId,
+      meeting_url: meetingUrl,
+    });
+  }
+
+  roleDetails(hackathonId: number): Observable<any> {
+    const params = new HttpParams().set('hackathon_id', hackathonId);
+    return this.http.get<IHackathonUserRoles>(this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.ROLE_DETAILS), {
+      params,
     });
   }
 }

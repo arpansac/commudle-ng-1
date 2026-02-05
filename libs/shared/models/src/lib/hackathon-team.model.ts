@@ -40,6 +40,8 @@ export interface IHackathonTeam {
   team_members?: IHackathonUserResponse[];
   team_leader?: IHackathonUserResponse;
   hackathon_team_round_scores: IHackathonTeamRoundScore[];
+  slot_assigned?: boolean;
+  hackathon_team_round_score: IHackathonTeamRoundScore;
 }
 
 export enum EHackathonRegistrationStatus {

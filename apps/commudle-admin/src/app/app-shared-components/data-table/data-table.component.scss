@@ -161,6 +161,22 @@
           overflow-y: auto;
           position: relative;
 
+          &.no-padding {
+            @apply com-p-0;
+          }
+
+          &.border-right {
+            @apply com-border-0 com-border-solid com-border-r com-border-Bright-Gray;
+          }
+
+          &.border-bottom {
+            @apply com-border-0 com-border-solid com-border-b com-border-Bright-Gray;
+          }
+
+          &.border-right-bottom {
+            @apply com-border-0 com-border-solid com-border-r com-border-b com-border-Bright-Gray;
+          }
+
           &.frozen-column {
             @apply com-sticky com-left-0 com-z-10 com-bg-white;
             min-width: 360px;

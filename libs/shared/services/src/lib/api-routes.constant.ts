@@ -933,7 +933,6 @@ export const API_ROUTES = {
     TEAMS: {
       INDEX: 'api/v2/hackathons/teams/index', //GET
       UPDATE_OFFLINE_INVITE_STATUS: 'api/v2/hackathons/teams/update_offline_invite_status', //PUT
-      SHOW_BY_TOKEN: 'api/v2/hackathons/teams/show_by_token', //GET
       UPDATE_RSVP_BY_TOKEN: 'api/v2/hackathons/teams/update_rsvp_by_token', //PUT
       SEND_RSVP_EMAIL: 'api/v2/hackathons/teams/send_rsvp_email', //POST
       SEND_ENTRY_PASSES_EMAIL: 'api/v2/hackathons/teams/send_entry_passes_email', //POST
@@ -993,6 +992,7 @@ export const API_ROUTES = {
   ROUND: {
     CREATE: 'api/v2/round', //POST
     INDEX: 'api/v2/round', //GET
+    MENTOR_SLOT_INDEX: 'api/v2/round/mentor_slot_index', //GET
     DELETE: 'api/v2/round', //DELETE
     UPDATE: 'api/v2/round', //PUT
     CREATE_CHANNEL_FOR_ROUND: 'api/v2/round/create_channel_for_round', //POST
@@ -1023,6 +1023,8 @@ export const API_ROUTES = {
     ROLES: 'api/v2/hackathon_judge/roles', //GET
     SEND_DASHBOARD_LINK: 'api/v2/hackathon_judge/send_dashboard_link', //POST
     SEND_CUSTOM_EMAIL: 'api/v2/hackathon_judge/send_custom_email', //POST
+    UPDATE_MEETING_URL: 'api/v2/hackathon_judge/update_meeting_url', //PUT
+    ROLE_DETAILS: 'api/v2/hackathon_judge/role_details', //GET
   },
 
   EXPERTS: {
@@ -1130,5 +1132,22 @@ export const API_ROUTES = {
     SCAN_ENTRY_PASS: 'api/v2/hackathon_entry_passes/scan_entry_pass', //GET
     UPDATE_ATTENDANCE: 'api/v2/hackathon_entry_passes/update_attendance', //PUT
     ATTENDANCE_STATS: 'api/v2/hackathon_entry_passes/attendance_stats', //GET
+  },
+
+  ROUND_MENTOR_SLOT_RULES: {
+    CREATE: 'api/v2/round_mentor_slot_rules', //POST
+    UPDATE: 'api/v2/round_mentor_slot_rules', //PUT
+    SHOW_BY_ROUND: 'api/v2/round_mentor_slot_rules/show_by_round', //GET
+  },
+
+  ROUND_MENTOR_SLOT_BOOKINGS: {
+    CREATE: 'api/v2/round_mentor_slot_bookings', //POST
+    DESTROY: 'api/v2/round_mentor_slot_bookings', //DELETE
+  },
+
+  ROUND_MENTOR_SLOTS: {
+    INDEX_BY_ROUND_MENTOR: 'api/v2/round_mentor_slots/index_by_round_mentor', //GET
+    CREATE: 'api/v2/round_mentor_slots', //POST
+    UPDATE_STATUS: 'api/v2/round_mentor_slots/update_status', //PUT
   },
 };

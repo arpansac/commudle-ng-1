@@ -145,6 +145,12 @@
                     </div>
                     <div *ngIf="sidebarExpanded" class="action-button-name">Mentor Assignment</div>
                   </a>
+                  <a class="action-button" [routerLink]="['mentor-slots']" routerLinkActive="active">
+                    <div class="icon">
+                      <fa-icon [icon]="icons.faClock"></fa-icon>
+                    </div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">Mentor Slots</div>
+                  </a>
                   <a class="action-button" [routerLink]="['faqs']" routerLinkActive="active">
                     <div class="icon">
                       <fa-icon [icon]="icons.faCircleQuestion"></fa-icon>

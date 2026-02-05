@@ -118,7 +118,6 @@ export class HackathonControlPanelEmailsComponent implements OnInit, OnDestroy {
 
   fetchHackathonDetails(hackathonId) {
     this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
-      // TODO: Add Community Group in Future
       if (data.community) {
         this.parent = data.community;
       }

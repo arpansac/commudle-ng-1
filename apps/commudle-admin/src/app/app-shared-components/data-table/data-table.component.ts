@@ -19,6 +19,7 @@ export interface DataTableColumn {
   frozen?: boolean;
   resizable?: boolean;
   filterable?: boolean;
+  noPadding?: boolean;
   headerTemplate?: TemplateRef<unknown>;
   cellTemplate?: TemplateRef<unknown>;
 }
@@ -34,6 +35,8 @@ export interface DataTableConfig {
   frozenColumns?: boolean;
   emptyMessage?: string;
   loadingMessage?: string;
+  noCellPadding?: boolean;
+  cellBorders?: 'right' | 'bottom' | 'both' | 'none';
 }
 
 @Component({
@@ -71,6 +74,8 @@ export class DataTableComponent implements OnInit, OnDestroy {
     frozenColumns: true,
     emptyMessage: 'No entries found',
     loadingMessage: 'Loading...',
+    noCellPadding: false,
+    cellBorders: 'none',
   };
 
   ngOnInit() {
