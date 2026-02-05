@@ -30,6 +30,14 @@ export interface IPurchaseOrder {
   notes: {
     subscription_months: number;
   };
+  discount_amount: number;
+  has_taxes: boolean;
+  price: number;
+  tax_name: string;
+  tax_rate: number;
+  total_amount: number;
+  updated_at: Date;
+  user_id: number;
 }
 
 export enum EPurchaseOrderStatus {
