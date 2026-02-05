@@ -36,7 +36,6 @@ export interface IPurchaseOrder {
   tax_rate: number;
   total_amount: number;
   updated_at: Date;
-  user_id: number;
 }
 
 export enum EPurchaseOrderStatus {
