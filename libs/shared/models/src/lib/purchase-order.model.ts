@@ -10,7 +10,6 @@ export interface IPurchaseOrder {
   uuid: string;
   application_fee_amount: number;
   amount_to_be_paid: number;
-  amount: number;
   payment_gateway_fee: number;
   currency: string;
   tax_amount: number;

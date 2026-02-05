@@ -547,7 +547,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
-        amount: this.purchaseOrder.amount * this.quantity * this.subscriptionMonths,
+        amount: this.purchaseOrder.price * this.quantity * this.subscriptionMonths,
         usersCount: 1,
         edfegId: null,
         eventId: null,
@@ -592,7 +592,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
 
     const discountAmount = this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
-    const basePrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths;
+    const basePrice = (this.purchaseOrder.price / 100) * this.quantity * this.subscriptionMonths;
 
     if (this.discountCodeApplied && discountAmount > basePrice) {
       this.toastrService.warningDialog('Discount amount exceeds order total. Discount coupon will auto remove.');
@@ -604,9 +604,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private calcTotalPrice(discountAmount = 0): void {
-    if (!this.purchaseOrder?.amount) return;
+    if (!this.purchaseOrder?.price) return;
 
-    const basePrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths;
+    const basePrice = (this.purchaseOrder.price / 100) * this.quantity * this.subscriptionMonths;
     this.totalPrice = Math.max(0, basePrice - discountAmount);
   }
 
