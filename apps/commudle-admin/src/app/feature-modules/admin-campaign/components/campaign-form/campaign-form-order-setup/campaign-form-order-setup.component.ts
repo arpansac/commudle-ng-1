@@ -9,8 +9,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, EDbModels } from '@commudle/shared-models';
-import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
+import { ICampaign, ICampaignAsset, ICampaignEstimate, EDbModels, IWallet } from '@commudle/shared-models';
+import {
+  CampaignService,
+  GoogleTagManagerService,
+  SeoService,
+  ToastrService,
+  WalletService,
+} from '@commudle/shared-services';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
 import { ISearch } from 'apps/shared-models/search.model';
@@ -35,8 +41,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     faTrash,
   };
   campaign: ICampaign;
-  estimatedRuntime: string;
-  dailySpending: number;
+  wallet: IWallet;
+  estimate: ICampaignEstimate;
   form1Invalid = true;
   form2Invalid = true;
 
@@ -56,6 +62,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
     private campaignService: CampaignService,
+    private walletService: WalletService,
     private toasterService: ToastrService,
     private router: Router,
     private seoService: SeoService,
@@ -87,6 +94,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
         if (data['campaign']) {
           this.campaign = data['campaign'];
           this.patchCampaignForm();
+          this.getFundStatus();
           setTimeout(() => {
             if (this.campaignForm.get('set_end_date')?.value) {
               this.onSetEndDateChange();
@@ -120,25 +128,22 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   createCampaign() {
-    const campaignData: any = {
-      campaign: {
-        name: this.campaignForm.value.name,
-        start_at: this.campaignForm.value.start_at || null,
-      },
-    };
+    const formData = new FormData();
+    formData.append('campaign[name]', this.campaignForm.value.name);
+    formData.append('campaign[start_at]', this.campaignForm.value.start_at || null);
 
     if (this.campaignForm.get('set_end_date')?.value) {
-      campaignData.campaign.end_at = this.campaignForm.value.end_at || null;
+      formData.append('campaign[end_at]', this.campaignForm.value.end_at || null);
     }
 
-    this.campaignService.createCampaign(campaignData).subscribe((res: ICampaign) => {
+    this.campaignService.createCampaign(formData).subscribe((res: ICampaign) => {
       if (res) {
-        this.campaign = res; // Store the created campaign
+        this.campaign = res;
+        this.getFundStatus();
         this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
-        // this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
-        //   com_campaign_id: res.id,
-        //   com_campaign_type_name: this.campaign.campaign_type.name,
-        // });
+        this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
+          com_campaign_id: res.id,
+        });
       }
     });
   }
@@ -202,7 +207,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
       formData.append('campaign[campaign_assets][0][image]', assetData.image);
     }
 
-    // Save the asset to API
+    // Save the asset to APIFro
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
       // Create a new object reference with a new array reference to ensure change detection
       this.campaign = {
@@ -329,6 +334,14 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getEstimatedImpressions(): void {
+    if (!this.campaign?.id) return;
+    this.campaignService.getEstimatedImpressions(this.campaign.id).subscribe((res) => {
+      this.estimate = res.data;
+      this.cdr.detectChanges();
+    });
+  }
+
   private formatDateTimeForInput(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -386,6 +399,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
   handleInput(value: string | number, key: string) {
     this.campaignForm.patchValue({ [key]: value });
+    if (this.campaign?.id && key === 'budget') {
+      this.updateCampaign();
+    }
   }
 
   handleArrayFormInput(value: string | number, key: string, index: number, formArrayName: string) {
@@ -440,10 +456,12 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
       next: (data) => {
         if (data) {
           this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
+          this.getEstimatedImpressions();
           if (this.campaign && callSubmitButton) {
             this.callSubmitForApproval();
           }
           this.loadCampaignAssetsFromApi();
+          this.getEstimatedImpressions();
           this.cdr.detectChanges();
         }
       },
@@ -455,11 +473,11 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   callSubmitForApproval() {
-    this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
-      if (data) {
-        this.toasterService.successDialog('Campaign submitted for approval successfully');
-      }
-    });
+    // this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
+    //   if (data) {
+    //     this.toasterService.successDialog('Campaign submitted for approval successfully');
+    //   }
+    // });
   }
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
@@ -587,11 +605,17 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     this.selectedLocations.push(address);
     this.syncLocationsForm();
     this.locationsFormControl.setValue('', { emitEvent: false });
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
   }
 
   removeLocation(index: number) {
     this.selectedLocations.splice(index, 1);
     this.syncLocationsForm();
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
   }
 
   private syncLocationsForm(): void {
@@ -629,6 +653,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
       this.campaignForm.get('communities').setValue(communitySlugs);
 
       this.communitiesFormControl.setValue('', { emitEvent: false });
+
+      if (this.campaign?.id) {
+        this.updateCampaign();
+      }
     }
   }
 
@@ -636,5 +664,15 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     this.selectedCommunities.splice(index, 1);
     const communitySlugs = this.selectedCommunities.map((c) => c.slug);
     this.campaignForm.get('communities').setValue(communitySlugs);
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
+  }
+
+  getFundStatus() {
+    this.walletService.getFundStatus(this.campaign.currency_type).subscribe((res) => {
+      this.wallet = res;
+      this.cdr.detectChanges();
+    });
   }
 }

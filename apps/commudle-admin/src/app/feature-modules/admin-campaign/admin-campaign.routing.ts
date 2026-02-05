@@ -12,17 +12,6 @@ const routes: Routes = [
   {
     path: 'new',
     component: CampaignFormOrderSetupComponent,
-    // children: [
-    //   { path: '', component: CampaignFormOrderSetupComponent },
-    // {
-    //   path: 'order-setup',
-    //   component: CampaignFormOrderSetupComponent,
-    // },
-    // {
-    //   path: 'order-confirmation',
-    //   component: CampaignFormOrderConfirmationComponent,
-    // },
-    // ],
   },
   {
     path: 'edit/:campaign_id',
@@ -30,18 +19,7 @@ const routes: Routes = [
       campaign: CampaignResolver,
     },
     runGuardsAndResolvers: 'always',
-    // component: CampaignFormComponent,
-    children: [
-      { path: '', component: CampaignFormOrderSetupComponent },
-      // {
-      //   path: 'order-setup',
-      //   component: CampaignFormOrderSetupComponent,
-      // },
-      // {
-      //   path: 'order-confirmation',
-      //   component: CampaignFormOrderConfirmationComponent,
-      // },
-    ],
+    children: [{ path: '', component: CampaignFormOrderSetupComponent }],
   },
   {
     path: 'stats/:campaign_id',

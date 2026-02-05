@@ -5,7 +5,7 @@ import { IPurchaseOrder } from './purchase-order.model';
 import { INote } from './note.model';
 
 export interface ICampaign {
-  id: number;
+  id: string;
   name: string;
   company_name: string;
   contact_name: string;
@@ -26,12 +26,12 @@ export interface ICampaign {
   status: ECampaignStatus;
   locations: [];
   communities: [];
-
   user: IUser;
   campaign_type: ICampaignType;
   campaign_assets: ICampaignAsset[];
   purchase_order?: IPurchaseOrder;
   unapproved_reasons?: INote[];
+  cta_label?: string;
 }
 
 export enum ECampaignStatus {

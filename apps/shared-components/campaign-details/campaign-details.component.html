@@ -1,50 +1,48 @@
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<app-loading-spinner *ngIf="!campaign"></app-loading-spinner>
 
-<div *ngIf="campaign && !isLoading" class="campaign-container">
+<div *ngIf="campaign" class="campaign-container">
   <h2 class="title">Campaign Details</h2>
 
   <div class="campaign-info">
-    <div class="campaign-item"><strong>Campaign Name:</strong> {{ campaign.name }}</div>
+    <p class="campaign-item"><strong>Campaign Name:</strong> {{ campaign.name ? campaign.name : '--' }}</p>
 
-    <div class="campaign-item"><strong>Company Name:</strong> {{ campaign.company_name }}</div>
+    <p class="campaign-item">
+      <strong>Start Date:</strong> {{ campaign.start_at ? (campaign.start_at | date : 'longDate') : '--' }}
+    </p>
 
-    <div class="campaign-item"><strong>Contact Name:</strong> {{ campaign.contact_name }}</div>
+    <p class="campaign-item">
+      <strong>End Date:</strong> {{ campaign.end_at ? (campaign.end_at | date : 'longDate') : '--' }}
+    </p>
+    <p class="campaign-item">
+      <strong>Start Time:</strong>
+      {{ campaign.start_at ? (campaign.start_at | date : 'HH:mm') : '--' }}
+    </p>
 
-    <div class="campaign-item">
-      <strong>Contact Email:</strong> <a [href]="'mailto:' + campaign.contact_email">{{ campaign.contact_email }}</a>
+    <p class="campaign-item">
+      <strong *ngIf="campaign.end_at">End Time:</strong>
+      {{ campaign.end_at ? moment.utc(campaign.end_at, 'HH:mm').local().format('HH:mm') : '--' }}
+    </p>
+
+    <p class="campaign-item">
+      <strong>Budget:</strong> {{ campaign.budget ? (campaign.budget | currency : campaign.currency_type) : '--' }}
+    </p>
+
+    <p class="campaign-item">
+      <strong>Status: </strong>
+      <span>{{ campaign.status ? (campaign.status | capitalizeAndRemoveUnderscore) : '--' }}</span>
+    </p>
+
+    <p class="campaign-item">
+      <strong>Created At:</strong> {{ campaign.created_at ? (campaign.created_at | date : 'longDate') : '--' }}
+    </p>
+
+    <p class="campaign-item"><strong>CTA Label:</strong> {{ campaign.cta_label ? campaign.cta_label : '--' }}</p>
+
+    <div class="campaign-item" *ngIf="campaign.unapproved_reasons?.length > 0">
+      <p *ngFor="let reason of campaign.unapproved_reasons">{{ reason.text }}</p>
     </div>
 
-    <div class="campaign-item"><strong>Start Date:</strong> {{ campaign.start_date | date : 'longDate' }}</div>
-
-    <div class="campaign-item"><strong>End Date:</strong> {{ campaign.end_date | date : 'longDate' }}</div>
-
-    <div class="campaign-item">
-      <strong>Start Time:</strong> {{ moment.utc(campaign.start_time, 'HH:mm').local().format('HH:mm') }}
-    </div>
-
-    <div class="campaign-item">
-      <strong>End Time:</strong> {{ moment.utc(campaign.end_time, 'HH:mm').local().format('HH:mm') }}
-    </div>
-
-    <div class="campaign-item"><strong>Budget:</strong> {{ campaign.budget | currency : campaign.currency_type }}</div>
-
-    <div class="campaign-item"><strong>Campaign Type:</strong> {{ campaign.campaign_type?.name }}</div>
-
-    <div class="campaign-item">
-      <strong>Status:</strong> <span>{{ campaign.status | capitalizeAndRemoveUnderscore }}</span>
-    </div>
-
-    <div class="campaign-item"><strong>Created At:</strong> {{ campaign.created_at | date : 'longDate' }}</div>
-
-    <div class="campaign-item">
-      <strong>Tags:</strong>
-      <span *ngIf="campaign.tags?.length; else noTags">
-        {{ campaign.tags.join(', ') }}
-      </span>
-      <ng-template #noTags> No Tags </ng-template>
-    </div>
-
-    <div class="campaign-item"><strong>Created by:</strong> {{ campaign.user?.name }}</div>
+    <p class="campaign-item"><strong>Created by:</strong> {{ campaign.user?.name }}</p>
   </div>
 
   <div class="campaign-section">
@@ -52,12 +50,12 @@
     <ul *ngIf="campaign.campaign_assets?.length; else noAssets" class="assets-list">
       <li *ngFor="let asset of campaign.campaign_assets" class="asset-item">
         <p>
-          <strong>{{ asset.headline }}</strong>
+          <strong>{{ asset.headline ? asset.headline : '--' }}</strong>
         </p>
-        <img [src]="asset.image.url" [alt]="asset.headline" class="asset-image" />
+        <img [src]="asset.image.url ? asset.image.url : '--'" [alt]="asset.headline" class="asset-image" />
         <p>
           Url:
-          <a [href]="asset.url">{{ asset.url }}</a>
+          <a [href]="asset.url ? asset.url : '--'">{{ asset.url ? asset.url : '--' }}</a>
         </p>
       </li>
     </ul>

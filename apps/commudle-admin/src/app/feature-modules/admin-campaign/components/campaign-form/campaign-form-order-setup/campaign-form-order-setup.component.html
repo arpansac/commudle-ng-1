@@ -119,10 +119,12 @@
               <div class="form">
                 <form [formGroup]="campaignForm">
                   <!-- Est. Impressions -->
-                  <div class="budget-info-row com-mb-5">
+                  <div *ngIf="estimate" class="budget-info-row com-mb-5">
                     <div class="cost-container">
                       <label for="est_impressions">Est. Impressions:</label>
-                      <span class="info-value">100k-250k</span>
+                      <span class="info-value">{{
+                        this.estimate.daily_impressions.min + ' - ' + this.estimate.daily_impressions.max
+                      }}</span>
                     </div>
                   </div>
 
@@ -234,16 +236,29 @@
                     </div>
                   </div>
 
-                  <!-- Est. cost -->
-                  <div class="budget-info-row com-mb-2 com-gap-10">
+                  <div *ngIf="estimate" class="budget-info-row com-mb-2 com-gap-10">
                     <div class="cost-container">
                       <span>Est. cost:</span>
-                      <span class="budget-info-value">$1.00 per<span class="small-info-text"> per view</span></span>
+                      <span class="budget-info-value"
+                        >{{ this.estimate.price_per_impression | currency : campaign?.currency_type
+                        }}<span class="small-info-text"> per impression</span></span
+                      >
+                    </div>
+                    <div class="cost-container">
+                      <span>Est. runtime ~ X days/hours/minutes :</span>
+                      <span class="budget-info-value">{{ this.estimate.remaining_days }}</span>
                     </div>
                   </div>
 
-                  <p class="small-info-text">You will end up spending ${{ dailySpending }} per day</p>
+                  <p class="small-info-text" *ngIf="estimate?.daily_spend">
+                    You will end up spending
+                    {{ estimate.daily_spend.min | currency : campaign?.currency_type }}
+                    -
+                    {{ estimate.daily_spend.max | currency : campaign?.currency_type }}
+                    per day
+                  </p>
                 </form>
+                <!-- price_per_impression -->
               </div>
             </nb-accordion-item-body>
           </nb-accordion-item>
@@ -428,11 +443,41 @@
           </nb-accordion-item>
         </nb-accordion>
 
-        <div class="next-button">
-          <button nbButton shape="semi-round" [disabled]="!isSubmitForApprovalEnabled()" (click)="updateCampaign(true)">
-            Submit For Approval &nbsp;
-            <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-          </button>
+        <div class="sticky-footer">
+          <div *ngIf="wallet" class="wallet-details-section">
+            <h4 class="wallet-details-heading">Wallet</h4>
+            <table class="wallet-details-table">
+              <tbody>
+                <tr>
+                  <td class="wallet-details-label">Balance</td>
+                  <td class="wallet-details-label">Available balance</td>
+                  <td class="wallet-details-label">Reserved balance</td>
+                </tr>
+                <tr>
+                  <td class="wallet-details-value">
+                    {{ wallet.balance | currency : campaign?.currency_type }}
+                  </td>
+                  <td class="wallet-details-value">
+                    {{ wallet.available_balance | currency : campaign?.currency_type }}
+                  </td>
+                  <td class="wallet-details-value">
+                    {{ wallet.reserved_balance | currency : campaign?.currency_type }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="next-button">
+            <button
+              nbButton
+              shape="semi-round"
+              [disabled]="!isSubmitForApprovalEnabled()"
+              (click)="updateCampaign(true)"
+            >
+              Submit For Approval &nbsp;
+              <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+            </button>
+          </div>
         </div>
       </div>
       <div class="right-column">

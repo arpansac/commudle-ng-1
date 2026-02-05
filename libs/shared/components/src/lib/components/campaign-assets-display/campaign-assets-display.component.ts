@@ -97,7 +97,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   private fetchCampaignBySlug(): void {
-    this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+    this.campaignService.serveCampaign().subscribe((data) => {
       if (data && data.campaign_assets && data.campaign_assets.length > 0) {
         this.campaign = data;
         this.slidesCount = this.campaign.campaign_assets.length;
@@ -226,6 +226,20 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
             }),
           );
       }
+      const formData = new FormData();
+      formData.append('campaign_engagement[event_type]', 'impression');
+      formData.append('campaign_engagement[url]', window.location.href);
+
+      if (!this.seoService.isBot) {
+        this.campaignService.recordImpression(formData, this.campaign.id).subscribe(() => {
+          this.gtmService.dataLayerPushEvent('ad_campaign', {
+            com_campaign_id: this.campaign.id,
+            com_campaign_name: this.campaign.name,
+            com_current_page_url: window.location.href,
+            com_event_type: eventType,
+          });
+        });
+      }
     }
   }
 
@@ -238,7 +252,6 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
     this.gtmService.dataLayerPushEvent('default_ad_campaign', {
       com_current_page_url: this.isBrowser ? window.location.href : '',
       com_event_type: eventType,
-      com_campaign_type_slug: this.campaignTypeSlug,
     });
     // this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
   }
