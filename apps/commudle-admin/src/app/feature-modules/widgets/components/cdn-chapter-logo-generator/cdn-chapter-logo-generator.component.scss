@@ -1,0 +1,189 @@
+:host {
+  display: block;
+}
+
+.skip-to-main {
+  @apply com-sr-only focus:com-not-sr-only;
+  @apply com-absolute com-top-4 com-left-4 com-z-50;
+  @apply com-bg-primary-500 com-text-white com-px-4 com-py-2 com-rounded-md;
+  @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500;
+}
+
+// Main Layout
+.logo-generator-layout {
+  @apply com-flex com-flex-col com-gap-8;
+  @apply lg:com-flex-row lg:com-items-start;
+}
+
+// Preview Container (Left/Main)
+.preview-container {
+  @apply com-flex-1;
+
+  .preview-card {
+    @apply com-border com-border-Bright-Gray com-rounded-lg com-shadow-lg;
+    @apply com-bg-white;
+
+    nb-card-header {
+      @apply com-bg-gray-100 com-border-b com-border-Bright-Gray;
+      @apply com-p-6;
+    }
+
+    .preview-body {
+      @apply com-p-6 com-min-h-96;
+      @apply com-flex com-items-center com-justify-center;
+    }
+  }
+}
+
+// Form Container (Right/Side)
+.form-container {
+  @apply com-flex-1;
+
+  .form-card {
+    @apply com-border com-border-Bright-Gray com-rounded-lg com-shadow-lg;
+    @apply com-bg-white com-sticky com-top-8;
+
+    nb-card-header {
+      @apply com-bg-primary-500 com-border-b com-border-Bright-Gray;
+      @apply com-p-6;
+    }
+
+    .form-body {
+      @apply com-p-6 com-space-y-6;
+    }
+  }
+}
+
+// Loading State
+.loading-container {
+  @apply com-flex com-flex-col com-items-center com-justify-center;
+  @apply com-py-12;
+}
+
+// Canvas Container - CENTERED
+.canvas-container {
+  @apply com-w-full com-flex com-justify-center com-items-center;
+
+  .preview-canvas {
+    @apply com-max-w-full com-h-auto com-rounded-lg com-shadow-md;
+    @apply com-border com-border-Bright-Gray com-mx-auto;
+    max-height: 400px;
+    display: block;
+  }
+}
+
+// Error State
+.error-state {
+  @apply com-flex com-flex-col com-items-center com-justify-center;
+  @apply com-py-12 com-text-center;
+
+  .error-icon {
+    @apply com-text-xl com-text-gray-400 com-mb-4;
+  }
+}
+
+// Input Group
+.input-group {
+  @apply com-space-y-2;
+
+  .input-label {
+    @apply com-block com-text-sm com-font-medium com-text-Yankees-Blue;
+    @apply com-mb-2;
+  }
+
+  .city-input {
+    @apply com-w-full com-px-4 com-py-3 com-border com-border-Bright-Gray com-rounded-md;
+    @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
+    @apply com-text-lg com-text-Yankees-Blue;
+    @apply com-transition-all com-duration-200;
+
+    &::placeholder {
+      @apply com-text-gray-400;
+    }
+
+    &:invalid {
+      @apply com-border-Infra-Red focus:com-ring-Infra-Red;
+    }
+  }
+
+  .input-help {
+    @apply com-flex com-justify-between com-items-center;
+
+    .character-count {
+      @apply com-text-xs com-text-gray-500;
+    }
+  }
+}
+
+// Preview Info
+.preview-info {
+  @apply com-p-4 com-bg-primary-500 com-rounded-md com-border com-border-primary-200;
+}
+
+// Download Section
+.download-section {
+  @apply com-space-y-4;
+
+  .download-info {
+    @apply com-text-xs com-text-gray-600 com-text-center;
+    @apply com-mt-2;
+
+    code {
+      @apply com-bg-gray-100 com-px-2 com-py-1 com-rounded com-text-xs;
+      @apply com-font-mono com-text-Yankees-Blue;
+    }
+  }
+}
+
+// Validation Info
+.validation-info {
+  @apply com-p-4 com-bg-red-100 com-rounded-md com-border com-border-red-200;
+}
+
+// Responsive Design
+@media (max-width: 1023px) {
+  .logo-generator-layout {
+    @apply com-flex-col com-space-y-8;
+  }
+
+  .form-container .form-card {
+    @apply com-static;
+  }
+
+  .preview-container .preview-body {
+    @apply com-min-h-64;
+  }
+
+  .canvas-container .preview-canvas {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 767px) {
+  .preview-container .preview-body {
+    @apply com-min-h-48 com-p-4;
+  }
+
+  .form-container .form-body {
+    @apply com-p-4 com-space-y-4;
+  }
+
+  .canvas-container .preview-canvas {
+    max-height: 250px;
+  }
+}
+
+// Nebular Component Overrides
+nb-card {
+  nb-card-body {
+    @apply com-bg-white;
+  }
+}
+
+nb-alert {
+  @apply com-rounded-md;
+}
+
+nb-spinner {
+  @apply com-text-primary-500;
+}

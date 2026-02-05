@@ -1,4 +1,35 @@
-<li>
-  <p class="title">{{ update.title }}</p>
+<li *ngIf="update">
+  <p class="title">
+    <span>{{ update.title }}</span>
+    <app-badge
+      [color]="'com-bg-green-100'"
+      [fontSize]="'xx-small'"
+      [text]="'New'"
+      [borderRadius]="'semi-round'"
+      [fontColor]="'com-text-green-700'"
+    ></app-badge>
+  </p>
   <div [innerHTML]="richText" class="content"></div>
+  <div *ngIf="update.images && update.images.length > 0" class="images-container">
+    <div *ngFor="let image of update.images" class="image-container" (click)="openImage(image)">
+      <img [src]="imageUrl(image)?.url()" [alt]="update.title" />
+    </div>
+  </div>
 </li>
+
+<ng-template #imageTemplate let-ref="dialogRef" let-data>
+  <nb-card class="image-popup">
+    <nb-card-body>
+      <div class="image-wrapper">
+        <img [src]="data.image" [alt]="data.title" />
+      </div>
+    </nb-card-body>
+    <nb-card-footer class="close-button-footer">
+      <div class="close-button-container">
+        <button nbButton size="medium" class="close-button" (click)="ref.close()" aria-label="Close">
+          <nb-icon icon="close" class="close-icon"></nb-icon>
+        </button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

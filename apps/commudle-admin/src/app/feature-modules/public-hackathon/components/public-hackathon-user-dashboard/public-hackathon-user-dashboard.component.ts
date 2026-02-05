@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   EDbModels,
   EDiscussionType,
@@ -36,7 +36,6 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   hackathon: IHackathon;
   subscriptions: Subscription[] = [];
   userTeamDetails: IHackathonTeam[];
-  selectedTeamIndex = 0;
   hrgId: number;
   EDbModels: EDbModels;
   EDiscussionType = EDiscussionType;
@@ -45,6 +44,8 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   hackathonResponseGroup: IHackathonResponseGroup;
   hasTeammateOption = false;
   isSubmittingProblemStatement = false;
+  selectedTeamId: number | null = null;
+  selectedTeam: IHackathonTeam | null = null;
 
   @ViewChild('editTeamMembersDialog') editTeamMembersDialogRef: TemplateRef<any>;
   @ViewChild('problemStatementDialog') problemStatementDialogRef: TemplateRef<any>;
@@ -52,6 +53,7 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private hackathonService: HackathonService,
     private hrgService: HackathonResponseGroupService,
     private authService: AuthService,
@@ -69,6 +71,10 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
           this.hasTeammateOption = true;
         }
         this.getChannels();
+        this.activatedRoute.queryParams.subscribe((params) => {
+          this.selectedTeamId = params['team_id'] ? Number(params['team_id']) : null;
+          this.syncSelectedTeam();
+        });
         this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((currentUser) => {
           if (currentUser) this.getHackathonCurrentRegistrationDetails();
         });
@@ -92,9 +98,25 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
         .subscribe((data: IHackathonTeam[]) => {
           if (data) {
             this.userTeamDetails = data;
+            this.syncSelectedTeam();
           }
         }),
     );
+  }
+
+  syncSelectedTeam() {
+    if (!this.userTeamDetails || this.userTeamDetails.length === 0) return;
+    this.selectedTeam = this.userTeamDetails.find((t) => t.id === this.selectedTeamId);
+    if (!this.selectedTeam) {
+      this.selectedTeamId = this.userTeamDetails[0].id;
+
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { team_id: this.selectedTeamId },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
   }
 
   getChannels() {
@@ -103,19 +125,20 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
     });
   }
 
-  openDialogBox(
-    dialog: TemplateRef<any>,
-    hur: IHackathonUserResponse,
-    team: IHackathonTeam,
-    index: number,
-    teamIndex: number,
-  ) {
+  onTeamSelectionChange() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { team_id: this.selectedTeamId },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  openDialogBox(dialog: TemplateRef<any>, hur: IHackathonUserResponse, team: IHackathonTeam, index: number) {
     this.nbDialogService.open(dialog, {
       context: {
         hur: hur,
         team: team,
         index: index,
-        team_index: teamIndex,
       },
     });
   }
@@ -138,13 +161,12 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   }
 
   openEditTeamMembersDialog() {
-    const selectedTeam = this.userTeamDetails[this.selectedTeamIndex];
-    const hackathonUserResponse = selectedTeam.hackathon_user_responses[0];
+    const hackathonUserResponse = this.selectedTeam.hackathon_user_responses[0];
     this.nbDialogService.open(this.editTeamMembersDialogRef, {
       context: {
         hackathonUserResponse: hackathonUserResponse,
         hackathonResponseGroup: this.hackathonResponseGroup,
-        selectedTeam: selectedTeam,
+        selectedTeam: this.selectedTeam,
       },
     });
   }
@@ -159,24 +181,24 @@ export class PublicHackathonUserDashboardComponent implements OnInit, OnDestroy 
   }
 
   shouldShowProblemStatementPrompt(): boolean {
-    if (!this.userTeamDetails || this.userTeamDetails.length === 0) return false;
-    const team = this.userTeamDetails[this.selectedTeamIndex];
-    return team.registration_status === EHackathonRegistrationStatus.ACCEPTED && !team.problem_statement;
+    if (!this.selectedTeam) return false;
+    return (
+      this.selectedTeam.registration_status === EHackathonRegistrationStatus.ACCEPTED &&
+      !this.selectedTeam.problem_statement
+    );
   }
 
   openProblemStatementDialog() {
-    const selectedTeam = this.userTeamDetails[this.selectedTeamIndex];
     this.nbDialogService.open(this.problemStatementDialogRef, {
       context: {
-        selectedTeam: selectedTeam,
+        selectedTeam: this.selectedTeam,
       },
     });
   }
 
   submitProjectDetails(formData, dialogRef: any) {
-    const team = this.userTeamDetails[this.selectedTeamIndex];
     this.hackathonUserResponseService
-      .updateProjectDetails(formData, team.hackathon_user_responses[0].id)
+      .updateProjectDetails(formData, this.selectedTeam.hackathon_user_responses[0].id)
       .subscribe((data) => {
         if (data) {
           this.toasterService.successDialog('Problem statement updated successfully');

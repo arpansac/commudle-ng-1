@@ -22,4 +22,5 @@ export enum EDbModels {
   SURVEY = 'Survey',
   TRACK_SLOT = 'TrackSlot',
   SPEAKER_RESOURCE = 'SpeakerResource',
+  ENTITY_UPDATE = 'EntityUpdate',
 }

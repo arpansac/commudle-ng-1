@@ -1,0 +1,568 @@
+// Hackathon Management Platform Component Styles
+// Rewritten to comply with styling guidelines
+
+:host {
+  @apply com-block;
+}
+
+// Ensure section title links maintain the same styling
+.section-title a,
+.community-title a,
+.sponsor-title a,
+.managed-title a,
+.boost-title a,
+.faq-title a {
+  @apply com-text-Yankees-Blue com-no-underline;
+  @apply hover:com-text-Yankees-Blue hover:com-no-underline;
+  @apply com-transition-colors com-duration-200;
+}
+
+// Global heading styles with Yankees-Blue
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply com-text-Yankees-Blue com-font-bold com-leading-tight;
+}
+
+h1 {
+  @apply com-text-2xl md:com-text-5xl;
+}
+
+h2 {
+  @apply com-text-xl md:com-text-3xl;
+}
+
+h3 {
+  @apply com-text-lg md:com-text-2xl;
+}
+
+h4 {
+  @apply com-text-base md:com-text-xl;
+}
+
+h5 {
+  @apply com-text-sm md:com-text-lg;
+}
+
+h6 {
+  @apply com-text-xs md:com-text-base;
+}
+
+// Ensure all sections use Yankees-Blue text for headings
+section {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply com-text-Yankees-Blue;
+  }
+}
+
+// Skip to main content link for accessibility
+.skip-to-main {
+  @apply com-absolute com-top-0 com-left-0 com-z-50;
+  @apply com-bg-primary-600 com-text-white com-px-4 com-py-2;
+  @apply com-font-semibold com-text-sm com-rounded-br-md;
+  @apply com-transform com--translate-y-full;
+  @apply com-transition-transform com-duration-200;
+  @apply focus:com-translate-y-0;
+  @apply com-no-underline hover:com-no-underline;
+
+  &:focus {
+    @apply com-outline-none com-ring-2 com-ring-white com-ring-offset-2;
+  }
+}
+
+// Hero Section
+.hero-section {
+  @apply com-relative com-overflow-hidden;
+  @apply com-bg-gradient-to-br com-from-gray-50 com-via-gray-100 com-to-gray-200;
+}
+
+// Hero Decorative Elements - Colorful Gradient Orbs
+.hero-decoration {
+  @apply com-absolute com-rounded-full com-opacity-60;
+  @apply com-blur-2xl;
+
+  &.code-block-1 {
+    @apply com-w-80 com-h-80 com-bg-gradient-to-br com-from-orange-200 com-to-orange-400;
+    @apply com-top-10 com-left-10;
+    @apply lg:com-w-96 lg:com-h-96;
+    @apply sm:com-w-64 sm:com-h-64;
+  }
+
+  &.code-block-2 {
+    @apply com-w-72 com-h-72 com-bg-gradient-to-br com-from-primary-200 com-to-primary-400;
+    @apply com-top-20 com-right-16;
+    @apply lg:com-w-80 lg:com-h-80;
+    @apply sm:com-w-56 sm:com-h-56;
+  }
+
+  &.code-block-3 {
+    @apply com-w-64 com-h-64 com-bg-gradient-to-br com-from-green-200 com-to-green-400;
+    @apply com-bottom-20 com-left-20;
+    @apply lg:com-w-72 lg:com-h-72;
+    @apply sm:com-w-48 sm:com-h-48;
+  }
+}
+
+.hero-content {
+  @apply com-space-y-8 com-relative com-z-10;
+  @apply md:com-w-1/2;
+}
+
+.hero-badge {
+  @apply com-inline-flex com-items-center com-px-4 com-py-2;
+  @apply com-bg-primary-100 com-text-primary-800 com-rounded-full;
+  @apply com-text-sm com-font-medium;
+}
+
+.hero-title {
+  @apply com-text-2xl com-font-bold com-leading-tight;
+  @apply com-text-Yankees-Blue;
+  @apply md:com-text-5xl;
+
+  span {
+    @apply com-text-primary-500;
+  }
+}
+
+.hero-description {
+  @apply com-text-lg com-text-gray-600 com-leading-relaxed com-max-w-2xl;
+}
+
+.hero-cta {
+  @apply com-flex com-flex-col com-gap-4;
+  @apply com-text-center  sm:com-flex-row sm:com-text-left;
+}
+
+.cta-primary {
+  @apply com-px-8 com-py-4 com-font-semibold;
+  @apply com-shadow-lg com-transition-all com-duration-300;
+  @apply hover:com-shadow-xl hover:com-transform hover:com-scale-105;
+}
+
+.cta-secondary {
+  @apply com-px-8 com-py-4 com-font-semibold;
+  @apply com-transition-all com-duration-300;
+  @apply hover:com-transform hover:com-scale-105;
+}
+
+.hero-stats {
+  @apply com-flex com-flex-col com-gap-8 com-pt-8 com-text-Yankees-Blue;
+  @apply sm:com-flex-row;
+}
+
+.stat-item {
+  @apply com-text-center;
+  @apply sm:com-text-left;
+}
+
+.stat-number {
+  @apply com-block com-text-xl com-font-bold;
+}
+
+.stat-label {
+  @apply com-text-sm com-font-medium;
+}
+
+// Hero Image - Enterprise Dashboard
+.hero-image {
+  @apply com-flex com-justify-center com-items-center com-relative;
+  @apply com-z-10;
+  @apply md:com-w-1/2;
+
+  img {
+    @apply com-w-4/5 com-max-w-lg com-h-auto com-rounded-2xl;
+    // @apply com-border com-border-gray-200;
+  }
+}
+
+// Features Section
+.features-section {
+  @apply com-bg-white com-py-10;
+}
+
+.section-header {
+  @apply com-text-center com-mb-16;
+}
+
+.section-title {
+  @apply com-text-xl com-font-bold com-text-Yankees-Blue com-mb-4;
+  @apply md:com-text-3xl;
+}
+
+.section-description {
+  @apply com-text-lg com-text-gray-600 com-max-w-3xl com-mx-auto;
+}
+
+.features-grid {
+  @apply com-grid com-grid-cols-1 com-gap-8;
+  @apply md:com-grid-cols-2;
+  @apply lg:com-grid-cols-3;
+  @apply sm:com-gap-6;
+}
+
+.feature-card {
+  @apply com-bg-white com-rounded-2xl com-p-8 com-border com-border-gray-200;
+  @apply com-shadow-sm com-transition-all com-duration-300;
+  @apply hover:com-shadow-lg hover:com-transform hover:com-scale-105;
+}
+
+.feature-icon {
+  @apply com-w-12 com-h-12 com-bg-gray-100 com-rounded-xl;
+  @apply com-flex com-items-center com-justify-center com-mb-6;
+  @apply com-text-xl;
+}
+
+.feature-title {
+  @apply com-text-lg com-font-bold com-text-Yankees-Blue com-mb-4 com-mt-4;
+}
+
+.feature-description {
+  @apply com-text-gray-600 com-leading-relaxed;
+}
+
+// Success Stories Section
+// .success-stories-section {
+//   @apply com-bg-gray-50 com-py-20;
+// }
+
+// .stories-header {
+//   @apply com-flex com-justify-between com-items-start com-mb-12;
+// }
+
+// .stories-title-section {
+//   @apply com-flex-1;
+// }
+
+// .stories-title {
+//   @apply com-text-xl com-font-bold com-text-Yankees-Blue com-mb-2;
+//   @apply sm:com-text-lg;
+// }
+
+// .stories-subtitle {
+//   @apply com-text-gray-600 com-text-base;
+// }
+
+// .see-all-btn {
+//   @apply com-bg-Infra-Red com-text-white com-px-6 com-py-3;
+//   @apply com-rounded-full com-font-medium com-text-sm;
+//   @apply com-transition-all com-duration-200 com-cursor-pointer;
+//   @apply com-border-0;
+
+//   &:hover {
+//     @apply com-bg-Infra-Red com-bg-opacity-90;
+//   }
+// }
+
+// .stories-container {
+//   @apply com-space-y-8;
+// }
+
+// .story-showcase {
+//   @apply com-grid com-grid-cols-1 com-gap-8 com-items-center;
+//   @apply lg:com-grid-cols-2;
+// }
+
+// // Left Visual Card
+// .story-visual-card {
+//   @apply com-bg-white com-rounded-2xl com-shadow-lg com-overflow-hidden;
+//   @apply com-border com-border-gray-200;
+// }
+
+// .visual-header {
+//   @apply com-bg-gray-100 com-px-4 com-py-2 com-text-xs com-text-gray-600;
+// }
+
+// .promoted-tag {
+//   @apply com-inline-block com-mr-2 com-font-medium;
+// }
+
+// .promo-text {
+//   @apply com-inline-block;
+// }
+
+// .visual-content {
+//   @apply com-p-6 com-relative;
+// }
+
+// .company-branding {
+//   @apply com-flex com-items-center com-gap-3 com-mb-4;
+// }
+
+// .company-logo-placeholder {
+//   @apply com-w-8 com-h-8 com-bg-gray-300 com-rounded;
+// }
+
+// .company-name {
+//   @apply com-font-bold com-text-Yankees-Blue;
+// }
+
+// .image-section {
+//   @apply com-mb-6 com-relative;
+// }
+
+// .main-image-placeholder {
+//   @apply com-w-full com-h-48 com-bg-gray-200 com-rounded-xl;
+//   @apply com-flex com-items-center com-justify-center;
+//   @apply com-bg-gradient-to-br com-from-gray-100 com-to-gray-200;
+// }
+
+// .stat-overlay {
+//   @apply com-absolute com-bottom-4 com-left-4 com-bg-Yankees-Blue com-text-white;
+//   @apply com-p-4 com-rounded-xl com-max-w-48;
+// }
+
+// .stat-description {
+//   @apply com-text-xs com-opacity-90 com-leading-tight;
+// }
+
+// // Right Content Section
+// .story-content-section {
+//   @apply com-space-y-6;
+// }
+
+// .content-header {
+//   @apply com-flex com-items-center com-gap-3;
+// }
+
+// .company-logo-small {
+//   @apply com-w-6 com-h-6 com-bg-gray-300 com-rounded;
+// }
+
+// .company-name-header {
+//   @apply com-font-bold com-text-Yankees-Blue;
+// }
+
+// .story-testimonial {
+//   @apply com-text-gray-700 com-leading-relaxed com-text-base;
+//   @apply com-border-l-4 com-border-gray-200 com-pl-4;
+// }
+
+// .case-study-btn {
+//   @apply com-bg-transparent com-border-2 com-border-Infra-Red com-text-Infra-Red;
+//   @apply com-px-6 com-py-2 com-rounded-full com-text-sm com-font-medium;
+//   @apply com-transition-all com-duration-200 com-cursor-pointer;
+
+//   &:hover {
+//     @apply com-bg-Infra-Red com-text-white;
+//   }
+// }
+
+// // Carousel Navigation
+// .carousel-navigation {
+//   @apply com-flex com-items-center com-justify-center com-gap-6;
+// }
+
+// .nav-btn {
+//   @apply com-w-10 com-h-10 com-bg-white com-border com-border-gray-300;
+//   @apply com-rounded-full com-flex com-items-center com-justify-center;
+//   @apply com-text-gray-600 com-cursor-pointer com-transition-all com-duration-200;
+
+//   &:hover {
+//     @apply com-bg-gray-50 com-border-gray-400;
+//   }
+// }
+
+// .carousel-dots {
+//   @apply com-flex com-items-center com-gap-2;
+// }
+
+// .dot {
+//   @apply com-w-2 com-h-2 com-bg-gray-300 com-rounded-full com-cursor-pointer;
+//   @apply com-transition-all com-duration-200;
+
+//   &.active {
+//     @apply com-bg-Yankees-Blue;
+//   }
+
+//   &:hover {
+//     @apply com-bg-gray-400;
+//   }
+// }
+
+// CTA Section
+.cta-section {
+  @apply com-py-10;
+}
+
+.cta-container {
+  @apply com-bg-slate-950;
+  @apply com-rounded-3xl com-overflow-hidden com-relative;
+  @apply com-border com-border-gray-800;
+}
+
+.cta-content {
+  @apply com-grid com-grid-cols-1 com-items-center com-min-h-96;
+  @apply lg:com-grid-cols-2 com-gap-12;
+}
+
+// Left Content Section
+.cta-text-section {
+  @apply com-p-8 com-text-white com-space-y-6;
+  @apply lg:com-p-12;
+  @apply sm:com-p-6;
+
+  .cta-title {
+    @apply com-text-2xl com-font-bold com-leading-tight;
+    @apply com-text-tWhite com-mb-4;
+    @apply lg:com-text-4xl;
+    @apply sm:com-text-xl;
+  }
+}
+
+.cta-description {
+  @apply com-text-lg com-text-gray-300 com-leading-relaxed com-mb-6;
+  @apply com-max-w-lg;
+  @apply sm:com-text-base;
+}
+
+.cta-button {
+  @apply com-bg-white com-text-gray-900 com-px-6 com-py-3;
+  @apply com-rounded-lg com-font-semibold com-text-sm;
+  @apply com-flex com-items-center com-gap-2;
+  @apply com-transition-all com-duration-200 com-cursor-pointer;
+  @apply com-border-0 com-inline-flex;
+  @apply hover:com-bg-gray-100 hover:com-transform hover:com-scale-105;
+}
+
+// Right Image Section with Halo Effect
+.cta-image-section {
+  @apply com-relative com-p-8 com-flex com-items-center com-justify-center;
+  @apply lg:com-p-6;
+  @apply sm:com-p-6;
+
+  .experts-image {
+    @apply com-w-full com-max-w-md;
+    @apply com-relative com-z-10;
+    @apply com-rounded-lg;
+
+    // Halo effect using primary color
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.3), 0 0 120px rgba(59, 130, 246, 0.2), 0 0 180px rgba(59, 130, 246, 0.1);
+
+    img {
+      @apply com-w-full com-h-auto com-rounded-lg;
+      @apply com-border com-border-gray-700;
+    }
+  }
+}
+
+// Footer Section
+.footer-section {
+  @apply com-bg-Yankees-Blue com-text-white;
+}
+
+// Community Hackathon Section
+.community-hackathon-section {
+  @apply com-bg-white com-py-10;
+
+  .community-content {
+    .community-cta {
+      button {
+        @apply com-mr-4 com-mb-4 md:com-mb-0;
+      }
+    }
+  }
+}
+
+.community-dashboard {
+  @apply com-flex com-justify-center com-items-center;
+}
+
+.launch-your-community-image {
+  @apply com-w-full com-max-w-md com-mx-auto;
+  @apply sm:com-max-w-sm;
+  @apply lg:com-max-w-full;
+
+  img {
+    @apply com-w-full com-h-auto com-rounded-lg;
+    @apply com-border com-border-gray-200;
+  }
+}
+
+// Sponsor Section - Smaller Image
+.sponsor-hackathons-image {
+  @apply com-w-full com-max-w-sm com-mx-auto;
+  @apply sm:com-max-w-xs;
+  @apply lg:com-max-w-md;
+
+  img {
+    @apply com-w-full com-h-auto com-rounded-lg;
+    @apply com-border com-border-gray-200;
+  }
+}
+
+.community-description {
+  @apply com-text-lg com-text-gray-600 com-leading-relaxed com-mb-8;
+  @apply com-max-w-lg;
+  @apply sm:com-text-base;
+}
+
+.link-group {
+  @apply com-space-y-4;
+}
+
+.group-title {
+  @apply com-font-bold com-text-white com-mb-4;
+}
+
+.footer-link {
+  @apply com-block com-text-gray-300 com-transition-colors com-duration-200 com-no-underline;
+  @apply hover:com-text-white;
+}
+
+.footer-bottom {
+  @apply com-flex com-flex-col com-justify-between com-items-center;
+  @apply com-pt-8 com-border-t com-border-gray-700;
+  @apply sm:com-flex-row;
+}
+
+.copyright {
+  @apply com-text-gray-300 com-text-sm;
+}
+
+.social-links {
+  @apply com-flex com-gap-4 com-mt-4;
+  @apply sm:com-mt-0;
+}
+
+.social-link {
+  @apply com-w-10 com-h-10 com-bg-gray-700 com-rounded-full;
+  @apply com-flex com-items-center com-justify-center;
+  @apply com-text-gray-300 com-transition-all com-duration-200 com-no-underline;
+  @apply hover:com-text-white hover:com-bg-primary-600;
+}
+
+// Commudle Managed Hackathons Section
+.managed-hackathons-section {
+  .managed-content {
+    .managed-services {
+      .service-item {
+        .service-content {
+          @apply com-mb-4;
+          .service-title {
+            @apply com-mb-2;
+          }
+        }
+      }
+    }
+  }
+}
+
+// FAQ Section
+.faq-title {
+  @apply com-text-center;
+}
+
+// Accessibility - Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

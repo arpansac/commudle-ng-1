@@ -284,22 +284,53 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       currency: this.purchaseOrder.currency,
       subscription_months: this.subscriptionMonths,
     };
+    if (orderDetails['amount'] === 0) {
+      this.handleFullDiscount();
+    } else {
+      this.razorpayService
+        .createOrFindOrder(orderDetails, { po_id: purchaseOrderId })
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => {
+            if (!this.isLoadingPayment) {
+              this.isLoadingPayment = false;
+            }
+          }),
+        )
+        .subscribe({
+          next: (data: IRazorpayOrder) => this.razorPaySubmit(data),
+          error: () => {
+            this.isLoadingPayment = false;
+            this.toastrService.errorDialog('Failed to create payment order');
+          },
+        });
+    }
+  }
 
-    this.razorpayService
-      .createOrFindOrder(orderDetails, { po_id: purchaseOrderId })
+  private handleFullDiscount() {
+    this.purchaseOrderService
+      .markPaidForFullyDiscounted(this.purchaseOrder.uuid)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => {
-          if (!this.isLoadingPayment) {
-            this.isLoadingPayment = false;
-          }
-        }),
+        finalize(() => (this.isLoadingPayment = false)),
       )
       .subscribe({
-        next: (data: IRazorpayOrder) => this.razorPaySubmit(data),
+        next: () => {
+          if (this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE) {
+            this.gtmDataLayerPushEvent('community-subscription-po-completed', {
+              com_purchase_order: this.purchaseOrder.uuid,
+              com_product_price_plan_name: this.productPrice.plan_name,
+              com_product_price_product_name: this.productPrice.product_name,
+              com_purchase_order_quantity: this.purchaseOrder.quantity,
+              com_purchase_order_subscription_months: this.purchaseOrder.notes?.subscription_months,
+            });
+          }
+          this.toastrService.successDialog('Order completed successfully');
+          this.paymentPaid = true;
+          this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+        },
         error: () => {
-          this.isLoadingPayment = false;
-          this.toastrService.errorDialog('Failed to create payment order');
+          this.toastrService.errorDialog('Failed to complete order');
         },
       });
   }
@@ -516,7 +547,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.discountCodesService
       .canBeApplied({
         code: this.discountCode.toUpperCase(),
-        amount: (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths,
+        amount: this.purchaseOrder.amount * this.quantity * this.subscriptionMonths,
         usersCount: 1,
         edfegId: null,
         eventId: null,
@@ -529,8 +560,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
             this.discountAmount = result.discount_amount;
             this.discountCodeApplied = true;
             this.discountType = result.discount_type;
-            this.finalDiscountAmount =
-              this.discountType === EDiscountType.PERCENTAGE ? this.discountAmount : this.discountAmount / 100;
+            this.finalDiscountAmount = this.discountAmount;
             this.updatePurchaseOrder();
             if (callback) callback(true);
           } else {
@@ -561,12 +591,16 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   private updateTotalPrice(): void {
     if (!this.purchaseOrder?.amount_to_be_paid) return;
 
-    if (this.discountCodeApplied && this.finalDiscountAmount > this.totalPrice) {
-      this.calcTotalPrice();
+    const discountAmount = this.discountCodeApplied ? this.finalDiscountAmount / 100 : 0;
+    const basePrice = (this.purchaseOrder.amount / 100) * this.quantity * this.subscriptionMonths;
+
+    if (this.discountCodeApplied && discountAmount > basePrice) {
+      this.toastrService.warningDialog('Discount amount exceeds order total. Discount coupon will auto remove.');
       this.removePromoCode();
-    } else {
-      this.calcTotalPrice(this.discountCodeApplied ? this.finalDiscountAmount : 0);
+      return;
     }
+
+    this.calcTotalPrice(discountAmount);
   }
 
   private calcTotalPrice(discountAmount = 0): void {

@@ -1,0 +1,522 @@
+<!-- Hackathon Management Platform Page -->
+<div class="com-min-h-screen com-bg-white">
+  <!-- Skip to main content link for keyboard navigation -->
+  <!-- Hero Section -->
+  <section id="main-content" class="hero-section" tabindex="-1">
+    <!-- Decorative Elements -->
+    <div class="hero-decoration code-block-1"></div>
+    <div class="hero-decoration code-block-2"></div>
+    <div class="hero-decoration code-block-3"></div>
+
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="com-flex com-w-full md:com-flex-row com-flex-col-reverse com-gap-12 com-items-center">
+        <!-- Left Content -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+            Trusted by top developer communities worldwide
+          </div>
+          <h1 class="hero-title">
+            Reach developers ready to build
+            <span>with Hackathon Platform</span>
+          </h1>
+          <p class="hero-description"></p>
+          <div class="hero-cta">
+            <a [routerLink]="['/pricing']">
+              <button nbButton status="danger" size="large" class="cta-primary">
+                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+                Host a Hackathon
+              </button>
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number">250,000+</span>
+              <span class="stat-label">Developers & Designers</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">500,000+</span>
+              <span class="stat-label">Community Members</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Focus on Developer Communities</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Image -->
+        <div class="hero-image">
+          <img [src]="hackathonImages.hero_image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="section-header">
+        <h2 class="section-title">
+          <a [routerLink]="'.'" fragment="features">Everything you need to run successful hackathons</a>
+        </h2>
+        <p class="section-description">
+          From registration to judging, our platform handles every aspect of hackathon management for offline, online
+          and hybrid hackathons
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faUserPlus" class="com-text-primary-600"></fa-icon>
+          </div>
+          <h3 class="feature-title">Smart Registration</h3>
+          <p class="feature-description">
+            Streamlined registration process with custom forms, team formation tools, and automated confirmations
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faUsers" class="com-text-Caribbean-Green"></fa-icon>
+          </div>
+          <h3 class="feature-title">Team Management</h3>
+          <p class="feature-description">Individual and team hackathon registrations with profile management</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faCode" class="com-text-Infra-Red"></fa-icon>
+          </div>
+          <h3 class="feature-title">Project Submission</h3>
+          <p class="feature-description">Built-in project & PPT submission system with featured projects</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faTrophy" class="com-text-Chrome-Yellow"></fa-icon>
+          </div>
+          <h3 class="feature-title">Judging Platform</h3>
+          <p class="feature-description">
+            Comprehensive judging system with scoring rubrics, feedback, and evaluation process
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faChartLine" class="com-text-primary-600"></fa-icon>
+          </div>
+          <h3 class="feature-title">Analytics Dashboard</h3>
+          <p class="feature-description">
+            Analytics and insights to track participation, engagement, and hackathon success metrics.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <fa-icon [icon]="faBullhorn" class="com-text-Caribbean-Green"></fa-icon>
+          </div>
+          <h3 class="feature-title">Marketing Tools</h3>
+          <p class="feature-description">
+            Collaboration with most active communities and boost outreach using self-serve advertising portal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Launch Community Hackathon Section -->
+  <section id="community-hackathon" class="community-hackathon-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
+        <!-- Left Visual - Community Dashboard -->
+        <div class="community-visual">
+          <div class="community-dashboard">
+            <div class="cta-image-section">
+              <div class="launch-your-community-image">
+                <img
+                  title="hackathon-experts-team"
+                  [src]="hackathonImages.launch_your_community_hackathons"
+                  class="com-rounded-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="community-content">
+          <div class="community-badge">
+            <fa-icon [icon]="faUsers" class="com-mr-2"></fa-icon>
+            Build Your Developer Community
+          </div>
+          <h2 class="community-title">
+            <a [routerLink]="'.'" fragment="community-hackathon">
+              Launch your own
+              <span class="com-text-primary-600">community hackathon</span>
+            </a>
+          </h2>
+          <p class="community-description">
+            Empower your developer community with engaging hackathons, bundled with your community. Our platform
+            provides everything you need to create, manage, and grow successful developer programs.
+          </p>
+
+          <div class="community-features">
+            <div class="feature-item">
+              <fa-icon [icon]="faRocket" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Quick Setup</h4>
+                <p class="feature-description">Launch your hackathon in minutes with our simple setup flow</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <fa-icon [icon]="faUsers" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Community Tools</h4>
+                <p class="feature-description">Built-in networking and collaboration features for participants</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <fa-icon [icon]="faChartLine" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Growth Analytics</h4>
+                <p class="feature-description">Track member activity and engagement to find the top contributors</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="community-cta">
+            <a [routerLink]="['/pricing']">
+              <button nbButton status="primary" size="large" class="cta-primary">
+                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+                Start Your Community
+              </button>
+            </a>
+
+            <a [routerLink]="['/communities']">
+              <button nbButton status="basic" outline size="large" class="cta-secondary">All Communities</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sponsor a Hackathon Section -->
+  <section id="sponsor" class="sponsor-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
+        <!-- Left Content -->
+        <div class="sponsor-content">
+          <h2 class="sponsor-title">
+            <a [routerLink]="'.'" fragment="sponsor">Sponsor a hackathon</a>
+          </h2>
+          <p class="sponsor-description">
+            Hackathon hosts are looking to partner with brands who want to boost their presence, get early adopters,
+            looking to hire or solve their problem statements.
+          </p>
+          <div class="sponsor-cta">
+            <a [routerLink]="['/hackathons']">
+              <button nbButton status="primary" size="large" class="cta-primary">
+                <fa-icon [icon]="faTrophy" class="com-mr-2"></fa-icon>
+                Become a Sponsor
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Visual - Interface Mockup -->
+        <div class="sponsor-visual">
+          <div class="cta-image-section">
+            <div class="sponsor-hackathons-image">
+              <img title="hackathon-experts-team" [src]="hackathonImages.sponsor_hackathons" class="com-rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commudle Managed Hackathons Section -->
+  <section id="managed-hackathons" class="managed-hackathons-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
+        <!-- Left Content -->
+        <div class="managed-content">
+          <div class="managed-badge">
+            <fa-icon [icon]="faCogs" class="com-mr-2"></fa-icon>
+            Full-Service Solution
+          </div>
+          <h2 class="managed-title">
+            <a [routerLink]="'.'" fragment="managed-hackathons">
+              Commudle Managed
+              <span class="com-text-primary-600">Hackathons</span>
+            </a>
+          </h2>
+          <p class="managed-description">
+            Let our expert team handle everything for you. From concept to execution, we provide end-to-end hackathon
+            management services.
+          </p>
+
+          <div class="managed-services">
+            <div class="service-item">
+              <div class="service-content">
+                <h4 class="service-title">
+                  <fa-icon [icon]="faClipboardList" class="service-icon"></fa-icon> Planning & Strategy
+                </h4>
+                <p class="service-description">
+                  Conceptualization, timeline planning, problem statement formation & platform setup
+                </p>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-content">
+                <h4 class="service-title">
+                  <fa-icon [icon]="faUsers" class="service-icon"></fa-icon> Participant Management
+                </h4>
+                <p class="service-description">
+                  Outreach, registration management, team formation, and participant engagement throughout
+                </p>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-content">
+                <h4 class="service-title">
+                  <fa-icon [icon]="faHeadset" class="service-icon"></fa-icon> 24/7 Support & Monitoring
+                </h4>
+                <p class="service-description">Dedicated team ensures smooth operations and quick issue resolution</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="managed-cta">
+            <a [routerLink]="['/fill-form/4296']">
+              <button nbButton status="primary" size="large" class="cta-primary">
+                <fa-icon [icon]="faEnvelope" class="com-mr-2"></fa-icon>
+                Speak With An Expert
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Visual - Service Process -->
+        <div class="managed-visual">
+          <div class="cta-image-section">
+            <div class="launch-your-community-image">
+              <img
+                title="hackathon-experts-team"
+                [src]="hackathonImages.commudle_managed_hackathons"
+                class="com-rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Boost Your Hackathons Section -->
+  <section id="boost-hackathons" class="boost-hackathons-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
+        <!-- Left Visual - Advertising Dashboard -->
+        <div class="boost-visual">
+          <div class="advertising-dashboard">
+            <div class="cta-image-section">
+              <div class="launch-your-community-image">
+                <img title="hackathon-experts-team" [src]="hackathonImages.boost_hackathons" class="com-rounded-lg" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="boost-content">
+          <div class="boost-badge">
+            <fa-icon [icon]="faBullhorn" class="com-mr-2"></fa-icon>
+            Self-Serve Advertising
+          </div>
+          <h2 class="boost-title">
+            <a [routerLink]="'.'" fragment="boost-hackathons">
+              Boost your hackathons
+              <span class="com-text-primary-600">with targeted ads</span>
+            </a>
+          </h2>
+          <p class="boost-description">
+            Reach the right people at the right time with our self serve advertising portal. Create, manage and optimize
+            your outreach campaigns with analytics and performance insights.
+          </p>
+
+          <div class="boost-features">
+            <div class="feature-item">
+              <fa-icon [icon]="faTarget" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Precise Targeting</h4>
+                <p class="feature-description">
+                  Target developers by skills, location, experience level, and communities
+                </p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <fa-icon [icon]="faChartBar" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Real-time Analytics</h4>
+                <p class="feature-description">Track impressions, clicks, and conversions with detailed reporting</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <fa-icon [icon]="faDollarSign" class="feature-icon"></fa-icon>
+              <div class="feature-content">
+                <h4 class="feature-title">Flexible Budgets</h4>
+                <p class="feature-description">Set campaign budgets with full control over your spending</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="boost-stats">
+            <div class="stat-highlight">
+              <span class="stat-number">100%</span>
+              <span class="stat-description">People using Commudle are techies.</span>
+            </div>
+          </div>
+
+          <div class="boost-cta">
+            <a [routerLink]="['/ad-campaigns']" class="cta-link">
+              <button nbButton status="primary" size="large" class="cta-primary com-mt-4">
+                <fa-icon [icon]="faBullhorn" class="com-mr-2"></fa-icon>
+                Start Advertising
+              </button>
+            </a>
+            <!-- <button nbButton status="basic" outline size="large" class="cta-secondary">View Pricing</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Stories Section -->
+  <!-- <section id="success-stories" class="success-stories-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="stories-header">
+        <div class="stories-title-section">
+          <h2 class="stories-title">Success Stories</h2>
+          <p class="stories-subtitle">
+            See how hackathon organizers of all sizes achieve success with Commudle Platform.
+          </p>
+        </div>
+        <button class="see-all-btn">See all success stories</button>
+      </div>
+
+      <div class="stories-container">
+        <div class="story-showcase">
+          <div class="story-visual-card">
+            <div class="visual-header">
+              <div class="promoted-tag">Promoted</div>
+              <div class="promo-text">For Hackathon Organizers: 30% Off with code HACK30</div>
+            </div>
+
+            <div class="visual-content">
+              <div class="company-branding">
+                <div class="company-logo-placeholder"></div>
+                <span class="company-name">TechCorp</span>
+              </div>
+
+              <div class="image-section">
+                <div class="main-image-placeholder"></div>
+              </div>
+
+              <div class="stat-overlay">
+                <div class="stat-number">84%</div>
+                <div class="stat-description">Higher ROAS vs. other competitive hackathon platforms</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-content-section">
+            <div class="content-header">
+              <div class="company-logo-small"></div>
+              <span class="company-name-header">TechCorp</span>
+            </div>
+
+            <blockquote class="story-testimonial">
+              "Commudle gives us a unique opportunity to appear where developers are actively researching and engaging
+              in authentic conversations. By hosting hackathons on Commudle we got to be alongside conversations about
+              the development journey and bring our products to those developers who are doing their research. We were
+              able to scale out our developer outreach campaigns each month and update promos and offerings seamlessly."
+            </blockquote>
+
+            <button class="case-study-btn">Read case study</button>
+          </div>
+        </div>
+
+        <div class="carousel-navigation">
+          <button class="nav-btn prev-btn">
+            <fa-icon [icon]="faChevronLeft"></fa-icon>
+          </button>
+
+          <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+
+          <button class="nav-btn next-btn">
+            <fa-icon [icon]="faChevronRight"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="cta-container">
+        <div class="cta-content">
+          <!-- Left side - Content -->
+          <div class="cta-text-section">
+            <h2 class="cta-title">Start with a hackathon, expand to a global developer program</h2>
+            <p class="cta-description">
+              Get hands-on help from our hackathon expert. Work smarter with tools that can live in your community,
+              events, and hackathons—anywhere you work.
+            </p>
+            <a [routerLink]="['/fill-form/4296']">
+              <button class="cta-button com-mt-10">
+                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
+                Speak with an Expert
+              </button>
+            </a>
+          </div>
+
+          <!-- Right side - Image -->
+          <div class="cta-image-section">
+            <div class="experts-image">
+              <img title="hackathon-experts-team" [src]="hackathonImages.experts_team_image" class="com-rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="com-max-w-4xl com-mx-auto com-px-4 com-py-20">
+      <h2 class="faq-title">
+        <a [routerLink]="'.'" fragment="faq">Frequently Asked Questions</a>
+      </h2>
+      <div class="faq-container">
+        <commudle-faq-card *ngFor="let faq of faqs" [faq]="faq"></commudle-faq-card>
+      </div>
+    </div>
+  </section>
+</div>

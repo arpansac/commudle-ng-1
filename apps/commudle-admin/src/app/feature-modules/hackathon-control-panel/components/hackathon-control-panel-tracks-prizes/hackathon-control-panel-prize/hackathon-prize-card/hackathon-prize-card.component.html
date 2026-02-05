@@ -43,7 +43,9 @@
   <nb-card class="prize-distribution-dialog-box">
     <nb-card-header>
       <span> {{ hackathonPrize.name }} ({{ prizeCurrencySymbol?.symbol }} {{ hackathonPrize.prize_amount }}) </span>
-      <button nbButton ghost shape="round" (click)="ref.close()">X</button>
+      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+        <nb-icon icon="close"></nb-icon>
+      </button>
     </nb-card-header>
     <nb-card-body>
       <table>
@@ -97,7 +99,8 @@
           </td>
         </tr>
       </table>
-
+    </nb-card-body>
+    <nb-card-footer>
       <app-pagination
         *ngIf="total > 0"
         [count]="count"
@@ -107,7 +110,7 @@
         (next)="page = $event; fetchHackathonUserResponses()"
         (previous)="page = $event; fetchHackathonUserResponses()"
       ></app-pagination>
-    </nb-card-body>
+    </nb-card-footer>
   </nb-card>
 </ng-template>
 

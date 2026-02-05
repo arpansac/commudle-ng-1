@@ -263,7 +263,26 @@ export const staticAssets = {
 
   folder_empty:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMkRPQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2dbfa83c67668c9571746d1b9517c40b459312da/Folder_empty.svg',
+  // id: 217
+  hackathon_platform: {
+    hero_image:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNmdaQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--5a15bfe973d79bc218239eb85cd3abe5ee72c6fa/hero%20(5).png',
+    experts_team_image:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2tZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--d4cf5d0ca1d26b2a1c2de58ef78e631217af5a5b/Gemini_Generated_Image_3ce9vc3ce9vc3ce9.png',
+    boost_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL3dZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--84680c9889186c6d2cae166fe7773b9bc7bd3004/Boost%20your%20hackathons%20with%20targeted%20ads.png',
+    commudle_managed_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzBZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--fb90c0c92303e280afbf96451d83550becf534e2/Commudle%20Managed%20Hackathons.png',
+    sponsor_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzhZQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--00bdbcb1029e4b2b43e742fa33d0b341b34dbd01/sponsor%20a%20hackathon.png',
+    launch_your_community_hackathons:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd0FaQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--202370f2295bd42256edd3fc2840e5ca270ce02a/launch%20your%20community%20hackathon.png',
+  },
 
+  widgets: {
+    cdn_logo:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMmtXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--cba183ace87063d17cf07c6ef59ae389c5cd86a7/cdn%20logo.png',
+  },
   //id: 210
   events_admin_empty_state:
     'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMVgyQlE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--716f712bd8679fc24644ba987fab60b902d79315/Events.svg',
@@ -345,6 +364,22 @@ export const staticAssets = {
     recap_thank_you_heart_image:
       'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBLzhMQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--28e643163cdc04a7801e7c58499d01c08b8d5992/Red%20Heart.png',
   },
+
+  //id: 235
+  empty_state_desktop_past_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNFVXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1f889659a8620e4294907a286f7435213b5e8d55/Past%20-%20Desktop.png',
+
+  //id: 236
+  empty_state_mobile_past_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNTBXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--e9c54ba849485839da8f52ffd8a296cef4629c8e/Past%20-%20Mobile.png',
+
+  //id: 237
+  empty_state_mobile_upcoming_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNk1XQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c4ccce312c7e3a5bb5ab8b4b525addfc2a3591f6/Upcoming%20-%20Mobile.png',
+
+  //id: 238
+  empty_state_desktop_upcoming_events:
+    'https://json.commudle.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNklXQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--78a99d83aaf09d50069300bf97d344a7b93790a4/Upcoming%20-%20Desktop.png',
 };
 
 export const AwsS3Bucket = {

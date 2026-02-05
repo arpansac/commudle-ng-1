@@ -20,4 +20,24 @@ export class HackathonTeamService {
       },
     );
   }
+
+  updateTrack(teamId: number, hackathonTrackId: number): Observable<IHackathonTeam> {
+    const params = new HttpParams().set('team_id', teamId).set('hackathon_track_id', hackathonTrackId);
+    return this.http.post<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_TRACK),
+      {},
+      { params },
+    );
+  }
+
+  updateProblemStatement(teamId: number, hackathonProblemStatementId: number): Observable<IHackathonTeam> {
+    const params = new HttpParams()
+      .set('team_id', teamId)
+      .set('hackathon_problem_statement_id', hackathonProblemStatementId);
+    return this.http.post<IHackathonTeam>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.UPDATE_PROBLEM_STATEMENT),
+      {},
+      { params },
+    );
+  }
 }

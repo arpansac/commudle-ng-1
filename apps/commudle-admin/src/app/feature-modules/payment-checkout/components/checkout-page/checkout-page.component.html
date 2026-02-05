@@ -201,7 +201,7 @@
                 <span class="heading">Discount Code</span>
                 <span class="value">
                   <span *ngIf="purchaseOrder.discount_code || finalDiscountAmount">
-                    {{ finalDiscountAmount | currency : purchaseOrder.currency }}
+                    {{ finalDiscountAmount / 100 | currency : purchaseOrder.currency }}
                   </span>
                 </span>
               </div>

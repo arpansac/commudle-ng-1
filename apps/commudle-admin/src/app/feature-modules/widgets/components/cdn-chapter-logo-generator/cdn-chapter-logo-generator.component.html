@@ -1,0 +1,132 @@
+<div class="com-min-h-screen com-bg-white">
+  <!-- Main content -->
+  <section id="main-content" class="com-container com-mx-auto com-px-4 com-py-8">
+    <div class="com-max-w-7xl com-mx-auto">
+      <!-- Page Header -->
+      <div class="com-text-center com-mb-8">
+        <h1 class="com-text-32 com-font-bold com-text-Yankees-Blue com-mb-4">CDN Chapter Logo Generator</h1>
+        <p class="com-text-16 com-text-Yankees-Blue com-opacity-80">
+          Create custom chapter logos for your community with your city or college name
+        </p>
+      </div>
+
+      <!-- Error Alert -->
+      <nb-alert *ngIf="errorMessage" status="danger" class="com-mb-6" role="alert" [attr.aria-live]="'polite'">
+        {{ errorMessage }}
+      </nb-alert>
+
+      <!-- Main Layout: Two Container Layout -->
+      <div class="logo-generator-layout">
+        <!-- Left/Main Container: Preview Section -->
+        <div class="preview-container">
+          <nb-card class="preview-card">
+            <nb-card-header class="com-text-center">
+              <h2 class="com-text-xl com-font-semibold com-text-Yankees-Blue com-m-2">
+                <fa-icon [icon]="faImage" class="com-mr-2"></fa-icon>
+                Logo Preview
+              </h2>
+              <p class="com-text-14 com-text-Yankees-Blue com-opacity-70">
+                {{ previewText }}
+              </p>
+            </nb-card-header>
+
+            <nb-card-body class="preview-body">
+              <!-- Loading Spinner -->
+              <div *ngIf="isImageLoading" class="loading-container">
+                <nb-spinner size="large" status="primary"></nb-spinner>
+                <p class="com-text-14 com-text-Yankees-Blue com-mt-4">Loading background image...</p>
+              </div>
+
+              <!-- Canvas Preview -->
+              <div *ngIf="!isImageLoading && backgroundImage" class="canvas-container">
+                <canvas
+                  #previewCanvas
+                  class="preview-canvas"
+                  [attr.aria-label]="'Logo preview with text: ' + (cityName || 'No text entered')"
+                  role="img"
+                ></canvas>
+              </div>
+
+              <!-- Error State -->
+              <div *ngIf="!isImageLoading && !backgroundImage && errorMessage" class="error-state">
+                <fa-icon [icon]="faImage" class="error-icon"></fa-icon>
+                <p class="com-text-14 com-text-Yankees-Blue com-opacity-70">Unable to load preview</p>
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </div>
+
+        <!-- Right/Side Container: Input Form Section -->
+        <div class="form-container">
+          <nb-card class="form-card">
+            <nb-card-header>
+              <h2 class="com-text-20 com-font-semibold com-text-Yankees-Blue">Customize Your Logo</h2>
+            </nb-card-header>
+
+            <nb-card-body class="form-body">
+              <!-- City/College Name Input -->
+              <div class="input-group">
+                <label for="cityName" class="input-label"> City or College Name * </label>
+                <input
+                  nbInput
+                  id="cityName"
+                  type="text"
+                  placeholder="Enter your city or college name"
+                  [(ngModel)]="cityName"
+                  (input)="onCityNameChange()"
+                  [maxlength]="config.maxTextLength"
+                  class="city-input"
+                  [attr.aria-describedby]="'cityName-help'"
+                  [attr.aria-invalid]="cityName.trim().length === 0"
+                  required
+                />
+                <div id="cityName-help" class="input-help">
+                  <span class="character-count"> {{ cityName.length }}/{{ config.maxTextLength }} characters </span>
+                </div>
+              </div>
+
+              <!-- Real-time Preview Info -->
+              <div class="preview-info">
+                <p class="com-text-14 com-text-tWhite">
+                  <fa-icon [icon]="faImage" class="com-mr-2"></fa-icon>
+                  Preview updates automatically as you type
+                </p>
+              </div>
+
+              <!-- Download Section -->
+              <div class="download-section">
+                <button
+                  nbButton
+                  status="primary"
+                  size="large"
+                  shape="semi-round"
+                  fullWidth
+                  [disabled]="!isFormValid || isDownloading"
+                  (click)="downloadLogo()"
+                  [attr.aria-label]="'Download logo with text: ' + cityName"
+                >
+                  <nb-spinner *ngIf="isDownloading" size="small" status="basic" class="com-mr-2"></nb-spinner>
+                  <fa-icon *ngIf="!isDownloading" [icon]="faDownload" class="com-mr-2"></fa-icon>
+                  {{ isDownloading ? 'Generating...' : 'Download Logo' }}
+                </button>
+
+                <p class="download-info">
+                  Downloads as PNG format with filename:
+                  <code>{{ downloadFileName }}</code>
+                </p>
+              </div>
+
+              <!-- Form Validation Info -->
+              <div *ngIf="!isFormValid && cityName.trim().length === 0" class="validation-info">
+                <p class="com-text-14 com-text-Infra-Red">Please enter a city or college name to generate your logo</p>
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+
+      <!-- Hidden canvas for final rendering -->
+      <canvas #canvas style="display: none"></canvas>
+    </div>
+  </section>
+</div>

@@ -3,6 +3,7 @@ p {
 }
 
 .community-build-discussion {
+  @apply com-m-0 com-mt-10;
   nb-card-body {
     @apply com-p-0;
 
@@ -13,8 +14,9 @@ p {
 }
 
 .community-build-details {
+  @apply com-m-0 md:com-mx-0 com-mx-4;
   .community-build-name {
-    @apply com-my-5 com-mx-0;
+    @apply md:com-text-[28px] com-text-2xl com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
   }
 
   .community-build-tags {
@@ -28,18 +30,16 @@ p {
   }
 
   .community-build-content {
-    @apply com-my-5 com-mx-0;
+    @apply com-mt-8 com-mx-0;
 
     .community-build-embed {
-      // @apply com-w-9 com-overflow-auto;
-
-      // iframe {
-      //   width: 100% !important;
-      // }
+      iframe {
+        @apply com-w-full;
+      }
     }
 
     .community-build-link {
-      @apply com-my-2 com-mx-0;
+      @apply com-text-base com-font-medium com-text-Yankees-Blue com-m-0 com-mb-4;
     }
   }
 
@@ -59,8 +59,69 @@ p {
     }
   }
 
-  app-share-button {
-    @apply com-absolute com-right-[15px] com-bottom-[10px];
+  .commudle-build-images-carousel {
+    @apply com-mt-6 com-relative;
+
+    .carousel-container {
+      @apply com-relative com-overflow-hidden com-rounded-lg;
+
+      &:hover {
+        .carousel-nav {
+          @apply com-opacity-80;
+
+          &:hover {
+            @apply com-opacity-100;
+          }
+        }
+      }
+
+      .carousel-wrapper {
+        @apply com-flex com-flex-nowrap com-overflow-x-auto com-scrollbar-hide com-gap-4 com-scroll-smooth com-items-center;
+        scroll-snap-type: x mandatory;
+      }
+
+      .carousel-slide {
+        @apply com-flex-shrink-0 com-overflow-hidden com-cursor-pointer md:com-w-[360px] com-w-full;
+        scroll-snap-align: start;
+
+        img {
+          @apply com-h-auto com-object-cover com-w-full com-rounded-lg;
+          aspect-ratio: 16 / 9;
+        }
+      }
+
+      .carousel-nav {
+        @apply com-absolute com-top-1/2 -com-translate-y-1/2 com-rounded-[50%] com-w-10 com-h-10 com-flex com-items-center com-justify-center com-shadow-md com-opacity-0 com-transition-opacity com-z-10;
+
+        &.carousel-nav-left {
+          @apply com-left-3;
+        }
+
+        &.carousel-nav-right {
+          @apply com-right-3;
+        }
+
+        &:disabled {
+          @apply com-opacity-0 com-cursor-default;
+        }
+      }
+    }
+
+    .carousel-dots {
+      @apply com-flex com-justify-center com-gap-2 com-mt-4;
+
+      .carousel-dot {
+        @apply com-w-2 com-h-2 com-rounded-full com-border-none com-cursor-pointer com-transition-all com-bg-gray-300 com-p-0;
+
+        &.active {
+          @apply com-bg-primary-500 com-w-8;
+        }
+
+        &:hover {
+          @apply com-bg-primary-400;
+        }
+      }
+    }
   }
 }
 
@@ -121,11 +182,55 @@ p {
 }
 
 .date-edit-btn {
-  @apply com-flex com-flex-row com-items-center;
+  @apply com-flex com-flex-row com-items-center com-mb-3;
   .date {
-    @apply com-text-sm com-m-0;
+    @apply com-text-xs com-font-medium com-text-Yankees-Blue com-m-0;
+
+    fa-icon {
+      @apply com-h-4 com-w-4 com-text-Cadet-Grey com-mr-2;
+    }
   }
   nb-icon {
     @apply com-ml-4 com-text-Yankees-Blue com-cursor-pointer;
   }
+}
+
+.community-build-description {
+  &::ng-deep {
+    p {
+      @apply com-text-base com-font-normal com-text-gray-500 com-m-0 com-mb-4;
+    }
+
+    ul,
+    ol {
+      li {
+        @apply com-text-base com-font-normal com-text-gray-500 com-m-0 com-mb-2;
+      }
+    }
+
+    h2,
+    h3,
+    h4 {
+      @apply com-text-base com-font-medium com-text-Yankees-Blue com-m-0 com-mb-2;
+    }
+  }
+}
+
+.votes-share-container {
+  @apply com-flex com-justify-between com-items-center com-mt-4 com-pt-4 com-border-0 com-border-t com-border-solid com-border-Bright-Gray;
+
+  .votes-views {
+    @apply com-flex com-items-center;
+  }
+  app-votes-display {
+    @apply com-inline-block com-mr-4;
+
+    .views-count {
+      @apply com-flex com-items-center com-text-base com-font-medium com-text-gray-500 com-border-0 com-border-l com-gap-2 com-border-solid com-border-Bright-Gray com-pl-4;
+    }
+  }
+}
+
+.votes-encouragement {
+  @apply com-text-xs com-font-normal com-text-gray-500 com-pt-4;
 }

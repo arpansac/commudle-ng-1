@@ -92,6 +92,7 @@ export class HackathonControlPanelTrackComponent implements OnInit {
 
   removeProblemStatement(index: number): void {
     this.problemStatements.removeAt(index);
+    this.trackForm.markAsDirty();
   }
 
   openSponsorDialogBox(dialog, track?: IHackathonTrack, index?) {

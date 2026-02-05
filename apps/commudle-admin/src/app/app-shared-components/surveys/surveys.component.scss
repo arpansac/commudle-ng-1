@@ -1,7 +1,7 @@
 .dropdown {
   @apply com-flex com-items-center com-text-sm com-cursor-pointer com-m-0;
   select {
-    @apply com-bg-[#eef2f7] com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3;
+    @apply com-bg-Custom-Select-Background com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3;
   }
 }
 

@@ -1,4 +1,4 @@
-<nb-card>
+<nb-card class="registration-form-section">
   <nb-card-header>
     <span
       >Registration<commudle-help-section [helpDictionaryName]="'hackathon-registrations'"></commudle-help-section
@@ -167,9 +167,22 @@
 
       <div>
         <div class="group-name">TRACK SELECTION</div>
-        <nb-checkbox status="basic" [(ngModel)]="allow_track_problem_statement_selection">
+        <nb-checkbox
+          status="basic"
+          [(ngModel)]="allow_track_problem_statement_selection"
+          [disabled]="hackathon?.tracks_count === 0"
+        >
           Allow track/problem statement selection
         </nb-checkbox>
+        <commudle-alert *ngIf="hackathon?.tracks_count === 0" [info]="true">
+          <div infoContent>
+            No tracks available. Please
+            <a [routerLink]="['/admin/communities', parent.slug, 'hackathon-dashboard', hackathon.slug, 'tracks']">
+              add tracks
+            </a>
+            to enable this option.
+          </div>
+        </commudle-alert>
       </div>
 
       <div>

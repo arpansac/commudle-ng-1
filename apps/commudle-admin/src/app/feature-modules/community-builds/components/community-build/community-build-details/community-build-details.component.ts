@@ -7,11 +7,12 @@ import { CBuildTypeDisplay, EBuildType, ICommunityBuild } from 'apps/shared-mode
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUpRightFromSquare, faEye } from '@fortawesome/free-solid-svg-icons';
 import { SeoService } from '@commudle/shared-services';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-community-build-details',
@@ -31,6 +32,11 @@ export class CommunityBuildDetailsComponent implements OnInit {
   singleImage: boolean;
   faArrowUpRightFromSquare = faArrowUpRightFromSquare;
   currentUser: ICurrentUser;
+  faCalendar = faCalendar;
+  currentImageIndex = 0;
+  isLeftScrollDisabled = true;
+  isRightScrollDisabled = true;
+  faEye = faEye;
 
   moment = moment;
 
@@ -107,5 +113,37 @@ export class CommunityBuildDetailsComponent implements OnInit {
       },
       applicationCategory: 'Software Engineering',
     });
+  }
+
+  scrollImages(direction: 'left' | 'right') {
+    const carouselWrapper = document.querySelector('.carousel-wrapper') as HTMLElement;
+    if (carouselWrapper) {
+      const scrollAmount = direction === 'left' ? -400 : 400;
+      carouselWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
+
+  checkScrollPosition(event: Event) {
+    const target = event.target as HTMLElement;
+    this.isLeftScrollDisabled = target.scrollLeft <= 0;
+    this.isRightScrollDisabled = target.scrollLeft + target.clientWidth >= target.scrollWidth - 5;
+
+    // Simple calculation for current image index
+    const slides = target.querySelectorAll('.carousel-slide');
+    if (slides.length > 0) {
+      const slideWidth = (slides[0] as HTMLElement).offsetWidth;
+      this.currentImageIndex = Math.round(target.scrollLeft / slideWidth);
+    }
+  }
+
+  goToImage(index: number) {
+    const carouselWrapper = document.querySelector('.carousel-wrapper') as HTMLElement;
+    if (carouselWrapper) {
+      const slides = carouselWrapper.querySelectorAll('.carousel-slide');
+      if (slides[index]) {
+        (slides[index] as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        this.currentImageIndex = index;
+      }
+    }
   }
 }

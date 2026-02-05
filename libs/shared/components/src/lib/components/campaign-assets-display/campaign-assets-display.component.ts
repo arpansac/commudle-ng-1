@@ -50,19 +50,19 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   ngOnInit() {
-    if (this.campaignTypeSlug) {
-      this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
-        if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-          this.campaign = data;
-          this.slidesCount = this.campaign.campaign_assets.length;
-          this.startAutoSlide();
-          this.userEngagementRecordForm.patchValue({
-            parent_id: this.campaign.id,
-            parent_type: EDbModels.CAMPAIGN,
-          });
-        }
-      });
-    }
+    // if (this.campaignTypeSlug) {
+    //   this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+    //     if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+    //       this.campaign = data;
+    //       this.slidesCount = this.campaign.campaign_assets.length;
+    //       this.startAutoSlide();
+    //       this.userEngagementRecordForm.patchValue({
+    //         parent_id: this.campaign.id,
+    //         parent_type: EDbModels.CAMPAIGN,
+    //       });
+    //     }
+    //   });
+    // }
   }
 
   ngAfterViewInit() {
