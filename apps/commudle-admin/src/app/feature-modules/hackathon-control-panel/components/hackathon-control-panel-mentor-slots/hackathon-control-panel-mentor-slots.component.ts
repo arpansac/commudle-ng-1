@@ -44,7 +44,11 @@ import {
   RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
@@ -334,10 +338,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const bookedTeamIds = bookings?.map((b) => b.hackathon_team_id) || [];
     this.filteredUnassignedTeams = this.teams.filter(
       (team) => team.name.toLowerCase().includes(query) && !bookedTeamIds.includes(team.id),
-    );
-    console.log(
-      '🚀 ~ HackathonControlPanelMentorSlotsComponent ~ updateFilteredTeams ~  this.filteredUnassignedTeams:',
-      this.filteredUnassignedTeams,
     );
   }
 

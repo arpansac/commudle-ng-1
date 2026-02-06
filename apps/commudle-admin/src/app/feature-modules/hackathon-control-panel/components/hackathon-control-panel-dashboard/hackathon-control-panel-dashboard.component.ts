@@ -120,10 +120,6 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
 
   checkMobileView() {
     this.isMobileView = window.innerWidth < 768;
-    console.log(
-      '🚀 ~ HackathonControlPanelDashboardComponent ~ checkMobileView ~  this.isMobileView:',
-      this.isMobileView,
-    );
   }
 
   updateStatus(hackathonStatus) {
