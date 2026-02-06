@@ -152,7 +152,7 @@
 </ng-template>
 
 <ng-template #updateSlotRules let-data let-ref="dialogRef">
-  <nb-card class="dialog-box-card" [formGroup]="slotRuleForm">
+  <nb-card class="dialog-box-card slot-rule-form" [formGroup]="slotRuleForm">
     <nb-card-header>
       <div>Add/Update Slot Rules</div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
@@ -165,7 +165,15 @@
       </div>
       <div class="form-group">
         <label for="startsAt">Starts At <span class="required">*</span></label>
-        <input type="datetime-local" id="startsAt" nbInput fullWidth formControlName="starts_at" />
+        <input
+          type="datetime-local"
+          id="startsAt"
+          nbInput
+          fullWidth
+          formControlName="starts_at"
+          [min]="moment(data.currentRound.date).format('YYYY-MM-DDTHH:mm')"
+          [max]="moment(data.currentRound.end_date).format('YYYY-MM-DDTHH:mm')"
+        />
         <commudle-alert
           *ngIf="slotRuleForm.controls['starts_at'].touched && slotRuleForm.controls['starts_at'].errors?.['required'] && slotRuleForm.controls['starts_at'].invalid"
           [error]="true"
@@ -174,7 +182,15 @@
       </div>
       <div class="form-group">
         <label for="endsAt">Ends At <span class="required">*</span></label>
-        <input type="datetime-local" id="endsAt" nbInput fullWidth formControlName="ends_at" />
+        <input
+          type="datetime-local"
+          id="endsAt"
+          nbInput
+          fullWidth
+          formControlName="ends_at"
+          [min]="moment(data.currentRound.date).format('YYYY-MM-DDTHH:mm')"
+          [max]="moment(data.currentRound.end_date).format('YYYY-MM-DDTHH:mm')"
+        />
         <commudle-alert
           *ngIf="slotRuleForm.controls['ends_at'].touched && slotRuleForm.controls['ends_at'].errors?.['required'] && slotRuleForm.controls['ends_at'].invalid"
           [error]="true"
@@ -221,7 +237,14 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="saveSlotRules(ref)" [disabled]="slotRuleForm.invalid">Save</button>
+      <button
+        nbButton
+        status="primary"
+        (click)="saveSlotRules(ref)"
+        [disabled]="slotRuleForm.invalid || isSlotRuleFormSubmitting"
+      >
+        Save
+      </button>
       <button nbButton (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>

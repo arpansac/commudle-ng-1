@@ -206,6 +206,15 @@
   }
 }
 
+.slot-rule-form {
+  .form-group {
+    @apply com-my-3;
+    input {
+      @apply com-mt-1;
+    }
+  }
+}
+
 .header-actions {
   @apply com-flex com-items-center com-gap-2;
 }

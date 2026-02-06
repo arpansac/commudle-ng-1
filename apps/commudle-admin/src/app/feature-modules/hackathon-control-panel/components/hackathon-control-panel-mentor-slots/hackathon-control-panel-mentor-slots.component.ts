@@ -91,6 +91,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   sidebarEventName = 'mentor-slot-team-assignment';
   teams: IHackathonTeam[] = [];
   filteredUnassignedTeams: IHackathonTeam[] = [];
+  isSlotRuleFormSubmitting = false;
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -229,9 +230,10 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   openSlotRulesDialog(template: TemplateRef<unknown>, roundId: number): void {
     this.currentRoundId = roundId;
+    const currentRound: IRound = this.rounds.find((r) => r.id === this.currentRoundId);
     this.loadSlotRule(roundId);
     this.dialogService.open(template, {
-      context: { roundId },
+      context: { roundId, currentRound },
     });
   }
 
@@ -260,9 +262,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   saveSlotRules(dialogRef: any): void {
+    this.isSlotRuleFormSubmitting = true;
     if (this.slotRuleForm.invalid) {
       this.slotRuleForm.markAllAsTouched();
       this.toastrService.warningDialog('Please fill all required fields correctly');
+      this.isSlotRuleFormSubmitting = false;
       return;
     }
 
@@ -278,6 +282,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.toastrService.successDialog('Slot rules updated successfully');
           dialogRef.close();
           this.loadRounds();
+          this.isSlotRuleFormSubmitting = false;
         },
       });
     } else {
@@ -286,6 +291,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.toastrService.successDialog('Slot rules created successfully');
           dialogRef.close();
           this.loadRounds();
+          this.isSlotRuleFormSubmitting = false;
         },
       });
     }

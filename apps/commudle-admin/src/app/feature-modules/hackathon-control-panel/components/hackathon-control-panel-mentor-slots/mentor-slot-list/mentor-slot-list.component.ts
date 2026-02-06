@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { IHackathonJudge, IRound, IRoundMentorSlot, IRoundMentorSlotBooking } from '@commudle/shared-models';
 import { RoundMentorSlotService } from '@commudle/shared-services';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
@@ -9,7 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './mentor-slot-list.component.html',
   styleUrl: './mentor-slot-list.component.scss',
 })
-export class MentorSlotListComponent implements OnInit, OnDestroy {
+export class MentorSlotListComponent implements OnDestroy, OnChanges {
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
   @Input() mentorId: number;
@@ -24,7 +24,7 @@ export class MentorSlotListComponent implements OnInit, OnDestroy {
     private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
   ) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.roundMentorSlotService
       .indexByRoundMentor(this.round.id, this.mentor.id)
       .pipe(takeUntil(this.destroy$))
