@@ -172,7 +172,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         cellTemplate: this.mentorCellTemplate,
       },
       ...this.rounds.map((round) => {
-        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.total_slots : 1;
+        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.slot_times.length : 1;
         const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(400, slotCount * 160)}px` : '400px';
 
         return {

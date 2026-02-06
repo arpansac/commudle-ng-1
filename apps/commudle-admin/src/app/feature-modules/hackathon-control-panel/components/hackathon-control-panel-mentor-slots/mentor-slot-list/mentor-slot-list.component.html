@@ -1,5 +1,5 @@
 <div class="slots-grid">
-  <div *ngFor="let slot of [].constructor(round.round_mentor_slot_rule.total_slots); let i = index" class="slot-item">
+  <div *ngFor="let slot of round.round_mentor_slot_rule.slot_times; let i = index" class="slot-item">
     @if (roundMentorSlots) {
     <commudle-mentor-slot-team-assignment
       [round]="round"
