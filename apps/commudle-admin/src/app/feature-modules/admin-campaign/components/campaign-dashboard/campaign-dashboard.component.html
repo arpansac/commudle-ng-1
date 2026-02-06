@@ -1,31 +1,29 @@
 <div class="base-layout">
   <div class="container">
     <div class="one-column-layout">
-      <commudle-loading-spinner *ngIf="isLoading; else campaignsTable"></commudle-loading-spinner>
-      <ng-template #campaignsTable>
-        <div>
-          <div class="dashboard-header">
-            <h1 class="page-title">Ad Dashboard</h1>
-            <button [routerLink]="['new']" nbButton status="primary" size="medium" class="create-new-campaign-button">
-              <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Campaign
-            </button>
-          </div>
-          <commudle-campaign-list
-            [campaigns]="campaigns ?? []"
-            [selectedStatus]="selectedStatus"
-            (refreshRequested)="onRefreshRequested($event)"
-          ></commudle-campaign-list>
-          <app-pagination
-            *ngIf="pagination.total > 0"
-            (goTo)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-            (next)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-            (previous)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-            [count]="pagination.count"
-            [current]="pagination.page"
-            [total]="pagination.total"
-          ></app-pagination>
+      <div>
+        <div class="dashboard-header">
+          <h1 class="page-title">Ad Dashboard</h1>
+          <button [routerLink]="['new']" nbButton status="primary" size="medium" class="create-new-campaign-button">
+            <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Campaign
+          </button>
         </div>
-      </ng-template>
+        <commudle-campaign-list
+          [campaigns]="campaigns ?? []"
+          [isLoading]="isLoading"
+          [selectedStatus]="selectedStatus"
+          (refreshRequested)="onRefreshRequested($event)"
+        ></commudle-campaign-list>
+        <app-pagination
+          *ngIf="pagination.total > 0"
+          (goTo)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (next)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (previous)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          [count]="pagination.count"
+          [current]="pagination.page"
+          [total]="pagination.total"
+        ></app-pagination>
+      </div>
     </div>
   </div>
 </div>

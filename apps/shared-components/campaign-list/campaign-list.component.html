@@ -62,7 +62,16 @@
             <th class="com-bg-gray-50">ACTIONS</th>
           </tr>
         </thead>
-        <tbody *ngIf="campaigns?.length === 0">
+        <tbody *ngIf="isLoading">
+          <tr>
+            <td colspan="9">
+              <div class="loading-cell">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!isLoading && campaigns?.length === 0">
           <tr>
             <td colspan="9">
               <div class="empty-state">
@@ -75,7 +84,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody *ngIf="campaigns?.length > 0">
+        <tbody *ngIf="!isLoading && campaigns?.length > 0">
           <tr
             *ngFor="let campaign of campaigns"
             (click)="openPopup(showCampaignDetails, campaign)"

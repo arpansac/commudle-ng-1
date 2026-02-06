@@ -13,6 +13,7 @@ import * as moment from 'moment';
 export class CampaignListComponent implements OnChanges {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
+  @Input() isLoading = false;
   @Input() selectedStatus: ECampaignStatus | null = null;
   @Output() refreshRequested = new EventEmitter<ECampaignStatus | null>();
   moment = moment;
