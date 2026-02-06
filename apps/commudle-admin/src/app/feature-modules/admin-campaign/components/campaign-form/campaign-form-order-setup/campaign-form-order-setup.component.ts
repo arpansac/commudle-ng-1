@@ -26,10 +26,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-    selector: 'commudle-campaign-form-order-setup',
-    templateUrl: './campaign-form-order-setup.component.html',
-    styleUrls: ['./campaign-form-order-setup.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-form-order-setup',
+  templateUrl: './campaign-form-order-setup.component.html',
+  styleUrls: ['./campaign-form-order-setup.component.scss'],
+  standalone: false,
 })
 export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   @ViewChild('locationSearchInput', { read: ElementRef }) locationSearchInput: ElementRef;
@@ -473,11 +473,24 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   callSubmitForApproval() {
-    // this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
-    //   if (data) {
-    //     this.toasterService.successDialog('Campaign submitted for approval successfully');
-    //   }
-    // });
+    if (this.wallet && this.wallet.available_balance >= this.campaignForm?.get('budget')?.value) {
+      this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
+        if (data) {
+          this.toasterService.successDialog('Campaign submitted');
+          this.router.navigate(['/campaigns']);
+        }
+      });
+    } else {
+      this.campaignService.createPurchaseOrder(this.campaign.id, true).subscribe((data) => {
+        if (data) {
+          console.log('data', data);
+          this.toasterService.warningDialog(
+            'You do not have enough balance to submit for approval. Please add more balance to your wallet.',
+          );
+          this.router.navigate(['/checkout', data.uuid]);
+        }
+      });
+    }
   }
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
