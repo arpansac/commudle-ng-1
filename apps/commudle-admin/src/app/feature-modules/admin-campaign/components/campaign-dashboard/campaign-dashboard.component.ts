@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ICampaign } from '@commudle/shared-models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ECampaignStatus, ICampaign } from '@commudle/shared-models';
 import { CampaignService, SeoService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { map } from 'rxjs/operators';
+
 @Component({
     selector: 'commudle-campaign-dashboard',
     templateUrl: './campaign-dashboard.component.html',
@@ -12,6 +15,7 @@ import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 export class CampaignDashboardComponent implements OnInit {
   campaigns: ICampaign[];
   isLoading = true;
+  selectedStatus: ECampaignStatus | null = null;
   moment = moment;
   icons = {
     faPlus,
@@ -22,14 +26,40 @@ export class CampaignDashboardComponent implements OnInit {
     count: 10,
     total: 0,
   };
-  constructor(private campaignService: CampaignService, private seoService: SeoService) {}
+
+  constructor(
+    private campaignService: CampaignService,
+    private seoService: SeoService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.fetchCampaigns();
+    this.route.queryParams
+      .pipe(
+        map((params) => {
+          const status = params['status'];
+          return status ? (status as ECampaignStatus) : null;
+        }),
+      )
+      .subscribe((status) => {
+        this.selectedStatus = status;
+        this.fetchCampaigns(status ?? undefined);
+      });
   }
 
-  fetchCampaigns() {
-    this.campaignService.indexCampaigns(this.pagination.page, this.pagination.count).subscribe((res) => {
+  onRefreshRequested(status: ECampaignStatus | null) {
+    const queryParams = status != null ? { status } : { status: null };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  fetchCampaigns(statusFilter?: ECampaignStatus) {
+    this.campaignService.indexCampaigns(this.pagination.page, this.pagination.count, statusFilter).subscribe((res) => {
       this.campaigns = res.values;
       this.pagination.total = res.total;
       this.pagination.page = res.page;

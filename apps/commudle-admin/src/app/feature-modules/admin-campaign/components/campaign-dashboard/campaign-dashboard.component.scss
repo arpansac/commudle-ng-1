@@ -10,18 +10,6 @@
   @apply com-text-white com-bg-Yankees-Blue com-border-Yankees-Blue com-rounded-lg #{!important};
 }
 
-.empty-state {
-  @apply com-flex com-flex-col com-items-center com-justify-center com-text-center com-pt-36;
-}
-
-.empty-state-title {
-  @apply com-text-xl md:com-text-[32px] com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
-}
-
-.empty-state-description {
-  @apply com-text-base com-font-medium com-text-gray-custom-1 com-m-0 com-mb-8 com-w-[680px] com-text-center;
-}
-
 table {
   @apply com-border-collapse com-w-full;
 }

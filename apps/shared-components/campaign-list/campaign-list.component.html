@@ -28,19 +28,15 @@
           <fa-icon [icon]="icons.faSync"></fa-icon>
           Refresh
         </button>
-        <!-- <div class="filter-by-status">
+        <div class="filter-by-status">
           <fa-icon [icon]="icons.faFilter" class="filter-icon"></fa-icon>
-          <select
-            class="status-filter-select"
-            [ngModel]="statusFilter"
-            (ngModelChange)="statusFilter = $event"
-          >
+          <select class="status-filter-select" [ngModel]="statusFilter" (ngModelChange)="onFilterChange($event)">
             <option [ngValue]="null">All statuses</option>
-            <option *ngFor="let status of statusOptions" [ngValue]="status">
-              {{ status | capitalizeAndRemoveUnderscore }}
+            <option *ngFor="let status of ECampaignStatus | keyvalue" [ngValue]="status.value">
+              {{ status.value | capitalizeAndRemoveUnderscore }}
             </option>
           </select>
-        </div> -->
+        </div>
       </div>
       <!-- <div class="toolbar-right">
         <button nbButton size="small" (click)="onExportCsv()" class="toolbar-btn">
@@ -66,7 +62,20 @@
             <th class="com-bg-gray-50">ACTIONS</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="campaigns?.length === 0">
+          <tr>
+            <td colspan="9">
+              <div class="empty-state">
+                <h3 class="empty-state-title">No Ad Campaigns Yet</h3>
+                <p class="empty-state-description">
+                  Once you create a campaign, this table will show its status, impressions, clicks, CTR, spend, and
+                  remaining balance in one place
+                </p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="campaigns?.length > 0">
           <tr
             *ngFor="let campaign of campaigns"
             (click)="openPopup(showCampaignDetails, campaign)"
@@ -244,7 +253,7 @@
                   size="small"
                   class="action-btn-icon edit-btn"
                 >
-                  <fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
+                  Complete Setup &nbsp;<fa-icon [icon]="icons.faEdit" shape="semi-round"></fa-icon>
                 </button>
               </a>
               <a
@@ -253,7 +262,7 @@
                 (click)="$event.stopPropagation()"
               >
                 <button nbButton status="success" size="small" class="action-btn-icon" outline>
-                  <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                  Stats &nbsp;<fa-icon [icon]="icons.faArrowRight"></fa-icon>
                 </button>
               </a>
               <button
@@ -265,7 +274,7 @@
                 class="action-btn-icon"
                 outline
               >
-                <fa-icon [icon]="icons.faTrash"></fa-icon>
+                Delete Campaign &nbsp;<fa-icon [icon]="icons.faTrash"></fa-icon>
               </button>
             </td>
           </tr>

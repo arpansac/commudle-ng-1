@@ -1,4 +1,4 @@
 export enum EUserActivityEventType {
-  USER_VIEW = 'user_view',
+  USER_IMPRESSION = 'impression',
   USER_CLICK = 'user_click',
 }

@@ -70,6 +70,18 @@
     @apply com-p-4;
   }
 
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-text-center com-align-middle com-py-10 com-px-4 #{!important};
+  }
+
+  .empty-state-title {
+    @apply com-text-xl md:com-text-[32px] com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-4;
+  }
+
+  .empty-state-description {
+    @apply com-text-base com-font-medium com-text-gray-custom-1 com-m-0 com-mb-8 com-max-w-[680px] com-text-center;
+  }
+
   .name-cell-content {
     @apply com-flex com-items-center com-gap-4 com-flex-wrap;
   }
@@ -179,13 +191,12 @@
   @apply com-flex com-gap-2 com-mt-2;
 }
 
-// Pending
-// .filter-by-status {
-//   @apply com-flex com-items-center com-gap-2;
-//   .filter-icon {
-//     @apply com-text-Yankees-Blue com-text-sm;
-//   }
-//   .status-filter-select {
-//     @apply com-h-8 com-min-w-[140px] com-text-sm com-rounded com-border com-border-solid com-border-Bright-Gray com-bg-white com-text-Yankees-Blue com-cursor-pointer com-px-2 com-py-1;
-//   }
-// }
+.filter-by-status {
+  @apply com-flex com-items-center com-gap-2;
+  .filter-icon {
+    @apply com-text-Yankees-Blue com-text-sm;
+  }
+  .status-filter-select {
+    @apply com-h-8 com-min-w-[140px] com-text-sm com-rounded com-border com-border-solid com-border-Bright-Gray com-bg-white com-text-Yankees-Blue com-cursor-pointer com-px-2 com-py-1;
+  }
+}

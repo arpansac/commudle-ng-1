@@ -22,7 +22,7 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.timeout = setTimeout(() => {
-              this.getUserEngagement(EUserActivityEventType.USER_VIEW);
+              this.getUserEngagement(EUserActivityEventType.USER_IMPRESSION);
             }, 1000);
           }
         });

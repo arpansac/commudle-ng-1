@@ -120,7 +120,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
       (entries) => {
         const entry = entries[0];
         if (entry.isIntersecting && !this.hasTrackedCampaignView) {
-          this.createUserEngagementForCampaign(EUserActivityEventType.USER_VIEW);
+          this.createUserEngagementForCampaign(EUserActivityEventType.USER_IMPRESSION);
           this.hasTrackedCampaignView = true;
           this.campaignObserver.disconnect(); // Stop observing after first call
         }
@@ -132,7 +132,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
       (entries) => {
         const entry = entries[0];
         if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
-          this.createUserEngagementForDefaultImage(EUserActivityEventType.USER_VIEW);
+          this.createUserEngagementForDefaultImage(EUserActivityEventType.USER_IMPRESSION);
           this.hasTrackedDefaultImageView = true;
           this.defaultImageObserver.disconnect(); // Stop observing after first call
         }

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { ICampaign, ECampaignStatus, EDbModels } from '@commudle/shared-models';
 import { CampaignService, NoteService, ToastrService } from '@commudle/shared-services';
-import { faEdit, faArrowUpRightFromSquare, faSync, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faArrowRight, faSync, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
 @Component({
@@ -10,16 +10,22 @@ import * as moment from 'moment';
     styleUrls: ['./campaign-list.component.scss'],
     standalone: false
 })
-export class CampaignListComponent {
+export class CampaignListComponent implements OnChanges {
   @Input() campaigns: ICampaign[];
   @Input() isCampaignAdmin = false;
-  @Output() refreshRequested = new EventEmitter<void>();
+  @Input() selectedStatus: ECampaignStatus | null = null;
+  @Output() refreshRequested = new EventEmitter<ECampaignStatus | null>();
   moment = moment;
-  icons = { faEdit, faArrowUpRightFromSquare, faSync, faTrash };
+  icons = { faEdit, faArrowRight, faSync, faTrash, faFilter };
   ECampaignStatus = ECampaignStatus;
   noteTexts: { [campaignId: number]: string } = {};
-  // statusFilter: ECampaignStatus | null = null;
-  // faFilter,
+  statusFilter: ECampaignStatus | null = null;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedStatus']) {
+      this.statusFilter = this.selectedStatus;
+    }
+  }
 
   constructor(
     private campaignService: CampaignService,
@@ -40,7 +46,7 @@ export class CampaignListComponent {
 
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
-      this.dialogService.open(dialog, { context: { campaignId: campaign.id } });
+      this.dialogService.open(dialog, { context: { campaign } });
     }
   }
 
@@ -48,7 +54,7 @@ export class CampaignListComponent {
     this.dialogService.open(dialog, { context: { campaign: campaign } });
   }
 
-  updateNotes(campaignId: number) {
+  updateNotes(campaignId: string) {
     if (!this.noteTexts[campaignId]) return; // Prevent empty submissions
 
     const formData = new FormData();
@@ -80,5 +86,10 @@ export class CampaignListComponent {
 
   onRefresh() {
     this.refreshRequested.emit();
+  }
+
+  onFilterChange(event: ECampaignStatus) {
+    this.statusFilter = event;
+    this.refreshRequested.emit(this.statusFilter);
   }
 }
