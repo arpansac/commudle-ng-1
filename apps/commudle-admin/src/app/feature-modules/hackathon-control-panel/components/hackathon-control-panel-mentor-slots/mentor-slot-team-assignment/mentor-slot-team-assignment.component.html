@@ -18,6 +18,14 @@
         <span class="scored" [title]="'Current round score: ' + rmsb.hackathon_team_round_score.total_score">
           {{ rmsb.hackathon_team_round_score.total_score }}
         </span>
+        } @else{
+        <app-badge
+          text="Score was pending or not submitted"
+          [fontColor]="'com-text-tAuro-Metal-Saurus'"
+          [fontSize]="'xx-small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-Bright-Gray-Light'"
+        ></app-badge>
         }
       </span>
       }
