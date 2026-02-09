@@ -488,7 +488,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
           this.toasterService.warningDialog(
             'You do not have enough balance to submit for approval. Please add more balance to your wallet.',
           );
-          this.router.navigate(['/checkout', data.uuid]);
+          this.router.navigate(['/checkout', data.uuid], {
+            queryParams: { campaign_id: this.campaign.id },
+          });
         }
       });
     }

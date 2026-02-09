@@ -95,6 +95,7 @@ import { NewsletterCardComponent } from './newsletter-card/newsletter-card.compo
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
+import { WalletDetailsComponent } from './wallet-details/wallet-details.component';
 import { NextStepCardComponent } from './next-step-card/next-step-card.component';
 import { CampaignStatsComponent } from './campaign-stats/campaign-stats.component';
 import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-expert-tick.component';
@@ -156,6 +157,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     NewsletterCardComponent,
     CampaignListComponent,
     CampaignDetailsComponent,
+    WalletDetailsComponent,
     NextStepCardComponent,
     CampaignStatsComponent,
     ProductPriceDetailsComponent,
@@ -253,6 +255,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     NewsletterCardComponent,
     CampaignListComponent,
     CampaignDetailsComponent,
+    WalletDetailsComponent,
     NextStepCardComponent,
     CampaignStatsComponent,
     ProductPriceDetailsComponent,

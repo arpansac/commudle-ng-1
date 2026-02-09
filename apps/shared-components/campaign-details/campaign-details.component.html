@@ -1,7 +1,7 @@
 <app-loading-spinner *ngIf="!campaign"></app-loading-spinner>
 
 <div *ngIf="campaign" class="campaign-container">
-  <h2 class="title">Campaign Details</h2>
+  <h3 class="title">Campaign Details</h3>
 
   <div class="campaign-info">
     <p class="campaign-item"><strong>Campaign Name:</strong> {{ campaign.name ? campaign.name : '--' }}</p>
@@ -49,9 +49,6 @@
     <h6>Campaign Assets</h6>
     <ul *ngIf="campaign.campaign_assets?.length; else noAssets" class="assets-list">
       <li *ngFor="let asset of campaign.campaign_assets" class="asset-item">
-        <p>
-          <strong>{{ asset.headline ? asset.headline : '--' }}</strong>
-        </p>
         <img [src]="asset.image.url ? asset.image.url : '--'" [alt]="asset.headline" class="asset-image" />
         <p>
           Url:

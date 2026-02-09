@@ -4,9 +4,10 @@
       <!-- Left Column - Order Details -->
       <div class="main-column">
         <!-- Campaign Details -->
-        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.CAMPAIGN">
+        <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET">
           <nb-card-body>
-            <commudle-campaign-details [campaignId]="purchaseOrder.orderable_id"></commudle-campaign-details>
+            <commudle-campaign-details [campaignId]="campaignId"></commudle-campaign-details>
+            <commudle-wallet-details [campaignId]="campaignId"></commudle-wallet-details>
           </nb-card-body>
         </nb-card>
 
