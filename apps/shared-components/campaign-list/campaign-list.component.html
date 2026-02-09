@@ -88,7 +88,7 @@
             </td>
           </tr>
         </tbody>
-        <tbody *ngIf="!isLoading && campaigns?.length > 0">
+        <tbody *ngIf="!isLoading && campaigns && campaigns.length > 0">
           <tr
             *ngFor="let campaign of campaigns"
             (click)="openPopup(showCampaignDetails, campaign)"
@@ -247,11 +247,17 @@
                 <!-- Pending <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini> -->
               </div>
             </td>
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <td class="data-cell com-text-right">
+              {{ statsTimeseries && statsTimeseries.impressions ? statsTimeseries.impressions : '--' }}
+            </td>
             <!--pending -->
-            <td class="data-cell com-text-right">{{ campaign.budget }}</td>
+            <td class="data-cell com-text-right">
+              {{ statsTimeseries && statsTimeseries.clicks ? statsTimeseries.clicks : '--' }}
+            </td>
             <!--pending -->
-            <td class="data-cell com-text-right border-right">{{ campaign.budget }}</td>
+            <td class="data-cell com-text-right border-right">
+              {{ statsTimeseries && statsTimeseries.ctr ? statsTimeseries.ctr : '--' }}
+            </td>
             <!--pending -->
             <td class="action-buttons">
               <a

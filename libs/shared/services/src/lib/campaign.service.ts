@@ -181,4 +181,11 @@ export class CampaignService {
       params,
     });
   }
+
+  getStatsTimeseries(campaignId: string): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS_TIMESERIES), {
+      params,
+    });
+  }
 }

@@ -1077,6 +1077,7 @@ export const API_ROUTES = {
     CREATE_PURCHASE_ORDER: 'api/v2/campaigns/create_purchase_order', //PUT
     RECORD_IMPRESSION: 'api/v2/campaigns/record_impression', //POST
     STATS_OVERVIEW: 'api/v2/campaigns/stats/overview', //GET
+    STATS_TIMESERIES: 'api/v2/campaigns/stats/timeseries', //GET
 
     CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns/campaign_admin_index', //GET
     UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
