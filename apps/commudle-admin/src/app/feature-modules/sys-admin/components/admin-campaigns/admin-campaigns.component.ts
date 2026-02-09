@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IsActiveMatchOptions } from '@angular/router';
 
 @Component({
     selector: 'commudle-admin-campaigns',
@@ -7,10 +8,18 @@ import { Component } from '@angular/core';
     standalone: false
 })
 export class AdminCampaignsComponent {
+  tabActiveLinkOptions: IsActiveMatchOptions = {
+    paths: 'exact',
+    queryParams: 'ignored',
+    matrixParams: 'ignored',
+    fragment: 'ignored',
+  };
+
   tabs = [
     {
       title: 'All Campaigns',
       route: './',
+      queryParamsHandling: 'preserve' as const,
     },
     {
       title: 'Purchase Orders',

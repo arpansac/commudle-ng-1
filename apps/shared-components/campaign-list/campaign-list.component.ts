@@ -46,23 +46,13 @@ export class CampaignListComponent implements OnChanges {
     }
   }
 
-  updateStatus(event: Event, campaignId: string | number) {
-    const campaignIdStr = String(campaignId);
-    const status = (event.target as HTMLSelectElement)?.value as ECampaignStatus;
-    if (!status) return;
-    this.campaignService.campaignAdminUpdateStatus(campaignIdStr, status).subscribe({
-      next: (res) => {
-        if (res) {
-          const index = this.campaigns.findIndex((c) => String(c.id) === campaignIdStr);
-          if (index !== -1) {
-            this.campaigns[index] = res;
-          }
-          this.toasterService.successDialog('Campaign status updated successfully');
-        }
-      },
-      error: () => {
-        this.toasterService.errorDialog('Failed to update campaign status. Please try again.');
-      },
+  updateStatus(event, campaignId) {
+    this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
+      if (res) {
+        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+        this.campaigns[index] = res;
+        this.toasterService.successDialog('Campaign status updated successfully');
+      }
     });
   }
 
@@ -111,7 +101,6 @@ export class CampaignListComponent implements OnChanges {
   }
 
   onFilterChange(event: ECampaignStatus) {
-    console.log('event parent', event);
     this.statusFilter = event;
     this.refreshRequested.emit(this.statusFilter);
   }
