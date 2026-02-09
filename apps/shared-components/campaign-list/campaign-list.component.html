@@ -1,20 +1,24 @@
 <!-- KPI Cards -->
-<div class="kpi-cards">
+<div class="kpi-cards" *ngIf="statsOverview">
   <div class="kpi-card">
     <div class="kpi-label">Impressions</div>
-    <div class="kpi-value">Impressions</div>
+    <div class="kpi-value">
+      {{ statsOverview.total_impressions ? statsOverview.total_impressions : 'Data Not Available' }}
+    </div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Total Spendings</div>
-    <div class="kpi-value">Total Spendings</div>
+    <div class="kpi-label">Budget Remaining</div>
+    <div class="kpi-value">
+      {{ statsOverview.budget_remaining ? statsOverview.budget_remaining : 'Data Not Available' }}
+    </div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Click Through Rate (CTR)</div>
-    <div class="kpi-value">Click Through Rate (CTR)</div>
+    <div class="kpi-value">{{ statsOverview.ctr ? statsOverview.ctr : 'Data Not Available' }}</div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">ECPM</div>
-    <div class="kpi-value">ECPM</div>
+    <div class="kpi-label">Total Clicks</div>
+    <div class="kpi-value">{{ statsOverview.total_clicks ? statsOverview.total_clicks : 'Data Not Available' }}</div>
   </div>
 </div>
 
@@ -121,19 +125,19 @@
                     campaign.status === ECampaignStatus.INCOMPLETE
                       ? 'com-bg-gray-100'
                       : campaign.status === ECampaignStatus.DRAFT
-                      ? 'com-bg-gray-500'
+                      ? 'com-bg-gray-100'
                       : campaign.status === ECampaignStatus.SUBMITTED
                       ? 'com-bg-blue-100'
                       : campaign.status === ECampaignStatus.APPROVED
-                      ? 'com-bg-gray-500'
+                      ? 'com-bg-green-500'
                       : campaign.status === ECampaignStatus.REJECTED
-                      ? 'com-bg-gray-500'
+                      ? 'com-bg-red-100'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
-                      ? 'com-bg-amber-100'
+                      ? 'com-bg-yellow-100'
                       : campaign.status === ECampaignStatus.LIVE
-                      ? 'com-bg-emerald-100'
+                      ? 'com-bg-green-500'
                       : campaign.status === ECampaignStatus.COMPLETE
-                      ? 'com-bg-sky-100'
+                      ? 'com-bg-blue-100'
                       : 'com-bg-gray-100'
                   "
                   [fontColor]="
@@ -142,17 +146,17 @@
                       : campaign.status === ECampaignStatus.DRAFT
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.SUBMITTED
-                      ? 'com-text-gray-700'
+                      ? 'com-text-blue-700'
                       : campaign.status === ECampaignStatus.APPROVED
-                      ? 'com-text-gray-700'
+                      ? 'com-text-white'
                       : campaign.status === ECampaignStatus.REJECTED
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
-                      ? 'com-text-emerald-700'
+                      ? 'com-text-red-500'
                       : campaign.status === ECampaignStatus.LIVE
-                      ? 'com-text-red-700'
+                      ? 'com-text-white'
                       : campaign.status === ECampaignStatus.COMPLETE
-                      ? 'com-text-gray-700'
+                      ? 'com-text-blue-700'
                       : 'com-text-gray-700'
                   "
                 ></app-badge>
@@ -250,7 +254,11 @@
             <td class="data-cell com-text-right border-right">{{ campaign.budget }}</td>
             <!--pending -->
             <td class="action-buttons">
-              <a *ngIf="!isCampaignAdmin" [routerLink]="['edit', campaign.id]" (click)="$event.stopPropagation()">
+              <a
+                *ngIf="!isCampaignAdmin"
+                [routerLink]="['/campaigns/edit', campaign.id]"
+                (click)="$event.stopPropagation()"
+              >
                 <button
                   nbButton
                   [disabled]="

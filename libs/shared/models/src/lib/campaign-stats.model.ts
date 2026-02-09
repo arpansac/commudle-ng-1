@@ -26,4 +26,7 @@ export interface ICampaignStats {
     delivered: number;
     sents: number;
   };
+  total_impressions: number;
+  ctr: number;
+  budget_remaining: number;
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ICampaign, ECampaignStatus, EDbModels } from '@commudle/shared-models';
+import { ICampaign, ECampaignStatus, EDbModels, ICampaignStats } from '@commudle/shared-models';
 import { CampaignService, NoteService, ToastrService } from '@commudle/shared-services';
 import { faEdit, faArrowRight, faSync, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
@@ -21,6 +21,7 @@ export class CampaignListComponent implements OnChanges {
   ECampaignStatus = ECampaignStatus;
   noteTexts: { [campaignId: number]: string } = {};
   statusFilter: ECampaignStatus | null = null;
+  statsOverview: ICampaignStats;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedStatus']) {
@@ -34,6 +35,10 @@ export class CampaignListComponent implements OnChanges {
     private dialogService: NbDialogService,
     private noteService: NoteService,
   ) {}
+
+  ngOnInit() {
+    this.getStatsOverview(this.campaigns[0].id);
+  }
 
   updateStatus(event, campaignId) {
     this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
@@ -92,5 +97,11 @@ export class CampaignListComponent implements OnChanges {
   onFilterChange(event: ECampaignStatus) {
     this.statusFilter = event;
     this.refreshRequested.emit(this.statusFilter);
+  }
+
+  getStatsOverview(campaignId: string) {
+    this.campaignService.getStatsOverview(campaignId).subscribe((stats: ICampaignStats) => {
+      this.statsOverview = stats;
+    });
   }
 }

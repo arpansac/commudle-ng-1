@@ -1068,13 +1068,20 @@ export const API_ROUTES = {
   },
 
   CAMPAIGNS: {
+    CREATE: 'api/v2/campaigns', //POST
+    UPDATE: 'api/v2/campaigns', //PUT
     INDEX: 'api/v2/campaigns', //GET
-    // CREATE: 'api/v2/campaigns', //POST  //DEPRECATED
-    UPDATE: 'api/v2/campaigns', //PUT //DEPRECATED
-    UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
     SHOW: 'api/v2/campaigns/show', //GET
-    CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
+    ESTIMATED_IMPRESSIONS: 'api/v2/campaigns/estimated_impressions', //GET
+    SUBMIT_FOR_APPROVAL: 'api/v2/campaigns/submit_for_approval', //PUT
+    CREATE_PURCHASE_ORDER: 'api/v2/campaigns/create_purchase_order', //PUT
+    RECORD_IMPRESSION: 'api/v2/campaigns/record_impression', //POST
+    STATS_OVERVIEW: 'api/v2/campaigns/stats/overview', //GET
+
     CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns/campaign_admin_index', //GET
+    UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
+
+    CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
     CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
     CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
     STATS: 'api/v2/campaigns/stats', //GET
@@ -1097,12 +1104,13 @@ export const API_ROUTES = {
   },
 
   CAMPAIGNS_NEW: {
-    INDEX: 'api/v2/campaigns_new', //GET
-    CREATE: 'api/v2/campaigns_new', //POST
-    UPDATE: 'api/v2/campaigns_new', //PUT
-    SUBMIT_FOR_APPROVAL: 'api/v2/campaigns_new/submit_for_approval', //PUT
     CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns_new/index_admin', //GET
     CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
+    CAMPAIGN_SERVE: 'api/v2/campaigns_new/serve', //GET
+  },
+
+  WALLET: {
+    FUND_STATUS: 'api/v2/wallets/fund_status', //GET
   },
 
   PURCHASE_ORDER: {

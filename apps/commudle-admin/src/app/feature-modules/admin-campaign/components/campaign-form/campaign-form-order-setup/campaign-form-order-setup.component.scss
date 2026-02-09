@@ -177,7 +177,7 @@ nb-accordion {
 }
 
 .sticky-footer {
-  @apply com-flex com-flex-col com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-sticky com-bottom-0 com-bg-Ghost-White com-z-10;
+  @apply com-flex com-flex-col com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-sticky md:com-bottom-0 com-bottom-[68px] com-bg-Ghost-White com-z-10;
 }
 
 .wallet-details-section {

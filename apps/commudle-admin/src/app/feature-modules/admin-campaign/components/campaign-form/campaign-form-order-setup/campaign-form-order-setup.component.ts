@@ -90,9 +90,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     if (this.router.url.includes('/edit/')) {
-      this.activatedRoute.parent?.data.subscribe((data) => {
-        if (data['campaign']) {
-          this.campaign = data['campaign'];
+      const campaignId = this.activatedRoute.parent?.snapshot?.paramMap?.get('campaign_id');
+      this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
+        if (campaign) {
+          this.campaign = campaign;
           this.patchCampaignForm();
           this.getFundStatus();
           setTimeout(() => {
