@@ -15,13 +15,13 @@
           (refreshRequested)="onRefreshRequested($event)"
         ></commudle-campaign-list>
         <app-pagination
-          *ngIf="pagination.total > 0"
-          (goTo)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-          (next)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-          (previous)="pagination.page = $event; fetchCampaigns(selectedStatus ?? undefined)"
-          [count]="pagination.count"
-          [current]="pagination.page"
-          [total]="pagination.total"
+          *ngIf="total > 0"
+          (goTo)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (next)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (previous)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          [count]="count"
+          [current]="page"
+          [total]="total"
         ></app-pagination>
       </div>
     </div>

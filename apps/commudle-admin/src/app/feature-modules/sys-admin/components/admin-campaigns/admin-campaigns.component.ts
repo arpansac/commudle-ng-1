@@ -13,10 +13,6 @@ export class AdminCampaignsComponent {
       route: './',
     },
     {
-      title: 'Campaign Types',
-      route: 'types',
-    },
-    {
       title: 'Purchase Orders',
       route: 'purchase-orders',
     },

@@ -165,10 +165,6 @@ const routes = [
             component: AdminCampaignsListComponent,
           },
           {
-            path: 'types',
-            component: CampaignTypesComponent,
-          },
-          {
             path: 'purchase-orders',
             component: CampaignPurchaseOrdersComponent,
           },

@@ -50,14 +50,11 @@ export class CampaignService {
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
   }
 
-  campaignAdminUpdateStatus(campaignId: number, campaignStatus: ECampaignStatus): Observable<ICampaign> {
-    return this.http.put<ICampaign>(
-      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS_NEW.CAMPAIGN_ADMIN_STATUS_UPDATE),
-      {
-        campaign_id: campaignId,
-        campaign_status: campaignStatus,
-      },
-    );
+  campaignAdminUpdateStatus(campaignId: string, campaignStatus: ECampaignStatus): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE), {
+      campaign_id: campaignId,
+      campaign_status: campaignStatus,
+    });
   }
 
   updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {

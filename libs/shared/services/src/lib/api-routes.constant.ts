@@ -1078,12 +1078,12 @@ export const API_ROUTES = {
     RECORD_IMPRESSION: 'api/v2/campaigns/record_impression', //POST
     STATS_OVERVIEW: 'api/v2/campaigns/stats/overview', //GET
     STATS_TIMESERIES: 'api/v2/campaigns/stats/timeseries', //GET
+    CAMPAIGNS_ADMIN_INDEX: 'api/v2/campaigns/index_admin', //GET
+    CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
 
-    CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns/campaign_admin_index', //GET
     UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
 
     CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
-    CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
     CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT
     STATS: 'api/v2/campaigns/stats', //GET
     MAIN_NEWSLETTER_CAMPAIGN_STATS: 'api/v2/campaigns/main_newsletter_campaign_stats', //GET
@@ -1105,8 +1105,6 @@ export const API_ROUTES = {
   },
 
   CAMPAIGNS_NEW: {
-    CAMPAIGN_ADMIN_INDEX: 'api/v2/campaigns_new/index_admin', //GET
-    CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
     CAMPAIGN_SERVE: 'api/v2/campaigns_new/serve', //GET
   },
 
