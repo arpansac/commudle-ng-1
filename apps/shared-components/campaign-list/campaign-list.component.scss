@@ -1,6 +1,6 @@
 // KPI Cards
 .kpi-cards {
-  @apply com-grid md:com-grid-cols-4 com-grid-cols-1 com-gap-4 com-mb-6 md:com-mx-0 com-mx-4;
+  @apply com-grid md:com-grid-cols-4 com-grid-cols-1 com-gap-4 com-mb-6 com-mx-0;
 
   .kpi-card {
     @apply com-bg-white com-rounded-[10px] com-p-4 com-border com-border-solid com-border-Bright-Gray;
@@ -17,7 +17,7 @@
 
 // Table panel
 .table-panel {
-  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border com-border-solid com-border-Bright-Gray md:com-mx-0 com-mx-4;
+  @apply com-rounded-xl com-overflow-hidden com-m-0 com-border com-border-solid com-border-Bright-Gray com-mx-0;
 
   nb-card-body {
     @apply com-p-0;

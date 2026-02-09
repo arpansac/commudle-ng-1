@@ -1,3 +1,7 @@
 nb-card {
-  @apply com-min-h-screen;
+  @apply com-m-0 com-min-h-screen;
+
+  nb-card-body {
+    @apply com-p-4;
+  }
 }

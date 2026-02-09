@@ -19,7 +19,7 @@
     </p>
 
     <p class="campaign-item">
-      <strong *ngIf="campaign.end_at">End Time:</strong>
+      <strong>End Time:</strong>
       {{ campaign.end_at ? moment.utc(campaign.end_at, 'HH:mm').local().format('HH:mm') : '--' }}
     </p>
 
