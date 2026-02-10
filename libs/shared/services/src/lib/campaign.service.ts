@@ -162,7 +162,7 @@ export class CampaignService {
   }
 
   serveCampaign(): Observable<any> {
-    return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS_NEW.CAMPAIGN_SERVE));
+    return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_SERVE));
   }
 
   createPurchaseOrder(campaignId: string, purchaseOrderData: any): Observable<IPurchaseOrder> {
