@@ -1,5 +1,15 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
 import {
@@ -11,10 +21,10 @@ import {
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'commudle-campaign-assets-display',
-    templateUrl: './campaign-assets-display.component.html',
-    styleUrls: ['./campaign-assets-display.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-assets-display',
+  templateUrl: './campaign-assets-display.component.html',
+  styleUrls: ['./campaign-assets-display.component.scss'],
+  standalone: false,
 })
 export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() defaultImage: string;
@@ -42,7 +52,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
     private fb: FormBuilder,
     private gtmService: GoogleTagManagerService,
     private seoService: SeoService,
-    @Inject(PLATFORM_ID) platformId: Object,
+    @Inject(PLATFORM_ID) platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.userEngagementRecordForm = this.fb.group({
@@ -55,22 +65,22 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   ngOnInit() {
-    if (this.campaignTypeSlug) {
-      this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
-        if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-          this.campaign = data;
-          this.slidesCount = this.campaign.campaign_assets.length;
-          // SSR-safe: avoid starting intervals on the server.
-          if (this.isBrowser) {
-            this.startAutoSlide();
-          }
-          this.userEngagementRecordForm.patchValue({
-            parent_id: this.campaign.id,
-            parent_type: EDbModels.CAMPAIGN,
-          });
-        }
-      });
-    }
+    // if (this.campaignTypeSlug) {
+    //   this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
+    //     if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+    //       this.campaign = data;
+    //       this.slidesCount = this.campaign.campaign_assets.length;
+    //       // SSR-safe: avoid starting intervals on the server.
+    //       if (this.isBrowser) {
+    //         this.startAutoSlide();
+    //       }
+    //       this.userEngagementRecordForm.patchValue({
+    //         parent_id: this.campaign.id,
+    //         parent_type: EDbModels.CAMPAIGN,
+    //       });
+    //     }
+    //   });
+    // }
   }
 
   ngAfterViewInit() {
