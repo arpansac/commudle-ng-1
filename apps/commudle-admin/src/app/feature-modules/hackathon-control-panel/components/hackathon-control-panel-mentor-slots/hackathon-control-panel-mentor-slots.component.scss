@@ -1,4 +1,4 @@
-.main-card-container {
+nb-card {
   @apply com-relative com-transition-all com-duration-300;
 
   &.sidebar-expanded:not(.fullscreen-card) {

@@ -139,17 +139,35 @@
                     </div>
                     <div *ngIf="sidebarExpanded" class="action-button-name">Judges, Speakers & Mentors</div>
                   </a>
-                  <a class="action-button" [routerLink]="['mentors']" routerLinkActive="active">
+                  <a
+                    class="action-button premium-feature"
+                    [routerLink]="['mentors']"
+                    routerLinkActive="active"
+                    nbTooltip="Premium Feature - Free for now, paid soon"
+                    nbTooltipPlacement="right"
+                  >
                     <div class="icon">
                       <fa-icon [icon]="icons.faUserGroup"></fa-icon>
                     </div>
-                    <div *ngIf="sidebarExpanded" class="action-button-name">Mentor Assignment</div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">
+                      Mentor Assignment
+                      <fa-icon [icon]="icons.faCrown" class="crown-icon"></fa-icon>
+                    </div>
                   </a>
-                  <a class="action-button" [routerLink]="['mentor-slots']" routerLinkActive="active">
+                  <a
+                    class="action-button premium-feature"
+                    [routerLink]="['mentor-slots']"
+                    routerLinkActive="active"
+                    nbTooltip="Premium Feature - Free for now, paid soon"
+                    nbTooltipPlacement="right"
+                  >
                     <div class="icon">
                       <fa-icon [icon]="icons.faClock"></fa-icon>
                     </div>
-                    <div *ngIf="sidebarExpanded" class="action-button-name">Mentor Slots</div>
+                    <div *ngIf="sidebarExpanded" class="action-button-name">
+                      Mentor Slots
+                      <fa-icon [icon]="icons.faCrown" class="crown-icon"></fa-icon>
+                    </div>
                   </a>
                   <a class="action-button" [routerLink]="['faqs']" routerLinkActive="active">
                     <div class="icon">

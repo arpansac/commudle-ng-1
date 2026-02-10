@@ -20,14 +20,16 @@
   </nb-card-header>
   <nb-card-body>
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    <commudle-data-table
-      *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
-      [columns]="tableColumns"
-      [rows]="tableRows"
-      [config]="tableConfig"
-      [isLoading]="isLoading"
-    >
-    </commudle-data-table>
+    <div class="data-table com-overflow-hidden com-w-full com-h-[70dvh] com-relative">
+      <commudle-data-table
+        *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
+        [columns]="tableColumns"
+        [rows]="tableRows"
+        [config]="tableConfig"
+        [isLoading]="isLoading"
+      >
+      </commudle-data-table>
+    </div>
   </nb-card-body>
 </nb-card>
 
