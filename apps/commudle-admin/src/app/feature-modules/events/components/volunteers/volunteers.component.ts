@@ -19,10 +19,11 @@ import { IEvent, ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-volunteers',
-  templateUrl: './volunteers.component.html',
-  styleUrls: ['./volunteers.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-volunteers',
+    templateUrl: './volunteers.component.html',
+    styleUrls: ['./volunteers.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class VolunteersComponent implements OnInit, OnDestroy, AfterViewInit {
   event: IEvent;

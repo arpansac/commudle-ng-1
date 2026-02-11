@@ -11,6 +11,7 @@ interface ParentInfo {
 }
 
 @Component({
+  standalone: false,
   selector: 'commudle-forums-dashboard',
   templateUrl: './forums-dashboard.component.html',
   styleUrls: ['./forums-dashboard.component.scss'],

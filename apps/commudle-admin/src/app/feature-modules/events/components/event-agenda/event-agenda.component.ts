@@ -8,9 +8,10 @@ import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-event-agenda',
-  templateUrl: './event-agenda.component.html',
-  styleUrls: ['./event-agenda.component.scss'],
+    selector: 'commudle-event-agenda',
+    templateUrl: './event-agenda.component.html',
+    styleUrls: ['./event-agenda.component.scss'],
+    standalone: false
 })
 export class EventAgendaComponent implements OnInit, OnDestroy {
   event: IEvent;

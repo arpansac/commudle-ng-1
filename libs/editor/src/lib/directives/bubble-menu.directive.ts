@@ -3,7 +3,8 @@ import { Editor } from '@tiptap/core';
 import { BubbleMenuPlugin, BubbleMenuPluginProps } from '@tiptap/extension-bubble-menu';
 
 @Directive({
-  selector: 'tiptap-bubble-menu[editor], [tiptapBubbleMenu][editor]',
+    selector: 'tiptap-bubble-menu[editor], [tiptapBubbleMenu][editor]',
+    standalone: false
 })
 export class BubbleMenuDirective implements OnInit, OnDestroy {
   readonly editor = input.required<Editor>();

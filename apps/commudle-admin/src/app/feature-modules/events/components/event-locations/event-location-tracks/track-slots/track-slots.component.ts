@@ -3,10 +3,10 @@ import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-track-slots',
-  templateUrl: './track-slots.component.html',
-  styleUrls: ['./track-slots.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-track-slots',
+    templateUrl: './track-slots.component.html',
+    styleUrls: ['./track-slots.component.scss'],
+    standalone: false
 })
 export class TrackSlotsComponent implements OnInit {
   @Input() slots;

@@ -9,9 +9,10 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-pa-slots-form',
-  templateUrl: './admin-page-ads-form.component.html',
-  styleUrls: ['./admin-page-ads-form.component.scss'],
+    selector: 'app-admin-pa-slots-form',
+    templateUrl: './admin-page-ads-form.component.html',
+    styleUrls: ['./admin-page-ads-form.component.scss'],
+    standalone: false
 })
 export class AdminPageAdsFormComponent implements OnInit, OnDestroy {
   pageAd: IPageAd;

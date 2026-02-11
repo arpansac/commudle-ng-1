@@ -6,9 +6,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'app-homepage-testimonials',
-  templateUrl: './homepage-testimonials.component.html',
-  styleUrls: ['./homepage-testimonials.component.scss'],
+    selector: 'app-homepage-testimonials',
+    templateUrl: './homepage-testimonials.component.html',
+    styleUrls: ['./homepage-testimonials.component.scss'],
+    standalone: false
 })
 export class HomepageTestimonialsComponent implements OnInit {
   testimonials: ITestimonial[] = [];

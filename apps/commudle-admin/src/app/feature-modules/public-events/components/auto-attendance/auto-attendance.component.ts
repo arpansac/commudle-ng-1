@@ -5,9 +5,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-auto-attendance',
-  templateUrl: './auto-attendance.component.html',
-  styleUrls: ['./auto-attendance.component.scss'],
+    selector: 'app-auto-attendance',
+    templateUrl: './auto-attendance.component.html',
+    styleUrls: ['./auto-attendance.component.scss'],
+    standalone: false
 })
 export class AutoAttendanceComponent implements OnInit, OnDestroy {
   @Input() eventId;

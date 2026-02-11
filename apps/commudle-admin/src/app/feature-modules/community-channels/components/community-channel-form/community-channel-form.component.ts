@@ -8,9 +8,10 @@ import { Subscription } from 'rxjs';
 import { CommunityChannelManagerService, CommunityChannelsService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-community-channel-form',
-  templateUrl: './community-channel-form.component.html',
-  styleUrls: ['./community-channel-form.component.scss'],
+    selector: 'commudle-community-channel-form',
+    templateUrl: './community-channel-form.component.html',
+    styleUrls: ['./community-channel-form.component.scss'],
+    standalone: false
 })
 export class CommunityChannelFormComponent implements OnInit {
   @Input() existingChannel: ICommunityChannel;

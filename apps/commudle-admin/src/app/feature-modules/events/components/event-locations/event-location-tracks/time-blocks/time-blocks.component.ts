@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, NgZone, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-time-blocks',
-  templateUrl: './time-blocks.component.html',
-  styleUrls: ['./time-blocks.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-time-blocks',
+    templateUrl: './time-blocks.component.html',
+    styleUrls: ['./time-blocks.component.scss'],
+    standalone: false
 })
 export class TimeBlocksComponent implements OnInit {
   @Input() timeBlocks;

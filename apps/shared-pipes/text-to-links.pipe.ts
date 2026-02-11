@@ -1,7 +1,10 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'textToLinks' })
+@Pipe({
+    name: 'textToLinks',
+    standalone: false
+})
 export class TextToLinksPipe implements PipeTransform {
 
   constructor(private sanitizer: DomSanitizer) {}

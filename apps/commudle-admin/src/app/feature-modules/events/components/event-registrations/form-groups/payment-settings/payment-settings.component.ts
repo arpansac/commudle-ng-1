@@ -19,9 +19,10 @@ import { CustomPageFormComponent } from 'apps/commudle-admin/src/app/app-shared-
 import { EPageType, ICustomPage } from 'apps/shared-models/custom-page.model';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'commudle-payment-settings',
-  templateUrl: './payment-settings.component.html',
-  styleUrls: ['./payment-settings.component.scss'],
+    selector: 'commudle-payment-settings',
+    templateUrl: './payment-settings.component.html',
+    styleUrls: ['./payment-settings.component.scss'],
+    standalone: false
 })
 export class PaymentSettingsComponent implements OnInit {
   @Input() community: ICommunity;

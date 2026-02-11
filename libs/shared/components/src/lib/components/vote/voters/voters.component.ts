@@ -4,9 +4,10 @@ import { VoteService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-voters',
-  templateUrl: './voters.component.html',
-  styleUrls: ['./voters.component.scss'],
+    selector: 'commudle-voters',
+    templateUrl: './voters.component.html',
+    styleUrls: ['./voters.component.scss'],
+    standalone: false
 })
 export class VotersComponent implements OnInit {
   @Input() votableType;

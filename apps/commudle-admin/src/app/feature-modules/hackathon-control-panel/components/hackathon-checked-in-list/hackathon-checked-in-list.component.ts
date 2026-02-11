@@ -7,6 +7,7 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 
 @Component({
   selector: 'commudle-hackathon-checked-in-list',
+  standalone: false,
   templateUrl: './hackathon-checked-in-list.component.html',
   styleUrl: './hackathon-checked-in-list.component.scss',
 })

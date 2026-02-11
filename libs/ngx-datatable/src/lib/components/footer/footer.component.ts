@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy, Input } from '@angular/core';
 import { DatatableFooterDirective } from './footer.directive';
 @Component({
-  selector: 'datatable-footer',
-  template: `
+    selector: 'datatable-footer',
+    template: `
     <div class="datatable-footer-inner" [ngClass]="{ 'selected-count': selectedMessage }">
       <ng-template
         *ngIf="footerTemplate"
@@ -35,10 +35,11 @@ import { DatatableFooterDirective } from './footer.directive';
       </datatable-pager>
     </div>
   `,
-  host: {
-    class: 'datatable-footer',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'datatable-footer',
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTableFooterComponent {
   @Input() footerHeight: number;

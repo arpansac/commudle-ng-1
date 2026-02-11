@@ -7,9 +7,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-local-preview',
-  templateUrl: './local-preview.component.html',
-  styleUrls: ['./local-preview.component.scss'],
+    selector: 'app-local-preview',
+    templateUrl: './local-preview.component.html',
+    styleUrls: ['./local-preview.component.scss'],
+    standalone: false
 })
 export class LocalPreviewComponent implements OnInit, OnDestroy {
   audioInputDevices: MediaDeviceInfo[] = [];

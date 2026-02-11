@@ -22,9 +22,10 @@ import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'commudle-channel-members',
-  templateUrl: './channel-members.component.html',
-  styleUrls: ['./channel-members.component.scss'],
+    selector: 'commudle-channel-members',
+    templateUrl: './channel-members.component.html',
+    styleUrls: ['./channel-members.component.scss'],
+    standalone: false
 })
 export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() channelOrForum: ICommunityChannel;

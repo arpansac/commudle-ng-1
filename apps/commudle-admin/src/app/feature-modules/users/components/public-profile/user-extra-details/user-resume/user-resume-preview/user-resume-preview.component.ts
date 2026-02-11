@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-user-resume-preview',
-  templateUrl: './user-resume-preview.component.html',
-  styleUrls: ['./user-resume-preview.component.scss'],
+    selector: 'app-user-resume-preview',
+    templateUrl: './user-resume-preview.component.html',
+    styleUrls: ['./user-resume-preview.component.scss'],
+    standalone: false
 })
 export class UserResumePreviewComponent implements OnInit, OnDestroy {
   userResume: IUserResume;

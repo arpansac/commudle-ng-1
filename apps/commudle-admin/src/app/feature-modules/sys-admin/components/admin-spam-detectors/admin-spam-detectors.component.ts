@@ -6,9 +6,10 @@ import { ISpamDetector } from '@commudle/shared-models';
 import moment from 'moment';
 
 @Component({
-  selector: 'commudle-admin-spam-detectors',
-  templateUrl: './admin-spam-detectors.component.html',
-  styleUrls: ['./admin-spam-detectors.component.scss'],
+    selector: 'commudle-admin-spam-detectors',
+    templateUrl: './admin-spam-detectors.component.html',
+    styleUrls: ['./admin-spam-detectors.component.scss'],
+    standalone: false
 })
 export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   spamDetectors: ISpamDetector[] = [];

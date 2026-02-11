@@ -5,9 +5,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-recommended-labs',
-  templateUrl: './recommended-labs.component.html',
-  styleUrls: ['./recommended-labs.component.scss'],
+    selector: 'app-recommended-labs',
+    templateUrl: './recommended-labs.component.html',
+    styleUrls: ['./recommended-labs.component.scss'],
+    standalone: false
 })
 export class RecommendedLabsComponent implements OnInit, OnDestroy {
   recommendedLabs: ILab[] = [];

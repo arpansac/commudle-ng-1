@@ -5,9 +5,10 @@ import { PollResultComponent } from 'apps/shared-components/poll-result/poll-res
 
 
 @Component({
-  selector: 'app-poll-list-item',
-  templateUrl: './poll-list-item.component.html',
-  styleUrls: ['./poll-list-item.component.scss']
+    selector: 'app-poll-list-item',
+    templateUrl: './poll-list-item.component.html',
+    styleUrls: ['./poll-list-item.component.scss'],
+    standalone: false
 })
 export class PollListItemComponent implements OnInit {
   EPollStatuses = EPollStatuses;

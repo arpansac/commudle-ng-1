@@ -8,9 +8,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss'],
+    selector: 'app-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
+    standalone: false
 })
 export class AboutComponent implements OnInit, OnDestroy {
   ICmsAbout: ICMSAbout;

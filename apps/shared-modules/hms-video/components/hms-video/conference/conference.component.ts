@@ -14,16 +14,18 @@ import {
   selectPeers,
   selectRoleChangeRequest,
 } from '@100mslive/hms-video-store';
-import { HMSVirtualBackgroundPlugin } from '@100mslive/hms-virtual-background';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -45,9 +47,10 @@ import { combineLatest, Subscription } from 'rxjs';
 import { ConferenceSettingsComponent } from './conference-settings/conference-settings.component';
 
 @Component({
-  selector: 'app-conference',
-  templateUrl: './conference.component.html',
-  styleUrls: ['./conference.component.scss'],
+    selector: 'app-conference',
+    templateUrl: './conference.component.html',
+    styleUrls: ['./conference.component.scss'],
+    standalone: false
 })
 export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() serverClient: IHmsClient;
@@ -95,6 +98,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     private embeddedVideoStreamsService: EmbeddedVideoStreamsService,
     private hmsLiveChannel: HmsLiveChannel,
     private localMediaService: LocalMediaService,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit(): void {
@@ -384,7 +388,13 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  toggleBackgroundBlur() {
+  async toggleBackgroundBlur() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const { HMSVirtualBackgroundPlugin } = await import('@100mslive/hms-virtual-background');
+
     const virtualBackground = new HMSVirtualBackgroundPlugin('blur');
     const pluginSupport = hmsActions.validateVideoPluginSupport(virtualBackground);
     if (pluginSupport.isSupported) {

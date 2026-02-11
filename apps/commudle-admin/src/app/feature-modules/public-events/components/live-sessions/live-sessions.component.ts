@@ -6,9 +6,10 @@ import { TrackSlotsService } from 'apps/commudle-admin/src/app/services/track_sl
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-live-sessions',
-  templateUrl: './live-sessions.component.html',
-  styleUrls: ['./live-sessions.component.scss']
+    selector: 'app-live-sessions',
+    templateUrl: './live-sessions.component.html',
+    styleUrls: ['./live-sessions.component.scss'],
+    standalone: false
 })
 export class LiveSessionsComponent implements OnInit {
   moment = moment;

@@ -18,6 +18,7 @@ import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-g
 import { HackathonResponseGroupService } from 'apps/commudle-admin/src/app/services/hackathon-response-group.service';
 
 @Component({
+  standalone: false,
   selector: 'commudle-public-hackathon-form-confirmation',
   templateUrl: './public-hackathon-form-confirmation.component.html',
   styleUrl: './public-hackathon-form-confirmation.component.scss',

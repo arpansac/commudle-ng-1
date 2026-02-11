@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import * as actionCable from 'actioncable';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -16,7 +15,6 @@ export class FlagChannel {
     ERROR: 'error'
   };
 
-  actionCable = actionCable;
   private cableConnection;
 
   private subscriptions = {};

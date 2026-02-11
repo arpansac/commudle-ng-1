@@ -24,9 +24,10 @@ import * as _ from 'lodash';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-qna',
-  templateUrl: './qna.component.html',
-  styleUrls: ['./qna.component.scss'],
+    selector: 'app-qna',
+    templateUrl: './qna.component.html',
+    styleUrls: ['./qna.component.scss'],
+    standalone: false
 })
 export class QnaComponent implements OnInit, OnDestroy, AfterContentChecked {
   @Input() discussion: IDiscussion;

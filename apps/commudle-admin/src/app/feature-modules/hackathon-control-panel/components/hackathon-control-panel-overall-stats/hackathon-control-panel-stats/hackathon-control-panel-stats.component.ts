@@ -7,9 +7,10 @@ import Chart from 'chart.js';
 declare let google: any;
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-stats',
-  templateUrl: './hackathon-control-panel-stats.component.html',
-  styleUrls: ['./hackathon-control-panel-stats.component.scss'],
+    selector: 'commudle-hackathon-control-panel-stats',
+    templateUrl: './hackathon-control-panel-stats.component.html',
+    styleUrls: ['./hackathon-control-panel-stats.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelStatsComponent implements OnInit {
   private hackathonId: string;

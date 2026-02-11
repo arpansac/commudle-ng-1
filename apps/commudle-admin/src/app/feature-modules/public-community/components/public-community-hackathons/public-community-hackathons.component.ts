@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-  selector: 'commudle-public-community-hackathons',
-  templateUrl: './public-community-hackathons.component.html',
-  styleUrls: ['./public-community-hackathons.component.scss'],
+    selector: 'commudle-public-community-hackathons',
+    templateUrl: './public-community-hackathons.component.html',
+    styleUrls: ['./public-community-hackathons.component.scss'],
+    standalone: false
 })
 export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   EDbModels = EDbModels;

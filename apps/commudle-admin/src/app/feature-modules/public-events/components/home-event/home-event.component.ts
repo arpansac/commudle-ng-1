@@ -18,9 +18,10 @@ import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortaweso
 import { IUser } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-home-event',
-  templateUrl: './home-event.component.html',
-  styleUrls: ['./home-event.component.scss'],
+    selector: 'app-home-event',
+    templateUrl: './home-event.component.html',
+    styleUrls: ['./home-event.component.scss'],
+    standalone: false
 })
 export class HomeEventComponent implements OnInit, OnDestroy {
   moment = moment;

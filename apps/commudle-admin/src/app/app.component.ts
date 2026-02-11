@@ -16,9 +16,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { ProfileStatusBarService } from './services/profile-status-bar.service';
 @Component({
-  selector: 'commudle-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'commudle-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
   sideBarState: NbSidebarState = 'collapsed';
@@ -126,6 +127,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   themeCheck() {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.darkModeService.isDarkMode$.pipe(takeUntil(this.destroy$)).subscribe((isDarkMode) => {
       this.isDarkMode = isDarkMode;
       document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');

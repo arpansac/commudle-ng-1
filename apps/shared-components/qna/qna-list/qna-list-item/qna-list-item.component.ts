@@ -7,9 +7,10 @@ import { IUserMessage } from 'apps/shared-models/user_message.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-qna-list-item',
-  templateUrl: './qna-list-item.component.html',
-  styleUrls: ['./qna-list-item.component.scss'],
+    selector: 'app-qna-list-item',
+    templateUrl: './qna-list-item.component.html',
+    styleUrls: ['./qna-list-item.component.scss'],
+    standalone: false
 })
 export class QnaListItemComponent implements OnInit {
   @Input() canReply: boolean;

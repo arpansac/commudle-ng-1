@@ -6,9 +6,10 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-attended-members-card',
-  templateUrl: './attended-members-card.component.html',
-  styleUrls: ['./attended-members-card.component.scss'],
+    selector: 'app-attended-members-card',
+    templateUrl: './attended-members-card.component.html',
+    styleUrls: ['./attended-members-card.component.scss'],
+    standalone: false
 })
 export class AttendedMembersCardComponent implements OnInit {
   @Input() user: IUser;

@@ -11,9 +11,10 @@ import { ResponsiveService } from 'apps/shared-services/responsive.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-features',
-  templateUrl: './features.component.html',
-  styleUrls: ['./features.component.scss'],
+    selector: 'commudle-features',
+    templateUrl: './features.component.html',
+    styleUrls: ['./features.component.scss'],
+    standalone: false
 })
 export class FeaturesComponent implements OnInit, OnDestroy {
   @Input() categoryName = 'all';

@@ -5,9 +5,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-basic-user-profile',
-  templateUrl: './basic-user-profile.component.html',
-  styleUrls: ['./basic-user-profile.component.scss'],
+    selector: 'app-basic-user-profile',
+    templateUrl: './basic-user-profile.component.html',
+    styleUrls: ['./basic-user-profile.component.scss'],
+    standalone: false
 })
 export class BasicUserProfileComponent implements OnInit, OnDestroy {
   @Input() pagePadding = true;

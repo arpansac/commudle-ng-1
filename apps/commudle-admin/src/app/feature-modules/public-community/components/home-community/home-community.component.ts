@@ -23,9 +23,10 @@ interface CustomMenuItem {
   slug: string;
 }
 @Component({
-  selector: 'app-home-community',
-  templateUrl: './home-community.component.html',
-  styleUrls: ['./home-community.component.scss'],
+    selector: 'app-home-community',
+    templateUrl: './home-community.component.html',
+    styleUrls: ['./home-community.component.scss'],
+    standalone: false
 })
 export class HomeCommunityComponent implements OnInit, OnDestroy {
   community: ICommunity;

@@ -34,7 +34,10 @@ experiences of Community Organizers.
 ## Build for production
 
 - Run `npx nx reset` to clear cache.
-- Run `npx nx run prerender:release` to build the project. The build artifacts will be stored in the `prod-server.zip` file.
+- Run `npx nx run commudle-admin:release` (or `npm run build:ssr`) to build the SSR deploy artifact.
+  - Output: `prod-server.zip`
+  - Contains: `commudle-admin/browser` (static assets) + `commudle-admin/server` (SSR Node server)
+  - Deployment: upload `prod-server.zip` to the Elastic Beanstalk environment.
 
 ## Design Framework / UI Kit
 

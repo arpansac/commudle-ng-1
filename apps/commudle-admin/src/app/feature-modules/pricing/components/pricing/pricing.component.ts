@@ -12,9 +12,10 @@ import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.
 import { CmsService } from 'apps/shared-services/cms.service';
 import { Subject, takeUntil } from 'rxjs';
 @Component({
-  selector: 'commudle-pricing',
-  templateUrl: './pricing.component.html',
-  styleUrls: ['./pricing.component.scss'],
+    selector: 'commudle-pricing',
+    templateUrl: './pricing.component.html',
+    styleUrls: ['./pricing.component.scss'],
+    standalone: false
 })
 export class PricingComponent implements OnInit, OnDestroy {
   @ViewChild('loadingTemplate') loadingTemplate: TemplateRef<any>;

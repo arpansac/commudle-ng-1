@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as actionCable from 'actioncable';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,7 +12,6 @@ export class NotificationChannel {
     STATUS_UPDATE: 'status_update',
   };
 
-  actionCable = actionCable;
   private cableConnection;
   private subscription;
 

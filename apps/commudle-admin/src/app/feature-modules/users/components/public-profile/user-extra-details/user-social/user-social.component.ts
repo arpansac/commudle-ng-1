@@ -16,9 +16,10 @@ import { debounceTime } from 'rxjs/operators';
 import { faFileText } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-user-social',
-  templateUrl: './user-social.component.html',
-  styleUrls: ['./user-social.component.scss'],
+    selector: 'app-user-social',
+    templateUrl: './user-social.component.html',
+    styleUrls: ['./user-social.component.scss'],
+    standalone: false
 })
 export class UserSocialComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

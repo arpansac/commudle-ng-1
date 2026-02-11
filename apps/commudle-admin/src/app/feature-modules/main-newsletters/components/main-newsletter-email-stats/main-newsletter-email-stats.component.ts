@@ -3,9 +3,10 @@ import { IEmailStatsOverview } from 'apps/shared-models/email-stats-overview.mod
 import { MainNewslettersService } from '../../services/main-newsletters.service';
 
 @Component({
-  selector: 'app-main-newsletter-email-stats',
-  templateUrl: './main-newsletter-email-stats.component.html',
-  styleUrls: ['./main-newsletter-email-stats.component.scss']
+    selector: 'app-main-newsletter-email-stats',
+    templateUrl: './main-newsletter-email-stats.component.html',
+    styleUrls: ['./main-newsletter-email-stats.component.scss'],
+    standalone: false
 })
 export class MainNewsletterEmailStatsComponent implements OnInit {
   @Input() mainNewsletterId: number;

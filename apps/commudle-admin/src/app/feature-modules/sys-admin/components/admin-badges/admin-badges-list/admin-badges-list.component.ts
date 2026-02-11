@@ -6,9 +6,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-badges-list',
-  templateUrl: './admin-badges-list.component.html',
-  styleUrls: ['./admin-badges-list.component.scss'],
+    selector: 'app-admin-badges-list',
+    templateUrl: './admin-badges-list.component.html',
+    styleUrls: ['./admin-badges-list.component.scss'],
+    standalone: false
 })
 export class AdminBadgesListComponent implements OnInit, OnDestroy {
   currentBadgeId;

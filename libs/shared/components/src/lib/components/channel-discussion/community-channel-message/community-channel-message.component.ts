@@ -21,9 +21,10 @@ import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { UserMessageReceiptHandlerService } from 'libs/shared/components/src/lib/services/user-message-receipt-handler.service';
 
 @Component({
-  selector: 'commudle-community-channel-message',
-  templateUrl: './community-channel-message.component.html',
-  styleUrls: ['./community-channel-message.component.scss'],
+    selector: 'commudle-community-channel-message',
+    templateUrl: './community-channel-message.component.html',
+    styleUrls: ['./community-channel-message.component.scss'],
+    standalone: false
 })
 export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   @Input() message!: IUserMessage;

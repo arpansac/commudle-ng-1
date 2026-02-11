@@ -4,9 +4,10 @@ import { SysAdminFeaturedItemsService } from 'apps/commudle-admin/src/app/featur
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'commudle-delete-featured-item',
-  templateUrl: './delete-featured-item.component.html',
-  styleUrls: ['./delete-featured-item.component.scss'],
+    selector: 'commudle-delete-featured-item',
+    templateUrl: './delete-featured-item.component.html',
+    styleUrls: ['./delete-featured-item.component.scss'],
+    standalone: false
 })
 export class DeleteFeaturedItemComponent implements OnInit {
   @Input() featuredItemId: number;

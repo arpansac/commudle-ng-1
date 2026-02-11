@@ -16,9 +16,10 @@ import * as confetti from 'canvas-confetti';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-  selector: 'app-stepper',
-  templateUrl: './stepper.component.html',
-  styleUrls: ['./stepper.component.scss'],
+    selector: 'app-stepper',
+    templateUrl: './stepper.component.html',
+    styleUrls: ['./stepper.component.scss'],
+    standalone: false
 })
 export class StepperComponent implements OnInit, OnDestroy {
   tagsDialog: string[] = [];

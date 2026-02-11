@@ -8,9 +8,10 @@ import { IUser } from '@commudle/shared-models';
 import { AuthService, ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-basic-info',
-  templateUrl: './basic-info.component.html',
-  styleUrls: ['./basic-info.component.scss'],
+    selector: 'commudle-basic-info',
+    templateUrl: './basic-info.component.html',
+    styleUrls: ['./basic-info.component.scss'],
+    standalone: false
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
   @ViewChild('autocompleteInput', { static: true })

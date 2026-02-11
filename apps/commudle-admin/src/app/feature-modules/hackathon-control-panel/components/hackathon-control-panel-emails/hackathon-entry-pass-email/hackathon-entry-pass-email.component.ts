@@ -9,6 +9,7 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 
 @Component({
   selector: 'commudle-hackathon-entry-pass-email',
+  standalone: false,
   templateUrl: './hackathon-entry-pass-email.component.html',
   styleUrls: ['./hackathon-entry-pass-email.component.scss'],
 })

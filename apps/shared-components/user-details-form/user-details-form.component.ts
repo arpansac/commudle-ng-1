@@ -8,9 +8,10 @@ import { AuthService, ToastrService } from '@commudle/shared-services';
 import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 @Component({
-  selector: 'commudle-user-details-form',
-  templateUrl: './user-details-form.component.html',
-  styleUrls: ['./user-details-form.component.scss'],
+    selector: 'commudle-user-details-form',
+    templateUrl: './user-details-form.component.html',
+    styleUrls: ['./user-details-form.component.scss'],
+    standalone: false
 })
 export class UserDetailsFormComponent implements OnInit, OnDestroy {
   @Input() userFormDetails;

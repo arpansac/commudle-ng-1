@@ -19,9 +19,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-role-confirmation',
-  templateUrl: './user-role-confirmation.component.html',
-  styleUrls: ['./user-role-confirmation.component.scss'],
+    selector: 'app-user-role-confirmation',
+    templateUrl: './user-role-confirmation.component.html',
+    styleUrls: ['./user-role-confirmation.component.scss'],
+    standalone: false
 })
 export class UserRoleConfirmationComponent implements OnInit, OnDestroy {
   userRolesUser: IUserRolesUser;

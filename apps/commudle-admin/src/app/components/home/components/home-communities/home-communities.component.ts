@@ -11,9 +11,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-home-communities',
-  templateUrl: './home-communities.component.html',
-  styleUrls: ['./home-communities.component.scss'],
+    selector: 'app-home-communities',
+    templateUrl: './home-communities.component.html',
+    styleUrls: ['./home-communities.component.scss'],
+    standalone: false
 })
 export class HomeCommunitiesComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];

@@ -7,9 +7,10 @@ import { ICommunity } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-community-stats',
-  templateUrl: './community-stats.component.html',
-  styleUrls: ['./community-stats.component.scss'],
+    selector: 'app-community-stats',
+    templateUrl: './community-stats.component.html',
+    styleUrls: ['./community-stats.component.scss'],
+    standalone: false
 })
 export class CommunityStatsComponent implements OnInit, OnDestroy {
   emails;

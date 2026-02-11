@@ -7,9 +7,10 @@ import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-lab-discussion-message',
-  templateUrl: './lab-discussion-message.component.html',
-  styleUrls: ['./lab-discussion-message.component.scss'],
+    selector: 'app-lab-discussion-message',
+    templateUrl: './lab-discussion-message.component.html',
+    styleUrls: ['./lab-discussion-message.component.scss'],
+    standalone: false
 })
 export class LabDiscussionMessageComponent implements OnInit {
   @Input() message: IUserMessage;

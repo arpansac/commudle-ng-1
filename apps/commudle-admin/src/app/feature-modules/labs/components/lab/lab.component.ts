@@ -26,9 +26,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-lab',
-  templateUrl: './lab.component.html',
-  styleUrls: ['./lab.component.scss'],
+    selector: 'app-lab',
+    templateUrl: './lab.component.html',
+    styleUrls: ['./lab.component.scss'],
+    standalone: false
 })
 export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   public src;

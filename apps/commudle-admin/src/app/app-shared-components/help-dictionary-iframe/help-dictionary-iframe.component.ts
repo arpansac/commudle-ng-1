@@ -5,20 +5,21 @@ import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.s
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-help-dictionary-iframe',
-  templateUrl: './help-dictionary-iframe.component.html',
-  styleUrls: ['./help-dictionary-iframe.component.scss'],
+    selector: 'commudle-help-dictionary-iframe',
+    templateUrl: './help-dictionary-iframe.component.html',
+    styleUrls: ['./help-dictionary-iframe.component.scss'],
+    standalone: false
 })
 export class HelpDictionaryIframeComponent implements OnInit, OnDestroy {
   @Input() eventName: string;
   helpDictionaryUrl: string;
   faXmark = faXmark;
   faBars = faBars;
-  private subscription: Subscription;
+  private subscription?: Subscription;
   constructor(private helpDictionaryService: HelpDictionaryService, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    this.helpDictionaryService.helpDictionary$.subscribe((data) => {
+    this.subscription = this.helpDictionaryService.helpDictionary$.subscribe((data) => {
       if (data) {
         this.helpDictionaryUrl = data;
       }
@@ -26,7 +27,7 @@ export class HelpDictionaryIframeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   closeSidebar() {

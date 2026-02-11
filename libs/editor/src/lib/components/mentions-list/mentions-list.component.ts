@@ -3,9 +3,10 @@ import { MentionResult } from '../../models/mentions.model';
 import { AngularNodeViewComponent } from '../node-view.component';
 
 @Component({
-  selector: 'commudle-mentions-list',
-  templateUrl: './mentions-list.component.html',
-  styleUrls: ['./mentions-list.component.scss'],
+    selector: 'commudle-mentions-list',
+    templateUrl: './mentions-list.component.html',
+    styleUrls: ['./mentions-list.component.scss'],
+    standalone: false
 })
 export class MentionsListComponent extends AngularNodeViewComponent {
   @Input() props!: Record<string, any>;

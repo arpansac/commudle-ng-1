@@ -5,9 +5,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-communities-featured',
-  templateUrl: './communities-featured.component.html',
-  styleUrls: ['./communities-featured.component.scss'],
+    selector: 'commudle-communities-featured',
+    templateUrl: './communities-featured.component.html',
+    styleUrls: ['./communities-featured.component.scss'],
+    standalone: false
 })
 export class CommunitiesFeaturedComponent implements OnInit, OnDestroy {
   featuredItems: IFeaturedItems[] = [];

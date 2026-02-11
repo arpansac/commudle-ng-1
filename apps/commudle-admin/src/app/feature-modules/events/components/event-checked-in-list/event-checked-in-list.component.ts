@@ -6,9 +6,10 @@ import { EventsService } from 'apps/commudle-admin/src/app/services/events.servi
 import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'commudle-event-checked-in-list',
-  templateUrl: './event-checked-in-list.component.html',
-  styleUrls: ['./event-checked-in-list.component.scss'],
+    selector: 'commudle-event-checked-in-list',
+    templateUrl: './event-checked-in-list.component.html',
+    styleUrls: ['./event-checked-in-list.component.scss'],
+    standalone: false
 })
 export class EventCheckedInListComponent implements OnInit, OnDestroy {
   event: IEvent;

@@ -6,9 +6,10 @@ import * as moment from 'moment';
 import { MainNewslettersService } from '../../services/main-newsletters.service';
 
 @Component({
-  selector: 'app-main-newsletter-scheduler',
-  templateUrl: './main-newsletter-scheduler.component.html',
-  styleUrls: ['./main-newsletter-scheduler.component.scss'],
+    selector: 'app-main-newsletter-scheduler',
+    templateUrl: './main-newsletter-scheduler.component.html',
+    styleUrls: ['./main-newsletter-scheduler.component.scss'],
+    standalone: false
 })
 export class MainNewsletterSchedulerComponent implements OnInit {
   @Input() newsletter: IMainNewsletter;

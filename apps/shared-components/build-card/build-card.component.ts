@@ -4,9 +4,10 @@ import * as moment from 'moment';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-build-card',
-  templateUrl: './build-card.component.html',
-  styleUrls: ['./build-card.component.scss'],
+    selector: 'commudle-build-card',
+    templateUrl: './build-card.component.html',
+    styleUrls: ['./build-card.component.scss'],
+    standalone: false
 })
 export class BuildCardComponent {
   @Input() communityBuild: ICommunityBuild;

@@ -27,9 +27,10 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-lab-discussion',
-  templateUrl: './lab-discussion.component.html',
-  styleUrls: ['./lab-discussion.component.scss'],
+    selector: 'app-lab-discussion',
+    templateUrl: './lab-discussion.component.html',
+    styleUrls: ['./lab-discussion.component.scss'],
+    standalone: false
 })
 export class LabDiscussionComponent implements OnInit, OnDestroy, OnChanges {
   @Input() discussion: IDiscussion;

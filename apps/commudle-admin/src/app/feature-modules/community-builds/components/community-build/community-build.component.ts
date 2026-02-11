@@ -8,9 +8,10 @@ import * as moment from 'moment';
 import { ECommunityBuildPublishStatus } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-community-build',
-  templateUrl: './community-build.component.html',
-  styleUrls: ['./community-build.component.scss'],
+    selector: 'app-community-build',
+    templateUrl: './community-build.component.html',
+    styleUrls: ['./community-build.component.scss'],
+    standalone: false
 })
 export class CommunityBuildComponent implements OnInit, OnDestroy {
   communityBuild: ICommunityBuild;

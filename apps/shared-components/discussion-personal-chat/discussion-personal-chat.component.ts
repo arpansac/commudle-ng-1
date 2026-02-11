@@ -16,9 +16,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-discussion-personal-chat',
-  templateUrl: './discussion-personal-chat.component.html',
-  styleUrls: ['./discussion-personal-chat.component.scss'],
+    selector: 'app-discussion-personal-chat',
+    templateUrl: './discussion-personal-chat.component.html',
+    styleUrls: ['./discussion-personal-chat.component.scss'],
+    standalone: false
 })
 export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
   @Input() discussion: IDiscussion;

@@ -10,9 +10,10 @@ import {
 import { RoundService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-public-hackathon-registration',
-  templateUrl: './public-hackathon-registration.component.html',
-  styleUrls: ['./public-hackathon-registration.component.scss'],
+    selector: 'commudle-public-hackathon-registration',
+    templateUrl: './public-hackathon-registration.component.html',
+    styleUrls: ['./public-hackathon-registration.component.scss'],
+    standalone: false
 })
 export class PublicHackathonRegistrationComponent implements OnInit {
   @Input() hrgId: number; // ID of the hackathon response group

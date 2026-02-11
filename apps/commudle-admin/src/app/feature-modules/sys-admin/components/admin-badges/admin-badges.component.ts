@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-admin-badges',
-  templateUrl: './admin-badges.component.html',
-  styleUrls: ['./admin-badges.component.scss'],
+    selector: 'app-admin-badges',
+    templateUrl: './admin-badges.component.html',
+    styleUrls: ['./admin-badges.component.scss'],
+    standalone: false
 })
 export class AdminBadgesComponent implements OnInit {
   constructor() {}

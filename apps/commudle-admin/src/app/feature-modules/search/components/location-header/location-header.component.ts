@@ -3,9 +3,10 @@ import { IListingPageHeader } from 'apps/shared-models/listing-page-header.model
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-location-header',
-  templateUrl: './location-header.component.html',
-  styleUrls: ['./location-header.component.scss'],
+    selector: 'commudle-location-header',
+    templateUrl: './location-header.component.html',
+    styleUrls: ['./location-header.component.scss'],
+    standalone: false
 })
 export class LocationHeaderComponent implements OnInit {
   @Input() locationPageHeader: IListingPageHeader;

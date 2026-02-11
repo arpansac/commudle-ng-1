@@ -11,9 +11,10 @@ import { faLightbulb, faCalendar, faUsers, faBookOpen, faIdBadge } from '@fortaw
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
-  selector: 'app-user-contributions',
-  templateUrl: './user-contributions.component.html',
-  styleUrls: ['./user-contributions.component.scss'],
+    selector: 'app-user-contributions',
+    templateUrl: './user-contributions.component.html',
+    styleUrls: ['./user-contributions.component.scss'],
+    standalone: false
 })
 export class UserContributionsComponent implements OnChanges, OnDestroy {
   @Input() user: IUser;

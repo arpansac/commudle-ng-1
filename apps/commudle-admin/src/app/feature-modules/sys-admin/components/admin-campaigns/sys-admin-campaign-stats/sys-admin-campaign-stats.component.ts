@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-sys-admin-campaign-stats',
-  templateUrl: './sys-admin-campaign-stats.component.html',
-  styleUrls: ['./sys-admin-campaign-stats.component.scss'],
+    selector: 'commudle-sys-admin-campaign-stats',
+    templateUrl: './sys-admin-campaign-stats.component.html',
+    styleUrls: ['./sys-admin-campaign-stats.component.scss'],
+    standalone: false
 })
 export class SysAdminCampaignStatsComponent implements OnInit, OnDestroy {
   campaignId: number;

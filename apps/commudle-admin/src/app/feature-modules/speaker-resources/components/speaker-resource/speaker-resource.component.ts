@@ -11,9 +11,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 import { EAttachmentType } from '@commudle/shared-models';
 @Component({
-  selector: 'app-speaker-resource',
-  templateUrl: './speaker-resource.component.html',
-  styleUrls: ['./speaker-resource.component.scss'],
+    selector: 'app-speaker-resource',
+    templateUrl: './speaker-resource.component.html',
+    styleUrls: ['./speaker-resource.component.scss'],
+    standalone: false
 })
 export class SpeakerResourceComponent implements OnInit, OnDestroy {
   speakerResource: ISpeakerResource;

@@ -9,9 +9,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-invite-form',
-  templateUrl: './invite-form.component.html',
-  styleUrls: ['./invite-form.component.scss'],
+    selector: 'app-invite-form',
+    templateUrl: './invite-form.component.html',
+    styleUrls: ['./invite-form.component.scss'],
+    standalone: false
 })
 export class InviteFormComponent implements OnInit, OnDestroy {
   @Input() channelId: number;

@@ -12,9 +12,10 @@ import { Subscription } from 'rxjs';
 import { EDbModels, EDiscussionType } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-email-join',
-  templateUrl: './email-join.component.html',
-  styleUrls: ['./email-join.component.scss'],
+    selector: 'app-email-join',
+    templateUrl: './email-join.component.html',
+    styleUrls: ['./email-join.component.scss'],
+    standalone: false
 })
 export class EmailJoinComponent implements OnInit {
   verified = false;

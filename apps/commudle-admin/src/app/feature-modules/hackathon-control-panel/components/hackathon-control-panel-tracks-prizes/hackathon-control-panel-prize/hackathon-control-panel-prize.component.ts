@@ -11,9 +11,10 @@ import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-prize',
-  templateUrl: './hackathon-control-panel-prize.component.html',
-  styleUrls: ['./hackathon-control-panel-prize.component.scss'],
+    selector: 'commudle-hackathon-control-panel-prize',
+    templateUrl: './hackathon-control-panel-prize.component.html',
+    styleUrls: ['./hackathon-control-panel-prize.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelPrizeComponent implements OnInit, OnDestroy {
   prizeForm: FormGroup;

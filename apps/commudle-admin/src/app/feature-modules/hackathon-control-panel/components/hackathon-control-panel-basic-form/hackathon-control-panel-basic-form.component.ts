@@ -10,9 +10,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-basic-form',
-  templateUrl: './hackathon-control-panel-basic-form.component.html',
-  styleUrls: ['./hackathon-control-panel-basic-form.component.scss'],
+    selector: 'commudle-hackathon-control-panel-basic-form',
+    templateUrl: './hackathon-control-panel-basic-form.component.html',
+    styleUrls: ['./hackathon-control-panel-basic-form.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelBasicFormComponent implements OnInit, OnDestroy {
   @Input() saveButtonText = 'Save';

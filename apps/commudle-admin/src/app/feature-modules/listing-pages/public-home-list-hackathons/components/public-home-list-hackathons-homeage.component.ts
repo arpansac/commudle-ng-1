@@ -6,9 +6,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
-  selector: 'commudle-public-home-list-hackathons-homeage',
-  templateUrl: './public-home-list-hackathons-homeage.component.html',
-  styleUrl: './public-home-list-hackathons-homeage.component.scss',
+    selector: 'commudle-public-home-list-hackathons-homeage',
+    templateUrl: './public-home-list-hackathons-homeage.component.html',
+    styleUrl: './public-home-list-hackathons-homeage.component.scss',
+    standalone: false
 })
 export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestroy {
   showSpinnerUpcoming = true;

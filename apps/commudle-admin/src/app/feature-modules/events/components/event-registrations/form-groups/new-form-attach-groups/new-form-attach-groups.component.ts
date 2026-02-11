@@ -14,9 +14,10 @@ import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_form
 import { NewDataFormComponent } from 'apps/shared-components/new-data-form/new-data-form.component';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'commudle-new-form-attach-groups',
-  templateUrl: './new-form-attach-groups.component.html',
-  styleUrls: ['./new-form-attach-groups.component.scss'],
+    selector: 'commudle-new-form-attach-groups',
+    templateUrl: './new-form-attach-groups.component.html',
+    styleUrls: ['./new-form-attach-groups.component.scss'],
+    standalone: false
 })
 export class NewFormAttachGroupsComponent implements OnInit {
   @Input() registrationTypes: IRegistrationType[];

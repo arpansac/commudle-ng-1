@@ -12,9 +12,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-blog',
-  templateUrl: './blog.component.html',
-  styleUrls: ['./blog.component.scss'],
+    selector: 'app-blog',
+    templateUrl: './blog.component.html',
+    styleUrls: ['./blog.component.scss'],
+    standalone: false
 })
 export class BlogComponent implements OnInit, OnDestroy {
   @Input() activateMiniProfileDirective = true;

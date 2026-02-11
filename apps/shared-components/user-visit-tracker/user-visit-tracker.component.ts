@@ -7,9 +7,10 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-visit-tracker',
-  templateUrl: './user-visit-tracker.component.html',
-  styleUrls: ['./user-visit-tracker.component.scss'],
+    selector: 'app-user-visit-tracker',
+    templateUrl: './user-visit-tracker.component.html',
+    styleUrls: ['./user-visit-tracker.component.scss'],
+    standalone: false
 })
 export class UserVisitTrackerComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;

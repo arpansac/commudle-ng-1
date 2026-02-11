@@ -3,9 +3,10 @@ import {ILab} from 'apps/shared-models/lab.model';
 import {HomeService} from 'apps/commudle-admin/src/app/services/home.service';
 
 @Component({
-  selector: 'app-home-labs',
-  templateUrl: './home-labs.component.html',
-  styleUrls: ['./home-labs.component.scss']
+    selector: 'app-home-labs',
+    templateUrl: './home-labs.component.html',
+    styleUrls: ['./home-labs.component.scss'],
+    standalone: false
 })
 export class HomeLabsComponent implements OnInit {
 

@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-employers-list',
-  templateUrl: './employers-list.component.html',
-  styleUrls: ['./employers-list.component.scss'],
+    selector: 'app-employers-list',
+    templateUrl: './employers-list.component.html',
+    styleUrls: ['./employers-list.component.scss'],
+    standalone: false
 })
 export class EmployersListComponent implements OnInit, OnDestroy {
   page_info: IPageInfo;

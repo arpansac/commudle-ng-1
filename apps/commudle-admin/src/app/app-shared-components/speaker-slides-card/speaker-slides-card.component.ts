@@ -4,9 +4,10 @@ import { EAttachmentType, ISpeakerResource } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-speaker-slides-card',
-  templateUrl: './speaker-slides-card.component.html',
-  styleUrls: ['./speaker-slides-card.component.scss'],
+    selector: 'commudle-speaker-slides-card',
+    templateUrl: './speaker-slides-card.component.html',
+    styleUrls: ['./speaker-slides-card.component.scss'],
+    standalone: false
 })
 export class SpeakerSlidesCardComponent implements OnInit {
   @Input() item: ISpeakerResource;

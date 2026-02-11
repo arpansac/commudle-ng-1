@@ -6,9 +6,10 @@ import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 @Component({
-  selector: 'commudle-hackathon-overall-round-selection-update-email',
-  templateUrl: './hackathon-overall-round-selection-update-email.component.html',
-  styleUrls: ['./hackathon-overall-round-selection-update-email.component.scss'],
+    selector: 'commudle-hackathon-overall-round-selection-update-email',
+    templateUrl: './hackathon-overall-round-selection-update-email.component.html',
+    styleUrls: ['./hackathon-overall-round-selection-update-email.component.scss'],
+    standalone: false
 })
 export class HackathonOverallRoundSelectionUpdateEmailComponent implements OnInit {
   @Input() hackathonId: number | string;

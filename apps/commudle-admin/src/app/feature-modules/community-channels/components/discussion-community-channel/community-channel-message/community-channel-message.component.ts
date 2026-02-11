@@ -29,9 +29,10 @@ import { filter, map } from 'rxjs/operators';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-community-channel-message',
-  templateUrl: './community-channel-message.component.html',
-  styleUrls: ['./community-channel-message.component.scss'],
+    selector: 'app-community-channel-message',
+    templateUrl: './community-channel-message.component.html',
+    styleUrls: ['./community-channel-message.component.scss'],
+    standalone: false
 })
 export class CommunityChannelMessageComponent implements OnInit, OnChanges, OnDestroy {
   EUserRoles = EUserRoles;

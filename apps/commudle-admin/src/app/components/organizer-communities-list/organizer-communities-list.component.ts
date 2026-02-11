@@ -4,9 +4,10 @@ import { ICommunities } from 'apps/shared-models/communities.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 
 @Component({
-  selector: 'app-organizer-communities-list',
-  templateUrl: './organizer-communities-list.component.html',
-  styleUrls: ['./organizer-communities-list.component.scss']
+    selector: 'app-organizer-communities-list',
+    templateUrl: './organizer-communities-list.component.html',
+    styleUrls: ['./organizer-communities-list.component.scss'],
+    standalone: false
 })
 export class OrganizerCommunitiesListComponent implements OnInit {
   organizerCommunities: ICommunity[];

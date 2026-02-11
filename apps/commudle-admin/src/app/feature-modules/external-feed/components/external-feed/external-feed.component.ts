@@ -4,9 +4,10 @@ import { FeedItemService } from 'apps/commudle-admin/src/app/services/feed-items
 import { IFeedItem } from 'apps/shared-models/feed-item.model';
 
 @Component({
-  selector: 'app-external-feed',
-  templateUrl: './external-feed.component.html',
-  styleUrls: ['./external-feed.component.scss']
+    selector: 'app-external-feed',
+    templateUrl: './external-feed.component.html',
+    styleUrls: ['./external-feed.component.scss'],
+    standalone: false
 })
 export class ExternalFeedComponent implements OnInit {
   externalPosts: IFeedItem[] = [];

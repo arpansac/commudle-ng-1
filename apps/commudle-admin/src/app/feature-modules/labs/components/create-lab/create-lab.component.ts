@@ -3,14 +3,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faFlask } from '@fortawesome/free-solid-svg-icons';
 import { environment } from '@commudle/shared-environments';
-import { RecaptchaComponent } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha-2';
 import { LabsService } from 'apps/commudle-admin/src/app/feature-modules/labs/services/labs.service';
 import { SeoService, ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-create-lab',
-  templateUrl: './create-lab.component.html',
-  styleUrls: ['./create-lab.component.scss'],
+    selector: 'commudle-create-lab',
+    templateUrl: './create-lab.component.html',
+    styleUrls: ['./create-lab.component.scss'],
+    standalone: false
 })
 export class CreateLabComponent implements OnInit {
   faFlask = faFlask;

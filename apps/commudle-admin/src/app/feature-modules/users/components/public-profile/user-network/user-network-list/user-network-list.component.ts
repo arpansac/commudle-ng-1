@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-user-network-list',
-  templateUrl: './user-network-list.component.html',
-  styleUrls: ['./user-network-list.component.scss'],
+    selector: 'app-user-network-list',
+    templateUrl: './user-network-list.component.html',
+    styleUrls: ['./user-network-list.component.scss'],
+    standalone: false
 })
 export class UserNetworkListComponent implements OnInit, OnDestroy {
   user: IUser;

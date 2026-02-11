@@ -6,9 +6,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-community-group-about',
-  templateUrl: './community-group-about.component.html',
-  styleUrls: ['./community-group-about.component.scss'],
+    selector: 'app-community-group-about',
+    templateUrl: './community-group-about.component.html',
+    styleUrls: ['./community-group-about.component.scss'],
+    standalone: false
 })
 export class CommunityGroupAboutComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

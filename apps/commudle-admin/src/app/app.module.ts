@@ -1,7 +1,7 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ErrorHandler, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -44,7 +44,7 @@ import {
   NbWindowModule,
 } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { createErrorHandler, TraceService } from '@sentry/angular-ivy';
+import { createErrorHandler, TraceService } from '@sentry/angular';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Angular2SmartTableModule } from 'angular2-smart-table';
 import { FeaturedCommunitiesCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-communities-card/featured-communities-card.component';
@@ -66,7 +66,7 @@ import { PageAdsModule } from 'apps/shared-modules/page-ads/page-ads.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { PrismJsHighlightCodeService } from 'apps/shared-services/prismjs-highlight-code.service';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxStripeModule } from 'ngx-stripe';
 import { AppRoutingModule } from './app-routing.module';
@@ -181,7 +181,6 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
       registrationStrategy: 'registerWhenStable:30000',
     }),
     BrowserAnimationsModule,
-    HttpClientModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
@@ -268,12 +267,10 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
     IsBrowserService,
     PrismJsHighlightCodeService,
     AuthService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initApp,
-      deps: [AppInitService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initApp(inject(AppInitService));
+      return initializerFn();
+    }),
     {
       // TODO move the interceptors to a common barrel file if needed
       // https://angular.io/guide/http#provide-the-interceptor
@@ -317,12 +314,11 @@ export function initApp(appInitService: AppInitService): () => Promise<any> {
       deps: [Router],
     },
     // TODO: there are two providers with same provide key, check if that causes error?
-    {
-      provide: APP_INITIALIZER,
-      useFactory: () => () => {},
-      deps: [TraceService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      inject(TraceService);
+    }),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideClientHydration(withEventReplay()),
   ],
 })
 export class AppModule {}

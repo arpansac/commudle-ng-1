@@ -5,9 +5,10 @@ import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'commudle-public-home-list-events-featured-communities',
-  templateUrl: './public-home-list-events-featured-communities.component.html',
-  styleUrls: ['./public-home-list-events-featured-communities.component.scss'],
+    selector: 'commudle-public-home-list-events-featured-communities',
+    templateUrl: './public-home-list-events-featured-communities.component.html',
+    styleUrls: ['./public-home-list-events-featured-communities.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit, AfterViewInit {
   @Input() showCardsHorizontal = false;

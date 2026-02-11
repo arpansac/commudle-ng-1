@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'app-speaker-card',
-  templateUrl: './speaker-card.component.html',
-  styleUrls: ['./speaker-card.component.scss'],
+    selector: 'app-speaker-card',
+    templateUrl: './speaker-card.component.html',
+    styleUrls: ['./speaker-card.component.scss'],
+    standalone: false
 })
 export class SpeakerCardComponent implements OnInit {
   @Input() speaker: IUser;

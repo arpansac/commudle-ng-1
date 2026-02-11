@@ -7,9 +7,10 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
-  selector: 'commudle-hackathon-round-general-mailer',
-  templateUrl: './hackathon-round-general-mailer.component.html',
-  styleUrls: ['./hackathon-round-general-mailer.component.scss'],
+    selector: 'commudle-hackathon-round-general-mailer',
+    templateUrl: './hackathon-round-general-mailer.component.html',
+    styleUrls: ['./hackathon-round-general-mailer.component.scss'],
+    standalone: false
 })
 export class HackathonRoundGeneralMailerComponent implements OnInit {
   @Input() hackathonId: number | string;

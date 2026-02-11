@@ -6,6 +6,7 @@ import { ToastrService } from '@commudle/shared-services';
 import { IHackathonJudge } from '@commudle/shared-models';
 
 @Component({
+  standalone: false,
   selector: 'commudle-mentor-custom-email-dialog',
   templateUrl: './mentor-custom-email-dialog.component.html',
   styleUrls: ['./mentor-custom-email-dialog.component.scss'],

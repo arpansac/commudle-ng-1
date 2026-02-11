@@ -7,9 +7,10 @@ import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-teammate-invite-confirmation',
-  templateUrl: './teammate-invite-confirmation.component.html',
-  styleUrls: ['./teammate-invite-confirmation.component.scss'],
+    selector: 'app-teammate-invite-confirmation',
+    templateUrl: './teammate-invite-confirmation.component.html',
+    styleUrls: ['./teammate-invite-confirmation.component.scss'],
+    standalone: false
 })
 export class TeammateInviteConfirmationComponent implements OnInit {
   confirmation: boolean;

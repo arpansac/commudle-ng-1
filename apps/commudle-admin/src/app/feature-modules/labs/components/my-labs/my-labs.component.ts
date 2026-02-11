@@ -10,9 +10,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-my-labs',
-  templateUrl: './my-labs.component.html',
-  styleUrls: ['./my-labs.component.scss'],
+    selector: 'app-my-labs',
+    templateUrl: './my-labs.component.html',
+    styleUrls: ['./my-labs.component.scss'],
+    standalone: false
 })
 export class MyLabsComponent implements OnInit, OnDestroy {
   faFlask = faFlask;

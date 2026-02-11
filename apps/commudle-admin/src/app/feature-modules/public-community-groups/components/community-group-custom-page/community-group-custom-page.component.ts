@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community-group-custom-page',
-  templateUrl: './community-group-custom-page.component.html',
-  styleUrls: ['./community-group-custom-page.component.scss'],
+    selector: 'commudle-community-group-custom-page',
+    templateUrl: './community-group-custom-page.component.html',
+    styleUrls: ['./community-group-custom-page.component.scss'],
+    standalone: false
 })
 export class CommunityGroupCustomPageComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

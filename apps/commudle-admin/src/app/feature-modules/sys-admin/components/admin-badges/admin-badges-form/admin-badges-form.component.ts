@@ -8,9 +8,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-badges-form',
-  templateUrl: './admin-badges-form.component.html',
-  styleUrls: ['./admin-badges-form.component.scss'],
+    selector: 'app-admin-badges-form',
+    templateUrl: './admin-badges-form.component.html',
+    styleUrls: ['./admin-badges-form.component.scss'],
+    standalone: false
 })
 export class AdminBadgesFormComponent implements OnInit, OnDestroy {
   badge: IBadge;

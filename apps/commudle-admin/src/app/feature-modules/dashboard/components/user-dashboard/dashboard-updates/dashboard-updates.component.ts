@@ -20,9 +20,10 @@ import { generate } from 'lean-qr';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-dashboard-updates',
-  templateUrl: './dashboard-updates.component.html',
-  styleUrls: ['./dashboard-updates.component.scss'],
+    selector: 'commudle-dashboard-updates',
+    templateUrl: './dashboard-updates.component.html',
+    styleUrls: ['./dashboard-updates.component.scss'],
+    standalone: false
 })
 export class DashboardUpdatesComponent implements OnInit, OnDestroy {
   @ViewChild('postContentBox') postContentBox: TemplateRef<any>;

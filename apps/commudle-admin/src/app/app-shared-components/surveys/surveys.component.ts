@@ -12,9 +12,10 @@ import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-surveys',
-  templateUrl: './surveys.component.html',
-  styleUrls: ['./surveys.component.scss'],
+    selector: 'commudle-surveys',
+    templateUrl: './surveys.component.html',
+    styleUrls: ['./surveys.component.scss'],
+    standalone: false
 })
 export class SurveysComponent implements OnInit, OnDestroy {
   @Input() parentId: number;

@@ -3,9 +3,10 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-community-builds',
-  templateUrl: './community-builds.component.html',
-  styleUrls: ['./community-builds.component.scss'],
+    selector: 'commudle-community-builds',
+    templateUrl: './community-builds.component.html',
+    styleUrls: ['./community-builds.component.scss'],
+    standalone: false
 })
 export class CommunityBuildsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;

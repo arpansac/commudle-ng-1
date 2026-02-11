@@ -36,9 +36,10 @@ import { EventDataFormEntityGroupsStore } from 'apps/commudle-admin/src/app/feat
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 
 @Component({
-  selector: 'app-event-dashboard',
-  templateUrl: './event-dashboard.component.html',
-  styleUrls: ['./event-dashboard.component.scss'],
+    selector: 'app-event-dashboard',
+    templateUrl: './event-dashboard.component.html',
+    styleUrls: ['./event-dashboard.component.scss'],
+    standalone: false
 })
 export class EventDashboardComponent implements OnInit, OnDestroy {
   event: IEvent;

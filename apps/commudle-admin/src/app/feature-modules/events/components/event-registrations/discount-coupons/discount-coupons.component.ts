@@ -19,9 +19,10 @@ import { EPageType, ICustomPage } from 'apps/shared-models/custom-page.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-discount-coupons',
-  templateUrl: './discount-coupons.component.html',
-  styleUrls: ['./discount-coupons.component.scss'],
+    selector: 'commudle-discount-coupons',
+    templateUrl: './discount-coupons.component.html',
+    styleUrls: ['./discount-coupons.component.scss'],
+    standalone: false
 })
 export class DiscountCouponsComponent implements OnInit {
   @Input() event: IEvent;

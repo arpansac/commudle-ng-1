@@ -11,9 +11,10 @@ interface EGroupedCommunityChannels {
 }
 
 @Component({
-  selector: 'commudle-community-channels-dashboard-forum-list',
-  templateUrl: './community-channels-dashboard-forum-list.component.html',
-  styleUrls: ['./community-channels-dashboard-forum-list.component.scss'],
+    selector: 'commudle-community-channels-dashboard-forum-list',
+    templateUrl: './community-channels-dashboard-forum-list.component.html',
+    styleUrls: ['./community-channels-dashboard-forum-list.component.scss'],
+    standalone: false
 })
 export class CommunityChannelsDashboardForumListComponent implements OnInit {
   @Input() parent: ICommunity | ICommunityGroup;

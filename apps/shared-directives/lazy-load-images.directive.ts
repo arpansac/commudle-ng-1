@@ -12,8 +12,9 @@ import {
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 
 @Directive({
-  selector: 'img',
-  providers: [IsBrowserService],
+    selector: 'img',
+    providers: [IsBrowserService],
+    standalone: false
 })
 export class LazyLoadImagesDirective implements AfterContentInit, OnChanges {
   @HostBinding('attr.src') srcAttr;

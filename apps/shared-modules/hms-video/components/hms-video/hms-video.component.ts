@@ -12,9 +12,10 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HmsStageService } from '../../services/hms-stage.service';
 
 @Component({
-  selector: 'app-hms-video',
-  templateUrl: './hms-video.component.html',
-  styleUrls: ['./hms-video.component.scss'],
+    selector: 'app-hms-video',
+    templateUrl: './hms-video.component.html',
+    styleUrls: ['./hms-video.component.scss'],
+    standalone: false
 })
 export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;

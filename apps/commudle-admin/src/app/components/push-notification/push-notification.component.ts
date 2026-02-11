@@ -10,9 +10,10 @@ import { PushNotificationsService } from 'apps/shared-services/push-notification
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-push-notification',
-  templateUrl: './push-notification.component.html',
-  styleUrls: ['./push-notification.component.scss'],
+    selector: 'app-push-notification',
+    templateUrl: './push-notification.component.html',
+    styleUrls: ['./push-notification.component.scss'],
+    standalone: false
 })
 export class PushNotificationComponent implements OnInit, OnDestroy {
   showPopup = false;

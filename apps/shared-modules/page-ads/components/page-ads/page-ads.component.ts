@@ -3,9 +3,10 @@ import { IPageAd } from 'apps/shared-models/page-ad.model';
 import { PageAdsService } from 'apps/shared-modules/page-ads/services/page-ads.service';
 
 @Component({
-  selector: 'app-pa-slots',
-  templateUrl: './page-ads.component.html',
-  styleUrls: ['./page-ads.component.scss'],
+    selector: 'app-pa-slots',
+    templateUrl: './page-ads.component.html',
+    styleUrls: ['./page-ads.component.scss'],
+    standalone: false
 })
 export class PageAdsComponent implements OnInit {
   @Input() showTitle: boolean;

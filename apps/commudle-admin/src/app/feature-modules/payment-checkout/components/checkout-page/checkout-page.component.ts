@@ -36,9 +36,10 @@ import { Subject, finalize, takeUntil } from 'rxjs';
 declare const Razorpay: any;
 
 @Component({
-  selector: 'commudle-checkout-page',
-  templateUrl: './checkout-page.component.html',
-  styleUrls: ['./checkout-page.component.scss'],
+    selector: 'commudle-checkout-page',
+    templateUrl: './checkout-page.component.html',
+    styleUrls: ['./checkout-page.component.scss'],
+    standalone: false
 })
 export class CheckoutPageComponent implements OnInit, OnDestroy {
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog!: TemplateRef<unknown>;

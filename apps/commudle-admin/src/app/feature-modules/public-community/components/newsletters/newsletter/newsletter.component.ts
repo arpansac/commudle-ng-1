@@ -7,9 +7,10 @@ import { SeoService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-  selector: 'commudle-newsletter',
-  templateUrl: './newsletter.component.html',
-  styleUrls: ['./newsletter.component.scss'],
+    selector: 'commudle-newsletter',
+    templateUrl: './newsletter.component.html',
+    styleUrls: ['./newsletter.component.scss'],
+    standalone: false
 })
 export class NewsletterComponent implements OnInit {
   newsletter: INewsletter;

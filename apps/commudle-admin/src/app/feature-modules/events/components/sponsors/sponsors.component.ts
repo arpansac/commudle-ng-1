@@ -21,10 +21,11 @@ import { SeoService, ToastrService } from '@commudle/shared-services';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-sponsors',
-  templateUrl: './sponsors.component.html',
-  styleUrls: ['./sponsors.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'commudle-sponsors',
+    templateUrl: './sponsors.component.html',
+    styleUrls: ['./sponsors.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SponsorsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;

@@ -6,9 +6,10 @@ import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/com
 import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feature-modules/community-channels/services/community-channel-manager.service';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'commudle-archive',
-  templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss'],
+    selector: 'commudle-archive',
+    templateUrl: './archive.component.html',
+    styleUrls: ['./archive.component.scss'],
+    standalone: false
 })
 export class ArchiveComponent {
   @Input() channelId;

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-entity-profile',
-  templateUrl: './entity-profile.component.html',
-  styleUrls: ['./entity-profile.component.scss']
+    selector: 'app-entity-profile',
+    templateUrl: './entity-profile.component.html',
+    styleUrls: ['./entity-profile.component.scss'],
+    standalone: false
 })
 export class EntityProfileComponent implements OnInit {
 

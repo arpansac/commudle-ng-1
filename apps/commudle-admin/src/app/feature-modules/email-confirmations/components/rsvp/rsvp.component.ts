@@ -25,9 +25,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-rsvp',
-  templateUrl: './rsvp.component.html',
-  styleUrls: ['./rsvp.component.scss'],
+    selector: 'app-rsvp',
+    templateUrl: './rsvp.component.html',
+    styleUrls: ['./rsvp.component.scss'],
+    standalone: false
 })
 export class RsvpComponent implements OnInit, OnDestroy {
   token: string;

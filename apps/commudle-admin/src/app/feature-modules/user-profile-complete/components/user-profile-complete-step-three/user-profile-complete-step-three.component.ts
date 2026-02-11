@@ -9,9 +9,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'commudle-user-profile-complete-step-three',
-  templateUrl: './user-profile-complete-step-three.component.html',
-  styleUrls: ['./user-profile-complete-step-three.component.scss'],
+    selector: 'commudle-user-profile-complete-step-three',
+    templateUrl: './user-profile-complete-step-three.component.html',
+    styleUrls: ['./user-profile-complete-step-three.component.scss'],
+    standalone: false
 })
 export class UserProfileCompleteStepThreeComponent implements OnInit, OnDestroy {
   staticAssets = staticAssets;

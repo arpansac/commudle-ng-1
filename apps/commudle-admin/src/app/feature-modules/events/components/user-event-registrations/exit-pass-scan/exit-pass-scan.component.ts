@@ -10,9 +10,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-exit-pass-scan',
-  templateUrl: './exit-pass-scan.component.html',
-  styleUrls: ['./exit-pass-scan.component.scss'],
+    selector: 'app-exit-pass-scan',
+    templateUrl: './exit-pass-scan.component.html',
+    styleUrls: ['./exit-pass-scan.component.scss'],
+    standalone: false
 })
 export class ExitPassScanComponent implements OnInit, OnDestroy {
   event: IEvent;

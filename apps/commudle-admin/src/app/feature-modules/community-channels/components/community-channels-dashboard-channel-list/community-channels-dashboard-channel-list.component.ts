@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'app-community-channels-dashboard-channel-list',
-  templateUrl: './community-channels-dashboard-channel-list.component.html',
-  styleUrls: ['./community-channels-dashboard-channel-list.component.scss'],
+    selector: 'app-community-channels-dashboard-channel-list',
+    templateUrl: './community-channels-dashboard-channel-list.component.html',
+    styleUrls: ['./community-channels-dashboard-channel-list.component.scss'],
+    standalone: false
 })
 export class CommunityChannelsDashboardChannelListComponent implements OnInit, OnDestroy {
   @Input() parent: ICommunity | ICommunityGroup;

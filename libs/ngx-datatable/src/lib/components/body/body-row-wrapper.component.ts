@@ -12,9 +12,9 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'datatable-row-wrapper',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'datatable-row-wrapper',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     <div *ngIf="groupHeader && groupHeader.template" class="datatable-group-header" [ngStyle]="getGroupHeaderStyle()">
       <ng-template
         *ngIf="groupHeader && groupHeader.template"
@@ -38,9 +38,10 @@ import {
       </ng-template>
     </div>
   `,
-  host: {
-    class: 'datatable-row-wrapper'
-  }
+    host: {
+        class: 'datatable-row-wrapper'
+    },
+    standalone: false
 })
 export class DataTableRowWrapperComponent implements DoCheck {
   @Input() innerWidth: number;

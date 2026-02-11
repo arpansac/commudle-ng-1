@@ -5,9 +5,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-case-studies',
-  templateUrl: './case-studies.component.html',
-  styleUrls: ['./case-studies.component.scss'],
+    selector: 'commudle-case-studies',
+    templateUrl: './case-studies.component.html',
+    styleUrls: ['./case-studies.component.scss'],
+    standalone: false
 })
 export class CaseStudiesComponent implements OnInit, OnDestroy {
   caseStudies: ICaseStudy[] = [];

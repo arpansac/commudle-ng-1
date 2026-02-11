@@ -8,10 +8,11 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 // this component holds the speakers when we have simple event agenda
 
 @Component({
-  selector: 'app-event-speakers',
-  templateUrl: './event-speakers.component.html',
-  styleUrls: ['./event-speakers.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-event-speakers',
+    templateUrl: './event-speakers.component.html',
+    styleUrls: ['./event-speakers.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventSpeakersComponent implements OnInit {
   @Input() event: IEvent;

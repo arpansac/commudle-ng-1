@@ -4,9 +4,10 @@ import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { CommunityChannelManagerService } from '../../../services/community-channel-manager.service';
 
 @Component({
-  selector: 'commudle-edit-channel',
-  templateUrl: './edit-channel.component.html',
-  styleUrls: ['./edit-channel.component.scss'],
+    selector: 'commudle-edit-channel',
+    templateUrl: './edit-channel.component.html',
+    styleUrls: ['./edit-channel.component.scss'],
+    standalone: false
 })
 export class EditChannelComponent implements OnInit {
   @Input() channelId: number;

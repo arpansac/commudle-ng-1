@@ -3,9 +3,10 @@ import { IHackathonResponseGroup } from 'apps/shared-models/hackathon-response-g
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 
 @Component({
-  selector: 'commudle-public-hackathon-custom-questions-form',
-  templateUrl: './public-hackathon-custom-questions-form.component.html',
-  styleUrls: ['./public-hackathon-custom-questions-form.component.scss'],
+    selector: 'commudle-public-hackathon-custom-questions-form',
+    templateUrl: './public-hackathon-custom-questions-form.component.html',
+    styleUrls: ['./public-hackathon-custom-questions-form.component.scss'],
+    standalone: false
 })
 export class PublicHackathonCustomQuestionsFormComponent implements OnInit {
   @Input() hackathonResponseGroup: IHackathonResponseGroup;

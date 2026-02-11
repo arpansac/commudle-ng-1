@@ -21,10 +21,11 @@ import { faChevronRight, faLink } from '@fortawesome/free-solid-svg-icons';
 import { EventLocationsService } from 'apps/commudle-admin/src/app/services/event-locations.service';
 
 @Component({
-  selector: 'app-event-location-tracks',
-  templateUrl: './event-location-tracks.component.html',
-  styleUrls: ['./event-location-tracks.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-event-location-tracks',
+    templateUrl: './event-location-tracks.component.html',
+    styleUrls: ['./event-location-tracks.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EventLocationTracksComponent implements OnInit, OnChanges {
   moment = moment;

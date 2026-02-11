@@ -8,9 +8,10 @@ import { IUserEventRegistration } from 'apps/shared-models/user_event_registrati
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-speakers',
-  templateUrl: './speakers.component.html',
-  styleUrls: ['./speakers.component.scss'],
+    selector: 'app-speakers',
+    templateUrl: './speakers.component.html',
+    styleUrls: ['./speakers.component.scss'],
+    standalone: false
 })
 export class SpeakersComponent implements OnInit {
   @Input() community: ICommunity;

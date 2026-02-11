@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'datatable-pager',
-  template: `
+    selector: 'datatable-pager',
+    template: `
     <label for="jumpTo" class="jump-to-label">Jump to</label>
     <select name="jumpTo" id="jumpTo" [(ngModel)]="selectedPage" (change)="jumpToPage($event)" class="jump-to-select">
       <option *ngFor="let pg of allPages" [value]="pg.number">{{ pg.number }}</option>
@@ -36,10 +36,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnInit
       </li>
     </ul>
   `,
-  host: {
-    class: 'datatable-pager',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'datatable-pager',
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DataTablePagerComponent implements OnInit {
   @Input() pagerLeftArrowIcon: string;

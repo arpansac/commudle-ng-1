@@ -4,9 +4,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-case-studies-header',
-  templateUrl: './case-studies-header.component.html',
-  styleUrls: ['./case-studies-header.component.scss'],
+    selector: 'commudle-case-studies-header',
+    templateUrl: './case-studies-header.component.html',
+    styleUrls: ['./case-studies-header.component.scss'],
+    standalone: false
 })
 export class CaseStudiesHeaderComponent implements OnInit {
   caseStudyPageHeader: ICaseStudy;

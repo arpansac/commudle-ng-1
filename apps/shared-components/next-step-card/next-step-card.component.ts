@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 @Component({
-  selector: 'commudle-next-step-card',
-  templateUrl: './next-step-card.component.html',
-  styleUrls: ['./next-step-card.component.scss'],
+    selector: 'commudle-next-step-card',
+    templateUrl: './next-step-card.component.html',
+    styleUrls: ['./next-step-card.component.scss'],
+    standalone: false
 })
 export class NextStepCardComponent implements OnInit {
   @Input() routerLink: string;

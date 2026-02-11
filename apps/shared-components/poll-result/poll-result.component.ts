@@ -9,9 +9,10 @@ import { IPoll } from 'apps/shared-models/poll.model';
 import { RandomColorsService } from 'apps/shared-services/random-colors.service';
 
 @Component({
-  selector: 'app-poll-result',
-  templateUrl: './poll-result.component.html',
-  styleUrls: ['./poll-result.component.scss']
+    selector: 'app-poll-result',
+    templateUrl: './poll-result.component.html',
+    styleUrls: ['./poll-result.component.scss'],
+    standalone: false
 })
 export class PollResultComponent implements OnInit {
 

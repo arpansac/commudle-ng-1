@@ -10,6 +10,14 @@
   }
 }
 
+// On small screens, the navigation menu is rendered in the bottom bar (nb-layout-footer).
+// Even if SSR outputs the desktop menu, ensure it never shows on mobile.
+@media screen and (max-width: theme('screens.md')) {
+  :host ::ng-deep app-navbar-menu.navbar-menu-desktop {
+    display: none !important;
+  }
+}
+
 .home-sidebar {
   @apply com-w-11 com-h-12 com-flex com-justify-end com-items-center com-cursor-pointer;
 
@@ -62,5 +70,41 @@
 
   .user-profile-image {
     @apply com-w-9 com-h-9 md:com-w-11 md:com-h-11 com-object-cover com-rounded-full com-self-end com-bg-tWhite com-cursor-pointer;
+  }
+}
+
+// --- Theme-driven visibility (must be last to override @apply ... !important display rules) ---
+// Default (no data-theme / light): show light assets.
+:host {
+  .logo-dark {
+    display: none !important;
+  }
+
+  .toggle-dark-mode {
+    button.theme-toggle-to-light {
+      display: none !important;
+    }
+    button.theme-toggle-to-dark {
+      display: inline-flex !important;
+    }
+  }
+}
+
+// Dark theme: swap visible assets.
+:host-context([data-theme='dark']) {
+  .logo-light {
+    display: none !important;
+  }
+  .logo-dark {
+    display: block !important;
+  }
+
+  .toggle-dark-mode {
+    button.theme-toggle-to-light {
+      display: inline-flex !important;
+    }
+    button.theme-toggle-to-dark {
+      display: none !important;
+    }
   }
 }

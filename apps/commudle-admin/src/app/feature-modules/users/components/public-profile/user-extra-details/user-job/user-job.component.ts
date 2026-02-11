@@ -25,13 +25,14 @@ import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/ser
 import { SeoService } from '@commudle/shared-services';
 import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
 import { environment } from '@commudle/shared-environments';
-import { RecaptchaComponent } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha-2';
 
 @Component({
-  selector: 'app-user-job',
-  templateUrl: './user-job.component.html',
-  styleUrls: ['./user-job.component.scss'],
-  providers: [EnumFormatPipe],
+    selector: 'app-user-job',
+    templateUrl: './user-job.component.html',
+    styleUrls: ['./user-job.component.scss'],
+    providers: [EnumFormatPipe],
+    standalone: false
 })
 export class UserJobComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

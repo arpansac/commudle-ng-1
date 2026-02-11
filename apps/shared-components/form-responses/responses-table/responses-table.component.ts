@@ -7,9 +7,10 @@ import { IQuestion } from 'apps/shared-models/question.model';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-responses-table',
-  templateUrl: './responses-table.component.html',
-  styleUrls: ['./responses-table.component.scss'],
+    selector: 'app-responses-table',
+    templateUrl: './responses-table.component.html',
+    styleUrls: ['./responses-table.component.scss'],
+    standalone: false
 })
 export class ResponsesTableComponent implements OnInit {
   @ViewChild('table') table;

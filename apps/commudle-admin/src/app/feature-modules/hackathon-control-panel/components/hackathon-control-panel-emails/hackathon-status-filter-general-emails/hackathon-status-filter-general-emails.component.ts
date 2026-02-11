@@ -7,9 +7,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
-  selector: 'commudle-hackathon-status-filter-general-emails',
-  templateUrl: './hackathon-status-filter-general-emails.component.html',
-  styleUrls: ['./hackathon-status-filter-general-emails.component.scss'],
+    selector: 'commudle-hackathon-status-filter-general-emails',
+    templateUrl: './hackathon-status-filter-general-emails.component.html',
+    styleUrls: ['./hackathon-status-filter-general-emails.component.scss'],
+    standalone: false
 })
 export class HackathonStatusFilterGeneralEmailsComponent {
   @Input() hackathonId: number;

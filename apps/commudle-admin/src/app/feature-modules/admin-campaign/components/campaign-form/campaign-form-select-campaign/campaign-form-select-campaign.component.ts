@@ -6,9 +6,10 @@ import { NbDialogService } from '@commudle/theme';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-campaign-form-select-campaign',
-  templateUrl: './campaign-form-select-campaign.component.html',
-  styleUrls: ['./campaign-form-select-campaign.component.scss'],
+    selector: 'commudle-campaign-form-select-campaign',
+    templateUrl: './campaign-form-select-campaign.component.html',
+    styleUrls: ['./campaign-form-select-campaign.component.scss'],
+    standalone: false
 })
 export class CampaignFormSelectCampaignComponent implements OnInit {
   campaignTypes: ICampaignType[];

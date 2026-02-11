@@ -26,9 +26,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-session-page-video',
-  templateUrl: './session-page-video.component.html',
-  styleUrls: ['./session-page-video.component.scss'],
+    selector: 'app-session-page-video',
+    templateUrl: './session-page-video.component.html',
+    styleUrls: ['./session-page-video.component.scss'],
+    standalone: false
 })
 export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() event: IEvent;

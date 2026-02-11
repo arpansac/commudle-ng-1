@@ -4,9 +4,10 @@ import { ILab } from 'apps/shared-models/lab.model';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-labs-card',
-  templateUrl: './labs-card.component.html',
-  styleUrls: ['./labs-card.component.scss'],
+    selector: 'app-labs-card',
+    templateUrl: './labs-card.component.html',
+    styleUrls: ['./labs-card.component.scss'],
+    standalone: false
 })
 export class LabsCardComponent implements OnInit {
   @Input() lab: ILab;

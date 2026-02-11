@@ -13,9 +13,10 @@ import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.s
 import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: false
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;

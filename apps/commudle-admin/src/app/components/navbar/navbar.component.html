@@ -1,6 +1,10 @@
 <div class="com-flex com-justify-between com-items-center com-gap-3 com-container com-max-w-screen-xl com-px-2">
   <a [routerLink]="['/']">
-    <div *ngIf="!isDarkMode">
+    <!--
+      Render both variants and let CSS decide based on [data-theme].
+      This prevents SSR/client mismatches caused by theme being resolved only after bootstrap.
+    -->
+    <div class="navbar-logo logo-light">
       <img
         *appBreakpoints="'<=md'"
         alt="Commudle"
@@ -16,7 +20,8 @@
         title="Commudle"
       />
     </div>
-    <div *ngIf="isDarkMode">
+
+    <div class="navbar-logo logo-dark">
       <img
         *appBreakpoints="'<=md'"
         alt="Commudle"
@@ -52,14 +57,14 @@
       ></app-search-box>
     </ng-template>
 
-    <app-navbar-menu *appBreakpoints="'>md'" class="com-justify-self-center"></app-navbar-menu>
+    <app-navbar-menu *appBreakpoints="'>md'" class="com-justify-self-center navbar-menu-desktop"></app-navbar-menu>
 
     <div class="user-login">
       <div class="toggle-dark-mode">
-        <button *ngIf="!isDarkMode" (click)="toggleDarkMode(true)" class="toggle-btn-moon" nbButton>
+        <button (click)="toggleDarkMode(true)" class="toggle-btn-moon theme-toggle-to-dark" nbButton>
           <fa-icon [icon]="faMoon"></fa-icon>
         </button>
-        <button *ngIf="isDarkMode" (click)="toggleDarkMode(false)" class="toggle-btn-sun !com-p-0" nbButton>
+        <button (click)="toggleDarkMode(false)" class="toggle-btn-sun theme-toggle-to-light !com-p-0" nbButton>
           <img src="https://json.commudle.com/icons/dark-mode-sun-icon.svg" />
         </button>
       </div>

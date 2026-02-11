@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as actionCable from 'actioncable';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -21,7 +20,6 @@ export class DiscussionChatChannel {
     BLOCKED: 'blocked',
   };
 
-  actionCable = actionCable;
   private cableConnection;
 
   private subscription;

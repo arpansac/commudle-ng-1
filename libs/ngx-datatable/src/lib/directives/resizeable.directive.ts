@@ -13,10 +13,11 @@ import { Subscription, fromEvent } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[resizeable]',
-  host: {
-    '[class.resizeable]': 'resizeEnabled'
-  }
+    selector: '[resizeable]',
+    host: {
+        '[class.resizeable]': 'resizeEnabled'
+    },
+    standalone: false
 })
 export class ResizeableDirective implements OnDestroy, AfterViewInit {
   @Input() resizeEnabled: boolean = true;

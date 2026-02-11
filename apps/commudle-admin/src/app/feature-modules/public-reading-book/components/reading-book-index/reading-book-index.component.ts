@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IReadingBook } from 'apps/shared-models/reading_book.model';
 
 @Component({
-  selector: 'commudle-reading-book-index',
-  templateUrl: './reading-book-index.component.html',
-  styleUrls: ['./reading-book-index.component.scss'],
+    selector: 'commudle-reading-book-index',
+    templateUrl: './reading-book-index.component.html',
+    styleUrls: ['./reading-book-index.component.scss'],
+    standalone: false
 })
 export class ReadingBookIndexComponent implements OnInit {
   @Input() chapterIndexes: IReadingBook[] = [];

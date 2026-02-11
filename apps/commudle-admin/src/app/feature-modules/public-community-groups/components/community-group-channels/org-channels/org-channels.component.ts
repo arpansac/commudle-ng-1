@@ -4,9 +4,10 @@ import { ICommunityGroup, EDbModels } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-org-channels',
-  templateUrl: './org-channels.component.html',
-  styleUrls: ['./org-channels.component.scss'],
+    selector: 'commudle-org-channels',
+    templateUrl: './org-channels.component.html',
+    styleUrls: ['./org-channels.component.scss'],
+    standalone: false
 })
 export class OrgChannelsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

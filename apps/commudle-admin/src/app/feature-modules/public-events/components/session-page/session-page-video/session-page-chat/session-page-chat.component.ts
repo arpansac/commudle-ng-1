@@ -4,9 +4,10 @@ import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { SessionPageNotificationsService } from 'apps/shared-services/session-page-notifications.service';
 
 @Component({
-  selector: 'app-session-page-chat',
-  templateUrl: './session-page-chat.component.html',
-  styleUrls: ['./session-page-chat.component.scss'],
+    selector: 'app-session-page-chat',
+    templateUrl: './session-page-chat.component.html',
+    styleUrls: ['./session-page-chat.component.scss'],
+    standalone: false
 })
 export class SessionPageChatComponent implements OnInit {
   @Input() chat: IDiscussion;

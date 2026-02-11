@@ -14,9 +14,10 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-user-resume',
-  templateUrl: './user-resume.component.html',
-  styleUrls: ['./user-resume.component.scss'],
+    selector: 'app-user-resume',
+    templateUrl: './user-resume.component.html',
+    styleUrls: ['./user-resume.component.scss'],
+    standalone: false
 })
 export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

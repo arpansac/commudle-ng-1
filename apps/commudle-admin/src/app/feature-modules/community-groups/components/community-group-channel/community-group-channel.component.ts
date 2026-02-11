@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { EDbModels, ICommunityGroup } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-community-group-channel',
-  templateUrl: './community-group-channel.component.html',
-  styleUrls: ['./community-group-channel.component.scss'],
+    selector: 'commudle-community-group-channel',
+    templateUrl: './community-group-channel.component.html',
+    styleUrls: ['./community-group-channel.component.scss'],
+    standalone: false
 })
 export class CommunityGroupChannelComponent implements OnInit {
   communityGroup: ICommunityGroup;

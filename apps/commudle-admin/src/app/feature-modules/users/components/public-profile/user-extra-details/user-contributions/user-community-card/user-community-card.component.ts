@@ -3,9 +3,10 @@ import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'app-user-community-card',
-  templateUrl: './user-community-card.component.html',
-  styleUrls: ['./user-community-card.component.scss'],
+    selector: 'app-user-community-card',
+    templateUrl: './user-community-card.component.html',
+    styleUrls: ['./user-community-card.component.scss'],
+    standalone: false
 })
 export class UserCommunityCardComponent implements OnInit {
   @Input() community: IUserRolesUser;

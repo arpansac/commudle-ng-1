@@ -14,9 +14,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-payment-log-edfeg',
-  templateUrl: './payment-log-edfeg.component.html',
-  styleUrls: ['./payment-log-edfeg.component.scss'],
+    selector: 'commudle-payment-log-edfeg',
+    templateUrl: './payment-log-edfeg.component.html',
+    styleUrls: ['./payment-log-edfeg.component.scss'],
+    standalone: false
 })
 export class PaymentLogEdfegComponent implements OnInit {
   edfegId: number | string;

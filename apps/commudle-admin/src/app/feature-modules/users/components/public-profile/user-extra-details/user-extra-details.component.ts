@@ -6,9 +6,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-user-extra-details',
-  templateUrl: './user-extra-details.component.html',
-  styleUrls: ['./user-extra-details.component.scss'],
+    selector: 'app-user-extra-details',
+    templateUrl: './user-extra-details.component.html',
+    styleUrls: ['./user-extra-details.component.scss'],
+    standalone: false
 })
 export class UserExtraDetailsComponent implements OnInit, OnDestroy {
   user: IUser;

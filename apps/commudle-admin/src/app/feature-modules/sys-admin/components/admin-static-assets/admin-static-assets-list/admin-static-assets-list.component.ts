@@ -6,9 +6,10 @@ import { NbDialogService } from '@commudle/theme';
 import { ToastrService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'app-admin-static-assets-list',
-  templateUrl: './admin-static-assets-list.component.html',
-  styleUrls: ['./admin-static-assets-list.component.scss'],
+    selector: 'app-admin-static-assets-list',
+    templateUrl: './admin-static-assets-list.component.html',
+    styleUrls: ['./admin-static-assets-list.component.scss'],
+    standalone: false
 })
 export class AdminStaticAssetsListComponent implements OnInit {
   constructor(

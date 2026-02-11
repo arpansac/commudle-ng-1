@@ -16,9 +16,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-social-links',
-  templateUrl: './social-links.component.html',
-  styleUrls: ['./social-links.component.scss'],
+    selector: 'app-social-links',
+    templateUrl: './social-links.component.html',
+    styleUrls: ['./social-links.component.scss'],
+    standalone: false
 })
 export class SocialLinksComponent implements OnInit, OnDestroy {
   @Output() socialLinksFormValidity: EventEmitter<boolean> = new EventEmitter<boolean>();

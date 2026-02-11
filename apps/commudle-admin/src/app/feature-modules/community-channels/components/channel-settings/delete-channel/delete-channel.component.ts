@@ -7,9 +7,10 @@ import { CommunityChannelManagerService } from 'apps/commudle-admin/src/app/feat
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-delete-channel',
-  templateUrl: './delete-channel.component.html',
-  styleUrls: ['./delete-channel.component.scss'],
+    selector: 'app-delete-channel',
+    templateUrl: './delete-channel.component.html',
+    styleUrls: ['./delete-channel.component.scss'],
+    standalone: false
 })
 export class DeleteChannelComponent {
   @Input() channelId;

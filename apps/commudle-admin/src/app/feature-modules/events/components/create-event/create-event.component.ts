@@ -11,9 +11,10 @@ import * as moment from 'moment';
 import * as momentTimezone from 'moment-timezone';
 
 @Component({
-  selector: 'app-create-event',
-  templateUrl: './create-event.component.html',
-  styleUrls: ['./create-event.component.scss'],
+    selector: 'app-create-event',
+    templateUrl: './create-event.component.html',
+    styleUrls: ['./create-event.component.scss'],
+    standalone: false
 })
 export class CreateEventComponent implements OnInit {
   event: IEvent;

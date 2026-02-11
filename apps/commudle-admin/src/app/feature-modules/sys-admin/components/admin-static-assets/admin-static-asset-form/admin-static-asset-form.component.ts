@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
   selector: 'commudle-admin-static-asset-form',
   templateUrl: './admin-static-asset-form.component.html',
   styleUrls: ['./admin-static-asset-form.component.scss'],
+  standalone: false,
 })
 export class AdminStaticAssetFormComponent implements OnInit {
   asset: IStaticAsset;

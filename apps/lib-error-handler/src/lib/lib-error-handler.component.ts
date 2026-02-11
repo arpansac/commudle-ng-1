@@ -4,9 +4,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { LibErrorHandlerService } from './lib-error-handler.service';
 
 @Component({
-  selector: 'lib-lib-error-handler',
-  templateUrl: './lib-error-handler.component.html',
-  styleUrls: ['./lib-error-handler.component.scss'],
+    selector: 'lib-lib-error-handler',
+    templateUrl: './lib-error-handler.component.html',
+    styleUrls: ['./lib-error-handler.component.scss'],
+    standalone: false
 })
 export class LibErrorHandlerComponent implements OnInit, OnDestroy, OnChanges {
   errorCode: string;

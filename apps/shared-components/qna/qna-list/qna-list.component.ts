@@ -15,9 +15,10 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IUserMessage } from 'apps/shared-models/user_message.model';
 
 @Component({
-  selector: 'app-qna-list',
-  templateUrl: './qna-list.component.html',
-  styleUrls: ['./qna-list.component.scss']
+    selector: 'app-qna-list',
+    templateUrl: './qna-list.component.html',
+    styleUrls: ['./qna-list.component.scss'],
+    standalone: false
 })
 export class QnaListComponent implements OnInit, AfterViewInit {
 

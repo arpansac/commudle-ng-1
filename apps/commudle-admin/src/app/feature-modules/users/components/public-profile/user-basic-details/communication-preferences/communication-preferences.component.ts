@@ -5,9 +5,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
 @Component({
-  selector: 'commudle-communication-preferences',
-  templateUrl: './communication-preferences.component.html',
-  styleUrls: ['./communication-preferences.component.scss'],
+    selector: 'commudle-communication-preferences',
+    templateUrl: './communication-preferences.component.html',
+    styleUrls: ['./communication-preferences.component.scss'],
+    standalone: false
 })
 export class CommunicationPreferencesComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;

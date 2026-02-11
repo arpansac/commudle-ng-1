@@ -20,9 +20,10 @@ import { NavigatorShareService } from 'apps/shared-services/navigator-share.serv
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-resume-card',
-  templateUrl: './user-resume-card.component.html',
-  styleUrls: ['./user-resume-card.component.scss'],
+    selector: 'app-user-resume-card',
+    templateUrl: './user-resume-card.component.html',
+    styleUrls: ['./user-resume-card.component.scss'],
+    standalone: false
 })
 export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;

@@ -7,9 +7,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-case-study',
-  templateUrl: './case-study.component.html',
-  styleUrls: ['./case-study.component.scss'],
+    selector: 'commudle-case-study',
+    templateUrl: './case-study.component.html',
+    styleUrls: ['./case-study.component.scss'],
+    standalone: false
 })
 export class CaseStudyComponent implements OnInit, OnDestroy {
   caseStudyPage: ICaseStudy;

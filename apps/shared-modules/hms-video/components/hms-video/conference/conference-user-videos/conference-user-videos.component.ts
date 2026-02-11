@@ -5,9 +5,10 @@ import { HmsStageService } from 'apps/shared-modules/hms-video/services/hms-stag
 import { hmsStore } from 'apps/shared-modules/hms-video/stores/hms.store';
 
 @Component({
-  selector: 'app-conference-user-videos',
-  templateUrl: './conference-user-videos.component.html',
-  styleUrls: ['./conference-user-videos.component.scss'],
+    selector: 'app-conference-user-videos',
+    templateUrl: './conference-user-videos.component.html',
+    styleUrls: ['./conference-user-videos.component.scss'],
+    standalone: false
 })
 export class ConferenceUserVideosComponent implements OnInit {
   peers: HMSPeer[] = [];

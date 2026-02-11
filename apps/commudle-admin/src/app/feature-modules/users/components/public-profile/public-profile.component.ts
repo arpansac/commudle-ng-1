@@ -15,9 +15,10 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-public-profile',
-  templateUrl: './public-profile.component.html',
-  styleUrls: ['./public-profile.component.scss'],
+    selector: 'app-public-profile',
+    templateUrl: './public-profile.component.html',
+    styleUrls: ['./public-profile.component.scss'],
+    standalone: false
 })
 export class PublicProfileComponent implements OnInit, OnDestroy {
   user: IUser;

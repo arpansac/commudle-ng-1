@@ -4,9 +4,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { MainNewslettersService } from '../../services/main-newsletters.service';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss'],
+    selector: 'app-index',
+    templateUrl: './index.component.html',
+    styleUrls: ['./index.component.scss'],
+    standalone: false
 })
 export class IndexComponent implements OnInit, OnDestroy {
   page = 1;

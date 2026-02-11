@@ -6,9 +6,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-pa-slots-list',
-  templateUrl: './admin-page-ads-list.component.html',
-  styleUrls: ['./admin-page-ads-list.component.scss'],
+    selector: 'app-admin-pa-slots-list',
+    templateUrl: './admin-page-ads-list.component.html',
+    styleUrls: ['./admin-page-ads-list.component.scss'],
+    standalone: false
 })
 export class AdminPageAdsListComponent implements OnInit, OnDestroy {
   currentAdId;

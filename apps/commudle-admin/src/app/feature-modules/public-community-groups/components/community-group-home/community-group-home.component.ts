@@ -25,9 +25,10 @@ interface CustomMenuItem {
 }
 
 @Component({
-  selector: 'app-community-group-home',
-  templateUrl: './community-group-home.component.html',
-  styleUrls: ['./community-group-home.component.scss'],
+    selector: 'app-community-group-home',
+    templateUrl: './community-group-home.component.html',
+    styleUrls: ['./community-group-home.component.scss'],
+    standalone: false
 })
 export class CommunityGroupHomeComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;

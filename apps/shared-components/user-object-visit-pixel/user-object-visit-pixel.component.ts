@@ -17,9 +17,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserObjectVisitsService } from '../services/user-object-visits.service';
 
 @Component({
-  selector: 'app-user-object-visit-pixel',
-  templateUrl: './user-object-visit-pixel.component.html',
-  styleUrls: ['./user-object-visit-pixel.component.scss'],
+    selector: 'app-user-object-visit-pixel',
+    templateUrl: './user-object-visit-pixel.component.html',
+    styleUrls: ['./user-object-visit-pixel.component.scss'],
+    standalone: false
 })
 export class UserObjectVisitPixelComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() parentType;

@@ -6,9 +6,10 @@ interface badgesList {
   users: IPagination<IUser>;
 }
 @Component({
-  selector: 'commudle-experts',
-  templateUrl: './experts.component.html',
-  styleUrls: ['./experts.component.scss'],
+    selector: 'commudle-experts',
+    templateUrl: './experts.component.html',
+    styleUrls: ['./experts.component.scss'],
+    standalone: false
 })
 export class ExpertsComponent implements OnChanges {
   @Input() expertBadges: IBadge[] = [];

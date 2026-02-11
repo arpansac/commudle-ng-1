@@ -10,6 +10,7 @@ import { NbDialogService } from '@commudle/theme';
 import { ForumsStore } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-forums-by-category',
   templateUrl: './forums-by-category.component.html',
   styleUrls: ['./forums-by-category.component.scss'],

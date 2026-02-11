@@ -12,13 +12,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { NbDialogService, NbDialogRef } from '@commudle/theme';
 import { LoginConsentPopupComponent } from 'apps/commudle-admin/src/app/components/login-consent-popup/login-consent-popup.component';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { ReCaptchaV3Service } from 'ng-recaptcha-2';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'commudle-login-signup',
-  templateUrl: './login-signup.component.html',
-  styleUrls: ['./login-signup.component.scss'],
+    selector: 'commudle-login-signup',
+    templateUrl: './login-signup.component.html',
+    styleUrls: ['./login-signup.component.scss'],
+    standalone: false
 })
 export class LoginSignupComponent implements OnInit, OnDestroy {
   @Input() redirectUrl: string;

@@ -5,9 +5,10 @@ import { SeoService } from '@commudle/shared-services';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-community-groups-surveys',
-  templateUrl: './community-groups-surveys.component.html',
-  styleUrls: ['./community-groups-surveys.component.scss'],
+    selector: 'commudle-community-groups-surveys',
+    templateUrl: './community-groups-surveys.component.html',
+    styleUrls: ['./community-groups-surveys.component.scss'],
+    standalone: false
 })
 export class CommunityGroupsSurveysComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

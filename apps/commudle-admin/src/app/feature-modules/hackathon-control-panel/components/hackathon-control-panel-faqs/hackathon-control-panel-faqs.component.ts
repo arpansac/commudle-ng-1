@@ -7,9 +7,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-faqs',
-  templateUrl: './hackathon-control-panel-faqs.component.html',
-  styleUrls: ['./hackathon-control-panel-faqs.component.scss'],
+    selector: 'commudle-hackathon-control-panel-faqs',
+    templateUrl: './hackathon-control-panel-faqs.component.html',
+    styleUrls: ['./hackathon-control-panel-faqs.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelFaqsComponent implements OnInit, OnDestroy {
   hackathonSlug = '';

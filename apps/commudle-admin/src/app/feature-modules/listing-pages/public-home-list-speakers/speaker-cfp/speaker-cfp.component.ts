@@ -4,9 +4,10 @@ import { EventsService } from 'apps/commudle-admin/src/app/services/events.servi
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 
 @Component({
-  selector: 'commudle-speaker-cfp',
-  templateUrl: './speaker-cfp.component.html',
-  styleUrls: ['./speaker-cfp.component.scss'],
+    selector: 'commudle-speaker-cfp',
+    templateUrl: './speaker-cfp.component.html',
+    styleUrls: ['./speaker-cfp.component.scss'],
+    standalone: false
 })
 export class SpeakerCfpComponent implements OnInit {
   speakerForms: IEventDataFormEntityGroup[] = [];

@@ -7,9 +7,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-admin-surveys',
-  templateUrl: './admin-surveys.component.html',
-  styleUrls: ['./admin-surveys.component.scss'],
+    selector: 'app-admin-surveys',
+    templateUrl: './admin-surveys.component.html',
+    styleUrls: ['./admin-surveys.component.scss'],
+    standalone: false
 })
 export class AdminSurveysComponent implements OnInit {
   adminSurveys: ISurvey[];

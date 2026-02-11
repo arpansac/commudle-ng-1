@@ -17,8 +17,8 @@ import { RowHeightCache } from '../../utils/row-height-cache';
 import { translateXY } from '../../utils/translate';
 
 @Component({
-  selector: 'datatable-body',
-  template: `
+    selector: 'datatable-body',
+    template: `
     <datatable-progress *ngIf="loadingIndicator"> </datatable-progress>
     <datatable-selection
       #selector
@@ -116,10 +116,11 @@ import { translateXY } from '../../utils/translate';
       <div class="empty-row" *ngIf="!rows?.length && !loadingIndicator" [innerHTML]="emptyMessage"></div>
     </datatable-selection>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'datatable-body'
-  }
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'datatable-body'
+    },
+    standalone: false
 })
 export class DataTableBodyComponent implements OnInit, OnDestroy {
   @Input() scrollbarV: boolean;

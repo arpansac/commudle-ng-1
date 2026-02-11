@@ -6,9 +6,10 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'commudle-public-home-list-events-past',
-  templateUrl: './public-home-list-events-past.component.html',
-  styleUrls: ['./public-home-list-events-past.component.scss'],
+    selector: 'commudle-public-home-list-events-past',
+    templateUrl: './public-home-list-events-past.component.html',
+    styleUrls: ['./public-home-list-events-past.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsPastComponent implements OnInit, AfterViewInit {
   pastEvents: IEvent[] = [];

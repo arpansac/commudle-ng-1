@@ -23,9 +23,10 @@ import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-newsletter',
-  templateUrl: './newsletter.component.html',
-  styleUrls: ['./newsletter.component.scss'],
+    selector: 'commudle-newsletter',
+    templateUrl: './newsletter.component.html',
+    styleUrls: ['./newsletter.component.scss'],
+    standalone: false
 })
 export class NewsletterComponent implements OnInit, OnDestroy {
   @Input() parentId: string | number;

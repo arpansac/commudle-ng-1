@@ -4,9 +4,10 @@ import { IQuestionType } from 'apps/shared-models/question_type.model';
 
 
 @Component({
-  selector: 'app-poll-create-form',
-  templateUrl: './poll-create-form.component.html',
-  styleUrls: ['./poll-create-form.component.scss']
+    selector: 'app-poll-create-form',
+    templateUrl: './poll-create-form.component.html',
+    styleUrls: ['./poll-create-form.component.scss'],
+    standalone: false
 })
 export class PollCreateFormComponent implements OnInit {
 

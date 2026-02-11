@@ -7,9 +7,10 @@ import { EJobApplicationStatus, IJobApplication } from 'apps/shared-models/job-a
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-job-applications',
-  templateUrl: './job-applications.component.html',
-  styleUrls: ['./job-applications.component.scss'],
+    selector: 'app-job-applications',
+    templateUrl: './job-applications.component.html',
+    styleUrls: ['./job-applications.component.scss'],
+    standalone: false
 })
 export class JobApplicationsComponent implements OnInit, OnDestroy {
   job_id: number;

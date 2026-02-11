@@ -3,9 +3,10 @@ import { RazorpayService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-payment-logs',
-  templateUrl: './payment-logs.component.html',
-  styleUrls: ['./payment-logs.component.scss'],
+    selector: 'commudle-payment-logs',
+    templateUrl: './payment-logs.component.html',
+    styleUrls: ['./payment-logs.component.scss'],
+    standalone: false
 })
 export class PaymentLogsComponent {
   rzpPaymentId: '';

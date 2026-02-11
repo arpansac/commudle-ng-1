@@ -4,9 +4,10 @@ import { NbButtonAppearance, NbComponentStatus } from '@commudle/theme';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { NavigatorShareService } from 'apps/shared-services/navigator-share.service';
 @Component({
-  selector: 'app-share-button',
-  templateUrl: './share-button.component.html',
-  styleUrls: ['./share-button.component.scss'],
+    selector: 'app-share-button',
+    templateUrl: './share-button.component.html',
+    styleUrls: ['./share-button.component.scss'],
+    standalone: false
 })
 export class ShareButtonComponent implements OnInit {
   @Input() title: string = '';

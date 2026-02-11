@@ -6,9 +6,10 @@ import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/com
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-communities-channels',
-  templateUrl: './communities-channels.component.html',
-  styleUrls: ['./communities-channels.component.scss'],
+    selector: 'commudle-communities-channels',
+    templateUrl: './communities-channels.component.html',
+    styleUrls: ['./communities-channels.component.scss'],
+    standalone: false
 })
 export class CommunitiesChannelsComponent implements OnInit, OnDestroy {
   channels: ICommunityChannel[] = [];

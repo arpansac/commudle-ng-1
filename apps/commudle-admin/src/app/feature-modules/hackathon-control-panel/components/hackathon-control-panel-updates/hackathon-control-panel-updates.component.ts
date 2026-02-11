@@ -12,9 +12,10 @@ import { NbDialogService } from '@commudle/theme';
 import { EditorComponent } from '@commudle/editor';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-updates',
-  templateUrl: './hackathon-control-panel-updates.component.html',
-  styleUrls: ['./hackathon-control-panel-updates.component.scss'],
+    selector: 'commudle-hackathon-control-panel-updates',
+    templateUrl: './hackathon-control-panel-updates.component.html',
+    styleUrls: ['./hackathon-control-panel-updates.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelUpdatesComponent implements OnInit, OnDestroy, AfterViewInit {
   EDbModels = EDbModels;

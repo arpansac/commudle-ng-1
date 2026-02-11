@@ -3,9 +3,10 @@ import { faFlask } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'app-home-head-banner',
-  templateUrl: './home-head-banner.component.html',
-  styleUrls: ['./home-head-banner.component.scss'],
+    selector: 'app-home-head-banner',
+    templateUrl: './home-head-banner.component.html',
+    styleUrls: ['./home-head-banner.component.scss'],
+    standalone: false
 })
 export class HomeHeadBannerComponent implements OnInit {
   faFlask = faFlask;

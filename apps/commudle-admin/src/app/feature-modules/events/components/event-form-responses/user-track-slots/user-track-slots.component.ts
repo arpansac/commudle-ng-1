@@ -11,9 +11,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-user-track-slots',
-  templateUrl: './user-track-slots.component.html',
-  styleUrls: ['./user-track-slots.component.scss'],
+    selector: 'commudle-user-track-slots',
+    templateUrl: './user-track-slots.component.html',
+    styleUrls: ['./user-track-slots.component.scss'],
+    standalone: false
 })
 export class UserTrackSlotsComponent implements OnInit {
   @Input() trackSlots: ITrackSlot[];

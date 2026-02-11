@@ -3,7 +3,8 @@ import { UserEngagementRecordsService } from '@commudle/shared-services';
 import { EUserActivityEventType, EDbModels, IActivityFeed } from '@commudle/shared-models';
 
 @Directive({
-  selector: '[appActivityFeed]',
+    selector: '[appActivityFeed]',
+    standalone: false
 })
 export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
   @Input() feed: IActivityFeed;

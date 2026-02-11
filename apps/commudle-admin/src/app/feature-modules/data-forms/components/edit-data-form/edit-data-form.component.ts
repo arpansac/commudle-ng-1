@@ -14,9 +14,10 @@ import { NbMenuService } from '@commudle/theme';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-edit-data-form',
-  templateUrl: './edit-data-form.component.html',
-  styleUrls: ['./edit-data-form.component.scss'],
+    selector: 'app-edit-data-form',
+    templateUrl: './edit-data-form.component.html',
+    styleUrls: ['./edit-data-form.component.scss'],
+    standalone: false
 })
 export class EditDataFormComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;

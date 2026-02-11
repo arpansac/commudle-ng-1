@@ -31,14 +31,15 @@ import * as moment from 'moment';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import { AuthService, SeoService, ToastrService } from '@commudle/shared-services';
 import { environment } from '@commudle/shared-environments';
-import { RecaptchaComponent } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha-2';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-  selector: 'commudle-create-community-build',
-  templateUrl: './create-community-build.component.html',
-  styleUrls: ['./create-community-build.component.scss'],
+    selector: 'commudle-create-community-build',
+    templateUrl: './create-community-build.component.html',
+    styleUrls: ['./create-community-build.component.scss'],
+    standalone: false
 })
 export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   eUserRolesUserStatus = EUserRolesUserStatus;

@@ -8,9 +8,10 @@ import { ICommunityBuild } from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 
 @Component({
-  selector: 'commudle-my-community-builds',
-  templateUrl: './my-community-builds.component.html',
-  styleUrls: ['./my-community-builds.component.scss'],
+    selector: 'commudle-my-community-builds',
+    templateUrl: './my-community-builds.component.html',
+    styleUrls: ['./my-community-builds.component.scss'],
+    standalone: false
 })
 export class MyCommunityBuildsComponent implements OnInit, OnDestroy {
   moment = moment;

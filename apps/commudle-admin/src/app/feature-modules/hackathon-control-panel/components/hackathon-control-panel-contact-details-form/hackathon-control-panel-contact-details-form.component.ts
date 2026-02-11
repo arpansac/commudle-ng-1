@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'commudle-hackathon-control-panel-contact-details-form',
-  templateUrl: './hackathon-control-panel-contact-details-form.component.html',
-  styleUrls: ['./hackathon-control-panel-contact-details-form.component.scss'],
+    selector: 'commudle-hackathon-control-panel-contact-details-form',
+    templateUrl: './hackathon-control-panel-contact-details-form.component.html',
+    styleUrls: ['./hackathon-control-panel-contact-details-form.component.scss'],
+    standalone: false
 })
 export class HackathonControlPanelContactDetailsFormComponent implements OnInit, OnDestroy {
   hackathonContactForm: FormGroup;

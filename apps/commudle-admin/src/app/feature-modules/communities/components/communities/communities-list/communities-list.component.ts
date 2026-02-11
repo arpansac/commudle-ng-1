@@ -1,5 +1,6 @@
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ICommunity, IPageInfo } from '@commudle/shared-models';
@@ -9,9 +10,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'commudle-communities-list',
-  templateUrl: './communities-list.component.html',
-  styleUrls: ['./communities-list.component.scss'],
+    selector: 'commudle-communities-list',
+    templateUrl: './communities-list.component.html',
+    styleUrls: ['./communities-list.component.scss'],
+    standalone: false
 })
 export class CommunitiesListComponent implements OnInit, OnDestroy {
   communities: ICommunity[] = [];
@@ -34,6 +36,7 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   newest_communities = true;
   loadingData = false;
   loadingCommunities = false;
+  private isBrowser: boolean;
 
   @Output() seoTitleChange = new EventEmitter<string>();
 
@@ -42,7 +45,9 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private location: Location,
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.options = ['Newest', 'Most Events', 'Most Members'];
     this.searchForm = this.fb.group({
       name: [''],
@@ -50,7 +55,8 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.limit = window.innerWidth <= 768 ? 3 : 6;
+    // SSR-safe: window is not available on the server.
+    this.limit = this.isBrowser && window.innerWidth <= 768 ? 3 : 6;
     this.search();
     const params = this.activatedRoute.snapshot.queryParams;
     if (Object.keys(params).length > 0) {
@@ -185,7 +191,10 @@ export class CommunitiesListComponent implements OnInit, OnDestroy {
     this.updateSeoTitle();
     const urlSearchParams = new URLSearchParams(queryParams);
     const queryParamsString = urlSearchParams.toString();
-    this.location.replaceState(location.pathname, queryParamsString);
+    // SSR-safe: global `location` is not available on the server.
+    if (this.isBrowser) {
+      this.location.replaceState(location.pathname, queryParamsString);
+    }
     this.getPopularCommunities();
   }
 }

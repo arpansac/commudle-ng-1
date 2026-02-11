@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as actionCable from 'actioncable';
+import type * as actionCable from 'actioncable';
 import { ActionCableConnectionSocket } from 'apps/shared-services/action-cable-connection.socket';
 import { APPLICATION_CABLE_CHANNELS } from 'apps/shared-services/application-cable-channels.constants';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
@@ -19,8 +19,6 @@ export class HmsLiveChannel {
     HAND_LOWERED: 'hand_lowered',
     END_STREAM: 'end_stream',
   };
-
-  actionCable = actionCable;
 
   public channelData$ = {};
   public channelConnectionStatus$ = {};

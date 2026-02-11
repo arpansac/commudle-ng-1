@@ -7,9 +7,10 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-community-members-list',
-  templateUrl: './community-members-list.component.html',
-  styleUrls: ['./community-members-list.component.scss'],
+    selector: 'app-community-members-list',
+    templateUrl: './community-members-list.component.html',
+    styleUrls: ['./community-members-list.component.scss'],
+    standalone: false
 })
 export class CommunityMembersListComponent implements OnInit, OnDestroy {
   sendingRequest = false;

@@ -8,6 +8,7 @@ import { NbDialogRef } from '@commudle/theme';
 import { HackathonTeamRoundSubmissionService } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-ppt-upload-dialog',
   templateUrl: './ppt-upload-dialog.component.html',
   styleUrls: ['./ppt-upload-dialog.component.scss'],

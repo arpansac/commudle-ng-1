@@ -25,10 +25,11 @@ import { ICommunity, IEvent } from '@commudle/shared-models';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-collaborating-communities',
-  templateUrl: './collaborating-communities.component.html',
-  styleUrls: ['./collaborating-communities.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-collaborating-communities',
+    templateUrl: './collaborating-communities.component.html',
+    styleUrls: ['./collaborating-communities.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CollaboratingCommunitiesComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() community: ICommunity;

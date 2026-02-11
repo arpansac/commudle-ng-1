@@ -8,9 +8,10 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-work-history-card',
-  templateUrl: './user-work-history-card.component.html',
-  styleUrls: ['./user-work-history-card.component.scss'],
+    selector: 'app-user-work-history-card',
+    templateUrl: './user-work-history-card.component.html',
+    styleUrls: ['./user-work-history-card.component.scss'],
+    standalone: false
 })
 export class UserWorkHistoryCardComponent implements OnInit, OnDestroy {
   @Input() user: IUser;

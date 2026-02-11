@@ -35,9 +35,10 @@ import { Subscription } from 'rxjs';
 import { commudleIcons } from 'apps/commudle-admin/src/assets/store/icons-library';
 
 @Component({
-  selector: 'app-community-control-panel',
-  templateUrl: './community-control-panel.component.html',
-  styleUrls: ['./community-control-panel.component.scss'],
+    selector: 'app-community-control-panel',
+    templateUrl: './community-control-panel.component.html',
+    styleUrls: ['./community-control-panel.component.scss'],
+    standalone: false
 })
 export class CommunityControlPanelComponent implements OnInit, OnDestroy {
   community: ICommunity;

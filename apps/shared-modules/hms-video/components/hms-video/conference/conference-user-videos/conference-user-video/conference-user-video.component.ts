@@ -26,9 +26,10 @@ import { hmsActions, hmsStore } from 'apps/shared-modules/hms-video/stores/hms.s
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-  selector: 'app-conference-user-video',
-  templateUrl: './conference-user-video.component.html',
-  styleUrls: ['./conference-user-video.component.scss'],
+    selector: 'app-conference-user-video',
+    templateUrl: './conference-user-video.component.html',
+    styleUrls: ['./conference-user-video.component.scss'],
+    standalone: false
 })
 export class ConferenceUserVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() peer: HMSPeer;

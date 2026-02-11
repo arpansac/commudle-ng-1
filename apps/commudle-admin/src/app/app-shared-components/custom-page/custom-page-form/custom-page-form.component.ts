@@ -11,9 +11,10 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-  selector: 'app-custom-page-form',
-  templateUrl: './custom-page-form.component.html',
-  styleUrls: ['./custom-page-form.component.scss'],
+    selector: 'app-custom-page-form',
+    templateUrl: './custom-page-form.component.html',
+    styleUrls: ['./custom-page-form.component.scss'],
+    standalone: false
 })
 export class CustomPageFormComponent implements OnInit, OnDestroy {
   customPageForm: FormGroup;

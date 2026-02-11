@@ -3,9 +3,10 @@ import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featu
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 
 @Component({
-  selector: 'commudle-experts-featured',
-  templateUrl: './experts-featured.component.html',
-  styleUrls: ['./experts-featured.component.scss'],
+    selector: 'commudle-experts-featured',
+    templateUrl: './experts-featured.component.html',
+    styleUrls: ['./experts-featured.component.scss'],
+    standalone: false
 })
 export class ExpertsFeaturedComponent implements OnInit {
   experts: IFeaturedItems[] = [];

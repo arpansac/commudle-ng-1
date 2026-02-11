@@ -10,10 +10,11 @@ import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-agenda',
-  templateUrl: './agenda.component.html',
-  styleUrls: ['./agenda.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-agenda',
+    templateUrl: './agenda.component.html',
+    styleUrls: ['./agenda.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AgendaComponent implements OnInit {
   moment = moment;

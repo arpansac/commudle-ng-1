@@ -4,9 +4,10 @@ import { CampaignService, SeoService } from '@commudle/shared-services';
 import * as moment from 'moment';
 import { faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'commudle-campaign-dashboard',
-  templateUrl: './campaign-dashboard.component.html',
-  styleUrls: ['./campaign-dashboard.component.scss'],
+    selector: 'commudle-campaign-dashboard',
+    templateUrl: './campaign-dashboard.component.html',
+    styleUrls: ['./campaign-dashboard.component.scss'],
+    standalone: false
 })
 export class CampaignDashboardComponent implements OnInit {
   campaigns: ICampaign[];

@@ -5,9 +5,10 @@ import { ICaseStudy } from 'apps/shared-models/case-study.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-case-study-card',
-  templateUrl: './case-study-card.component.html',
-  styleUrls: ['./case-study-card.component.scss'],
+    selector: 'commudle-case-study-card',
+    templateUrl: './case-study-card.component.html',
+    styleUrls: ['./case-study-card.component.scss'],
+    standalone: false
 })
 export class CaseStudyCardComponent implements OnInit {
   @Input() caseStudy: ICaseStudy;

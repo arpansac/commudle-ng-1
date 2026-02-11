@@ -6,9 +6,10 @@ import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-public-hackathon-projects',
-  templateUrl: './public-hackathon-projects.component.html',
-  styleUrls: ['./public-hackathon-projects.component.scss'],
+    selector: 'commudle-public-hackathon-projects',
+    templateUrl: './public-hackathon-projects.component.html',
+    styleUrls: ['./public-hackathon-projects.component.scss'],
+    standalone: false
 })
 export class PublicHackathonProjectsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];

@@ -34,9 +34,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-discussion-community-channel',
-  templateUrl: './discussion-community-channel.component.html',
-  styleUrls: ['./discussion-community-channel.component.scss'],
+    selector: 'app-discussion-community-channel',
+    templateUrl: './discussion-community-channel.component.html',
+    styleUrls: ['./discussion-community-channel.component.scss'],
+    standalone: false
 })
 export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('confirmJoinDialog') joinChannelDialog: TemplateRef<any>;

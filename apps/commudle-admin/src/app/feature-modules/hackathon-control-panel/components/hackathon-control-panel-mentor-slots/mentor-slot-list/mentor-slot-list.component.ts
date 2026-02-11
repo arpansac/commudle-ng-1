@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
   selector: 'commudle-mentor-slot-list',
   templateUrl: './mentor-slot-list.component.html',
   styleUrl: './mentor-slot-list.component.scss',
+  standalone: false,
 })
 export class MentorSlotListComponent implements OnDestroy, OnChanges {
   @Input() round: IRound;

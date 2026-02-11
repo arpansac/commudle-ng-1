@@ -6,9 +6,10 @@ import { NbDialogService } from '@commudle/theme';
 import { MainNewsletterTestEmailerComponent } from '../../main-newsletter-test-emailer/main-newsletter-test-emailer.component';
 
 @Component({
-  selector: 'app-main-newsletter-list-item',
-  templateUrl: './main-newsletter-list-item.component.html',
-  styleUrls: ['./main-newsletter-list-item.component.scss']
+    selector: 'app-main-newsletter-list-item',
+    templateUrl: './main-newsletter-list-item.component.html',
+    styleUrls: ['./main-newsletter-list-item.component.scss'],
+    standalone: false
 })
 export class MainNewsletterListItemComponent implements OnInit {
   @Input() newsletter: IMainNewsletter;

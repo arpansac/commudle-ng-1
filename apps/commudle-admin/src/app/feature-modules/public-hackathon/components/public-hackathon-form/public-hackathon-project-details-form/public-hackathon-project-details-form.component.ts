@@ -5,9 +5,10 @@ import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 
 @Component({
-  selector: 'commudle-public-hackathon-project-details-form',
-  templateUrl: './public-hackathon-project-details-form.component.html',
-  styleUrls: ['./public-hackathon-project-details-form.component.scss'],
+    selector: 'commudle-public-hackathon-project-details-form',
+    templateUrl: './public-hackathon-project-details-form.component.html',
+    styleUrls: ['./public-hackathon-project-details-form.component.scss'],
+    standalone: false
 })
 export class PublicHackathonProjectDetailsFormComponent implements OnInit {
   @Input() hackathon: IHackathon;

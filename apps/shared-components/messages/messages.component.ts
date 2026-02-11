@@ -25,9 +25,10 @@ import { debounceTime } from 'rxjs/operators';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-messages',
-  templateUrl: './messages.component.html',
-  styleUrls: ['./messages.component.scss'],
+    selector: 'app-messages',
+    templateUrl: './messages.component.html',
+    styleUrls: ['./messages.component.scss'],
+    standalone: false
 })
 export class MessagesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() discussion: IDiscussion;

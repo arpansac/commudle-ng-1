@@ -4,9 +4,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'app-voters',
-  templateUrl: './voters.component.html',
-  styleUrls: ['./voters.component.scss'],
+    selector: 'app-voters',
+    templateUrl: './voters.component.html',
+    styleUrls: ['./voters.component.scss'],
+    standalone: false
 })
 export class VotersComponent implements OnInit {
   @ViewChild('votersList') votersList: TemplateRef<any>;

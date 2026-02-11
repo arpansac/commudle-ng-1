@@ -15,6 +15,7 @@ import { environment } from '@commudle/shared-environments';
   templateUrl: './recap-2025.component.html',
   styleUrls: ['./recap-2025.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class Recap2025Component implements OnInit, OnDestroy {
   currentSlide = 0;

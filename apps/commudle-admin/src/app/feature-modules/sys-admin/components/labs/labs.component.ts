@@ -6,9 +6,10 @@ import { SysAdminLabsService } from 'apps/commudle-admin/src/app/feature-modules
 import { ELabPublishStatus } from '@commudle/shared-models';
 
 @Component({
-  selector: 'commudle-labs',
-  templateUrl: './labs.component.html',
-  styleUrls: ['./labs.component.scss'],
+    selector: 'commudle-labs',
+    templateUrl: './labs.component.html',
+    styleUrls: ['./labs.component.scss'],
+    standalone: false
 })
 export class LabsComponent implements OnInit {
   moment = moment;

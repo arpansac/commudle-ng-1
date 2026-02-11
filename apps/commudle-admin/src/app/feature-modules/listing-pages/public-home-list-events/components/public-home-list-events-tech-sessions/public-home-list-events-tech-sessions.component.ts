@@ -8,9 +8,10 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { ISessions } from 'apps/shared-models/sessions.model';
 
 @Component({
-  selector: 'commudle-public-home-list-events-tech-sessions',
-  templateUrl: './public-home-list-events-tech-sessions.component.html',
-  styleUrls: ['./public-home-list-events-tech-sessions.component.scss'],
+    selector: 'commudle-public-home-list-events-tech-sessions',
+    templateUrl: './public-home-list-events-tech-sessions.component.html',
+    styleUrls: ['./public-home-list-events-tech-sessions.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsTechSessionsComponent implements OnInit, AfterViewInit {
   @Input() communityGroupId: number;

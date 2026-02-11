@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'commudle-members-list',
-  templateUrl: './members-list.component.html',
-  styleUrls: ['./members-list.component.scss'],
+    selector: 'commudle-members-list',
+    templateUrl: './members-list.component.html',
+    styleUrls: ['./members-list.component.scss'],
+    standalone: false
 })
 export class MembersListComponent implements OnInit, OnDestroy {
   members: IUser[] = [];

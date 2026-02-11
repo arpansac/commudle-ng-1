@@ -39,9 +39,10 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-event-location-tracks',
-  templateUrl: './event-location-tracks.component.html',
-  styleUrls: ['./event-location-tracks.component.scss'],
+    selector: 'app-event-location-tracks',
+    templateUrl: './event-location-tracks.component.html',
+    styleUrls: ['./event-location-tracks.component.scss'],
+    standalone: false
 })
 export class EventLocationTracksComponent implements OnInit, OnChanges {
   @Input() eventLocations: IEventLocation[] = [];

@@ -4,9 +4,10 @@ import { SeoService } from '@commudle/shared-services';
 import { SysAdminCampaignService } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/services/sys-admin-campaign.service';
 
 @Component({
-  selector: 'commudle-admin-campaigns-list',
-  templateUrl: './admin-campaigns-list.component.html',
-  styleUrls: ['./admin-campaigns-list.component.scss'],
+    selector: 'commudle-admin-campaigns-list',
+    templateUrl: './admin-campaigns-list.component.html',
+    styleUrls: ['./admin-campaigns-list.component.scss'],
+    standalone: false
 })
 export class AdminCampaignsListComponent implements OnInit, OnDestroy {
   campaigns: ICampaign[];

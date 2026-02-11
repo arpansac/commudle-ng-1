@@ -48,6 +48,7 @@ import {
 } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
 
 @Component({
+  standalone: false,
   selector: 'commudle-event-form-responses',
   templateUrl: './event-form-responses.component.html',
   styleUrls: ['./event-form-responses.component.scss'],

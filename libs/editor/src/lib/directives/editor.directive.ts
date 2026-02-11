@@ -13,14 +13,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Content, Editor, type EditorEvents } from '@tiptap/core';
 
 @Directive({
-  selector: 'tiptap[editor], [tiptap][editor], tiptap-editor[editor], [tiptapEditor][editor]',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => EditorDirective),
-      multi: true,
-    },
-  ],
+    selector: 'tiptap[editor], [tiptap][editor], tiptap-editor[editor], [tiptapEditor][editor]',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => EditorDirective),
+            multi: true,
+        },
+    ],
+    standalone: false
 })
 export class EditorDirective implements OnInit, AfterViewInit, ControlValueAccessor {
   readonly editor = input.required<Editor>();

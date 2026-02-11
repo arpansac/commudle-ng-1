@@ -4,9 +4,10 @@ import { ActivatedRoute } from "@angular/router";
 import { FeedItemService } from "apps/commudle-admin/src/app/services/feed-items.service";
 
 @Component({
-  selector: "app-feed-item",
-  templateUrl: "./feed-item.component.html",
-  styleUrls: ["./feed-item.component.scss"],
+    selector: "app-feed-item",
+    templateUrl: "./feed-item.component.html",
+    styleUrls: ["./feed-item.component.scss"],
+    standalone: false
 })
 export class FeedItemComponent implements OnInit {
   feedItem: IFeedItem;

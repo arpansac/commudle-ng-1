@@ -7,9 +7,10 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-  selector: 'commudle-public-home-list-events-speakers',
-  templateUrl: './public-home-list-events-speakers.component.html',
-  styleUrls: ['./public-home-list-events-speakers.component.scss'],
+    selector: 'commudle-public-home-list-events-speakers',
+    templateUrl: './public-home-list-events-speakers.component.html',
+    styleUrls: ['./public-home-list-events-speakers.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsSpeakersComponent implements OnInit, AfterViewInit {
   @Input() parentType: string;

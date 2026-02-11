@@ -5,9 +5,10 @@ import { SeoService } from '@commudle/shared-services';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-testimonial-card',
-  templateUrl: './testimonial-card.component.html',
-  styleUrls: ['./testimonial-card.component.scss'],
+    selector: 'commudle-testimonial-card',
+    templateUrl: './testimonial-card.component.html',
+    styleUrls: ['./testimonial-card.component.scss'],
+    standalone: false
 })
 export class TestimonialCardComponent implements OnInit {
   @Input() testimonials: ITestimonial[];

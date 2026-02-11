@@ -4,9 +4,10 @@ import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/us
 import { IUser } from '@commudle/shared-models';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'app-user-profile-card-large',
-  templateUrl: './user-profile-card-large.component.html',
-  styleUrls: ['./user-profile-card-large.component.scss'],
+    selector: 'app-user-profile-card-large',
+    templateUrl: './user-profile-card-large.component.html',
+    styleUrls: ['./user-profile-card-large.component.scss'],
+    standalone: false
 })
 export class UserProfileCardLargeComponent implements OnInit {
   @Input() user: IUser;

@@ -5,6 +5,7 @@ import { CommunityChannelHandlerService } from '@commudle/shared-components';
 import { ToastrService } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-new-discussion-form',
   templateUrl: './new-discussion-form.component.html',
   styleUrls: ['./new-discussion-form.component.scss'],

@@ -11,9 +11,10 @@ import { GoogleTagManagerService } from '@commudle/shared-services';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-  selector: 'app-votes-display',
-  templateUrl: './votes-display.component.html',
-  styleUrls: ['./votes-display.component.scss'],
+    selector: 'app-votes-display',
+    templateUrl: './votes-display.component.html',
+    styleUrls: ['./votes-display.component.scss'],
+    standalone: false
 })
 export class VotesDisplayComponent implements OnInit, OnDestroy {
   @Input() votableType: string;

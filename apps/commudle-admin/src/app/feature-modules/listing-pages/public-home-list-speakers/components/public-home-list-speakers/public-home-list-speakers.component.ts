@@ -6,9 +6,10 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'commudle-public-home-list-speakers',
-  templateUrl: './public-home-list-speakers.component.html',
-  styleUrls: ['./public-home-list-speakers.component.scss'],
+    selector: 'commudle-public-home-list-speakers',
+    templateUrl: './public-home-list-speakers.component.html',
+    styleUrls: ['./public-home-list-speakers.component.scss'],
+    standalone: false
 })
 export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   isMobileView: boolean;

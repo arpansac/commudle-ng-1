@@ -6,9 +6,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-student-non-profit-community-support',
-  templateUrl: './student-non-profit-community-support.component.html',
-  styleUrls: ['./student-non-profit-community-support.component.scss'],
+    selector: 'commudle-student-non-profit-community-support',
+    templateUrl: './student-non-profit-community-support.component.html',
+    styleUrls: ['./student-non-profit-community-support.component.scss'],
+    standalone: false
 })
 export class StudentNonProfitCommunitySupportComponent implements OnInit, OnDestroy {
   faStar = faStar;

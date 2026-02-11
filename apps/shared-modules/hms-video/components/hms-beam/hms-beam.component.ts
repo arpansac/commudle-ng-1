@@ -6,10 +6,11 @@ import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { WhatsNewService } from 'apps/shared-services/whats-new.service';
 
 @Component({
-  selector: 'app-hms-beam',
-  templateUrl: './hms-beam.component.html',
-  styleUrls: ['./hms-beam.component.scss'],
-  providers: [IsBrowserService],
+    selector: 'app-hms-beam',
+    templateUrl: './hms-beam.component.html',
+    styleUrls: ['./hms-beam.component.scss'],
+    providers: [IsBrowserService],
+    standalone: false
 })
 export class HmsBeamComponent implements OnInit {
   authToken: string;

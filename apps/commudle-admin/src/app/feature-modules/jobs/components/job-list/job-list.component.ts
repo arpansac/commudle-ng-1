@@ -20,10 +20,11 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { EnumFormatPipe } from 'apps/shared-pipes/enum-format.pipe';
 
 @Component({
-  selector: 'app-job-list',
-  templateUrl: './job-list.component.html',
-  styleUrls: ['./job-list.component.scss'],
-  providers: [EnumFormatPipe],
+    selector: 'app-job-list',
+    templateUrl: './job-list.component.html',
+    styleUrls: ['./job-list.component.scss'],
+    providers: [EnumFormatPipe],
+    standalone: false
 })
 export class JobListComponent implements OnInit, OnDestroy {
   jobs: IJob[] = [];

@@ -5,9 +5,10 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-community-build-card',
-  templateUrl: './community-build-card.component.html',
-  styleUrls: ['./community-build-card.component.scss'],
+    selector: 'app-community-build-card',
+    templateUrl: './community-build-card.component.html',
+    styleUrls: ['./community-build-card.component.scss'],
+    standalone: false
 })
 export class CommunityBuildCardComponent implements OnInit {
   @Input() communityBuild: ICommunityBuild;

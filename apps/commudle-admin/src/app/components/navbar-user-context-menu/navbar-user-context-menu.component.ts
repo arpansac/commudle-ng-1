@@ -4,9 +4,10 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { NbDialogService } from '@commudle/theme';
 
 @Component({
-  selector: 'commudle-navbar-user-context-menu',
-  templateUrl: './navbar-user-context-menu.component.html',
-  styleUrls: ['./navbar-user-context-menu.component.scss'],
+    selector: 'commudle-navbar-user-context-menu',
+    templateUrl: './navbar-user-context-menu.component.html',
+    styleUrls: ['./navbar-user-context-menu.component.scss'],
+    standalone: false
 })
 export class NavbarUserContextMenuComponent implements OnInit {
   @Input() currentUser: ICurrentUser;

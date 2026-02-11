@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-circular-progressive-bar',
-  templateUrl: './circular-progressive-bar.component.html',
-  styleUrls: ['./circular-progressive-bar.component.scss'],
+    selector: 'app-circular-progressive-bar',
+    templateUrl: './circular-progressive-bar.component.html',
+    styleUrls: ['./circular-progressive-bar.component.scss'],
+    standalone: false
 })
 export class CircularProgressiveBarComponent implements OnInit, OnChanges {
   @Input() value: number;

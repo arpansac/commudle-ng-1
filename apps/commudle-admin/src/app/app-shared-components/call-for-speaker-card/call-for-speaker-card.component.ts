@@ -7,9 +7,10 @@ import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_en
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-call-for-speaker-card',
-  templateUrl: './call-for-speaker-card.component.html',
-  styleUrls: ['./call-for-speaker-card.component.scss'],
+    selector: 'commudle-call-for-speaker-card',
+    templateUrl: './call-for-speaker-card.component.html',
+    styleUrls: ['./call-for-speaker-card.component.scss'],
+    standalone: false
 })
 export class CallForSpeakerCardComponent implements OnInit {
   @Input() item: IEventDataFormEntityGroup;

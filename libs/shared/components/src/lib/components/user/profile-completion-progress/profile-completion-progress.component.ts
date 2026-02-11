@@ -4,9 +4,10 @@ import { IProfileCompletionStatus } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'commudle-profile-completion-progress',
-  templateUrl: './profile-completion-progress.component.html',
-  styleUrls: ['./profile-completion-progress.component.scss'],
+    selector: 'commudle-profile-completion-progress',
+    templateUrl: './profile-completion-progress.component.html',
+    styleUrls: ['./profile-completion-progress.component.scss'],
+    standalone: false
 })
 export class ProfileCompletionProgressComponent implements OnInit, OnDestroy {
   profileCompletionPercentage = 0;

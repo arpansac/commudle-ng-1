@@ -16,9 +16,10 @@ import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum'
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'commudle-campaign-form',
-  templateUrl: './campaign-form.component.html',
-  styleUrls: ['./campaign-form.component.scss'],
+    selector: 'commudle-campaign-form',
+    templateUrl: './campaign-form.component.html',
+    styleUrls: ['./campaign-form.component.scss'],
+    standalone: false
 })
 export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;

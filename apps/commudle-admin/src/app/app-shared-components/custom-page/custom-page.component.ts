@@ -10,9 +10,10 @@ import { EDbModels } from '@commudle/shared-models';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-  selector: 'commudle-custom-page',
-  templateUrl: './custom-page.component.html',
-  styleUrls: ['./custom-page.component.scss'],
+    selector: 'commudle-custom-page',
+    templateUrl: './custom-page.component.html',
+    styleUrls: ['./custom-page.component.scss'],
+    standalone: false
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() parentId: number | string;

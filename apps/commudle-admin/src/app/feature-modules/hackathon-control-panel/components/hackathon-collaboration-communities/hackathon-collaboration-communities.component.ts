@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
+  standalone: false,
   selector: 'commudle-hackathon-collaboration-communities',
   templateUrl: './hackathon-collaboration-communities.component.html',
   styleUrls: ['./hackathon-collaboration-communities.component.scss'],

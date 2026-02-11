@@ -32,9 +32,10 @@ import { TrackSlotsService } from 'apps/commudle-admin/src/app/services/track_sl
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-event-locations',
-  templateUrl: './event-locations.component.html',
-  styleUrls: ['./event-locations.component.scss'],
+    selector: 'app-event-locations',
+    templateUrl: './event-locations.component.html',
+    styleUrls: ['./event-locations.component.scss'],
+    standalone: false
 })
 export class EventLocationsComponent implements OnInit {
   @ViewChild('eventLocationFormTemplate') eventLocationFormTemplate: TemplateRef<any>;

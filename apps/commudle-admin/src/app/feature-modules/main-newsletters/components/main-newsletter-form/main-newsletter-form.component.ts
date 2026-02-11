@@ -11,9 +11,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-main-newsletter-form',
-  templateUrl: './main-newsletter-form.component.html',
-  styleUrls: ['./main-newsletter-form.component.scss'],
+    selector: 'app-main-newsletter-form',
+    templateUrl: './main-newsletter-form.component.html',
+    styleUrls: ['./main-newsletter-form.component.scss'],
+    standalone: false
 })
 export class MainNewsletterFormComponent implements OnInit, OnDestroy, AfterViewInit, CanComponentDeactivate {
   newsLetter: IMainNewsletter;

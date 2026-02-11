@@ -31,6 +31,7 @@ import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
+  standalone: false,
   selector: 'commudle-hackathon-control-panel-mentors',
   templateUrl: './hackathon-control-panel-mentors.component.html',
   styleUrls: ['./hackathon-control-panel-mentors.component.scss'],

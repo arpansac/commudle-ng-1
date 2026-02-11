@@ -10,6 +10,7 @@ import { NbDialogService } from '@commudle/theme';
 import { CommunityChannelsService } from '@commudle/shared-services';
 
 @Component({
+  standalone: false,
   selector: 'commudle-community-channel',
   templateUrl: './community-channel.component.html',
   styleUrls: ['./community-channel.component.scss'],

@@ -5,9 +5,10 @@ import { IHmsRecording } from 'apps/shared-modules/hms-video/models/hms-recordin
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-event-recordings',
-  templateUrl: './event-recordings.component.html',
-  styleUrls: ['./event-recordings.component.scss'],
+    selector: 'app-event-recordings',
+    templateUrl: './event-recordings.component.html',
+    styleUrls: ['./event-recordings.component.scss'],
+    standalone: false
 })
 export class EventRecordingsComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;

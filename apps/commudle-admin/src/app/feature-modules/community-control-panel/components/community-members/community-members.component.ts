@@ -31,6 +31,7 @@ import * as moment from 'moment';
 import { StatsCommunitiesService } from 'apps/commudle-admin/src/app/services/stats/stats-communities.service';
 import { Chart } from 'chart.js';
 @Component({
+  standalone: false,
   selector: 'commudle-community-members',
   templateUrl: './community-members.component.html',
   styleUrls: ['./community-members.component.scss'],

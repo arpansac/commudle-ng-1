@@ -4,9 +4,10 @@ import { IEvent } from 'apps/shared-models/event.model';
 import * as moment from 'moment';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 @Component({
-  selector: 'app-community-events-list-date',
-  templateUrl: './community-events-list-date.component.html',
-  styleUrls: ['./community-events-list-date.component.scss'],
+    selector: 'app-community-events-list-date',
+    templateUrl: './community-events-list-date.component.html',
+    styleUrls: ['./community-events-list-date.component.scss'],
+    standalone: false
 })
 export class CommunityEventsListDateComponent implements OnInit {
   @Input() value: string | number;

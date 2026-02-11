@@ -5,9 +5,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-user-basic-social',
-  templateUrl: './user-basic-social.component.html',
-  styleUrls: ['./user-basic-social.component.scss'],
+    selector: 'app-user-basic-social',
+    templateUrl: './user-basic-social.component.html',
+    styleUrls: ['./user-basic-social.component.scss'],
+    standalone: false
 })
 export class UserBasicSocialComponent implements OnChanges {
   @Input() user: IUser;

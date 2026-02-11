@@ -7,9 +7,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-newsletter-list',
-  templateUrl: './newsletter-list.component.html',
-  styleUrls: ['./newsletter-list.component.scss'],
+    selector: 'app-newsletter-list',
+    templateUrl: './newsletter-list.component.html',
+    styleUrls: ['./newsletter-list.component.scss'],
+    standalone: false
 })
 export class NewsletterListComponent implements OnInit, OnDestroy {
   newsletters: IMainNewsletter[] = [];

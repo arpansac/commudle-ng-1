@@ -6,9 +6,10 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { ISpeakerResource } from 'apps/shared-models/speaker_resource.model';
 
 @Component({
-  selector: 'commudle-public-home-list-speakers-content',
-  templateUrl: './public-home-list-speakers-content.component.html',
-  styleUrls: ['./public-home-list-speakers-content.component.scss'],
+    selector: 'commudle-public-home-list-speakers-content',
+    templateUrl: './public-home-list-speakers-content.component.html',
+    styleUrls: ['./public-home-list-speakers-content.component.scss'],
+    standalone: false
 })
 export class PublicHomeListSpeakersContentComponent implements OnInit {
   @Input() parentType: string;

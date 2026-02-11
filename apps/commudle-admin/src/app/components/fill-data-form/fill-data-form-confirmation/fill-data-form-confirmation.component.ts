@@ -24,9 +24,10 @@ import { UserRolesUsersService } from 'apps/commudle-admin/src/app/services/user
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 
 @Component({
-  selector: 'commudle-fill-data-form-confirmation',
-  templateUrl: './fill-data-form-confirmation.component.html',
-  styleUrls: ['./fill-data-form-confirmation.component.scss'],
+    selector: 'commudle-fill-data-form-confirmation',
+    templateUrl: './fill-data-form-confirmation.component.html',
+    styleUrls: ['./fill-data-form-confirmation.component.scss'],
+    standalone: false
 })
 export class FillDataFormConfirmationComponent implements OnInit, OnDestroy {
   currentUser: IUser;

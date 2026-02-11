@@ -18,9 +18,10 @@ import { SeoService } from '@commudle/shared-services';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 
 @Component({
-  selector: 'commudle-community-forum',
-  templateUrl: './community-forum.component.html',
-  styleUrls: ['./community-forum.component.scss'],
+    selector: 'commudle-community-forum',
+    templateUrl: './community-forum.component.html',
+    styleUrls: ['./community-forum.component.scss'],
+    standalone: false
 })
 export class CommunityForumComponent implements OnInit, OnDestroy {
   @Input() isCommunityOrganizer = false;

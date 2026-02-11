@@ -4,9 +4,10 @@ import { CampaignService } from '@commudle/shared-services';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'commudle-campaign-details',
-  templateUrl: './campaign-details.component.html',
-  styleUrls: ['./campaign-details.component.scss'],
+    selector: 'commudle-campaign-details',
+    templateUrl: './campaign-details.component.html',
+    styleUrls: ['./campaign-details.component.scss'],
+    standalone: false
 })
 export class CampaignDetailsComponent implements OnInit {
   @Input() campaignId: number;

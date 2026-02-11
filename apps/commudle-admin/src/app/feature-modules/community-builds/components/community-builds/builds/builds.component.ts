@@ -8,9 +8,10 @@ import { Output, EventEmitter } from '@angular/core';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-  selector: 'commudle-builds',
-  templateUrl: './builds.component.html',
-  styleUrls: ['./builds.component.scss'],
+    selector: 'commudle-builds',
+    templateUrl: './builds.component.html',
+    styleUrls: ['./builds.component.scss'],
+    standalone: false
 })
 export class BuildsComponent implements OnInit {
   communityBuilds: ICommunityBuild[] = [];

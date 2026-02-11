@@ -9,6 +9,7 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 
 @Component({
   selector: 'commudle-hackathon-rsvp-email',
+  standalone: false,
   templateUrl: './hackathon-rsvp-email.component.html',
   styleUrls: ['./hackathon-rsvp-email.component.scss'],
 })

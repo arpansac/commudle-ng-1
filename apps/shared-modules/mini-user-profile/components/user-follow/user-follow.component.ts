@@ -19,10 +19,11 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-follow',
-  templateUrl: './user-follow.component.html',
-  styleUrls: ['./user-follow.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-user-follow',
+    templateUrl: './user-follow.component.html',
+    styleUrls: ['./user-follow.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UserFollowComponent implements OnChanges, OnDestroy {
   @Input() username: string;

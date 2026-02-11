@@ -7,9 +7,10 @@ import { Subscription } from 'rxjs';
 import { faAward } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-user-badges',
-  templateUrl: './user-badges.component.html',
-  styleUrls: ['./user-badges.component.scss'],
+    selector: 'app-user-badges',
+    templateUrl: './user-badges.component.html',
+    styleUrls: ['./user-badges.component.scss'],
+    standalone: false
 })
 export class UserBadgesComponent implements OnChanges, OnDestroy {
   @Input() user: IUser;

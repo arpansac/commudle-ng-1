@@ -23,9 +23,9 @@ import { ScrollbarHelper } from '../../services/scrollbar-helper.service';
 import { translateXY } from '../../utils/translate';
 
 @Component({
-  selector: 'datatable-body-row',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'datatable-body-row',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     <div
       *ngFor="let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups"
       class="datatable-row-{{ colGroup.type }} datatable-row-group"
@@ -49,7 +49,8 @@ import { translateXY } from '../../utils/translate';
       >
       </datatable-body-cell>
     </div>
-  `
+  `,
+    standalone: false
 })
 export class DataTableBodyRowComponent implements DoCheck {
   @Input() set columns(val: any[]) {

@@ -18,9 +18,10 @@ import { validate } from 'uuid';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-speaker-resource-form',
-  templateUrl: './speaker-resource-form.component.html',
-  styleUrls: ['./speaker-resource-form.component.scss'],
+    selector: 'app-speaker-resource-form',
+    templateUrl: './speaker-resource-form.component.html',
+    styleUrls: ['./speaker-resource-form.component.scss'],
+    standalone: false
 })
 export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
   token: string;

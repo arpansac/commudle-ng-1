@@ -7,9 +7,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-mini-user-profile',
-  templateUrl: './mini-user-profile.component.html',
-  styleUrls: ['./mini-user-profile.component.scss'],
+    selector: 'app-mini-user-profile',
+    templateUrl: './mini-user-profile.component.html',
+    styleUrls: ['./mini-user-profile.component.scss'],
+    standalone: false
 })
 export class MiniUserProfileComponent implements OnInit, OnDestroy {
   @Input() username: string;

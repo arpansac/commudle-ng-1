@@ -4,9 +4,10 @@ import { HomeService } from 'apps/commudle-admin/src/app/services/home.service';
 import { IFeedItem } from 'apps/shared-models/feed-item.model';
 
 @Component({
-  selector: 'app-home-external-feed-links',
-  templateUrl: './home-external-feed-links.component.html',
-  styleUrls: ['./home-external-feed-links.component.scss'],
+    selector: 'app-home-external-feed-links',
+    templateUrl: './home-external-feed-links.component.html',
+    styleUrls: ['./home-external-feed-links.component.scss'],
+    standalone: false
 })
 export class HomeExternalFeedLinksComponent implements OnInit {
   feedItems: IFeedItem[] = [];

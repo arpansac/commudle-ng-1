@@ -4,9 +4,10 @@ import * as moment from 'moment';
 import { DatePipe } from '@angular/common'
 
 @Component({
-  selector: 'app-external-feed-hlist-item',
-  templateUrl: './external-feed-hlist-item.component.html',
-  styleUrls: ['./external-feed-hlist-item.component.scss']
+    selector: 'app-external-feed-hlist-item',
+    templateUrl: './external-feed-hlist-item.component.html',
+    styleUrls: ['./external-feed-hlist-item.component.scss'],
+    standalone: false
 })
 export class ExternalFeedHListItemComponent implements OnInit {
   moment = moment;

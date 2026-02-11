@@ -3,9 +3,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { UserChatsService } from '../../commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 
 @Component({
-  selector: 'app-user-profile-horizontal',
-  templateUrl: './user-profile-horizontal.component.html',
-  styleUrls: ['./user-profile-horizontal.component.scss'],
+    selector: 'app-user-profile-horizontal',
+    templateUrl: './user-profile-horizontal.component.html',
+    styleUrls: ['./user-profile-horizontal.component.scss'],
+    standalone: false
 })
 export class UserProfileHorizontalComponent implements OnInit {
   @Input() user: IUser;

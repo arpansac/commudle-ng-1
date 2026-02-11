@@ -58,6 +58,7 @@ import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/w
   selector: 'commudle-hackathon-control-panel-mentor-slots',
   templateUrl: './hackathon-control-panel-mentor-slots.component.html',
   styleUrls: ['./hackathon-control-panel-mentor-slots.component.scss'],
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterViewInit, OnDestroy {

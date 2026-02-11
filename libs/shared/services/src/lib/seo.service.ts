@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
-import { DOCUMENT, Location } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser, Location } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@commudle/shared-environments';
@@ -16,6 +16,7 @@ export class SeoService {
   private isBotLegacy: boolean;
   private host: string;
   private prohibitedQueryParams = ['q', 'track_slot_id', 'page'];
+  private readonly isBrowser: boolean;
 
   constructor(
     private meta: Meta,
@@ -24,20 +25,34 @@ export class SeoService {
     private cookieService: CookieService,
     private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: any,
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+
+    // Avoid ReferenceError if `isBot` is not actually defined at runtime.
+    const globalIsBot = typeof (globalThis as any).isBot === 'boolean' ? (globalThis as any).isBot : false;
+
     // using native js because angular's route takes somewhere between 100-200ms to initialize and get the query param
-    const url = new URL(window.location.href);
-    this.host = window.location.hostname;
-    this.isBotLegacy = url.searchParams.get('bot') === 'true';
-    if (this.isBotLegacy || ['test.commudle.com'].includes(this.host)) {
-      this.noIndex(true);
+    this.host = '';
+    this.isBotLegacy = false;
+
+    if (this.isBrowser) {
+      const url = new URL(window.location.href);
+      this.host = window.location.hostname;
+      this.isBotLegacy = url.searchParams.get('bot') === 'true';
+      if (this.isBotLegacy || ['test.commudle.com'].includes(this.host)) {
+        this.noIndex(true);
+      }
     }
     // TODO: don't remove above code since we need to no-index the existing bot pages
     // check if cookie is set (x-prerender: 1)
-    this.isBot = this.cookieService.get('x-prerender') === '1' || isBot;
+    this.isBot = (this.isBrowser && this.cookieService.get('x-prerender') === '1') || globalIsBot;
   }
 
   setCanonical() {
+    if (!this.isBrowser) {
+      return;
+    }
     const head = this.document.getElementsByTagName('head')[0];
     let element: HTMLLinkElement = this.document.querySelector(`link[rel='canonical']`) || null;
     if (element == null) {
@@ -146,8 +161,15 @@ export class SeoService {
   }
 
   removeHtmlTags(content): string {
+    const input = content == null ? '' : String(content);
+
+    // DOMParser is browser-only; for SSR fall back to a simple strip.
+    if (!this.isBrowser || typeof DOMParser === 'undefined') {
+      return input.replace(/<[^>]*>/g, '');
+    }
+
     const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
+    const doc = parser.parseFromString(input, 'text/html');
     return doc.body.textContent || '';
   }
 }

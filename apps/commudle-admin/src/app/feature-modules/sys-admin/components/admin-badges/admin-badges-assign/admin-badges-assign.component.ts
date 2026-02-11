@@ -7,9 +7,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-badges-assign',
-  templateUrl: './admin-badges-assign.component.html',
-  styleUrls: ['./admin-badges-assign.component.scss'],
+    selector: 'app-admin-badges-assign',
+    templateUrl: './admin-badges-assign.component.html',
+    styleUrls: ['./admin-badges-assign.component.scss'],
+    standalone: false
 })
 export class AdminBadgesAssignComponent implements OnInit, OnDestroy {
   userBadges: IUserBadge[] = [];

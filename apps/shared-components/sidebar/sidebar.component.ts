@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   //font-awesome icons
   faRightLeft = faRightLeft;
 
-  constructor(private sidebarService: SidebarService) {}
+  constructor(
+    private sidebarService: SidebarService,
+    @Inject(DOCUMENT) private document: Document,
+  ) {}
 
   ngOnInit(): void {
     if (this.eventName && this.sidebarService.setSidebar$[this.eventName]) {
@@ -64,7 +67,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // Set up document click listener manually for better control
     if (this.forWindow) {
       this.documentClickListener = this.onDocumentClick.bind(this);
-      document.addEventListener('mousedown', this.documentClickListener);
+      this.document.addEventListener('mousedown', this.documentClickListener);
     }
   }
 
@@ -73,7 +76,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
 
     if (this.documentClickListener) {
-      document.removeEventListener('mousedown', this.documentClickListener);
+      this.document.removeEventListener('mousedown', this.documentClickListener);
       this.documentClickListener = undefined;
     }
   }

@@ -8,9 +8,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'app-community-create',
-  templateUrl: './community-create.component.html',
-  styleUrls: ['./community-create.component.scss'],
+    selector: 'app-community-create',
+    templateUrl: './community-create.component.html',
+    styleUrls: ['./community-create.component.scss'],
+    standalone: false
 })
 export class CommunityCreateComponent implements OnInit, OnDestroy {
   communityGroupId;

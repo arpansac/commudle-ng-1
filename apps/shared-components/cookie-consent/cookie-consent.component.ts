@@ -5,9 +5,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-cookie-consent',
-  templateUrl: './cookie-consent.component.html',
-  styleUrls: ['./cookie-consent.component.scss'],
+    selector: 'app-cookie-consent',
+    templateUrl: './cookie-consent.component.html',
+    styleUrls: ['./cookie-consent.component.scss'],
+    standalone: false
 })
 export class CookieConsentComponent implements OnInit {
   @Input() showPopup = false;

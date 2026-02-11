@@ -5,6 +5,7 @@ import { HackathonCollaborationCommunitiesService } from '@commudle/shared-servi
 import { IHackathonCollaborationCommunity } from '@commudle/shared-models';
 
 @Component({
+  standalone: false,
   selector: 'commudle-public-hackathon-collaboration-communities',
   templateUrl: './public-hackathon-collaboration-communities.component.html',
   styleUrls: ['./public-hackathon-collaboration-communities.component.scss'],

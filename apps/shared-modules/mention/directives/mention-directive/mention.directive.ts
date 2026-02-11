@@ -13,7 +13,8 @@ import { getCaretCoordinates } from 'apps/shared-modules/mention/utils/textarea-
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appMention]',
+    selector: '[appMention]',
+    standalone: false
 })
 export class MentionDirective implements OnDestroy {
   componentRef: ComponentRef<SuggestionBoxComponent>;

@@ -6,9 +6,10 @@ import * as moment from 'moment';
 
 
 @Component({
-  selector: 'app-lab-list-item',
-  templateUrl: './lab-list-item.component.html',
-  styleUrls: ['./lab-list-item.component.scss']
+    selector: 'app-lab-list-item',
+    templateUrl: './lab-list-item.component.html',
+    styleUrls: ['./lab-list-item.component.scss'],
+    standalone: false
 })
 export class LabListItemComponent implements OnInit {
   @Input() lab: ILab;

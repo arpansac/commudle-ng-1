@@ -19,7 +19,8 @@ import { MiniUserProfileService } from 'apps/shared-modules/mini-user-profile/se
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appMiniUserProfile]',
+    selector: '[appMiniUserProfile]',
+    standalone: false
 })
 export class MiniUserProfileDirective implements OnDestroy, OnInit, AfterViewInit {
   @Input() username: string;

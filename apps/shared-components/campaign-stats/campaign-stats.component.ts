@@ -6,9 +6,10 @@ import { Chart } from 'chart.js';
 declare let google: any;
 
 @Component({
-  selector: 'commudle-campaign-stats',
-  templateUrl: './campaign-stats.component.html',
-  styleUrls: ['./campaign-stats.component.scss'],
+    selector: 'commudle-campaign-stats',
+    templateUrl: './campaign-stats.component.html',
+    styleUrls: ['./campaign-stats.component.scss'],
+    standalone: false
 })
 export class CampaignStatsComponent implements OnInit {
   @Input() campaignId: number;

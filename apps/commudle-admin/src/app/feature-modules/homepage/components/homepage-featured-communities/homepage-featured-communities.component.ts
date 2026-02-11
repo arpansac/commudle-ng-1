@@ -6,10 +6,11 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 
 @Component({
-  selector: 'app-homepage-featured-communities',
-  templateUrl: './homepage-featured-communities.component.html',
-  styleUrls: ['./homepage-featured-communities.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-homepage-featured-communities',
+    templateUrl: './homepage-featured-communities.component.html',
+    styleUrls: ['./homepage-featured-communities.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HomepageFeaturedCommunitiesComponent implements OnInit {
   featuredCommunities: IFeaturedItems[] = [];

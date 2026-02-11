@@ -3,9 +3,10 @@ import { IFeature } from 'apps/shared-models/features.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 
 @Component({
-  selector: 'commudle-features-content',
-  templateUrl: './features-content.component.html',
-  styleUrls: ['./features-content.component.scss'],
+    selector: 'commudle-features-content',
+    templateUrl: './features-content.component.html',
+    styleUrls: ['./features-content.component.scss'],
+    standalone: false
 })
 export class FeaturesContentComponent implements OnInit {
   @Input() selectedFeature: IFeature;

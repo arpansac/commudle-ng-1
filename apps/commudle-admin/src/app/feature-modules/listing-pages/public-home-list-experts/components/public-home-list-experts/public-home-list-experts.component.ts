@@ -4,9 +4,10 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { IBadge } from 'apps/shared-models/badge.model';
 import { SeoService } from '@commudle/shared-services';
 @Component({
-  selector: 'commudle-public-home-list-experts',
-  templateUrl: './public-home-list-experts.component.html',
-  styleUrls: ['./public-home-list-experts.component.scss'],
+    selector: 'commudle-public-home-list-experts',
+    templateUrl: './public-home-list-experts.component.html',
+    styleUrls: ['./public-home-list-experts.component.scss'],
+    standalone: false
 })
 export class PublicHomeListExpertsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;

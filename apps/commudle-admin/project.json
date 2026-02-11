@@ -16,7 +16,7 @@
             "externals": "replace"
           }
         },
-        "outputPath": "dist/apps/commudle-admin",
+        "outputPath": "dist/apps/commudle-admin/browser",
         "index": "apps/commudle-admin/src/index.html",
         "main": "apps/commudle-admin/src/main.ts",
         "polyfills": ["zone.js"],
@@ -86,7 +86,8 @@
           "buildTarget": "commudle-admin:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -106,7 +107,8 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/commudle-admin/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "tsConfig": "apps/commudle-admin/tsconfig.spec.json"
       },
       "configurations": {
         "ci": {
@@ -133,11 +135,82 @@
         }
       }
     },
-    "deploy": {
-      "executor": "@nx-extend/firebase-hosting:deploy",
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nx/angular:webpack-server",
       "options": {
-        "site": "commudle-eacee"
-      }
+        "outputPath": "dist/apps/commudle-admin/server",
+        "main": "apps/commudle-admin/src/server.ts",
+        "tsConfig": "apps/commudle-admin/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/commudle-admin/src/environments/environment.ts",
+              "with": "apps/commudle-admin/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "continuous": true,
+      "executor": "@angular-devkit/build-angular:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "commudle-admin:build:development",
+          "serverTarget": "commudle-admin:server:development"
+        },
+        "production": {
+          "browserTarget": "commudle-admin:build:production",
+          "serverTarget": "commudle-admin:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@angular-devkit/build-angular:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "commudle-admin:build:development",
+          "serverTarget": "commudle-admin:server:development"
+        },
+        "production": {
+          "browserTarget": "commudle-admin:build:production",
+          "serverTarget": "commudle-admin:server:production"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "release": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/builders/release.js"
+      },
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
+        },
+        {
+          "target": "server",
+          "projects": "self"
+        }
+      ]
     }
   }
 }

@@ -3,9 +3,10 @@ import { FooterService } from 'apps/commudle-admin/src/app/services/footer.servi
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-  selector: 'commudle-public-home-list-events',
-  templateUrl: './public-home-list-events.component.html',
-  styleUrls: ['./public-home-list-events.component.scss'],
+    selector: 'commudle-public-home-list-events',
+    templateUrl: './public-home-list-events.component.html',
+    styleUrls: ['./public-home-list-events.component.scss'],
+    standalone: false
 })
 export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;

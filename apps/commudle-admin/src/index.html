@@ -5,6 +5,24 @@
     <script>
       const isBot = false;
     </script>
+
+    <!--
+      Theme bootstrap: set data-theme before first paint to avoid light/dark flicker.
+      This runs only in the browser (SSR does not execute scripts).
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersDark =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = stored ? stored === 'dark' : prefersDark;
+          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        } catch (e) {
+          // no-op
+        }
+      })();
+    </script>
     <!-- Google Tag Manager -->
     <script>
       const host = window.location.hostname;
