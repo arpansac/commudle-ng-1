@@ -44,7 +44,11 @@ import {
   RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
@@ -54,6 +58,7 @@ import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/w
   selector: 'commudle-hackathon-control-panel-mentor-slots',
   templateUrl: './hackathon-control-panel-mentor-slots.component.html',
   styleUrls: ['./hackathon-control-panel-mentor-slots.component.scss'],
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -28,6 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
   selector: 'commudle-mentor-slot-team-assignment',
   templateUrl: './mentor-slot-team-assignment.component.html',
   styleUrls: ['./mentor-slot-team-assignment.component.scss'],
+  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnDestroy {
