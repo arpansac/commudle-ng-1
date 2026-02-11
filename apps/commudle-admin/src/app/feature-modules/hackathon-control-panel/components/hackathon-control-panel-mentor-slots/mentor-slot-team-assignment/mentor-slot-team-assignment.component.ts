@@ -23,6 +23,7 @@ import {
 } from '@commudle/shared-models';
 import { RoundMentorSlotService, ToastrService } from '@commudle/shared-services';
 import { Subject, takeUntil } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'commudle-mentor-slot-team-assignment',
@@ -33,12 +34,13 @@ import { Subject, takeUntil } from 'rxjs';
 export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() round: IRound;
   @Input() mentor: IHackathonJudge;
-  @Input() index: number;
+  @Input() slotTime: { starts_at: Date; ends_at: Date };
   @Input() roundMentorSlots: IRoundMentorSlot[];
   @Output() slotClick = new EventEmitter<IRoundMentorSlot>();
   @Output() cancelSlot = new EventEmitter<void>();
   EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
 
+  currentSlot: IRoundMentorSlot;
   isSlotCancelled = false;
 
   @ViewChild('cancelConfirmDialog') cancelConfirmDialog: TemplateRef<any>;
@@ -55,16 +57,12 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   ) {}
 
   ngOnInit() {
-    this.isSlotCancelled =
-      this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED ||
-      this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
+    this.findMatchingSlot();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['roundMentorSlots']) {
-      this.isSlotCancelled =
-        this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED ||
-        this.roundMentorSlots?.[this.index]?.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
+    if (changes['roundMentorSlots'] || changes['slotTime']) {
+      this.findMatchingSlot();
       this.cdr.markForCheck();
     }
   }
@@ -74,9 +72,20 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
     this.destroy$.complete();
   }
 
+  private findMatchingSlot(): void {
+    this.currentSlot = this.roundMentorSlots?.find(
+      (slot) =>
+        moment(slot.starts_at).isSame(moment(this.slotTime.starts_at)) &&
+        moment(slot.ends_at).isSame(moment(this.slotTime.ends_at)),
+    );
+    this.isSlotCancelled =
+      this.currentSlot?.status === ERoundMentorSlotStatus.CANCELLED ||
+      this.currentSlot?.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR;
+  }
+
   onSlotClick(): void {
-    if (this.isSlotCancelled) return;
-    this.slotClick.emit(this.roundMentorSlots[this.index]);
+    if (this.isSlotCancelled || !this.currentSlot) return;
+    this.slotClick.emit(this.currentSlot);
   }
 
   onCancelSlot(event: Event): void {
@@ -98,11 +107,10 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   }
 
   activateMentorSlot(): void {
-    const slot = this.roundMentorSlots[this.index];
-    if (!slot) return;
+    if (!this.currentSlot) return;
 
     this.roundMentorSlotService
-      .updateStatus(slot.id, ERoundMentorSlotStatus.OPEN)
+      .updateStatus(this.currentSlot.id, ERoundMentorSlotStatus.OPEN)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -115,11 +123,10 @@ export class MentorSlotTeamAssignmentComponent implements OnInit, OnChanges, OnD
   }
 
   cancelMentorSlot(): void {
-    const slot = this.roundMentorSlots[this.index];
-    if (!slot) return;
+    if (!this.currentSlot) return;
 
     this.roundMentorSlotService
-      .updateStatus(slot.id, ERoundMentorSlotStatus.CANCELLED)
+      .updateStatus(this.currentSlot.id, ERoundMentorSlotStatus.CANCELLED)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

@@ -44,7 +44,11 @@ import {
   RoundMentorSlotBookingService,
 } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from '../../../../app-shared-components/data-table/data-table.component';
 import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
@@ -87,6 +91,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   sidebarEventName = 'mentor-slot-team-assignment';
   teams: IHackathonTeam[] = [];
   filteredUnassignedTeams: IHackathonTeam[] = [];
+  isSlotRuleFormSubmitting = false;
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
@@ -167,7 +172,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         cellTemplate: this.mentorCellTemplate,
       },
       ...this.rounds.map((round) => {
-        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.total_slots : 1;
+        const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.slot_times.length : 1;
         const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(400, slotCount * 160)}px` : '400px';
 
         return {
@@ -225,9 +230,10 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
 
   openSlotRulesDialog(template: TemplateRef<unknown>, roundId: number): void {
     this.currentRoundId = roundId;
+    const currentRound: IRound = this.rounds.find((r) => r.id === this.currentRoundId);
     this.loadSlotRule(roundId);
     this.dialogService.open(template, {
-      context: { roundId },
+      context: { roundId, currentRound },
     });
   }
 
@@ -256,9 +262,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   saveSlotRules(dialogRef: any): void {
+    this.isSlotRuleFormSubmitting = true;
     if (this.slotRuleForm.invalid) {
       this.slotRuleForm.markAllAsTouched();
       this.toastrService.warningDialog('Please fill all required fields correctly');
+      this.isSlotRuleFormSubmitting = false;
       return;
     }
 
@@ -274,6 +282,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.toastrService.successDialog('Slot rules updated successfully');
           dialogRef.close();
           this.loadRounds();
+          this.isSlotRuleFormSubmitting = false;
         },
       });
     } else {
@@ -282,6 +291,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
           this.toastrService.successDialog('Slot rules created successfully');
           dialogRef.close();
           this.loadRounds();
+          this.isSlotRuleFormSubmitting = false;
         },
       });
     }
@@ -334,10 +344,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const bookedTeamIds = bookings?.map((b) => b.hackathon_team_id) || [];
     this.filteredUnassignedTeams = this.teams.filter(
       (team) => team.name.toLowerCase().includes(query) && !bookedTeamIds.includes(team.id),
-    );
-    console.log(
-      '🚀 ~ HackathonControlPanelMentorSlotsComponent ~ updateFilteredTeams ~  this.filteredUnassignedTeams:',
-      this.filteredUnassignedTeams,
     );
   }
 

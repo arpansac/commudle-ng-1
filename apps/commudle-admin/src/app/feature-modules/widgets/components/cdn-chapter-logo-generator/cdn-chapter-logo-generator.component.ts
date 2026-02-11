@@ -128,8 +128,6 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
       // to force a fresh handshake that ignores the 'null' origin cache
       const cleanS3Url = s3Url + (s3Url.includes('?') ? '&' : '?') + 's3_cb=' + Date.now();
 
-      console.log('Fetching from S3 with fresh context:', cleanS3Url);
-
       // 4. Fetch the actual blob from S3
       const s3Response = await fetch(cleanS3Url, {
         method: 'GET',
@@ -168,8 +166,6 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
   }
 
   private createFallbackImage(): void {
-    console.log('Creating fallback image...');
-
     // Create a canvas-based fallback image
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -234,7 +230,6 @@ export class CdnChapterLogoGeneratorComponent implements OnInit, AfterViewInit, 
   }
 
   retryImageLoad(): void {
-    console.log('Retrying image load...');
     this.loadBackgroundImage();
   }
 

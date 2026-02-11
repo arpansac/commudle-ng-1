@@ -1,4 +1,4 @@
-.main-card-container {
+nb-card {
   @apply com-relative com-transition-all com-duration-300;
 
   &.sidebar-expanded:not(.fullscreen-card) {
@@ -203,6 +203,15 @@
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
+  }
+}
+
+.slot-rule-form {
+  .form-group {
+    @apply com-my-3;
+    input {
+      @apply com-mt-1;
+    }
   }
 }
 

@@ -25,7 +25,7 @@
 
       .table-body {
         td.frozen-column {
-          @apply com-static com-bg-white;
+          @apply com-static com-bg-white com-z-20;
           min-width: 200px;
         }
 
@@ -178,7 +178,7 @@
           }
 
           &.frozen-column {
-            @apply com-sticky com-left-0 com-z-10 com-bg-white;
+            @apply com-sticky com-left-0 com-z-20 com-bg-white;
             min-width: 360px;
 
             @media screen and (max-width: 800px) {

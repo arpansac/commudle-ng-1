@@ -1,5 +1,9 @@
 .slots-grid {
   @apply com-flex com-gap-2;
+
+  .no-slot-message {
+    @apply com-text-sm com-text-gray-500 com-py-2 com-px-3;
+  }
 }
 
 .slot-item {

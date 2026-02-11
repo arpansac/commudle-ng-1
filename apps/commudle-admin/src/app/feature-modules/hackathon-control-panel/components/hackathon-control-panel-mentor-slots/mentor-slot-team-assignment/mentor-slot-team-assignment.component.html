@@ -1,29 +1,35 @@
 <div class="team-assignments-compact">
-  @if(roundMentorSlots && roundMentorSlots[index]?.round_mentor_slot_bookings &&
-  roundMentorSlots[index]?.round_mentor_slot_bookings?.length > 0) {
+  @if(currentSlot?.round_mentor_slot_bookings && currentSlot.round_mentor_slot_bookings.length > 0) {
   <div class="team-cell-wrapper" [class.disabled]="isSlotCancelled" (click)="onSlotClick()">
-    @if(round.round_mentor_slot_rule.max_teams_per_slot ===
-    roundMentorSlots[index]?.round_mentor_slot_bookings?.length){
+    @if(round.round_mentor_slot_rule.max_teams_per_slot === currentSlot.round_mentor_slot_bookings.length){
     <div class="team-count-badge-full">Filled</div>
     }@else {
     <div class="team-count-badge">
-      {{ roundMentorSlots[index]?.round_mentor_slot_bookings?.length }}
+      {{ currentSlot.round_mentor_slot_bookings.length }}
     </div>
     }
     <div class="team-summary custom-scrollbar">
-      @for(rmsb of roundMentorSlots[index].round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
+      @for(rmsb of currentSlot.round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
       <span class="team-name">
         {{ rmsb.hackathon_team.name }}
         @if(rmsb.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
         <span class="scored" [title]="'Current round score: ' + rmsb.hackathon_team_round_score.total_score">
           {{ rmsb.hackathon_team_round_score.total_score }}
         </span>
+        } @else{
+        <app-badge
+          text="Score was pending or not submitted"
+          [fontColor]="'com-text-tAuro-Metal-Saurus'"
+          [fontSize]="'xx-small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-Bright-Gray-Light'"
+        ></app-badge>
         }
       </span>
       }
     </div>
   </div>
-  } @else {
+  } @else if(currentSlot) {
   <div class="no-teams-actions">
     <button class="no-teams-compact add-btn" (click)="onSlotClick()" [disabled]="isSlotCancelled">
       <fa-icon [icon]="icons.faPlus"></fa-icon>Add teams
@@ -40,6 +46,8 @@
     </button>
     }
   </div>
+  } @else {
+  <div class="no-slot-message">NO SLOT</div>
   }
 </div>
 

@@ -20,14 +20,16 @@
   </nb-card-header>
   <nb-card-body>
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-    <commudle-data-table
-      *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
-      [columns]="tableColumns"
-      [rows]="tableRows"
-      [config]="tableConfig"
-      [isLoading]="isLoading"
-    >
-    </commudle-data-table>
+    <div class="data-table com-overflow-hidden com-w-full com-h-[70dvh] com-relative">
+      <commudle-data-table
+        *ngIf="!isLoading && rounds.length > 0 && mentors.length > 0"
+        [columns]="tableColumns"
+        [rows]="tableRows"
+        [config]="tableConfig"
+        [isLoading]="isLoading"
+      >
+      </commudle-data-table>
+    </div>
   </nb-card-body>
 </nb-card>
 
@@ -152,7 +154,7 @@
 </ng-template>
 
 <ng-template #updateSlotRules let-data let-ref="dialogRef">
-  <nb-card class="dialog-box-card" [formGroup]="slotRuleForm">
+  <nb-card class="dialog-box-card slot-rule-form" [formGroup]="slotRuleForm">
     <nb-card-header>
       <div>Add/Update Slot Rules</div>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
@@ -165,7 +167,15 @@
       </div>
       <div class="form-group">
         <label for="startsAt">Starts At <span class="required">*</span></label>
-        <input type="datetime-local" id="startsAt" nbInput fullWidth formControlName="starts_at" />
+        <input
+          type="datetime-local"
+          id="startsAt"
+          nbInput
+          fullWidth
+          formControlName="starts_at"
+          [min]="moment(data.currentRound.date).format('YYYY-MM-DDTHH:mm')"
+          [max]="moment(data.currentRound.end_date).format('YYYY-MM-DDTHH:mm')"
+        />
         <commudle-alert
           *ngIf="slotRuleForm.controls['starts_at'].touched && slotRuleForm.controls['starts_at'].errors?.['required'] && slotRuleForm.controls['starts_at'].invalid"
           [error]="true"
@@ -174,7 +184,15 @@
       </div>
       <div class="form-group">
         <label for="endsAt">Ends At <span class="required">*</span></label>
-        <input type="datetime-local" id="endsAt" nbInput fullWidth formControlName="ends_at" />
+        <input
+          type="datetime-local"
+          id="endsAt"
+          nbInput
+          fullWidth
+          formControlName="ends_at"
+          [min]="moment(data.currentRound.date).format('YYYY-MM-DDTHH:mm')"
+          [max]="moment(data.currentRound.end_date).format('YYYY-MM-DDTHH:mm')"
+        />
         <commudle-alert
           *ngIf="slotRuleForm.controls['ends_at'].touched && slotRuleForm.controls['ends_at'].errors?.['required'] && slotRuleForm.controls['ends_at'].invalid"
           [error]="true"
@@ -221,7 +239,14 @@
       </div>
     </nb-card-body>
     <nb-card-footer>
-      <button nbButton status="primary" (click)="saveSlotRules(ref)" [disabled]="slotRuleForm.invalid">Save</button>
+      <button
+        nbButton
+        status="primary"
+        (click)="saveSlotRules(ref)"
+        [disabled]="slotRuleForm.invalid || isSlotRuleFormSubmitting"
+      >
+        Save
+      </button>
       <button nbButton (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
@@ -302,6 +327,14 @@
             <span class="scored" [title]="'Current round score: ' + team.hackathon_team_round_score.total_score">
               {{ team.hackathon_team_round_score.total_score }}
             </span>
+            }@else{
+            <app-badge
+              text="Score was pending or not submitted"
+              [fontColor]="'com-text-tAuro-Metal-Saurus'"
+              [fontSize]="'xx-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-Bright-Gray-Light'"
+            ></app-badge>
             }
           </span>
         </div>
