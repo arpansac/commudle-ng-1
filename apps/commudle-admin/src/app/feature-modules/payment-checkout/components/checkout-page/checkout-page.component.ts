@@ -111,7 +111,6 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     this.seoService.noIndex(true);
     this.openLoadingDialog();
     this.fetchCurrentUser();
-    this.campaignId = this.activatedRoute.snapshot.queryParams['campaign_id'] ?? null;
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const purchaseOrderUuid = params['purchase_order_uuid'];
       if (purchaseOrderUuid) {

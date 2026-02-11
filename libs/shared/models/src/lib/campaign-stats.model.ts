@@ -7,17 +7,17 @@ export interface ICampaignStats {
   views_over_time: { x: string; y: number }[];
   clicks_over_days: { x: string; y: number }[];
   views_over_days: { x: string; y: number }[];
-  user_tags: {
+  tags: {
     total: number;
     tags: ITag[];
   };
-  user_gender_distribution: {
+  gender: {
     male: number;
     female: number;
     prefer_not_to_answer: number;
     NA: number;
   };
-  user_locations: [];
+  locations: [];
   newsletter_email_stats: {
     opens: number;
     uniq_opens: number;
@@ -31,4 +31,5 @@ export interface ICampaignStats {
   budget_remaining: number;
   impressions: number;
   clicks: number;
+  total_budget_utilization: number;
 }

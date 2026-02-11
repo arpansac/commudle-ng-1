@@ -254,17 +254,21 @@
               </div>
             </td>
             <td class="data-cell com-text-right">
-              {{ statsTimeseries && statsTimeseries.impressions ? statsTimeseries.impressions : '--' }}
+              <!-- {{ campaign.statsOverview?.total_impressions != null ? campaign.statsOverview?.total_impressions : '--' }} -->
+              {{
+                statsOverview[campaign.id]?.total_impressions != null
+                  ? statsOverview[campaign.id]?.total_impressions
+                  : '--'
+              }}
             </td>
-            <!--pending -->
             <td class="data-cell com-text-right">
-              {{ statsTimeseries && statsTimeseries.clicks ? statsTimeseries.clicks : '--' }}
+              <!-- {{ campaign.statsOverview?.total_clicks != null ? campaign.statsOverview?.total_clicks : '--' }} -->
+              {{ statsOverview[campaign.id]?.total_clicks != null ? statsOverview[campaign.id]?.total_clicks : '--' }}
             </td>
-            <!--pending -->
             <td class="data-cell com-text-right border-right">
-              {{ statsTimeseries && statsTimeseries.ctr ? statsTimeseries.ctr : '--' }}
+              <!-- {{ campaign.statsOverview?.ctr != null ? campaign.statsOverview.ctr : '--' }} -->
+              {{ statsOverview[campaign.id]?.ctr != null ? statsOverview[campaign.id]?.ctr : '--' }}
             </td>
-            <!--pending -->
             <td class="action-buttons">
               <a
                 *ngIf="!isCampaignAdmin"

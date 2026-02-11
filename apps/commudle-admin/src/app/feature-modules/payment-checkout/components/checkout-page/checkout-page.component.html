@@ -6,8 +6,8 @@
         <!-- Campaign Details -->
         <nb-card *ngIf="purchaseOrder?.orderable_type === EDbModels.WALLET">
           <nb-card-body>
-            <commudle-campaign-details [campaignId]="campaignId"></commudle-campaign-details>
-            <commudle-wallet-details [campaignId]="campaignId"></commudle-wallet-details>
+            <commudle-campaign-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-campaign-details>
+            <commudle-wallet-details [campaignId]="purchaseOrder.notes.campaign.id"></commudle-wallet-details>
           </nb-card-body>
         </nb-card>
 

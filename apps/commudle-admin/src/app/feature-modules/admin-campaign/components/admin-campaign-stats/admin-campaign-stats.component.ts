@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
     standalone: false
 })
 export class AdminCampaignStatsComponent implements OnInit {
-  campaignId: number;
+  campaignId: string;
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {

@@ -29,6 +29,7 @@ export interface IPurchaseOrder {
   contact_info: IContactInfo;
   notes: {
     subscription_months: number;
+    campaign: ICampaign;
   };
   total_amount: number;
 }

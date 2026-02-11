@@ -4,6 +4,9 @@ import { CampaignService, NoteService, ToastrService } from '@commudle/shared-se
 import { faEdit, faArrowRight, faSync, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
+// import { forkJoin, Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
+
 @Component({
     selector: 'commudle-campaign-list',
     templateUrl: './campaign-list.component.html',
@@ -19,14 +22,24 @@ export class CampaignListComponent implements OnChanges {
   moment = moment;
   icons = { faEdit, faArrowRight, faSync, faTrash, faFilter };
   ECampaignStatus = ECampaignStatus;
-  noteTexts: { [campaignId: number]: string } = {};
+  noteTexts: { [campaignId: string]: string } = {};
   statusFilter: ECampaignStatus | null = null;
   statsUserCampaigns: ICampaignStats;
-  statsTimeseries: ICampaignStats;
+  // statsOverview: ICampaignStats;
+  statsOverview: any[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedStatus']) {
       this.statusFilter = this.selectedStatus;
+    }
+    if (changes['campaigns'] && this.campaigns?.length) {
+      // Loop through campaigns here once
+      this.campaigns.forEach((campaign) => {
+        if (this.statsOverview[campaign.id]) return;
+        this.campaignService.getStatsOverview(campaign.id).subscribe((stats: ICampaignStats) => {
+          this.statsOverview[campaign.id] = stats;
+        });
+      });
     }
   }
 
@@ -37,9 +50,18 @@ export class CampaignListComponent implements OnChanges {
     private noteService: NoteService,
   ) {}
 
-  ngOnInit() {
-    this.getStatsUserCampaigns();
-  }
+  ngOnInit(): void {}
+
+  // private loadStatsOverview(): void {
+  //   if (!this.campaigns?.length) return;
+  //   const sources: Record<string, Observable<{ campaign: ICampaign; stats: ICampaignStats }>> = {};
+  //   this.campaigns.forEach((campaign, i) => {
+  //     sources[i] = this.campaignService.getStatsOverview(campaign.id).pipe(map((stats) => ({ campaign, stats })));
+  //   });
+  //   forkJoin(sources).subscribe((results) =>
+  //     Object.entries(results).forEach(([i, r]) => (this.campaigns[+i].statsOverview = r.stats)),
+  //   );
+  // }
 
   updateStatus(event, campaignId) {
     this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
@@ -103,12 +125,6 @@ export class CampaignListComponent implements OnChanges {
   getStatsUserCampaigns() {
     this.campaignService.getUserCampaignsStats().subscribe((stats: ICampaignStats) => {
       this.statsUserCampaigns = stats;
-    });
-  }
-
-  getStatsTimeseries(campaignId: string) {
-    this.campaignService.getStatsTimeseries(campaignId).subscribe((stats: ICampaignStats) => {
-      this.statsTimeseries = stats;
     });
   }
 }

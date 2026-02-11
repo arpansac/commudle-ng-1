@@ -1081,9 +1081,10 @@ export const API_ROUTES = {
     CAMPAIGNS_ADMIN_INDEX: 'api/v2/campaigns/index_admin', //GET
     CAMPAIGN_ADMIN_STATUS_UPDATE: 'api/v2/campaigns/campaign_admin_status_update', //PUT
     CAMPAIGN_SERVE: 'api/v2/campaigns/serve', //GET
-    // STATS: 'api/v2/campaigns/stats', //GET
     USER_CAMPAIGNS_STATS: 'api/v2/campaigns/stats/user_campaigns', //GET
+    STATS_USER_DISTRIBUTION: 'api/v2/campaigns/stats/user_distribution', //GET
 
+    STATS: 'api/v2/campaigns/stats', //GET
     UPDATE_TAGS: 'api/v2/campaigns/update_tags', //PUT
     CALC_ESTIMATED_PRICE: 'api/v2/campaigns/calc_estimated_price', //GET
     CAMPAIGN_ADMIN_UPDATE_NEWSLETTER: 'api/v2/campaigns/campaign_admin_update_newsletter', //PUT

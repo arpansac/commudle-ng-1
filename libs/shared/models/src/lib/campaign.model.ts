@@ -3,6 +3,7 @@ import { ICampaignType } from './campaign-type.model';
 import { ICampaignAsset } from './campaign-asset.model';
 import { IPurchaseOrder } from './purchase-order.model';
 import { INote } from './note.model';
+import { ICampaignStats } from './campaign-stats.model';
 
 export interface ICampaign {
   id: string;
@@ -32,6 +33,7 @@ export interface ICampaign {
   purchase_order?: IPurchaseOrder;
   unapproved_reasons?: INote[];
   cta_label?: string;
+  statsOverview?: ICampaignStats;
 }
 
 export enum ECampaignStatus {
