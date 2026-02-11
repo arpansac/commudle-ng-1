@@ -1,24 +1,30 @@
 <!-- KPI Cards -->
-<div class="kpi-cards" *ngIf="statsOverview">
+<div class="kpi-cards" *ngIf="statsUserCampaigns">
   <div class="kpi-card">
     <div class="kpi-label">Impressions</div>
     <div class="kpi-value">
-      {{ statsOverview.total_impressions ? statsOverview.total_impressions : 'Data Not Available' }}
+      {{ statsUserCampaigns.total_impressions != null ? statsUserCampaigns.total_impressions : 'Data Not Available' }}
     </div>
   </div>
   <div class="kpi-card">
-    <div class="kpi-label">Budget Remaining</div>
+    <div class="kpi-label">Budget Utilization</div>
     <div class="kpi-value">
-      {{ statsOverview.budget_remaining ? statsOverview.budget_remaining : 'Data Not Available' }}
+      {{
+        statsUserCampaigns.total_budget_utilization != null
+          ? statsUserCampaigns.total_budget_utilization
+          : 'Data Not Available'
+      }}
     </div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Click Through Rate (CTR)</div>
-    <div class="kpi-value">{{ statsOverview.ctr ? statsOverview.ctr : 'Data Not Available' }}</div>
+    <div class="kpi-value">{{ statsUserCampaigns.ctr != null ? statsUserCampaigns.ctr : 'Data Not Available' }}</div>
   </div>
   <div class="kpi-card">
     <div class="kpi-label">Total Clicks</div>
-    <div class="kpi-value">{{ statsOverview.total_clicks ? statsOverview.total_clicks : 'Data Not Available' }}</div>
+    <div class="kpi-value">
+      {{ statsUserCampaigns.total_clicks != null ? statsUserCampaigns.total_clicks : 'Data Not Available' }}
+    </div>
   </div>
 </div>
 

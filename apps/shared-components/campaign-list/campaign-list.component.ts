@@ -21,15 +21,12 @@ export class CampaignListComponent implements OnChanges {
   ECampaignStatus = ECampaignStatus;
   noteTexts: { [campaignId: number]: string } = {};
   statusFilter: ECampaignStatus | null = null;
-  statsOverview: ICampaignStats;
+  statsUserCampaigns: ICampaignStats;
   statsTimeseries: ICampaignStats;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedStatus']) {
       this.statusFilter = this.selectedStatus;
-    }
-    if (changes['campaigns'] && this.campaigns?.length > 0) {
-      this.getStatsOverview(this.campaigns[0].id);
     }
   }
 
@@ -41,9 +38,7 @@ export class CampaignListComponent implements OnChanges {
   ) {}
 
   ngOnInit() {
-    if (this.campaigns?.length > 0) {
-      this.getStatsOverview(this.campaigns[0].id);
-    }
+    this.getStatsUserCampaigns();
   }
 
   updateStatus(event, campaignId) {
@@ -105,9 +100,9 @@ export class CampaignListComponent implements OnChanges {
     this.refreshRequested.emit(this.statusFilter);
   }
 
-  getStatsOverview(campaignId: string) {
-    this.campaignService.getStatsOverview(campaignId).subscribe((stats: ICampaignStats) => {
-      this.statsOverview = stats;
+  getStatsUserCampaigns() {
+    this.campaignService.getUserCampaignsStats().subscribe((stats: ICampaignStats) => {
+      this.statsUserCampaigns = stats;
     });
   }
 
