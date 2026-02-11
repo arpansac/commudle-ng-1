@@ -68,13 +68,14 @@
             <th class="com-text-left com-bg-gray-50 border-right created-column">CREATED</th>
             <th class="com-text-right">IMPRESSIONS/VIEWS</th>
             <th class="com-text-right">CLICKS</th>
-            <th class="com-text-right border-right">CTR</th>
+            <th class="com-text-right">CTR</th>
+            <th class="com-text-right border-right">BUDGET REMAINING</th>
             <th class="com-bg-gray-50">ACTIONS</th>
           </tr>
         </thead>
         <tbody *ngIf="isLoading">
           <tr>
-            <td colspan="9">
+            <td colspan="10">
               <div class="loading-cell">
                 <app-loading-spinner></app-loading-spinner>
               </div>
@@ -83,7 +84,7 @@
         </tbody>
         <tbody *ngIf="!isLoading && campaigns?.length === 0">
           <tr>
-            <td colspan="9">
+            <td colspan="10">
               <div class="empty-state">
                 <h3 class="empty-state-title">No Ad Campaigns Yet</h3>
                 <p class="empty-state-description">
@@ -268,6 +269,14 @@
             <td class="data-cell com-text-right border-right">
               <!-- {{ campaign.statsOverview?.ctr != null ? campaign.statsOverview.ctr : '--' }} -->
               {{ statsOverview[campaign.id]?.ctr != null ? statsOverview[campaign.id]?.ctr : '--' }}
+            </td>
+            <td class="data-cell com-text-right border-right">
+              <!-- {{ campaign.statsOverview?.ctr != null ? campaign.statsOverview.ctr : '--' }} -->
+              {{
+                statsOverview[campaign.id]?.budget_remaining != null
+                  ? (statsOverview[campaign.id]?.budget_remaining | currency : campaign.currency_type)
+                  : '--'
+              }}
             </td>
             <td class="action-buttons">
               <a

@@ -165,10 +165,10 @@ export class CampaignService {
     return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_SERVE));
   }
 
-  createPurchaseOrder(campaignId: string, purchaseOrderData: any): Observable<IPurchaseOrder> {
+  createPurchaseOrder(campaignId: string, userWalletBalance = true): Observable<IPurchaseOrder> {
     return this.http.put<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE_PURCHASE_ORDER), {
       campaign_id: campaignId,
-      use_wallet_balance: purchaseOrderData,
+      use_wallet_balance: userWalletBalance,
     });
   }
 
