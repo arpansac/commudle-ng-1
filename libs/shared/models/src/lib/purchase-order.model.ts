@@ -10,7 +10,6 @@ export interface IPurchaseOrder {
   uuid: string;
   application_fee_amount: number;
   amount_to_be_paid: number;
-  amount: number;
   payment_gateway_fee: number;
   currency: string;
   tax_amount: number;
@@ -30,6 +29,13 @@ export interface IPurchaseOrder {
   notes: {
     subscription_months: number;
   };
+  discount_amount: number;
+  has_taxes: boolean;
+  price: number;
+  tax_name: string;
+  tax_rate: number;
+  total_amount: number;
+  updated_at: Date;
 }
 
 export enum EPurchaseOrderStatus {
