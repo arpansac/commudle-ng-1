@@ -62,7 +62,7 @@
           </p>
         </div>
         <div
-          *ngIf="contextMenuItems.length > 0"
+          *ngIf="contextMenuItems?.length > 0"
           [nbContextMenuTag]="'community-channel-message-menu-'.concat(message.id.toString())"
           [nbContextMenu]="contextMenuItems"
           class="message-context-menu clickable"
