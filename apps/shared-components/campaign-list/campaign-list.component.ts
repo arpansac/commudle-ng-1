@@ -75,7 +75,7 @@ export class CampaignListComponent implements OnChanges {
     if (campaign?.status === ECampaignStatus.PAUSED) {
       return [ECampaignStatus.RESUMED];
     }
-    return [ECampaignStatus.PAUSED, ECampaignStatus.STOPPED, ECampaignStatus.RESUMED];
+    return [];
   }
 
   updateStatus(value, campaignId, index) {

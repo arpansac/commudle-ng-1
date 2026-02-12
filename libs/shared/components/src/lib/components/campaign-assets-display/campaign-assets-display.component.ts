@@ -13,7 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
+import { EDbModels, ECampaignStatus, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
 import {
   CampaignService,
   GoogleTagManagerService,
@@ -205,27 +205,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   createUserEngagementForCampaign(eventType) {
-    if (this.campaign) {
-      this.userEngagementRecordForm.patchValue({
-        event_type: eventType,
-        parent_id: this.campaign.id,
-        parent_type: EDbModels.CAMPAIGN,
-        url: this.isBrowser ? window.location.href : '',
-      });
-
-      if (!this.seoService.isBot) {
-        this.uerService
-          .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
-          .subscribe(() =>
-            this.gtmService.dataLayerPushEvent('ad_campaign', {
-              com_campaign_id: this.campaign.id,
-              com_campaign_name: this.campaign.name,
-              com_campaign_type: this.campaign.campaign_type,
-              com_current_page_url: this.isBrowser ? window.location.href : '',
-              com_event_type: eventType,
-            }),
-          );
-      }
+    if (this.campaign && this.campaign.status === ECampaignStatus.LIVE) {
       const formData = new FormData();
       formData.append('campaign_engagement[event_type]', 'impression');
       formData.append('campaign_engagement[url]', window.location.href);
