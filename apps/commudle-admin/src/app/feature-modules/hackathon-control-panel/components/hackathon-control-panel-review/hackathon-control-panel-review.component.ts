@@ -59,10 +59,10 @@ import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-review',
-    templateUrl: './hackathon-control-panel-review.component.html',
-    styleUrls: ['./hackathon-control-panel-review.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-review',
+  templateUrl: './hackathon-control-panel-review.component.html',
+  styleUrls: ['./hackathon-control-panel-review.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   userResponses: IHackathonUserResponses[];
@@ -108,8 +108,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   selectedStatusForFilter = '';
   selectedTrackForFilter = '';
   selectProblemStatementForFilter = '';
+  selectedOfflineInviteStatusForFilter = '';
   showOnlyWinnerEntry = false;
   sortByTotalScore: 'asc' | 'desc' | null = null;
+
+  bulkOperationType = '';
+  bulkOperationValue = null;
 
   dialogReference: NbDialogRef<any>;
   sendEmailDialogRef: NbDialogRef<any>;
@@ -246,6 +250,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         Number(this.selectProblemStatementForFilter),
         this.sortByTotalScore ? 'total_score' : null,
         this.sortByTotalScore,
+        this.selectedOfflineInviteStatusForFilter,
       )
       .subscribe((data) => {
         this.userResponses = data.values;
@@ -446,16 +451,24 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.selectedStatusForFilter ||
       this.selectedRoundIdForFilter ||
       this.selectedTrackForFilter ||
-      this.selectProblemStatementForFilter
+      this.selectProblemStatementForFilter ||
+      this.selectedOfflineInviteStatusForFilter
     ) {
       this.selectedStatusForFilter = '';
       this.selectedRoundIdForFilter = '';
       this.selectedTrackForFilter = '';
       this.selectProblemStatementForFilter = '';
+      this.selectedOfflineInviteStatusForFilter = '';
       this.indexProblemStatements(this.hackathon.id);
       this.page = 1;
       this.fetchUserResponses();
     }
+  }
+
+  onOfflineInviteStatusChange(event) {
+    this.selectedOfflineInviteStatusForFilter = event.target.value;
+    this.page = 1;
+    this.fetchUserResponses();
   }
 
   clearSorting() {
@@ -790,5 +803,157 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   getTrackProblemStatements(trackId: number) {
     const track = this.hackathonTracks.find((t) => t.id === trackId);
     return track?.hackathon_problem_statements || [];
+  }
+
+  onBulkOperationChange(event: Event, templateRef: TemplateRef<any>) {
+    const select = event.target as HTMLSelectElement;
+    this.bulkOperationType = select.value;
+
+    if (!this.bulkOperationType) {
+      return;
+    }
+
+    this.nbDialogService.open(templateRef, {
+      context: { operationType: this.bulkOperationType },
+    });
+    select.value = '';
+  }
+
+  onBulkValueSelect(value: any, templateRef: TemplateRef<any>) {
+    this.bulkOperationValue = value;
+    this.nbDialogService.open(templateRef);
+  }
+
+  confirmBulkOperation() {
+    if (!this.bulkOperationType || !this.bulkOperationValue) return;
+
+    let operation$;
+    switch (this.bulkOperationType) {
+      case 'application_status':
+        operation$ = this.hackathonTeamService.bulkRegistrationStatus(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+      case 'invite_status':
+        operation$ = this.hackathonTeamService.bulkUpdateInviteStatus(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+      case 'rsvp_status':
+        operation$ = this.hackathonTeamService.bulkUpdateRsvpStatus(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+      case 'round':
+        operation$ = this.hackathonTeamService.bulkUpdateRound(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+      case 'track':
+        operation$ = this.hackathonTeamService.bulkUpdateTrack(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+      case 'problem_statement':
+        operation$ = this.hackathonTeamService.bulkUpdateProblemStatement(
+          this.hackathonId,
+          this.bulkOperationValue,
+          this.searchForm.get('search').value,
+          Number(this.selectedRoundIdForFilter),
+          this.selectedStatusForFilter,
+          this.showOnlyWinnerEntry,
+          Number(this.selectedTrackForFilter),
+          Number(this.selectProblemStatementForFilter),
+          this.selectedOfflineInviteStatusForFilter,
+        );
+        break;
+    }
+
+    operation$.subscribe({
+      next: () => {
+        this.toastrService.successDialog('Bulk operation completed successfully');
+        this.bulkOperationType = '';
+        this.bulkOperationValue = null;
+        this.confirmationDialogReference?.close();
+        this.fetchUserResponses();
+      },
+      error: () => {
+        this.toastrService.errorDialog('Bulk operation failed');
+        this.confirmationDialogReference?.close();
+      },
+    });
+  }
+
+  getBulkOperationLabel(): string {
+    const labels = {
+      application_status: 'Application Status',
+      invite_status: 'Invite Status',
+      rsvp_status: 'RSVP Status',
+      round: 'Round',
+      track: 'Track',
+      problem_statement: 'Problem Statement',
+    };
+    return labels[this.bulkOperationType] || '';
+  }
+
+  getBulkOperationValueLabel(): string {
+    switch (this.bulkOperationType) {
+      case 'application_status':
+      case 'invite_status':
+      case 'rsvp_status':
+        return this.bulkOperationValue;
+      case 'round':
+        return this.hackathonRounds.find((r) => r.id === this.bulkOperationValue)?.name || '';
+      case 'track':
+        return this.hackathonTracks.find((t) => t.id === this.bulkOperationValue)?.name || '';
+      case 'problem_statement':
+        return `#${this.hackathonProblemStatements.find((ps) => ps.id === this.bulkOperationValue)?.display_id || ''}`;
+      default:
+        return '';
+    }
+  }
+
+  getFilteredTeamsCount(): number {
+    return this.total || 0;
   }
 }

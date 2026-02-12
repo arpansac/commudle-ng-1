@@ -129,6 +129,21 @@
       </div>
 
       <div class="select">
+        <select
+          (change)="onOfflineInviteStatusChange($event)"
+          [(ngModel)]="selectedOfflineInviteStatusForFilter"
+          [ngClass]="{
+            'not-active': selectedOfflineInviteStatusForFilter === ''
+          }"
+        >
+          <option value="" selected disabled>Filter with Offline Invite Status</option>
+          <option *ngFor="let status of EOfflineInviteStatus | keyvalue" [value]="status.value">
+            {{ status.value | capitalizeAndRemoveUnderscore }}
+          </option>
+        </select>
+      </div>
+
+      <div class="select">
         <select (change)="onSelectWinnerChange($event)" [(ngModel)]="showOnlyWinnerEntry">
           <option [value]="false">Show All</option>
           <option [value]="true">Show Only Winners</option>
@@ -142,13 +157,26 @@
           selectedStatusForFilter ||
           selectedRoundIdForFilter ||
           selectedTrackForFilter ||
-          selectProblemStatementForFilter
+          selectProblemStatementForFilter ||
+          selectedOfflineInviteStatusForFilter
         "
       >
         Clear All Filters
       </div>
 
       <div class="clear-filter" (click)="clearSorting()" *ngIf="sortByTotalScore">Clear Sorting</div>
+
+      <div class="select">
+        <select (change)="onBulkOperationChange($event, bulkOperationDialog)">
+          <option value="" selected disabled>Bulk Operations</option>
+          <option value="application_status">Change Application Status</option>
+          <option value="invite_status">Change Invite Status</option>
+          <option value="rsvp_status">Change RSVP Status</option>
+          <option value="round">Change Round</option>
+          <option value="track">Change Track</option>
+          <option value="problem_statement">Change Problem Statement</option>
+        </select>
+      </div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -1265,6 +1293,121 @@
     </nb-card-body>
     <nb-card-footer>
       <button (click)="ref.close()" nbButton status="basic">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #bulkOperationDialog let-ref="dialogRef" let-data>
+  <nb-card>
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>Select {{ getBulkOperationLabel() }}</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="data.operationType === 'application_status'">
+        <button
+          *ngFor="let status of EHackathonRegistrationStatus | keyvalue"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ status.value | titlecase }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'invite_status'">
+        <button
+          *ngFor="let status of EOfflineInviteStatus | keyvalue"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ status.value | titlecase }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'rsvp_status'">
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect('confirmed', bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          Confirmed
+        </button>
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect('declined', bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          Declined
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'round'">
+        <button
+          *ngFor="let round of hackathonRounds"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(round.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ round.name }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'track'">
+        <button
+          *ngFor="let track of hackathonTracks"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(track.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ track.name }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'problem_statement'">
+        <button
+          *ngFor="let ps of hackathonProblemStatements"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(ps.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          #{{ ps.display_id }}
+        </button>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #bulkConfirmDialog let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>Confirm Bulk Operation</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>
+        You are changing <strong>{{ getBulkOperationLabel() }}</strong> of
+        <strong>{{ getFilteredTeamsCount() }}</strong> teams to <strong>{{ getBulkOperationValueLabel() }}</strong
+        >. This operation cannot be reverted. Are you sure?
+      </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmBulkOperation()">Confirm</button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>
