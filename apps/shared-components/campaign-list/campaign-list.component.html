@@ -240,11 +240,14 @@
             </td>
             <td>{{ campaign.budget ? (campaign.budget | currency : campaign.currency_type) : '-' }}</td>
             <td class="duration-time">
-              <div *ngIf="campaign.start_date">
-                From <span>{{ moment(campaign.start_date).format('MMM Do, YYYY') }}</span> to
-                <span>{{ moment(campaign.end_date).format('MMM Do, YYYY') }}</span> between
-                <span>{{ moment.utc(campaign.start_time, 'HH:mm').local().format('HH:mm') }}</span> and
-                <span>{{ moment.utc(campaign.end_time, 'HH:mm').local().format('HH:mm') }}</span>
+              <div *ngIf="campaign.start_at">
+                <span>{{ moment(campaign.start_at).format('MMM Do, YYYY') }}</span
+                >&nbsp;
+                <span>{{ moment.utc(campaign.start_at, 'HH:mm').local().format('HH:mm') }}</span>
+                <span *ngIf="campaign.end_at"
+                  ><span class="time-created"> to </span>{{ moment(campaign.end_at).format('MMM Do, YYYY') }}</span
+                >&nbsp;
+                <span *ngIf="campaign.end_at">{{ moment.utc(campaign.end_at, 'HH:mm').local().format('HH:mm') }}</span>
               </div>
             </td>
             <td class="data-cell border-right created-column">
