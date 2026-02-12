@@ -289,7 +289,7 @@
                   <fa-icon [icon]="faNewspaper" class="com-text-2xl com-leading-none"></fa-icon>
                   <span class="title">Newsletters</span>
                 </a>
-                <a class="d-flex" [nbContextMenu]="items" nbContextMenuTrigger="hover" *ngIf="items.length > 0">
+                <a class="d-flex" [nbContextMenu]="items" nbContextMenuTrigger="hover" *ngIf="items?.length > 0">
                   <fa-icon [icon]="faCaretDown" class="com-text-2xl com-leading-none"></fa-icon>
                   <span class="title">More</span>
                 </a>

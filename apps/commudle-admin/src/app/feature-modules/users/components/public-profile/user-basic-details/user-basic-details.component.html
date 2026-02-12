@@ -116,7 +116,7 @@
           <a routerLink="followers">{{ user.followers_count || 0 }} Followers </a>
           <a routerLink="following">{{ user.followees_count || 0 }} Following </a>
         </div>
-        <nb-tag-list *ngIf="user.tags.length > 0" class="tags">
+        <nb-tag-list *ngIf="user.tags?.length > 0" class="tags">
           <nb-tag *ngFor="let tag of user.tags" [text]="tag.name" appearance="outline" class="user-tags"></nb-tag>
           <nb-tag (click)="onTagDialogOpen()" *ngIf="currentUser?.id === user.id" class="add-tag" text="+"></nb-tag>
         </nb-tag-list>
