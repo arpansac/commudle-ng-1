@@ -37,12 +37,16 @@ export interface ICampaign {
 }
 
 export enum ECampaignStatus {
-  INCOMPLETE = 'incomplete',
+  // INCOMPLETE = 'incomplete',
+  // SUBMITTED = 'submitted',
   DRAFT = 'draft',
-  SUBMITTED = 'submitted',
   APPROVED = 'approved',
   REJECTED = 'rejected',
   CHANGES_REQUIRED = 'changes_required',
   LIVE = 'live',
   COMPLETE = 'complete',
+  PENDING_PAYMENT = 'pending_payment',
+  PAUSED = 'paused',
+  STOPPED = 'stopped',
+  RESUMED = 'resumed',
 }

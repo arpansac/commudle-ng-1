@@ -22,6 +22,11 @@ export class CampaignListComponent implements OnChanges {
   moment = moment;
   icons = { faEdit, faArrowRight, faSync, faTrash, faFilter };
   ECampaignStatus = ECampaignStatus;
+  readonly adminStatusOptions: ECampaignStatus[] = [
+    ECampaignStatus.PAUSED,
+    ECampaignStatus.STOPPED,
+    ECampaignStatus.RESUMED,
+  ];
   noteTexts: { [campaignId: string]: string } = {};
   statusFilter: ECampaignStatus | null = null;
   statsUserCampaigns: ICampaignStats;
@@ -63,25 +68,49 @@ export class CampaignListComponent implements OnChanges {
   //   );
   // }
 
-  updateStatus(event, campaignId) {
-    this.campaignService.campaignAdminUpdateStatus(campaignId, event.target.value).subscribe((res) => {
-      if (res) {
-        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
-        this.campaigns[index] = res;
-        this.toasterService.successDialog('Campaign status updated successfully');
-      }
-    });
+  getStatusOptionsForCampaign(campaign: ICampaign): ECampaignStatus[] {
+    if (campaign?.status === ECampaignStatus.LIVE) {
+      return [ECampaignStatus.PAUSED, ECampaignStatus.STOPPED];
+    }
+    if (campaign?.status === ECampaignStatus.PAUSED) {
+      return [ECampaignStatus.RESUMED];
+    }
+    return [ECampaignStatus.PAUSED, ECampaignStatus.STOPPED, ECampaignStatus.RESUMED];
   }
 
+  updateStatus(value, campaignId, index) {
+    if (value === ECampaignStatus.PAUSED) {
+      this.campaignService.campaignAdminUpdateStatusPause(campaignId).subscribe((res) => {
+        if (res) {
+          this.campaigns[index] = { ...this.campaigns[index], status: ECampaignStatus.PAUSED };
+          this.toasterService.successDialog('Campaign status updated successfully');
+        }
+      });
+    } else if (value === ECampaignStatus.STOPPED) {
+      this.campaignService.campaignAdminUpdateStatusStop(campaignId).subscribe((res) => {
+        if (res) {
+          this.campaigns[index] = { ...this.campaigns[index], status: ECampaignStatus.STOPPED };
+          this.toasterService.successDialog('Campaign status updated successfully');
+        }
+      });
+    } else if (value === ECampaignStatus.RESUMED) {
+      this.campaignService.campaignAdminUpdateStatusResume(campaignId).subscribe((res) => {
+        if (res) {
+          this.campaigns[index] = { ...this.campaigns[index], status: ECampaignStatus.RESUMED };
+          this.toasterService.successDialog('Campaign status updated successfully');
+        }
+      });
+    }
+  }
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
       this.dialogService.open(dialog, { context: { campaign } });
     }
   }
 
-  openDestroyCampaignPopup(dialog, campaign) {
-    this.dialogService.open(dialog, { context: { campaign: campaign } });
-  }
+  // openDestroyCampaignPopup(dialog, campaign) {
+  //   this.dialogService.open(dialog, { context: { campaign: campaign } });
+  // }
 
   updateNotes(campaignId: string) {
     if (!this.noteTexts[campaignId]) return; // Prevent empty submissions
@@ -103,15 +132,15 @@ export class CampaignListComponent implements OnChanges {
     });
   }
 
-  destroy(campaignId) {
-    this.campaignService.destroy(campaignId).subscribe((res) => {
-      if (res) {
-        const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
-        this.campaigns.splice(index, 1);
-        this.toasterService.successDialog('Campaign deleted successfully');
-      }
-    });
-  }
+  // destroy(campaignId) {
+  //   this.campaignService.destroy(campaignId).subscribe((res) => {
+  //     if (res) {
+  //       const index = this.campaigns.findIndex((campaign) => campaign.id === campaignId);
+  //       this.campaigns.splice(index, 1);
+  //       this.toasterService.successDialog('Campaign deleted successfully');
+  //     }
+  //   });
+  // }
 
   onRefresh() {
     this.refreshRequested.emit(this.statusFilter);

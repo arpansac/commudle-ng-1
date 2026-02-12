@@ -200,3 +200,7 @@
     @apply com-h-8 com-min-w-[140px] com-text-sm com-rounded com-border com-border-solid com-border-Bright-Gray com-bg-white com-text-Yankees-Blue com-cursor-pointer com-px-2 com-py-1;
   }
 }
+
+.status-cell {
+  @apply com-flex com-flex-col com-gap-2;
+}

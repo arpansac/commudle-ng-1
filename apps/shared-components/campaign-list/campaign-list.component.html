@@ -97,7 +97,7 @@
         </tbody>
         <tbody *ngIf="!isLoading && campaigns && campaigns.length > 0">
           <tr
-            *ngFor="let campaign of campaigns"
+            *ngFor="let campaign of campaigns; let i = index"
             (click)="openPopup(showCampaignDetails, campaign)"
             [ngClass]="{ 'com-cursor-pointer': isCampaignAdmin }"
             class="campaign-row"
@@ -122,18 +122,18 @@
                 <span class="name-cell-text">{{ campaign.name }}</span>
               </div>
             </td>
-            <td>
-              <div *ngIf="campaign.status && !isCampaignAdmin">
+            <td class="status-cell">
+              <div *ngIf="campaign.status">
                 <app-badge
                   [text]="campaign.status | capitalizeAndRemoveUnderscore"
                   [fontSize]="'small'"
                   [borderRadius]="'round'"
                   [color]="
-                    campaign.status === ECampaignStatus.INCOMPLETE
+                    campaign.status === ECampaignStatus.PENDING_PAYMENT
                       ? 'com-bg-gray-100'
                       : campaign.status === ECampaignStatus.DRAFT
                       ? 'com-bg-gray-100'
-                      : campaign.status === ECampaignStatus.SUBMITTED
+                      : campaign.status === ECampaignStatus.RESUMED
                       ? 'com-bg-blue-100'
                       : campaign.status === ECampaignStatus.APPROVED
                       ? 'com-bg-green-500'
@@ -145,14 +145,18 @@
                       ? 'com-bg-green-500'
                       : campaign.status === ECampaignStatus.COMPLETE
                       ? 'com-bg-blue-100'
+                      : campaign.status === ECampaignStatus.PAUSED
+                      ? 'com-bg-gray-100'
+                      : campaign.status === ECampaignStatus.STOPPED
+                      ? 'com-bg-red-100'
                       : 'com-bg-gray-100'
                   "
                   [fontColor]="
-                    campaign.status === ECampaignStatus.INCOMPLETE
+                    campaign.status === ECampaignStatus.PENDING_PAYMENT
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.DRAFT
                       ? 'com-text-gray-700'
-                      : campaign.status === ECampaignStatus.SUBMITTED
+                      : campaign.status === ECampaignStatus.RESUMED
                       ? 'com-text-blue-700'
                       : campaign.status === ECampaignStatus.APPROVED
                       ? 'com-text-white'
@@ -164,22 +168,23 @@
                       ? 'com-text-white'
                       : campaign.status === ECampaignStatus.COMPLETE
                       ? 'com-text-blue-700'
+                      : campaign.status === ECampaignStatus.PAUSED
+                      ? 'com-text-gray-700'
+                      : campaign.status === ECampaignStatus.STOPPED
+                      ? 'com-text-red-700'
                       : 'com-text-gray-700'
                   "
                 ></app-badge>
               </div>
-              <div *ngIf="isCampaignAdmin" (click)="$event.stopPropagation()" class="select">
+              <div *ngIf="isCampaignAdmin && campaign.status" (click)="$event.stopPropagation()" class="select">
                 <select
-                  [disabled]="
-                    campaign.status === ECampaignStatus.COMPLETE ||
-                    campaign.status === ECampaignStatus.LIVE ||
-                    campaign.status === ECampaignStatus.INCOMPLETE
-                  "
-                  [(ngModel)]="campaign.status"
-                  (change)="updateStatus($event, campaign.id)"
+                  [disabled]="campaign.status === ECampaignStatus.STOPPED"
+                  [ngModel]="getStatusOptionsForCampaign(campaign).includes(campaign.status) ? campaign.status : ''"
+                  (ngModelChange)="$event && updateStatus($event, campaign.id, i)"
                 >
-                  <option *ngFor="let CampaignStatus of ECampaignStatus | keyvalue" [value]="CampaignStatus.value">
-                    {{ CampaignStatus.value | capitalizeAndRemoveUnderscore }}
+                  <option value="">Change status</option>
+                  <option *ngFor="let status of getStatusOptionsForCampaign(campaign)" [value]="status">
+                    {{ status | capitalizeAndRemoveUnderscore }}
                   </option>
                 </select>
               </div>
@@ -310,8 +315,8 @@
                   Stats &nbsp;<fa-icon [icon]="icons.faArrowRight"></fa-icon>
                 </button>
               </a>
-              <button
-                *ngIf="!isCampaignAdmin && campaign.status === ECampaignStatus.INCOMPLETE"
+              <!-- <button
+                *ngIf="!isCampaignAdmin"
                 nbButton
                 status="danger"
                 size="small"
@@ -320,7 +325,7 @@
                 outline
               >
                 Delete Campaign &nbsp;<fa-icon [icon]="icons.faTrash"></fa-icon>
-              </button>
+              </button> -->
             </td>
           </tr>
           <!-- Total row -->
@@ -356,7 +361,7 @@
 </ng-template>
 
 <!-- Destroy campaign dialog -->
-<ng-template #destroyCampaign let-data let-ref="dialogRef">
+<!-- <ng-template #destroyCampaign let-data let-ref="dialogRef">
   <nb-card class="destroy-campaign">
     <nb-card-header>
       <span>Are you sure?</span>
@@ -372,4 +377,4 @@
       <button nbButton status="info" (click)="ref.close()">Close</button>
     </nb-card-footer>
   </nb-card>
-</ng-template>
+</ng-template> -->

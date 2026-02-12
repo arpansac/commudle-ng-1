@@ -1,3 +1,4 @@
+// NOT USING THIS COMPONENT ANYMORE
 import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ICampaign, ECampaignStatus } from '@commudle/shared-models';
@@ -35,9 +36,9 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.parent.data.subscribe((data) => {
       this.campaign = data['campaign'];
-      if (this.campaign.status === ECampaignStatus.SUBMITTED) {
-        this.consent = true;
-      }
+      // if (this.campaign.status === ECampaignStatus.SUBMITTED) {
+      //   this.consent = true;
+      // }
       this.seoService.setTags(
         `Review ${this.campaign.name} Campaign Details`,
         `Review the details of ${this.campaign.name} and submit for approval`,
@@ -59,19 +60,19 @@ export class CampaignFormOrderConfirmationComponent implements OnInit {
   }
 
   submitForApproval() {
-    this.campaignService
-      .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
-      .subscribe((data) => {
-        if (data) {
-          this.campaign = data;
-          this.gtmDataLayerPushEvent('new-campaign-created', {
-            com_campaign_id: this.campaign.id,
-            com_campaign_type_name: this.campaign.campaign_type.name,
-          });
-          this.openDialog(this.submissionCampaignDialog);
-          this.setAnimation();
-        }
-      });
+    // this.campaignService
+    //   .updateCampaign({ campaign: { status: ECampaignStatus.SUBMITTED } }, this.campaign.id)
+    //   .subscribe((data) => {
+    //     if (data) {
+    //       this.campaign = data;
+    //       this.gtmDataLayerPushEvent('new-campaign-created', {
+    //         com_campaign_id: this.campaign.id,
+    //         com_campaign_type_name: this.campaign.campaign_type.name,
+    //       });
+    //       this.openDialog(this.submissionCampaignDialog);
+    //       this.setAnimation();
+    //     }
+    //   });
   }
 
   openDialog(dialog) {

@@ -50,11 +50,25 @@ export class CampaignService {
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
   }
 
-  campaignAdminUpdateStatus(campaignId: string, campaignStatus: ECampaignStatus): Observable<ICampaign> {
-    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE), {
-      campaign_id: campaignId,
-      campaign_status: campaignStatus,
-    });
+  campaignAdminUpdateStatusStop(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_STOP),
+      { campaign_id: campaignId },
+    );
+  }
+
+  campaignAdminUpdateStatusPause(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_PAUSE),
+      { campaign_id: campaignId },
+    );
+  }
+
+  campaignAdminUpdateStatusResume(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_RESUME),
+      { campaign_id: campaignId },
+    );
   }
 
   updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {
