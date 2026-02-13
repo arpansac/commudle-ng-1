@@ -1,5 +1,14 @@
 import { ActivatedRoute } from '@angular/router';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { CampaignService, SeoService } from '@commudle/shared-services';
 import { ECampaignStatus, ECampaignTypeSlug, ICampaign, ICampaignStats } from '@commudle/shared-models';
 import { Chart } from 'chart.js';
@@ -11,7 +20,7 @@ declare let google: any;
     styleUrls: ['./campaign-stats.component.scss'],
     standalone: false
 })
-export class CampaignStatsComponent implements OnInit {
+export class CampaignStatsComponent implements OnInit, OnChanges {
   @Input() campaignId: string;
   campaign: ICampaign;
   campaignStats: ICampaignStats;
@@ -19,16 +28,21 @@ export class CampaignStatsComponent implements OnInit {
   // @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
   // @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
   // @ViewChild('viewsOverTime') ViewsOverTimeChart: ElementRef<HTMLCanvasElement>;
-  // @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
+  @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
 
   constructor(private campaignService: CampaignService, private seoService: SeoService) {}
 
   ngOnInit() {
-    this.fetchCampaigns();
+    if (this.campaignId) this.fetchCampaigns();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['campaignId'] && this.campaignId) this.fetchCampaigns();
   }
 
   fetchCampaigns() {
+    if (!this.campaignId) return;
     this.campaignService.fetchCampaign(this.campaignId).subscribe((campaign) => {
       this.campaign = campaign;
       this.getStatsUserDistribution();
@@ -45,10 +59,6 @@ export class CampaignStatsComponent implements OnInit {
     this.campaignService.getStatsUserDistribution(this.campaignId).subscribe((stats: ICampaignStats) => {
       this.campaignStats = stats;
       setTimeout(() => {
-        // this.viewsOverDays();
-        //   this.clicksOverDays();
-        //   this.viewsOverTime();
-        //   this.clicksOverTime();
         this.genderDistribution();
         this.initMapChart();
       }, 0);
@@ -58,6 +68,12 @@ export class CampaignStatsComponent implements OnInit {
   getStatsTimeseries() {
     this.campaignService.getStatsTimeseries(this.campaignId).subscribe((stats: ICampaignStats) => {
       this.campaignStatsTimeseries = stats;
+      setTimeout(() => {
+        this.clicksOverTime();
+        // this.viewsOverDays();
+        // this.viewsOverTime();
+        // this.clicksOverDays();
+      }, 0);
     });
   }
 
@@ -258,19 +274,25 @@ export class CampaignStatsComponent implements OnInit {
   // }
 
   // clicksOverTime() {
-  //   if (!this.ClicksOverTimeChart?.nativeElement || !this.campaignStats.clicks_over_time) {
-  //     return;
-  //   }
+  //   console.log('called');
+  //   const rawClicks = this.campaignStatsTimeseries?.clicks ?? [];
+  //   console.log('rawClicks', rawClicks);
+  //   console.log('ClicksOverTimeChart', this.ClicksOverTimeChart?.nativeElement);
+  //   if (!this.ClicksOverTimeChart?.nativeElement || !rawClicks) return;
+
+  //   const data = Array.isArray(rawClicks)
+  //     ? rawClicks.map((item: { date?: string; value?: number; x?: string; y?: number }) =>
+  //         this.normalizeTimeseriesPoint(item),
+  //       )
+  //     : [];
+
   //   new Chart(this.ClicksOverTimeChart.nativeElement, {
   //     type: 'line',
   //     data: {
   //       datasets: [
   //         {
-  //           label: 'Views Over Time',
-  //           data: this.campaignStats.clicks_over_time.map((item) => ({
-  //             t: new Date(item.x), // Chart.js 2.x uses 't' instead of 'x' for time
-  //             y: item.y,
-  //           })),
+  //           label: 'Clicks Over Time',
+  //           data,
   //           borderColor: '#5072ff',
   //           backgroundColor: 'rgba(80, 114, 255, 0.2)',
   //           borderWidth: 2,
@@ -286,34 +308,78 @@ export class CampaignStatsComponent implements OnInit {
   //       scales: {
   //         xAxes: [
   //           {
-  //             type: 'time', // Use 'time' scale
+  //             type: 'time',
   //             time: {
-  //               unit: 'hour', // Display by hour
-  //               tooltipFormat: 'YYYY-MM-DD HH:mm',
-  //               displayFormats: { hour: 'HH:mm' },
+  //               unit: 'day',
+  //               tooltipFormat: 'YYYY-MM-DD',
+  //               displayFormats: { day: 'MMM D', week: 'MMM D' },
   //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Time (Hourly)',
-  //             },
+  //             scaleLabel: { display: true, labelString: 'Date' },
   //           },
   //         ],
   //         yAxes: [
   //           {
-  //             ticks: {
-  //               beginAtZero: false,
-  //               stepSize: 5,
-  //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Clicks',
-  //             },
+  //             ticks: { beginAtZero: true, stepSize: 1 },
+  //             scaleLabel: { display: true, labelString: 'Clicks' },
   //           },
   //         ],
   //       },
   //     },
   //   });
   // }
+
+  clicksOverTime() {
+    const source = this.campaignStatsTimeseries ?? this.campaignStats;
+    const raw = source && (source as any)?.clicks;
+    const el = this.ClicksOverTimeChart?.nativeElement;
+    if (!el || !raw.length) return;
+
+    const data = raw.map((p: { date?: string; value?: number; x?: string; y?: number }) => ({
+      t: new Date((p.date ?? p.x) || 0),
+      y: Number(p.value ?? p.y ?? 0),
+    }));
+
+    new Chart(el, {
+      type: 'line',
+      data: {
+        datasets: [
+          {
+            label: 'Clicks Over Time',
+            data,
+            borderColor: '#5072ff',
+            backgroundColor: 'rgba(80, 114, 255, 0.2)',
+            borderWidth: 2,
+            pointBackgroundColor: '#1f3bb3',
+            pointRadius: 5,
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                unit: 'day',
+                tooltipFormat: 'YYYY-MM-DD',
+                displayFormats: { day: 'MMM D', week: 'MMM D' },
+              },
+              scaleLabel: { display: true, labelString: 'Date' },
+            },
+          ],
+          yAxes: [
+            {
+              ticks: { beginAtZero: true, stepSize: 1 },
+              scaleLabel: { display: true, labelString: 'Clicks' },
+            },
+          ],
+        },
+      },
+    });
+  }
 
   genderDistribution() {
     const gender = this.campaignStats?.gender;

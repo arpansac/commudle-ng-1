@@ -55,7 +55,9 @@ export class CampaignListComponent implements OnChanges {
     private noteService: NoteService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getUserCampaignsStats();
+  }
 
   // private loadStatsOverview(): void {
   //   if (!this.campaigns?.length) return;
@@ -151,7 +153,7 @@ export class CampaignListComponent implements OnChanges {
     this.refreshRequested.emit(this.statusFilter);
   }
 
-  getStatsUserCampaigns() {
+  getUserCampaignsStats() {
     this.campaignService.getUserCampaignsStats().subscribe((stats: ICampaignStats) => {
       this.statsUserCampaigns = stats;
     });

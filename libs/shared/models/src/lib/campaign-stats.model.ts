@@ -30,6 +30,6 @@ export interface ICampaignStats {
   ctr: number;
   budget_remaining: number;
   impressions: number;
-  clicks: number;
+  clicks: number | { date: string; value: number }[];
   total_budget_utilization: number;
 }

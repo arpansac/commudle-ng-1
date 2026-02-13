@@ -8,4 +8,6 @@ export interface ITag {
   color?: string;
   picture?: IAttachedFile;
   ai_corrected?: boolean;
+  tag: string;
+  users: number;
 }

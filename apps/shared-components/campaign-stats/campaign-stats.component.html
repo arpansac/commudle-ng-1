@@ -85,15 +85,15 @@
               <div class="chart-container">
                 <canvas #clicksOverDays></canvas>
               </div>
-            </div>
+            </div> -->
 
-            <div class="campaign-graph-container">
-              <span class="title">Clicks Over Time</span>
-              <div class="chart-container">
-                <canvas #clicksOverTime></canvas>
-              </div>
+          <div class="campaign-graph-container">
+            <span class="title">Clicks Over Time</span>
+            <div class="chart-container">
+              <canvas #clicksOverTime></canvas>
             </div>
-          </div> -->
+          </div>
+          <!-- </div> -->
 
           <div class="graph-container">
             <div class="campaign-graph-container" *ngIf="campaignStats.gender">
@@ -106,12 +106,12 @@
             <div class="campaign-graph-container" *ngIf="campaignStats.tags?.total > 0">
               <span class="title">User Tags</span>
               <div class="chart-container">
-                <nb-tag-list *ngIf="campaignStats">
+                <nb-tag-list *ngIf="campaignStats.tags?.tags">
                   <nb-tag
                     status="info"
                     appearance="outline"
                     *ngFor="let tag of campaignStats.tags.tags"
-                    text="{{ tag[0] }} ({{ tag[1] }})"
+                    text="{{ tag.tag }} ({{ tag.users }})"
                     [removable]="false"
                   ></nb-tag>
                 </nb-tag-list>
