@@ -14,7 +14,7 @@
   }
 
   .component-container-wrapper {
-    @apply com-w-full com-flex-shrink-0 com-flex-grow-0 com-rounded-md;
+    @apply com-w-full com-flex-shrink-0 com-flex-grow-0 com-rounded-md com-bg-tWhite;
     flex: 0 0 100%; /* Each slide takes full width */
 
     a {
@@ -35,7 +35,7 @@
 }
 
 .campaign-image-footer {
-  @apply com-flex com-flex-row com-justify-between com-items-center com-gap-4;
+  @apply com-flex com-flex-row com-justify-between com-items-center com-gap-4 com-px-2 com-pb-2;
 }
 
 .campaign-url {

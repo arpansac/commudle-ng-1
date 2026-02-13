@@ -176,7 +176,11 @@
                   "
                 ></app-badge>
               </div>
-              <div *ngIf="isCampaignAdmin && campaign.status" (click)="$event.stopPropagation()" class="select">
+              <div
+                *ngIf="isCampaignAdmin && campaign.status"
+                (click)="$event.stopPropagation()"
+                class="select com-mt-2"
+              >
                 <select
                   [disabled]="campaign.status === ECampaignStatus.STOPPED"
                   [ngModel]="getStatusOptionsForCampaign(campaign).includes(campaign.status) ? campaign.status : ''"

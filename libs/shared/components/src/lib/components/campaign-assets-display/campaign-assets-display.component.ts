@@ -32,7 +32,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   @Input() defaultImage: string;
   @Input() defaultImageUrl: string;
   @Input() campaignTypeSlug: string;
-  @Input() showCampaignPreview = false;
+  @Input() campaignType: 'preview' | 'live' = 'live';
   @Input() campaignPreview: ICampaign;
   campaign: ICampaign;
   currentSlide = 0;
@@ -69,34 +69,33 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if (this.showCampaignPreview && this.campaignPreview) {
-      this.applyCampaignFromInput();
-    }
-    if (!this.campaign) {
-      this.fetchCampaignBySlug();
+    console.log('campaignType', this.campaignType);
+    if (this.campaignPreview && this.campaignType === 'preview') {
+      this.applyCampaignPreview();
+    } else if (!this.campaign && this.campaignType === 'live') {
+      this.fetchCampaign();
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['campaignPreview'] && this.showCampaignPreview) {
-      this.applyCampaignFromInput();
+    if (changes['campaignPreview'] && this.campaignPreview && this.campaignType === 'preview') {
+      this.applyCampaignPreview();
     }
   }
 
-  private applyCampaignFromInput(): void {
+  private applyCampaignPreview(): void {
     const source = this.campaignPreview;
     this.campaign = source;
     if (source && source.campaign_assets && source.campaign_assets.length > 0) {
       this.slidesCount = source.campaign_assets.length;
       this.startAutoSlide();
-      this.userEngagementRecordForm.patchValue({
-        parent_id: source.id,
-        parent_type: EDbModels.CAMPAIGN,
-      });
+    } else {
+      this.slidesCount = 0;
+      this.clearAutoSlide();
     }
   }
 
-  private fetchCampaignBySlug(): void {
+  private fetchCampaign(): void {
     this.campaignService.serveCampaign().subscribe((data) => {
       if (data && data.campaign_assets && data.campaign_assets.length > 0) {
         this.campaign = data;
@@ -111,47 +110,47 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   ngAfterViewInit() {
-    // SSR-safe: IntersectionObserver/window/document do not exist on the server.
     if (!this.isBrowser || typeof IntersectionObserver === 'undefined') {
       return;
     }
+    if (this.campaignType === 'live') {
+      this.campaignObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !this.hasTrackedCampaignView) {
+            this.createUserEngagementForCampaign(EUserActivityEventType.IMPRESSION);
+            this.hasTrackedCampaignView = true;
+            this.campaignObserver.disconnect(); // Stop observing after first call
+          }
+        },
+        { threshold: 0.5 },
+      );
 
-    this.campaignObserver = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !this.hasTrackedCampaignView) {
-          this.createUserEngagementForCampaign(EUserActivityEventType.USER_IMPRESSION);
-          this.hasTrackedCampaignView = true;
-          this.campaignObserver.disconnect(); // Stop observing after first call
+      this.defaultImageObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
+            this.createUserEngagementForDefaultImage(EUserActivityEventType.IMPRESSION);
+            this.hasTrackedDefaultImageView = true;
+            this.defaultImageObserver.disconnect(); // Stop observing after first call
+          }
+        },
+        { threshold: 0.5 },
+      );
+
+      setTimeout(() => {
+        const campaignEl = this.campaignImageContainerDiv?.nativeElement;
+        const defaultEl = this.defaultImageContainerDiv?.nativeElement;
+
+        if (this.campaign && campaignEl) {
+          this.campaignObserver.observe(campaignEl);
+          this.checkAndTriggerIfVisible(campaignEl, this.campaignObserver);
+        } else if (defaultEl) {
+          this.defaultImageObserver.observe(defaultEl);
+          this.checkAndTriggerIfVisible(defaultEl, this.defaultImageObserver);
         }
-      },
-      { threshold: 0.5 },
-    );
-
-    this.defaultImageObserver = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
-          this.createUserEngagementForDefaultImage(EUserActivityEventType.USER_IMPRESSION);
-          this.hasTrackedDefaultImageView = true;
-          this.defaultImageObserver.disconnect(); // Stop observing after first call
-        }
-      },
-      { threshold: 0.5 },
-    );
-
-    setTimeout(() => {
-      const campaignEl = this.campaignImageContainerDiv?.nativeElement;
-      const defaultEl = this.defaultImageContainerDiv?.nativeElement;
-
-      if (this.campaign && campaignEl) {
-        this.campaignObserver.observe(campaignEl);
-        this.checkAndTriggerIfVisible(campaignEl, this.campaignObserver);
-      } else if (defaultEl) {
-        this.defaultImageObserver.observe(defaultEl);
-        this.checkAndTriggerIfVisible(defaultEl, this.defaultImageObserver);
-      }
-    }, 500);
+      }, 500);
+    }
   }
 
   private checkAndTriggerIfVisible(element: HTMLElement, observer: IntersectionObserver) {
@@ -201,13 +200,13 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   onClick() {
-    this.createUserEngagementForCampaign(EUserActivityEventType.USER_CLICK);
+    this.createUserEngagementForCampaign(EUserActivityEventType.CLICK);
   }
 
   createUserEngagementForCampaign(eventType) {
-    if (this.campaign && this.campaign.status === ECampaignStatus.LIVE) {
+    if (this.campaignType === 'live' && this.campaign) {
       const formData = new FormData();
-      formData.append('campaign_engagement[event_type]', 'impression');
+      formData.append('campaign_engagement[event_type]', eventType);
       formData.append('campaign_engagement[url]', window.location.href);
 
       if (!this.seoService.isBot) {
@@ -224,15 +223,17 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   createUserEngagementForDefaultImage(eventType) {
-    this.userEngagementRecordForm.patchValue({
-      event_type: eventType,
-      url: this.isBrowser ? window.location.href : '',
-    });
+    if (this.campaignType === 'live' && this.campaign) {
+      this.userEngagementRecordForm.patchValue({
+        event_type: eventType,
+        url: window.location.href,
+      });
 
-    this.gtmService.dataLayerPushEvent('default_ad_campaign', {
-      com_current_page_url: this.isBrowser ? window.location.href : '',
-      com_event_type: eventType,
-    });
+      this.gtmService.dataLayerPushEvent('default_ad_campaign', {
+        com_current_page_url: window.location.href,
+        com_event_type: eventType,
+      });
+    }
     // this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
   }
 }

@@ -9,7 +9,7 @@ import { SeoService } from '@commudle/shared-services';
     standalone: false
 })
 export class SysAdminCampaignStatsComponent implements OnInit, OnDestroy {
-  campaignId: number;
+  campaignId: string;
   constructor(private route: ActivatedRoute, private seoService: SeoService) {}
 
   ngOnInit() {
