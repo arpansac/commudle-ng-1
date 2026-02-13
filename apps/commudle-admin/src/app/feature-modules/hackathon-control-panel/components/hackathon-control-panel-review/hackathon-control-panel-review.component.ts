@@ -119,6 +119,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   sendEmailDialogRef: NbDialogRef<any>;
   confirmSendEmailDialogRef: NbDialogRef<any>;
   confirmationDialogReference: NbDialogRef<any>;
+  bulkConfirmDialogReference: NbDialogRef<any>;
   parent: ICommunity | ICommunityGroup;
   subscriptions: Subscription[] = [];
 
@@ -821,7 +822,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   onBulkValueSelect(value: any, templateRef: TemplateRef<any>) {
     this.bulkOperationValue = value;
-    this.nbDialogService.open(templateRef);
+    this.bulkConfirmDialogReference = this.nbDialogService.open(templateRef);
   }
 
   confirmBulkOperation() {
@@ -844,19 +845,6 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         break;
       case 'invite_status':
         operation$ = this.hackathonTeamService.bulkUpdateInviteStatus(
-          this.hackathonId,
-          this.bulkOperationValue,
-          this.searchForm.get('search').value,
-          Number(this.selectedRoundIdForFilter),
-          this.selectedStatusForFilter,
-          this.showOnlyWinnerEntry,
-          Number(this.selectedTrackForFilter),
-          Number(this.selectProblemStatementForFilter),
-          this.selectedOfflineInviteStatusForFilter,
-        );
-        break;
-      case 'rsvp_status':
-        operation$ = this.hackathonTeamService.bulkUpdateRsvpStatus(
           this.hackathonId,
           this.bulkOperationValue,
           this.searchForm.get('search').value,
@@ -910,15 +898,19 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     }
 
     operation$.subscribe({
-      next: () => {
-        this.toastrService.successDialog('Bulk operation completed successfully');
+      next: (data) => {
+        this.toastrService.successDialog(
+          `Bulk operation completed successfully. ${data.updated_count} team(s) updated`,
+        );
         this.bulkOperationType = '';
         this.bulkOperationValue = null;
         this.confirmationDialogReference?.close();
+        this.bulkConfirmDialogReference?.close();
         this.fetchUserResponses();
       },
       error: () => {
         this.toastrService.errorDialog('Bulk operation failed');
+        this.bulkConfirmDialogReference?.close();
         this.confirmationDialogReference?.close();
       },
     });

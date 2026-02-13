@@ -22,12 +22,18 @@
             <span>Registration Link</span>
           </button>
         </a>
+        <div
+          *ngIf="hackathon && !hackathon.hackathon_response_group"
+          class="com-text-orange-600 com-text-sm com-font-medium"
+        >
+          <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
+          No registration form created yet
+        </div>
       </div>
 
       <div class="header-actions">
-        <div class="action-buttons">
+        <div class="action-buttons" *ngIf="hackathon && userResponses && userResponses.length > 0">
           <button
-            *ngIf="userResponses && userResponses.length > 0"
             nbButton
             status="primary"
             (click)="openSendApplicationStatusEmailsDialogBox(sendApplicationStatusEmails)"
@@ -36,13 +42,7 @@
             Send Application Status Emails
           </button>
 
-          <button
-            *ngIf="userResponses && userResponses.length > 0"
-            nbButton
-            status="primary"
-            (click)="openRoundSelectionUpdateEmailDialogBox()"
-            size="small"
-          >
+          <button nbButton status="primary" (click)="openRoundSelectionUpdateEmailDialogBox()" size="small">
             Send Round Selection Email
           </button>
 
@@ -54,19 +54,12 @@
             Send Entry Passes to All
           </button>
 
-          <button
-            *ngIf="userResponses && userResponses.length > 0"
-            nbButton
-            status="primary"
-            (click)="sendTeamDetailsCsv()"
-            size="small"
-          >
+          <button nbButton status="primary" (click)="sendTeamDetailsCsv()" size="small">
             <fa-icon [icon]="icons.faEnvelope"></fa-icon>
             <span>Export CSV</span>
           </button>
 
           <a
-            *ngIf="hackathon && userResponses && userResponses.length > 0"
             [routerLink]="[
               '/admin',
               'communities',
@@ -149,11 +142,14 @@
               <option [value]="true">Winners Only</option>
             </select>
 
-            <select class="filter-select bulk-operations" (change)="onBulkOperationChange($event, bulkOperationDialog)">
+            <select
+              class="filter-select bulk-operations"
+              *ngIf="hackathon && userResponses && userResponses.length > 0"
+              (change)="onBulkOperationChange($event, bulkOperationDialog)"
+            >
               <option value="" selected disabled>Bulk Operations</option>
               <option value="application_status">Change Application Status</option>
               <option value="invite_status">Change Invite Status</option>
-              <option value="rsvp_status">Change RSVP Status</option>
               <option value="round">Change Round</option>
               <option value="track">Change Track</option>
               <option value="problem_statement">Change Problem Statement</option>
@@ -452,8 +448,51 @@
 
       <!-- NO RESPONSE MESSAGE -->
       <ng-template #noUserResponse>
-        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
-        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
+        <div class="no-data-message">
+          <!-- Check if filters are active -->
+          <ng-container
+            *ngIf="
+              searchForm.get('search').value ||
+                selectedRoundIdForFilter ||
+                selectedStatusForFilter ||
+                selectedTrackForFilter ||
+                selectProblemStatementForFilter ||
+                selectedOfflineInviteStatusForFilter ||
+                sortByTotalScore;
+              else noFiltersApplied
+            "
+          >
+            <nb-icon icon="search-outline" class="icon"></nb-icon>
+            <h3>No Results Found</h3>
+            <p>No applications match your current filters. Try adjusting your search criteria or clear filters.</p>
+          </ng-container>
+
+          <!-- No filters applied - show status-based messages -->
+          <ng-template #noFiltersApplied>
+            <ng-container [ngSwitch]="hackathon?.status">
+              <div *ngSwitchCase="EHackathonStatus.DRAFT">
+                <nb-icon icon="lock-outline" class="icon"></nb-icon>
+                <h3>Applications Not Open Yet</h3>
+                <p>Registration has not started. Applications will be visible once the hackathon is published.</p>
+              </div>
+              <div *ngSwitchCase="EHackathonStatus.OPEN">
+                <nb-icon icon="inbox-outline" class="icon"></nb-icon>
+                <h3>No Applications Received</h3>
+                <p>No teams have registered yet. Applications will appear here once teams start registering.</p>
+              </div>
+              <div *ngSwitchCase="EHackathonStatus.COMPLETED">
+                <nb-icon icon="checkmark-circle-outline" class="icon"></nb-icon>
+                <h3>Hackathon Completed</h3>
+                <p>This hackathon has been completed. No applications were received.</p>
+              </div>
+              <div *ngSwitchDefault>
+                <nb-icon icon="inbox-outline" class="icon"></nb-icon>
+                <h3>No Applications</h3>
+                <p>No applications have been received for this hackathon.</p>
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
       </ng-template>
     </div>
   </nb-card-body>
@@ -1330,26 +1369,6 @@
           class="com-mb-2"
         >
           {{ status.value | titlecase }}
-        </button>
-      </div>
-      <div *ngIf="data.operationType === 'rsvp_status'">
-        <button
-          nbButton
-          fullWidth
-          status="basic"
-          (click)="onBulkValueSelect('confirmed', bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
-        >
-          Confirmed
-        </button>
-        <button
-          nbButton
-          fullWidth
-          status="basic"
-          (click)="onBulkValueSelect('declined', bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
-        >
-          Declined
         </button>
       </div>
       <div *ngIf="data.operationType === 'round'">

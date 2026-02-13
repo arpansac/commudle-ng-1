@@ -43,7 +43,7 @@ export class HackathonTeamService {
 
   bulkRegistrationStatus(
     hackathonId: string,
-    applicationStatus: string, // which we have to update to
+    newRegistrationStatus: string, // which we have to update to
     search?: string,
     roundId?: number,
     registrationStatus?: string,
@@ -52,7 +52,9 @@ export class HackathonTeamService {
     problemStatementId?: number,
     offlineInviteStatusFilter?: string,
   ): Observable<any> {
-    let params = new HttpParams().set('hackathon_id', hackathonId).set('new_registration_status', applicationStatus);
+    let params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('new_registration_status', newRegistrationStatus);
     if (search) {
       params = params.set('q', search);
     }
@@ -83,16 +85,18 @@ export class HackathonTeamService {
 
   bulkUpdateInviteStatus(
     hackathonId: string,
-    offlineInviteStatus: string,
+    newOfflineInviteStatus: string,
     search?: string,
     roundId?: number,
     registrationStatus?: string,
     onlyWinners?: boolean,
     trackId?: number,
     problemStatementId?: number,
-    offlineInviteStatusFilter?: string,
+    offlineInviteStatus?: string,
   ): Observable<any> {
-    let params = new HttpParams().set('hackathon_id', hackathonId).set('offline_invite_status', offlineInviteStatus);
+    let params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('new_offline_invite_status', newOfflineInviteStatus);
 
     if (search) {
       params = params.set('q', search);
@@ -112,51 +116,11 @@ export class HackathonTeamService {
     if (problemStatementId) {
       params = params.set('problem_statement_id', problemStatementId);
     }
-    if (offlineInviteStatusFilter) {
-      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    if (offlineInviteStatus) {
+      params = params.set('offline_invite_status', offlineInviteStatus);
     }
     return this.http.put(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_INVITE_STATUS),
-      {},
-      { params },
-    );
-  }
-
-  bulkUpdateRsvpStatus(
-    hackathonId: string,
-    rsvpStatus: string,
-    search?: string,
-    roundId?: number,
-    registrationStatus?: string,
-    onlyWinners?: boolean,
-    trackId?: number,
-    problemStatementId?: number,
-    offlineInviteStatusFilter?: string,
-  ): Observable<any> {
-    let params = new HttpParams().set('hackathon_id', hackathonId).set('rsvp_status', rsvpStatus);
-    if (search) {
-      params = params.set('q', search);
-    }
-    if (roundId) {
-      params = params.set('round_id', roundId);
-    }
-    if (registrationStatus) {
-      params = params.set('registration_status', registrationStatus);
-    }
-    if (onlyWinners) {
-      params = params.set('only_winners', onlyWinners);
-    }
-    if (trackId) {
-      params = params.set('track_id', trackId);
-    }
-    if (problemStatementId) {
-      params = params.set('problem_statement_id', problemStatementId);
-    }
-    if (offlineInviteStatusFilter) {
-      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
-    }
-    return this.http.put(
-      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_RSVP_STATUS),
       {},
       { params },
     );
@@ -236,7 +200,7 @@ export class HackathonTeamService {
 
   bulkUpdateProblemStatement(
     hackathonId: string,
-    hackathonProblemStatementId: number,
+    newHackathonProblemStatementId: number,
     search?: string,
     roundId?: number,
     registrationStatus?: string,
@@ -247,7 +211,7 @@ export class HackathonTeamService {
   ): Observable<any> {
     let params = new HttpParams()
       .set('hackathon_id', hackathonId)
-      .set('hackathon_problem_statement_id', hackathonProblemStatementId);
+      .set('new_hackathon_problem_statement_id', newHackathonProblemStatementId);
     if (search) {
       params = params.set('q', search);
     }
