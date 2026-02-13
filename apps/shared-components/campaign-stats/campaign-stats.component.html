@@ -79,21 +79,24 @@
             </div>
           </div> -->
 
-          <!-- <div class="graph-container" *ngIf="campaignStats.clicks_over_time || campaignStats.clicks_over_days">
+          <div
+            class="graph-container"
+            *ngIf="campaignStatsTimeseries && (campaignStatsTimeseries.ctr || campaignStatsTimeseries.clicks)"
+          >
             <div class="campaign-graph-container">
-              <span class="title">Clicks Over Days</span>
+              <span class="title">Click Through Rate (CTR)</span>
               <div class="chart-container">
                 <canvas #clicksOverDays></canvas>
               </div>
-            </div> -->
+            </div>
 
-          <div class="campaign-graph-container">
-            <span class="title">Clicks Over Time</span>
-            <div class="chart-container">
-              <canvas #clicksOverTime></canvas>
+            <div class="campaign-graph-container">
+              <span class="title">Clicks</span>
+              <div class="chart-container">
+                <canvas #clicksOverTime></canvas>
+              </div>
             </div>
           </div>
-          <!-- </div> -->
 
           <div class="graph-container">
             <div class="campaign-graph-container" *ngIf="campaignStats.gender">

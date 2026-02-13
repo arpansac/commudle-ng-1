@@ -26,7 +26,7 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
   campaignStats: ICampaignStats;
   campaignStatsTimeseries: ICampaignStats;
   // @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
-  // @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
+  @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
   // @ViewChild('viewsOverTime') ViewsOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
@@ -70,9 +70,9 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
       this.campaignStatsTimeseries = stats;
       setTimeout(() => {
         this.clicksOverTime();
+        this.clicksOverDays();
         // this.viewsOverDays();
         // this.viewsOverTime();
-        // this.clicksOverDays();
       }, 0);
     });
   }
@@ -146,74 +146,76 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
   //   });
   // }
 
-  // clicksOverDays() {
-  //   if (!this.ClicksOverDaysChart?.nativeElement || !this.campaignStats.clicks_over_days) {
-  //     return;
-  //   }
+  clicksOverDays() {
+    const source = this.campaignStatsTimeseries.ctr as any;
 
-  //   new Chart(this.ClicksOverDaysChart.nativeElement, {
-  //     type: 'bar',
-  //     data: {
-  //       labels: this.campaignStats.clicks_over_days.map((data) => data.x), // Extracting dates
-  //       datasets: [
-  //         {
-  //           label: 'Clicks per Day',
-  //           data: this.campaignStats.clicks_over_days.map((data) => data.y), // Extracting values
-  //           backgroundColor: '#5072ff',
-  //           borderColor: '#1f3bb3',
-  //           borderWidth: 2,
-  //           hoverBackgroundColor: '#1f3bb3',
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false,
-  //       scales: {
-  //         xAxes: [
-  //           {
-  //             type: 'time',
-  //             time: {
-  //               unit: 'day',
-  //               tooltipFormat: 'YYYY-MM-DD',
-  //               displayFormats: {
-  //                 day: 'YYYY-MM-DD',
-  //               },
-  //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Date',
-  //             },
-  //             ticks: {
-  //               autoSkip: true,
-  //               maxRotation: 45,
-  //               minRotation: 45,
-  //             },
-  //           },
-  //         ],
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Clicks Count',
-  //             },
-  //             ticks: {
-  //               beginAtZero: false,
-  //               stepSize: 5,
-  //             },
-  //           },
-  //         ],
-  //       },
-  //       legend: {
-  //         display: true,
-  //         labels: {
-  //           fontColor: '#333',
-  //           fontSize: 14,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
+    if (!this.ClicksOverDaysChart?.nativeElement || !source) {
+      return;
+    }
+
+    new Chart(this.ClicksOverDaysChart.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: source.map((data) => data.date), // Extracting dates
+        datasets: [
+          {
+            label: 'Clicks Over Days',
+            data: source.map((data) => data.value), // Extracting values
+            backgroundColor: '#5072ff',
+            borderColor: '#1f3bb3',
+            borderWidth: 2,
+            hoverBackgroundColor: '#1f3bb3',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                unit: 'day',
+                tooltipFormat: 'YYYY-MM-DD',
+                displayFormats: {
+                  day: 'YYYY-MM-DD',
+                },
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Date',
+              },
+              ticks: {
+                autoSkip: true,
+                maxRotation: 45,
+                minRotation: 45,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'Clicks Count',
+              },
+              ticks: {
+                beginAtZero: false,
+                stepSize: 5,
+              },
+            },
+          ],
+        },
+        legend: {
+          display: true,
+          labels: {
+            fontColor: '#333',
+            fontSize: 14,
+          },
+        },
+      },
+    });
+  }
 
   // viewsOverTime() {
   //   if (!this.ViewsOverTimeChart?.nativeElement || !this.campaignStats.views_over_time) {
@@ -273,64 +275,8 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
   //   });
   // }
 
-  // clicksOverTime() {
-  //   console.log('called');
-  //   const rawClicks = this.campaignStatsTimeseries?.clicks ?? [];
-  //   console.log('rawClicks', rawClicks);
-  //   console.log('ClicksOverTimeChart', this.ClicksOverTimeChart?.nativeElement);
-  //   if (!this.ClicksOverTimeChart?.nativeElement || !rawClicks) return;
-
-  //   const data = Array.isArray(rawClicks)
-  //     ? rawClicks.map((item: { date?: string; value?: number; x?: string; y?: number }) =>
-  //         this.normalizeTimeseriesPoint(item),
-  //       )
-  //     : [];
-
-  //   new Chart(this.ClicksOverTimeChart.nativeElement, {
-  //     type: 'line',
-  //     data: {
-  //       datasets: [
-  //         {
-  //           label: 'Clicks Over Time',
-  //           data,
-  //           borderColor: '#5072ff',
-  //           backgroundColor: 'rgba(80, 114, 255, 0.2)',
-  //           borderWidth: 2,
-  //           pointBackgroundColor: '#1f3bb3',
-  //           pointRadius: 5,
-  //           fill: true,
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false,
-  //       scales: {
-  //         xAxes: [
-  //           {
-  //             type: 'time',
-  //             time: {
-  //               unit: 'day',
-  //               tooltipFormat: 'YYYY-MM-DD',
-  //               displayFormats: { day: 'MMM D', week: 'MMM D' },
-  //             },
-  //             scaleLabel: { display: true, labelString: 'Date' },
-  //           },
-  //         ],
-  //         yAxes: [
-  //           {
-  //             ticks: { beginAtZero: true, stepSize: 1 },
-  //             scaleLabel: { display: true, labelString: 'Clicks' },
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   });
-  // }
-
   clicksOverTime() {
-    const source = this.campaignStatsTimeseries ?? this.campaignStats;
-    const raw = source && (source as any)?.clicks;
+    const raw = this.campaignStatsTimeseries && (this.campaignStatsTimeseries as any)?.clicks;
     const el = this.ClicksOverTimeChart?.nativeElement;
     if (!el || !raw.length) return;
 
@@ -344,7 +290,7 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
       data: {
         datasets: [
           {
-            label: 'Clicks Over Time',
+            label: 'Clicks Over Days',
             data,
             borderColor: '#5072ff',
             backgroundColor: 'rgba(80, 114, 255, 0.2)',

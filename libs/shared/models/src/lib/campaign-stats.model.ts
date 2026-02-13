@@ -27,7 +27,7 @@ export interface ICampaignStats {
     sents: number;
   };
   total_impressions: number;
-  ctr: number;
+  ctr: number | { date: string; value: number }[];
   budget_remaining: number;
   impressions: number;
   clicks: number | { date: string; value: number }[];
