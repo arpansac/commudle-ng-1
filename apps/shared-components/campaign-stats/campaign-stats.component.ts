@@ -25,7 +25,7 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
   campaign: ICampaign;
   campaignStats: ICampaignStats;
   campaignStatsTimeseries: ICampaignStats;
-  // @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
+  @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
   // @ViewChild('viewsOverTime') ViewsOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
@@ -71,80 +71,81 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
       setTimeout(() => {
         this.clicksOverTime();
         this.clicksOverDays();
-        // this.viewsOverDays();
+        this.viewsOverDays();
         // this.viewsOverTime();
       }, 0);
     });
   }
 
-  // viewsOverDays() {
-  //   if (!this.ViewsOverDaysChart?.nativeElement || !this.campaignStats.views_over_days) {
-  //     return;
-  //   }
+  viewsOverDays() {
+    const source = this.campaignStatsTimeseries.impressions as any;
+    if (!this.ViewsOverDaysChart?.nativeElement || !source) {
+      return;
+    }
 
-  //   new Chart(this.ViewsOverDaysChart.nativeElement, {
-  //     type: 'bar',
-  //     data: {
-  //       labels: this.campaignStats.views_over_days.map((data) => data.x), // Extracting dates
-  //       datasets: [
-  //         {
-  //           label: 'Views per Day',
-  //           data: this.campaignStats.views_over_days.map((data) => data.y), // Extracting values
-  //           backgroundColor: '#5072ff',
-  //           borderColor: '#1f3bb3',
-  //           borderWidth: 2,
-  //           hoverBackgroundColor: '#1f3bb3',
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false,
-  //       scales: {
-  //         xAxes: [
-  //           {
-  //             type: 'time',
-  //             time: {
-  //               unit: 'day',
-  //               tooltipFormat: 'YYYY-MM-DD',
-  //               displayFormats: {
-  //                 day: 'YYYY-MM-DD',
-  //               },
-  //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Date',
-  //             },
-  //             ticks: {
-  //               autoSkip: true,
-  //               maxRotation: 45,
-  //               minRotation: 45,
-  //             },
-  //           },
-  //         ],
-  //         yAxes: [
-  //           {
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Views Count',
-  //             },
-  //             ticks: {
-  //               beginAtZero: false,
-  //               stepSize: 5,
-  //             },
-  //           },
-  //         ],
-  //       },
-  //       legend: {
-  //         display: true,
-  //         labels: {
-  //           fontColor: '#333',
-  //           fontSize: 14,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
+    new Chart(this.ViewsOverDaysChart.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: source.map((data) => data.date), // Extracting dates
+        datasets: [
+          {
+            label: 'Impressions Over Days',
+            data: source.map((data) => data.value), // Extracting values
+            backgroundColor: '#5072ff',
+            borderColor: '#1f3bb3',
+            borderWidth: 2,
+            hoverBackgroundColor: '#1f3bb3',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              time: {
+                unit: 'day',
+                tooltipFormat: 'YYYY-MM-DD',
+                displayFormats: {
+                  day: 'YYYY-MM-DD',
+                },
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Date',
+              },
+              ticks: {
+                autoSkip: true,
+                maxRotation: 45,
+                minRotation: 45,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: 'Views Count',
+              },
+              ticks: {
+                beginAtZero: false,
+                stepSize: 5,
+              },
+            },
+          ],
+        },
+        legend: {
+          display: true,
+          labels: {
+            fontColor: 'com-text-black',
+            fontSize: 14,
+          },
+        },
+      },
+    });
+  }
 
   clicksOverDays() {
     const source = this.campaignStatsTimeseries.ctr as any;
@@ -209,7 +210,7 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
         legend: {
           display: true,
           labels: {
-            fontColor: '#333',
+            fontColor: 'com-text-red-500',
             fontSize: 14,
           },
         },

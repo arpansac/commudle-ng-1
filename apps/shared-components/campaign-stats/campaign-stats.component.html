@@ -62,22 +62,22 @@
                 <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.delivered }}</div>
               </nb-card-body>
             </nb-card>
-          </div>
+          </div> -->
 
-          <div class="graph-container" *ngIf="campaignStats.views_over_days || campaignStats.views_over_time">
-            <div class="campaign-graph-container" *ngIf="campaignStats.views_over_days">
+          <div class="graph-container" *ngIf="campaignStatsTimeseries && campaignStatsTimeseries.impressions">
+            <div class="campaign-graph-container" *ngIf="campaignStatsTimeseries.impressions">
               <span class="title">Views Over Days</span>
               <div class="chart-container">
                 <canvas #viewsOverDays></canvas>
               </div>
             </div>
-            <div class="campaign-graph-container" *ngIf="campaignStats.views_over_time">
+            <!-- <div class="campaign-graph-container" *ngIf="campaignStats.views_over_time">
               <span class="title">Views Over Time</span>
               <div class="chart-container">
                 <canvas #viewsOverTime></canvas>
               </div>
-            </div>
-          </div> -->
+            </div> -->
+          </div>
 
           <div
             class="graph-container"
