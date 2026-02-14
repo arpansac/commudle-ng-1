@@ -92,9 +92,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
             label: 'Impressions Over Days',
             data: source.map((data) => data.value), // Extracting values
             backgroundColor: '#5072ff',
-            borderColor: '#1f3bb3',
-            borderWidth: 2,
-            hoverBackgroundColor: '#1f3bb3',
           },
         ],
       },
@@ -139,7 +136,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
         legend: {
           display: true,
           labels: {
-            fontColor: 'com-text-black',
             fontSize: 14,
           },
         },
@@ -210,7 +206,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
         legend: {
           display: true,
           labels: {
-            fontColor: 'com-text-red-500',
             fontSize: 14,
           },
         },
