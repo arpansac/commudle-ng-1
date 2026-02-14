@@ -140,7 +140,7 @@
                       : campaign.status === ECampaignStatus.REJECTED
                       ? 'com-bg-red-100'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
-                      ? 'com-bg-yellow-100'
+                      ? 'com-bg-red-100'
                       : campaign.status === ECampaignStatus.LIVE
                       ? 'com-bg-green-500'
                       : campaign.status === ECampaignStatus.COMPLETE
@@ -161,7 +161,7 @@
                       : campaign.status === ECampaignStatus.APPROVED
                       ? 'com-text-white'
                       : campaign.status === ECampaignStatus.REJECTED
-                      ? 'com-text-gray-700'
+                      ? 'com-text-red-500'
                       : campaign.status === ECampaignStatus.CHANGES_REQUIRED
                       ? 'com-text-red-500'
                       : campaign.status === ECampaignStatus.LIVE
@@ -171,7 +171,7 @@
                       : campaign.status === ECampaignStatus.PAUSED
                       ? 'com-text-gray-700'
                       : campaign.status === ECampaignStatus.STOPPED
-                      ? 'com-text-red-700'
+                      ? 'com-text-red-500'
                       : 'com-text-gray-700'
                   "
                 ></app-badge>

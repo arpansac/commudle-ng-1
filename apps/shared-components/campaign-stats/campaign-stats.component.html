@@ -5,7 +5,16 @@
         <nb-card-header> <h3>Campaign Stats</h3></nb-card-header>
         <nb-card-body *ngIf="campaignStats">
           <div class="graph-container">
-            <div class="campaign-graph-container" *ngIf="campaignStats.gender">
+            <div
+              class="campaign-graph-container"
+              *ngIf="
+                campaignStats.gender &&
+                (campaignStats.gender.male > 0 ||
+                  campaignStats.gender.female > 0 ||
+                  campaignStats.gender.prefer_not_to_answer > 0 ||
+                  campaignStats.gender.unknown > 0)
+              "
+            >
               <span class="title">Gender Distribution</span>
               <div class="chart-container">
                 <canvas #genderDistribution></canvas>
@@ -30,7 +39,10 @@
 
           <div
             class="graph-container"
-            *ngIf="(campaignStatsTimeseries && campaignStatsTimeseries.impressions) || campaignStats.locations"
+            *ngIf="
+              (campaignStatsTimeseries && campaignStatsTimeseries.impressions) ||
+              (campaignStats && campaignStats.locations)
+            "
           >
             <div class="campaign-graph-container" *ngIf="campaignStatsTimeseries.impressions">
               <span class="title">Views Over Days</span>
@@ -52,14 +64,14 @@
             class="graph-container"
             *ngIf="campaignStatsTimeseries && (campaignStatsTimeseries.ctr || campaignStatsTimeseries.clicks)"
           >
-            <div class="campaign-graph-container">
+            <div *ngIf="campaignStatsTimeseries.ctr" class="campaign-graph-container">
               <span class="title">Click Through Rate (CTR)</span>
               <div class="chart-container">
                 <canvas #clicksOverDays></canvas>
               </div>
             </div>
 
-            <div class="campaign-graph-container">
+            <div *ngIf="campaignStatsTimeseries.clicks" class="campaign-graph-container">
               <span class="title">Clicks</span>
               <div class="chart-container">
                 <canvas #clicksOverTime></canvas>
