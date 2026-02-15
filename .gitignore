@@ -63,6 +63,9 @@ Thumbs.db
 ssr-deployment-prod.sh
 ssr-deployment-staging.sh
 
+# SSR perf tooling outputs
+apps/ssr-perf/out
+
 # nx
 *NX
 .nx/cache
