@@ -1,28 +1,87 @@
 .review-section {
   @apply com-mx-0 md:com-mx-2;
+
   nb-card-header {
-    .header {
-      @apply com-flex com-items-center com-mb-2;
-    }
+    @apply com-p-6;
 
-    .actions {
-      @apply com-flex com-flex-wrap com-gap-3 com-items-center;
+    .header-container {
+      @apply com-flex com-flex-col com-gap-6;
 
-      .select {
-        @apply com-flex com-items-center com-gap-1 com-h-8 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-max com-min-w-[180px];
-        select {
-          @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
-          &.not-active {
-            @apply com-text-[#8E9BB3];
+      .header-title {
+        @apply com-flex com-flex-wrap com-items-center com-gap-3;
+
+        h2 {
+          @apply com-text-xl com-font-semibold com-text-gray-900 com-m-0;
+        }
+
+        .registration-link {
+          @apply com-ml-auto;
+
+          button {
+            @apply com-flex com-items-center com-gap-2;
           }
         }
       }
 
-      .clear-filter {
-        @apply com-text-red-500 com-cursor-pointer;
+      .header-actions {
+        @apply com-flex com-flex-col com-gap-4;
+
+        .action-buttons {
+          @apply com-flex com-flex-wrap com-gap-3 com-items-center;
+
+          button {
+            @apply com-whitespace-nowrap com-font-medium;
+          }
+        }
+
+        .filters-section {
+          @apply com-flex com-flex-col com-gap-3 com-py-4;
+
+          .filter-controls {
+            @apply com-flex com-flex-wrap com-gap-3 com-items-center;
+
+            .filter-select {
+              @apply com-h-10 com-text-sm com-rounded-lg com-cursor-pointer;
+              @apply com-bg-white com-border com-border-solid com-border-gray-300;
+              @apply com-text-gray-400 com-min-w-[180px] com-max-w-[220px];
+              @apply hover:com-border-primary-500 focus:com-border-primary-500 focus:com-outline-none;
+              @apply com-transition-colors com-duration-200;
+              padding: 0 40px 0 12px;
+              background-position: right 12px center;
+              background-size: 12px;
+              background-repeat: no-repeat;
+              appearance: none;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+
+              &.active {
+                @apply com-border-primary-500  com-text-gray-900;
+              }
+
+              &.bulk-operations {
+                @apply com-text-gray-400;
+
+                &.active {
+                  @apply com-text-gray-900;
+                }
+              }
+            }
+          }
+
+          .filter-actions {
+            @apply com-flex com-flex-wrap com-gap-2 com-items-center;
+
+            .clear-button {
+              @apply com-px-4 com-py-2 com-text-sm com-font-medium com-rounded-lg;
+              @apply com-bg-white com-text-red-600 com-border com-border-solid com-border-red-300;
+              @apply hover:com-bg-red-50 hover:com-border-red-400;
+              @apply com-cursor-pointer com-transition-colors com-duration-200;
+            }
+          }
+        }
       }
     }
   }
+
   nb-card-body {
     @apply com-flex com-flex-col com-justify-between com-min-h-[680px];
   }
@@ -113,12 +172,6 @@ th {
   @apply com-border com-border-solid com-border-[#e4e9f2] com-rounded com-w-28 com-cursor-pointer;
   select {
     @apply com-text-white com-px-1 com-py-1 com-border-0 com-w-24 com-font-semibold com-rounded com-cursor-pointer com-text-xs;
-  }
-}
-
-.actions {
-  button {
-    @apply com-whitespace-nowrap com-font-medium;
   }
 }
 
@@ -326,5 +379,21 @@ th {
   nb-card-header,
   nb-card-footer {
     @apply com-flex com-justify-between com-items-center;
+  }
+}
+
+.no-data-message {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-py-16 com-px-4 com-text-center;
+
+  .icon {
+    @apply com-text-6xl com-text-gray-300 com-mb-4;
+  }
+
+  h3 {
+    @apply com-text-xl com-font-semibold com-text-gray-700 com-mb-2 com-mt-0;
+  }
+
+  p {
+    @apply com-text-sm com-text-gray-500 com-max-w-md com-m-0;
   }
 }

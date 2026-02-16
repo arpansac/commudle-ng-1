@@ -20,6 +20,7 @@ import {
   IPagination,
   IPaginationCount,
   IHackathonJudge,
+  EOfflineInviteStatus,
 } from '@commudle/shared-models';
 
 @Injectable({
@@ -313,12 +314,13 @@ export class HackathonService {
     count = 10,
     search?: string,
     roundId?: number,
-    status?: string,
+    registrationStatus?: string,
     onlyWinners?: boolean,
     trackId?: number,
     problemStatementId?: number,
     sortBy?: string,
     sortOrder?: string,
+    offlineInviteStatus?: string,
   ): Observable<IPaginationCount<IHackathonUserResponses>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
 
@@ -328,8 +330,8 @@ export class HackathonService {
     if (roundId) {
       params = params.set('round_id', roundId);
     }
-    if (status) {
-      params = params.set('status', status);
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
     }
     if (onlyWinners) {
       params = params.set('only_winners', onlyWinners);
@@ -345,6 +347,10 @@ export class HackathonService {
     }
     if (sortOrder) {
       params = params.set('sort_order', sortOrder);
+    }
+
+    if (offlineInviteStatus) {
+      params = params.set('offline_invite_status', offlineInviteStatus);
     }
     return this.http.get<IPaginationCount<IHackathonUserResponses>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.INDEX_USER_RESPONSES),

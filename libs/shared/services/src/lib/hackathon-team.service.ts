@@ -40,4 +40,203 @@ export class HackathonTeamService {
       { params },
     );
   }
+
+  bulkRegistrationStatus(
+    hackathonId: string,
+    newRegistrationStatus: string, // which we have to update to
+    search?: string,
+    roundId?: number,
+    registrationStatus?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
+    problemStatementId?: number,
+    offlineInviteStatusFilter?: string,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('new_registration_status', newRegistrationStatus);
+    if (search) {
+      params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (offlineInviteStatusFilter) {
+      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    }
+    return this.http.put(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_REGISTRATION_STATUS),
+      {},
+      { params },
+    );
+  }
+
+  bulkUpdateInviteStatus(
+    hackathonId: string,
+    newOfflineInviteStatus: string,
+    search?: string,
+    roundId?: number,
+    registrationStatus?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
+    problemStatementId?: number,
+    offlineInviteStatus?: string,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('new_offline_invite_status', newOfflineInviteStatus);
+
+    if (search) {
+      params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (offlineInviteStatus) {
+      params = params.set('offline_invite_status', offlineInviteStatus);
+    }
+    return this.http.put(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_INVITE_STATUS),
+      {},
+      { params },
+    );
+  }
+
+  bulkUpdateRound(
+    hackathonId: string,
+    newRoundId: number,
+    search?: string,
+    roundId?: number,
+    registrationStatus?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
+    problemStatementId?: number,
+    offlineInviteStatusFilter?: string,
+  ): Observable<any> {
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('new_round_id', newRoundId);
+    if (search) {
+      params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (offlineInviteStatusFilter) {
+      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    }
+    return this.http.put(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_ROUND), {}, { params });
+  }
+
+  bulkUpdateTrack(
+    hackathonId: string,
+    hackathonTrackId: number,
+    search?: string,
+    roundId?: number,
+    registrationStatus?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
+    problemStatementId?: number,
+    offlineInviteStatusFilter?: string,
+  ): Observable<any> {
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('hackathon_track_id', hackathonTrackId);
+    if (search) {
+      params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (offlineInviteStatusFilter) {
+      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    }
+    return this.http.put(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_TRACK), {}, { params });
+  }
+
+  bulkUpdateProblemStatement(
+    hackathonId: string,
+    newHackathonProblemStatementId: number,
+    search?: string,
+    roundId?: number,
+    registrationStatus?: string,
+    onlyWinners?: boolean,
+    trackId?: number,
+    problemStatementId?: number,
+    offlineInviteStatusFilter?: string,
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('hackathon_id', hackathonId)
+      .set('new_hackathon_problem_statement_id', newHackathonProblemStatementId);
+    if (search) {
+      params = params.set('q', search);
+    }
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    if (registrationStatus) {
+      params = params.set('registration_status', registrationStatus);
+    }
+    if (onlyWinners) {
+      params = params.set('only_winners', onlyWinners);
+    }
+    if (trackId) {
+      params = params.set('track_id', trackId);
+    }
+    if (problemStatementId) {
+      params = params.set('problem_statement_id', problemStatementId);
+    }
+    if (offlineInviteStatusFilter) {
+      params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    }
+    return this.http.put(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_PROBLEM_STATEMENT),
+      {},
+      { params },
+    );
+  }
 }

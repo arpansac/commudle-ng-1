@@ -1,154 +1,180 @@
 <nb-card class="review-section">
   <nb-card-header>
-    <div class="header">
-      Applications & Projects
-      <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
-      <a
-        *ngIf="parent && parent.slug && hackathon && hackathon.hackathon_response_group"
-        target="_blank"
-        [routerLink]="[
-          '/communities',
-          parent.slug,
-          'hackathons',
-          hackathon.slug,
-          'fill-form',
-          hackathon.hackathon_response_group.id
-        ]"
-      >
-        <button nbButton status="primary" size="tiny">
-          <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon> &nbsp; Link to register
-        </button>
-      </a>
-    </div>
-
-    <div class="actions">
-      <button
-        *ngIf="userResponses && userResponses.length > 0"
-        nbButton
-        status="primary"
-        (click)="openRoundSelectionUpdateEmailDialogBox()"
-        class="com-w-max"
-        size="small"
-      >
-        Send round selection update email
-      </button>
-
-      <button
-        *ngIf="userResponses && userResponses.length > 0"
-        nbButton
-        status="primary"
-        (click)="openSendApplicationStatusEmailsDialogBox(sendApplicationStatusEmails)"
-        class="com-w-max"
-        size="small"
-      >
-        Send Application Status Emails
-      </button>
-      <button nbButton status="primary" (click)="openBulkRsvpEmailDialog()" size="small" class="com-w-max">
-        Send RSVP to All Teams
-      </button>
-      <button nbButton status="primary" (click)="openBulkEntryPassEmailDialog()" class="com-w-max" size="small">
-        Send Entry Passes to All Teams
-      </button>
-
-      <button
-        *ngIf="userResponses && userResponses.length > 0"
-        nbButton
-        status="primary"
-        (click)="sendTeamDetailsCsv()"
-        class="com-w-max"
-        size="small"
-      >
-        <fa-icon [icon]="icons.faEnvelope"></fa-icon>&nbsp;CSV
-      </button>
-
-      <a
-        *ngIf="hackathon && userResponses && userResponses.length > 0"
-        [routerLink]="['/admin', 'communities', parent.slug, 'hackathon-dashboard', hackathon.slug, 'tracks', 'prizes']"
-      >
-        <button nbButton status="primary" class="com-w-max" size="small">Select Winner</button>
-      </a>
-
-      <div class="select">
-        <select
-          (change)="onRoundChange($event)"
-          [(ngModel)]="selectedRoundIdForFilter"
-          [ngClass]="{
-            'not-active': selectedRoundIdForFilter === ''
-          }"
+    <div class="header-container">
+      <div class="header-title">
+        <h2>Applications & Projects</h2>
+        <commudle-help-section [helpDictionaryName]="'hackathon-applications-projects'"></commudle-help-section>
+        <a
+          *ngIf="parent && parent.slug && hackathon && hackathon.hackathon_response_group"
+          target="_blank"
+          class="registration-link"
+          [routerLink]="[
+            '/communities',
+            parent.slug,
+            'hackathons',
+            hackathon.slug,
+            'fill-form',
+            hackathon.hackathon_response_group.id
+          ]"
         >
-          <option value="" selected disabled>Filter with round</option>
-          <option *ngFor="let round of hackathonRounds" [value]="round.id">
-            {{ round.name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="select">
-        <select
-          (change)="onStatusChange($event)"
-          [(ngModel)]="selectedStatusForFilter"
-          [ngClass]="{
-            'not-active': selectedStatusForFilter === ''
-          }"
+          <button nbButton status="primary" size="tiny">
+            <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
+            <span>Registration Link</span>
+          </button>
+        </a>
+        <div
+          *ngIf="hackathon && !hackathon.hackathon_response_group"
+          class="com-text-orange-600 com-text-sm com-font-medium"
         >
-          <option value="" selected disabled>Filter with status</option>
-          <option *ngFor="let status of EHackathonRegistrationStatus | keyvalue" [value]="status.value">
-            {{ status.value | capitalizeAndRemoveUnderscore }}
-          </option>
-        </select>
+          <fa-icon [icon]="icons.faExclamationTriangle"></fa-icon>
+          No registration form created yet
+        </div>
       </div>
 
-      <div class="select">
-        <select
-          (change)="onTrackChange($event)"
-          [(ngModel)]="selectedTrackForFilter"
-          [ngClass]="{
-            'not-active': selectedTrackForFilter === ''
-          }"
-        >
-          <option value="" selected disabled>Filter with Tracks</option>
-          <option *ngFor="let track of hackathonTracks" [value]="track.id">
-            {{ track.name }}
-          </option>
-        </select>
-      </div>
+      <div class="header-actions">
+        <div class="action-buttons" *ngIf="hackathon && userResponses && userResponses.length > 0">
+          <button
+            nbButton
+            status="primary"
+            (click)="openSendApplicationStatusEmailsDialogBox(sendApplicationStatusEmails)"
+            size="small"
+          >
+            Send Application Status Emails
+          </button>
 
-      <div class="select">
-        <select
-          (change)="onProblemStatementChange($event)"
-          [(ngModel)]="selectProblemStatementForFilter"
-          [ngClass]="{
-            'not-active': selectProblemStatementForFilter === ''
-          }"
-        >
-          <option value="" selected disabled>Filter with Problem Statements</option>
-          <option *ngFor="let problemStatement of hackathonProblemStatements" [value]="problemStatement.id">
-            #{{ problemStatement.display_id }}
-          </option>
-        </select>
-      </div>
+          <button nbButton status="primary" (click)="openRoundSelectionUpdateEmailDialogBox()" size="small">
+            Send Round Selection Email
+          </button>
 
-      <div class="select">
-        <select (change)="onSelectWinnerChange($event)" [(ngModel)]="showOnlyWinnerEntry">
-          <option [value]="false">Show All</option>
-          <option [value]="true">Show Only Winners</option>
-        </select>
-      </div>
+          <button nbButton status="primary" (click)="openBulkRsvpEmailDialog()" size="small">
+            Send RSVP to All Teams
+          </button>
 
-      <div
-        class="clear-filter"
-        (click)="clearAllFilter()"
-        *ngIf="
-          selectedStatusForFilter ||
-          selectedRoundIdForFilter ||
-          selectedTrackForFilter ||
-          selectProblemStatementForFilter
-        "
-      >
-        Clear All Filters
-      </div>
+          <button nbButton status="primary" (click)="openBulkEntryPassEmailDialog()" size="small">
+            Send Entry Passes to All
+          </button>
 
-      <div class="clear-filter" (click)="clearSorting()" *ngIf="sortByTotalScore">Clear Sorting</div>
+          <button nbButton status="primary" (click)="sendTeamDetailsCsv()" size="small">
+            <fa-icon [icon]="icons.faEnvelope"></fa-icon>
+            <span>Export CSV</span>
+          </button>
+
+          <a
+            [routerLink]="[
+              '/admin',
+              'communities',
+              parent.slug,
+              'hackathon-dashboard',
+              hackathon.slug,
+              'tracks',
+              'prizes'
+            ]"
+          >
+            <button nbButton status="primary" size="small">Select Winner</button>
+          </a>
+        </div>
+
+        <div class="filters-section">
+          <div class="filter-controls">
+            <select
+              class="filter-select"
+              (change)="onRoundChange($event)"
+              [(ngModel)]="selectedRoundIdForFilter"
+              [ngClass]="{ active: selectedRoundIdForFilter !== '' }"
+            >
+              <option value="" selected disabled>Filter: Round</option>
+              <option *ngFor="let round of hackathonRounds" [value]="round.id">{{ round.name }}</option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onStatusChange($event)"
+              [(ngModel)]="selectedStatusForFilter"
+              [ngClass]="{ active: selectedStatusForFilter !== '' }"
+            >
+              <option value="" selected disabled>Filter: Application Status</option>
+              <option *ngFor="let status of EHackathonRegistrationStatus | keyvalue" [value]="status.value">
+                {{ status.value | capitalizeAndRemoveUnderscore }}
+              </option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onOfflineInviteStatusChange($event)"
+              [(ngModel)]="selectedOfflineInviteStatusForFilter"
+              [ngClass]="{ active: selectedOfflineInviteStatusForFilter !== '' }"
+            >
+              <option value="" selected disabled>Filter: Invite Status</option>
+              <option *ngFor="let status of EOfflineInviteStatus | keyvalue" [value]="status.value">
+                {{ status.value | capitalizeAndRemoveUnderscore }}
+              </option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onTrackChange($event)"
+              [(ngModel)]="selectedTrackForFilter"
+              [ngClass]="{ active: selectedTrackForFilter !== '' }"
+            >
+              <option value="" selected disabled>Filter: Track</option>
+              <option *ngFor="let track of hackathonTracks" [value]="track.id">{{ track.name }}</option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onProblemStatementChange($event)"
+              [(ngModel)]="selectProblemStatementForFilter"
+              [ngClass]="{ active: selectProblemStatementForFilter !== '' }"
+            >
+              <option value="" selected disabled>Filter: Problem Statement</option>
+              <option *ngFor="let problemStatement of hackathonProblemStatements" [value]="problemStatement.id">
+                #{{ problemStatement.display_id }}
+              </option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onSelectWinnerChange($event)"
+              [(ngModel)]="showOnlyWinnerEntry"
+              [ngClass]="{ active: showOnlyWinnerEntry !== null }"
+            >
+              <option [value]="false">Show All</option>
+              <option [value]="true">Winners Only</option>
+            </select>
+
+            <select
+              class="filter-select bulk-operations"
+              *ngIf="hackathon && userResponses && userResponses.length > 0"
+              (change)="onBulkOperationChange($event, bulkOperationDialog)"
+            >
+              <option value="" selected disabled>Bulk Operations</option>
+              <option value="application_status">Change Application Status</option>
+              <option value="invite_status">Change Invite Status</option>
+              <option value="round">Change Round</option>
+              <option value="track">Change Track</option>
+              <option value="problem_statement">Change Problem Statement</option>
+            </select>
+          </div>
+
+          <div class="filter-actions">
+            <button
+              class="clear-button"
+              (click)="clearAllFilter()"
+              *ngIf="
+                selectedStatusForFilter ||
+                selectedRoundIdForFilter ||
+                selectedTrackForFilter ||
+                selectProblemStatementForFilter ||
+                selectedOfflineInviteStatusForFilter
+              "
+            >
+              Clear Filters
+            </button>
+
+            <button class="clear-button" (click)="clearSorting()" *ngIf="sortByTotalScore">Clear Sorting</button>
+          </div>
+        </div>
+      </div>
     </div>
   </nb-card-header>
   <nb-card-body>
@@ -422,8 +448,51 @@
 
       <!-- NO RESPONSE MESSAGE -->
       <ng-template #noUserResponse>
-        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.DRAFT">Applications not open</div>
-        <div *ngIf="hackathon && hackathon.status === EHackathonStatus.OPEN">No Applications received till now</div>
+        <div class="no-data-message">
+          <!-- Check if filters are active -->
+          <ng-container
+            *ngIf="
+              searchForm.get('search').value ||
+                selectedRoundIdForFilter ||
+                selectedStatusForFilter ||
+                selectedTrackForFilter ||
+                selectProblemStatementForFilter ||
+                selectedOfflineInviteStatusForFilter ||
+                sortByTotalScore;
+              else noFiltersApplied
+            "
+          >
+            <nb-icon icon="search-outline" class="icon"></nb-icon>
+            <h3>No Results Found</h3>
+            <p>No applications match your current filters. Try adjusting your search criteria or clear filters.</p>
+          </ng-container>
+
+          <!-- No filters applied - show status-based messages -->
+          <ng-template #noFiltersApplied>
+            <ng-container [ngSwitch]="hackathon?.status">
+              <div *ngSwitchCase="EHackathonStatus.DRAFT">
+                <nb-icon icon="lock-outline" class="icon"></nb-icon>
+                <h3>Applications Not Open Yet</h3>
+                <p>Registration has not started. Applications will be visible once the hackathon is published.</p>
+              </div>
+              <div *ngSwitchCase="EHackathonStatus.OPEN">
+                <nb-icon icon="inbox-outline" class="icon"></nb-icon>
+                <h3>No Applications Received</h3>
+                <p>No teams have registered yet. Applications will appear here once teams start registering.</p>
+              </div>
+              <div *ngSwitchCase="EHackathonStatus.COMPLETED">
+                <nb-icon icon="checkmark-circle-outline" class="icon"></nb-icon>
+                <h3>Hackathon Completed</h3>
+                <p>This hackathon has been completed. No applications were received.</p>
+              </div>
+              <div *ngSwitchDefault>
+                <nb-icon icon="inbox-outline" class="icon"></nb-icon>
+                <h3>No Applications</h3>
+                <p>No applications have been received for this hackathon.</p>
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
       </ng-template>
     </div>
   </nb-card-body>
@@ -1265,6 +1334,101 @@
     </nb-card-body>
     <nb-card-footer>
       <button (click)="ref.close()" nbButton status="basic">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #bulkOperationDialog let-ref="dialogRef" let-data>
+  <nb-card>
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>Select {{ getBulkOperationLabel() }}</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="data.operationType === 'application_status'">
+        <button
+          *ngFor="let status of EHackathonRegistrationStatus | keyvalue"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ status.value | titlecase }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'invite_status'">
+        <button
+          *ngFor="let status of EOfflineInviteStatus | keyvalue"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ status.value | titlecase }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'round'">
+        <button
+          *ngFor="let round of hackathonRounds"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(round.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ round.name }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'track'">
+        <button
+          *ngFor="let track of hackathonTracks"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(track.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ track.name }}
+        </button>
+      </div>
+      <div *ngIf="data.operationType === 'problem_statement'">
+        <button
+          *ngFor="let ps of hackathonProblemStatements"
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(ps.id, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          #{{ ps.display_id }}
+        </button>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #bulkConfirmDialog let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>Confirm Bulk Operation</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <p>
+        You are changing <strong>{{ getBulkOperationLabel() }}</strong> of
+        <strong>{{ getFilteredTeamsCount() }}</strong> teams to <strong>{{ getBulkOperationValueLabel() }}</strong
+        >. This operation cannot be reverted. Are you sure?
+      </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="confirmBulkOperation()">Confirm</button>
+      <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

@@ -941,6 +941,12 @@ export const API_ROUTES = {
       TEAMS_BY_EVALUATOR: 'api/v2/hackathons/teams/teams_by_evaluator', //POST
       UPDATE_TRACK: 'api/v2/hackathons/teams/update_track', //POST
       UPDATE_PROBLEM_STATEMENT: 'api/v2/hackathons/teams/update_problem_statement',
+      BULK_UPDATE_INVITE_STATUS: 'api/v2/hackathons/teams/bulk_update_invite_status', //PUT
+      BULK_UPDATE_RSVP_STATUS: 'api/v2/hackathons/teams/bulk_update_rsvp_status', //PUT
+      BULK_UPDATE_ROUND: 'api/v2/hackathons/teams/bulk_update_round', //PUT
+      BULK_UPDATE_TRACK: 'api/v2/hackathons/teams/bulk_update_track', //PUT
+      BULK_UPDATE_PROBLEM_STATEMENT: 'api/v2/hackathons/teams/bulk_update_problem_statement', //PUT
+      BULK_REGISTRATION_STATUS: 'api/v2/hackathons/teams/bulk_registration_status', //PUT
     },
   },
 
