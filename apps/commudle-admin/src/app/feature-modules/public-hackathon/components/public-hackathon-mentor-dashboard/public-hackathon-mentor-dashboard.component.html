@@ -102,7 +102,9 @@
                     (click)="openAddTeamDialog(slot, i)"
                     [disabled]="
                       slot.status === ERoundMentorSlotStatus.CANCELLED ||
-                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR
+                      slot.status === ERoundMentorSlotStatus.CANCELLED_BY_MENTOR ||
+                      !selectedRound.round_mentor_slot_rule.booking_open ||
+                      !selectedRound.round_mentor_slot_rule.mentor_manages_teams
                     "
                   >
                     <fa-icon [icon]="icons.faPlus"></fa-icon>

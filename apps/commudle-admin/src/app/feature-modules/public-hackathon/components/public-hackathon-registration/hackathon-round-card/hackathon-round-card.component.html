@@ -80,7 +80,8 @@
           </span>
           } }
         </div>
-        } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0) {
+        } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0 && round.round_mentor_slot_rule?.booking_open &&
+        (round.round_mentor_slot_rule?.teams_choose_slots || !round.round_mentor_slot_rule?.only_admin_assigns_teams)) {
         <button
           nbButton
           size="tiny"
