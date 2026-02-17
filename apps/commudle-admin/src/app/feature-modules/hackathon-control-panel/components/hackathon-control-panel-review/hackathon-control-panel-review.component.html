@@ -104,9 +104,18 @@
               [(ngModel)]="selectedOfflineInviteStatusForFilter"
               [ngClass]="{ active: selectedOfflineInviteStatusForFilter !== '' }"
             >
-              <option value="" selected disabled>Filter: Invite Status</option>
-              <option *ngFor="let status of EOfflineInviteStatus | keyvalue" [value]="status.value">
-                {{ status.value | capitalizeAndRemoveUnderscore }}
+              <option value="" selected disabled>Filter: Offline Invite Status</option>
+              <option [value]="EOfflineInviteStatus.PENDING">
+                {{ EOfflineInviteStatus.PENDING | capitalizeAndRemoveUnderscore }}
+              </option>
+              <option [value]="EOfflineInviteStatus.SHORTLISTED">
+                {{ EOfflineInviteStatus.SHORTLISTED | capitalizeAndRemoveUnderscore }}
+              </option>
+              <option [value]="EOfflineInviteStatus.CONFIRMED">
+                {{ EOfflineInviteStatus.CONFIRMED | capitalizeAndRemoveUnderscore }}
+              </option>
+              <option [value]="EOfflineInviteStatus.CANCELLED">
+                {{ EOfflineInviteStatus.CANCELLED | capitalizeAndRemoveUnderscore }}
               </option>
             </select>
 
@@ -149,7 +158,7 @@
             >
               <option value="" selected disabled>Bulk Operations</option>
               <option value="application_status">Change Application Status</option>
-              <option value="invite_status">Change Invite Status</option>
+              <option value="invite_status">Change Offline Invite Status</option>
               <option value="round">Change Round</option>
               <option value="track">Change Track</option>
               <option value="problem_statement">Change Problem Statement</option>
@@ -1361,14 +1370,40 @@
       </div>
       <div *ngIf="data.operationType === 'invite_status'">
         <button
-          *ngFor="let status of EOfflineInviteStatus | keyvalue"
           nbButton
           fullWidth
           status="basic"
-          (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
+          (click)="onBulkValueSelect(EOfflineInviteStatus.PENDING, bulkConfirmDialog); ref.close()"
           class="com-mb-2"
         >
-          {{ status.value | titlecase }}
+          {{ EOfflineInviteStatus.PENDING | titlecase }}
+        </button>
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(EOfflineInviteStatus.SHORTLISTED, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ EOfflineInviteStatus.SHORTLISTED | titlecase }}
+        </button>
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(EOfflineInviteStatus.CONFIRMED, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ EOfflineInviteStatus.CONFIRMED | titlecase }}
+        </button>
+        <button
+          nbButton
+          fullWidth
+          status="basic"
+          (click)="onBulkValueSelect(EOfflineInviteStatus.CANCELLED, bulkConfirmDialog); ref.close()"
+          class="com-mb-2"
+        >
+          {{ EOfflineInviteStatus.CANCELLED | titlecase }}
         </button>
       </div>
       <div *ngIf="data.operationType === 'round'">
