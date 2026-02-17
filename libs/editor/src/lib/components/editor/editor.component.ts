@@ -9,8 +9,10 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { minLength, noWhitespace, required } from '@commudle/shared-validators';
 import { Editor, Extensions } from '@tiptap/core';
 import { CharacterCount } from '@tiptap/extension-character-count';
@@ -27,11 +29,11 @@ import { IEditorValidator } from '../../models/editor-validator.model';
 import { NbButtonAppearance, NbComponentStatus } from '@commudle/theme';
 
 @Component({
-    selector: 'commudle-editor',
-    templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'commudle-editor',
+  templateUrl: './editor.component.html',
+  styleUrls: ['./editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showMenu = false;
@@ -50,12 +52,11 @@ export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   @Output() uploadImages = new EventEmitter<any>();
 
   injector = inject(Injector);
+  private platformId = inject(PLATFORM_ID);
 
   editor: Editor;
   extensionsCollection: { [key: string]: Extensions };
   isValid: boolean;
-
-  constructor() {}
 
   get coreExtensions(): Extensions {
     if (!this.editable) {
@@ -66,11 +67,13 @@ export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.initExtensions();
-    this.initEditor();
+    if (isPlatformBrowser(this.platformId)) {
+      this.initExtensions();
+      this.initEditor();
 
-    if (this.editable && this.validators) {
-      this.editor.on('update', () => this.validate());
+      if (this.editable && this.validators) {
+        this.editor.on('update', () => this.validate());
+      }
     }
   }
 
@@ -84,7 +87,7 @@ export class EditorComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.editor.destroy();
+    this.editor?.destroy();
   }
 
   initExtensions(): void {
