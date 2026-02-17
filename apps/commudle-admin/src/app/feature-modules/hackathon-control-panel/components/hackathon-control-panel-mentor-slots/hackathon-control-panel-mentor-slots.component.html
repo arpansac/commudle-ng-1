@@ -163,7 +163,23 @@
     </nb-card-header>
     <nb-card-body>
       <div class="form-group">
-        <nb-checkbox formControlName="booking_open">Booking Open</nb-checkbox>
+        <nb-checkbox formControlName="booking_open" (checkedChange)="onBookingOpenChange($event)"
+          >Booking Open</nb-checkbox
+        >
+      </div>
+      <div class="form-group">
+        <nb-checkbox
+          formControlName="only_admin_assigns_teams"
+          (checkedChange)="onAdminAssignsTeamsChange($event)"
+          [disabled]="!slotRuleForm.get('booking_open').value"
+          >Only Admin Assigns Teams</nb-checkbox
+        >
+      </div>
+      <div class="form-group">
+        <nb-checkbox formControlName="mentor_manages_teams">Mentor Manages Teams</nb-checkbox>
+      </div>
+      <div class="form-group">
+        <nb-checkbox formControlName="teams_choose_slots">Teams Choose Slots</nb-checkbox>
       </div>
       <div class="form-group">
         <label for="startsAt">Starts At <span class="required">*</span></label>
