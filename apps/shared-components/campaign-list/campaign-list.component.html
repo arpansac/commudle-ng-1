@@ -263,11 +263,14 @@
               <span>{{ moment(campaign.created_at).format('MMM D, YYYY') }}</span>
               <span class="time-created"> | {{ moment(campaign.created_at).format('h:mm A') }}</span>
               <div *ngIf="isCampaignAdmin">
-                <!-- Pending <app-user-profile-mini [user]="campaign.user" size="small"></app-user-profile-mini> -->
+                <commudle-user-profile-mini-card
+                  [user]="campaign.user"
+                  [size]="'small'"
+                  [designation]="false"
+                ></commudle-user-profile-mini-card>
               </div>
             </td>
             <td class="data-cell com-text-right">
-              <!-- {{ campaign.statsOverview?.total_impressions != null ? campaign.statsOverview?.total_impressions : '--' }} -->
               {{
                 statsOverview[campaign.id]?.total_impressions != null
                   ? statsOverview[campaign.id]?.total_impressions
@@ -275,15 +278,12 @@
               }}
             </td>
             <td class="data-cell com-text-right">
-              <!-- {{ campaign.statsOverview?.total_clicks != null ? campaign.statsOverview?.total_clicks : '--' }} -->
               {{ statsOverview[campaign.id]?.total_clicks != null ? statsOverview[campaign.id]?.total_clicks : '--' }}
             </td>
             <td class="data-cell com-text-right border-right">
-              <!-- {{ campaign.statsOverview?.ctr != null ? campaign.statsOverview.ctr : '--' }} -->
               {{ statsOverview[campaign.id]?.ctr != null ? statsOverview[campaign.id]?.ctr : '--' }}
             </td>
             <td class="data-cell com-text-right border-right">
-              <!-- {{ campaign.statsOverview?.ctr != null ? campaign.statsOverview.ctr : '--' }} -->
               {{
                 statsOverview[campaign.id]?.budget_remaining != null
                   ? (statsOverview[campaign.id]?.budget_remaining | currency : campaign.currency_type)

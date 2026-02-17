@@ -13,13 +13,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EDbModels, ECampaignStatus, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
-import {
-  CampaignService,
-  GoogleTagManagerService,
-  UserEngagementRecordsService,
-  SeoService,
-} from '@commudle/shared-services';
+import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
+import { CampaignService, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -31,9 +26,9 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() defaultImage: string;
   @Input() defaultImageUrl: string;
-  @Input() campaignTypeSlug: string;
   @Input() campaignType: 'preview' | 'live' = 'live';
   @Input() campaignPreview: ICampaign;
+
   campaign: ICampaign;
   currentSlide = 0;
   slidesCount = 0;
@@ -52,7 +47,6 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
 
   constructor(
     private campaignService: CampaignService,
-    private uerService: UserEngagementRecordsService,
     private fb: FormBuilder,
     private gtmService: GoogleTagManagerService,
     private seoService: SeoService,
@@ -69,7 +63,6 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    console.log('campaignType', this.campaignType);
     if (this.campaignPreview && this.campaignType === 'preview') {
       this.applyCampaignPreview();
     } else if (!this.campaign && this.campaignType === 'live') {
@@ -234,6 +227,5 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
         com_event_type: eventType,
       });
     }
-    // this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
   }
 }

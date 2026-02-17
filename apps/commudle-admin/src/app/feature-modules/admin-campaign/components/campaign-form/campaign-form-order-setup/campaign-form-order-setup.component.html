@@ -236,6 +236,18 @@
                     </div>
                   </div>
 
+                  <div>
+                    <label for="cta_label">Call to action <span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'e.g. Learn More, Sign Up, Get Started'"
+                        [inputValue]="campaignForm.get('cta_label')?.value"
+                        (blurEvent)="campaignForm.get('cta_label')?.markAsTouched()"
+                        (valueChange)="handleInput($event, 'cta_label')"
+                      ></commudle-input>
+                    </div>
+                  </div>
+
                   <div *ngIf="estimate" class="budget-info-row com-mb-2 com-gap-10">
                     <div class="cost-container">
                       <span>Est. cost:</span>
@@ -284,7 +296,6 @@
                         <img [src]="asset.image.url" alt="Asset preview" />
                       </div>
                       <div class="saved-asset-details">
-                        <p class="saved-headline">{{ asset.headline }}</p>
                         <p class="saved-url"><strong>URL:</strong> {{ asset.url }}</p>
                       </div>
                       <button
@@ -353,35 +364,6 @@
                             status="danger"
                           ></nb-icon>
                         </p>
-                      </div>
-
-                      <div>
-                        <label [for]="'headline-' + (campaignAssets.length - 1)" class="label"
-                          >Headline <span class="required"> *</span></label
-                        >
-                        <div class="input">
-                          <commudle-input
-                            [id]="'headline-' + (campaignAssets.length - 1)"
-                            placeholder="Enter Your Headline Text"
-                            [inputValue]="
-                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')?.value
-                            "
-                            (valueChange)="
-                              handleArrayFormInput($event, 'headline', campaignAssets.length - 1, 'campaign_assets')
-                            "
-                            [type]="'text'"
-                          ></commudle-input>
-                          <div
-                            *ngIf="
-                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')
-                                ?.invalid &&
-                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.headline')?.touched
-                            "
-                            class="alert-container"
-                          >
-                            <commudle-alert [error]="true" errorMessage="Headline is required"></commudle-alert>
-                          </div>
-                        </div>
                       </div>
 
                       <div>
@@ -470,12 +452,14 @@
           <div class="next-button">
             <button
               nbButton
-              shape="semi-round"
               [disabled]="!isSubmitForApprovalEnabled()"
+              shape="semi-round"
               (click)="updateCampaign(true)"
             >
-              Submit For Approval &nbsp;
-              <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+              {{
+                wallet && wallet.available_balance >= campaignForm.get('budget').value ? 'Go live' : 'Pay and Go live'
+              }}
+              &nbsp;<fa-icon [icon]="icons.faArrowRight"></fa-icon>
             </button>
           </div>
         </div>
@@ -494,17 +478,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div>
-                        <label class="label" for="call-to-action-{{ i }}"
-                          >Call To Action <span class="required"> *</span></label
-                        >
-                        <div class="input">
-                          <commudle-input
-                            [inputValue]="campaignForm.get('campaign_assets.' + i + '.call_to_action')?.value"
-                            (valueChange)="handleArrayFormInput($event, 'call_to_action', i, 'campaign_assets')"
-                            placeholder="eg: Learn More"
-                            [type]="'text'"
-                          ></commudle-input>
-                        </div>
-                      </div> -->

@@ -77,6 +77,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
         start_at: ['', Validators.required],
         end_at: [''],
         set_end_date: [false],
+        cta_label: [''],
         budget: [0, [Validators.required, Validators.min(50)]],
         locations: [],
         communities: [],
@@ -169,7 +170,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     return this._fb.group({
       id: [asset ? asset?.id : ''],
       image: [asset ? asset?.image?.url : null, Validators.required],
-      headline: [asset ? asset?.headline : '', Validators.required],
       url: [asset ? asset?.url : '', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]], // Ensure URL is valid
     });
   }
@@ -179,38 +179,43 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   addAsset(index: number) {
-    const savedCount = this.campaign?.campaign_assets?.length;
+    const savedCount = this.campaign?.campaign_assets?.length ?? 0;
     if (savedCount >= 5) {
       this.toasterService.warningDialog(`Maximum 5 campaign assets allowed. Remove an asset to add a new one.`);
       return;
     }
 
     const currentGroup = this.campaignAssets.at(index) as FormGroup;
-
-    // Validate the current asset before saving
     if (currentGroup.invalid) {
       currentGroup.markAllAsTouched();
       return;
     }
 
-    // Prepare FormData for the single asset
     const formData = new FormData();
     const assetData = currentGroup.value;
+    const url = (currentGroup.get('url')?.value ?? assetData.url ?? '') as string;
+    const existingAssets = this.campaign?.campaign_assets ?? [];
+    let nextIndex = 0;
 
-    formData.append('campaign[campaign_assets][0][headline]', assetData.headline);
-    formData.append('campaign[campaign_assets][0][url]', assetData.url);
+    // Include all existing assets so the API replaces the array with existing + new, not just the new one
+    existingAssets.forEach((asset, idx) => {
+      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url ?? '');
+      if (asset.id) {
+        formData.append(`campaign[campaign_assets][${idx}][id]`, asset.id.toString());
+      }
+      nextIndex = idx + 1;
+    });
 
+    // Append the new asset at the next index
+    formData.append(`campaign[campaign_assets][${nextIndex}][url]`, url);
     if (assetData.id) {
-      formData.append('campaign[campaign_assets][0][id]', assetData.id.toString());
+      formData.append(`campaign[campaign_assets][${nextIndex}][id]`, assetData.id);
     }
-
     if (assetData.image instanceof File) {
-      formData.append('campaign[campaign_assets][0][image]', assetData.image);
+      formData.append(`campaign[campaign_assets][${nextIndex}][image]`, assetData.image);
     }
 
-    // Save the asset to APIFro
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
-      // Create a new object reference with a new array reference to ensure change detection
       this.campaign = {
         ...updatedCampaign,
         campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
@@ -265,28 +270,24 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
   }
 
   removeCampaignAsset(index: number) {
-    if (!this.campaign.campaign_assets || index >= this.campaign.campaign_assets.length) {
+    if (!this.campaign?.campaign_assets || index >= this.campaign.campaign_assets.length) {
       return;
     }
 
     const assetToRemove = this.campaign.campaign_assets[index];
-    const assetId = assetToRemove.id;
+    const assetId = assetToRemove?.id;
 
-    if (!assetId) {
+    if (assetId == null) {
       return;
     }
 
-    // Remove from API by updating campaign without this asset
     const formData = new FormData();
-    const remainingAssets = this.campaign.campaign_assets.filter((asset) => {
-      return asset.id !== assetId;
-    });
+    const remainingAssets = this.campaign.campaign_assets.filter((asset) => asset.id !== assetId);
 
-    // Rebuild FormData with all assets except the one being deleted
+    // Rebuild FormData: all remaining assets, or explicitly empty so backend clears the list
     remainingAssets.forEach((asset, idx) => {
-      formData.append(`campaign[campaign_assets][${idx}][headline]`, asset.headline);
-      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url);
-      if (asset.id) {
+      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url ?? '');
+      if (asset.id != null) {
         formData.append(`campaign[campaign_assets][${idx}][id]`, asset.id.toString());
       }
     });
@@ -325,6 +326,7 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
         start_at: this.formatDateTimeForInput(this.campaign.start_at),
         end_at: this.formatDateTimeForInput(this.campaign.end_at),
         set_end_date: !!this.campaign.end_at,
+        cta_label: this.campaign.cta_label,
         budget: this.campaign.budget,
         locations: this.selectedLocations,
         communities: communitySlugs,
@@ -337,10 +339,10 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
   getEstimatedImpressions(): void {
     if (!this.campaign?.id) return;
-    this.campaignService.getEstimatedImpressions(this.campaign.id).subscribe((res) => {
-      this.estimate = res.data;
-      this.cdr.detectChanges();
-    });
+    // this.campaignService.getEstimatedImpressions(this.campaign.id).subscribe((res) => {
+    //   this.estimate = res.data;
+    //   this.cdr.detectChanges();
+    // });
   }
 
   private formatDateTimeForInput(dateString: string): string {
@@ -425,6 +427,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
 
     // Append basic campaign info with null checks
     if (formValue.name) formData.append('campaign[name]', formValue.name);
+    if (formValue.cta_label) {
+      formData.append('campaign[cta_label]', formValue.cta_label);
+    }
     if (formValue.budget) formData.append('campaign[budget]', formValue.budget.toString());
     if (formValue.start_at) formData.append('campaign[start_at]', formValue.start_at);
     if (formValue.set_end_date && formValue.end_at) {
@@ -443,9 +448,8 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     // Send saved assets from API
     if (this.campaign?.campaign_assets) {
       this.campaign.campaign_assets.forEach((asset, index) => {
-        if (asset.headline && asset.url) {
-          formData.append(`campaign[campaign_assets][${index}][headline]`, asset.headline);
-          formData.append(`campaign[campaign_assets][${index}][url]`, asset.url);
+        if (asset.url) {
+          formData.append(`campaign[campaign_assets][${index}][url]`, asset.url ?? '');
           if (asset.id) {
             formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
           }
@@ -453,23 +457,16 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
       });
     }
 
-    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe({
-      next: (data) => {
-        if (data) {
-          this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
-          this.getEstimatedImpressions();
-          if (this.campaign && callSubmitButton) {
-            this.callSubmitForApproval();
-          }
-          this.loadCampaignAssetsFromApi();
-          this.getEstimatedImpressions();
-          this.cdr.detectChanges();
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
+      if (data) {
+        this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
+        this.getEstimatedImpressions();
+        if (this.campaign && callSubmitButton) {
+          this.callSubmitForApproval();
         }
-      },
-      error: (error) => {
-        this.toasterService.errorDialog('Failed to update campaign. Please try again.');
-        console.error('Error updating campaign:', error);
-      },
+        this.loadCampaignAssetsFromApi();
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -484,7 +481,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
     } else {
       this.campaignService.createPurchaseOrder(this.campaign.id, true).subscribe((data) => {
         if (data) {
-          console.log('data', data);
           this.toasterService.warningDialog(
             'You do not have enough balance to submit for approval. Please add more balance to your wallet.',
           );

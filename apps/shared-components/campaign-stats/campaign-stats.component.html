@@ -44,13 +44,16 @@
               (campaignStats && campaignStats.locations)
             "
           >
-            <div class="campaign-graph-container" *ngIf="campaignStatsTimeseries.impressions">
+            <div
+              class="campaign-graph-container"
+              *ngIf="campaignStatsTimeseries && campaignStatsTimeseries.impressions"
+            >
               <span class="title">Views Over Days</span>
               <div class="chart-container">
                 <canvas #viewsOverDays></canvas>
               </div>
             </div>
-            <div class="map" *ngIf="campaignStats.locations">
+            <div class="map" *ngIf="campaignStats && campaignStats.locations">
               <div class="campaign-graph-container">
                 <span class="title">Map Wise Distribution</span>
                 <div class="chart-container">

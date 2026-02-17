@@ -4,14 +4,12 @@ import { CampaignService, NoteService, ToastrService } from '@commudle/shared-se
 import { faEdit, faArrowRight, faSync, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogService } from '@commudle/theme';
 import * as moment from 'moment';
-// import { forkJoin, Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'commudle-campaign-list',
-    templateUrl: './campaign-list.component.html',
-    styleUrls: ['./campaign-list.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-list',
+  templateUrl: './campaign-list.component.html',
+  styleUrls: ['./campaign-list.component.scss'],
+  standalone: false,
 })
 export class CampaignListComponent implements OnChanges {
   @Input() campaigns: ICampaign[];
@@ -30,15 +28,13 @@ export class CampaignListComponent implements OnChanges {
   noteTexts: { [campaignId: string]: string } = {};
   statusFilter: ECampaignStatus | null = null;
   statsUserCampaigns: ICampaignStats;
-  // statsOverview: ICampaignStats;
-  statsOverview: any[] = [];
+  statsOverview: ICampaignStats[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedStatus']) {
       this.statusFilter = this.selectedStatus;
     }
     if (changes['campaigns'] && this.campaigns?.length) {
-      // Loop through campaigns here once
       this.campaigns.forEach((campaign) => {
         if (this.statsOverview[campaign.id]) return;
         this.campaignService.getStatsOverview(campaign.id).subscribe((stats: ICampaignStats) => {
@@ -58,17 +54,6 @@ export class CampaignListComponent implements OnChanges {
   ngOnInit(): void {
     this.getUserCampaignsStats();
   }
-
-  // private loadStatsOverview(): void {
-  //   if (!this.campaigns?.length) return;
-  //   const sources: Record<string, Observable<{ campaign: ICampaign; stats: ICampaignStats }>> = {};
-  //   this.campaigns.forEach((campaign, i) => {
-  //     sources[i] = this.campaignService.getStatsOverview(campaign.id).pipe(map((stats) => ({ campaign, stats })));
-  //   });
-  //   forkJoin(sources).subscribe((results) =>
-  //     Object.entries(results).forEach(([i, r]) => (this.campaigns[+i].statsOverview = r.stats)),
-  //   );
-  // }
 
   getStatusOptionsForCampaign(campaign: ICampaign): ECampaignStatus[] {
     if (campaign?.status === ECampaignStatus.LIVE) {
@@ -104,6 +89,7 @@ export class CampaignListComponent implements OnChanges {
       });
     }
   }
+
   openPopup(dialog, campaign) {
     if (this.isCampaignAdmin) {
       this.dialogService.open(dialog, { context: { campaign } });
@@ -115,7 +101,7 @@ export class CampaignListComponent implements OnChanges {
   // }
 
   updateNotes(campaignId: string) {
-    if (!this.noteTexts[campaignId]) return; // Prevent empty submissions
+    if (!this.noteTexts[campaignId]) return;
 
     const formData = new FormData();
     formData.append('note[text]', this.noteTexts[campaignId]);

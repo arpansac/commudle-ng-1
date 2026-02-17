@@ -15,10 +15,10 @@ import { Chart } from 'chart.js';
 declare let google: any;
 
 @Component({
-    selector: 'commudle-campaign-stats',
-    templateUrl: './campaign-stats.component.html',
-    styleUrls: ['./campaign-stats.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-stats',
+  templateUrl: './campaign-stats.component.html',
+  styleUrls: ['./campaign-stats.component.scss'],
+  standalone: false,
 })
 export class CampaignStatsComponent implements OnInit, OnChanges {
   @Input() campaignId: string;
@@ -27,7 +27,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
   campaignStatsTimeseries: ICampaignStats;
   @ViewChild('viewsOverDays') ViewsOverDaysChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverDays') ClicksOverDaysChart: ElementRef<HTMLCanvasElement>;
-  // @ViewChild('viewsOverTime') ViewsOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('clicksOverTime') ClicksOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
 
@@ -72,7 +71,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
         this.clicksOverTime();
         this.clicksOverDays();
         this.viewsOverDays();
-        // this.viewsOverTime();
       }, 0);
     });
   }
@@ -212,64 +210,6 @@ export class CampaignStatsComponent implements OnInit, OnChanges {
       },
     });
   }
-
-  // viewsOverTime() {
-  //   if (!this.ViewsOverTimeChart?.nativeElement || !this.campaignStats.views_over_time) {
-  //     return;
-  //   }
-  //   new Chart(this.ViewsOverTimeChart.nativeElement, {
-  //     type: 'line',
-  //     data: {
-  //       datasets: [
-  //         {
-  //           label: 'Views Over Time',
-  //           data: this.campaignStats.views_over_time.map((item) => ({
-  //             t: new Date(item.x), // Chart.js 2.x uses 't' instead of 'x' for time
-  //             y: item.y,
-  //           })),
-  //           borderColor: '#5072ff',
-  //           backgroundColor: 'rgba(80, 114, 255, 0.2)',
-  //           borderWidth: 2,
-  //           pointBackgroundColor: '#1f3bb3',
-  //           pointRadius: 5,
-  //           fill: true,
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false,
-  //       scales: {
-  //         xAxes: [
-  //           {
-  //             type: 'time', // Use 'time' scale
-  //             time: {
-  //               unit: 'hour', // Display by hour
-  //               tooltipFormat: 'YYYY-MM-DD HH:mm',
-  //               displayFormats: { hour: 'HH:mm' },
-  //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Time (Hourly)',
-  //             },
-  //           },
-  //         ],
-  //         yAxes: [
-  //           {
-  //             ticks: {
-  //               beginAtZero: false,
-  //               stepSize: 5,
-  //             },
-  //             scaleLabel: {
-  //               display: true,
-  //               labelString: 'Views',
-  //             },
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   });
-  // }
 
   clicksOverTime() {
     const raw = this.campaignStatsTimeseries && (this.campaignStatsTimeseries as any)?.clicks;

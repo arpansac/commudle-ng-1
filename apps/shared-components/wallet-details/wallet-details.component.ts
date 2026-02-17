@@ -6,6 +6,7 @@ import { CampaignService, WalletService } from '@commudle/shared-services';
   selector: 'commudle-wallet-details',
   templateUrl: './wallet-details.component.html',
   styleUrls: ['./wallet-details.component.scss'],
+  standalone: false,
 })
 export class WalletDetailsComponent implements OnInit {
   @Input() campaignId: string;
