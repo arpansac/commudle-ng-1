@@ -163,13 +163,13 @@
 }
 
 .book-slot-dialog-card {
-  @apply com-max-w-[40dvw];
+  @apply com-max-w-[40dvw] com-max-h-[80dvh];
   nb-card-header {
     @apply com-flex com-items-center com-justify-between;
   }
   nb-card-body {
     .slot-item {
-      @apply com-flex com-gap-2 com-items-center;
+      @apply com-flex com-gap-2 com-items-center com-flex-col;
     }
   }
 }
