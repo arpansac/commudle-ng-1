@@ -632,7 +632,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       if (index >= 0) {
         this.userResponses[index].team.round = data.round;
       }
-      this.selectedTeamDetails.round = data.round;
+      if (this.selectedTeamDetails) {
+        this.selectedTeamDetails.round = data.round;
+      }
 
       // Force DOM update
       const selectElement = document.getElementById(`round-select-${teamId}`) as HTMLSelectElement;
