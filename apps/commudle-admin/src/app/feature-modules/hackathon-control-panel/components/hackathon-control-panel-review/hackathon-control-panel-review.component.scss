@@ -110,12 +110,6 @@ table {
       .date {
         @apply com-text-gray-400 com-text-10px;
       }
-      .project-link {
-        @apply com-text-xs;
-        a {
-          @apply com-no-underline com-text-primary-500;
-        }
-      }
     }
   }
   .round-name {
@@ -137,6 +131,7 @@ td,
 th {
   text-align: left;
   padding: 8px;
+  vertical-align: top;
 }
 
 .sortable-header {
@@ -154,6 +149,32 @@ th {
 
 .total-score {
   @apply com-font-semibold com-text-gray-900;
+}
+
+.submissions {
+  .submission-chips {
+    @apply com-flex com-flex-wrap com-gap-2;
+
+    .submission-chip {
+      @apply com-inline-flex com-items-center com-gap-1.5 com-px-3 com-py-1.5;
+      @apply com-bg-orange-50 com-text-orange-700 com-rounded-lg com-no-underline;
+      @apply com-text-xs com-font-medium com-border com-border-orange-200;
+      @apply hover:com-bg-orange-100 hover:com-border-orange-300 com-transition-all com-duration-200;
+
+      fa-icon {
+        @apply com-text-xs;
+      }
+
+      &.project-chip {
+        @apply com-bg-green-50 com-text-green-700 com-border-green-200;
+        @apply hover:com-bg-green-100 hover:com-border-green-300;
+      }
+    }
+  }
+
+  .no-submission {
+    @apply com-text-gray-400 com-text-sm;
+  }
 }
 
 .round-select-wrapper {
@@ -190,7 +211,7 @@ th {
 .round-select,
 .track-select,
 .problem-statement-select {
-  @apply com-my-4;
+  @apply com-my-2;
   select {
     @apply com-bg-Custom-Select-Background com-border com-border-solid com-border-Bright-Gray com-cursor-pointer com-w-full com-rounded-lg com-h-10 com-mt-3 com-text-Yankees-Blue;
   }
@@ -312,7 +333,7 @@ th {
   @apply com-w-full md:com-w-[600px] com-max-h-[90dvh];
 
   nb-card-header {
-    @apply com-border-b com-border-solid com-border-gray-200 com-flex com-justify-between;
+    @apply com-flex com-justify-between;
   }
 
   nb-card-body {
