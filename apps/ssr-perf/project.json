@@ -1,0 +1,25 @@
+{
+  "name": "ssr-perf",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/ssr-perf",
+  "tags": [],
+  "targets": {
+    "run": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          {
+            "command": "mkdir -p apps/ssr-perf/out",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "docker run --rm -i -v \"$PWD\":/work -w /work grafana/k6 run apps/ssr-perf/k6/ssr-perf.js",
+            "forwardAllArgs": false
+          }
+        ]
+      }
+    }
+  }
+}
