@@ -51,6 +51,8 @@ export class HackathonTeamService {
     trackId?: number,
     problemStatementId?: number,
     offlineInviteStatusFilter?: string,
+    withSubmissions?: boolean | null,
+    withCommunityBuild?: boolean | null,
   ): Observable<any> {
     let params = new HttpParams()
       .set('hackathon_id', hackathonId)
@@ -76,6 +78,12 @@ export class HackathonTeamService {
     if (offlineInviteStatusFilter) {
       params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
     }
+    if (withSubmissions !== null && withSubmissions !== undefined) {
+      params = params.set('with_submissions', withSubmissions);
+    }
+    if (withCommunityBuild !== null && withCommunityBuild !== undefined) {
+      params = params.set('with_community_build', withCommunityBuild);
+    }
     return this.http.put(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_REGISTRATION_STATUS),
       {},
@@ -93,6 +101,8 @@ export class HackathonTeamService {
     trackId?: number,
     problemStatementId?: number,
     offlineInviteStatus?: string,
+    withSubmissions?: boolean | null,
+    withCommunityBuild?: boolean | null,
   ): Observable<any> {
     let params = new HttpParams()
       .set('hackathon_id', hackathonId)
@@ -119,6 +129,12 @@ export class HackathonTeamService {
     if (offlineInviteStatus) {
       params = params.set('offline_invite_status', offlineInviteStatus);
     }
+    if (withSubmissions !== null && withSubmissions !== undefined) {
+      params = params.set('with_submissions', withSubmissions);
+    }
+    if (withCommunityBuild !== null && withCommunityBuild !== undefined) {
+      params = params.set('with_community_build', withCommunityBuild);
+    }
     return this.http.put(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_INVITE_STATUS),
       {},
@@ -136,6 +152,8 @@ export class HackathonTeamService {
     trackId?: number,
     problemStatementId?: number,
     offlineInviteStatusFilter?: string,
+    withSubmissions?: boolean | null,
+    withCommunityBuild?: boolean | null,
   ): Observable<any> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('new_round_id', newRoundId);
     if (search) {
@@ -159,6 +177,12 @@ export class HackathonTeamService {
     if (offlineInviteStatusFilter) {
       params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
     }
+    if (withSubmissions !== null && withSubmissions !== undefined) {
+      params = params.set('with_submissions', withSubmissions);
+    }
+    if (withCommunityBuild !== null && withCommunityBuild !== undefined) {
+      params = params.set('with_community_build', withCommunityBuild);
+    }
     return this.http.put(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_ROUND), {}, { params });
   }
 
@@ -172,6 +196,8 @@ export class HackathonTeamService {
     trackId?: number,
     problemStatementId?: number,
     offlineInviteStatusFilter?: string,
+    withSubmissions?: boolean | null,
+    withCommunityBuild?: boolean | null,
   ): Observable<any> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('hackathon_track_id', hackathonTrackId);
     if (search) {
@@ -195,6 +221,12 @@ export class HackathonTeamService {
     if (offlineInviteStatusFilter) {
       params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
     }
+    if (withSubmissions !== null && withSubmissions !== undefined) {
+      params = params.set('with_submissions', withSubmissions);
+    }
+    if (withCommunityBuild !== null && withCommunityBuild !== undefined) {
+      params = params.set('with_community_build', withCommunityBuild);
+    }
     return this.http.put(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_TRACK), {}, { params });
   }
 
@@ -208,6 +240,8 @@ export class HackathonTeamService {
     trackId?: number,
     problemStatementId?: number,
     offlineInviteStatusFilter?: string,
+    withSubmissions?: boolean | null,
+    withCommunityBuild?: boolean | null,
   ): Observable<any> {
     let params = new HttpParams()
       .set('hackathon_id', hackathonId)
@@ -232,6 +266,12 @@ export class HackathonTeamService {
     }
     if (offlineInviteStatusFilter) {
       params = params.set('offline_invite_status_filter', offlineInviteStatusFilter);
+    }
+    if (withSubmissions !== null && withSubmissions !== undefined) {
+      params = params.set('with_submissions', withSubmissions);
+    }
+    if (withCommunityBuild !== null && withCommunityBuild !== undefined) {
+      params = params.set('with_community_build', withCommunityBuild);
     }
     return this.http.put(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.BULK_UPDATE_PROBLEM_STATEMENT),
