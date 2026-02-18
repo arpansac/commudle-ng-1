@@ -282,6 +282,7 @@ const routes: Routes = [
       },
       {
         path: 'communities/:community_id/hackathon-dashboard',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./feature-modules/hackathon-control-panel/hackathon-control-panel.module').then(
             (m) => m.HackathonControlPanelModule,
@@ -304,6 +305,7 @@ const routes: Routes = [
       },
       {
         path: 'communities/:community_id/event-dashboard',
+        canActivate: [AuthGuard],
         loadChildren: () => import('./feature-modules/events/events.module').then((m) => m.EventsModule),
       },
       {
