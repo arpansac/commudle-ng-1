@@ -152,6 +152,28 @@
             </select>
 
             <select
+              class="filter-select"
+              (change)="onWithSubmissionsChange($event)"
+              [(ngModel)]="withSubmissions"
+              [ngClass]="{ active: withSubmissions !== null }"
+            >
+              <option [value]="null" selected>All Teams</option>
+              <option [value]="true">With Submissions</option>
+              <option [value]="false">Without Submissions</option>
+            </select>
+
+            <select
+              class="filter-select"
+              (change)="onWithCommunityBuildChange($event)"
+              [(ngModel)]="withCommunityBuild"
+              [ngClass]="{ active: withCommunityBuild !== null }"
+            >
+              <option [value]="null" selected>All Teams</option>
+              <option [value]="true">With Project</option>
+              <option [value]="false">Without Project</option>
+            </select>
+
+            <select
               class="filter-select bulk-operations"
               *ngIf="hackathon && userResponses && userResponses.length > 0"
               (change)="onBulkOperationChange($event, bulkOperationDialog)"
@@ -174,7 +196,9 @@
                 selectedRoundIdForFilter ||
                 selectedTrackForFilter ||
                 selectProblemStatementForFilter ||
-                selectedOfflineInviteStatusForFilter
+                selectedOfflineInviteStatusForFilter ||
+                withSubmissions !== null ||
+                withCommunityBuild !== null
               "
             >
               Clear Filters

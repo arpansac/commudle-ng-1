@@ -114,6 +114,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   selectProblemStatementForFilter = '';
   selectedOfflineInviteStatusForFilter = '';
   showOnlyWinnerEntry = false;
+  withSubmissions: boolean | null = null;
+  withCommunityBuild: boolean | null = null;
   sortByTotalScore: 'asc' | 'desc' | null = null;
 
   bulkOperationType = '';
@@ -256,6 +258,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.sortByTotalScore ? 'total_score' : null,
         this.sortByTotalScore,
         this.selectedOfflineInviteStatusForFilter,
+        this.withSubmissions,
+        this.withCommunityBuild,
       )
       .subscribe((data) => {
         this.userResponses = data.values;
@@ -445,6 +449,18 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.fetchUserResponses();
   }
 
+  onWithSubmissionsChange(event) {
+    this.withSubmissions = event.target.value === 'null' ? null : event.target.value === 'true';
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
+  onWithCommunityBuildChange(event) {
+    this.withCommunityBuild = event.target.value === 'null' ? null : event.target.value === 'true';
+    this.page = 1;
+    this.fetchUserResponses();
+  }
+
   onStatusChange(event) {
     this.selectedStatusForFilter = event.target.value;
     this.page = 1;
@@ -457,13 +473,17 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.selectedRoundIdForFilter ||
       this.selectedTrackForFilter ||
       this.selectProblemStatementForFilter ||
-      this.selectedOfflineInviteStatusForFilter
+      this.selectedOfflineInviteStatusForFilter ||
+      this.withSubmissions !== null ||
+      this.withCommunityBuild !== null
     ) {
       this.selectedStatusForFilter = '';
       this.selectedRoundIdForFilter = '';
       this.selectedTrackForFilter = '';
       this.selectProblemStatementForFilter = '';
       this.selectedOfflineInviteStatusForFilter = '';
+      this.withSubmissions = null;
+      this.withCommunityBuild = null;
       this.indexProblemStatements(this.hackathon.id);
       this.page = 1;
       this.fetchUserResponses();
@@ -847,6 +867,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
           Number(this.selectedTrackForFilter),
           Number(this.selectProblemStatementForFilter),
           this.selectedOfflineInviteStatusForFilter,
+          this.withSubmissions,
+          this.withCommunityBuild,
         );
         break;
       case 'invite_status':
@@ -860,6 +882,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
           Number(this.selectedTrackForFilter),
           Number(this.selectProblemStatementForFilter),
           this.selectedOfflineInviteStatusForFilter,
+          this.withSubmissions,
+          this.withCommunityBuild,
         );
         break;
       case 'round':
@@ -873,6 +897,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
           Number(this.selectedTrackForFilter),
           Number(this.selectProblemStatementForFilter),
           this.selectedOfflineInviteStatusForFilter,
+          this.withSubmissions,
+          this.withCommunityBuild,
         );
         break;
       case 'track':
@@ -886,6 +912,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
           Number(this.selectedTrackForFilter),
           Number(this.selectProblemStatementForFilter),
           this.selectedOfflineInviteStatusForFilter,
+          this.withSubmissions,
+          this.withCommunityBuild,
         );
         break;
       case 'problem_statement':
@@ -899,6 +927,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
           Number(this.selectedTrackForFilter),
           Number(this.selectProblemStatementForFilter),
           this.selectedOfflineInviteStatusForFilter,
+          this.withSubmissions,
+          this.withCommunityBuild,
         );
         break;
     }
