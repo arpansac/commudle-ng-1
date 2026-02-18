@@ -263,11 +263,11 @@
               <span>{{ moment(campaign.created_at).format('MMM D, YYYY') }}</span>
               <span class="time-created"> | {{ moment(campaign.created_at).format('h:mm A') }}</span>
               <div *ngIf="isCampaignAdmin">
-                <commudle-user-profile-mini-card
+                <!-- <commudle-user-profile-mini-card
                   [user]="campaign.user"
                   [size]="'small'"
                   [designation]="false"
-                ></commudle-user-profile-mini-card>
+                ></commudle-user-profile-mini-card> -->
               </div>
             </td>
             <td class="data-cell com-text-right">
