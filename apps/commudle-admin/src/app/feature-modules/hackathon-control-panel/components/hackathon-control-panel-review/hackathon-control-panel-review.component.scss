@@ -418,3 +418,52 @@ th {
     @apply com-text-sm com-text-gray-500 com-max-w-md com-m-0;
   }
 }
+
+.bulk-operation-dialog {
+  @apply com-w-full md:com-w-[500px];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center com-bg-gray-50 com-p-4;
+
+    h3 {
+      @apply com-m-0 com-text-lg com-font-semibold com-text-gray-900;
+    }
+
+    p {
+      @apply com-m-0 com-text-sm com-text-gray-600 com-mt-1;
+    }
+  }
+
+  nb-card-body {
+    @apply com-p-4;
+  }
+
+  .option-grid {
+    @apply com-grid com-grid-cols-1 com-gap-2;
+
+    &.scrollable {
+      @apply com-max-h-[400px] com-overflow-y-auto;
+    }
+  }
+
+  .option-button {
+    @apply com-justify-start com-text-left com-h-12;
+    @apply hover:com-bg-primary-100 com-transition-colors;
+
+    &.pending {
+      @apply hover:com-bg-yellow-50;
+    }
+
+    &.shortlisted {
+      @apply hover:com-bg-blue-50;
+    }
+
+    &.confirmed {
+      @apply hover:com-bg-green-50;
+    }
+
+    &.cancelled {
+      @apply hover:com-bg-red-50;
+    }
+  }
+}

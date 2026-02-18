@@ -1397,33 +1397,36 @@
 </ng-template>
 
 <ng-template #bulkOperationDialog let-ref="dialogRef" let-data>
-  <nb-card>
-    <nb-card-header class="com-flex com-justify-between com-items-center">
-      <span>Select {{ getBulkOperationLabel() }}</span>
-      <button nbButton ghost (click)="ref.close()" shape="round">
+  <nb-card class="bulk-operation-dialog">
+    <nb-card-header>
+      <div>
+        <h3>Select {{ getBulkOperationLabel() }}</h3>
+        <p>Choose a value to apply to all filtered teams</p>
+      </div>
+      <button nbButton ghost (click)="ref.close()" shape="round" size="small">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <div *ngIf="data.operationType === 'application_status'">
+      <div *ngIf="data.operationType === 'application_status'" class="option-grid">
         <button
           *ngFor="let status of EHackathonRegistrationStatus | keyvalue"
           nbButton
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(status.value, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button"
         >
           {{ status.value | titlecase }}
         </button>
       </div>
-      <div *ngIf="data.operationType === 'invite_status'">
+      <div *ngIf="data.operationType === 'invite_status'" class="option-grid">
         <button
           nbButton
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(EOfflineInviteStatus.PENDING, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button pending"
         >
           {{ EOfflineInviteStatus.PENDING | titlecase }}
         </button>
@@ -1432,7 +1435,7 @@
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(EOfflineInviteStatus.SHORTLISTED, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button shortlisted"
         >
           {{ EOfflineInviteStatus.SHORTLISTED | titlecase }}
         </button>
@@ -1441,7 +1444,7 @@
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(EOfflineInviteStatus.CONFIRMED, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button confirmed"
         >
           {{ EOfflineInviteStatus.CONFIRMED | titlecase }}
         </button>
@@ -1450,43 +1453,43 @@
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(EOfflineInviteStatus.CANCELLED, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button cancelled"
         >
           {{ EOfflineInviteStatus.CANCELLED | titlecase }}
         </button>
       </div>
-      <div *ngIf="data.operationType === 'round'">
+      <div *ngIf="data.operationType === 'round'" class="option-grid scrollable">
         <button
           *ngFor="let round of hackathonRounds"
           nbButton
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(round.id, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button"
         >
           {{ round.name }}
         </button>
       </div>
-      <div *ngIf="data.operationType === 'track'">
+      <div *ngIf="data.operationType === 'track'" class="option-grid scrollable">
         <button
           *ngFor="let track of hackathonTracks"
           nbButton
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(track.id, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button"
         >
           {{ track.name }}
         </button>
       </div>
-      <div *ngIf="data.operationType === 'problem_statement'">
+      <div *ngIf="data.operationType === 'problem_statement'" class="option-grid scrollable">
         <button
           *ngFor="let ps of hackathonProblemStatements"
           nbButton
           fullWidth
           status="basic"
           (click)="onBulkValueSelect(ps.id, bulkConfirmDialog); ref.close()"
-          class="com-mb-2"
+          class="option-button"
         >
           #{{ ps.display_id }}
         </button>
