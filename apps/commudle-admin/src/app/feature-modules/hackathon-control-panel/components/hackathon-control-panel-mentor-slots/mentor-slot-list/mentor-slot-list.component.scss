@@ -7,7 +7,7 @@
 }
 
 .slot-item {
-  @apply com-flex com-flex-col com-w-[150px];
+  @apply com-flex com-flex-col com-w-[200px];
 
   &:not(:last-child) {
     @apply com-border-0 com-border-r com-border-solid com-border-Bright-Gray;

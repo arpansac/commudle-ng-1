@@ -177,7 +177,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       },
       ...this.rounds.map((round) => {
         const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.slot_times.length : 1;
-        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(400, slotCount * 160)}px` : '400px';
+        const calculatedWidth = round.round_mentor_slot_rule ? `${Math.max(600, slotCount * 250)}px` : '400px';
 
         return {
           key: `round_${round.id}`,

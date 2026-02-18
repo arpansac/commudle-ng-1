@@ -9,24 +9,28 @@
     </div>
     }
     <div class="team-summary custom-scrollbar">
-      <div class="team-table">
-        <div class="team-table-header">
-          <span class="team-table-cell">Team Name</span>
-          <span class="team-table-cell">Score</span>
-        </div>
-        @for(rmsb of currentSlot.round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
-        <div class="team-table-row">
-          <span class="team-table-cell team-name">{{ rmsb.hackathon_team.name }}</span>
-          <span class="team-table-cell team-score">
-            @if(rmsb.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
-            <span class="scored">{{ rmsb.hackathon_team_round_score.total_score }}</span>
-            } @else {
-            <span class="pending">Pending</span>
-            }
-          </span>
-        </div>
-        }
-      </div>
+      <table class="team-table">
+        <thead>
+          <tr>
+            <th>Team Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(rmsb of currentSlot.round_mentor_slot_bookings; track rmsb.hackathon_team.id) {
+          <tr>
+            <td class="team-name">{{ rmsb.hackathon_team.name }}</td>
+            <td class="team-score">
+              @if(rmsb.hackathon_team_round_score?.status === EHackathonTeamRoundScoreStatus.SUBMITTED) {
+              <span class="scored">{{ rmsb.hackathon_team_round_score.total_score }}</span>
+              } @else {
+              <span class="pending">Pending</span>
+              }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
   } @else if(currentSlot) {
