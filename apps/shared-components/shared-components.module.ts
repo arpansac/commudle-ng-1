@@ -92,6 +92,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
 import { UserDetailsCheckboxFormComponent } from './user-details-checkbox-form/user-details-checkbox-form.component';
 import { UserDetailsFormComponent } from './user-details-form/user-details-form.component';
 import { NewsletterCardComponent } from './newsletter-card/newsletter-card.component';
+import { SharedComponentsModule as LibSharedComponentsModule } from '@commudle/shared-components';
 import { UserPersonalConnectComponent } from 'libs/shared/components/src/lib/components/user-personal-connect/user-personal-connect.component';
 import { CampaignListComponent } from './campaign-list/campaign-list.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
@@ -210,6 +211,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     tinyMCEEditorModule,
     UserPersonalConnectComponent,
     UserExpertTickComponent,
+    LibSharedComponentsModule,
   ],
   exports: [
     WorkInProgressComponent,

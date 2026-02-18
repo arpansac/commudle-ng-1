@@ -83,6 +83,7 @@ import { InterestedMembersComponent } from './components/interested-members/inte
     PublicFaqsComponent,
     InputComponent,
     CampaignAssetsDisplayComponent,
+    UserProfileMiniCardComponent,
     ProfileCompletionProgressComponent,
     UserProfileMissingFieldsComponent,
     AddToCalendarComponent,
