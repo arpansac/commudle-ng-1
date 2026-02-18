@@ -16,13 +16,11 @@ import {
 import {
   HackathonTeamRoundScoreService,
   RoundService,
-  AuthService,
   RoundMentorSlotService,
   HackathonTeamService,
   RoundMentorSlotBookingService,
   ToastrService,
 } from '@commudle/shared-services';
-import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { NbDialogService } from '@commudle/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { MentorScoringDialogComponent } from './mentor-scoring-dialog/mentor-scoring-dialog.component';

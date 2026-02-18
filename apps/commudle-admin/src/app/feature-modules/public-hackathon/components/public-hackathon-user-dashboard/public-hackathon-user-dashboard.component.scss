@@ -107,7 +107,7 @@ nb-card {
 }
 
 .problem-statement-dialog {
-  @apply com-max-h-[90dvh];
+  @apply com-max-h-[90dvh] md:com-w-[30dvw];
   nb-card-header {
     @apply com-flex com-justify-between com-items-center;
   }

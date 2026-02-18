@@ -632,7 +632,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       if (index >= 0) {
         this.userResponses[index].team.round = data.round;
       }
-      this.selectedTeamDetails.round = data.round;
+      if (this.selectedTeamDetails) {
+        this.selectedTeamDetails.round = data.round;
+      }
 
       // Force DOM update
       const selectElement = document.getElementById(`round-select-${teamId}`) as HTMLSelectElement;
@@ -640,7 +642,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.round.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 
@@ -685,7 +687,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.track.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 
@@ -730,7 +732,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.problem_statement.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 

@@ -24,6 +24,7 @@ export class HackathonRoundCardComponent implements OnInit, AfterViewInit {
   @Input() userTeamDetails: IHackathonTeam;
   @ViewChild('descriptionSpan') descriptionSpan: ElementRef;
   @ViewChild('bookSlotDialog') bookSlotDialog: TemplateRef<any>;
+  @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
   isCompleted: boolean;
   isUpcoming: boolean;
   isLive: boolean;
@@ -141,15 +142,21 @@ export class HackathonRoundCardComponent implements OnInit, AfterViewInit {
   }
 
   bookSlot(slotId: number, dialogRef: any) {
-    this.roundMentorSlotBookingService.createBooking(this.userTeamDetails.id, slotId, this.selectedMentorId).subscribe({
-      next: () => {
-        this.toastrService.successDialog('Slot booked successfully');
-        this.fetchSlots(this.selectedMentorId);
-        dialogRef.close();
-      },
-      error: () => {
-        this.toastrService.errorDialog('Failed to book slot');
-      },
+    this.dialogService.open(this.confirmDialog).onClose.subscribe((confirmed) => {
+      if (confirmed) {
+        this.roundMentorSlotBookingService
+          .createBooking(this.userTeamDetails.id, slotId, this.selectedMentorId)
+          .subscribe({
+            next: () => {
+              this.toastrService.successDialog('Slot booked successfully');
+              this.fetchSlots(this.selectedMentorId);
+              dialogRef.close();
+            },
+            error: () => {
+              this.toastrService.errorDialog('Failed to book slot');
+            },
+          });
+      }
     });
   }
 }

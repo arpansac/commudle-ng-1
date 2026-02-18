@@ -31,7 +31,11 @@
   </div>
   } @else if(currentSlot) {
   <div class="no-teams-actions">
-    <button class="no-teams-compact add-btn" (click)="onSlotClick()" [disabled]="isSlotCancelled">
+    <button
+      class="no-teams-compact add-btn"
+      (click)="onSlotClick()"
+      [disabled]="isSlotCancelled || !round?.round_mentor_slot_rule?.booking_open"
+    >
       <fa-icon [icon]="icons.faPlus"></fa-icon>Add teams
     </button>
     @if(isSlotCancelled) {

@@ -134,6 +134,9 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         ends_at: ['', Validators.required],
         slot_length: [30, [Validators.required, Validators.min(1)]],
         max_teams_per_slot: [1, [Validators.required, Validators.min(1)]],
+        only_admin_assigns_teams: [true],
+        mentor_manages_teams: [false],
+        teams_choose_slots: [false],
       },
       { validators: this.dateRangeValidator },
     );
@@ -239,17 +242,26 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   loadSlotRule(roundId: number): void {
-    const currentRound = this.rounds.find((r) => r.id === roundId);
+    const currentRound: IRound = this.rounds.find((r) => r.id === roundId);
     this.currentSlotRule = currentRound?.round_mentor_slot_rule || null;
+    console.log(
+      '🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadSlotRule ~ this.currentSlotRule:',
+      this.currentSlotRule,
+    );
 
     if (this.currentSlotRule) {
+      const onlyAdminAssigns = this.currentSlotRule.only_admin_assigns_teams ?? true;
       this.slotRuleForm.patchValue({
         booking_open: this.currentSlotRule.booking_open,
         starts_at: moment.utc(this.currentSlotRule.starts_at).local().format('YYYY-MM-DDTHH:mm'),
         ends_at: moment.utc(this.currentSlotRule.ends_at).local().format('YYYY-MM-DDTHH:mm'),
         slot_length: this.currentSlotRule.slot_length,
         max_teams_per_slot: this.currentSlotRule.max_teams_per_slot,
+        only_admin_assigns_teams: onlyAdminAssigns,
+        mentor_manages_teams: this.currentSlotRule.mentor_manages_teams || false,
+        teams_choose_slots: this.currentSlotRule.teams_choose_slots || false,
       });
+      this.onAdminAssignsTeamsChange(onlyAdminAssigns);
     } else {
       this.slotRuleForm.patchValue({
         booking_open: true,
@@ -257,7 +269,11 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         ends_at: currentRound?.end_date ? moment(currentRound.end_date).format('YYYY-MM-DDTHH:mm') : '',
         slot_length: 30,
         max_teams_per_slot: 1,
+        only_admin_assigns_teams: true,
+        mentor_manages_teams: false,
+        teams_choose_slots: false,
       });
+      this.onAdminAssignsTeamsChange(true);
     }
     this.cdr.markForCheck();
   }
@@ -272,7 +288,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     }
 
     const formData = {
-      ...this.slotRuleForm.value,
+      ...this.slotRuleForm.getRawValue(),
       starts_at: moment(this.slotRuleForm.value.starts_at).toISOString(),
       ends_at: moment(this.slotRuleForm.value.ends_at).toISOString(),
     };
@@ -445,5 +461,42 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     const end = moment(ends_at);
 
     return end.isAfter(start) ? null : { dateRange: true };
+  }
+
+  onAdminAssignsTeamsChange(checked: boolean): void {
+    if (checked) {
+      this.slotRuleForm.patchValue({
+        only_admin_assigns_teams: checked,
+        mentor_manages_teams: false,
+        teams_choose_slots: false,
+      });
+      this.slotRuleForm.get('mentor_manages_teams').disable();
+      this.slotRuleForm.get('teams_choose_slots').disable();
+    } else {
+      this.slotRuleForm.get('mentor_manages_teams').enable();
+      this.slotRuleForm.get('teams_choose_slots').enable();
+    }
+    this.cdr.markForCheck();
+  }
+
+  onBookingOpenChange(checked: boolean): void {
+    if (!checked) {
+      this.slotRuleForm.patchValue({
+        only_admin_assigns_teams: false,
+        mentor_manages_teams: false,
+        teams_choose_slots: false,
+      });
+      this.slotRuleForm.get('only_admin_assigns_teams').disable();
+      this.slotRuleForm.get('mentor_manages_teams').disable();
+      this.slotRuleForm.get('teams_choose_slots').disable();
+    } else {
+      this.slotRuleForm.get('only_admin_assigns_teams').enable();
+      const onlyAdminAssigns = this.slotRuleForm.get('only_admin_assigns_teams').value;
+      if (!onlyAdminAssigns) {
+        this.slotRuleForm.get('mentor_manages_teams').enable();
+        this.slotRuleForm.get('teams_choose_slots').enable();
+      }
+    }
+    this.cdr.markForCheck();
   }
 }

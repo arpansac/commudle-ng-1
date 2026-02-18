@@ -73,6 +73,9 @@
           >
             <nb-icon icon="video-outline"></nb-icon> Join Meeting
           </a>
+          <commudle-alert [info]="true">
+            <div infoContent>In case you want to alter the slot, please contact the admin team</div>
+          </commudle-alert>
           } @else {
           <span class="meeting-location-text">
             <nb-icon icon="pin-outline"></nb-icon>
@@ -80,7 +83,8 @@
           </span>
           } }
         </div>
-        } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0) {
+        } @else if(mentorSlotsByMentor.get(evaluator.id)?.length > 0 && round.round_mentor_slot_rule?.booking_open &&
+        (round.round_mentor_slot_rule?.teams_choose_slots || !round.round_mentor_slot_rule?.only_admin_assigns_teams)) {
         <button
           nbButton
           size="tiny"
@@ -157,7 +161,7 @@
   <nb-card class="book-slot-dialog-card">
     <nb-card-header>
       <span>Book Mentor Slot</span>
-      <button nbButton size="small" shape="round" (click)="ref.close()">
+      <button nbButton size="small" shape="round" (click)="ref.close()" ghost>
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
@@ -174,5 +178,18 @@
         }
       </div>
     </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #confirmDialog let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Confirm Slot Booking</nb-card-header>
+    <nb-card-body>
+      <p>Are you sure? Once the slot is booked, it cannot be changed.</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="primary" (click)="ref.close(true)">Confirm</button>
+      <button nbButton status="basic" (click)="ref.close(false)">Cancel</button>
+    </nb-card-footer>
   </nb-card>
 </ng-template>
