@@ -10,7 +10,7 @@ import * as moment from 'moment';
     standalone: false
 })
 export class CampaignDetailsComponent implements OnInit {
-  @Input() campaignId: number;
+  @Input() campaignId: string;
   @Input() campaign: ICampaign;
   isLoading = true;
   // Expose moment to the template
@@ -20,7 +20,7 @@ export class CampaignDetailsComponent implements OnInit {
 
   ngOnInit() {
     if (this.campaignId) {
-      this.campaignService.fetchCampaign(this.campaignId).subscribe((campaign) => {
+      this.campaignService.fetchCampaign(this.campaignId).subscribe((campaign: ICampaign) => {
         this.campaign = campaign;
         this.isLoading = false;
       });

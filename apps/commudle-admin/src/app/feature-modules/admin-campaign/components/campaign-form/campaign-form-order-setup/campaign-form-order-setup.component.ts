@@ -1,64 +1,158 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICampaign, ICampaignAsset, ECampaignTypeSlug } from '@commudle/shared-models';
-import { CampaignService, GoogleTagManagerService, SeoService, ToastrService } from '@commudle/shared-services';
-import { faPlus, faXmark, faArrowRight, faFileImage } from '@fortawesome/free-solid-svg-icons';
-import { combineLatest, debounceTime, filter, Subscription } from 'rxjs';
+import { ICampaign, ICampaignAsset, ICampaignEstimate, EDbModels, IWallet } from '@commudle/shared-models';
+import {
+  CampaignService,
+  GoogleTagManagerService,
+  SeoService,
+  ToastrService,
+  WalletService,
+} from '@commudle/shared-services';
+import { GooglePlacesAutocompleteService } from 'apps/commudle-admin/src/app/services/google-places-autocomplete.service';
+import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
+import { ISearch } from 'apps/shared-models/search.model';
+import { faArrowRight, faFileImage, faRectangleAd, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { distinctUntilChanged, switchMap } from 'rxjs';
+import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
+import { environment } from '@commudle/shared-environments';
 
 @Component({
-    selector: 'commudle-campaign-form-order-setup',
-    templateUrl: './campaign-form-order-setup.component.html',
-    styleUrls: ['./campaign-form-order-setup.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-form-order-setup',
+  templateUrl: './campaign-form-order-setup.component.html',
+  styleUrls: ['./campaign-form-order-setup.component.scss'],
+  standalone: false,
 })
-export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
-  fragment: string;
+export class CampaignFormOrderSetupComponent implements OnInit, AfterViewInit {
+  @ViewChild('locationSearchInput', { read: ElementRef }) locationSearchInput: ElementRef;
   campaignForm: FormGroup;
   icons = {
-    faPlus,
-    faXmark,
     faArrowRight,
     faFileImage,
+    faRectangleAd,
+    faTrash,
   };
   campaign: ICampaign;
-  imagePreview = [];
-  tags = [];
+  wallet: IWallet;
+  estimate: ICampaignEstimate;
+  form1Invalid = true;
+  form2Invalid = true;
 
-  formSubscription: Subscription;
-  ECampaignTypeSlug = ECampaignTypeSlug;
+  communitiesFormControl = new FormControl('');
+  communitiesSearchResult = [];
+  selectedCommunities: Array<{ id: number; name: string; slug: string }> = [];
+  locationsFormControl = new FormControl('');
+  selectedLocations: string[] = [];
+  EDbModels = EDbModels;
+  page = 1;
+  count = 10;
+  imagePreview = [];
+  staticAssets = staticAssets;
+  defaultUrl = environment.app_url + '/campaigns/new';
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private _fb: FormBuilder,
     private campaignService: CampaignService,
+    private walletService: WalletService,
     private toasterService: ToastrService,
     private router: Router,
     private seoService: SeoService,
     private gtm: GoogleTagManagerService,
+    private googlePlacesAutocompleteService: GooglePlacesAutocompleteService,
+    private searchService: SearchService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.campaignForm = this._fb.group(
       {
-        name: ['', [Validators.required, Validators.pattern(/^\S*$/)]], //campaign name
-        contact_name: ['', Validators.required],
-        contact_email: ['', [Validators.required, Validators.email]],
-        company_name: ['', Validators.required],
-        start_time: [''],
-        end_time: [''],
-        start_date: [''],
-        end_date: [''],
-        budget: [0, Validators.required],
+        name: ['', Validators.required],
+        start_at: ['', Validators.required],
+        end_at: [''],
+        set_end_date: [false],
+        cta_label: [''],
+        budget: [0, [Validators.required, Validators.min(50)]],
+        locations: [],
+        communities: [],
         campaign_assets: this._fb.array([this.createCampaignAsset()]),
       },
       {
-        validator: this.endDateValidator, // Add the custom validator
+        validators: [this.endDateValidator],
       },
     );
   }
 
+  ngOnInit() {
+    if (this.router.url.includes('/edit/')) {
+      const campaignId = this.activatedRoute.parent?.snapshot?.paramMap?.get('campaign_id');
+      this.campaignService.fetchCampaign(campaignId).subscribe((campaign) => {
+        if (campaign) {
+          this.campaign = campaign;
+          this.patchCampaignForm();
+          this.getFundStatus();
+          setTimeout(() => {
+            if (this.campaignForm.get('set_end_date')?.value) {
+              this.onSetEndDateChange();
+            }
+            if (!this.isForm1Invalid()) {
+              this.form1Invalid = false;
+            }
+            if (!this.isForm2Invalid()) {
+              this.form2Invalid = false;
+            }
+          });
+          this.seoService.setTags(
+            `Edit ${this.campaign.name} Campaign`,
+            `Edit your campaign ${this.campaign.name}`,
+            'https://commudle.com/assets/images/commudle-logo192.png',
+          );
+        }
+      });
+    } else {
+      this.seoService.setTags(
+        'Create a Campaign',
+        'Create a new campaign to boost outreach to thousands of developers on Commudle. Choose a campaign type to start',
+        'https://commudle.com/assets/images/commudle-logo192.png',
+      );
+    }
+  }
+
+  ngAfterViewInit() {
+    this.initAutocomplete();
+    this.observeCommunitiesInput();
+  }
+
+  createCampaign() {
+    const formData = new FormData();
+    formData.append('campaign[name]', this.campaignForm.value.name);
+    formData.append('campaign[start_at]', this.campaignForm.value.start_at || null);
+
+    if (this.campaignForm.get('set_end_date')?.value) {
+      formData.append('campaign[end_at]', this.campaignForm.value.end_at || null);
+    }
+
+    this.campaignService.createCampaign(formData).subscribe((res: ICampaign) => {
+      if (res) {
+        this.campaign = res;
+        this.getFundStatus();
+        this.router.navigate(['campaigns', 'edit', res.id], { replaceUrl: true });
+        this.gtmDataLayerPushEvent('new-campaign-step-1-created', {
+          com_campaign_id: res.id,
+        });
+      }
+    });
+  }
+
   endDateValidator(formGroup: AbstractControl): ValidationErrors | null {
-    const startDate = formGroup.get('start_date')?.value;
-    const endDate = formGroup.get('end_date')?.value;
+    const startDate = formGroup.get('start_at')?.value;
+    const endDate = formGroup.get('end_at')?.value;
 
     if (!startDate || !endDate) return null; // No validation if either date is missing
 
@@ -76,7 +170,6 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     return this._fb.group({
       id: [asset ? asset?.id : ''],
       image: [asset ? asset?.image?.url : null, Validators.required],
-      headline: [asset ? asset?.headline : '', Validators.required],
       url: [asset ? asset?.url : '', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]], // Ensure URL is valid
     });
   }
@@ -85,83 +178,178 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     return this.campaignForm.get('campaign_assets') as FormArray;
   }
 
-  addCampaignAsset() {
-    this.campaignAssets.push(this.createCampaignAsset());
-  }
+  addAsset(index: number) {
+    const savedCount = this.campaign?.campaign_assets?.length ?? 0;
+    if (savedCount >= 5) {
+      this.toasterService.warningDialog(`Maximum 5 campaign assets allowed. Remove an asset to add a new one.`);
+      return;
+    }
 
-  removeCampaignAsset(index: number) {
-    this.campaignAssets.removeAt(index);
-  }
+    const currentGroup = this.campaignAssets.at(index) as FormGroup;
+    if (currentGroup.invalid) {
+      currentGroup.markAllAsTouched();
+      return;
+    }
 
-  ngOnInit() {
-    this.checkFragment();
-    this.subscribeToFormChanges();
-    this.activatedRoute.parent.data.subscribe((data) => {
-      this.campaign = data['campaign'];
-      this.patchCampaignForm();
-      this.seoService.setTags(
-        `Edit ${this.campaign.name} Campaign - Set Time & Budget`,
-        'Set the campaign name, time, budget, tags and other details.',
-        'https://commudle.com/assets/images/commudle-logo192.png',
-      );
+    const formData = new FormData();
+    const assetData = currentGroup.value;
+    const url = (currentGroup.get('url')?.value ?? assetData.url ?? '') as string;
+    const existingAssets = this.campaign?.campaign_assets ?? [];
+    let nextIndex = 0;
+
+    // Include all existing assets so the API replaces the array with existing + new, not just the new one
+    existingAssets.forEach((asset, idx) => {
+      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url ?? '');
+      if (asset.id) {
+        formData.append(`campaign[campaign_assets][${idx}][id]`, asset.id.toString());
+      }
+      nextIndex = idx + 1;
+    });
+
+    // Append the new asset at the next index
+    formData.append(`campaign[campaign_assets][${nextIndex}][url]`, url);
+    if (assetData.id) {
+      formData.append(`campaign[campaign_assets][${nextIndex}][id]`, assetData.id);
+    }
+    if (assetData.image instanceof File) {
+      formData.append(`campaign[campaign_assets][${nextIndex}][image]`, assetData.image);
+    }
+
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
+      this.campaign = {
+        ...updatedCampaign,
+        campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
+      };
+      this.loadCampaignAssetsFromApi();
+      this.resetAssetForm();
+      this.cdr.detectChanges();
     });
   }
 
-  ngOnDestroy(): void {
-    this.formSubscription.unsubscribe();
+  private loadCampaignAssetsFromApi() {
+    const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+    campaignAssetsFormArray.clear();
+    this.imagePreview = [];
+
+    // Add all saved assets from API
+    if (this.campaign?.campaign_assets && this.campaign.campaign_assets.length > 0) {
+      this.campaign.campaign_assets.forEach((asset) => {
+        const assetForm = this.createCampaignAsset(asset);
+        campaignAssetsFormArray.push(assetForm);
+        // Set image preview if available
+        if (asset.image?.url) {
+          this.imagePreview.push(asset.image.url);
+        } else {
+          this.imagePreview.push(null);
+        }
+      });
+    }
+
+    // Always add one empty form for new asset entry
+    campaignAssetsFormArray.push(this.createCampaignAsset());
+    this.imagePreview.push(null);
+
+    this.cdr.detectChanges();
+  }
+
+  private resetAssetForm() {
+    const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
+    const lastIndex = campaignAssetsFormArray.length - 1;
+
+    if (lastIndex >= 0) {
+      // Reset the last form (the empty one)
+      campaignAssetsFormArray.at(lastIndex).reset();
+      this.imagePreview[lastIndex] = null;
+    } else {
+      // If no forms exist, create one
+      campaignAssetsFormArray.push(this.createCampaignAsset());
+      this.imagePreview.push(null);
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  removeCampaignAsset(index: number) {
+    if (!this.campaign?.campaign_assets || index >= this.campaign.campaign_assets.length) {
+      return;
+    }
+
+    const assetToRemove = this.campaign.campaign_assets[index];
+    const assetId = assetToRemove?.id;
+
+    if (assetId == null) {
+      return;
+    }
+
+    const formData = new FormData();
+    const remainingAssets = this.campaign.campaign_assets.filter((asset) => asset.id !== assetId);
+
+    // Rebuild FormData: all remaining assets, or explicitly empty so backend clears the list
+    remainingAssets.forEach((asset, idx) => {
+      formData.append(`campaign[campaign_assets][${idx}][url]`, asset.url ?? '');
+      if (asset.id != null) {
+        formData.append(`campaign[campaign_assets][${idx}][id]`, asset.id.toString());
+      }
+    });
+
+    this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((updatedCampaign: ICampaign) => {
+      // Create a new object reference with a new array reference to ensure change detection
+      this.campaign = {
+        ...updatedCampaign,
+        campaign_assets: updatedCampaign.campaign_assets ? [...updatedCampaign.campaign_assets] : [],
+      };
+      this.loadCampaignAssetsFromApi();
+      this.cdr.detectChanges();
+      this.toasterService.successDialog('Asset removed successfully.');
+    });
   }
 
   patchCampaignForm() {
     if (this.campaign.name) {
+      this.selectedLocations =
+        this.campaign.locations?.map((loc: { location?: string } | string) =>
+          typeof loc === 'string' ? loc : loc.location ?? '',
+        ) ?? [];
+
+      let communitySlugs: string[] = [];
+      if (this.campaign.communities && this.campaign.communities.length > 0) {
+        this.selectedCommunities = this.campaign.communities.map((community: any) => ({
+          id: community.id || community,
+          name: community.name || community,
+          slug: community.slug || community,
+        }));
+        communitySlugs = this.selectedCommunities.map((c) => c.slug);
+      }
+
       this.campaignForm.patchValue({
         name: this.campaign.name,
-        contact_name: this.campaign.contact_name,
-        contact_email: this.campaign.contact_email,
-        company_name: this.campaign.company_name,
-        start_time: this.convertUtcTimeToLocalString(this.campaign.start_time.toString()),
-        end_time: this.convertUtcTimeToLocalString(this.campaign.end_time.toString()),
-        start_date: this.campaign.start_date,
-        end_date: this.campaign.end_date,
+        start_at: this.formatDateTimeForInput(this.campaign.start_at),
+        end_at: this.formatDateTimeForInput(this.campaign.end_at),
+        set_end_date: !!this.campaign.end_at,
+        cta_label: this.campaign.cta_label,
         budget: this.campaign.budget,
+        locations: this.selectedLocations,
+        communities: communitySlugs,
       });
-      if (this.campaign.tags) {
-        this.tags = this.campaign.tags;
-      }
 
-      if (this.campaign.campaign_assets.length > 0) {
-        // Patch Campaign Assets (FormArray)
-        const campaignAssetsFormArray = this.campaignForm.get('campaign_assets') as FormArray;
-
-        // Clear existing items in the FormArray
-        campaignAssetsFormArray.clear();
-
-        // Loop through campaign_assets and add them to the FormArray
-        this.campaign.campaign_assets.forEach((asset, index) => {
-          campaignAssetsFormArray.push(this.createCampaignAsset(asset));
-          this.imagePreview[index] = asset.image.url;
-        });
-      }
-    }
-
-    if (this.campaign.campaign_type.slug === ECampaignTypeSlug.MAIN_NEWSLETTER) {
-      this.campaignService.calculateBudget(this.campaign.id).subscribe((data) => {
-        this.campaignForm.patchValue({ budget: data });
-      });
+      // Load campaign assets from API
+      this.loadCampaignAssetsFromApi();
     }
   }
 
-  private convertUtcTimeToLocalString(timeStr: string): string {
-    const [hours, minutes] = timeStr.split(':').map(Number);
+  getEstimatedImpressions(): void {
+    if (!this.campaign?.id) return;
+    // this.campaignService.getEstimatedImpressions(this.campaign.id).subscribe((res) => {
+    //   this.estimate = res.data;
+    //   this.cdr.detectChanges();
+    // });
+  }
 
-    // Create a Date in UTC
-    const utcDate = new Date();
-    utcDate.setUTCHours(hours, minutes, 0, 0);
-
-    // Convert to local time
-    const localHours = utcDate.getHours().toString().padStart(2, '0');
-    const localMinutes = utcDate.getMinutes().toString().padStart(2, '0');
-
-    return `${localHours}:${localMinutes}`;
+  private formatDateTimeForInput(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const isoString = date.toISOString();
+    return isoString.substring(0, 16);
   }
 
   onFileChange(event: any, index: number) {
@@ -187,25 +375,9 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     const img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = () => {
-      if (
-        img.width !== this.campaign.campaign_type.image_dimension?.width ||
-        img.height !== this.campaign.campaign_type.image_dimension?.height
-      ) {
-        this.toasterService.warningDialog(
-          'Image must be exactly ' +
-            this.campaign.campaign_type.image_dimension.width +
-            ' X ' +
-            this.campaign.campaign_type.image_dimension.height +
-            ' pixels.',
-        );
-        event.target.value = ''; // Reset input field
-        return;
-      }
-
-      // Ensure `campaignAssets` is correctly accessed as FormArray
       const campaignAssets = this.campaignForm.get('campaign_assets') as FormArray;
       if (campaignAssets && campaignAssets.at(index)) {
-        campaignAssets.at(index).patchValue({ image: file });
+        campaignAssets.at(index).get('image').setValue(file);
         campaignAssets.at(index).get('image')?.updateValueAndValidity();
 
         // Display image preview
@@ -223,12 +395,16 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview[i] = reader.result as string;
+      this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
   }
 
   handleInput(value: string | number, key: string) {
     this.campaignForm.patchValue({ [key]: value });
+    if (this.campaign?.id && key === 'budget') {
+      this.updateCampaign();
+    }
   }
 
   handleArrayFormInput(value: string | number, key: string, index: number, formArrayName: string) {
@@ -239,140 +415,274 @@ export class CampaignFormOrderSetupComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateCampaign() {
+  updateCampaign(callSubmitButton = false) {
+    // Validation
+    if (!this.campaign?.id) {
+      this.toasterService.warningDialog('Campaign ID is missing.');
+      return;
+    }
+
     const formData = new FormData();
     const formValue = this.campaignForm.value;
 
-    // Append non-file fields to FormData
-    formData.append('campaign[name]', formValue.name);
-    formData.append('campaign[contact_name]', formValue.contact_name);
-    formData.append('campaign[contact_email]', formValue.contact_email);
-    formData.append('campaign[company_name]', formValue.company_name);
+    // Append basic campaign info with null checks
+    if (formValue.name) formData.append('campaign[name]', formValue.name);
+    if (formValue.cta_label) {
+      formData.append('campaign[cta_label]', formValue.cta_label);
+    }
+    if (formValue.budget) formData.append('campaign[budget]', formValue.budget.toString());
+    if (formValue.start_at) formData.append('campaign[start_at]', formValue.start_at);
+    if (formValue.set_end_date && formValue.end_at) {
+      formData.append('campaign[end_at]', formValue.end_at);
+    } else {
+      formData.append('campaign[end_at]', '');
+    }
 
-    const combinedStart = `${formValue.start_date}T${formValue.start_time}:00`; // add seconds
-    const combinedEnd = `${formValue.end_date}T${formValue.end_time}:00`;
+    // Append locations and communities
+    const locations = Array.isArray(formValue.locations) ? formValue.locations : [];
+    locations.forEach((loc) => formData.append('campaign[locations][]', loc));
 
-    const startTimeUtc = new Date(combinedStart).toISOString();
-    const endTimeUtc = new Date(combinedEnd).toISOString();
+    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+    communitySlugs.forEach((slug) => formData.append('campaign[communities][]', slug));
 
-    formData.append('campaign[start_time]', startTimeUtc);
-    formData.append('campaign[end_time]', endTimeUtc);
-
-    // formData.append('campaign[start_time]', formValue.start_time);
-    // formData.append('campaign[end_time]', formValue.end_time);
-
-    formData.append('campaign[start_date]', formValue.start_date);
-    formData.append('campaign[end_date]', formValue.end_date);
-    formData.append('campaign[budget]', formValue.budget);
-
-    // Append campaign assets
-    formValue.campaign_assets.forEach((asset, index) => {
-      formData.append(`campaign[campaign_assets[${index}][headline]]`, asset.headline);
-      formData.append(`campaign[campaign_assets[${index}][url]]`, asset.url);
-      formData.append(`campaign[campaign_assets[${index}][id]]`, asset.id);
-
-      if (asset.image instanceof File) {
-        formData.append(`campaign[campaign_assets[${index}][image]]`, asset.image);
-      }
-    });
+    // Send saved assets from API
+    if (this.campaign?.campaign_assets) {
+      this.campaign.campaign_assets.forEach((asset, index) => {
+        if (asset.url) {
+          formData.append(`campaign[campaign_assets][${index}][url]`, asset.url ?? '');
+          if (asset.id) {
+            formData.append(`campaign[campaign_assets][${index}][id]`, asset.id.toString());
+          }
+        }
+      });
+    }
 
     this.campaignService.updateCampaign(formData, this.campaign.id).subscribe((data) => {
       if (data) {
-        this.gtmDataLayerPushEvent('new-campaign-step-2-created', {
-          com_campaign_id: this.campaign.id,
-          com_campaign_type_name: this.campaign.campaign_type.name,
-        });
-        this.submitTags();
+        this.campaign = { ...data, campaign_assets: data.campaign_assets ? [...data.campaign_assets] : [] };
+        this.getEstimatedImpressions();
+        if (this.campaign && callSubmitButton) {
+          this.callSubmitForApproval();
+        }
+        this.loadCampaignAssetsFromApi();
+        this.cdr.detectChanges();
       }
     });
   }
 
-  checkFragment() {
-    this.activatedRoute.fragment.subscribe((fragment) => {
-      if (fragment) {
-        requestAnimationFrame(() => {
-          const element = document.getElementById(fragment);
-          if (element) {
-            element.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-              inline: 'nearest',
-            });
-          }
-        });
-      }
-    });
-  }
-
-  generateCampaignName() {
-    const companyName = this.campaignForm.get('company_name')?.value?.trim().replace(/\s+/g, '-') || '';
-    const contactName = this.campaignForm.get('contact_name')?.value?.trim().replace(/\s+/g, '-') || '';
-
-    let campaignName = '';
-
-    if (companyName && contactName) {
-      campaignName = `${companyName}-${contactName}`;
-    } else if (companyName) {
-      campaignName = companyName;
-    } else if (contactName) {
-      campaignName = contactName;
-    }
-
-    this.campaignForm.patchValue({
-      name: campaignName,
-    });
-
-    this.campaignForm.get('name')?.updateValueAndValidity(); // Ensures validation updates
-  }
-
-  onTagAdd(value: string) {
-    if (!this.tags.includes(value)) {
-      this.tags.push(value);
-    }
-  }
-
-  onTagDelete(value: string) {
-    this.tags = this.tags.filter((tag: string) => tag !== value);
-  }
-
-  submitTags() {
-    this.campaignService.updateTags(this.campaign.id, this.tags).subscribe(() => {
-      this.router.navigate(['campaigns', 'edit', this.campaign.id, 'order-confirmation']);
-    });
-  }
-
-  subscribeToFormChanges(): void {
-    this.formSubscription = combineLatest([
-      this.campaignForm.get('start_date').valueChanges,
-      this.campaignForm.get('end_date').valueChanges,
-      this.campaignForm.get('start_time').valueChanges,
-      this.campaignForm.get('end_time').valueChanges,
-    ])
-      .pipe(
-        debounceTime(300), // Prevents too many calls
-        filter(([startDate, endDate, startTime, endTime]) => startDate && endDate && startTime && endTime), // Ensure all values are present
-      )
-      .subscribe(() => {
-        this.calculateEstimatedAmount();
+  callSubmitForApproval() {
+    if (this.wallet && this.wallet.available_balance >= this.campaignForm?.get('budget')?.value) {
+      this.campaignService.submitForApproval(this.campaign.id).subscribe((data) => {
+        if (data) {
+          this.toasterService.successDialog('Campaign submitted');
+          this.router.navigate(['/campaigns']);
+        }
       });
-  }
-
-  calculateEstimatedAmount() {
-    const startDate = this.campaignForm.get('start_date').value;
-    const endDate = this.campaignForm.get('end_date').value;
-    const startTime = this.campaignForm.get('start_time').value;
-    const endTime = this.campaignForm.get('end_time').value;
-    if (!startDate || !endDate || !startTime || !endTime) {
-      return;
-    }
-    this.campaignService.calculateBudget(this.campaign.id, startDate, endDate, startTime, endTime).subscribe((data) => {
-      this.campaignForm.patchValue({
-        budget: data,
+    } else {
+      this.campaignService.createPurchaseOrder(this.campaign.id, true).subscribe((data) => {
+        if (data) {
+          this.toasterService.warningDialog(
+            'You do not have enough balance to submit for approval. Please add more balance to your wallet.',
+          );
+          this.router.navigate(['/checkout', data.uuid]);
+        }
       });
-    });
+    }
   }
 
   private gtmDataLayerPushEvent(eventName: string, eventData: Record<string, string | number> = {}): void {
     this.gtm.dataLayerPushEvent(eventName, eventData);
+  }
+
+  isSubmitForApprovalEnabled(): boolean {
+    const name = this.campaignForm.get('name')?.valid;
+    const startAt = this.campaignForm.get('start_at')?.valid;
+    const budget = this.campaignForm.get('budget')?.valid;
+    const locations = this.campaignForm.get('locations')?.valid;
+    const campaignAssets = (this.campaignForm.get('campaign_assets') as FormArray).length > 0;
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const communities = this.campaignForm.get('communities')?.valid;
+    const endAt = this.campaignForm.get('end_at');
+    const endDateValid = !setEndDate || (endAt?.valid && !this.campaignForm.hasError('endDateValidator'));
+
+    if (!name || !startAt || !budget || !locations || !endDateValid || !campaignAssets || !communities) {
+      return false;
+    }
+    return true;
+  }
+
+  onSetEndDateChange() {
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const endDateControl = this.campaignForm.get('end_at');
+
+    if (endDateControl) {
+      if (setEndDate) {
+        endDateControl.setValidators([Validators.required]);
+      } else {
+        endDateControl.clearValidators();
+        endDateControl.setValue('');
+      }
+      endDateControl.updateValueAndValidity();
+    }
+  }
+
+  isForm1Invalid(): boolean {
+    const nameControl = this.campaignForm.get('name');
+    const startAtControl = this.campaignForm.get('start_at');
+    const setEndDate = this.campaignForm.get('set_end_date')?.value;
+    const endAtControl = this.campaignForm.get('end_at');
+
+    if (nameControl?.invalid || startAtControl?.invalid) {
+      nameControl.markAsTouched();
+      startAtControl.markAsTouched();
+      return true;
+    }
+
+    if (setEndDate && (endAtControl?.invalid || this.campaignForm.hasError('endDateValidator'))) {
+      endAtControl.markAsTouched();
+      return true;
+    }
+
+    return false;
+  }
+
+  onAccordion2Click(event: MouseEvent) {
+    if (this.router.url.includes('/edit/')) {
+      return;
+    }
+
+    if (this.isForm1Invalid()) {
+      this.form1Invalid = true;
+      return;
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      this.form1Invalid = false;
+      this.createCampaign();
+    }
+  }
+
+  isForm2Invalid(): boolean {
+    const budgetControl = this.campaignForm.get('budget');
+    const locationsControl = this.campaignForm.get('locations');
+
+    if (budgetControl?.invalid || locationsControl?.invalid) {
+      budgetControl?.markAsTouched();
+      locationsControl?.markAsTouched();
+      return true;
+    }
+
+    return false;
+  }
+
+  onAccordion3Click(event: MouseEvent) {
+    if (this.isForm1Invalid() || this.isForm2Invalid()) {
+      if (this.isForm1Invalid()) {
+        this.form1Invalid = true;
+        return;
+      }
+      if (this.isForm2Invalid()) {
+        this.form2Invalid = true;
+        return;
+      }
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      this.form1Invalid = false;
+      this.form2Invalid = false;
+      this.updateCampaign();
+    }
+  }
+
+  initAutocomplete() {
+    const inputElement = this.locationSearchInput?.nativeElement;
+
+    if (inputElement) {
+      this.googlePlacesAutocompleteService.initAutocompleteWithTypeRestrictions(inputElement, {
+        types: ['locality', 'administrative_area_level_1', 'country'],
+      });
+
+      this.googlePlacesAutocompleteService.placeChanged.subscribe((place: google.maps.places.PlaceResult) => {
+        this.onLocationPlaceSelected(place);
+      });
+    }
+  }
+
+  onLocationPlaceSelected(place: google.maps.places.PlaceResult) {
+    const address = place.formatted_address;
+    if (!address) return;
+    if (this.selectedLocations.includes(address)) return;
+    this.selectedLocations.push(address);
+    this.syncLocationsForm();
+    this.locationsFormControl.setValue('', { emitEvent: false });
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
+  }
+
+  removeLocation(index: number) {
+    this.selectedLocations.splice(index, 1);
+    this.syncLocationsForm();
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
+  }
+
+  private syncLocationsForm(): void {
+    this.campaignForm.get('locations').setValue([...this.selectedLocations]);
+    this.campaignForm.get('locations').updateValueAndValidity();
+    this.cdr.detectChanges();
+  }
+
+  observeCommunitiesInput() {
+    this.communitiesFormControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((value: string) =>
+          this.searchService.getSearchResultsByScope(value || '', this.page, this.count, EDbModels.KOMMUNITY),
+        ),
+      )
+      .subscribe((value: ISearch) => {
+        this.communitiesSearchResult = value.results;
+      });
+  }
+
+  onCommunitySelected(communityId: number, communityName: string, communitySlug: string) {
+    const isAlreadySelected = this.selectedCommunities.some(
+      (community) => community.id === communityId || community.slug === communitySlug,
+    );
+
+    if (!isAlreadySelected) {
+      this.selectedCommunities.push({
+        id: communityId,
+        name: communityName,
+        slug: communitySlug,
+      });
+
+      const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+      this.campaignForm.get('communities').setValue(communitySlugs);
+
+      this.communitiesFormControl.setValue('', { emitEvent: false });
+
+      if (this.campaign?.id) {
+        this.updateCampaign();
+      }
+    }
+  }
+
+  removeCommunity(index: number) {
+    this.selectedCommunities.splice(index, 1);
+    const communitySlugs = this.selectedCommunities.map((c) => c.slug);
+    this.campaignForm.get('communities').setValue(communitySlugs);
+    if (this.campaign?.id) {
+      this.updateCampaign();
+    }
+  }
+
+  getFundStatus() {
+    this.walletService.getFundStatus(this.campaign.currency_type).subscribe((res) => {
+      this.wallet = res;
+      this.cdr.detectChanges();
+    });
   }
 }

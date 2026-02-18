@@ -2,116 +2,34 @@
   <div class="container">
     <div class="one-column-layout">
       <nb-card>
-        <nb-card-header> Campaign Stats </nb-card-header>
+        <nb-card-header> <h3>Campaign Stats</h3></nb-card-header>
         <nb-card-body *ngIf="campaignStats">
-          <div class="campaign-stats-number" *ngIf="campaignStats.total_views || campaignStats.total_clicks">
-            <nb-card *ngIf="campaignStats.total_views">
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Views:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.total_views }}</div>
-              </nb-card-body>
-            </nb-card>
-
-            <nb-card *ngIf="campaignStats.total_clicks">
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Clicks:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.total_clicks }}</div>
-              </nb-card-body>
-            </nb-card>
-          </div>
-
-          <div class="campaign-stats-number" *ngIf="campaignStats.newsletter_email_stats">
-            <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Opens:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.opens }}</div>
-              </nb-card-body>
-            </nb-card>
-
-            <!-- <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Clicks:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.clicks }}</div>
-              </nb-card-body>
-            </nb-card> -->
-
-            <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Uniq Opens:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.uniq_opens }}</div>
-              </nb-card-body>
-            </nb-card>
-
-            <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Sents:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.sents }}</div>
-              </nb-card-body>
-            </nb-card>
-
-            <!-- <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Uniq Clicks:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.uniq_clicks }}</div>
-              </nb-card-body>
-            </nb-card> -->
-
-            <nb-card>
-              <nb-card-body>
-                <div class="campaign-stats-item-label">Total Delivered:</div>
-                <div class="campaign-stats-item-value">{{ campaignStats.newsletter_email_stats.delivered }}</div>
-              </nb-card-body>
-            </nb-card>
-          </div>
-
-          <div class="graph-container" *ngIf="campaignStats.views_over_days || campaignStats.views_over_time">
-            <div class="campaign-graph-container" *ngIf="campaignStats.views_over_days">
-              <span class="title">Views Over Days</span>
-              <div class="chart-container">
-                <canvas #viewsOverDays></canvas>
-              </div>
-            </div>
-            <div class="campaign-graph-container" *ngIf="campaignStats.views_over_time">
-              <span class="title">Views Over Time</span>
-              <div class="chart-container">
-                <canvas #viewsOverTime></canvas>
-              </div>
-            </div>
-          </div>
-
-          <div class="graph-container" *ngIf="campaignStats.clicks_over_time || campaignStats.clicks_over_days">
-            <div class="campaign-graph-container">
-              <span class="title">Clicks Over Days</span>
-              <div class="chart-container">
-                <canvas #clicksOverDays></canvas>
-              </div>
-            </div>
-
-            <div class="campaign-graph-container">
-              <span class="title">Clicks Over Time</span>
-              <div class="chart-container">
-                <canvas #clicksOverTime></canvas>
-              </div>
-            </div>
-          </div>
-
           <div class="graph-container">
-            <div class="campaign-graph-container" *ngIf="campaignStats.user_gender_distribution">
+            <div
+              class="campaign-graph-container"
+              *ngIf="
+                campaignStats.gender &&
+                (campaignStats.gender.male > 0 ||
+                  campaignStats.gender.female > 0 ||
+                  campaignStats.gender.prefer_not_to_answer > 0 ||
+                  campaignStats.gender.unknown > 0)
+              "
+            >
               <span class="title">Gender Distribution</span>
               <div class="chart-container">
                 <canvas #genderDistribution></canvas>
               </div>
             </div>
 
-            <div class="campaign-graph-container" *ngIf="campaignStats.user_tags?.total > 0">
+            <div class="campaign-graph-container" *ngIf="campaignStats.tags?.total > 0">
               <span class="title">User Tags</span>
               <div class="chart-container">
-                <nb-tag-list *ngIf="campaignStats">
+                <nb-tag-list *ngIf="campaignStats.tags?.tags">
                   <nb-tag
                     status="info"
                     appearance="outline"
-                    *ngFor="let tag of campaignStats.user_tags.tags"
-                    text="{{ tag[0] }} ({{ tag[1] }})"
+                    *ngFor="let tag of campaignStats.tags.tags"
+                    text="{{ tag.tag }} ({{ tag.users }})"
                     [removable]="false"
                   ></nb-tag>
                 </nb-tag-list>
@@ -119,11 +37,47 @@
             </div>
           </div>
 
-          <div class="map" *ngIf="campaignStats.user_locations">
-            <div class="campaign-graph-container">
-              <span class="title">Map Wise Distribution</span>
+          <div
+            class="graph-container"
+            *ngIf="
+              (campaignStatsTimeseries && campaignStatsTimeseries.impressions) ||
+              (campaignStats && campaignStats.locations)
+            "
+          >
+            <div
+              class="campaign-graph-container"
+              *ngIf="campaignStatsTimeseries && campaignStatsTimeseries.impressions"
+            >
+              <span class="title">Views Over Days</span>
               <div class="chart-container">
-                <div id="regions_div"></div>
+                <canvas #viewsOverDays></canvas>
+              </div>
+            </div>
+            <div class="map" *ngIf="campaignStats && campaignStats.locations">
+              <div class="campaign-graph-container">
+                <span class="title">Map Wise Distribution</span>
+                <div class="chart-container">
+                  <div id="regions_div"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="graph-container"
+            *ngIf="campaignStatsTimeseries && (campaignStatsTimeseries.ctr || campaignStatsTimeseries.clicks)"
+          >
+            <div *ngIf="campaignStatsTimeseries.ctr" class="campaign-graph-container">
+              <span class="title">Click Through Rate (CTR)</span>
+              <div class="chart-container">
+                <canvas #clicksOverDays></canvas>
+              </div>
+            </div>
+
+            <div *ngIf="campaignStatsTimeseries.clicks" class="campaign-graph-container">
+              <span class="title">Clicks</span>
+              <div class="chart-container">
+                <canvas #clicksOverTime></canvas>
               </div>
             </div>
           </div>

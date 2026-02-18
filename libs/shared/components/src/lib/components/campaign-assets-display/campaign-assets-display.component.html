@@ -1,4 +1,8 @@
-<div class="carousel" *ngIf="campaign" #campaignImageContainer>
+<div
+  class="carousel"
+  *ngIf="campaign && campaign.campaign_assets && campaign.campaign_assets.length > 0"
+  #campaignImageContainer
+>
   <div class="promoted-badge">
     Promoted<a [routerLink]="['/campaigns/new']" target="_blank"><fa-icon [icon]="faCircleQuestion"></fa-icon></a>
   </div>
@@ -9,19 +13,29 @@
           transform: 'translateX(-' + currentSlide * 100 + '%)',
         }"
   >
-    <div class="component-container-wrapper" *ngFor="let ca of campaign.campaign_assets">
-      <a [href]="ca.url" target="_blank" (click)="createUserEngagementForCampaign(UserActivityEventType.USER_CLICK)">
-        <img [src]="ca.image.url" class="slider-image" [alt]="ca.headline" [title]="ca.headline" />
+    <div class="component-container-wrapper" *ngFor="let ca of campaign?.campaign_assets">
+      <a [href]="ca?.url" target="_blank" (click)="createUserEngagementForCampaign(UserActivityEventType.CLICK)">
+        <img [src]="ca.image?.url" class="slider-image" [alt]="ca.headline" [title]="ca.headline" />
+        <div class="campaign-image-footer">
+          <p class="campaign-url">{{ ca.url }}</p>
+          <a [href]="ca.url" class="learn-more-button" size="small" outline nbButton shape="semi-round">{{
+            campaign?.cta_label
+          }}</a>
+        </div>
       </a>
     </div>
   </div>
 </div>
 
-<div *ngIf="!campaign" class="default-image-container" #defaultImageContainer>
+<div
+  *ngIf="!campaign || campaign?.campaign_assets?.length === 0"
+  class="default-image-container"
+  #defaultImageContainer
+>
   <a
     class="header-image"
     [href]="defaultImageUrl"
-    (click)="createUserEngagementForDefaultImage(UserActivityEventType.USER_CLICK)"
+    (click)="createUserEngagementForDefaultImage(UserActivityEventType.CLICK)"
     [ngClass]="{ 'com-pointer-events-none': !defaultImageUrl }"
   >
     <img [src]="defaultImage" class="com-w-full" />

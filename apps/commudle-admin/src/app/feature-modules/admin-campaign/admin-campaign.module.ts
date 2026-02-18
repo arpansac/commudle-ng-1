@@ -5,7 +5,17 @@ import { SharedComponentsModule as NewSharedComponentsModule } from '@commudle/s
 import { CampaignFormComponent } from './components/campaign-form/campaign-form.component';
 import { SidebarComponent } from 'apps/shared-components/sidebar/sidebar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbIconModule, NbTagModule } from '@commudle/theme';
+import {
+  NbAccordionModule,
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbIconModule,
+  NbTagModule,
+  NbFormFieldModule,
+  NbAutocompleteModule,
+  NbInputModule,
+} from '@commudle/theme';
 import { CampaignFormSelectCampaignComponent } from './components/campaign-form/campaign-form-select-campaign/campaign-form-select-campaign.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CampaignDashboardComponent } from './components/campaign-dashboard/campaign-dashboard.component';
@@ -27,16 +37,18 @@ import { AdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature
     NewSharedComponentsModule,
     SharedPipesModule,
     LinkyModule,
-
     //Standalone components
     SidebarComponent,
-
     //nebular
     NbCardModule,
     NbButtonModule,
     NbCheckboxModule,
     NbTagModule,
     NbIconModule,
+    NbAccordionModule,
+    NbFormFieldModule,
+    NbAutocompleteModule,
+    NbInputModule,
   ],
   declarations: [
     CampaignFormComponent,

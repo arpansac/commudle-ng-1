@@ -22,7 +22,7 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             this.timeout = setTimeout(() => {
-              this.getUserEngagement(EUserActivityEventType.USER_VIEW);
+              this.getUserEngagement(EUserActivityEventType.IMPRESSION);
             }, 1000);
           }
         });
@@ -34,7 +34,7 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
 
   @HostListener('click')
   onClick() {
-    this.getUserEngagement(EUserActivityEventType.USER_CLICK);
+    this.getUserEngagement(EUserActivityEventType.CLICK);
   }
 
   ngOnDestroy(): void {

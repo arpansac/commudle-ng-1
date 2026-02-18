@@ -23,4 +23,5 @@ export enum EDbModels {
   TRACK_SLOT = 'TrackSlot',
   SPEAKER_RESOURCE = 'SpeakerResource',
   ENTITY_UPDATE = 'EntityUpdate',
+  WALLET = 'Wallet',
 }

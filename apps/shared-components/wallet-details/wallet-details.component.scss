@@ -1,0 +1,19 @@
+.wallet-details-section {
+  @apply com-px-4 com-pt-3 com-pb-2;
+
+  .wallet-details-heading {
+    @apply com-text-lg com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-3;
+  }
+
+  .wallet-details-table {
+    @apply com-w-full com-text-base com-border-collapse;
+
+    .wallet-details-label {
+      @apply com-py-6px com-pr-4 com-text-gray-600;
+    }
+
+    .wallet-details-value {
+      @apply com-py-6px com-text-left com-font-medium;
+    }
+  }
+}

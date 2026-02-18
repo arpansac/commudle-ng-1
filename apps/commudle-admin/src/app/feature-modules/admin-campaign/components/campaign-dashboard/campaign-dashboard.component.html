@@ -1,32 +1,29 @@
-<nb-card>
-  <nb-card-header>Your Campaign List</nb-card-header>
-  <nb-card-body>
-    <button [routerLink]="['new']" nbButton status="primary" shape="semi-round">
-      <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Campaign
-    </button>
-    <commudle-loading-spinner *ngIf="isLoading; else campaignsTable"></commudle-loading-spinner>
-    <ng-template #campaignsTable>
-      <div *ngIf="campaigns.length > 0; else noCampaignFound">
-        <commudle-campaign-list [campaigns]="campaigns"></commudle-campaign-list>
+<div class="base-layout">
+  <div class="container">
+    <div class="one-column-layout">
+      <div>
+        <div class="dashboard-header">
+          <h1 class="page-title">Ad Dashboard</h1>
+          <button [routerLink]="['new']" nbButton status="primary" size="medium" class="create-new-campaign-button">
+            <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Campaign
+          </button>
+        </div>
+        <commudle-campaign-list
+          [campaigns]="campaigns ?? []"
+          [isLoading]="isLoading"
+          [selectedStatus]="selectedStatus"
+          (refreshRequested)="onRefreshRequested($event)"
+        ></commudle-campaign-list>
+        <app-pagination
+          *ngIf="total > 0"
+          (goTo)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (next)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          (previous)="page = $event; fetchCampaigns(selectedStatus ?? undefined)"
+          [count]="count"
+          [current]="page"
+          [total]="total"
+        ></app-pagination>
       </div>
-
-      <app-pagination
-        *ngIf="pagination.total > 0"
-        (goTo)="pagination.page = $event; fetchCampaigns()"
-        (next)="pagination.page = $event; fetchCampaigns()"
-        (previous)="pagination.page = $event; fetchCampaigns()"
-        [count]="pagination.count"
-        [current]="pagination.page"
-        [total]="pagination.total"
-      ></app-pagination>
-
-      <ng-template #noCampaignFound>
-        <br />
-        <br />
-        <br />
-        <br />
-        <div>oops!, No result found Create a new campaign today!</div>
-      </ng-template>
-    </ng-template>
-  </nb-card-body>
-</nb-card>
+    </div>
+  </div>
+</div>

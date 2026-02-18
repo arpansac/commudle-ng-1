@@ -36,10 +36,10 @@ import { Subject, finalize, takeUntil } from 'rxjs';
 declare const Razorpay: any;
 
 @Component({
-    selector: 'commudle-checkout-page',
-    templateUrl: './checkout-page.component.html',
-    styleUrls: ['./checkout-page.component.scss'],
-    standalone: false
+  selector: 'commudle-checkout-page',
+  templateUrl: './checkout-page.component.html',
+  styleUrls: ['./checkout-page.component.scss'],
+  standalone: false,
 })
 export class CheckoutPageComponent implements OnInit, OnDestroy {
   @ViewChild('paymentErrorDialog', { static: true }) paymentErrorDialog!: TemplateRef<unknown>;
@@ -55,6 +55,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   totalPrice = 0;
   totalTaxAmount = 0;
   campaign?: ICampaign;
+  campaignId: string | null = null;
   paymentPaid = false;
 
   quantity = 1;

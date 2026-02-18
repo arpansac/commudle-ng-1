@@ -4,20 +4,17 @@ import {
   Component,
   ElementRef,
   Inject,
+  PLATFORM_ID,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  PLATFORM_ID,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EDbModels, ICampaign, EUserActivityEventType } from '@commudle/shared-models';
-import {
-  CampaignService,
-  GoogleTagManagerService,
-  UserEngagementRecordsService,
-  SeoService,
-} from '@commudle/shared-services';
+import { CampaignService, GoogleTagManagerService, SeoService } from '@commudle/shared-services';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -26,10 +23,12 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./campaign-assets-display.component.scss'],
   standalone: false,
 })
-export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() defaultImage: string;
   @Input() defaultImageUrl: string;
-  @Input() campaignTypeSlug: string;
+  @Input() campaignType: 'preview' | 'live' = 'live';
+  @Input() campaignPreview: ICampaign;
+
   campaign: ICampaign;
   currentSlide = 0;
   slidesCount = 0;
@@ -48,7 +47,6 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
 
   constructor(
     private campaignService: CampaignService,
-    private uerService: UserEngagementRecordsService,
     private fb: FormBuilder,
     private gtmService: GoogleTagManagerService,
     private seoService: SeoService,
@@ -65,66 +63,87 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   ngOnInit() {
-    // if (this.campaignTypeSlug) {
-    //   this.campaignService.indexOngoingCampaign(this.campaignTypeSlug).subscribe((data) => {
-    //     if (data && data.campaign_assets && data.campaign_assets.length > 0) {
-    //       this.campaign = data;
-    //       this.slidesCount = this.campaign.campaign_assets.length;
-    //       // SSR-safe: avoid starting intervals on the server.
-    //       if (this.isBrowser) {
-    //         this.startAutoSlide();
-    //       }
-    //       this.userEngagementRecordForm.patchValue({
-    //         parent_id: this.campaign.id,
-    //         parent_type: EDbModels.CAMPAIGN,
-    //       });
-    //     }
-    //   });
-    // }
+    if (this.campaignPreview && this.campaignType === 'preview') {
+      this.applyCampaignPreview();
+    } else if (!this.campaign && this.campaignType === 'live') {
+      this.fetchCampaign();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['campaignPreview'] && this.campaignPreview && this.campaignType === 'preview') {
+      this.applyCampaignPreview();
+    }
+  }
+
+  private applyCampaignPreview(): void {
+    const source = this.campaignPreview;
+    this.campaign = source;
+    if (source && source.campaign_assets && source.campaign_assets.length > 0) {
+      this.slidesCount = source.campaign_assets.length;
+      this.startAutoSlide();
+    } else {
+      this.slidesCount = 0;
+      this.clearAutoSlide();
+    }
+  }
+
+  private fetchCampaign(): void {
+    this.campaignService.serveCampaign().subscribe((data) => {
+      if (data && data.campaign_assets && data.campaign_assets.length > 0) {
+        this.campaign = data;
+        this.slidesCount = this.campaign.campaign_assets.length;
+        this.startAutoSlide();
+        this.userEngagementRecordForm.patchValue({
+          parent_id: this.campaign.id,
+          parent_type: EDbModels.CAMPAIGN,
+        });
+      }
+    });
   }
 
   ngAfterViewInit() {
-    // SSR-safe: IntersectionObserver/window/document do not exist on the server.
     if (!this.isBrowser || typeof IntersectionObserver === 'undefined') {
       return;
     }
+    if (this.campaignType === 'live') {
+      this.campaignObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !this.hasTrackedCampaignView) {
+            this.createUserEngagementForCampaign(EUserActivityEventType.IMPRESSION);
+            this.hasTrackedCampaignView = true;
+            this.campaignObserver.disconnect(); // Stop observing after first call
+          }
+        },
+        { threshold: 0.5 },
+      );
 
-    this.campaignObserver = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !this.hasTrackedCampaignView) {
-          this.createUserEngagementForCampaign(EUserActivityEventType.USER_VIEW);
-          this.hasTrackedCampaignView = true;
-          this.campaignObserver.disconnect(); // Stop observing after first call
+      this.defaultImageObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
+            this.createUserEngagementForDefaultImage(EUserActivityEventType.IMPRESSION);
+            this.hasTrackedDefaultImageView = true;
+            this.defaultImageObserver.disconnect(); // Stop observing after first call
+          }
+        },
+        { threshold: 0.5 },
+      );
+
+      setTimeout(() => {
+        const campaignEl = this.campaignImageContainerDiv?.nativeElement;
+        const defaultEl = this.defaultImageContainerDiv?.nativeElement;
+
+        if (this.campaign && campaignEl) {
+          this.campaignObserver.observe(campaignEl);
+          this.checkAndTriggerIfVisible(campaignEl, this.campaignObserver);
+        } else if (defaultEl) {
+          this.defaultImageObserver.observe(defaultEl);
+          this.checkAndTriggerIfVisible(defaultEl, this.defaultImageObserver);
         }
-      },
-      { threshold: 0.5 },
-    );
-
-    this.defaultImageObserver = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !this.hasTrackedDefaultImageView) {
-          this.createUserEngagementForDefaultImage(EUserActivityEventType.USER_VIEW);
-          this.hasTrackedDefaultImageView = true;
-          this.defaultImageObserver.disconnect(); // Stop observing after first call
-        }
-      },
-      { threshold: 0.5 },
-    );
-
-    setTimeout(() => {
-      const campaignEl = this.campaignImageContainerDiv?.nativeElement;
-      const defaultEl = this.defaultImageContainerDiv?.nativeElement;
-
-      if (this.campaign && campaignEl) {
-        this.campaignObserver.observe(campaignEl);
-        this.checkAndTriggerIfVisible(campaignEl, this.campaignObserver);
-      } else if (defaultEl) {
-        this.defaultImageObserver.observe(defaultEl);
-        this.checkAndTriggerIfVisible(defaultEl, this.defaultImageObserver);
-      }
-    }, 500);
+      }, 500);
+    }
   }
 
   private checkAndTriggerIfVisible(element: HTMLElement, observer: IntersectionObserver) {
@@ -174,45 +193,39 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnDestroy, AfterV
   }
 
   onClick() {
-    this.createUserEngagementForCampaign(EUserActivityEventType.USER_CLICK);
+    this.createUserEngagementForCampaign(EUserActivityEventType.CLICK);
   }
 
   createUserEngagementForCampaign(eventType) {
-    if (this.campaign) {
-      this.userEngagementRecordForm.patchValue({
-        event_type: eventType,
-        parent_id: this.campaign.id,
-        parent_type: EDbModels.CAMPAIGN,
-        url: this.isBrowser ? window.location.href : '',
-      });
+    if (this.campaignType === 'live' && this.campaign) {
+      const formData = new FormData();
+      formData.append('campaign_engagement[event_type]', eventType);
+      formData.append('campaign_engagement[url]', window.location.href);
 
       if (!this.seoService.isBot) {
-        this.uerService
-          .userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value })
-          .subscribe(() =>
-            this.gtmService.dataLayerPushEvent('ad_campaign', {
-              com_campaign_id: this.campaign.id,
-              com_campaign_name: this.campaign.name,
-              com_campaign_type: this.campaign.campaign_type,
-              com_current_page_url: this.isBrowser ? window.location.href : '',
-              com_event_type: eventType,
-            }),
-          );
+        this.campaignService.recordImpression(formData, this.campaign.id).subscribe(() => {
+          this.gtmService.dataLayerPushEvent('ad_campaign', {
+            com_campaign_id: this.campaign.id,
+            com_campaign_name: this.campaign.name,
+            com_current_page_url: window.location.href,
+            com_event_type: eventType,
+          });
+        });
       }
     }
   }
 
   createUserEngagementForDefaultImage(eventType) {
-    this.userEngagementRecordForm.patchValue({
-      event_type: eventType,
-      url: this.isBrowser ? window.location.href : '',
-    });
+    if (this.campaignType === 'live' && this.campaign) {
+      this.userEngagementRecordForm.patchValue({
+        event_type: eventType,
+        url: window.location.href,
+      });
 
-    this.gtmService.dataLayerPushEvent('default_ad_campaign', {
-      com_current_page_url: this.isBrowser ? window.location.href : '',
-      com_event_type: eventType,
-      com_campaign_type_slug: this.campaignTypeSlug,
-    });
-    // this.uerService.userEngagementRecords({ user_engagement_record: this.userEngagementRecordForm.value }).subscribe();
+      this.gtmService.dataLayerPushEvent('default_ad_campaign', {
+        com_current_page_url: window.location.href,
+        com_event_type: eventType,
+      });
+    }
   }
 }

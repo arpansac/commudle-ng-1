@@ -1,13 +1,13 @@
 .title {
-  @apply com-mb-5;
+  @apply com-m-0 com-mb-5;
 }
 
 .campaign-info {
-  @apply com-grid com-gap-2 com-grid-cols-2;
+  @apply com-grid com-gap-x-3 com-gap-y-6 com-grid-cols-2;
 }
 
 .campaign-item {
-  @apply com-bg-gray-50 com-p-2 com-rounded-md com-text-sm;
+  @apply com-bg-gray-50 com-m-0 com-p-2 com-rounded-md com-text-sm;
 }
 
 .campaign-item a {

@@ -94,6 +94,15 @@ HTML Emmet's
     }
   }
 
+  &.mobile-reverse-equal-columns {
+    .left-column {
+      @apply com-order-2 md:com-order-1;
+    }
+    .right-column {
+      @apply com-order-1 md:com-order-2;
+    }
+  }
+
   @screen lg {
     @include grid-layout(24);
 
@@ -136,6 +145,13 @@ HTML Emmet's
 
       .main-column {
         @apply com-col-span-18;
+      }
+    }
+
+    &.equal-columns {
+      .left-column,
+      .right-column {
+        @apply com-col-span-12;
       }
     }
 

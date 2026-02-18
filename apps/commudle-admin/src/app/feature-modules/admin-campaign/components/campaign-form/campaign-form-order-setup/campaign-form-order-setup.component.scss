@@ -1,87 +1,256 @@
-div {
-  .text {
-    p {
-      @apply com-m-0;
-      &.heading {
-        @apply com-font-semibold com-text-lg com-text-Yankees-Blue;
-      }
-      &.sub-heading {
-        @apply com-text-base com-text-gray-500;
-      }
-    }
-  }
+.heading {
+  @apply com-font-semibold com-text-lg com-text-Yankees-Blue com-m-0 com-mb-5 md:com-mb-10;
+}
 
-  nb-card {
-    @apply com-mx-0;
-    nb-card-header {
-      @apply com-bg-gray-50;
-      a {
-        @apply com-flex com-justify-between com-items-center com-no-underline;
-      }
-      .left {
-        @apply com-text-base com-font-semibold com-text-Yankees-Blue;
-      }
-      .right {
-        @apply com-font-medium com-text-sm com-text-gray-500;
+input[type='file'] {
+  @apply com-bg-transparent;
+}
+
+.left-column {
+  @apply com-bg-Bright-Gray com-p-4 md:com-p-8 com-rounded-b-md;
+}
+
+nb-accordion {
+  @apply com-shadow-none;
+  nb-accordion-item {
+    @apply com-mb-5 com-rounded-[10px] com-border com-border-solid com-border-Bright-Gray;
+
+    &:last-child {
+      @apply com-mb-0 com-rounded-b-none;
+    }
+
+    &.collapsed nb-accordion-item-header {
+      @apply com-border-0;
+    }
+
+    nb-accordion-item-header {
+      @apply com-px-4 com-py-3 com-border-Bright-Gray;
+
+      .accordion-header-content {
+        @apply com-flex com-items-center com-gap-4;
+
+        .accordion-number {
+          @apply com-flex com-items-center com-justify-center com-w-6 com-h-6 com-rounded-full com-bg-gray-100 com-text-Yankees-Blue com-font-medium com-text-sm;
+        }
+
+        .accordion-title {
+          @apply com-text-base com-font-bold com-text-Yankees-Blue;
+        }
       }
     }
-    nb-card-body {
+
+    nb-accordion-item-body {
+      ::ng-deep {
+        .item-body {
+          @apply com-p-0;
+        }
+      }
+
       .form {
+        @apply com-px-5 com-py-6;
         form {
-          @apply com-grid com-grid-cols-2 com-gap-8;
-          div {
-            label {
-              @apply com-pb-1;
-              .required {
-                @apply com-text-red-500;
-              }
-            }
-            .input {
-              @apply com-mt-1 com-w-full;
-            }
+          .label {
+            @apply com-flex com-text-xs com-font-medium com-text-Yankees-Blue com-mb-2;
           }
-          .image-info {
-            @apply com-text-sm com-italic com-font-medium com-text-gray-500 com-mb-0;
-          }
-          .image-upload-container {
-            @apply com-border com-border-solid com-border-Bright-Gray com-w-full  com-rounded-md com-px-5 com-py-2;
-          }
-        }
-        &.creative-assets {
-          form {
-            @apply com-block;
-            .creative-assets-input {
-              @apply com-mt-1 com-w-full;
-              textarea {
-                @apply com-w-full com-bg-transparent placeholder:com-text-gray-400 com-text-black com-text-sm com-border com-border-solid com-border-slate-200 com-rounded-md com-px-3 com-py-2 com-transition com-duration-300  focus:com-outline-none focus:com-border-primary-500 hover:com-border-primary-300;
-              }
-            }
-            .creative-assets-controller {
-              @apply com-mb-4;
-              .preview-image {
-                @apply com-aspect-[16/9] com-h-40 com-mb-2 com-border com-border-solid com-border-Bright-Gray com-p-1 com-rounded-md com-flex com-justify-center com-items-center;
-                img {
-                  @apply com-w-full com-h-full com-object-contain;
-                }
-              }
-            }
-          }
-        }
-      }
 
-      .budget-amount {
-        @apply com-flex com-gap-1 com-items-center;
-        .budget {
-          @apply com-font-bold com-text-3xl com-text-green-600;
-        }
-        .per-day {
-          @apply com-rounded-2xl com-border com-border-solid com-border-Bright-Gray com-bg-gray-500 com-font-medium com-text-sm com-text-white com-px-1;
+          .small-info-text {
+            @apply com-text-xs com-font-normal com-text-gray-custom-1;
+          }
+
+          .input {
+            @apply com-mb-5 com-w-full;
+          }
+
+          .input-budget {
+            @apply com-mb-2 com-w-full;
+          }
+
+          .end-date-input {
+            @apply com-mt-2;
+          }
+
+          .total-budget-container {
+            @apply com-mb-5;
+          }
+
+          .budget-info-row {
+            @apply com-flex com-flex-row com-flex-wrap com-gap-4 com-bg-gray-50 com-rounded-lg com-p-4;
+
+            .info-value {
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Yankees-Blue;
+            }
+
+            .budget-info-value {
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Crayola-Green;
+            }
+
+            .time-info-value {
+              @apply com-m-0 com-text-lg com-font-semibold com-text-Ultramarine-Blue;
+            }
+
+            .cost-container {
+              @apply com-flex com-flex-col com-gap-3;
+            }
+          }
         }
       }
     }
   }
 }
 
-input[type='file'] {
-  @apply com-bg-transparent;
+.required {
+  @apply com-text-Infra-Red;
+}
+
+.alert-container {
+  @apply com-flex com-mt-2;
+}
+
+.info-container {
+  @apply com-flex com-mt-2 com-mb-4;
+}
+
+.images-container {
+  @apply com-flex com-flex-col com-mb-4;
+}
+
+.selected-communities-container {
+  @apply com-flex com-flex-row com-gap-2 com-mt-2 com-flex-wrap;
+}
+
+.image-container {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-w-full com-h-full com-border com-border-dashed com-border-Cadet-Grey com-bg-white com-rounded-md com-text-sm com-font-medium com-text-Yankees-Blue com-p-4;
+
+  .image-text {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-gap-3;
+  }
+
+  nb-icon {
+    @apply com-w-10 com-h-8 com-text-Cadet-Grey;
+  }
+}
+
+.images {
+  @apply com-flex com-flex-row com-justify-start com-flex-wrap;
+}
+
+.image {
+  @apply com-w-[100px] com-h-[100px] com-border com-border-dashed com-border-Cadet-Grey com-bg-Ghost-White com-rounded-md com-overflow-hidden com-p-6px com-flex com-flex-col com-items-center com-justify-center com-relative com-mb-6;
+  img {
+    @apply com-w-full;
+  }
+
+  p {
+    @apply com-absolute com-bottom-0 com-m-0 com-mt-6px;
+    nb-icon:hover {
+      @apply com-rounded-full com-bg-white;
+    }
+  }
+}
+
+.image-icon {
+  @apply com-flex com-flex-shrink-0 com-text-5xl com-text-Cadet-Grey;
+}
+
+.image-text-content {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-text-sm com-font-medium com-text-Yankees-Blue com-gap-1 com-m-0;
+}
+
+.browse-text {
+  @apply com-font-normal com-text-primary-500;
+}
+
+.image-size-text {
+  @apply com-flex com-flex-row com-text-xs com-font-normal com-text-gray-custom-1 com-m-0 com-mt-4;
+}
+
+.image-size {
+  @apply com-pr-2 com-border-0 com-border-r com-border-solid com-border-Bright-Gray;
+}
+
+.image-type {
+  @apply com-pl-2 com-border-0 com-border-l com-border-solid com-border-Bright-Gray;
+}
+
+.image-input {
+  @apply com-hidden;
+}
+
+.sticky-footer {
+  @apply com-flex com-flex-col com-border-0 com-border-t com-border-solid com-border-Bright-Gray com-sticky md:com-bottom-0 com-bottom-[68px] com-bg-Ghost-White com-z-10;
+}
+
+.wallet-details-section {
+  @apply com-px-4 com-pt-3 com-pb-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+  .wallet-details-heading {
+    @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-m-0 com-mb-2;
+  }
+
+  .wallet-details-table {
+    @apply com-w-full com-text-sm com-border-collapse;
+
+    .wallet-details-label {
+      @apply com-pb-2 com-pr-4 com-text-gray-600;
+    }
+
+    .wallet-details-value {
+      @apply com-text-left com-font-medium;
+    }
+  }
+}
+
+.next-button {
+  @apply com-flex com-p-4;
+
+  button {
+    @apply com-bg-Yankees-Blue com-text-white #{!important};
+
+    &:disabled {
+      @apply com-cursor-not-allowed;
+    }
+  }
+}
+
+.right-column {
+  @apply com-flex com-flex-col com-m-0 md:com-ml-10 md:com-mt-[108px] md:com-px-32 com-bg-white md:com-py-10 com-rounded-md com-w-full com-h-max md:com-sticky md:com-top-24 com-self-start com-px-4 com-py-6;
+}
+
+.right-column-container {
+  @apply com-aspect-1 com-rounded-md;
+}
+
+.saved-assets-container {
+  @apply com-flex com-flex-col com-gap-4 com-mb-5;
+
+  .saved-asset-item {
+    @apply com-flex com-flex-row com-gap-4;
+
+    .saved-asset-content {
+      @apply com-flex com-flex-row com-gap-4 com-pr-6 com-pl-4 com-py-3 com-border com-border-solid com-border-Bright-Gray com-rounded-md com-bg-Ghost-White com-w-full com-items-center;
+    }
+
+    .saved-image-preview {
+      @apply com-w-[120px] com-h-[76px] com-rounded-lg com-overflow-hidden com-flex com-items-center com-justify-center;
+      img {
+        @apply com-w-full;
+      }
+    }
+
+    .saved-asset-details {
+      @apply com-flex com-flex-col com-gap-2;
+
+      .saved-headline {
+        @apply com-m-0 com-text-sm com-font-medium com-text-Yankees-Blue;
+      }
+
+      .saved-url {
+        @apply com-m-0 com-text-xs com-font-medium com-text-gray-custom-1;
+      }
+    }
+  }
+}
+
+.action-btn {
+  @apply com-ml-auto;
 }

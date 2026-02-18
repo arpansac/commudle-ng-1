@@ -1,5 +1,17 @@
+.dashboard-header {
+  @apply com-flex md:com-flex-row com-flex-col com-justify-between com-items-center md:com-gap-0 com-gap-4 md:com-my-10 com-my-8;
+}
+
+.page-title {
+  @apply com-m-0 md:com-text-[32px] com-text-2xl com-font-semibold com-text-Yankees-Blue;
+}
+
+.create-new-campaign-button {
+  @apply com-text-white com-bg-Yankees-Blue com-border-Yankees-Blue com-rounded-lg #{!important};
+}
+
 table {
-  @apply com-border-collapse com-w-full com-mt-4;
+  @apply com-border-collapse com-w-full;
 }
 
 td,
@@ -8,5 +20,10 @@ th {
 }
 
 tr:not(:last-child) {
-  @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
+  @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+}
+
+commudle-loading-spinner,
+app-pagination {
+  @apply com-mt-6;
 }

@@ -1,0 +1,23 @@
+<div *ngIf="wallet" class="wallet-details-section">
+  <h4 class="wallet-details-heading">Wallet</h4>
+  <table class="wallet-details-table">
+    <tbody>
+      <tr>
+        <td class="wallet-details-label">Balance</td>
+        <td class="wallet-details-label">Available balance</td>
+        <td class="wallet-details-label">Reserved balance</td>
+      </tr>
+      <tr>
+        <td class="wallet-details-value">
+          {{ wallet.balance | currency : currencyType }}
+        </td>
+        <td class="wallet-details-value">
+          {{ wallet.available_balance | currency : currencyType }}
+        </td>
+        <td class="wallet-details-value">
+          {{ wallet.reserved_balance | currency : currencyType }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

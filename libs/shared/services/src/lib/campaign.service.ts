@@ -1,6 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ECampaignStatus, ICampaign, ICampaignStats, IPaginationCount } from '@commudle/shared-models';
+import {
+  ECampaignStatus,
+  ICampaign,
+  ICampaignEstimate,
+  ICampaignStats,
+  IPaginationCount,
+  IPurchaseOrder,
+} from '@commudle/shared-models';
 import { Observable } from 'rxjs';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
@@ -11,37 +18,57 @@ import { BaseApiService } from './base-api.service';
 export class CampaignService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  createCampaign(campaignTypeId: number): Observable<ICampaign> {
-    return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE), {
-      campaign_type_id: campaignTypeId,
-    });
+  createCampaign(campaignData: any): Observable<ICampaign> {
+    return this.http.post<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE), campaignData);
   }
 
-  indexCampaigns(page = 1, count = 10): Observable<IPaginationCount<ICampaign>> {
-    const params = new HttpParams().set('page', page).set('count', count);
+  indexCampaigns(page = 1, count = 10, statusFilter?: ECampaignStatus): Observable<IPaginationCount<ICampaign>> {
+    let params = new HttpParams().set('page', page).set('count', count);
+    if (statusFilter) {
+      params = params.set('status', statusFilter);
+    }
     return this.http.get<IPaginationCount<ICampaign>>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.INDEX), {
       params,
     });
   }
 
-  updateCampaign(formData, campaignId: number): Observable<ICampaign> {
+  updateCampaign(campaignData: any, campaignId: string): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
-
-    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE), formData, {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.UPDATE), campaignData, {
       params,
     });
   }
 
-  fetchCampaign(campaignId: number): Observable<ICampaign> {
+  submitForApproval(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SUBMIT_FOR_APPROVAL), {
+      campaign_id: campaignId,
+    });
+  }
+
+  fetchCampaign(campaignId: string): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_id', campaignId);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.SHOW), { params });
   }
 
-  campaignAdminUpdateStatus(campaignId: number, campaignStatus: ECampaignStatus): Observable<ICampaign> {
-    return this.http.put<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE), {
-      campaign_id: campaignId,
-      campaign_status: campaignStatus,
-    });
+  campaignAdminUpdateStatusStop(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_STOP),
+      { campaign_id: campaignId },
+    );
+  }
+
+  campaignAdminUpdateStatusPause(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_PAUSE),
+      { campaign_id: campaignId },
+    );
+  }
+
+  campaignAdminUpdateStatusResume(campaignId: string): Observable<ICampaign> {
+    return this.http.put<ICampaign>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_ADMIN_STATUS_UPDATE_RESUME),
+      { campaign_id: campaignId },
+    );
   }
 
   updateTags(campaignId: number, tags: string[]): Observable<ICampaign> {
@@ -76,7 +103,7 @@ export class CampaignService {
     });
   }
 
-  getStats(campaignId: number): Observable<ICampaignStats> {
+  getStats(campaignId: string): Observable<ICampaignStats> {
     const params = new HttpParams().set('campaign_id', campaignId);
     return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS), {
       params,
@@ -129,6 +156,57 @@ export class CampaignService {
   indexOngoingCampaign(campaignTypeSlug: string | number): Observable<ICampaign> {
     const params = new HttpParams().set('campaign_type_id', campaignTypeSlug);
     return this.http.get<ICampaign>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.PUBLIC.ONGOING_CAMPAIGN), {
+      params,
+    });
+  }
+
+  getEstimatedImpressions(campaignId: string): Observable<{ data: ICampaignEstimate }> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<{ data: ICampaignEstimate }>(
+      this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.ESTIMATED_IMPRESSIONS),
+      { params },
+    );
+  }
+
+  recordImpression(formData: any, campaignId: string): Observable<any> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.post<any>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.RECORD_IMPRESSION), formData, {
+      params,
+    });
+  }
+
+  serveCampaign(): Observable<any> {
+    return this.http.get<any>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CAMPAIGN_SERVE));
+  }
+
+  createPurchaseOrder(campaignId: string, userWalletBalance = true): Observable<IPurchaseOrder> {
+    return this.http.put<IPurchaseOrder>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.CREATE_PURCHASE_ORDER), {
+      campaign_id: campaignId,
+      use_wallet_balance: userWalletBalance,
+    });
+  }
+
+  getStatsOverview(campaignId: string): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS_OVERVIEW), {
+      params,
+    });
+  }
+
+  getStatsTimeseries(campaignId: string): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS_TIMESERIES), {
+      params,
+    });
+  }
+
+  getUserCampaignsStats(): Observable<ICampaignStats> {
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.USER_CAMPAIGNS_STATS));
+  }
+
+  getStatsUserDistribution(campaignId: string): Observable<ICampaignStats> {
+    const params = new HttpParams().set('campaign_id', campaignId);
+    return this.http.get<ICampaignStats>(this.baseApiService.getRoute(API_ROUTES.CAMPAIGNS.STATS_USER_DISTRIBUTION), {
       params,
     });
   }

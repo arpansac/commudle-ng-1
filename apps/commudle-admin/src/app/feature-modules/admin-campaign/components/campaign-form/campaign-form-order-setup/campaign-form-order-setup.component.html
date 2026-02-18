@@ -1,398 +1,480 @@
-<div>
-  <div class="text">
-    <p class="heading">Please fill all the required sections below to setup your order.</p>
-    <p class="sub-heading">
-      Your order will go live upon approval. You have selected Global awareness campaign from Commudle
-    </p>
-  </div>
+<div class="base-layout">
+  <div class="container">
+    <div class="two-column-layout equal-columns mobile-reverse-equal-columns">
+      <div class="left-column">
+        <h3 class="heading"><fa-icon [icon]="icons.faRectangleAd"></fa-icon> Build your Ad campaign</h3>
 
-  <!-- User Information -->
-  <nb-card>
-    <nb-card-header id="user-information">
-      <a [routerLink]="[]" fragment="user-information">
-        <span class="left">User Information</span>
-        <span class="right">Please enter your name and contact information</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <div class="form">
-        <form [formGroup]="campaignForm">
-          <div>
-            <label for="contact_name">Name<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                placeholder="Name"
-                [inputValue]="campaignForm.get('contact_name').value"
-                (blurEvent)="campaignForm.get('contact_name').markAsTouched()"
-                (valueChange)="handleInput($event, 'contact_name'); generateCampaignName()"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('contact_name')?.invalid &&
-                campaignForm.get('contact_name')?.touched &&
-                campaignForm.get('contact_name')?.hasError('required')
-              "
-              errorMessage="Contact Name is required"
-            ></commudle-alert>
-          </div>
-          <div>
-            <label for="contact_email">Email Address <span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                placeholder="Email"
-                [inputValue]="campaignForm.get('contact_email').value"
-                (blurEvent)="campaignForm.get('contact_email').markAsTouched()"
-                (valueChange)="handleInput($event, 'contact_email')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('contact_email')?.invalid &&
-                campaignForm.get('contact_email')?.touched &&
-                campaignForm.get('contact_email')?.hasError('required')
-              "
-              errorMessage="Email is required"
-            ></commudle-alert>
-            <commudle-alert
-              [error]="
-                campaignForm.get('contact_email')?.touched && campaignForm.get('contact_email')?.hasError('email')
-              "
-              errorMessage="Invalid Email address"
-            ></commudle-alert>
-          </div>
-        </form>
-      </div>
-    </nb-card-body>
-  </nb-card>
+        <!-- Campaign Form Accordion -->
+        <nb-accordion>
+          <!-- Campaign Details Section -->
+          <nb-accordion-item [expanded]="true">
+            <nb-accordion-item-header>
+              <div class="accordion-header-content">
+                <span class="accordion-number">1</span>
+                <span class="accordion-title">Campaign Details</span>
+              </div>
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <div class="form">
+                <form [formGroup]="campaignForm">
+                  <div>
+                    <label class="label" for="name">Campaign Name<span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'Enter your campaign name'"
+                        [inputValue]="campaignForm.get('name').value"
+                        (blurEvent)="campaignForm.get('name').markAsTouched()"
+                        (valueChange)="handleInput($event, 'name')"
+                      ></commudle-input>
 
-  <!-- Campaign Information -->
-  <nb-card>
-    <nb-card-header id="campaign-information">
-      <a [routerLink]="[]" fragment="campaign-information">
-        <span class="left">Campaign Information</span>
-        <span class="right">Please enter a name for this campaign and the company name</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <div class="form">
-        <form [formGroup]="campaignForm">
-          <div>
-            <label for="company_name">Company Name<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                placeholder="Company Name"
-                [inputValue]="campaignForm.get('company_name').value"
-                (blurEvent)="campaignForm.get('company_name').markAsTouched()"
-                (valueChange)="handleInput($event, 'company_name'); generateCampaignName()"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('company_name')?.invalid &&
-                campaignForm.get('company_name')?.touched &&
-                campaignForm.get('company_name')?.hasError('required')
-              "
-              errorMessage="Company name is required"
-            ></commudle-alert>
-          </div>
-          <div>
-            <label for="name">Campaign Name<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                placeholder="Campaign Name"
-                [inputValue]="campaignForm.get('name').value"
-                (blurEvent)="campaignForm.get('name').markAsTouched()"
-                (valueChange)="handleInput($event, 'name')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('name')?.invalid &&
-                campaignForm.get('name')?.touched &&
-                campaignForm.get('name')?.hasError('required')
-              "
-              errorMessage="Campaign name is required"
-            ></commudle-alert>
-            <commudle-alert
-              [error]="campaignForm.get('name')?.touched && campaignForm.get('name')?.hasError('pattern')"
-              errorMessage="Campaign name should not have any space"
-            ></commudle-alert>
-          </div>
-        </form>
-      </div>
-    </nb-card-body>
-  </nb-card>
+                      <div
+                        *ngIf="
+                          campaignForm.get('name')?.invalid &&
+                          campaignForm.get('name')?.touched &&
+                          campaignForm.get('name')?.hasError('required')
+                        "
+                        class="alert-container"
+                      >
+                        <commudle-alert [error]="true" errorMessage="Campaign name is required"></commudle-alert>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="info-container">
+                      <commudle-alert
+                        [info]="true"
+                        message="Ad will be served to users every day from the start to end time of that selected day. For Example: Start Date: 1 Jan 2025, End Date: 15 Jan 2025 Start Time: 10am, End Time: 12pm This sample schedule will show the Ad to the user every day from 1st Jan 2025 to 15th Jan 2025 between 10am to 12pm only. Select your Ad schedule accordingly."
+                      ></commudle-alert>
+                    </div>
+                    <label for="start_at">Start Date & Time<span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        placeholder="Select Start Date & Time"
+                        [inputValue]="campaignForm.get('start_at').value"
+                        [type]="'datetime-local'"
+                        (blurEvent)="campaignForm.get('start_at').markAsTouched()"
+                        (valueChange)="handleInput($event, 'start_at')"
+                      ></commudle-input>
+                      <div
+                        *ngIf="
+                          campaignForm.get('start_at')?.invalid &&
+                          campaignForm.get('start_at')?.touched &&
+                          campaignForm.get('start_at')?.hasError('required')
+                        "
+                        class="alert-container"
+                      >
+                        <commudle-alert [error]="true" errorMessage="Start date is required"></commudle-alert>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <label>End Date & Time</label>
+                    <div>
+                      <nb-checkbox formControlName="set_end_date" status="basic" (checkedChange)="onSetEndDateChange()">
+                        Set End Date
+                      </nb-checkbox>
+                    </div>
+                    <div *ngIf="campaignForm.get('set_end_date').value" class="end-date-input">
+                      <div>
+                        <commudle-input
+                          placeholder="Select End Date & Time"
+                          [inputValue]="campaignForm.get('end_at').value"
+                          [type]="'datetime-local'"
+                          (blurEvent)="campaignForm.get('end_at').markAsTouched()"
+                          (valueChange)="handleInput($event, 'end_at')"
+                        ></commudle-input>
+                        <div
+                          *ngIf="
+                            campaignForm.get('end_at')?.invalid &&
+                            campaignForm.get('end_at')?.touched &&
+                            campaignForm.get('end_at')?.hasError('required')
+                          "
+                          class="alert-container"
+                        >
+                          <commudle-alert [error]="true" errorMessage="End date is required"></commudle-alert>
+                        </div>
+                        <div *ngIf="campaignForm.get('end_at')?.hasError('endDateValidator')" class="alert-container">
+                          <commudle-alert
+                            [error]="true"
+                            errorMessage="End date must be at least 3 days after the start date."
+                          ></commudle-alert>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
 
-  <!-- Schedule -->
-  <nb-card *ngIf="campaign.campaign_type.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER">
-    <nb-card-header id="schedule">
-      <a [routerLink]="[]" fragment="schedule">
-        <span class="left">Schedule</span>
-        <span class="right">Select your start and end date</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <commudle-alert
-        [info]="true"
-        message="Ad will be served to users every day from the start to end time of that selected day. For Example: Start Date: 1 Jan 2025, End Date: 15 Jan 2025 Start Time: 10am, End Time: 12pm This sample schedule will show the Ad to the user every day from 1st Jan 2025 to 15th Jan 2025 between 10am to 12pm only. Select your Ad schedule accordingly."
-      ></commudle-alert>
-      <br />
-      <div class="form">
-        <form [formGroup]="campaignForm">
-          <!-- start date -->
-          <div>
-            <label for="start_date">Select Starting Date<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                [inputValue]="campaignForm.get('start_date').value"
-                [type]="'date'"
-                (blurEvent)="campaignForm.get('start_date').markAsTouched()"
-                (valueChange)="handleInput($event, 'start_date')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('start_date')?.invalid &&
-                campaignForm.get('start_date')?.touched &&
-                campaignForm.get('start_date')?.hasError('required')
-              "
-              errorMessage="Start date is required"
-            ></commudle-alert>
-          </div>
+          <!-- Budget Section -->
+          <nb-accordion-item [disabled]="form1Invalid" [expanded]="!form1Invalid" (click)="onAccordion2Click($event)">
+            <nb-accordion-item-header>
+              <div class="accordion-header-content">
+                <span class="accordion-number">2</span>
+                <span class="accordion-title">Budget</span>
+              </div>
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <div class="form">
+                <form [formGroup]="campaignForm">
+                  <!-- Est. Impressions -->
+                  <div *ngIf="estimate" class="budget-info-row com-mb-5">
+                    <div class="cost-container">
+                      <label for="est_impressions">Est. Impressions:</label>
+                      <span class="info-value">{{
+                        this.estimate.daily_impressions.min + ' - ' + this.estimate.daily_impressions.max
+                      }}</span>
+                    </div>
+                  </div>
 
-          <!-- end date -->
-          <div>
-            <label for="end_date">Select Ending Date<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                [inputValue]="campaignForm.get('end_date').value"
-                [type]="'date'"
-                (blurEvent)="campaignForm.get('end_date').markAsTouched()"
-                (valueChange)="handleInput($event, 'end_date')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('end_date')?.invalid &&
-                campaignForm.get('end_date')?.touched &&
-                campaignForm.get('end_date')?.hasError('required')
-              "
-              errorMessage="End date is required"
-            ></commudle-alert>
-            <commudle-alert
-              [error]="campaignForm.hasError('endDateValidator')"
-              errorMessage="End date must be at least 3 days after the start date."
-            ></commudle-alert>
-          </div>
+                  <!-- Total Budget -->
+                  <div class="total-budget-container">
+                    <label for="budget">
+                      Total Budget<span class="small-info-text"> (Min budget should be atleast $50)</span
+                      ><span class="required"> *</span></label
+                    >
+                    <div class="input-budget">
+                      <commudle-input
+                        [placeholder]="'Enter total budget'"
+                        [inputValue]="campaignForm.get('budget').value"
+                        [type]="'number'"
+                        (blurEvent)="campaignForm.get('budget').markAsTouched()"
+                        (valueChange)="handleInput($event, 'budget')"
+                      ></commudle-input>
+                    </div>
+                    <p class="small-info-text">This is the total amount you want to spend on this campaign</p>
+                    <commudle-alert
+                      [error]="
+                        campaignForm.get('budget')?.invalid &&
+                        campaignForm.get('budget')?.touched &&
+                        campaignForm.get('budget')?.hasError('required')
+                      "
+                      errorMessage="Budget is required"
+                    ></commudle-alert>
+                    <commudle-alert
+                      [error]="campaignForm.get('budget')?.touched && campaignForm.get('budget')?.hasError('min')"
+                      errorMessage="Minimum budget should be at least $50"
+                    ></commudle-alert>
+                  </div>
 
-          <!-- start time -->
-          <div>
-            <label for="start_time">Daily Start Time<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                [inputValue]="campaignForm.get('start_time').value"
-                [type]="'time'"
-                (blurEvent)="campaignForm.get('start_time').markAsTouched()"
-                (valueChange)="handleInput($event, 'start_time')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('start_time')?.invalid &&
-                campaignForm.get('start_time')?.touched &&
-                campaignForm.get('start_time')?.hasError('required')
-              "
-              errorMessage="start time is required"
-            ></commudle-alert>
-          </div>
+                  <!-- Location (add one, shown as tag below; add more like communities) -->
+                  <div>
+                    <label for="locationSearchInput"> Location<span class="required"> *</span> </label>
+                    <div class="input">
+                      <nb-form-field>
+                        <input
+                          #locationSearchInput
+                          [formControl]="locationsFormControl"
+                          fullWidth
+                          nbInput
+                          placeholder="Enter Region, City, Country (select from dropdown)"
+                          type="text"
+                        />
+                      </nb-form-field>
+                      <!-- Display selected locations as tags -->
+                      <div *ngIf="selectedLocations.length > 0" class="selected-communities-container com-mt-2">
+                        <nb-tag
+                          *ngFor="let location of selectedLocations; let i = index"
+                          [text]="location"
+                          [removable]="true"
+                          (remove)="removeLocation(i)"
+                          [size]="'tiny'"
+                          status="basic"
+                        ></nb-tag>
+                      </div>
+                      <div
+                        *ngIf="
+                          campaignForm.get('locations')?.invalid &&
+                          campaignForm.get('locations')?.touched &&
+                          campaignForm.get('locations')?.hasError('required')
+                        "
+                        class="alert-container"
+                      >
+                        <commudle-alert
+                          [error]="true"
+                          errorMessage="At least one location is required"
+                        ></commudle-alert>
+                      </div>
+                    </div>
+                  </div>
 
-          <!-- end time -->
-          <div>
-            <label for="end_time">Daily End Time<span class="required"> *</span></label>
-            <br />
-            <div class="input">
-              <commudle-input
-                [inputValue]="campaignForm.get('end_time').value"
-                [type]="'time'"
-                (blurEvent)="campaignForm.get('end_time').markAsTouched()"
-                (valueChange)="handleInput($event, 'end_time')"
-              ></commudle-input>
-            </div>
-            <commudle-alert
-              [error]="
-                campaignForm.get('end_time')?.invalid &&
-                campaignForm.get('end_time')?.touched &&
-                campaignForm.get('end_time')?.hasError('required')
-              "
-              errorMessage="End time is required"
-            ></commudle-alert>
-          </div>
-        </form>
-      </div>
-    </nb-card-body>
-  </nb-card>
+                  <!-- Communities -->
+                  <div>
+                    <label for="communities">Communities</label>
+                    <div class="input">
+                      <nb-form-field>
+                        <input
+                          #searchInput
+                          [formControl]="communitiesFormControl"
+                          [nbAutocomplete]="communitiesAutoNgModel"
+                          fullWidth
+                          nbInput
+                          placeholder="Search communities (type at least 3 characters)"
+                          type="text"
+                        />
+                      </nb-form-field>
+                      <nb-autocomplete #communitiesAutoNgModel>
+                        <nb-option
+                          *ngFor="let result of communitiesSearchResult"
+                          (click)="onCommunitySelected(result.id, result.name, result.slug)"
+                        >
+                          {{ result.name }}
+                        </nb-option>
+                      </nb-autocomplete>
+                      <!-- Display selected communities as tags -->
+                      <div *ngIf="selectedCommunities.length > 0" class="selected-communities-container">
+                        <nb-tag
+                          *ngFor="let community of selectedCommunities; let i = index"
+                          [text]="community.name"
+                          [removable]="true"
+                          (remove)="removeCommunity(i)"
+                          [size]="'tiny'"
+                          status="basic"
+                        ></nb-tag>
+                      </div>
+                    </div>
+                  </div>
 
-  <!-- Price -->
-  <nb-card>
-    <nb-card-header id="price">
-      <a [routerLink]="[]" fragment="price">
-        <span class="left">Price</span>
-        <span class="right">Enter your budget for the whole campaign</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <div class="form">
-        <form [formGroup]="campaignForm">
-          <div class="budget-amount">
-            <span class="budget">${{ campaign.campaign_type.budget_amount }}</span>
-            <span class="per-day" *ngIf="campaign.campaign_type.slug !== ECampaignTypeSlug.MAIN_NEWSLETTER"
-              >Per Minute</span
+                  <div>
+                    <label for="cta_label">Call to action <span class="required"> *</span></label>
+                    <div class="input">
+                      <commudle-input
+                        [placeholder]="'e.g. Learn More, Sign Up, Get Started'"
+                        [inputValue]="campaignForm.get('cta_label')?.value"
+                        (blurEvent)="campaignForm.get('cta_label')?.markAsTouched()"
+                        (valueChange)="handleInput($event, 'cta_label')"
+                      ></commudle-input>
+                    </div>
+                  </div>
+
+                  <div *ngIf="estimate" class="budget-info-row com-mb-2 com-gap-10">
+                    <div class="cost-container">
+                      <span>Est. cost:</span>
+                      <span class="budget-info-value"
+                        >{{ this.estimate.price_per_impression | currency : campaign?.currency_type
+                        }}<span class="small-info-text"> per impression</span></span
+                      >
+                    </div>
+                    <div class="cost-container">
+                      <span>Est. runtime ~ X days/hours/minutes :</span>
+                      <span class="budget-info-value">{{ this.estimate.remaining_days }}</span>
+                    </div>
+                  </div>
+
+                  <p class="small-info-text" *ngIf="estimate?.daily_spend">
+                    You will end up spending
+                    {{ estimate.daily_spend.min | currency : campaign?.currency_type }}
+                    -
+                    {{ estimate.daily_spend.max | currency : campaign?.currency_type }}
+                    per day
+                  </p>
+                </form>
+                <!-- price_per_impression -->
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+
+          <!-- Creatives and Destination URL Section -->
+          <nb-accordion-item [disabled]="form1Invalid || form2Invalid" [expanded]="!form1Invalid && !form2Invalid">
+            <nb-accordion-item-header (click)="onAccordion3Click($event)">
+              <div class="accordion-header-content">
+                <span class="accordion-number">3</span>
+                <span class="accordion-title">Creatives and Destination URL</span>
+              </div>
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+              <div class="form creative-assets">
+                <!-- Display saved assets from API -->
+                <div
+                  class="saved-assets-container"
+                  *ngIf="campaign?.campaign_assets && campaign.campaign_assets.length > 0"
+                >
+                  <div *ngFor="let asset of campaign.campaign_assets; let i = index" class="saved-asset-item">
+                    <div class="saved-asset-content">
+                      <div class="saved-image-preview" *ngIf="asset.image?.url">
+                        <img [src]="asset.image.url" alt="Asset preview" />
+                      </div>
+                      <div class="saved-asset-details">
+                        <p class="saved-url"><strong>URL:</strong> {{ asset.url }}</p>
+                      </div>
+                      <button
+                        class="action-btn"
+                        nbButton
+                        ghost
+                        status="basic"
+                        size="small"
+                        (click)="removeCampaignAsset(i)"
+                      >
+                        <fa-icon [icon]="icons.faTrash"></fa-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Single form container for adding new asset -->
+                <form [formGroup]="campaignForm">
+                  <div formArrayName="campaign_assets">
+                    <div
+                      class="creative-assets-controller"
+                      *ngIf="campaignAssets.length > 0"
+                      [formGroupName]="campaignAssets.length - 1"
+                    >
+                      <div class="images-container">
+                        <label [for]="'image-' + (campaignAssets.length - 1)" class="clickable image-container">
+                          <span class="image-text">
+                            <fa-icon class="image-icon" [icon]="icons.faFileImage"></fa-icon>
+                            <p class="image-text-content">
+                              <span>Drag and drop images</span><span class="browse-text"> or Browse</span>
+                            </p>
+                          </span>
+                          <input
+                            [id]="'image-' + (campaignAssets.length - 1)"
+                            type="file"
+                            [attr.data-index]="campaignAssets.length - 1"
+                            (change)="onFileChange($event, campaignAssets.length - 1)"
+                            accept="image/png, image/jpeg, image/jpg"
+                            class="image-input"
+                            fullWidth
+                            nbInput
+                          />
+                          <div class="images">
+                            <p class="image-size-text">
+                              <span class="image-size">1280 x 720px or higher recommended</span
+                              ><span class="image-type">JPG, JPEG, PNG</span>
+                            </p>
+                          </div>
+                        </label>
+                      </div>
+
+                      <div *ngIf="imagePreview[campaignAssets.length - 1]" class="image">
+                        <div class="image-preview">
+                          <img [src]="imagePreview[campaignAssets.length - 1]" alt="Asset preview" />
+                        </div>
+                        <p class="clickable">
+                          <nb-icon
+                            (click)="
+                              imagePreview[campaignAssets.length - 1] = null;
+                              campaignAssets
+                                .at(campaignAssets.length - 1)
+                                .get('image')
+                                .setValue(null)
+                            "
+                            icon="close-circle"
+                            status="danger"
+                          ></nb-icon>
+                        </p>
+                      </div>
+
+                      <div>
+                        <label [for]="'url-' + (campaignAssets.length - 1)" class="label"
+                          >Destination URL <span class="required"> *</span></label
+                        >
+                        <div class="creative-assets-input">
+                          <commudle-input
+                            [inputValue]="
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.value
+                            "
+                            (blurEvent)="
+                              campaignForm
+                                .get('campaign_assets.' + (campaignAssets.length - 1) + '.url')
+                                ?.markAsTouched()
+                            "
+                            (valueChange)="
+                              handleArrayFormInput($event, 'url', campaignAssets.length - 1, 'campaign_assets')
+                            "
+                            placeholder="eg: https://www.commudle.com/"
+                            [type]="'text'"
+                          ></commudle-input>
+                          <div
+                            *ngIf="
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.invalid &&
+                              campaignForm.get('campaign_assets.' + (campaignAssets.length - 1) + '.url')?.touched
+                            "
+                            class="alert-container"
+                          >
+                            <commudle-alert
+                              [error]="true"
+                              errorMessage="Valid URL is required (must start with http:// or https://)"
+                            ></commudle-alert>
+                          </div>
+                          <p class="small-info-text">
+                            The call to action button will take the user on this destination
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Save button -->
+                      <div class="save-button-container">
+                        <button
+                          type="button"
+                          nbButton
+                          status="primary"
+                          shape="semi-round"
+                          (click)="addAsset(campaignAssets.length - 1)"
+                          [disabled]="campaignAssets.at(campaignAssets.length - 1).invalid"
+                        >
+                          Save Asset
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+
+        <div class="sticky-footer">
+          <div *ngIf="wallet" class="wallet-details-section">
+            <h4 class="wallet-details-heading">Wallet</h4>
+            <table class="wallet-details-table">
+              <tbody>
+                <tr>
+                  <td class="wallet-details-label">Balance</td>
+                  <td class="wallet-details-label">Available balance</td>
+                  <td class="wallet-details-label">Reserved balance</td>
+                </tr>
+                <tr>
+                  <td class="wallet-details-value">
+                    {{ wallet.balance | currency : campaign?.currency_type }}
+                  </td>
+                  <td class="wallet-details-value">
+                    {{ wallet.available_balance | currency : campaign?.currency_type }}
+                  </td>
+                  <td class="wallet-details-value">
+                    {{ wallet.reserved_balance | currency : campaign?.currency_type }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="next-button">
+            <button
+              nbButton
+              [disabled]="!isSubmitForApprovalEnabled()"
+              shape="semi-round"
+              (click)="updateCampaign(true)"
             >
+              {{
+                wallet && wallet.available_balance >= campaignForm.get('budget').value ? 'Go live' : 'Pay and Go live'
+              }}
+              &nbsp;<fa-icon [icon]="icons.faArrowRight"></fa-icon>
+            </button>
           </div>
-          <div>
-            <label for="budget">Your Estimated Cost</label>
-            <br />
-            <div class="budget-amount">
-              <div class="budget">${{ campaignForm.get('budget').value }}</div>
-            </div>
-            <!-- <div class="input">
-              <commudle-input
-                placeholder="Budget amount"
-                [inputValue]="campaignForm.get('budget').value"
-                [type]="'number'"
-                (blurEvent)="campaignForm.get('budget').markAsTouched()"
-                (valueChange)="handleInput($event, 'budget')"
-              ></commudle-input>
-            </div> -->
-            <commudle-alert
-              [error]="
-                campaignForm.get('budget')?.invalid &&
-                campaignForm.get('budget')?.touched &&
-                campaignForm.get('budget')?.hasError('required')
-              "
-              errorMessage="Budget is required"
-            ></commudle-alert>
-          </div>
-        </form>
-      </div>
-    </nb-card-body>
-  </nb-card>
-
-  <!-- Tags -->
-  <nb-card>
-    <nb-card-header>
-      <a [routerLink]="[]" fragment="tags">
-        <span class="left">Tags</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <app-tag
-        (tagAdd)="onTagAdd($event)"
-        (tagDelete)="onTagDelete($event)"
-        [backgroundColor]="'com-bg-tAnti-Flash'"
-        [editable]="true"
-        [fontColor]="'com-text-tYankees-Blue'"
-        [tags]="tags"
-        [minTagLimit]="false"
-        [showAutoSuggestDropDown]="true"
-        [showSuggestedTags]="true"
-      ></app-tag>
-    </nb-card-body>
-  </nb-card>
-
-  <!-- Creative Assets -->
-  <nb-card>
-    <nb-card-header id="creative-assets">
-      <a [routerLink]="[]" fragment="creative-assets">
-        <span class="left">Creative Assets</span>
-        <span class="right">Please enter your name and contact information</span>
-      </a>
-    </nb-card-header>
-    <nb-card-body>
-      <div class="form creative-assets">
-        <form [formGroup]="campaignForm">
-          <div formArrayName="campaign_assets">
-            <div
-              class="creative-assets-controller"
-              *ngFor="let asset of campaignAssets.controls; let i = index"
-              [formGroupName]="i"
-            >
-              <!-- Image Upload -->
-              <label for="image-{{ i }}">Attach Image <span class="required"> *</span></label>
-              <br />
-              <div class="preview-image" *ngIf="imagePreview[i]">
-                <img [src]="imagePreview[i]" />
-              </div>
-              <div class="image-upload-container">
-                <input
-                  id="image-{{ i }}"
-                  type="file"
-                  (change)="onFileChange($event, i)"
-                  accept="image/png, image/jpeg, image/jpg"
-                />
-              </div>
-              <p class="image-info" *ngIf="campaign.campaign_type.image_dimension">
-                (Allowed {{ campaign.campaign_type.image_dimension.width }} X
-                {{ campaign.campaign_type.image_dimension.height }}, PNG, JPG, max 2MB)
-              </p>
-              <br />
-              <!-- Description -->
-              <label for="headline-{{ i }}">Description <span class="required"> *</span></label>
-              <br />
-              <!-- <input id="headline-{{ i }}" type="text" formControlName="headline" /> -->
-              <div class="creative-assets-input">
-                <textarea
-                  id="headline-{{ i }}"
-                  placeholder="Add a brief description, it help with SEO"
-                  formControlName="headline"
-                ></textarea>
-              </div>
-              <br />
-
-              <!-- url -->
-              <label for="url-{{ i }}"
-                >Add the link where you want to redirect the user. Use any UTM parameters needed here Itself.
-                <span class="required"> *</span></label
-              >
-              <br />
-              <!-- <input id="url-{{ i }}" type="text" formControlName="url" /> -->
-              <div class="creative-assets-input">
-                <commudle-input
-                  [inputValue]="campaignForm.get('campaign_assets.' + i + '.url')?.value"
-                  (valueChange)="handleArrayFormInput($event, 'url', i, 'campaign_assets')"
-                  placeholder="eg: https://www.commudle.com/"
-                  [type]="'text'"
-                ></commudle-input>
-              </div>
-
-              <!-- <button type="button" (click)="removeCampaignAsset(i)">Remove</button> -->
-              <br />
-              <hr />
-            </div>
-          </div>
-        </form>
-        <div>
-          <button nbButton outline type="button" (click)="addCampaignAsset()">
-            <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add another Asset
-          </button>
-          <p>Add another image which will keep rotating with above image</p>
         </div>
       </div>
-    </nb-card-body>
-  </nb-card>
-
-  <div class="next-button">
-    <button nbButton status="primary" shape="semi-round" [disabled]="!campaignForm.valid" (click)="updateCampaign()">
-      Review Details &nbsp;
-      <fa-icon [icon]="icons.faArrowRight"></fa-icon>
-    </button>
+      <div class="right-column">
+        <h3 class="heading">Campaign Preview</h3>
+        <div class="right-column-container">
+          <commudle-campaign-assets-display
+            [defaultImageUrl]="defaultUrl"
+            [defaultImage]="staticAssets.campaign_default_image"
+            [campaignPreview]="campaign"
+            [campaignType]="'preview'"
+          ></commudle-campaign-assets-display>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
