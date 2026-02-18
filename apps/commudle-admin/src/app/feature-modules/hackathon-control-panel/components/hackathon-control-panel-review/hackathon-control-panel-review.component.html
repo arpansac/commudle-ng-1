@@ -201,11 +201,11 @@
       <ng-template #userResponsesContainer>
         <table *ngIf="userResponses && userResponses.length > 0; else noUserResponse">
           <tr>
-            <th width="300px">Name</th>
-            <th width="100px">PS ID</th>
-            <th>Round</th>
-            <th width="120px" class="sortable-header">
-              <span> Total Score </span>
+            <th width="20%">Name</th>
+            <th width="6%">PS ID</th>
+            <th width="8%">Round</th>
+            <th width="8%" class="sortable-header">
+              <span>Total Score</span>
               <div class="sort-icons">
                 <fa-icon
                   *ngIf="sortByTotalScore !== 'asc'"
@@ -225,11 +225,12 @@
                 </fa-icon>
               </div>
             </th>
-            <th width="200px">Updates</th>
-            <th width="200px">Notes</th>
-            <th>Application Status</th>
-            <th width="300px">Offline Invite Status</th>
-            <th>Actions</th>
+            <th width="8%">Submissions</th>
+            <th width="10%">Updates</th>
+            <th width="10%">Notes</th>
+            <th width="10%">Application Status</th>
+            <th width="12%">Offline Invite Status</th>
+            <th width="8%">Actions</th>
           </tr>
           <tr
             *ngFor="let userResponse of userResponses; let i = index; trackBy: trackByTeamId"
@@ -248,7 +249,7 @@
                     <fa-icon
                       [icon]="icons.faExclamationTriangle"
                       [title]="
-                        hackathon.participate_types === ENUMS.EParticipateTypes.TEAM
+                        hackathon?.participate_types === ENUMS.EParticipateTypes.TEAM
                           ? 'Incomplete registration: Team Leader has not completed the form'
                           : 'Incomplete registration'
                       "
@@ -264,13 +265,6 @@
                 </div>
                 <div class="date">
                   {{ moment(userResponse.team.created_at).format('DD MMM YYYY, h:mm A') }}
-                </div>
-                <div *ngIf="userResponse.team.community_build" (click)="$event.stopPropagation()" class="project-link">
-                  Link to project:
-                  <a [routerLink]="['/builds', userResponse.team.community_build.slug]" target="_blank">
-                    <fa-icon [icon]="icons.faUpRightFromSquare"></fa-icon>
-                    {{ userResponse.team.community_build.name }}</a
-                  >
                 </div>
               </div>
             </td>
@@ -312,6 +306,37 @@
             <!-- TOTAL SCORE -->
             <td class="total-score">
               {{ userResponse.team.total_score || 0 }}
+            </td>
+
+            <!-- ROUND SUBMISSIONS -->
+            <td class="submissions" (click)="$event.stopPropagation()">
+              <div class="submission-chips">
+                <a
+                  *ngIf="userResponse.team.community_build"
+                  [routerLink]="['/builds', userResponse.team.community_build.slug]"
+                  target="_blank"
+                  class="submission-chip project-chip"
+                >
+                  <fa-icon [icon]="icons.faLaptopCode"></fa-icon>
+                  <span>Project</span>
+                </a>
+                <a
+                  *ngFor="let submission of userResponse.team.hackathon_team_round_submissions"
+                  [href]="submission.file_attachment.url"
+                  target="_blank"
+                  class="submission-chip"
+                >
+                  <fa-icon [icon]="icons.faFilePowerpoint"></fa-icon>
+                  <span>{{ submission.round.name }}</span>
+                </a>
+              </div>
+              <span
+                *ngIf="
+                  !userResponse.team.hackathon_team_round_submissions?.length && !userResponse.team.community_build
+                "
+                class="no-submission"
+                >—</span
+              >
             </td>
 
             <!-- UPDATED -->

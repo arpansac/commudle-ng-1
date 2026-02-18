@@ -46,6 +46,8 @@ import {
   faExclamationTriangle,
   faSortUp,
   faSortDown,
+  faFilePowerpoint,
+  faLaptopCode,
 } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
@@ -86,6 +88,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faExclamationTriangle,
     faSortUp,
     faSortDown,
+    faFilePowerpoint,
+    faLaptopCode,
   };
   notesForm: FormGroup;
   notes: INote[];
