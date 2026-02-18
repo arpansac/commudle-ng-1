@@ -642,7 +642,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.round.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 
@@ -687,7 +687,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.track.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 
@@ -732,7 +732,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         selectElement.value = data.problem_statement.id.toString();
       }
 
-      this.closeConfirmationDialogBox();
+      // this.closeConfirmationDialogBox();
     });
   }
 
