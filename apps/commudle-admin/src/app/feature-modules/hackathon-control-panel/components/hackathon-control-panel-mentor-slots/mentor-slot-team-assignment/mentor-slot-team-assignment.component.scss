@@ -21,11 +21,39 @@
     .team-summary {
       @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
 
-      .team-name {
-        @apply com-px-3 com-text-primary-500 com-font-medium com-text-xs;
+      .team-table {
+        @apply com-w-full;
 
-        .scored {
-          @apply com-text-green-600 com-font-semibold;
+        .team-table-header {
+          @apply com-grid com-grid-cols-2 com-gap-2 com-pb-2 com-border-b com-border-gray-300 com-font-semibold com-text-xs com-text-gray-700;
+        }
+
+        .team-table-row {
+          @apply com-grid com-grid-cols-2 com-gap-2 com-py-1.5 com-border-b com-border-gray-200;
+
+          &:last-child {
+            @apply com-border-b-0;
+          }
+        }
+
+        .team-table-cell {
+          @apply com-text-xs;
+
+          &.team-name {
+            @apply com-text-primary-500 com-font-medium;
+          }
+
+          &.team-score {
+            @apply com-text-right;
+
+            .scored {
+              @apply com-text-green-600 com-font-semibold;
+            }
+
+            .pending {
+              @apply com-text-gray-500 com-italic;
+            }
+          }
         }
       }
     }
