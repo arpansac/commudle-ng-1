@@ -1,19 +1,20 @@
-/* eslint-disable @nx/enforce-module-boundaries */
 import { ToastrService } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathonUserResponses } from 'apps/shared-models/hackathon-user-responses.model';
 import { HackathonWinnerService } from 'apps/commudle-admin/src/app/services/hackathon-winner.service';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { countries_details } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { IHackathonPrize, IHackathonTeam, IHackathonWinner } from '@commudle/shared-models';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-    selector: 'commudle-hackathon-prize-card',
-    templateUrl: './hackathon-prize-card.component.html',
-    styleUrls: ['./hackathon-prize-card.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-prize-card',
+  templateUrl: './hackathon-prize-card.component.html',
+  styleUrls: ['./hackathon-prize-card.component.scss'],
+  standalone: false,
 })
 export class HackathonPrizeCardComponent implements OnInit {
   @Input() hackathonPrize: IHackathonPrize;
@@ -24,7 +25,10 @@ export class HackathonPrizeCardComponent implements OnInit {
   hackathonUserResponses: IHackathonUserResponses[];
   icons = {
     faXmark,
+    faSearch,
   };
+  searchForm: FormGroup;
+  isLoading = false;
 
   page = 1;
   total: number;
@@ -35,7 +39,12 @@ export class HackathonPrizeCardComponent implements OnInit {
     private hackathonService: HackathonService,
     private hackathonWinnerService: HackathonWinnerService,
     private toastrService: ToastrService,
-  ) {}
+    private fb: FormBuilder,
+  ) {
+    this.searchForm = this.fb.group({
+      search: [''],
+    });
+  }
 
   ngOnInit() {
     this.prizeCurrencySymbol = this.countryDetails.find(
@@ -47,6 +56,11 @@ export class HackathonPrizeCardComponent implements OnInit {
         symbol: this.hackathonPrize.currency_type,
       };
     }
+
+    this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.fetchHackathonUserResponses();
+    });
   }
 
   editPrize(prize) {
@@ -58,13 +72,15 @@ export class HackathonPrizeCardComponent implements OnInit {
   }
 
   openPrizeDistributionDialogBox(dialog) {
+    this.searchForm.patchValue({ search: '' });
     this.fetchHackathonUserResponses();
     this.nbDialogService.open(dialog, {});
   }
 
   fetchHackathonUserResponses() {
+    this.isLoading = true;
     this.hackathonService
-      .indexUserResponses(this.hackathonPrize.hackathon_id, this.page, this.count)
+      .indexUserResponses(this.hackathonPrize.hackathon_id, this.page, this.count, this.searchForm.get('search').value)
       .subscribe((data) => {
         if (data) {
           this.hackathonUserResponses = data.values;
@@ -82,6 +98,7 @@ export class HackathonPrizeCardComponent implements OnInit {
             }
           }
         }
+        this.isLoading = false;
       });
   }
 

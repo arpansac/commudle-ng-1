@@ -40,65 +40,99 @@
 </nb-card>
 
 <ng-template #prizeDistributionDialogBox let-ref="dialogRef" let-data>
-  <nb-card class="prize-distribution-dialog-box">
+  <nb-card class="prize-distribution-dialog">
     <nb-card-header>
-      <span> {{ hackathonPrize.name }} ({{ prizeCurrencySymbol?.symbol }} {{ hackathonPrize.prize_amount }}) </span>
-      <button (click)="ref.close()" ghost nbButton shape="round" size="small">
-        <nb-icon icon="close"></nb-icon>
-      </button>
+      <div class="header-content">
+        <div class="prize-info">
+          <h3>{{ hackathonPrize.name }}</h3>
+          <span class="prize-amount">{{ prizeCurrencySymbol?.symbol }} {{ hackathonPrize.prize_amount }}</span>
+        </div>
+        <button (click)="ref.close()" ghost nbButton shape="round" size="small">
+          <nb-icon icon="close"></nb-icon>
+        </button>
+      </div>
     </nb-card-header>
     <nb-card-body>
-      <table>
-        <tr>
-          <th width="30%">Team Name</th>
-          <th width="20%">Round</th>
-          <th width="30%">Build/Project Name</th>
-          <th width="20%">Prize</th>
-        </tr>
-        <tr
-          *ngFor="let userResponse of hackathonUserResponses; let i = index"
-          [ngClass]="{ winner: userResponse.team.hackathon_winners.length > 0 }"
-        >
-          <td class="team-name">
-            <span>{{ userResponse.team.name }}</span>
-            <br />
-            <span *ngFor="let hackathonWinner of userResponse.team.hackathon_winners"> 🏆</span>
-          </td>
-          <td>
-            <div *ngIf="userResponse.team.round" class="round-name">
-              <span>{{ userResponse.team.round.name }}</span>
-            </div>
-          </td>
-          <td class="build-name">{{ userResponse.team.community_build?.name }}</td>
-          <td>
-            <button
-              *ngIf="!userResponse.team.prize_selected"
-              nbButton
-              status="primary"
-              size="tiny"
-              (click)="openAddWinnerConfirmationDialogBox(addWinnerDialogBox, userResponse.team, i)"
+      <div class="search-container">
+        <form [formGroup]="searchForm">
+          <div class="search-input-wrapper">
+            <fa-icon [icon]="icons.faSearch" class="search-icon"></fa-icon>
+            <input
+              formControlName="search"
+              nbInput
+              type="text"
+              fullWidth
+              placeholder="Search by team name, member name or email"
+              class="search-input"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="table-container">
+        <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+        <table *ngIf="!isLoading" class="teams-table">
+          <thead>
+            <tr>
+              <th>Team Name</th>
+              <th>Round</th>
+              <th>Project</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let userResponse of hackathonUserResponses; let i = index"
+              [class.winner-row]="userResponse.team.hackathon_winners.length > 0"
             >
-              Select Winner
-            </button>
-            <div *ngFor="let hackathonWinner of userResponse.team.hackathon_winners; let wi = index" class="com-py-2">
-              <span (click)="$event.stopPropagation()" class="prizes">
-                <span>
-                  {{ hackathonWinner.hackathon_prize.name }}
+              <td class="team-name-cell">
+                <div class="team-info">
+                  <span class="team-name">{{ userResponse.team.name }}</span>
+                  <span *ngFor="let hackathonWinner of userResponse.team.hackathon_winners" class="trophy">🏆</span>
+                </div>
+              </td>
+              <td>
+                <span *ngIf="userResponse.team.round" class="round-badge">
+                  {{ userResponse.team.round.name }}
                 </span>
+                <span *ngIf="!userResponse.team.round" class="no-data">—</span>
+              </td>
+              <td class="project-cell">
+                <span *ngIf="userResponse.team.community_build" class="project-name">
+                  {{ userResponse.team.community_build.name }}
+                </span>
+                <span *ngIf="!userResponse.team.community_build" class="no-data">—</span>
+              </td>
+              <td class="action-cell">
                 <button
+                  *ngIf="!userResponse.team.prize_selected"
                   nbButton
-                  shape="round"
-                  status="danger"
-                  size="tiny"
-                  (click)="removeWinnerConfirmationDialogBox(removeWinnerDialogBox, hackathonWinner.id, i, wi)"
+                  status="primary"
+                  size="small"
+                  (click)="openAddWinnerConfirmationDialogBox(addWinnerDialogBox, userResponse.team, i)"
                 >
-                  <fa-icon [icon]="icons.faXmark"></fa-icon>
+                  Select Winner
                 </button>
-              </span>
-            </div>
-          </td>
-        </tr>
-      </table>
+                <div
+                  *ngFor="let hackathonWinner of userResponse.team.hackathon_winners; let wi = index"
+                  class="prize-tag"
+                >
+                  <span class="prize-name">{{ hackathonWinner.hackathon_prize.name }}</span>
+                  <button
+                    nbButton
+                    shape="round"
+                    status="danger"
+                    size="tiny"
+                    ghost
+                    (click)="removeWinnerConfirmationDialogBox(removeWinnerDialogBox, hackathonWinner.id, i, wi)"
+                  >
+                    <fa-icon [icon]="icons.faXmark"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </nb-card-body>
     <nb-card-footer>
       <app-pagination
