@@ -25,3 +25,5 @@ export * from './lib/components/user/user-profile-missing-fields/user-profile-mi
 export * from './lib/components/add-to-calendar/add-to-calendar.component';
 
 export * from './lib/services/community-channel-handler.service';
+
+export * from './lib/components/user-profile/user-profile-mini-card/user-profile-mini-card.component';

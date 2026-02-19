@@ -66,7 +66,7 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
     if (this.campaignPreview && this.campaignType === 'preview') {
       this.applyCampaignPreview();
     } else if (!this.campaign && this.campaignType === 'live') {
-      this.fetchCampaign();
+      // this.fetchCampaign();
     }
   }
 
