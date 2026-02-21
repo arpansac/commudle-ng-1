@@ -947,6 +947,7 @@ export const API_ROUTES = {
       BULK_UPDATE_TRACK: 'api/v2/hackathons/teams/bulk_update_track', //PUT
       BULK_UPDATE_PROBLEM_STATEMENT: 'api/v2/hackathons/teams/bulk_update_problem_statement', //PUT
       BULK_REGISTRATION_STATUS: 'api/v2/hackathons/teams/bulk_registration_status', //PUT
+      TEAM_SCORES: 'api/v2/hackathons/teams/team_scores', //GET
     },
   },
 

@@ -139,6 +139,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   private originalProblemStatementValue: number;
   private originalOfflineInviteStatusValue: EOfflineInviteStatus;
   expandedUpdates: { [key: number]: boolean } = {};
+  activeTab: 'details' | 'scores' = 'details';
+  teamScores: any[] = [];
 
   tinyMCE = {
     height: 200,
@@ -996,5 +998,18 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   toggleUpdateExpansion(updateId: number): void {
     this.expandedUpdates[updateId] = !this.expandedUpdates[updateId];
+  }
+
+  switchTab(tab: 'details' | 'scores'): void {
+    this.activeTab = tab;
+    if (tab === 'scores' && this.selectedTeamDetails) {
+      this.fetchTeamScores(this.selectedTeamDetails.id);
+    }
+  }
+
+  fetchTeamScores(teamId: number): void {
+    this.hackathonTeamService.teamRoundScores(teamId).subscribe((data) => {
+      this.teamScores = data;
+    });
   }
 }

@@ -19,7 +19,7 @@
     }
 
     .team-summary {
-      @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-p-2 com-w-full;
+      @apply com-flex com-flex-col com-gap-2 com-max-h-24 com-overflow-y-auto com-py-2 com-w-full;
 
       .team-name {
         @apply com-px-3 com-text-primary-500 com-font-medium com-text-xs;

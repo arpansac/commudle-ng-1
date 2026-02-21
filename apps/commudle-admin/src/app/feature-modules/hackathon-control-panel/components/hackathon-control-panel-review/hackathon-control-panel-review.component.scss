@@ -197,7 +197,7 @@ th {
 }
 
 .response-dialog-box {
-  @apply com-w-auto com-mx-0 com-max-h-full md:com-max-h-[90dvh] md:com-w-800px;
+  @apply com-w-auto com-mx-0 com-max-h-full md:com-h-[90dvh] md:com-w-800px;
   nb-card-body {
     @apply com-overflow-x-hidden;
   }
@@ -361,6 +361,125 @@ th {
 
   nb-card-body {
     @apply com-p-0 com-overflow-hidden;
+  }
+}
+
+.tab-navigation {
+  @apply com-flex com-gap-0 com-border-b com-border-gray-300 com-mb-4;
+
+  .tab-item {
+    @apply com-px-4 com-py-2 com-font-medium com-cursor-pointer com-transition-colors com-text-gray-600;
+    @apply hover:com-text-primary-500;
+
+    &.active {
+      @apply com-border-b com-border-primary-500 com-text-primary-500 com-border-0 com-border-solid;
+    }
+  }
+}
+
+.scores-tab {
+  .scores-list {
+    @apply com-space-y-3;
+  }
+
+  .score-card {
+    @apply com-p-4 com-border com-border-gray-200 com-rounded-lg com-space-y-3;
+
+    .score-header {
+      @apply com-flex com-items-center com-justify-between com-pb-3 com-border-b com-border-gray-100;
+
+      .round-name {
+        @apply com-font-semibold com-text-base com-text-gray-900;
+      }
+
+      .status-badge {
+        @apply com-px-2 com-py-1 com-text-xs com-rounded com-font-medium;
+
+        &.status-evaluated {
+          @apply com-bg-green-100 com-text-green-700;
+        }
+
+        &.status-pending {
+          @apply com-bg-yellow-100 com-text-yellow-700;
+        }
+
+        &.status-submitted {
+          @apply com-bg-green-100 com-text-green-700;
+        }
+
+        &.status-draft {
+          @apply com-bg-yellow-100 com-text-yellow-700;
+        }
+
+        &.status-not_created {
+          @apply com-bg-gray-100 com-text-gray-700;
+        }
+      }
+    }
+
+    .total-score {
+      @apply com-flex com-items-center com-justify-between com-py-2 com-px-3 com-bg-gray-50 com-rounded;
+
+      .label {
+        @apply com-text-sm com-text-gray-600;
+      }
+
+      .value {
+        @apply com-text-xl com-font-bold com-text-gray-900;
+      }
+    }
+
+    .breakdown {
+      @apply com-space-y-2;
+
+      .breakdown-item {
+        @apply com-flex com-items-center com-justify-between com-text-sm;
+
+        .criterion {
+          @apply com-text-gray-700;
+        }
+
+        .points {
+          @apply com-font-semibold com-text-gray-900;
+        }
+      }
+    }
+
+    .evaluator {
+      @apply com-flex com-items-center com-gap-3 com-pt-2 com-border-t com-border-gray-100;
+
+      .avatar {
+        @apply com-w-8 com-h-8 com-rounded-full com-object-cover;
+      }
+
+      .info {
+        @apply com-flex com-flex-col;
+
+        .name {
+          @apply com-text-sm com-font-medium com-text-gray-900;
+        }
+
+        .role {
+          @apply com-text-xs com-text-gray-500;
+        }
+      }
+    }
+
+    .remarks {
+      @apply com-text-sm com-text-gray-600 com-italic com-pt-2 com-border-t com-border-gray-100 com-m-0;
+    }
+  }
+
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-text-gray-400;
+
+    nb-icon {
+      @apply com-text-4xl com-mb-2;
+    }
+
+    p {
+      @apply com-text-sm com-m-0;
+    }
   }
 }
 

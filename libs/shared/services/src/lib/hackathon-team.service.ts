@@ -279,4 +279,9 @@ export class HackathonTeamService {
       { params },
     );
   }
+
+  teamRoundScores(teamId: number): Observable<any> {
+    const params = new HttpParams().set('team_id', teamId);
+    return this.http.get(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAM_SCORES), { params });
+  }
 }
