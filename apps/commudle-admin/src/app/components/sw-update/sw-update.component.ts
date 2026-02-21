@@ -13,10 +13,10 @@ interface AppData {
 }
 
 @Component({
-    selector: 'app-sw-update',
-    templateUrl: './sw-update.component.html',
-    styleUrls: ['./sw-update.component.scss'],
-    standalone: false
+  selector: 'app-sw-update',
+  templateUrl: './sw-update.component.html',
+  styleUrls: ['./sw-update.component.scss'],
+  standalone: false,
 })
 export class SwUpdateComponent implements OnInit {
   isBrowser: boolean;
@@ -51,7 +51,6 @@ export class SwUpdateComponent implements OnInit {
         switch (evt.type) {
           case 'VERSION_DETECTED':
             console.log(`Downloading new app version: ${evt.version.hash}`);
-            this.toastLogService.notificationDialog(`Downloading new app version...`);
             break;
           case 'VERSION_READY': {
             console.log(`Current app version: ${evt.currentVersion.hash}`);
