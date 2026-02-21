@@ -309,6 +309,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   openDialogBox(dialog, teamId, index) {
+    this.switchTab('details');
     this.hackathonService.showUserResponsesByTeam(teamId).subscribe((data: IHackathonUserResponses) => {
       this.selectedTeamDetails = data.team;
       this.selectedUserResponsesDetails = data.user_responses;
