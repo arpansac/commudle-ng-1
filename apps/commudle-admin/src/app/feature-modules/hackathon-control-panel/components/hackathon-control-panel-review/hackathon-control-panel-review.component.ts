@@ -91,6 +91,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faFilePowerpoint,
     faLaptopCode,
   };
+
   notesForm: FormGroup;
   notes: INote[];
   dialogRef: NbDialogRef<unknown>;
@@ -175,6 +176,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   @ViewChildren('noteTextarea') noteTextarea: QueryList<ElementRef>;
   @ViewChild('problemStatementDialog') problemStatementDialog: TemplateRef<any>;
   @ViewChild('teamAttendanceDialog') teamAttendanceDialog: TemplateRef<any>;
+  @ViewChild('documentViewerDialog') documentViewerDialog: TemplateRef<any>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -983,5 +985,11 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
 
   getFilteredTeamsCount(): number {
     return this.total || 0;
+  }
+
+  openDocumentViewer(roundName: string, teamName: string, url: string) {
+    this.nbDialogService.open(this.documentViewerDialog, {
+      context: { roundName, teamName, url },
+    });
   }
 }

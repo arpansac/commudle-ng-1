@@ -73,6 +73,7 @@ import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/min
 import { HackathonControlPanelMentorSlotsComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentor-slots/hackathon-control-panel-mentor-slots.component';
 import { MentorSlotTeamAssignmentComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentor-slots/mentor-slot-team-assignment/mentor-slot-team-assignment.component';
 import { MentorSlotListComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-mentor-slots/mentor-slot-list/mentor-slot-list.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/mentor-notes-dialog/mentor-notes-dialog.component';
 
 @NgModule({
@@ -153,6 +154,7 @@ import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-
     NbContextMenuModule,
     ZXingScannerModule,
     MiniUserProfileModule,
+    NgxDocViewerModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { IRound, IHackathonTeamRoundSubmission } from '@commudle/shared-models';
 
 import { Subject } from 'rxjs';
-import { faUpload, faFile, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faUpload, faFile, faXmark, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogRef } from '@commudle/theme';
 import { HackathonTeamRoundSubmissionService } from '@commudle/shared-services';
 
@@ -27,6 +27,7 @@ export class PptUploadDialogComponent implements OnInit {
     faUpload,
     faFile,
     faXmark,
+    faExternalLink,
   };
 
   constructor(

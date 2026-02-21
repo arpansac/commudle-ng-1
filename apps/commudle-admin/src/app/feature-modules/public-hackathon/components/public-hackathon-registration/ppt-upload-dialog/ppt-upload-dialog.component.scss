@@ -1,43 +1,59 @@
-:host ::ng-deep {
-  .upload-dialog {
-    @apply com-w-full com-max-w-2xl com-max-h-[90dvh] com-overflow-auto;
+.upload-dialog {
+  @apply com-mx-0 com-w-[100dvw] md:com-w-630px;
 
-    .header-content {
-      @apply com-flex com-justify-between com-items-center com-w-full;
+  .header-content {
+    @apply com-flex com-items-center com-justify-between com-mb-2;
 
-      .dialog-title {
-        @apply com-text-xl com-font-semibold com-text-gray-900 com-m-0;
-      }
-
-      .close-button {
-        @apply com-ml-auto;
-      }
+    .dialog-title {
+      @apply com-text-Page-Section-Header com-font-semibold com-text-Yankees-Blue com-m-0;
     }
 
-    .round-name {
-      @apply com-text-sm com-text-gray-600 com-mt-1 com-mb-0;
+    .close-button {
+      @apply com-flex-shrink-0;
     }
   }
 
-  .existing-file {
-    @apply com-mb-4 com-p-3 com-bg-gray-100 com-rounded-lg;
+  .round-name {
+    @apply com-text-Paragraph-2 com-text-gray-500 com-m-0;
+  }
 
-    .existing-label {
-      @apply com-text-sm com-font-medium com-text-gray-700 com-mb-1;
+  .existing-file {
+    @apply com-flex com-items-center com-justify-between com-p-4 com-bg-Alice-Blue com-rounded-lg com-mb-4;
+
+    .existing-file-header {
+      @apply com-flex com-items-center com-gap-3 com-flex-1 com-min-w-0;
+
+      .existing-file-icon {
+        @apply com-text-primary-500 com-text-xl com-flex-shrink-0;
+      }
+
+      .existing-file-info {
+        @apply com-flex com-flex-col com-min-w-0;
+
+        .existing-label {
+          @apply com-text-Caption com-text-gray-500 com-m-0;
+        }
+
+        .existing-file-name {
+          @apply com-text-Paragraph-2 com-font-medium com-text-Yankees-Blue com-m-0 com-truncate;
+        }
+      }
     }
 
     .existing-link {
-      @apply com-text-primary-500 com-underline hover:com-text-primary-600 com-text-sm;
+      @apply com-flex com-items-center com-gap-2 com-text-primary-500 com-text-Paragraph-2 com-flex-shrink-0;
+      @apply hover:com-text-primary-600;
     }
   }
 
   .upload-area {
-    @apply com-border-2 com-border-dashed com-border-gray-300 com-rounded-lg com-p-8 com-mb-4;
-    @apply com-cursor-pointer com-transition-all com-duration-200;
-    @apply hover:com-border-primary-500 hover:com-bg-primary-100;
+    @apply com-border-2 com-border-dashed com-border-gray-100 com-rounded-lg com-p-6 com-cursor-pointer;
+    @apply com-bg-Anti-Flash-White com-transition-colors;
+    @apply hover:com-border-primary-500;
+    @apply md:com-p-8;
 
     &.has-file {
-      @apply com-border-solid com-border-primary-500 com-bg-primary-100;
+      @apply com-bg-Alice-Blue com-border-solid com-border-primary-500;
     }
 
     .file-input {
@@ -45,55 +61,61 @@
     }
 
     .upload-placeholder {
-      @apply com-text-center;
+      @apply com-flex com-flex-col com-items-center com-gap-3;
 
       .upload-icon {
-        @apply com-text-4xl com-text-gray-400 com-mb-3;
+        @apply com-text-primary-500 com-text-4xl;
+        @apply md:com-text-5xl;
       }
 
       .upload-text {
-        @apply com-text-base com-font-medium com-text-gray-700 com-mb-1;
+        @apply com-text-Paragraph-1 com-font-medium com-text-Yankees-Blue com-text-center com-m-0;
       }
 
       .upload-hint {
-        @apply com-text-sm com-text-gray-500 com-m-0;
+        @apply com-text-Caption com-text-gray-500 com-m-0;
       }
     }
 
     .file-selected {
-      @apply com-flex com-items-center com-gap-4;
+      @apply com-flex com-items-center com-gap-3;
 
       .file-icon {
-        @apply com-text-3xl com-text-primary-600;
+        @apply com-text-primary-500 com-text-2xl com-flex-shrink-0;
       }
 
       .file-details {
-        @apply com-flex-1;
+        @apply com-flex com-flex-col com-min-w-0;
 
         .file-name {
-          @apply com-text-base com-font-medium com-text-gray-900 com-mb-1 com-truncate;
+          @apply com-text-Paragraph-2 com-font-medium com-text-Yankees-Blue com-m-0 com-truncate;
         }
 
         .file-size {
-          @apply com-text-sm com-text-gray-600 com-m-0;
+          @apply com-text-Caption com-text-gray-500 com-m-0;
         }
       }
     }
   }
 
   .comments-section {
-    @apply com-mb-4;
+    @apply com-flex com-flex-col com-gap-2 com-mt-2;
 
     .comments-label {
-      @apply com-block com-text-sm com-font-medium com-text-gray-700 com-mb-2;
+      @apply com-text-Paragraph-2 com-font-medium com-text-Yankees-Blue;
     }
   }
 
   .dialog-actions {
-    @apply com-flex com-justify-end com-gap-2;
-  }
+    @apply com-flex com-items-center com-justify-end com-gap-3;
+    @apply com-flex-col-reverse md:com-flex-row;
 
-  .spinning {
-    @apply com-animate-spin;
+    button {
+      @apply com-w-full md:com-w-auto;
+
+      .spinning {
+        @apply com-animate-spin;
+      }
+    }
   }
 }

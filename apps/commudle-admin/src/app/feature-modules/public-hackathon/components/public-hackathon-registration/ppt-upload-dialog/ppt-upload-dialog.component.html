@@ -13,9 +13,18 @@
     <form [formGroup]="uploadForm">
       @if(existingSubmission?.file_attachment) {
       <div class="existing-file">
-        <p class="existing-label">Current File:</p>
+        <div class="existing-file-header">
+          <fa-icon [icon]="icons.faFile" class="existing-file-icon"></fa-icon>
+          <div class="existing-file-info">
+            <p class="existing-label">Current File:</p>
+            <p class="existing-file-name" [title]="existingSubmission.file_attachment.name">
+              {{ existingSubmission.file_attachment.name }}
+            </p>
+          </div>
+        </div>
         <a [href]="existingSubmission.file_attachment.url" target="_blank" class="existing-link">
-          {{ existingSubmission.file_attachment.name }}
+          <fa-icon [icon]="icons.faExternalLink"></fa-icon>
+          View
         </a>
       </div>
       }

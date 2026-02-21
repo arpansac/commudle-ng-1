@@ -358,8 +358,9 @@
                 </a>
                 <a
                   *ngFor="let submission of userResponse.team.hackathon_team_round_submissions"
-                  [href]="submission.file_attachment.url"
-                  target="_blank"
+                  (click)="
+                    openDocumentViewer(submission.round.name, userResponse.team.name, submission.file_attachment.url)
+                  "
                   class="submission-chip"
                 >
                   <fa-icon [icon]="icons.faFilePowerpoint"></fa-icon>
@@ -1529,5 +1530,22 @@
       <button nbButton status="primary" (click)="confirmBulkOperation()">Confirm</button>
       <button nbButton status="basic" (click)="ref.close()">Cancel</button>
     </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #documentViewerDialog let-ref="dialogRef" let-data>
+  <nb-card class="document-viewer-dialog">
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <div>
+        <h3>{{ data.roundName }}</h3>
+        <p>{{ data.teamName }}</p>
+      </div>
+      <button nbButton ghost (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <ngx-doc-viewer [url]="data.url" viewer="google" style="width: 100%; height: 80vh"></ngx-doc-viewer>
+    </nb-card-body>
   </nb-card>
 </ng-template>
