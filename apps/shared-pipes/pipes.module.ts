@@ -13,6 +13,7 @@ import { TextToLinksPipe } from './text-to-links.pipe';
 import { TruncateTextPipe } from './truncate-text.pipe';
 import { GroupByDatePipe } from './group-by.pipe';
 import { ReplaceSpacePipe } from './replace-space.pipe';
+import { StripHtmlExceptLinksPipe } from './strip-html-except-links.pipe';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ReplaceSpacePipe } from './replace-space.pipe';
     CapitalizeAndRemoveUnderscorePipe,
     GroupByDatePipe,
     ReplaceSpacePipe,
+    StripHtmlExceptLinksPipe,
   ],
   imports: [],
   exports: [
@@ -47,6 +49,7 @@ import { ReplaceSpacePipe } from './replace-space.pipe';
     CapitalizeAndRemoveUnderscorePipe,
     GroupByDatePipe,
     ReplaceSpacePipe,
+    StripHtmlExceptLinksPipe,
   ],
 })
 export class SharedPipesModule {}

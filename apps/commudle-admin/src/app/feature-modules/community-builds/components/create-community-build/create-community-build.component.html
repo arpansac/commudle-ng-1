@@ -396,7 +396,7 @@
                   >
                     <div *ngFor="let update of cBuild.entity_updates; let i = index" class="entity-update">
                       <div class="update-details">
-                        <div [innerHTML]="update.details"></div>
+                        <div [innerHTML]="update.details | stripHtmlExceptLinks | safeHtml"></div>
                         <span class="date">{{ moment(update.created_at).format('Do MMM YYYY') }} </span>
                       </div>
                       <nb-icon
@@ -430,6 +430,21 @@
                         "
                       >
                         <commudle-alert [errorMessage]="'Required Field'" [error]="true"></commudle-alert>
+                      </span>
+                      <span
+                        *ngIf="
+                          updateList.controls[i].get('value').touched &&
+                          updateList.controls[i].get('value').invalid &&
+                          updateList.controls[i].get('value').errors?.wordLimit
+                        "
+                      >
+                        <commudle-alert
+                          [errorMessage]="
+                            'Maximum 200 words allowed. Current: ' +
+                            updateList.controls[i].get('value').errors.wordLimit.actual
+                          "
+                          [error]="true"
+                        ></commudle-alert>
                       </span>
                     </div>
                     <button (click)="addUpdate()" *ngIf="parentId && parentType" class="add-button" nbButton>

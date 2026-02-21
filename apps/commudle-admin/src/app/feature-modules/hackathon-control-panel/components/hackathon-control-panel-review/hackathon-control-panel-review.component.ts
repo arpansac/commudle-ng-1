@@ -138,6 +138,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   private originalTrackValue: number;
   private originalProblemStatementValue: number;
   private originalOfflineInviteStatusValue: EOfflineInviteStatus;
+  expandedUpdates: { [key: number]: boolean } = {};
 
   tinyMCE = {
     height: 200,
@@ -991,5 +992,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     this.nbDialogService.open(this.documentViewerDialog, {
       context: { roundName, teamName, url },
     });
+  }
+
+  toggleUpdateExpansion(updateId: number): void {
+    this.expandedUpdates[updateId] = !this.expandedUpdates[updateId];
   }
 }

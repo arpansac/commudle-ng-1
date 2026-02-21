@@ -381,8 +381,40 @@
               <div *ngIf="userResponse.team.entity_updates.length > 0">
                 <span
                   class="details"
-                  [innerHTML]="userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details"
+                  [innerHTML]="
+                    (expandedUpdates[userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].id]
+                      ? userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details
+                      : userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details.length >
+                        100
+                      ? (userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details
+                          | slice : 0 : 100) + '...'
+                      : userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details
+                    )
+                      | stripHtmlExceptLinks
+                      | safeHtml
+                  "
                 ></span>
+                <button
+                  *ngIf="
+                    userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].details.length > 100
+                  "
+                  nbButton
+                  ghost
+                  size="tiny"
+                  status="primary"
+                  (click)="
+                    toggleUpdateExpansion(
+                      userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].id
+                    );
+                    $event.stopPropagation()
+                  "
+                >
+                  {{
+                    expandedUpdates[userResponse.team.entity_updates[userResponse.team.entity_updates.length - 1].id]
+                      ? 'View Less'
+                      : 'View More'
+                  }}
+                </button>
                 <span
                   class="timeago"
                   title="{{

@@ -36,10 +36,10 @@ import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
-    selector: 'commudle-create-community-build',
-    templateUrl: './create-community-build.component.html',
-    styleUrls: ['./create-community-build.component.scss'],
-    standalone: false
+  selector: 'commudle-create-community-build',
+  templateUrl: './create-community-build.component.html',
+  styleUrls: ['./create-community-build.component.scss'],
+  standalone: false,
 })
 export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   eUserRolesUserStatus = EUserRolesUserStatus;
@@ -190,7 +190,6 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
     );
 
     this.paramsTags = this.activatedRoute.snapshot.queryParamMap.getAll('tags[]');
-    this.activatedRoute.snapshot.queryParamMap;
     this.editBuildForm = this.activatedRoute.snapshot.params.community_build_id ? true : false;
     this.getCommunityBuild();
     this.setBuildType();
@@ -501,7 +500,21 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
   }
 
   addUpdate() {
-    this.updateList.push(this.fb.group({ value: new FormControl('', [Validators.required]) }));
+    this.updateList.push(
+      this.fb.group({ value: new FormControl('', [Validators.required, this.wordLimitValidator(200)]) }),
+    );
+  }
+
+  wordLimitValidator(maxWords: number): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!control.value) return null;
+      const text = control.value.replace(/<[^>]*>/g, '');
+      const wordCount = text
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word.length > 0).length;
+      return wordCount > maxWords ? { wordLimit: { max: maxWords, actual: wordCount } } : null;
+    };
   }
 
   removeUpdate(index) {
@@ -510,12 +523,18 @@ export class CreateCommunityBuildComponent implements OnInit, OnDestroy {
 
   saveUpdates(communityBuild) {
     for (const update of this.communityBuildUpdateForm.value.update) {
+      const strippedDetails = this.stripHtmlExceptLinks(update.value).trim();
+      if (!strippedDetails) continue;
+
       const formData = new FormData();
-      formData.append('entity_update[details]', update.value);
-      this.entityUpdatesService
-        .createEntityUpdate(formData, communityBuild.id, EDbModels.COMMUNITY_BUILD)
-        .subscribe((data) => {});
+      formData.append('entity_update[details]', strippedDetails);
+      this.entityUpdatesService.createEntityUpdate(formData, communityBuild.id, EDbModels.COMMUNITY_BUILD).subscribe();
     }
+  }
+
+  stripHtmlExceptLinks(html: string): string {
+    if (!html) return '';
+    return html.replace(/<(?!\/?a\b)[^>]*>/gi, '');
   }
 
   removeEntityUpdate(updateId, index) {

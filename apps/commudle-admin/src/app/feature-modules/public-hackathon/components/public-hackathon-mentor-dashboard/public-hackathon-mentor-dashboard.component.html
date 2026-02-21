@@ -142,7 +142,7 @@
           <th>Track</th>
           <th>Problem Statement</th>
           <th>Members count</th>
-          <th>Submission & Updates</th>
+          <th width="100">Submission & Updates</th>
           <th>Total Score</th>
           <th>Score Details</th>
           <th>Status</th>
@@ -187,7 +187,29 @@
                 <ol>
                   @for(update of teamData.team.entity_updates; track update.id) {
                   <li>
-                    <span class="update-details" [innerHTML]="update.details | safeHtml"></span>
+                    <span
+                      class="update-details"
+                      [innerHTML]="
+                        (expandedUpdates[update.id]
+                          ? update.details
+                          : update.details.length > 100
+                          ? (update.details | slice : 0 : 100) + '...'
+                          : update.details
+                        )
+                          | stripHtmlExceptLinks
+                          | safeHtml
+                      "
+                    ></span>
+                    <button
+                      *ngIf="update.details.length > 100"
+                      nbButton
+                      ghost
+                      size="tiny"
+                      status="primary"
+                      (click)="toggleUpdateExpansion(update.id)"
+                    >
+                      {{ expandedUpdates[update.id] ? 'View Less' : 'View More' }}
+                    </button>
                     <span class="date-time">({{ update.created_at | date : 'short' }})</span>
                   </li>
                   }

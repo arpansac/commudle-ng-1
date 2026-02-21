@@ -236,7 +236,7 @@ nb-card {
         }
 
         .submission-details {
-          @apply com-flex com-flex-col com-gap-2;
+          @apply com-flex com-flex-col com-gap-2 com-max-w-[400px];
 
           .ppt-link,
           .project-link,
@@ -248,7 +248,7 @@ nb-card {
             }
 
             a {
-              @apply com-text-primary-500 com-underline com-text-xs;
+              @apply com-text-primary-500 com-underline com-text-xs com-break-words;
               @apply hover:com-text-primary-600;
             }
 
@@ -274,6 +274,18 @@ nb-card {
 
                 span {
                   @apply com-p-0;
+                }
+
+                .update-details {
+                  ::ng-deep {
+                    p {
+                      @apply com-m-0;
+                    }
+
+                    img {
+                      @apply com-max-w-[200px] com-max-h-[200px] com-object-contain;
+                    }
+                  }
                 }
 
                 .date-time {
