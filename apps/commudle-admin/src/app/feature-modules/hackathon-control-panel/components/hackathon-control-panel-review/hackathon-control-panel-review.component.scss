@@ -240,6 +240,9 @@ th {
 
 .updates {
   .details {
+    word-break: break-word;
+    overflow-wrap: break-word;
+
     ::ng-deep {
       p {
         @apply com-text-primary-500 com-my-0 com-text-base com-font-medium com-line-clamp-1;

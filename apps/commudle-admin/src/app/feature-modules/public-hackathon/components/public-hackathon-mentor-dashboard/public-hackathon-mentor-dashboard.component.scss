@@ -253,6 +253,9 @@ nb-card {
             }
 
             .update-details {
+              word-break: break-word;
+              overflow-wrap: break-word;
+
               ::ng-deep {
                 p {
                   @apply com-m-0;
@@ -266,6 +269,7 @@ nb-card {
           }
 
           .updates-list {
+            @apply com-w-36;
             ol {
               @apply com-m-0 com-pl-4;
 
@@ -277,6 +281,10 @@ nb-card {
                 }
 
                 .update-details {
+                  @apply com-w-36;
+                  word-break: break-word;
+                  overflow-wrap: break-word;
+
                   ::ng-deep {
                     p {
                       @apply com-m-0;

@@ -33,7 +33,10 @@
             <nb-card-body>
               <ul>
                 <li *ngFor="let updates of communityBuild.entity_updates">
-                  <div [innerHTML]="updates.details"></div>
+                  <div
+                    [innerHTML]="updates.details | stripHtmlExceptLinks | safeHtml"
+                    style="word-break: break-word; overflow-wrap: break-word"
+                  ></div>
                   <span class="date">{{ moment(updates.created_at).format('dddd, MMM Do, YYYY') }}</span>
                 </li>
               </ul>
