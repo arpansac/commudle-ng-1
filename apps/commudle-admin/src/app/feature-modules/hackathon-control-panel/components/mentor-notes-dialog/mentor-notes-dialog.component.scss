@@ -1,0 +1,58 @@
+.notes-dialog {
+  @apply com-w-[600px] com-max-w-[90vw] com-max-h-[85vh];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+
+    span {
+      @apply com-font-semibold com-text-base;
+    }
+  }
+
+  .add-note-section {
+    @apply com-mb-6;
+
+    textarea {
+      @apply com-mb-3 com-resize-none;
+    }
+
+    .action-buttons {
+      @apply com-flex com-justify-end;
+    }
+  }
+
+  .notes-list {
+    @apply com-overflow-y-auto com-space-y-3;
+
+    .empty-state {
+      @apply com-flex com-flex-col com-items-center com-justify-center com-py-12 com-text-gray-400;
+
+      nb-icon {
+        @apply com-text-5xl com-mb-3;
+      }
+
+      p {
+        @apply com-text-sm com-m-0;
+      }
+    }
+
+    .note-card {
+      @apply com-px-4 com-py-2 com-bg-white com-border com-border-gray-200 com-rounded-lg com-transition-all;
+
+      .note-header {
+        @apply com-flex com-justify-between com-items-center com-border-b com-border-gray-100;
+
+        .note-date {
+          @apply com-text-8px com-text-gray-500;
+        }
+      }
+
+      .note-text {
+        @apply com-text-sm com-text-gray-700 com-m-0 com-whitespace-pre-wrap;
+      }
+      &:not(:last-child) {
+        @apply com-border-0 com-border-b com-border-Bright-Gray com-border-solid;
+      }
+    }
+  }
+}

@@ -10,7 +10,15 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { faPlus, faMinus, faArrowRight, faUserCircle, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faMinus,
+  faArrowRight,
+  faUserCircle,
+  faExpand,
+  faCompress,
+  faStickyNote,
+} from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
 import {
   EDbModels,
@@ -25,8 +33,13 @@ import { ToastrService, SeoService, RoundService, HackathonTeamRoundScoreService
 import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
 import { MentorCustomEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
+import { MentorNotesDialogComponent } from '../mentor-notes-dialog/mentor-notes-dialog.component';
 import { filter, map } from 'rxjs/operators';
-import { DataTableColumn, DataTableRow, DataTableConfig } from '../../../../app-shared-components/data-table/data-table.component';
+import {
+  DataTableColumn,
+  DataTableRow,
+  DataTableConfig,
+} from '../../../../app-shared-components/data-table/data-table.component';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
@@ -80,6 +93,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
 
   teamMentorCounts: Map<number, number> = new Map();
   filteredUnassignedTeams: IHackathonTeam[] = [];
+  allFilteredTeams: IHackathonTeam[] = [];
+  activeTab: 'all' | 'unallocated' = 'unallocated';
 
   readonly icons = {
     faPlus,
@@ -88,6 +103,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     faUserCircle,
     faExpand,
     faCompress,
+    faStickyNote,
   };
 
   isFullscreen = false;
@@ -340,23 +356,43 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     this.selectedMentor = null;
     this.searchQuery = '';
     this.filteredUnassignedTeams = [];
+    this.allFilteredTeams = [];
     this.cdr.markForCheck();
   }
 
   updateFilteredTeams(): void {
     if (!this.selectedMentorId || !this.selectedRoundId) {
       this.filteredUnassignedTeams = [];
+      this.allFilteredTeams = [];
       return;
     }
-    const teams = this.getUnassignedTeamsForRound(this.selectedMentorId, this.selectedRoundId).filter(
-      (team) => team.round?.id === this.selectedRoundId,
-    );
-    if (!this.searchQuery) {
-      this.filteredUnassignedTeams = teams;
+
+    // Get all teams for the selected round
+    const allTeamsInRound = this.teams.filter((team) => team.round?.id === this.selectedRoundId);
+
+    // Get teams that have NO mentor assigned for this round (truly unallocated)
+    const unallocatedTeams = allTeamsInRound.filter((team) => {
+      const mentorCount = this.teamMentorCounts.get(team.id) || 0;
+      return mentorCount === 0;
+    });
+
+    // Get teams not assigned to current mentor (for adding to this mentor)
+    const unassignedToCurrentMentor = this.getUnassignedTeamsForRound(
+      this.selectedMentorId,
+      this.selectedRoundId,
+    ).filter((team) => team.round?.id === this.selectedRoundId);
+
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      this.filteredUnassignedTeams = unallocatedTeams
+        .filter((team) => team.name.toLowerCase().includes(query))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      this.allFilteredTeams = unassignedToCurrentMentor
+        .filter((team) => team.name.toLowerCase().includes(query))
+        .sort((a, b) => a.name.localeCompare(b.name));
     } else {
-      this.filteredUnassignedTeams = teams.filter((team) =>
-        team.name.toLowerCase().includes(this.searchQuery.toLowerCase()),
-      );
+      this.filteredUnassignedTeams = unallocatedTeams.sort((a, b) => a.name.localeCompare(b.name));
+      this.allFilteredTeams = unassignedToCurrentMentor.sort((a, b) => a.name.localeCompare(b.name));
     }
   }
 
@@ -378,7 +414,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       {
         key: 'mentor',
         title: 'Mentors ⬇️ / Rounds ➡️',
-        width: '250px',
+        width: '300px',
         frozen: true,
         cellTemplate: this.mentorCellTemplate,
         headerTemplate: this.mentorHeaderTemplate,
@@ -589,5 +625,20 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     });
 
     return teamsInRound.every((team) => assignedTeamIds.has(team.id));
+  }
+
+  openNotesDialog(mentor: IHackathonJudge): void {
+    this.dialogService.open(MentorNotesDialogComponent, {
+      context: {
+        mentor: mentor,
+        hackathonId: this.hackathonId,
+      },
+    });
+  }
+
+  onTabChange(tab: 'all' | 'unallocated'): void {
+    this.activeTab = tab;
+    this.updateFilteredTeams();
+    this.cdr.markForCheck();
   }
 }

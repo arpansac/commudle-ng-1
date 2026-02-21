@@ -40,9 +40,7 @@
       <div *ngIf="rounds.length > 0 && mentors.length === 0 && !isLoading" class="no-mentors-message">
         <p>
           No
-          {{
-            mentorFilter === 'mentors' ? 'mentors' : mentorFilter === 'judges' ? 'judges' : 'mentors or judges'
-          }}
+          {{ mentorFilter === 'mentors' ? 'mentors' : mentorFilter === 'judges' ? 'judges' : 'mentors or judges' }}
           found.
         </p>
         <div *ngIf="mentorFilter !== 'all'" class="filter-switch">
@@ -106,6 +104,20 @@
     <div class="mentor-details">
       <span class="mentor-name">{{ judge.name }}</span>
       <span class="mentor-designation" *ngIf="judge.designation">{{ judge.designation }}</span>
+      <span class="mentor-phone" *ngIf="judge.phone">+{{ judge.phone_country_code }} {{ judge.phone }}</span>
+    </div>
+    <div class="notes-button-wrapper">
+      <button nbButton size="tiny" status="info" ghost (click)="openNotesDialog(judge)" title="Notes">
+        <fa-icon [icon]="icons.faStickyNote"></fa-icon>
+      </button>
+      <app-badge
+        *ngIf="judge.notes?.length > 0"
+        [text]="judge.notes.length.toString()"
+        [fontColor]="'com-text-white'"
+        [fontSize]="'xx-small'"
+        [borderRadius]="'round'"
+        [color]="'com-bg-red-500'"
+      ></app-badge>
     </div>
     <button
       nbButton
@@ -229,7 +241,20 @@
     </div>
 
     <div class="search-section">
-      <h3>Add Teams</h3>
+      <div class="tabs">
+        <button
+          nbButton
+          ghost
+          [status]="activeTab === 'unallocated' ? 'primary' : 'basic'"
+          (click)="onTabChange('unallocated')"
+        >
+          Unallocated Teams
+        </button>
+        <button nbButton ghost [status]="activeTab === 'all' ? 'primary' : 'basic'" (click)="onTabChange('all')">
+          All Teams
+        </button>
+      </div>
+      <h3>{{ activeTab === 'all' ? 'All Teams' : 'Add Teams' }}</h3>
       <input
         nbInput
         fullWidth
@@ -239,9 +264,12 @@
         (ngModelChange)="onSearchChange()"
       />
     </div>
-
     <div class="teams-list">
-      <div *ngFor="let team of filteredUnassignedTeams" class="team-item" (click)="assignTeam(team.id)">
+      <div
+        *ngFor="let team of activeTab === 'all' ? allFilteredTeams : filteredUnassignedTeams"
+        class="team-item"
+        (click)="assignTeam(team.id)"
+      >
         <div class="team-info">
           <span>{{ team.name }}</span>
           <fa-icon
@@ -256,7 +284,7 @@
         </div>
         <button nbButton size="tiny" status="primary">Add</button>
       </div>
-      <div *ngIf="filteredUnassignedTeams.length === 0" class="no-teams">
+      <div *ngIf="(activeTab === 'all' ? allFilteredTeams : filteredUnassignedTeams).length === 0" class="no-teams">
         <p>No teams available</p>
       </div>
     </div>

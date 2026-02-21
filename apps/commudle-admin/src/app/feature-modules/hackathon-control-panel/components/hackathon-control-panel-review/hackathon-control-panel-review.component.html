@@ -74,8 +74,11 @@
           </a>
         </div>
 
+        <!-- Filters and Actions Section -->
         <div class="filters-section">
+          <!-- Filter Dropdowns Container -->
           <div class="filter-controls">
+            <!-- Round Filter -->
             <select
               class="filter-select"
               (change)="onRoundChange($event)"
@@ -86,6 +89,7 @@
               <option *ngFor="let round of hackathonRounds" [value]="round.id">{{ round.name }}</option>
             </select>
 
+            <!-- Application Status Filter -->
             <select
               class="filter-select"
               (change)="onStatusChange($event)"
@@ -98,6 +102,7 @@
               </option>
             </select>
 
+            <!-- Offline Invite Status Filter -->
             <select
               class="filter-select"
               (change)="onOfflineInviteStatusChange($event)"
@@ -119,6 +124,7 @@
               </option>
             </select>
 
+            <!-- Track Filter -->
             <select
               class="filter-select"
               (change)="onTrackChange($event)"
@@ -129,6 +135,7 @@
               <option *ngFor="let track of hackathonTracks" [value]="track.id">{{ track.name }}</option>
             </select>
 
+            <!-- Problem Statement Filter -->
             <select
               class="filter-select"
               (change)="onProblemStatementChange($event)"
@@ -141,6 +148,7 @@
               </option>
             </select>
 
+            <!-- Winners Filter -->
             <select
               class="filter-select"
               (change)="onSelectWinnerChange($event)"
@@ -151,28 +159,31 @@
               <option [value]="true">Winners Only</option>
             </select>
 
-            <select
-              class="filter-select"
-              (change)="onWithSubmissionsChange($event)"
-              [(ngModel)]="withSubmissions"
-              [ngClass]="{ active: withSubmissions !== null }"
-            >
-              <option [value]="null" selected>All Teams</option>
-              <option [value]="true">With Submissions</option>
-              <option [value]="false">Without Submissions</option>
-            </select>
-
+            <!-- Project Submission Filter -->
             <select
               class="filter-select"
               (change)="onWithCommunityBuildChange($event)"
               [(ngModel)]="withCommunityBuild"
               [ngClass]="{ active: withCommunityBuild !== null }"
             >
-              <option [value]="null" selected>All Teams</option>
-              <option [value]="true">With Project</option>
-              <option [value]="false">Without Project</option>
+              <option [value]="null" selected>Project: All</option>
+              <option [value]="true">Project: Submitted</option>
+              <option [value]="false">Project: Not Submitted</option>
             </select>
 
+            <!-- PPT Submission Filter -->
+            <select
+              class="filter-select"
+              (change)="onWithSubmissionsChange($event)"
+              [(ngModel)]="withSubmissions"
+              [ngClass]="{ active: withSubmissions !== null }"
+            >
+              <option [value]="null" selected>PPT: All</option>
+              <option [value]="true">PPT: Submitted</option>
+              <option [value]="false">PPT: Not Submitted</option>
+            </select>
+
+            <!-- Bulk Operations Dropdown -->
             <select
               class="filter-select bulk-operations"
               *ngIf="hackathon && userResponses && userResponses.length > 0"
@@ -187,6 +198,7 @@
             </select>
           </div>
 
+          <!-- Clear Filters and Sorting Buttons -->
           <div class="filter-actions">
             <button
               class="clear-button"

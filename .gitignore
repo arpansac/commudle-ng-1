@@ -35,7 +35,7 @@ speed-measure-plugin*.json
 .history/*
 
 # AI
-.amazonq/
+# .amazonq/
 .kiro/
 .claude/
 .serena/

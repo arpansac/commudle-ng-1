@@ -67,6 +67,7 @@
     <div *ngFor="let judge of judges; let i = index">
       <commudle-hackathon-judge-card
         [judge]="judge"
+        [hackathonId]="hackathon.slug"
         (destroyJudgeEvent)="confirmDeleteDialogBox(deleteJudgeDilaogBox, $event, i)"
         (editJudgeEvent)="openEditJudgeDialogBox(judgeForm, $event, i)"
       ></commudle-hackathon-judge-card>
@@ -77,151 +78,138 @@
 <ng-template #judgeForm let-data let-ref="dialogRef">
   <nb-card class="speaker-form">
     <nb-card-header class="actions">
-      <span> Add New {{ speakerRegistrationForm.controls['judge_type'].value | titlecase }}</span>
+      <span
+        >{{ data?.judge ? 'Edit' : 'Add' }} {{ speakerRegistrationForm.controls['judge_type'].value | titlecase }}</span
+      >
       <button (click)="ref.close(); resetSpeakerRegistrationForm()" ghost nbButton shape="round" size="small">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
     <nb-card-body>
-      <div class="com-mb-2">
-        <commudle-alert
-          [info]="true"
-          message="Changes made here will not change the profile of the user they will just be displayed on the hackathon page "
-        ></commudle-alert>
-      </div>
-      <form [formGroup]="speakerRegistrationForm">
-        <!-- judge_type -->
-        <div>
-          <label>
-            Select Type*
-            <div class="select !com-w-full">
-              <select
-                formControlName="judge_type"
-                [ngClass]="{
-                  'com-text-[#8E9BB3]': speakerRegistrationForm.controls['judge_type'].value === ''
-                }"
-              >
+      <form [formGroup]="speakerRegistrationForm" class="judge-form">
+        <!-- Type & Image -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="judge_type">Type<span class="com-text-red-500">*</span></label>
+            <div class="custom-select">
+              <select formControlName="judge_type" id="judge_type">
                 <option value="" disabled>Select Type</option>
                 <option *ngFor="let judgeType of EHackathonJudgeType | keyvalue" [value]="judgeType.value">
                   {{ judgeType.value | titlecase }}
                 </option>
               </select>
             </div>
-          </label>
-        </div>
-
-        <!-- profile image -->
-        <div>
-          <div class="com-flex com-gap-4 com-items-start">
-            <label for="profile_image_url">Profile Image*</label>
-            <div *ngIf="imageUrl" (click)="removeBannerImage()" class="delete-image">
-              <button nbButton status="danger" outline size="small">Replace</button>
+          </div>
+          <div class="form-field">
+            <label>Profile Image<span class="com-text-red-500">*</span></label>
+            <div *ngIf="!imageUrl" class="image-upload">
+              <input (change)="onImageChange($event)" type="file" accept="image/*" class="com-hidden" #fileInput />
+              <button nbButton size="small" outline (click)="fileInput.click()" type="button">
+                <fa-icon [icon]="icons.faFileImage"></fa-icon> Upload
+              </button>
+            </div>
+            <div *ngIf="imageUrl" class="image-preview">
+              <img [src]="imageUrl" />
+              <button nbButton size="small" status="danger" outline (click)="removeBannerImage()" type="button">
+                Replace
+              </button>
             </div>
           </div>
-          <div class="com-w-full" *ngIf="!imageUrl">
-            <div
-              class="com-border com-rounded-lg com-border-dashed com-bg-[#E4E9F2]/40 com-border-gray-500 com-relative"
-            >
-              <input
-                (change)="onImageChange($event)"
-                type="file"
-                accept="image/*"
-                class="com-cursor-pointer com-relative com-block com-opacity-0 com-w-full com-h-full com-p-16 com-z-50"
-              />
-              <div class="com-text-center com-absolute com-top-8 com-right-0 com-left-0 com-m-auto com-text-gray-400">
-                <fa-icon [icon]="icons.faFileImage" class="com-text-5xl"></fa-icon>
-                <p>
-                  Drag file here
-                  <br />
-                  or<span class="com-text-primary-500"> BROWSE </span>
-                </p>
-              </div>
+        </div>
+
+        <!-- Name & Email -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Name<span class="com-text-red-500">*</span></label>
+            <input placeholder="Name" type="text" nbInput fullWidth id="name" formControlName="name" />
+          </div>
+          <div class="form-field">
+            <label for="email">Email<span class="com-text-red-500">*</span></label>
+            <input
+              placeholder="Email"
+              type="email"
+              nbInput
+              fullWidth
+              id="email"
+              formControlName="email"
+              [readonly]="profileExist"
+            />
+          </div>
+        </div>
+
+        <!-- Company & Designation -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="company">Company<span class="com-text-red-500">*</span></label>
+            <input placeholder="Company" type="text" nbInput fullWidth id="company" formControlName="company" />
+          </div>
+          <div class="form-field">
+            <label for="designation">Designation<span class="com-text-red-500">*</span></label>
+            <input
+              placeholder="Designation"
+              type="text"
+              nbInput
+              fullWidth
+              id="designation"
+              formControlName="designation"
+            />
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="form-field">
+          <label for="about">About<span class="com-text-red-500">*</span></label>
+          <textarea formControlName="about" nbInput fullWidth id="about" placeholder="About" rows="2"></textarea>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="phone_country_code">Country Code</label>
+            <div class="custom-select">
+              <select formControlName="phone_country_code" id="phone_country_code">
+                <option value="">Select Code</option>
+                <option *ngFor="let country of countries" [value]="country.phone">
+                  {{ country.name }} (+{{ country.phone }})
+                </option>
+              </select>
             </div>
           </div>
-          <div *ngIf="imageUrl" class="image-preview">
-            <div class="com-w-28 com-h-28 com-mx-auto">
-              <img class="com-w-full com-h-full com-object-contain" [src]="imageUrl" />
-            </div>
+          <div class="form-field">
+            <label for="phone">Phone</label>
+            <input placeholder="Phone" type="text" nbInput fullWidth id="phone" formControlName="phone" />
           </div>
-          <!-- <input placeholder="" type="text" nbInput fullWidth id="" formControlName /> -->
         </div>
 
-        <!-- name -->
-        <div>
-          <label for="name">Name* </label>
-          <input placeholder="Name" type="text" nbInput fullWidth id="name" formControlName="name" />
-        </div>
-
-        <!-- about -->
-        <div>
-          <label for="about">About*</label>
-          <textarea formControlName="about" nbInput fullWidth id="about" placeholder="About Me"> </textarea>
-        </div>
-
-        <!-- email -->
-        <div>
-          <label for="eamil">Email*</label>
-          <input
-            placeholder="Email"
-            type="email"
-            nbInput
-            fullWidth
-            id="email"
-            formControlName="email"
-            [readonly]="profileExist"
-          />
-        </div>
-
-        <!-- company -->
-        <div>
-          <label for="company">Company*</label>
-          <input placeholder="Company" type="text" nbInput fullWidth id="company" formControlName="company" />
-        </div>
-
-        <!-- designation -->
-        <div>
-          <label for="designation">Designation*</label>
-          <input
-            placeholder="Designation"
-            type="text"
-            nbInput
-            fullWidth
-            id="designation"
-            formControlName="designation"
-          />
-        </div>
-
-        <!-- twitter -->
-        <div>
-          <label for="twitter">Twitter</label>
-          <input placeholder="Twitter" type="text" nbInput fullWidth id="twitter" formControlName="twitter" />
-          <commudle-alert
-            *ngIf="speakerRegistrationForm.get('twitter').hasError('invalidUrl')"
-            [error]="true"
-            errorMessage="Enter complete URL"
-          ></commudle-alert>
-        </div>
-
-        <!-- linkedin -->
-        <div>
-          <label for="linkedin">linkedin</label>
-          <input placeholder="Linkedin" type="text" nbInput fullWidth id="linkedin" formControlName="linkedin" />
-          <commudle-alert
-            *ngIf="speakerRegistrationForm.get('linkedin').hasError('invalidUrl')"
-            [error]="true"
-            errorMessage="Enter complete URL"
-          ></commudle-alert>
-        </div>
-
-        <!-- website -->
-        <div>
-          <label for="website">Website</label>
-          <input placeholder="Website" type="text" nbInput fullWidth id="website" formControlName="website" />
-          <commudle-alert
-            *ngIf="speakerRegistrationForm.get('website').hasError('invalidUrl')"
-            [error]="true"
-            errorMessage="Enter complete URL"
-          ></commudle-alert>
+        <!-- Social Links -->
+        <div class="form-row-3">
+          <div class="form-field">
+            <label for="linkedin">LinkedIn</label>
+            <input placeholder="LinkedIn URL" type="text" nbInput fullWidth id="linkedin" formControlName="linkedin" />
+            <commudle-alert
+              *ngIf="speakerRegistrationForm.get('linkedin').hasError('invalidUrl')"
+              [error]="true"
+              errorMessage="Enter complete URL"
+            ></commudle-alert>
+          </div>
+          <div class="form-field">
+            <label for="twitter">Twitter</label>
+            <input placeholder="Twitter URL" type="text" nbInput fullWidth id="twitter" formControlName="twitter" />
+            <commudle-alert
+              *ngIf="speakerRegistrationForm.get('twitter').hasError('invalidUrl')"
+              [error]="true"
+              errorMessage="Enter complete URL"
+            ></commudle-alert>
+          </div>
+          <div class="form-field">
+            <label for="website">Website</label>
+            <input placeholder="Website URL" type="text" nbInput fullWidth id="website" formControlName="website" />
+            <commudle-alert
+              *ngIf="speakerRegistrationForm.get('website').hasError('invalidUrl')"
+              [error]="true"
+              errorMessage="Enter complete URL"
+            ></commudle-alert>
+          </div>
         </div>
       </form>
     </nb-card-body>

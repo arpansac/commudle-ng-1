@@ -34,42 +34,72 @@
 </nb-card>
 
 <ng-template #mentorCellTemplate let-row="row" let-value="value">
-  <div class="mentor-info">
-    <img *ngIf="value.photo?.i320" [src]="value.photo.i320" [alt]="value.name" class="mentor-avatar" />
-    <div *ngIf="!value.photo?.i320" class="mentor-avatar-placeholder">
-      <span>{{ value.name.charAt(0).toUpperCase() }}</span>
+  <div class="mentor-cell">
+    <div class="mentor-info">
+      <img *ngIf="value.photo?.i320" [src]="value.photo.i320" [alt]="value.name" class="mentor-avatar" />
+      <div *ngIf="!value.photo?.i320" class="mentor-avatar-placeholder">
+        <span>{{ value.name.charAt(0).toUpperCase() }}</span>
+      </div>
+      <div class="mentor-details">
+        <span class="mentor-name">{{ value.name }}</span>
+        <span class="mentor-designation" *ngIf="value.designation">{{ value.designation }}</span>
+        <span class="mentor-phone" *ngIf="value.phone">+{{ value.phone_country_code }} {{ value.phone }}</span>
+      </div>
+      <div class="notes-button-wrapper">
+        <button nbButton size="tiny" status="info" ghost (click)="openNotesDialog(value)" title="Notes">
+          <fa-icon [icon]="icons.faStickyNote"></fa-icon>
+        </button>
+        <app-badge
+          *ngIf="value.notes?.length > 0"
+          [text]="value.notes.length.toString()"
+          [fontColor]="'com-text-white'"
+          [fontSize]="'xx-small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-red-500'"
+        ></app-badge>
+      </div>
     </div>
-    <div class="mentor-details">
-      <span class="mentor-name">{{ value.name }}</span>
-      <span class="mentor-designation" *ngIf="value.designation">{{ value.designation }}</span>
+
+    <div class="meeting-section">
+      @if(value.meeting_location){ @if(value.meeting_location.startsWith('http://') ||
+      value.meeting_location.startsWith('https://')){
+      <div class="meeting-location-link" [nbTooltip]="value.meeting_location" nbTooltipPlacement="top">
+        <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer">
+          {{ value.meeting_location }}
+        </a>
+        <button
+          nbButton
+          size="tiny"
+          status="basic"
+          ghost
+          (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)"
+          title="Edit"
+        >
+          <fa-icon [icon]="icons.faEdit"></fa-icon>
+        </button>
+      </div>
+      }@else {
+      <div class="meeting-location-text" [nbTooltip]="value.meeting_location" nbTooltipPlacement="top">
+        <span>{{ value.meeting_location }}</span>
+        <button
+          nbButton
+          size="tiny"
+          status="basic"
+          ghost
+          (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)"
+          title="Edit"
+        >
+          <fa-icon [icon]="icons.faEdit"></fa-icon>
+        </button>
+      </div>
+      } }@else {
+      <button nbButton size="small" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
+        <fa-icon [icon]="icons.faPlus"></fa-icon>
+        Add Meeting Location
+      </button>
+      }
     </div>
   </div>
-  @if(value.meeting_location){ @if(value.meeting_location.startsWith('http://') ||
-  value.meeting_location.startsWith('https://')){
-  <div class="meeting-location">
-    <a [href]="value.meeting_location" target="_blank" rel="noopener noreferrer"> {{ value.meeting_location }} </a
-    ><button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
-      <fa-icon [icon]="icons.faEdit"></fa-icon>
-    </button>
-  </div>
-  }@else {
-  <div class="meeting-location">
-    {{ value.meeting_location }}
-    <button nbButton size="tiny" status="basic" (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)">
-      <fa-icon [icon]="icons.faEdit"></fa-icon>
-    </button>
-  </div>
-  } }@else {
-  <button
-    nbButton
-    size="small"
-    status="basic"
-    class="add-meeting-btn"
-    (click)="openUpdateMeetingUrlDialog(updateMentorMeetingUrl, value)"
-  >
-    <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Add Meeting Location
-  </button>
-  }
 </ng-template>
 
 <ng-template #roundHeaderTemplate let-column="column">
@@ -279,29 +309,34 @@
   <div class="sidebar-content">
     <div class="sidebar-info">
       @if (selectedMentor && selectedSlot) {
-      <div class="mentor-info">
-        <img
-          *ngIf="selectedMentor.photo?.i320"
-          [src]="selectedMentor.photo.i320"
-          [alt]="selectedMentor.name"
-          class="mentor-avatar"
-        />
-        <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
-          <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+      <div class="info-card">
+        <div class="mentor-info">
+          <img
+            *ngIf="selectedMentor.photo?.i320"
+            [src]="selectedMentor.photo.i320"
+            [alt]="selectedMentor.name"
+            class="mentor-avatar"
+          />
+          <div *ngIf="!selectedMentor.photo?.i320" class="mentor-avatar-placeholder">
+            <span>{{ selectedMentor.name.charAt(0).toUpperCase() }}</span>
+          </div>
+          <div class="mentor-details">
+            <span class="mentor-name">{{ selectedMentor.name }}</span>
+            <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+          </div>
         </div>
-        <div class="mentor-details">
-          <span class="mentor-name">{{ selectedMentor.name }}</span>
-          <span class="mentor-designation" *ngIf="selectedMentor.designation">{{ selectedMentor.designation }}</span>
+        <div class="info-row">
+          <span class="label">Round:</span>
+          <span class="value">{{ selectedRound?.name || 'No round selected' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Slot:</span>
+          <span class="value slot-time">
+            {{ moment(selectedSlot?.starts_at).format('h:mm A') }} -
+            {{ moment(selectedSlot?.ends_at).format('h:mm A') }}
+          </span>
         </div>
       </div>
-
-      <span><strong>Round:</strong> {{ selectedRound?.name || 'No round selected' }}</span>
-      <span>
-        <strong>Slot:</strong>
-        <span class="slot-time-item">
-          {{ moment(selectedSlot?.starts_at).format('h:mm A') }} - {{ moment(selectedSlot?.ends_at).format('h:mm A') }}
-        </span>
-      </span>
       }
     </div>
 
@@ -323,6 +358,11 @@
 
     <div class="search-section">
       <commudle-alert [info]="true" message="Only teams allocated to this mentor are visible here."></commudle-alert>
+      <br />
+      <commudle-alert
+        [info]="true"
+        message="One team can be allocated only one mentor slot per round."
+      ></commudle-alert>
       <h3>Add Teams</h3>
       <input
         nbInput

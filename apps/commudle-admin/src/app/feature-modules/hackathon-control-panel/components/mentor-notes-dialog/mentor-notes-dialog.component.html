@@ -1,0 +1,48 @@
+<nb-card class="notes-dialog">
+  <nb-card-header>
+    <span>Notes - {{ mentor.name }}</span>
+    <button ghost nbButton size="small" (click)="close()" shape="round">
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="add-note-section">
+      <textarea nbInput fullWidth [(ngModel)]="newNote" placeholder="Write a note..." rows="3"></textarea>
+      <div class="action-buttons">
+        <button nbButton status="primary" (click)="addNote()" [disabled]="!newNote.trim()" size="small">
+          <fa-icon [icon]="icons.faPlus"></fa-icon>&nbsp; Add Note
+        </button>
+      </div>
+    </div>
+
+    <div class="notes-list">
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+      <div *ngIf="!isLoading && mentor.notes.length === 0" class="empty-state">
+        <nb-icon icon="file-text-outline"></nb-icon>
+        <p>No notes yet. Add your first note above.</p>
+      </div>
+      <div *ngFor="let note of mentor.notes" class="note-card">
+        <p class="note-text">{{ note.text }}</p>
+        <div class="note-header">
+          <span class="note-date">{{ moment(note.created_at).format('MMM D, YYYY • h:mm A') }}</span>
+          <button nbButton size="tiny" status="danger" ghost (click)="deleteNote(note.id)">
+            <fa-icon [icon]="icons.faTrash"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #deleteConfirmDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Delete Note</nb-card-header>
+    <nb-card-body>
+      <p>Are you sure you want to delete this note? This action cannot be undone.</p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton status="danger" (click)="ref.close(true)">Delete</button>&nbsp;&nbsp;&nbsp;
+      <button nbButton (click)="ref.close(false)">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

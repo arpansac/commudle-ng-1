@@ -28,6 +28,7 @@
       }
       .designation,
       .company,
+      .phone,
       .twitter,
       .linkedin,
       .website {
@@ -38,10 +39,15 @@
       }
 
       .designation,
-      .company {
+      .company,
+      .phone {
         .value {
           @apply com-text-gray-400 com-text-sm;
         }
+      }
+
+      .link-truncate {
+        @apply com-block com-truncate com-max-w-full com-text-sm;
       }
       .divided-line {
         @apply com-border com-border-solid com-border-Bright-Gray;
@@ -54,8 +60,17 @@
           }
         }
       }
+
       .actions {
-        @apply com-mt-2;
+        @apply com-mt-2 com-flex com-items-center com-gap-2;
+
+        .notes-button-wrapper {
+          @apply com-relative;
+
+          app-badge {
+            @apply com-absolute -com-top-1 -com-right-1 com-z-10;
+          }
+        }
       }
     }
   }

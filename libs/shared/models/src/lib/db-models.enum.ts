@@ -24,4 +24,5 @@ export enum EDbModels {
   SPEAKER_RESOURCE = 'SpeakerResource',
   ENTITY_UPDATE = 'EntityUpdate',
   WALLET = 'Wallet',
+  HACKATHON_JUDGE = 'HackathonJudge',
 }

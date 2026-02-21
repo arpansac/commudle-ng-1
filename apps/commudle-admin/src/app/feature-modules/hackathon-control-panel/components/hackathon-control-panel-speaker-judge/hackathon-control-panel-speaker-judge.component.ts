@@ -10,13 +10,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
-import { SeoService } from '@commudle/shared-services';
+import { SeoService, countries_details } from '@commudle/shared-services';
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-speaker-judge',
-    templateUrl: './hackathon-control-panel-speaker-judge.component.html',
-    styleUrls: ['./hackathon-control-panel-speaker-judge.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-speaker-judge',
+  templateUrl: './hackathon-control-panel-speaker-judge.component.html',
+  styleUrls: ['./hackathon-control-panel-speaker-judge.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDestroy {
   fetchSpeakerJudge: FormGroup;
@@ -36,6 +36,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
   subscriptions: Subscription[] = [];
   parent: ICommunity | ICommunityGroup;
   hackathon: IHackathon;
+  countries = countries_details;
 
   @ViewChild('judgeForm', { static: true }) judgeFormDialog: TemplateRef<any>;
 
@@ -64,6 +65,8 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
       website: ['', this.urlValidator],
       user_id: [''],
       judge_type: ['', Validators.required],
+      phone: [''],
+      phone_country_code: ['91'],
     });
   }
 
@@ -158,6 +161,8 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
       username: userData.username,
       user_id: userData.id,
       judge_type: judgeType,
+      phone: userData.phone || '',
+      phone_country_code: userData.phone_country_code || '',
     });
   }
 
@@ -173,6 +178,8 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
       username: judge.username,
       company: judge.company,
       judge_type: judge.judge_type,
+      phone: judge.phone || '',
+      phone_country_code: judge.phone_country_code || '91',
     });
     this.imageUrl = judge.photo?.url;
 
@@ -314,6 +321,7 @@ export class HackathonControlPanelSpeakerJudgeComponent implements OnInit, OnDes
     this.speakerRegistrationForm.patchValue({
       email: '',
       judge_type: '',
+      phone_country_code: '91',
     });
     this.fetchSpeakerJudge.patchValue({
       email: '',

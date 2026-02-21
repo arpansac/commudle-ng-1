@@ -1,24 +1,67 @@
 .hackathon-judge-mentor-section {
   @apply com-mx-0 md:com-mx-2;
+
   .email-select-type-form {
     @apply com-flex com-gap-4 com-w-full;
   }
 
   .select {
-    @apply com-flex com-items-center com-gap-1 com-h-10 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-[120px];
+    @apply com-flex com-items-center com-gap-1 com-h-10 com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-border com-border-solid com-border-[#E4E9F2] com-w-[120px];
+
     select {
       @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
     }
   }
 }
+
 .speaker-form {
-  @apply com-h-full com-w-[100dvw] md:com-h-[90dvh] md:com-w-[70dvw] com-mx-0;
-  form {
+  @apply com-w-[100dvw] com-max-h-[90dvh] md:com-w-[70dvw] com-mx-0;
+
+  .judge-form {
     @apply com-flex com-flex-col com-gap-3;
-    .profile-image {
-      @apply com-w-28 com-h-28 com-rounded;
+
+    .form-row {
+      @apply com-grid com-grid-cols-2 com-gap-4;
+    }
+
+    .form-row-3 {
+      @apply com-grid com-grid-cols-3 com-gap-4;
+    }
+
+    .form-field {
+      @apply com-flex com-flex-col com-gap-1;
+
+      label {
+        @apply com-text-sm com-font-medium com-text-gray-700;
+      }
+    }
+
+    .custom-select {
+      @apply com-relative;
+
+      select {
+        @apply com-w-full com-h-10 com-px-3 com-py-2 com-text-sm com-rounded com-border com-border-gray-300 com-bg-white hover:com-border-primary-500 focus:com-border-primary-500 focus:com-outline-none focus:com-ring-1 focus:com-ring-primary-500 com-cursor-pointer com-appearance-none com-text-Yankees-Blue;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+
+        option {
+          @apply com-py-2;
+        }
+      }
+    }
+
+    .image-upload {
+      @apply com-border com-rounded com-border-dashed com-border-gray-300 com-p-2 com-text-center;
+    }
+
+    .image-preview {
+      @apply com-flex com-items-center com-gap-3;
+
       img {
-        @apply com-w-full;
+        @apply com-w-20 com-h-20 com-rounded com-object-cover com-border com-border-gray-200;
       }
     }
   }

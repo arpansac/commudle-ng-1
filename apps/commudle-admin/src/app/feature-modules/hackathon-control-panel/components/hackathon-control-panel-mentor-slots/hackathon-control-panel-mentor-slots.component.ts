@@ -20,6 +20,7 @@ import {
   faExpand,
   faCompress,
   faXmark,
+  faStickyNote,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   EDbModels,
@@ -53,6 +54,7 @@ import moment from 'moment';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import { ESidebarPosition, ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum';
 import { RoundMentorSlotBookingChannel } from 'apps/shared-components/services/websockets/round-mentor-slot-booking.channel';
+import { MentorNotesDialogComponent } from '../mentor-notes-dialog/mentor-notes-dialog.component';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-mentor-slots',
@@ -107,6 +109,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     faExpand,
     faCompress,
     faXmark,
+    faStickyNote,
   };
   EHackathonTeamRoundScoreStatus = EHackathonTeamRoundScoreStatus;
   private destroy$ = new Subject<void>();
@@ -498,5 +501,14 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       }
     }
     this.cdr.markForCheck();
+  }
+
+  openNotesDialog(mentor: IHackathonJudge): void {
+    this.dialogService.open(MentorNotesDialogComponent, {
+      context: {
+        mentor: mentor,
+        hackathonId: this.hackathonId,
+      },
+    });
   }
 }

@@ -29,23 +29,42 @@
             <div class="name">Company</div>
             <div class="value">{{ judge.company }}</div>
           </div>
+          <div class="phone" *ngIf="judge.phone">
+            <div class="name">Phone</div>
+            <div class="value">+{{ judge.phone_country_code }} {{ judge.phone }}</div>
+          </div>
           <div class="twitter" *ngIf="judge.twitter && judge.twitter !== null">
             <div class="name">Twitter</div>
-            <a [href]="judge.twitter" class="value" target="_blank" (click)="$event.stopPropagation()">{{
-              judge.twitter
-            }}</a>
+            <a
+              [href]="judge.twitter"
+              class="value link-truncate"
+              target="_blank"
+              (click)="$event.stopPropagation()"
+              [title]="judge.twitter"
+              >{{ judge.twitter }}</a
+            >
           </div>
           <div class="linkedin" *ngIf="judge.linkedin">
             <div class="name">Linkedin</div>
-            <a [href]="judge.linkedin" class="value" target="_blank" (click)="$event.stopPropagation()">{{
-              judge.linkedin
-            }}</a>
+            <a
+              [href]="judge.linkedin"
+              class="value link-truncate"
+              target="_blank"
+              (click)="$event.stopPropagation()"
+              [title]="judge.linkedin"
+              >{{ judge.linkedin }}</a
+            >
           </div>
           <div class="website" *ngIf="judge.website">
             <div class="name">Personal Website</div>
-            <a [href]="judge.website" class="value" target="_blank" (click)="$event.stopPropagation()">{{
-              judge.website
-            }}</a>
+            <a
+              [href]="judge.website"
+              class="value link-truncate"
+              target="_blank"
+              (click)="$event.stopPropagation()"
+              [title]="judge.website"
+              >{{ judge.website }}</a
+            >
           </div>
         </div>
       </a>
@@ -81,8 +100,25 @@
         </div>
         <hr class="divided-line" />
         <div class="actions">
-          <button nbButton ghost status="primary" (click)="editJudge(judge)">Edit</button>
-          <button nbButton ghost status="danger" (click)="deleteJudge(judge.id)">Delete</button>
+          <button nbButton ghost status="primary" (click)="editJudge(judge)">
+            <fa-icon [icon]="icons.faEdit"></fa-icon>&nbsp; Edit
+          </button>
+          <div class="notes-button-wrapper">
+            <button nbButton ghost status="info" (click)="openNotesDialog()" title="Notes">
+              <fa-icon [icon]="icons.faStickyNote"></fa-icon>&nbsp; Notes
+            </button>
+            <app-badge
+              *ngIf="judge.notes?.length > 0"
+              [text]="judge.notes.length.toString()"
+              [fontColor]="'com-text-white'"
+              [fontSize]="'xx-small'"
+              [borderRadius]="'round'"
+              [color]="'com-bg-red-500'"
+            ></app-badge>
+          </div>
+          <button nbButton ghost status="danger" (click)="deleteJudge(judge.id)">
+            <fa-icon [icon]="icons.faTrash"></fa-icon>&nbsp; Delete
+          </button>
         </div>
       </div>
     </nb-card-body>

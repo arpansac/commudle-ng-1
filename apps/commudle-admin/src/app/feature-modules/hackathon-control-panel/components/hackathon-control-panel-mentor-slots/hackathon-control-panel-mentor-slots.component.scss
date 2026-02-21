@@ -21,42 +21,63 @@ nb-card {
   }
 }
 
-.mentor-info {
-  @apply com-flex com-items-center com-gap-3 com-z-20;
+.mentor-cell {
+  @apply com-flex com-flex-col com-gap-1;
 
-  .mentor-avatar {
-    @apply com-w-10 com-h-10 com-rounded-full com-object-cover;
-  }
+  .mentor-info {
+    @apply com-flex com-items-center com-gap-3;
 
-  .mentor-avatar-placeholder {
-    @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center com-text-white com-font-semibold;
-  }
-
-  .mentor-details {
-    @apply com-flex com-flex-col com-flex-1;
-
-    .mentor-name {
-      @apply com-font-medium com-text-gray-900;
+    .mentor-avatar {
+      @apply com-w-10 com-h-10 com-rounded-full com-object-cover com-flex-shrink-0;
     }
 
-    .mentor-designation {
-      @apply com-text-sm com-text-gray-600;
+    .mentor-avatar-placeholder {
+      @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center com-text-white com-font-semibold com-flex-shrink-0;
+    }
+
+    .mentor-details {
+      @apply com-flex com-flex-col com-flex-1 com-min-w-0;
+
+      .mentor-name {
+        @apply com-font-medium com-text-sm com-text-gray-900 com-truncate;
+      }
+
+      .mentor-designation {
+        @apply com-text-xs com-text-gray-600 com-truncate;
+      }
+
+      .mentor-phone {
+        @apply com-text-10px com-text-gray-500;
+      }
+    }
+
+    .notes-button-wrapper {
+      @apply com-relative;
+
+      app-badge {
+        @apply com-absolute -com-top-1 -com-right-1 com-z-10;
+      }
     }
   }
-}
 
-.add-meeting-btn {
-  @apply com-text-xs com-mt-2;
-}
+  .meeting-section {
+    @apply com-pl-12;
 
-.meeting-location {
-  @apply com-mt-2 com-text-xs;
+    .meeting-location-link {
+      @apply com-flex com-items-center com-gap-2 com-px-2 com-bg-blue-50 com-rounded com-border com-border-blue-200;
 
-  a {
-    @apply com-text-primary-500 com-underline;
+      a {
+        @apply com-text-xs com-text-primary-500 com-truncate com-flex-1 com-min-w-0;
+        @apply hover:com-text-primary-600 hover:com-underline;
+      }
+    }
 
-    &:hover {
-      @apply com-text-primary-600;
+    .meeting-location-text {
+      @apply com-flex com-items-center com-gap-2 com-p-2 com-bg-gray-50 com-rounded com-border com-border-gray-200;
+
+      span {
+        @apply com-text-xs com-text-gray-700 com-truncate com-flex-1 com-min-w-0;
+      }
     }
   }
 }
@@ -228,28 +249,52 @@ nb-card {
   @apply com-p-4 com-flex com-flex-col com-gap-4;
 
   .sidebar-info {
-    @apply com-p-3 com-bg-gray-100 com-rounded com-flex com-flex-col com-gap-2;
+    @apply com-mb-4;
 
-    p {
-      @apply com-mb-0 com-text-sm;
-    }
+    .info-card {
+      @apply com-p-3 com-bg-gray-50 com-rounded com-border com-border-gray-200;
 
-    .assigned-teams {
-      @apply com-mt-3;
+      .mentor-info {
+        @apply com-flex com-items-center com-gap-2 com-mb-3 com-pb-3 com-border-b com-border-gray-200;
 
-      h4 {
-        @apply com-text-sm com-font-semibold com-mb-2;
-      }
-
-      .team-tags {
-        @apply com-flex com-flex-wrap com-gap-2;
-
-        .tag {
-          @apply com-m-2 com-p-3;
+        .mentor-avatar {
+          @apply com-w-8 com-h-8 com-rounded-full com-object-cover com-flex-shrink-0;
         }
 
-        .no-teams {
-          @apply com-text-sm com-text-gray-500 com-italic;
+        .mentor-avatar-placeholder {
+          @apply com-w-8 com-h-8 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center com-text-white com-font-semibold com-text-xs com-flex-shrink-0;
+        }
+
+        .mentor-details {
+          @apply com-flex com-flex-col com-min-w-0;
+
+          .mentor-name {
+            @apply com-font-medium com-text-sm com-text-gray-900 com-truncate;
+          }
+
+          .mentor-designation {
+            @apply com-text-xs com-text-gray-600 com-truncate;
+          }
+        }
+      }
+
+      .info-row {
+        @apply com-flex com-items-center com-gap-2 com-text-sm com-mb-2;
+
+        &:last-child {
+          @apply com-mb-0;
+        }
+
+        .label {
+          @apply com-font-medium com-text-gray-700;
+        }
+
+        .value {
+          @apply com-text-gray-600;
+
+          &.slot-time {
+            @apply com-bg-gray-100 com-px-2 com-py-1 com-rounded com-text-xs;
+          }
         }
       }
     }
