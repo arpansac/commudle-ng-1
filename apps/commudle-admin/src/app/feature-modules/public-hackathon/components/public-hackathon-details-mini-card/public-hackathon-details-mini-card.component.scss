@@ -12,7 +12,9 @@
     @apply com-font-semibold com-text-base com-mt-4;
   }
   .date-value {
-    @apply com-font-medium com-text-base com-text-gray-500;
+    p {
+      @apply com-font-medium com-text-base com-text-gray-500 com-m-0;
+    }
   }
 }
 .prize-location {

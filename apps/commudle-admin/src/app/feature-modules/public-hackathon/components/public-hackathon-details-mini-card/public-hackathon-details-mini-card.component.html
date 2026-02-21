@@ -8,7 +8,15 @@
         <span class="dot">&#x2022;</span>
         <span>
           Registrations starts on -
-          {{ hackathon.application_start_date | date : 'dd MMM yyyy' }}
+          <ng-container *ngIf="hackathon.timezone">
+            {{
+              momentTimezone.tz(moment.utc(hackathon.application_start_date), hackathon.timezone).format('dd MMM yyyy')
+            }}
+            {{ momentTimezone.tz(hackathon.timezone).format('z') }}
+          </ng-container>
+          <ng-container *ngIf="!hackathon.timezone">{{
+            hackathon.application_start_date | date : 'dd MMM yyyy'
+          }}</ng-container>
         </span>
       </span>
 
@@ -24,14 +32,33 @@
     </div>
     <div class="date-heading">Hackathon Dates</div>
     <div class="date-value">
-      {{ hackathon.start_date | date : 'dd MMM yyyy' }} - {{ hackathon.end_date | date : 'dd MMM yyyy' }}
+      <p *ngIf="hackathon.timezone">
+        Starts on:
+        {{ momentTimezone.tz(moment.utc(hackathon.start_date), hackathon.timezone).format('MMM yyyy, h:mm a') }}
+        {{ momentTimezone.tz(hackathon.timezone).format('z') }}
+      </p>
+      <p *ngIf="hackathon.timezone">
+        Ends on:
+        {{ momentTimezone.tz(moment.utc(hackathon.end_date), hackathon.timezone).format('MMM yyyy, h:mm a') }}
+        {{ momentTimezone.tz(hackathon.timezone).format('z') }}
+      </p>
     </div>
     <div class="date-heading" *ngIf="hackathonStatus !== 'Closed'">Registration Dates</div>
     <div class="date-value" *ngIf="hackathonStatus !== 'Closed'">
-      <span *ngIf="hackathonStatus !== 'Outgoing'"
-        >{{ hackathon.application_start_date | date : 'dd MMM yyyy' }} -
-      </span>
-      {{ hackathon.application_end_date | date : 'dd MMM yyyy' }}
+      <ng-container *ngIf="hackathon.timezone">
+        <span *ngIf="hackathonStatus !== 'Outgoing'">
+          {{
+            momentTimezone
+              .tz(moment.utc(hackathon.application_start_date), hackathon.timezone)
+              .format('MMM yyyy, h:mm a')
+          }}
+          {{ momentTimezone.tz(hackathon.timezone).format('z') }} -
+        </span>
+        {{
+          momentTimezone.tz(moment.utc(hackathon.application_end_date), hackathon.timezone).format('MMM yyyy, h:mm a')
+        }}
+        {{ momentTimezone.tz(hackathon.timezone).format('z') }}
+      </ng-container>
     </div>
   </div>
   <hr *ngIf="hackathon.start_date && hackathon.end_date" class="divided-line" />

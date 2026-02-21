@@ -47,7 +47,7 @@ nb-card-header {
   }
 
   .mentor-filter-select {
-    @apply com-px-3 com-py-1 com-text-xs com-border com-border-gray-300 com-rounded com-bg-white com-w-full com-text-Yankees-Blue;
+    @apply com-px-3 com-py-1 com-text-xs com-border com-border-gray-300 com-rounded com-bg-white com-text-gray-700 com-w-full;
     @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
     @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
   }
@@ -165,7 +165,7 @@ nb-card-header {
     }
 
     .filter-switch-select {
-      @apply com-px-4 com-py-2 com-text-sm com-border com-border-gray-300 com-rounded com-bg-white;
+      @apply com-px-4 com-py-2 com-text-sm com-border com-border-gray-300 com-rounded com-bg-white com-text-gray-700;
       @apply hover:com-bg-gray-50 com-cursor-pointer com-transition-colors;
       @apply focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-500 focus:com-border-primary-500;
     }

@@ -6,11 +6,13 @@ import { AuthService, countries_details } from '@commudle/shared-services';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { EHackathonStatus, ICommunity, IHackathonTeam, IUser } from '@commudle/shared-models';
 import { Subject, takeUntil } from 'rxjs';
+import * as moment from 'moment';
+import * as momentTimezone from 'moment-timezone';
 @Component({
-    selector: 'commudle-public-hackathon-details-mini-card',
-    templateUrl: './public-hackathon-details-mini-card.component.html',
-    styleUrls: ['./public-hackathon-details-mini-card.component.scss'],
-    standalone: false
+  selector: 'commudle-public-hackathon-details-mini-card',
+  templateUrl: './public-hackathon-details-mini-card.component.html',
+  styleUrls: ['./public-hackathon-details-mini-card.component.scss'],
+  standalone: false,
 })
 export class PublicHackathonDetailsMiniCardComponent implements OnInit, OnDestroy {
   @Input() hackathon: IHackathon;
@@ -25,6 +27,9 @@ export class PublicHackathonDetailsMiniCardComponent implements OnInit, OnDestro
     faGlobe,
     faAward,
   };
+
+  moment = moment;
+  momentTimezone = momentTimezone;
 
   EHackathonLocationType = EHackathonLocationType;
   EHackathonStatus = EHackathonStatus;
