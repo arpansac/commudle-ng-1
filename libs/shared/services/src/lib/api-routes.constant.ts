@@ -1032,6 +1032,8 @@ export const API_ROUTES = {
     SEND_CUSTOM_EMAIL: 'api/v2/hackathon_judge/send_custom_email', //POST
     UPDATE_MEETING_URL: 'api/v2/hackathon_judge/update_meeting_url', //PUT
     ROLE_DETAILS: 'api/v2/hackathon_judge/role_details', //GET
+    SEND_TEAM_ASSIGNMENT_EMAIL: 'api/v2/hackathon_judge/send_team_assignment_email', //POST
+    SEND_BULK_TEAM_ASSIGNMENT_EMAIL: 'api/v2/hackathon_judge/send_bulk_team_assignment_email', //POST
   },
 
   EXPERTS: {

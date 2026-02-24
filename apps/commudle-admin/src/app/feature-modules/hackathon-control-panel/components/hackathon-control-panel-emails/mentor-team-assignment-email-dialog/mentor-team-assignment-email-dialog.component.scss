@@ -1,0 +1,32 @@
+.mail-popup {
+  @apply com-w-full md:com-w-[600px];
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    @apply com-flex com-flex-col com-gap-4;
+
+    .round-field {
+      @apply com-flex com-flex-col com-gap-2;
+
+      label {
+        @apply com-font-medium com-text-sm com-text-gray-700;
+      }
+
+      .round-select {
+        @apply com-w-full com-px-3 com-py-2 com-border com-border-gray-300 com-rounded-lg;
+        @apply focus:com-border-primary-500 focus:com-outline-none;
+      }
+    }
+
+    .message-field {
+      @apply com-flex com-flex-col com-gap-2;
+
+      label {
+        @apply com-font-medium com-text-sm com-text-gray-700;
+      }
+    }
+  }
+}

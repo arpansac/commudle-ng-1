@@ -71,4 +71,26 @@ export class HackathonJudgeService {
       params,
     });
   }
+
+  sendTeamAssignmentEmail(hackathonJudgeId: number, roundId: number, message?: string): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_TEAM_ASSIGNMENT_EMAIL),
+      {
+        hackathon_judge_id: hackathonJudgeId,
+        round_id: roundId,
+        message,
+      },
+    );
+  }
+
+  sendBulkTeamAssignmentEmail(hackathonId: string, roundId: number, message?: string): Observable<boolean> {
+    return this.http.post<boolean>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_JUDGE.SEND_BULK_TEAM_ASSIGNMENT_EMAIL),
+      {
+        hackathon_id: hackathonId,
+        round_id: roundId,
+        message,
+      },
+    );
+  }
 }
