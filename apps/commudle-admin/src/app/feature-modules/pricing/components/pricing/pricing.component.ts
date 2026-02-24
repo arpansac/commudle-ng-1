@@ -12,10 +12,10 @@ import { IPricing, IPricingFeatures } from 'apps/shared-models/pricing-features.
 import { CmsService } from 'apps/shared-services/cms.service';
 import { Subject, takeUntil } from 'rxjs';
 @Component({
-    selector: 'commudle-pricing',
-    templateUrl: './pricing.component.html',
-    styleUrls: ['./pricing.component.scss'],
-    standalone: false
+  selector: 'commudle-pricing',
+  templateUrl: './pricing.component.html',
+  styleUrls: ['./pricing.component.scss'],
+  standalone: false,
 })
 export class PricingComponent implements OnInit, OnDestroy {
   @ViewChild('loadingTemplate') loadingTemplate: TemplateRef<any>;
@@ -266,14 +266,14 @@ export class PricingComponent implements OnInit, OnDestroy {
         answer: 'Absolutely, a few Design Communities are already using Commudle.',
       },
       {
-        question: 'Does Commudle support paid ticket events?',
+        question: 'Does Commudle support paid ticketing for my community events?',
         answer:
           'Yes, Commudle supports paid tickets in events. Community organizers can access this feature from their community admin dashboard.',
       },
       {
         question: 'What are the charges for payments received through payment gateway on Commudle?',
         answer:
-          "We use Stripe which has standard payment rates for payments made through different countries defined on this link: https://stripe.com/en-in/pricing. Commudle charges a standard platform fee. Depending on the plan purchased by you this fee can be a part of the annual subscription as a business so that your community leaders don't have to pay for it.",
+          'For every ticket sale, the payment gateway charges a fee per transaction and there is a platform fee charged by Commudle. More details are mentioned here: https://www.commudle.com/paid-ticketing.',
       },
       {
         question: 'Will I get access to new features which are rolled out after I pay for my subscription?',

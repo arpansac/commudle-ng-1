@@ -10,6 +10,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { AiAssistantSelectorComponent } from '@commudle/shared-components';
 
 @NgModule({
   declarations: [BlogsListComponent, BlogComponent, BlogCardComponent],
@@ -26,6 +27,7 @@ import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives
     SharedComponentsModule,
     FontAwesomeModule,
     SharedDirectivesModule,
+    AiAssistantSelectorComponent,
   ],
 })
 export class PublicBlogsModule {}

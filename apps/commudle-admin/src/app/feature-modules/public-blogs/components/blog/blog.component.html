@@ -43,6 +43,14 @@
                 <article>
                   <div [innerHTML]="richText" class="!com-max-w-full content"></div>
                 </article>
+
+                <!-- AI Assistant Selector Component -->
+                <commudle-ai-assistant-selector
+                  *ngIf="blog && !isLoading"
+                  [prompt]="aiPrompt"
+                  [title]="'Explore with AI'"
+                  [description]="'Choose an AI assistant to explore this article further:'"
+                ></commudle-ai-assistant-selector>
               </div>
             </div>
           </div>

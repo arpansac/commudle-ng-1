@@ -1,0 +1,48 @@
+<!-- Inline AI Assistant Selector -->
+<div
+  class="ai-selector-inline"
+  role="region"
+  aria-labelledby="ai-selector-title"
+  aria-describedby="ai-selector-description"
+>
+  <!-- Header -->
+  <div class="selector-header">
+    <img [src]="staticAssets.icon_ai_sparkles" alt="AI Sparkles" class="sparkles-icon" aria-hidden="true" />
+    <h3 id="ai-selector-title">{{ title }}</h3>
+  </div>
+
+  <!-- Body -->
+  <div class="selector-body">
+    <p id="ai-selector-description" class="description">{{ description }}</p>
+
+    <!-- Assistant Options Grid -->
+    <div class="assistant-grid" role="group" aria-label="AI assistant options">
+      <!-- AI Assistant Links -->
+      <a
+        *ngFor="let assistant of assistants"
+        [href]="getAssistantUrl(assistant)"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="assistant-option"
+        [attr.aria-label]="'Open prompt in ' + assistant.name + ' in a new tab'"
+      >
+        <fa-icon [icon]="assistant.icon" aria-hidden="true"></fa-icon>
+        <span>{{ assistant.name }}</span>
+      </a>
+
+      <!-- Copy Prompt Link -->
+      <a
+        href="javascript:void(0)"
+        class="assistant-option copy-option"
+        (click)="copyPrompt($event)"
+        aria-label="Copy prompt to clipboard for use in any AI assistant"
+      >
+        <fa-icon [icon]="icons.faCopy" aria-hidden="true"></fa-icon>
+        <span>{{ isCopied ? 'Copied' : 'Copy Prompt' }}</span>
+      </a>
+    </div>
+
+    <!-- Footer Note -->
+    <p class="footer-note" aria-live="polite">Opens in a new tab with pre-filled prompt</p>
+  </div>
+</div>

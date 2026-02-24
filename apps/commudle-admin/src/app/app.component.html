@@ -1,5 +1,5 @@
 <div
-  [ngClass]="{ 'com-dark, nb-theme-dark': isDarkMode, 'com-light, nb-theme-default': !isDarkMode }"
+  [ngClass]="{ 'com-dark nb-theme-dark dark': isDarkMode, 'com-light nb-theme-default': !isDarkMode }"
   [attr.data-theme]="isDarkMode ? 'dark' : 'light'"
 >
   <nb-layout class="home-layout">

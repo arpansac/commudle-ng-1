@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faRssSquare } from '@fortawesome/free-solid-svg-icons';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
@@ -12,10 +12,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-blog',
-    templateUrl: './blog.component.html',
-    styleUrls: ['./blog.component.scss'],
-    standalone: false
+  selector: 'app-blog',
+  templateUrl: './blog.component.html',
+  styleUrls: ['./blog.component.scss'],
+  standalone: false,
 })
 export class BlogComponent implements OnInit, OnDestroy {
   @Input() activateMiniProfileDirective = true;
@@ -39,12 +39,17 @@ export class BlogComponent implements OnInit, OnDestroy {
   environment = environment;
   blogs: IBlog[];
 
+  // AI Assistant Selector properties
+  showAiAssistant = false;
+  aiPrompt = '';
+
   constructor(
     private cmsService: CmsService,
     private activatedRoute: ActivatedRoute,
     private appUsersService: AppUsersService,
     private seoService: SeoService,
     private footerService: FooterService,
+    private router: Router,
   ) {
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(() => {
@@ -79,6 +84,16 @@ export class BlogComponent implements OnInit, OnDestroy {
           this.setUser();
           this.setMeta();
           this.isLoading = false;
+
+          // Set AI prompt for the AI Assistant Selector component
+          const blogText = this.richText
+            ? this.richText
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+            : '';
+          this.aiPrompt = `I am reading a blog: ${this.blog.title}.\n\nHelp me explore and understand deeply on the topic.\n\nHere is the link to the source: ${environment.app_url}${this.router.url}`;
+
           if (this.blog.similarBlogs) {
             this.getSimilarBlogs(this.blog.similarBlogs);
           }

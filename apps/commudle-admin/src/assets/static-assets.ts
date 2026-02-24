@@ -384,6 +384,10 @@ export const staticAssets = {
   //id: 250
   campaign_default_image:
     'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdzR5Qmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--468a233d1d9b9fe4826f7946cbd0722ad734bb95/Ad%20Campaign%20Empty%20State.png',
+
+  //id: 251
+  icon_ai_sparkles:
+    'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd0ZpQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bd690c690e8a6a3f0407a30eca21333fd3fe0a79/icon-ai-sparkles-1.svg',
 };
 
 export const AwsS3Bucket = {
