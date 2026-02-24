@@ -198,6 +198,55 @@ nb-card {
 
         &.team-name {
           @apply com-font-medium com-text-gray-900;
+
+          .team-name-wrapper {
+            @apply com-flex com-flex-col com-gap-2;
+
+            .evaluators-section {
+              @apply com-flex com-flex-col com-gap-1;
+
+              .evaluators-label {
+                @apply com-text-xs com-font-semibold com-text-gray-600;
+              }
+
+              .evaluators-cards {
+                @apply com-flex com-flex-col com-gap-2;
+
+                .evaluator-card {
+                  @apply com-flex com-items-center com-gap-2 com-no-underline com-p-1.5 com-rounded com-border com-border-gray-200;
+                  @apply hover:com-bg-gray-50 com-transition-colors;
+
+                  .evaluator-avatar-wrapper {
+                    @apply com-flex-shrink-0;
+
+                    .evaluator-avatar {
+                      @apply com-w-6 com-h-6 com-rounded-full com-object-cover;
+                    }
+
+                    .evaluator-avatar-placeholder {
+                      @apply com-w-6 com-h-6 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center;
+
+                      span {
+                        @apply com-text-white com-text-[10px] com-font-semibold;
+                      }
+                    }
+                  }
+
+                  .evaluator-info {
+                    @apply com-flex com-flex-col;
+
+                    .evaluator-name {
+                      @apply com-text-xs com-font-medium com-text-gray-900;
+                    }
+
+                    .evaluator-designation {
+                      @apply com-text-[10px] com-text-gray-600;
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
 
         .status-badge {

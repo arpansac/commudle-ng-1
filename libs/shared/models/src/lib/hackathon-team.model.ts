@@ -10,6 +10,7 @@ import { IHackathonProblemStatement } from './hackathon-problem-statement.model'
 import { IHackathonTrack } from './hackathon-track.model';
 import { IHackathonTeamRoundSubmission } from './hackathon-team-round-submission.model';
 import { IHackathonTeamRoundScore } from './hackathon-team-round-score.model';
+import { IHackathonJudge } from './hackathon-judge.model';
 
 export interface IHackathonTeam {
   id: number;
@@ -69,4 +70,5 @@ export interface IHackathonTeamWithScoreAndSubmissions {
   score: IHackathonTeamRoundScore;
   team: IHackathonTeam;
   submission: IHackathonTeamRoundSubmission;
+  evaluators: IHackathonJudge[];
 }

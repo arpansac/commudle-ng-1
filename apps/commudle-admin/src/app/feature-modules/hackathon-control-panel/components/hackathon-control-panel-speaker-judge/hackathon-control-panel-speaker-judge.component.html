@@ -231,15 +231,21 @@
 <ng-template #deleteJudgeDilaogBox let-ref="dialogRef" let-data>
   <nb-card>
     <nb-card-header class="actions">
-      <span>Confirm delete Judge</span>
-      <button nbButton ghost (click)="ref.close()">
+      <span>Confirm Delete</span>
+      <button nbButton ghost (click)="ref.close()" shape="round">
         <fa-icon [icon]="icons.faXmark"></fa-icon>
       </button>
     </nb-card-header>
-    <nb-card-body>Are you sure, you want to delete Judge?</nb-card-body>
+    <nb-card-body>
+      <p>Are you sure you want to delete this judge/mentor/speaker?</p>
+      <commudle-alert
+        [error]="true"
+        errorMessage="Warning: All scores allocated by this judge/mentor and their team assignments will be permanently deleted. This action cannot be undone."
+      ></commudle-alert>
+    </nb-card-body>
     <nb-card-footer class="actions">
-      <button nbButton status="primary" (click)="destroyJudge(data.judgeId, data.index); ref.close()">Delete</button>
-      <button nbButton status="danger" (click)="ref.close()" outline>Cancel</button>
+      <button nbButton status="danger" (click)="destroyJudge(data.judgeId, data.index); ref.close()">Delete</button>
+      <button nbButton status="basic" (click)="ref.close()" outline>Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

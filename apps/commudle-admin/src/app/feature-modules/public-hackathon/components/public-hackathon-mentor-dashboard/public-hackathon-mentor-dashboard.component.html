@@ -151,7 +151,46 @@
       </thead>
       <tbody>
         <tr *ngFor="let teamData of teamDetails">
-          <td class="team-name">{{ teamData.team.name }}</td>
+          <td class="team-name">
+            <div class="team-name-wrapper">
+              <span>{{ teamData.team.name }}</span>
+              @if(teamData.evaluators && teamData.evaluators.length > 0) {
+              <div class="evaluators-section">
+                <span class="evaluators-label">Evaluators:</span>
+                <div class="evaluators-cards">
+                  @for(evaluator of teamData.evaluators; track evaluator.id) {
+                  <a [routerLink]="['/users', evaluator.username]" class="evaluator-card">
+                    <div class="evaluator-avatar-wrapper">
+                      <img
+                        *ngIf="evaluator.photo?.i32"
+                        [src]="evaluator.photo.i32"
+                        [alt]="evaluator.name"
+                        [username]="evaluator.username"
+                        appMiniUserProfile
+                        class="evaluator-avatar"
+                      />
+                      <div
+                        *ngIf="!evaluator.photo?.i32"
+                        class="evaluator-avatar-placeholder"
+                        [username]="evaluator.username"
+                        appMiniUserProfile
+                      >
+                        <span>{{ evaluator.name.charAt(0).toUpperCase() }}</span>
+                      </div>
+                    </div>
+                    <div class="evaluator-info" [username]="evaluator.username" appMiniUserProfile>
+                      <span class="evaluator-name">{{ evaluator.name }}</span>
+                      <span class="evaluator-designation" *ngIf="evaluator.designation">{{
+                        evaluator.designation
+                      }}</span>
+                    </div>
+                  </a>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+          </td>
           <td>{{ teamData.team.track?.name || 'N/A' }}</td>
           <td>
             <span
