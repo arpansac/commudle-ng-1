@@ -733,6 +733,7 @@ export const API_ROUTES = {
       HACKATHON_USER_VISITS: 'api/v2/stats/hackathons/user_visits',
       USER_LOCATIONS: 'api/v2/stats/hackathons/user_locations',
       EMAILS: 'api/v2/stats/hackathons/emails',
+      PROBLEM_STATEMENT_DISTRIBUTION: 'api/v2/stats/hackathons/problem_statement_distribution',
     },
   },
 

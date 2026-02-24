@@ -3,14 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { IHackathon, EParticipateTypes } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { StatsHackathonService } from 'apps/commudle-admin/src/app/services/stats/hackathons.service';
+import { NbDialogService } from '@commudle/theme';
 import Chart from 'chart.js';
 declare let google: any;
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-stats',
-    templateUrl: './hackathon-control-panel-stats.component.html',
-    styleUrls: ['./hackathon-control-panel-stats.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-stats',
+  templateUrl: './hackathon-control-panel-stats.component.html',
+  styleUrls: ['./hackathon-control-panel-stats.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelStatsComponent implements OnInit {
   private hackathonId: string;
@@ -19,14 +20,17 @@ export class HackathonControlPanelStatsComponent implements OnInit {
   hackathonUserLocationsForParticipants: any;
   userVisitStats: any;
   hackathon: IHackathon;
+  problemStatementDistribution: any;
   EParticipateTypes = EParticipateTypes;
   @ViewChild('genderDistribution') GenderDistributionChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('hackathonTeamOverTime') HackathonTeamOverTimeChart: ElementRef<HTMLCanvasElement>;
   @ViewChild('hackathonUserVisitOverDays') HackathonUserVisitOverDays: ElementRef<HTMLCanvasElement>;
+  @ViewChild('problemStatementChart') ProblemStatementChart: ElementRef<HTMLCanvasElement>;
   constructor(
     private route: ActivatedRoute,
     private statsHackathonService: StatsHackathonService,
     private hackathonService: HackathonService,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -41,6 +45,7 @@ export class HackathonControlPanelStatsComponent implements OnInit {
       this.getHackathonTeamOverTime();
       this.getHackathonUserVisits();
       this.getHackathonUserLocation();
+      this.getProblemStatementDistribution();
     });
   }
 
@@ -270,5 +275,58 @@ export class HackathonControlPanelStatsComponent implements OnInit {
 
     const chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
     chart.draw(data, options);
+  }
+
+  getProblemStatementDistribution() {
+    this.statsHackathonService.problemStatementDistribution(this.hackathonId).subscribe((data) => {
+      this.problemStatementDistribution = data;
+      setTimeout(() => this.drawProblemStatementChart(), 100);
+    });
+  }
+
+  drawProblemStatementChart() {
+    if (!this.ProblemStatementChart?.nativeElement || !this.problemStatementDistribution) {
+      return;
+    }
+
+    const colors = [
+      '#5072ff',
+      '#ff43bc',
+      '#00d68f',
+      '#ffaa00',
+      '#ff3d71',
+      '#a855f7',
+      '#06b6d4',
+      '#f59e0b',
+      '#10b981',
+      '#8b5cf6',
+    ];
+
+    new Chart(this.ProblemStatementChart.nativeElement, {
+      type: 'pie',
+      data: {
+        datasets: [
+          {
+            data: this.problemStatementDistribution.map((ps) => ps.teams_count),
+            backgroundColor: colors,
+          },
+        ],
+        labels: this.problemStatementDistribution.map((ps) => `${ps.problem_statement.display_id} (${ps.teams_count})`),
+      },
+      options: {
+        responsive: true,
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = (elements[0] as any)._index;
+            const template = document.querySelector('#psDialog');
+            this.openPSDialog(template, this.problemStatementDistribution[index].problem_statement);
+          }
+        },
+      },
+    });
+  }
+
+  openPSDialog(dialog, ps) {
+    this.dialogService.open(dialog, { context: ps });
   }
 }

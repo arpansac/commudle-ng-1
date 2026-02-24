@@ -133,6 +133,14 @@
         </tbody>
       </table>
     </div>
+
+    <div *ngIf="problemStatementDistribution" class="graph-container">
+      <span class="title">Problem Statement Distribution</span>
+      <div class="chart-container">
+        <canvas #problemStatementChart></canvas>
+      </div>
+    </div>
+
     <br />
     <div class="map">
       <div class="graph-container">
@@ -144,3 +152,17 @@
     </div>
   </nb-card-body>
 </nb-card>
+
+<ng-template #psDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <div>{{ data.display_id }}</div>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body>
+      <div [innerHTML]="data.title"></div>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

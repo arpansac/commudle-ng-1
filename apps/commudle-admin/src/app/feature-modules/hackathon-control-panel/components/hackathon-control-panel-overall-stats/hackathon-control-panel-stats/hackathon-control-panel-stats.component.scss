@@ -39,3 +39,11 @@ table {
     @apply com-border-0 com-border-b com-border-solid  com-border-Bright-Gray;
   }
 }
+
+.ps-link {
+  @apply com-cursor-pointer com-text-primary-500;
+
+  &:hover {
+    @apply com-text-primary-600 com-underline;
+  }
+}
