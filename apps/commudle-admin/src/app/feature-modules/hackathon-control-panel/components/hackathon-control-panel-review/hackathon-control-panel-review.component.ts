@@ -48,6 +48,7 @@ import {
   faSortDown,
   faFilePowerpoint,
   faLaptopCode,
+  faChartPie,
 } from '@fortawesome/free-solid-svg-icons';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IHackathon, EHackathonStatus } from 'apps/shared-models/hackathon.model';
@@ -59,6 +60,7 @@ import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-co
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { HackathonRsvpEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-rsvp-email/hackathon-rsvp-email.component';
 import { HackathonEntryPassEmailComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/hackathon-entry-pass-email/hackathon-entry-pass-email.component';
+import { StatsHackathonService } from 'apps/commudle-admin/src/app/services/stats/hackathons.service';
 
 @Component({
   selector: 'commudle-hackathon-control-panel-review',
@@ -90,6 +92,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     faSortDown,
     faFilePowerpoint,
     faLaptopCode,
+    faChartPie,
   };
 
   notesForm: FormGroup;
@@ -180,6 +183,9 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   @ViewChild('problemStatementDialog') problemStatementDialog: TemplateRef<any>;
   @ViewChild('teamAttendanceDialog') teamAttendanceDialog: TemplateRef<any>;
   @ViewChild('documentViewerDialog') documentViewerDialog: TemplateRef<any>;
+  @ViewChild('psStatsChart') psStatsChart: ElementRef<HTMLCanvasElement>;
+
+  problemStatementDistribution: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -194,6 +200,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private seoService: SeoService,
     private hackathonTeamService: HackathonTeamService,
+    private statsHackathonService: StatsHackathonService,
   ) {
     this.notesForm = this.fb.group({
       note: this.fb.array([]),
@@ -217,6 +224,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
         this.indexRounds(params.get('hackathon_id'));
         this.indexTracks(params.get('hackathon_id'));
         this.indexProblemStatements(params.get('hackathon_id'));
+        this.fetchProblemStatementDistribution(params.get('hackathon_id'));
       }),
     );
 
@@ -1017,6 +1025,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   fetchTeamScores(teamId: number): void {
     this.hackathonTeamService.teamRoundScores(teamId).subscribe((data) => {
       this.teamScores = data;
+    });
+  }
+
+  fetchProblemStatementDistribution(hackathonId: string): void {
+    this.statsHackathonService.problemStatementDistribution(hackathonId).subscribe((data) => {
+      this.problemStatementDistribution = data;
     });
   }
 }

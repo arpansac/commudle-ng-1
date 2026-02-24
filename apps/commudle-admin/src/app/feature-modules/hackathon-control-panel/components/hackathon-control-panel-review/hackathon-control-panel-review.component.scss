@@ -91,6 +91,10 @@ table {
   border-collapse: collapse;
   width: 100%;
 
+  .ps-header {
+    @apply com-flex com-gap-1 com-items-center;
+  }
+
   .user-response {
     @apply com-cursor-pointer hover:com-bg-gray-100;
   }

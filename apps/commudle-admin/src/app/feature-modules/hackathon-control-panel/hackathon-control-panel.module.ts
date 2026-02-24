@@ -23,6 +23,7 @@ import {
   NbTooltipModule,
   NbAutocompleteModule,
   NbContextMenuModule,
+  NbPopoverModule,
 } from '@commudle/theme';
 import { HackathonControlPanelContactDetailsFormComponent } from './components/hackathon-control-panel-contact-details-form/hackathon-control-panel-contact-details-form.component';
 import { HackathonControlPanelDatesFormComponent } from './components/hackathon-control-panel-dates-form/hackathon-control-panel-dates-form.component';
@@ -77,6 +78,7 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/mentor-notes-dialog/mentor-notes-dialog.component';
 import { MentorTeamAssignmentEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-team-assignment-email-dialog/mentor-team-assignment-email-dialog.component';
 import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-message-to-teams-dialog/mentor-message-to-teams-dialog.component';
+import { HackathonProblemStatementChartComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-review/hackathon-problem-statement-chart/hackathon-problem-statement-chart.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +126,7 @@ import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app
     MentorNotesDialogComponent,
     MentorTeamAssignmentEmailDialogComponent,
     MentorMessageToTeamsDialogComponent,
+    HackathonProblemStatementChartComponent,
   ],
   imports: [
     CommonModule,
@@ -156,6 +159,7 @@ import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app
     NbTooltipModule,
     NbAutocompleteModule,
     NbContextMenuModule,
+    NbPopoverModule,
     ZXingScannerModule,
     MiniUserProfileModule,
     NgxDocViewerModule,

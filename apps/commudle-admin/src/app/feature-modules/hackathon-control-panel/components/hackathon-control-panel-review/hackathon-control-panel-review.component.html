@@ -227,8 +227,23 @@
       <ng-template #userResponsesContainer>
         <table *ngIf="userResponses && userResponses.length > 0; else noUserResponse">
           <tr>
-            <th width="20%">Name</th>
-            <th width="6%">PS ID</th>
+            <th width="18%">Name</th>
+            <th width="8%">
+              <div class="ps-header">
+                <span>PS ID</span>
+                <button
+                  nbButton
+                  ghost
+                  size="tiny"
+                  [nbPopover]="psStatsPopover"
+                  nbPopoverTrigger="hover"
+                  nbPopoverPlacement="bottom"
+                  class="ps-stats-icon"
+                >
+                  <fa-icon [icon]="icons.faChartPie"></fa-icon>
+                </button>
+              </div>
+            </th>
             <th width="8%">Round</th>
             <th width="8%" class="sortable-header">
               <span>Total Score</span>
@@ -1624,4 +1639,10 @@
       <ngx-doc-viewer [url]="data.url" viewer="google" style="width: 100%; height: 80vh"></ngx-doc-viewer>
     </nb-card-body>
   </nb-card>
+</ng-template>
+
+<ng-template #psStatsPopover>
+  <app-hackathon-problem-statement-chart
+    [problemStatementDistribution]="problemStatementDistribution"
+  ></app-hackathon-problem-statement-chart>
 </ng-template>
