@@ -25,12 +25,9 @@ export class SeoService {
     private cookieService: CookieService,
     private activatedRoute: ActivatedRoute,
     @Inject(DOCUMENT) private document: any,
-    @Inject(PLATFORM_ID) platformId: Object,
+    @Inject(PLATFORM_ID) platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-
-    // Avoid ReferenceError if `isBot` is not actually defined at runtime.
-    const globalIsBot = typeof (globalThis as any).isBot === 'boolean' ? (globalThis as any).isBot : false;
 
     // using native js because angular's route takes somewhere between 100-200ms to initialize and get the query param
     this.host = '';
@@ -46,7 +43,7 @@ export class SeoService {
     }
     // TODO: don't remove above code since we need to no-index the existing bot pages
     // check if cookie is set (x-prerender: 1)
-    this.isBot = (this.isBrowser && this.cookieService.get('x-prerender') === '1') || globalIsBot;
+    this.isBot = !this.isBrowser;
   }
 
   setCanonical() {

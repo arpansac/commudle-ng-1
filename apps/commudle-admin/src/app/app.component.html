@@ -33,7 +33,7 @@
   </nb-layout>
 
   <app-chats-container *ngIf="currentUser && cookieAccepted"></app-chats-container>
-  <app-cookie-consent></app-cookie-consent>
+  <app-cookie-consent *ngIf="!seoService.isBot"></app-cookie-consent>
   <app-user-visit-tracker></app-user-visit-tracker>
   <app-sw-update></app-sw-update>
   <commudle-whats-new></commudle-whats-new>

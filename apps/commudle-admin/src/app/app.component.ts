@@ -16,10 +16,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { ProfileStatusBarService } from './services/profile-status-bar.service';
 @Component({
-    selector: 'commudle-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+  selector: 'commudle-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
   sideBarState: NbSidebarState = 'collapsed';
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // private pioneerAnalyticsService: PioneerAnalyticsService,
     private profileStatusBarService: ProfileStatusBarService,
     private isBrowserService: IsBrowserService,
-    private seoService: SeoService,
+    public seoService: SeoService,
     private router: Router,
     private cableService: CableService,
     private darkModeService: DarkModeService,
