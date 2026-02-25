@@ -23,10 +23,10 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-rounds',
-    templateUrl: './hackathon-control-panel-rounds.component.html',
-    styleUrls: ['./hackathon-control-panel-rounds.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-rounds',
+  templateUrl: './hackathon-control-panel-rounds.component.html',
+  styleUrls: ['./hackathon-control-panel-rounds.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
   roundForm: FormGroup;
@@ -76,6 +76,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       end_date: [''],
       round_type: [ERoundType.GENERAL],
       has_marking_criteria: [true],
+      allow_multiple_mentors: [false],
     });
   }
 
@@ -126,6 +127,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
         end_date: this.datePipe.transform(round.end_date, 'yyyy-MM-ddTHH:mm:ss'),
         round_type: round.round_type,
         has_marking_criteria: round.has_marking_criteria ?? true,
+        allow_multiple_mentors: round.allow_multiple_mentors ?? false,
       });
       this.markingCriteria = round.marking_criteria ? [...round.marking_criteria] : [];
     } else {
@@ -221,6 +223,7 @@ export class HackathonControlPanelRoundsComponent implements OnInit, OnDestroy {
       end_date: [''],
       round_type: ['general'],
       has_marking_criteria: [true],
+      allow_multiple_mentors: [false],
     });
   }
 

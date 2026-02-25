@@ -16,6 +16,7 @@ export interface IRound {
   round_type: ERoundType;
   end_date: string;
   has_marking_criteria: boolean;
+  allow_multiple_mentors: boolean;
   round_mentor_slot_rule?: IRoundMentorSlotRule;
   round_mentor_slots?: IRoundMentorSlot[];
 }
