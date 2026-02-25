@@ -199,25 +199,15 @@
           </div>
 
           <!-- Clear Filters and Sorting Buttons -->
+          @if(selectedStatusForFilter || selectedRoundIdForFilter || selectedTrackForFilter ||
+          selectProblemStatementForFilter || selectedOfflineInviteStatusForFilter || withSubmissions !== null ||
+          withCommunityBuild !== null){
           <div class="filter-actions">
-            <button
-              class="clear-button"
-              (click)="clearAllFilter()"
-              *ngIf="
-                selectedStatusForFilter ||
-                selectedRoundIdForFilter ||
-                selectedTrackForFilter ||
-                selectProblemStatementForFilter ||
-                selectedOfflineInviteStatusForFilter ||
-                withSubmissions !== null ||
-                withCommunityBuild !== null
-              "
-            >
-              Clear Filters
-            </button>
+            <button class="clear-button" (click)="clearAllFilter()">Clear Filters</button>
 
             <button class="clear-button" (click)="clearSorting()" *ngIf="sortByTotalScore">Clear Sorting</button>
           </div>
+          }
         </div>
       </div>
     </div>
@@ -1007,7 +997,7 @@
         </ul>
       </div> -->
 
-        <div *ngIf="selectedUserDetails.project_description">
+        <div *ngIf="selectedUserDetails?.project_description">
           <strong>Project Description:</strong>
           <ul>
             <li>
@@ -1018,8 +1008,8 @@
 
         <div
           *ngIf="
-            selectedTeamDetails.hackathon_team_round_submissions &&
-            selectedTeamDetails.hackathon_team_round_submissions.length > 0
+            selectedTeamDetails?.hackathon_team_round_submissions &&
+            selectedTeamDetails?.hackathon_team_round_submissions.length > 0
           "
         >
           <strong>Round Submissions:</strong>
@@ -1045,7 +1035,6 @@
               [ngClass]="{ active: selectedUserDetails.name === user.name }"
               [ngClass]="{
                 'com-cursor-pointer': user.name,
-                'com-cursor-no-drop': !user.name
               }"
             >
               <div (click)="displayUserData(user)" class="name" *ngIf="user.name">
@@ -1066,9 +1055,9 @@
               <div
                 class="name"
                 *ngIf="!user.name"
+                (click)="displayUserData(user)"
                 [ngClass]="{
-                  'com-pointer-events-none com-text-gray-500':
-                    user.invite_status !== EInvitationStatus.APPLICATION_COMPLETE
+                  'com-text-gray-500': user.invite_status !== EInvitationStatus.APPLICATION_COMPLETE
                 }"
               >
                 {{ user.user_email }}

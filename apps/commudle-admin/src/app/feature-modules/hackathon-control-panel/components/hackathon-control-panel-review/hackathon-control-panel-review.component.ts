@@ -316,8 +316,8 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
       this.selectedUserResponsesDetails = data.user_responses;
       this.selectedUserResponse = data;
       this.notesIndex(data.team.id);
-      this.selectedUserDetails = this.selectedUserResponsesDetails[0];
-      this.getQuestionAnswer();
+      this.selectedUserDetails = this.selectedUserResponsesDetails ? this.selectedUserResponsesDetails[0] : null;
+      if (this.selectedUserDetails) this.getQuestionAnswer();
       this.dialogRef = this.nbDialogService.open(dialog, {
         context: { team: this.selectedTeamDetails, index: index, userResponse: this.selectedUserResponsesDetails },
       });
@@ -347,7 +347,12 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   displayUserData(user) {
+    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ displayUserData ~ user:', user);
     this.selectedUserDetails = user;
+    console.log(
+      '🚀 ~ HackathonControlPanelReviewComponent ~ displayUserData ~ this.selectedUserDetails:',
+      this.selectedUserDetails,
+    );
     this.getQuestionAnswer();
   }
 
