@@ -9,6 +9,7 @@
   </nb-card-header>
   <nb-card-body>
     <commudle-alert [info]="true" message="This will send team assignment details to the mentor(s)"></commudle-alert>
+    <commudle-alert [info]="true" message="Send Round Team Assignment Email"></commudle-alert>
 
     <div class="round-field">
       <label for="round">Select Round *</label>
@@ -18,7 +19,7 @@
     </div>
 
     <div class="message-field">
-      <label for="message">Message (Optional)</label>
+      <label for="message">Additional Message (Optional)</label>
       <editor [init]="tinyMCE" [(ngModel)]="message"></editor>
     </div>
   </nb-card-body>
