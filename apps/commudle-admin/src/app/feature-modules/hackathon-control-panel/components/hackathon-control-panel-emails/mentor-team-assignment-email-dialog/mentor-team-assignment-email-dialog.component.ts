@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NbDialogRef } from '@commudle/theme';
+import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { HackathonJudgeService } from 'apps/commudle-admin/src/app/services/hackathon-judge.service';
-import { ToastrService } from '@commudle/shared-services';
+import { ToastrService, EmailerPreviewService } from '@commudle/shared-services';
 import { IHackathonJudge, IRound } from '@commudle/shared-models';
+import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 
 @Component({
   standalone: false,
@@ -19,6 +20,9 @@ export class MentorTeamAssignmentEmailDialogComponent implements OnInit {
 
   message = '';
   isSubmitting = false;
+  showPreviewSpinner = false;
+  previewData: string;
+  dialogReference: NbDialogRef<any>;
 
   tinyMCE = {
     min_height: 200,
@@ -38,6 +42,8 @@ export class MentorTeamAssignmentEmailDialogComponent implements OnInit {
     protected dialogRef: NbDialogRef<MentorTeamAssignmentEmailDialogComponent>,
     private hackathonJudgeService: HackathonJudgeService,
     private toastrService: ToastrService,
+    private emailerPreviewService: EmailerPreviewService,
+    private nbDialogService: NbDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -73,5 +79,34 @@ export class MentorTeamAssignmentEmailDialogComponent implements OnInit {
     this.isSubmitting = false;
     this.message = '';
     this.dialogRef.close();
+  }
+
+  previewEmail(): void {
+    if (!this.selectedRoundId) {
+      this.toastrService.warningDialog('Please select a round');
+      return;
+    }
+
+    this.showPreviewSpinner = true;
+
+    this.emailerPreviewService
+      .mentorTeamAssignmentEmailPreview(this.hackathonId, this.selectedRoundId, this.message)
+      .subscribe({
+        next: (result) => {
+          this.previewData = result.preview;
+          this.openEmailPreviewTemplate(this.previewData);
+          this.showPreviewSpinner = false;
+        },
+        error: () => {
+          this.toastrService.errorDialog('Failed to load preview');
+          this.showPreviewSpinner = false;
+        },
+      });
+  }
+
+  openEmailPreviewTemplate(previewData: string): void {
+    this.dialogReference = this.nbDialogService.open(EmailPreviewComponent, {
+      context: { previewData },
+    });
   }
 }

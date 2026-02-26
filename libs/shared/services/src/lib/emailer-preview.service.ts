@@ -120,4 +120,30 @@ export class EmailerPreviewService {
       },
     );
   }
+
+  mentorMessageToTeamsEmailPreview(hackathonId, subject, message): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.MENTOR_MESSAGE_TO_TEAMS_EMAIL),
+      {
+        hackathon_id: hackathonId,
+        email_form: {
+          subject: subject,
+          body: message,
+        },
+      },
+    );
+  }
+
+  mentorTeamAssignmentEmailPreview(hackathonId, roundId, message): Observable<any> {
+    return this.http.post<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.EMAIL_PREVIEWS.HACKATHON_EMAILS.MENTOR_TEAM_ASSIGNMENT_EMAIL),
+      {
+        hackathon_id: hackathonId,
+        round_id: roundId,
+        email_form: {
+          body: message,
+        },
+      },
+    );
+  }
 }

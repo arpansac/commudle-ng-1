@@ -34,6 +34,7 @@ import { NbDialogService, NbMenuItem, NbMenuService } from '@commudle/theme';
 import { MentorDashboardLinkDialogComponent } from '../hackathon-control-panel-emails/mentor-dashboard-link-dialog/mentor-dashboard-link-dialog.component';
 import { MentorCustomEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-custom-email-dialog/mentor-custom-email-dialog.component';
 import { MentorTeamAssignmentEmailDialogComponent } from '../hackathon-control-panel-emails/mentor-team-assignment-email-dialog/mentor-team-assignment-email-dialog.component';
+import { MentorMessageToTeamsDialogComponent } from '../hackathon-control-panel-emails/mentor-message-to-teams-dialog/mentor-message-to-teams-dialog.component';
 import { MentorNotesDialogComponent } from '../mentor-notes-dialog/mentor-notes-dialog.component';
 import { filter, map } from 'rxjs/operators';
 import {
@@ -160,12 +161,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       )
       .subscribe(({ item, tag }) => {
         if (tag === 'header-actions') {
-          const index = item.data.index;
-          if (index === 0) {
-            this.openBulkDashboardLinkDialog();
-          } else if (index === 1) {
-            this.openBulkCustomEmailDialog();
-          }
+          //
         } else {
           const mentor = item.data.mentor;
           const index = item.data.index;
@@ -443,6 +439,8 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
       this.openShiftTeamsDialog(roundId);
     } else if (action === 'sendEmail') {
       this.openBulkTeamAssignmentEmailDialog(roundId);
+    } else if (action === 'sendMentorMessage') {
+      this.openMentorMessageToTeamsDialog(roundId);
     }
 
     select.value = '';
@@ -584,6 +582,10 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
         title: 'Send Team Assignment Email to All',
         icon: 'people-outline',
       },
+      {
+        title: 'Send Mentor Message to Teams',
+        icon: 'message-circle-outline',
+      },
     ].map((item, index) => ({
       ...item,
       data: { index },
@@ -629,6 +631,7 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
   openIndividualTeamAssignmentEmailDialog(mentor: IHackathonJudge): void {
     this.dialogService.open(MentorTeamAssignmentEmailDialogComponent, {
       context: {
+        hackathonId: this.hackathonId,
         mentor,
         rounds: this.rounds,
         isBulk: false,
@@ -674,5 +677,16 @@ export class HackathonControlPanelMentorsComponent implements OnInit, OnDestroy 
     this.activeTab = tab;
     this.updateFilteredTeams();
     this.cdr.markForCheck();
+  }
+
+  openMentorMessageToTeamsDialog(roundId: number): void {
+    this.dialogService.open(MentorMessageToTeamsDialogComponent, {
+      context: {
+        hackathonId: this.hackathonId,
+        rounds: this.rounds,
+        mentors: this.mentors,
+        selectedRoundId: roundId,
+      },
+    });
   }
 }

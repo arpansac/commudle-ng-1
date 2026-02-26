@@ -3,7 +3,7 @@
     <span>{{
       isBulk ? 'Send Team Assignment Email to All Mentors' : 'Send Team Assignment Email to ' + mentor.name
     }}</span>
-    <button nbButton size="small" shape="round" (click)="closeDialogBox()">
+    <button nbButton size="small" shape="round" (click)="closeDialogBox()" ghost>
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
@@ -24,16 +24,29 @@
     </div>
   </nb-card-body>
   <nb-card-footer>
-    <button
-      nbButton
-      status="primary"
-      shape="semi-round"
-      fullWidth
-      (click)="sendEmail()"
-      [nbSpinner]="isSubmitting"
-      [disabled]="isSubmitting || !selectedRoundId"
-    >
-      Send
-    </button>
+    <div class="footer-actions">
+      <button
+        nbButton
+        status="basic"
+        shape="semi-round"
+        (click)="previewEmail()"
+        [disabled]="!selectedRoundId"
+        [nbSpinner]="showPreviewSpinner"
+        fullWidth
+      >
+        Preview
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        (click)="sendEmail()"
+        [nbSpinner]="isSubmitting"
+        [disabled]="isSubmitting || !selectedRoundId"
+        fullWidth
+      >
+        Send
+      </button>
+    </div>
   </nb-card-footer>
 </nb-card>

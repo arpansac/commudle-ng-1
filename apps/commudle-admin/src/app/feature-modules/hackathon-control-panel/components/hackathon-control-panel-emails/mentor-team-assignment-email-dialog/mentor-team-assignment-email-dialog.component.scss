@@ -29,4 +29,14 @@
       }
     }
   }
+
+  nb-card-footer {
+    .footer-actions {
+      @apply com-flex com-gap-3;
+
+      button {
+        @apply com-min-w-[120px];
+      }
+    }
+  }
 }

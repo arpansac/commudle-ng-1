@@ -1,0 +1,107 @@
+.mail-popup {
+  @apply md:com-w-[50dvw] md:com-max-h-[90dvh] com-w-auto com-mx-0;
+
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  nb-card-body {
+    @apply com-overflow-y-auto;
+
+    .form-group {
+      @apply com-mb-4;
+
+      label {
+        @apply com-block com-mb-2 com-font-medium com-text-gray-700;
+      }
+
+      .select-wrapper {
+        @apply com-relative;
+
+        select {
+          @apply com-w-full com-px-4 com-py-2.5 com-border com-border-gray-300 com-rounded-lg;
+          @apply com-bg-white com-text-gray-900 com-cursor-pointer;
+          @apply focus:com-border-primary-500 focus:com-outline-none focus:com-ring-2 focus:com-ring-primary-200;
+          @apply com-appearance-none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          padding-right: 40px;
+        }
+      }
+
+      .mentor-header {
+        @apply com-flex com-justify-between com-items-center com-mb-3;
+
+        label {
+          @apply com-mb-0;
+        }
+      }
+
+      .mentor-list {
+        @apply com-max-h-64 com-overflow-y-auto com-border com-border-gray-200 com-rounded-lg com-p-3 com-bg-gray-50;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          @apply com-bg-gray-100 com-rounded;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          @apply com-bg-gray-400 com-rounded;
+
+          &:hover {
+            @apply com-bg-gray-500;
+          }
+        }
+
+        .mentor-checkbox {
+          @apply com-flex com-items-center com-gap-2 com-mb-2 com-cursor-pointer com-p-2 com-rounded com-transition-colors;
+          @apply hover:com-bg-white;
+
+          &:last-child {
+            @apply com-mb-0;
+          }
+
+          input[type='checkbox'] {
+            @apply com-w-4 com-h-4 com-cursor-pointer com-rounded com-border-2 com-border-gray-300;
+            @apply com-transition-all com-duration-200;
+            @apply focus:com-ring-2 focus:com-ring-primary-200 focus:com-ring-offset-0;
+
+            &:checked {
+              @apply com-border-primary-500;
+            }
+          }
+
+          .checkmark {
+            @apply com-hidden;
+          }
+
+          .mentor-name {
+            @apply com-text-Yankees-Blue com-text-sm com-select-none;
+          }
+        }
+      }
+    }
+
+    .message-field {
+      @apply com-mb-4;
+
+      label {
+        @apply com-block com-mb-2 com-font-medium com-text-gray-700;
+      }
+    }
+  }
+
+  nb-card-footer {
+    .footer-actions {
+      @apply com-flex com-gap-3;
+
+      button {
+        @apply com-min-w-[120px];
+      }
+    }
+  }
+}

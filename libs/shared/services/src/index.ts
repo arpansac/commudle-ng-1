@@ -41,3 +41,4 @@ export * from './lib/round-mentor-slot-rules.service';
 export * from './lib/round-mentor-slot.service';
 export * from './lib/hackathon-team.service';
 export * from './lib/round-mentor-slot-booking.service';
+export * from './lib/hackathon-emails.service';

@@ -457,6 +457,8 @@ export const API_ROUTES = {
       HACKATHON_TEAM_RSVP_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_team_rsvp_email',
       HACKATHON_ENTRY_PASS_EMAIL: 'api/v2/email_previews/hackathon_emails/hackathon_entry_pass_email',
       SEND_REJECTION_EMAILS: 'api/v2/email_previews/hackathon_emails/send_rejection_emails', //POST
+      MENTOR_MESSAGE_TO_TEAMS_EMAIL: 'api/v2/email_previews/hackathon_emails/mentor_message_to_teams_email', //POST
+      MENTOR_TEAM_ASSIGNMENT_EMAIL: 'api/v2/email_previews/hackathon_emails/mentor_team_assignment_email', //POST
     },
   },
 
@@ -1157,6 +1159,10 @@ export const API_ROUTES = {
     SCAN_ENTRY_PASS: 'api/v2/hackathon_entry_passes/scan_entry_pass', //GET
     UPDATE_ATTENDANCE: 'api/v2/hackathon_entry_passes/update_attendance', //PUT
     ATTENDANCE_STATS: 'api/v2/hackathon_entry_passes/attendance_stats', //GET
+  },
+
+  HACKATHON_EMAILS: {
+    SEND_MENTOR_MESSAGE_TO_TEAMS: 'api/v2/hackathon_emails/send_mentor_message_to_teams', //POST
   },
 
   ROUND_MENTOR_SLOT_RULES: {

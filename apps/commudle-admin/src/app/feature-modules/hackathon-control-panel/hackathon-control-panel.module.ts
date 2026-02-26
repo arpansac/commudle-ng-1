@@ -76,6 +76,7 @@ import { MentorSlotListComponent } from 'apps/commudle-admin/src/app/feature-mod
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/mentor-notes-dialog/mentor-notes-dialog.component';
 import { MentorTeamAssignmentEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-team-assignment-email-dialog/mentor-team-assignment-email-dialog.component';
+import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-message-to-teams-dialog/mentor-message-to-teams-dialog.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { MentorTeamAssignmentEmailDialogComponent } from 'apps/commudle-admin/sr
     MentorSlotListComponent,
     MentorNotesDialogComponent,
     MentorTeamAssignmentEmailDialogComponent,
+    MentorMessageToTeamsDialogComponent,
   ],
   imports: [
     CommonModule,

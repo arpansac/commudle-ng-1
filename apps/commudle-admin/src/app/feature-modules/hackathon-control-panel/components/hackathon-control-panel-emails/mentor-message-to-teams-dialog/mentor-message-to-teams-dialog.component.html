@@ -1,0 +1,78 @@
+<nb-card class="mail-popup">
+  <nb-card-header>
+    <span>Send Message to Teams via Mentors/Judges</span>
+    <button nbButton size="small" shape="round" (click)="closeDialogBox()" ghost>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <commudle-alert [info]="true" message="This will send a message to teams through selected mentors"></commudle-alert>
+    <form [formGroup]="emailForm">
+      <div class="form-group">
+        <label for="round">Select Round *</label>
+        <div class="select-wrapper">
+          <select id="round" formControlName="roundId">
+            <option [value]="null" disabled>Select a round</option>
+            <option *ngFor="let round of rounds" [value]="round.id">{{ round.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="mentor-header">
+          <label>Select Mentors/Judges *</label>
+          <button nbButton size="small" status="basic" (click)="toggleSelectAll()" type="button">
+            {{ selectAllMentors ? 'Deselect All' : 'Select All' }}
+          </button>
+        </div>
+        <div class="mentor-list">
+          <label *ngFor="let mentor of mentors" class="mentor-checkbox">
+            <input
+              type="checkbox"
+              [value]="mentor.id"
+              [checked]="emailForm.get('mentorIds').value.includes(mentor.id)"
+              (change)="onMentorCheckboxChange($event, mentor.id)"
+            />
+            <span class="mentor-name">{{ mentor.name }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject *</label>
+        <input nbInput fullWidth id="subject" formControlName="subject" placeholder="Enter email subject" />
+      </div>
+
+      <div class="message-field">
+        <label for="message" class="message">Message *</label>
+        <editor [init]="tinyMCE" formControlName="message"></editor>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="footer-actions">
+      <button
+        nbButton
+        status="basic"
+        shape="semi-round"
+        (click)="previewMessage()"
+        [disabled]="emailForm.invalid"
+        [nbSpinner]="showPreviewSpinner"
+        fullWidth
+      >
+        Preview
+      </button>
+      <button
+        nbButton
+        status="primary"
+        shape="semi-round"
+        (click)="sendMessage()"
+        [nbSpinner]="isSubmitting"
+        [disabled]="isSubmitting || emailForm.invalid"
+        fullWidth
+      >
+        Send
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>
