@@ -93,7 +93,7 @@
 
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
-        <div *appBreakpoints="'>lg'" class="registrations-buttons">
+        <div class="registrations-buttons">
           <nb-card *ngIf="moment() < moment(event.end_time)" class="event-form-card">
             <nb-card-header>
               <h6 class="event-form-title">
@@ -171,7 +171,7 @@
       </div>
       <div class="right-column">
         <div class="event-date-time-card">
-          <div class="organizer-panel" *ngIf="isOrganizer">
+          <div class="organizer-panel-event" *ngIf="isOrganizer">
             <a
               nbButton
               status="danger"
@@ -273,7 +273,7 @@
         (click)="openBottomSheet()"
         class="register-now-button"
       >
-        Register Now
+        Join this event
       </button>
     </div>
   </div>

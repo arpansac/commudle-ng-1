@@ -80,7 +80,7 @@
       }
 
       .event-date-time-card {
-        @apply com-mb-0 com-mx-0 com-ml-3 md:com-mt-2 md:com-rounded-[10px] com-rounded-none com-flex com-flex-col md:com-sticky md:com-top-32;
+        @apply com-mb-0 com-mx-0 md:com-ml-3 com-ml-0 md:com-mt-2 md:com-rounded-[10px] com-rounded-none com-flex com-flex-col md:com-sticky md:com-top-32;
         .event-date-time {
           @apply com-p-0;
           .event-date,
@@ -161,4 +161,8 @@
 
 .organizer-panel {
   @apply com-m-0 com-mt-4;
+}
+
+.organizer-panel-event {
+  @apply com-m-0 com-mt-4 md:com-mx-0 com-mx-6;
 }
