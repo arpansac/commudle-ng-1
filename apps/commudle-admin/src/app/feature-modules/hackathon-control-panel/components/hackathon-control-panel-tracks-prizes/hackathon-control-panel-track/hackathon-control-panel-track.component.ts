@@ -8,10 +8,10 @@ import { HackathonPrizeFormComponent } from 'apps/commudle-admin/src/app/feature
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-track',
-    templateUrl: './hackathon-control-panel-track.component.html',
-    styleUrls: ['./hackathon-control-panel-track.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-track',
+  templateUrl: './hackathon-control-panel-track.component.html',
+  styleUrls: ['./hackathon-control-panel-track.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelTrackComponent implements OnInit {
   trackForm: FormGroup;
@@ -199,9 +199,11 @@ export class HackathonControlPanelTrackComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe((result) => {
-      const hackathonTrackIndex = this.hackathonTracks.findIndex((track) => track.id === selectedTrackId);
-      if (hackathonTrackIndex > -1 && this.hackathonTracks[hackathonTrackIndex]) {
-        this.hackathonTracks[hackathonTrackIndex].hackathon_prizes.push(result);
+      if (result) {
+        const hackathonTrackIndex = this.hackathonTracks.findIndex((track) => track.id === selectedTrackId);
+        if (hackathonTrackIndex > -1 && this.hackathonTracks[hackathonTrackIndex]) {
+          this.hackathonTracks[hackathonTrackIndex].hackathon_prizes.push(result);
+        }
       }
     });
   }
