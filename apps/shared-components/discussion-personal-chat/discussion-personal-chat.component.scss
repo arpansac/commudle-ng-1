@@ -2,10 +2,21 @@
   @apply com-h-full;
 
   .discussion-chat-component {
-    @apply com-h-full com-relative;
+    @apply com-flex com-flex-col com-h-full com-min-h-0 com-relative;
 
     .messages {
-      @apply com-h-full;
+      @apply com-flex-1 com-min-h-0 com-overflow-y-auto com-w-full;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: auto;
+
+      .load-previous-sentinel {
+        @apply com-flex com-min-h-1 com-w-full com-items-center com-justify-center com-py-2;
+        pointer-events: none;
+      }
+
+      .load-previous-label {
+        @apply com-text-xs com-text-gray-500;
+      }
 
       .message {
         @apply com-p-0 com-px-3;
@@ -22,7 +33,7 @@
     }
 
     .send-message-form {
-      @apply com-bg-white com-sticky com-bottom-0 com-w-full;
+      @apply com-flex-shrink-0 com-bg-white com-w-full com-border-t com-border-gray-200;
 
       form {
         align-items: self-start;

@@ -1,4 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 import { UserMessagesService } from 'apps/commudle-admin/src/app/services/user-messages.service';
@@ -16,12 +27,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-    selector: 'app-discussion-personal-chat',
-    templateUrl: './discussion-personal-chat.component.html',
-    styleUrls: ['./discussion-personal-chat.component.scss'],
-    standalone: false
+  selector: 'app-discussion-personal-chat',
+  templateUrl: './discussion-personal-chat.component.html',
+  styleUrls: ['./discussion-personal-chat.component.scss'],
+  standalone: false,
 })
-export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
+export class DiscussionPersonalChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() discussion: IDiscussion;
   @Input() user: IUser;
   @Output() newMessage = new EventEmitter();
@@ -43,7 +54,11 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
   chatMessageForm;
   showEmojiForm = false;
   @ViewChild('inputElement', { static: true }) inputElement: ElementRef;
-  @ViewChild('messagesContainer') private messagesContainer: ElementRef;
+  @ViewChild('messagesContainer') private messagesContainer: ElementRef<HTMLDivElement>;
+  @ViewChild('loadPreviousSentinel') private loadPreviousSentinel: ElementRef<HTMLElement>;
+
+  private loadPreviousObserver: IntersectionObserver | null = null;
+  private sentinelWasIntersecting = false;
 
   validators: IEditorValidator = {
     required: true,
@@ -64,6 +79,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     private authWatchService: LibAuthwatchService,
     private gtm: GoogleTagManagerService,
     private loginAuthService: LoginAuthService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.chatMessageForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
@@ -77,7 +93,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     this.chatChannelSubscription = this.discussionChatChannel.subscribe(this.discussion.id);
     this.discussionSubscribed.emit(true);
     this.discussionChatChannel.discussionBlockedStatuses$[this.discussion.id].subscribe((data: boolean) => {
-      let previousBlockedStatus = this.blocked;
+      const previousBlockedStatus = this.blocked;
       this.blocked = data;
       if (previousBlockedStatus !== data && data !== null && previousBlockedStatus !== null) {
         this.blockChat();
@@ -88,7 +104,12 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     this.getDiscussionMessages();
   }
 
+  ngAfterViewInit(): void {
+    this.setupLoadPreviousObserver();
+  }
+
   ngOnDestroy() {
+    this.disconnectLoadPreviousObserver();
     this.currentUserSubscription.unsubscribe();
     this.chatChannelSubscription.unsubscribe(this.discussion.id);
     this.channelSubscription.unsubscribe(this.discussion.id);
@@ -96,13 +117,14 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  scrollToBottom() {
-    // TODO find a fix to this settimeout for scrolling to bottom on every new message loaded
+  scrollToBottom(): void {
+    const el = this.messagesContainer?.nativeElement;
+    if (!el) return;
     setTimeout(() => {
       try {
-        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight + 300;
+        el.scrollTop = el.scrollHeight - el.clientHeight;
       } catch (err) {
-        console.log(err);
+        console.warn('scrollToBottom', err);
       }
     }, 100);
   }
@@ -113,6 +135,51 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  private setupLoadPreviousObserver(): void {
+    const container = this.messagesContainer?.nativeElement;
+    if (!container) return;
+
+    this.loadPreviousObserver = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry || this.allMessagesLoaded || this.loadingMessages) return;
+
+        const isNowInView = entry.isIntersecting;
+        if (isNowInView && !this.sentinelWasIntersecting) {
+          this.sentinelWasIntersecting = true;
+          this.unobserveLoadPreviousSentinel();
+          this.getDiscussionMessages();
+        } else if (!isNowInView) {
+          this.sentinelWasIntersecting = false;
+        }
+      },
+      { root: container, rootMargin: '0px', threshold: 0 },
+    );
+    this.observeLoadPreviousSentinel();
+  }
+
+  private observeLoadPreviousSentinel(): void {
+    const sentinel = this.loadPreviousSentinel?.nativeElement;
+    if (sentinel && this.loadPreviousObserver) {
+      this.loadPreviousObserver.observe(sentinel);
+    }
+  }
+
+  private unobserveLoadPreviousSentinel(): void {
+    const sentinel = this.loadPreviousSentinel?.nativeElement;
+    if (sentinel && this.loadPreviousObserver) {
+      this.loadPreviousObserver.unobserve(sentinel);
+    }
+  }
+
+  private disconnectLoadPreviousObserver(): void {
+    if (this.loadPreviousObserver) {
+      this.loadPreviousObserver.disconnect();
+      this.loadPreviousObserver = null;
+    }
+    this.sentinelWasIntersecting = false;
+  }
+
   login() {
     if (!this.currentUser) {
       this.loginAuthService.openLoginSignupTemplate();
@@ -120,9 +187,14 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  getDiscussionMessages() {
+  getDiscussionMessages(): void {
     if (!this.allMessagesLoaded && !this.loadingMessages) {
       this.loadingMessages = true;
+      const isLoadingOlder = this.nextPage > 1;
+      const el = this.messagesContainer?.nativeElement;
+      const prevScrollHeight = el ? el.scrollHeight : 0;
+      const prevScrollTop = el ? el.scrollTop : 0;
+
       this.userMessagesService
         .getPersonalChatDiscussionMessages(this.discussion.id, this.nextPage, this.pageSize)
         .subscribe((data) => {
@@ -132,13 +204,40 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
           this.messages.unshift(...data.user_messages.reverse());
           this.groupedMessages = this.groupMessagesByDate(this.messages);
           this.loadingMessages = false;
+
           if (this.nextPage === 1) {
             this.scrollToBottom();
+            // Re-observe only after we've scrolled to bottom so sentinel is out of view (avoid loading page 2 immediately)
+            setTimeout(() => this.observeLoadPreviousSentinel(), 150);
+          } else if (isLoadingOlder && prevScrollHeight > 0) {
+            this.cdr.detectChanges();
+            this.preserveScrollPosition(prevScrollHeight, prevScrollTop, () => this.observeLoadPreviousSentinel());
+          } else {
+            setTimeout(() => this.observeLoadPreviousSentinel(), 0);
           }
 
           this.nextPage += 1;
         });
     }
+  }
+
+  private preserveScrollPosition(prevScrollHeight: number, prevScrollTop: number, onDone?: () => void): void {
+    const el = this.messagesContainer?.nativeElement;
+    if (!el) {
+      onDone?.();
+      return;
+    }
+    const applyScroll = () => {
+      const heightDelta = el.scrollHeight - prevScrollHeight;
+      el.scrollTop = prevScrollTop + heightDelta;
+    };
+    requestAnimationFrame(() => {
+      applyScroll();
+      setTimeout(applyScroll, 0);
+      setTimeout(() => {
+        onDone?.();
+      }, 50);
+    });
   }
 
   groupMessagesByDate(messages) {
@@ -184,7 +283,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
   }
 
   delete(data) {
-    let userMessageId = data.messageId;
+    const userMessageId = data.messageId;
     this.discussionChatChannel.sendData(this.discussion.id, this.discussionChatChannel.ACTIONS.DELETE, {
       user_message_id: userMessageId,
     });
@@ -373,7 +472,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy {
   }
 
   selectEmoji(event) {
-    let currentValue = this.chatMessageForm.get('content').value || '';
+    const currentValue = this.chatMessageForm.get('content').value || '';
     this.chatMessageForm.patchValue({
       content: currentValue.concat(event.emoji.native),
     });

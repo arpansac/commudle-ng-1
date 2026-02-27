@@ -14,7 +14,11 @@
 
     nb-card-body {
       transition: all 0.2s ease-in-out;
-      @apply com-grid com-p-0;
+      @apply com-grid com-p-0 com-overflow-hidden com-min-h-0;
+
+      app-discussion-personal-chat {
+        @apply com-min-h-0;
+      }
     }
   }
 }

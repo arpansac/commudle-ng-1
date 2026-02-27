@@ -1,6 +1,9 @@
 <div class="discussion-chat-component">
-  <div #messagesContainer (scroll)="loadPreviousMessages()" class="messages">
+  <div #messagesContainer class="messages">
     <div class="com-h-full">
+      <div *ngIf="messages.length > 0 && !allMessagesLoaded" #loadPreviousSentinel class="load-previous-sentinel">
+        <span *ngIf="loadingMessages" class="load-previous-label">Loading older messages…</span>
+      </div>
       <div *ngFor="let group of groupedMessages">
         <h3 class="grouped-date">{{ moment(group.date).format('MMMM D, YYYY') }}</h3>
         <div *ngFor="let message of group.messages">
@@ -18,27 +21,27 @@
             (sendFlag)="sendFlag($event)"
           ></app-message>
         </div>
-        <div *ngIf="messages.length === 0" class="filler-message">
-          <h4>Be the first one to message!</h4>
-        </div>
+      </div>
+      <div *ngIf="messages.length === 0" class="filler-message">
+        <h4>Be the first one to message!</h4>
       </div>
     </div>
+  </div>
 
-    <div class="send-message-form">
-      <commudle-editor
-        *ngIf="currentUser && !blocked"
-        [editable]="true"
-        [placeholder]="'Type Here'"
-        [status]="'info'"
-        [appearance]="'filled'"
-        (contentChange)="sendMessage($event)"
-        [validators]="validators"
-      ></commudle-editor>
-      <p *ngIf="currentUser && blocked" class="blocked-text">You have blocked this User</p>
+  <div class="send-message-form">
+    <commudle-editor
+      *ngIf="currentUser && !blocked"
+      [editable]="true"
+      [placeholder]="'Type Here'"
+      [status]="'info'"
+      [appearance]="'filled'"
+      (contentChange)="sendMessage($event)"
+      [validators]="validators"
+    ></commudle-editor>
+    <p *ngIf="currentUser && blocked" class="blocked-text">You have blocked this User</p>
 
-      <button *ngIf="!currentUser" nbButton fullWidth status="primary" class="login-button" (click)="login()">
-        Post a Message
-      </button>
-    </div>
+    <button *ngIf="!currentUser" nbButton fullWidth status="primary" class="login-button" (click)="login()">
+      Post a Message
+    </button>
   </div>
 </div>

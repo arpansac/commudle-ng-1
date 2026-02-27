@@ -33,6 +33,7 @@ import {
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { InfiniteScrollModule } from 'apps/shared-modules/infinite-scroll/infinite-scroll.module';
 import { HmsVideoModule } from 'apps/shared-modules/hms-video/hms-video.module';
 import { MentionModule } from 'apps/shared-modules/mention/mention.module';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
@@ -176,6 +177,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     PickerModule,
     LinkyModule,
     SharedDirectivesModule,
+    InfiniteScrollModule,
     MentionModule,
     MiniUserProfileModule,
     InViewportModule,
