@@ -30,6 +30,7 @@
   "appData": {
     "version": "2.2.0",
     "releaseNotes": "",
-    "critical": true
+    "critical": true,
+    "timestamp": "2026-03-03T07:03:47.000Z"
   }
 }
