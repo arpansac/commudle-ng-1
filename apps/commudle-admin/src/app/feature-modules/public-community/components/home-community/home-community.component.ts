@@ -23,10 +23,10 @@ interface CustomMenuItem {
   slug: string;
 }
 @Component({
-    selector: 'app-home-community',
-    templateUrl: './home-community.component.html',
-    styleUrls: ['./home-community.component.scss'],
-    standalone: false
+  selector: 'app-home-community',
+  templateUrl: './home-community.component.html',
+  styleUrls: ['./home-community.component.scss'],
+  standalone: false,
 })
 export class HomeCommunityComponent implements OnInit, OnDestroy {
   community: ICommunity;
@@ -88,8 +88,8 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
       this.updateHeaderVariation();
       this.newsletterService.getPIndex(this.community.id, 'Kommunity').subscribe((data) => {
         if (data.length > 0) this.showNewslettersTab = true;
-      }),
-        (this.uploadedBanner = this.community.banner_image ? this.community.banner_image.url : '');
+      });
+      this.uploadedBanner = this.community.banner_image ? this.community.banner_image.url : '';
       if (this.community.is_visible) {
         this.seoService.setTags(
           this.community.name,
@@ -126,15 +126,17 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
           this.items.push(newItem);
         }
       }),
-    ),
+    );
+    this.subscriptions.push(
       this.nbMenuService
         .onItemClick()
         .pipe(map(({ item }) => item as CustomMenuItem))
-        .subscribe(({ title, slug }) => {
+        .subscribe(({ slug }) => {
           if (slug) {
             this.router.navigate(['communities', this.community.slug, 'p', slug]);
           }
-        });
+        }),
+    );
   }
   getNotificationsCount(id) {
     if (this.notificationsStore.communityNotificationsCount$[id] !== undefined) {
@@ -164,6 +166,9 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
   }
 
   updateBanner() {
+    if (!this.uploadedBannerFile) {
+      return;
+    }
     const formData: any = new FormData();
     formData.append('community[id]', this.community.id);
     formData.append('community[name]', this.community.name);
