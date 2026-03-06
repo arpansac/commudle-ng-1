@@ -4,7 +4,6 @@ import { NbButtonModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faClaude, faOpenai, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 interface AiAssistant {
   id: string;
@@ -38,7 +37,12 @@ export class AiAssistantSelectorComponent {
     faCopy,
   };
 
-  readonly staticAssets = staticAssets;
+  // TODO: Move to static assets store or local file instead of using external URL
+  // Should be stored in assets folder like: assets/images/icons/icon-ai-sparkles.svg
+  readonly staticAssets = {
+    icon_ai_sparkles:
+      'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd0ZpQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bd690c690e8a6a3f0407a30eca21333fd3fe0a79/icon-ai-sparkles-1.svg',
+  };
 
   assistants: AiAssistant[] = [
     {
