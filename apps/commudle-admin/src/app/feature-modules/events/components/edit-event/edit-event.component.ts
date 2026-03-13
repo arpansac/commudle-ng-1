@@ -11,10 +11,10 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { NbWindowRef } from '@commudle/theme';
 import { EEventType } from '@commudle/shared-models';
 @Component({
-    selector: 'app-edit-event',
-    templateUrl: './edit-event.component.html',
-    styleUrls: ['./edit-event.component.scss'],
-    standalone: false
+  selector: 'app-edit-event',
+  templateUrl: './edit-event.component.html',
+  styleUrls: ['./edit-event.component.scss'],
+  standalone: false,
 })
 export class EditEventComponent implements OnInit {
   @Input() eventId: number;
@@ -68,6 +68,7 @@ export class EditEventComponent implements OnInit {
       'undo redo | bullist numlist | formatselect | bold italic backcolor | \
           alignleft aligncenter alignright alignjustify | \
           outdent indent | removeformat | help',
+    license_key: 'gpl',
   };
 
   EEventType = EEventType;
@@ -139,7 +140,6 @@ export class EditEventComponent implements OnInit {
       this.eventForm.get('event').disable();
     }
 
-    // @ts-ignore
     this.eventForm.get('event').patchValue({
       name: this.event.name,
       description: this.event.description,
