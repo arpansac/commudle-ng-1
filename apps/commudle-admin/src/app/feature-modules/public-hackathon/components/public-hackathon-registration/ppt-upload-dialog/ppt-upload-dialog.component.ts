@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { faUpload, faFile, faXmark, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogRef } from '@commudle/theme';
 import { HackathonTeamRoundSubmissionService, ToastrService } from '@commudle/shared-services';
+import { PdfXssValidationService } from '@commudle/shared-components';
 
 @Component({
   standalone: false,
@@ -35,6 +36,7 @@ export class PptUploadDialogComponent implements OnInit {
     private dialogRef: NbDialogRef<PptUploadDialogComponent>,
     private submissionService: HackathonTeamRoundSubmissionService,
     private toasterService: ToastrService,
+    private pdfXssValidationService: PdfXssValidationService,
   ) {
     this.uploadForm = this.fb.group({
       comments: [''],
@@ -69,7 +71,7 @@ export class PptUploadDialogComponent implements OnInit {
         return;
       }
 
-      this.checkPdfFile(file).then((isSafe) => {
+      this.pdfXssValidationService.checkPdfFileForXss(file).then((isSafe) => {
         if (!isSafe) {
           this.toasterService.warningDialog("File contains unsafe content, you can't upload this file");
           event.target.value = '';
@@ -86,25 +88,6 @@ export class PptUploadDialogComponent implements OnInit {
         reader.readAsDataURL(file);
       });
     }
-  }
-
-  checkPdfFile(file: File): Promise<boolean> {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const content = reader.result as string;
-        // Check for XSS patterns in content
-        const isSafe = !this.containsXssContent(content);
-        resolve(isSafe);
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  containsXssContent(content: string): boolean {
-    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
-
-    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   onSubmit() {

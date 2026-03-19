@@ -26,6 +26,8 @@ export * from './lib/components/add-to-calendar/add-to-calendar.component';
 
 export * from './lib/services/community-channel-handler.service';
 
+export * from './lib/services/pdf-xss-validation.service';
+
 export * from './lib/components/user-profile/user-profile-mini-card/user-profile-mini-card.component';
 
 export * from './lib/components/ai-assistant-selector/ai-assistant-selector.component';
