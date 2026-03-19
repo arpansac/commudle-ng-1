@@ -5,7 +5,7 @@ import { IRound, IHackathonTeamRoundSubmission } from '@commudle/shared-models';
 import { Subject } from 'rxjs';
 import { faUpload, faFile, faXmark, faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import { NbDialogRef } from '@commudle/theme';
-import { HackathonTeamRoundSubmissionService } from '@commudle/shared-services';
+import { HackathonTeamRoundSubmissionService, ToastrService } from '@commudle/shared-services';
 
 @Component({
   standalone: false,
@@ -34,6 +34,7 @@ export class PptUploadDialogComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: NbDialogRef<PptUploadDialogComponent>,
     private submissionService: HackathonTeamRoundSubmissionService,
+    private toasterService: ToastrService,
   ) {
     this.uploadForm = this.fb.group({
       comments: [''],
@@ -59,15 +60,51 @@ export class PptUploadDialogComponent implements OnInit {
 
     if (file) {
       if (!allowedTypes.includes(file.type)) {
-        alert('Invalid file type. Please upload .ppt, .pptx, or .pdf files only.');
+        this.toasterService.warningDialog('Invalid file type. Please upload .ppt, .pptx, or .pdf files only.');
         return;
       }
+
       if (file.size > maxSize) {
-        alert('File size exceeds 10MB. Please upload a smaller file.');
+        this.toasterService.warningDialog('File size exceeds 10MB. Please upload a smaller file.');
         return;
       }
-      this.selectedFile = file;
+
+      this.checkPdfFile(file).then((isSafe) => {
+        if (!isSafe) {
+          this.toasterService.warningDialog("File contains unsafe content, you can't upload this file");
+          event.target.value = '';
+          this.selectedFile = null;
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          this.selectedFile = file;
+        };
+
+        reader.readAsDataURL(file);
+      });
     }
+  }
+
+  checkPdfFile(file: File): Promise<boolean> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const content = reader.result as string;
+        // Check for XSS patterns in content
+        const isSafe = !this.containsXssContent(content);
+        resolve(isSafe);
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  containsXssContent(content: string): boolean {
+    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
+
+    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   onSubmit() {
