@@ -16,6 +16,7 @@ import { EAttachmentType } from '@commudle/shared-models';
 import { IUserStat } from '@commudle/shared-models';
 import { validate } from 'uuid';
 import { Subject, takeUntil } from 'rxjs';
+import { PdfXssValidationService } from '@commudle/shared-components';
 
 @Component({
   selector: 'app-speaker-resource-form',
@@ -56,6 +57,7 @@ export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private authWatchService: LibAuthwatchService,
     private appUsersService: AppUsersService,
+    private pdfXssValidationService: PdfXssValidationService,
   ) {
     this.speakerResourceForm = this.fb.group(
       {
@@ -182,7 +184,7 @@ export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
       }
 
       // Read and check the file for XSS
-      this.checkPdfFile(file).then((isSafe) => {
+      this.pdfXssValidationService.checkPdfFileForXss(file).then((isSafe) => {
         if (!isSafe) {
           this.nbToastrService.warning("PDF contains unsafe content, You can't upload that file", 'Warning');
           this.uploadedPdf = null;
@@ -200,24 +202,6 @@ export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
         reader.readAsDataURL(file);
       });
     }
-  }
-
-  checkPdfFile(file: File): Promise<boolean> {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const content = reader.result as string;
-        // Check for XSS patterns in content
-        const isSafe = !this.containsXssContent(content);
-        resolve(isSafe);
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  containsXssContent(content: string): boolean {
-    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
-    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   removePdfFile() {

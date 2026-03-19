@@ -12,12 +12,13 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from '@commudle/shared-services';
+import { PdfXssValidationService } from '@commudle/shared-components';
 
 @Component({
-    selector: 'app-user-resume',
-    templateUrl: './user-resume.component.html',
-    styleUrls: ['./user-resume.component.scss'],
-    standalone: false
+  selector: 'app-user-resume',
+  templateUrl: './user-resume.component.html',
+  styleUrls: ['./user-resume.component.scss'],
+  standalone: false,
 })
 export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -50,6 +51,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private toasterService: ToastrService,
+    private pdfXssValidationService: PdfXssValidationService,
   ) {
     this.userResumeForm = this.fb.group({
       name: ['', Validators.required],
@@ -170,7 +172,7 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       // Read and check the file for XSS
-      this.checkPdfFile(file).then((isSafe) => {
+      this.pdfXssValidationService.checkPdfFileForXss(file).then((isSafe) => {
         if (!isSafe) {
           this.toasterService.warningDialog("PDF contains unsafe content, You can't upload that file");
           this.userResumeForm.patchValue({
@@ -197,25 +199,6 @@ export class UserResumeComponent implements OnInit, OnChanges, OnDestroy {
         reader.readAsDataURL(file);
       });
     }
-  }
-
-  checkPdfFile(file: File): Promise<boolean> {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const content = reader.result as string;
-        // Check for XSS patterns in content
-        const isSafe = !this.containsXssContent(content);
-        resolve(isSafe);
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  containsXssContent(content: string): boolean {
-    // Basic patterns for XSS in PDFs
-    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
-    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   getResumeFormData(): FormData {
