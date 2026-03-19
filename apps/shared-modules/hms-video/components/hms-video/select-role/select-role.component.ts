@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EHmsRoles } from 'apps/shared-modules/hms-video/enums/hms-roles.enum';
 import { EHmsStates } from 'apps/shared-modules/hms-video/enums/hms-states.enum';
 import { IHmsClient } from 'apps/shared-modules/hms-video/models/hms-client.model';
 import { HmsVideoStateService } from 'apps/shared-modules/hms-video/services/hms-video-state.service';
 
 @Component({
-    selector: 'app-select-role',
-    templateUrl: './select-role.component.html',
-    styleUrls: ['./select-role.component.scss'],
-    standalone: false
+  selector: 'app-select-role',
+  templateUrl: './select-role.component.html',
+  styleUrls: ['./select-role.component.scss'],
+  standalone: false,
 })
-export class SelectRoleComponent implements OnInit {
+export class SelectRoleComponent {
   @Input() serverClient: IHmsClient;
 
   @Output() selectedRole: EventEmitter<EHmsRoles> = new EventEmitter<EHmsRoles>();
@@ -19,13 +19,11 @@ export class SelectRoleComponent implements OnInit {
 
   constructor(private hmsVideoStateService: HmsVideoStateService) {}
 
-  ngOnInit(): void {}
-
   selectRole(role: EHmsRoles): void {
     this.selectedRole.emit(role);
 
     switch (role) {
-      case EHmsRoles.VIEWER:
+      case EHmsRoles.VIEWER_NEAR_REALTIME:
       case EHmsRoles.HOST_VIEWER:
         this.hmsVideoStateService.setState(EHmsStates.ROOM);
         break;

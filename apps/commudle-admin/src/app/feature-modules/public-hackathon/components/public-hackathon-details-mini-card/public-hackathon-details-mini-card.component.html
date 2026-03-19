@@ -34,12 +34,12 @@
     <div class="date-value">
       <p *ngIf="hackathon.timezone">
         Starts on:
-        {{ momentTimezone.tz(moment.utc(hackathon.start_date), hackathon.timezone).format('MMM yyyy, h:mm a') }}
+        {{ momentTimezone.tz(moment.utc(hackathon.start_date), hackathon.timezone).format('DD MMM yyyy, h:mm a') }}
         {{ momentTimezone.tz(hackathon.timezone).format('z') }}
       </p>
       <p *ngIf="hackathon.timezone">
         Ends on:
-        {{ momentTimezone.tz(moment.utc(hackathon.end_date), hackathon.timezone).format('MMM yyyy, h:mm a') }}
+        {{ momentTimezone.tz(moment.utc(hackathon.end_date), hackathon.timezone).format('DD MMM yyyy, h:mm a') }}
         {{ momentTimezone.tz(hackathon.timezone).format('z') }}
       </p>
     </div>
@@ -50,12 +50,14 @@
           {{
             momentTimezone
               .tz(moment.utc(hackathon.application_start_date), hackathon.timezone)
-              .format('MMM yyyy, h:mm a')
+              .format('DD MMM yyyy, h:mm a')
           }}
           {{ momentTimezone.tz(hackathon.timezone).format('z') }} -
         </span>
         {{
-          momentTimezone.tz(moment.utc(hackathon.application_end_date), hackathon.timezone).format('MMM yyyy, h:mm a')
+          momentTimezone
+            .tz(moment.utc(hackathon.application_end_date), hackathon.timezone)
+            .format('DD MMM yyyy, h:mm a')
         }}
         {{ momentTimezone.tz(hackathon.timezone).format('z') }}
       </ng-container>

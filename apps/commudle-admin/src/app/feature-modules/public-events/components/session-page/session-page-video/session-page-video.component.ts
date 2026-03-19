@@ -26,10 +26,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'app-session-page-video',
-    templateUrl: './session-page-video.component.html',
-    styleUrls: ['./session-page-video.component.scss'],
-    standalone: false
+  selector: 'app-session-page-video',
+  templateUrl: './session-page-video.component.html',
+  styleUrls: ['./session-page-video.component.scss'],
+  standalone: false,
 })
 export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() event: IEvent;
@@ -52,6 +52,7 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
   isFullScreen = false;
   compressVideoStream = false;
   isBeamActive = false;
+  isHlsRunning = false;
 
   // For live notifications
   userCount = 0;
@@ -75,6 +76,7 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
   ngOnChanges(_changes: SimpleChanges) {
     if (this.embeddedVideoStream) {
       this.isBeamActive = this.embeddedVideoStream.is_recording || this.embeddedVideoStream.is_streaming;
+      this.isHlsRunning = this.embeddedVideoStream.hls_running;
     }
   }
 

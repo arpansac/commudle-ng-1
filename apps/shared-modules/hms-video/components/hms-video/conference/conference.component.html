@@ -1,28 +1,46 @@
 <div *ngIf="isConnectedToRoom" class="conference-container">
-  <app-conference-user-videos></app-conference-user-videos>
+  <!-- HLS Video Player for Viewers -->
+  <div
+    *ngIf="
+      serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      currentRoleAsPerLocalPeer === EHmsRoles.VIEWER_NEAR_REALTIME
+    "
+    class="hls-player-container"
+  >
+    <ng-container *ngIf="isHlsRunning && hlsPlaybackUrl; else hlsNotAvailable">
+      <video #hlsVideoPlayer autoplay playsinline class="hls-video-player"></video>
+    </ng-container>
+    <ng-template #hlsNotAvailable>
+      <p class="hls-loading-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+    </ng-template>
+  </div>
+  <!-- Regular conference view for hosts/guests -->
+  <app-conference-user-videos
+    *ngIf="
+      serverClient.role !== EHmsRoles.VIEWER_NEAR_REALTIME ||
+      currentRoleAsPerLocalPeer !== EHmsRoles.VIEWER_NEAR_REALTIME
+    "
+  ></app-conference-user-videos>
   <div *ngIf="localPeer" class="d-flex controls">
-    <!-- Recording -->
-    <!--    <button-->
-    <!--      (click)="toggleRecording()"-->
-    <!--      *ngIf="-->
-    <!--        (localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER) &&-->
-    <!--        embeddedVideoStream?.rtmp_url.length <= 0-->
-    <!--      "-->
-    <!--      [nbTooltip]="isRecording ? 'Stop Recording' : 'Start Recording'"-->
-    <!--      ghost-->
-    <!--      nbButton-->
-    <!--      shape="round"-->
-    <!--    >-->
-    <!--      <nb-icon [icon]="isRecording ? 'stop-circle' : 'play-circle'" [status]="isRecording ? 'success' : ''"></nb-icon>-->
-    <!--    </button>-->
-    <!-- Streaming -->
+    <!-- HLS Viewer Streaming -->
     <button
-      (click)="toggleStreaming()"
+      (click)="toggleHls()"
+      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
+      [nbTooltip]="isHlsRunning ? 'Stop Viewer Streaming' : 'Start Viewer Streaming'"
+      ghost
+      nbButton
+      shape="round"
+    >
+      <nb-icon [status]="isHlsRunning ? 'success' : ''" icon="cast"></nb-icon>
+    </button>
+    <!-- YT Streaming -->
+    <button
+      (click)="toggleYTStreaming()"
       *ngIf="
         (localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER) &&
         embeddedVideoStream?.rtmp_url?.length > 0
       "
-      [nbTooltip]="isStreaming ? 'Stop Streaming' : 'Start Streaming'"
+      [nbTooltip]="isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming'"
       ghost
       nbButton
       shape="round"

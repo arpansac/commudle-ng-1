@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { EHmsRoles } from 'apps/shared-modules/hms-video/enums/hms-roles.enum';
@@ -12,15 +12,16 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HmsStageService } from '../../services/hms-stage.service';
 
 @Component({
-    selector: 'app-hms-video',
-    templateUrl: './hms-video.component.html',
-    styleUrls: ['./hms-video.component.scss'],
-    standalone: false
+  selector: 'app-hms-video',
+  templateUrl: './hms-video.component.html',
+  styleUrls: ['./hms-video.component.scss'],
+  standalone: false,
 })
 export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   currentUser: ICurrentUser;
 
@@ -56,7 +57,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.embeddedVideoStream.hms_room_id) {
       // Get current user
       this.subscriptions.push(

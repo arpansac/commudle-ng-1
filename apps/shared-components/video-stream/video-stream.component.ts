@@ -1,13 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -16,16 +7,16 @@ import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_v
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 
 @Component({
-    selector: 'app-video-stream',
-    templateUrl: './video-stream.component.html',
-    styleUrls: ['./video-stream.component.scss'],
-    providers: [IsBrowserService],
-    standalone: false
+  selector: 'app-video-stream',
+  templateUrl: './video-stream.component.html',
+  styleUrls: ['./video-stream.component.scss'],
+  providers: [IsBrowserService],
+  standalone: false,
 })
-export class VideoStreamComponent implements OnInit, OnChanges {
+export class VideoStreamComponent implements OnChanges {
   @Input() started: boolean;
   @Input() currentUser: ICurrentUser;
-  @Input() fillerText: string = 'Loading...';
+  @Input() fillerText = 'Loading...';
   @Input() videoSource: string;
   @Input() videoCode: any;
   @Input() width: number;
@@ -33,6 +24,7 @@ export class VideoStreamComponent implements OnInit, OnChanges {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   playerUrl: any;
 
@@ -47,8 +39,6 @@ export class VideoStreamComponent implements OnInit, OnChanges {
   ) {
     this.isBrowser = this.isBrowserService.isBrowser();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.currentUser || changes.embeddedVideoStream || changes.videoCode || changes.videoSource) {

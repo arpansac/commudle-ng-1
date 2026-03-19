@@ -26,10 +26,10 @@ import { hmsActions, hmsStore } from 'apps/shared-modules/hms-video/stores/hms.s
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-    selector: 'app-conference-user-video',
-    templateUrl: './conference-user-video.component.html',
-    styleUrls: ['./conference-user-video.component.scss'],
-    standalone: false
+  selector: 'app-conference-user-video',
+  templateUrl: './conference-user-video.component.html',
+  styleUrls: ['./conference-user-video.component.scss'],
+  standalone: false,
 })
 export class ConferenceUserVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() peer: HMSPeer;
@@ -125,12 +125,14 @@ export class ConferenceUserVideoComponent implements OnInit, OnChanges, AfterVie
 
   changeRole(): void {
     switch (this.peer.roleName) {
-      case EHmsRoles.HOST:
+      case EHmsRoles.HOST: {
         const metaData = JSON.parse(this.peer.metadata || '{}');
         this.toastLogService.warningDialog(`Cannot remove ${metaData.name} from stage`);
         break;
+      }
       case EHmsRoles.GUEST:
-        hmsActions.changeRole(this.peer.id, EHmsRoles.VIEWER, true);
+        hmsActions.changeRole(this.peer.id, EHmsRoles.VIEWER_NEAR_REALTIME, true);
+        break;
     }
   }
 

@@ -1,0 +1,37 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { API_ROUTES } from './api-routes.constant';
+import { BaseApiService } from './base-api.service';
+import { Observable } from 'rxjs';
+import { EDbModels, IHmsHls } from '@commudle/shared-models';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HmsHlsService {
+  constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
+
+  startHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
+    return this.http.post<IHmsHls>(this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.START_HLS), {
+      streamable_id: streamableId,
+      streamable_type: streamableType,
+    });
+  }
+
+  stopHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
+    return this.http.post<IHmsHls>(this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.STOP_HLS), {
+      streamable_id: streamableId,
+      streamable_type: streamableType,
+    });
+  }
+
+  getPlaybackUrl(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
+    const params = new HttpParams().set('streamable_id', streamableId).set('streamable_type', streamableType);
+    return this.http.get<IHmsHls>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.GET_PLAYBACK_URL),
+      {
+        params,
+      },
+    );
+  }
+}

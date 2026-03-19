@@ -42,19 +42,38 @@
           width: 15px;
           height: 15px;
           border-radius: 50%;
-          background-color: $ultra-red;
         }
 
         .ring {
           width: 25px;
           height: 25px;
           border-radius: 50%;
-          border: 3px solid $ultra-red;
           position: absolute;
           left: -5px;
           top: -5px;
           animation: pulsate 1s ease-out infinite;
           opacity: 0;
+        }
+
+        &.ring-green {
+          .circle {
+            @apply com-bg-green-500;
+          }
+
+          .ring {
+            @apply com-border-solid com-border-2 com-border-green-500;
+            animation: pulsate 1s ease-out infinite;
+          }
+        }
+
+        &.ring-red {
+          .circle {
+            background-color: $ultra-red;
+          }
+
+          .ring {
+            border: 3px solid $ultra-red;
+          }
         }
 
         @keyframes pulsate {

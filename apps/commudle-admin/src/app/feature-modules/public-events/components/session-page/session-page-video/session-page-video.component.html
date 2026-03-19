@@ -8,7 +8,11 @@
 >
   <nb-card-body>
     <div *ngIf="embeddedVideoStream" class="session-page-info d-flex align-items-center">
-      <div *ngIf="isBeamActive" class="ring-container">
+      <div *ngIf="isHlsRunning" class="ring-container ring-green">
+        <div class="ring"></div>
+        <div class="circle"></div>
+      </div>
+      <div *ngIf="isBeamActive" class="ring-container ring-red">
         <div class="ring"></div>
         <div class="circle"></div>
       </div>

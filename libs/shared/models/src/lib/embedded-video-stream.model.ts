@@ -1,10 +1,11 @@
+import { EDbModels } from './db-models.enum';
 import { IUser } from './user.model';
 import { IYoutubeBroadcast } from './youtube-broadcast.model';
 
 export interface IEmbeddedVideoStream {
   id: number;
   source: string;
-  streamable_type: string;
+  streamable_type: EDbModels;
   streamable_id: number;
   embed_code: string;
   user: IUser;
@@ -18,4 +19,5 @@ export interface IEmbeddedVideoStream {
   is_recording: boolean;
   is_streaming: boolean;
   youtube_broadcast: IYoutubeBroadcast;
+  hls_running?: boolean;
 }

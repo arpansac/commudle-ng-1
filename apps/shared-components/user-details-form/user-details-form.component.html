@@ -26,7 +26,7 @@
   </div>
   <div *ngIf="userForm.get('name')">
     <label for="name">Your Name <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="name" />
+    <input type="text" nbInput fullWidth formControlName="name" placeholder="Enter your full name" />
     <commudle-alert
       *ngIf="userForm.get('name').touched && userForm.get('name').invalid && userForm.get('name').errors.required"
       [error]="true"
@@ -35,7 +35,7 @@
   </div>
   <div *ngIf="userForm.get('designation')">
     <label for="name">Designation/Tagline <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="designation" />
+    <input type="text" nbInput fullWidth formControlName="designation" placeholder="e.g. Software Engineer at Google" />
     <commudle-alert
       *ngIf="
         userForm.get('designation').touched &&
@@ -56,8 +56,16 @@
     </span>
   </div>
   <div *ngIf="userForm.get('about_me')">
-    <label for="name">About <span class="required">*</span></label>
-    <textarea name="about_me" id="about_me" rows="3" nbInput fullWidth formControlName="about_me"></textarea>
+    <label for="name">About Me<span class="required">*</span></label>
+    <textarea
+      name="about_me"
+      id="about_me"
+      rows="3"
+      nbInput
+      fullWidth
+      formControlName="about_me"
+      placeholder="Tell us a little about yourself, your interests, and what you do"
+    ></textarea>
     <span
       *ngIf="
         userForm.get('about_me').touched && userForm.get('about_me').invalid && userForm.get('about_me').errors.required
@@ -86,7 +94,14 @@
   </div>
   <div *ngIf="userForm.get('location')">
     <label for="name">Location <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth id="addressInput" formControlName="location" />
+    <input
+      type="text"
+      nbInput
+      fullWidth
+      id="addressInput"
+      formControlName="location"
+      placeholder="e.g. Bangalore, India"
+    />
     <commudle-alert
       *ngIf="
         userForm.get('location').touched && userForm.get('location').invalid && userForm.get('location').errors.required
@@ -151,7 +166,7 @@
   </div>
   <div *ngIf="userForm.get('work_experience_months')">
     <label for="name">Your Work Experience in Years <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="work_experience_months" />
+    <input type="text" nbInput fullWidth formControlName="work_experience_months" placeholder="e.g. 3" />
     <commudle-alert
       *ngIf="
         userForm.get('work_experience_months').touched &&
@@ -164,7 +179,7 @@
   </div>
   <div *ngIf="userForm.get('education')">
     <label for="name">Your education <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="education" />
+    <input type="text" nbInput fullWidth formControlName="education" placeholder="e.g. B.Tech in Computer Science" />
     <commudle-alert
       *ngIf="
         userForm.get('education').touched &&
@@ -177,7 +192,7 @@
   </div>
   <div *ngIf="userForm.get('phone')">
     <label for="name">Your Phone Number <span class="required">*</span></label>
-    <input type="number" nbInput fullWidth formControlName="phone" />
+    <input type="number" nbInput fullWidth formControlName="phone" placeholder="e.g. 9876543210" />
     <commudle-alert
       *ngIf="userForm.get('phone').touched && userForm.get('phone').invalid && userForm.get('phone').errors.required"
       [error]="true"
@@ -186,11 +201,11 @@
   </div>
   <div *ngIf="userForm.get('email')">
     <label for="name">Your email <span class="required">*</span></label>
-    <input type="email" nbInput fullWidth formControlName="email" readonly />
+    <input type="email" nbInput fullWidth formControlName="email" readonly placeholder="your@email.com" />
   </div>
   <div *ngIf="userForm.get('twitter')">
     <label for="name">Twitter <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="twitter" />
+    <input type="text" nbInput fullWidth formControlName="twitter" placeholder="https://twitter.com/yourhandle" />
     <commudle-alert
       *ngIf="
         userForm.get('twitter').touched && userForm.get('twitter').invalid && userForm.get('twitter').errors.required
@@ -209,7 +224,7 @@
   </div>
   <div *ngIf="userForm.get('linkedin')">
     <label for="name">Linkedin <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="linkedin" />
+    <input type="text" nbInput fullWidth formControlName="linkedin" placeholder="https://linkedin.com/in/yourprofile" />
     <commudle-alert
       *ngIf="
         userForm.get('linkedin').touched && userForm.get('linkedin').invalid && userForm.get('linkedin').errors.required
@@ -228,7 +243,7 @@
   </div>
   <div *ngIf="userForm.get('dribbble')">
     <label for="name">Dribbble <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="dribbble" />
+    <input type="text" nbInput fullWidth formControlName="dribbble" placeholder="https://dribbble.com/yourprofile" />
     <commudle-alert
       *ngIf="
         userForm.get('dribbble').touched && userForm.get('dribbble').invalid && userForm.get('dribbble').errors.required
@@ -247,7 +262,7 @@
   </div>
   <div *ngIf="userForm.get('youtube')">
     <label for="name">Youtube <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="youtube" />
+    <input type="text" nbInput fullWidth formControlName="youtube" placeholder="https://youtube.com/@yourchannel" />
     <commudle-alert
       *ngIf="
         userForm.get('youtube').touched && userForm.get('youtube').invalid && userForm.get('youtube').errors.required
@@ -266,7 +281,7 @@
   </div>
   <div *ngIf="userForm.get('medium')">
     <label for="name">Medium <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="medium" />
+    <input type="text" nbInput fullWidth formControlName="medium" placeholder="https://medium.com/@yourprofile" />
     <commudle-alert
       *ngIf="userForm.get('medium').touched && userForm.get('medium').invalid && userForm.get('medium').errors.required"
       [error]="true"
@@ -281,7 +296,7 @@
   </div>
   <div *ngIf="userForm.get('behance')">
     <label for="name">Behance <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="behance" />
+    <input type="text" nbInput fullWidth formControlName="behance" placeholder="https://behance.net/yourprofile" />
     <commudle-alert
       *ngIf="
         userForm.get('behance').touched && userForm.get('behance').invalid && userForm.get('behance').errors.required
@@ -300,7 +315,7 @@
   </div>
   <div *ngIf="userForm.get('gitlab')">
     <label for="name">Gitlab <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="gitlab" />
+    <input type="text" nbInput fullWidth formControlName="gitlab" placeholder="https://gitlab.com/yourusername" />
     <commudle-alert
       *ngIf="userForm.get('gitlab').touched && userForm.get('gitlab').invalid && userForm.get('gitlab').errors.required"
       [error]="true"
@@ -315,7 +330,7 @@
   </div>
   <div *ngIf="userForm.get('github')">
     <label for="name">Github <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="github" />
+    <input type="text" nbInput fullWidth formControlName="github" placeholder="https://github.com/yourusername" />
     <commudle-alert
       *ngIf="userForm.get('github').touched && userForm.get('github').invalid && userForm.get('github').errors.required"
       [error]="true"
@@ -330,7 +345,7 @@
   </div>
   <div *ngIf="userForm.get('facebook')">
     <label for="name">Facebook <span class="required">*</span></label>
-    <input type="text" nbInput fullWidth formControlName="facebook" />
+    <input type="text" nbInput fullWidth formControlName="facebook" placeholder="https://facebook.com/yourprofile" />
     <commudle-alert
       *ngIf="
         userForm.get('facebook').touched && userForm.get('facebook').invalid && userForm.get('facebook').errors.required

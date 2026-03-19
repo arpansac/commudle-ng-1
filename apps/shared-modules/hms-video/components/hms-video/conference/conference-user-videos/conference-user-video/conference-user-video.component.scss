@@ -4,6 +4,7 @@
   height: 100%;
   position: relative;
   width: 100%;
+  @apply com-overflow-hidden;
 
   &:hover {
     .video-controls {

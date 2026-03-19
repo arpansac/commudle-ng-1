@@ -5,11 +5,13 @@
   top: 0;
   width: 100vw;
   z-index: 1050;
+  @apply com-overflow-hidden;
 
   app-conference-user-videos {
     &::ng-deep {
       .user-streams {
         height: 100%;
+        @apply com-overflow-hidden;
       }
     }
   }

@@ -176,6 +176,11 @@ export const API_ROUTES = {
     PUBLIC: {
       GET: 'api/v2/embedded_video_streams/public',
     },
+    HMS_HLS: {
+      START_HLS: 'api/v2/hms_hls/start_hls',
+      STOP_HLS: 'api/v2/hms_hls/stop_hls',
+      GET_PLAYBACK_URL: 'api/v2/hms_hls/get_playback_url',
+    },
     CREATE_LIVESTREAM: 'api/v2/embedded_video_streams/create_livestream',
     DELETE_LIVESTREAM: 'api/v2/embedded_video_streams/delete_livestream',
   },

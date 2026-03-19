@@ -21,8 +21,6 @@ export class HmsStageService {
   latestRaisedHand: BehaviorSubject<IHandRaisedUser> = new BehaviorSubject<IHandRaisedUser>(null);
   latestRaisedHand$ = this.latestRaisedHand.asObservable();
 
-  constructor() {}
-
   inviteToStage(userId: number) {
     this.stageStatus.next(userId);
   }

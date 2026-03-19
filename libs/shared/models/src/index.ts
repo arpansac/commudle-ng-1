@@ -68,3 +68,4 @@ export * from './lib/hackathon-judge.model';
 export * from './lib/round-mentor-slot-rule.model';
 export * from './lib/round-mentor-slot.model';
 export * from './lib/round-mentor-slot-booking.model';
+export * from './lib/hms-hls.model';

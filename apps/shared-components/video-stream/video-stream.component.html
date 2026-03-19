@@ -9,6 +9,7 @@
     <div *ngIf="currentUser && started" [ngSwitch]="videoSource" class="youtube-player">
       <app-hms-video
         (beamStatus)="beamStatus.emit($event)"
+        (beamStatus)="hlsStatus.emit($event)"
         *ngSwitchCase="EEmbeddedVideoStreamSources.COMMUDLE"
         [embeddedVideoStream]="embeddedVideoStream"
       ></app-hms-video>

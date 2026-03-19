@@ -18,6 +18,8 @@ export class HmsLiveChannel {
     HAND_RAISED: 'hand_raised',
     HAND_LOWERED: 'hand_lowered',
     END_STREAM: 'end_stream',
+    HLS_STARTED: 'hls_started',
+    HLS_STOPPED: 'hls_stopped',
   };
 
   public channelData$ = {};
