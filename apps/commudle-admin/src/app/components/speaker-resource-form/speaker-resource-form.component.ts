@@ -13,15 +13,15 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { EAttachmentType } from '@commudle/shared-models';
-import { IUserStat } from 'libs/shared/models/src/lib/user-stats.model';
+import { IUserStat } from '@commudle/shared-models';
 import { validate } from 'uuid';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-speaker-resource-form',
-    templateUrl: './speaker-resource-form.component.html',
-    styleUrls: ['./speaker-resource-form.component.scss'],
-    standalone: false
+  selector: 'app-speaker-resource-form',
+  templateUrl: './speaker-resource-form.component.html',
+  styleUrls: ['./speaker-resource-form.component.scss'],
+  standalone: false,
 })
 export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
   token: string;
@@ -166,26 +166,58 @@ export class SpeakerResourceFormComponent implements OnInit, OnDestroy {
   }
 
   onFileChange(event) {
-    if (event.target.files) {
-      if (event.target.files[0].type !== 'application/pdf') {
-        this.nbToastrService.warning('File must be a pdf', 'Warning');
-        return;
-      }
-
-      if (event.target.files[0].size > 30000000) {
-        this.nbToastrService.warning('File must be less than 30MB', 'Warning');
-        return;
-      }
-
+    if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
-      this.uploadedPdf = file;
 
+      if (file.type !== 'application/pdf') {
+        this.nbToastrService.warning('File must be a pdf', 'Warning');
+        event.target.value = '';
+        return;
+      }
+
+      if (file.size > 30000000) {
+        this.nbToastrService.warning('File must be less than 30MB', 'Warning');
+        event.target.value = '';
+        return;
+      }
+
+      // Read and check the file for XSS
+      this.checkPdfFile(file).then((isSafe) => {
+        if (!isSafe) {
+          this.nbToastrService.warning("PDF contains unsafe content, You can't upload that file", 'Warning');
+          this.uploadedPdf = null;
+          this.uploadedPdfSrc = '';
+          event.target.value = '';
+          return;
+        }
+
+        this.uploadedPdf = file;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.uploadedPdfSrc = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  checkPdfFile(file: File): Promise<boolean> {
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => {
-        this.uploadedPdfSrc = <string>reader.result;
+        const content = reader.result as string;
+        // Check for XSS patterns in content
+        const isSafe = !this.containsXssContent(content);
+        resolve(isSafe);
       };
-      reader.readAsDataURL(file);
-    }
+      reader.readAsText(file);
+    });
+  }
+
+  containsXssContent(content: string): boolean {
+    const xssPatterns = [/javascript:/i, /<script/i, /onload=/i, /eval\(/i];
+    return xssPatterns.some((pattern) => pattern.test(content));
   }
 
   removePdfFile() {
