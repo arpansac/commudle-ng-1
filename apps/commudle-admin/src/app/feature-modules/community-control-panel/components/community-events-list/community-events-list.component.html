@@ -6,7 +6,7 @@
       nbButton
       status="primary"
       shape="semi-round"
-      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      [routerLink]="['/admin/communities', community.slug, 'event-dashboard', 'new']"
     >
       <fa-icon [icon]="icons.faPlus"></fa-icon> &nbsp; Create New Event
     </a>
@@ -51,7 +51,7 @@
       *appBreakpoints="'<=lg'"
       nbButton
       status="primary"
-      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      [routerLink]="['/admin/communities', community.slug, 'event-dashboard', 'new']"
       class="empty-state-button"
       fullWidth
     >
@@ -67,7 +67,7 @@
       *appBreakpoints="'>lg'"
       nbButton
       status="primary"
-      [routerLink]="['/admin/communities', community.id, 'event-dashboard', 'new']"
+      [routerLink]="['/admin/communities', community.slug, 'event-dashboard', 'new']"
       class="empty-state-button"
     >
       <fa-icon [icon]="icons.faPlus"></fa-icon>
