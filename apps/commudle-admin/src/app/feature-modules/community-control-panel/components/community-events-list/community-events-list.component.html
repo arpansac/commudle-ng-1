@@ -12,6 +12,39 @@
     </a>
   </div>
 
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="status-filter">
+      <nb-select
+        placeholder="Status"
+        multiple
+        [selected]="activeEventStatuses"
+        (selectedChange)="onStatusFilterChange($event)"
+        class="status-multi-select"
+      >
+        <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
+          {{ eventStatus | titlecase }}
+        </nb-option>
+      </nb-select>
+    </div>
+    <form [formGroup]="searchForm" class="search-form">
+      <div>
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            [disabled]="isLoading"
+            fieldSize="medium"
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search by name, email, designation or tags"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
+  </div>
+
   <!-- Empty State -->
   <div *ngIf="!isLoading && (!events || events.length === 0)">
     <a
@@ -42,40 +75,7 @@
     </a>
   </div>
 
-  <ng-container *ngIf="isLoading || (events && events.length > 0)">
-    <!-- Search and Filter Section -->
-    <div class="search-filter-section">
-      <div class="status-filter">
-        <nb-select
-          placeholder="Status"
-          multiple
-          [selected]="activeEventStatuses"
-          (selectedChange)="onStatusFilterChange($event)"
-          class="status-multi-select"
-        >
-          <nb-option *ngFor="let eventStatus of eventStatuses" [value]="eventStatus">
-            {{ eventStatus | titlecase }}
-          </nb-option>
-        </nb-select>
-      </div>
-      <form [formGroup]="searchForm" class="search-form">
-        <div>
-          <nb-form-field>
-            <nb-icon icon="search" nbPrefix></nb-icon>
-            <input
-              [disabled]="isLoading"
-              fieldSize="medium"
-              formControlName="name"
-              fullWidth
-              nbInput
-              placeholder="Search by name, email, designation or tags"
-              type="text"
-            />
-          </nb-form-field>
-        </div>
-      </form>
-    </div>
-
+  <ng-container *ngIf="!isLoading && events && events.length > 0">
     <!-- Events Table Section -->
     <section class="event-list-container">
       <div class="table-wrapper">
