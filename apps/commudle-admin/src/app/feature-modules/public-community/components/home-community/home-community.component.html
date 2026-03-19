@@ -271,7 +271,7 @@
                   <span class="title">Channels</span>
                 </a>
                 <a [routerLink]="['forums']" class="d-flex" routerLinkActive="active">
-                  <fa-icon [icon]="faMessage" class="com-text-2xl com-leading-none"></fa-icon>
+                  <fa-icon [icon]="faMessage"></fa-icon>
                   <span class="title">Forums</span>
                 </a>
                 <div *ngIf="isOrganizer" class="com-relative" (click)="gtmService()">
@@ -286,11 +286,11 @@
                   </a>
                 </div>
                 <a *ngIf="showNewslettersTab" [routerLink]="['newsletters']" class="d-flex" routerLinkActive="active">
-                  <fa-icon [icon]="faNewspaper" class="com-text-2xl com-leading-none"></fa-icon>
+                  <fa-icon [icon]="faNewspaper"></fa-icon>
                   <span class="title">Newsletters</span>
                 </a>
                 <a class="d-flex" [nbContextMenu]="items" nbContextMenuTrigger="hover" *ngIf="items?.length > 0">
-                  <fa-icon [icon]="faCaretDown" class="com-text-2xl com-leading-none"></fa-icon>
+                  <fa-icon [icon]="faCaretDown"></fa-icon>
                   <span class="title">More</span>
                 </a>
               </div>

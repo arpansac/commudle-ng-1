@@ -2,11 +2,7 @@ import { Component, OnDestroy, OnInit, Inject, ViewChild, TemplateRef } from '@a
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NotificationsStore } from 'apps/commudle-admin/src/app/feature-modules/notifications/store/notifications.store';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription, map } from 'rxjs';
-import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { DOCUMENT } from '@angular/common';
 import { NbDialogService, NbMenuService } from '@commudle/theme';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
@@ -15,8 +11,10 @@ import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-p
 import { faCaretDown, faMessage, faNewspaper, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { NewsletterService } from 'apps/commudle-admin/src/app/services/newsletter.service';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, ICommunity } from '@commudle/shared-models';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { environment } from '@commudle/shared-environments';
+import { SeoService, ToastrService } from '@commudle/shared-services';
 
 interface CustomMenuItem {
   title: string;
@@ -58,7 +56,7 @@ export class HomeCommunityComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
     private communitiesService: CommunitiesService,
     private notificationsStore: NotificationsStore,
-    private toastLogService: LibToastLogService,
+    private toastLogService: ToastrService,
     @Inject(DOCUMENT) private document: Document,
     private dialogService: NbDialogService,
     private gtm: GoogleTagManagerService,
