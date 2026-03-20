@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 import { Observable } from 'rxjs';
-import { EDbModels, IHmsHls } from '@commudle/shared-models';
+import { EDbModels, EHmsRoomMode, IHmsHls } from '@commudle/shared-models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HmsHlsService {
+export class HmsRoomService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
   startHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
@@ -31,6 +31,28 @@ export class HmsHlsService {
       this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.GET_PLAYBACK_URL),
       {
         params,
+      },
+    );
+  }
+
+  updateIsLive(streamableId: number, streamableType: EDbModels, isLive: boolean): Observable<{ is_live: boolean }> {
+    return this.http.post<{ is_live: boolean }>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.UPDATE_IS_LIVE),
+      {
+        streamable_id: streamableId,
+        streamable_type: streamableType,
+        is_live: isLive,
+      },
+    );
+  }
+
+  updateMode(streamableId: number, streamableType: EDbModels, mode: EHmsRoomMode): Observable<{ mode: EHmsRoomMode }> {
+    return this.http.post<{ mode: EHmsRoomMode }>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.UPDATE_MODE),
+      {
+        streamable_id: streamableId,
+        streamable_type: streamableType,
+        mode,
       },
     );
   }
