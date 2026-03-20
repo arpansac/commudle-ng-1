@@ -16,6 +16,7 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
   constructor(private errorHandleService: LibErrorHandlerService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const skipError = req.headers.get('skip-error');
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
@@ -27,6 +28,18 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
       }),
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
+          if (skipError === 'true' && error.status === 404) {
+            return new Observable<HttpEvent<any>>((observer) => {
+              observer.next(
+                new HttpResponse({
+                  body: null,
+                  status: 200,
+                }),
+              );
+              observer.complete();
+            });
+          }
+
           // show a dialog/redirect, based on error code
           this.errorHandleService.handleError(error.status, error.error.message);
         }

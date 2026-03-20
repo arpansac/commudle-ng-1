@@ -7,10 +7,10 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { IUser } from '@commudle/shared-models';
 
 @Component({
-    selector: 'commudle-blog-card',
-    templateUrl: './blog-card.component.html',
-    styleUrls: ['./blog-card.component.scss'],
-    standalone: false
+  selector: 'commudle-blog-card',
+  templateUrl: './blog-card.component.html',
+  styleUrls: ['./blog-card.component.scss'],
+  standalone: false,
 })
 export class BlogCardComponent implements OnInit {
   @Input() blog: IBlog;
@@ -38,7 +38,7 @@ export class BlogCardComponent implements OnInit {
 
   getUserProfile() {
     if (this.blog.username) {
-      this.usersService.getProfile(this.blog.username).subscribe((data) => {
+      this.usersService.getProfile(this.blog.username, { skipError: true }).subscribe((data) => {
         if (data) {
           this.user = data;
         }

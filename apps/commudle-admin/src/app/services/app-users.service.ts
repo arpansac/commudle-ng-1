@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IPaginationCount,
@@ -28,9 +28,21 @@ import { Observable } from 'rxjs';
 export class AppUsersService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  getProfile(username): Observable<IUser> {
+  getProfile(
+    username: string,
+    config?: {
+      skipError?: boolean;
+    },
+  ): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), { params });
+    let headers = new HttpHeaders();
+    if (config?.skipError) {
+      headers = headers.set('skip-error', 'true');
+    }
+    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), {
+      params,
+      headers,
+    });
   }
 
   fetchProfile(username: string): Observable<IUser> {

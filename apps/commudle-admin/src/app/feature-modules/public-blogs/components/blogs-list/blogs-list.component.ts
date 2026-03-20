@@ -8,10 +8,10 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-    selector: 'app-blogs',
-    templateUrl: './blogs-list.component.html',
-    styleUrls: ['./blogs-list.component.scss'],
-    standalone: false
+  selector: 'app-blogs',
+  templateUrl: './blogs-list.component.html',
+  styleUrls: ['./blogs-list.component.scss'],
+  standalone: false,
 })
 export class BlogsListComponent implements OnInit, OnDestroy {
   blogs: IBlog[];
@@ -203,7 +203,7 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   getUser(username): Promise<string> {
     return this.appUsersService
-      .getProfile(username)
+      .getProfile(username, { skipError: true })
       .toPromise()
       .then((user) => user.name);
   }
