@@ -1,19 +1,16 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { IEmbeddedVideoStream, IEvent } from '@commudle/shared-models';
+import { IEmbeddedVideoStream, IEvent, IUser, ICommunity } from '@commudle/shared-models';
+import { AuthService, ToastrService } from '@commudle/shared-services';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_video_stream_sources.enum';
-import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
-import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-event-embedded-video-stream',
-    templateUrl: './event-embedded-video-stream.component.html',
-    styleUrls: ['./event-embedded-video-stream.component.scss'],
-    standalone: false
+  selector: 'commudle-event-embedded-video-stream',
+  templateUrl: './event-embedded-video-stream.component.html',
+  styleUrls: ['./event-embedded-video-stream.component.scss'],
+  standalone: false,
 })
 export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   @Input() event: IEvent;
@@ -25,7 +22,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
 
   EEmbeddedVideoStreamSources = EEmbeddedVideoStreamSources;
   evs = <IEmbeddedVideoStream>{};
-  currentUser: ICurrentUser;
+  currentUser: IUser;
 
   embeddedVideoStreamForm;
 
@@ -36,8 +33,8 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private embeddedVideoStreamsService: EmbeddedVideoStreamsService,
-    private toastLogService: LibToastLogService,
-    private authService: LibAuthwatchService,
+    private toastLogService: ToastrService,
+    private authService: AuthService,
   ) {
     this.embeddedVideoStreamForm = this.fb.group({
       streamable_type: ['', Validators.required],
@@ -79,7 +76,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
       this.getEmbeddedVideoStream();
     }
 
-    this.subscription = this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data: ICurrentUser) => {
+    this.subscription = this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe((data: IUser) => {
       this.currentUser = data;
     });
   }
