@@ -41,6 +41,7 @@ export default defineConfig([
         },
       ],
 
+      '@angular-eslint/prefer-standalone': 'off',
       '@angular-eslint/no-empty-lifecycle-method': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
       '@typescript-eslint/no-empty-function': 'warn',
