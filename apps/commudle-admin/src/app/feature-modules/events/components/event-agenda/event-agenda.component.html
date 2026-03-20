@@ -60,11 +60,11 @@
           *ngIf="!event.custom_agenda && !event.custom_registration"
           [event]="event"
         ></app-event-speakers>
-        <app-event-embedded-video-stream
+        <commudle-event-embedded-video-stream
           *ngIf="!event.custom_agenda"
           [community]="community"
           [event]="event"
-        ></app-event-embedded-video-stream>
+        ></commudle-event-embedded-video-stream>
       </div>
     </nb-card-body>
   </nb-card>

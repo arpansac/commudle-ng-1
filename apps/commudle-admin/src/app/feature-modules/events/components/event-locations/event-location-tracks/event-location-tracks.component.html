@@ -369,14 +369,14 @@
           <fa-icon [icon]="faXmark" class="cross-icon"></fa-icon></button
       ></nb-card-header>
       <nb-card-body>
-        <app-event-embedded-video-stream
+        <commudle-event-embedded-video-stream
           [event]="event"
           [community]="community"
           [embeddedVideoStreamFromTrackSlot]="true"
           (embeddedVideoStream)="updateEmbededContent($event, data.eventLocationTrack, data.elti)"
           [embeddedFormData]="eventLocationTracks[data.elti].embedded_video_stream"
           [eventLocationTrackId]="data.eventLocationTrack.id"
-        ></app-event-embedded-video-stream>
+        ></commudle-event-embedded-video-stream>
       </nb-card-body>
     </nb-card>
   </div>
