@@ -34,7 +34,7 @@ import {
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
 import { faHand } from '@fortawesome/free-solid-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
-import { HmsHlsService } from '@commudle/shared-services';
+import { HmsRoomService } from '@commudle/shared-services';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { EHmsRoles } from 'apps/shared-modules/hms-video/enums/hms-roles.enum';
@@ -110,7 +110,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     private hmsStageService: HmsStageService,
     private nbDialogService: NbDialogService,
     private embeddedVideoStreamsService: EmbeddedVideoStreamsService,
-    private hmsHlsService: HmsHlsService,
+    private hmsRoomService: HmsRoomService,
     private hmsLiveChannel: HmsLiveChannel,
     private localMediaService: LocalMediaService,
     @Inject(PLATFORM_ID) private platformId: object,
@@ -411,7 +411,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.isHlsRunning) {
-      this.hmsHlsService
+      this.hmsRoomService
         .stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
         .subscribe((value: IHmsHls) => {
           if (value) {
@@ -420,7 +420,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
           }
         });
     } else {
-      this.hmsHlsService
+      this.hmsRoomService
         .startHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
         .subscribe((value: IHmsHls) => {
           if (value) {
@@ -600,7 +600,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadHlsStream(): void {
-    this.hmsHlsService
+    this.hmsRoomService
       .getPlaybackUrl(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
       .subscribe((value: IHmsHls) => {
         if (value?.playback_url) {
