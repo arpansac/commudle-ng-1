@@ -133,10 +133,7 @@
               <p class="streaming-label">YouTube Streaming</p>
               <div *ngIf="embeddedVideoStream.rtmp_url" class="streaming-action">
                 <div class="yt-status">
-                  <nb-icon
-                    [icon]="isStreaming ? 'radio' : 'radio-outline'"
-                    [status]="isStreaming ? 'success' : 'basic'"
-                  ></nb-icon>
+                  <fa-icon [icon]="faYoutube" [ngClass]="isStreaming ? 'yt-icon-live' : 'yt-icon-off'"></fa-icon>
                   <span>{{ isStreaming ? 'YT Stream is Live' : 'YT Stream is Off' }}</span>
                 </div>
                 <button
@@ -148,6 +145,7 @@
                   [status]="isStreaming ? 'danger' : 'success'"
                   outline
                 >
+                  <fa-icon [icon]="faYoutube" [ngClass]="isStreaming ? 'yt-icon-live' : 'yt-icon-off'"></fa-icon>
                   {{ isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming' }}
                 </button>
               </div>
@@ -204,9 +202,6 @@
         </div>
       </div>
     </nb-card-body>
-    <nb-card-footer class="d-flex justify-content-space-around">
-      <button (click)="close(false)" nbButton size="tiny" status="success">Save</button>
-    </nb-card-footer>
   </ng-container>
 </nb-card>
 

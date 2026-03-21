@@ -68,7 +68,7 @@
           nbButton
           class="device-selector-btn"
         >
-          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+          <fa-icon [icon]="icons.faChevronUp"></fa-icon>
         </button>
         <div *ngIf="showAudioDeviceDropdown" class="device-dropdown">
           <div
@@ -104,7 +104,7 @@
           nbButton
           class="device-selector-btn"
         >
-          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+          <fa-icon [icon]="icons.faChevronUp"></fa-icon>
         </button>
         <div *ngIf="showVideoDeviceDropdown" class="device-dropdown">
           <div
@@ -152,7 +152,7 @@
 
     <!-- Streaming controls based on mode -->
     <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
-      <!-- Leave stage (host only) -->
+      <!-- Leave stage (host on stage) -->
       <button
         (click)="toggleStage()"
         *ngIf="isOnStage"
@@ -164,6 +164,19 @@
       >
         <fa-icon [icon]="icons.faArrowRightFromBracket"></fa-icon>
         <span class="control-label">Leave Stage</span>
+      </button>
+      <!-- Join stage (host viewer off stage) -->
+      <button
+        (click)="toggleStage()"
+        *ngIf="!isOnStage && localPeer.roleName === EHmsRoles.HOST_VIEWER"
+        nbTooltip="Join Stage"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <nb-icon icon="cast"></nb-icon>
+        <span class="control-label">Join Stage</span>
       </button>
     </ng-container>
 
@@ -177,7 +190,7 @@
         LIVE
       </span>
       <span *ngIf="isStreaming" class="status-dot status-dot-yt" nbTooltip="YouTube Streaming">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
         YT
       </span>
       <span *ngIf="isRecording" class="status-dot status-dot-rec" nbTooltip="Recording">

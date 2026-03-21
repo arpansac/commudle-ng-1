@@ -88,6 +88,14 @@
 
           .yt-status {
             @apply com-flex com-items-center com-gap-2 com-text-sm;
+
+            .yt-icon-live {
+              @apply com-text-red-600 com-text-lg;
+            }
+
+            .yt-icon-off {
+              @apply com-text-gray-400 com-text-lg;
+            }
           }
         }
       }

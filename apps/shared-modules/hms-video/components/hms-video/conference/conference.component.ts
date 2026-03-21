@@ -32,13 +32,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
-import {
-  faArrowRightFromBracket,
-  faChevronDown,
-  faCircle,
-  faDoorOpen,
-  faHand,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faChevronUp, faCircle, faDoorOpen, faHand } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { HmsRoomService } from '@commudle/shared-services';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -114,10 +109,11 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   protected readonly icons = {
     faHand,
-    faChevronDown,
+    faChevronUp,
     faDoorOpen,
     faCircle,
     faArrowRightFromBracket,
+    faYoutube,
   };
 
   @ViewChild('hlsVideoPlayer') hlsVideoPlayer!: ElementRef<HTMLVideoElement>;
@@ -388,6 +384,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openSettings(): void {
+    this.showVideoDeviceDropdown = false;
+    this.showAudioDeviceDropdown = false;
     const dialogRef = this.nbDialogService.open(ConferenceSettingsComponent, {
       context: {
         showSessionTypeSettings:
@@ -579,6 +577,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   toggleRaiseHand(): void {
+    this.showAudioDeviceDropdown = false;
+    this.showVideoDeviceDropdown = false;
     if (this.isHandRaised) {
       this.hmsLiveChannel.sendData(this.hmsLiveChannel.ACTIONS.HAND_LOWERED, this.currentUser.id, {});
     } else {

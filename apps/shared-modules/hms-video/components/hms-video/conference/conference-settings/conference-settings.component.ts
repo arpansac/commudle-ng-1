@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NbDialogRef, NbTrigger } from '@commudle/theme';
 import { EHmsRoomMode } from '@commudle/shared-models';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { LocalMediaService } from 'apps/shared-modules/hms-video/services/local-media.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -26,6 +27,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   EHmsRoomMode = EHmsRoomMode;
   showModeConfirmation = false;
   pendingMode: EHmsRoomMode = null;
+  faYoutube = faYoutube;
   currentMode: EHmsRoomMode;
 
   @Output() streamingAction = new EventEmitter<string>();
