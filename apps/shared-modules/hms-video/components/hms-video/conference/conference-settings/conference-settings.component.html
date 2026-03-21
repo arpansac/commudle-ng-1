@@ -26,29 +26,23 @@
     <nb-card-body class="settings-body">
       <div class="settings-layout">
         <div class="settings-menu">
-          <button
-            nbButton
-            ghost
-            fullWidth
-            [status]="activeTab === 'audio-video' ? 'primary' : 'basic'"
+          <div
             (click)="activeTab = 'audio-video'"
             class="menu-item"
+            [ngClass]="{ 'menu-item-active': activeTab === 'audio-video' }"
           >
             <nb-icon icon="settings"></nb-icon>
             Audio / Video
-          </button>
-          <button
+          </div>
+          <div
             *ngIf="showSessionTypeSettings"
-            nbButton
-            ghost
-            fullWidth
-            [status]="activeTab === 'session-type' ? 'primary' : 'basic'"
             (click)="activeTab = 'session-type'"
             class="menu-item"
+            [ngClass]="{ 'menu-item-active': activeTab === 'session-type' }"
           >
             <nb-icon icon="cast"></nb-icon>
             Session Type
-          </button>
+          </div>
         </div>
 
         <div class="settings-content">
@@ -76,8 +70,12 @@
                 (click)="selectMode(EHmsRoomMode.INTERACTIVE)"
               >
                 <nb-icon icon="video" class="mode-icon"></nb-icon>
-                <p class="mode-title">Interactive</p>
-                <p class="mode-description">Best for small meetings, webinars with audience interaction</p>
+                <p class="mode-title">Interactive Mode</p>
+                <p class="mode-description">Maximum 150 participants: Invite anyone to the stage</p>
+                <ul class="mode-features">
+                  <li class="mode-feature-yes">YouTube Streaming</li>
+                  <li class="mode-feature-no">Local Recording</li>
+                </ul>
               </div>
               <div
                 class="mode-card"
@@ -88,8 +86,15 @@
                 (click)="selectMode(EHmsRoomMode.LARGE_SCALE_WEBINAR)"
               >
                 <nb-icon icon="cast" class="mode-icon"></nb-icon>
-                <p class="mode-title">Large Scale Webinar</p>
-                <p class="mode-description">Best for large audiences with HLS streaming and recording</p>
+                <p class="mode-title">Large Scale Webinar Mode</p>
+                <p class="mode-description">5000 participants: Invite anyone to the stage</p>
+                <ul class="mode-features">
+                  <li class="mode-feature-no">YouTube Streaming</li>
+                  <li class="mode-feature-yes">
+                    Local Recording (Commudle records it and sends the link to you over email, can be downloaded within
+                    7 days only). You can upload to YouTube later
+                  </li>
+                </ul>
               </div>
             </div>
             <nb-alert *ngIf="isStreamingActive" accent="warning" class="streaming-warning">

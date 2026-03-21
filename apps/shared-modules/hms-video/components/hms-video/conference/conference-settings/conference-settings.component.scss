@@ -1,8 +1,8 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .settings {
-  max-width: 560px;
-  min-width: 480px;
+  max-width: 720px;
+  min-width: 640px;
 
   .settings-body {
     @apply com-p-0;
@@ -15,7 +15,23 @@
       @apply com-w-44 com-border-0 com-border-r com-border-solid com-border-gray-200 com-py-2 com-flex-shrink-0;
 
       .menu-item {
-        @apply com-justify-start com-text-left com-text-sm com-rounded-none;
+        @apply com-flex com-items-center com-gap-2 com-w-full com-text-left com-text-sm com-px-4 com-py-3 com-cursor-pointer com-text-gray-600;
+
+        &:hover {
+          @apply com-bg-gray-100;
+        }
+
+        nb-icon {
+          @apply com-text-lg;
+        }
+      }
+
+      .menu-item-active {
+        @apply com-text-primary-500 com-bg-primary-100 com-font-semibold;
+
+        &:hover {
+          @apply com-bg-primary-100;
+        }
       }
     }
 
@@ -56,6 +72,34 @@
 
           .mode-card-disabled {
             @apply com-opacity-50 com-cursor-not-allowed;
+          }
+        }
+
+        .mode-features {
+          @apply com-list-none com-p-0 com-m-0 com-mt-2;
+
+          li {
+            @apply com-text-xs com-mb-1 com-flex com-items-start com-gap-1;
+
+            &::before {
+              @apply com-flex-shrink-0;
+            }
+          }
+
+          .mode-feature-yes {
+            @apply com-text-green-600;
+
+            &::before {
+              content: '✅';
+            }
+          }
+
+          .mode-feature-no {
+            @apply com-text-gray-400;
+
+            &::before {
+              content: '❌';
+            }
           }
         }
 
@@ -117,6 +161,7 @@
         background-color: black;
         height: 100%;
         width: 100%;
+        @apply com-rounded-lg com-overflow-hidden;
 
         video {
           height: 100%;
