@@ -10,10 +10,10 @@ import { faCalendarCheck, faCalendarDays, faMapPin } from '@fortawesome/free-sol
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 
 @Component({
-    selector: 'app-events',
-    templateUrl: './events.component.html',
-    styleUrls: ['./events.component.scss'],
-    standalone: false
+  selector: 'app-events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.scss'],
+  standalone: false,
 })
 export class EventsComponent implements OnInit {
   moment = moment;
@@ -63,7 +63,7 @@ export class EventsComponent implements OnInit {
     this.isLoadingPastEvents = true;
     this.eventsService.pGetCommunityEvents('past', this.community.id, this.page, this.count).subscribe((data) => {
       this.pastEvents = data.values;
-      this.setSchema();
+      this.setSchema(this.pastEvents);
       this.total = data.total;
       this.page = data.page;
       this.count = data.count;
@@ -77,14 +77,16 @@ export class EventsComponent implements OnInit {
     this.isLoadingUpcomingEvents = true;
     this.eventsService.pGetCommunityEvents('future', this.community.id).subscribe((data) => {
       this.upcomingEvents = data.values;
-      this.setSchema();
+      this.setSchema(this.upcomingEvents);
       this.isLoadingUpcomingEvents = false;
     });
   }
 
-  setSchema() {
-    if (this.upcomingEvents.length > 0) {
-      for (const event of this.upcomingEvents) {
+  setSchema(events) {
+    if (events.length > 0) {
+      this.eventForSchema = [];
+
+      for (const event of events) {
         let location: object, eventStatus: string;
         if (event.event_locations && Object.keys(event.event_locations).length > 0) {
           location = {
