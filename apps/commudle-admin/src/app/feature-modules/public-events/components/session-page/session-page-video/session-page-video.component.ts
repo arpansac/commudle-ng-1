@@ -10,10 +10,9 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
-  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
-import { EDbModels, EUserRoles, ICommunity, IEvent, IUser, IUserRole } from '@commudle/shared-models';
+import { EDbModels, EUserRoles, ICommunity, IEvent, IUser } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
@@ -28,7 +27,7 @@ import * as moment from 'moment';
 })
 export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() event: IEvent;
-  @Input() userRoles: IUserRole[];
+  @Input() userRoles: any[];
   @Input() currentUser: IUser;
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() startTime: Date;
