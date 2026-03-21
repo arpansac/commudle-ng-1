@@ -5,19 +5,120 @@
   position: relative;
   width: 100%;
 
-  .controls {
-    bottom: $space-8;
-    gap: $space-8;
-    left: 50%;
-    position: absolute;
+  .controls-bar {
+    @apply com-absolute com-bottom-4 com-left-1/2 com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-rounded-xl com-bg-gray-900 com-bg-opacity-80;
     transform: translateX(-50%);
 
-    button {
+    .control-group {
+      @apply com-flex com-items-center com-gap-0;
+
+      .control-btn {
+        @apply com-rounded-r-none;
+      }
+
+      .device-selector-wrapper {
+        @apply com-relative;
+
+        .device-selector-btn {
+          @apply com-rounded-l-none com-px-1 com-border-l com-border-gray-600 com-border-solid com-border-0;
+          min-width: 24px;
+          height: 40px;
+
+          fa-icon {
+            @apply com-text-xs com-text-gray-300;
+          }
+        }
+
+        .device-dropdown {
+          @apply com-absolute com-bottom-full com-left-0 com-mb-2 com-bg-white com-rounded-lg com-shadow-lg com-min-w-[220px] com-max-w-[300px] com-overflow-hidden com-z-30;
+
+          .device-dropdown-item {
+            @apply com-flex com-items-center com-gap-2 com-px-3 com-py-2 com-text-sm com-cursor-pointer com-text-gray-700;
+
+            &:hover {
+              @apply com-bg-gray-100;
+            }
+
+            nb-icon {
+              @apply com-text-base;
+            }
+          }
+
+          .device-dropdown-item-active {
+            @apply com-bg-primary-100 com-text-primary-500;
+          }
+        }
+      }
+    }
+
+    .control-btn {
       height: 40px;
 
       fa-icon.text-success {
         color: var(--icon-success-color);
       }
+
+      fa-icon.text-danger {
+        @apply com-text-red-500;
+      }
+
+      .control-label {
+        @apply com-text-xs com-ml-1 com-hidden;
+        @apply md:com-inline;
+      }
+    }
+
+    .end-session-btn {
+      @apply com-ml-2;
+    }
+
+    .status-indicators {
+      @apply com-flex com-items-center com-gap-2 com-ml-1;
+
+      .status-dot {
+        @apply com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-2 com-py-1 com-rounded-full;
+
+        fa-icon {
+          @apply com-text-[6px];
+        }
+      }
+
+      .status-dot-live {
+        @apply com-bg-green-600 com-text-white;
+
+        fa-icon {
+          @apply com-text-white;
+          animation: pulse-dot 1.5s infinite;
+        }
+      }
+
+      .status-dot-yt {
+        @apply com-bg-red-600 com-text-white;
+
+        fa-icon {
+          @apply com-text-white;
+          animation: pulse-dot 1.5s infinite;
+        }
+      }
+
+      .status-dot-rec {
+        @apply com-bg-red-500 com-text-white;
+
+        fa-icon {
+          @apply com-text-white;
+          animation: pulse-dot 1.5s infinite;
+        }
+      }
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
     }
   }
 
@@ -41,8 +142,8 @@
 
 @media all and (max-width: $tab-width) {
   .conference-container {
-    .controls {
-      bottom: $space-64;
+    .controls-bar {
+      @apply com-bottom-16 com-gap-1 com-px-2;
     }
   }
 }

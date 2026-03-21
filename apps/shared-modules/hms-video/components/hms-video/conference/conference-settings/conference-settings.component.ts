@@ -1,18 +1,37 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NbDialogRef, NbTrigger } from "@commudle/theme";
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { NbDialogRef, NbTrigger } from '@commudle/theme';
+import { EHmsRoomMode } from '@commudle/shared-models';
+import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { LocalMediaService } from 'apps/shared-modules/hms-video/services/local-media.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-conference-settings',
-    templateUrl: './conference-settings.component.html',
-    styleUrls: ['./conference-settings.component.scss'],
-    standalone: false
+  selector: 'app-conference-settings',
+  templateUrl: './conference-settings.component.html',
+  styleUrls: ['./conference-settings.component.scss'],
+  standalone: false,
 })
 export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   invitation: boolean;
   joinStage: boolean;
+  showSessionTypeSettings = false;
+  isStreamingActive = false;
+  isStreaming = false;
+  isLive = false;
+  isHlsRunning = false;
+  isRecording = false;
+  embeddedVideoStream: IEmbeddedVideoStream;
+  activeTab: 'audio-video' | 'session-type' = 'audio-video';
+  EHmsRoomMode = EHmsRoomMode;
+  showModeConfirmation = false;
+  pendingMode: EHmsRoomMode = null;
+  currentMode: EHmsRoomMode;
+
+  @Output() streamingAction = new EventEmitter<string>();
+  @Output() modeChanged = new EventEmitter<EHmsRoomMode>();
+
+  loadingAction: string = null;
 
   audioInputDevices: MediaDeviceInfo[] = [];
   videoDevices: MediaDeviceInfo[] = [];
@@ -144,5 +163,58 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     this.localMediaService.setIsVideoEnabled(this.isVideoEnabled);
 
     this.dialogRef.close(value);
+  }
+
+  selectMode(mode: EHmsRoomMode): void {
+    if (this.isStreamingActive || mode === this.currentMode) {
+      return;
+    }
+    this.pendingMode = mode;
+    this.showModeConfirmation = true;
+  }
+
+  confirmModeChange(): void {
+    this.currentMode = this.pendingMode;
+    this.showModeConfirmation = false;
+    this.modeChanged.emit(this.currentMode);
+  }
+
+  cancelModeChange(): void {
+    this.pendingMode = null;
+    this.showModeConfirmation = false;
+  }
+
+  onToggleYTStreaming(): void {
+    this.loadingAction = 'toggleYTStreaming';
+    this.streamingAction.emit('toggleYTStreaming');
+  }
+
+  onToggleIsLive(): void {
+    this.loadingAction = 'toggleIsLive';
+    this.streamingAction.emit('toggleIsLive');
+  }
+
+  onToggleHls(): void {
+    this.loadingAction = 'toggleHls';
+    this.streamingAction.emit('toggleHls');
+  }
+
+  onToggleRecording(): void {
+    this.loadingAction = 'toggleRecording';
+    this.streamingAction.emit('toggleRecording');
+  }
+
+  updateStreamingState(state: {
+    isLive?: boolean;
+    isStreaming?: boolean;
+    isHlsRunning?: boolean;
+    isRecording?: boolean;
+  }): void {
+    if (state.isLive !== undefined) this.isLive = state.isLive;
+    if (state.isStreaming !== undefined) this.isStreaming = state.isStreaming;
+    if (state.isHlsRunning !== undefined) this.isHlsRunning = state.isHlsRunning;
+    if (state.isRecording !== undefined) this.isRecording = state.isRecording;
+    this.isStreamingActive = this.isLive || this.isStreaming || this.isHlsRunning || this.isRecording;
+    this.loadingAction = null;
   }
 }

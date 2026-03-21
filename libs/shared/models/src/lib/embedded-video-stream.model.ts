@@ -1,3 +1,4 @@
+import { EHmsRoomMode } from './hms-room-mode.enum';
 import { EDbModels } from './db-models.enum';
 import { IUser } from './user.model';
 import { IYoutubeBroadcast } from './youtube-broadcast.model';
@@ -20,4 +21,6 @@ export interface IEmbeddedVideoStream {
   is_streaming: boolean;
   youtube_broadcast: IYoutubeBroadcast;
   hls_running?: boolean;
+  is_live: boolean;
+  mode: EHmsRoomMode;
 }

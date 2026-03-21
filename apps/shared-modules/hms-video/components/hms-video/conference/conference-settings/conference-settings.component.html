@@ -2,58 +2,252 @@
   <nb-card-header *ngIf="invitation">You are being invited to the Stage!</nb-card-header>
   <nb-card-header *ngIf="joinStage">Join the stage</nb-card-header>
   <nb-card-header *ngIf="!(invitation || joinStage)">Settings</nb-card-header>
-  <nb-card-body *ngIf="audioInputDevices.length === 0 || videoDevices.length === 0">
-    <nb-alert accent="info">Please allow access to microphone and camera devices to continue!</nb-alert>
-    <button (click)="getMediaPermissions()" fullWidth nbButton status="info">Get Permission</button>
-  </nb-card-body>
-  <nb-card-body [ngClass]="{ hidden: audioInputDevices.length === 0 || videoDevices.length === 0 }">
-    <div class="preview">
-      <div class="video-container">
-        <video #previewVideo [muted]="true" autoplay playsinline></video>
+
+  <!-- Invitation / Join Stage view (unchanged) -->
+  <ng-container *ngIf="invitation || joinStage">
+    <nb-card-body *ngIf="audioInputDevices.length === 0 || videoDevices.length === 0">
+      <nb-alert accent="info">Please allow access to microphone and camera devices to continue!</nb-alert>
+      <button (click)="getMediaPermissions()" fullWidth nbButton status="info">Get Permission</button>
+    </nb-card-body>
+    <nb-card-body [ngClass]="{ hidden: audioInputDevices.length === 0 || videoDevices.length === 0 }">
+      <ng-container *ngTemplateOutlet="audioVideoSettings"></ng-container>
+    </nb-card-body>
+    <nb-card-footer class="d-flex justify-content-space-around">
+      <button (click)="close(true)" nbButton size="tiny" status="success">
+        <nb-icon icon="cast"></nb-icon>
+        Join Stage
+      </button>
+      <button (click)="close(false)" nbButton size="tiny" status="info">Close</button>
+    </nb-card-footer>
+  </ng-container>
+
+  <!-- Full settings view with LHS menu -->
+  <ng-container *ngIf="!(invitation || joinStage)">
+    <nb-card-body class="settings-body">
+      <div class="settings-layout">
+        <div class="settings-menu">
+          <button
+            nbButton
+            ghost
+            fullWidth
+            [status]="activeTab === 'audio-video' ? 'primary' : 'basic'"
+            (click)="activeTab = 'audio-video'"
+            class="menu-item"
+          >
+            <nb-icon icon="settings"></nb-icon>
+            Audio / Video
+          </button>
+          <button
+            *ngIf="showSessionTypeSettings"
+            nbButton
+            ghost
+            fullWidth
+            [status]="activeTab === 'session-type' ? 'primary' : 'basic'"
+            (click)="activeTab = 'session-type'"
+            class="menu-item"
+          >
+            <nb-icon icon="cast"></nb-icon>
+            Session Type
+          </button>
+        </div>
+
+        <div class="settings-content">
+          <!-- Audio / Video Tab -->
+          <div *ngIf="activeTab === 'audio-video'">
+            <nb-card-body *ngIf="audioInputDevices.length === 0 || videoDevices.length === 0">
+              <nb-alert accent="info">Please allow access to microphone and camera devices to continue!</nb-alert>
+              <button (click)="getMediaPermissions()" fullWidth nbButton status="info">Get Permission</button>
+            </nb-card-body>
+            <div [ngClass]="{ hidden: audioInputDevices.length === 0 || videoDevices.length === 0 }">
+              <ng-container *ngTemplateOutlet="audioVideoSettings"></ng-container>
+            </div>
+          </div>
+
+          <!-- Session Type Tab -->
+          <div *ngIf="activeTab === 'session-type'" class="session-type-content">
+            <p class="session-type-label">Choose session type</p>
+            <div class="mode-cards">
+              <div
+                class="mode-card"
+                [ngClass]="{
+                  'mode-card-active': currentMode === EHmsRoomMode.INTERACTIVE,
+                  'mode-card-disabled': isStreamingActive
+                }"
+                (click)="selectMode(EHmsRoomMode.INTERACTIVE)"
+              >
+                <nb-icon icon="video" class="mode-icon"></nb-icon>
+                <p class="mode-title">Interactive</p>
+                <p class="mode-description">Best for small meetings, webinars with audience interaction</p>
+              </div>
+              <div
+                class="mode-card"
+                [ngClass]="{
+                  'mode-card-active': currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR,
+                  'mode-card-disabled': isStreamingActive
+                }"
+                (click)="selectMode(EHmsRoomMode.LARGE_SCALE_WEBINAR)"
+              >
+                <nb-icon icon="cast" class="mode-icon"></nb-icon>
+                <p class="mode-title">Large Scale Webinar</p>
+                <p class="mode-description">Best for large audiences with HLS streaming and recording</p>
+              </div>
+            </div>
+            <nb-alert *ngIf="isStreamingActive" accent="warning" class="streaming-warning">
+              Stop all active streaming/recording before switching session type.
+            </nb-alert>
+
+            <!-- Mode change confirmation -->
+            <div *ngIf="showModeConfirmation" class="mode-confirmation">
+              <p class="mode-confirmation-text">
+                Are you sure you want to switch to
+                <strong>{{ pendingMode === EHmsRoomMode.INTERACTIVE ? 'Interactive' : 'Large Scale Webinar' }}</strong>
+                mode?
+              </p>
+              <div class="mode-confirmation-actions">
+                <button (click)="confirmModeChange()" nbButton size="small" status="primary">Yes, switch</button>
+                <button (click)="cancelModeChange()" nbButton size="small" ghost status="basic">Cancel</button>
+              </div>
+            </div>
+
+            <!-- Interactive mode: Streaming + YouTube streaming controls -->
+            <div *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream" class="streaming-controls">
+              <p class="streaming-label">Session Streaming</p>
+              <div class="streaming-action">
+                <div class="yt-status">
+                  <nb-icon icon="play-circle" [status]="isLive ? 'success' : 'basic'"></nb-icon>
+                  <span>{{ isLive ? 'Session is Live' : 'Session is not Live' }}</span>
+                </div>
+                <button
+                  (click)="onToggleIsLive()"
+                  [nbSpinner]="loadingAction === 'toggleIsLive'"
+                  nbSpinnerSize="tiny"
+                  nbButton
+                  size="small"
+                  [status]="isLive ? 'danger' : 'success'"
+                  outline
+                >
+                  {{ isLive ? 'Stop Streaming' : 'Start Streaming' }}
+                </button>
+              </div>
+
+              <p class="streaming-label">YouTube Streaming</p>
+              <div *ngIf="embeddedVideoStream.rtmp_url" class="streaming-action">
+                <div class="yt-status">
+                  <nb-icon
+                    [icon]="isStreaming ? 'radio' : 'radio-outline'"
+                    [status]="isStreaming ? 'success' : 'basic'"
+                  ></nb-icon>
+                  <span>{{ isStreaming ? 'YT Stream is Live' : 'YT Stream is Off' }}</span>
+                </div>
+                <button
+                  (click)="onToggleYTStreaming()"
+                  [nbSpinner]="loadingAction === 'toggleYTStreaming'"
+                  nbSpinnerSize="tiny"
+                  nbButton
+                  size="small"
+                  [status]="isStreaming ? 'danger' : 'success'"
+                  outline
+                >
+                  {{ isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming' }}
+                </button>
+              </div>
+              <div *ngIf="!embeddedVideoStream.rtmp_url" class="yt-status">
+                <nb-icon icon="alert-circle" status="warning"></nb-icon>
+                <span>No RTMP URL configured. Set it in the event dashboard.</span>
+              </div>
+            </div>
+
+            <!-- Large scale webinar mode: HLS + Recording controls -->
+            <div *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR" class="streaming-controls">
+              <p class="streaming-label">HLS Streaming</p>
+              <div class="streaming-action">
+                <div class="yt-status">
+                  <nb-icon
+                    [icon]="isHlsRunning ? 'cast' : 'cast-outline'"
+                    [status]="isHlsRunning ? 'success' : 'basic'"
+                  ></nb-icon>
+                  <span>{{ isHlsRunning ? 'HLS Stream is Live' : 'HLS Stream is Off' }}</span>
+                </div>
+                <button
+                  (click)="onToggleHls()"
+                  [nbSpinner]="loadingAction === 'toggleHls'"
+                  nbSpinnerSize="tiny"
+                  nbButton
+                  size="small"
+                  [status]="isHlsRunning ? 'danger' : 'success'"
+                  outline
+                >
+                  {{ isHlsRunning ? 'Stop HLS Streaming' : 'Start HLS Streaming' }}
+                </button>
+              </div>
+
+              <p class="streaming-label">Recording</p>
+              <div class="streaming-action">
+                <div class="yt-status">
+                  <nb-icon icon="radio-button-on" [status]="isRecording ? 'danger' : 'basic'"></nb-icon>
+                  <span>{{ isRecording ? 'Recording in Progress' : 'Recording is Off' }}</span>
+                </div>
+                <button
+                  (click)="onToggleRecording()"
+                  [nbSpinner]="loadingAction === 'toggleRecording'"
+                  nbSpinnerSize="tiny"
+                  nbButton
+                  size="small"
+                  [status]="isRecording ? 'danger' : 'info'"
+                  outline
+                >
+                  {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="controls">
-        <button
-          (click)="toggleAudio()"
-          [nbTooltipTrigger]="NbTrigger.HOVER"
-          [nbTooltip]="isAudioEnabled ? 'Mute Audio' : 'Unmute Audio'"
-          ghost
-          nbButton
-          shape="round"
-        >
-          <nb-icon [icon]="isAudioEnabled ? 'mic' : 'mic-off'"></nb-icon>
-        </button>
-        <button
-          (click)="toggleVideo()"
-          [nbTooltipTrigger]="NbTrigger.HOVER"
-          [nbTooltip]="isVideoEnabled ? 'Mute Video' : 'Unmute Video'"
-          ghost
-          nbButton
-          shape="round"
-        >
-          <nb-icon [icon]="isVideoEnabled ? 'video' : 'video-off'"></nb-icon>
-        </button>
-      </div>
-    </div>
-    <nb-select
-      (selectedChange)="selectAudioInputDevice($event)"
-      [selected]="selectedAudioInputDeviceId"
-      fullWidth
-      size="small"
-    >
-      <nb-option *ngFor="let device of audioInputDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
-    </nb-select>
-    <nb-select (selectedChange)="selectVideoDevice($event)" [selected]="selectedVideoDeviceId" fullWidth size="small">
-      <nb-option *ngFor="let device of videoDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
-    </nb-select>
-  </nb-card-body>
-  <nb-card-footer class="d-flex justify-content-space-around">
-    <button (click)="close(true)" *ngIf="invitation || joinStage" nbButton size="tiny" status="success">
-      <nb-icon icon="cast"></nb-icon>
-      Join Stage
-    </button>
-    <button (click)="close(false)" *ngIf="invitation || joinStage" nbButton size="tiny" status="info">Close</button>
-    <button (click)="close(false)" *ngIf="!(invitation || joinStage)" nbButton size="tiny" status="success">
-      Save
-    </button>
-  </nb-card-footer>
+    </nb-card-body>
+    <nb-card-footer class="d-flex justify-content-space-around">
+      <button (click)="close(false)" nbButton size="tiny" status="success">Save</button>
+    </nb-card-footer>
+  </ng-container>
 </nb-card>
+
+<!-- Shared audio/video settings template -->
+<ng-template #audioVideoSettings>
+  <div class="preview">
+    <div class="video-container">
+      <video #previewVideo [muted]="true" autoplay playsinline></video>
+    </div>
+    <div class="controls">
+      <button
+        (click)="toggleAudio()"
+        [nbTooltipTrigger]="NbTrigger.HOVER"
+        [nbTooltip]="isAudioEnabled ? 'Mute Audio' : 'Unmute Audio'"
+        ghost
+        nbButton
+        shape="round"
+      >
+        <nb-icon [icon]="isAudioEnabled ? 'mic' : 'mic-off'"></nb-icon>
+      </button>
+      <button
+        (click)="toggleVideo()"
+        [nbTooltipTrigger]="NbTrigger.HOVER"
+        [nbTooltip]="isVideoEnabled ? 'Mute Video' : 'Unmute Video'"
+        ghost
+        nbButton
+        shape="round"
+      >
+        <nb-icon [icon]="isVideoEnabled ? 'video' : 'video-off'"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <nb-select
+    (selectedChange)="selectAudioInputDevice($event)"
+    [selected]="selectedAudioInputDeviceId"
+    fullWidth
+    size="small"
+  >
+    <nb-option *ngFor="let device of audioInputDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
+  </nb-select>
+  <nb-select (selectedChange)="selectVideoDevice($event)" [selected]="selectedVideoDeviceId" fullWidth size="small">
+    <nb-option *ngFor="let device of videoDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
+  </nb-select>
+</ng-template>

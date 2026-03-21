@@ -176,12 +176,12 @@ export const API_ROUTES = {
     PUBLIC: {
       GET: 'api/v2/embedded_video_streams/public',
     },
-    HMS_HLS: {
-      START_HLS: 'api/v2/hms_hls/start_hls',
-      STOP_HLS: 'api/v2/hms_hls/stop_hls',
-      GET_PLAYBACK_URL: 'api/v2/hms_hls/get_playback_url',
-      UPDATE_IS_LIVE: 'api/v2/hms_hls/update_is_live',
-      UPDATE_MODE: 'api/v2/hms_hls/update_mode',
+    HMS_ROOMS: {
+      START_HLS: 'api/v2/hms_rooms/start_hls',
+      STOP_HLS: 'api/v2/hms_rooms/stop_hls',
+      GET_PLAYBACK_URL: 'api/v2/hms_rooms/get_playback_url',
+      UPDATE_IS_LIVE: 'api/v2/hms_rooms/update_is_live',
+      UPDATE_MODE: 'api/v2/hms_rooms/update_mode',
     },
     CREATE_LIVESTREAM: 'api/v2/embedded_video_streams/create_livestream',
     DELETE_LIVESTREAM: 'api/v2/embedded_video_streams/delete_livestream',

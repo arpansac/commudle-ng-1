@@ -12,14 +12,17 @@ export class HmsRoomService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
   startHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
-    return this.http.post<IHmsHls>(this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.START_HLS), {
-      streamable_id: streamableId,
-      streamable_type: streamableType,
-    });
+    return this.http.post<IHmsHls>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.START_HLS),
+      {
+        streamable_id: streamableId,
+        streamable_type: streamableType,
+      },
+    );
   }
 
   stopHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
-    return this.http.post<IHmsHls>(this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.STOP_HLS), {
+    return this.http.post<IHmsHls>(this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.STOP_HLS), {
       streamable_id: streamableId,
       streamable_type: streamableType,
     });
@@ -28,7 +31,7 @@ export class HmsRoomService {
   getPlaybackUrl(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
     const params = new HttpParams().set('streamable_id', streamableId).set('streamable_type', streamableType);
     return this.http.get<IHmsHls>(
-      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.GET_PLAYBACK_URL),
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.GET_PLAYBACK_URL),
       {
         params,
       },
@@ -37,7 +40,7 @@ export class HmsRoomService {
 
   updateIsLive(streamableId: number, streamableType: EDbModels, isLive: boolean): Observable<{ is_live: boolean }> {
     return this.http.post<{ is_live: boolean }>(
-      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.UPDATE_IS_LIVE),
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.UPDATE_IS_LIVE),
       {
         streamable_id: streamableId,
         streamable_type: streamableType,
@@ -48,7 +51,7 @@ export class HmsRoomService {
 
   updateMode(streamableId: number, streamableType: EDbModels, mode: EHmsRoomMode): Observable<{ mode: EHmsRoomMode }> {
     return this.http.post<{ mode: EHmsRoomMode }>(
-      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_HLS.UPDATE_MODE),
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.UPDATE_MODE),
       {
         streamable_id: streamableId,
         streamable_type: streamableType,
