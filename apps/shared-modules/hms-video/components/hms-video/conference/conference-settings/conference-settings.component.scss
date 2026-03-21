@@ -1,7 +1,98 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .settings {
-  max-width: 320px;
+  max-width: 560px;
+  min-width: 480px;
+
+  .settings-body {
+    @apply com-p-0;
+  }
+
+  .settings-layout {
+    @apply com-flex com-min-h-[320px];
+
+    .settings-menu {
+      @apply com-w-44 com-border-0 com-border-r com-border-solid com-border-gray-200 com-py-2 com-flex-shrink-0;
+
+      .menu-item {
+        @apply com-justify-start com-text-left com-text-sm com-rounded-none;
+      }
+    }
+
+    .settings-content {
+      @apply com-flex-1 com-p-4;
+
+      .session-type-content {
+        .session-type-label {
+          @apply com-text-sm com-font-semibold com-mb-3 com-m-0;
+        }
+
+        .mode-cards {
+          @apply com-flex com-gap-3;
+
+          .mode-card {
+            @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all;
+
+            &:hover:not(.mode-card-disabled) {
+              @apply com-border-primary-300 com-shadow-sm;
+            }
+
+            .mode-icon {
+              @apply com-text-2xl com-mb-2;
+            }
+
+            .mode-title {
+              @apply com-text-sm com-font-semibold com-m-0 com-mb-1;
+            }
+
+            .mode-description {
+              @apply com-text-xs com-text-gray-500 com-m-0;
+            }
+          }
+
+          .mode-card-active {
+            @apply com-border-primary-500 com-bg-primary-100;
+          }
+
+          .mode-card-disabled {
+            @apply com-opacity-50 com-cursor-not-allowed;
+          }
+        }
+
+        .streaming-warning {
+          @apply com-mt-3;
+        }
+
+        .mode-confirmation {
+          @apply com-mt-3 com-p-3 com-bg-gray-100 com-rounded-lg;
+
+          .mode-confirmation-text {
+            @apply com-text-sm com-m-0 com-mb-2;
+          }
+
+          .mode-confirmation-actions {
+            @apply com-flex com-gap-2;
+          }
+        }
+
+        .streaming-controls {
+          @apply com-mt-4 com-pt-4 com-border-0 com-border-t com-border-solid com-border-gray-200;
+
+          .streaming-label {
+            @apply com-text-sm com-font-semibold com-m-0 com-mb-2;
+          }
+
+          .streaming-action {
+            @apply com-flex com-items-center com-justify-between com-mb-4;
+          }
+
+          .yt-status {
+            @apply com-flex com-items-center com-gap-2 com-text-sm;
+          }
+        }
+      }
+    }
+  }
 
   nb-card-body {
     .preview,

@@ -20,6 +20,8 @@ export class HmsLiveChannel {
     END_STREAM: 'end_stream',
     HLS_STARTED: 'hls_started',
     HLS_STOPPED: 'hls_stopped',
+    IS_LIVE_STARTED: 'is_live_started',
+    IS_LIVE_STOPPED: 'is_live_stopped',
   };
 
   public channelData$ = {};

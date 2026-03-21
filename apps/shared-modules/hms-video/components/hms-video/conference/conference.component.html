@@ -1,19 +1,44 @@
 <div *ngIf="isConnectedToRoom" class="conference-container">
-  <!-- HLS Video Player for Viewers -->
+  <!-- Viewer: interactive mode is live -->
+  <app-conference-user-videos
+    *ngIf="
+      serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      currentRoleAsPerLocalPeer === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      isLive &&
+      !isHlsRunning
+    "
+  ></app-conference-user-videos>
+
+  <!-- Viewer: HLS streaming is on -->
   <div
     *ngIf="
       serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
-      currentRoleAsPerLocalPeer === EHmsRoles.VIEWER_NEAR_REALTIME
+      currentRoleAsPerLocalPeer === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      isHlsRunning
     "
     class="hls-player-container"
   >
-    <ng-container *ngIf="isHlsRunning && hlsPlaybackUrl; else hlsNotAvailable">
+    <ng-container *ngIf="hlsPlaybackUrl; else hlsNotAvailable">
       <video #hlsVideoPlayer autoplay playsinline class="hls-video-player"></video>
     </ng-container>
     <ng-template #hlsNotAvailable>
-      <p class="hls-loading-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+      <p class="hls-loading-text">Loading stream, please wait...</p>
     </ng-template>
   </div>
+
+  <!-- Viewer: nothing is live -->
+  <div
+    *ngIf="
+      serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      currentRoleAsPerLocalPeer === EHmsRoles.VIEWER_NEAR_REALTIME &&
+      !isLive &&
+      !isHlsRunning
+    "
+    class="hls-player-container"
+  >
+    <p class="hls-loading-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+  </div>
+
   <!-- Regular conference view for hosts/guests -->
   <app-conference-user-videos
     *ngIf="
@@ -21,54 +46,84 @@
       currentRoleAsPerLocalPeer !== EHmsRoles.VIEWER_NEAR_REALTIME
     "
   ></app-conference-user-videos>
-  <div *ngIf="localPeer" class="d-flex controls">
-    <!-- HLS Viewer Streaming -->
-    <button
-      (click)="toggleHls()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
-      [nbTooltip]="isHlsRunning ? 'Stop Viewer Streaming' : 'Start Viewer Streaming'"
-      ghost
-      nbButton
-      shape="round"
-    >
-      <nb-icon [status]="isHlsRunning ? 'success' : ''" icon="cast"></nb-icon>
-    </button>
-    <!-- YT Streaming -->
-    <button
-      (click)="toggleYTStreaming()"
-      *ngIf="
-        (localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER) &&
-        embeddedVideoStream?.rtmp_url?.length > 0
-      "
-      [nbTooltip]="isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming'"
-      ghost
-      nbButton
-      shape="round"
-    >
-      <nb-icon [status]="isStreaming ? 'success' : ''" icon="radio"></nb-icon>
-    </button>
-    <!-- Microphone -->
-    <button
-      (click)="toggleAudio()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
-      [nbTooltip]="isAudioEnabled ? 'Mute Audio' : 'Unmute Audio'"
-      ghost
-      nbButton
-      shape="round"
-    >
-      <nb-icon [icon]="isAudioEnabled ? 'mic' : 'mic-off'"></nb-icon>
-    </button>
-    <!-- Camera -->
-    <button
-      (click)="toggleVideo()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
-      [nbTooltip]="isVideoEnabled ? 'Mute Video' : 'Unmute Video'"
-      ghost
-      nbButton
-      shape="round"
-    >
-      <nb-icon [icon]="isVideoEnabled ? 'video' : 'video-off'"></nb-icon>
-    </button>
+
+  <div *ngIf="localPeer" class="controls-bar">
+    <!-- Mic + device selector -->
+    <div *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST" class="control-group">
+      <button
+        (click)="toggleAudio()"
+        [nbTooltip]="isAudioEnabled ? 'Mute Audio' : 'Unmute Audio'"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <nb-icon [icon]="isAudioEnabled ? 'mic' : 'mic-off'"></nb-icon>
+      </button>
+      <div class="device-selector-wrapper">
+        <button
+          (click)="toggleAudioDeviceDropdown()"
+          nbTooltip="Change Microphone"
+          ghost
+          nbButton
+          class="device-selector-btn"
+        >
+          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+        </button>
+        <div *ngIf="showAudioDeviceDropdown" class="device-dropdown">
+          <div
+            *ngFor="let device of audioInputDevices"
+            (click)="selectAudioDevice(device.deviceId)"
+            class="device-dropdown-item"
+            [ngClass]="{ 'device-dropdown-item-active': device.deviceId === selectedAudioInputDeviceId }"
+          >
+            <nb-icon icon="mic"></nb-icon>
+            <span>{{ device.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Camera + device selector -->
+    <div *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST" class="control-group">
+      <button
+        (click)="toggleVideo()"
+        [nbTooltip]="isVideoEnabled ? 'Mute Video' : 'Unmute Video'"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <nb-icon [icon]="isVideoEnabled ? 'video' : 'video-off'"></nb-icon>
+      </button>
+      <div class="device-selector-wrapper">
+        <button
+          (click)="toggleVideoDeviceDropdown()"
+          nbTooltip="Camera Options"
+          ghost
+          nbButton
+          class="device-selector-btn"
+        >
+          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+        </button>
+        <div *ngIf="showVideoDeviceDropdown" class="device-dropdown">
+          <div
+            *ngFor="let device of videoInputDevices"
+            (click)="selectVideoDevice(device.deviceId)"
+            class="device-dropdown-item"
+            [ngClass]="{ 'device-dropdown-item-active': device.deviceId === selectedVideoDeviceId }"
+          >
+            <nb-icon icon="video"></nb-icon>
+            <span>{{ device.label }}</span>
+          </div>
+          <div (click)="toggleBackgroundBlur()" class="device-dropdown-item">
+            <nb-icon [status]="isBackgroundBlurred ? 'success' : ''" icon="image-outline"></nb-icon>
+            <span>{{ isBackgroundBlurred ? 'Remove Blur' : 'Blur Background' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Screen share -->
     <button
       (click)="toggleScreenShare()"
@@ -78,9 +133,11 @@
       ghost
       nbButton
       shape="round"
+      class="control-btn"
     >
       <nb-icon [status]="isLocalScreenSharing ? 'success' : ''" icon="monitor"></nb-icon>
     </button>
+
     <!-- Raise hand -->
     <button
       (click)="toggleRaiseHand()"
@@ -88,62 +145,71 @@
       ghost
       nbButton
       shape="round"
+      class="control-btn"
     >
-      <fa-icon [icon]="faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
+      <fa-icon [icon]="icons.faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
     </button>
-    <!-- Blur background -->
-    <button
-      (click)="toggleBackgroundBlur()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
-      [nbTooltip]="isBackgroundBlurred ? 'Unblur Background' : 'Blur Background'"
-      ghost
-      nbButton
-      shape="round"
+
+    <!-- Streaming controls based on mode -->
+    <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
+      <!-- Leave stage (host only) -->
+      <button
+        (click)="toggleStage()"
+        *ngIf="isOnStage"
+        nbTooltip="Leave Stage"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <fa-icon [icon]="icons.faArrowRightFromBracket"></fa-icon>
+        <span class="control-label">Leave Stage</span>
+      </button>
+    </ng-container>
+
+    <!-- Live / Streaming status indicators -->
+    <div
+      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
+      class="status-indicators"
     >
-      <nb-icon [status]="isBackgroundBlurred ? 'success' : ''" icon="image-outline"></nb-icon>
-    </button>
+      <span *ngIf="isLive || isHlsRunning" class="status-dot status-dot-live" nbTooltip="Stream is Live">
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        LIVE
+      </span>
+      <span *ngIf="isStreaming" class="status-dot status-dot-yt" nbTooltip="YouTube Streaming">
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        YT
+      </span>
+      <span *ngIf="isRecording" class="status-dot status-dot-rec" nbTooltip="Recording">
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        REC
+      </span>
+    </div>
+
     <!-- Settings -->
     <button
       (click)="openSettings()"
       *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
-      [nbTooltipTrigger]="NbTrigger.HOVER"
+      nbTooltip="Settings"
       ghost
       nbButton
-      nbTooltip="Open Settings"
       shape="round"
+      class="control-btn"
     >
       <nb-icon icon="settings"></nb-icon>
     </button>
-    <!--     Leave session -->
-    <button
-      (click)="leaveSession()"
-      [nbTooltipTrigger]="NbTrigger.HOVER"
-      ghost
-      nbButton
-      nbTooltip="Leave session"
-      shape="round"
-    >
-      <nb-icon icon="log-out"></nb-icon>
-    </button>
-    <!--     Join/Leave Stage -->
-    <button
-      (click)="toggleStage()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
-      ghost
-      nbButton
-      shape="round"
-    >
-      {{ isOnStage ? 'Leave stage' : 'Join stage' }}
-    </button>
-    <!-- End session -->
+
+    <!-- End session (host only, red button with door exit icon) -->
     <button
       (click)="endSession()"
       *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
-      ghost
+      nbTooltip="End Session"
       nbButton
       shape="round"
+      status="danger"
+      class="control-btn end-session-btn"
     >
-      End session
+      <fa-icon [icon]="icons.faDoorOpen"></fa-icon>
     </button>
   </div>
 

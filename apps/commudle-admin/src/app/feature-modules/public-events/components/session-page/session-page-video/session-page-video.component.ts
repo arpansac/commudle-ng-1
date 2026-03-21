@@ -13,16 +13,11 @@ import {
   SimpleChanges,
   ViewChildren,
 } from '@angular/core';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, EUserRoles, ICommunity, IEvent, IUser, IUserRole } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
-import { ICommunity } from 'apps/shared-models/community.model';
-import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
-import { EUserRoles } from 'apps/shared-models/enums/user_roles.enum';
-import { IEvent } from 'apps/shared-models/event.model';
 import { ITrackSlot } from 'apps/shared-models/track-slot.model';
-import { IUser } from 'apps/shared-models/user.model';
 import * as moment from 'moment';
 
 @Component({
@@ -33,8 +28,8 @@ import * as moment from 'moment';
 })
 export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() event: IEvent;
-  @Input() userRoles: any[];
-  @Input() currentUser: ICurrentUser;
+  @Input() userRoles: IUserRole[];
+  @Input() currentUser: IUser;
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() startTime: Date;
   @Input() endTime: Date;
@@ -73,7 +68,7 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
     document.onfullscreenchange = () => (this.isFullScreen = this.document.fullscreenElement);
   }
 
-  ngOnChanges(_changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.embeddedVideoStream) {
       this.isBeamActive = this.embeddedVideoStream.is_recording || this.embeddedVideoStream.is_streaming;
       this.isHlsRunning = this.embeddedVideoStream.hls_running;

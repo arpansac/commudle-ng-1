@@ -32,7 +32,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
-import { faHand } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowRightFromBracket,
+  faChevronDown,
+  faCircle,
+  faDoorOpen,
+  faHand,
+} from '@fortawesome/free-solid-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { HmsRoomService } from '@commudle/shared-services';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
@@ -48,7 +54,7 @@ import { hmsActions, hmsNotifications, hmsStore } from 'apps/shared-modules/hms-
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { ConferenceSettingsComponent } from './conference-settings/conference-settings.component';
-import { IHmsHls } from '@commudle/shared-models';
+import { EHmsRoomMode, IHmsHls } from '@commudle/shared-models';
 import Hls from 'hls.js';
 
 @Component({
@@ -67,6 +73,13 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   EHmsRoles = EHmsRoles;
+  EHmsRoomMode = EHmsRoomMode;
+  currentMode: EHmsRoomMode = EHmsRoomMode.INTERACTIVE;
+
+  audioInputDevices: MediaDeviceInfo[] = [];
+  videoInputDevices: MediaDeviceInfo[] = [];
+  showAudioDeviceDropdown = false;
+  showVideoDeviceDropdown = false;
 
   peers: HMSPeer[] = [];
   localPeer!: HMSPeer;
@@ -80,7 +93,10 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   isLocalScreenSharing: boolean = false;
   isRecording: boolean = false;
   isStreaming: boolean = false;
+  isLive: boolean = false;
   showReconnecting = false;
+
+  private settingsInstance: ConferenceSettingsComponent = null;
 
   selectedAudioInputDeviceId: string = '';
   selectedVideoDeviceId: string = '';
@@ -96,7 +112,15 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   currentRoleAsPerLocalPeer: EHmsRoles;
 
-  @ViewChild('hlsVideoPlayer') hlsVideoPlayer: ElementRef<HTMLVideoElement>;
+  protected readonly icons = {
+    faHand,
+    faChevronDown,
+    faDoorOpen,
+    faCircle,
+    faArrowRightFromBracket,
+  };
+
+  @ViewChild('hlsVideoPlayer') hlsVideoPlayer!: ElementRef<HTMLVideoElement>;
 
   @ViewChild('screenShareContainer', { static: false })
   screenShareContainer!: ElementRef<HTMLDivElement>;
@@ -134,6 +158,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       this.isRecording = this.embeddedVideoStream.is_recording;
       this.isStreaming = this.embeddedVideoStream.is_streaming;
       this.isHlsRunning = this.embeddedVideoStream.hls_running;
+      this.isLive = this.embeddedVideoStream.is_live;
+      this.currentMode = this.embeddedVideoStream.mode;
     }
 
     if (this.selectedRole === EHmsRoles.HOST) {
@@ -362,7 +388,122 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openSettings(): void {
-    this.nbDialogService.open(ConferenceSettingsComponent);
+    const dialogRef = this.nbDialogService.open(ConferenceSettingsComponent, {
+      context: {
+        showSessionTypeSettings:
+          this.localPeer?.roleName === EHmsRoles.HOST || this.localPeer?.roleName === EHmsRoles.HOST_VIEWER,
+        currentMode: this.currentMode,
+        isStreamingActive: this.isLive || this.isStreaming || this.isHlsRunning || this.isRecording,
+        isLive: this.isLive,
+        isStreaming: this.isStreaming,
+        isHlsRunning: this.isHlsRunning,
+        isRecording: this.isRecording,
+        embeddedVideoStream: this.embeddedVideoStream,
+      },
+    });
+    this.settingsInstance = dialogRef.componentRef.instance;
+    dialogRef.onClose.subscribe(() => {
+      this.settingsInstance = null;
+    });
+    this.settingsInstance.streamingAction.subscribe((action: string) => {
+      switch (action) {
+        case 'toggleIsLive':
+          this.toggleIsLive();
+          break;
+        case 'toggleYTStreaming':
+          this.toggleYTStreaming();
+          break;
+        case 'toggleHls':
+          this.toggleHls();
+          break;
+        case 'toggleRecording':
+          this.toggleRecording();
+          break;
+      }
+    });
+    this.settingsInstance.modeChanged.subscribe((mode: EHmsRoomMode) => {
+      this.onModeChanged(mode);
+    });
+  }
+
+  loadAudioDevices(): void {
+    this.localMediaService.getAudioInputDevices().subscribe((devices) => {
+      this.audioInputDevices = devices;
+    });
+  }
+
+  loadVideoDevices(): void {
+    this.localMediaService.getVideoDevices().subscribe((devices) => {
+      this.videoInputDevices = devices;
+    });
+  }
+
+  toggleAudioDeviceDropdown(): void {
+    this.showVideoDeviceDropdown = false;
+    this.showAudioDeviceDropdown = !this.showAudioDeviceDropdown;
+    if (this.showAudioDeviceDropdown) {
+      this.loadAudioDevices();
+    }
+  }
+
+  toggleVideoDeviceDropdown(): void {
+    this.showAudioDeviceDropdown = false;
+    this.showVideoDeviceDropdown = !this.showVideoDeviceDropdown;
+    if (this.showVideoDeviceDropdown) {
+      this.loadVideoDevices();
+    }
+  }
+
+  selectAudioDevice(deviceId: string): void {
+    this.selectedAudioInputDeviceId = deviceId;
+    this.localMediaService.setAudioInputDeviceId(deviceId);
+    this.showAudioDeviceDropdown = false;
+  }
+
+  selectVideoDevice(deviceId: string): void {
+    this.selectedVideoDeviceId = deviceId;
+    this.localMediaService.setVideoDeviceId(deviceId);
+    this.showVideoDeviceDropdown = false;
+  }
+
+  onModeChanged(mode: EHmsRoomMode): void {
+    if (this.isLive || this.isStreaming || this.isHlsRunning || this.isRecording) {
+      this.toastLogService.warningDialog('Stop all active streaming/recording before switching mode');
+      return;
+    }
+    this.currentMode = mode;
+    this.hmsRoomService
+      .updateMode(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type, mode)
+      .subscribe();
+  }
+
+  private pushStateToSettings(): void {
+    this.settingsInstance?.updateStreamingState({
+      isLive: this.isLive,
+      isStreaming: this.isStreaming,
+      isHlsRunning: this.isHlsRunning,
+      isRecording: this.isRecording,
+    });
+  }
+
+  toggleIsLive(): void {
+    if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
+      return;
+    }
+    const newIsLive = !this.isLive;
+    this.hmsRoomService
+      .updateIsLive(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type, newIsLive)
+      .subscribe({
+        next: (value) => {
+          this.isLive = value.is_live;
+          this.pushStateToSettings();
+          this.toastLogService.successDialog(this.isLive ? 'Session is now Live' : 'Session streaming stopped');
+        },
+        error: () => {
+          this.pushStateToSettings();
+          this.toastLogService.warningDialog('Failed to update streaming status');
+        },
+      });
   }
 
   toggleRecording(): void {
@@ -370,19 +511,23 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    if (this.isRecording) {
-      this.embeddedVideoStreamsService
-        .stopRecording(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
-        .subscribe((value: boolean) => value);
-    } else {
-      this.embeddedVideoStreamsService
-        .startRecording(
+    const obs = this.isRecording
+      ? this.embeddedVideoStreamsService.stopRecording(
+          this.embeddedVideoStream.streamable_id,
+          this.embeddedVideoStream.streamable_type,
+        )
+      : this.embeddedVideoStreamsService.startRecording(
           this.embeddedVideoStream.streamable_id,
           this.embeddedVideoStream.streamable_type,
           this.getMeetingUrl(),
-        )
-        .subscribe((value: boolean) => value);
-    }
+        );
+
+    obs.subscribe({
+      error: () => {
+        this.pushStateToSettings();
+        this.toastLogService.warningDialog('Failed to toggle recording');
+      },
+    });
   }
 
   toggleYTStreaming(): void {
@@ -390,19 +535,23 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    if (this.isStreaming) {
-      this.embeddedVideoStreamsService
-        .stopStreaming(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
-        .subscribe((value: boolean) => value);
-    } else {
-      this.embeddedVideoStreamsService
-        .startStreaming(
+    const obs = this.isStreaming
+      ? this.embeddedVideoStreamsService.stopStreaming(
+          this.embeddedVideoStream.streamable_id,
+          this.embeddedVideoStream.streamable_type,
+        )
+      : this.embeddedVideoStreamsService.startStreaming(
           this.embeddedVideoStream.streamable_id,
           this.embeddedVideoStream.streamable_type,
           this.getMeetingUrl(),
-        )
-        .subscribe((value: boolean) => value);
-    }
+        );
+
+    obs.subscribe({
+      error: () => {
+        this.pushStateToSettings();
+        this.toastLogService.warningDialog('Failed to toggle YT streaming');
+      },
+    });
   }
 
   toggleHls(): void {
@@ -410,25 +559,23 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    if (this.isHlsRunning) {
-      this.hmsRoomService
-        .stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
-        .subscribe((value: IHmsHls) => {
-          if (value) {
-            this.toastLogService.successDialog('HLS Viewer Streaming Stopped');
-            this.isHlsRunning = value.hls_running;
-          }
-        });
-    } else {
-      this.hmsRoomService
-        .startHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
-        .subscribe((value: IHmsHls) => {
-          if (value) {
-            this.toastLogService.successDialog('HLS Viewer Streaming Started');
-            this.isHlsRunning = value.hls_running;
-          }
-        });
-    }
+    const obs = this.isHlsRunning
+      ? this.hmsRoomService.stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
+      : this.hmsRoomService.startHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type);
+
+    obs.subscribe({
+      next: (value: IHmsHls) => {
+        if (value) {
+          this.isHlsRunning = value.hls_running;
+          this.pushStateToSettings();
+          this.toastLogService.successDialog(this.isHlsRunning ? 'HLS Streaming Started' : 'HLS Streaming Stopped');
+        }
+      },
+      error: () => {
+        this.pushStateToSettings();
+        this.toastLogService.warningDialog('Failed to toggle HLS streaming');
+      },
+    });
   }
 
   toggleRaiseHand(): void {
@@ -515,23 +662,28 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   receiveChannelData(): void {
     this.hmsLiveChannel.channelData$[this.currentUser.id].subscribe(
       (value: { action: string; user: { id: number; name: string }; user_name: string; playback_url: string }) => {
+        console.log('🚀 ~ ConferenceComponent ~ receiveChannelData ~ value:', value);
         switch (value.action) {
           // TODO: Use setpermissions for handling this
           case this.hmsLiveChannel.ACTIONS.RECORDING_STARTED:
             this.beamStatus.emit(true);
             this.isRecording = true;
+            this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.RECORDING_STOPPED:
             this.beamStatus.emit(false);
             this.isRecording = false;
+            this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.STREAMING_STARTED:
             this.beamStatus.emit(true);
             this.isStreaming = true;
+            this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.STREAMING_STOPPED:
             this.beamStatus.emit(false);
             this.isStreaming = false;
+            this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.HAND_RAISED:
             if (value.user.id === this.currentUser.id) {
@@ -551,6 +703,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
             this.isHlsRunning = true;
             this.hlsStatus.emit(this.isHlsRunning);
             this.hlsPlaybackUrl = value.playback_url;
+            this.pushStateToSettings();
             if (this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
               setTimeout(() => this.attachHlsStream(value.playback_url), 5000);
             }
@@ -560,6 +713,15 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
             this.hlsPlaybackUrl = '';
             this.destroyHlsInstance();
             this.hlsStatus.emit(this.isHlsRunning);
+            this.pushStateToSettings();
+            break;
+          case this.hmsLiveChannel.ACTIONS.IS_LIVE_STARTED:
+            this.isLive = true;
+            this.pushStateToSettings();
+            break;
+          case this.hmsLiveChannel.ACTIONS.IS_LIVE_STOPPED:
+            this.isLive = false;
+            this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.END_STREAM:
             this.leaveRoom();
@@ -647,6 +809,4 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       this.hlsInstance = null;
     }
   }
-
-  protected readonly faHand = faHand;
 }
