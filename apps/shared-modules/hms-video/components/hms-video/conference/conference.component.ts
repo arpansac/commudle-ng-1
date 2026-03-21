@@ -33,7 +33,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
-import { faArrowRightFromBracket, faChevronUp, faCircle, faDoorOpen, faHand } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowRightFromBracket,
+  faArrowUpFromBracket,
+  faChevronUp,
+  faCircle,
+  faDoorOpen,
+  faHand,
+} from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { HmsRoomService } from '@commudle/shared-services';
@@ -116,6 +123,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     faDoorOpen,
     faCircle,
     faArrowRightFromBracket,
+    faArrowUpFromBracket,
     faYoutube,
   };
 
