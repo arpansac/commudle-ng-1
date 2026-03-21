@@ -19,6 +19,8 @@ import { HmsStageService } from '../../services/hms-stage.service';
 })
 export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
+  @Input() eventName: string;
+  @Input() eventBannerUrl: string;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();

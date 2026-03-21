@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChi
 import { NbDialogRef, NbTrigger } from '@commudle/theme';
 import { EHmsRoomMode } from '@commudle/shared-models';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { LocalMediaService } from 'apps/shared-modules/hms-video/services/local-media.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
@@ -28,6 +29,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   showModeConfirmation = false;
   pendingMode: EHmsRoomMode = null;
   faYoutube = faYoutube;
+  faLaptop = faLaptop;
   currentMode: EHmsRoomMode;
 
   @Output() streamingAction = new EventEmitter<string>();

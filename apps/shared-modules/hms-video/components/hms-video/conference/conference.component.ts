@@ -63,6 +63,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() currentUser: ICurrentUser;
   @Input() selectedRole: EHmsRoles;
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
+  @Input() eventName: string;
+  @Input() eventBannerUrl: string;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();

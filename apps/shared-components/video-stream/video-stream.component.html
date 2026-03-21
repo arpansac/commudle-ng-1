@@ -12,6 +12,8 @@
         (beamStatus)="hlsStatus.emit($event)"
         *ngSwitchCase="EEmbeddedVideoStreamSources.COMMUDLE"
         [embeddedVideoStream]="embeddedVideoStream"
+        [eventName]="eventName"
+        [eventBannerUrl]="eventBannerUrl"
       ></app-hms-video>
 
       <youtube-player

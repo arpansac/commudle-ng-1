@@ -34,9 +34,20 @@
       !isLive &&
       !isHlsRunning
     "
-    class="hls-player-container"
+    class="waiting-container"
   >
-    <p class="hls-loading-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+    <div class="waiting-banner" *ngIf="eventBannerUrl">
+      <img [src]="eventBannerUrl" [alt]="eventName" class="waiting-banner-img" />
+    </div>
+    <div class="waiting-content">
+      <h2 *ngIf="eventName" class="waiting-event-name">{{ eventName }}</h2>
+      <p class="waiting-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+      <div class="waiting-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
   </div>
 
   <!-- Regular conference view for hosts/guests -->

@@ -31,6 +31,8 @@
         (beamStatus)="isBeamActive = $event"
         [currentUser]="currentUser"
         [embeddedVideoStream]="embeddedVideoStream"
+        [eventName]="event?.name"
+        [eventBannerUrl]="event?.header_image_path"
         [fillerText]="
           !currentUser
             ? 'Login to Access'
