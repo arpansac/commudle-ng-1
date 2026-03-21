@@ -254,3 +254,20 @@
     <span>Your internet connection seems to be unstable. We are trying to get you back into the session...</span>
   </nb-alert>
 </div>
+
+<!-- End session confirmation dialog -->
+<ng-template #endSessionDialog let-ref="dialogRef">
+  <nb-card class="end-session-dialog">
+    <nb-card-header>End Session</nb-card-header>
+    <nb-card-body>
+      <p class="end-session-message">{{ endSessionMessage }}</p>
+      <ul *ngIf="endSessionExtras.length" class="end-session-extras">
+        <li *ngFor="let extra of endSessionExtras">{{ extra }}</li>
+      </ul>
+    </nb-card-body>
+    <nb-card-footer class="end-session-actions">
+      <button (click)="ref.close(true)" nbButton size="small" status="danger">Yes, end session</button>
+      <button (click)="ref.close(false)" nbButton size="small" ghost status="basic">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

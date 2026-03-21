@@ -107,18 +107,6 @@
           @apply com-mt-3;
         }
 
-        .mode-confirmation {
-          @apply com-mt-3 com-p-3 com-bg-gray-100 com-rounded-lg;
-
-          .mode-confirmation-text {
-            @apply com-text-sm com-m-0 com-mb-2;
-          }
-
-          .mode-confirmation-actions {
-            @apply com-flex com-gap-2;
-          }
-        }
-
         .streaming-controls {
           @apply com-mt-4 com-pt-4 com-border-0 com-border-t com-border-solid com-border-gray-200;
 
@@ -188,4 +176,16 @@
 
 .hidden {
   display: none;
+}
+
+.confirm-dialog {
+  @apply com-max-w-[400px];
+
+  .confirm-message {
+    @apply com-text-sm com-m-0;
+  }
+
+  .confirm-actions {
+    @apply com-flex com-justify-end com-gap-2;
+  }
 }

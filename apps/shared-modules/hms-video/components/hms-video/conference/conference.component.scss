@@ -205,3 +205,23 @@
     }
   }
 }
+
+.end-session-dialog {
+  @apply com-max-w-[400px];
+
+  .end-session-message {
+    @apply com-text-sm com-m-0;
+  }
+
+  .end-session-extras {
+    @apply com-mt-2 com-mb-0 com-pl-4;
+
+    li {
+      @apply com-text-sm com-text-red-600;
+    }
+  }
+
+  .end-session-actions {
+    @apply com-flex com-justify-end com-gap-2;
+  }
+}

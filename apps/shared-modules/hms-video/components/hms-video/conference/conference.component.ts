@@ -29,6 +29,7 @@ import {
   Output,
   PLATFORM_ID,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
@@ -119,6 +120,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   @ViewChild('hlsVideoPlayer') hlsVideoPlayer!: ElementRef<HTMLVideoElement>;
+
+  @ViewChild('endSessionDialog') endSessionDialog: TemplateRef<any>;
 
   @ViewChild('screenShareContainer', { static: false })
   screenShareContainer!: ElementRef<HTMLDivElement>;
@@ -653,13 +656,27 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   endSession(): void {
     if (this.serverClient.role === EHmsRoles.HOST || this.serverClient.role === EHmsRoles.HOST_VIEWER) {
-      if (window.confirm('Are you sure you want to end the session?')) {
-        this.hmsVideoStateService.setState(EHmsStates.ENDED);
-        this.hmsLiveChannel.sendData(this.hmsLiveChannel.ACTIONS.END_STREAM, this.currentUser.id, {});
-        this.toastLogService.successDialog('Session has ended');
-      }
+      const message = 'Are you sure? This will end the session for everyone.';
+      const extras = [];
+      if (this.isStreaming) extras.push('This will stop the YT streaming also.');
+      if (this.isHlsRunning) extras.push('This will stop the HLS streaming also.');
+      if (this.isRecording) extras.push('This will stop the recording also.');
+      this.endSessionMessage = message;
+      this.endSessionExtras = extras;
+
+      const ref = this.nbDialogService.open(this.endSessionDialog, { closeOnBackdropClick: false });
+      ref.onClose.subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.hmsVideoStateService.setState(EHmsStates.ENDED);
+          this.hmsLiveChannel.sendData(this.hmsLiveChannel.ACTIONS.END_STREAM, this.currentUser.id, {});
+          this.toastLogService.successDialog('Session has ended');
+        }
+      });
     }
   }
+
+  endSessionMessage = '';
+  endSessionExtras: string[] = [];
 
   receiveChannelData(): void {
     this.hmsLiveChannel.channelData$[this.currentUser.id].subscribe(

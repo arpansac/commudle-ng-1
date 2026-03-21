@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { NbDialogRef, NbTrigger } from '@commudle/theme';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
 import { EHmsRoomMode } from '@commudle/shared-models';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
@@ -48,11 +48,13 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   NbTrigger = NbTrigger;
 
   @ViewChild('previewVideo', { static: false }) previewVideo: ElementRef<HTMLVideoElement>;
+  @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
 
   subscriptions: Subscription[] = [];
 
   constructor(
     protected dialogRef: NbDialogRef<ConferenceSettingsComponent>,
+    private nbDialogService: NbDialogService,
     private localMediaService: LocalMediaService,
     private libToastLogService: LibToastLogService,
   ) {}
@@ -173,39 +175,84 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     if (this.isStreamingActive || mode === this.currentMode) {
       return;
     }
+    const modeName = mode === EHmsRoomMode.INTERACTIVE ? 'Interactive' : 'Large Scale Webinar';
+    this.confirmTitle = 'Switch Session Type';
+    this.confirmMessage = `Are you sure you want to switch to ${modeName} mode?`;
     this.pendingMode = mode;
-    this.showModeConfirmation = true;
-  }
-
-  confirmModeChange(): void {
-    this.currentMode = this.pendingMode;
-    this.showModeConfirmation = false;
-    this.modeChanged.emit(this.currentMode);
-  }
-
-  cancelModeChange(): void {
-    this.pendingMode = null;
-    this.showModeConfirmation = false;
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.currentMode = this.pendingMode;
+        this.modeChanged.emit(this.currentMode);
+      }
+      this.pendingMode = null;
+    });
   }
 
   onToggleYTStreaming(): void {
-    this.loadingAction = 'toggleYTStreaming';
-    this.streamingAction.emit('toggleYTStreaming');
+    if (this.isStreaming) {
+      this.openConfirmDialog(
+        'Stop YouTube Streaming',
+        'Are you sure you want to stop YT streaming? Once stopped, YouTube might stop the YouTube live for all viewers.',
+        'toggleYTStreaming',
+      );
+    } else {
+      this.executeAction('toggleYTStreaming');
+    }
   }
 
   onToggleIsLive(): void {
-    this.loadingAction = 'toggleIsLive';
-    this.streamingAction.emit('toggleIsLive');
+    if (this.isLive) {
+      this.openConfirmDialog(
+        'Stop Streaming',
+        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'toggleIsLive',
+      );
+    } else {
+      this.executeAction('toggleIsLive');
+    }
   }
 
   onToggleHls(): void {
-    this.loadingAction = 'toggleHls';
-    this.streamingAction.emit('toggleHls');
+    if (this.isHlsRunning) {
+      this.openConfirmDialog(
+        'Stop HLS Streaming',
+        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'toggleHls',
+      );
+    } else {
+      this.executeAction('toggleHls');
+    }
   }
 
   onToggleRecording(): void {
-    this.loadingAction = 'toggleRecording';
-    this.streamingAction.emit('toggleRecording');
+    if (this.isRecording) {
+      this.openConfirmDialog('Stop Recording', 'Are you sure you want to stop recording?', 'toggleRecording');
+    } else {
+      this.executeAction('toggleRecording');
+    }
+  }
+
+  private openConfirmDialog(title: string, message: string, actionKey: string): void {
+    this.confirmTitle = title;
+    this.confirmMessage = message;
+    this.pendingActionKey = actionKey;
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.executeAction(this.pendingActionKey);
+      }
+      this.pendingActionKey = null;
+    });
+  }
+
+  confirmTitle = '';
+  confirmMessage = '';
+  private pendingActionKey: string = null;
+
+  private executeAction(actionKey: string): void {
+    this.loadingAction = actionKey;
+    this.streamingAction.emit(actionKey);
   }
 
   updateStreamingState(state: {

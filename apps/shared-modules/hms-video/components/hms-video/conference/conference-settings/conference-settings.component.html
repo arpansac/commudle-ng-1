@@ -101,18 +101,7 @@
               Stop all active streaming/recording before switching session type.
             </nb-alert>
 
-            <!-- Mode change confirmation -->
-            <div *ngIf="showModeConfirmation" class="mode-confirmation">
-              <p class="mode-confirmation-text">
-                Are you sure you want to switch to
-                <strong>{{ pendingMode === EHmsRoomMode.INTERACTIVE ? 'Interactive' : 'Large Scale Webinar' }}</strong>
-                mode?
-              </p>
-              <div class="mode-confirmation-actions">
-                <button (click)="confirmModeChange()" nbButton size="small" status="primary">Yes, switch</button>
-                <button (click)="cancelModeChange()" nbButton size="small" ghost status="basic">Cancel</button>
-              </div>
-            </div>
+            <!-- Mode change confirmation handled by separate dialog -->
 
             <!-- Interactive mode: Streaming + YouTube streaming controls -->
             <div *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream" class="streaming-controls">
@@ -209,6 +198,20 @@
     </nb-card-body>
   </ng-container>
 </nb-card>
+
+<!-- Confirmation dialog template -->
+<ng-template #confirmDialog let-ref="dialogRef">
+  <nb-card class="confirm-dialog">
+    <nb-card-header>{{ confirmTitle }}</nb-card-header>
+    <nb-card-body>
+      <p class="confirm-message">{{ confirmMessage }}</p>
+    </nb-card-body>
+    <nb-card-footer class="confirm-actions">
+      <button (click)="ref.close(true)" nbButton size="small" status="danger">Yes, confirm</button>
+      <button (click)="ref.close(false)" nbButton size="small" ghost status="basic">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
 
 <!-- Shared audio/video settings template -->
 <ng-template #audioVideoSettings>
