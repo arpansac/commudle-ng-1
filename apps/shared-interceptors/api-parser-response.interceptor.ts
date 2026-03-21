@@ -1,4 +1,5 @@
 import {
+  HttpContextToken,
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
@@ -11,12 +12,14 @@ import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+export const SKIP_ERROR = new HttpContextToken<boolean>(() => false);
+
 @Injectable()
 export class ApiParserResponseInterceptor implements HttpInterceptor {
   constructor(private errorHandleService: LibErrorHandlerService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const skipError = req.headers.get('skip-error');
+    const skipError = req.context.get(SKIP_ERROR);
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
@@ -28,11 +31,11 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
       }),
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
-          if (skipError === 'true' && error.status === 404) {
+          if (skipError === true && error.status === 404) {
             return new Observable<HttpEvent<any>>((observer) => {
               observer.next(
                 new HttpResponse({
-                  body: null,
+                  body: { data: null },
                   status: 200,
                 }),
               );

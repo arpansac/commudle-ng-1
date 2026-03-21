@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IPaginationCount,
@@ -9,6 +9,7 @@ import {
   IUserStat,
 } from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
+import { SKIP_ERROR } from 'apps/shared-interceptors/api-parser-response.interceptor';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
@@ -35,13 +36,13 @@ export class AppUsersService {
     },
   ): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    let headers = new HttpHeaders();
+    let context = new HttpContext();
     if (config?.skipError) {
-      headers = headers.set('skip-error', 'true');
+      context = context.set(SKIP_ERROR, true);
     }
     return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), {
       params,
-      headers,
+      context,
     });
   }
 
