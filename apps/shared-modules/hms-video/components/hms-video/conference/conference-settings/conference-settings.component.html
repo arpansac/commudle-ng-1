@@ -3,21 +3,21 @@
   <nb-card-header *ngIf="joinStage">Join the stage</nb-card-header>
   <nb-card-header *ngIf="!(invitation || joinStage)">Settings</nb-card-header>
 
-  <!-- Invitation / Join Stage view (unchanged) -->
+  <!-- Invitation / Join Stage view -->
   <ng-container *ngIf="invitation || joinStage">
-    <nb-card-body *ngIf="audioInputDevices.length === 0 || videoDevices.length === 0">
+    <nb-card-body *ngIf="audioInputDevices.length === 0 || videoDevices.length === 0" class="stage-permissions">
       <nb-alert accent="info">Please allow access to microphone and camera devices to continue!</nb-alert>
-      <button (click)="getMediaPermissions()" fullWidth nbButton status="info">Get Permission</button>
+      <button (click)="getMediaPermissions()" fullWidth nbButton status="info" size="medium">Get Permission</button>
     </nb-card-body>
     <nb-card-body [ngClass]="{ hidden: audioInputDevices.length === 0 || videoDevices.length === 0 }">
       <ng-container *ngTemplateOutlet="audioVideoSettings"></ng-container>
     </nb-card-body>
-    <nb-card-footer class="d-flex justify-content-space-around">
-      <button (click)="close(true)" nbButton size="tiny" status="success">
-        <nb-icon icon="cast"></nb-icon>
+    <nb-card-footer class="stage-actions">
+      <button (click)="close(true)" nbButton size="medium" status="success" fullWidth>
+        <nb-icon icon="video"></nb-icon>
         Join Stage
       </button>
-      <button (click)="close(false)" nbButton size="tiny" status="info">Close</button>
+      <button (click)="close(false)" nbButton size="medium" status="basic" outline fullWidth>Cancel</button>
     </nb-card-footer>
   </ng-container>
 

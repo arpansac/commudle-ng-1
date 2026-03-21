@@ -4,6 +4,14 @@
   max-width: 720px;
   min-width: 640px;
 
+  .stage-permissions {
+    @apply com-text-center;
+  }
+
+  .stage-actions {
+    @apply com-flex com-flex-col com-gap-3 com-px-6 com-py-4;
+  }
+
   .settings-body {
     @apply com-p-0;
   }
