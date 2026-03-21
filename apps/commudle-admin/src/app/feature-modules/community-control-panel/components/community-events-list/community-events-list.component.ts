@@ -13,10 +13,10 @@ import moment from 'moment';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-    selector: 'app-community-events-list',
-    templateUrl: './community-events-list.component.html',
-    styleUrls: ['./community-events-list.component.scss'],
-    standalone: false
+  selector: 'app-community-events-list',
+  templateUrl: './community-events-list.component.html',
+  styleUrls: ['./community-events-list.component.scss'],
+  standalone: false,
 })
 export class CommunityEventsListComponent implements OnInit, OnDestroy {
   @ViewChild('cloneEvent') cloneEvent: TemplateRef<any>;
@@ -40,6 +40,7 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
   total = 0;
   count = 10;
   page = 1;
+  isSearchApplied = false;
 
   eventStatuses = Object.values(EEventStatuses);
   activeEventStatuses: string[] = [EEventStatuses.OPEN, EEventStatuses.DRAFT, EEventStatuses.COMPLETED];
@@ -137,6 +138,11 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
 
   getCommunityEvents() {
     this.isLoading = true;
+
+    if (!this.query) {
+      this.isSearchApplied = false;
+    }
+
     this.eventsService
       .communityEventsForEmail(this.community.id, this.page, this.count, this.query, this.activeEventStatuses)
       .pipe(takeUntil(this.destroy$))
@@ -157,6 +163,8 @@ export class CommunityEventsListComponent implements OnInit, OnDestroy {
           this.page = 1;
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
+
+          this.isSearchApplied = !!this.query;
           return this.eventsService.communityEventsForEmail(
             this.community.id,
             this.page,

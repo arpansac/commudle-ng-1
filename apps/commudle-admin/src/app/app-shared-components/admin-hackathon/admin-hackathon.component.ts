@@ -11,10 +11,10 @@ import { NbMenuService } from '@commudle/theme';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-    selector: 'commudle-admin-hackathon',
-    templateUrl: './admin-hackathon.component.html',
-    styleUrls: ['./admin-hackathon.component.scss'],
-    standalone: false
+  selector: 'commudle-admin-hackathon',
+  templateUrl: './admin-hackathon.component.html',
+  styleUrls: ['./admin-hackathon.component.scss'],
+  standalone: false,
 })
 export class AdminHackathonComponent implements OnInit, OnDestroy {
   @Input() parentId: number | string;
@@ -33,6 +33,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
   page = 1;
   hackathonStatuses = Object.values(EHackathonStatus);
   activeHackathonStatuses: string[] = [EHackathonStatus.OPEN, EHackathonStatus.DRAFT, EHackathonStatus.COMPLETED];
+  isSearchApplied = false;
 
   contextMenuItems = [
     {
@@ -79,6 +80,9 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
 
   getHackathons() {
     this.isLoading = true;
+    if (!this.query) {
+      this.isSearchApplied = false;
+    }
     this.hackathonService
       .indexHackathons(this.parentId, this.parentType, this.page, this.count, this.query, this.activeHackathonStatuses)
       .pipe(takeUntil(this.destroy$))
@@ -99,6 +103,7 @@ export class AdminHackathonComponent implements OnInit, OnDestroy {
           this.page = 1;
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
+          this.isSearchApplied = !!this.query;
           return this.hackathonService.indexHackathons(
             this.parentId,
             this.parentType,
