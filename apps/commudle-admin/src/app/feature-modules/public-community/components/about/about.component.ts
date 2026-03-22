@@ -14,10 +14,10 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-about',
-    templateUrl: './about.component.html',
-    styleUrls: ['./about.component.scss'],
-    standalone: false
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.scss'],
+  standalone: false,
 })
 export class AboutComponent implements OnInit, OnDestroy {
   community: ICommunity = null;
@@ -79,7 +79,11 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.organizers = [];
     roles.forEach((role) => {
       this.userRolesUsersService.pGetCommunityLeadersByRole(this.community.id, role).subscribe((data) => {
-        this.organizers = this.organizers.concat(data.users);
+        data.users.forEach((user) => {
+          if (this.organizers.findIndex((existingUser) => existingUser.id === user.id) === -1) {
+            this.organizers.push(user);
+          }
+        });
         this.isLoading = false;
       });
     });
