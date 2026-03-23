@@ -80,6 +80,19 @@
       @apply com-text-red-500;
     }
 
+    .emoji-picker {
+      @apply com-absolute com-bottom-full com-left-1/2 com-mb-2 com-bg-white com-rounded-lg com-shadow-lg com-p-2 com-flex com-gap-1 com-z-30;
+      transform: translateX(-50%);
+
+      .emoji-btn {
+        @apply com-text-2xl com-cursor-pointer com-p-1 com-rounded com-border-0 com-bg-transparent;
+
+        &:hover {
+          @apply com-bg-gray-100;
+        }
+      }
+    }
+
     .status-dot-inline {
       @apply com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-2 com-py-0.5 com-rounded-full;
 
@@ -109,6 +122,26 @@
     }
     50% {
       opacity: 0.4;
+    }
+  }
+
+  .floating-emojis {
+    @apply com-absolute com-bottom-24 com-right-8 com-flex com-flex-col com-items-center com-pointer-events-none;
+
+    .floating-emoji {
+      @apply com-text-4xl;
+      animation: float-up 3s ease-out forwards;
+    }
+  }
+
+  @keyframes float-up {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-200px) scale(1.5);
     }
   }
 

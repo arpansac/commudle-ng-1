@@ -161,6 +161,18 @@
       <fa-icon [icon]="icons.faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
     </button>
 
+    <!-- Emoji reactions -->
+    <div class="device-selector-wrapper">
+      <button (click)="toggleEmojiPicker()" nbTooltip="React" ghost nbButton shape="round" class="control-btn">
+        <fa-icon [icon]="icons.faFaceSmile"></fa-icon>
+      </button>
+      <div *ngIf="showEmojiPicker" class="emoji-picker">
+        <button *ngFor="let emoji of EMOJI_REACTIONS" (click)="sendEmojiReaction(emoji)" class="emoji-btn">
+          {{ emoji }}
+        </button>
+      </div>
+    </div>
+
     <!-- Host streaming controls + status indicators -->
     <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
       <!-- Start/Stop Stream (isLive for interactive, HLS for webinar) -->
@@ -273,6 +285,11 @@
     >
       <fa-icon [icon]="icons.faDoorOpen"></fa-icon>
     </button>
+  </div>
+
+  <!-- Floating emoji reactions -->
+  <div class="floating-emojis">
+    <span *ngFor="let item of floatingEmojis" class="floating-emoji">{{ item.emoji }}</span>
   </div>
 
   <nb-alert *ngIf="showReconnecting" class="reconnecting">

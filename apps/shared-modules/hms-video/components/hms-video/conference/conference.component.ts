@@ -43,7 +43,9 @@ import {
   faHand,
   faPlay,
   faSpinner,
+  faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { HmsRoomService } from '@commudle/shared-services';
@@ -90,6 +92,11 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   videoInputDevices: MediaDeviceInfo[] = [];
   showAudioDeviceDropdown = false;
   showVideoDeviceDropdown = false;
+  showEmojiPicker = false;
+  floatingEmojis: { emoji: string; id: number }[] = [];
+  private emojiIdCounter = 0;
+
+  readonly EMOJI_REACTIONS = ['👏', '🔥', '❤️', '🎉', '😂', '👍', '🚀', '😮'];
 
   peers: HMSPeer[] = [];
   localPeer!: HMSPeer;
@@ -133,6 +140,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     faPlay,
     faGear,
     faSpinner,
+    faFaceSmile,
+    faThumbsUp,
   };
 
   @ViewChild('hlsVideoPlayer') hlsVideoPlayer!: ElementRef<HTMLVideoElement>;
@@ -620,6 +629,26 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  toggleEmojiPicker(): void {
+    this.showAudioDeviceDropdown = false;
+    this.showVideoDeviceDropdown = false;
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  sendEmojiReaction(emoji: string): void {
+    hmsActions.sendBroadcastMessage(emoji, 'EMOJI_REACTION');
+    this.showFloatingEmoji(emoji);
+    this.showEmojiPicker = false;
+  }
+
+  private showFloatingEmoji(emoji: string): void {
+    const id = this.emojiIdCounter++;
+    this.floatingEmojis.push({ emoji, id });
+    setTimeout(() => {
+      this.floatingEmojis = this.floatingEmojis.filter((e) => e.id !== id);
+    }, 3000);
+  }
+
   async toggleBackgroundBlur() {
     if (!isPlatformBrowser(this.platformId)) {
       return;
@@ -786,6 +815,13 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       switch (notification.type) {
+        case HMSNotificationTypes.NEW_MESSAGE: {
+          const msg = notification.data;
+          if (msg.type === 'EMOJI_REACTION') {
+            this.showFloatingEmoji(msg.message);
+          }
+          break;
+        }
         case HMSNotificationTypes.RECONNECTING:
           this.showReconnecting = true;
           break;
