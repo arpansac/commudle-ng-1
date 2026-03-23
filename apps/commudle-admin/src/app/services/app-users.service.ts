@@ -9,7 +9,7 @@ import {
   IUserStat,
 } from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
-import { SKIP_ERROR_404 } from 'apps/shared-interceptors/http-context-tokens';
+import { SKIP_ERROR_404 } from 'apps/shared-models/enums/http-context-tokens';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';

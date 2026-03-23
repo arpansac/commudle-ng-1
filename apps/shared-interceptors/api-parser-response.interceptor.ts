@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
-import { SKIP_ERROR_404 } from 'apps/shared-interceptors/http-context-tokens';
+import { SKIP_ERROR_404 } from 'apps/shared-models/enums/http-context-tokens';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 

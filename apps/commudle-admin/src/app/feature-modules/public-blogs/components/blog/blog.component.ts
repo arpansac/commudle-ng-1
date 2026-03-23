@@ -115,7 +115,7 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   setUser() {
     this.subscriptions.push(
-      this.appUsersService.getProfile(this.blog.username).subscribe((data) => {
+      this.appUsersService.getProfile(this.blog.username, { skipError404: true }).subscribe((data) => {
         this.user = data;
         this.setFaqSchemaData();
       }),
