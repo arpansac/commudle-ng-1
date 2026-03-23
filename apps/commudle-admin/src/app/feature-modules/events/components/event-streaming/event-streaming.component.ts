@@ -38,7 +38,7 @@ export class EventStreamingComponent implements AfterContentInit {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() event: IEvent;
 
-  @Output() refreshEmbeddedVideoStream: EventEmitter<any> = new EventEmitter();
+  @Output() refreshEmbeddedVideoStream: EventEmitter<IEmbeddedVideoStream> = new EventEmitter();
 
   communityAuthToken: ICommunityAuthToken;
   loaders = {
@@ -81,7 +81,7 @@ export class EventStreamingComponent implements AfterContentInit {
           if (res) {
             this.toastrService.successDialog('Connected to Youtube');
             this.getToken();
-            this.refreshEmbeddedVideoStream.emit();
+            this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
           }
         }),
     );
@@ -99,7 +99,7 @@ export class EventStreamingComponent implements AfterContentInit {
         if (res) {
           this.toastrService.successDialog('Disconnected from Youtube');
           this.getToken();
-          this.refreshEmbeddedVideoStream.emit();
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
         }
       }),
     );
@@ -111,8 +111,9 @@ export class EventStreamingComponent implements AfterContentInit {
       this.embeddedVideoStreamService.createLivestream(this.event.id, 'Event').subscribe({
         next: (res) => {
           if (res) {
+            this.embeddedVideoStream = res;
             this.toastrService.successDialog('Stream created');
-            this.refreshEmbeddedVideoStream.emit();
+            this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
             this.loaders.createStream = false;
           }
         },
@@ -126,8 +127,9 @@ export class EventStreamingComponent implements AfterContentInit {
     this.subscriptions.push(
       this.embeddedVideoStreamService.deleteLivestream(this.event.id, 'Event').subscribe((res) => {
         if (res) {
+          this.embeddedVideoStream = { ...this.embeddedVideoStream, youtube_broadcast: null, rtmp_url: null };
           this.toastrService.successDialog('Stream deleted');
-          this.refreshEmbeddedVideoStream.emit();
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
           this.loaders.deleteStream = false;
         }
       }),

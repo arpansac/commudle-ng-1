@@ -80,7 +80,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() refreshEmbeddedVideoStream: EventEmitter<void> = new EventEmitter<void>();
+  @Output() refreshEmbeddedVideoStream: EventEmitter<IEmbeddedVideoStream> = new EventEmitter<IEmbeddedVideoStream>();
 
   EHmsRoles = EHmsRoles;
   EHmsRoomMode = EHmsRoomMode;
@@ -444,8 +444,9 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     this.settingsInstance.modeChanged.subscribe((mode: EHmsRoomMode) => {
       this.onModeChanged(mode);
     });
-    this.settingsInstance.refreshEmbeddedVideoStream.subscribe(() => {
-      this.refreshEmbeddedVideoStream.emit();
+    this.settingsInstance.refreshEmbeddedVideoStream.subscribe((evs: IEmbeddedVideoStream) => {
+      this.embeddedVideoStream = evs;
+      this.refreshEmbeddedVideoStream.emit(evs);
     });
   }
 

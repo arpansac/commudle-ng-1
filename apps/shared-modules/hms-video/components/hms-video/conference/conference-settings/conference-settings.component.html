@@ -139,7 +139,7 @@
                   [status]="isStreaming ? 'danger' : 'success'"
                   outline
                 >
-                  <fa-icon [icon]="faYoutube" [ngClass]="isStreaming ? 'yt-icon-live' : 'yt-icon-off'"></fa-icon>
+                  <fa-icon [icon]="faYoutube" [ngClass]="isStreaming ? 'yt-icon-live' : 'yt-icon-off'"></fa-icon>&nbsp;
                   {{ isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming' }}
                 </button>
               </div>
@@ -147,7 +147,7 @@
                 <commudle-event-streaming
                   [embeddedVideoStream]="embeddedVideoStream"
                   [event]="event"
-                  (refreshEmbeddedVideoStream)="refreshEmbeddedVideoStream.emit()"
+                  (refreshEmbeddedVideoStream)="onEmbeddedVideoStreamUpdated($event)"
                 ></commudle-event-streaming>
               </div>
             </div>

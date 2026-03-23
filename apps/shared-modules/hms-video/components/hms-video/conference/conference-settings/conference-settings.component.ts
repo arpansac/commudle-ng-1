@@ -36,7 +36,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   @Output() streamingAction = new EventEmitter<string>();
   @Output() modeChanged = new EventEmitter<EHmsRoomMode>();
-  @Output() refreshEmbeddedVideoStream = new EventEmitter<void>();
+  @Output() refreshEmbeddedVideoStream = new EventEmitter<IEmbeddedVideoStream>();
 
   loadingAction: string = null;
 
@@ -266,6 +266,11 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   private executeAction(actionKey: string): void {
     this.loadingAction = actionKey;
     this.streamingAction.emit(actionKey);
+  }
+
+  onEmbeddedVideoStreamUpdated(evs: IEmbeddedVideoStream): void {
+    this.embeddedVideoStream = evs;
+    this.refreshEmbeddedVideoStream.emit(evs);
   }
 
   updateStreamingState(state: {
