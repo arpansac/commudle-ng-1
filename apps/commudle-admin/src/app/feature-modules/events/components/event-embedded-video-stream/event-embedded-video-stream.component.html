@@ -1,148 +1,193 @@
-<div class="embedded-video-stream">
-  <div class="embedded-video-stream-form">
-    <form (ngSubmit)="createOrUpdate()" *ngIf="event.editable" [formGroup]="embeddedVideoStreamForm">
-      <div>
-        <nb-select
-          (selectedChange)="updateValidators()"
-          formControlName="source"
-          fullWidth
-          placeholder="Source*"
-          size="small"
-          status="primary"
-        >
-          <nb-option [value]="EEmbeddedVideoStreamSources.COMMUDLE">
-            <div>
-              Commudle Stage
-              <br />
-              <small>(Upto 20 people live on the stage and upto 500 viewers!)</small>
-              <br />
-            </div>
-          </nb-option>
-          <nb-option [value]="EEmbeddedVideoStreamSources.EXTERNAL_LINK">
-            External Link (to platforms like Google Meet)
-          </nb-option>
-          <nb-option [value]="EEmbeddedVideoStreamSources.YOUTUBE">YouTube Live Embed (URL)</nb-option>
-          <nb-option [value]="EEmbeddedVideoStreamSources.OTHER">IFrame (Paste the code of any Iframe)</nb-option>
-          <nb-option disabled>Meet using Jitsi</nb-option>
-          <nb-option [value]="EEmbeddedVideoStreamSources.ZOOM" disabled>ZOOM (embedded into browser)</nb-option>
-        </nb-select>
+<div class="embedded-video-stream" [formGroup]="embeddedVideoStreamForm">
+  <!-- Step 1: Source Selection -->
+  <div class="step-section">
+    <p class="step-label">1. Choose Video Source</p>
+    <div class="source-cards">
+      <div
+        *ngFor="let src of sourceOptions"
+        class="source-card"
+        [ngClass]="{
+          'source-card-active': embeddedVideoStreamForm.get('source').value === src.value,
+          'source-card-disabled': src.disabled
+        }"
+        (click)="!src.disabled && selectSource(src.value)"
+      >
+        <fa-icon [icon]="src.icon" class="source-icon"></fa-icon>
+        <p class="source-title">{{ src.label }}</p>
+        <p class="source-description">{{ src.description }}</p>
       </div>
-      <div>
-        <label>
-          <span *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.ZOOM">
-            Zoom Meeting ID
-          </span>
-          <span *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.YOUTUBE">
-            Video Url
-          </span>
-          <span *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.EXTERNAL_LINK">
-            Paste link here
-          </span>
-          <span *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.OTHER">
-            Other (Embedded Iframe)
-          </span>
-          <span
-            *ngIf="
-              embeddedVideoStreamForm['controls'].embed_code.touched &&
-              embeddedVideoStreamForm['controls'].embed_code.invalid &&
-              embeddedVideoStreamForm['controls'].embed_code.errors.required
-            "
-            class="validation-error-text"
-          >
-            Required Field
-          </span>
-          <textarea
-            [ngClass]="{ hidden: embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE }"
-            formControlName="embed_code"
-            fullWidth
-            nbInput
-            placeholder="Type here"
-          ></textarea>
-        </label>
+    </div>
+  </div>
+
+  <!-- Step 2: Mode Selection (Commudle only) -->
+  <div
+    *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE"
+    class="step-section"
+  >
+    <p class="step-label">2. Choose Session Mode</p>
+    <div class="mode-cards">
+      <div
+        class="mode-card"
+        [ngClass]="{ 'mode-card-active': selectedMode === EHmsRoomMode.INTERACTIVE }"
+        (click)="selectMode(EHmsRoomMode.INTERACTIVE)"
+      >
+        <nb-icon icon="video" class="mode-icon"></nb-icon>
+        <p class="mode-title">Interactive Mode</p>
+        <p class="mode-description">Maximum 150 participants: Invite anyone to the stage</p>
+        <ul class="mode-features">
+          <li class="mode-feature-yes">YouTube Streaming</li>
+          <li class="mode-feature-no">Local Recording</li>
+        </ul>
       </div>
-      <div *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.ZOOM">
-        <label>
-          Meeting/Webinar Host Email
-          <span
-            *ngIf="
-              embeddedVideoStreamForm['controls'].zoom_host_email.touched &&
-              embeddedVideoStreamForm['controls'].zoom_host_email.invalid &&
-              embeddedVideoStreamForm['controls'].zoom_host_email.errors.required
-            "
-            class="validation-error-text"
-          >
-            Required Field
-          </span>
-          <input formControlName="zoom_host_email" fullWidth nbInput placeholder="Type email id here" />
-        </label>
+      <div
+        class="mode-card"
+        [ngClass]="{ 'mode-card-active': selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR }"
+        (click)="selectMode(EHmsRoomMode.LARGE_SCALE_WEBINAR)"
+      >
+        <nb-icon icon="cast" class="mode-icon"></nb-icon>
+        <p class="mode-title">Large Scale Webinar</p>
+        <p class="mode-description">5000 participants: Invite anyone to the stage</p>
+        <ul class="mode-features">
+          <li class="mode-feature-no">YouTube Streaming</li>
+          <li class="mode-feature-yes">Local Recording (link sent via email, downloadable for 7 days)</li>
+        </ul>
       </div>
-      <div *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.ZOOM">
-        <label>
-          Meeting/Webinar Password (visible only to organizers)
-          <span
-            *ngIf="
-              embeddedVideoStreamForm['controls'].zoom_password.touched &&
-              embeddedVideoStreamForm['controls'].zoom_password.invalid &&
-              embeddedVideoStreamForm['controls'].zoom_password.errors.required
-            "
-            class="validation-error-text"
-          >
-            Required Field
-          </span>
-          <input formControlName="zoom_password" fullWidth nbInput placeholder="Type password here" />
-        </label>
-      </div>
-      <div *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE">
+    </div>
+  </div>
+
+  <!-- Step 3: Configuration -->
+  <div *ngIf="embeddedVideoStreamForm.get('source').value" class="step-section">
+    <p class="step-label">
+      {{ embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE ? '3.' : '2.' }}
+      Configuration
+    </p>
+
+    <!-- Commudle: YouTube streaming setup -->
+    <div *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE">
+      <div *ngIf="selectedMode === EHmsRoomMode.INTERACTIVE" class="config-section">
+        <p class="config-label">YouTube Streaming (Optional)</p>
         <commudle-event-streaming
+          *ngIf="evs?.id"
           (refreshEmbeddedVideoStream)="getEmbeddedVideoStream()"
           [embeddedVideoStream]="evs"
           [event]="event"
         ></commudle-event-streaming>
-        <label>
-          Enter the streaming url (rtmp://a.rtmp.youtube.com/live2/&lt;stream_key&gt;)
-          <input
-            formControlName="rtmp_url"
-            fullWidth
-            nbInput
-            placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
-            type="url"
-          />
-        </label>
+        <div *ngIf="evs?.rtmp_url" class="config-field">
+          <label class="config-field-label">
+            RTMP URL
+            <input
+              formControlName="rtmp_url"
+              fullWidth
+              nbInput
+              size="small"
+              placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
+              type="url"
+            />
+          </label>
+        </div>
       </div>
-      <div class="save-button-bottom">
-        <button [disabled]="!embeddedVideoStreamForm.valid" fullWidth nbButton status="info" type="submit">
-          <span
-            *ngIf="
-              !evs ||
-              !evs.hms_room_id ||
-              (evs && embeddedVideoStreamForm.get('source').value !== EEmbeddedVideoStreamSources.COMMUDLE)
-            "
-          >
-            Save
-          </span>
-          <span
-            *ngIf="
-              embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE && evs?.hms_room_id
-            "
-          >
-            Reset / Update Room
-          </span>
-        </button>
+      <div *ngIf="selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR" class="config-section">
+        <nb-alert accent="info">
+          Recording will be handled automatically. The recording link will be sent to your email after the session ends.
+        </nb-alert>
       </div>
-    </form>
+    </div>
+
+    <!-- YouTube -->
+    <div
+      *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.YOUTUBE"
+      class="config-section"
+    >
+      <label class="config-field-label">
+        YouTube Video URL
+        <input
+          formControlName="embed_code"
+          fullWidth
+          nbInput
+          size="small"
+          placeholder="https://www.youtube.com/watch?v=..."
+        />
+      </label>
+    </div>
+
+    <!-- External Link -->
+    <div
+      *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.EXTERNAL_LINK"
+      class="config-section"
+    >
+      <label class="config-field-label">
+        Paste link here (Google Meet, etc.)
+        <input formControlName="embed_code" fullWidth nbInput size="small" placeholder="https://meet.google.com/..." />
+      </label>
+    </div>
+
+    <!-- Other (iframe) -->
+    <div
+      *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.OTHER"
+      class="config-section"
+    >
+      <label class="config-field-label">
+        Paste Iframe Code
+        <textarea
+          formControlName="embed_code"
+          fullWidth
+          nbInput
+          placeholder="<iframe src='...'></iframe>"
+          rows="3"
+        ></textarea>
+      </label>
+    </div>
   </div>
-  <div class="preview">
-    <app-video-stream
-      *ngIf="evs && currentUser"
-      [currentUser]="currentUser"
-      [embeddedVideoStream]="evs"
-      [eventName]="event?.name"
-      [eventBannerUrl]="event?.header_image_path"
-      [event]="event"
-      [started]="true"
-      [videoCode]="embeddedVideoStreamForm.get('embed_code').value || evs.hms_room_id"
-      [videoSource]="embeddedVideoStreamForm.get('source').value"
-      fillerText="Auto Preview"
-    ></app-video-stream>
+
+  <!-- Save Button -->
+  <div *ngIf="embeddedVideoStreamForm.get('source').value && event.editable" class="step-section">
+    <button
+      (click)="createOrUpdate()"
+      [disabled]="!embeddedVideoStreamForm.valid || savingInProgress"
+      [nbSpinner]="savingInProgress"
+      nbSpinnerSize="small"
+      nbButton
+      status="primary"
+      fullWidth
+      size="medium"
+    >
+      {{
+        evs?.hms_room_id && embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE
+          ? 'Update Configuration'
+          : 'Save'
+      }}
+    </button>
+  </div>
+
+  <!-- Preview -->
+  <div *ngIf="evs?.id && currentUser" class="step-section preview-section">
+    <p class="step-label">Preview</p>
+    <div class="preview-container">
+      <app-video-stream
+        [currentUser]="currentUser"
+        [embeddedVideoStream]="evs"
+        [eventName]="event?.name"
+        [eventBannerUrl]="event?.header_image_path"
+        [event]="event"
+        [started]="true"
+        [videoCode]="embeddedVideoStreamForm.get('embed_code').value || evs.hms_room_id"
+        [videoSource]="embeddedVideoStreamForm.get('source').value"
+        fillerText="Auto Preview"
+      ></app-video-stream>
+    </div>
   </div>
 </div>
+
+<!-- Confirmation dialog -->
+<ng-template #confirmDialog let-ref="dialogRef">
+  <nb-card class="confirm-dialog">
+    <nb-card-header>{{ confirmTitle }}</nb-card-header>
+    <nb-card-body>
+      <p class="confirm-message">{{ confirmMessage }}</p>
+    </nb-card-body>
+    <nb-card-footer class="confirm-actions">
+      <button (click)="ref.close(true)" nbButton size="small" status="primary">Yes, switch</button>
+      <button (click)="ref.close(false)" nbButton size="small" ghost status="basic">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
