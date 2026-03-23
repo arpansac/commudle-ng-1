@@ -42,7 +42,15 @@
     <nb-card class="home-event-menu">
       <nb-card-body>
         <nb-actions>
-          <nb-action (click)="scroll(eventFormSectionRef)" *ngIf="moment() < moment(event.end_time)" class="clickable">
+          <nb-action
+            (click)="scroll(eventFormSectionRef)"
+            *ngIf="
+              moment() < moment(event.end_time) &&
+              (event.editable || event.event_status.name === EEventStatuses.OPEN) &&
+              hasOpenForms
+            "
+            class="clickable"
+          >
             <nb-icon icon="file-text-outline" status="primary"></nb-icon>
             <span><a [routerLink]="'.'" fragment="event-form">Event Forms</a></span>
           </nb-action>
@@ -94,7 +102,14 @@
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
         <div class="registrations-buttons">
-          <nb-card *ngIf="moment() < moment(event.end_time)" class="event-form-card">
+          <nb-card
+            *ngIf="
+              moment() < moment(event.end_time) &&
+              (event.editable || event.event_status.name === EEventStatuses.OPEN) &&
+              hasOpenForms
+            "
+            class="event-form-card"
+          >
             <nb-card-header>
               <h6 class="event-form-title">
                 <a [routerLink]="'.'" fragment="event-form"
@@ -106,7 +121,6 @@
               <div #eventFormSection id="event-form" class="registration-form">
                 <app-highlighted-links
                   (hasOpenForms)="hasOpenForms = $event"
-                  *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
                   [community]="community"
                   [event]="event"
                 ></app-highlighted-links>
