@@ -97,6 +97,7 @@ export class UserProfileManagerService {
         this.gtm.dataLayerPushEvent('profile-updated', {});
       }
       this.authWatchService.updateSignedInUser();
+      this.user.next(data);
       if (showToast) {
         this.toastLogService.successDialog(`Your Profile is now updated!`);
       }

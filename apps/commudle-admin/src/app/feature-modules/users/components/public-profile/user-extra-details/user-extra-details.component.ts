@@ -6,10 +6,10 @@ import { IUser } from 'apps/shared-models/user.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-user-extra-details',
-    templateUrl: './user-extra-details.component.html',
-    styleUrls: ['./user-extra-details.component.scss'],
-    standalone: false
+  selector: 'app-user-extra-details',
+  templateUrl: './user-extra-details.component.html',
+  styleUrls: ['./user-extra-details.component.scss'],
+  standalone: false,
 })
 export class UserExtraDetailsComponent implements OnInit, OnDestroy {
   user: IUser;
@@ -25,11 +25,14 @@ export class UserExtraDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(this.activatedRoute.params.subscribe((data) => this.getUserData(data.username)));
-    this.userProfileManagerService.user$.subscribe((data) => {
-      if (data) {
-        this.hiring = data.is_employer;
-      }
-    });
+    this.subscriptions.push(
+      this.userProfileManagerService.user$.subscribe((data) => {
+        if (data && data.username === this.activatedRoute.snapshot.params.username) {
+          this.user = data;
+          this.hiring = data.is_employer;
+        }
+      }),
+    );
   }
 
   ngOnDestroy() {
