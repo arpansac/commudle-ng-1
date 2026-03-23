@@ -33,103 +33,120 @@
       &nbsp; CREATE NEW FORM
     </a>
   </div>
-  <div *ngIf="!isLoading && (!dataForms || dataForms.length === 0)" class="empty-state">
-    <img [src]="staticAssets.surveys_admin_empty_state" alt="No Forms" class="empty-state-icon" />
-    <h2 class="empty-state-title">No Data Available</h2>
-    <p class="empty-state-description">You can create one by clicking the "Create New Form" button</p>
-    <a
-      *appBreakpoints="'>lg'"
-      class="create-button empty-state-button"
-      [routerLink]="['/forms', 'new']"
-      [queryParams]="{ parent_id: community.id, parent_type: 'Kommunity' }"
-      status="primary"
-      nbButton
-      shape="semi-round"
-    >
-      <fa-icon [icon]="faPlus"></fa-icon>
-      &nbsp; CREATE NEW FORM
-    </a>
+
+  <div class="page-header">
+    <form [formGroup]="searchForm" class="search-form">
+      <div>
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            [disabled]="isLoading"
+            fieldSize="medium"
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search by name"
+            type="text"
+            shape="semi-round"
+          />
+        </nb-form-field>
+      </div>
+    </form>
   </div>
 
-  <ng-container *ngIf="isLoading || (dataForms && dataForms.length > 0)">
-    <div class="page-header">
-      <form [formGroup]="searchForm" class="search-form">
-        <div>
-          <nb-form-field>
-            <nb-icon icon="search" nbPrefix></nb-icon>
-            <input
-              [disabled]="isLoading"
-              fieldSize="medium"
-              formControlName="name"
-              fullWidth
-              nbInput
-              placeholder="Search by name"
-              type="text"
-              shape="semi-round"
-            />
-          </nb-form-field>
-        </div>
-      </form>
-    </div>
+  <ng-container>
+    <div class="content-area">
+      <!-- Table Section -->
+      <div class="table-wrapper">
+        <table class="forms-table">
+          <thead>
+            <tr class="table-header">
+              <th>NAME</th>
+              <th>MINI STATS</th>
+              <th>CREATED BY</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="isLoading">
+            <tr>
+              <td colspan="4" class="empty-state-cell">
+                <div class="empty-state">
+                  <app-loading-spinner></app-loading-spinner>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="dataForms.length > 0 && !isLoading">
+            <tr *ngFor="let form of dataForms" class="table-row">
+              <td>
+                <p class="form-name" [title]="form.name">
+                  {{ form.name }}
+                </p>
+              </td>
 
-    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+              <td>
+                <div class="stats-content">
+                  <p class="responses-count">{{ form.responses_count }} Responses</p>
+                  <p class="questions-count">{{ form.questions_count }} Questions</p>
+                </div>
+              </td>
 
-    <!-- Table Section -->
-    <div class="table-wrapper">
-      <table *ngIf="!isLoading" class="forms-table">
-        <thead>
-          <tr class="table-header">
-            <th>NAME</th>
-            <th>MINI STATS</th>
-            <th>CREATED BY</th>
-            <th>ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody *ngIf="dataForms.length > 0">
-          <tr *ngFor="let form of dataForms" class="table-row">
-            <td>
-              <p class="form-name" [title]="form.name">
-                {{ form.name }}
-              </p>
-            </td>
+              <td>
+                <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small>
+              </td>
 
-            <td>
-              <div class="stats-content">
-                <p class="responses-count">{{ form.responses_count }} Responses</p>
-                <p class="questions-count">{{ form.questions_count }} Questions</p>
-              </div>
-            </td>
-
-            <td>
-              <app-user-profile-card-small [user]="form.user"></app-user-profile-card-small>
-            </td>
-
-            <td class="actions-cell">
-              <div class="actions-buttons">
-                <button
-                  class="show-responses-btn"
-                  nbButton
-                  status="basic"
-                  size="small"
-                  shape="semi-round"
-                  (click)="openResponses(form)"
-                >
-                  Show Responses
-                </button>
-                <button
-                  class="edit-btn"
-                  nbButton
-                  shape="semi-round"
-                  size="small"
-                  [routerLink]="['/forms', form.id, 'edit']"
-                >
-                  <fa-icon [icon]="faEdit"></fa-icon> &nbsp; Edit
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td class="actions-cell">
+                <div class="actions-buttons">
+                  <button
+                    class="show-responses-btn"
+                    nbButton
+                    status="basic"
+                    size="small"
+                    shape="semi-round"
+                    (click)="openResponses(form)"
+                  >
+                    Show Responses
+                  </button>
+                  <button
+                    class="edit-btn"
+                    nbButton
+                    shape="semi-round"
+                    size="small"
+                    [routerLink]="['/forms', form.id, 'edit']"
+                  >
+                    <fa-icon [icon]="faEdit"></fa-icon> &nbsp; Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!isLoading && (!dataForms || dataForms.length === 0)">
+            <tr>
+              <td colspan="4" class="empty-state-cell">
+                <div class="empty-state">
+                  <img [src]="staticAssets.surveys_admin_empty_state" alt="No Forms" class="empty-state-icon" />
+                  <h2 class="empty-state-title">
+                    {{ isSearchApplied ? 'No Form Found With That Name' : 'Create Your First Form' }}
+                  </h2>
+                  <p class="empty-state-description">You can create one by clicking the "Create New Form" button</p>
+                  <a
+                    *appBreakpoints="'>lg'"
+                    class="create-button empty-state-button"
+                    [routerLink]="['/forms', 'new']"
+                    [queryParams]="{ parent_id: community.id, parent_type: 'Kommunity' }"
+                    status="primary"
+                    nbButton
+                    shape="semi-round"
+                  >
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                    &nbsp; CREATE NEW FORM
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <app-pagination
       class="pagination"
