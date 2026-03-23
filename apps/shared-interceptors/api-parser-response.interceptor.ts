@@ -9,17 +9,17 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
-import { Observable, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-export const SKIP_ERROR = new HttpContextToken<boolean>(() => false);
+export const SKIP_ERROR_404 = new HttpContextToken<boolean>(() => false);
 
 @Injectable()
 export class ApiParserResponseInterceptor implements HttpInterceptor {
   constructor(private errorHandleService: LibErrorHandlerService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const skipError = req.context.get(SKIP_ERROR);
+    const skipError404 = req.context.get(SKIP_ERROR_404);
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
@@ -31,16 +31,8 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
       }),
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
-          if (skipError === true && error.status === 404) {
-            return new Observable<HttpEvent<any>>((observer) => {
-              observer.next(
-                new HttpResponse({
-                  body: { data: null },
-                  status: 200,
-                }),
-              );
-              observer.complete();
-            });
+          if (skipError404 === true) {
+            return EMPTY;
           }
 
           // show a dialog/redirect, based on error code
