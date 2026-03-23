@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LibErrorHandlerService } from 'apps/lib-error-handler/src/public-api';
-import { SKIP_ERROR_404 } from 'apps/shared-models/enums/http-context-tokens';
+import { EHttpContextFlag } from 'apps/shared-models/enums/http-context-tokens';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ export class ApiParserResponseInterceptor implements HttpInterceptor {
   constructor(private errorHandleService: LibErrorHandlerService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const skipError404 = req.context.get(SKIP_ERROR_404);
+    const skipError404 = req.context.get(EHttpContextFlag.SKIP_ERROR_404);
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {

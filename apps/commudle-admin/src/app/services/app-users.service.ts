@@ -1,4 +1,4 @@
-import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpContextToken, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IPaginationCount,
@@ -9,7 +9,6 @@ import {
   IUserStat,
 } from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
-import { SKIP_ERROR_404 } from 'apps/shared-models/enums/http-context-tokens';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
@@ -29,21 +28,24 @@ import { Observable } from 'rxjs';
 export class AppUsersService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  getProfile(
-    username: string,
-    config?: {
-      skipError404?: boolean;
-    },
-  ): Observable<IUser> {
+  getProfile(username: string, flags?): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    let context = new HttpContext();
-    if (config?.skipError404) {
-      context = context.set(SKIP_ERROR_404, true);
-    }
-    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), {
+    const requestOptions: { params: HttpParams; context?: HttpContext } = {
       params,
-      context,
+    };
+    if (flags?.length) {
+      requestOptions.context = this.buildContextToken(flags);
+    }
+    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), requestOptions);
+  }
+
+  buildContextToken(flags?: { token: HttpContextToken<any>; value: any }[]): HttpContext {
+    let context = new HttpContext();
+
+    flags.forEach((flag) => {
+      context = context.set(flag.token, flag.value);
     });
+    return context;
   }
 
   fetchProfile(username: string): Observable<IUser> {

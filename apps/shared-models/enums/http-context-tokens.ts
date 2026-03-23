@@ -1,3 +1,7 @@
 import { HttpContextToken } from '@angular/common/http';
 
-export const SKIP_ERROR_404 = new HttpContextToken<boolean>(() => false);
+export const EHttpContextFlag = {
+  SKIP_ERROR_404: new HttpContextToken<boolean>(() => false),
+};
+
+export type EHttpContextFlag = (typeof EHttpContextFlag)[keyof typeof EHttpContextFlag];
