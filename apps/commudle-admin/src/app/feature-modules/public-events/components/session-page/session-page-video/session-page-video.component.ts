@@ -48,6 +48,14 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
   isBeamActive = false;
   isHlsRunning = false;
 
+  get isOrganizer(): boolean {
+    return (
+      this.userRoles?.includes(EUserRoles.ORGANIZER) ||
+      this.userRoles?.includes(EUserRoles.EVENT_ORGANIZER) ||
+      this.userRoles?.includes(EUserRoles.EVENT_VOLUNTEER)
+    );
+  }
+
   // For live notifications
   userCount = 0;
   newMessage = false;

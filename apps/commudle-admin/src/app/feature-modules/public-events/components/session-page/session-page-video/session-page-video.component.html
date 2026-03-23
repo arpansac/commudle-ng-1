@@ -36,14 +36,16 @@
         [fillerText]="
           !currentUser
             ? 'Login to Access'
+            : isOrganizer
+            ? 'Click to join as Host'
             : moment() < moment(startTime)
             ? 'Starting in ' + moment(startTime).fromNow(true)
             : 'Loading Video...'
         "
         [height]="videoStream.clientHeight"
-        [started]="moment() >= moment(startTime)"
+        [started]="isOrganizer || moment() >= moment(startTime)"
         [videoCode]="
-          !currentUser || moment() < moment(startTime)
+          !currentUser || (!isOrganizer && moment() < moment(startTime))
             ? false
             : embeddedVideoStream.embed_code || embeddedVideoStream.hms_room_id
         "
