@@ -1,12 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HttpContext } from '@angular/common/http';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { IUser } from '@commudle/shared-models';
-import { SKIP_ERROR_404 } from 'apps/shared-interceptors/api-parser-response.interceptor';
 
 @Component({
   selector: 'commudle-blog-card',
@@ -40,8 +38,7 @@ export class BlogCardComponent implements OnInit {
 
   getUserProfile() {
     if (this.blog.username) {
-      const context = new HttpContext().set(SKIP_ERROR_404, true);
-      this.usersService.getProfile(this.blog.username, { context }).subscribe((data) => {
+      this.usersService.getProfile(this.blog.username, { skipError404: true }).subscribe((data) => {
         if (data) {
           this.user = data;
         }

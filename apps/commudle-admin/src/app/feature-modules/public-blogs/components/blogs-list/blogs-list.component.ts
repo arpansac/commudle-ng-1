@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpContext } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/models/blogs.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
-import { SKIP_ERROR_404 } from 'apps/shared-interceptors/api-parser-response.interceptor';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
@@ -204,9 +202,8 @@ export class BlogsListComponent implements OnInit, OnDestroy {
   }
 
   getUser(username): Promise<string> {
-    const context = new HttpContext().set(SKIP_ERROR_404, true);
     return this.appUsersService
-      .getProfile(username, { context })
+      .getProfile(username, { skipError404: true })
       .toPromise()
       .then((user) => user?.name || username)
       .catch(() => username);

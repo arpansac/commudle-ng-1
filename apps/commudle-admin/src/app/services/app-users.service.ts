@@ -9,6 +9,7 @@ import {
   IUserStat,
 } from '@commudle/shared-models';
 import { API_ROUTES, BaseApiService } from '@commudle/shared-services';
+import { SKIP_ERROR_404 } from 'apps/shared-interceptors/api-parser-response.interceptor';
 import { IBadges } from 'apps/shared-models/badges.model';
 import { ICommunityBuilds } from 'apps/shared-models/community-builds.model';
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
@@ -31,11 +32,14 @@ export class AppUsersService {
   getProfile(
     username: string,
     config?: {
-      context?: HttpContext;
+      skipError404?: boolean;
     },
   ): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    const context = config?.context;
+    let context = new HttpContext();
+    if (config?.skipError404) {
+      context = context.set(SKIP_ERROR_404, true);
+    }
     return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), {
       params,
       context,
