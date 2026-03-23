@@ -739,7 +739,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   receiveChannelData(): void {
     this.hmsLiveChannel.channelData$[this.currentUser.id].subscribe(
       (value: { action: string; user: { id: number; name: string }; user_name: string; playback_url: string }) => {
-        console.log('🚀 ~ ConferenceComponent ~ receiveChannelData ~ value:', value);
         switch (value.action) {
           // TODO: Use setpermissions for handling this
           case this.hmsLiveChannel.ACTIONS.RECORDING_STARTED:

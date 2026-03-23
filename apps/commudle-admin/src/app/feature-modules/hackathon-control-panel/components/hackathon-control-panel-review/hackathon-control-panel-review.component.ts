@@ -355,12 +355,7 @@ export class HackathonControlPanelReviewComponent implements OnInit, OnDestroy {
   }
 
   displayUserData(user) {
-    console.log('🚀 ~ HackathonControlPanelReviewComponent ~ displayUserData ~ user:', user);
     this.selectedUserDetails = user;
-    console.log(
-      '🚀 ~ HackathonControlPanelReviewComponent ~ displayUserData ~ this.selectedUserDetails:',
-      this.selectedUserDetails,
-    );
     this.getQuestionAnswer();
   }
 
