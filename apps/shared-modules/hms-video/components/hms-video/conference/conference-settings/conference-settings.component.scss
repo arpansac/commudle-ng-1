@@ -148,6 +148,24 @@
       margin: $space-8 0;
     }
 
+    .mic-meter {
+      @apply com-flex com-items-center com-gap-2 com-mt-2;
+
+      .mic-meter-icon {
+        @apply com-text-lg com-text-gray-500 com-flex-shrink-0;
+      }
+
+      .mic-meter-track {
+        @apply com-flex-1 com-h-2 com-bg-gray-200 com-rounded-full com-overflow-hidden;
+
+        .mic-meter-fill {
+          @apply com-h-full com-rounded-full;
+          background: linear-gradient(90deg, #22c55e 0%, #22c55e 60%, #eab308 80%, #ef4444 100%);
+          transition: width 0.1s ease-out;
+        }
+      }
+    }
+
     .preview {
       aspect-ratio: 16 / 9;
       position: relative;

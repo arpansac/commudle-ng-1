@@ -143,9 +143,12 @@
                   {{ isStreaming ? 'Stop YT Streaming' : 'Start YT Streaming' }}
                 </button>
               </div>
-              <div *ngIf="!embeddedVideoStream.rtmp_url" class="yt-status">
-                <nb-icon icon="alert-circle" status="warning"></nb-icon>
-                <span>No RTMP URL configured. Set it in the event dashboard.</span>
+              <div *ngIf="!embeddedVideoStream.rtmp_url">
+                <commudle-event-streaming
+                  [embeddedVideoStream]="embeddedVideoStream"
+                  [event]="event"
+                  (refreshEmbeddedVideoStream)="refreshEmbeddedVideoStream.emit()"
+                ></commudle-event-streaming>
               </div>
             </div>
 
@@ -250,6 +253,12 @@
   >
     <nb-option *ngFor="let device of audioInputDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
   </nb-select>
+  <div class="mic-meter">
+    <nb-icon [icon]="isAudioEnabled ? 'mic' : 'mic-off'" class="mic-meter-icon"></nb-icon>
+    <div class="mic-meter-track">
+      <div class="mic-meter-fill" [style.width.%]="isAudioEnabled ? micLevel : 0"></div>
+    </div>
+  </div>
   <nb-select (selectedChange)="selectVideoDevice($event)" [selected]="selectedVideoDeviceId" fullWidth size="small">
     <nb-option *ngFor="let device of videoDevices" [value]="device.deviceId"> {{ device.label }} </nb-option>
   </nb-select>

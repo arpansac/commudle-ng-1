@@ -24,6 +24,7 @@ export class VideoStreamComponent implements OnChanges {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() eventName: string;
   @Input() eventBannerUrl: string;
+  @Input() event: any;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();

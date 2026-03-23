@@ -161,6 +161,59 @@
       <fa-icon [icon]="icons.faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
     </button>
 
+    <!-- Host streaming controls + status indicators -->
+    <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
+      <!-- Start/Stop Stream (isLive for interactive, HLS for webinar) -->
+      <button
+        (click)="toggleStream()"
+        [nbTooltip]="isLive || isHlsRunning ? 'Stop Stream' : 'Start Stream'"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <span *ngIf="isLive || isHlsRunning" class="status-dot-inline status-dot-live">
+          <fa-icon [icon]="icons.faCircle"></fa-icon>
+          LIVE
+        </span>
+        <fa-icon *ngIf="!isLive && !isHlsRunning" [icon]="icons.faPlay"></fa-icon>
+      </button>
+
+      <!-- YT Streaming (interactive mode with rtmp_url) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url"
+        (click)="toggleYTStreaming()"
+        [nbTooltip]="isStreaming ? 'Stop YT Stream' : 'Start YT Stream'"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <span *ngIf="isStreaming" class="status-dot-inline status-dot-yt">
+          <fa-icon [icon]="icons.faYoutube"></fa-icon>
+          YT
+        </span>
+        <fa-icon *ngIf="!isStreaming" [icon]="icons.faYoutube"></fa-icon>
+      </button>
+
+      <!-- Recording (webinar mode) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR"
+        (click)="toggleRecording()"
+        [nbTooltip]="isRecording ? 'Stop Recording' : 'Start Recording'"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <span *ngIf="isRecording" class="status-dot-inline status-dot-rec">
+          <fa-icon [icon]="icons.faCircle"></fa-icon>
+          REC
+        </span>
+        <fa-icon *ngIf="!isRecording" [icon]="icons.faCircle"></fa-icon>
+      </button>
+    </ng-container>
+
     <!-- Streaming controls based on mode -->
     <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
       <!-- Leave stage (host on stage) -->
@@ -191,36 +244,21 @@
       </button>
     </ng-container>
 
-    <!-- Live / Streaming status indicators -->
-    <div
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
-      class="status-indicators"
-    >
-      <span *ngIf="isLive || isHlsRunning" class="status-dot status-dot-live" nbTooltip="Stream is Live">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
-        LIVE
-      </span>
-      <span *ngIf="isStreaming" class="status-dot status-dot-yt" nbTooltip="YouTube Streaming">
-        <fa-icon [icon]="icons.faYoutube"></fa-icon>
-        YT
-      </span>
-      <span *ngIf="isRecording" class="status-dot status-dot-rec" nbTooltip="Recording">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
-        REC
-      </span>
-    </div>
-
     <!-- Settings -->
     <button
       (click)="openSettings()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
+      *ngIf="
+        localPeer.roleName === EHmsRoles.HOST ||
+        localPeer.roleName === EHmsRoles.GUEST ||
+        localPeer.roleName === EHmsRoles.HOST_VIEWER
+      "
       nbTooltip="Settings"
       ghost
       nbButton
       shape="round"
       class="control-btn"
     >
-      <nb-icon icon="settings"></nb-icon>
+      <fa-icon [icon]="icons.faGear"></fa-icon>
     </button>
 
     <!-- End session (host only, red button with door exit icon) -->
@@ -238,19 +276,7 @@
   </div>
 
   <nb-alert *ngIf="showReconnecting" class="reconnecting">
-    <svg
-      class="com-animate-spin com--ml-1 com-mr-3 com-h-5 com-w-5 com-text-blue-600"
-      fill="none"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle class="com-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path
-        class="com-opacity-75"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        fill="currentColor"
-      ></path>
-    </svg>
+    <fa-icon [icon]="icons.faSpinner" class="reconnecting-spinner"></fa-icon>
     <span>Your internet connection seems to be unstable. We are trying to get you back into the session...</span>
   </nb-alert>
 </div>

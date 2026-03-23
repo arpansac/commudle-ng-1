@@ -138,6 +138,7 @@
       [embeddedVideoStream]="evs"
       [eventName]="event?.name"
       [eventBannerUrl]="event?.header_image_path"
+      [event]="event"
       [started]="true"
       [videoCode]="embeddedVideoStreamForm.get('embed_code').value || evs.hms_room_id"
       [videoSource]="embeddedVideoStreamForm.get('source').value"

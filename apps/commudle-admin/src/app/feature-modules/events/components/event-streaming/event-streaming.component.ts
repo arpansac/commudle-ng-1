@@ -1,17 +1,38 @@
+import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { AuthService, YoutubeLoginProvider } from '@commudle/auth';
 import { ICommunityAuthToken, IEmbeddedVideoStream, IEvent } from '@commudle/shared-models';
 import { ToastrService } from '@commudle/shared-services';
-import { NbDialogService } from '@commudle/theme';
+import {
+  NbAlertModule,
+  NbButtonModule,
+  NbCardModule,
+  NbDialogModule,
+  NbDialogService,
+  NbIconModule,
+  NbSpinnerModule,
+} from '@commudle/theme';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommunityAuthTokensService } from 'apps/commudle-admin/src/app/services/community-auth-tokens.service';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'commudle-event-streaming',
-    templateUrl: './event-streaming.component.html',
-    styleUrls: ['./event-streaming.component.scss'],
-    standalone: false
+  selector: 'commudle-event-streaming',
+  templateUrl: './event-streaming.component.html',
+  styleUrls: ['./event-streaming.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    NbAlertModule,
+    NbSpinnerModule,
+    NbDialogModule,
+  ],
 })
 export class EventStreamingComponent implements AfterContentInit {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
@@ -24,6 +45,8 @@ export class EventStreamingComponent implements AfterContentInit {
     createStream: false,
     deleteStream: false,
   };
+
+  faYoutube = faYoutube;
 
   subscriptions: Subscription[] = [];
 

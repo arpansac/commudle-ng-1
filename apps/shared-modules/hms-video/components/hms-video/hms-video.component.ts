@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
+import { IEvent } from '@commudle/shared-models';
 import { EHmsRoles } from 'apps/shared-modules/hms-video/enums/hms-roles.enum';
 import { EHmsStates } from 'apps/shared-modules/hms-video/enums/hms-states.enum';
 import { IHmsClient } from 'apps/shared-modules/hms-video/models/hms-client.model';
@@ -21,6 +22,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() eventName: string;
   @Input() eventBannerUrl: string;
+  @Input() event: IEvent;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();

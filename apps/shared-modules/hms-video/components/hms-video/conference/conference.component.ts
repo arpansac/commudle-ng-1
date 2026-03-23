@@ -39,7 +39,10 @@ import {
   faChevronUp,
   faCircle,
   faDoorOpen,
+  faGear,
   faHand,
+  faPlay,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
@@ -57,7 +60,7 @@ import { hmsActions, hmsNotifications, hmsStore } from 'apps/shared-modules/hms-
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { ConferenceSettingsComponent } from './conference-settings/conference-settings.component';
-import { EHmsRoomMode, IHmsHls } from '@commudle/shared-models';
+import { EHmsRoomMode, IEvent, IHmsHls } from '@commudle/shared-models';
 import Hls from 'hls.js';
 
 @Component({
@@ -73,9 +76,11 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() eventName: string;
   @Input() eventBannerUrl: string;
+  @Input() event: IEvent;
 
   @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() refreshEmbeddedVideoStream: EventEmitter<void> = new EventEmitter<void>();
 
   EHmsRoles = EHmsRoles;
   EHmsRoomMode = EHmsRoomMode;
@@ -125,6 +130,9 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     faArrowRightFromBracket,
     faArrowUpFromBracket,
     faYoutube,
+    faPlay,
+    faGear,
+    faSpinner,
   };
 
   @ViewChild('hlsVideoPlayer') hlsVideoPlayer!: ElementRef<HTMLVideoElement>;
@@ -410,6 +418,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         isHlsRunning: this.isHlsRunning,
         isRecording: this.isRecording,
         embeddedVideoStream: this.embeddedVideoStream,
+        event: this.event,
       },
     });
     this.settingsInstance = dialogRef.componentRef.instance;
@@ -434,6 +443,9 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.settingsInstance.modeChanged.subscribe((mode: EHmsRoomMode) => {
       this.onModeChanged(mode);
+    });
+    this.settingsInstance.refreshEmbeddedVideoStream.subscribe(() => {
+      this.refreshEmbeddedVideoStream.emit();
     });
   }
 
@@ -495,6 +507,14 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       isHlsRunning: this.isHlsRunning,
       isRecording: this.isRecording,
     });
+  }
+
+  toggleStream(): void {
+    if (this.currentMode === EHmsRoomMode.INTERACTIVE) {
+      this.toggleIsLive();
+    } else {
+      this.toggleHls();
+    }
   }
 
   toggleIsLive(): void {

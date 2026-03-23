@@ -4,6 +4,7 @@ import { EHmsRoomMode } from '@commudle/shared-models';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
+import { IEvent } from '@commudle/shared-models';
 import { LocalMediaService } from 'apps/shared-modules/hms-video/services/local-media.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
@@ -24,6 +25,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   isHlsRunning = false;
   isRecording = false;
   embeddedVideoStream: IEmbeddedVideoStream;
+  event: IEvent;
   activeTab: 'audio-video' | 'session-type' = 'audio-video';
   EHmsRoomMode = EHmsRoomMode;
   showModeConfirmation = false;
@@ -34,6 +36,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   @Output() streamingAction = new EventEmitter<string>();
   @Output() modeChanged = new EventEmitter<EHmsRoomMode>();
+  @Output() refreshEmbeddedVideoStream = new EventEmitter<void>();
 
   loadingAction: string = null;
 
@@ -52,6 +55,12 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  micLevel = 0;
+  private audioContext: AudioContext;
+  private analyser: AnalyserNode;
+  private micStream: MediaStream;
+  private micAnimationId: number;
+
   constructor(
     protected dialogRef: NbDialogRef<ConferenceSettingsComponent>,
     private nbDialogService: NbDialogService,
@@ -65,6 +74,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopStream();
+    this.stopMicMeter();
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
@@ -113,6 +123,8 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
           if (this.localMediaService.getVideoDeviceId() === 'default') {
             this.selectVideoDevice(videoDevices[0].deviceId);
           }
+
+          this.startMicMeter();
         },
       ),
     );
@@ -127,6 +139,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   selectAudioInputDevice(deviceId: string): void {
     this.selectedAudioInputDeviceId = deviceId;
+    this.startMicMeter();
   }
 
   selectVideoDevice(deviceId: string): void {
@@ -267,5 +280,45 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     if (state.isRecording !== undefined) this.isRecording = state.isRecording;
     this.isStreamingActive = this.isLive || this.isStreaming || this.isHlsRunning || this.isRecording;
     this.loadingAction = null;
+  }
+
+  private startMicMeter(): void {
+    this.stopMicMeter();
+    const deviceId = this.selectedAudioInputDeviceId || 'default';
+    navigator.mediaDevices.getUserMedia({ audio: { deviceId } }).then((stream) => {
+      this.micStream = stream;
+      this.audioContext = new AudioContext();
+      const source = this.audioContext.createMediaStreamSource(stream);
+      this.analyser = this.audioContext.createAnalyser();
+      this.analyser.fftSize = 256;
+      source.connect(this.analyser);
+      this.updateMicLevel();
+    });
+  }
+
+  private updateMicLevel(): void {
+    if (!this.analyser) return;
+    const data = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(data);
+    const avg = data.reduce((sum, val) => sum + val, 0) / data.length;
+    this.micLevel = Math.min(100, Math.round((avg / 128) * 100));
+    this.micAnimationId = requestAnimationFrame(() => this.updateMicLevel());
+  }
+
+  private stopMicMeter(): void {
+    if (this.micAnimationId) {
+      cancelAnimationFrame(this.micAnimationId);
+      this.micAnimationId = null;
+    }
+    if (this.micStream) {
+      this.micStream.getTracks().forEach((t) => t.stop());
+      this.micStream = null;
+    }
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+    this.analyser = null;
+    this.micLevel = 0;
   }
 }
