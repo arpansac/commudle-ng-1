@@ -35,6 +35,7 @@ import {
 import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
 import {
   faArrowRightFromBracket,
+  faArrowRightToBracket,
   faArrowUpFromBracket,
   faChevronUp,
   faCircle,
@@ -135,6 +136,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     faDoorOpen,
     faCircle,
     faArrowRightFromBracket,
+    faArrowRightToBracket,
     faArrowUpFromBracket,
     faYoutube,
     faPlay,

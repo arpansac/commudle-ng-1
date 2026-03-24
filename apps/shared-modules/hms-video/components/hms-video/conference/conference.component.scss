@@ -167,10 +167,10 @@
   }
 
   .waiting-container {
-    @apply com-relative com-w-full com-h-full com-flex com-flex-col com-items-center com-justify-center com-bg-gray-900 com-overflow-hidden com-rounded-lg;
+    @apply com-relative com-w-full com-h-full com-flex com-flex-col com-items-center com-justify-center com-bg-tblack com-overflow-hidden com-rounded-lg;
 
     .waiting-banner {
-      @apply com-absolute com-inset-0 com-opacity-20;
+      @apply com-absolute com-inset-0 com-opacity-30;
 
       .waiting-banner-img {
         @apply com-w-full com-h-full com-object-cover com-overflow-hidden;
@@ -181,7 +181,7 @@
       @apply com-relative com-z-10 com-flex com-flex-col com-items-center com-text-center com-px-6;
 
       .waiting-event-name {
-        @apply com-text-white com-text-2xl com-font-semibold com-m-0 com-mb-3;
+        @apply com-text-tWhite com-text-2xl com-font-semibold com-m-0 com-mb-3;
       }
 
       .waiting-text {
