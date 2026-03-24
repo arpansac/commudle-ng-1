@@ -151,6 +151,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.selectedMode = mode;
+        this.createOrUpdate();
       }
     });
   }

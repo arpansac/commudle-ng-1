@@ -1,5 +1,42 @@
 .embedded-video-stream {
   @apply com-flex com-flex-col com-gap-6;
+  @apply lg:com-flex-row lg:com-items-start;
+
+  .form-panel {
+    @apply com-flex-1 com-flex com-flex-col com-gap-6 com-min-w-0;
+    @apply lg:com-max-w-[400px];
+  }
+
+  .preview-panel {
+    @apply com-w-full;
+    @apply lg:com-flex-1 lg:com-flex-shrink-0 lg:com-self-start;
+
+    .preview-sticky {
+      position: sticky;
+      top: 80px;
+
+      .step-label {
+        @apply com-text-sm com-font-semibold com-text-gray-700 com-m-0 com-mb-3;
+      }
+
+      .preview-container {
+        @apply com-h-[300px] com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-gray-900;
+        @apply lg:com-h-[360px];
+      }
+
+      .preview-placeholder {
+        @apply com-h-full com-flex com-flex-col com-items-center com-justify-center com-text-center;
+
+        .preview-placeholder-icon {
+          @apply com-text-4xl com-text-gray-500 com-mb-2;
+        }
+
+        .preview-placeholder-text {
+          @apply com-text-sm com-text-gray-400 com-m-0;
+        }
+      }
+    }
+  }
 
   .step-section {
     .step-label {
@@ -7,45 +44,8 @@
     }
   }
 
-  .source-cards {
-    @apply com-grid com-grid-cols-2 com-gap-3;
-    @apply lg:com-grid-cols-3;
-
-    .source-card {
-      @apply com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all com-text-center;
-
-      &:hover:not(.source-card-disabled) {
-        @apply com-border-primary-300 com-shadow-sm;
-      }
-
-      .source-icon {
-        @apply com-text-2xl com-text-gray-500 com-mb-2;
-      }
-
-      .source-title {
-        @apply com-text-sm com-font-semibold com-m-0 com-mb-1;
-      }
-
-      .source-description {
-        @apply com-text-xs com-text-gray-500 com-m-0;
-      }
-    }
-
-    .source-card-active {
-      @apply com-border-primary-500 com-bg-primary-100;
-
-      .source-icon {
-        @apply com-text-primary-500;
-      }
-    }
-
-    .source-card-disabled {
-      @apply com-opacity-40 com-cursor-not-allowed;
-    }
-  }
-
   .mode-cards {
-    @apply com-flex com-gap-3;
+    @apply com-flex com-flex-row com-gap-3;
 
     .mode-card {
       @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all;
@@ -105,18 +105,8 @@
       @apply com-text-sm com-font-semibold com-m-0;
     }
 
-    .config-field {
-      @apply com-mt-2;
-    }
-
     .config-field-label {
       @apply com-text-sm com-text-gray-600 com-flex com-flex-col com-gap-1;
-    }
-  }
-
-  .preview-section {
-    .preview-container {
-      @apply com-h-[450px] com-overflow-auto com-rounded-lg com-border com-border-solid com-border-gray-200;
     }
   }
 }
