@@ -88,8 +88,8 @@
                     formControlName="data_form_id"
                     [ngClass]="{ disabled: eventDataFormEntityGroup?.summary_registration_counts?.all > 0 }"
                   >
-                    <option value="">Create New Form</option>
-                    <option *ngFor="let df of communityDataForms" [value]="df.id">
+                    <option [ngValue]="null">Create New Form</option>
+                    <option *ngFor="let df of communityDataForms" [ngValue]="df.id">
                       {{ df.name | titlecase }}
                     </option>
                   </select>

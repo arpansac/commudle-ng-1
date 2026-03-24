@@ -35,10 +35,10 @@ import {
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 
 @Component({
-    selector: 'app-form-groups',
-    templateUrl: './form-groups.component.html',
-    styleUrls: ['./form-groups.component.scss'],
-    standalone: false
+  selector: 'app-form-groups',
+  templateUrl: './form-groups.component.html',
+  styleUrls: ['./form-groups.component.scss'],
+  standalone: false,
 })
 export class FormGroupsComponent implements OnInit {
   @Input() event: IEvent;
@@ -199,6 +199,12 @@ export class FormGroupsComponent implements OnInit {
   updateEdfegList(edfeg) {
     this.eventDataFormEntityGroups = [...this.eventDataFormEntityGroups, edfeg];
     this.edfegStore.addEventDataFormEntityGroup(edfeg);
+  }
+
+  onDataFormCreated(data: IDataForm) {
+    this.communityDataForms = [data, ...this.communityDataForms.filter((df) => df.id !== data.id)];
+
+    this.changeDetectorRef.markForCheck();
   }
 
   deleteEventDataFormEntityGroup(eventDataFormEntityGroupId, index) {

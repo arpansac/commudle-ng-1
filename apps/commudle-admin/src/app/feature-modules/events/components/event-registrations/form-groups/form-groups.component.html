@@ -5,6 +5,7 @@
     [communityDataForms]="communityDataForms"
     [event]="event"
     [community]="community"
+    (dataFormCreated)="onDataFormCreated($event)"
     (edfegCreated)="updateEdfegList($event)"
     (edfegUpdated)="updateEventDataFormEntityGroup($event)"
   ></commudle-new-form-attach-groups>
