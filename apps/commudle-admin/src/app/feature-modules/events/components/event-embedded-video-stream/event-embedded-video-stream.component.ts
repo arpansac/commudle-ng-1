@@ -133,6 +133,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
             rtmp_url: '',
           });
           this.updateValidators();
+          this.createOrUpdate();
         }
       });
     } else {

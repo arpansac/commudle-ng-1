@@ -638,7 +638,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   sendEmojiReaction(emoji: string): void {
     hmsActions.sendBroadcastMessage(emoji, 'EMOJI_REACTION');
     this.showFloatingEmoji(emoji);
-    this.showEmojiPicker = false;
   }
 
   private showFloatingEmoji(emoji: string): void {
