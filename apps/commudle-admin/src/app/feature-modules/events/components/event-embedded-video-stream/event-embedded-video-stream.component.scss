@@ -21,7 +21,7 @@
 
       .preview-container {
         @apply com-h-[300px] com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-gray-900;
-        @apply lg:com-h-[360px];
+        @apply lg:com-h-[440px];
       }
 
       .preview-placeholder {
@@ -45,7 +45,7 @@
   }
 
   .mode-cards {
-    @apply com-flex com-flex-row com-gap-3;
+    @apply com-flex com-flex-col com-gap-3;
 
     .mode-card {
       @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all;
@@ -93,6 +93,14 @@
 
       &::before {
         content: '❌';
+        @apply com-flex-shrink-0;
+      }
+    }
+    .mode-feature-rocket {
+      @apply com-text-green-600;
+
+      &::before {
+        content: '🚀';
         @apply com-flex-shrink-0;
       }
     }

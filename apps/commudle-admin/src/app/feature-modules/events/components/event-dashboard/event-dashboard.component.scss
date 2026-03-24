@@ -66,7 +66,7 @@ a {
   @apply com-flex com-gap-2 com-items-center;
 }
 .right-column {
-  @apply com-w-full  com-max-w-screen-xl com-mx-auto;
+  @apply com-w-full com-mx-auto;
 }
 
 .event-dashboard-menu {
@@ -99,7 +99,7 @@ a {
 }
 
 .router {
-  @apply com-my-4 md:com-mx-4 com-mx-0;
+  @apply com-mx-0 md:com-mx-4;
 }
 
 .header-icons {
