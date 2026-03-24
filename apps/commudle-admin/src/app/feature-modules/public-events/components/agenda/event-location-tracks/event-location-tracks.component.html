@@ -66,7 +66,7 @@
                                <nb-icon *ngIf="!slot.user_vote" icon="heart-outline" status="basic"></nb-icon>
                              </div> -->
               <!-- </nb-action> -->
-              <div class="link">
+              <!-- <div class="link">
                 <a
                   [queryParams]="{ track_slot_id: slot.id }"
                   [routerLink]="['/communities', community.slug, 'events', event.slug, 'session']"
@@ -75,7 +75,7 @@
                   <span>Ask Q's</span>
                   <nb-icon icon="external-link" status="primary" class="com-pl-1"></nb-icon>
                 </a>
-              </div>
+              </div> -->
               <div *ngIf="elt.track_slots.length == 0">no slots yet</div>
             </nb-list-item>
           </nb-list>
