@@ -10,6 +10,7 @@ import {
   NbDialogModule,
   NbDialogService,
   NbIconModule,
+  NbInputModule,
   NbSpinnerModule,
 } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -32,6 +33,7 @@ import { Subscription } from 'rxjs';
     NbAlertModule,
     NbSpinnerModule,
     NbDialogModule,
+    NbInputModule,
   ],
 })
 export class EventStreamingComponent implements AfterContentInit {

@@ -163,7 +163,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   }
 
   stopStream(): void {
-    if (this.isVideoEnabled) {
+    if (this.isVideoEnabled && this.previewVideo?.nativeElement) {
       const stream: MediaStream | MediaSource | Blob = this.previewVideo.nativeElement.srcObject;
       if (stream) {
         if ('getTracks' in stream) {

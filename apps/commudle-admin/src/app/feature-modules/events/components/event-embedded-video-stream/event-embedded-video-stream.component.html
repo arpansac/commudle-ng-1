@@ -56,36 +56,16 @@
   </div>
 
   <!-- Step 3: Configuration -->
-  <div *ngIf="embeddedVideoStreamForm.get('source').value" class="step-section">
-    <p class="step-label">
-      {{ embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE ? '3.' : '2.' }}
-      Configuration
-    </p>
+  <div
+    *ngIf="
+      embeddedVideoStreamForm.get('source').value &&
+      embeddedVideoStreamForm.get('source').value !== EEmbeddedVideoStreamSources.COMMUDLE
+    "
+    class="step-section"
+  >
+    <p class="step-label">2. Configuration</p>
 
-    <!-- Commudle: YouTube streaming setup -->
     <div *ngIf="embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE">
-      <div *ngIf="selectedMode === EHmsRoomMode.INTERACTIVE" class="config-section">
-        <p class="config-label">YouTube Streaming (Optional)</p>
-        <commudle-event-streaming
-          *ngIf="evs?.id"
-          (refreshEmbeddedVideoStream)="getEmbeddedVideoStream()"
-          [embeddedVideoStream]="evs"
-          [event]="event"
-        ></commudle-event-streaming>
-        <div *ngIf="evs?.rtmp_url" class="config-field">
-          <label class="config-field-label">
-            RTMP URL
-            <input
-              formControlName="rtmp_url"
-              fullWidth
-              nbInput
-              size="small"
-              placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
-              type="url"
-            />
-          </label>
-        </div>
-      </div>
       <div *ngIf="selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR" class="config-section">
         <nb-alert accent="info">
           Recording will be handled automatically. The recording link will be sent to your email after the session ends.

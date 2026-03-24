@@ -44,6 +44,14 @@
       @apply com-text-sm com-text-gray-500 com-m-0 com-mb-3;
     }
   }
+
+  .rtmp-field {
+    @apply com-mt-3;
+
+    .rtmp-label {
+      @apply com-text-sm com-text-gray-600 com-flex com-flex-col com-gap-1;
+    }
+  }
 }
 
 .stream-dialog {
