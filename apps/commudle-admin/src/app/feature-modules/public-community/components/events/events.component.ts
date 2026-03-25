@@ -45,11 +45,7 @@ export class EventsComponent implements OnInit {
 
   ngOnInit() {
     const params = this.activatedRoute.snapshot.queryParams;
-    if (Object.keys(params).length > 0) {
-      if (params.page) {
-        this.page = Number(params.page);
-      }
-    }
+    this.page = params.page ? Number(params.page) : 1;
 
     this.activatedRoute.parent.data.subscribe((data) => {
       this.community = data.community;
@@ -69,7 +65,9 @@ export class EventsComponent implements OnInit {
       this.count = data.count;
       this.isLoadingPastEvents = false;
       this.isLoading = false;
-      this.router.navigate([], { queryParams: { page: this.page } });
+      if (this.page > 1) {
+        this.router.navigate([], { queryParams: { page: this.page }, replaceUrl: true });
+      }
     });
   }
 
@@ -84,8 +82,6 @@ export class EventsComponent implements OnInit {
 
   setSchema(events) {
     if (events.length > 0) {
-      this.eventForSchema = [];
-
       for (const event of events) {
         let location: object, eventStatus: string;
         if (event.event_locations && Object.keys(event.event_locations).length > 0) {
