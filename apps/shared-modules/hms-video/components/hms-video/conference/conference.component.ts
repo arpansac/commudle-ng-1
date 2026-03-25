@@ -490,9 +490,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         case 'toggleHlsWithRecording':
           this.toggleHls(true);
           break;
-        case 'toggleRecording':
-          this.toggleRecording();
-          break;
         case 'startRecordingViaHls':
           this.restartHlsWithRecording(true);
           break;
@@ -598,30 +595,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  toggleRecording(): void {
-    if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
-      return;
-    }
-
-    const obs = this.isRecording
-      ? this.embeddedVideoStreamsService.stopRecording(
-          this.embeddedVideoStream.streamable_id,
-          this.embeddedVideoStream.streamable_type,
-        )
-      : this.embeddedVideoStreamsService.startRecording(
-          this.embeddedVideoStream.streamable_id,
-          this.embeddedVideoStream.streamable_type,
-          this.getMeetingUrl(),
-        );
-
-    obs.subscribe({
-      error: () => {
-        this.pushStateToSettings();
-        this.toastLogService.warningDialog('Failed to toggle recording');
-      },
-    });
-  }
-
   toggleYTStreaming(): void {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
       return;
@@ -685,32 +658,19 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.hmsRoomService
-      .stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
+      .restartHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type, enableRecording)
       .subscribe({
-        next: () => {
-          this.hmsRoomService
-            .startHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type, enableRecording)
-            .subscribe({
-              next: (value: IHmsHls) => {
-                if (value) {
-                  this.isHlsRunning = value.hls_running;
-                  this.pushStateToSettings();
-                  this.toastLogService.successDialog(
-                    enableRecording
-                      ? 'HLS Streaming restarted with Recording'
-                      : 'HLS Streaming restarted without Recording',
-                  );
-                }
-              },
-              error: () => {
-                this.pushStateToSettings();
-                this.toastLogService.warningDialog('Failed to restart HLS streaming');
-              },
-            });
+        next: (value: IHmsHls) => {
+          if (value) {
+            this.pushStateToSettings();
+            this.toastLogService.successDialog(
+              enableRecording ? 'HLS Streaming restarted with Recording' : 'HLS Streaming restarted without Recording',
+            );
+          }
         },
         error: () => {
           this.pushStateToSettings();
-          this.toastLogService.warningDialog('Failed to stop HLS streaming');
+          this.toastLogService.warningDialog('Failed to restart HLS streaming');
         },
       });
   }

@@ -29,6 +29,17 @@ export class HmsRoomService {
     });
   }
 
+  restartHls(streamableId: number, streamableType: EDbModels, singleFilePerLayer: boolean): Observable<IHmsHls> {
+    return this.http.post<IHmsHls>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.RESTART_HLS),
+      {
+        streamable_id: streamableId,
+        streamable_type: streamableType,
+        single_file_per_layer: singleFilePerLayer,
+      },
+    );
+  }
+
   getPlaybackUrl(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
     const params = new HttpParams().set('streamable_id', streamableId).set('streamable_type', streamableType);
     return this.http.get<IHmsHls>(
