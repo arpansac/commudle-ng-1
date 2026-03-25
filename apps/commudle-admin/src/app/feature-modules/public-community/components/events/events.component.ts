@@ -92,7 +92,7 @@ export class EventsComponent implements OnInit {
       this.eventForSchema = [];
       for (const event of events) {
         let location: object, eventStatus: string;
-        if (event.event_locations && Object.keys(event.event_locations).length > 0) {
+        if (event.event_locations && Object.keys(event.event_locations).length > 0 && event.event_type === 'offline') {
           location = {
             '@type': 'Place',
             name: event.event_locations[0].name,
