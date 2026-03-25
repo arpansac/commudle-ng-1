@@ -52,6 +52,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   @ViewChild('previewVideo', { static: false }) previewVideo: ElementRef<HTMLVideoElement>;
   @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
+  @ViewChild('hlsOptionsDialog') hlsOptionsDialog: TemplateRef<any>;
 
   subscriptions: Subscription[] = [];
 
@@ -234,15 +235,24 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
         'toggleHls',
       );
     } else {
-      this.executeAction('toggleHls');
+      const ref = this.nbDialogService.open(this.hlsOptionsDialog, { closeOnBackdropClick: false });
+      ref.onClose.subscribe((action: string) => {
+        if (action) {
+          this.executeAction(action);
+        }
+      });
     }
   }
 
   onToggleRecording(): void {
     if (this.isRecording) {
-      this.openConfirmDialog('Stop Recording', 'Are you sure you want to stop recording?', 'toggleRecording');
+      this.openConfirmDialog('Stop Recording', 'Are you sure you want to stop recording?', 'stopRecordingViaHls');
     } else {
-      this.executeAction('toggleRecording');
+      this.openConfirmDialog(
+        'Start Recording',
+        'This will restart HLS streaming with recording enabled. Continue?',
+        'startRecordingViaHls',
+      );
     }
   }
 

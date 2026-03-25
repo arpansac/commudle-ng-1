@@ -11,12 +11,13 @@ import { EDbModels, EHmsRoomMode, IHmsHls } from '@commudle/shared-models';
 export class HmsRoomService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  startHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
+  startHls(streamableId: number, streamableType: EDbModels, singleFilePerLayer: boolean): Observable<IHmsHls> {
     return this.http.post<IHmsHls>(
       this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.START_HLS),
       {
         streamable_id: streamableId,
         streamable_type: streamableType,
+        single_file_per_layer: singleFilePerLayer,
       },
     );
   }

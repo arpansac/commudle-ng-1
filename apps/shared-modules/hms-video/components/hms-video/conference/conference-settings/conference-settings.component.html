@@ -189,6 +189,7 @@
                   nbButton
                   size="small"
                   [status]="isRecording ? 'danger' : 'info'"
+                  [disabled]="!isHlsRunning && !isRecording"
                   outline
                 >
                   {{ isRecording ? 'Stop Recording' : 'Start Recording' }}
@@ -201,6 +202,23 @@
     </nb-card-body>
   </ng-container>
 </nb-card>
+
+<!-- HLS start options dialog -->
+<ng-template #hlsOptionsDialog let-ref="dialogRef">
+  <nb-card class="confirm-dialog">
+    <nb-card-header>Start HLS Streaming</nb-card-header>
+    <nb-card-body>
+      <p class="confirm-message">How would you like to start the HLS stream?</p>
+    </nb-card-body>
+    <nb-card-footer class="confirm-actions">
+      <button (click)="ref.close('toggleHls')" nbButton size="small" status="success">Stream Only</button>
+      <button (click)="ref.close('toggleHlsWithRecording')" nbButton size="small" status="info">
+        Stream + Recording
+      </button>
+      <button (click)="ref.close(null)" nbButton size="small" ghost status="basic">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
 
 <!-- Confirmation dialog template -->
 <ng-template #confirmDialog let-ref="dialogRef">
