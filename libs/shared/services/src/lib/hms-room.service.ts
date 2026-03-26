@@ -71,4 +71,12 @@ export class HmsRoomService {
       },
     );
   }
+
+  getRecordingAssets(streamableId: number, streamableType: EDbModels): Observable<any> {
+    const params = new HttpParams().set('streamable_id', streamableId).set('streamable_type', streamableType);
+    return this.http.get<any>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.RECORDING_ASSETS),
+      { params },
+    );
+  }
 }

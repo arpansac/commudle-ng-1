@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { EHmsRoomMode, IEmbeddedVideoStream, IEvent, IUser, ICommunity } from '@commudle/shared-models';
+import { EHmsRoomMode, IEmbeddedVideoStream, IEvent, IUser, ICommunity, EDbModels } from '@commudle/shared-models';
 import { AuthService, HmsRoomService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
-import { faDesktop, faExternalLinkAlt, faCode } from '@fortawesome/free-solid-svg-icons';
+import { faDesktop, faExternalLinkAlt, faCode, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_video_stream_sources.enum';
@@ -31,6 +31,10 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   savingInProgress = false;
   confirmTitle = '';
   confirmMessage = '';
+  recordingAssets: any[] = [];
+  groupedRecordings: { duration: number; assets: any[] }[] = [];
+  loadingRecordings = false;
+  faDownload = faDownload;
 
   @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
 
@@ -170,8 +174,60 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
           this.selectedMode = data.mode;
         }
         this.updateValidators();
+        if (this.selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR) {
+          this.loadRecordingAssets();
+        }
       }
     });
+  }
+
+  loadRecordingAssets(): void {
+    if (!this.evs?.streamable_id || !this.evs?.streamable_type) return;
+    this.loadingRecordings = true;
+    this.hmsRoomService.getRecordingAssets(this.evs.streamable_id, this.evs.streamable_type).subscribe({
+      next: (data) => {
+        this.recordingAssets = (data || []).filter((asset: any) => asset.metadata?.resolution?.height);
+        this.groupedRecordings = this.groupAssetsBySession(this.recordingAssets);
+        this.loadingRecordings = false;
+      },
+      error: () => {
+        this.recordingAssets = [];
+        this.groupedRecordings = [];
+        this.loadingRecordings = false;
+      },
+    });
+  }
+
+  private groupAssetsBySession(assets: any[]): { duration: number; assets: any[] }[] {
+    const groups = new Map<number, any[]>();
+    assets.forEach((asset) => {
+      const key = asset.duration || 0;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(asset);
+    });
+    return Array.from(groups.entries())
+      .map(([duration, items]) => ({
+        duration,
+        assets: items.sort(
+          (a: any, b: any) => (b.metadata?.resolution?.height || 0) - (a.metadata?.resolution?.height || 0),
+        ),
+      }))
+      .sort((a, b) => b.duration - a.duration);
+  }
+
+  getResolutionLabel(height: number): string {
+    if (height >= 1080) return '1080p';
+    if (height >= 720) return '720p';
+    if (height >= 540) return '540p';
+    if (height >= 480) return '480p';
+    if (height >= 360) return '360p';
+    return `${height}p`;
+  }
+
+  formatDuration(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
   }
 
   createOrUpdate() {

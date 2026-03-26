@@ -184,6 +184,29 @@
           <p class="preview-placeholder-text">Configure a source to see the preview</p>
         </div>
       </div>
+
+      <!-- Session Recordings -->
+      <div *ngIf="selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && evs?.id" class="recordings-section">
+        <div class="recordings-header">
+          <p class="recordings-title">Session Recordings</p>
+        </div>
+        <div *ngIf="loadingRecordings && groupedRecordings.length === 0" class="recordings-loading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <div *ngIf="!loadingRecordings && groupedRecordings.length === 0" class="recordings-empty">
+          <span>No recordings available yet</span>
+        </div>
+        <div *ngIf="groupedRecordings.length > 0" class="recordings-list">
+          <div *ngFor="let group of groupedRecordings" class="recording-row">
+            <span class="recording-duration">{{ formatDuration(group.duration) }}</span>
+            <div class="recording-buttons">
+              <a *ngFor="let asset of group.assets" [href]="asset.url" target="_blank" download class="download-pill">
+                Download {{ getResolutionLabel(asset.metadata?.resolution?.height) }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -35,6 +35,54 @@
           @apply com-text-sm com-text-gray-400 com-m-0;
         }
       }
+
+      .recordings-section {
+        @apply com-mt-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-overflow-hidden;
+
+        .recordings-header {
+          @apply com-flex com-items-center com-justify-between com-px-4 com-py-3 com-border-0 com-border-b com-border-solid com-border-gray-200;
+
+          .recordings-title {
+            @apply com-text-base com-font-bold com-m-0;
+          }
+        }
+
+        .recordings-loading {
+          @apply com-flex com-items-center com-justify-center com-py-6;
+        }
+
+        .recordings-empty {
+          @apply com-flex com-items-center com-justify-center com-py-6 com-text-sm com-text-gray-400;
+        }
+
+        .recordings-list {
+          @apply com-max-h-[300px] com-overflow-y-auto;
+
+          .recording-row {
+            @apply com-flex com-items-center com-justify-between com-px-4 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
+
+            &:last-child {
+              @apply com-border-b-0;
+            }
+
+            .recording-duration {
+              @apply com-text-sm com-font-medium com-text-gray-700 com-flex-shrink-0;
+            }
+
+            .recording-buttons {
+              @apply com-flex com-items-center com-gap-2 com-flex-wrap com-justify-end;
+
+              .download-pill {
+                @apply com-text-xs com-px-4 com-py-1.5 com-rounded-full com-border com-border-solid com-border-gray-300 com-bg-gray-100 com-text-gray-700 com-no-underline com-whitespace-nowrap com-cursor-pointer;
+
+                &:hover {
+                  @apply com-bg-gray-200 com-border-gray-400;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 
