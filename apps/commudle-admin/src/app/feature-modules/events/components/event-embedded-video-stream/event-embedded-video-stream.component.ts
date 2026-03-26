@@ -31,8 +31,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   savingInProgress = false;
   confirmTitle = '';
   confirmMessage = '';
-  recordingAssets: any[] = [];
-  groupedRecordings: { duration: number; assets: any[] }[] = [];
+  groupedRecordings: { recordingId: string; createdAt: string; assets: any[] }[] = [];
   loadingRecordings = false;
   faDownload = faDownload;
 
@@ -186,49 +185,26 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
     this.loadingRecordings = true;
     this.hmsRoomService.getRecordingAssets(this.evs.streamable_id, this.evs.streamable_type).subscribe({
       next: (data) => {
-        this.recordingAssets = (data || []).filter((asset: any) => asset.metadata?.resolution?.height);
-        this.groupedRecordings = this.groupAssetsBySession(this.recordingAssets);
+        this.groupedRecordings = this.parseRecordings(data || {});
         this.loadingRecordings = false;
       },
       error: () => {
-        this.recordingAssets = [];
         this.groupedRecordings = [];
         this.loadingRecordings = false;
       },
     });
   }
 
-  // TODO: get group by from backend
-  private groupAssetsBySession(assets: any[]): { duration: number; assets: any[] }[] {
-    const groups = new Map<number, any[]>();
-    assets.forEach((asset) => {
-      const key = asset.duration || 0;
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push(asset);
-    });
-    return Array.from(groups.entries())
-      .map(([duration, items]) => ({
-        duration,
-        assets: items.sort(
-          (a: any, b: any) => (b.metadata?.resolution?.height || 0) - (a.metadata?.resolution?.height || 0),
-        ),
+  private parseRecordings(data: Record<string, any>): { recordingId: string; createdAt: string; assets: any[] }[] {
+    return Object.values(data)
+      .map((recording: any) => ({
+        recordingId: recording.hms_recording_id,
+        createdAt: recording.created_at,
+        assets: (recording.assets || [])
+          .filter((asset: any) => asset.presigned_url?.url && asset.metadata?.resolution?.height)
+          .sort((a: any, b: any) => (b.metadata.resolution.height || 0) - (a.metadata.resolution.height || 0)),
       }))
-      .sort((a, b) => b.duration - a.duration);
-  }
-
-  getResolutionLabel(height: number): string {
-    if (height >= 1080) return '1080p';
-    if (height >= 720) return '720p';
-    if (height >= 540) return '540p';
-    if (height >= 480) return '480p';
-    if (height >= 360) return '360p';
-    return `${height}p`;
-  }
-
-  formatDuration(seconds: number): string {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}m ${secs}s`;
+      .filter((group) => group.assets.length > 0);
   }
 
   createOrUpdate() {
