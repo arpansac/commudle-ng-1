@@ -129,6 +129,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   isBackgroundBlurred: boolean = false;
 
   isHlsRunning: boolean = false;
+  private pendingHlsAction = false;
   hlsPlaybackUrl: string = '';
   private hlsInstance: any = null;
   NbTrigger = NbTrigger;
@@ -265,12 +266,13 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
           const wasRunning = this.isHlsRunning;
           this.isHlsRunning = hlsState.running;
           if (hlsState.running && hlsState.variants?.length) {
+            this.pendingHlsAction = false;
             this.hlsPlaybackUrl = hlsState.variants[0].url;
             this.hlsStatus.emit(true);
             if (this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
               setTimeout(() => this.attachHlsStream(this.hlsPlaybackUrl), 5000);
             }
-          } else if (!hlsState.running) {
+          } else if (!hlsState.running && !this.pendingHlsAction) {
             this.hlsPlaybackUrl = '';
             this.destroyHlsInstance();
             this.hlsStatus.emit(false);
@@ -282,7 +284,9 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
               this.toastLogService.warningDialog('HLS streaming stopped unexpectedly due to an issue');
             }
           }
-          this.pushStateToSettings();
+          if (!this.pendingHlsAction) {
+            this.pushStateToSettings();
+          }
         }
       }, selectHLSState);
 
@@ -623,6 +627,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
       return;
     }
+    this.pendingHlsAction = true;
 
     const obs = this.isHlsRunning
       ? this.hmsRoomService.stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
@@ -633,14 +638,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         );
 
     obs.subscribe({
-      next: (value: IHmsHls) => {
-        if (value) {
-          this.isHlsRunning = value.hls_running;
-          this.pushStateToSettings();
-          this.toastLogService.successDialog(this.isHlsRunning ? 'HLS Streaming Started' : 'HLS Streaming Stopped');
-        }
-      },
       error: () => {
+        this.pendingHlsAction = false;
         this.pushStateToSettings();
         this.toastLogService.warningDialog('Failed to toggle HLS streaming');
       },
@@ -657,18 +656,12 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
       return;
     }
+    this.pendingHlsAction = true;
     this.hmsRoomService
       .restartHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type, enableRecording)
       .subscribe({
-        next: (value: IHmsHls) => {
-          if (value) {
-            this.pushStateToSettings();
-            this.toastLogService.successDialog(
-              enableRecording ? 'HLS Streaming restarted with Recording' : 'HLS Streaming restarted without Recording',
-            );
-          }
-        },
         error: () => {
+          this.pendingHlsAction = false;
           this.pushStateToSettings();
           this.toastLogService.warningDialog('Failed to restart HLS streaming');
         },

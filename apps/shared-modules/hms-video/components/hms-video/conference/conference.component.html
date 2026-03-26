@@ -211,8 +211,8 @@
       <!-- Recording (webinar mode) -->
       <button
         *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR"
-        (click)="toggleRecording()"
-        [nbTooltip]="isRecording ? 'Stop Recording' : 'Start Recording'"
+        (click)="openSettings()"
+        [nbTooltip]="isRecording ? 'Recording in Progress' : 'Manage Recording'"
         ghost
         nbButton
         shape="round"
