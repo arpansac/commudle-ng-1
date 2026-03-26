@@ -198,6 +198,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO: get group by from backend
   private groupAssetsBySession(assets: any[]): { duration: number; assets: any[] }[] {
     const groups = new Map<number, any[]>();
     assets.forEach((asset) => {
