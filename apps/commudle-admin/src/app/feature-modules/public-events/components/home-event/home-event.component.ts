@@ -18,10 +18,10 @@ import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortaweso
 import { IUser } from '@commudle/shared-models';
 
 @Component({
-    selector: 'app-home-event',
-    templateUrl: './home-event.component.html',
-    styleUrls: ['./home-event.component.scss'],
-    standalone: false
+  selector: 'app-home-event',
+  templateUrl: './home-event.component.html',
+  styleUrls: ['./home-event.component.scss'],
+  standalone: false,
 })
 export class HomeEventComponent implements OnInit, OnDestroy {
   moment = moment;
@@ -56,6 +56,10 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   faGlobe = faGlobe;
   interestedUsers: IUser[];
   interestedUsersCount: number;
+  speakersData: IUser[] = [];
+  isSpeakersLoaded = false;
+  isInterestedMembersLoaded = false;
+  private schemaRendered = false;
 
   items: [{ title: string }];
   @ViewChild('updatesSection', { static: false }) updatesSectionRef: ElementRef<HTMLDivElement>;
@@ -97,6 +101,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   getEvent(eventId) {
     this.eventsService.pGetEvent(eventId).subscribe((event) => {
       this.event = event;
+      this.isSpeakersLoaded = this.event.event_speakers_count === 0;
       this.fetchInterestedMembers();
       this.isLoading = false;
       this.getCommunity(event.kommunity_id);
@@ -121,45 +126,87 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     this.eventService.pGetEventsInterestedMembers(this.event.id).subscribe((res) => {
       this.interestedUsers = res.users;
       this.interestedUsersCount = res.total_count;
-      if (!this.event.custom_agenda && this.community && this.interestedUsersCount) {
-        this.setSchema();
-      }
+      this.isInterestedMembersLoaded = true;
+      this.checkAndSetSchema();
     });
   }
 
-  setSchema() {
-    if (this.event.start_time) {
-      this.seoService.setSchema({
-        '@context': 'https://schema.org',
-        '@type': 'Event',
-        name: this.event.name,
-        description: this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
-        startDate: this.event.start_time,
-        endDate: this.event.end_time,
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-        location: {
-          '@type': 'VirtualLocation',
-          url: environment.app_url + '/communities/' + this.community.slug + '/events/' + this.event.slug,
-        },
-        organizer: {
-          '@type': 'Organization',
-          name: this.community.name,
-          url: environment.app_url + '/communities/' + this.community.slug,
-        },
-        offers: {
-          '@type': 'Offer',
-          name: this.event.name,
-          url: environment.app_url + '/communities/' + this.community.slug + '/events/' + this.event.slug,
-        },
-        interactionStatistic: {
-          '@type': 'InteractionCounter',
-          interactionType: 'https://schema.org/JoinAction',
-          userInteractionCount: this.interestedUsersCount || 0,
-        },
-      });
+  onSpeakersData(speakers: IUser[]) {
+    this.speakersData = speakers;
+    if (this.speakersData.length === this.event.event_speakers_count) {
+      this.isSpeakersLoaded = true;
+      this.checkAndSetSchema();
     }
+  }
+
+  private getPerformersSchema() {
+    if (this.speakersData.length > 0) {
+      return this.speakersData.map((speaker) => ({
+        '@type': 'Person',
+        name: speaker.name,
+        url: speaker.username ? `${environment.app_url}/users/${speaker.username}` : '',
+        image: speaker.avatar,
+        jobTitle: speaker.designation,
+      }));
+    }
+    return undefined;
+  }
+
+  private checkAndSetSchema() {
+    if (this.schemaRendered) {
+      return;
+    }
+    if (this.community && this.isInterestedMembersLoaded && this.isSpeakersLoaded && this.event.start_time) {
+      this.schemaRendered = true;
+      this.setSchema();
+    }
+  }
+
+  setSchema() {
+    const performers = this.getPerformersSchema();
+
+    const schemaObject: any = {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: this.event.name,
+      description: this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
+      image: this.event.header_image_path ? this.event.header_image_path : this.community?.logo_image_path?.url,
+
+      startDate: this.event.start_time,
+      endDate: this.event.end_time,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+
+      location: {
+        '@type': 'VirtualLocation',
+        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+      },
+
+      organizer: {
+        '@type': 'Organization',
+        name: this.community.name,
+        url: `${environment.app_url}/communities/${this.community.slug}`,
+      },
+
+      offers: {
+        '@type': 'Offer',
+        name: this.event.name,
+        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+      },
+
+      interactionStatistic: {
+        '@type': 'InteractionCounter',
+        interactionType: 'https://schema.org/JoinAction',
+        userInteractionCount: this.interestedUsersCount || 0,
+      },
+    };
+
+    // Only add performer if it exists (clean conditional property)
+    if (performers && performers.length > 0) {
+      schemaObject.performer = performers;
+    }
+
+    this.seoService.setSchema(schemaObject);
   }
 
   isOrganizerCheck(community) {

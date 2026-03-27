@@ -143,7 +143,7 @@
           <app-agenda [community]="community" [event]="event"></app-agenda>
         </div>
         <div #speakersSection *ngIf="event.event_speakers_count > 0" id="speakers">
-          <app-speakers [community]="community" [event]="event"></app-speakers>
+          <app-speakers (speakersData)="onSpeakersData($event)" [community]="community" [event]="event"></app-speakers>
         </div>
         <div #sponsorsSection id="sponsors">
           <app-sponsors (hasSponsors)="hasSponsors = $event" [event]="event"></app-sponsors>

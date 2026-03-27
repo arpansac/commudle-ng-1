@@ -6,16 +6,18 @@ import { DataFormEntityResponseGroupsService } from 'apps/commudle-admin/src/app
 import { IDataFormEntityResponseGroup } from 'apps/shared-models/data_form_entity_response_group.model';
 import { IUserEventRegistration } from 'apps/shared-models/user_event_registration.model';
 import { SeoService } from 'apps/shared-services/seo.service';
+import { IUser } from '@commudle/shared-models';
 
 @Component({
-    selector: 'app-speakers',
-    templateUrl: './speakers.component.html',
-    styleUrls: ['./speakers.component.scss'],
-    standalone: false
+  selector: 'app-speakers',
+  templateUrl: './speakers.component.html',
+  styleUrls: ['./speakers.component.scss'],
+  standalone: false,
 })
 export class SpeakersComponent implements OnInit {
   @Input() community: ICommunity;
   @Input() event: IEvent;
+  @Output() speakersData = new EventEmitter<IUser[]>();
 
   viewMoreSection = true;
   footerText = 'View More';
@@ -38,7 +40,7 @@ export class SpeakersComponent implements OnInit {
       this.isBot = true;
     } else {
       this.isMobileView = window.innerWidth <= 640;
-      this.isMobileView ? (this.totalSpeakers = 4) : (this.totalSpeakers = 5);
+      this.totalSpeakers = this.isMobileView ? 4 : 5;
       if (this.speakers.length + this.simpleAgendaSpeakers.length > this.totalSpeakers) {
         this.footerText = `View More (${this.speakers.length + this.simpleAgendaSpeakers.length - this.totalSpeakers})`;
       }
@@ -54,6 +56,7 @@ export class SpeakersComponent implements OnInit {
   getCustomAgendaSpeakers() {
     this.dataFormEntityResponseGroupsService.pGetEventSpeakers(this.event.id).subscribe((data) => {
       this.speakers = data.data_form_entity_response_groups;
+      this.speakersData.emit(this.speakers.map((speaker) => speaker.user));
       this.isLoading = false;
       this.footerText = `View More (${this.speakers.length + this.simpleAgendaSpeakers.length - this.totalSpeakers})`;
     });
@@ -62,6 +65,7 @@ export class SpeakersComponent implements OnInit {
   getSimpleAgendaSpeakers() {
     this.userEventRegistrationsService.pSpeakers(this.event.slug).subscribe((data) => {
       this.simpleAgendaSpeakers = data.user_event_registrations;
+      this.speakersData.emit(this.simpleAgendaSpeakers.map((speaker) => speaker.user));
       this.isLoading = false;
       this.footerText = `View More (${this.simpleAgendaSpeakers.length - this.totalSpeakers})`;
     });
