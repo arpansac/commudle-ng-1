@@ -133,7 +133,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   isBackgroundBlurred: boolean = false;
 
   isHlsRunning: boolean = false;
-  private pendingHlsAction = false;
+  pendingHlsAction = false;
   pendingRecordingAction = false;
   private expectedRecordingState: boolean | null = null;
   hlsPlaybackUrl: string = '';
