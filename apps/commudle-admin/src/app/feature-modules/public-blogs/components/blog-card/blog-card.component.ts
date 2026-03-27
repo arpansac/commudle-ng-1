@@ -5,12 +5,13 @@ import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { IUser } from '@commudle/shared-models';
+import { EHttpContextFlag } from 'apps/shared-models/enums/http-context-tokens';
 
 @Component({
-    selector: 'commudle-blog-card',
-    templateUrl: './blog-card.component.html',
-    styleUrls: ['./blog-card.component.scss'],
-    standalone: false
+  selector: 'commudle-blog-card',
+  templateUrl: './blog-card.component.html',
+  styleUrls: ['./blog-card.component.scss'],
+  standalone: false,
 })
 export class BlogCardComponent implements OnInit {
   @Input() blog: IBlog;
@@ -38,11 +39,13 @@ export class BlogCardComponent implements OnInit {
 
   getUserProfile() {
     if (this.blog.username) {
-      this.usersService.getProfile(this.blog.username).subscribe((data) => {
-        if (data) {
-          this.user = data;
-        }
-      });
+      this.usersService
+        .getProfile(this.blog.username, [{ token: EHttpContextFlag.SKIP_ERROR_404, value: true }])
+        .subscribe((data) => {
+          if (data) {
+            this.user = data;
+          }
+        });
     }
   }
 }

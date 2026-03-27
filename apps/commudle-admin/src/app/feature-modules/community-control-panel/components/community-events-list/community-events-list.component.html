@@ -61,7 +61,9 @@
   </div>
   <div *ngIf="!isLoading && (!events || events.length === 0)" class="empty-state">
     <img [src]="staticAssets.events_admin_empty_state" alt="No Events" class="empty-state-icon" />
-    <h2 class="empty-state-title">No Events Added</h2>
+    <h2 class="empty-state-title">
+      {{ isSearchApplied ? 'No Event Found With That Name' : 'Create Your First Event' }}
+    </h2>
     <p class="empty-state-description">You can create one by clicking the "Create New Event" button</p>
     <a
       *appBreakpoints="'>lg'"

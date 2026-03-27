@@ -42,7 +42,15 @@
     <nb-card class="home-event-menu">
       <nb-card-body>
         <nb-actions>
-          <nb-action (click)="scroll(eventFormSectionRef)" *ngIf="moment() < moment(event.end_time)" class="clickable">
+          <nb-action
+            (click)="scroll(eventFormSectionRef)"
+            *ngIf="
+              moment() < moment(event.end_time) &&
+              (event.editable || event.event_status.name === EEventStatuses.OPEN) &&
+              hasOpenForms
+            "
+            class="clickable"
+          >
             <nb-icon icon="file-text-outline" status="primary"></nb-icon>
             <span><a [routerLink]="'.'" fragment="event-form">Event Forms</a></span>
           </nb-action>
@@ -94,7 +102,14 @@
     <div class="two-column-layout wide mobile-reverse">
       <div class="main-column">
         <div class="registrations-buttons">
-          <nb-card *ngIf="moment() < moment(event.end_time)" class="event-form-card">
+          <nb-card
+            *ngIf="
+              moment() < moment(event.end_time) &&
+              (event.editable || event.event_status.name === EEventStatuses.OPEN) &&
+              hasOpenForms
+            "
+            class="event-form-card"
+          >
             <nb-card-header>
               <h6 class="event-form-title">
                 <a [routerLink]="'.'" fragment="event-form"
@@ -106,7 +121,7 @@
               <div #eventFormSection id="event-form" class="registration-form">
                 <app-highlighted-links
                   (hasOpenForms)="hasOpenForms = $event"
-                  *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
+                  [formsData]="formsData"
                   [community]="community"
                   [event]="event"
                 ></app-highlighted-links>
@@ -129,7 +144,7 @@
           <app-agenda [community]="community" [event]="event"></app-agenda>
         </div>
         <div #speakersSection *ngIf="event.event_speakers_count > 0" id="speakers">
-          <app-speakers [community]="community" [event]="event"></app-speakers>
+          <app-speakers (speakersData)="onSpeakersData($event)" [community]="community" [event]="event"></app-speakers>
         </div>
         <div #sponsorsSection id="sponsors">
           <app-sponsors (hasSponsors)="hasSponsors = $event" [event]="event"></app-sponsors>
@@ -161,7 +176,7 @@
               </button>
             </nb-card-header>
             <nb-card-body>
-              <app-messages [discussion]="discussionChat" [parentData]="event"></app-messages>
+              <app-messages [discussion]="discussionChat" [parentData]="event" [autoFocusEditor]="false"></app-messages>
             </nb-card-body>
           </nb-card>
         </div>
@@ -282,6 +297,7 @@
     <app-highlighted-links
       *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
       (hasOpenForms)="hasOpenForms = $event"
+      [formsData]="formsData"
       [community]="community"
       [event]="event"
     ></app-highlighted-links>

@@ -25,14 +25,15 @@ import { debounceTime } from 'rxjs/operators';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-    selector: 'app-messages',
-    templateUrl: './messages.component.html',
-    styleUrls: ['./messages.component.scss'],
-    standalone: false
+  selector: 'app-messages',
+  templateUrl: './messages.component.html',
+  styleUrls: ['./messages.component.scss'],
+  standalone: false,
 })
 export class MessagesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() discussion: IDiscussion;
   @Input() parentData: IEvent;
+  @Input() autoFocusEditor = true;
   @Output() newMessage: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('mainEditor') mainEditor: EditorComponent;
 
@@ -83,7 +84,7 @@ export class MessagesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (this.mainEditor && this.currentUser && this.discussion.open) {
+      if (this.autoFocusEditor && this.mainEditor && this.currentUser && this.discussion.open) {
         this.mainEditor.focus();
       }
     }, 100);

@@ -4,14 +4,15 @@ import { IBlog } from 'apps/commudle-admin/src/app/feature-modules/public-blogs/
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { EHttpContextFlag } from 'apps/shared-models/enums/http-context-tokens';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-    selector: 'app-blogs',
-    templateUrl: './blogs-list.component.html',
-    styleUrls: ['./blogs-list.component.scss'],
-    standalone: false
+  selector: 'app-blogs',
+  templateUrl: './blogs-list.component.html',
+  styleUrls: ['./blogs-list.component.scss'],
+  standalone: false,
 })
 export class BlogsListComponent implements OnInit, OnDestroy {
   blogs: IBlog[];
@@ -203,9 +204,10 @@ export class BlogsListComponent implements OnInit, OnDestroy {
 
   getUser(username): Promise<string> {
     return this.appUsersService
-      .getProfile(username)
+      .getProfile(username, [{ token: EHttpContextFlag.SKIP_ERROR_404, value: true }])
       .toPromise()
-      .then((user) => user.name);
+      .then((user) => user?.name || username)
+      .catch(() => username);
   }
 
   updatePagesAndCount(loadBlogs = true): void {

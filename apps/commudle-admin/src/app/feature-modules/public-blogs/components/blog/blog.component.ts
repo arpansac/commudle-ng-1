@@ -7,6 +7,7 @@ import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { IUser } from 'apps/shared-models/user.model';
+import { EHttpContextFlag } from 'apps/shared-models/enums/http-context-tokens';
 import { CmsService } from 'apps/shared-services/cms.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
@@ -115,10 +116,12 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   setUser() {
     this.subscriptions.push(
-      this.appUsersService.getProfile(this.blog.username).subscribe((data) => {
-        this.user = data;
-        this.setFaqSchemaData();
-      }),
+      this.appUsersService
+        .getProfile(this.blog.username, [{ token: EHttpContextFlag.SKIP_ERROR_404, value: true }])
+        .subscribe((data) => {
+          this.user = data;
+          this.setFaqSchemaData();
+        }),
     );
   }
 

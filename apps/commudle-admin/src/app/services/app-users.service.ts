@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpContextToken, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IPaginationCount,
@@ -28,9 +28,24 @@ import { Observable } from 'rxjs';
 export class AppUsersService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  getProfile(username): Observable<IUser> {
+  getProfile(username: string, flags?): Observable<IUser> {
     const params = new HttpParams().set('username', username);
-    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), { params });
+    const requestOptions: { params: HttpParams; context?: HttpContext } = {
+      params,
+    };
+    if (flags?.length) {
+      requestOptions.context = this.buildContextToken(flags);
+    }
+    return this.http.get<IUser>(this.baseApiService.getRoute(API_ROUTES.USERS.GET_PROFILE), requestOptions);
+  }
+
+  buildContextToken(flags?: { token: HttpContextToken<any>; value: any }[]): HttpContext {
+    let context = new HttpContext();
+
+    flags.forEach((flag) => {
+      context = context.set(flag.token, flag.value);
+    });
+    return context;
   }
 
   fetchProfile(username: string): Observable<IUser> {

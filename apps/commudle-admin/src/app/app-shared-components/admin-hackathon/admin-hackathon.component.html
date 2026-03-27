@@ -12,6 +12,39 @@
     </a>
   </div>
 
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="status-filter">
+      <nb-select
+        placeholder="Status"
+        multiple
+        [selected]="activeHackathonStatuses"
+        (selectedChange)="onStatusFilterChange($event)"
+        class="status-multi-select"
+      >
+        <nb-option *ngFor="let hackathonStatus of hackathonStatuses" [value]="hackathonStatus">
+          {{ hackathonStatus | titlecase }}
+        </nb-option>
+      </nb-select>
+    </div>
+    <form [formGroup]="searchForm" class="search-form">
+      <div>
+        <nb-form-field>
+          <nb-icon icon="search" nbPrefix></nb-icon>
+          <input
+            [disabled]="isLoading"
+            fieldSize="medium"
+            formControlName="name"
+            fullWidth
+            nbInput
+            placeholder="Search hackathons by name, description, or tags"
+            type="text"
+          />
+        </nb-form-field>
+      </div>
+    </form>
+  </div>
+
   <!-- Empty State -->
   <div *ngIf="!isLoading && (!hackathons || hackathons.length === 0)">
     <a
@@ -28,7 +61,9 @@
   </div>
   <div *ngIf="!isLoading && (!hackathons || hackathons.length === 0)" class="empty-state">
     <img [src]="staticAssets.hackathons_admin_empty_state" alt="No Hackathons" class="empty-state-icon" />
-    <h2 class="empty-state-title">No Hackathons Added</h2>
+    <h2 class="empty-state-title">
+      {{ isSearchApplied ? 'No Hackathon Found With That Name' : 'Create Your First Hackathon' }}
+    </h2>
     <p class="empty-state-description">You can create one by clicking the "Create New Hackathon" button</p>
     <a
       *appBreakpoints="'>lg'"
@@ -43,39 +78,6 @@
   </div>
 
   <ng-container *ngIf="isLoading || (hackathons && hackathons.length > 0)">
-    <!-- Search and Filter Section -->
-    <div class="search-filter-section">
-      <div class="status-filter">
-        <nb-select
-          placeholder="Status"
-          multiple
-          [selected]="activeHackathonStatuses"
-          (selectedChange)="onStatusFilterChange($event)"
-          class="status-multi-select"
-        >
-          <nb-option *ngFor="let hackathonStatus of hackathonStatuses" [value]="hackathonStatus">
-            {{ hackathonStatus | titlecase }}
-          </nb-option>
-        </nb-select>
-      </div>
-      <form [formGroup]="searchForm" class="search-form">
-        <div>
-          <nb-form-field>
-            <nb-icon icon="search" nbPrefix></nb-icon>
-            <input
-              [disabled]="isLoading"
-              fieldSize="medium"
-              formControlName="name"
-              fullWidth
-              nbInput
-              placeholder="Search hackathons by name, description, or tags"
-              type="text"
-            />
-          </nb-form-field>
-        </div>
-      </form>
-    </div>
-
     <!-- Hackathons Table Section -->
     <section class="hackathon-list-container">
       <div class="table-wrapper">
@@ -91,7 +93,7 @@
           </thead>
           <tbody>
             <tr *ngIf="isLoading" class="loading-row">
-              <td class="loading-cell">
+              <td colspan="5" class="loading-cell">
                 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
               </td>
             </tr>

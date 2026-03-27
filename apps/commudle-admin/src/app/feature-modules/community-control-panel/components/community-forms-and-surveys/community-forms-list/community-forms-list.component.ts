@@ -15,10 +15,10 @@ import { FormBuilder } from '@angular/forms';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-    selector: 'app-community-forms-list',
-    templateUrl: './community-forms-list.component.html',
-    styleUrls: ['./community-forms-list.component.scss'],
-    standalone: false
+  selector: 'app-community-forms-list',
+  templateUrl: './community-forms-list.component.html',
+  styleUrls: ['./community-forms-list.component.scss'],
+  standalone: false,
 })
 export class CommunityFormsListComponent implements OnInit, OnDestroy {
   community: ICommunity;
@@ -34,6 +34,7 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   count = 10;
   page = 1;
   query = '';
+  isSearchApplied = false;
   destroy$ = new Subject<void>();
   staticAssets = staticAssets;
 
@@ -115,6 +116,7 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
           this.page = 1;
           this.isLoading = true;
           this.query = this.searchForm.get('name').value;
+          this.isSearchApplied = !!this.query;
           return this.dataFormsService.getCommunityDataForms(this.community.id, this.page, this.count, this.query);
         }),
       )
@@ -127,6 +129,9 @@ export class CommunityFormsListComponent implements OnInit, OnDestroy {
   }
 
   getDataForms() {
+    if (!this.query) {
+      this.isSearchApplied = false;
+    }
     this.subscriptions.push(
       this.dataFormsService
         .getCommunityDataForms(this.community.id, this.page, this.count, this.query)

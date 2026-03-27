@@ -1,5 +1,5 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+/* eslint-disable @nx/enforce-module-boundaries */
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICommunity, IEvent } from '@commudle/shared-models';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
@@ -14,12 +14,12 @@ import { DataFormsService } from 'apps/commudle-admin/src/app/services/data_form
 import { NewDataFormComponent } from 'apps/shared-components/new-data-form/new-data-form.component';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
-    selector: 'commudle-new-form-attach-groups',
-    templateUrl: './new-form-attach-groups.component.html',
-    styleUrls: ['./new-form-attach-groups.component.scss'],
-    standalone: false
+  selector: 'commudle-new-form-attach-groups',
+  templateUrl: './new-form-attach-groups.component.html',
+  styleUrls: ['./new-form-attach-groups.component.scss'],
+  standalone: false,
 })
-export class NewFormAttachGroupsComponent implements OnInit {
+export class NewFormAttachGroupsComponent {
   @Input() registrationTypes: IRegistrationType[];
   @Input() communityDataForms: IDataForm[] = [];
   @Input() event: IEvent;
@@ -27,6 +27,7 @@ export class NewFormAttachGroupsComponent implements OnInit {
   @Input() eventDataFormEntityGroup: IEventDataFormEntityGroup;
   @Output() edfegCreated = new EventEmitter<IEventDataFormEntityGroup>();
   @Output() edfegUpdated = new EventEmitter<IEventDataFormEntityGroup>();
+  @Output() dataFormCreated = new EventEmitter<IDataForm>();
   @ViewChild(UserDetailsCheckboxFormComponent) UserDetailsCheckbox: UserDetailsCheckboxFormComponent;
   @ViewChild(EditDataFormComponent) editDataFormComponent: EditDataFormComponent;
   @ViewChild(NewDataFormComponent) newDataFormComponent: NewDataFormComponent;
@@ -50,12 +51,10 @@ export class NewFormAttachGroupsComponent implements OnInit {
       data_form_entity_group: this.fb.group({
         name: ['', Validators.required],
         registration_type_id: [''],
-        data_form_id: [''],
+        data_form_id: [null],
       }),
     });
   }
-
-  ngOnInit() {}
 
   openDialogBox(registrationTypes?, edfeg?, communityDataForms?) {
     this.eventDataFormEntityGroup = null;
@@ -75,7 +74,7 @@ export class NewFormAttachGroupsComponent implements OnInit {
       this.eventDataFormEntityGroupForm.get('data_form_entity_group').patchValue({
         name: edfeg.data_form_entity.name,
         registration_type_id: edfeg.registration_type.id,
-        data_form_id: edfeg.data_form_entity.data_form_id,
+        data_form_id: edfeg.data_form_entity.data_form_id ?? null,
       });
     }
     if (communityDataForms) {
@@ -153,7 +152,7 @@ export class NewFormAttachGroupsComponent implements OnInit {
       data_form_entity_group: {
         name: '',
         registration_type_id: '',
-        data_form_id: '',
+        data_form_id: null,
       },
     });
   }
@@ -161,6 +160,7 @@ export class NewFormAttachGroupsComponent implements OnInit {
   submit(newFormData) {
     this.dataFormsService.createDataForm(newFormData, this.community.id, 'Kommunity').subscribe((data) => {
       if (data) {
+        this.dataFormCreated.emit(data);
         this.eventDataFormEntityGroupForm.get('data_form_entity_group').get('data_form_id').setValue(data.id);
         this.createOrUpdateEdfeg();
       }

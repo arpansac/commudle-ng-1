@@ -12,6 +12,11 @@
           <a
             *ngFor="let action of homepageActions"
             [href]="action.link"
+            [ngStyle]="{
+              'background-color': action.background_color?.hex,
+              'border-color': action.background_color?.hex,
+              color: action.text_color?.hex
+            }"
             class="homepage-action"
             nbButton
             size="large"

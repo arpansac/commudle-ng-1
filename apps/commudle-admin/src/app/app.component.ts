@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { CableService } from '@commudle/shared-services';
 import { NbSidebarState, NbThemeService } from '@commudle/theme';
 import { DarkModeService } from 'apps/commudle-admin/src/app/services/dark-mode.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
@@ -49,7 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private isBrowserService: IsBrowserService,
     public seoService: SeoService,
     private router: Router,
-    private cableService: CableService,
     private darkModeService: DarkModeService,
     private themeService: NbThemeService,
     public helpSidebarService: SidebarService,
@@ -65,9 +63,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
 
       if (this.isBrowser) {
-        this.cableService.createCable(
-          environment.anycable_url + '?user_auth_token=' + this.authWatchService.getAuthCookie(),
-        );
         this.actionCableConnectionSocket.connectToServer();
         // this.notificationsService.subscribeToNotifications();
 
