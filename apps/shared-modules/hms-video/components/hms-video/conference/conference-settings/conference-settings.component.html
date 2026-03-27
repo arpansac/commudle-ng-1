@@ -184,7 +184,7 @@
                 </div>
                 <button
                   (click)="onToggleRecording()"
-                  [nbSpinner]="loadingAction === 'toggleRecording'"
+                  [nbSpinner]="loadingAction === 'startRecordingViaHls' || loadingAction === 'stopRecordingViaHls'"
                   nbSpinnerSize="tiny"
                   nbButton
                   size="small"

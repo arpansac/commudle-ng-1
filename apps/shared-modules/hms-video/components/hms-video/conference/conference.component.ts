@@ -134,6 +134,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   isHlsRunning: boolean = false;
   private pendingHlsAction = false;
+  pendingRecordingAction = false;
+  private expectedRecordingState: boolean | null = null;
   hlsPlaybackUrl: string = '';
   private hlsInstance: any = null;
   NbTrigger = NbTrigger;
@@ -289,7 +291,14 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
       hmsStore.subscribe((recordingState: HMSRecording) => {
         if (recordingState) {
-          this.isRecording = recordingState.hls?.running || false;
+          const newRecording = recordingState.hls?.running || false;
+          if (this.pendingRecordingAction && this.expectedRecordingState !== null) {
+            if (newRecording === this.expectedRecordingState) {
+              this.pendingRecordingAction = false;
+              this.expectedRecordingState = null;
+            }
+          }
+          this.isRecording = newRecording;
           this.recordingStatus.emit(this.isRecording);
           this.pushStateToSettings();
         }
@@ -577,6 +586,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   toggleRecording(): void {
+    this.expectedRecordingState = !this.isRecording;
+    this.pendingRecordingAction = true;
     this.restartHlsWithRecording(!this.isRecording);
   }
 
@@ -656,6 +667,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   private restartHlsWithRecording(enableRecording: boolean): void {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
+      this.pendingRecordingAction = false;
+      this.expectedRecordingState = null;
       return;
     }
     this.pendingHlsAction = true;
@@ -664,6 +677,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe({
         error: () => {
           this.pendingHlsAction = false;
+          this.pendingRecordingAction = false;
+          this.expectedRecordingState = null;
           this.pushStateToSettings();
           this.toastLogService.warningDialog('Failed to restart HLS streaming');
         },

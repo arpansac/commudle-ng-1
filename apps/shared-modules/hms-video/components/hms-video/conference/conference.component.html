@@ -256,7 +256,7 @@
 
       <!-- Start Recording (webinar mode, only when HLS is running) -->
       <button
-        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && !isRecording"
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && !isRecording && !pendingRecordingAction"
         (click)="toggleRecording()"
         [disabled]="!isHlsRunning"
         [nbTooltip]="isHlsRunning ? 'Start Recording' : 'Start stream first to enable recording'"
@@ -270,7 +270,7 @@
 
       <!-- Stop Recording (webinar mode) -->
       <button
-        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && isRecording"
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && isRecording && !pendingRecordingAction"
         (click)="toggleRecording()"
         nbTooltip="Stop Recording"
         nbButton
@@ -279,6 +279,19 @@
       >
         <fa-icon [icon]="icons.faCircle"></fa-icon>
         Rec
+      </button>
+
+      <!-- Recording Pending -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && pendingRecordingAction"
+        [disabled]="true"
+        nbTooltip="Please wait..."
+        nbButton
+        size="small"
+        ghost
+        class="control-btn"
+      >
+        <fa-icon [icon]="icons.faSpinner" [spin]="true"></fa-icon>
       </button>
     </ng-container>
 
