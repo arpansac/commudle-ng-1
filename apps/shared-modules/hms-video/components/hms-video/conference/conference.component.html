@@ -231,21 +231,31 @@
         <fa-icon *ngIf="!isStreaming" [icon]="icons.faYoutube"></fa-icon>
       </button>
 
-      <!-- Recording (webinar mode) -->
+      <!-- Start Recording (webinar mode, only when HLS is running) -->
       <button
-        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR"
-        (click)="openSettings()"
-        [nbTooltip]="isRecording ? 'Recording in Progress' : 'Manage Recording'"
-        ghost
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && !isRecording"
+        (click)="toggleRecording()"
+        [disabled]="!isHlsRunning"
+        [nbTooltip]="isHlsRunning ? 'Start Recording' : 'Start stream first to enable recording'"
         nbButton
-        shape="round"
-        class="control-btn"
+        size="small"
+        class="stream-start-btn"
       >
-        <span *ngIf="isRecording" class="status-dot-inline status-dot-rec">
-          <fa-icon [icon]="icons.faCircle"></fa-icon>
-          REC
-        </span>
-        <fa-icon *ngIf="!isRecording" [icon]="icons.faCircle"></fa-icon>
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        Rec
+      </button>
+
+      <!-- Stop Recording (webinar mode) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && isRecording"
+        (click)="toggleRecording()"
+        nbTooltip="Stop Recording"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        Rec
       </button>
     </ng-container>
 

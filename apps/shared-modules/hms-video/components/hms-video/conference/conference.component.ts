@@ -581,6 +581,10 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  toggleRecording(): void {
+    this.restartHlsWithRecording(!this.isRecording);
+  }
+
   toggleIsLive(): void {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
       return;

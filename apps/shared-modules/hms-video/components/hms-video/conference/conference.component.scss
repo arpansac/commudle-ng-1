@@ -78,6 +78,10 @@
       &:hover {
         @apply com-bg-green-700;
       }
+
+      &:disabled {
+        @apply com-bg-gray-500 com-text-gray-300 com-cursor-not-allowed com-opacity-60;
+      }
     }
 
     .stream-stop-btn {
