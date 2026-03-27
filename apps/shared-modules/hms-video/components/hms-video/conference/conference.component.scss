@@ -92,6 +92,14 @@
       }
     }
 
+    .stream-yt-connect-btn {
+      @apply com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3 com-text-gray-300 com-border com-border-solid com-border-gray-500;
+
+      &:hover {
+        @apply com-text-white com-border-gray-300;
+      }
+    }
+
     .text-danger {
       @apply com-text-red-500;
     }

@@ -211,24 +211,47 @@
         ghost
         class="control-btn"
       >
-        <fa-icon [icon]="icons.faSpinner" [spin]="true"></fa-icon>
+        <fa-icon [icon]="icons.faSpinner"></fa-icon>
       </button>
 
-      <!-- YT Streaming (interactive mode with rtmp_url) -->
+      <!-- Connect YT (no rtmp_url configured yet) -->
       <button
-        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url"
-        (click)="toggleYTStreaming()"
-        [nbTooltip]="isStreaming ? 'Stop YT Stream' : 'Start YT Stream'"
-        ghost
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && !embeddedVideoStream?.rtmp_url"
+        (click)="openSettings()"
+        nbTooltip="Connect YouTube"
         nbButton
-        shape="round"
-        class="control-btn"
+        size="small"
+        ghost
+        class="stream-yt-connect-btn"
       >
-        <span *ngIf="isStreaming" class="status-dot-inline status-dot-yt">
-          <fa-icon [icon]="icons.faYoutube"></fa-icon>
-          YT
-        </span>
-        <fa-icon *ngIf="!isStreaming" [icon]="icons.faYoutube"></fa-icon>
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        Connect YT
+      </button>
+
+      <!-- Start YT Stream (rtmp_url exists, enabled only when live) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url && !isStreaming"
+        (click)="toggleYTStreaming()"
+        [nbTooltip]="'Start YT Stream'"
+        nbButton
+        size="small"
+        class="stream-start-btn"
+      >
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        YT
+      </button>
+
+      <!-- Stop YT Stream -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url && isStreaming"
+        (click)="toggleYTStreaming()"
+        nbTooltip="Stop YT Stream"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        YT
       </button>
 
       <!-- Start Recording (webinar mode, only when HLS is running) -->
