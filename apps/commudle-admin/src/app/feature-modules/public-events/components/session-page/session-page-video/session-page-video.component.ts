@@ -45,8 +45,10 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
 
   isFullScreen = false;
   compressVideoStream = false;
-  isBeamActive = false;
+  isYtStreaming = false;
   isHlsRunning = false;
+  isRecording = false;
+  isLive = false;
 
   get isOrganizer(): boolean {
     return (
@@ -77,8 +79,10 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
 
   ngOnChanges() {
     if (this.embeddedVideoStream) {
-      this.isBeamActive = this.embeddedVideoStream.is_recording || this.embeddedVideoStream.is_streaming;
+      this.isYtStreaming = this.embeddedVideoStream.is_streaming;
       this.isHlsRunning = this.embeddedVideoStream.hls_running;
+      this.isRecording = this.embeddedVideoStream.is_recording;
+      this.isLive = this.embeddedVideoStream.is_live;
     }
   }
 

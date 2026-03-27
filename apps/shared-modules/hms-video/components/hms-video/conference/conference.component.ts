@@ -87,8 +87,11 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventBannerUrl!: string;
   @Input() event: IEvent;
 
-  @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() ytStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output() recordingStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() liveStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() refreshEmbeddedVideoStream: EventEmitter<IEmbeddedVideoStream> = new EventEmitter<IEmbeddedVideoStream>();
 
   EHmsRoles = EHmsRoles;
@@ -265,7 +268,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
       hmsStore.subscribe((hlsState: HMSHLS) => {
         if (hlsState) {
-          const wasRunning = this.isHlsRunning;
           this.isHlsRunning = hlsState.running;
           if (hlsState.running && hlsState.variants?.length) {
             this.pendingHlsAction = false;
@@ -278,13 +280,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
             this.hlsPlaybackUrl = '';
             this.destroyHlsInstance();
             this.hlsStatus.emit(false);
-            if (
-              wasRunning &&
-              (this.serverClient?.role === EHmsRoles.HOST || this.serverClient?.role === EHmsRoles.HOST_VIEWER)
-            ) {
-              this.syncBackendHlsStop();
-              this.toastLogService.warningDialog('HLS streaming stopped unexpectedly due to an issue');
-            }
           }
           if (!this.pendingHlsAction) {
             this.pushStateToSettings();
@@ -294,8 +289,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
       hmsStore.subscribe((recordingState: HMSRecording) => {
         if (recordingState) {
-          this.isRecording =
-            recordingState.browser?.running || recordingState.server?.running || recordingState.hls?.running || false;
+          this.isRecording = recordingState.hls?.running || false;
+          this.recordingStatus.emit(this.isRecording);
           this.pushStateToSettings();
         }
       }, selectRecordingState);
@@ -595,6 +590,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe({
         next: (value) => {
           this.isLive = value.is_live;
+          this.liveStatus.emit(this.isLive);
           this.pushStateToSettings();
           this.toastLogService.successDialog(this.isLive ? 'Session is now Live' : 'Session streaming stopped');
         },
@@ -796,18 +792,16 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         switch (value.action) {
           // Recording state now handled by hmsStore.subscribe(selectRecordingState)
           case this.hmsLiveChannel.ACTIONS.RECORDING_STARTED:
-            this.beamStatus.emit(true);
+            this.ytStatus.emit(true);
             break;
           case this.hmsLiveChannel.ACTIONS.RECORDING_STOPPED:
-            this.beamStatus.emit(false);
+            this.ytStatus.emit(false);
             break;
           case this.hmsLiveChannel.ACTIONS.STREAMING_STARTED:
-            this.beamStatus.emit(true);
             this.isStreaming = true;
             this.pushStateToSettings();
             break;
           case this.hmsLiveChannel.ACTIONS.STREAMING_STOPPED:
-            this.beamStatus.emit(false);
             this.isStreaming = false;
             this.pushStateToSettings();
             break;

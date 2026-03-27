@@ -24,8 +24,10 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   @Input() eventBannerUrl: string;
   @Input() event: IEvent;
 
-  @Output() beamStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() ytStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() hlsStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() recordingStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() liveStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   currentUser: ICurrentUser;
 

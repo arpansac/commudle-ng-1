@@ -161,7 +161,7 @@
                     [icon]="isHlsRunning ? 'cast' : 'cast-outline'"
                     [status]="isHlsRunning ? 'success' : 'basic'"
                   ></nb-icon>
-                  <span>{{ isHlsRunning ? 'HLS Stream is Live' : 'HLS Stream is Off' }}</span>
+                  <span>{{ isHlsRunning ? 'Stream is Live' : 'Stream is Off' }}</span>
                 </div>
                 <button
                   (click)="onToggleHls()"
@@ -172,7 +172,7 @@
                   [status]="isHlsRunning ? 'danger' : 'success'"
                   outline
                 >
-                  {{ isHlsRunning ? 'Stop HLS Streaming' : 'Start HLS Streaming' }}
+                  {{ isHlsRunning ? 'Stop Streaming' : 'Start Streaming' }}
                 </button>
               </div>
 
