@@ -37,46 +37,46 @@
       }
 
       .recordings-section {
-        @apply com-mt-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-overflow-hidden;
+        @apply com-mt-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-overflow-hidden com-bg-white;
 
         .recordings-header {
-          @apply com-flex com-items-center com-justify-between com-px-4 com-py-3 com-border-0 com-border-b com-border-solid com-border-gray-200;
+          @apply com-px-5 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
 
           .recordings-title {
-            @apply com-text-base com-font-bold com-m-0;
+            @apply com-text-base com-font-bold com-m-0 com-text-gray-900;
           }
         }
 
         .recordings-loading {
-          @apply com-flex com-items-center com-justify-center com-py-6;
+          @apply com-flex com-items-center com-justify-center com-py-8;
         }
 
         .recordings-empty {
-          @apply com-flex com-items-center com-justify-center com-py-6 com-text-sm com-text-gray-400;
+          @apply com-flex com-items-center com-justify-center com-py-8 com-text-sm com-text-gray-400;
         }
 
         .recordings-list {
-          @apply com-max-h-[300px] com-overflow-y-auto;
+          @apply com-max-h-[400px] com-overflow-y-auto;
 
           .recording-row {
-            @apply com-flex com-items-center com-justify-between com-px-4 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
+            @apply com-flex com-items-center com-justify-between com-px-5 com-py-5 com-border-0 com-border-b com-border-solid com-border-gray-200;
 
             &:last-child {
               @apply com-border-b-0;
             }
 
-            .recording-duration {
-              @apply com-text-sm com-font-medium com-text-gray-700 com-flex-shrink-0;
+            .recording-date {
+              @apply com-text-base com-font-medium com-text-gray-800 com-flex-shrink-0;
             }
 
             .recording-buttons {
-              @apply com-flex com-items-center com-gap-2 com-flex-wrap com-justify-end;
+              @apply com-flex com-items-center com-gap-3 com-flex-wrap com-justify-end;
 
               .download-pill {
-                @apply com-text-xs com-px-4 com-py-1.5 com-rounded-full com-border com-border-solid com-border-gray-300 com-bg-gray-100 com-text-gray-700 com-no-underline com-whitespace-nowrap com-cursor-pointer;
+                @apply com-text-sm com-px-5 com-py-2 com-rounded-full com-border com-border-solid com-border-primary-200 com-bg-primary-100 com-text-primary-700 com-no-underline com-whitespace-nowrap com-cursor-pointer com-font-medium;
 
                 &:hover {
-                  @apply com-bg-gray-200 com-border-gray-400;
+                  @apply com-bg-primary-200 com-border-primary-300;
                 }
               }
             }

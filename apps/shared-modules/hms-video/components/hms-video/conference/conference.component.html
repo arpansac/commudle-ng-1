@@ -175,20 +175,43 @@
 
     <!-- Host streaming controls + status indicators -->
     <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
-      <!-- Start/Stop Stream (isLive for interactive, HLS for webinar) -->
+      <!-- Start Stream -->
       <button
+        *ngIf="!pendingHlsAction && !isLive && !isHlsRunning"
         (click)="toggleStream()"
-        [nbTooltip]="isLive || isHlsRunning ? 'Stop Stream' : 'Start Stream'"
-        ghost
+        nbTooltip="Start Stream"
         nbButton
-        shape="round"
+        size="small"
+        class="stream-start-btn"
+      >
+        <fa-icon [icon]="icons.faPlay"></fa-icon>
+        Start
+      </button>
+
+      <!-- Stop Stream -->
+      <button
+        *ngIf="!pendingHlsAction && (isLive || isHlsRunning)"
+        (click)="toggleStream()"
+        nbTooltip="Stop Stream"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faStop"></fa-icon>
+        Stop
+      </button>
+
+      <!-- Pending -->
+      <button
+        *ngIf="pendingHlsAction"
+        [disabled]="true"
+        nbTooltip="Please wait..."
+        nbButton
+        size="small"
+        ghost
         class="control-btn"
       >
-        <span *ngIf="isLive || isHlsRunning" class="status-dot-inline status-dot-live">
-          <fa-icon [icon]="icons.faCircle"></fa-icon>
-          LIVE
-        </span>
-        <fa-icon *ngIf="!isLive && !isHlsRunning" [icon]="icons.faPlay"></fa-icon>
+        <fa-icon [icon]="icons.faSpinner" [spin]="true"></fa-icon>
       </button>
 
       <!-- YT Streaming (interactive mode with rtmp_url) -->

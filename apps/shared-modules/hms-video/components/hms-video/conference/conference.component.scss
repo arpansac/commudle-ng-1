@@ -72,8 +72,20 @@
       @apply com-ml-2;
     }
 
-    .stream-btn {
-      @apply com-flex com-items-center com-gap-1;
+    .stream-start-btn {
+      @apply com-bg-green-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+
+      &:hover {
+        @apply com-bg-green-700;
+      }
+    }
+
+    .stream-stop-btn {
+      @apply com-bg-red-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+
+      &:hover {
+        @apply com-bg-red-700;
+      }
     }
 
     .text-danger {

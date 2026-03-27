@@ -198,7 +198,7 @@
         </div>
         <div *ngIf="groupedRecordings.length > 0" class="recordings-list">
           <div *ngFor="let group of groupedRecordings" class="recording-row">
-            <span class="recording-duration">{{ group.createdAt | date : 'medium' }}</span>
+            <span class="recording-date">{{ group.createdAt | date : 'MMM d, y - h:mm a' }}</span>
             <div class="recording-buttons">
               <a
                 *ngFor="let asset of group.assets"
