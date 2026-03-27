@@ -16,6 +16,9 @@ import { NbMenuService } from '@commudle/theme';
 import { map } from 'rxjs';
 import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { IUser } from '@commudle/shared-models';
+import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
+import { ERegistationTypes } from 'apps/shared-models/enums/registration_types.enum';
 
 @Component({
   selector: 'app-home-event',
@@ -56,9 +59,12 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   faGlobe = faGlobe;
   interestedUsers: IUser[];
   interestedUsersCount: number;
+  formsData: IEventDataFormEntityGroup[] = [];
+  attendeeForms: IEventDataFormEntityGroup[] = [];
   speakersData: IUser[] = [];
   isSpeakersLoaded = false;
   isInterestedMembersLoaded = false;
+  isAttendeeFormsLoaded = false;
   private schemaRendered = false;
 
   items: [{ title: string }];
@@ -82,6 +88,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     private discussionService: DiscussionService,
     private menuService: NbMenuService,
     private eventService: EventsService,
+    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
   ) {}
 
   ngOnInit() {
@@ -103,8 +110,25 @@ export class HomeEventComponent implements OnInit, OnDestroy {
       this.event = event;
       this.isSpeakersLoaded = this.event.event_speakers_count === 0;
       this.fetchInterestedMembers();
+      this.fetchOpenForms();
       this.isLoading = false;
       this.getCommunity(event.kommunity_id);
+    });
+  }
+
+  fetchOpenForms() {
+    this.eventDataFormEntityGroupsService.pGetPublicOpenDataForms(this.event.id).subscribe((data) => {
+      if (data.event_data_form_entity_groups.length > 0) {
+        this.formsData = data.event_data_form_entity_groups;
+        this.attendeeForms = this.formsData.filter(
+          (form) => form.registration_type.name === ERegistationTypes.ATTENDEE,
+        );
+        this.checkAndSetSchema();
+        this.isAttendeeFormsLoaded = true;
+      } else {
+        this.isAttendeeFormsLoaded = true;
+        this.checkAndSetSchema();
+      }
     });
   }
 
@@ -152,11 +176,39 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
+  private getOffersSchema() {
+    if (this.attendeeForms.length > 0) {
+      return this.attendeeForms.map((form) => ({
+        '@type': 'Offer',
+        name: form.name,
+        url: `${environment.app_url}/fill-form/${form.data_form_entity_id}`,
+        price: form.is_paid && form.paid_ticket_setting ? form.paid_ticket_setting.price / 100 : 0,
+        priceCurrency: form.is_paid && form.paid_ticket_setting ? form.paid_ticket_setting.currency : 'INR',
+        availability: 'https://schema.org/InStock',
+      }));
+    }
+
+    return {
+      '@type': 'Offer',
+      name: this.event.name,
+      url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+      price: 0,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+    };
+  }
+
   private checkAndSetSchema() {
     if (this.schemaRendered) {
       return;
     }
-    if (this.community && this.isInterestedMembersLoaded && this.isSpeakersLoaded && this.event.start_time) {
+    if (
+      this.community &&
+      this.isInterestedMembersLoaded &&
+      this.isSpeakersLoaded &&
+      this.event.start_time &&
+      this.isAttendeeFormsLoaded
+    ) {
       this.schemaRendered = true;
       this.setSchema();
     }
@@ -188,11 +240,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
         url: `${environment.app_url}/communities/${this.community.slug}`,
       },
 
-      offers: {
-        '@type': 'Offer',
-        name: this.event.name,
-        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
-      },
+      offers: this.getOffersSchema(),
 
       interactionStatistic: {
         '@type': 'InteractionCounter',

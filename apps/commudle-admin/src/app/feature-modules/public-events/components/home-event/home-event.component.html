@@ -121,6 +121,7 @@
               <div #eventFormSection id="event-form" class="registration-form">
                 <app-highlighted-links
                   (hasOpenForms)="hasOpenForms = $event"
+                  [formsData]="formsData"
                   [community]="community"
                   [event]="event"
                 ></app-highlighted-links>
@@ -296,6 +297,7 @@
     <app-highlighted-links
       *ngIf="event.editable || event.event_status.name === EEventStatuses.OPEN"
       (hasOpenForms)="hasOpenForms = $event"
+      [formsData]="formsData"
       [community]="community"
       [event]="event"
     ></app-highlighted-links>

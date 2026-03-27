@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
-import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 import { ERegistationTypes } from 'apps/shared-models/enums/registration_types.enum';
 import { Router } from '@angular/router';
@@ -28,10 +27,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-highlighted-links',
-    templateUrl: './highlighted-links.component.html',
-    styleUrls: ['./highlighted-links.component.scss'],
-    standalone: false
+  selector: 'app-highlighted-links',
+  templateUrl: './highlighted-links.component.html',
+  styleUrls: ['./highlighted-links.component.scss'],
+  standalone: false,
 })
 export class HighlightedLinksComponent implements OnInit {
   ERegistationTypes = ERegistationTypes;
@@ -41,6 +40,7 @@ export class HighlightedLinksComponent implements OnInit {
 
   @Input() community: ICommunity;
   @Input() event: IEvent;
+  @Input() formsData: IEventDataFormEntityGroup[] = [];
   @Output() hasOpenForms = new EventEmitter();
 
   openForms: IEventDataFormEntityGroup[] = [];
@@ -60,7 +60,6 @@ export class HighlightedLinksComponent implements OnInit {
   };
 
   constructor(
-    private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
     private eventSimpleRegistrationsService: EventSimpleRegistrationsService,
     private userEventRegistrationsService: UserEventRegistrationsService,
     private router: Router,
@@ -80,41 +79,39 @@ export class HighlightedLinksComponent implements OnInit {
 
   getOpenForms() {
     if (this.event.editable) {
-      this.eventDataFormEntityGroupsService.pGetPublicOpenDataForms(this.event.id).subscribe((data) => {
-        for (const form of data.event_data_form_entity_groups) {
-          if (
-            this.event.event_status.name === EEventStatuses.CANCELED ||
-            this.event.event_status.name === EEventStatuses.COMPLETED
-          ) {
-            if (form.registration_type.name === ERegistationTypes.FEEDBACK) {
-              this.openForms.push(form);
-            }
-            if (form.registration_type.name === ERegistationTypes.COMMUNICATION) {
-              this.openForms.push(form);
-            }
+      for (const form of this.formsData) {
+        if (
+          this.event.event_status.name === EEventStatuses.CANCELED ||
+          this.event.event_status.name === EEventStatuses.COMPLETED
+        ) {
+          if (form.registration_type.name === ERegistationTypes.FEEDBACK) {
+            this.openForms.push(form);
           }
-          if (
-            this.event.event_status.name === EEventStatuses.OPEN ||
-            this.event.event_status.name === EEventStatuses.DRAFT
-          ) {
-            if (form.registration_type.name === ERegistationTypes.ATTENDEE) {
-              this.openForms.push(form);
-            }
-            if (form.registration_type.name === ERegistationTypes.SPEAKER) {
-              this.openForms.push(form);
-            }
-            if (form.registration_type.name === ERegistationTypes.FEEDBACK) {
-              this.openForms.push(form);
-            }
-            if (form.registration_type.name === ERegistationTypes.COMMUNICATION) {
-              this.openForms.push(form);
-            }
+          if (form.registration_type.name === ERegistationTypes.COMMUNICATION) {
+            this.openForms.push(form);
           }
         }
-        if (this.openForms.length > 0) {
-          this.hasOpenForms.emit(true);
+        if (
+          this.event.event_status.name === EEventStatuses.OPEN ||
+          this.event.event_status.name === EEventStatuses.DRAFT
+        ) {
+          if (form.registration_type.name === ERegistationTypes.ATTENDEE) {
+            this.openForms.push(form);
+          }
+          if (form.registration_type.name === ERegistationTypes.SPEAKER) {
+            this.openForms.push(form);
+          }
+          if (form.registration_type.name === ERegistationTypes.FEEDBACK) {
+            this.openForms.push(form);
+          }
+          if (form.registration_type.name === ERegistationTypes.COMMUNICATION) {
+            this.openForms.push(form);
+          }
         }
-      });
+      }
+      if (this.openForms.length > 0) {
+        this.hasOpenForms.emit(true);
+      }
     }
   }
 
