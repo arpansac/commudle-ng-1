@@ -239,6 +239,12 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     if (status) {
       hmsStore.subscribe((peers: HMSPeer[]) => {
         this.peers = peers;
+        if (
+          this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
+          this.currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR
+        ) {
+          this.muteRemoteAudioForViewer();
+        }
       }, selectPeers);
       hmsStore.subscribe((localPeer: HMSPeer) => {
         this.localPeer = localPeer;
@@ -309,6 +315,9 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
       if (this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
         this.loadHlsStream();
+        if (this.currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR) {
+          this.muteRemoteAudioForViewer();
+        }
       }
     }
   };
@@ -875,6 +884,16 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         case HMSNotificationTypes.RECONNECTED:
           this.showReconnecting = false;
           break;
+        case HMSNotificationTypes.TRACK_ADDED:
+        case HMSNotificationTypes.TRACK_UNMUTED: {
+          if (
+            this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME &&
+            this.currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR
+          ) {
+            this.muteRemoteAudioForViewer();
+          }
+          break;
+        }
         case HMSNotificationTypes.ERROR: {
           const data: HMSException = notification.data;
           switch (data.code) {
@@ -939,5 +958,13 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
       this.hlsInstance.destroy();
       this.hlsInstance = null;
     }
+  }
+
+  private muteRemoteAudioForViewer(): void {
+    this.peers.forEach((peer: HMSPeer) => {
+      if (peer.audioTrack) {
+        hmsActions.setVolume(0, peer.audioTrack);
+      }
+    });
   }
 }

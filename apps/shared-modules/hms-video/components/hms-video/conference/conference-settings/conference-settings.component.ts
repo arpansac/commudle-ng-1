@@ -153,6 +153,11 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   toggleAudio(): void {
     this.isAudioEnabled = !this.isAudioEnabled;
+    if (this.isAudioEnabled) {
+      this.startMicMeter();
+    } else {
+      this.stopMicMeter();
+    }
   }
 
   toggleVideo(): void {
@@ -164,7 +169,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   }
 
   stopStream(): void {
-    if (this.isVideoEnabled && this.previewVideo?.nativeElement) {
+    if (this.previewVideo?.nativeElement) {
       const stream: MediaStream | MediaSource | Blob = this.previewVideo.nativeElement.srcObject;
       if (stream) {
         if ('getTracks' in stream) {
