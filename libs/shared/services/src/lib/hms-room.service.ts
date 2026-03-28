@@ -11,12 +11,13 @@ import { EDbModels, EHmsRoomMode, IHmsHls } from '@commudle/shared-models';
 export class HmsRoomService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  startHls(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
+  startHls(streamableId: number, streamableType: EDbModels, singleFilePerLayer: boolean): Observable<IHmsHls> {
     return this.http.post<IHmsHls>(
       this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.START_HLS),
       {
         streamable_id: streamableId,
         streamable_type: streamableType,
+        single_file_per_layer: singleFilePerLayer,
       },
     );
   }
@@ -26,6 +27,17 @@ export class HmsRoomService {
       streamable_id: streamableId,
       streamable_type: streamableType,
     });
+  }
+
+  restartHls(streamableId: number, streamableType: EDbModels, singleFilePerLayer: boolean): Observable<IHmsHls> {
+    return this.http.post<IHmsHls>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.RESTART_HLS),
+      {
+        streamable_id: streamableId,
+        streamable_type: streamableType,
+        single_file_per_layer: singleFilePerLayer,
+      },
+    );
   }
 
   getPlaybackUrl(streamableId: number, streamableType: EDbModels): Observable<IHmsHls> {
@@ -57,6 +69,14 @@ export class HmsRoomService {
         streamable_type: streamableType,
         mode,
       },
+    );
+  }
+
+  getRecordingAssets(streamableId: number, streamableType: EDbModels): Observable<any> {
+    const params = new HttpParams().set('streamable_id', streamableId).set('streamable_type', streamableType);
+    return this.http.get<any>(
+      this.baseApiService.getRoute(API_ROUTES.EMBEDDED_VIDEO_STREAMS.HMS_ROOMS.RECORDING_ASSETS),
+      { params },
     );
   }
 }

@@ -15,11 +15,16 @@
     <app-local-preview *ngSwitchCase="EHmsStates.PREVIEW"></app-local-preview>
     <!-- Join room -->
     <app-conference
-      (beamStatus)="beamStatus.emit($event)"
-      (beamStatus)="hlsStatus.emit($event)"
+      (ytStatus)="ytStatus.emit($event)"
+      (hlsStatus)="hlsStatus.emit($event)"
+      (recordingStatus)="recordingStatus.emit($event)"
+      (liveStatus)="liveStatus.emit($event)"
       *ngSwitchCase="EHmsStates.ROOM"
       [currentUser]="currentUser"
       [embeddedVideoStream]="embeddedVideoStream"
+      [eventName]="eventName"
+      [eventBannerUrl]="eventBannerUrl"
+      [event]="event"
       [selectedRole]="selectedRole"
       [serverClient]="serverClient"
     ></app-conference>

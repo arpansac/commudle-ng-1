@@ -247,10 +247,6 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   loadSlotRule(roundId: number): void {
     const currentRound: IRound = this.rounds.find((r) => r.id === roundId);
     this.currentSlotRule = currentRound?.round_mentor_slot_rule || null;
-    console.log(
-      '🚀 ~ HackathonControlPanelMentorSlotsComponent ~ loadSlotRule ~ this.currentSlotRule:',
-      this.currentSlotRule,
-    );
 
     if (this.currentSlotRule) {
       const onlyAdminAssigns = this.currentSlotRule.only_admin_assigns_teams ?? true;

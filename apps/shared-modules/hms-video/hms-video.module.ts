@@ -27,6 +27,7 @@ import { HmsVideoComponent } from './components/hms-video/hms-video.component';
 import { LocalPreviewComponent } from './components/hms-video/local-preview/local-preview.component';
 import { SelectRoleComponent } from './components/hms-video/select-role/select-role.component';
 import { HmsStageService } from './services/hms-stage.service';
+import { EventStreamingComponent } from 'apps/commudle-admin/src/app/feature-modules/events/components/event-streaming/event-streaming.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { HmsStageService } from './services/hms-stage.service';
     NbAlertModule,
     RouterModule,
     FontAwesomeModule,
+    EventStreamingComponent,
   ],
   exports: [HmsVideoComponent],
   providers: [HmsStageService],

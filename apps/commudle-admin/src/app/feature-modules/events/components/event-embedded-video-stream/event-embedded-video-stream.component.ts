@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { IEmbeddedVideoStream, IEvent, IUser, ICommunity } from '@commudle/shared-models';
-import { AuthService, ToastrService } from '@commudle/shared-services';
+import { EHmsRoomMode, IEmbeddedVideoStream, IEvent, IUser, ICommunity, EDbModels } from '@commudle/shared-models';
+import { AuthService, HmsRoomService, ToastrService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
+import { faDesktop, faExternalLinkAlt, faCode, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
 import { EEmbeddedVideoStreamSources } from 'apps/shared-models/enums/embedded_video_stream_sources.enum';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -21,20 +24,61 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   @Output() embeddedVideoStream = new EventEmitter<IEmbeddedVideoStream>();
 
   EEmbeddedVideoStreamSources = EEmbeddedVideoStreamSources;
+  EHmsRoomMode = EHmsRoomMode;
   evs = <IEmbeddedVideoStream>{};
   currentUser: IUser;
+  selectedMode: EHmsRoomMode = EHmsRoomMode.INTERACTIVE;
+  savingInProgress = false;
+  confirmTitle = '';
+  confirmMessage = '';
+  groupedRecordings: { recordingId: string; createdAt: string; assets: any[] }[] = [];
+  loadingRecordings = false;
+  faDownload = faDownload;
+
+  @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
+
+  sourceOptions = [
+    {
+      value: EEmbeddedVideoStreamSources.COMMUDLE,
+      label: 'Commudle Stage',
+      description: 'Up to 20 on stage, 500 viewers',
+      icon: faDesktop,
+      disabled: false,
+    },
+    {
+      value: EEmbeddedVideoStreamSources.YOUTUBE,
+      label: 'YouTube Live',
+      description: 'Embed a YouTube live URL',
+      icon: faYoutube,
+      disabled: false,
+    },
+    {
+      value: EEmbeddedVideoStreamSources.EXTERNAL_LINK,
+      label: 'External Link',
+      description: 'Google Meet, Teams, etc.',
+      icon: faExternalLinkAlt,
+      disabled: false,
+    },
+    {
+      value: EEmbeddedVideoStreamSources.OTHER,
+      label: 'Iframe Embed',
+      description: 'Paste any iframe code',
+      icon: faCode,
+      disabled: false,
+    },
+  ];
 
   embeddedVideoStreamForm;
-
   subscription: Subscription;
-
   private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     private embeddedVideoStreamsService: EmbeddedVideoStreamsService,
+    private hmsRoomService: HmsRoomService,
     private toastLogService: ToastrService,
     private authService: AuthService,
+    private nbDialogService: NbDialogService,
   ) {
     this.embeddedVideoStreamForm = this.fb.group({
       streamable_type: ['', Validators.required],
@@ -49,27 +93,15 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this.embeddedVideoStreamFromTrackSlot) {
-      this.embeddedVideoStreamForm.patchValue({
-        streamable_type: 'Event',
-        streamable_id: this.event.id,
-      });
-    } else {
-      if (this.embeddedFormData) {
-        this.embeddedVideoStreamForm.patchValue({
-          streamable_type: this.embeddedFormData.streamable_type,
-          streamable_id: this.embeddedFormData.streamable_id,
-          source: this.embeddedFormData.source,
-          embed_code: this.embeddedFormData.embed_code,
-          zoom_host_email: this.embeddedFormData.zoom_host_email,
-          zoom_password: this.embeddedFormData.zoom_password,
-        });
-      } else {
-        this.embeddedVideoStreamForm.patchValue({
-          streamable_type: 'EventLocationTrack',
-          streamable_id: this.eventLocationTrackId,
-        });
-      }
+      this.embeddedVideoStreamForm.patchValue({ streamable_type: 'Event', streamable_id: this.event.id });
+    } else if (this.embeddedFormData) {
+      this.embeddedVideoStreamForm.patchValue(this.embeddedFormData);
       this.updateValidators();
+    } else {
+      this.embeddedVideoStreamForm.patchValue({
+        streamable_type: 'EventLocationTrack',
+        streamable_id: this.eventLocationTrackId,
+      });
     }
 
     if (!this.embeddedVideoStreamFromTrackSlot) {
@@ -87,13 +119,49 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  selectSource(source: string): void {
+    const current = this.embeddedVideoStreamForm.get('source').value;
+    if (current && current !== source) {
+      this.confirmTitle = 'Switch Video Source';
+      this.confirmMessage =
+        'Are you sure you want to switch the video source? This will reset the current configuration.';
+      const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+      ref.onClose.subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.embeddedVideoStreamForm.patchValue({
+            source,
+            embed_code: '',
+            zoom_host_email: '',
+            zoom_password: '',
+            rtmp_url: '',
+          });
+          this.updateValidators();
+          this.createOrUpdate();
+        }
+      });
+    } else {
+      this.embeddedVideoStreamForm.patchValue({ source });
+      this.updateValidators();
+    }
+  }
+
+  selectMode(mode: EHmsRoomMode): void {
+    if (this.selectedMode === mode) return;
+    this.confirmTitle = 'Switch Session Mode';
+    const modeName = mode === EHmsRoomMode.INTERACTIVE ? 'Interactive' : 'Large Scale Webinar';
+    this.confirmMessage = `Are you sure you want to switch to ${modeName} mode?`;
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.selectedMode = mode;
+        this.createOrUpdate();
+      }
+    });
+  }
+
   validateRtmpUrl(control) {
     const url: string = control.value;
-    if (url?.startsWith('rtmp://') || url === '') {
-      return null;
-    } else {
-      return { invalidUrl: true };
-    }
+    return !url || url.startsWith('rtmp://') ? null : { invalidUrl: true };
   }
 
   getEmbeddedVideoStream() {
@@ -101,47 +169,99 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
       if (data) {
         this.evs = data;
         this.embeddedVideoStreamForm.patchValue(data);
+        if (data.mode) {
+          this.selectedMode = data.mode;
+        }
         this.updateValidators();
+        if (this.selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR) {
+          this.loadRecordingAssets();
+        }
       }
     });
   }
 
+  loadRecordingAssets(): void {
+    if (!this.evs?.streamable_id || !this.evs?.streamable_type) return;
+    this.loadingRecordings = true;
+    this.hmsRoomService.getRecordingAssets(this.evs.streamable_id, this.evs.streamable_type).subscribe({
+      next: (data) => {
+        this.groupedRecordings = this.parseRecordings(data || {});
+        this.loadingRecordings = false;
+      },
+      error: () => {
+        this.groupedRecordings = [];
+        this.loadingRecordings = false;
+      },
+    });
+  }
+
+  private parseRecordings(data: Record<string, any>): { recordingId: string; createdAt: string; assets: any[] }[] {
+    return Object.values(data)
+      .map((recording: any) => ({
+        recordingId: recording.hms_recording_id,
+        createdAt: recording.created_at,
+        assets: (recording.assets || [])
+          .filter((asset: any) => asset.presigned_url?.url && asset.metadata?.resolution?.height)
+          .sort((a: any, b: any) => (b.metadata.resolution.height || 0) - (a.metadata.resolution.height || 0)),
+      }))
+      .filter((group) => group.assets.length > 0);
+  }
+
   createOrUpdate() {
+    this.savingInProgress = true;
     if (this.embeddedVideoStreamFromTrackSlot) {
       this.embeddedVideoStream.emit(this.embeddedVideoStreamForm.value);
-    } else {
-      this.embeddedVideoStreamsService.createOrUpdate(this.embeddedVideoStreamForm.value).subscribe((data) => {
+      this.savingInProgress = false;
+      return;
+    }
+
+    this.embeddedVideoStreamsService.createOrUpdate(this.embeddedVideoStreamForm.value).subscribe({
+      next: (data) => {
         delete this.evs;
-        // firing after 1 second because it doesn't update the value otherwise
         setTimeout(() => {
           this.evs = data;
         }, 100);
         this.embeddedVideoStreamForm.patchValue(data);
         this.updateValidators();
-        this.toastLogService.successDialog('Saved!');
-      });
-    }
+
+        if (
+          this.embeddedVideoStreamForm.get('source').value === EEmbeddedVideoStreamSources.COMMUDLE &&
+          data.streamable_id
+        ) {
+          this.hmsRoomService.updateMode(data.streamable_id, data.streamable_type, this.selectedMode).subscribe({
+            next: () => {
+              this.toastLogService.successDialog('Saved!');
+              this.savingInProgress = false;
+            },
+            error: () => {
+              this.toastLogService.successDialog('Saved! (mode update pending)');
+              this.savingInProgress = false;
+            },
+          });
+        } else {
+          this.toastLogService.successDialog('Saved!');
+          this.savingInProgress = false;
+        }
+      },
+      error: () => {
+        this.toastLogService.warningDialog('Failed to save');
+        this.savingInProgress = false;
+      },
+    });
   }
 
   updateValidators() {
-    // remove the required validator from zoom attributes
     this.embeddedVideoStreamForm.get('zoom_host_email').clearValidators();
     this.embeddedVideoStreamForm.get('zoom_password').clearValidators();
-
-    // add required validator to embed_code
     this.embeddedVideoStreamForm.get('embed_code').setValidators([Validators.required]);
 
     switch (this.embeddedVideoStreamForm.get('source').value) {
       case EEmbeddedVideoStreamSources.ZOOM:
-        {
-          this.embeddedVideoStreamForm.get('zoom_host_email').setValidators([Validators.required, Validators.email]);
-          this.embeddedVideoStreamForm.get('zoom_password').setValidators(Validators.required);
-        }
+        this.embeddedVideoStreamForm.get('zoom_host_email').setValidators([Validators.required, Validators.email]);
+        this.embeddedVideoStreamForm.get('zoom_password').setValidators(Validators.required);
         break;
       case EEmbeddedVideoStreamSources.COMMUDLE:
-        {
-          this.embeddedVideoStreamForm.get('embed_code').clearValidators();
-        }
+        this.embeddedVideoStreamForm.get('embed_code').clearValidators();
         break;
     }
 

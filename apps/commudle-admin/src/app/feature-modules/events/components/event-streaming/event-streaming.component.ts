@@ -1,29 +1,55 @@
+import { CommonModule } from '@angular/common';
 import { AfterContentInit, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { AuthService, YoutubeLoginProvider } from '@commudle/auth';
 import { ICommunityAuthToken, IEmbeddedVideoStream, IEvent } from '@commudle/shared-models';
 import { ToastrService } from '@commudle/shared-services';
-import { NbDialogService } from '@commudle/theme';
+import {
+  NbAlertModule,
+  NbButtonModule,
+  NbCardModule,
+  NbDialogModule,
+  NbDialogService,
+  NbIconModule,
+  NbInputModule,
+  NbSpinnerModule,
+} from '@commudle/theme';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommunityAuthTokensService } from 'apps/commudle-admin/src/app/services/community-auth-tokens.service';
 import { EmbeddedVideoStreamsService } from 'apps/commudle-admin/src/app/services/embedded-video-streams.service';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'commudle-event-streaming',
-    templateUrl: './event-streaming.component.html',
-    styleUrls: ['./event-streaming.component.scss'],
-    standalone: false
+  selector: 'commudle-event-streaming',
+  templateUrl: './event-streaming.component.html',
+  styleUrls: ['./event-streaming.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    NbButtonModule,
+    NbCardModule,
+    NbIconModule,
+    NbAlertModule,
+    NbSpinnerModule,
+    NbDialogModule,
+    NbInputModule,
+  ],
 })
 export class EventStreamingComponent implements AfterContentInit {
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() event: IEvent;
 
-  @Output() refreshEmbeddedVideoStream: EventEmitter<any> = new EventEmitter();
+  @Output() refreshEmbeddedVideoStream: EventEmitter<IEmbeddedVideoStream> = new EventEmitter();
 
   communityAuthToken: ICommunityAuthToken;
   loaders = {
     createStream: false,
     deleteStream: false,
+    saveRtmp: false,
   };
+
+  faYoutube = faYoutube;
 
   subscriptions: Subscription[] = [];
 
@@ -58,7 +84,7 @@ export class EventStreamingComponent implements AfterContentInit {
           if (res) {
             this.toastrService.successDialog('Connected to Youtube');
             this.getToken();
-            this.refreshEmbeddedVideoStream.emit();
+            this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
           }
         }),
     );
@@ -76,7 +102,7 @@ export class EventStreamingComponent implements AfterContentInit {
         if (res) {
           this.toastrService.successDialog('Disconnected from Youtube');
           this.getToken();
-          this.refreshEmbeddedVideoStream.emit();
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
         }
       }),
     );
@@ -88,8 +114,9 @@ export class EventStreamingComponent implements AfterContentInit {
       this.embeddedVideoStreamService.createLivestream(this.event.id, 'Event').subscribe({
         next: (res) => {
           if (res) {
+            this.embeddedVideoStream = res;
             this.toastrService.successDialog('Stream created');
-            this.refreshEmbeddedVideoStream.emit();
+            this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
             this.loaders.createStream = false;
           }
         },
@@ -103,8 +130,9 @@ export class EventStreamingComponent implements AfterContentInit {
     this.subscriptions.push(
       this.embeddedVideoStreamService.deleteLivestream(this.event.id, 'Event').subscribe((res) => {
         if (res) {
+          this.embeddedVideoStream = { ...this.embeddedVideoStream, youtube_broadcast: null, rtmp_url: null };
           this.toastrService.successDialog('Stream deleted');
-          this.refreshEmbeddedVideoStream.emit();
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
           this.loaders.deleteStream = false;
         }
       }),
@@ -113,5 +141,42 @@ export class EventStreamingComponent implements AfterContentInit {
 
   openDialog(templateRef: TemplateRef<any>) {
     this.nbDialogService.open(templateRef);
+  }
+
+  rtmpInvalid = false;
+
+  isValidRtmpUrl(url: string): boolean {
+    return /^rtmp:\/\/.+\/.+/.test(url.trim());
+  }
+
+  saveRtmpUrl(rtmpUrl: string): void {
+    if (!this.isValidRtmpUrl(rtmpUrl)) {
+      this.rtmpInvalid = true;
+      this.toastrService.warningDialog(
+        'Please enter a valid RTMP URL (e.g. rtmp://a.rtmp.youtube.com/live2/<stream_key>)',
+      );
+      return;
+    }
+    this.rtmpInvalid = false;
+    this.loaders.saveRtmp = true;
+    this.embeddedVideoStreamService
+      .createOrUpdate({
+        streamable_type: this.embeddedVideoStream.streamable_type,
+        streamable_id: this.embeddedVideoStream.streamable_id,
+        source: this.embeddedVideoStream.source,
+        rtmp_url: rtmpUrl.trim(),
+      })
+      .subscribe({
+        next: (res) => {
+          this.embeddedVideoStream = res;
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
+          this.toastrService.successDialog('RTMP URL saved');
+          this.loaders.saveRtmp = false;
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to save RTMP URL');
+          this.loaders.saveRtmp = false;
+        },
+      });
   }
 }

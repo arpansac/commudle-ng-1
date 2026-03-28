@@ -84,7 +84,7 @@ import { EditorModule as NewEditorModule } from '@commudle/editor';
 import { EventCheckedInListComponent } from './components/event-checked-in-list/event-checked-in-list.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { BadgeComponent } from 'apps/shared-components/badge/badge.component';
-import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-components/data-table/data-table.component';
+import { DataTableComponent } from '../../app-shared-components/data-table/data-table.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +117,6 @@ import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-compo
     ExitPassScanComponent,
     EventAgendaComponent,
     EventRegistrationsComponent,
-    EventStreamingComponent,
     DiscountCouponsComponent,
     PaymentSettingsComponent,
     DiscountCouponFormComponent,
@@ -153,6 +152,7 @@ import { DataTableComponent } from 'apps/commudle-admin/src/app/app-shared-compo
     HelpSectionComponent,
     BadgeComponent,
     DataTableComponent,
+    EventStreamingComponent,
     //Nebular
     NbButtonModule,
     NbCardModule,

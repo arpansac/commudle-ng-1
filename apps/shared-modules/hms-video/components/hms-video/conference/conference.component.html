@@ -34,9 +34,20 @@
       !isLive &&
       !isHlsRunning
     "
-    class="hls-player-container"
+    class="waiting-container"
   >
-    <p class="hls-loading-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+    <div class="waiting-banner" *ngIf="eventBannerUrl">
+      <img [src]="eventBannerUrl" [alt]="eventName" class="waiting-banner-img" />
+    </div>
+    <div class="waiting-content">
+      <h2 *ngIf="eventName" class="waiting-event-name">{{ eventName }}</h2>
+      <p class="waiting-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+      <div class="waiting-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
   </div>
 
   <!-- Regular conference view for hosts/guests -->
@@ -68,7 +79,7 @@
           nbButton
           class="device-selector-btn"
         >
-          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+          <fa-icon [icon]="icons.faChevronUp"></fa-icon>
         </button>
         <div *ngIf="showAudioDeviceDropdown" class="device-dropdown">
           <div
@@ -104,7 +115,7 @@
           nbButton
           class="device-selector-btn"
         >
-          <fa-icon [icon]="icons.faChevronDown"></fa-icon>
+          <fa-icon [icon]="icons.faChevronUp"></fa-icon>
         </button>
         <div *ngIf="showVideoDeviceDropdown" class="device-dropdown">
           <div
@@ -135,7 +146,7 @@
       shape="round"
       class="control-btn"
     >
-      <nb-icon [status]="isLocalScreenSharing ? 'success' : ''" icon="monitor"></nb-icon>
+      <fa-icon [icon]="icons.faDisplay" [ngClass]="{ 'text-success': isLocalScreenSharing }"></fa-icon>
     </button>
 
     <!-- Raise hand -->
@@ -150,9 +161,143 @@
       <fa-icon [icon]="icons.faHand" [ngClass]="{ 'text-success': isHandRaised }"></fa-icon>
     </button>
 
+    <!-- Emoji reactions -->
+    <div class="device-selector-wrapper">
+      <button (click)="toggleEmojiPicker()" nbTooltip="React" ghost nbButton shape="round" class="control-btn">
+        <fa-icon [icon]="icons.faFaceSmile"></fa-icon>
+      </button>
+      <div *ngIf="showEmojiPicker" class="emoji-picker">
+        <button *ngFor="let emoji of EMOJI_REACTIONS" (click)="sendEmojiReaction(emoji)" class="emoji-btn">
+          {{ emoji }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Host streaming controls + status indicators -->
+    <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
+      <!-- Start Stream -->
+      <button
+        *ngIf="!pendingHlsAction && !isLive && !isHlsRunning"
+        (click)="toggleStream()"
+        nbTooltip="Start Stream"
+        nbButton
+        size="small"
+        class="stream-start-btn"
+      >
+        <fa-icon [icon]="icons.faPlay"></fa-icon>
+        Start
+      </button>
+
+      <!-- Stop Stream -->
+      <button
+        *ngIf="!pendingHlsAction && (isLive || isHlsRunning)"
+        (click)="toggleStream()"
+        nbTooltip="Stop Stream"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faStop"></fa-icon>
+        Stop
+      </button>
+
+      <!-- Pending -->
+      <button
+        *ngIf="pendingHlsAction"
+        [disabled]="true"
+        nbTooltip="Please wait..."
+        nbButton
+        size="small"
+        ghost
+        class="control-btn"
+      >
+        <fa-icon [icon]="icons.faSpinner"></fa-icon>
+      </button>
+
+      <!-- Connect YT (no rtmp_url configured yet) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && !embeddedVideoStream?.rtmp_url"
+        (click)="openSettings('session-type')"
+        nbTooltip="Connect YouTube"
+        nbButton
+        size="small"
+        ghost
+        class="stream-yt-connect-btn"
+      >
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        Connect YT
+      </button>
+
+      <!-- Start YT Stream (rtmp_url exists, enabled only when live) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url && !isStreaming"
+        (click)="toggleYTStreaming()"
+        [nbTooltip]="'Start YT Stream'"
+        nbButton
+        size="small"
+        class="stream-start-btn"
+      >
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        YT
+      </button>
+
+      <!-- Stop YT Stream -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && embeddedVideoStream?.rtmp_url && isStreaming"
+        (click)="toggleYTStreaming()"
+        nbTooltip="Stop YT Stream"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faYoutube"></fa-icon>
+        YT
+      </button>
+
+      <!-- Start Recording (webinar mode, only when HLS is running) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && !isRecording && !pendingRecordingAction"
+        (click)="toggleRecording()"
+        [disabled]="!isHlsRunning"
+        [nbTooltip]="isHlsRunning ? 'Start Recording' : 'Start stream first to enable recording'"
+        nbButton
+        size="small"
+        class="stream-start-btn"
+      >
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        Rec
+      </button>
+
+      <!-- Stop Recording (webinar mode) -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && isRecording && !pendingRecordingAction"
+        (click)="toggleRecording()"
+        nbTooltip="Stop Recording"
+        nbButton
+        size="small"
+        class="stream-stop-btn"
+      >
+        <fa-icon [icon]="icons.faCircle"></fa-icon>
+        Rec
+      </button>
+
+      <!-- Recording Pending -->
+      <button
+        *ngIf="currentMode === EHmsRoomMode.LARGE_SCALE_WEBINAR && pendingRecordingAction"
+        [disabled]="true"
+        nbTooltip="Please wait..."
+        nbButton
+        size="small"
+        ghost
+        class="control-btn"
+      >
+        <fa-icon [icon]="icons.faSpinner"></fa-icon>
+      </button>
+    </ng-container>
+
     <!-- Streaming controls based on mode -->
     <ng-container *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER">
-      <!-- Leave stage (host only) -->
+      <!-- Leave stage (host on stage) -->
       <button
         (click)="toggleStage()"
         *ngIf="isOnStage"
@@ -165,38 +310,35 @@
         <fa-icon [icon]="icons.faArrowRightFromBracket"></fa-icon>
         <span class="control-label">Leave Stage</span>
       </button>
+      <!-- Join stage (host viewer off stage) -->
+      <button
+        (click)="toggleStage()"
+        *ngIf="!isOnStage && localPeer.roleName === EHmsRoles.HOST_VIEWER"
+        nbTooltip="Join Stage"
+        ghost
+        nbButton
+        shape="round"
+        class="control-btn"
+      >
+        <fa-icon [icon]="icons.faArrowRightToBracket"></fa-icon>
+      </button>
     </ng-container>
-
-    <!-- Live / Streaming status indicators -->
-    <div
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.HOST_VIEWER"
-      class="status-indicators"
-    >
-      <span *ngIf="isLive || isHlsRunning" class="status-dot status-dot-live" nbTooltip="Stream is Live">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
-        LIVE
-      </span>
-      <span *ngIf="isStreaming" class="status-dot status-dot-yt" nbTooltip="YouTube Streaming">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
-        YT
-      </span>
-      <span *ngIf="isRecording" class="status-dot status-dot-rec" nbTooltip="Recording">
-        <fa-icon [icon]="icons.faCircle"></fa-icon>
-        REC
-      </span>
-    </div>
 
     <!-- Settings -->
     <button
       (click)="openSettings()"
-      *ngIf="localPeer.roleName === EHmsRoles.HOST || localPeer.roleName === EHmsRoles.GUEST"
+      *ngIf="
+        localPeer.roleName === EHmsRoles.HOST ||
+        localPeer.roleName === EHmsRoles.GUEST ||
+        localPeer.roleName === EHmsRoles.HOST_VIEWER
+      "
       nbTooltip="Settings"
       ghost
       nbButton
       shape="round"
       class="control-btn"
     >
-      <nb-icon icon="settings"></nb-icon>
+      <fa-icon [icon]="icons.faGear"></fa-icon>
     </button>
 
     <!-- End session (host only, red button with door exit icon) -->
@@ -213,20 +355,30 @@
     </button>
   </div>
 
+  <!-- Floating emoji reactions -->
+  <div class="floating-emojis">
+    <span *ngFor="let item of floatingEmojis" class="floating-emoji">{{ item.emoji }}</span>
+  </div>
+
   <nb-alert *ngIf="showReconnecting" class="reconnecting">
-    <svg
-      class="com-animate-spin com--ml-1 com-mr-3 com-h-5 com-w-5 com-text-blue-600"
-      fill="none"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle class="com-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path
-        class="com-opacity-75"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        fill="currentColor"
-      ></path>
-    </svg>
+    <fa-icon [icon]="icons.faSpinner" class="reconnecting-spinner"></fa-icon>
     <span>Your internet connection seems to be unstable. We are trying to get you back into the session...</span>
   </nb-alert>
 </div>
+
+<!-- End session confirmation dialog -->
+<ng-template #endSessionDialog let-ref="dialogRef">
+  <nb-card class="end-session-dialog">
+    <nb-card-header>End Session</nb-card-header>
+    <nb-card-body>
+      <p class="end-session-message">{{ endSessionMessage }}</p>
+      <ul *ngIf="endSessionExtras.length" class="end-session-extras">
+        <li *ngFor="let extra of endSessionExtras">{{ extra }}</li>
+      </ul>
+    </nb-card-body>
+    <nb-card-footer class="end-session-actions">
+      <button (click)="ref.close(true)" nbButton size="small" status="danger">Yes, end session</button>
+      <button (click)="ref.close(false)" nbButton size="small" ghost status="basic">Cancel</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

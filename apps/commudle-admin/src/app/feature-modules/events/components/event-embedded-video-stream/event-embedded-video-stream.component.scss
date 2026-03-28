@@ -1,40 +1,180 @@
 .embedded-video-stream {
-  @apply com-bg-white com-flex com-flex-col;
+  @apply com-flex com-flex-col com-gap-6;
+  @apply lg:com-flex-row lg:com-items-start;
 
-  .embedded-video-stream-form {
-    order: 2;
+  .form-panel {
+    @apply com-flex-1 com-flex com-flex-col com-gap-6 com-min-w-0;
+    @apply lg:com-max-w-[400px];
+  }
 
-    form {
-      > div {
-        margin-bottom: 1rem;
+  .preview-panel {
+    @apply com-w-full;
+    @apply lg:com-flex-1 lg:com-flex-shrink-0 lg:com-self-start;
+
+    .preview-sticky {
+      position: sticky;
+      top: 80px;
+
+      .step-label {
+        @apply com-text-sm com-font-semibold com-text-gray-700 com-m-0 com-mb-3;
+      }
+
+      .preview-container {
+        @apply com-h-[300px] com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-gray-900;
+        @apply lg:com-h-[440px];
+      }
+
+      .preview-placeholder {
+        @apply com-h-full com-flex com-flex-col com-items-center com-justify-center com-text-center;
+
+        .preview-placeholder-icon {
+          @apply com-text-4xl com-text-gray-500 com-mb-2;
+        }
+
+        .preview-placeholder-text {
+          @apply com-text-sm com-text-gray-400 com-m-0;
+        }
+      }
+
+      .recordings-section {
+        @apply com-mt-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-overflow-hidden com-bg-white;
+
+        .recordings-header {
+          @apply com-px-5 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
+
+          .recordings-title {
+            @apply com-text-base com-font-bold com-m-0 com-text-gray-900;
+          }
+        }
+
+        .recordings-loading {
+          @apply com-flex com-items-center com-justify-center com-py-8;
+        }
+
+        .recordings-empty {
+          @apply com-flex com-items-center com-justify-center com-py-8 com-text-sm com-text-gray-400;
+        }
+
+        .recordings-list {
+          @apply com-max-h-[400px] com-overflow-y-auto;
+
+          .recording-row {
+            @apply com-flex com-items-center com-justify-between com-px-5 com-py-5 com-border-0 com-border-b com-border-solid com-border-gray-200;
+
+            &:last-child {
+              @apply com-border-b-0;
+            }
+
+            .recording-date {
+              @apply com-text-base com-font-medium com-text-gray-800 com-flex-shrink-0;
+            }
+
+            .recording-buttons {
+              @apply com-flex com-items-center com-gap-3 com-flex-wrap com-justify-end;
+
+              .download-pill {
+                @apply com-text-sm com-px-5 com-py-2 com-rounded-full com-border com-border-solid com-border-primary-200 com-bg-primary-100 com-text-primary-700 com-no-underline com-whitespace-nowrap com-cursor-pointer com-font-medium;
+
+                &:hover {
+                  @apply com-bg-primary-200 com-border-primary-300;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
 
-  .preview {
-    @apply com-mb-4 com-h-[550px] com-overflow-auto;
-    order: 1;
-  }
-
-  nb-option.selected {
-    background-color: red !important;
-
-    p {
-      color: white !important;
+  .step-section {
+    .step-label {
+      @apply com-text-sm com-font-semibold com-text-gray-700 com-m-0 com-mb-3;
     }
   }
-}
 
-nb-option {
-  @apply com-text-Yankees-Blue;
-}
+  .mode-cards {
+    @apply com-flex com-flex-col com-gap-3;
 
-nb-select {
-  ::ng-deep {
-    button {
-      span {
-        @apply com-text-Yankees-Blue;
+    .mode-card {
+      @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all;
+
+      &:hover {
+        @apply com-border-primary-300 com-shadow-sm;
+      }
+
+      .mode-icon {
+        @apply com-text-2xl com-mb-2;
+      }
+
+      .mode-title {
+        @apply com-text-sm com-font-semibold com-m-0 com-mb-1;
+      }
+
+      .mode-description {
+        @apply com-text-xs com-text-gray-500 com-m-0;
       }
     }
+
+    .mode-card-active {
+      @apply com-border-primary-500 com-bg-primary-100;
+    }
+  }
+
+  .mode-features {
+    @apply com-list-none com-p-0 com-m-0 com-mt-2;
+
+    li {
+      @apply com-text-xs com-mb-1 com-flex com-items-start com-gap-1;
+    }
+
+    .mode-feature-yes {
+      @apply com-text-green-600;
+
+      &::before {
+        content: '✅';
+        @apply com-flex-shrink-0;
+      }
+    }
+
+    .mode-feature-no {
+      @apply com-text-gray-400;
+
+      &::before {
+        content: '❌';
+        @apply com-flex-shrink-0;
+      }
+    }
+    .mode-feature-rocket {
+      @apply com-text-green-600;
+
+      &::before {
+        content: '🚀';
+        @apply com-flex-shrink-0;
+      }
+    }
+  }
+
+  .config-section {
+    @apply com-flex com-flex-col com-gap-3;
+
+    .config-label {
+      @apply com-text-sm com-font-semibold com-m-0;
+    }
+
+    .config-field-label {
+      @apply com-text-sm com-text-gray-600 com-flex com-flex-col com-gap-1;
+    }
+  }
+}
+
+.confirm-dialog {
+  @apply com-max-w-[400px];
+
+  .confirm-message {
+    @apply com-text-sm com-m-0;
+  }
+
+  .confirm-actions {
+    @apply com-flex com-justify-end com-gap-2;
   }
 }

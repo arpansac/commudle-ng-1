@@ -10,10 +10,9 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
-  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
-import { EDbModels, EUserRoles, ICommunity, IEvent, IUser, IUserRole } from '@commudle/shared-models';
+import { EDbModels, EUserRoles, ICommunity, IEvent, IUser } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
@@ -28,7 +27,7 @@ import * as moment from 'moment';
 })
 export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() event: IEvent;
-  @Input() userRoles: IUserRole[];
+  @Input() userRoles: any[];
   @Input() currentUser: IUser;
   @Input() embeddedVideoStream: IEmbeddedVideoStream;
   @Input() startTime: Date;
@@ -46,8 +45,18 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
 
   isFullScreen = false;
   compressVideoStream = false;
-  isBeamActive = false;
+  isYtStreaming = false;
   isHlsRunning = false;
+  isRecording = false;
+  isLive = false;
+
+  get isOrganizer(): boolean {
+    return (
+      this.userRoles?.includes(EUserRoles.ORGANIZER) ||
+      this.userRoles?.includes(EUserRoles.EVENT_ORGANIZER) ||
+      this.userRoles?.includes(EUserRoles.EVENT_VOLUNTEER)
+    );
+  }
 
   // For live notifications
   userCount = 0;
@@ -70,8 +79,10 @@ export class SessionPageVideoComponent implements OnInit, OnChanges, AfterViewIn
 
   ngOnChanges() {
     if (this.embeddedVideoStream) {
-      this.isBeamActive = this.embeddedVideoStream.is_recording || this.embeddedVideoStream.is_streaming;
+      this.isYtStreaming = this.embeddedVideoStream.is_streaming;
       this.isHlsRunning = this.embeddedVideoStream.hls_running;
+      this.isRecording = this.embeddedVideoStream.is_recording;
+      this.isLive = this.embeddedVideoStream.is_live;
     }
   }
 

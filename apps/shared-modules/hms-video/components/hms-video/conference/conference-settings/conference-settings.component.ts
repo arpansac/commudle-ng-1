@@ -1,7 +1,10 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { NbDialogRef, NbTrigger } from '@commudle/theme';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { NbDialogRef, NbDialogService, NbTrigger } from '@commudle/theme';
 import { EHmsRoomMode } from '@commudle/shared-models';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
+import { IEvent } from '@commudle/shared-models';
 import { LocalMediaService } from 'apps/shared-modules/hms-video/services/local-media.service';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { combineLatest, Subscription } from 'rxjs';
@@ -22,14 +25,18 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   isHlsRunning = false;
   isRecording = false;
   embeddedVideoStream: IEmbeddedVideoStream;
+  event: IEvent;
   activeTab: 'audio-video' | 'session-type' = 'audio-video';
   EHmsRoomMode = EHmsRoomMode;
   showModeConfirmation = false;
   pendingMode: EHmsRoomMode = null;
+  faYoutube = faYoutube;
+  faLaptop = faLaptop;
   currentMode: EHmsRoomMode;
 
   @Output() streamingAction = new EventEmitter<string>();
   @Output() modeChanged = new EventEmitter<EHmsRoomMode>();
+  @Output() refreshEmbeddedVideoStream = new EventEmitter<IEmbeddedVideoStream>();
 
   loadingAction: string = null;
 
@@ -44,11 +51,20 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   NbTrigger = NbTrigger;
 
   @ViewChild('previewVideo', { static: false }) previewVideo: ElementRef<HTMLVideoElement>;
+  @ViewChild('confirmDialog') confirmDialog: TemplateRef<any>;
+  @ViewChild('hlsOptionsDialog') hlsOptionsDialog: TemplateRef<any>;
 
   subscriptions: Subscription[] = [];
 
+  micLevel = 0;
+  private audioContext: AudioContext;
+  private analyser: AnalyserNode;
+  private micStream: MediaStream;
+  private micAnimationId: number;
+
   constructor(
     protected dialogRef: NbDialogRef<ConferenceSettingsComponent>,
+    private nbDialogService: NbDialogService,
     private localMediaService: LocalMediaService,
     private libToastLogService: LibToastLogService,
   ) {}
@@ -59,6 +75,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopStream();
+    this.stopMicMeter();
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
@@ -107,6 +124,8 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
           if (this.localMediaService.getVideoDeviceId() === 'default') {
             this.selectVideoDevice(videoDevices[0].deviceId);
           }
+
+          this.startMicMeter();
         },
       ),
     );
@@ -121,6 +140,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   selectAudioInputDevice(deviceId: string): void {
     this.selectedAudioInputDeviceId = deviceId;
+    this.startMicMeter();
   }
 
   selectVideoDevice(deviceId: string): void {
@@ -133,6 +153,11 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   toggleAudio(): void {
     this.isAudioEnabled = !this.isAudioEnabled;
+    if (this.isAudioEnabled) {
+      this.startMicMeter();
+    } else {
+      this.stopMicMeter();
+    }
   }
 
   toggleVideo(): void {
@@ -144,7 +169,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   }
 
   stopStream(): void {
-    if (this.isVideoEnabled) {
+    if (this.previewVideo?.nativeElement) {
       const stream: MediaStream | MediaSource | Blob = this.previewVideo.nativeElement.srcObject;
       if (stream) {
         if ('getTracks' in stream) {
@@ -169,39 +194,98 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     if (this.isStreamingActive || mode === this.currentMode) {
       return;
     }
+    const modeName = mode === EHmsRoomMode.INTERACTIVE ? 'Interactive' : 'Large Scale Webinar';
+    this.confirmTitle = 'Switch Session Type';
+    this.confirmMessage = `Are you sure you want to switch to ${modeName} mode?`;
     this.pendingMode = mode;
-    this.showModeConfirmation = true;
-  }
-
-  confirmModeChange(): void {
-    this.currentMode = this.pendingMode;
-    this.showModeConfirmation = false;
-    this.modeChanged.emit(this.currentMode);
-  }
-
-  cancelModeChange(): void {
-    this.pendingMode = null;
-    this.showModeConfirmation = false;
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.currentMode = this.pendingMode;
+        this.modeChanged.emit(this.currentMode);
+      }
+      this.pendingMode = null;
+    });
   }
 
   onToggleYTStreaming(): void {
-    this.loadingAction = 'toggleYTStreaming';
-    this.streamingAction.emit('toggleYTStreaming');
+    if (this.isStreaming) {
+      this.openConfirmDialog(
+        'Stop YouTube Streaming',
+        'Are you sure you want to stop YT streaming? Once stopped, YouTube might stop the YouTube live for all viewers.',
+        'toggleYTStreaming',
+      );
+    } else {
+      this.executeAction('toggleYTStreaming');
+    }
   }
 
   onToggleIsLive(): void {
-    this.loadingAction = 'toggleIsLive';
-    this.streamingAction.emit('toggleIsLive');
+    if (this.isLive) {
+      this.openConfirmDialog(
+        'Stop Streaming',
+        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'toggleIsLive',
+      );
+    } else {
+      this.executeAction('toggleIsLive');
+    }
   }
 
   onToggleHls(): void {
-    this.loadingAction = 'toggleHls';
-    this.streamingAction.emit('toggleHls');
+    if (this.isHlsRunning) {
+      this.openConfirmDialog(
+        'Stop HLS Streaming',
+        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'toggleHls',
+      );
+    } else {
+      const ref = this.nbDialogService.open(this.hlsOptionsDialog, { closeOnBackdropClick: false });
+      ref.onClose.subscribe((action: string) => {
+        if (action) {
+          this.executeAction(action);
+        }
+      });
+    }
   }
 
   onToggleRecording(): void {
-    this.loadingAction = 'toggleRecording';
-    this.streamingAction.emit('toggleRecording');
+    if (this.isRecording) {
+      this.openConfirmDialog('Stop Recording', 'Are you sure you want to stop recording?', 'stopRecordingViaHls');
+    } else {
+      this.openConfirmDialog(
+        'Start Recording',
+        'This will restart HLS streaming with recording enabled. Continue?',
+        'startRecordingViaHls',
+      );
+    }
+  }
+
+  private openConfirmDialog(title: string, message: string, actionKey: string): void {
+    this.confirmTitle = title;
+    this.confirmMessage = message;
+    this.pendingActionKey = actionKey;
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.executeAction(this.pendingActionKey);
+      }
+      this.pendingActionKey = null;
+    });
+  }
+
+  confirmTitle = '';
+  confirmMessage = '';
+  private pendingActionKey: string = null;
+
+  private executeAction(actionKey: string): void {
+    this.loadingAction = actionKey;
+    this.streamingAction.emit(actionKey);
+  }
+
+  onEmbeddedVideoStreamUpdated(evs: IEmbeddedVideoStream): void {
+    this.embeddedVideoStream = evs;
+    this.refreshEmbeddedVideoStream.emit(evs);
   }
 
   updateStreamingState(state: {
@@ -216,5 +300,45 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     if (state.isRecording !== undefined) this.isRecording = state.isRecording;
     this.isStreamingActive = this.isLive || this.isStreaming || this.isHlsRunning || this.isRecording;
     this.loadingAction = null;
+  }
+
+  private startMicMeter(): void {
+    this.stopMicMeter();
+    const deviceId = this.selectedAudioInputDeviceId || 'default';
+    navigator.mediaDevices.getUserMedia({ audio: { deviceId } }).then((stream) => {
+      this.micStream = stream;
+      this.audioContext = new AudioContext();
+      const source = this.audioContext.createMediaStreamSource(stream);
+      this.analyser = this.audioContext.createAnalyser();
+      this.analyser.fftSize = 256;
+      source.connect(this.analyser);
+      this.updateMicLevel();
+    });
+  }
+
+  private updateMicLevel(): void {
+    if (!this.analyser) return;
+    const data = new Uint8Array(this.analyser.frequencyBinCount);
+    this.analyser.getByteFrequencyData(data);
+    const avg = data.reduce((sum, val) => sum + val, 0) / data.length;
+    this.micLevel = Math.min(100, Math.round((avg / 128) * 100));
+    this.micAnimationId = requestAnimationFrame(() => this.updateMicLevel());
+  }
+
+  private stopMicMeter(): void {
+    if (this.micAnimationId) {
+      cancelAnimationFrame(this.micAnimationId);
+      this.micAnimationId = null;
+    }
+    if (this.micStream) {
+      this.micStream.getTracks().forEach((t) => t.stop());
+      this.micStream = null;
+    }
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+    this.analyser = null;
+    this.micLevel = 0;
   }
 }
