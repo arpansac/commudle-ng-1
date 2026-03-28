@@ -217,7 +217,7 @@
       <!-- Connect YT (no rtmp_url configured yet) -->
       <button
         *ngIf="currentMode === EHmsRoomMode.INTERACTIVE && !embeddedVideoStream?.rtmp_url"
-        (click)="openSettings()"
+        (click)="openSettings('session-type')"
         nbTooltip="Connect YouTube"
         nbButton
         size="small"

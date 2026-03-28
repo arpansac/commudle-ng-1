@@ -1,7 +1,16 @@
 <nb-card class="settings">
-  <nb-card-header *ngIf="invitation">You are being invited to the Stage!</nb-card-header>
-  <nb-card-header *ngIf="joinStage">Join the stage</nb-card-header>
-  <nb-card-header *ngIf="!(invitation || joinStage)">Settings</nb-card-header>
+  <nb-card-header *ngIf="invitation" class="settings-header">
+    You are being invited to the Stage!
+    <button (click)="close(false)" nbButton ghost size="small"><nb-icon icon="close"></nb-icon></button>
+  </nb-card-header>
+  <nb-card-header *ngIf="joinStage" class="settings-header">
+    Join the stage
+    <button (click)="close(false)" nbButton ghost size="small"><nb-icon icon="close"></nb-icon></button>
+  </nb-card-header>
+  <nb-card-header *ngIf="!(invitation || joinStage)" class="settings-header">
+    Settings
+    <button (click)="close(false)" nbButton ghost size="small"><nb-icon icon="close"></nb-icon></button>
+  </nb-card-header>
 
   <!-- Invitation / Join Stage view -->
   <ng-container *ngIf="invitation || joinStage">

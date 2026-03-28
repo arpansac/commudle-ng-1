@@ -46,6 +46,7 @@ export class EventStreamingComponent implements AfterContentInit {
   loaders = {
     createStream: false,
     deleteStream: false,
+    saveRtmp: false,
   };
 
   faYoutube = faYoutube;
@@ -140,5 +141,42 @@ export class EventStreamingComponent implements AfterContentInit {
 
   openDialog(templateRef: TemplateRef<any>) {
     this.nbDialogService.open(templateRef);
+  }
+
+  rtmpInvalid = false;
+
+  isValidRtmpUrl(url: string): boolean {
+    return /^rtmp:\/\/.+\/.+/.test(url.trim());
+  }
+
+  saveRtmpUrl(rtmpUrl: string): void {
+    if (!this.isValidRtmpUrl(rtmpUrl)) {
+      this.rtmpInvalid = true;
+      this.toastrService.warningDialog(
+        'Please enter a valid RTMP URL (e.g. rtmp://a.rtmp.youtube.com/live2/<stream_key>)',
+      );
+      return;
+    }
+    this.rtmpInvalid = false;
+    this.loaders.saveRtmp = true;
+    this.embeddedVideoStreamService
+      .createOrUpdate({
+        streamable_type: this.embeddedVideoStream.streamable_type,
+        streamable_id: this.embeddedVideoStream.streamable_id,
+        source: this.embeddedVideoStream.source,
+        rtmp_url: rtmpUrl.trim(),
+      })
+      .subscribe({
+        next: (res) => {
+          this.embeddedVideoStream = res;
+          this.refreshEmbeddedVideoStream.emit(this.embeddedVideoStream);
+          this.toastrService.successDialog('RTMP URL saved');
+          this.loaders.saveRtmp = false;
+        },
+        error: () => {
+          this.toastrService.warningDialog('Failed to save RTMP URL');
+          this.loaders.saveRtmp = false;
+        },
+      });
   }
 }

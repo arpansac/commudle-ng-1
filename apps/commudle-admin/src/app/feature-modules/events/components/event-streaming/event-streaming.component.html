@@ -51,21 +51,6 @@
           </button>
         </div>
       </div>
-      <div class="rtmp-field">
-        <label class="rtmp-label">
-          Your RTMP URL
-          <input
-            [value]="embeddedVideoStream.rtmp_url"
-            fullWidth
-            nbInput
-            size="small"
-            placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
-            type="url"
-            readonly
-            disable
-          />
-        </label>
-      </div>
     </ng-container>
 
     <ng-template #createStreamSection>
@@ -83,19 +68,6 @@
           <fa-icon [icon]="faYoutube"></fa-icon>&nbsp; Create New Stream
         </button>
       </div>
-      <div class="rtmp-field">
-        <label class="rtmp-label">
-          Enter the streaming url (rtmp://a.rtmp.youtube.com/live2/:stream_key)
-          <input
-            [value]="embeddedVideoStream.rtmp_url"
-            fullWidth
-            nbInput
-            size="small"
-            placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
-            type="url"
-          />
-        </label>
-      </div>
     </ng-template>
   </ng-container>
 
@@ -112,6 +84,40 @@
       </button>
     </div>
   </ng-template>
+
+  <!-- Always visible RTMP URL input -->
+  <div class="rtmp-field">
+    <label class="rtmp-label">
+      RTMP URL
+      <div class="rtmp-input-row">
+        <input
+          #rtmpInput
+          [value]="embeddedVideoStream.rtmp_url || ''"
+          fullWidth
+          nbInput
+          size="small"
+          placeholder="rtmp://a.rtmp.youtube.com/live2/<stream_key>"
+          type="url"
+          [readonly]="!!embeddedVideoStream.youtube_broadcast"
+          [status]="rtmpInvalid ? 'danger' : 'basic'"
+          (input)="rtmpInvalid = false"
+        />
+        <button
+          nbButton
+          size="small"
+          status="primary"
+          (click)="saveRtmpUrl(rtmpInput.value)"
+          [nbSpinner]="loaders.saveRtmp"
+          [disabled]="loaders.saveRtmp || !!embeddedVideoStream.youtube_broadcast || !rtmpInput.value.trim()"
+        >
+          Save
+        </button>
+      </div>
+      <span *ngIf="rtmpInvalid" class="rtmp-error"
+        >Enter a valid RTMP URL (e.g. rtmp://a.rtmp.youtube.com/live2/stream_key)</span
+      >
+    </label>
+  </div>
 </div>
 
 <!-- Live stream enabled dialog -->

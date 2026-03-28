@@ -1,8 +1,11 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .settings {
-  max-width: 720px;
-  min-width: 640px;
+  @apply com-h-[90dvh] com-w-full md:com-w-800px;
+
+  .settings-header {
+    @apply com-flex com-items-center com-justify-between;
+  }
 
   .stage-permissions {
     @apply com-text-center;

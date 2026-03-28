@@ -465,7 +465,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  openSettings(): void {
+  openSettings(activeTab: 'audio-video' | 'session-type' = 'audio-video'): void {
     this.showVideoDeviceDropdown = false;
     this.showAudioDeviceDropdown = false;
     const dialogRef = this.nbDialogService.open(ConferenceSettingsComponent, {
@@ -480,6 +480,7 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
         isRecording: this.isRecording,
         embeddedVideoStream: this.embeddedVideoStream,
         event: this.event,
+        activeTab,
       },
     });
     this.settingsInstance = dialogRef.componentRef.instance;
