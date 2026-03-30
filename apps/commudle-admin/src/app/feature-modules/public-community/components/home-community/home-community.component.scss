@@ -200,3 +200,7 @@
     @apply com-text-sm com-font-semibold com-ml-2;
   }
 }
+
+.details-container {
+  @apply com-grid com-grid-cols-1 com-items-start md:com-grid-cols-2 md:com-items-center com-min-w-0;
+}
