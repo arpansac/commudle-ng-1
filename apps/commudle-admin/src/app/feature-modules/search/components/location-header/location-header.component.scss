@@ -1,5 +1,5 @@
 .header {
-  @apply md:com-max-h-[862px] com-max-h-full;
+  @apply md:com-max-h-[862px] com-max-h-full md:com-h-[460px];
   .background {
     @apply com-relative com-m-0 com-p-0 com-w-full com-h-full com-bg-no-repeat com-bg-center;
 
@@ -25,6 +25,10 @@
                 @apply com-m-0 com-mx-0 md:com-mb-[50px] com-mb-6 com-text-tWhite md:com-w-[664px] com-w-full;
               }
             }
+          }
+
+          .default-results-total {
+            @apply com-flex md:com-text-start com-text-center com-text-tWhite com-text-lg com-font-medium com-mb-4;
           }
         }
 

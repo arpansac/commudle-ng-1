@@ -11,11 +11,15 @@ nb-form-field {
 
   &::ng-deep {
     .main-search-bar.giant {
-      @apply com-text-lg com-rounded-b-none com-rounded-t-xl;
+      @apply com-text-lg com-rounded-xl;
 
       &::placeholder {
         @apply com-text-lg com-font-normal;
       }
+    }
+
+    .main-search-bar.giant.bottom-radius-none {
+      @apply com-rounded-b-none;
     }
   }
 

@@ -9,15 +9,16 @@ import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
 
 @Component({
-    selector: 'app-search-box',
-    templateUrl: './search-box.component.html',
-    styleUrls: ['./search-box.component.scss'],
-    standalone: false
+  selector: 'app-search-box',
+  templateUrl: './search-box.component.html',
+  styleUrls: ['./search-box.component.scss'],
+  standalone: false,
 })
 export class SearchBoxComponent implements OnInit {
   @Input() overrideSearchStatus = false;
   @Input() showSuggestions = true;
   @Input() shape: 'round' | 'rectangle' | 'semi-round';
+  @Input() removeBottomRadius = false;
 
   @Output() searchInput: EventEmitter<string> = new EventEmitter<string>();
 

@@ -388,6 +388,10 @@ export const staticAssets = {
   //id: 251
   icon_ai_sparkles:
     'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBd0ZpQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--bd690c690e8a6a3f0407a30eca21333fd3fe0a79/icon-ai-sparkles-1.svg',
+
+  //id: 253
+  search_page_background:
+    'https://json.commudle.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBMTZiQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c0a7cbd7a4d4795fc0b7158365f3615add31ea3d/com_55400d30e300a422_20260330145824.png',
 };
 
 export const AwsS3Bucket = {

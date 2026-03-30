@@ -1,22 +1,25 @@
 <div class="header">
-  <div
-    *ngIf="locationPageHeader"
-    [ngStyle]="{ 'background-image': 'url(\'' + headerImagePath + '\')' }"
-    class="background"
-  >
+  <div [ngStyle]="{ 'background-image': 'url(\'' + headerImagePath + '\')' }" class="background">
     <div class="base-layout">
       <div class="content">
         <div class="header-text">
-          <p class="sub-heading">{{ locationPageHeader.sub_heading }}</p>
-          <h1 class="heading">{{ locationPageHeader.heading }}</h1>
-          <div [innerHTML]="richText" class="content-rich-text"></div>
+          <p *ngIf="locationPageHeader" class="sub-heading">{{ locationPageHeader?.sub_heading }}</p>
+          <h1 class="heading">{{ locationPageHeader?.heading || query }}</h1>
+          <div
+            *ngIf="locationPageHeader; else defaultResultsText"
+            [innerHTML]="richText"
+            class="content-rich-text"
+          ></div>
+          <ng-template #defaultResultsText>
+            <div class="default-results-total">{{ total }} Result{{ total > 1 ? 's' : '' }} Found</div>
+          </ng-template>
         </div>
-        <ng-container *ngIf="locationPageHeader?.image_link">
+        <ng-container *ngIf="locationPageHeader?.header_image && locationPageHeader?.image_link">
           <a class="header-image" [href]="locationPageHeader.image_link">
             <img [src]="imageUrl(locationPageHeader.header_image).url()" class="com-w-full" />
           </a>
         </ng-container>
-        <ng-container *ngIf="!locationPageHeader?.image_link">
+        <ng-container *ngIf="locationPageHeader?.header_image && !locationPageHeader?.image_link">
           <div class="header-image">
             <img [src]="imageUrl(locationPageHeader.header_image).url()" class="com-w-full" />
           </div>

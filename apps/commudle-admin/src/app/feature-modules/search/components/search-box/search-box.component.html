@@ -6,7 +6,10 @@
       (keyup.enter)="onSubmit()"
       [fieldSize]="overrideSearchStatus ? 'giant' : 'medium'"
       [formControl]="inputFormControl"
-      [ngClass]="{ giant: overrideSearchStatus }"
+      [ngClass]="{
+        giant: overrideSearchStatus,
+        'bottom-radius-none': removeBottomRadius
+      }"
       [nbAutocomplete]="showSuggestions ? autoComplete : loading"
       [shape]="shape"
       [overlayOffset]="0"

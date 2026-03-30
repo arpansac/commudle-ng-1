@@ -1,6 +1,10 @@
 <div class="com-bg-white">
-  <div *ngIf="locationPageHeader">
-    <commudle-location-header [locationPageHeader]="locationPageHeader"></commudle-location-header>
+  <div>
+    <commudle-location-header
+      [locationPageHeader]="locationPageHeader"
+      [query]="query"
+      [total]="total"
+    ></commudle-location-header>
   </div>
   <div class="base-layout">
     <div class="search-input">
