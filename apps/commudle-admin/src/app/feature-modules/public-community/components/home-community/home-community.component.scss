@@ -118,7 +118,7 @@
         @apply com-self-center com-ml-1.5;
       }
 
-      span {
+      span:not(.events-chip) {
         @apply com-hidden;
         @apply md:com-inline;
       }
@@ -136,6 +136,10 @@
       .title {
         @apply com-text-primary-500;
       }
+    }
+
+    .events-chip {
+      @apply com-bg-orange-500 com-text-white com-text-[10px] com-font-semibold com-px-1.5 com-py-0.5 com-rounded-full com-ml-1 com-self-center com-whitespace-nowrap com-inline;
     }
   }
 }

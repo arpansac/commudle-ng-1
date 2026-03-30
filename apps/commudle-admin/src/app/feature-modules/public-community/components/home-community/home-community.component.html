@@ -213,18 +213,11 @@
                   <span class="title">About</span>
                 </a>
                 <a [routerLink]="['events']" class="d-flex com-relative" routerLinkActive="active">
-                  <app-badge
-                    *ngIf="community.upcoming_events_count > 0"
-                    class="-com-mt-4"
-                    text="{{ community.upcoming_events_count }} New"
-                    [fontColor]="'com-text-tWhite'"
-                    [fontSize]="'small'"
-                    [borderRadius]="'round'"
-                    [color]="'com-bg-orange-500'"
-                    [position]="'top right'"
-                  ></app-badge>
                   <nb-icon icon="calendar" status="info"></nb-icon>
                   <span class="title">Events</span>
+                  <span *ngIf="community.upcoming_events_count > 0" class="events-chip">
+                    {{ community.upcoming_events_count }} New
+                  </span>
                 </a>
                 <a
                   [routerLink]="['hackathons']"
