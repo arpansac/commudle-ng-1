@@ -35,12 +35,11 @@
 
         a {
           text-decoration: none;
-          @apply com-flex com-items-center com-gap-1;
+          @apply com-flex com-items-start com-gap-1 com-text-sm;
         }
 
-        a,
         nb-icon {
-          @apply com-text-sm;
+          @apply com-text-sm com-flex-shrink-0 com-mt-2px;
         }
       }
     }
