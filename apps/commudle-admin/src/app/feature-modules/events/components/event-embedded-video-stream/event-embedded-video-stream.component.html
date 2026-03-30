@@ -4,18 +4,16 @@
     <!-- Step 1: Source Selection -->
     <div class="step-section">
       <p class="step-label">1. Choose Video Source</p>
-      <nb-select
-        [selected]="embeddedVideoStreamForm.get('source').value"
-        (selectedChange)="selectSource($event)"
-        fullWidth
-        placeholder="Select a source"
-        size="small"
-        status="primary"
+      <select
+        class="source-select"
+        [value]="embeddedVideoStreamForm.get('source').value"
+        (change)="selectSource($event.target.value)"
       >
-        <nb-option *ngFor="let src of sourceOptions" [value]="src.value" [disabled]="src.disabled">
+        <option value="" disabled>Select a source</option>
+        <option *ngFor="let src of sourceOptions" [value]="src.value" [disabled]="src.disabled">
           {{ src.label }} — {{ src.description }}
-        </nb-option>
-      </nb-select>
+        </option>
+      </select>
     </div>
 
     <!-- Step 2: Mode Selection (Commudle only) -->
@@ -82,10 +80,12 @@
           ></commudle-event-streaming>
         </div>
         <div *ngIf="selectedMode === EHmsRoomMode.LARGE_SCALE_WEBINAR" class="config-section">
-          <nb-alert accent="info">
-            Recording will be handled automatically. The recording link will be sent to your email after the session
-            ends.
-          </nb-alert>
+          <commudle-alert
+            [info]="true"
+            [message]="
+              'Recording will be handled automatically. The recording link will be sent to your email after the session ends.'
+            "
+          ></commudle-alert>
         </div>
       </div>
 

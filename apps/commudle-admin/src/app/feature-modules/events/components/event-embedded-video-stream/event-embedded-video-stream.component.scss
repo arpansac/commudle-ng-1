@@ -90,6 +90,19 @@
     .step-label {
       @apply com-text-sm com-font-semibold com-text-gray-700 com-m-0 com-mb-3;
     }
+
+    .source-select {
+      @apply com-w-full com-px-3 com-py-2 com-text-sm com-border com-border-solid com-border-gray-300 com-rounded-lg com-bg-white com-text-gray-700 com-cursor-pointer;
+      appearance: auto;
+
+      &:focus {
+        @apply com-outline-none com-border-primary-500;
+      }
+
+      option:disabled {
+        @apply com-text-gray-400;
+      }
+    }
   }
 
   .mode-cards {

@@ -83,3 +83,12 @@
 .timing-alert {
   @apply com-mb-6;
 }
+
+.date-timezone-row {
+  @apply com-flex com-flex-col com-gap-4 com-mb-6;
+  @apply md:com-flex-row;
+
+  .form-group {
+    @apply com-flex-1 com-mb-0;
+  }
+}

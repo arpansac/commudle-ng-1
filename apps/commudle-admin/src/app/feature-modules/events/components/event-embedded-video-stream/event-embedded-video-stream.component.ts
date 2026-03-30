@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { EHmsRoomMode, IEmbeddedVideoStream, IEvent, IUser, ICommunity, EDbModels } from '@commudle/shared-models';
+import { EHmsRoomMode, IEmbeddedVideoStream, IEvent, IUser, ICommunity } from '@commudle/shared-models';
 import { AuthService, HmsRoomService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { faDesktop, faExternalLinkAlt, faCode, faDownload } from '@fortawesome/free-solid-svg-icons';

@@ -41,7 +41,10 @@
     </div>
     <div class="waiting-content">
       <h2 *ngIf="eventName" class="waiting-event-name">{{ eventName }}</h2>
-      <p class="waiting-text">Stream is not live yet. Please wait for the host to start streaming.</p>
+      <p class="waiting-text">
+        Hi <strong>{{ currentUser?.name }}</strong
+        >! The stream will start soon, excited to have you join us 🎉
+      </p>
       <div class="waiting-dots">
         <span class="dot"></span>
         <span class="dot"></span>

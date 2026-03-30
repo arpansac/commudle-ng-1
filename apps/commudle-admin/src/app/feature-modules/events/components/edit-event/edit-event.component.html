@@ -41,33 +41,36 @@
             <commudle-alert [info]="true" message="Timings (Leave empty if you are yet to decide)"></commudle-alert>
           </div>
 
-          <div class="form-group">
-            <label for="start_date">Start Date</label>
-            <input
-              id="start_date"
-              nbInput
-              type="datetime-local"
-              placeholder="Pick a date"
-              formControlName="start_date"
-              fullWidth
-              class="form-input"
-            />
+          <div class="date-timezone-row">
+            <div class="form-group">
+              <label for="start_date">Start Date</label>
+              <input
+                id="start_date"
+                nbInput
+                type="datetime-local"
+                placeholder="Pick a date"
+                formControlName="start_date"
+                fullWidth
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="end_date">End Date</label>
+              <input
+                id="end_date"
+                nbInput
+                type="datetime-local"
+                placeholder="Pick a date"
+                formControlName="end_date"
+                fullWidth
+                class="form-input"
+              />
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="end_date">End Date</label>
-            <input
-              id="end_date"
-              nbInput
-              type="datetime-local"
-              placeholder="Pick a date"
-              formControlName="end_date"
-              fullWidth
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
+            <label for="timezone">Timezone</label>
             <nb-select
               id="timezone"
               placeholder="Select Timezone"
@@ -91,7 +94,6 @@
               [errorMessage]="'Required Field'"
             ></commudle-alert>
           </div>
-
           <div class="form-group">
             <label> Event Type <span class="required">*</span> </label>
             <div class="radio-group">
