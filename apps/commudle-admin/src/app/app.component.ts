@@ -14,6 +14,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { Subject, takeUntil } from 'rxjs';
 import { CookieConsentService } from './services/cookie-consent.service';
 import { ProfileStatusBarService } from './services/profile-status-bar.service';
+import { LayoutService } from '@commudle/shared-services';
 @Component({
   selector: 'commudle-root',
   templateUrl: './app.component.html',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUser: ICurrentUser;
   cookieAccepted = false;
   profileBarStatus = true;
+  isFullHeightContent = false;
   isBrowser;
 
   isDarkMode = false;
@@ -51,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private darkModeService: DarkModeService,
     private themeService: NbThemeService,
     public helpSidebarService: SidebarService,
+    private layoutService: LayoutService,
   ) {
     this.apiRoutes.setBaseUrl(environment.base_url);
     this.actionCableConnectionSocket.setBaseUrl(environment.anycable_url);
@@ -75,6 +78,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.profileStatusBarService.profileBarStatus$
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => (this.profileBarStatus = value));
+
+    this.layoutService.fullHeightContent$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => (this.isFullHeightContent = value));
 
     if (this.cookieConsentService.isCookieConsentAccepted()) {
       this.cookieAccepted = true;
