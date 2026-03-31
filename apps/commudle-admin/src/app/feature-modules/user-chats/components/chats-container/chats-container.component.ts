@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { UserChatMessagesChannel } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/websockets/user-chat-messages.channel';
 import { SDiscussionsService } from 'apps/shared-components/services/s-discussions.service';
@@ -10,12 +10,13 @@ import { UserChatNotificationsChannel } from 'apps/commudle-admin/src/app/featur
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-    selector: 'app-chats-container',
-    templateUrl: './chats-container.component.html',
-    styleUrls: ['./chats-container.component.scss'],
-    standalone: false
+  selector: 'app-chats-container',
+  templateUrl: './chats-container.component.html',
+  styleUrls: ['./chats-container.component.scss'],
+  standalone: false,
 })
 export class ChatsContainerComponent implements OnInit, OnDestroy {
+  @Input() isPersonalChatsPage = false;
   page = 1;
   count = 10;
   total: number;
@@ -67,6 +68,10 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
     //new chat
     this.checkNewMessage();
+
+    if (this.isPersonalChatsPage) {
+      this.getPersonalChat();
+    }
   }
 
   ngOnDestroy() {

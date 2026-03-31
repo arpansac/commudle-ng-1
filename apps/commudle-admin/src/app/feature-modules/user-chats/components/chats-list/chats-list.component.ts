@@ -6,18 +6,20 @@ import { IDiscussionFollower } from 'apps/shared-models/discussion-follower.mode
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-chats-list',
-    templateUrl: './chats-list.component.html',
-    styleUrls: ['./chats-list.component.scss'],
-    standalone: false
+  selector: 'app-chats-list',
+  templateUrl: './chats-list.component.html',
+  styleUrls: ['./chats-list.component.scss'],
+  standalone: false,
 })
 export class ChatsListComponent implements OnInit, OnDestroy {
   @Input() currentUser: ICurrentUser;
   @Input() allPersonalChatUsers: IDiscussionFollower[];
   @Input() totalChats: number;
   @Input() loadingChat: boolean;
+  @Input() isPersonalChatsPage = false;
   @Output() getChat: EventEmitter<IDiscussionFollower> = new EventEmitter<IDiscussionFollower>();
   @Output() moveUserToTop: EventEmitter<IDiscussionFollower[]> = new EventEmitter<IDiscussionFollower[]>();
   @Output() getPersonalChats: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -34,9 +36,13 @@ export class ChatsListComponent implements OnInit, OnDestroy {
     private authWatchService: LibAuthwatchService,
     private userChatNotificationsChannel: UserChatNotificationsChannel,
     private gtm: GoogleTagManagerService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    if (this.isPersonalChatsPage) {
+      this.showChat = true;
+    }
     this.authWatchService.currentUser$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => (this.showLiveStatus = !!data));
@@ -73,5 +79,16 @@ export class ChatsListComponent implements OnInit, OnDestroy {
 
   getMoreChatsList() {
     this.getPersonalChats.emit(true);
+  }
+
+  onToggleClick() {
+    if (window.innerWidth <= 768) {
+      this.router.navigate(['/user-personal-chats-list']);
+      return;
+    }
+
+    this.showChat = !this.showChat;
+    this.gtmService();
+    this.getMoreChatsList();
   }
 }

@@ -13,3 +13,23 @@
     }
   }
 }
+
+//TODO
+.chats-container.page-mode {
+  @apply com-w-full com-z-0 com-overflow-hidden;
+  height: 100dvh;
+
+  .chats-list {
+    @apply com-static com-w-full;
+  }
+
+  ::ng-deep .chats-list-container {
+    .chats-list {
+      @apply com-relative com-flex com-w-full com-right-0 com-bottom-0 com-shadow-none;
+    }
+
+    .chats-list-toggle {
+      @apply com-hidden;
+    }
+  }
+}

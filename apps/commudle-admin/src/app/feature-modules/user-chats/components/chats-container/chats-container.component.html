@@ -1,16 +1,17 @@
-<div class="chats-container">
+<div class="chats-container" [ngClass]="{ 'page-mode': isPersonalChatsPage }">
   <div class="chats-list">
     <app-chats-list
       (getChat)="openChat($event)"
       (moveUserToTop)="liveUpdates($event)"
       (getPersonalChats)="getPersonalChat()"
+      [isPersonalChatsPage]="isPersonalChatsPage"
       [loadingChat]="isLoadingChat"
       [allPersonalChatUsers]="allPersonalChatUsers"
       [totalChats]="total"
       [currentUser]="currentUser"
     ></app-chats-list>
   </div>
-  <div [style.right.px]="chatsWindowsRight" class="chats-windows">
+  <div *ngIf="!isPersonalChatsPage" [style.right.px]="chatsWindowsRight" class="chats-windows">
     <app-chats-window
       (removeChat)="closeChat($event)"
       (removeFromUnread)="removeFromUnread($event)"

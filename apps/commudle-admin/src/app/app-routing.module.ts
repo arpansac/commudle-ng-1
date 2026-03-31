@@ -11,6 +11,7 @@ import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { SpeakerResourceFormComponent } from './components/speaker-resource-form/speaker-resource-form.component';
 import { UserAccountMenuComponent } from './components/user-account-menu/user-account-menu.component';
+import { UserPersonalChatList } from './feature-modules/user-chats/components/user-personal-chat-list/user-personal-chat-list.component';
 import { MainNewsletterComponent } from './feature-modules/main-newsletters/components/main-newsletter/main-newsletter.component';
 import { RedirectToMyProfileGuard } from './feature-modules/users/guards/redirect-to-my-profile.guard';
 import { InitResolver } from './resolvers/init.resolver';
@@ -245,6 +246,10 @@ const routes: Routes = [
   {
     path: 'search',
     loadChildren: () => import('./feature-modules/search/search.module').then((m) => m.SearchModule),
+  },
+  {
+    path: 'user-personal-chats-list',
+    component: UserPersonalChatList,
   },
   {
     path: 'exa-drive',
