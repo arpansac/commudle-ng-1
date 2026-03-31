@@ -27,7 +27,6 @@
 
     .youtube-player {
       display: flex;
-      height: 100%;
       justify-content: center;
 
       youtube-player {
@@ -36,27 +35,51 @@
       }
     }
 
-    .external-link {
-      text-align: center;
+    .external-link-container {
+      @apply com-w-full com-h-full com-flex com-items-center com-justify-center;
 
-      p {
-        font-size: 1.2rem;
+      .external-link-content {
+        @apply com-flex com-flex-col com-items-center com-text-center com-px-6 com-py-10 com-max-w-md;
 
-        small {
-          font-size: 0.8rem;
+        .external-link-icon-wrapper {
+          @apply com-w-20 com-h-20 com-rounded-full com-bg-primary-500 com-flex com-items-center com-justify-center com-mb-6;
 
           nb-icon {
-            font-size: 0.8rem;
+            @apply com-text-4xl;
           }
         }
-      }
 
-      nb-icon.video-outline {
-        font-size: 3.5rem;
-      }
+        .external-link-icon-wrapper-pending {
+          @apply com-bg-gray-700;
 
-      a {
-        text-decoration: none;
+          nb-icon {
+            @apply com-text-tWhite;
+          }
+        }
+
+        .external-link-heading {
+          @apply com-text-2xl com-font-bold com-m-0 com-mb-2 com-text-Auro-Metal-Saurus;
+        }
+
+        .external-link-subtext {
+          @apply com-text-sm com-text-gray-400 com-m-0 com-mb-6;
+        }
+
+        .external-link-btn {
+          @apply com-inline-flex com-items-center com-gap-2 com-px-6 com-py-3 com-bg-primary-500 com-text-white com-text-base com-font-semibold com-rounded-lg com-no-underline com-transition-all;
+
+          &:hover {
+            @apply com-bg-primary-600 com-shadow-lg;
+          }
+
+          nb-icon {
+            @apply com-text-lg;
+          }
+        }
+
+        .external-link-url {
+          @apply com-text-xs com-text-gray-500 com-m-0 com-mt-4 com-max-w-full com-truncate;
+        }
       }
     }
   }

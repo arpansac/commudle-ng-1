@@ -25,17 +25,33 @@
         [width]="width || 640"
       ></youtube-player>
 
-      <div *ngSwitchCase="EEmbeddedVideoStreamSources.EXTERNAL_LINK" class="external-link">
-        <a *ngIf="playerUrl !== ''" [href]="playerUrl" class="text-info" target="_blank">
-          <nb-icon class="video-outline" icon="video-outline"></nb-icon>
-          <br />
-          Click Here To Access
-          <br />
-          <small>
+      <div *ngSwitchCase="EEmbeddedVideoStreamSources.EXTERNAL_LINK" class="external-link-container">
+        <!-- Link available -->
+        <div *ngIf="playerUrl; else noLinkState" class="external-link-content">
+          <div class="external-link-icon-wrapper">
+            <nb-icon icon="video-outline"></nb-icon>
+          </div>
+          <h3 class="external-link-heading">Your session is ready</h3>
+          <p class="external-link-subtext">Click the button below to join the session in a new tab</p>
+          <a [href]="playerUrl" target="_blank" class="external-link-btn">
             <nb-icon icon="external-link"></nb-icon>
-            {{ playerUrl }}
-          </small>
-        </a>
+            Join Session
+          </a>
+          <p class="external-link-url">{{ playerUrl }}</p>
+        </div>
+
+        <!-- No link configured -->
+        <ng-template #noLinkState>
+          <div class="external-link-content">
+            <div class="external-link-icon-wrapper external-link-icon-wrapper-pending">
+              <nb-icon icon="clock-outline"></nb-icon>
+            </div>
+            <h3 class="external-link-heading">Session link not available yet</h3>
+            <p class="external-link-subtext">
+              The organizer hasn't shared the meeting link yet. Please check back later.
+            </p>
+          </div>
+        </ng-template>
       </div>
 
       <div *ngSwitchCase="EEmbeddedVideoStreamSources.ZOOM">

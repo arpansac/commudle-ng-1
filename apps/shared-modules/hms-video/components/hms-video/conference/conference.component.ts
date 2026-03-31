@@ -669,12 +669,6 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private syncBackendHlsStop(): void {
-    this.hmsRoomService
-      .stopHls(this.embeddedVideoStream.streamable_id, this.embeddedVideoStream.streamable_type)
-      .subscribe();
-  }
-
   private restartHlsWithRecording(enableRecording: boolean): void {
     if (this.serverClient.role === EHmsRoles.GUEST || this.serverClient.role === EHmsRoles.VIEWER_NEAR_REALTIME) {
       this.pendingRecordingAction = false;
