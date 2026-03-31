@@ -19,10 +19,29 @@
           }
 
           .content-rich-text {
-            @apply com-flex md:com-text-start com-text-center;
+            @apply com-flex com-flex-col md:com-text-start com-text-center;
             ::ng-deep {
               p {
                 @apply com-m-0 com-mx-0 md:com-mb-[50px] com-mb-6 com-text-tWhite md:com-w-[664px] com-w-full;
+              }
+            }
+          }
+
+          .default-content-rich-text {
+            @apply md:com-flex com-flex-col md:com-text-start com-text-center com-hidden;
+
+            .default-content-list {
+              @apply com-flex com-flex-row com-flex-shrink-0 com-m-0 com-mx-0 md:com-mb-2 com-mb-6 com-text-tWhite md:com-w-[664px] com-w-full;
+
+              .communities-text,
+              .events-text,
+              .projects-text,
+              .labs-text {
+                @apply com-flex com-flex-shrink-0 com-whitespace-nowrap;
+              }
+
+              strong {
+                @apply com-flex com-flex-row com-flex-shrink-0;
               }
             }
           }

@@ -3,7 +3,13 @@
     <div class="base-layout">
       <div class="content">
         <div class="header-text">
-          <p *ngIf="locationPageHeader" class="sub-heading">{{ locationPageHeader?.sub_heading }}</p>
+          <p class="sub-heading">
+            {{
+              locationPageHeader
+                ? locationPageHeader.sub_heading
+                : (total > 1 ? total : 'No') + ' Result' + (total > 1 ? 's' : '') + ' Found'
+            }}
+          </p>
           <h1 class="heading">{{ locationPageHeader?.heading || query }}</h1>
           <div
             *ngIf="locationPageHeader; else defaultResultsText"
@@ -11,7 +17,36 @@
             class="content-rich-text"
           ></div>
           <ng-template #defaultResultsText>
-            <div class="default-results-total">{{ total }} Result{{ total > 1 ? 's' : '' }} Found</div>
+            <div class="default-content-rich-text">
+              <p *ngIf="communities.length > 0" class="default-content-list">
+                <span class="communities-text">Join communities&nbsp;</span>
+                <ng-container *ngFor="let community of communities.slice(0, 5); let last = last">
+                  <strong>{{ community.name }}</strong>
+                  <span *ngIf="!last">,&nbsp;</span>
+                </ng-container>
+              </p>
+              <p *ngIf="events.length > 0" class="default-content-list">
+                <span class="events-text">Register for or speak at&nbsp;</span>
+                <ng-container *ngFor="let event of events.slice(0, 5); let last = last">
+                  <strong>{{ event.name }}</strong
+                  ><span *ngIf="!last">,&nbsp;</span>
+                </ng-container>
+              </p>
+              <p *ngIf="projects.length > 0" class="default-content-list">
+                <span class="projects-text">Explore projects including&nbsp;</span>
+                <ng-container *ngFor="let project of projects.slice(0, 5); let last = last">
+                  <strong>{{ project.name }}</strong
+                  ><span *ngIf="!last">,&nbsp;</span>
+                </ng-container>
+              </p>
+              <p *ngIf="labs.length > 0" class="default-content-list">
+                <span class="labs-text">Learn from tutorials on&nbsp;</span>
+                <ng-container *ngFor="let lab of labs.slice(0, 5); let last = last">
+                  <strong>{{ lab.name }}</strong
+                  ><span *ngIf="!last">,&nbsp;</span>
+                </ng-container>
+              </p>
+            </div>
           </ng-template>
         </div>
         <ng-container *ngIf="locationPageHeader?.header_image && locationPageHeader?.image_link">

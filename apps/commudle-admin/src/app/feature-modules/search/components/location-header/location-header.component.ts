@@ -13,6 +13,10 @@ export class LocationHeaderComponent implements OnInit, OnChanges {
   @Input() locationPageHeader: IListingPageHeader;
   @Input() query: string;
   @Input() total: number;
+  @Input() communities = [];
+  @Input() events = [];
+  @Input() projects = [];
+  @Input() labs = [];
   headerImagePath: string;
   richText: string;
   staticAssets = staticAssets;
