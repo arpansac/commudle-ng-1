@@ -13,6 +13,7 @@ import {
   NbDialogModule,
   NbSelectModule,
   NbTagModule,
+  NbPopoverModule,
 } from '@commudle/theme';
 import { PublicHackathonHomepageComponent } from './components/public-hackathon-homepage/public-hackathon-homepage.component';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
@@ -62,6 +63,7 @@ import { MentorScoringDialogComponent } from 'apps/commudle-admin/src/app/featur
     NbDialogModule,
     NbSelectModule,
     NbTagModule,
+    NbPopoverModule,
     FontAwesomeModule,
     SharedComponentsModule,
     NewSharedComponentsModule,

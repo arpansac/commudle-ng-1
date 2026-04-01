@@ -202,7 +202,29 @@
             </span>
             <span *ngIf="!teamData.team.problem_statement">N/A</span>
           </td>
-          <td>{{ teamData.team.team_members_count }}</td>
+          <td>
+            <span
+              class="members-count-trigger"
+              [nbPopover]="membersPopover"
+              nbPopoverTrigger="click"
+              nbPopoverPlacement="bottom"
+            >
+              {{ teamData.team.team_members_count }}
+            </span>
+            <ng-template #membersPopover>
+              <div class="members-popover">
+                @if(teamData.team.team_members && teamData.team.team_members.length > 0) {
+                <div class="members-popover-list">
+                  @for(member of teamData.team.team_members; track member.id) {
+                  <app-user-profile-card-small [user]="member.user || member"></app-user-profile-card-small>
+                  }
+                </div>
+                } @else {
+                <span class="members-popover-empty">No member details available</span>
+                }
+              </div>
+            </ng-template>
+          </td>
           <td>
             <div class="submission-details">
               @if(teamData.submission?.file_attachment) {

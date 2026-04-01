@@ -442,3 +442,31 @@ nb-card {
     }
   }
 }
+
+.members-count-trigger {
+  @apply com-text-primary-500 com-font-semibold com-cursor-pointer com-underline com-underline-offset-2;
+
+  &:hover {
+    @apply com-text-primary-600;
+  }
+}
+
+.members-popover {
+  @apply com-p-3 com-min-w-[200px] com-max-w-[300px];
+
+  .members-popover-list {
+    @apply com-flex com-flex-col com-max-h-[300px] com-overflow-y-auto;
+
+    app-user-profile-card-small {
+      @apply com-py-2 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      &:last-child {
+        @apply com-border-b-0;
+      }
+    }
+  }
+
+  .members-popover-empty {
+    @apply com-text-xs com-text-gray-400;
+  }
+}

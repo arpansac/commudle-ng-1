@@ -110,6 +110,8 @@ export class PublicHackathonMentorDashboardComponent implements OnInit, OnDestro
         this.selectedRoundId = this.selectedRound.id;
         this.roleDetails();
         this.fetchTeams();
+      } else {
+        this.isLoading = false;
       }
     });
   }
