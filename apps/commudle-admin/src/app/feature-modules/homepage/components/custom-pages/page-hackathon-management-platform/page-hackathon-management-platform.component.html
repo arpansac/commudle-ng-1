@@ -22,10 +22,15 @@
           </h1>
           <p class="hero-description"></p>
           <div class="hero-cta">
-            <a [routerLink]="['/pricing']">
-              <button nbButton status="danger" size="large" class="cta-primary">
-                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-                Host a Hackathon
+            <h5 class="hero-cta-title"><fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>Host a Hackathon</h5>
+            <a [routerLink]="'/fill-form/4296'">
+              <button nbButton status="info" outline size="large" class="cta-secondary">
+                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
+              </button>
+            </a>
+            <a [routerLink]="'/fill-form/4617'">
+              <button nbButton status="primary" size="large" class="cta-secondary">
+                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
               </button>
             </a>
           </div>
@@ -295,10 +300,14 @@
           </div>
 
           <div class="managed-cta">
-            <a [routerLink]="['/fill-form/4296']">
-              <button nbButton status="primary" size="large" class="cta-primary">
-                <fa-icon [icon]="faEnvelope" class="com-mr-2"></fa-icon>
-                Speak With An Expert
+            <a [routerLink]="'/fill-form/4296'">
+              <button nbButton status="info" outline size="large" class="cta-secondary">
+                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
+              </button>
+            </a>
+            <a [routerLink]="'/fill-form/4617'">
+              <button nbButton status="primary" size="large" class="cta-secondary">
+                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
               </button>
             </a>
           </div>
@@ -489,12 +498,18 @@
               Get hands-on help from our hackathon expert. Work smarter with tools that can live in your community,
               events, and hackathons—anywhere you work.
             </p>
-            <a [routerLink]="['/fill-form/4296']">
-              <button class="cta-button com-mt-10">
-                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-                Speak with an Expert
-              </button>
-            </a>
+            <div class="cta-buttons">
+              <a [routerLink]="'/fill-form/4296'">
+                <button nbButton status="info" outline size="large" class="cta-secondary" shape="semi-round">
+                  <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
+                </button>
+              </a>
+              <a [routerLink]="'/fill-form/4617'">
+                <button nbButton status="primary" size="large" class="cta-secondary" shape="semi-round">
+                  <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
+                </button>
+              </a>
+            </div>
           </div>
 
           <!-- Right side - Image -->
