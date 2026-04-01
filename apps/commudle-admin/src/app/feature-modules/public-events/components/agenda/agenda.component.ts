@@ -10,11 +10,11 @@ import { ITrackSlot } from 'apps/shared-models/track-slot.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-    selector: 'app-agenda',
-    templateUrl: './agenda.component.html',
-    styleUrls: ['./agenda.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-agenda',
+  templateUrl: './agenda.component.html',
+  styleUrls: ['./agenda.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AgendaComponent implements OnInit {
   moment = moment;
@@ -22,6 +22,7 @@ export class AgendaComponent implements OnInit {
   @Input() community: ICommunity;
   @Input() event: IEvent;
   @Input() showShareButton = true;
+  @Input() setAgendaSchema = false;
 
   eventLocations: IEventLocation[] = [];
   eventDatesLocation: IEventDatesLocation[];
@@ -110,7 +111,9 @@ export class AgendaComponent implements OnInit {
         if (data.event_locations) {
           this.selectLocation(data[0].event_locations[0]);
         }
-        this.setSchema();
+        if (this.setAgendaSchema) {
+          this.setSchema();
+        }
         this.isLoading = false;
         this.changeDetectorRef.markForCheck();
       }

@@ -141,7 +141,7 @@
           <app-event-description [community]="community" [event]="event" [share]="true"></app-event-description>
         </div>
         <div #agendaSection *ngIf="event.custom_agenda && event.event_locations_count > 0" id="agenda">
-          <app-agenda [community]="community" [event]="event"></app-agenda>
+          <app-agenda [community]="community" [event]="event" [setAgendaSchema]="false"></app-agenda>
         </div>
         <div #speakersSection *ngIf="event.event_speakers_count > 0" id="speakers">
           <app-speakers (speakersData)="onSpeakersData($event)" [community]="community" [event]="event"></app-speakers>
