@@ -3,20 +3,13 @@ import { Injectable } from '@angular/core';
 import { ISearch } from 'apps/shared-models/search.model';
 import { API_ROUTES } from 'apps/shared-services/api-routes.constants';
 import { ApiRoutesService } from 'apps/shared-services/api-routes.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  private showNavbarSearchBox = new BehaviorSubject<boolean>(true);
-  public showNavbarSearchBox$ = this.showNavbarSearchBox.asObservable();
-
   constructor(private http: HttpClient, private apiRoutesService: ApiRoutesService) {}
-
-  setShowNavbarSearchBox(value: boolean): void {
-    this.showNavbarSearchBox.next(value);
-  }
 
   getSearchResults(query: string, page = 1, count = 10, s?: string): Observable<any> {
     let params = new HttpParams().set('q', query).set('page', page.toString()).set('count', count.toString());

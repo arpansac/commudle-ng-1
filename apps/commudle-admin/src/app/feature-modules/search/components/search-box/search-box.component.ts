@@ -53,7 +53,7 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.searchService.showNavbarSearchBox$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+    this.searchStatusService.showNavbarSearchBox$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
       this.showSearchBox = value;
       if (value === true) {
         this.query = '';
@@ -152,6 +152,6 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.query = this.inputFormControl.value?.name || this.inputFormControl.value || this.query;
     this.router.navigate(['/search', this.query]);
-    this.searchService.setShowNavbarSearchBox(false);
+    this.searchStatusService.setShowNavbarSearchBox(false);
   }
 }
