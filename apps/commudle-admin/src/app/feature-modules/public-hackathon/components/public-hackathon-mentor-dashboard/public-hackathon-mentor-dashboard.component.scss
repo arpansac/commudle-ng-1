@@ -142,7 +142,7 @@ nb-card {
 }
 
 .loading-state {
-  @apply com-flex com-justify-between com-items-center com-gap-4;
+  @apply com-items-center com-w-full;
 
   .round-selector {
     @apply com-flex com-items-center com-gap-2;
