@@ -119,9 +119,10 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  selectSource(source: string): void {
+  selectSource(event): void {
+    const value = event.target.value;
     const current = this.embeddedVideoStreamForm.get('source').value;
-    if (current && current !== source) {
+    if (current && current !== value) {
       this.confirmTitle = 'Switch Video Source';
       this.confirmMessage =
         'Are you sure you want to switch the video source? This will reset the current configuration.';
@@ -129,7 +130,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
       ref.onClose.subscribe((confirmed: boolean) => {
         if (confirmed) {
           this.embeddedVideoStreamForm.patchValue({
-            source,
+            value,
             embed_code: '',
             zoom_host_email: '',
             zoom_password: '',
@@ -140,7 +141,7 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.embeddedVideoStreamForm.patchValue({ source });
+      this.embeddedVideoStreamForm.patchValue({ value });
       this.updateValidators();
     }
   }

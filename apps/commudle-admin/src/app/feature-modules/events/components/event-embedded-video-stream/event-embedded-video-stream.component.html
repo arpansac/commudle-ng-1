@@ -7,7 +7,7 @@
       <select
         class="source-select"
         [value]="embeddedVideoStreamForm.get('source').value"
-        (change)="selectSource($event.target.value)"
+        (change)="selectSource($event)"
       >
         <option value="" disabled>Select a source</option>
         <option *ngFor="let src of sourceOptions" [value]="src.value" [disabled]="src.disabled">
