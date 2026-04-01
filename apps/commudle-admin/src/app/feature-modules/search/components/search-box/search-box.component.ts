@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchStatusService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search-status.service';
 import { SearchService } from 'apps/commudle-admin/src/app/feature-modules/search/services/search.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import * as moment from 'moment';
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./search-box.component.scss'],
   standalone: false,
 })
-export class SearchBoxComponent implements OnInit {
+export class SearchBoxComponent implements OnInit, OnDestroy {
   @Input() overrideSearchStatus = false;
   @Input() showSuggestions = true;
   @Input() shape: 'round' | 'rectangle' | 'semi-round';
@@ -40,9 +40,10 @@ export class SearchBoxComponent implements OnInit {
 
   moment = moment;
   showSearchBox = true;
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private searchService: SearchService,
+    public searchService: SearchService,
     public searchStatusService: SearchStatusService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -52,7 +53,14 @@ export class SearchBoxComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showSearchBox = true;
+    this.searchService.showNavbarSearchBox$.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.showSearchBox = value;
+      if (value === true) {
+        this.query = '';
+        this.inputFormControl.setValue('');
+        this.total = 0;
+      }
+    });
     this.search();
     this.observeSearchStatus();
     this.activatedRoute.params.subscribe((params) => {
@@ -65,6 +73,11 @@ export class SearchBoxComponent implements OnInit {
         this.getNotifications();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   search() {
@@ -139,6 +152,6 @@ export class SearchBoxComponent implements OnInit {
   onSubmit() {
     this.query = this.inputFormControl.value?.name || this.inputFormControl.value || this.query;
     this.router.navigate(['/search', this.query]);
-    this.showSearchBox = false;
+    this.searchService.setShowNavbarSearchBox(false);
   }
 }

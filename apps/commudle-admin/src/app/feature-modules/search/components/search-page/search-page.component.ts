@@ -90,6 +90,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchStatusService.setSearchStatus(false);
+    this.searchService.setShowNavbarSearchBox(false);
     this.activatedRoute.params.subscribe((params: Params) => {
       this.searchLoader = true;
       this.query = params.query;
@@ -115,6 +116,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.searchStatusService.setSearchStatus(true);
+    this.searchService.setShowNavbarSearchBox(true);
   }
 
   clearResults() {
