@@ -63,11 +63,13 @@ export class EventsComponent implements OnInit {
     this.isLoadingPastEvents = true;
     this.eventsService.pGetCommunityEvents('past', this.community.id, this.page, this.count).subscribe((data) => {
       this.pastEvents = data.values;
-      this.setSchema(this.pastEvents);
+      this.isLoadingPastEvents = false;
+      if (!this.isLoadingUpcomingEvents && !this.isLoadingPastEvents) {
+        this.setSchema();
+      }
       this.total = data.total;
       this.page = data.page;
       this.count = data.count;
-      this.isLoadingPastEvents = false;
       this.isLoading = false;
       this.router.navigate([], { queryParams: { page: this.page } });
     });
@@ -77,12 +79,15 @@ export class EventsComponent implements OnInit {
     this.isLoadingUpcomingEvents = true;
     this.eventsService.pGetCommunityEvents('future', this.community.id).subscribe((data) => {
       this.upcomingEvents = data.values;
-      this.setSchema(this.upcomingEvents);
       this.isLoadingUpcomingEvents = false;
+      if (!this.isLoadingUpcomingEvents && !this.isLoadingPastEvents) {
+        this.setSchema();
+      }
     });
   }
 
-  setSchema(events) {
+  setSchema() {
+    const events = [...this.upcomingEvents, ...this.pastEvents];
     if (events.length > 0) {
       this.eventForSchema = [];
 
