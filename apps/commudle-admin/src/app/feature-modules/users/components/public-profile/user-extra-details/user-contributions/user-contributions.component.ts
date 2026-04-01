@@ -3,7 +3,6 @@ import { UserProfileMenuService } from 'apps/commudle-admin/src/app/feature-modu
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { ILab } from 'apps/shared-models/lab.model';
-import { ISpeakerResource } from 'apps/shared-models/speaker_resource.model';
 import { IUser } from 'apps/shared-models/user.model';
 import { IUserRolesUser } from 'apps/shared-models/user_roles_user.model';
 import { Subscription } from 'rxjs';
@@ -11,10 +10,10 @@ import { faLightbulb, faCalendar, faUsers, faBookOpen, faIdBadge } from '@fortaw
 import { IEvent } from 'apps/shared-models/event.model';
 
 @Component({
-    selector: 'app-user-contributions',
-    templateUrl: './user-contributions.component.html',
-    styleUrls: ['./user-contributions.component.scss'],
-    standalone: false
+  selector: 'app-user-contributions',
+  templateUrl: './user-contributions.component.html',
+  styleUrls: ['./user-contributions.component.scss'],
+  standalone: false,
 })
 export class UserContributionsComponent implements OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -43,6 +42,13 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user) {
+      const prevUsername = changes.user.previousValue?.username;
+      const nextUsername = changes.user.currentValue?.username;
+
+      if (!nextUsername || prevUsername === nextUsername) {
+        return;
+      }
+
       this.pastEvents = [];
       this.communities = [];
       this.labs = [];
