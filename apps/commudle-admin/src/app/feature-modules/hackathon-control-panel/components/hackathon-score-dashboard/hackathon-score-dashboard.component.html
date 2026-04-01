@@ -1,0 +1,147 @@
+<nb-card class="score-dashboard">
+  <nb-card-header>
+    <h2>Score Dashboard</h2>
+  </nb-card-header>
+  <nb-card-body>
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="filters-header">
+        <span class="filters-title">Filters</span>
+        <button class="clear-btn" (click)="clearFilters()" *ngIf="selectedRoundId || selectedEvaluatorId || minScore">
+          Clear all
+        </button>
+      </div>
+      <div class="filters-row">
+        <div class="filter-group">
+          <label>Round</label>
+          <select class="filter-input" [(ngModel)]="selectedRoundId" (ngModelChange)="onFilterChange()">
+            <option [ngValue]="null">All rounds</option>
+            <option *ngFor="let round of rounds" [ngValue]="round.id">{{ round.name }}</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Min score</label>
+          <input
+            type="number"
+            class="filter-input"
+            placeholder="0"
+            [(ngModel)]="minScore"
+            (ngModelChange)="onFilterChange()"
+            min="0"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Teams shown</span>
+        <span class="stat-value">{{ teamsShown }}</span>
+        <span class="stat-sub">matching filters</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Top score</span>
+        <span class="stat-value">{{ topScore }}</span>
+        <span class="stat-sub">across rounds</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Avg score</span>
+        <span class="stat-value">{{ avgScore }}</span>
+        <span class="stat-sub">across selection</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total members</span>
+        <span class="stat-value">{{ totalMembers }}</span>
+        <span class="stat-sub">across {{ teamsShown }} teams</span>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading-state">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!isLoading && teamRows.length > 0" class="table-wrapper">
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th class="col-rank">#</th>
+            <th class="col-team">TEAM</th>
+            <th *ngFor="let round of rounds" class="col-round">
+              {{ round.name | uppercase }}
+            </th>
+            <th class="col-total">TOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of teamRows">
+            <!-- Rank -->
+            <td class="col-rank">
+              <span class="rank-badge">{{ row.rank }}</span>
+            </td>
+
+            <!-- Team -->
+            <td class="col-team">
+              <div class="team-info">
+                <div class="team-avatar">{{ row.team_initials }}</div>
+                <div class="team-details">
+                  <span class="team-name">{{ row.team_name }}</span>
+                  <span class="team-members"
+                    >Members <span class="members-badge">{{ row.members_count }}</span></span
+                  >
+                </div>
+              </div>
+            </td>
+
+            <!-- Round Scores -->
+            <td *ngFor="let round of rounds" class="col-round">
+              @if(row.round_cells[round.id]) {
+              <div class="round-scores-list">
+                @for(s of row.round_cells[round.id].scores; track $index) {
+                <div class="score-cell">
+                  <span class="score-status-badge submitted">Submitted</span>
+                  <span class="score-value">{{ s.total_score }}</span>
+                  <div class="criteria-chips" *ngIf="s.criteria && s.criteria.length > 0">
+                    <span *ngFor="let c of s.criteria" class="criteria-chip">
+                      {{ getCriteriaLabel(c.text) }} {{ c.score }}
+                    </span>
+                  </div>
+                  <span class="evaluator-name">{{ s.evaluator_name }}</span>
+                </div>
+                }
+              </div>
+              } @else {
+              <span class="no-score">—</span>
+              }
+            </td>
+
+            <!-- Total -->
+            <td class="col-total">
+              <span class="total-value">{{ row.total_score }}</span>
+              <span class="avg-label">avg {{ row.avg_score }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="total > count" class="pagination-wrapper">
+      <app-pagination
+        [count]="count"
+        [current]="page"
+        [total]="total"
+        (goTo)="onPageChange($event)"
+        (next)="onPageChange($event)"
+        (previous)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && teamRows.length === 0" class="empty-state">
+      <p>No score data available</p>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -62,6 +62,32 @@ export class HackathonTeamRoundScoreService {
     });
   }
 
+  scoreDistributionIndex(
+    hackathonId: number | string,
+    page = 1,
+    count = 10,
+    roundId?: number,
+    evaluatorId?: number,
+    teamId?: number,
+    status?: string,
+    minScore?: number,
+    maxScore?: number,
+  ): Observable<any> {
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('page', page).set('count', count);
+    if (roundId) params = params.set('round_id', roundId);
+    if (evaluatorId) params = params.set('evaluator_id', evaluatorId);
+    if (teamId) params = params.set('team_id', teamId);
+    if (status) params = params.set('status', status);
+    if (minScore) params = params.set('min_score', minScore);
+    if (maxScore) params = params.set('max_score', maxScore);
+    return this.http.get<any>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHON_TEAM_ROUND_SCORES.SCORE_DISTRIBUTION_INDEX),
+      {
+        params,
+      },
+    );
+  }
+
   showDetails(hackathonId: number | string, roundId: number): Observable<IHackathonTeamWithScoreAndSubmissions[]> {
     const params = new HttpParams().set('hackathon_id', hackathonId).set('round_id', roundId);
     return this.http.get<IHackathonTeamWithScoreAndSubmissions[]>(

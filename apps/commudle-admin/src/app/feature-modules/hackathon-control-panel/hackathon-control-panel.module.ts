@@ -79,6 +79,7 @@ import { MentorNotesDialogComponent } from 'apps/commudle-admin/src/app/feature-
 import { MentorTeamAssignmentEmailDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-team-assignment-email-dialog/mentor-team-assignment-email-dialog.component';
 import { MentorMessageToTeamsDialogComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-emails/mentor-message-to-teams-dialog/mentor-message-to-teams-dialog.component';
 import { HackathonProblemStatementChartComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-control-panel-review/hackathon-problem-statement-chart/hackathon-problem-statement-chart.component';
+import { HackathonScoreDashboardComponent } from 'apps/commudle-admin/src/app/feature-modules/hackathon-control-panel/components/hackathon-score-dashboard/hackathon-score-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { HackathonProblemStatementChartComponent } from 'apps/commudle-admin/src
     MentorTeamAssignmentEmailDialogComponent,
     MentorMessageToTeamsDialogComponent,
     HackathonProblemStatementChartComponent,
+    HackathonScoreDashboardComponent,
   ],
   imports: [
     CommonModule,

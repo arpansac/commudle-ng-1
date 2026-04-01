@@ -26,6 +26,7 @@ import {
   faQrcode,
   faClock,
   faCrown,
+  faChartColumn,
 } from '@fortawesome/free-solid-svg-icons';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
@@ -34,10 +35,10 @@ import { ESidebarWidth, ESidebarHeading } from 'apps/shared-components/sidebar/e
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 
 @Component({
-    selector: 'commudle-hackathon-control-panel-dashboard',
-    templateUrl: './hackathon-control-panel-dashboard.component.html',
-    styleUrls: ['./hackathon-control-panel-dashboard.component.scss'],
-    standalone: false
+  selector: 'commudle-hackathon-control-panel-dashboard',
+  templateUrl: './hackathon-control-panel-dashboard.component.html',
+  styleUrls: ['./hackathon-control-panel-dashboard.component.scss'],
+  standalone: false,
 })
 export class HackathonControlPanelDashboardComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
@@ -65,6 +66,7 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
     faQrcode,
     faClock,
     faCrown,
+    faChartColumn,
   };
 
   hackathonStatuses: string[] = Object.values(EHackathonStatus);
@@ -96,10 +98,10 @@ export class HackathonControlPanelDashboardComponent implements OnInit, OnDestro
         this.communitiesService.getCommunityDetails(communityId).subscribe((data) => {
           this.community = data;
         }),
-      ),
-        this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
-          this.hackathon = data;
-        });
+      );
+      this.hackathonService.showHackathon(hackathonId).subscribe((data) => {
+        this.hackathon = data;
+      });
     });
     if (this.isMobileView) {
       this.sidebarService.setSidebarVisibility(this.sidebarEventName, false, true);
