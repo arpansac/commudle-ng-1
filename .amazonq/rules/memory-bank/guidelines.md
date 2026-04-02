@@ -387,6 +387,16 @@ this.dialogService.open(this.paymentErrorDialog, {
 });
 ```
 
+- **Dialog close button**: **ALWAYS** add a close (×) button in `nb-card-header` for every dialog/popup. Use flex layout with `justify-between` to push the close button to the right.
+```html
+<nb-card-header class="com-flex com-justify-between com-items-center">
+  <span>Dialog Title</span>
+  <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+    <nb-icon icon="close"></nb-icon>
+  </button>
+</nb-card-header>
+```
+
 ## Testing Configuration
 
 ### Jest Configuration
