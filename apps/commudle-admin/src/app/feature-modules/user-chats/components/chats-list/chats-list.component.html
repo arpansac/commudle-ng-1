@@ -1,4 +1,4 @@
-<div class="chats-list-container">
+<div class="chats-list-container" [ngClass]="{ 'page-mode': isPersonalChatsPage }">
   <nb-card [ngClass]="{ active: showChat }" class="chats-list">
     <nb-card-header class="d-flex align-items-center justify-content-space-between">
       <div>Personal Inbox</div>
@@ -6,7 +6,7 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body>
+    <nb-card-body [ngClass]="{ 'com-max-h-[100vh]': isPersonalChatsPage, 'com-max-h-[60vh]': !isPersonalChatsPage }">
       <nb-list>
         <nb-list-item
           [infiniteScrollDisabled]="allPersonalChatUsers.length >= totalChats"

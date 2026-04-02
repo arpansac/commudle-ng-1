@@ -14,7 +14,7 @@
     }
 
     nb-card-body {
-      @apply com-p-0 com-max-h-[60vh];
+      @apply com-p-0 com-w-full com-max-h-[60vh];
     }
   }
 
@@ -23,7 +23,8 @@
     @apply md:com-bottom-6 com-shadow-Chat-box;
 
     nb-icon {
-      @apply com-ml-0 #{!important};
+      @apply com-ml-0;
+      margin-left: 0 !important;
     }
   }
 
@@ -52,5 +53,23 @@
 
   .selectedUser {
     @apply com-bg-slate-100;
+  }
+}
+
+.chats-list-container.page-mode {
+  @apply com-w-full com-h-full com-overflow-hidden;
+
+  .chats-list {
+    @apply com-relative com-flex com-w-full com-right-0 com-bottom-0 com-shadow-none;
+    height: 100%;
+
+    nb-card-body {
+      @apply com-w-full;
+      @apply com-overflow-y-auto com-max-h-[100vh] #{!important};
+    }
+  }
+
+  .chats-list-toggle {
+    @apply com-hidden;
   }
 }
