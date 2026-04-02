@@ -43,10 +43,16 @@ p {
       @apply com-w-full com-mt-4;
 
       .name {
-        @apply com-flex md:com-flex-row com-flex-col md:com-gap-6px com-gap-0 md:com-items-center;
+        @apply com-flex md:com-flex-row com-flex-col md:com-gap-6px com-gap-0 md:com-items-start com-items-center md:com-w-[90%] com-w-auto com-mb-2;
 
         h1 {
           @apply com-text-2xl md:com-text-[32px] com-font-semibold com-text-Yankees-Blue com-flex com-items-center;
+        }
+
+        h1 span {
+          @apply com-min-w-0;
+          overflow-wrap: anywhere;
+          word-break: break-word;
         }
 
         .deactivated-button {
