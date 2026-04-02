@@ -164,6 +164,8 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('endSessionDialog') endSessionDialog!: TemplateRef<any>;
 
+  @ViewChild('stopStreamDialog') stopStreamDialog!: TemplateRef<any>;
+
   @ViewChild('screenShareContainer', { static: false })
   screenShareContainer!: ElementRef<HTMLDivElement>;
 
@@ -593,6 +595,15 @@ export class ConferenceComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.toggleHls();
     }
+  }
+
+  confirmStopStream(): void {
+    const ref = this.nbDialogService.open(this.stopStreamDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.toggleStream();
+      }
+    });
   }
 
   toggleRecording(): void {

@@ -224,8 +224,9 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     if (this.isLive) {
       this.openConfirmDialog(
         'Stop Streaming',
-        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'Are you sure you want to stop the streaming for viewers?',
         'toggleIsLive',
+        ['The hosts will still be able to see each other on the stage.', 'Viewers will not see anything.'],
       );
     } else {
       this.executeAction('toggleIsLive');
@@ -235,9 +236,10 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
   onToggleHls(): void {
     if (this.isHlsRunning) {
       this.openConfirmDialog(
-        'Stop HLS Streaming',
-        'Are you sure you want to stop streaming? This will stop the stream to all viewers, but can be started again.',
+        'Stop Streaming',
+        'Are you sure you want to stop the streaming for viewers?',
         'toggleHls',
+        ['The hosts will still be able to see each other on the stage.', 'Viewers will not see anything.'],
       );
     } else {
       const ref = this.nbDialogService.open(this.hlsOptionsDialog, { closeOnBackdropClick: false });
@@ -261,9 +263,10 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openConfirmDialog(title: string, message: string, actionKey: string): void {
+  private openConfirmDialog(title: string, message: string, actionKey: string, extras: string[] = []): void {
     this.confirmTitle = title;
     this.confirmMessage = message;
+    this.confirmExtras = extras;
     this.pendingActionKey = actionKey;
     const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
     ref.onClose.subscribe((confirmed: boolean) => {
@@ -276,6 +279,7 @@ export class ConferenceSettingsComponent implements OnInit, OnDestroy {
 
   confirmTitle = '';
   confirmMessage = '';
+  confirmExtras: string[] = [];
   private pendingActionKey: string = null;
 
   private executeAction(actionKey: string): void {

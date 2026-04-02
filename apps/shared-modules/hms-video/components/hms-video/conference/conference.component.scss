@@ -268,6 +268,10 @@
 .end-session-dialog {
   @apply com-max-w-[400px];
 
+  .end-session-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
   .end-session-message {
     @apply com-text-sm com-m-0;
   }

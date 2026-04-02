@@ -215,7 +215,12 @@
 <!-- HLS start options dialog -->
 <ng-template #hlsOptionsDialog let-ref="dialogRef">
   <nb-card class="confirm-dialog">
-    <nb-card-header>Start HLS Streaming</nb-card-header>
+    <nb-card-header class="confirm-header">
+      <span>Start HLS Streaming</span>
+      <button ghost nbButton size="small" (click)="ref.close(null)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
     <nb-card-body>
       <p class="confirm-message">How would you like to start the HLS stream?</p>
     </nb-card-body>
@@ -232,9 +237,17 @@
 <!-- Confirmation dialog template -->
 <ng-template #confirmDialog let-ref="dialogRef">
   <nb-card class="confirm-dialog">
-    <nb-card-header>{{ confirmTitle }}</nb-card-header>
+    <nb-card-header class="confirm-header">
+      <span>{{ confirmTitle }}</span>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
     <nb-card-body>
       <p class="confirm-message">{{ confirmMessage }}</p>
+      <ul *ngIf="confirmExtras.length > 0" class="confirm-extras">
+        <li *ngFor="let extra of confirmExtras">{{ extra }}</li>
+      </ul>
     </nb-card-body>
     <nb-card-footer class="confirm-actions">
       <button (click)="ref.close(true)" nbButton size="small" status="danger">Yes, confirm</button>
