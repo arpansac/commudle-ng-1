@@ -73,7 +73,8 @@
     }
 
     .stream-start-btn {
-      @apply com-bg-green-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+      @apply com-bg-green-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-justify-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+      min-width: 72px;
 
       &:hover {
         @apply com-bg-green-700;
@@ -85,7 +86,8 @@
     }
 
     .stream-stop-btn {
-      @apply com-bg-red-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+      @apply com-bg-red-600 com-text-white com-border-0 com-rounded-lg com-flex com-items-center com-justify-center com-gap-1 com-text-xs com-font-semibold com-px-3;
+      min-width: 72px;
 
       &:hover {
         @apply com-bg-red-700;
@@ -93,11 +95,17 @@
     }
 
     .stream-yt-connect-btn {
-      @apply com-rounded-lg com-flex com-items-center com-gap-1 com-text-xs com-font-semibold com-px-3 com-text-gray-300 com-border com-border-solid com-border-gray-500;
+      @apply com-rounded-lg com-flex com-items-center com-justify-center com-gap-1 com-text-xs com-font-semibold com-px-3 com-text-gray-300 com-border com-border-solid com-border-gray-500;
+      min-width: 72px;
 
       &:hover {
         @apply com-text-white com-border-gray-300;
       }
+    }
+
+    .stream-pending-btn {
+      @apply com-rounded-lg com-flex com-items-center com-justify-center com-text-xs com-px-3 com-border-0;
+      min-width: 72px;
     }
 
     .text-danger {
