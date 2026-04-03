@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+
+.card {
+  @apply com-box-border com-flex com-flex-col com-overflow-hidden com-rounded-lg com-border com-border-solid com-bg-white com-text-Yankees-Blue;
+
+  border-color: var(--com-card-border, #edf1f7);
+
+  &.basic {
+    --com-card-border: #edf1f7;
+  }
+
+  &.primary {
+    @apply com-border-primary-500/30;
+  }
+
+  &.success {
+    @apply com-border-Caribbean-Green/40;
+  }
+
+  &.info {
+    @apply com-border-Brilliant-Azure/40;
+  }
+
+  &.warning {
+    @apply com-border-Chrome-Yellow/50;
+  }
+
+  &.danger {
+    @apply com-border-Infra-Red/40;
+  }
+
+  &.control {
+    border-color: color-mix(in srgb, var(--color-sonic-silver, #8f9bb3) 50%, transparent);
+  }
+
+  &.tiny {
+    @apply com-text-xs;
+  }
+
+  &.small {
+    @apply com-text-sm;
+  }
+
+  &.medium {
+    @apply com-text-base;
+  }
+
+  &.large {
+    @apply com-text-lg;
+  }
+
+  &.giant {
+    @apply com-text-xl;
+  }
+
+  &.accent-primary {
+    @apply com-border-l-4 com-border-l-primary-500;
+  }
+
+  &.accent-info {
+    @apply com-border-l-4 com-border-l-Brilliant-Azure;
+  }
+
+  &.accent-success {
+    @apply com-border-l-4 com-border-l-Caribbean-Green;
+  }
+
+  &.accent-warning {
+    @apply com-border-l-4 com-border-l-Chrome-Yellow;
+  }
+
+  &.accent-danger {
+    @apply com-border-l-4 com-border-l-Infra-Red;
+  }
+}
