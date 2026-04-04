@@ -120,30 +120,33 @@ export class EventEmbeddedVideoStreamComponent implements OnInit, OnDestroy {
   }
 
   selectSource(event): void {
-    const value = event.target.value;
+    const source = event.target.value;
     const current = this.embeddedVideoStreamForm.get('source').value;
-    if (current && current !== value) {
+    if (current && current !== source) {
       this.confirmTitle = 'Switch Video Source';
       this.confirmMessage =
         'Are you sure you want to switch the video source? This will reset the current configuration.';
-      const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
-      ref.onClose.subscribe((confirmed: boolean) => {
-        if (confirmed) {
-          this.embeddedVideoStreamForm.patchValue({
-            value,
-            embed_code: '',
-            zoom_host_email: '',
-            zoom_password: '',
-            rtmp_url: '',
-          });
-          this.updateValidators();
-          this.createOrUpdate();
-        }
-      });
     } else {
-      this.embeddedVideoStreamForm.patchValue({ value });
-      this.updateValidators();
+      this.confirmTitle = 'Set Video Source';
+      this.confirmMessage = `Are you sure you want to use this video source?`;
     }
+    const ref = this.nbDialogService.open(this.confirmDialog, { closeOnBackdropClick: false });
+    ref.onClose.subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.embeddedVideoStreamForm.patchValue({
+          source,
+          embed_code: current && current !== source ? '' : this.embeddedVideoStreamForm.get('embed_code').value,
+          zoom_host_email:
+            current && current !== source ? '' : this.embeddedVideoStreamForm.get('zoom_host_email').value,
+          zoom_password: current && current !== source ? '' : this.embeddedVideoStreamForm.get('zoom_password').value,
+          rtmp_url: current && current !== source ? '' : this.embeddedVideoStreamForm.get('rtmp_url').value,
+        });
+        this.updateValidators();
+        this.createOrUpdate();
+      } else {
+        event.target.value = current || '';
+      }
+    });
   }
 
   selectMode(mode: EHmsRoomMode): void {
