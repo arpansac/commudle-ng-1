@@ -215,7 +215,7 @@ echo ""
 sleep 0.3
 
 show_loading 0.3 "${YELLOW}🧹${RESET} Resetting Nx cache"
-npx nx reset > /dev/null 2>&1
+# npx nx reset > /dev/null 2>&1
 echo -e "${GREEN}${BOLD}✓ CACHE CLEARED${RESET}"
 echo ""
 sleep 0.3
