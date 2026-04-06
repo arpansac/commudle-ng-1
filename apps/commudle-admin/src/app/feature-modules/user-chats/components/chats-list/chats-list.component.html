@@ -6,7 +6,7 @@
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body [ngClass]="{ 'com-max-h-[100vh]': isPersonalChatsPage, 'com-max-h-[60vh]': !isPersonalChatsPage }">
+    <nb-card-body>
       <nb-list>
         <nb-list-item
           [infiniteScrollDisabled]="allPersonalChatUsers.length >= totalChats"

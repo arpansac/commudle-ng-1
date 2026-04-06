@@ -15,6 +15,7 @@
 
     nb-card-body {
       @apply com-p-0 com-w-full com-max-h-[60vh];
+      min-height: 0;
     }
   }
 
@@ -60,8 +61,7 @@
   @apply com-w-full com-h-full com-overflow-hidden;
 
   .chats-list {
-    @apply com-relative com-flex com-w-full com-right-0 com-bottom-0 com-shadow-none;
-    height: 100%;
+    @apply com-relative com-flex com-right-0 com-bottom-0 com-shadow-none com-w-[100dvw] com-min-h-dvh;
 
     nb-card-body {
       @apply com-w-full;
