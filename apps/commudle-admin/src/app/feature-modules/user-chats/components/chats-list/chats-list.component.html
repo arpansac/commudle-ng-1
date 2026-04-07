@@ -27,25 +27,14 @@
               [size]="'small'"
               [user]="chatUser.user"
               [alignStart]="true"
+              [profileInfoMaxWidth]="'100%'"
+              [addPadding]="false"
+              [userLatestMessage]="chatUser.last_message?.content"
+              [unreadMessagesCount]="chatUser.unread_messages_count"
             ></app-user-profile-mini>
             <p *ngIf="chatUser.last_message" class="date">
               {{ moment(chatUser.last_message.created_at).format('ll') }}
             </p>
-          </div>
-          <div class="latest-message-count">
-            <commudle-editor
-              [content]="chatUser.last_message?.content"
-              [editable]="false"
-              [twoLineClamp]="true"
-            ></commudle-editor>
-            <app-badge
-              *ngIf="currentUser && chatUser.unread_messages_count > 0"
-              [text]="chatUser.unread_messages_count"
-              [fontColor]="'com-text-white'"
-              [fontSize]="'xx-small'"
-              [borderRadius]="'round'"
-              [color]="'com-bg-primary-500'"
-            ></app-badge>
           </div>
         </nb-list-item>
       </nb-list>

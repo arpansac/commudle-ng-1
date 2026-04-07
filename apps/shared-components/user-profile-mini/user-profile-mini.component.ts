@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IUser } from '@commudle/shared-models';
 
 @Component({
@@ -15,6 +15,11 @@ export class UserProfileMiniComponent {
   @Input() showLiveStatus: boolean;
   @Input() showOnlineText = false;
   @Input() alignStart = false;
+  @Input() profileInfoMaxWidth = '80%';
+  @Input() addPadding = true;
+  @Input() userLatestMessage: string;
+  @Input() unreadMessagesCount: number;
+
   isOnline: boolean;
 
   HandleOnlineStatus(status) {

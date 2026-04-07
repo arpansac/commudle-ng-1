@@ -1,7 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 .user {
-  @apply com-flex com-p-2 com-relative com-items-center;
+  @apply com-flex com-relative com-items-center;
 
   &.align-start {
     @apply com-items-start;
@@ -99,6 +99,14 @@
 
     .active-now {
       @apply com-text-[10px] com-font-normal com-text-gray-500 com-mt-1 com-mx-0 com-mb-0;
+    }
+  }
+
+  .latest-message-count {
+    @apply com-flex com-flex-row com-justify-between com-m-0 com-mt-2 com-w-full;
+
+    .last_message {
+      @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2;
     }
   }
 }

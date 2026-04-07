@@ -1,14 +1,15 @@
-<div class="user {{ size }}" [ngClass]="{ 'align-start': alignStart }">
+<div class="user {{ size }}" [ngClass]="{ 'align-start': alignStart, 'p-2': addPadding }">
   <app-user-live-status
     *ngIf="showLiveStatus || showOnlineText"
     [showLiveStatus]="showLiveStatus"
     [userId]="user.id"
     (isOnline)="HandleOnlineStatus($event)"
+    [position]="'top-left-corner'"
   ></app-user-live-status>
   <div class="profile-picture {{ size }}">
     <img alt="{{ user.name }}" src="{{ user.photo.i64 }}" title="{{ user.name }}" />
   </div>
-  <div class="profile-info">
+  <div class="profile-info" [style.max-width]="profileInfoMaxWidth">
     <p class="name {{ size }} d-flex">
       <a [routerLink]="['/users', user.username]" target="_blank" [ngClass]="{ 'disable-anchor': disableAnchor }"
         ><strong>{{ user.name }}</strong></a
@@ -21,5 +22,16 @@
       {{ user.designation | slice : 0 : 50 }}
       <span *ngIf="user.designation?.length > 25">...</span>
     </p>
+    <div class="latest-message-count">
+      <p class="last_message">{{ userLatestMessage | stripHtmlExceptLinks }}</p>
+      <app-badge
+        *ngIf="unreadMessagesCount > 0"
+        [text]="unreadMessagesCount"
+        [fontColor]="'com-text-white'"
+        [fontSize]="'xx-small'"
+        [borderRadius]="'round'"
+        [color]="'com-bg-primary-500'"
+      ></app-badge>
+    </div>
   </div>
 </div>

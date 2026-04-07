@@ -38,15 +38,7 @@
         @apply com-flex com-flex-row com-justify-between com-w-full;
 
         .date {
-          @apply com-m-0 com-text-xs com-font-normal com-text-gray-500 com-pt-2;
-        }
-      }
-
-      .latest-message-count {
-        @apply com-flex com-flex-row com-justify-between com-m-0 com-pl-12 com-mt-[-16px] com-w-full;
-
-        .last_message {
-          @apply com-text-xs com-font-normal com-text-black com-m-0 com-line-clamp-2;
+          @apply com-m-0 com-text-xs com-font-normal com-text-Cadet-Grey com-pt-2 com-flex-shrink-0 com-ml-4;
         }
       }
     }
