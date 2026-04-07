@@ -1,5 +1,5 @@
-<nb-card *ngIf="techSessions.length > 0" id="tech-sessions">
-  <nb-card-body>
+<com-card *ngIf="techSessions.length > 0" id="tech-sessions">
+  <com-card-body>
     <div class="heading">
       <h3 class="title"><a [routerLink]="'.'" fragment="tech-sessions">Latest Tech Talks</a></h3>
       <h4 class="sub-heading">All the knowledge from event sessions</h4>
@@ -29,5 +29,5 @@
         </button>
       </div>
     </div>
-  </nb-card-body>
-</nb-card>
+  </com-card-body>
+</com-card>

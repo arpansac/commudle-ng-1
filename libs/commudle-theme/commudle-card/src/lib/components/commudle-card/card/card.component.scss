@@ -1,40 +1,9 @@
 :host {
+  @apply com-box-border com-flex com-flex-col com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white com-text-Yankees-Blue;
+
   display: block;
-}
 
-.card {
-  @apply com-box-border com-flex com-flex-col com-overflow-hidden com-rounded-lg com-border com-border-solid com-bg-white com-text-Yankees-Blue;
-
-  border-color: var(--com-card-border, #edf1f7);
-
-  &.basic {
-    --com-card-border: #edf1f7;
-  }
-
-  &.primary {
-    @apply com-border-primary-500/30;
-  }
-
-  &.success {
-    @apply com-border-Caribbean-Green/40;
-  }
-
-  &.info {
-    @apply com-border-Brilliant-Azure/40;
-  }
-
-  &.warning {
-    @apply com-border-Chrome-Yellow/50;
-  }
-
-  &.danger {
-    @apply com-border-Infra-Red/40;
-  }
-
-  &.control {
-    border-color: color-mix(in srgb, var(--color-sonic-silver, #8f9bb3) 50%, transparent);
-  }
-
+  /* SIZE */
   &.tiny {
     @apply com-text-xs;
   }
@@ -55,6 +24,7 @@
     @apply com-text-xl;
   }
 
+  /* ACCENT */
   &.accent-primary {
     @apply com-border-l-4 com-border-l-primary-500;
   }
