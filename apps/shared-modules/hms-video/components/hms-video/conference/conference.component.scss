@@ -187,7 +187,7 @@
   }
 
   .hls-player-container {
-    @apply com-relative com-w-full com-h-full com-flex com-items-center com-justify-center com-bg-black;
+    @apply com-relative com-w-full com-h-full com-flex com-items-center com-justify-center com-bg-tblack;
 
     .hls-video-player {
       @apply com-w-full com-h-[90%];
