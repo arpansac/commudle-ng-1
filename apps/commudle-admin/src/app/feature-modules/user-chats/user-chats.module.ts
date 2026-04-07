@@ -15,13 +15,13 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { ChatsContainerComponent } from './components/chats-container/chats-container.component';
 import { ChatsListComponent } from './components/chats-list/chats-list.component';
 import { ChatsWindowComponent } from './components/chats-window/chats-window.component';
-import { UserPersonalChatList } from './components/user-personal-chat-list/user-personal-chat-list.component';
+import { UserPersonalChatListComponent } from './components/user-personal-chat-list/user-personal-chat-list.component';
 import { EditorModule } from '@commudle/editor';
 import { InfiniteScrollModule } from '@commudle/infinite-scroll';
 
 @NgModule({
-  declarations: [ChatsContainerComponent, ChatsListComponent, ChatsWindowComponent, UserPersonalChatList],
-  exports: [ChatsContainerComponent, UserPersonalChatList],
+  declarations: [ChatsContainerComponent, ChatsListComponent, ChatsWindowComponent, UserPersonalChatListComponent],
+  exports: [ChatsContainerComponent, UserPersonalChatListComponent],
   imports: [
     CommonModule,
     SharedComponentsModule,

@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ESidebarPosition = ESidebarPosition;
   ESidebarWidth = ESidebarWidth;
   sidebarEventName = 'MainSidebar';
+  showGlobalChatPopup = true;
 
   private destroy$ = new Subject<void>();
 
@@ -82,6 +83,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.layoutService.fullHeightContent$
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => (this.isFullHeightContent = value));
+
+    this.layoutService.showGlobalChatPopup$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => (this.showGlobalChatPopup = value));
 
     if (this.cookieConsentService.isCookieConsentAccepted()) {
       this.cookieAccepted = true;
