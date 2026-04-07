@@ -1,4 +1,8 @@
-<div [style.width.px]="chatsWindowWidth" class="chat-window">
+<div
+  class="chat-window"
+  [ngClass]="{ 'full-page-mode': fullPageMode }"
+  [style.width.px]="fullPageMode ? null : chatsWindowWidth"
+>
   <nb-card>
     <nb-card-header class="clickable">
       <div class="window-options">
@@ -22,9 +26,9 @@
       </div>
     </nb-card-header>
     <nb-card-body
-      [style.height.vh]="chatsWindowHeight"
-      [style.maxHeight.vh]="chatsWindowHeight"
-      [style.minHeight.vh]="chatsWindowHeight"
+      [style.height.vh]="fullPageMode ? null : chatsWindowHeight"
+      [style.maxHeight.vh]="fullPageMode ? null : chatsWindowHeight"
+      [style.minHeight.vh]="fullPageMode ? null : chatsWindowHeight"
     >
       <app-discussion-personal-chat
         *ngIf="discussion"

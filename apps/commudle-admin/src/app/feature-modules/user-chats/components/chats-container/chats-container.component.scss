@@ -20,4 +20,17 @@
   .chats-list {
     @apply com-relative com-flex com-w-full com-right-0 com-bottom-0 com-shadow-none com-h-full;
   }
+
+  &.detail-open {
+    .chats-list {
+      @apply com-hidden;
+    }
+    .chats-windows {
+      @apply com-relative com-w-full com-h-full com-right-0 com-bottom-0;
+
+      app-chats-window {
+        @apply com-block com-w-full;
+      }
+    }
+  }
 }

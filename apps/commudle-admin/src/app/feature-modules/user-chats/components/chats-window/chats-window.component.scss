@@ -21,4 +21,16 @@
       }
     }
   }
+
+  &.full-page-mode {
+    @apply com-mb-0 com-ml-0 com-mr-0 com-w-full;
+
+    nb-card {
+      @apply com-w-full;
+
+      nb-card-body {
+        @apply com-min-h-[calc(100dvh-190px)];
+      }
+    }
+  }
 }

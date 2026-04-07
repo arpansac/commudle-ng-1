@@ -17,6 +17,7 @@ import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/go
 })
 export class ChatsContainerComponent implements OnInit, OnDestroy {
   @Input() isPersonalChatsPage = false;
+  showMobileChatDetail = false;
   page = 1;
   count = 10;
   total: number;
@@ -107,6 +108,13 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
 
   // Open a chat based on the user clicked (event emitter from chats list component)
   openChat(follower: IDiscussionFollower) {
+    if (this.isPersonalChatsPage) {
+      this.showMobileChatDetail = true;
+      this.discussionFollowers = [follower];
+      this.gtm.dataLayerPushEvent('click-chatlist-chatbox-open', { com_chat_user_id: follower.id });
+      return;
+    }
+
     // Add only if follower is not active
     // Duplicates are added if done by .includes, hence this elaborate way of checking discussionFollower id's
     const isThere = this.discussionFollowers.some((value) => value.id === follower.id);
@@ -127,6 +135,9 @@ export class ChatsContainerComponent implements OnInit, OnDestroy {
     const index = this.discussionFollowers.indexOf(follower);
     this.userChatMessagesChannel.unsubscribe(follower.discussion_id);
     this.discussionFollowers.splice(index, 1);
+    if (this.isPersonalChatsPage) {
+      this.showMobileChatDetail = false;
+    }
   }
 
   // If there has been a new message and the user has seen it, remove the unread badge

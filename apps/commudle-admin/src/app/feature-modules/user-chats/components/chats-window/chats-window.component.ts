@@ -8,13 +8,14 @@ import { NbMenuService } from '@commudle/theme';
 import { filter, map, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-chats-window',
-    templateUrl: './chats-window.component.html',
-    styleUrls: ['./chats-window.component.scss'],
-    standalone: false
+  selector: 'app-chats-window',
+  templateUrl: './chats-window.component.html',
+  styleUrls: ['./chats-window.component.scss'],
+  standalone: false,
 })
 export class ChatsWindowComponent implements OnInit, OnDestroy {
   @Input() discussionFollower: IDiscussionFollower;
+  @Input() fullPageMode = false;
   @Output() removeFromUnread: EventEmitter<IDiscussionFollower> = new EventEmitter<IDiscussionFollower>();
   @Output() removeChat: EventEmitter<IDiscussionFollower> = new EventEmitter<IDiscussionFollower>();
 

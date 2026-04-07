@@ -1,4 +1,7 @@
-<div class="chats-container" [ngClass]="{ 'page-mode': isPersonalChatsPage }">
+<div
+  class="chats-container"
+  [ngClass]="{ 'page-mode': isPersonalChatsPage, 'detail-open': isPersonalChatsPage && showMobileChatDetail }"
+>
   <div class="chats-list">
     <app-chats-list
       (getChat)="openChat($event)"
@@ -11,12 +14,17 @@
       [currentUser]="currentUser"
     ></app-chats-list>
   </div>
-  <div *ngIf="!isPersonalChatsPage" [style.right.px]="chatsWindowsRight" class="chats-windows">
+  <div
+    *ngIf="!isPersonalChatsPage || (isPersonalChatsPage && showMobileChatDetail)"
+    [style.right.px]="isPersonalChatsPage ? null : chatsWindowsRight"
+    class="chats-windows"
+  >
     <app-chats-window
       (removeChat)="closeChat($event)"
       (removeFromUnread)="removeFromUnread($event)"
       *ngFor="let follower of discussionFollowers"
       [discussionFollower]="follower"
+      [fullPageMode]="isPersonalChatsPage && showMobileChatDetail"
     ></app-chats-window>
   </div>
 </div>
