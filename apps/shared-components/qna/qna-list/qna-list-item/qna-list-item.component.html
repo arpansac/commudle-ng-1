@@ -21,7 +21,7 @@
       [ngClass]="{ clickable: message.user.id !== currentUser?.id }"
       class="upvote-btn d-flex align-items-center"
     >
-      <p *ngIf="message.votes_count > 0">{{ message.votes_count }}&nbsp;</p>
+      <p *ngIf="message.votes_count > 0" class="upvote-count">{{ message.votes_count }}&nbsp;</p>
       <nb-icon
         (click)="emitVote(message.id)"
         [nbTooltip]="

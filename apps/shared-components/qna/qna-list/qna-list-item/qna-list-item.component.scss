@@ -24,13 +24,7 @@ p {
       .user {
         .name {
           a {
-            text-decoration: none;
-            color: inherit;
-            font-weight: $fw-600;
-
-            &:hover {
-              text-decoration: underline;
-            }
+            @apply com-no-underline com-text-Yankees-Blue com-font-bold hover:com-underline;
           }
         }
 
@@ -42,11 +36,15 @@ p {
       .content {
         margin: $space-4 0;
         word-break: break-word;
+        @apply com-text-Yankees-Blue;
       }
     }
 
     .upvote-btn {
       align-self: center;
+      .upvote-count {
+        @apply com-text-Yankees-Blue;
+      }
     }
   }
 
