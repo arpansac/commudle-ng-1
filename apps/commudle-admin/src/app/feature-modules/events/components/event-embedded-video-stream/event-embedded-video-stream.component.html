@@ -197,17 +197,22 @@
           <span>No recordings available yet</span>
         </div>
         <div *ngIf="groupedRecordings.length > 0" class="recordings-list">
-          <div *ngFor="let group of groupedRecordings" class="recording-row">
-            <span class="recording-date">{{ group.createdAt | date : 'MMM d, y - h:mm a' }}</span>
-            <div class="recording-buttons">
+          <div *ngFor="let group of groupedRecordings; let i = index" class="recording-row">
+            <div class="recording-row-left">
+              <nb-icon icon="film-outline" class="recording-icon"></nb-icon>
+              <span class="recording-label">Recording {{ i + 1 }}</span>
+              <span class="recording-date">{{ group.createdAt | date : 'MMM d, y — h:mm a' }}</span>
+            </div>
+            <div class="recording-row-right">
               <a
                 *ngFor="let asset of group.assets"
                 [href]="asset.presigned_url.url"
                 target="_blank"
                 download
-                class="download-pill"
+                class="download-btn"
               >
-                Download {{ asset.metadata?.resolution?.height }}p
+                <nb-icon icon="download-outline"></nb-icon>
+                {{ asset.metadata?.resolution?.height }}p
               </a>
             </div>
           </div>
