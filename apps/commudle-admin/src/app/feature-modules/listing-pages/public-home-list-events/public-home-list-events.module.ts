@@ -22,7 +22,7 @@ import { ListingPagesLayoutComponent } from 'apps/commudle-admin/src/app/app-sha
 import { EventsVolunteerListComponent } from './components/events-volunteer-list/events-volunteer-list.component';
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { AppSharedComponentsModule } from 'apps/commudle-admin/src/app/app-shared-components/app-shared-components.module';
-import { CommudleThemeModule } from '@commudle/commudle-theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 @NgModule({
   declarations: [
     PublicHomeListEventsComponent,
@@ -37,7 +37,7 @@ import { CommudleThemeModule } from '@commudle/commudle-theme';
     CommonModule,
     PublicHomeListEventsRoutingModule,
     NbCardModule,
-    CommudleThemeModule,
+    CommudleCardModule,
     NbButtonModule,
     SharedComponentsModule,
     SharedPipesModule,
