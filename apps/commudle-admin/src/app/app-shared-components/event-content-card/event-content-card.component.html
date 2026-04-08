@@ -1,5 +1,5 @@
-<nb-card [ngClass]="horizontalScroll ? 'com-w-72' : 'com-w-full'">
-  <nb-card-body>
+<com-card [ngClass]="horizontalScroll ? 'com-w-72' : 'com-w-full'">
+  <com-card-body>
     <a [routerLink]="['/users', speakersContent.user.username]">
       <p class="title">{{ speakersContent.title }}</p>
       <p class="description">{{ speakersContent.description }}</p>
@@ -19,5 +19,5 @@
         />
       </div>
     </a>
-  </nb-card-body>
-</nb-card>
+  </com-card-body>
+</com-card>

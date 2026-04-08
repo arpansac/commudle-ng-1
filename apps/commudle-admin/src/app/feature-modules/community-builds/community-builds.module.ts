@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { SharedComponentsModule } from '@commudle/shared-components';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import {
   NbButtonModule,
   NbCardModule,
@@ -79,6 +80,7 @@ import { RecaptchaModule } from 'ng-recaptcha-2';
     RecommendationsModule,
     MiniUserProfileModule,
     SharedComponentsModule,
+    CommudleCardModule,
     PublicHomeListEventsModule,
     RecaptchaModule,
     //Standalone

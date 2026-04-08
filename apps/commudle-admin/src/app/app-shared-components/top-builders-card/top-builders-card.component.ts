@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NbCardModule, NbIconModule } from '@commudle/theme';
+import { NbIconModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { RouterModule } from '@angular/router';
 import { IUser } from 'apps/shared-models/user.model';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
@@ -15,7 +16,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
   styleUrls: ['./top-builders-card.component.scss'],
   imports: [
     CommonModule,
-    NbCardModule,
+    CommudleCardModule,
     RouterModule,
     NbIconModule,
     MiniUserProfileModule,
@@ -24,7 +25,7 @@ import { UserExpertTickComponent } from 'apps/commudle-admin/src/app/app-shared-
     UserExpertTickComponent,
   ],
 })
-export class TopBuildersCardComponent implements OnInit {
+export class TopBuildersCardComponent {
   @Input() topBuilder: IUser;
   @Input() maxUserNameLength = 20;
   @Input() displayVotes = false;
@@ -32,8 +33,4 @@ export class TopBuildersCardComponent implements OnInit {
   @Input() showFollowButton = false;
   @Input() allignFollowButtonToRight = false;
   @Input() displayUsername = true;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }
