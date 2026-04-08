@@ -15,7 +15,7 @@ const compat = new FlatCompat({
 export default defineConfig([
   globalIgnores(['!**/*']),
   {
-    extends: compat.extends('../../../.eslintrc.json'),
+    extends: compat.extends('../../.eslintrc.json'),
   },
   {
     files: ['**/*.ts'],

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CommudleCardModule } from '../commudle-card.module';
+import { CommudleThemeModule } from '../../../commudle-theme.module';
 
 @Component({
   standalone: false,
@@ -19,7 +19,7 @@ describe('ComCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommudleCardModule],
+      imports: [CommudleThemeModule],
       declarations: [TestHostComponent],
     }).compileComponents();
 

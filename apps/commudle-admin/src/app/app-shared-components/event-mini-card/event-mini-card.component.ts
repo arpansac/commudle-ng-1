@@ -10,7 +10,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
 import { ICommunity } from 'apps/shared-models/community.model';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { environment } from '@commudle/shared-environments';
-import { CommudleCardModule } from '@commudle/commudle-card';
+import { CommudleThemeModule } from '@commudle/commudle-theme';
 
 @Component({
   selector: 'commudle-event-mini-card',
@@ -25,7 +25,7 @@ import { CommudleCardModule } from '@commudle/commudle-card';
     SharedComponentsModule,
     NbButtonModule,
     NbIconModule,
-    CommudleCardModule,
+    CommudleThemeModule,
   ],
 })
 export class EventMiniCardComponent implements OnInit {

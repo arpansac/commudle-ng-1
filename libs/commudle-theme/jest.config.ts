@@ -1,7 +1,6 @@
- 
 export default {
-  displayName: 'commudle-card',
-  preset: '../../../jest.preset.js',
+  displayName: 'commudle-theme',
+  preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -9,7 +8,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../../coverage/libs/commudle-theme/commudle-card',
+  coverageDirectory: '../../coverage/libs/commudle-theme',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

@@ -1,5 +1,5 @@
 {
-  "name": "@commudle/commudle-card",
+  "name": "@commudle/commudle-theme",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^19.0.0",
