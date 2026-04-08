@@ -5,10 +5,10 @@
     @apply com-h-full com-m-0;
 
     nb-card-header {
-      @apply com-px-1 com-py-6px;
+      @apply com-p-4;
 
       .window-options {
-        @apply com-flex com-justify-between;
+        @apply com-flex com-justify-between com-items-center;
       }
     }
 
@@ -23,13 +23,17 @@
   }
 
   &.full-page-mode {
-    @apply com-mb-0 com-ml-0 com-mr-0 com-w-full;
+    @apply com-mb-0 com-ml-0 com-mr-0 com-w-full com-h-full;
 
     nb-card {
-      @apply com-w-full;
+      @apply com-w-full com-h-full com-flex com-flex-col;
+
+      nb-card-header {
+        @apply com-flex-shrink-0;
+      }
 
       nb-card-body {
-        @apply com-min-h-[calc(100dvh-190px)];
+        @apply com-flex-1 com-min-h-0 com-overflow-hidden;
       }
     }
   }

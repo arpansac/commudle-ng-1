@@ -11,6 +11,10 @@
 
     nb-card-header {
       @apply com-p-3;
+
+      h4 {
+        @apply com-text-base com-font-medium com-text-Yankees-Blue;
+      }
     }
 
     nb-card-body {
@@ -32,7 +36,7 @@
   nb-list {
     @apply com-w-full;
     nb-list-item {
-      @apply com-px-3 com-py-2 com-flex com-flex-col com-justify-between com-items-start;
+      @apply com-p-4 com-flex com-flex-col com-justify-between com-items-start;
 
       .user-profile {
         @apply com-flex com-flex-row com-justify-between com-w-full;
