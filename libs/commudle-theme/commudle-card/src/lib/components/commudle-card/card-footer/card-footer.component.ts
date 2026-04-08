@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'com-card-footer',
-  templateUrl: './card-footer.component.html',
+  template: `<ng-content></ng-content>`,
   styleUrls: ['./card-footer.component.scss'],
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
