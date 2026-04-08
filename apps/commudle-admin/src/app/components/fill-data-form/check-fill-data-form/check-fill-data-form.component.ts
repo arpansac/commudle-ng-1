@@ -10,13 +10,14 @@ import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { DataFormEntityResponsesService } from 'apps/commudle-admin/src/app/services/data-form-entity-responses.service';
 import { ERegistrationStatuses } from 'apps/shared-models/enums/registration_statuses.enum';
 import { EDbModels, IUser } from '@commudle/shared-models';
+import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 @Component({
-    selector: 'commudle-check-fill-data-form',
-    templateUrl: './check-fill-data-form.component.html',
-    styleUrls: ['./check-fill-data-form.component.scss'],
-    standalone: false
+  selector: 'commudle-check-fill-data-form',
+  templateUrl: './check-fill-data-form.component.html',
+  styleUrls: ['./check-fill-data-form.component.scss'],
+  standalone: false,
 })
 export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   dataFormEntity: IDataFormEntity;
@@ -45,6 +46,7 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
     private dataFormEntityResponsesService: DataFormEntityResponsesService,
     private authWatchService: LibAuthwatchService,
     private loginAuthService: LoginAuthService,
+    private isBrowserService: IsBrowserService,
   ) {}
 
   ngOnInit() {
@@ -56,6 +58,9 @@ export class CheckFillDataFormComponent implements OnInit, OnDestroy {
   }
 
   checkLoginPop() {
+    if (!this.isBrowserService.isBrowser()) {
+      return;
+    }
     setTimeout(() => {
       if (this.userLogin === false) {
         this.loginAuthService.openLoginSignupTemplate();
