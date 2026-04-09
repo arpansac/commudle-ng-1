@@ -19,7 +19,8 @@
       .homepage-action {
         background-color: #57c3b9;
         border-color: #57c3b9;
-        @apply com-w-full sm:com-w-auto com-rounded-xl;
+        @apply com-w-full sm:com-w-auto com-rounded-xl com-flex com-flex-wrap;
+        white-space: break-spaces;
       }
     }
 
