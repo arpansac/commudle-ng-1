@@ -20,7 +20,7 @@
       }
 
       .preview-container {
-        @apply com-h-[300px] com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-gray-900;
+        @apply com-h-[300px] com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-gray-900 com-shadow-md;
         @apply lg:com-h-[440px];
       }
 
@@ -56,27 +56,44 @@
         }
 
         .recordings-list {
-          @apply com-max-h-[400px] com-overflow-y-auto;
+          @apply com-max-h-80 com-overflow-y-auto;
 
           .recording-row {
-            @apply com-flex com-items-center com-justify-between com-px-5 com-py-5 com-border-0 com-border-b com-border-solid com-border-gray-200;
+            @apply com-flex com-items-center com-justify-between com-px-4 com-py-3 com-border-0 com-border-b com-border-solid com-border-gray-200;
 
             &:last-child {
               @apply com-border-b-0;
             }
 
-            .recording-date {
-              @apply com-text-base com-font-medium com-text-gray-800 com-flex-shrink-0;
+            .recording-row-left {
+              @apply com-flex com-items-center com-gap-2;
+
+              .recording-icon {
+                @apply com-text-lg com-text-primary-500;
+              }
+
+              .recording-label {
+                @apply com-text-sm com-font-semibold com-text-gray-900;
+              }
+
+              .recording-date {
+                @apply com-text-xs com-text-gray-400;
+              }
             }
 
-            .recording-buttons {
-              @apply com-flex com-items-center com-gap-3 com-flex-wrap com-justify-end;
+            .recording-row-right {
+              @apply com-flex com-items-center com-gap-2;
 
-              .download-pill {
-                @apply com-text-sm com-px-5 com-py-2 com-rounded-full com-border com-border-solid com-border-primary-200 com-bg-primary-100 com-text-primary-700 com-no-underline com-whitespace-nowrap com-cursor-pointer com-font-medium;
+              .download-btn {
+                @apply com-inline-flex com-items-center com-gap-1 com-text-xs com-font-medium com-px-3 com-py-1.5 com-rounded-lg com-no-underline com-transition-all;
+                @apply com-bg-primary-100 com-text-primary-700;
 
                 &:hover {
-                  @apply com-bg-primary-200 com-border-primary-300;
+                  @apply com-bg-primary-200;
+                }
+
+                nb-icon {
+                  @apply com-text-sm;
                 }
               }
             }
@@ -109,11 +126,7 @@
     @apply com-flex com-flex-col com-gap-3;
 
     .mode-card {
-      @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all;
-
-      &:hover {
-        @apply com-border-primary-300 com-shadow-sm;
-      }
+      @apply com-flex-1 com-p-4 com-border com-border-solid com-border-gray-200 com-rounded-lg com-cursor-pointer com-transition-all com-shadow-sm hover:com-shadow-md hover:com-border-primary-300;
 
       .mode-icon {
         @apply com-text-2xl com-mb-2;
@@ -130,6 +143,10 @@
 
     .mode-card-active {
       @apply com-border-primary-500 com-bg-primary-100;
+      nb-icon,
+      p {
+        @apply com-text-tYankees-Blue;
+      }
     }
   }
 
