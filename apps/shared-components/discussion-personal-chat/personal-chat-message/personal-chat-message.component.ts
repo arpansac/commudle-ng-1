@@ -71,7 +71,15 @@ export class PersonalChatMessageComponent implements OnInit {
     this.sendDelete.emit({ messageId, isSelfMessage });
   }
 
-  // markAsRead(messageId: number, { visible }: { visible: boolean }): void {}
+  markAsRead(messageId: number, { visible }: { visible: boolean }): void {
+    if (visible) {
+      // this.message.is_read = true;
+    }
+  }
+
+  isSelfMessage(): boolean {
+    return !!this.currentUser && this.message?.user?.id === this.currentUser.id;
+  }
 
   onHoverEnter(id) {
     this.showActionButton[id] = true;

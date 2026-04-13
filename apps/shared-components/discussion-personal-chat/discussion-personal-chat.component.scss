@@ -2,7 +2,7 @@
   @apply com-h-full;
 
   .discussion-chat-component {
-    @apply com-flex com-flex-col com-h-full com-min-h-0 com-relative;
+    @apply com-flex com-flex-col com-h-full com-min-h-0 com-relative com-bg-Anti-Flash;
 
     .messages {
       @apply com-flex-1 com-min-h-0 com-overflow-y-auto com-w-full;

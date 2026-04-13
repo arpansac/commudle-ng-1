@@ -8,18 +8,67 @@ p {
 }
 
 .message-container {
-  @apply com-p-0;
+  @apply com-px-4 com-py-1 com-flex;
+
+  &.self-message {
+    @apply com-justify-end;
+
+    .bubble {
+      @apply com-bg-Azure;
+      @apply com-text-white;
+      @apply com-rounded-tr-none com-overflow-visible;
+
+      &::after {
+        @apply com-border-Azure;
+        content: '';
+        @apply com-absolute com-top-0 com-right-[-8px] com-w-0 com-h-0;
+        border-top: 8px solid #0095ff;
+        border-right: 8px solid transparent;
+      }
+    }
+
+    .time {
+      @apply com-text-xs com-font-normal com-text-white com-flex-shrink-0;
+    }
+
+    .action-icons-hover {
+      @apply com-left-auto com-right-0 com-ml-0 com-mr-0;
+    }
+  }
+
+  &.other-message {
+    @apply com-justify-start;
+
+    .bubble {
+      @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue;
+      @apply com-rounded-tl-none com-overflow-visible;
+
+      &::before {
+        content: '';
+        @apply com-absolute com-top-0 com-left-[-8px] com-w-0 com-h-0;
+        border-top: 8px solid #ffffff;
+        border-left: 8px solid transparent;
+      }
+    }
+
+    .time {
+      @apply com-text-xs com-font-normal com-text-tYankees-Blue com-flex-shrink-0;
+    }
+
+    .chat-message {
+      @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue;
+    }
+  }
 
   .prefix {
-    width: 100%;
+    @apply com-w-full;
 
     .avatar {
       @apply com-h-8 com-w-8 com-rounded-full com-object-cover com-object-center;
     }
 
     .user-container {
-      margin-left: $space-8;
-      width: 100%;
+      @apply com-flex com-flex-col com-items-start com-gap-3 com-w-full;
 
       .user {
         .name {
@@ -29,15 +78,13 @@ p {
         }
 
         .time {
-          @apply com-flex com-text-xs com-font-normal com-text-gray-500 com-ml-2;
+          @apply com-text-xs com-font-normal com-text-white com-flex-shrink-0;
         }
       }
     }
   }
 
   .replies {
-    @apply com-pl-8;
-
     .reply-form {
       emoji-mart {
         display: none;
@@ -63,12 +110,17 @@ p {
   @apply com-relative com-mb-2px;
 }
 
+.chat-message {
+  @apply com-text-sm com-font-normal com-text-white;
+}
+
 .highlight-background {
   @apply com-bg-gray-100;
 }
 
 .action-icons-hover {
-  @apply com-absolute com-top-0 com-right-0 com-mt-[-22px] com-mr-6;
+  @apply com-absolute com-top-[-22px] com-right-0 com-mt-0 com-mr-0;
+  @apply com-z-[2];
 }
 
 nb-action {
@@ -84,7 +136,7 @@ nb-action {
 }
 
 .suffix {
-  @apply com-ml-10 com-border com-border-solid com-shadow-md com-rounded com-p-0 com-border-gray-100 com-m-0 com-w-fit;
+  @apply com-border com-border-solid com-shadow-md com-rounded com-p-0 com-border-gray-100 com-m-0 com-w-fit;
   app-votes-display {
     &::ng-deep {
       .votes {
@@ -100,8 +152,12 @@ nb-action {
   }
 }
 
+.time-container {
+  @apply com-flex com-justify-end com-w-full com-mt-1;
+}
+
 .message {
-  @apply com-px-3 com-py-2;
+  @apply com-relative com-max-w-[90%] com-rounded-lg com-px-2 com-py-1;
 }
 
 .votes-display {
