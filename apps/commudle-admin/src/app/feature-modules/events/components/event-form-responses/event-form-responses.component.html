@@ -178,21 +178,6 @@
     </div>
     }
     <div class="data-table-container">
-      <!-- Loading indicator -->
-      @if (isLoading) {
-      <div class="loading-indicator">
-        <app-loading-spinner></app-loading-spinner>
-        <p>Loading...</p>
-      </div>
-      }
-
-      <!-- Empty message -->
-      @if (!isLoading && rows.length === 0) {
-      <div class="empty-message">
-        <p>{{ emptyMessage || 'No entries found' }}</p>
-      </div>
-      }
-
       <!-- Reusable Data Table -->
       <commudle-data-table
         [columns]="tableColumns"

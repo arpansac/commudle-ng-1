@@ -147,6 +147,24 @@
     }
 
     .table-body {
+      .loading-row {
+        .loading-cell {
+          @apply com-align-middle com-p-0 com-py-20;
+        }
+      }
+
+      .empty-row {
+        @apply hover:com-bg-transparent;
+
+        .empty-cell {
+          @apply com-align-middle com-text-center com-p-0 com-py-20;
+
+          p {
+            @apply com-m-0 com-text-gray-600 com-text-base;
+          }
+        }
+      }
+
       tr {
         @apply com-border-b com-border-gray-100 hover:com-bg-gray-50;
 
