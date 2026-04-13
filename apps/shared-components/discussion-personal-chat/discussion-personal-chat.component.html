@@ -7,7 +7,7 @@
       <div *ngFor="let group of groupedMessages">
         <h3 class="grouped-date">{{ moment(group.date).format('ddd, MMM D, YYYY') }}</h3>
         <div *ngFor="let message of group.messages">
-          <app-message
+          <app-personal-chat-message
             [message]="message"
             [canReply]="!blocked"
             [permittedActions]="permittedActions"
@@ -19,7 +19,7 @@
             (sendVote)="sendVote($event)"
             (sendDelete)="delete($event)"
             (sendFlag)="sendFlag($event)"
-          ></app-message>
+          ></app-personal-chat-message>
         </div>
       </div>
       <div *ngIf="messages.length === 0" class="filler-message">

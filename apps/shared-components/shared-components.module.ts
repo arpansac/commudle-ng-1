@@ -46,6 +46,7 @@ import { CommunityBadgeComponent } from './community-badge/community-badge.compo
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 import { DataFormFillComponent } from './data-form-fill/data-form-fill.component';
 import { DiscussionPersonalChatComponent } from './discussion-personal-chat/discussion-personal-chat.component';
+import { PersonalChatMessageComponent } from './discussion-personal-chat/personal-chat-message/personal-chat-message.component';
 // import { UserPersonalChatMessageComponent } from './discussion-personal-chat/user-personal-chat-message/user-personal-chat-message.component';
 import { FlagsDisplayComponent } from './flags-display/flags-display.component';
 import { FormResponsesComponent } from './form-responses/form-responses.component';
@@ -125,6 +126,7 @@ import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component';
     VotersComponent,
     UserObjectVisitPixelComponent,
     DiscussionPersonalChatComponent,
+    PersonalChatMessageComponent,
     // UserPersonalChatMessageComponent,
     CookieConsentComponent,
     UserProfileMiniComponent,

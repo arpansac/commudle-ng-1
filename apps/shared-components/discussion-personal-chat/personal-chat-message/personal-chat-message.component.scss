@@ -1,0 +1,109 @@
+@import './apps/commudle-admin/src/assets/styles/variables';
+
+p {
+  color: $gunmetal;
+  font-size: $fs-13;
+  line-height: 15px;
+  margin: 0;
+}
+
+.message-container {
+  @apply com-p-0;
+
+  .prefix {
+    width: 100%;
+
+    .avatar {
+      @apply com-h-8 com-w-8 com-rounded-full com-object-cover com-object-center;
+    }
+
+    .user-container {
+      margin-left: $space-8;
+      width: 100%;
+
+      .user {
+        .name {
+          a {
+            @apply com-text-xs com-font-medium com-text-black com-no-underline;
+          }
+        }
+
+        .time {
+          @apply com-flex com-text-xs com-font-normal com-text-gray-500 com-ml-2;
+        }
+      }
+    }
+  }
+
+  .replies {
+    @apply com-pl-8;
+
+    .reply-form {
+      emoji-mart {
+        display: none;
+        width: clamp(250px, 100%, 360px);
+
+        &.active {
+          display: initial;
+        }
+      }
+
+      form {
+        nb-form-field {
+          .emoji-picker {
+            @apply com-p-2.5;
+          }
+        }
+      }
+    }
+  }
+}
+
+.message-content {
+  @apply com-relative com-mb-2px;
+}
+
+.highlight-background {
+  @apply com-bg-gray-100;
+}
+
+.action-icons-hover {
+  @apply com-absolute com-top-0 com-right-0 com-mt-[-22px] com-mr-6;
+}
+
+nb-action {
+  @apply com-flex com-flex-shrink-0 com-h-6 com-p-6px com-m-0 hover:com-bg-gray-100 #{!important};
+
+  p {
+    @apply com-text-Spanish-Gray com-text-xs;
+  }
+
+  fa-icon {
+    @apply com-text-xs com-text-gray-400;
+  }
+}
+
+.suffix {
+  @apply com-ml-10 com-border com-border-solid com-shadow-md com-rounded com-p-0 com-border-gray-100 com-m-0 com-w-fit;
+  app-votes-display {
+    &::ng-deep {
+      .votes {
+        p {
+          @apply com-text-xs com-font-medium com-text-gray-500;
+
+          nb-icon {
+            @apply com-text-xs com-text-gray-400;
+          }
+        }
+      }
+    }
+  }
+}
+
+.message {
+  @apply com-px-3 com-py-2;
+}
+
+.votes-display {
+  @apply com-ml-10 com-border com-border-solid com-rounded com-p-0 com-border-gray-300 com-m-0 com-w-fit;
+}
