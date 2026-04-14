@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { NbCardModule } from '@commudle/theme';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { ISpeakerResource } from 'apps/shared-models/speaker_resource.model';
 
 @Component({
   selector: 'commudle-event-content-card',
   standalone: true,
-  imports: [CommonModule, RouterModule, NbCardModule, SharedComponentsModule],
+  imports: [CommonModule, RouterModule, CommudleCardModule, SharedComponentsModule],
   templateUrl: './event-content-card.component.html',
   styleUrls: ['./event-content-card.component.scss'],
 })
@@ -17,8 +17,6 @@ export class EventContentCardComponent implements OnInit {
   @Input() horizontalScroll = false;
   speakersTagsLength: number;
   tags: string[] = [];
-  constructor() {}
-
   ngOnInit(): void {
     this.speakersTagsLength = Object.keys(this.speakersContent.tags).length;
   }

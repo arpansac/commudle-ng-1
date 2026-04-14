@@ -32,6 +32,7 @@ import { SpeakerCfpComponent } from 'apps/commudle-admin/src/app/feature-modules
 import { ListingPageHeaderComponent } from 'apps/commudle-admin/src/app/app-shared-components/listing-page-header/listing-page-header.component';
 import { MiniUserProfileModule } from 'apps/shared-modules/mini-user-profile/mini-user-profile.module';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
+import { CommudleCardModule } from '@commudle/commudle-theme';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
     SkeletonVerticalCardsComponent,
     //Nebular
     NbCardModule,
+    CommudleCardModule,
     NbButtonModule,
     NbSelectModule,
     NbIconModule,

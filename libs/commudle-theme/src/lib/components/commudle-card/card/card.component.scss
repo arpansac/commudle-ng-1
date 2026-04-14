@@ -1,0 +1,47 @@
+:host {
+  @apply com-box-border com-flex com-flex-col com-overflow-hidden com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white com-text-Yankees-Blue;
+
+  display: block;
+
+  /* SIZE */
+  &.tiny {
+    @apply com-text-xs;
+  }
+
+  &.small {
+    @apply com-text-sm;
+  }
+
+  &.medium {
+    @apply com-text-base;
+  }
+
+  &.large {
+    @apply com-text-lg;
+  }
+
+  &.giant {
+    @apply com-text-xl;
+  }
+
+  /* ACCENT */
+  &.accent-primary {
+    @apply com-border-l-4 com-border-l-primary-500;
+  }
+
+  &.accent-info {
+    @apply com-border-l-4 com-border-l-Brilliant-Azure;
+  }
+
+  &.accent-success {
+    @apply com-border-l-4 com-border-l-Caribbean-Green;
+  }
+
+  &.accent-warning {
+    @apply com-border-l-4 com-border-l-Chrome-Yellow;
+  }
+
+  &.accent-danger {
+    @apply com-border-l-4 com-border-l-Infra-Red;
+  }
+}
