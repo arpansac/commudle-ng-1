@@ -107,7 +107,7 @@
   .menu-items {
     @apply com-ml-2 com-overflow-y-scroll md:com-overflow-y-hidden com-items-center;
     a {
-      @apply com-text-gunmetal com-text-xs com-leading-4 com-h-fit com-m-0 com-pt-0 com-px-4 com-pb-2 com-cursor-pointer com-no-underline com-mt-2;
+      @apply com-text-gunmetal com-text-sm com-leading-4 com-h-fit com-m-0 com-pt-0 com-px-6 com-pb-4 com-cursor-pointer com-no-underline com-mt-4;
 
       nb-icon,
       fa-icon {
@@ -115,7 +115,7 @@
       }
 
       .title {
-        @apply com-self-center com-ml-1.5;
+        @apply com-self-center com-ml-2;
       }
 
       span:not(.events-chip) {
@@ -130,7 +130,7 @@
     }
 
     .active {
-      @apply com-border-0 com-border-b-2 com-border-solid com-border-primary-500;
+      @apply com-border-0 com-border-b-3 com-border-solid com-border-primary-500;
 
       nb-icon,
       .title {
@@ -145,7 +145,7 @@
 }
 
 .menu-items-footer {
-  @apply com-p-0 com-py-0 com-sticky com-top-16 com-z-20;
+  @apply com-p-0 com-sticky com-top-16 com-z-20;
 }
 
 .banner-image {
