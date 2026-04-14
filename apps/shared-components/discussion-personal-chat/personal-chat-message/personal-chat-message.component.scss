@@ -28,7 +28,7 @@ p {
     }
 
     .time {
-      @apply com-text-xs com-font-normal com-text-white com-flex-shrink-0;
+      @apply com-text-xs com-font-normal com-text-Cadet-Grey com-flex-shrink-0;
     }
 
     .action-icons-hover {
@@ -68,7 +68,7 @@ p {
     }
 
     .user-container {
-      @apply com-flex com-flex-col com-items-start com-gap-3 com-w-full;
+      @apply com-flex com-flex-col com-items-start com-w-full;
 
       .user {
         .name {
@@ -106,6 +106,10 @@ p {
   }
 }
 
+.message-block {
+  @apply com-relative com-w-fit com-max-w-[90%];
+}
+
 .message-content {
   @apply com-relative com-mb-2px;
 }
@@ -124,7 +128,7 @@ p {
 }
 
 nb-action {
-  @apply com-flex com-flex-shrink-0 com-h-6 com-p-6px com-m-0 hover:com-bg-gray-100 #{!important};
+  @apply com-flex com-flex-shrink-0 com-h-6 com-m-0 com-px-6px hover:com-bg-gray-100 #{!important};
 
   p {
     @apply com-text-Spanish-Gray com-text-xs;
@@ -133,6 +137,14 @@ nb-action {
   fa-icon {
     @apply com-text-xs com-text-gray-400;
   }
+
+  &.votes-action {
+    @apply com-p-0 #{!important};
+  }
+}
+
+nb-actions {
+  @apply com-bg-white com-rounded-sm #{!important};
 }
 
 .suffix {
@@ -153,13 +165,13 @@ nb-action {
 }
 
 .time-container {
-  @apply com-flex com-justify-end com-w-full com-mt-1;
-}
-
-.message {
-  @apply com-relative com-max-w-[90%] com-rounded-lg com-px-2 com-py-1;
+  @apply com-flex com-justify-end;
 }
 
 .votes-display {
-  @apply com-ml-10 com-border com-border-solid com-rounded com-p-0 com-border-gray-300 com-m-0 com-w-fit;
+  @apply com-m-0 com-p-0 com-absolute com-right-1 -com-bottom-4 com-z-10;
+}
+
+.message {
+  @apply com-relative com-rounded-lg com-px-2 com-py-1;
 }
