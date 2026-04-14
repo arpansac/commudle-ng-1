@@ -1,24 +1,4 @@
-<!-- Loading indicator -->
-@if (isLoading) {
-<div class="loading-indicator">
-  <div class="loading">
-    <div class="spinner">
-      <div *ngFor="let _ of [].constructor(5)"></div>
-    </div>
-  </div>
-  <p>{{ config.loadingMessage || 'Loading...' }}</p>
-</div>
-}
-
-<!-- Empty message -->
-@if (!isLoading && rows.length === 0) {
-<div class="empty-message">
-  <p>{{ config.emptyMessage || 'No entries found' }}</p>
-</div>
-}
-
 <!-- Custom Table -->
-@if (!isLoading && rows.length > 0) {
 <div class="custom-table-wrapper">
   <table class="custom-data-table" [class.resizing]="isResizing">
     <thead class="table-header">
@@ -54,7 +34,26 @@
     </thead>
 
     <tbody class="table-body">
-      @for (row of rows; track row.id; let rowIndex = $index) {
+      @if (isLoading) {
+      <tr class="loading-row">
+        <td [attr.colspan]="getColumnCount()" class="loading-cell">
+          <div class="loading-indicator">
+            <div class="loading">
+              <div class="spinner">
+                <div *ngFor="let _ of [].constructor(5)"></div>
+              </div>
+            </div>
+            <p>{{ config.loadingMessage || 'Loading...' }}</p>
+          </div>
+        </td>
+      </tr>
+      } @else if (rows.length === 0) {
+      <tr class="empty-row">
+        <td [attr.colspan]="getColumnCount()" class="empty-cell">
+          <p>{{ config.emptyMessage || 'No entries found' }}</p>
+        </td>
+      </tr>
+      } @else { @for (row of rows; track row.id; let rowIndex = $index) {
       <tr class="table-row" [class.expanded]="isRowExpanded(row.id)">
         @for (column of columns; track column.key) {
         <td
@@ -108,8 +107,7 @@
           </div>
         </td>
       </tr>
-      } }
+      } } }
     </tbody>
   </table>
 </div>
-}
