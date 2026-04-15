@@ -108,7 +108,6 @@ export class EventsComponent implements OnInit {
           eventStatus = 'OnlineEventAttendanceMode';
         }
         this.eventForSchema.push({
-          '@context': 'https://schema.org',
           '@type': 'Event',
           name: event.name,
           image: event.header_image_path ? event.header_image_path : this.community.logo_image_path.url,
@@ -135,7 +134,10 @@ export class EventsComponent implements OnInit {
         });
       }
 
-      this.seoService.setSchema(this.eventForSchema);
+      this.seoService.setSchema({
+        '@context': 'https://schema.org',
+        '@graph': this.eventForSchema,
+      });
     }
   }
 }
