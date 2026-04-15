@@ -28,7 +28,7 @@ p {
     }
 
     .time {
-      @apply com-text-xs com-font-normal com-text-Cadet-Grey com-flex-shrink-0;
+      @apply com-text-10px com-font-normal com-text-Cadet-Grey com-flex-shrink-0;
     }
 
     .action-icons-hover {
@@ -52,7 +52,7 @@ p {
     }
 
     .time {
-      @apply com-text-xs com-font-normal com-text-tYankees-Blue com-flex-shrink-0;
+      @apply com-text-10px com-font-normal com-text-Cadet-Grey com-flex-shrink-0;
     }
 
     .chat-message {
@@ -68,17 +68,13 @@ p {
     }
 
     .user-container {
-      @apply com-flex com-flex-col com-items-start com-w-full;
+      @apply com-flex com-flex-col com-items-end com-w-full;
 
       .user {
         .name {
           a {
             @apply com-text-xs com-font-medium com-text-black com-no-underline;
           }
-        }
-
-        .time {
-          @apply com-text-xs com-font-normal com-text-white com-flex-shrink-0;
         }
       }
     }
@@ -110,6 +106,10 @@ p {
   @apply com-relative com-w-fit com-max-w-[90%];
 }
 
+.custom-width {
+  @apply com-min-w-[84px];
+}
+
 .message-content {
   @apply com-relative com-mb-2px;
 }
@@ -139,12 +139,12 @@ nb-action {
   }
 
   &.votes-action {
-    @apply com-p-0 #{!important};
+    @apply com-px-2px #{!important};
   }
 }
 
 nb-actions {
-  @apply com-bg-white com-rounded-sm #{!important};
+  @apply com-bg-white com-rounded-[4px] #{!important};
 }
 
 .suffix {
@@ -169,7 +169,7 @@ nb-actions {
 }
 
 .votes-display {
-  @apply com-m-0 com-p-0 com-absolute com-right-1 -com-bottom-4 com-z-10;
+  @apply com-m-0 com-p-0 com-absolute com-left-6px -com-bottom-4 com-z-10;
 }
 
 .message {

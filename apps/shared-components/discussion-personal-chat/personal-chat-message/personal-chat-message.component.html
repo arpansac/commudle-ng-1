@@ -13,7 +13,10 @@
     longPress
     (longPress)="onLongPress(message.id)"
   >
-    <div [ngClass]="{ 'highlight-background': showActionButton[message.id], bubble: true }" class="message">
+    <div
+      [ngClass]="{ 'highlight-background': showActionButton[message.id], 'custom-width': totalVotesCount > 0 }"
+      class="message bubble"
+    >
       <div class="message-content">
         <div class="prefix d-flex align-items-start">
           <!-- <img
@@ -119,7 +122,7 @@
         </nb-action>
       </nb-actions>
     </div>
-    <div class="time-container" [ngClass]="{ 'com-mt-5': totalVotesCount > 0, 'com-mt-1': totalVotesCount === 0 }">
+    <div class="time-container">
       <p *ngIf="!showFullDateTime" class="time">
         {{ moment(message.created_at).format('h:mm A') }}
       </p>
