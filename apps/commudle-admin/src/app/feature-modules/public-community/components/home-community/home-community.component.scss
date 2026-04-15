@@ -88,7 +88,7 @@
 
       ::ng-deep {
         nb-select {
-          @apply com-w-full;
+          @apply com-w-full com-max-w-full;
           button {
             color: initial;
             @apply com-p-1 md:com-w-44 com-w-full;
