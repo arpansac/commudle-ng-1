@@ -14,9 +14,7 @@ p {
     @apply com-justify-end;
 
     .bubble {
-      @apply com-bg-Azure;
-      @apply com-text-white;
-      @apply com-rounded-tr-none com-overflow-visible;
+      @apply com-bg-Azure com-text-tWhite com-rounded-tr-none com-overflow-visible;
 
       &::after {
         @apply com-border-Azure;
@@ -33,6 +31,18 @@ p {
 
     .action-icons-hover {
       @apply com-left-auto com-right-0 com-ml-0 com-mr-0;
+    }
+
+    .chat-message {
+      @apply com-text-sm com-font-normal com-text-tWhite;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+
+      &::ng-deep a {
+        @apply com-text-sm com-font-normal com-text-tWhite;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+      }
     }
   }
 
@@ -56,8 +66,20 @@ p {
     }
 
     .chat-message {
-      @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue;
+      @apply com-text-sm com-font-normal com-bg-tWhite com-text-tYankees-Blue;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+
+      &::ng-deep a {
+        @apply com-text-sm com-font-normal com-text-tYankees-Blue;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+      }
     }
+  }
+
+  .chat-message {
+    @apply com-text-sm com-font-normal com-text-tWhite;
   }
 
   .prefix {
@@ -114,21 +136,16 @@ p {
   @apply com-relative com-mb-2px;
 }
 
-.chat-message {
-  @apply com-text-sm com-font-normal com-text-white;
-}
-
 .highlight-background {
   @apply com-bg-gray-100;
 }
 
 .action-icons-hover {
-  @apply com-absolute com-top-[-22px] com-right-0 com-mt-0 com-mr-0;
-  @apply com-z-[2];
+  @apply com-absolute -com-top-6 com-right-0 com-mt-0 com-mr-0 com-z-20;
 }
 
 nb-action {
-  @apply com-flex com-flex-shrink-0 com-h-6 com-m-0 com-px-6px hover:com-bg-gray-100 #{!important};
+  @apply com-flex com-flex-shrink-0 com-h-6 com-m-0 hover:com-bg-gray-100 com-px-1 #{!important};
 
   p {
     @apply com-text-Spanish-Gray com-text-xs;
@@ -139,12 +156,8 @@ nb-action {
   }
 
   &.votes-action {
-    @apply com-px-2px #{!important};
+    @apply com-px-2px;
   }
-}
-
-nb-actions {
-  @apply com-bg-white com-rounded-[4px] #{!important};
 }
 
 .suffix {
@@ -169,7 +182,9 @@ nb-actions {
 }
 
 .votes-display {
-  @apply com-m-0 com-p-0 com-absolute com-left-6px -com-bottom-4 com-z-10;
+  @apply com-m-0 com-p-0 com-absolute com-left-6px -com-bottom-[18px] com-z-10 com-rounded-[4px] com-border com-border-solid com-border-gray-200 com-shadow-sm;
+  background-color: #f1f5f9cc;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
 }
 
 .message {
