@@ -9,6 +9,7 @@ import { ICommunity } from 'apps/shared-models/community.model';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { EEventStatuses } from 'apps/shared-models/enums/event_statuses.enum';
 import { IEvent } from 'apps/shared-models/event.model';
+import { IEventUpdate } from 'apps/shared-models/event_update.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { DiscussionService } from '@commudle/shared-services';
@@ -17,6 +18,7 @@ import { map } from 'rxjs';
 import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { IUser } from '@commudle/shared-models';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
+import { EventUpdatesService } from 'apps/commudle-admin/src/app/services/event-updates.service';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
 import { ERegistationTypes } from 'apps/shared-models/enums/registration_types.enum';
 
@@ -65,6 +67,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   isSpeakersLoaded = false;
   isInterestedMembersLoaded = false;
   isAttendeeFormsLoaded = false;
+  liveBlogUpdates: IEventUpdate[] = [];
   private schemaRendered = false;
 
   items: [{ title: string }];
@@ -89,6 +92,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     private menuService: NbMenuService,
     private eventService: EventsService,
     private eventDataFormEntityGroupsService: EventDataFormEntityGroupsService,
+    private eventUpdatesService: EventUpdatesService,
   ) {}
 
   ngOnInit() {
@@ -111,8 +115,18 @@ export class HomeEventComponent implements OnInit, OnDestroy {
       this.isSpeakersLoaded = this.event.event_speakers_count === 0;
       this.fetchInterestedMembers();
       this.fetchOpenForms();
+      this.fetchLiveBlogUpdates();
       this.isLoading = false;
       this.getCommunity(event.kommunity_id);
+    });
+  }
+
+  private fetchLiveBlogUpdates() {
+    this.eventUpdatesService.pGetEventUpdates(this.event.id, 20).subscribe((data) => {
+      this.liveBlogUpdates = data.page?.reduce((acc, value) => [...acc, value.data], []) || [];
+      if (this.schemaRendered) {
+        this.setSchema();
+      }
     });
   }
 
@@ -248,6 +262,26 @@ export class HomeEventComponent implements OnInit, OnDestroy {
         userInteractionCount: this.interestedUsersCount || 0,
       },
     };
+
+    if (this.liveBlogUpdates.length > 0) {
+      schemaObject.subjectOf = {
+        '@type': 'LiveBlogPosting',
+        '@id': `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}#live-updates`,
+        coverageStartTime: this.event.start_time,
+        coverageEndTime: this.event.end_time,
+        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+        liveBlogUpdate: this.liveBlogUpdates.map((update) => ({
+          '@type': 'BlogPosting',
+          datePublished: update.created_at,
+          articleBody: (update.details || '').replace(/<[^>]*>/g, ''),
+          image: update.images?.length ? update.images[0]?.url || update.images[0]?.i128 : undefined,
+          author: {
+            '@type': 'Organization',
+            name: this.community.name,
+          },
+        })),
+      };
+    }
 
     // Only add performer if it exists (clean conditional property)
     if (performers && performers.length > 0) {
