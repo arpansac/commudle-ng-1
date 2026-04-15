@@ -27,8 +27,9 @@
                   src="{{ community.logo_image_path?.i320 }}"
                   title="{{ community.name }}"
                 />
+              </div>
+              <div class="mobile-share-cta" *appBreakpoints="'<=md'">
                 <app-share-button
-                  *appBreakpoints="'<=md'"
                   [content]="environment.app_url + '/communities/' + community.slug"
                   [title]="community.name"
                   [url]="environment.app_url + '/communities/' + community.slug"
@@ -138,6 +139,7 @@
                   </div>
                   <div *ngIf="isOrganizer">
                     <a
+                      class="admin-panel-link"
                       nbButton
                       status="danger"
                       [routerLink]="['/admin', 'communities', community.slug]"

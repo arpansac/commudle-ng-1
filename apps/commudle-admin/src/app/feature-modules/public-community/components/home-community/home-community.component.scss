@@ -21,8 +21,12 @@
   }
 
   .page-header {
-    @apply com-flex-col com-content-start com-mx-0 md:com-mb-16 com-mb-6;
+    @apply com-relative com-flex-col com-content-start com-mx-0 md:com-mb-16 com-mb-6;
     @apply md:com-flex-row;
+
+    .mobile-share-cta {
+      @apply com-absolute com-right-4 com-top-3 com-z-10;
+    }
 
     .logo-section {
       @apply com-h-28 com-w-28  com-rounded-xl -com-mt-14 com-mx-4 com-mr-6 com-bg-white com-shadow-md com-flex com-items-end com-justify-between;
@@ -99,6 +103,10 @@
 
     .membership-actions {
       @apply com-flex md:com-flex-row com-flex-col com-gap-3 md:com-items-center;
+    }
+
+    .admin-panel-link {
+      @apply com-rounded-xl;
     }
   }
 
