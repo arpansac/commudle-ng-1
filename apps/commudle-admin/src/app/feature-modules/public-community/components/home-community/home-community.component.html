@@ -27,8 +27,9 @@
                   src="{{ community.logo_image_path?.i320 }}"
                   title="{{ community.name }}"
                 />
+              </div>
+              <div class="mobile-share-cta" *appBreakpoints="'<=md'">
                 <app-share-button
-                  *appBreakpoints="'<=md'"
                   [content]="environment.app_url + '/communities/' + community.slug"
                   [title]="community.name"
                   [url]="environment.app_url + '/communities/' + community.slug"
@@ -62,7 +63,7 @@
                     </p>
                     <div *ngIf="community.location" class="location">
                       <nb-icon icon="pin" status="basic"></nb-icon>
-                      <span>{{ community.location }}</span>
+                      <span class="location-text" [title]="community.location">{{ community.location }}</span>
                     </div>
                   </div>
                   <div class="community-social-links d-flex align-items-center">
@@ -118,34 +119,38 @@
                 </div>
               </div>
               <div class="membership-toggle">
-                <div class="com-flex md:com-justify-end">
-                  <a
-                    *ngIf="community.community_group"
-                    [routerLink]="['/orgs', community.community_group.slug]"
-                    class="organization-details"
-                    [title]="community.community_group.name"
-                  >
-                    <fa-icon [icon]="faBuilding"></fa-icon>
-                    <span>{{ community.community_group.name }} ({{ community.community_group.member_count }})</span>
-                  </a>
-                  <app-membership-toggle
-                    [community]="community"
-                    [shapes]="'semi-round'"
-                    [size]="'medium'"
-                    [status]="'primary'"
-                  ></app-membership-toggle>
-                </div>
-                <div class="com-text-3xl com-mt-10" *ngIf="isOrganizer">
-                  <a
-                    nbButton
-                    status="danger"
-                    [routerLink]="['/admin', 'communities', community.slug]"
-                    target="_blank"
-                    shape="semi-round"
-                  >
-                    Go to Admin Panel
-                    <nb-icon icon="edit-outline"></nb-icon>
-                  </a>
+                <div class="membership-actions">
+                  <div class="com-flex md:com-justify-end">
+                    <a
+                      *ngIf="community.community_group"
+                      [routerLink]="['/orgs', community.community_group.slug]"
+                      class="organization-details"
+                      [title]="community.community_group.name"
+                    >
+                      <fa-icon [icon]="faBuilding"></fa-icon>
+                      <span>{{ community.community_group.name }} ({{ community.community_group.member_count }})</span>
+                    </a>
+                    <app-membership-toggle
+                      [community]="community"
+                      [shapes]="'semi-round'"
+                      [size]="'medium'"
+                      [status]="'primary'"
+                    ></app-membership-toggle>
+                  </div>
+                  <div *ngIf="isOrganizer">
+                    <a
+                      class="admin-panel-link"
+                      nbButton
+                      status="danger"
+                      [routerLink]="['/admin', 'communities', community.slug]"
+                      target="_blank"
+                      shape="semi-round"
+                      fullWidth
+                    >
+                      Go to Admin Panel
+                      <nb-icon icon="edit-outline"></nb-icon>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

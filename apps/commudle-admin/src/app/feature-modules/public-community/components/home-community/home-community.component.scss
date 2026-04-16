@@ -21,8 +21,12 @@
   }
 
   .page-header {
-    @apply com-flex-col com-content-start com-mx-0 com-mb-16;
+    @apply com-relative com-flex-col com-content-start com-mx-0 md:com-mb-16 com-mb-6;
     @apply md:com-flex-row;
+
+    .mobile-share-cta {
+      @apply com-absolute com-right-4 com-top-3 com-z-10;
+    }
 
     .logo-section {
       @apply com-h-28 com-w-28  com-rounded-xl -com-mt-14 com-mx-4 com-mr-6 com-bg-white com-shadow-md com-flex com-items-end com-justify-between;
@@ -45,15 +49,19 @@
 
       .membership {
         .member-location {
-          @apply com-flex com-items-start com-gap-2 com-flex-col md:com-flex-row md:com-gap-2;
+          @apply com-flex com-items-start com-gap-2 com-flex-row md:com-gap-2 com-min-w-0;
           .member-count {
-            @apply com-gap-2 com-h-5 com-self-stretch md:com-m-0 com-items-start com-m-0 md:com-border-0 md:com-border-r-2 md:com-border-solid md:com-border-Bright-Gray md:com-pr-3;
+            @apply com-gap-2 com-h-5 com-self-stretch md:com-m-0 com-items-start com-m-0 md:com-border-0 md:com-border-r-2 md:com-border-solid md:com-border-Bright-Gray md:com-pr-3 com-flex-shrink-0;
             a {
               @apply com-text-gray-500 com-no-underline com-gap-2 com-inline-flex;
             }
           }
           .location {
-            @apply com-inline-flex com-items-center com-gap-2 com-h-5 com-text-gray-500;
+            @apply com-inline-flex com-items-center com-gap-2 com-h-5 com-text-gray-500 com-min-w-0 com-flex-1;
+
+            .location-text {
+              @apply com-block com-truncate com-whitespace-nowrap com-overflow-hidden com-min-w-0;
+            }
           }
         }
 
@@ -76,15 +84,29 @@
       }
     }
     .membership-toggle {
-      @apply com-mr-4 com-mt-5 com-ml-4 md:com-ml-0;
+      @apply com-flex md:com-flex-row md:com-gap-3 com-flex-col com-mr-4 com-mt-5 com-ml-4 md:com-ml-0 md:com-items-start;
+
+      app-membership-toggle {
+        @apply com-w-full #{!important};
+      }
+
       ::ng-deep {
         nb-select {
+          @apply com-w-full com-max-w-full;
           button {
             color: initial;
-            @apply com-p-1 com-w-44;
+            @apply com-p-1 md:com-w-44 com-w-full;
           }
         }
       }
+    }
+
+    .membership-actions {
+      @apply com-flex md:com-flex-row com-flex-col com-gap-3 md:com-items-center;
+    }
+
+    .admin-panel-link {
+      @apply com-rounded-xl;
     }
   }
 
@@ -119,8 +141,7 @@
       }
 
       span:not(.events-chip) {
-        @apply com-hidden;
-        @apply md:com-inline;
+        @apply com-inline;
       }
     }
 
