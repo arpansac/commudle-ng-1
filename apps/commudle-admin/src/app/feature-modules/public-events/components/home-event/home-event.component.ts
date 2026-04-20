@@ -216,6 +216,23 @@ export class HomeEventComponent implements OnInit, OnDestroy {
 
   setSchema() {
     const performers = this.getPerformersSchema();
+    let location: object;
+    let eventStatus: string;
+
+    if (this.event.event_locations) {
+      location = {
+        '@type': 'Place',
+        name: this.event.event_locations[0] ? this.event.event_locations[0].name : '',
+        address: this.event.event_locations[0] ? this.event.event_locations[0].address : '',
+      };
+      eventStatus = 'OfflineEventAttendanceMode';
+    } else {
+      location = {
+        '@type': 'VirtualLocation',
+        url: `${environment.app_url}/communities/${this.event.kommunity_slug}/events/${this.event.slug}`,
+      };
+      eventStatus = 'OnlineEventAttendanceMode';
+    }
 
     const schemaObject: any = {
       '@context': 'https://schema.org',
@@ -227,12 +244,8 @@ export class HomeEventComponent implements OnInit, OnDestroy {
       startDate: this.event.start_time,
       endDate: this.event.end_time,
       eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
-
-      location: {
-        '@type': 'VirtualLocation',
-        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
-      },
+      eventAttendanceMode: `https://schema.org/${eventStatus}`,
+      location,
 
       organizer: {
         '@type': 'Organization',
