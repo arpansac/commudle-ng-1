@@ -8,6 +8,7 @@ import { IEvent } from 'apps/shared-models/event.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { faCalendarCheck, faCalendarDays, faMapPin } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { EEventType } from '@commudle/shared-models';
 
 @Component({
   selector: 'app-events',
@@ -31,6 +32,7 @@ export class EventsComponent implements OnInit {
   faMapPin = faMapPin;
   faCalendarDays = faCalendarDays;
   faCalendarCheck = faCalendarCheck;
+  EEventType = EEventType;
 
   count = 9;
   page = 1;
@@ -93,7 +95,7 @@ export class EventsComponent implements OnInit {
 
       for (const event of events) {
         let location: object, eventStatus: string;
-        if (event.event_locations) {
+        if (event.event_type === EEventType.OFFLINE) {
           location = {
             '@type': 'Place',
             name: event.event_locations[0] ? event.event_locations[0].name : '',
