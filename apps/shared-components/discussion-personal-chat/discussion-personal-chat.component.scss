@@ -79,20 +79,6 @@
   .grouped-date {
     @apply com-m-0 com-mt-2 com-mb-3 com-flex com-items-center com-justify-center com-text-xs com-font-medium com-text-Cadet-Grey com-px-[20px] #{!important};
   }
-
-  // .grouped-date::before,
-  // .grouped-date::after {
-  //   @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-flex-1;
-  //   content: '';
-  // }
-
-  // .grouped-date::before {
-  //   @apply com-mr-3;
-  // }
-
-  // .grouped-date::after {
-  //   @apply com-ml-3;
-  // }
 }
 
 .blocked-text {
