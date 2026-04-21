@@ -73,8 +73,13 @@ export class EventsComponent implements OnInit {
       this.page = data.page;
       this.count = data.count;
       this.isLoading = false;
-      this.router.navigate([], { queryParams: { page: this.page } });
     });
+  }
+
+  onPastEventsPageChange(page: number) {
+    this.page = page;
+    this.router.navigate([], { queryParams: { page: this.page } });
+    this.getPastEvents();
   }
 
   getUpcomingEvents() {
@@ -95,7 +100,7 @@ export class EventsComponent implements OnInit {
 
       for (const event of events) {
         let location: object, eventStatus: string;
-        if (event.event_type === EEventType.OFFLINE) {
+        if (event.event_type === EEventType.OFFLINE || event.custom_agenda === true) {
           location = {
             '@type': 'Place',
             name: event.event_locations[0] ? event.event_locations[0].name : '',

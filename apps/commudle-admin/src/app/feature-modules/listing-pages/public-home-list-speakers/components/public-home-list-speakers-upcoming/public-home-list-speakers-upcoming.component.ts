@@ -6,15 +6,15 @@ import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
-import { EDbModels } from '@commudle/shared-models';
+import { EDbModels, EEventType } from '@commudle/shared-models';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { SeoService } from 'apps/shared-services/seo.service';
 
 @Component({
-    selector: 'commudle-public-home-list-speakers-upcoming',
-    templateUrl: './public-home-list-speakers-upcoming.component.html',
-    styleUrls: ['./public-home-list-speakers-upcoming.component.scss'],
-    standalone: false
+  selector: 'commudle-public-home-list-speakers-upcoming',
+  templateUrl: './public-home-list-speakers-upcoming.component.html',
+  styleUrls: ['./public-home-list-speakers-upcoming.component.scss'],
+  standalone: false,
 })
 export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
   @Input() parentType = EDbModels.KOMMUNITY;
@@ -27,6 +27,7 @@ export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
   limit = 5;
   page_info: IPageInfo;
   eventForSchema = [];
+  EEventType = EEventType;
 
   constructor(
     private eventsService: EventsService,
@@ -74,11 +75,11 @@ export class PublicHomeListSpeakersUpcomingComponent implements OnInit {
   setSchema() {
     for (const event of this.upcomingEvents) {
       let location: object, eventStatus: string;
-      if (event.event_locations && Object.keys(event.event_locations).length > 0) {
+      if (event.event_type === EEventType.OFFLINE || event.custom_agenda === true) {
         location = {
           '@type': 'Place',
-          name: event.event_locations[0].name,
-          address: event.event_locations[0].address,
+          name: event.event_locations[0] ? event.event_locations[0].name : '',
+          address: event.event_locations[0] ? event.event_locations[0].address : '',
         };
         eventStatus = 'OfflineEventAttendanceMode';
       } else {

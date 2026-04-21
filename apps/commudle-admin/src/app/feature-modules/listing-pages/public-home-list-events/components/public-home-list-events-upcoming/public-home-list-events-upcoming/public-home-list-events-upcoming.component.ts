@@ -7,11 +7,12 @@ import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { ActivatedRoute } from '@angular/router';
+import { EEventType } from '@commudle/shared-models';
 @Component({
-    selector: 'commudle-public-home-list-events-upcoming',
-    templateUrl: './public-home-list-events-upcoming.component.html',
-    styleUrls: ['./public-home-list-events-upcoming.component.scss'],
-    standalone: false
+  selector: 'commudle-public-home-list-events-upcoming',
+  templateUrl: './public-home-list-events-upcoming.component.html',
+  styleUrls: ['./public-home-list-events-upcoming.component.scss'],
+  standalone: false,
 })
 export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewInit {
   community: ICommunity;
@@ -24,6 +25,7 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewI
 
   isLoadingUpcoming = true;
   showSpinner = false;
+  EEventType = EEventType;
 
   constructor(
     private eventsService: EventsService,
@@ -68,11 +70,11 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewI
   setSchema() {
     for (const event of this.upcomingEvents) {
       let location: object, eventStatus: string;
-      if (event.event_locations && Object.keys(event.event_locations).length > 0) {
+      if (event.event_type === EEventType.OFFLINE || event.custom_agenda === true) {
         location = {
           '@type': 'Place',
-          name: event.event_locations[0].name,
-          address: event.event_locations[0].address,
+          name: event.event_locations[0] ? event.event_locations[0].name : '',
+          address: event.event_locations[0] ? event.event_locations[0].address : '',
         };
         eventStatus = 'OfflineEventAttendanceMode';
       } else {

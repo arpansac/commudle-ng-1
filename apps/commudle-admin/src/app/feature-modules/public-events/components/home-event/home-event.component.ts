@@ -234,7 +234,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     let location: object;
     let eventStatus: string;
 
-    if (this.event.event_type === EEventType.OFFLINE) {
+    if (this.event.event_type === EEventType.OFFLINE || this.event.custom_agenda === true) {
       location = {
         '@type': 'Place',
         name: this.event.event_locations[0] ? this.event.event_locations[0].name : '',

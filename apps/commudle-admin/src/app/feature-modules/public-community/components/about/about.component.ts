@@ -8,7 +8,7 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IEvent } from 'apps/shared-models/event.model';
 import { AuthService, CommunityChannelManagerService, CommunityChannelsService } from '@commudle/shared-services';
-import { EDbModels, ICommunityChannel } from '@commudle/shared-models';
+import { EDbModels, EEventType, ICommunityChannel } from '@commudle/shared-models';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { environment } from 'apps/commudle-admin/src/environments/environment';
 import { Subject, takeUntil } from 'rxjs';
@@ -30,6 +30,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   defaultChannel: ICommunityChannel;
   currentUser: IUser;
   eventForSchema = [];
+  EEventType = EEventType;
 
   icons = {
     faUsers,
@@ -110,11 +111,11 @@ export class AboutComponent implements OnInit, OnDestroy {
   setSchema() {
     for (const event of this.upcomingEvents) {
       let location: object, eventStatus: string;
-      if (event.event_locations && Object.keys(event.event_locations).length > 0) {
+      if (event.event_type === EEventType.OFFLINE || event.custom_agenda === true) {
         location = {
           '@type': 'Place',
-          name: event.event_locations[0].name,
-          address: event.event_locations[0].address,
+          name: event.event_locations[0] ? event.event_locations[0].name : '',
+          address: event.event_locations[0] ? event.event_locations[0].address : '',
         };
         eventStatus = 'OfflineEventAttendanceMode';
       } else {
