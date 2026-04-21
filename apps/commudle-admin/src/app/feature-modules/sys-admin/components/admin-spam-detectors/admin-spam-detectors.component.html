@@ -1,142 +1,289 @@
-<div class="base-layout">
-  <div class="container">
-    <div class="one-column-layout">
-      <nb-card>
-        <nb-card-header>
-          <span>Spam Detectors</span>
-        </nb-card-header>
-        <nb-card-body>
-          <div class="filters">
-            <div class="select-container">
-              <div class="select-label-container">
-                <label for="filterSelect">Filter By Spam Detection</label>
-                <div class="select">
-                  <select
-                    [(ngModel)]="isSpam"
-                    placeholder="Filter By Spam Detection"
-                    (change)="changeSpamDetectorType($event.target)"
-                  >
-                    <option value="null">All</option>
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
+<div class="spam-dashboard">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <div class="header-icon-wrapper">
+        <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+      </div>
+      <div class="header-text">
+        <h1>Spam Control Center</h1>
+        <p>Monitor, review and take action on flagged content</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="record-count" *ngIf="total > 0">{{ total }} total records</span>
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="stats-row">
+    <div class="stat-card stat-total">
+      <div class="stat-icon">
+        <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ total }}</span>
+        <span class="stat-label">Total Scanned</span>
+      </div>
+    </div>
+    <div class="stat-card stat-spam">
+      <div class="stat-icon">
+        <fa-icon [icon]="icons.faTriangleExclamation"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ spamCount }}</span>
+        <span class="stat-label">Detected as Spam</span>
+      </div>
+    </div>
+    <div class="stat-card stat-safe">
+      <div class="stat-icon">
+        <fa-icon [icon]="icons.faCircleCheck"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ safeCount }}</span>
+        <span class="stat-label">Marked Safe</span>
+      </div>
+    </div>
+    <div class="stat-card stat-pending">
+      <div class="stat-icon">
+        <fa-icon [icon]="icons.faGavel"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ pendingDecisionCount }}</span>
+        <span class="stat-label">Pending Decision</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="filter-panel">
+    <div class="filter-panel-header">
+      <div class="filter-title">
+        <fa-icon [icon]="icons.faFilter"></fa-icon>
+        <span>Filters</span>
+      </div>
+      <button nbButton ghost size="small" status="basic" (click)="clearFilters()">
+        <fa-icon [icon]="icons.faRotateLeft"></fa-icon>
+        <span>Reset</span>
+      </button>
+    </div>
+    <div class="filter-controls">
+      <div class="filter-field">
+        <label>Spam Detection</label>
+        <select [(ngModel)]="isSpam" (change)="changeSpamDetectorType($event.target)">
+          <option value="null">All Results</option>
+          <option value="true">Flagged as Spam</option>
+          <option value="false">Not Spam</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label>Admin Decision</label>
+        <select [(ngModel)]="isSpamDecision" (change)="changeSpamDecisionType($event.target)">
+          <option value="null">All Decisions</option>
+          <option value="true">Confirmed Spam</option>
+          <option value="false">Confirmed Safe</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-panel">
+    <table *ngIf="spamDetectors.length > 0">
+      <thead>
+        <tr>
+          <th>Content</th>
+          <th>Author</th>
+          <th>Detection</th>
+          <th>Risk Score</th>
+          <th>Timestamps</th>
+          <th>Admin Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let spamDetector of spamDetectors" [class.row-flagged]="spamDetector.is_spam">
+          <!-- Content -->
+          <td>
+            <div class="content-info">
+              <span class="content-type-chip">{{ spamDetector.content_type }}</span>
+              <span class="content-title">{{ spamDetector.community_build.name }}</span>
+              <span class="content-desc" *ngIf="spamDetector.community_build.description">
+                {{ spamDetector.community_build.description }}
+              </span>
+              <a
+                class="view-btn"
+                [href]="'https://www.commudle.com/builds/' + spamDetector.community_build.slug"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                View Build
+              </a>
+            </div>
+          </td>
+
+          <!-- Author -->
+          <td>
+            <div class="author-info">
+              <div class="author-avatar">
+                {{ spamDetector.user.name?.charAt(0)?.toUpperCase() }}
               </div>
-              <div class="select-label-container">
-                <label for="filterSelect">Filter By Spam Decision</label>
-                <div class="select">
-                  <select
-                    [(ngModel)]="isSpamDecision"
-                    placeholder="Filter By Spam Decision"
-                    (change)="changeSpamDecisionType($event.target)"
-                  >
-                    <option value="null">All</option>
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                  </select>
-                </div>
+              <div class="author-details">
+                <span class="author-name">{{ spamDetector.user.name }}</span>
+                <span class="author-blocked-chip" *ngIf="spamDetector.user.blocked">
+                  <fa-icon [icon]="icons.faBan"></fa-icon>
+                  Blocked
+                </span>
+                <a
+                  class="view-btn"
+                  [href]="'https://www.commudle.com/users/' + spamDetector.user.username"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
+                  View Profile
+                </a>
               </div>
             </div>
-            <button nbButton status="basic" size="small" (click)="clearFilters()">Clear Filters</button>
-          </div>
-          <table>
-            <tr>
-              <th>Created At</th>
-              <th>Content</th>
-              <th>User</th>
-              <th>Request Sent At</th>
-              <th>Response Received At</th>
-              <th>Is Spam</th>
-              <th>Score</th>
-              <th>Is Spam Decision</th>
-            </tr>
-            <tr *ngFor="let spamDetector of spamDetectors">
-              <td>{{ moment(spamDetector.created_at).format('MMM Do, YYYY hh:mm A') }}</td>
-              <td class="table-data-content">
-                <span>{{ spamDetector.content_type }}</span>
-                <span>{{ spamDetector.community_build.name }}</span>
-                <span>{{ spamDetector.community_build.description }}</span>
-              </td>
-              <td class="table-data-content">
-                <span>{{ spamDetector.user.name }}</span>
-                <span>{{ spamDetector.user.blocked }}</span>
-              </td>
-              <td>
-                {{
-                  spamDetector.request_sent_at
-                    ? moment(spamDetector.request_sent_at).format('MMM Do, YYYY hh:mm A')
-                    : '--'
-                }}
-              </td>
-              <td>
-                {{
-                  spamDetector.response_received_at
-                    ? moment(spamDetector.response_received_at).format('MMM Do, YYYY hh:mm A')
-                    : '--'
-                }}
-              </td>
-              <td>{{ spamDetector.is_spam }}</td>
-              <td>{{ spamDetector.score }}</td>
-              <td>
-                <select
-                  class="select"
-                  [value]="spamDetector.is_spam_decision"
-                  (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
-                >
-                  <option value="null" disabled>Select Action</option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
-                </select>
-              </td>
-            </tr>
-          </table>
-        </nb-card-body>
-        <nb-card-footer>
-          <div class="pagination">
-            <app-pagination
-              (goTo)="page = $event; getSpamDetectorsData()"
-              (next)="page = $event; getSpamDetectorsData()"
-              (previous)="page = $event; getSpamDetectorsData()"
-              *ngIf="total > 0"
-              [count]="count"
-              [current]="page"
-              [total]="total"
-            ></app-pagination>
-          </div>
-        </nb-card-footer>
-      </nb-card>
+          </td>
+
+          <!-- Detection Status -->
+          <td>
+            <div
+              class="detection-status"
+              [class.is-spam]="spamDetector.is_spam"
+              [class.is-safe]="!spamDetector.is_spam"
+            >
+              <fa-icon [icon]="spamDetector.is_spam ? icons.faTriangleExclamation : icons.faCircleCheck"></fa-icon>
+              <span>{{ spamDetector.is_spam ? 'Spam Detected' : 'Clean' }}</span>
+            </div>
+          </td>
+
+          <!-- Risk Score -->
+          <td>
+            <div class="score-cell">
+              <div class="score-bar-track">
+                <div
+                  class="score-bar-fill"
+                  [class.score-critical]="spamDetector.score >= 0.7"
+                  [class.score-warning]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+                  [class.score-ok]="spamDetector.score < 0.4"
+                  [style.width.%]="getScorePercent(spamDetector.score)"
+                ></div>
+              </div>
+              <span
+                class="score-value"
+                [class.score-critical-text]="spamDetector.score >= 0.7"
+                [class.score-warning-text]="spamDetector.score >= 0.4 && spamDetector.score < 0.7"
+                [class.score-ok-text]="spamDetector.score < 0.4"
+              >
+                {{ getScorePercent(spamDetector.score) }}%
+              </span>
+            </div>
+          </td>
+
+          <!-- Timestamps -->
+          <td>
+            <div class="timestamps-cell">
+              <div class="timestamp-row">
+                <span class="timestamp-label">Created</span>
+                <span class="timestamp-value">{{
+                  moment(spamDetector.created_at).format('MMM D, YYYY · h:mm A')
+                }}</span>
+              </div>
+              <div class="timestamp-row" *ngIf="spamDetector.request_sent_at">
+                <span class="timestamp-label">Sent</span>
+                <span class="timestamp-value">{{
+                  moment(spamDetector.request_sent_at).format('MMM D, YYYY · h:mm A')
+                }}</span>
+              </div>
+              <div class="timestamp-row" *ngIf="spamDetector.response_received_at">
+                <span class="timestamp-label">Response</span>
+                <span class="timestamp-value">{{
+                  moment(spamDetector.response_received_at).format('MMM D, YYYY · h:mm A')
+                }}</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Admin Decision -->
+          <td>
+            <select
+              class="decision-dropdown"
+              [class.decision-spam]="spamDetector.is_spam_decision === true"
+              [class.decision-safe]="spamDetector.is_spam_decision === false"
+              [value]="spamDetector.is_spam_decision"
+              (change)="openDialog($any($event.target).value, spamDetector, spamDetectorFormDialog)"
+            >
+              <option value="null" disabled>— Take Action —</option>
+              <option value="true">🚫 Mark as Spam</option>
+              <option value="false">✅ Mark as Safe</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="spamDetectors.length === 0">
+      <fa-icon [icon]="icons.faShieldHalved"></fa-icon>
+      <span class="empty-title">No Records Found</span>
+      <span class="empty-desc">Try adjusting your filters or check back later.</span>
     </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-bar" *ngIf="total > 0">
+    <app-pagination
+      [current]="page"
+      [count]="count"
+      [total]="total"
+      (goTo)="page = $event; getSpamDetectorsData()"
+      (next)="page = $event; getSpamDetectorsData()"
+      (previous)="page = $event; getSpamDetectorsData()"
+    ></app-pagination>
   </div>
 </div>
 
+<!-- Confirmation Dialog -->
 <ng-template #spamDetectorFormDialog let-data let-ref="dialogRef">
-  <nb-card>
-    <nb-card-header class="template-header">
-      <div>
-        <span *ngIf="data.selectedValue === 'true'">
-          Are you sure you want to mark
-          <strong>{{ data.spamDetector.community_build.name }}</strong>
-          as spam?
-        </span>
-        <span *ngIf="data.selectedValue === 'false'">
-          Are you sure you want to mark
-          <strong>{{ data.spamDetector.community_build.name }}</strong>
-          as not spam?
-        </span>
-      </div>
-      <button ghost nbButton size="small" (click)="ref.close(false)">
+  <nb-card class="confirm-dialog-card">
+    <nb-card-header class="confirm-dialog-header">
+      <span>Confirm Decision</span>
+      <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-footer>
+    <nb-card-body class="confirm-dialog-body">
+      <div class="confirm-dialog-icon-row">
+        <div
+          class="confirm-icon-circle"
+          [class.confirm-spam]="data.selectedValue === 'true'"
+          [class.confirm-safe]="data.selectedValue === 'false'"
+        >
+          <fa-icon [icon]="data.selectedValue === 'true' ? icons.faTriangleExclamation : icons.faCircleCheck"></fa-icon>
+        </div>
+      </div>
+      <p class="confirm-message">
+        <ng-container *ngIf="data.selectedValue === 'true'">
+          Mark <strong>{{ data.spamDetector.community_build.name }}</strong> as <span class="text-spam">spam</span>?
+        </ng-container>
+        <ng-container *ngIf="data.selectedValue === 'false'">
+          Mark <strong>{{ data.spamDetector.community_build.name }}</strong> as <span class="text-safe">safe</span>?
+        </ng-container>
+      </p>
+      <p class="confirm-sub">This action will update the spam decision for this content.</p>
+    </nb-card-body>
+    <nb-card-footer class="confirm-dialog-footer">
+      <button nbButton status="basic" size="small" (click)="ref.close(false)">Cancel</button>
       <button
         nbButton
-        status="primary"
+        [status]="data.selectedValue === 'true' ? 'danger' : 'success'"
+        size="small"
         (click)="updateSpamDetector(data.selectedValue, data.spamDetector.id); ref.close(true)"
       >
-        Confirm
+        {{ data.selectedValue === 'true' ? 'Confirm Spam' : 'Confirm Safe' }}
       </button>
-      <button nbButton status="danger" (click)="ref.close(false)">Cancel</button>
     </nb-card-footer>
   </nb-card>
 </ng-template>

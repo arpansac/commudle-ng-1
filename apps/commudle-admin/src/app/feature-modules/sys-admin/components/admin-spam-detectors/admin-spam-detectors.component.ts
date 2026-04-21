@@ -3,13 +3,23 @@ import { SeoService, ToastrService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
 import { SpamDetectorService } from '../../services/spam-detector.service';
 import { ISpamDetector } from '@commudle/shared-models';
+import {
+  faShieldHalved,
+  faTriangleExclamation,
+  faCircleCheck,
+  faBan,
+  faFilter,
+  faRotateLeft,
+  faGavel,
+  faArrowUpRightFromSquare,
+} from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
 @Component({
-    selector: 'commudle-admin-spam-detectors',
-    templateUrl: './admin-spam-detectors.component.html',
-    styleUrls: ['./admin-spam-detectors.component.scss'],
-    standalone: false
+  selector: 'commudle-admin-spam-detectors',
+  templateUrl: './admin-spam-detectors.component.html',
+  styleUrls: ['./admin-spam-detectors.component.scss'],
+  standalone: false,
 })
 export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   spamDetectors: ISpamDetector[] = [];
@@ -19,6 +29,17 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   isSpam: boolean | null = null;
   isSpamDecision: boolean | null = null;
   moment = moment;
+
+  icons = {
+    faShieldHalved,
+    faTriangleExclamation,
+    faCircleCheck,
+    faBan,
+    faFilter,
+    faRotateLeft,
+    faGavel,
+    faArrowUpRightFromSquare,
+  };
 
   constructor(
     private dialogService: NbDialogService,
@@ -34,6 +55,22 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
     this.seoService.setTitle('Spam Detectors | Commudle');
   }
 
+  get spamCount(): number {
+    return this.spamDetectors.filter((s) => s.is_spam).length;
+  }
+
+  get safeCount(): number {
+    return this.spamDetectors.filter((s) => !s.is_spam).length;
+  }
+
+  get pendingDecisionCount(): number {
+    return this.spamDetectors.filter((s) => s.is_spam_decision === null || s.is_spam_decision === undefined).length;
+  }
+
+  getScorePercent(score: number): number {
+    return Math.round((score || 0) * 100);
+  }
+
   getSpamDetectorsData() {
     this.spamDetectorService
       .getSpamResult(this.page, this.count, this.isSpam, this.isSpamDecision)
@@ -45,22 +82,22 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateSpamDetector(selectedValue, id) {
-    selectedValue === 'true' ? (selectedValue = true) : (selectedValue = false);
-    this.spamDetectorService.updateSpamDetector(selectedValue, id).subscribe(() => {
+  updateSpamDetector(selectedValue: string, id: number) {
+    const isSpam = selectedValue === 'true';
+    this.spamDetectorService.updateSpamDetector(isSpam, id).subscribe(() => {
       this.toastrService.successDialog('Spam Detector Updated');
     });
   }
 
-  changeSpamDetectorType(data) {
+  changeSpamDetectorType(data: EventTarget) {
     this.page = 1;
-    data.value === 'true' ? (this.isSpam = true) : (this.isSpam = false);
+    this.isSpam = (data as HTMLSelectElement).value === 'true';
     this.getSpamDetectorsData();
   }
 
-  changeSpamDecisionType(data) {
+  changeSpamDecisionType(data: EventTarget) {
     this.page = 1;
-    data.value === 'true' ? (this.isSpamDecision = true) : (this.isSpamDecision = false);
+    this.isSpamDecision = (data as HTMLSelectElement).value === 'true';
     this.getSpamDetectorsData();
   }
 

@@ -1,57 +1,448 @@
-nb-card-header,
-nb-card-footer {
-  @apply com-flex com-justify-between com-items-center;
-}
-table {
-  @apply com-border-collapse com-w-full com-mt-4;
-}
+.spam-dashboard {
+  @apply com-flex com-flex-col com-gap-6 com-p-6;
 
-td,
-th {
-  @apply com-p-2;
-}
+  // ── Dashboard Header ──
+  .dashboard-header {
+    @apply com-flex com-justify-between com-items-center;
 
-tr:not(:last-child) {
-  @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
-}
+    .header-left {
+      @apply com-flex com-items-center com-gap-4;
 
-.select {
-  @apply com-flex com-items-center com-p-1 com-text-sm com-rounded-[4px] com-cursor-pointer com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50  com-border com-border-solid com-border-[#E4E9F2]  com-w-full;
-  select {
-    @apply com-bg-[#F6F9FC] hover:com-bg-[#eef2f7]/50 com-cursor-pointer com-border-0 com-w-full;
+      .header-icon-wrapper {
+        @apply com-flex com-items-center com-justify-center com-w-12 com-h-12 com-rounded-lg com-bg-primary-100 com-text-primary-600;
+
+        fa-icon {
+          @apply com-text-Page-Section-Header;
+        }
+      }
+
+      .header-text {
+        h1 {
+          @apply com-text-Page-Section-Header com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
+        }
+
+        p {
+          @apply com-text-Paragraph-2 com-text-gray-500 com-m-0 com-mt-0.5;
+        }
+      }
+    }
+
+    .header-right {
+      .record-count {
+        @apply com-text-Caption com-font-medium com-text-gray-500 com-bg-gray-100 com-px-3 com-py-1.5 com-rounded-full;
+      }
+    }
+  }
+
+  // ── Summary Stat Cards ──
+  .stats-row {
+    @apply com-grid com-grid-cols-2 lg:com-grid-cols-4 com-gap-4;
+
+    .stat-card {
+      @apply com-flex com-items-center com-gap-4 com-p-4 com-rounded-lg com-border com-border-solid;
+
+      .stat-icon {
+        @apply com-flex com-items-center com-justify-center com-w-10 com-h-10 com-rounded-lg com-flex-shrink-0;
+
+        fa-icon {
+          @apply com-text-Card-Subheading;
+        }
+      }
+
+      .stat-info {
+        @apply com-flex com-flex-col;
+
+        .stat-value {
+          @apply com-text-Page-Section-Header com-font-bold com-leading-tight;
+        }
+
+        .stat-label {
+          @apply com-text-Caption com-font-medium com-mt-0.5;
+        }
+      }
+
+      &.stat-total {
+        @apply com-border-primary-200 com-bg-primary-100;
+
+        .stat-icon {
+          @apply com-bg-primary-100 com-text-primary-600;
+        }
+
+        .stat-value {
+          @apply com-text-primary-700;
+        }
+
+        .stat-label {
+          @apply com-text-primary-500;
+        }
+      }
+
+      &.stat-spam {
+        @apply com-border-red-200 com-bg-red-100;
+
+        .stat-icon {
+          @apply com-bg-red-100 com-text-red-600;
+        }
+
+        .stat-value {
+          @apply com-text-red-700;
+        }
+
+        .stat-label {
+          @apply com-text-red-500;
+        }
+      }
+
+      &.stat-safe {
+        @apply com-border-green-200 com-bg-green-100;
+
+        .stat-icon {
+          @apply com-bg-green-100 com-text-green-600;
+        }
+
+        .stat-value {
+          @apply com-text-green-700;
+        }
+
+        .stat-label {
+          @apply com-text-green-500;
+        }
+      }
+
+      &.stat-pending {
+        @apply com-border-yellow-200 com-bg-yellow-100;
+
+        .stat-icon {
+          @apply com-bg-yellow-100 com-text-yellow-600;
+        }
+
+        .stat-value {
+          @apply com-text-yellow-700;
+        }
+
+        .stat-label {
+          @apply com-text-yellow-500;
+        }
+      }
+    }
+  }
+
+  // ── Filter Panel ──
+  .filter-panel {
+    @apply com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white;
+
+    .filter-panel-header {
+      @apply com-flex com-justify-between com-items-center com-px-5 com-py-3 com-border-0 com-border-b com-border-solid com-border-Bright-Gray;
+
+      .filter-title {
+        @apply com-flex com-items-center com-gap-2 com-text-Paragraph-2 com-font-semibold com-text-Yankees-Blue;
+
+        fa-icon {
+          @apply com-text-gray-500;
+        }
+      }
+
+      button {
+        fa-icon {
+          @apply com-mr-1;
+        }
+      }
+    }
+
+    .filter-controls {
+      @apply com-flex com-gap-5 com-p-5;
+
+      .filter-field {
+        @apply com-flex com-flex-col com-gap-1.5 com-min-w-[200px];
+
+        label {
+          @apply com-text-Caption com-font-semibold com-text-gray-600 com-uppercase com-tracking-wider;
+        }
+
+        select {
+          @apply com-text-Paragraph-2 com-px-3 com-py-2 com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-gray-50 com-cursor-pointer com-transition-colors com-duration-150;
+
+          &:hover {
+            @apply com-border-gray-500;
+          }
+
+          &:focus {
+            @apply com-outline-none com-border-primary-400 com-bg-white com-ring-2 com-ring-primary-100;
+          }
+        }
+      }
+    }
+  }
+
+  // ── Data Table ──
+  .table-panel {
+    @apply com-rounded-lg com-border com-border-solid com-border-Bright-Gray com-bg-white com-overflow-hidden;
+
+    table {
+      @apply com-w-full com-border-collapse;
+
+      thead tr {
+        @apply com-bg-gray-50 com-border-0 com-border-b-2 com-border-solid com-border-Bright-Gray;
+
+        th {
+          @apply com-px-5 com-py-3.5 com-text-left com-text-Caption com-font-bold com-text-gray-600 com-uppercase com-tracking-wider com-whitespace-nowrap;
+        }
+      }
+
+      tbody tr {
+        @apply com-border-0 com-border-b com-border-solid com-border-Bright-Gray com-transition-colors com-duration-150;
+
+        &:last-child {
+          @apply com-border-b-0;
+        }
+
+        &:hover {
+          @apply com-bg-gray-50;
+        }
+
+        &.row-flagged {
+          @apply com-border-l-4 com-border-l-red-400;
+        }
+
+        td {
+          @apply com-px-5 com-py-4 com-align-middle;
+        }
+      }
+    }
+  }
+
+  // ── Content Cell ──
+  .content-info {
+    @apply com-flex com-flex-col com-gap-1 com-max-w-xs;
+
+    .content-type-chip {
+      @apply com-inline-flex com-w-fit com-text-10px com-font-bold com-uppercase com-tracking-widest com-text-primary-700 com-bg-primary-100 com-px-2.5 com-py-0.5 com-rounded-full;
+    }
+
+    .content-title {
+      @apply com-text-Paragraph-2 com-font-semibold com-text-Yankees-Blue com-truncate;
+    }
+
+    .content-desc {
+      @apply com-text-Caption com-text-gray-500 com-line-clamp-2 com-leading-relaxed;
+    }
+  }
+
+  // ── Author Cell ──
+  .author-info {
+    @apply com-flex com-items-center com-gap-3;
+
+    .author-avatar {
+      @apply com-flex com-items-center com-justify-center com-w-9 com-h-9 com-rounded-full com-bg-primary-500 com-text-white com-text-Paragraph-2 com-font-bold com-flex-shrink-0;
+    }
+
+    .author-details {
+      @apply com-flex com-flex-col com-gap-0.5;
+
+      .author-name {
+        @apply com-text-Paragraph-2 com-font-medium com-text-Yankees-Blue com-whitespace-nowrap;
+      }
+
+      .author-blocked-chip {
+        @apply com-inline-flex com-items-center com-gap-1 com-w-fit com-text-10px com-font-bold com-uppercase com-text-red-700 com-bg-red-100 com-px-2 com-py-0.5 com-rounded-full;
+
+        fa-icon {
+          @apply com-text-8px;
+        }
+      }
+    }
+  }
+
+  // ── Detection Status Chip ──
+  .detection-status {
+    @apply com-inline-flex com-items-center com-gap-1.5 com-px-3 com-py-1.5 com-rounded-full com-text-Caption com-font-bold com-whitespace-nowrap;
+
+    &.is-spam {
+      @apply com-text-red-700 com-bg-red-100;
+    }
+
+    &.is-safe {
+      @apply com-text-green-700 com-bg-green-100;
+    }
+
+    fa-icon {
+      @apply com-text-Caption;
+    }
+  }
+
+  // ── Score Bar ──
+  .score-cell {
+    @apply com-flex com-flex-col com-gap-1.5 com-min-w-[100px];
+
+    .score-bar-track {
+      @apply com-w-full com-h-2 com-rounded-full com-bg-gray-100 com-overflow-hidden;
+
+      .score-bar-fill {
+        @apply com-h-full com-rounded-full com-transition-all com-duration-300;
+
+        &.score-critical {
+          @apply com-bg-red-500;
+        }
+
+        &.score-warning {
+          @apply com-bg-yellow-500;
+        }
+
+        &.score-ok {
+          @apply com-bg-green-500;
+        }
+      }
+    }
+
+    .score-value {
+      @apply com-text-Caption com-font-bold com-tabular-nums;
+
+      &.score-critical-text {
+        @apply com-text-red-600;
+      }
+
+      &.score-warning-text {
+        @apply com-text-yellow-600;
+      }
+
+      &.score-ok-text {
+        @apply com-text-green-600;
+      }
+    }
+  }
+
+  // ── Timestamps ──
+  .timestamps-cell {
+    @apply com-flex com-flex-col com-gap-1;
+
+    .timestamp-row {
+      @apply com-flex com-flex-col;
+
+      .timestamp-label {
+        @apply com-text-10px com-font-bold com-uppercase com-tracking-wider com-text-gray-500;
+      }
+
+      .timestamp-value {
+        @apply com-text-Caption com-text-gray-700 com-whitespace-nowrap;
+      }
+    }
+  }
+
+  // ── Decision Dropdown ──
+  .decision-dropdown {
+    @apply com-text-Paragraph-2 com-font-medium com-px-3 com-py-2 com-rounded-lg com-border-2 com-border-solid com-border-Bright-Gray com-bg-gray-50 com-cursor-pointer com-transition-all com-duration-150 com-min-w-[160px];
+
+    &:hover {
+      @apply com-border-gray-500 com-bg-white;
+    }
+
+    &:focus {
+      @apply com-outline-none com-border-primary-400 com-ring-2 com-ring-primary-100;
+    }
+
+    &.decision-spam {
+      @apply com-border-red-300 com-bg-red-100 com-text-red-700;
+    }
+
+    &.decision-safe {
+      @apply com-border-green-300 com-bg-green-100 com-text-green-700;
+    }
+  }
+
+  // ── Empty State ──
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-16 com-gap-3;
+
+    fa-icon {
+      @apply com-text-5xl com-text-gray-300;
+    }
+
+    .empty-title {
+      @apply com-text-Paragraph-1 com-font-semibold com-text-gray-600;
+    }
+
+    .empty-desc {
+      @apply com-text-Paragraph-2 com-text-gray-500;
+    }
+  }
+
+  // ── Pagination ──
+  .pagination-bar {
+    @apply com-flex com-justify-center;
+  }
+
+  // ── View Button ──
+  .view-btn {
+    @apply com-inline-flex com-items-center com-gap-1.5 com-w-fit com-mt-1 com-px-2.5 com-py-1 com-rounded-lg com-text-10px com-font-bold com-uppercase com-tracking-wider;
+    @apply com-text-primary-600 com-bg-primary-100 com-no-underline com-cursor-pointer com-transition-all com-duration-150 com-border com-border-solid com-border-primary-200;
+
+    fa-icon {
+      @apply com-text-10px;
+    }
+
+    &:hover {
+      @apply com-bg-primary-500 com-text-white com-border-primary-500;
+    }
   }
 }
 
-.pagination {
-  @apply com-w-full;
-}
+// ── Confirmation Dialog ──
+.confirm-dialog-card {
+  @apply com-min-w-[400px];
 
-.filters {
-  @apply com-flex com-justify-between com-items-end com-gap-5;
-}
+  .confirm-dialog-header {
+    @apply com-flex com-justify-between com-items-center;
 
-.template-header {
-  @apply com-flex com-justify-between com-items-center com-gap-5;
-
-  span {
-    @apply com-text-sm com-font-normal com-text-gray-700;
+    span {
+      @apply com-text-Paragraph-1 com-font-bold com-text-Yankees-Blue;
+    }
   }
-}
 
-.table-data-content {
-  span {
-    @apply com-flex com-w-full;
+  .confirm-dialog-body {
+    @apply com-flex com-flex-col com-items-center com-text-center com-py-4;
+
+    .confirm-dialog-icon-row {
+      @apply com-mb-4;
+
+      .confirm-icon-circle {
+        @apply com-flex com-items-center com-justify-center com-w-14 com-h-14 com-rounded-full;
+
+        fa-icon {
+          @apply com-text-Page-Section-Header;
+        }
+
+        &.confirm-spam {
+          @apply com-bg-red-100 com-text-red-500;
+        }
+
+        &.confirm-safe {
+          @apply com-bg-green-100 com-text-green-500;
+        }
+      }
+    }
+
+    .confirm-message {
+      @apply com-text-Paragraph-1 com-text-gray-700 com-m-0;
+
+      strong {
+        @apply com-text-Yankees-Blue;
+      }
+
+      .text-spam {
+        @apply com-font-bold com-text-red-600;
+      }
+
+      .text-safe {
+        @apply com-font-bold com-text-green-600;
+      }
+    }
+
+    .confirm-sub {
+      @apply com-text-Caption com-text-gray-500 com-m-0 com-mt-2;
+    }
   }
-}
 
-.select-container {
-  @apply com-flex com-gap-5 com-w-full;
-}
-
-label {
-  @apply com-text-sm com-font-medium com-mb-1 com-text-gray-500;
-}
-
-.select-label-container {
-  @apply com-flex com-flex-col com-gap-1 com-w-full;
+  .confirm-dialog-footer {
+    @apply com-flex com-justify-end com-gap-3;
+  }
 }
