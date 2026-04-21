@@ -28,8 +28,7 @@
     @apply md:com-bottom-6 com-shadow-Chat-box;
 
     nb-icon {
-      @apply com-ml-0;
-      margin-left: 0 !important;
+      @apply com-ml-0 #{!important};
     }
   }
 

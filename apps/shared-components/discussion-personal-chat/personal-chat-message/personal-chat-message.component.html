@@ -23,26 +23,7 @@
     >
       <div class="message-content">
         <div class="prefix d-flex align-items-start">
-          <!-- <img
-            alt="{{ message.user.name }}"
-            class="avatar"
-            src="{{ message.user.photo.i32 }}"
-            title="{{ message.user.name }}"
-          />-->
           <div class="user-container">
-            <!-- <div class="user d-flex align-items-center">
-              <p class="name">
-                <a [routerLink]="['/users', message.user.username]">{{ message.user.name }}</a>
-              </p>
-              <commudle-user-expert-tick *ngIf="message.user.is_expert"></commudle-user-expert-tick>
-              <p *ngIf="!showFullDateTime" class="time">
-                {{ moment(message.created_at).format('h:mm A') }}
-              </p>
-              <p class="time" *ngIf="showFullDateTime">
-                {{ moment(message.created_at).format('MMM Do YYYY, h:mm A') }}
-              </p>
-            </div> -->
-            <!-- <commudle-editor [content]="message.content" [editable]="false"></commudle-editor> -->
             <p class="chat-message" [innerHTML]="message.content | stripHtmlExceptLinks"></p>
           </div>
         </div>
