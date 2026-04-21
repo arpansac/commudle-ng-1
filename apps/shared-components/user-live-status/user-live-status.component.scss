@@ -10,9 +10,7 @@
     right: 0;
   }
   &.top.left-corner {
-    position: absolute;
-    top: 0px;
-    left: -4px;
+    @apply com-absolute com-top-0 com-left-[-4px];
   }
 
   > div {

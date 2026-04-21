@@ -1,10 +1,7 @@
 @import './apps/commudle-admin/src/assets/styles/variables';
 
 p {
-  color: $gunmetal;
-  font-size: $fs-13;
-  line-height: 15px;
-  margin: 0;
+  @apply com-text-xs com-m-0 com-text-tYankees-Blue;
 }
 
 .message-container {
