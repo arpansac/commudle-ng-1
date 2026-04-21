@@ -16,7 +16,7 @@ import { DiscussionService } from '@commudle/shared-services';
 import { NbMenuService } from '@commudle/theme';
 import { map } from 'rxjs';
 import { faEllipsisVertical, faCalendar, faClockFour, faGlobe } from '@fortawesome/free-solid-svg-icons';
-import { IUser } from '@commudle/shared-models';
+import { EEventType, IUser } from '@commudle/shared-models';
 import { EventDataFormEntityGroupsService } from 'apps/commudle-admin/src/app/services/event-data-form-entity-groups.service';
 import { EventUpdatesService } from 'apps/commudle-admin/src/app/services/event-updates.service';
 import { IEventDataFormEntityGroup } from 'apps/shared-models/event_data_form_enity_group.model';
@@ -69,6 +69,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
   isAttendeeFormsLoaded = false;
   liveBlogUpdates: IEventUpdate[] = [];
   private schemaRendered = false;
+  EEventType = EEventType;
 
   items: [{ title: string }];
   @ViewChild('updatesSection', { static: false }) updatesSectionRef: ElementRef<HTMLDivElement>;
@@ -233,7 +234,7 @@ export class HomeEventComponent implements OnInit, OnDestroy {
     let location: object;
     let eventStatus: string;
 
-    if (this.event.event_locations) {
+    if (this.event.event_type === EEventType.OFFLINE || this.event.custom_agenda === true) {
       location = {
         '@type': 'Place',
         name: this.event.event_locations[0] ? this.event.event_locations[0].name : '',

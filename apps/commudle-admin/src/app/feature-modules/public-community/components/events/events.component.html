@@ -79,9 +79,9 @@
           </a>
         </div>
         <app-pagination
-          (goTo)="page = $event; getPastEvents()"
-          (next)="page = $event; getPastEvents()"
-          (previous)="page = $event; getPastEvents()"
+          (goTo)="onPastEventsPageChange($event)"
+          (next)="onPastEventsPageChange($event)"
+          (previous)="onPastEventsPageChange($event)"
           *ngIf="total > 0"
           [count]="count"
           [current]="page"
