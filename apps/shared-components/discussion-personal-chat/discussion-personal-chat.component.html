@@ -6,9 +6,10 @@
       </div>
       <div *ngFor="let group of groupedMessages">
         <h3 class="grouped-date">{{ moment(group.date).format('ddd, MMM D, YYYY') }}</h3>
-        <div *ngFor="let message of group.messages">
+        <div *ngFor="let message of group.messages; let i = index">
           <app-personal-chat-message
             [message]="message"
+            [showTail]="!group.messages[i - 1] || group.messages[i - 1].user?.id !== message.user?.id"
             [canReply]="!blocked"
             [permittedActions]="permittedActions"
             [allActions]="allActions"

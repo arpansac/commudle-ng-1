@@ -14,9 +14,13 @@ p {
     @apply com-justify-end;
 
     .bubble {
-      @apply com-bg-Azure com-text-tWhite com-rounded-tr-none com-overflow-visible;
+      @apply com-bg-Azure com-text-tWhite com-overflow-visible;
 
-      &::after {
+      &.has-tail {
+        @apply com-rounded-tr-none;
+      }
+
+      &.has-tail::after {
         @apply com-border-Azure;
         content: '';
         @apply com-absolute com-top-0 com-right-[-8px] com-w-0 com-h-0;
@@ -51,9 +55,13 @@ p {
 
     .bubble {
       @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue;
-      @apply com-rounded-tl-none com-overflow-visible;
+      @apply com-overflow-visible;
 
-      &::before {
+      &.has-tail {
+        @apply com-rounded-tl-none;
+      }
+
+      &.has-tail::before {
         content: '';
         @apply com-absolute com-top-0 com-left-[-8px] com-w-0 com-h-0;
         border-top: 8px solid #ffffff;

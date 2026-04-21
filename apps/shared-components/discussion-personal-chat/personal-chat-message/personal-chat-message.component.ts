@@ -26,6 +26,7 @@ export class PersonalChatMessageComponent implements OnInit {
   @Input() showFlagIcon = true;
   @Input() showReplyIcon = true;
   @Input() showFullDateTime = false;
+  @Input() showTail = true;
   @Output() sendReply: EventEmitter<any> = new EventEmitter<any>();
   @Output() sendFlag: EventEmitter<number> = new EventEmitter<number>();
   @Output() sendDelete = new EventEmitter();
