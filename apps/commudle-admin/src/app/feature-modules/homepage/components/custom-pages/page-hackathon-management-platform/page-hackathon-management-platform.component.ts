@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
-import { SeoService } from '@commudle/shared-services';
+import { APP_SHOWCASE_STATS, SeoService } from '@commudle/shared-services';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { SharedComponentsModule as LibSharedComponentsModule } from '@commudle/shared-components';
 import { IFaq } from '@commudle/shared-models';
 import { NbButtonModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -34,6 +35,7 @@ import {
   faUniversity,
   faChevronLeft,
   faChevronRight,
+  faHashtag,
 } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { RouterModule } from '@angular/router';
@@ -41,7 +43,14 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'commudle-page-hackathon-management-platform',
   standalone: true,
-  imports: [CommonModule, SharedComponentsModule, NbButtonModule, FontAwesomeModule, RouterModule],
+  imports: [
+    CommonModule,
+    SharedComponentsModule,
+    LibSharedComponentsModule,
+    NbButtonModule,
+    FontAwesomeModule,
+    RouterModule,
+  ],
   templateUrl: './page-hackathon-management-platform.component.html',
   styleUrls: ['./page-hackathon-management-platform.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -75,7 +84,9 @@ export class PageHackathonManagementPlatformComponent implements OnInit, OnDestr
   faHeadset = faHeadset;
   faClipboardList = faClipboardList;
   faDollarSign = faDollarSign;
+  faHashtag = faHashtag;
   faTarget = faMousePointer;
+  readonly appShowcaseStats = APP_SHOWCASE_STATS;
   faMousePointer = faMousePointer;
   faEye = faEye;
   faLightbulb = faLightbulb;
