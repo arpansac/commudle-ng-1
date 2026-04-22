@@ -42,7 +42,7 @@
                   class="com-flex com-justify-between md:com-items-center com-flex-col com-my-2 md:com-flex-row md:com-m-0"
                 >
                   <div class="details-container">
-                    <h1 class="com-text-Yankees-Blue">{{ community.name }}</h1>
+                    <h1 class="heading-community-name">{{ community.name }}</h1>
                     <app-share-button
                       *appBreakpoints="'>md'"
                       [content]="environment.app_url + '/communities/' + community.slug"
@@ -120,6 +120,20 @@
               </div>
               <div class="membership-toggle">
                 <div class="membership-actions">
+                  <div *ngIf="isOrganizer">
+                    <a
+                      class="admin-panel-link"
+                      nbButton
+                      status="danger"
+                      [routerLink]="['/admin', 'communities', community.slug]"
+                      target="_blank"
+                      shape="semi-round"
+                      fullWidth
+                    >
+                      Go to Admin Panel
+                      <nb-icon icon="edit-outline"></nb-icon>
+                    </a>
+                  </div>
                   <div class="com-flex md:com-justify-end">
                     <a
                       *ngIf="community.community_group"
@@ -136,20 +150,6 @@
                       [size]="'medium'"
                       [status]="'primary'"
                     ></app-membership-toggle>
-                  </div>
-                  <div *ngIf="isOrganizer">
-                    <a
-                      class="admin-panel-link"
-                      nbButton
-                      status="danger"
-                      [routerLink]="['/admin', 'communities', community.slug]"
-                      target="_blank"
-                      shape="semi-round"
-                      fullWidth
-                    >
-                      Go to Admin Panel
-                      <nb-icon icon="edit-outline"></nb-icon>
-                    </a>
                   </div>
                 </div>
               </div>
