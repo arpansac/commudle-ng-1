@@ -3,11 +3,6 @@
   <!-- Skip to main content link for keyboard navigation -->
   <!-- Hero Section -->
   <section id="main-content" class="hero-section" tabindex="-1">
-    <!-- Decorative Elements -->
-    <div class="hero-decoration code-block-1"></div>
-    <div class="hero-decoration code-block-2"></div>
-    <div class="hero-decoration code-block-3"></div>
-
     <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
       <div class="com-flex com-w-full md:com-flex-row com-flex-col-reverse com-gap-12 com-items-center">
         <!-- Left Content -->
@@ -20,39 +15,43 @@
             Reach developers ready to build
             <span>with Hackathon Platform</span>
           </h1>
-          <p class="hero-description"></p>
-          <div class="hero-cta">
-            <h5 class="hero-cta-title"><fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>Host a Hackathon</h5>
-            <a [routerLink]="'/fill-form/4296'">
-              <button nbButton status="info" outline size="large" class="cta-secondary">
-                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
-              </button>
-            </a>
-            <a [routerLink]="'/fill-form/4617'">
-              <button nbButton status="primary" size="large" class="cta-secondary">
-                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
-              </button>
-            </a>
-          </div>
+          <p class="hero-description">
+            Commudle's hackathon platform gives community organizers, universities, and enterprises everything they need
+            to create, run, and measure impactful hackathons — from registration to final judging — all in one place.
+          </p>
           <div class="hero-stats">
             <div class="stat-item">
-              <span class="stat-number">250,000+</span>
+              <span class="stat-number">{{ appShowcaseStats.DEVELOPERS_AND_DESIGNERS }}</span>
               <span class="stat-label">Developers & Designers</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">500,000+</span>
+              <span class="stat-number">{{ appShowcaseStats.COMMUNITY_MEMBERS }}</span>
               <span class="stat-label">Community Members</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">100%</span>
+              <span class="stat-number">{{ appShowcaseStats.TECHIES_PERCENTAGE }}</span>
               <span class="stat-label">Focus on Developer Communities</span>
             </div>
           </div>
+          <div class="hero-cta">
+            <h5 class="hero-cta-title"><fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>Host a Hackathon</h5>
+            <a [routerLink]="'/fill-form/4296'">
+              <button nbButton status="primary" size="large" class="cta-secondary">
+                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Host a Corporate Hackathon
+              </button>
+            </a>
+            <a [routerLink]="'/fill-form/4617'">
+              <button nbButton status="info" outline size="large" class="cta-secondary">
+                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
+              </button>
+            </a>
+          </div>
+          <p class="hero-cta-note">Free to get started · We respond within 24 hours</p>
         </div>
 
         <!-- Right Hero Image -->
         <div class="hero-image">
-          <img [src]="hackathonImages.hero_image" />
+          <img [src]="hackathonImages.hero_image" alt="Commudle hackathon management platform dashboard" />
         </div>
       </div>
     </div>
@@ -63,7 +62,10 @@
     <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
       <div class="section-header">
         <h2 class="section-title">
-          <a [routerLink]="'.'" fragment="features">Everything you need to run successful hackathons</a>
+          Everything you need to run successful hackathons
+          <a [routerLink]="'.'" fragment="features" class="section-anchor-link" aria-label="Link to features section">
+            <fa-icon [icon]="faHashtag"></fa-icon>
+          </a>
         </h2>
         <p class="section-description">
           From participant registration to final judging, our platform provides all the tools for a seamless hackathon
@@ -141,8 +143,9 @@
             <div class="cta-image-section">
               <div class="launch-your-community-image">
                 <img
-                  title="hackathon-experts-team"
                   [src]="hackathonImages.launch_your_community_hackathons"
+                  alt="Community hackathon management dashboard on Commudle"
+                  loading="lazy"
                   class="com-rounded-lg"
                 />
               </div>
@@ -157,9 +160,15 @@
             Build Your Developer Community
           </div>
           <h2 class="community-title">
-            <a [routerLink]="'.'" fragment="community-hackathon">
-              Launch your own
-              <span class="com-text-primary-600">community hackathon</span>
+            Launch your own
+            <span class="com-text-primary-600">community hackathon</span>
+            <a
+              [routerLink]="'.'"
+              fragment="community-hackathon"
+              class="section-anchor-link"
+              aria-label="Link to community hackathon section"
+            >
+              <fa-icon [icon]="faHashtag"></fa-icon>
             </a>
           </h2>
           <p class="community-description">
@@ -217,14 +226,17 @@
         <!-- Left Content -->
         <div class="sponsor-content">
           <h2 class="sponsor-title">
-            <a [routerLink]="'.'" fragment="sponsor">Sponsor a hackathon</a>
+            Sponsor a hackathon
+            <a [routerLink]="'.'" fragment="sponsor" class="section-anchor-link" aria-label="Link to sponsor section">
+              <fa-icon [icon]="faHashtag"></fa-icon>
+            </a>
           </h2>
           <p class="sponsor-description">
             Hackathon hosts are looking to partner with brands who want to boost their presence, get early adopters,
             looking to hire or solve their problem statements.
           </p>
           <div class="sponsor-cta">
-            <a [routerLink]="['/hackathons']">
+            <a [routerLink]="'/fill-form/4296'">
               <button nbButton status="primary" size="large" class="cta-primary">
                 <fa-icon [icon]="faTrophy" class="com-mr-2"></fa-icon>
                 Become a Sponsor
@@ -237,7 +249,12 @@
         <div class="sponsor-visual">
           <div class="cta-image-section">
             <div class="sponsor-hackathons-image">
-              <img title="hackathon-experts-team" [src]="hackathonImages.sponsor_hackathons" class="com-rounded-lg" />
+              <img
+                [src]="hackathonImages.sponsor_hackathons"
+                alt="Sponsor a hackathon on Commudle"
+                loading="lazy"
+                class="com-rounded-lg"
+              />
             </div>
           </div>
         </div>
@@ -256,9 +273,15 @@
             Full-Service Solution
           </div>
           <h2 class="managed-title">
-            <a [routerLink]="'.'" fragment="managed-hackathons">
-              Commudle Managed
-              <span class="com-text-primary-600">Hackathons</span>
+            Commudle Managed
+            <span class="com-text-primary-600">Hackathons</span>
+            <a
+              [routerLink]="'.'"
+              fragment="managed-hackathons"
+              class="section-anchor-link"
+              aria-label="Link to managed hackathons section"
+            >
+              <fa-icon [icon]="faHashtag"></fa-icon>
             </a>
           </h2>
           <p class="managed-description">
@@ -301,13 +324,13 @@
 
           <div class="managed-cta">
             <a [routerLink]="'/fill-form/4296'">
-              <button nbButton status="info" outline size="large" class="cta-secondary">
-                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
+              <button nbButton status="primary" size="large" class="cta-secondary">
+                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Host a Corporate Hackathon
               </button>
             </a>
             <a [routerLink]="'/fill-form/4617'">
-              <button nbButton status="primary" size="large" class="cta-secondary">
-                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
+              <button nbButton status="info" outline size="large" class="cta-secondary">
+                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
               </button>
             </a>
           </div>
@@ -318,8 +341,9 @@
           <div class="cta-image-section">
             <div class="launch-your-community-image">
               <img
-                title="hackathon-experts-team"
                 [src]="hackathonImages.commudle_managed_hackathons"
+                alt="Commudle managed hackathon end-to-end services"
+                loading="lazy"
                 class="com-rounded-lg"
               />
             </div>
@@ -338,7 +362,12 @@
           <div class="advertising-dashboard">
             <div class="cta-image-section">
               <div class="launch-your-community-image">
-                <img title="hackathon-experts-team" [src]="hackathonImages.boost_hackathons" class="com-rounded-lg" />
+                <img
+                  [src]="hackathonImages.boost_hackathons"
+                  alt="Hackathon advertising and developer targeting dashboard"
+                  loading="lazy"
+                  class="com-rounded-lg"
+                />
               </div>
             </div>
           </div>
@@ -351,9 +380,15 @@
             Self-Serve Advertising
           </div>
           <h2 class="boost-title">
-            <a [routerLink]="'.'" fragment="boost-hackathons">
-              Boost your hackathons
-              <span class="com-text-primary-600">with targeted ads</span>
+            Boost your hackathons
+            <span class="com-text-primary-600">with targeted ads</span>
+            <a
+              [routerLink]="'.'"
+              fragment="boost-hackathons"
+              class="section-anchor-link"
+              aria-label="Link to boost hackathons section"
+            >
+              <fa-icon [icon]="faHashtag"></fa-icon>
             </a>
           </h2>
           <p class="boost-description">
@@ -391,7 +426,7 @@
 
           <div class="boost-stats">
             <div class="stat-highlight">
-              <span class="stat-number">100%</span>
+              <span class="stat-number">{{ appShowcaseStats.TECHIES_PERCENTAGE }}</span>
               <span class="stat-description">People using Commudle are techies.</span>
             </div>
           </div>
@@ -500,13 +535,13 @@
             </p>
             <div class="cta-buttons">
               <a [routerLink]="'/fill-form/4296'">
-                <button nbButton status="info" outline size="large" class="cta-secondary" shape="semi-round">
-                  <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Corporate Hackathon
+                <button nbButton status="primary" size="large" class="cta-secondary" shape="semi-round">
+                  <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Talk to a Hackathon Expert
                 </button>
               </a>
               <a [routerLink]="'/fill-form/4617'">
-                <button nbButton status="primary" size="large" class="cta-secondary" shape="semi-round">
-                  <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>University Hackathon
+                <button nbButton status="info" outline size="large" class="cta-secondary" shape="semi-round">
+                  <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
                 </button>
               </a>
             </div>
@@ -515,7 +550,12 @@
           <!-- Right side - Image -->
           <div class="cta-image-section">
             <div class="experts-image">
-              <img title="hackathon-experts-team" [src]="hackathonImages.experts_team_image" class="com-rounded-lg" />
+              <img
+                [src]="hackathonImages.experts_team_image"
+                alt="Commudle hackathon expert team"
+                loading="lazy"
+                class="com-rounded-lg"
+              />
             </div>
           </div>
         </div>
@@ -526,12 +566,7 @@
   <!-- FAQ Section -->
   <section id="faq" class="faq-section">
     <div class="com-max-w-4xl com-mx-auto com-px-4 com-py-20">
-      <h2 class="faq-title">
-        <a [routerLink]="'.'" fragment="faq">Frequently Asked Questions</a>
-      </h2>
-      <div class="faq-container">
-        <commudle-faq-card *ngFor="let faq of faqs" [faq]="faq"></commudle-faq-card>
-      </div>
+      <commudle-faq [faqs]="faqs"></commudle-faq>
     </div>
   </section>
 </div>

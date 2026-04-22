@@ -5,15 +5,11 @@
   @apply com-block;
 }
 
-// Ensure section title links maintain the same styling
-.section-title a,
-.community-title a,
-.sponsor-title a,
-.managed-title a,
-.boost-title a,
-.faq-title a {
-  @apply com-text-Yankees-Blue com-no-underline;
-  @apply hover:com-text-Yankees-Blue hover:com-no-underline;
+// Section anchor links - visible hashtag icon beside headings
+.section-anchor-link {
+  @apply com-ml-2 com-text-primary-400 com-no-underline com-inline-flex com-items-center com-align-middle;
+  @apply com-text-base;
+  @apply hover:com-text-primary-600;
   @apply com-transition-colors com-duration-200;
 }
 
@@ -80,34 +76,7 @@ section {
 // Hero Section
 .hero-section {
   @apply com-relative com-overflow-hidden;
-  @apply com-bg-gradient-to-br com-from-gray-50 com-via-gray-100 com-to-gray-200;
-}
-
-// Hero Decorative Elements - Colorful Gradient Orbs
-.hero-decoration {
-  @apply com-absolute com-rounded-full com-opacity-60;
-  @apply com-blur-2xl;
-
-  &.code-block-1 {
-    @apply com-w-80 com-h-80 com-bg-gradient-to-br com-from-orange-200 com-to-orange-400;
-    @apply com-top-10 com-left-10;
-    @apply lg:com-w-96 lg:com-h-96;
-    @apply sm:com-w-64 sm:com-h-64;
-  }
-
-  &.code-block-2 {
-    @apply com-w-72 com-h-72 com-bg-gradient-to-br com-from-primary-200 com-to-primary-400;
-    @apply com-top-20 com-right-16;
-    @apply lg:com-w-80 lg:com-h-80;
-    @apply sm:com-w-56 sm:com-h-56;
-  }
-
-  &.code-block-3 {
-    @apply com-w-64 com-h-64 com-bg-gradient-to-br com-from-green-200 com-to-green-400;
-    @apply com-bottom-20 com-left-20;
-    @apply lg:com-w-72 lg:com-h-72;
-    @apply sm:com-w-48 sm:com-h-48;
-  }
+  @apply com-bg-Ghost-White;
 }
 
 .hero-content {
@@ -144,8 +113,8 @@ section {
 
 .cta-primary {
   @apply com-px-8 com-py-4 com-font-semibold;
-  @apply com-shadow-lg com-transition-all com-duration-300;
-  @apply hover:com-shadow-xl hover:com-transform hover:com-scale-105;
+  @apply com-shadow-Card com-transition-all com-duration-300;
+  @apply hover:com-shadow-Card hover:com-transform hover:com-scale-105;
 }
 
 .cta-secondary {
@@ -169,11 +138,15 @@ section {
 }
 
 .stat-number {
-  @apply com-block com-text-xl com-font-bold;
+  @apply com-block com-text-3xl md:com-text-4xl com-font-bold;
 }
 
 .stat-label {
   @apply com-text-sm com-font-medium;
+}
+
+.hero-cta-note {
+  @apply com-text-sm com-text-Auro-Metal-Saurus com-mt-2;
 }
 
 // Hero Image - Enterprise Dashboard
@@ -190,7 +163,7 @@ section {
 
 // Features Section
 .features-section {
-  @apply com-bg-white com-py-10;
+  @apply com-bg-white com-py-20;
 }
 
 .section-header {
@@ -214,9 +187,9 @@ section {
 }
 
 .feature-card {
-  @apply com-bg-white com-rounded-2xl com-p-8 com-border com-border-gray-200;
-  @apply com-shadow-sm com-transition-all com-duration-300;
-  @apply hover:com-shadow-lg hover:com-transform hover:com-scale-105;
+  @apply com-bg-white com-rounded-2xl com-p-8 com-border com-border-Bright-Gray;
+  @apply com-shadow-Card com-transition-all com-duration-300;
+  @apply hover:com-shadow-Card hover:com-transform hover:com--translate-y-1;
 }
 
 .feature-icon {
@@ -394,11 +367,11 @@ section {
 
 // CTA Section
 .cta-section {
-  @apply com-py-10;
+  @apply com-py-20;
 }
 
 .cta-container {
-  @apply com-bg-slate-950;
+  @apply com-bg-Yankees-Blue;
   @apply com-rounded-3xl com-overflow-hidden com-relative;
   @apply com-border com-border-gray-800;
 }
@@ -416,14 +389,14 @@ section {
 
   .cta-title {
     @apply com-text-2xl com-font-bold com-leading-tight;
-    @apply com-text-tWhite com-mb-4;
+    @apply com-text-white com-mb-4;
     @apply lg:com-text-4xl;
     @apply sm:com-text-xl;
   }
 }
 
 .cta-description {
-  @apply com-text-lg com-text-gray-300 com-leading-relaxed com-mb-6;
+  @apply com-text-lg com-text-white com-opacity-80 com-leading-relaxed com-mb-6;
   @apply com-max-w-lg;
   @apply sm:com-text-base;
 }
@@ -446,14 +419,12 @@ section {
   .experts-image {
     @apply com-w-full com-max-w-md;
     @apply com-relative com-z-10;
-    @apply com-rounded-lg;
-
-    // Halo effect using primary color
-    box-shadow: 0 0 60px rgba(59, 130, 246, 0.3), 0 0 120px rgba(59, 130, 246, 0.2), 0 0 180px rgba(59, 130, 246, 0.1);
+    @apply com-rounded-10;
+    @apply com-shadow-Card;
 
     img {
-      @apply com-w-full com-h-auto com-rounded-lg;
-      @apply com-border com-border-gray-700;
+      @apply com-w-full com-h-auto com-rounded-10;
+      @apply com-border com-border-primary-400;
     }
   }
 }
@@ -463,9 +434,14 @@ section {
   @apply com-bg-Yankees-Blue com-text-white;
 }
 
+// Sponsor Section
+.sponsor-section {
+  @apply com-bg-white com-py-20;
+}
+
 // Community Hackathon Section
 .community-hackathon-section {
-  @apply com-bg-white com-py-10;
+  @apply com-bg-Ghost-White com-py-20;
 
   .community-content {
     .community-cta {
@@ -486,8 +462,8 @@ section {
   @apply lg:com-max-w-full;
 
   img {
-    @apply com-w-full com-h-auto com-rounded-lg;
-    @apply com-border com-border-gray-200;
+    @apply com-w-full com-h-auto com-rounded-10;
+    @apply com-border com-border-Bright-Gray;
   }
 }
 
@@ -498,8 +474,8 @@ section {
   @apply lg:com-max-w-md;
 
   img {
-    @apply com-w-full com-h-auto com-rounded-lg;
-    @apply com-border com-border-gray-200;
+    @apply com-w-full com-h-auto com-rounded-10;
+    @apply com-border com-border-Bright-Gray;
   }
 }
 
@@ -544,8 +520,26 @@ section {
   @apply hover:com-text-white hover:com-bg-primary-600;
 }
 
+// Boost Hackathons Section
+.boost-hackathons-section {
+  @apply com-bg-white com-py-20;
+}
+
+.boost-stats {
+  @apply com-bg-Ghost-White com-rounded-10 com-p-6 com-shadow-Card;
+
+  .stat-highlight {
+    @apply com-flex com-items-center com-gap-4;
+
+    .stat-description {
+      @apply com-text-base com-text-Auro-Metal-Saurus;
+    }
+  }
+}
+
 // Commudle Managed Hackathons Section
 .managed-hackathons-section {
+  @apply com-bg-Ghost-White;
   .managed-content {
     .managed-services {
       .service-item {
@@ -561,6 +555,10 @@ section {
 }
 
 // FAQ Section
+.faq-section {
+  @apply com-bg-Ghost-White;
+}
+
 .faq-title {
   @apply com-text-center;
 }
