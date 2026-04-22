@@ -14,6 +14,8 @@ export interface ICaseStudy {
   logoImage: SanityImageObject;
   challenge: [];
   solution: ISolution[];
+  caseStudyDescription: any[];
+  caseStudyMarkdownDescription: string;
 }
 
 interface ISolution {

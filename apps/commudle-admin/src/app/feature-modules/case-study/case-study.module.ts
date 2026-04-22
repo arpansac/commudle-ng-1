@@ -9,6 +9,8 @@ import { CaseStudiesComponent } from './components/case-studies/case-studies.com
 import { CaseStudiesHeaderComponent } from './components/case-studies-header/case-studies-header.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NbButtonModule, NbIconModule } from '@commudle/theme';
+import { MarkdownModule } from 'ngx-markdown';
+import { HttpClient } from '@angular/common/http';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { SharedPipesModule } from 'apps/shared-pipes/pipes.module';
 import { CaseStudyCardComponent } from 'apps/commudle-admin/src/app/feature-modules/case-study/components/case-study-card/case-study-card.component';
@@ -29,6 +31,7 @@ import { CaseStudyCardComponent } from 'apps/commudle-admin/src/app/feature-modu
     SharedComponentsModule,
     SharedPipesModule,
     NbIconModule,
+    MarkdownModule.forRoot({ loader: HttpClient }),
   ],
 })
 export class CaseStudyModule {}

@@ -7,15 +7,16 @@ import { CmsService } from 'apps/shared-services/cms.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'commudle-case-study',
-    templateUrl: './case-study.component.html',
-    styleUrls: ['./case-study.component.scss'],
-    standalone: false
+  selector: 'commudle-case-study',
+  templateUrl: './case-study.component.html',
+  styleUrls: ['./case-study.component.scss'],
+  standalone: false,
 })
 export class CaseStudyComponent implements OnInit, OnDestroy {
   caseStudyPage: ICaseStudy;
   richTextChallenges: string;
   richTextSolution: string;
+  richTextDescription: string;
   richTextStats: any[] = [];
   private subscriptions: Subscription[] = [];
 
@@ -45,11 +46,20 @@ export class CaseStudyComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.cmsService.getDataBySlug(slug).subscribe((data) => {
         this.caseStudyPage = data;
-        this.richTextChallenges = this.cmsService.getHtmlFromBlock(data, 'challenge');
-        this.richTextSolution = this.cmsService.getHtmlFromBlock(this.caseStudyPage.solution[0], 'solution');
-        this.caseStudyPage.stats.forEach((stat) => {
-          this.richTextStats.push(this.cmsService.getHtmlFromBlock(stat));
-        });
+        if (data.challenge) {
+          this.richTextChallenges = this.cmsService.getHtmlFromBlock(data, 'challenge');
+        }
+        if (data.solution?.length) {
+          this.richTextSolution = this.cmsService.getHtmlFromBlock(data.solution[0], 'solution');
+        }
+        if (data.caseStudyDescription) {
+          this.richTextDescription = this.cmsService.getHtmlFromBlock(data, 'caseStudyDescription');
+        }
+        if (data.stats?.length) {
+          data.stats.forEach((stat) => {
+            this.richTextStats.push(this.cmsService.getHtmlFromBlock(stat));
+          });
+        }
         this.setMeta();
       }),
     );

@@ -202,7 +202,6 @@ export class AiAssistantSelectorComponent {
       const success = await this.copyToClipboard(this.prompt);
 
       if (success) {
-        console.log('✓ Prompt copied to clipboard successfully');
         this.isCopied = true;
         this.promptCopied.emit(true);
 
