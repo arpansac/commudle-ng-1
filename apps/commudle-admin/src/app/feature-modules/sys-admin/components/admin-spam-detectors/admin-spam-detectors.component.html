@@ -110,12 +110,7 @@
               <span class="content-desc" *ngIf="spamDetector.community_build.description">
                 {{ spamDetector.community_build.description }}
               </span>
-              <a
-                class="view-btn"
-                [href]="'https://www.commudle.com/builds/' + spamDetector.community_build.slug"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a class="view-btn" [routerLink]="['/builds/', spamDetector.community_build.slug]" target="_blank">
                 <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                 View Build
               </a>
@@ -134,12 +129,7 @@
                   <fa-icon [icon]="icons.faBan"></fa-icon>
                   Blocked
                 </span>
-                <a
-                  class="view-btn"
-                  [href]="'https://www.commudle.com/users/' + spamDetector.user.username"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a class="view-btn" [routerLink]="['/users/', spamDetector.user.username]" target="_blank">
                   <fa-icon [icon]="icons.faArrowUpRightFromSquare"></fa-icon>
                   View Profile
                 </a>
