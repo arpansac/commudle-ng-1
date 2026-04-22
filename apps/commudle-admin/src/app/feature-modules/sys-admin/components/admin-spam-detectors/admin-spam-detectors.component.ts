@@ -68,7 +68,7 @@ export class AdminSpamDetectorsComponent implements OnInit, OnDestroy {
   }
 
   getScorePercent(score: number): number {
-    return Math.round((score || 0) * 100);
+    return parseFloat(((score || 0) * 100).toFixed(2));
   }
 
   getSpamDetectorsData() {

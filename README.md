@@ -16,6 +16,10 @@ experiences of Community Organizers.
 - Run `npx nx run commudle-admin:serve` for a dev server. Navigate to `http://localhost:4200/`.
 - The development server directly interacts with the production APIs.
 
+## Run with SSR (Server-Side Rendering)
+
+- Run `npx nx serve-ssr commudle-admin` for a dev server with SSR. Navigate to `http://localhost:4200/`.
+
 ## To create new components, service and interface
 
 - For Component Run `npx nx g @nx/angular:component <component-name>`
