@@ -3,13 +3,14 @@ import { IFaq } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-    selector: 'commudle-faq',
-    templateUrl: './faq.component.html',
-    styleUrls: ['./faq.component.scss'],
-    standalone: false
+  selector: 'commudle-faq',
+  templateUrl: './faq.component.html',
+  styleUrls: ['./faq.component.scss'],
+  standalone: false,
 })
 export class FaqComponent implements OnInit {
   @Input() faqs: IFaq[];
+  @Input() showHeading = true;
   showAnswers = [];
 
   constructor(private seoService: SeoService) {}

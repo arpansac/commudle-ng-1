@@ -2,217 +2,284 @@
 <div class="com-min-h-screen com-bg-white">
   <!-- Skip to main content link for keyboard navigation -->
   <!-- Hero Section -->
-  <section id="main-content" class="hero-section" tabindex="-1">
-    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="com-flex com-w-full md:com-flex-row com-flex-col-reverse com-gap-12 com-items-center">
-        <!-- Left Content -->
-        <div class="hero-content">
+  <section id="main-content" #heroSection class="hero-section" tabindex="-1">
+    <div class="hero-shell com-max-w-7xl com-mx-auto com-px-4">
+      <div class="hero-grid">
+        <div #heroContent class="hero-copy">
           <div class="hero-badge">
-            <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-            Trusted by top developer communities worldwide
+            <span class="hero-badge__dot"></span>
+            <fa-icon [icon]="icons.faRocket"></fa-icon>
+            Built for ambitious developer communities
           </div>
-          <h1 class="hero-title">
-            Reach developers ready to build
-            <span>with Hackathon Platform</span>
+
+          <h1 class="hero-heading">
+            Run hackathons that pull
+            <span>developers from across the globe</span>
           </h1>
-          <p class="hero-description">
-            Commudle's hackathon platform gives community organizers, universities, and enterprises everything they need
-            to create, run, and measure impactful hackathons — from registration to final judging — all in one place.
+
+          <p class="hero-subtext">
+            Commudle helps communities, universities, and enterprises launch branded hackathons with registration,
+            mentoring, judging, and submissions in one seamless workflow.
           </p>
+
+          <div class="hero-cta-row">
+            <a nbButton status="primary" size="large" class="hero-cta-link" [routerLink]="['/fill-form/4296']">
+              <fa-icon [icon]="icons.faBuilding" class="com-mr-2"></fa-icon>
+              Host a Corporate Hackathon
+            </a>
+
+            <a
+              nbButton
+              status="basic"
+              outline
+              size="large"
+              class="hero-cta-link hero-cta-link--secondary"
+              [routerLink]="['/fill-form/4617']"
+            >
+              <fa-icon [icon]="icons.faGraduationCap" class="com-mr-2"></fa-icon>
+              Host a University Hackathon
+            </a>
+          </div>
+
           <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-number">{{ appShowcaseStats.DEVELOPERS_AND_DESIGNERS }}</span>
-              <span class="stat-label">Developers & Designers</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">{{ appShowcaseStats.COMMUNITY_MEMBERS }}</span>
-              <span class="stat-label">Community Members</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">{{ appShowcaseStats.TECHIES_PERCENTAGE }}</span>
-              <span class="stat-label">Focus on Developer Communities</span>
-            </div>
+            <ng-container *ngFor="let stat of heroStats; let index = index; trackBy: trackByIndex">
+              <div class="hero-stat">
+                <span class="hero-stat__value">{{ heroStatDisplays[index] }}</span>
+                <span class="hero-stat__label">{{ stat.label }}</span>
+              </div>
+              <div *ngIf="index < heroStats.length - 1" class="hero-stat-divider" aria-hidden="true"></div>
+            </ng-container>
           </div>
-          <div class="hero-cta">
-            <h5 class="hero-cta-title"><fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>Host a Hackathon</h5>
-            <a [routerLink]="'/fill-form/4296'">
-              <button nbButton status="primary" size="large" class="cta-secondary">
-                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Host a Corporate Hackathon
-              </button>
-            </a>
-            <a [routerLink]="'/fill-form/4617'">
-              <button nbButton status="info" outline size="large" class="cta-secondary">
-                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
-              </button>
-            </a>
-          </div>
-          <p class="hero-cta-note">Free to get started · We respond within 24 hours</p>
         </div>
 
-        <!-- Right Hero Image -->
-        <div class="hero-image">
-          <img [src]="hackathonImages.hero_image" alt="Commudle hackathon management platform dashboard" />
+        <div #heroVisual class="hero-visual">
+          <div class="hero-visual-shell">
+            <div class="hero-trophy-badge" aria-hidden="true">
+              <fa-icon [icon]="icons.faTrophy"></fa-icon>
+            </div>
+
+            <div #globeWrap class="hero-globe-wrap">
+              <canvas #globeCanvas class="hero-globe-canvas" aria-hidden="true"></canvas>
+
+              <div class="hero-globe-overlays" aria-hidden="true">
+                <div
+                  *ngFor="let location of globeLocations; trackBy: trackByIndex"
+                  #hotspotElement
+                  class="hero-globe-hotspot"
+                >
+                  <span class="hero-globe-hotspot__ring"></span>
+                  <span class="hero-globe-hotspot__dot"></span>
+                </div>
+
+                <div
+                  *ngFor="let projectCard of heroProjectCards; trackBy: trackByIndex"
+                  #projectCardElement
+                  class="hero-project-card"
+                >
+                  <span class="hero-project-card__category">{{ projectCard.category }}</span>
+                  <span class="hero-project-card__title">{{ projectCard.title }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section #statsSection class="stats-band-section" aria-label="Hackathon platform reach and performance">
+    <div #statsContent class="stats-band-shell com-max-w-7xl com-mx-auto com-px-4">
+      <div class="stats-band-grid">
+        <div *ngFor="let stat of statsBandStats; let index = index; trackBy: trackByIndex" class="stats-band-item">
+          <span class="stats-band-item__value">{{ statsBandDisplays[index] }}</span>
+          <span class="stats-band-item__label">{{ stat.label }}</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section id="features" class="features-section">
-    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="section-header">
-        <h2 class="section-title">
-          Everything you need to run successful hackathons
+  <section id="features" #featuresSection class="features-section">
+    <div #featuresContent class="platform-features com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="platform-features__header">
+        <p class="platform-features__eyebrow">Platform features</p>
+        <h2 class="platform-features__title">
+          Everything for a successful hackathon
           <a [routerLink]="'.'" fragment="features" class="section-anchor-link" aria-label="Link to features section">
-            <fa-icon [icon]="faHashtag"></fa-icon>
+            <fa-icon [icon]="icons.faHashtag"></fa-icon>
           </a>
         </h2>
-        <p class="section-description">
-          From participant registration to final judging, our platform provides all the tools for a seamless hackathon
-          experience be it online, offline or hybrid.
+        <p class="platform-features__description">
+          Explore how Commudle supports organizers, participants, and sponsors through every phase of the hackathon.
         </p>
       </div>
 
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faUserPlus" class="com-text-primary-600"></fa-icon>
-          </div>
-          <h3 class="feature-title">Smart Registration</h3>
-          <p class="feature-description">
-            Streamlined registration process with custom forms, team formation tools, and automated confirmations
-          </p>
-        </div>
+      <div class="platform-features__panel">
+        <nb-tabset fullWidth class="audience-tabset">
+          <nb-tab *ngFor="let audience of featureAudienceGroups; trackBy: trackByIndex" [tabTitle]="audience.title">
+            <div class="audience-tab-content">
+              <p class="audience-tab-content__description">{{ audience.description }}</p>
 
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faUsers" class="com-text-Caribbean-Green"></fa-icon>
-          </div>
-          <h3 class="feature-title">Team Management</h3>
-          <p class="feature-description">Individual and team hackathon registrations with profile management</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faCode" class="com-text-Infra-Red"></fa-icon>
-          </div>
-          <h3 class="feature-title">Project Submission</h3>
-          <p class="feature-description">Built-in project & PPT submission system with featured projects</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faTrophy" class="com-text-Chrome-Yellow"></fa-icon>
-          </div>
-          <h3 class="feature-title">Judging Platform</h3>
-          <p class="feature-description">
-            Comprehensive judging system with scoring rubrics, feedback, and evaluation process
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faChartLine" class="com-text-primary-600"></fa-icon>
-          </div>
-          <h3 class="feature-title">Analytics Dashboard</h3>
-          <p class="feature-description">
-            Analytics and insights to track participation, engagement, and hackathon success metrics.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">
-            <fa-icon [icon]="faBullhorn" class="com-text-Caribbean-Green"></fa-icon>
-          </div>
-          <h3 class="feature-title">Marketing Tools</h3>
-          <p class="feature-description">
-            Collaboration with most active communities and boost outreach using self-serve advertising portal.
-          </p>
-        </div>
+              <div class="audience-card-grid">
+                <div *ngFor="let card of audience.cards; trackBy: trackByIndex" class="audience-feature-card">
+                  <div class="audience-feature-card__icon">
+                    <fa-icon [icon]="card.icon"></fa-icon>
+                  </div>
+                  <h3 class="audience-feature-card__title">{{ card.title }}</h3>
+                  <p class="audience-feature-card__description">{{ card.description }}</p>
+                </div>
+              </div>
+            </div>
+          </nb-tab>
+        </nb-tabset>
       </div>
     </div>
   </section>
 
-  <!-- Launch Community Hackathon Section -->
-  <section id="community-hackathon" class="community-hackathon-section">
-    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
-        <!-- Left Visual - Community Dashboard -->
-        <div class="community-visual">
-          <div class="community-dashboard">
-            <div class="cta-image-section">
-              <div class="launch-your-community-image">
-                <img
-                  [src]="hackathonImages.launch_your_community_hackathons"
-                  alt="Community hackathon management dashboard on Commudle"
-                  loading="lazy"
-                  class="com-rounded-lg"
-                />
+  <section id="how-it-works" #timelineSection class="timeline-section">
+    <div #timelineContent class="timeline-shell com-max-w-7xl com-mx-auto com-px-4 com-py-20">
+      <div class="timeline-header">
+        <p class="timeline-header__eyebrow">How it works</p>
+        <h2 class="timeline-header__title">
+          From idea to <span>award-winning</span> hackathon
+          <a
+            [routerLink]="'.'"
+            fragment="how-it-works"
+            class="section-anchor-link"
+            aria-label="Link to how it works section"
+          >
+            <fa-icon [icon]="icons.faHashtag"></fa-icon>
+          </a>
+        </h2>
+        <p class="timeline-header__description">
+          Everything orchestrated in one place — your team focuses on the experience, we handle the infrastructure.
+        </p>
+      </div>
+
+      <div class="timeline-progress-scroll">
+        <div class="tl-progress" [ngClass]="timelineProgressClass">
+          <div class="tl-progress__track"></div>
+          <div class="tl-progress__fill"></div>
+
+          <ng-container *ngFor="let stage of timelineStages; let index = index; trackBy: trackByIndex">
+            <button
+              type="button"
+              class="tl-node"
+              [class.tl-node--done]="index < activeTimelineStageIndex"
+              [class.tl-node--active]="index === activeTimelineStageIndex"
+              (click)="setTimelineStage(index, true)"
+            >
+              <span class="tl-node__emoji">{{ stage.emoji }}</span>
+              <span class="tl-node__label">{{ stage.label }}</span>
+            </button>
+            <div *ngIf="index < timelineStages.length - 1" class="tl-progress__spacer"></div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="timeline-grid">
+        <div class="tl-left">
+          <div class="tl-stage-chip">{{ activeTimelineStage.label }}</div>
+          <h3 class="tl-stage-title">{{ activeTimelineStage.title }}</h3>
+          <p class="tl-stage-description">{{ activeTimelineStage.description }}</p>
+
+          <div class="tl-feature-list">
+            <div *ngFor="let feature of activeTimelineStage.features; trackBy: trackByIndex" class="tl-feature-card">
+              <div class="tl-feature-card__icon">
+                <fa-icon [icon]="feature.icon"></fa-icon>
+              </div>
+              <div class="tl-feature-card__copy">
+                <p class="tl-feature-card__title">{{ feature.title }}</p>
+                <p class="tl-feature-card__desc">{{ feature.desc }}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Right Content -->
-        <div class="community-content">
-          <div class="community-badge">
-            <fa-icon [icon]="faUsers" class="com-mr-2"></fa-icon>
-            Build Your Developer Community
-          </div>
-          <h2 class="community-title">
-            Launch your own
-            <span class="com-text-primary-600">community hackathon</span>
-            <a
-              [routerLink]="'.'"
-              fragment="community-hackathon"
-              class="section-anchor-link"
-              aria-label="Link to community hackathon section"
-            >
-              <fa-icon [icon]="faHashtag"></fa-icon>
-            </a>
-          </h2>
-          <p class="community-description">
-            Empower your developer community with engaging hackathons, bundled with your community. Our platform
-            provides everything you need to create, manage, and grow successful developer programs.
-          </p>
-
-          <div class="community-features">
-            <div class="feature-item">
-              <fa-icon [icon]="faRocket" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Quick Setup</h4>
-                <p class="feature-description">Launch your hackathon in minutes with our simple setup flow</p>
+        <div class="tl-right">
+          <div class="tl-visual-panel">
+            <ng-container [ngSwitch]="activeTimelineStage.id">
+              <div *ngSwitchCase="'plan'" class="tl-plan-visual">
+                <div class="tl-visual-caption">Setup checklist</div>
+                <div class="tl-plan-list">
+                  <div
+                    *ngFor="let item of timelineChecklistItems; trackBy: trackByIndex"
+                    class="tl-plan-item"
+                    [class.tl-plan-item--complete]="item.complete"
+                  >
+                    <span class="tl-plan-item__marker"></span>
+                    <span class="tl-plan-item__label">{{ item.label }}</span>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="feature-item">
-              <fa-icon [icon]="faUsers" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Community Tools</h4>
-                <p class="feature-description">Built-in networking and collaboration features for participants</p>
+              <div *ngSwitchCase="'register'" class="tl-register-visual">
+                <div class="tl-visual-caption">Participants arriving</div>
+                <div class="tl-register-grid">
+                  <div *ngFor="let participant of timelineParticipants; trackBy: trackByIndex" class="tl-register-card">
+                    <div class="tl-register-card__avatar">{{ participant.initials }}</div>
+                    <div class="tl-register-card__name">{{ participant.name }}</div>
+                    <div class="tl-register-card__skill">{{ participant.skill }}</div>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="feature-item">
-              <fa-icon [icon]="faChartLine" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Growth Analytics</h4>
-                <p class="feature-description">Track member activity and engagement to find the top contributors</p>
+              <div *ngSwitchCase="'build'" class="tl-build-visual">
+                <div class="tl-visual-caption">Submission progress</div>
+                <div class="tl-build-list">
+                  <div *ngFor="let project of timelineBuildProjects; trackBy: trackByIndex" class="tl-build-row">
+                    <div class="tl-build-row__meta">
+                      <div>
+                        <p class="tl-build-row__name">{{ project.name }}</p>
+                        <p class="tl-build-row__category">{{ project.category }}</p>
+                      </div>
+                      <span class="tl-build-row__status">{{ project.progressLabel }}</span>
+                    </div>
+                    <div class="tl-build-row__bar">
+                      <span class="tl-build-row__bar-fill" [ngClass]="project.progressClass"></span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="community-cta">
-            <a [routerLink]="['/pricing']">
-              <button nbButton status="primary" size="large" class="cta-primary">
-                <fa-icon [icon]="faRocket" class="com-mr-2"></fa-icon>
-                Start Your Community
-              </button>
-            </a>
+              <div *ngSwitchCase="'judge'" class="tl-judge-visual">
+                <div class="tl-visual-caption">Evaluation snapshot</div>
+                <div class="tl-judge-table">
+                  <div class="tl-judge-table__header">
+                    <span class="tl-judge-table__project-label">Project</span>
+                    <span
+                      *ngFor="let criterion of timelineJudgeCriteria; trackBy: trackByIndex"
+                      class="tl-judge-table__criterion"
+                    >
+                      {{ criterion }}
+                    </span>
+                  </div>
 
-            <a [routerLink]="['/communities']">
-              <button nbButton status="basic" outline size="large" class="cta-secondary">All Communities</button>
-            </a>
+                  <div *ngFor="let project of timelineJudgeProjects; trackBy: trackByIndex" class="tl-judge-row">
+                    <span class="tl-judge-row__project">{{ project.name }}</span>
+                    <span
+                      *ngFor="let score of project.scores; trackBy: trackByIndex"
+                      class="tl-judge-score"
+                      [class.tl-judge-score--strong]="score.tone === 'strong'"
+                      [class.tl-judge-score--medium]="score.tone === 'medium'"
+                      [class.tl-judge-score--light]="score.tone === 'light'"
+                    >
+                      {{ score.value }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'win'" class="tl-win-visual">
+                <div class="tl-win-visual__emoji">🏆</div>
+                <div class="tl-win-card">
+                  <span class="tl-win-card__category">{{ timelineWinnerSummary.category }}</span>
+                  <h4 class="tl-win-card__title">{{ timelineWinnerSummary.title }}</h4>
+                  <p class="tl-win-card__subtitle">{{ timelineWinnerSummary.subtitle }}</p>
+                  <p class="tl-win-card__prize">{{ timelineWinnerSummary.prize }}</p>
+                </div>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -221,132 +288,51 @@
 
   <!-- Sponsor a Hackathon Section -->
   <section id="sponsor" class="sponsor-section">
-    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
-        <!-- Left Content -->
-        <div class="sponsor-content">
-          <h2 class="sponsor-title">
+    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-16">
+      <div class="sponsor-card">
+        <div class="sponsor-card__left">
+          <h2 class="sponsor-card__title">
             Sponsor a hackathon
-            <a [routerLink]="'.'" fragment="sponsor" class="section-anchor-link" aria-label="Link to sponsor section">
-              <fa-icon [icon]="faHashtag"></fa-icon>
-            </a>
-          </h2>
-          <p class="sponsor-description">
-            Hackathon hosts are looking to partner with brands who want to boost their presence, get early adopters,
-            looking to hire or solve their problem statements.
-          </p>
-          <div class="sponsor-cta">
-            <a [routerLink]="'/fill-form/4296'">
-              <button nbButton status="primary" size="large" class="cta-primary">
-                <fa-icon [icon]="faTrophy" class="com-mr-2"></fa-icon>
-                Become a Sponsor
-              </button>
-            </a>
-          </div>
-        </div>
-
-        <!-- Right Visual - Interface Mockup -->
-        <div class="sponsor-visual">
-          <div class="cta-image-section">
-            <div class="sponsor-hackathons-image">
-              <img
-                [src]="hackathonImages.sponsor_hackathons"
-                alt="Sponsor a hackathon on Commudle"
-                loading="lazy"
-                class="com-rounded-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Commudle Managed Hackathons Section -->
-  <section id="managed-hackathons" class="managed-hackathons-section">
-    <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
-        <!-- Left Content -->
-        <div class="managed-content">
-          <div class="managed-badge">
-            <fa-icon [icon]="faCogs" class="com-mr-2"></fa-icon>
-            Full-Service Solution
-          </div>
-          <h2 class="managed-title">
-            Commudle Managed
-            <span class="com-text-primary-600">Hackathons</span>
             <a
               [routerLink]="'.'"
-              fragment="managed-hackathons"
-              class="section-anchor-link"
-              aria-label="Link to managed hackathons section"
+              fragment="sponsor"
+              class="section-anchor-link section-anchor-link--white"
+              aria-label="Link to sponsor section"
             >
-              <fa-icon [icon]="faHashtag"></fa-icon>
+              <fa-icon [icon]="icons.faHashtag"></fa-icon>
             </a>
           </h2>
-          <p class="managed-description">
-            Let our expert team handle everything for you. From concept to execution, we provide end-to-end hackathon
-            management services.
+          <p class="sponsor-card__subtext">
+            Hackathon hosts are looking for brands who want to boost their developer reach, hire early talent, or get
+            their products in front of the right builders.
           </p>
 
-          <div class="managed-services">
-            <div class="service-item">
-              <div class="service-content">
-                <h4 class="service-title">
-                  <fa-icon [icon]="faClipboardList" class="service-icon"></fa-icon> Planning & Strategy
-                </h4>
-                <p class="service-description">
-                  Conceptualization, timeline planning, problem statement formation & platform setup
-                </p>
-              </div>
+          <div class="sponsor-card__value-points">
+            <div class="sponsor-card__point">
+              <fa-icon [icon]="icons.faCheck" class="sponsor-card__check"></fa-icon>
+              <span>Access 300K+ active developers across 600K+ community members</span>
             </div>
-
-            <div class="service-item">
-              <div class="service-content">
-                <h4 class="service-title">
-                  <fa-icon [icon]="faUsers" class="service-icon"></fa-icon> Participant Management
-                </h4>
-                <p class="service-description">
-                  Outreach, registration management, team formation, and participant engagement throughout
-                </p>
-              </div>
+            <div class="sponsor-card__point">
+              <fa-icon [icon]="icons.faCheck" class="sponsor-card__check"></fa-icon>
+              <span>Measure ROI with real-time campaign and participation analytics</span>
             </div>
-
-            <div class="service-item">
-              <div class="service-content">
-                <h4 class="service-title">
-                  <fa-icon [icon]="faHeadset" class="service-icon"></fa-icon> 24/7 Support & Monitoring
-                </h4>
-                <p class="service-description">Dedicated team ensures smooth operations and quick issue resolution</p>
-              </div>
+            <div class="sponsor-card__point">
+              <fa-icon [icon]="icons.faCheck" class="sponsor-card__check"></fa-icon>
+              <span>Targeted visibility across communities that match your audience</span>
             </div>
           </div>
 
-          <div class="managed-cta">
-            <a [routerLink]="'/fill-form/4296'">
-              <button nbButton status="primary" size="large" class="cta-secondary">
-                <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Host a Corporate Hackathon
-              </button>
-            </a>
-            <a [routerLink]="'/fill-form/4617'">
-              <button nbButton status="info" outline size="large" class="cta-secondary">
-                <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
-              </button>
-            </a>
-          </div>
+          <a [routerLink]="'/fill-form/4296'">
+            <button nbButton status="basic" size="large" shape="semi-round" class="sponsor-card__btn">
+              <fa-icon [icon]="icons.faTrophy" class="com-mr-2"></fa-icon>
+              Become a Sponsor
+            </button>
+          </a>
         </div>
 
-        <!-- Right Visual - Service Process -->
-        <div class="managed-visual">
-          <div class="cta-image-section">
-            <div class="launch-your-community-image">
-              <img
-                [src]="hackathonImages.commudle_managed_hackathons"
-                alt="Commudle managed hackathon end-to-end services"
-                loading="lazy"
-                class="com-rounded-lg"
-              />
-            </div>
+        <div class="sponsor-card__right">
+          <div class="sponsor-card__screenshot">
+            <img [src]="hackathonImages.sponsor_hackathons" alt="Sponsor a hackathon on Commudle" loading="lazy" />
           </div>
         </div>
       </div>
@@ -356,89 +342,73 @@
   <!-- Boost Your Hackathons Section -->
   <section id="boost-hackathons" class="boost-hackathons-section">
     <div class="com-max-w-7xl com-mx-auto com-px-4 com-py-20">
-      <div class="com-grid com-grid-cols-1 lg:com-grid-cols-2 com-gap-12 com-items-center">
-        <!-- Left Visual - Advertising Dashboard -->
-        <div class="boost-visual">
-          <div class="advertising-dashboard">
-            <div class="cta-image-section">
-              <div class="launch-your-community-image">
-                <img
-                  [src]="hackathonImages.boost_hackathons"
-                  alt="Hackathon advertising and developer targeting dashboard"
-                  loading="lazy"
-                  class="com-rounded-lg"
-                />
-              </div>
-            </div>
+      <div class="boost-grid">
+        <!-- Left — stat highlight + CTA -->
+        <div class="boost-left">
+          <p class="boost-left__eyebrow">Self-serve advertising</p>
+          <div class="boost-left__stat">
+            <span class="boost-left__stat-value">{{ appShowcaseStats.TECHIES_PERCENTAGE }}</span>
           </div>
-        </div>
-
-        <!-- Right Content -->
-        <div class="boost-content">
-          <div class="boost-badge">
-            <fa-icon [icon]="faBullhorn" class="com-mr-2"></fa-icon>
-            Self-Serve Advertising
-          </div>
-          <h2 class="boost-title">
+          <p class="boost-left__stat-label">of Commudle's audience are practising developers and designers.</p>
+          <blockquote class="boost-left__quote">
+            "Reach the builders who actually ship. Our self-serve ad portal puts your hackathon in front of the right
+            developer communities."
+          </blockquote>
+          <h2 class="boost-left__title">
             Boost your hackathons
-            <span class="com-text-primary-600">with targeted ads</span>
             <a
               [routerLink]="'.'"
               fragment="boost-hackathons"
               class="section-anchor-link"
               aria-label="Link to boost hackathons section"
             >
-              <fa-icon [icon]="faHashtag"></fa-icon>
+              <fa-icon [icon]="icons.faHashtag"></fa-icon>
             </a>
           </h2>
-          <p class="boost-description">
-            Reach the right people at the right time with our self serve advertising portal. Create, manage and optimize
-            your outreach campaigns with analytics and performance insights.
-          </p>
+          <a [routerLink]="['/ad-campaigns']">
+            <button nbButton status="primary" size="large" shape="semi-round">
+              <fa-icon [icon]="icons.faBullhorn" class="com-mr-2"></fa-icon>
+              Start Advertising
+            </button>
+          </a>
+        </div>
 
-          <div class="boost-features">
-            <div class="feature-item">
-              <fa-icon [icon]="faTarget" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Precise Targeting</h4>
-                <p class="feature-description">
-                  Target developers by skills, location, experience level, and communities
-                </p>
-              </div>
+        <!-- Right — three benefit cards -->
+        <div class="boost-right">
+          <div class="boost-card">
+            <div class="boost-card__icon">
+              <fa-icon [icon]="icons.faTarget"></fa-icon>
             </div>
-
-            <div class="feature-item">
-              <fa-icon [icon]="faChartBar" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Real-time Analytics</h4>
-                <p class="feature-description">Track impressions, clicks, and conversions with detailed reporting</p>
-              </div>
-            </div>
-
-            <div class="feature-item">
-              <fa-icon [icon]="faDollarSign" class="feature-icon"></fa-icon>
-              <div class="feature-content">
-                <h4 class="feature-title">Flexible Budgets</h4>
-                <p class="feature-description">Set campaign budgets with full control over your spending</p>
-              </div>
+            <div>
+              <h4 class="boost-card__title">Precise targeting</h4>
+              <p class="boost-card__desc">
+                Reach developers by skills, location, experience level, and community membership.
+              </p>
             </div>
           </div>
 
-          <div class="boost-stats">
-            <div class="stat-highlight">
-              <span class="stat-number">{{ appShowcaseStats.TECHIES_PERCENTAGE }}</span>
-              <span class="stat-description">People using Commudle are techies.</span>
+          <div class="boost-card">
+            <div class="boost-card__icon">
+              <fa-icon [icon]="icons.faChartBar"></fa-icon>
+            </div>
+            <div>
+              <h4 class="boost-card__title">Real-time analytics</h4>
+              <p class="boost-card__desc">
+                Track impressions, clicks, and conversions with detailed per-campaign reporting.
+              </p>
             </div>
           </div>
 
-          <div class="boost-cta">
-            <a [routerLink]="['/ad-campaigns']" class="cta-link">
-              <button nbButton status="primary" size="large" class="cta-primary com-mt-4">
-                <fa-icon [icon]="faBullhorn" class="com-mr-2"></fa-icon>
-                Start Advertising
-              </button>
-            </a>
-            <!-- <button nbButton status="basic" outline size="large" class="cta-secondary">View Pricing</button> -->
+          <div class="boost-card">
+            <div class="boost-card__icon">
+              <fa-icon [icon]="icons.faDollarSign"></fa-icon>
+            </div>
+            <div>
+              <h4 class="boost-card__title">Flexible budgets</h4>
+              <p class="boost-card__desc">
+                Set campaign budgets and adjust spend at any time with no minimum commitment.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -530,32 +500,48 @@
           <div class="cta-text-section">
             <h2 class="cta-title">Start with a hackathon, expand to a global developer program</h2>
             <p class="cta-description">
-              Get hands-on help from our hackathon expert. Work smarter with tools that can live in your community,
-              events, and hackathons—anywhere you work.
+              Join the communities, universities, and enterprises already running better hackathons on Commudle.
             </p>
             <div class="cta-buttons">
               <a [routerLink]="'/fill-form/4296'">
-                <button nbButton status="primary" size="large" class="cta-secondary" shape="semi-round">
-                  <fa-icon [icon]="faBuilding" class="com-mr-2"></fa-icon>Talk to a Hackathon Expert
+                <button nbButton status="primary" size="large" shape="semi-round">
+                  <fa-icon [icon]="icons.faRocket" class="com-mr-2"></fa-icon>Host a hackathon
                 </button>
               </a>
-              <a [routerLink]="'/fill-form/4617'">
-                <button nbButton status="info" outline size="large" class="cta-secondary" shape="semi-round">
-                  <fa-icon [icon]="faGraduationCap" class="com-mr-2"></fa-icon>Host a University Hackathon
+              <a [routerLink]="'/fill-form/4296'">
+                <button nbButton status="basic" outline size="large" shape="semi-round" class="cta-btn--outline-light">
+                  Talk to a hackathon expert
                 </button>
               </a>
             </div>
           </div>
 
-          <!-- Right side - Image -->
-          <div class="cta-image-section">
-            <div class="experts-image">
-              <img
-                [src]="hackathonImages.experts_team_image"
-                alt="Commudle hackathon expert team"
-                loading="lazy"
-                class="com-rounded-lg"
-              />
+          <!-- Right side - Ticker -->
+          <div class="cta-ticker-section" aria-hidden="true">
+            <div class="cta-ticker-wrap">
+              <div class="cta-ticker">
+                <span class="cta-ticker__item">🚀&nbsp;3 hackathons live right now</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">👥&nbsp;847 teams building</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">⏰&nbsp;Next deadline in 2h 14m</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">🏆&nbsp;12 prizes worth ₹45L up for grabs</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">🌐&nbsp;Participants from 48 countries</span>
+                <span class="cta-ticker__sep">·</span>
+                <!-- duplicate for seamless loop -->
+                <span class="cta-ticker__item">🚀&nbsp;3 hackathons live right now</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">👥&nbsp;847 teams building</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">⏰&nbsp;Next deadline in 2h 14m</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">🏆&nbsp;12 prizes worth ₹45L up for grabs</span>
+                <span class="cta-ticker__sep">·</span>
+                <span class="cta-ticker__item">🌐&nbsp;Participants from 48 countries</span>
+                <span class="cta-ticker__sep">·</span>
+              </div>
             </div>
           </div>
         </div>
@@ -566,7 +552,15 @@
   <!-- FAQ Section -->
   <section id="faq" class="faq-section">
     <div class="com-max-w-4xl com-mx-auto com-px-4 com-py-20">
-      <commudle-faq [faqs]="faqs"></commudle-faq>
+      <div class="section-header">
+        <h2 class="section-title">
+          Frequently Asked Questions
+          <a [routerLink]="'.'" fragment="faq" class="section-anchor-link" aria-label="Link to FAQ section">
+            <fa-icon [icon]="icons.faHashtag"></fa-icon>
+          </a>
+        </h2>
+      </div>
+      <commudle-faq [faqs]="faqs" [showHeading]="false"></commudle-faq>
     </div>
   </section>
 </div>

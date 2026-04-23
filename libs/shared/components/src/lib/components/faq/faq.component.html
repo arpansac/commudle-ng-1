@@ -1,8 +1,8 @@
-<a [routerLink]="'.'" fragment="faq">
-  <h2 class="heading">Frequently Asked Questions</h2>
-  <div class="faq-cards">
-    <div *ngFor="let faq of faqs" class="faq-card">
-      <commudle-faq-card [faq]="faq"></commudle-faq-card>
-    </div>
+<h2 *ngIf="showHeading" class="heading">
+  <a [routerLink]="'.'" fragment="faq">Frequently Asked Questions</a>
+</h2>
+<div class="faq-cards">
+  <div *ngFor="let faq of faqs" class="faq-card">
+    <commudle-faq-card [faq]="faq"></commudle-faq-card>
   </div>
-</a>
+</div>
