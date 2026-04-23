@@ -1,239 +1,293 @@
 #!/bin/bash
 
-# Exit script immediately if any command fails
+# ─────────────────────────────────────────────────────────────────────────────
+# Commudle Production Build System v3.0
+# ─────────────────────────────────────────────────────────────────────────────
+
 set -e
 
-# Advanced color codes and effects
-CYAN='\033[0;36m'
-MAGENTA='\033[0;35m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-RED='\033[0;31m'
-PURPLE='\033[0;35m'
-BOLD='\033[1m'
-DIM='\033[2m'
-BLINK='\033[5m'
-RESET='\033[0m'
-BG_BLUE='\033[48;5;24m'
-BG_CYAN='\033[46m'
-BG_GREEN='\033[42m'
+# ── Colors & Styles ──
+R='\033[0m'
+B='\033[1m'
+D='\033[2m'
+CY='\033[0;36m'
+GR='\033[0;32m'
+YL='\033[1;33m'
+RD='\033[0;31m'
+MG='\033[0;35m'
+WH='\033[1;37m'
+BG_BL='\033[44m'
+BG_GR='\033[42m'
+BG_MG='\033[45m'
 
-# Clear screen
-clear
+# ── Build Timer ──
+BUILD_START=$(date +%s)
 
-# Animated loading function
-show_loading() {
-  local duration=$1
-  local message=$2
-  echo -ne "${CYAN}${message}${RESET}"
-  for i in {1..3}; do
-    echo -ne "."
-    sleep $duration
-  done
-  echo -e " ${GREEN}✓${RESET}"
+# ── Utility Functions ──
+line() { echo -e "${D}${CY}$(printf '%.0s─' {1..70})${R}"; }
+step() { echo -e "  ${CY}${B}[$1/${TOTAL_STEPS}]${R} ${WH}$2${R}"; }
+ok() { echo -e "       ${GR}✔${R} $1"; }
+warn() { echo -e "       ${YL}⚠${R} $1"; }
+fail() { echo -e "       ${RD}✘${R} $1"; exit 1; }
+info() { echo -e "       ${D}$1${R}"; }
+spacer() { echo ""; }
+
+elapsed() {
+  local end=$(date +%s)
+  local diff=$((end - BUILD_START))
+  local min=$((diff / 60))
+  local sec=$((diff % 60))
+  echo "${min}m ${sec}s"
 }
 
-# Banner
-echo -e "${CYAN}${BOLD}"
-sleep 0.1
-cat << "EOF"
-    ╔══════════════════════════════════════════════════════════════════╗
-    ║                                                                  ║
-    ║     ██████╗ ██████╗ ███╗   ███╗███╗   ███╗██╗   ██╗██████╗     ║
-    ║    ██╔════╝██╔═══██╗████╗ ████║████╗ ████║██║   ██║██╔══██╗    ║
-    ║    ██║     ██║   ██║██╔████╔██║██╔████╔██║██║   ██║██║  ██║    ║
-    ║    ██║     ██║   ██║██║╚██╔╝██║██║╚██╔╝██║██║   ██║██║  ██║    ║
-    ║    ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║ ╚═╝ ██║╚██████╔╝██████╔╝    ║
-    ║     ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═════╝     ║
-    ║                                                                  ║
-EOF
-echo -e "${MAGENTA}${BOLD}"
-cat << "EOF"
-    ║          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓          ║
-    ║          ▓▓  🏗️  PRODUCTION BUILD SYSTEM v2.0 🏗️   ▓▓          ║
-    ║          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓          ║
-    ║                                                                  ║
-    ╚══════════════════════════════════════════════════════════════════╝
-EOF
-echo -e "${RESET}"
-sleep 0.2
+# ── Arrow Key Menu ──
+# Usage: arrow_select option1 option2 option3 ...
+# Returns selected option via: ARROW_RESULT
+ARROW_RESULT=""
+arrow_select() {
+  local options=("$@")
+  local selected=0
+  local count=${#options[@]}
 
-# System initialization
-echo -e "${DIM}${CYAN}[SYSTEM]${RESET} ${DIM}Initializing build system...${RESET}"
-sleep 0.3
-echo -e "${DIM}${CYAN}[SYSTEM]${RESET} ${GREEN}✓${RESET} ${DIM}System ready${RESET}"
-echo ""
-sleep 0.2
+  tput civis 2>/dev/null || true
 
-# Environment selection
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-echo -e "${BG_BLUE}${BOLD}  PHASE 1/4 › ENVIRONMENT CONFIGURATION                           ${RESET}"
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-echo -e "${BLUE}╭──────────────────────────────────────────────────────────────╮${RESET}"
-echo -e "${BLUE}│${RESET} ${YELLOW}Select your deployment environment:${RESET}                      ${BLUE}│${RESET}"
-echo -e "${BLUE}╰──────────────────────────────────────────────────────────────╯${RESET}"
-echo ""
+  while true; do
+    for i in "${!options[@]}"; do
+      if [ $i -eq $selected ]; then
+        echo -e "       ${CY}${B}▸ ${options[$i]}${R}"
+      else
+        echo -e "       ${D}  ${options[$i]}${R}"
+      fi
+    done
 
-PS3="$(echo -e "${MAGENTA}${BOLD}❯❯❯${RESET} ")"
-select environment in "🏠  LOCAL      (Development)" "🧪  TEST       (Testing)" "🎭  STAGING    (Pre-production)" "🚀  PRODUCTION (Live)"; do
-  case $environment in
-    "🏠  LOCAL      (Development)"|"🧪  TEST       (Testing)"|"🎭  STAGING    (Pre-production)"|"🚀  PRODUCTION (Live)")
-      env_name=$(echo $environment | awk '{print $2}' | tr '[:upper:]' '[:lower:]')
-      echo ""
-      echo -e "${GREEN}┌─────────────────────────────────────────────────────────────┐${RESET}"
-      echo -e "${GREEN}│${RESET} ${BOLD}✓ ENVIRONMENT LOCKED:${RESET} ${CYAN}${BOLD}$env_name${RESET}                        ${GREEN}│${RESET}"
-      echo -e "${GREEN}└─────────────────────────────────────────────────────────────┘${RESET}"
+    read -rsn1 key
+    if [[ "$key" == $'\x1b' ]]; then
+      read -rsn2 key
+      case "$key" in
+        '[A') ((selected > 0)) && ((selected--)) ;;          # Up
+        '[B') ((selected < count - 1)) && ((selected++)) ;;  # Down
+      esac
+    elif [[ "$key" == "" ]]; then
       break
-      ;;
-    *)
-      echo -e "${RED}${BOLD}⚠ ERROR:${RESET} Invalid selection. Please try again."
-      echo ""
-      ;;
-  esac
-done
+    fi
 
+    tput cuu "$count" 2>/dev/null || echo -ne "\033[${count}A"
+  done
+
+  tput cnorm 2>/dev/null || true
+
+  ARROW_RESULT="${options[$selected]}"
+}
+
+TOTAL_STEPS=6
+ENV_FILE="libs/shared/environments/src/lib/environments.ts"
+NGSW_FILE="apps/commudle-admin/ngsw-config.json"
+
+# ── Clear & Banner ──
+clear
 echo ""
-show_loading 0.2 "${YELLOW}⚡${RESET} Configuring environment matrix"
-
-show_loading 0.2 "${YELLOW}⚡${RESET} Configuring environment matrix"
-show_loading 0.2 "${YELLOW}⚡${RESET} Syncing configuration files"
-sed -i "" "s/export const environment = environments\['.*'\];/export const environment = environments['$env_name'];/" libs/shared/environments/src/lib/environments.ts
-show_loading 0.2 "${YELLOW}⚡${RESET} Applying settings"
-echo -e "${GREEN}${BOLD}✓ CONFIGURATION COMPLETE${RESET}"
+echo -e "${CY}${B}"
+cat << 'BANNER'
+     ██████╗ ██████╗ ███╗   ███╗███╗   ███╗██╗   ██╗██████╗ ██╗     ███████╗
+    ██╔════╝██╔═══██╗████╗ ████║████╗ ████║██║   ██║██╔══██╗██║     ██╔════╝
+    ██║     ██║   ██║██╔████╔██║██╔████╔██║██║   ██║██║  ██║██║     █████╗
+    ██║     ██║   ██║██║╚██╔╝██║██║╚██╔╝██║██║   ██║██║  ██║██║     ██╔══╝
+    ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗███████╗
+     ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═════╝╚══════╝╚══════╝
+BANNER
+echo -e "${R}"
+echo -e "    ${BG_MG}${WH}  BUILD SYSTEM v3.0  ${R}  ${D}Production Release Pipeline${R}"
 echo ""
-sleep 0.3
+line
 
-# Version configuration
-echo -e "${BG_CYAN}${BOLD}                                                                  ${RESET}"
-echo -e "${BG_CYAN}${BOLD}  PHASE 2/4 › VERSION CONFIGURATION                               ${RESET}"
-echo -e "${BG_CYAN}${BOLD}                                                                  ${RESET}"
+# ── System Info ──
+spacer
+echo -e "  ${D}${CY}SYSTEM${R}"
+info "Node     : $(node -v 2>/dev/null || echo 'not found')"
+info "npm      : $(npm -v 2>/dev/null || echo 'not found')"
+info "OS       : $(uname -s) $(uname -m)"
+info "Date     : $(date '+%b %d, %Y  %H:%M:%S')"
+info "User     : $(whoami)"
+spacer
+line
 
-# Get current version from ngsw-config.json
-CURRENT_VERSION=$(jq -r '.appData.version' apps/commudle-admin/ngsw-config.json)
-echo -e "${CYAN}╭──────────────────────────────────────────────────────────────╮${RESET}"
-echo -e "${CYAN}│${RESET} ${YELLOW}Current version:${RESET} ${BOLD}$CURRENT_VERSION${RESET}                              ${CYAN}│${RESET}"
-echo -e "${CYAN}╰──────────────────────────────────────────────────────────────╯${RESET}"
-echo ""
-echo -e "${YELLOW}Select version increment:${RESET}"
-PS3="$(echo -e "${MAGENTA}${BOLD}❯❯❯${RESET} ")"
-select ver_option in "Keep current ($CURRENT_VERSION)" "Patch (x.x.x+1)" "Minor (x.x+1.0)" "Major (x+1.0.0)" "Custom version"; do
-  case $ver_option in
-    "Keep current ($CURRENT_VERSION)")
-      version=$CURRENT_VERSION
-      break
-      ;;
-    "Patch (x.x.x+1)")
-      IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-      version="$major.$minor.$((patch + 1))"
-      break
-      ;;
-    "Minor (x.x+1.0)")
-      IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-      version="$major.$((minor + 1)).0"
-      break
-      ;;
-    "Major (x+1.0.0)")
-      IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-      version="$((major + 1)).0.0"
-      break
-      ;;
-    "Custom version")
-      read -p "$(echo -e "${MAGENTA}❯❯❯${RESET} Enter new version: ")" version
-      break
-      ;;
-    *)
-      echo -e "${RED}${BOLD}⚠ ERROR:${RESET} Invalid selection. Please try again."
-      echo ""
-      ;;
-  esac
-done
+# ── STEP 1: Pre-flight Checks ──
+spacer
+step 1 "PRE-FLIGHT CHECKS"
+spacer
 
-# Update both package.json and ngsw-config.json with new version
-npm version $version --no-git-tag-version --allow-same-version > /dev/null 2>&1
-jq --arg version "$version" '.appData.version = $version' \
-  apps/commudle-admin/ngsw-config.json > apps/commudle-admin/ngsw-config.json.tmp && \
-  mv apps/commudle-admin/ngsw-config.json.tmp apps/commudle-admin/ngsw-config.json
+command -v node &> /dev/null && ok "Node.js $(node -v)" || fail "Node.js not found"
+command -v npm &> /dev/null && ok "npm $(npm -v)" || fail "npm not found"
+command -v jq &> /dev/null && ok "jq available" || fail "jq not found. Install: brew install jq"
+npx nx --version &> /dev/null && ok "Nx workspace detected" || fail "Nx not found. Run npm ci"
+[ -f "$ENV_FILE" ] && ok "Environment config" || fail "Missing: $ENV_FILE"
+[ -f "$NGSW_FILE" ] && ok "Service worker config" || fail "Missing: $NGSW_FILE"
 
-echo -e "${GREEN}✓${RESET} Version set to: ${BOLD}$version${RESET}"
-echo ""
-sleep 0.3
+spacer
+line
 
-# Release notes
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-echo -e "${BG_BLUE}${BOLD}  PHASE 3/4 › RELEASE NOTES                                       ${RESET}"
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-read -p "$(echo -e "${MAGENTA}❯❯❯${RESET} Enter release notes: ")" releaseNotes
-echo -e "${GREEN}✓${RESET} Release notes recorded"
-echo ""
-sleep 0.3
+# ── STEP 2: Git Pull ──
+spacer
+step 2 "GIT PULL"
+spacer
 
-# Critical flag
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-echo -e "${BG_BLUE}${BOLD}  PHASE 4/4 › CRITICAL UPDATE FLAG                                ${RESET}"
-echo -e "${BG_BLUE}${BOLD}                                                                  ${RESET}"
-read -p "$(echo -e "${MAGENTA}❯❯❯${RESET} Is this a critical update? ${DIM}(y/N)${RESET}: ")" critical_input
-if [[ "$critical_input" =~ ^[Yy]$ ]]; then
-  critical="true"
-  echo -e "${RED}${BOLD}⚠ CRITICAL UPDATE FLAGGED${RESET}"
+# Detect remotes
+REMOTES=($(git remote 2>/dev/null))
+if [ ${#REMOTES[@]} -eq 0 ]; then
+  warn "No git remotes found, skipping pull"
 else
-  critical="false"
-  echo -e "${GREEN}✓${RESET} Standard update"
+  info "Current branch: ${B}$(git branch --show-current)${R}"
+  spacer
+  echo -e "       ${YL}Select remote:${R}"
+  spacer
+  arrow_select "${REMOTES[@]}" "Skip pull"
+  pull_remote="$ARROW_RESULT"
+
+  if [ "$pull_remote" != "Skip pull" ]; then
+    spacer
+    read -p "$(echo -e "       ${MG}▸${R} Branch name: ")" pull_branch
+    [ -z "$pull_branch" ] && pull_branch=$(git branch --show-current)
+    spacer
+    info "Running: git pull ${pull_remote} ${pull_branch}"
+    git pull "$pull_remote" "$pull_branch"
+    spacer
+    ok "Pulled ${B}${pull_remote}/${pull_branch}${R}"
+  else
+    spacer
+    ok "Skipped git pull"
+  fi
 fi
-echo ""
-sleep 0.3
 
-# Update ngsw-config.json
+spacer
+line
+
+# ── STEP 3: Environment ──
+spacer
+step 3 "ENVIRONMENT"
+spacer
+echo -e "       ${YL}Use ↑↓ arrows to select, Enter to confirm${R}"
+spacer
+
+arrow_select "local" "test" "staging" "production"
+env_selected="$ARROW_RESULT"
+
+sed -i "" "s/export const environment = environments\['.*'\];/export const environment = environments['$env_selected'];/" "$ENV_FILE"
+spacer
+ok "Environment → ${B}${env_selected}${R}"
+spacer
+line
+
+# ── STEP 4: Version ──
+spacer
+step 4 "VERSION"
+spacer
+
+CURRENT_VERSION=$(jq -r '.appData.version' "$NGSW_FILE")
+info "Current: ${B}${CURRENT_VERSION}${R}"
+spacer
+
+IFS='.' read -r v_major v_minor v_patch <<< "$CURRENT_VERSION"
+patch_v="$v_major.$v_minor.$((v_patch + 1))"
+minor_v="$v_major.$((v_minor + 1)).0"
+major_v="$((v_major + 1)).0.0"
+
+echo -e "       ${YL}Use ↑↓ arrows to select, Enter to confirm${R}"
+spacer
+
+arrow_select "Keep current ($CURRENT_VERSION)" "Patch ($patch_v)" "Minor ($minor_v)" "Major ($major_v)" "Custom"
+ver_selected="$ARROW_RESULT"
+
+case "$ver_selected" in
+  "Keep current"*) version="$CURRENT_VERSION" ;;
+  "Patch"*) version="$patch_v" ;;
+  "Minor"*) version="$minor_v" ;;
+  "Major"*) version="$major_v" ;;
+  "Custom")
+    read -p "$(echo -e "       ${MG}▸${R} Version (x.y.z): ")" version
+    ;;
+esac
+
+jq --arg v "$version" '.appData.version = $v' "$NGSW_FILE" > "${NGSW_FILE}.tmp" && mv "${NGSW_FILE}.tmp" "$NGSW_FILE"
+spacer
+ok "Version → ${B}${version}${R}"
+spacer
+line
+
+# ── STEP 5: Release Metadata ──
+spacer
+step 5 "RELEASE METADATA"
+spacer
+
+read -p "$(echo -e "       ${MG}▸${R} Release notes: ")" releaseNotes
+[ -z "$releaseNotes" ] && releaseNotes="Release $version"
+ok "Notes → ${D}${releaseNotes}${R}"
+spacer
+
+echo -e "       ${YL}Critical update?${R}"
+spacer
+arrow_select "No" "Yes"
+crit_selected="$ARROW_RESULT"
+[ "$crit_selected" = "Yes" ] && critical="true" || critical="false"
+spacer
+ok "Critical → ${B}${critical}${R}"
+
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
-echo -e "${PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${PURPLE}║${RESET}  ${BOLD}BUILD CONFIGURATION SUMMARY${RESET}                              ${PURPLE}║${RESET}"
-echo -e "${PURPLE}╠══════════════════════════════════════════════════════════════╣${RESET}"
-echo -e "${PURPLE}║${RESET}  ${YELLOW}🌍 ENVIRONMENT:${RESET} ${CYAN}${BOLD}$env_name${RESET}                                   ${PURPLE}║${RESET}"
-echo -e "${PURPLE}║${RESET}  ${YELLOW}📌 VERSION:${RESET}     ${BOLD}$version${RESET}                                    ${PURPLE}║${RESET}"
-echo -e "${PURPLE}║${RESET}  ${YELLOW}📝 NOTES:${RESET}       ${BOLD}$releaseNotes${RESET}                              ${PURPLE}║${RESET}"
-echo -e "${PURPLE}║${RESET}  ${YELLOW}⚡ CRITICAL:${RESET}    ${BOLD}$critical${RESET}                                     ${PURPLE}║${RESET}"
-echo -e "${PURPLE}║${RESET}  ${YELLOW}🕐 TIMESTAMP:${RESET}   ${BOLD}$timestamp${RESET}                    ${PURPLE}║${RESET}"
-echo -e "${PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
-echo ""
-sleep 0.5
 
-show_loading 0.2 "${CYAN}📦${RESET} Updating service worker configuration"
-timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
-jq --arg version "$version" --arg releaseNotes "$releaseNotes" --argjson critical "$critical" --arg timestamp "$timestamp" \
-  '.appData.version = $version | .appData.releaseNotes = $releaseNotes | .appData.critical = $critical | .appData.timestamp = $timestamp' \
-  apps/commudle-admin/ngsw-config.json > apps/commudle-admin/ngsw-config.json.tmp && \
-  mv apps/commudle-admin/ngsw-config.json.tmp apps/commudle-admin/ngsw-config.json
-echo -e "${GREEN}${BOLD}✓ CONFIGURATION SAVED${RESET}"
-echo ""
-sleep 0.3
+jq --arg v "$version" \
+   --arg notes "$releaseNotes" \
+   --argjson crit "$critical" \
+   --arg ts "$timestamp" \
+   '.appData.version = $v | .appData.releaseNotes = $notes | .appData.critical = $crit | .appData.timestamp = $ts' \
+   "$NGSW_FILE" > "${NGSW_FILE}.tmp" && mv "${NGSW_FILE}.tmp" "$NGSW_FILE"
 
-# Build process
-echo -e "${BG_GREEN}${BOLD}                                                                  ${RESET}"
-echo -e "${BG_GREEN}${BOLD}  INITIATING BUILD SEQUENCE                                        ${RESET}"
-echo -e "${BG_GREEN}${BOLD}                                                                  ${RESET}"
-echo ""
-sleep 0.3
+ok "Config saved"
+spacer
+line
 
-show_loading 0.3 "${YELLOW}🧹${RESET} Resetting Nx cache"
-# npx nx reset > /dev/null 2>&1
-echo -e "${GREEN}${BOLD}✓ CACHE CLEARED${RESET}"
-echo ""
-sleep 0.3
+# ── Build Manifest ──
+spacer
+echo -e "  ${BG_BL}${WH}  BUILD MANIFEST  ${R}"
+spacer
+echo -e "       ┌────────────────┬──────────────────────────────────────┐"
+printf "       │ ${D}Environment${R}    │ ${B}%-36s${R}│\n" "$env_selected"
+printf "       │ ${D}Version${R}        │ ${B}%-36s${R}│\n" "$version"
+printf "       │ ${D}Critical${R}       │ ${B}%-36s${R}│\n" "$critical"
+printf "       │ ${D}Timestamp${R}      │ ${B}%-36s${R}│\n" "$timestamp"
+printf "       │ ${D}Notes${R}          │ ${B}%-36.36s${R}│\n" "$releaseNotes"
+echo -e "       └────────────────┴──────────────────────────────────────┘"
+spacer
+line
 
-echo -e "${CYAN}${BOLD}┌─────────────────────────────────────────────────────────────┐${RESET}"
-echo -e "${CYAN}${BOLD}│${RESET}  ${BLINK}${GREEN}●${RESET} ${BOLD}BUILDING SSR RELEASE...${RESET}                                  ${CYAN}${BOLD}│${RESET}"
-echo -e "${CYAN}${BOLD}└─────────────────────────────────────────────────────────────┘${RESET}"
-echo ""
+# ── STEP 6: SSR Build ──
+spacer
+step 6 "SSR BUILD"
+spacer
+
+echo -e "       ${CY}●${R} ${B}Building commudle-admin SSR release...${R}"
+echo -e "       ${D}This may take several minutes.${R}"
+spacer
+
 npx nx run commudle-admin:release
-echo ""
-echo -e "${GREEN}${BOLD}✓ BUILD COMPLETE${RESET}"
-echo ""
-sleep 0.5
 
-# Final message
-echo -e "${GREEN}╔══════════════════════════════════════════════════════════════╗${RESET}"
-echo -e "${GREEN}║${RESET}  ${BOLD}✓ BUILD SUCCESSFUL!${RESET}                                        ${GREEN}║${RESET}"
-echo -e "${GREEN}╠══════════════════════════════════════════════════════════════╣${RESET}"
-echo -e "${GREEN}║${RESET}  ${YELLOW}📦 OUTPUT:${RESET} ${BOLD}prod-server.zip${RESET}                                ${GREEN}║${RESET}"
-echo -e "${GREEN}║${RESET}  ${YELLOW}🚀 READY:${RESET}  Upload to Elastic Beanstalk for deployment      ${GREEN}║${RESET}"
-echo -e "${GREEN}╚══════════════════════════════════════════════════════════════╝${RESET}"
+spacer
+ok "SSR build complete"
+spacer
+line
+
+# ── Final Report ──
+BUILD_TIME=$(elapsed)
+
+spacer
+echo -e "  ${BG_GR}${WH}  BUILD SUCCESSFUL  ${R}"
+spacer
+echo -e "       ┌────────────────┬──────────────────────────────────────┐"
+printf "       │ ${D}Output${R}         │ ${B}%-36s${R}│\n" "prod-server.zip"
+printf "       │ ${D}Environment${R}    │ ${B}%-36s${R}│\n" "$env_selected"
+printf "       │ ${D}Version${R}        │ ${B}%-36s${R}│\n" "$version"
+printf "       │ ${D}Build Time${R}     │ ${B}%-36s${R}│\n" "$BUILD_TIME"
+echo -e "       └────────────────┴──────────────────────────────────────┘"
+spacer
+echo -e "       ${GR}→${R} Upload ${B}prod-server.zip${R} to Elastic Beanstalk to deploy."
+spacer
+line
+echo ""
