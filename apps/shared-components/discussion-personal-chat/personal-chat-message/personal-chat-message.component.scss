@@ -93,7 +93,15 @@ p {
     }
 
     .user-container {
-      @apply com-flex com-flex-col com-items-end com-w-full;
+      @apply com-flex com-flex-col com-w-full;
+
+      &.self-user-container {
+        @apply com-items-end com-justify-end;
+      }
+
+      &.other-user-container {
+        @apply com-items-start com-justify-start;
+      }
 
       .user {
         .name {

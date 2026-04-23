@@ -23,7 +23,10 @@
     >
       <div class="message-content">
         <div class="prefix d-flex align-items-start">
-          <div class="user-container">
+          <div
+            class="user-container"
+            [ngClass]="{ 'self-user-container': isSelfMessage(), 'other-user-container': !isSelfMessage() }"
+          >
             <p class="chat-message" [innerHTML]="message.content | stripHtmlExceptLinks"></p>
           </div>
         </div>

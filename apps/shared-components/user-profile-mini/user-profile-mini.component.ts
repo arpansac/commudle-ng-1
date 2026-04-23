@@ -17,6 +17,7 @@ export class UserProfileMiniComponent {
   @Input() alignStart = false;
   @Input() profileInfoMaxWidth = '80%';
   @Input() addPadding = true;
+  @Input() truncateName = false;
   @Input() userLatestMessage: string;
   @Input() unreadMessagesCount: number;
 

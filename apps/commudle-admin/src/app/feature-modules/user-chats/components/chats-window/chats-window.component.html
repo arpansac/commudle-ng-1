@@ -10,6 +10,7 @@
           [size]="'small'"
           [user]="discussionFollower.user"
           [showOnlineText]="true"
+          [truncateName]="true"
         ></app-user-profile-mini>
         <div *ngIf="discussion" class="com-flex com-items-center">
           <button ghost nbButton [nbContextMenu]="items" nbContextMenuTag="user-personal-chat-menu-{{ discussion.id }}">
