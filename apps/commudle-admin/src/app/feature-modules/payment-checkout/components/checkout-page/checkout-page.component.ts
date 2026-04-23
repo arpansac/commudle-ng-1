@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -81,6 +82,7 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private dialogRef?: NbDialogRef<unknown>;
+  private readonly isBrowser: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -94,7 +96,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     private discountCodesService: DiscountCodesService,
     private gtm: GoogleTagManagerService,
     private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.contactInfoForm = this.initCheckoutForm();
   }
 
@@ -456,7 +460,9 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   reload(): void {
-    window.location.reload();
+    if (this.isBrowser) {
+      window.location.reload();
+    }
   }
 
   increaseQuantity(): void {

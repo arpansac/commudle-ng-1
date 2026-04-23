@@ -1,6 +1,8 @@
-import { Component, Injector, Input, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Component, Injector, Input, OnDestroy, Optional } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { AuthService, GoogleLoginProvider } from '@commudle/auth';
 import { NbToastrService } from '@commudle/theme';
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
@@ -16,12 +18,12 @@ import { ReCaptchaV3Service } from 'ng-recaptcha-2';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'commudle-login-signup',
-    templateUrl: './login-signup.component.html',
-    styleUrls: ['./login-signup.component.scss'],
-    standalone: false
+  selector: 'commudle-login-signup',
+  templateUrl: './login-signup.component.html',
+  styleUrls: ['./login-signup.component.scss'],
+  standalone: false,
 })
-export class LoginSignupComponent implements OnInit, OnDestroy {
+export class LoginSignupComponent implements OnDestroy {
   @Input() redirectUrl: string;
   @Input() showCloseButton = false;
   @Input() heading = 'Sign In';
@@ -38,6 +40,7 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
   faXmark = faXmark;
 
   private authService: AuthService;
+  private readonly isBrowser: boolean;
 
   constructor(
     public libAuthWatchService: LibAuthwatchService,
@@ -52,7 +55,9 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     private dialogService: NbDialogService,
     private recaptchaV3Service: ReCaptchaV3Service,
     @Optional() private dialogRef: NbDialogRef<LoginSignupComponent>,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.subscriptions.push(
       this.libAuthWatchService.currentUserVerified$.subscribe((value: boolean) => {
         if (value) {
@@ -81,8 +86,6 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.subscriptions.forEach((value) => value.unsubscribe());
   }
@@ -104,7 +107,9 @@ export class LoginSignupComponent implements OnInit, OnDestroy {
     if (targetUrl === '/') {
       targetUrl = '/dashboard';
     }
-    window.location.href = window.location.origin + targetUrl;
+    if (this.isBrowser) {
+      window.location.href = window.location.origin + targetUrl;
+    }
   }
 
   private isValidRedirectUrl(url: string): boolean {

@@ -1,6 +1,17 @@
 /* eslint-disable @nx/enforce-module-boundaries */
+import { isPlatformBrowser } from '@angular/common';
 import { SeoService } from '@commudle/shared-services';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { IEditorValidator } from '@commudle/editor';
 import { EUserRoles, ICommunityChannel, IUserMessage } from '@commudle/shared-models';
 import {
@@ -21,10 +32,10 @@ import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { UserMessageReceiptHandlerService } from 'libs/shared/components/src/lib/services/user-message-receipt-handler.service';
 
 @Component({
-    selector: 'commudle-community-channel-message',
-    templateUrl: './community-channel-message.component.html',
-    styleUrls: ['./community-channel-message.component.scss'],
-    standalone: false
+  selector: 'commudle-community-channel-message',
+  templateUrl: './community-channel-message.component.html',
+  styleUrls: ['./community-channel-message.component.scss'],
+  standalone: false,
 })
 export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   @Input() message!: IUserMessage;
@@ -58,6 +69,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   contextMenuItems = [];
 
   @ViewChild('messageRef') messageRef!: ElementRef<HTMLDivElement>;
+  private readonly isBrowser: boolean;
 
   protected readonly moment = moment;
 
@@ -73,7 +85,10 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     private communityChannelsService: CommunityChannelsService,
     private libToastLogService: ToastrService,
     private seoService: SeoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     // this.seoSchema();
@@ -212,7 +227,9 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   }
 
   seoSchema() {
-    const shareLink = `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`;
+    const shareLink = this.isBrowser
+      ? `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`
+      : '';
     this.seoService.setSchema({
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',

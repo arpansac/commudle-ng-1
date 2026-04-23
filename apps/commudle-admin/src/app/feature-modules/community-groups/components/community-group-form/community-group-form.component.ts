@@ -1,5 +1,6 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
@@ -8,10 +9,10 @@ import { Subscription } from 'rxjs';
 import { SeoService } from '@commudle/shared-services';
 
 @Component({
-    selector: 'app-community-group-form',
-    templateUrl: './community-group-form.component.html',
-    styleUrls: ['./community-group-form.component.scss'],
-    standalone: false
+  selector: 'app-community-group-form',
+  templateUrl: './community-group-form.component.html',
+  styleUrls: ['./community-group-form.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
@@ -22,6 +23,7 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
   themeColor = '#166534';
 
   subscriptions: Subscription[] = [];
+  private readonly isBrowser: boolean;
 
   tinyMCE = {
     height: 300,
@@ -63,7 +65,9 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.communityGroupForm = this.fb.group({
       name: ['', Validators.required],
       logo: [''],
@@ -170,7 +174,9 @@ export class CommunityGroupFormComponent implements OnInit, OnDestroy {
 
   redirect() {
     this.toastLogService.successDialog('Saved!');
-    window.location.reload();
+    if (this.isBrowser) {
+      window.location.reload();
+    }
   }
 
   setMeta() {

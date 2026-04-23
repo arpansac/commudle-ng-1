@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChild } from '@angular/core';
 import { IFaq, IProductPrice, IPurchaseOrder } from '@commudle/shared-models';
 import { AuthService, GoogleTagManagerService, ProductPriceService, SeoService } from '@commudle/shared-services';
 import { NbDialogService } from '@commudle/theme';
@@ -42,6 +43,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     faCircleXmark,
   };
   private destroy$ = new Subject<void>();
+  private isBrowser = false;
 
   constructor(
     private seoService: SeoService,
@@ -53,9 +55,11 @@ export class PricingComponent implements OnInit, OnDestroy {
     private nbDialogService: NbDialogService,
     private errorHandler: LibErrorHandlerService,
     private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {}
 
   ngOnInit(): void {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.setExistingCommunities();
     this.getPricingDetails();
     this.setFaqs();
@@ -176,7 +180,9 @@ export class PricingComponent implements OnInit, OnDestroy {
               });
               this.isFullPageLoading = false;
               if (response && response.uuid) {
-                window.location.href = `/checkout/${response.uuid}`;
+                if (this.isBrowser) {
+                  window.location.href = `/checkout/${response.uuid}`;
+                }
               }
             },
             (error) => {

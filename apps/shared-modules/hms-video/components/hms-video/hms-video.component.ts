@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 import { IEmbeddedVideoStream } from 'apps/shared-models/embedded_video_stream.model';
 import { IEvent } from '@commudle/shared-models';
@@ -41,6 +52,7 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   private destroy$ = new Subject<void>();
+  private readonly isBrowser: boolean;
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -48,7 +60,10 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
     private hmsApiService: HmsApiService,
     private hmsLiveChannel: HmsLiveChannel,
     private hmsStageService: HmsStageService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     // Set the initial hms state
@@ -128,6 +143,8 @@ export class HmsVideoComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   reload() {
-    window.location.reload();
+    if (this.isBrowser) {
+      window.location.reload();
+    }
   }
 }

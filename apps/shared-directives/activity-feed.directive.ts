@@ -1,10 +1,20 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { UserEngagementRecordsService } from '@commudle/shared-services';
 import { EUserActivityEventType, EDbModels, IActivityFeed } from '@commudle/shared-models';
 
 @Directive({
-    selector: '[appActivityFeed]',
-    standalone: false
+  selector: '[appActivityFeed]',
+  standalone: false,
 })
 export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
   @Input() feed: IActivityFeed;
@@ -12,8 +22,15 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
 
   timeout: any;
   private observer: IntersectionObserver;
+  private readonly isBrowser: boolean;
 
-  constructor(private el: ElementRef, private userEngagementRecordsService: UserEngagementRecordsService) {}
+  constructor(
+    private el: ElementRef,
+    private userEngagementRecordsService: UserEngagementRecordsService,
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngAfterViewInit() {
     // TODO: change to use dedicated library
@@ -44,6 +61,9 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
   }
 
   getUserEngagement(event_type: string) {
+    if (!this.isBrowser) {
+      return;
+    }
     const formData = new FormData();
     formData.append(
       'user_engagement_record[parent_id]',
@@ -56,6 +76,6 @@ export class ActivityFeedDirective implements AfterViewInit, OnDestroy {
     formData.append('user_engagement_record[url]', window.location.href);
     formData.append('user_engagement_record[event_type]', event_type);
     formData.append('user_engagement_record[created_at]', new Date().toISOString());
-    this.userEngagementRecordsService.userEngagementRecords(formData).subscribe((data) => {});
+    this.userEngagementRecordsService.userEngagementRecords(formData).subscribe();
   }
 }

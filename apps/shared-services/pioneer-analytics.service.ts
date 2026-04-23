@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 
 @Injectable({
@@ -6,21 +7,22 @@ import { NavigationStart, Router } from '@angular/router';
 })
 export class PioneerAnalyticsService {
   pioneerAnalytics: any;
+  private readonly isBrowser: boolean;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   // Call the active() method whenever the current user performs an action that makes them an active user
   trackAction(): void {
-    if (window.location.hostname !== 'localhost') {
+    if (this.isBrowser && window.location.hostname !== 'localhost') {
       this.pioneerAnalytics.active();
     }
   }
 
   startAnalytics(userId: number): void {
-    if (window.location.hostname !== 'localhost') {
-      // @ts-ignore
-      this.pioneerAnalytics = window.pioneerAnalytics;
+    if (this.isBrowser && window.location.hostname !== 'localhost') {
+      this.pioneerAnalytics = (window as any).pioneerAnalytics;
 
       this.identifyUser(userId);
 
