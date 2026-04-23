@@ -9,7 +9,7 @@
     <div class="base-layout">
       <div class="container">
         <div class="content banner">
-          <div class="logo-image">
+          <div class="logo-image" *ngIf="caseStudyPageHeader?.logoImage">
             <img
               [src]="imageUrl(caseStudyPageHeader.logoImage).url()"
               alt="{{ caseStudyPageHeader.title }}"
