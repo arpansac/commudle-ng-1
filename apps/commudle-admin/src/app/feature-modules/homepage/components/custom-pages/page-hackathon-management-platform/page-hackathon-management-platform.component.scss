@@ -5,12 +5,19 @@
   @apply com-block;
 }
 
-// Section anchor links - visible hashtag icon beside headings
+// Section anchor links - hidden by default, revealed on h2 hover
 .section-anchor-link {
-  @apply com-ml-2 com-text-primary-400 com-no-underline com-inline-flex com-items-center com-align-middle;
+  @apply com-opacity-0 com-ml-2 com-text-primary-400 com-no-underline com-inline-flex com-items-center com-align-middle;
   @apply com-text-base;
-  @apply hover:com-text-primary-600;
-  @apply com-transition-colors com-duration-200;
+  @apply com-transition-opacity com-duration-200;
+
+  &:focus {
+    @apply com-opacity-100;
+  }
+}
+
+h2:hover .section-anchor-link {
+  @apply com-opacity-100 com-text-primary-600;
 }
 
 // Global heading styles with Yankees-Blue
@@ -77,6 +84,7 @@ section {
 .hero-section {
   @apply com-relative com-overflow-hidden;
   @apply com-bg-Ghost-White;
+  @apply com-border-b com-border-Bright-Gray;
 }
 
 .hero-content {
@@ -164,6 +172,7 @@ section {
 // Features Section
 .features-section {
   @apply com-bg-white com-py-20;
+  @apply com-border-b com-border-Bright-Gray;
 }
 
 .section-header {
@@ -187,7 +196,7 @@ section {
 }
 
 .feature-card {
-  @apply com-bg-white com-rounded-2xl com-p-8 com-border com-border-Bright-Gray;
+  @apply com-bg-Ghost-White com-rounded-2xl com-p-8 com-border com-border-Bright-Gray;
   @apply com-shadow-Card com-transition-all com-duration-300;
   @apply hover:com-shadow-Card hover:com-transform hover:com--translate-y-1;
 }
@@ -437,11 +446,13 @@ section {
 // Sponsor Section
 .sponsor-section {
   @apply com-bg-white com-py-20;
+  @apply com-border-b com-border-Bright-Gray;
 }
 
 // Community Hackathon Section
 .community-hackathon-section {
   @apply com-bg-Ghost-White com-py-20;
+  @apply com-border-b com-border-Bright-Gray;
 
   .community-content {
     .community-cta {
@@ -523,6 +534,7 @@ section {
 // Boost Hackathons Section
 .boost-hackathons-section {
   @apply com-bg-white com-py-20;
+  @apply com-border-b com-border-Bright-Gray;
 }
 
 .boost-stats {
@@ -539,7 +551,8 @@ section {
 
 // Commudle Managed Hackathons Section
 .managed-hackathons-section {
-  @apply com-bg-Ghost-White;
+  @apply com-bg-Ghost-White com-py-20;
+  @apply com-border-b com-border-Bright-Gray;
   .managed-content {
     .managed-services {
       .service-item {
