@@ -139,12 +139,8 @@ p {
   @apply com-relative com-w-fit com-max-w-[90%];
 }
 
-.custom-width {
-  @apply com-min-w-[84px];
-}
-
 .message-content {
-  @apply com-relative com-mb-2px;
+  @apply com-relative;
 }
 
 .highlight-background {

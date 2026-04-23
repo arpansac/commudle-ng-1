@@ -38,10 +38,19 @@
       @apply com-p-4 com-flex com-flex-col com-justify-between com-items-start;
 
       .user-profile {
-        @apply com-flex com-flex-row com-justify-between com-w-full;
+        @apply com-flex com-flex-row com-justify-between com-w-full com-min-w-0;
+
+        .user-profile-main {
+          @apply com-flex-1 com-min-w-0;
+        }
+
+        .user-profile-main app-user-profile-mini {
+          @apply com-block com-w-full;
+        }
 
         .date {
-          @apply com-m-0 com-text-xs com-font-normal com-text-Cadet-Grey com-pt-2 com-flex-shrink-0 com-ml-4;
+          @apply com-m-0 com-text-xs com-font-normal com-text-Cadet-Grey com-flex-shrink-0 com-ml-4;
+          white-space: nowrap;
         }
       }
     }

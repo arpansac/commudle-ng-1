@@ -28,7 +28,7 @@
       {{ user.designation | slice : 0 : 50 }}
       <span *ngIf="user.designation?.length > 25">...</span>
     </p>
-    <div class="latest-message-count">
+    <div *ngIf="showLatestMessage" class="latest-message-count">
       <p class="last_message">{{ userLatestMessage | stripHtmlExceptLinks }}</p>
       <app-badge
         *ngIf="unreadMessagesCount > 0"

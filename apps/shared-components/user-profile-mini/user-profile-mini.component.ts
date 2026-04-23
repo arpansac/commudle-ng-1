@@ -20,6 +20,7 @@ export class UserProfileMiniComponent {
   @Input() truncateName = false;
   @Input() userLatestMessage: string;
   @Input() unreadMessagesCount: number;
+  @Input() showLatestMessage = false;
 
   isOnline: boolean;
 

@@ -26,7 +26,7 @@
   }
 
   .profile-picture {
-    @apply com-bg-tWhite;
+    @apply com-bg-tWhite com-flex-shrink-0;
     max-width: 50px;
     max-height: 50px;
     border-radius: 50%;
@@ -71,6 +71,24 @@
         }
       }
 
+      .name-link,
+      .name-text {
+        @apply com-inline;
+      }
+
+      &.truncate-name {
+        min-width: 0;
+
+        .name-link {
+          @apply com-flex-1;
+          min-width: 0;
+        }
+
+        .name-text {
+          @apply com-block com-truncate com-whitespace-nowrap com-overflow-hidden;
+        }
+      }
+
       &.medium {
         font-size: 1.2rem;
       }
@@ -78,7 +96,7 @@
       &.small {
         font-size: 14px;
         font-weight: 300;
-        line-height: 14px;
+        line-height: 16px;
       }
     }
 

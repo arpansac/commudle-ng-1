@@ -8,7 +8,23 @@
       @apply com-p-4;
 
       .window-options {
-        @apply com-flex com-justify-between com-items-center;
+        @apply com-flex com-justify-between com-items-center com-w-full;
+
+        .window-user {
+          @apply com-flex-1 com-min-w-0 com-overflow-hidden;
+        }
+
+        .window-user app-user-profile-mini {
+          @apply com-block com-w-full;
+        }
+
+        .window-actions {
+          @apply com-flex-shrink-0 com-ml-2;
+        }
+
+        .window-actions button {
+          @apply com-flex-shrink-0;
+        }
       }
     }
 
