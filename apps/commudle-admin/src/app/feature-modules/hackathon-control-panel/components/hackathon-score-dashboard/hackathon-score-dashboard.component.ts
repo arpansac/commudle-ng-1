@@ -1,40 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HackathonTeamRoundScoreService, RoundService, SeoService } from '@commudle/shared-services';
-import { EDbModels, IRound } from '@commudle/shared-models';
+import { EDbModels, IRound, IRoundScores, ITeamRow } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
 import { faChevronDown, faChevronUp, faUser } from '@fortawesome/free-solid-svg-icons';
-
-interface IEvaluatorScore {
-  evaluator_name: string;
-  evaluator_photo: string;
-  total_score: number;
-  round_name: string;
-  criteria: { text: string; score: number }[];
-}
-
-interface IRoundScores {
-  round_id: number;
-  round_name: string;
-  evaluator_scores: IEvaluatorScore[];
-  avg_score: number;
-  best_score: number;
-}
-
-interface ITeamRow {
-  rank: number;
-  team_id: number;
-  team_name: string;
-  team_initials: string;
-  members_count: number;
-  rounds: IRoundScores[];
-  total_score: number;
-  avg_score: number;
-  total_evaluations: number;
-  expanded: boolean;
-}
 
 @Component({
   selector: 'commudle-hackathon-score-dashboard',
@@ -179,7 +150,6 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
         rank: 0,
         team_id: team.id,
         team_name: team.name,
-        team_initials: this.getInitials(team.name),
         members_count: team.team_members_count || 0,
         rounds,
         total_score: totalScore,
@@ -223,13 +193,5 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
   onPageChange(newPage: number): void {
     this.page = newPage;
     this.fetchScoreData();
-  }
-
-  getInitials(name: string): string {
-    return (name || '')
-      .split(' ')
-      .map((w) => w.charAt(0).toUpperCase())
-      .slice(0, 2)
-      .join('');
   }
 }
