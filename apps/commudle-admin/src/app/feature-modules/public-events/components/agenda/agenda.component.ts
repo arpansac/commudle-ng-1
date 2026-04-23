@@ -48,32 +48,33 @@ export class AgendaComponent implements OnInit {
     ) {
       this.seoService.setSchema({
         '@context': 'https://schema.org',
-        '@type': 'Event',
-        name: this.event.name,
+        '@type': 'WebPage',
+        name: `Agenda - ${this.event.name}`,
+        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}/agenda`,
         description: this.event.description.replace(/<[^>]*>/g, '').substring(0, 200),
-        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
-        startDate: this.event.start_time,
-        endDate: this.event.end_time,
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-        location: {
-          '@type': 'Place',
-          name: this.eventDatesLocation[0].event_locations[0].location.address,
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: this.eventDatesLocation[0].event_locations[0].location.address,
-            addressCountry: 'IN',
-          },
-        },
-        organizer: {
-          '@type': 'Organization',
-          name: this.community.name,
-          url: environment.app_url + '/communities/' + this.community.slug,
-        },
-        offers: {
-          '@type': 'Offer',
+
+        isPartOf: {
+          '@type': 'WebPage',
           name: this.event.name,
-          url: environment.app_url + '/communities/' + this.community.slug + '/events/' + this.event.slug,
+          '@id': `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+          url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+        },
+
+        about: {
+          '@type': 'Event',
+          name: this.event.name,
+          url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+          startDate: this.event.start_time,
+          endDate: this.event.end_time,
+          location: {
+            '@type': 'Place',
+            name: this.eventDatesLocation[0].event_locations[0].location.address,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: this.eventDatesLocation[0].event_locations[0].location.address,
+              addressCountry: 'IN',
+            },
+          },
         },
       });
     }
