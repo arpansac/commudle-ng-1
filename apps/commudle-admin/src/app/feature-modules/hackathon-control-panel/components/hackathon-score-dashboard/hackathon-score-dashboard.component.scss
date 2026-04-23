@@ -1,8 +1,14 @@
 .score-dashboard {
-  @apply com-mx-0;
+  @apply com-flex com-flex-col com-gap-6;
+
+  .dashboard-header {
+    .dashboard-title {
+      @apply com-text-2xl com-font-bold com-text-gray-900 com-m-0;
+    }
+  }
 
   .filters-section {
-    @apply com-p-4 com-rounded-lg com-border com-border-solid com-border-gray-200 com-mb-6;
+    @apply com-p-4 com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white;
 
     .filters-header {
       @apply com-flex com-justify-between com-items-center com-mb-3;
@@ -32,210 +38,224 @@
         }
 
         .filter-input {
-          @apply com-w-full com-px-3 com-py-2 com-text-sm com-border com-border-solid com-border-gray-300 com-rounded-lg com-bg-white;
+          @apply com-w-full com-px-3 com-py-2 com-text-sm com-border com-border-solid com-border-gray-300 com-rounded-lg com-bg-white com-text-Yankees-Blue;
           appearance: auto;
 
           &:focus {
             @apply com-outline-none com-border-primary-500;
           }
         }
-
-        .filter-range {
-          @apply com-w-full com-cursor-pointer;
-        }
       }
     }
   }
 
   .stats-row {
-    @apply com-grid com-grid-cols-2 com-gap-4 com-mb-6;
+    @apply com-grid com-grid-cols-2 com-gap-3;
     @apply md:com-grid-cols-4;
 
     .stat-card {
-      @apply com-flex com-flex-col com-p-4 com-rounded-lg com-border com-border-solid com-border-gray-200;
-
-      .stat-label {
-        @apply com-text-xs com-text-gray-500;
-      }
+      @apply com-flex com-flex-col com-items-center com-p-4 com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white;
 
       .stat-value {
-        @apply com-text-3xl com-font-bold com-text-gray-900;
+        @apply com-text-2xl com-font-bold com-text-gray-900;
       }
 
-      .stat-sub {
-        @apply com-text-xs com-text-primary-500;
+      .stat-label {
+        @apply com-text-xs com-text-gray-500 com-mt-1;
       }
     }
   }
 
   .loading-state {
-    @apply com-text-center com-py-12;
+    @apply com-text-center com-py-16;
   }
 
   .empty-state {
-    @apply com-text-center com-py-12 com-bg-gray-100 com-rounded-lg;
+    @apply com-text-center com-py-16 com-bg-white com-rounded-lg com-border com-border-solid com-border-gray-200;
+
+    .empty-icon {
+      @apply com-text-4xl com-text-gray-300 com-mb-2;
+    }
 
     p {
-      @apply com-text-gray-500;
+      @apply com-text-gray-400 com-m-0;
     }
   }
 
-  .table-wrapper {
-    @apply com-overflow-x-auto com-rounded-lg com-border com-border-solid com-border-gray-200;
+  .teams-list {
+    @apply com-flex com-flex-col com-gap-3;
 
-    .score-table {
-      @apply com-w-full com-border-collapse com-min-w-max;
+    .team-card {
+      @apply com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white com-overflow-hidden com-transition-all;
 
-      thead {
-        tr {
-          @apply com-bg-gray-100;
+      &:hover {
+        @apply com-shadow-sm;
+      }
 
-          th {
-            @apply com-px-4 com-py-3 com-text-xs com-font-semibold com-text-gray-500 com-text-left com-uppercase com-tracking-wider;
-            @apply com-border-0 com-border-b com-border-solid com-border-gray-200;
+      .team-summary {
+        @apply com-flex com-items-center com-justify-between com-px-4 com-py-3 com-cursor-pointer com-select-none;
+        @apply md:com-px-6 md:com-py-4;
 
-            &.sortable {
-              @apply com-cursor-pointer com-select-none;
+        .team-left {
+          @apply com-flex com-items-center com-gap-3;
 
-              &:hover {
-                @apply com-text-gray-700;
-              }
+          .team-rank {
+            @apply com-text-sm com-font-bold com-text-gray-400 com-w-8 com-flex-shrink-0;
+          }
+
+          .team-avatar {
+            @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-text-white com-flex com-items-center com-justify-center com-text-sm com-font-bold com-flex-shrink-0;
+          }
+
+          .team-info {
+            @apply com-flex com-flex-col;
+
+            .team-name {
+              @apply com-font-semibold com-text-gray-900 com-text-sm;
+              @apply md:com-text-base;
             }
 
-            .sort-indicator {
-              @apply com-ml-1 com-text-primary-500;
+            .team-meta {
+              @apply com-text-xs com-text-gray-400;
+            }
+          }
+        }
+
+        .team-right {
+          @apply com-flex com-items-center com-gap-4;
+
+          .team-score-summary {
+            @apply com-flex com-flex-col com-items-end;
+
+            .team-total-score {
+              @apply com-text-xl com-font-bold com-text-green-600;
+            }
+
+            .team-avg-label {
+              @apply com-text-[10px] com-text-gray-400;
             }
           }
 
-          .col-rank {
-            @apply com-w-12 com-text-center;
-          }
-
-          .col-team {
-            @apply com-min-w-[220px];
-          }
-
-          .col-round {
-            @apply com-min-w-[160px] com-text-center;
-          }
-
-          .col-total {
-            @apply com-min-w-[100px] com-text-right;
+          .expand-icon {
+            @apply com-text-gray-400 com-text-sm;
           }
         }
       }
 
-      tbody {
-        tr {
-          @apply com-border-0 com-border-b com-border-solid com-border-gray-200 com-transition-colors;
+      .team-details {
+        @apply com-border-0 com-border-t com-border-solid com-border-gray-200 com-bg-gray-50;
 
-          &:hover {
-            @apply com-bg-gray-50;
+        .round-block {
+          @apply com-px-4 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
+          @apply md:com-px-6;
+
+          &:last-child {
+            @apply com-border-b-0;
           }
 
-          td {
-            @apply com-px-4 com-py-4 com-text-sm com-align-top;
-          }
+          .round-header {
+            @apply com-flex com-flex-col com-gap-1 com-mb-3;
+            @apply md:com-flex-row md:com-items-center md:com-justify-between;
 
-          .col-rank {
-            @apply com-text-center com-align-middle;
+            .round-name {
+              @apply com-text-sm com-font-bold com-text-Yankees-Blue;
+            }
 
-            .rank-badge {
-              @apply com-inline-flex com-items-center com-justify-center com-w-7 com-h-7 com-rounded-full com-bg-gray-200 com-text-xs com-font-semibold com-text-gray-600;
+            .round-stats {
+              @apply com-flex com-items-center com-gap-3;
+
+              .round-avg,
+              .round-best,
+              .round-evals {
+                @apply com-text-xs com-px-2 com-py-0.5 com-rounded-full com-font-medium;
+              }
+
+              .round-avg {
+                @apply com-bg-blue-100 com-text-blue-700;
+              }
+
+              .round-best {
+                @apply com-bg-green-100 com-text-green-700;
+              }
+
+              .round-evals {
+                @apply com-bg-gray-200 com-text-gray-600;
+              }
             }
           }
 
-          .col-team {
-            .team-info {
-              @apply com-flex com-items-center com-gap-3;
+          .evaluator-list {
+            @apply com-flex com-flex-col com-gap-2;
 
-              .team-avatar {
-                @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-text-white com-flex com-items-center com-justify-center com-text-sm com-font-bold com-flex-shrink-0;
-              }
+            .evaluator-row {
+              @apply com-flex com-flex-col com-gap-2 com-p-3 com-rounded-lg com-bg-white com-border com-border-solid com-border-gray-200;
+              @apply md:com-flex-row md:com-items-start md:com-justify-between;
 
-              .team-details {
-                @apply com-flex com-flex-col;
+              .evaluator-info {
+                @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-mb-2;
+                @apply md:com-mb-0 md:com-min-w-[160px];
 
-                .team-name {
-                  @apply com-font-semibold com-text-gray-900;
+                .evaluator-photo {
+                  @apply com-w-7 com-h-7 com-rounded-full com-object-cover com-flex-shrink-0;
                 }
 
-                .team-members {
-                  @apply com-text-xs com-text-gray-500 com-flex com-items-center com-gap-1;
+                .evaluator-photo-placeholder {
+                  @apply com-w-7 com-h-7 com-rounded-full com-bg-gray-300 com-flex com-items-center com-justify-center com-flex-shrink-0;
 
-                  .members-badge {
-                    @apply com-bg-gray-200 com-text-gray-600 com-px-1.5 com-py-0.5 com-rounded com-text-[10px] com-font-semibold;
+                  fa-icon {
+                    @apply com-text-xs com-text-gray-500;
+                  }
+                }
+
+                .evaluator-name {
+                  @apply com-text-sm com-font-medium com-text-gray-700;
+                }
+              }
+
+              .evaluator-scores {
+                @apply com-flex com-flex-col com-gap-2 com-flex-1;
+                @apply md:com-flex-row md:com-items-center md:com-justify-end md:com-gap-4;
+
+                .criteria-list {
+                  @apply com-flex com-flex-wrap com-gap-1;
+
+                  .criteria-item {
+                    @apply com-flex com-items-center com-gap-1 com-text-xs com-px-2 com-py-1 com-rounded com-bg-gray-100;
+
+                    .criteria-name {
+                      @apply com-text-gray-500;
+                    }
+
+                    .criteria-score {
+                      @apply com-font-bold com-text-gray-800;
+                    }
+                  }
+                }
+
+                .evaluator-total {
+                  @apply com-flex com-items-center com-gap-2 com-flex-shrink-0;
+
+                  .evaluator-total-label {
+                    @apply com-text-xs com-text-gray-400 com-uppercase;
+                  }
+
+                  .evaluator-total-value {
+                    @apply com-text-lg com-font-bold com-text-green-600;
                   }
                 }
               }
             }
           }
-
-          .col-round {
-            @apply com-text-center;
-
-            .round-scores-list {
-              @apply com-flex com-flex-col com-gap-3;
-            }
-
-            .score-cell {
-              @apply com-flex com-flex-col com-items-center com-gap-1;
-
-              .score-status-badge {
-                @apply com-text-[10px] com-font-semibold com-px-2 com-py-0.5 com-rounded-full;
-
-                &.submitted {
-                  @apply com-bg-green-100 com-text-green-700;
-                }
-
-                &.draft {
-                  @apply com-bg-yellow-100 com-text-yellow-700;
-                }
-              }
-
-              .score-value {
-                @apply com-text-2xl com-font-bold com-text-gray-900;
-
-                &.draft-value {
-                  @apply com-text-gray-400;
-                }
-              }
-
-              .criteria-chips {
-                @apply com-flex com-gap-1 com-flex-wrap com-justify-center;
-
-                .criteria-chip {
-                  @apply com-text-[10px] com-font-semibold com-px-1.5 com-py-0.5 com-rounded com-bg-green-600 com-text-white;
-                }
-              }
-
-              .evaluator-name {
-                @apply com-text-xs com-text-gray-500;
-              }
-            }
-
-            .no-score {
-              @apply com-text-gray-300 com-text-lg;
-            }
-          }
-
-          .col-total {
-            @apply com-text-right com-align-middle;
-
-            .total-value {
-              @apply com-text-xl com-font-bold com-text-green-600;
-            }
-
-            .avg-label {
-              @apply com-block com-text-xs com-text-gray-400;
-            }
-          }
         }
       }
+    }
+
+    .team-card-expanded {
+      @apply com-shadow-md com-border-primary-300;
     }
   }
 
   .pagination-wrapper {
-    @apply com-mt-6 com-flex com-justify-center;
+    @apply com-flex com-justify-center;
   }
 }
