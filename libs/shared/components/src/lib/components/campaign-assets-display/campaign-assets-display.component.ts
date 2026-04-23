@@ -198,16 +198,17 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
 
   createUserEngagementForCampaign(eventType) {
     if (this.campaignType === 'live' && this.campaign) {
+      const currentUrl = this.isBrowser ? window.location.href : '';
       const formData = new FormData();
       formData.append('campaign_engagement[event_type]', eventType);
-      formData.append('campaign_engagement[url]', window.location.href);
+      formData.append('campaign_engagement[url]', currentUrl);
 
       if (!this.seoService.isBot) {
         this.campaignService.recordImpression(formData, this.campaign.id).subscribe(() => {
           this.gtmService.dataLayerPushEvent('ad_campaign', {
             com_campaign_id: this.campaign.id,
             com_campaign_name: this.campaign.name,
-            com_current_page_url: window.location.href,
+            com_current_page_url: currentUrl,
             com_event_type: eventType,
           });
         });
@@ -217,13 +218,14 @@ export class CampaignAssetsDisplayComponent implements OnInit, OnChanges, OnDest
 
   createUserEngagementForDefaultImage(eventType) {
     if (this.campaignType === 'live' && this.campaign) {
+      const currentUrl = this.isBrowser ? window.location.href : '';
       this.userEngagementRecordForm.patchValue({
         event_type: eventType,
-        url: window.location.href,
+        url: currentUrl,
       });
 
       this.gtmService.dataLayerPushEvent('default_ad_campaign', {
-        com_current_page_url: window.location.href,
+        com_current_page_url: currentUrl,
         com_event_type: eventType,
       });
     }

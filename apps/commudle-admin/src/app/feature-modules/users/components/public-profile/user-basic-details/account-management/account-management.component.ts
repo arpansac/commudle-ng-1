@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
@@ -8,27 +9,29 @@ import { ButtonStyle, ButtonText, ConsentTypesEnum } from 'apps/shared-models/en
 import { GoogleTagManagerService } from 'apps/commudle-admin/src/app/services/google-tag-manager.service';
 
 @Component({
-    selector: 'commudle-account-management',
-    templateUrl: './account-management.component.html',
-    styleUrls: ['./account-management.component.scss'],
-    standalone: false
+  selector: 'commudle-account-management',
+  templateUrl: './account-management.component.html',
+  styleUrls: ['./account-management.component.scss'],
+  standalone: false,
 })
-export class AccountManagementComponent implements OnInit {
+export class AccountManagementComponent {
   deactivateAccount = false;
   closeAccount = false;
   faExclamationTriangle = faExclamationTriangle;
+  private readonly isBrowser: boolean;
 
   constructor(
     private nbDialogService: NbDialogService,
     private router: Router,
     private appUsersService: AppUsersService,
     private gtm: GoogleTagManagerService,
-  ) {}
-
-  ngOnInit(): void {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   deactivateProfile(deleteProfile?: boolean) {
-    this.appUsersService.deactivateProfile(deleteProfile).subscribe((data) => {});
+    this.appUsersService.deactivateProfile(deleteProfile).subscribe();
   }
 
   accountManagement(data) {
@@ -55,13 +58,17 @@ export class AccountManagementComponent implements OnInit {
         this.deactivateProfile(true);
         this.gtm.dataLayerPushEvent('user-account-delete', {});
         this.router.navigate(['./']).then(() => {
-          window.location.reload();
+          if (this.isBrowser) {
+            window.location.reload();
+          }
         });
       } else if (result === 'accepted' && this.closeAccount === false) {
         this.deactivateProfile();
         this.gtm.dataLayerPushEvent('user-account-deactivate', {});
         this.router.navigate(['./']).then(() => {
-          window.location.reload();
+          if (this.isBrowser) {
+            window.location.reload();
+          }
         });
       }
     });

@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 import {
@@ -16,10 +17,10 @@ import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum'
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'commudle-campaign-form',
-    templateUrl: './campaign-form.component.html',
-    styleUrls: ['./campaign-form.component.scss'],
-    standalone: false
+  selector: 'commudle-campaign-form',
+  templateUrl: './campaign-form.component.html',
+  styleUrls: ['./campaign-form.component.scss'],
+  standalone: false,
 })
 export class CampaignFormComponent implements OnInit, OnDestroy {
   ESidebarWidth = ESidebarWidth;
@@ -39,9 +40,16 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   };
   isEditMode = false;
   private subscriptions: Subscription[] = [];
+  private readonly isBrowser: boolean;
 
-  constructor(private router: Router, private footerService: FooterService, private sidebarService: SidebarService) {
+  constructor(
+    private router: Router,
+    private footerService: FooterService,
+    private sidebarService: SidebarService,
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
     this.sidebarEventName = 'campaignFormComponent';
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
@@ -71,7 +79,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   }
 
   generateSlug() {
-    this.lastSegment = window.location.pathname.split('/').pop();
+    this.lastSegment = this.isBrowser ? window.location.pathname.split('/').pop() : '';
     if (this.lastSegment === 'order-setup') {
       this.slug = 'Order Setup';
     } else if (this.lastSegment === 'order-confirmation') {

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { EDbModels } from '@commudle/shared-models';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { ForumsStore } from '@commudle/shared-services';
@@ -25,8 +26,15 @@ export class ForumsDashboardComponent implements OnInit {
   faIcons = {
     faBars,
   };
+  private readonly isBrowser: boolean;
 
-  constructor(private forumStore: ForumsStore, public sidebarService: SidebarService) {}
+  constructor(
+    private forumStore: ForumsStore,
+    public sidebarService: SidebarService,
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.parentInfo = this.getParentFromUrl();
@@ -45,6 +53,9 @@ export class ForumsDashboardComponent implements OnInit {
   }
 
   private getParentFromUrl(): ParentInfo | null {
+    if (!this.isBrowser) {
+      return null;
+    }
     const url = window.location.pathname;
 
     // Match /admin/communities/{parent_id}/forums or /communities/{parent_id}/forums

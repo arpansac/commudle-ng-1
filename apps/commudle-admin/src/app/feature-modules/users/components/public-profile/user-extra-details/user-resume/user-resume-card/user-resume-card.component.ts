@@ -1,12 +1,15 @@
 import { Clipboard } from '@angular/cdk/clipboard';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -20,10 +23,10 @@ import { NavigatorShareService } from 'apps/shared-services/navigator-share.serv
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-user-resume-card',
-    templateUrl: './user-resume-card.component.html',
-    styleUrls: ['./user-resume-card.component.scss'],
-    standalone: false
+  selector: 'app-user-resume-card',
+  templateUrl: './user-resume-card.component.html',
+  styleUrls: ['./user-resume-card.component.scss'],
+  standalone: false,
 })
 export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
@@ -38,6 +41,7 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
   subscriptions: Subscription[] = [];
 
   private destroy$ = new Subject<void>();
+  private readonly isBrowser: boolean;
 
   constructor(
     private authWatchService: LibAuthwatchService,
@@ -46,7 +50,10 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
     private nbToastrService: NbToastrService,
     private navigatorShareService: NavigatorShareService,
     private clipboard: Clipboard,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -55,7 +62,7 @@ export class UserResumeCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.userResume) {
+    if (changes.userResume && this.isBrowser) {
       this.resumeLink = `${window.location.href.split('#')[0]}/(p:resume/${this.userResume.uuid})`;
     }
   }

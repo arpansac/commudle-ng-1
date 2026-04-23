@@ -1,14 +1,16 @@
+import { isPlatformBrowser } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { CookieConsentService } from 'apps/commudle-admin/src/app/services/cookie-consent.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
-    selector: 'app-cookie-consent',
-    templateUrl: './cookie-consent.component.html',
-    styleUrls: ['./cookie-consent.component.scss'],
-    standalone: false
+  selector: 'app-cookie-consent',
+  templateUrl: './cookie-consent.component.html',
+  styleUrls: ['./cookie-consent.component.scss'],
+  standalone: false,
 })
 export class CookieConsentComponent implements OnInit {
   @Input() showPopup = false;
@@ -16,7 +18,7 @@ export class CookieConsentComponent implements OnInit {
 
   cookieConstent = false;
   showPreferncesButton = false;
-  isDisable: boolean = true;
+  isDisable = true;
   isBrowser;
   preferencesForm;
 
@@ -25,8 +27,9 @@ export class CookieConsentComponent implements OnInit {
     private isBrowserService: IsBrowserService,
     private seoService: SeoService,
     private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
-    this.isBrowser = this.isBrowserService.isBrowser();
+    this.isBrowser = this.isBrowserService.isBrowser() && isPlatformBrowser(this.platformId);
     this.preferencesForm = this.fb.group({
       necessary: [{ value: true, disabled: true }],
       analytics: [true],
@@ -69,7 +72,7 @@ export class CookieConsentComponent implements OnInit {
     );
     this.cookieConstent = false;
     this.showPopup = false;
-    if (this.reloadApp) {
+    if (this.reloadApp && this.isBrowser) {
       window.location.reload();
     }
   }

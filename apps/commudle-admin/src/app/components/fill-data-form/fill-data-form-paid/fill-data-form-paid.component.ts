@@ -1,5 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
+import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@commudle/theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
@@ -41,10 +43,10 @@ import { ICustomPage } from 'apps/shared-models/custom-page.model';
 
 declare const Razorpay: any;
 @Component({
-    selector: 'commudle-fill-data-form-paid',
-    templateUrl: './fill-data-form-paid.component.html',
-    styleUrls: ['./fill-data-form-paid.component.scss'],
-    standalone: false
+  selector: 'commudle-fill-data-form-paid',
+  templateUrl: './fill-data-form-paid.component.html',
+  styleUrls: ['./fill-data-form-paid.component.scss'],
+  standalone: false,
 })
 export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() existingResponses;
@@ -118,6 +120,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   isMobileView = false;
   refundPolicy: ICustomPage;
   private destroy$ = new Subject<void>();
+  private readonly isBrowser: boolean;
 
   @ViewChild(UserDetailsFormComponent) userDetailsFormComponent: UserDetailsFormComponent;
 
@@ -144,7 +147,10 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
     private userProfileManagerService: UserProfileManagerService,
     private responsiveService: ResponsiveService,
     private customPageService: CustomPageService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.fetchDataFormEntity();
@@ -763,7 +769,9 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
 
   // Reloads the current window location.
   reload() {
-    window.location.reload();
+    if (this.isBrowser) {
+      window.location.reload();
+    }
   }
 
   updateUserDetails(event) {

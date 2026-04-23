@@ -1,4 +1,15 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { IEditorValidator } from '@commudle/editor';
 import { EUserRoles, ICommunityChannel, IUserMessage } from '@commudle/shared-models';
 import {
@@ -12,7 +23,7 @@ import {
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { UserMessageReceiptHandlerService } from '../../../services/user-message-receipt-handler.service';
-import { CommunityChannelHandlerService } from 'libs/shared/components/src/lib/services/community-channel-handler.service';
+import { CommunityChannelHandlerService } from '../../../services/community-channel-handler.service';
 import { NbMenuService, NbWindowRef, NbWindowService } from '@commudle/theme';
 import { environment } from '@commudle/shared-environments';
 import { filter } from 'rxjs';
@@ -20,10 +31,10 @@ import { faReply, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'commudle-community-forum-message',
-    templateUrl: './community-forum-message.component.html',
-    styleUrls: ['./community-forum-message.component.scss'],
-    standalone: false
+  selector: 'commudle-community-forum-message',
+  templateUrl: './community-forum-message.component.html',
+  styleUrls: ['./community-forum-message.component.scss'],
+  standalone: false,
 })
 export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   @Input() message!: IUserMessage;
@@ -54,6 +65,7 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   contextMenuItems = [{ title: '' }];
 
   @ViewChild('messageRef') messageRef!: ElementRef<HTMLDivElement>;
+  private readonly isBrowser: boolean;
 
   protected readonly moment = moment;
 
@@ -69,7 +81,10 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
     private communityChannelsService: CommunityChannelsService,
     private libToastLogService: ToastrService,
     private seoService: SeoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.seoSchema();
@@ -78,23 +93,23 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
     this.communityChannelManagerService.allForumRoles$.subscribe((data) => {
       this.channelsRoles = data;
       this.fetchPermissions();
-    }),
-      this.nbMenuService
-        .onItemClick()
-        .pipe(filter(({ tag }) => tag === 'chat-menu-' + this.message.id))
-        .subscribe((event) => {
-          if (event.item.title === 'Edit') {
-            this.openEditForm();
-          } else if (event.item.title === 'Delete') {
-            this.communityChannelHandlerService.sendDelete(this.message);
-            // } else if (event.item.title === 'Pin Message') {
-            //   // this.pinMessage(this.message);
-            // } else if (event.item.title === 'Unpin Message') {
-            // this.unpinMessage(this.message);
-          } else if (event.item.title === 'Email to all members') {
-            this.sendMessageByEmail(this.message.id);
-          }
-        });
+    });
+    this.nbMenuService
+      .onItemClick()
+      .pipe(filter(({ tag }) => tag === 'chat-menu-' + this.message.id))
+      .subscribe((event) => {
+        if (event.item.title === 'Edit') {
+          this.openEditForm();
+        } else if (event.item.title === 'Delete') {
+          this.communityChannelHandlerService.sendDelete(this.message);
+          // } else if (event.item.title === 'Pin Message') {
+          //   // this.pinMessage(this.message);
+          // } else if (event.item.title === 'Unpin Message') {
+          // this.unpinMessage(this.message);
+        } else if (event.item.title === 'Email to all members') {
+          this.sendMessageByEmail(this.message.id);
+        }
+      });
   }
 
   fetchPermissions() {
@@ -178,7 +193,9 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   }
 
   seoSchema() {
-    const shareLink = `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`;
+    const shareLink = this.isBrowser
+      ? `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`
+      : '';
     this.seoService.setSchema({
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',

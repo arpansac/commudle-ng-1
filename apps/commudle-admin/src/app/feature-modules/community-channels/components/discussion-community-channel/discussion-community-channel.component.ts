@@ -2,14 +2,17 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  PLATFORM_ID,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@commudle/theme';
@@ -34,10 +37,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
 @Component({
-    selector: 'app-discussion-community-channel',
-    templateUrl: './discussion-community-channel.component.html',
-    styleUrls: ['./discussion-community-channel.component.scss'],
-    standalone: false
+  selector: 'app-discussion-community-channel',
+  templateUrl: './discussion-community-channel.component.html',
+  styleUrls: ['./discussion-community-channel.component.scss'],
+  standalone: false,
 })
 export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('confirmJoinDialog') joinChannelDialog: TemplateRef<any>;
@@ -71,6 +74,7 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
   @ViewChild('messagesContainer') private messagesContainer: ElementRef;
 
   private destroy$ = new Subject<void>();
+  private isBrowser: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -86,7 +90,9 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
     private router: Router,
     private communitiesService: CommunitiesService,
     private loginAuthService: LoginAuthService,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.chatMessageForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200), NoWhitespaceValidator]],
     });
@@ -337,7 +343,11 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
   }
 
   toggleReplyForm(messageId) {
-    this.showReplyForm === messageId ? (this.showReplyForm = 0) : (this.showReplyForm = messageId);
+    if (this.showReplyForm === messageId) {
+      this.showReplyForm = 0;
+      return;
+    }
+    this.showReplyForm = messageId;
   }
 
   sendMessage(data) {
@@ -482,7 +492,9 @@ export class DiscussionCommunityChannelComponent implements OnInit, OnChanges, O
             }
             case this.communityChannelChannel.ACTIONS.CHANGE_PERMISSION: {
               if (this.currentUser && Number(data.user_id) === this.currentUser.id) {
-                window.location.reload();
+                if (this.isBrowser) {
+                  window.location.reload();
+                }
               }
               break;
             }

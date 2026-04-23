@@ -1,10 +1,13 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  PLATFORM_ID,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -27,10 +30,10 @@ import { environment } from '@commudle/shared-environments';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'commudle-channel-discussion',
-    templateUrl: './channel-discussion.component.html',
-    styleUrls: ['./channel-discussion.component.scss'],
-    standalone: false
+  selector: 'commudle-channel-discussion',
+  templateUrl: './channel-discussion.component.html',
+  styleUrls: ['./channel-discussion.component.scss'],
+  standalone: false,
 })
 export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() discussionId!: number;
@@ -55,6 +58,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     noWhitespace: true,
   };
   private readonly destroy$ = new Subject<void>();
+  private readonly isBrowser: boolean;
 
   @ViewChild(InfiniteScrollDirective) infiniteScrollDirective;
   @ViewChildren('messagesListRef', { read: ViewContainerRef }) messagesListRefs: QueryList<HTMLDivElement>;
@@ -68,7 +72,10 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     private communityChannelsService: CommunityChannelsService,
     private toastLogService: ToastrService,
     private seoService: SeoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.communityChannelManagerService.allChannelRoles$.subscribe((data) => {
@@ -163,7 +170,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
       comment: message.user_messages ? this.getUserMessages(message) : '',
     }));
 
-    const shareLink = `${environment.app_url}${window.location.pathname}`;
+    const shareLink = this.isBrowser ? `${environment.app_url}${window.location.pathname}` : '';
     const firstMessageDate = this.channelOrForum.created_at;
 
     const discussionSchema = {

@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,6 +31,7 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
   readonly userMessages$ = this.forumsStore.userMessages$;
   readonly hasNextPage$ = this.forumsStore.hasNextPage$;
   readonly isLoading$ = this.forumsStore.isLoading$;
+  private readonly isBrowser: boolean;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -37,7 +39,10 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
     private readonly dialogService: NbDialogService,
     private readonly forumsStore: ForumsStore,
     private readonly seoService: SeoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.route.data.pipe(takeUntil(this.destroy$)).subscribe((data) => {
@@ -92,7 +97,9 @@ export class ForumDiscussionComponent implements OnInit, OnDestroy {
       comment: message.user_messages ? this.getUserMessages(message) : [],
     }));
 
-    const shareLink = `${environment.app_url}${window.location.pathname}`;
+    const shareLink = this.isBrowser
+      ? `${environment.app_url}${window.location.pathname}`
+      : `${environment.app_url}${this.router.url.split('?')[0]}`;
     const firstMessageDate = this.forum.created_at;
 
     const discussionSchema: Record<string, unknown> = {

@@ -1,4 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { IEditorValidator } from '@commudle/editor';
 import { IUserMessage } from '@commudle/shared-models';
 import { AuthService, SeoService, ShareService } from '@commudle/shared-services';
@@ -8,11 +19,11 @@ import { DiscussionHandlerService } from '../../../services/discussion-handler.s
 import { UserMessageReceiptHandlerService } from '../../../services/user-message-receipt-handler.service';
 
 @Component({
-    selector: 'commudle-message',
-    templateUrl: './message.component.html',
-    styleUrls: ['./message.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'commudle-message',
+  templateUrl: './message.component.html',
+  styleUrls: ['./message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MessageComponent implements OnInit, AfterViewInit {
   @Input() message!: IUserMessage;
@@ -29,6 +40,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
   showReply$ = new BehaviorSubject<boolean>(false);
 
   @ViewChild('messageRef') messageRef!: ElementRef<HTMLDivElement>;
+  private readonly isBrowser: boolean;
 
   protected readonly moment = moment;
 
@@ -38,7 +50,10 @@ export class MessageComponent implements OnInit, AfterViewInit {
     private userMessageReceiptHandlerService: UserMessageReceiptHandlerService,
     private shareService: ShareService,
     private seoService: SeoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     // this.seoSchema();
@@ -65,7 +80,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
   }
 
   share(): void {
-    const shareLink = `${window.location.pathname}?after=${this.cursor}`;
+    const shareLink = this.isBrowser ? `${window.location.pathname}?after=${this.cursor}` : '';
 
     this.shareService.shareContent(
       `Hey, check out this discussion on Commudle: ${shareLink}`,

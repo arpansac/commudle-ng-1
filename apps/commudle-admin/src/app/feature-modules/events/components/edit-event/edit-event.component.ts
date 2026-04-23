@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Optional } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, Input, OnInit, Optional, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
@@ -55,6 +56,7 @@ export class EditEventComponent implements OnInit {
   agenda = false;
   sponsors = false;
   eventForms = false;
+  private readonly isBrowser: boolean;
 
   tinyMCE = {
     height: 300,
@@ -80,7 +82,9 @@ export class EditEventComponent implements OnInit {
     private toastLogService: LibToastLogService,
     private router: Router,
     @Optional() private windowRef: NbWindowRef,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.eventForm = this.fb.group({
       event: this.fb.group({
         name: ['', Validators.required],
@@ -252,7 +256,9 @@ export class EditEventComponent implements OnInit {
       .subscribe(
         (data) => {
           this.submitIsInProcess = false;
-          window.location.reload();
+          if (this.isBrowser) {
+            window.location.reload();
+          }
           this.close();
         },
         (error) => {

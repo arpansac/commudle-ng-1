@@ -1,3 +1,4 @@
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   OnDestroy,
@@ -10,6 +11,8 @@ import {
   AfterViewInit,
   ViewChildren,
   QueryList,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {
   AuthService,
@@ -22,10 +25,10 @@ import { EUserRoles, ICommunityChannel, IPageInfo, IUser, IUserRolesUser } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'commudle-channel-members',
-    templateUrl: './channel-members.component.html',
-    styleUrls: ['./channel-members.component.scss'],
-    standalone: false
+  selector: 'commudle-channel-members',
+  templateUrl: './channel-members.component.html',
+  styleUrls: ['./channel-members.component.scss'],
+  standalone: false,
 })
 export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() channelOrForum: ICommunityChannel;
@@ -51,6 +54,7 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
   @ViewChildren('memberDiv') memberDivs!: QueryList<ElementRef>;
   channelForm: FormGroup;
   query = '';
+  private readonly isBrowser: boolean;
 
   constructor(
     private communityChannelsService: CommunityChannelsService,
@@ -58,7 +62,9 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
     private toastrService: ToastrService,
     private communityChannelManagerService: CommunityChannelManagerService,
     private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.channelForm = this.fb.group({
       q: '',
     });
@@ -233,7 +239,9 @@ export class ChannelMembersComponent implements OnInit, OnDestroy, OnChanges, Af
         if (data) {
           this.allUsers.splice(index, 1);
           this.toastrService.successDialog('You have exited this channel');
-          window.location.reload();
+          if (this.isBrowser) {
+            window.location.reload();
+          }
         }
       });
     }
