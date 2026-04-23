@@ -1,6 +1,10 @@
 .votes {
   width: max-content;
 
+  .votes-display {
+    @apply com-flex;
+  }
+
   div {
     font-size: 0.875rem;
     margin: 0;
@@ -54,7 +58,12 @@
       }
     }
   }
-}
 
-.clickable.votes.border {
+  &.size-extra-small {
+    div {
+      .count {
+        @apply com-text-Cadet-Grey com-text-[10px];
+      }
+    }
+  }
 }

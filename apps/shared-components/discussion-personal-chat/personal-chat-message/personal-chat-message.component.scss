@@ -9,7 +9,7 @@ p {
     @apply com-justify-end;
 
     .bubble {
-      @apply com-bg-Azure com-text-tWhite com-overflow-visible;
+      @apply com-bg-Azure com-text-tWhite com-overflow-visible com-w-fit com-max-w-full com-ml-auto;
 
       &.has-tail {
         @apply com-rounded-tr-none;
@@ -49,7 +49,7 @@ p {
     @apply com-justify-start;
 
     .bubble {
-      @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue;
+      @apply com-text-sm com-font-medium com-bg-tWhite com-text-tYankees-Blue com-w-fit com-max-w-full com-mr-auto;
       @apply com-overflow-visible;
 
       &.has-tail {
@@ -86,14 +86,14 @@ p {
   }
 
   .prefix {
-    @apply com-w-full;
+    @apply com-w-fit com-max-w-full;
 
     .avatar {
       @apply com-h-8 com-w-8 com-rounded-full com-object-cover com-object-center;
     }
 
     .user-container {
-      @apply com-flex com-flex-col com-w-full;
+      @apply com-flex com-flex-col com-w-fit com-max-w-full;
 
       &.self-user-container {
         @apply com-items-end com-justify-end;
@@ -140,7 +140,7 @@ p {
 }
 
 .message-content {
-  @apply com-relative;
+  @apply com-relative com-w-fit com-max-w-full;
 }
 
 .highlight-background {
@@ -185,7 +185,7 @@ nb-action {
 }
 
 .time-container {
-  @apply com-flex com-justify-end;
+  @apply com-flex com-items-center com-justify-end com-gap-1 com-mt-0.5;
 }
 
 .votes-display {

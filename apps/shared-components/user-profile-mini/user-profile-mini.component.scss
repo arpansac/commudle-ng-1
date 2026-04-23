@@ -34,7 +34,7 @@
     margin-right: 0.5rem;
 
     img {
-      width: 100%;
+      @apply com-h-full com-w-full;
       vertical-align: top;
     }
 
@@ -121,7 +121,7 @@
   }
 
   .latest-message-count {
-    @apply com-flex com-flex-row com-justify-between com-m-0 com-mt-2 com-w-full;
+    @apply com-flex com-flex-row com-justify-between com-m-0 com-mt-[6px] com-w-full;
 
     .last_message {
       @apply com-text-xs com-font-normal com-text-gray-500 com-m-0 com-line-clamp-2;

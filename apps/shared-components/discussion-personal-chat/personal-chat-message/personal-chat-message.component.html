@@ -91,25 +91,17 @@
           </nb-actions>
         </div>
       </div>
-      <nb-actions *ngIf="currentUser && totalVotesCount > 0" class="votes-display" size="tiny">
-        <nb-action
-          class="votes-action"
-          [disabled]="isVotingBlocked"
-          [ngClass]="{ 'com-pointer-events-none': isVotingBlocked }"
-        >
-          <app-votes-display
-            (isBlocked)="isVotingBlocked = $event"
-            (votesCount)="totalVotesCount = $event"
-            [votableId]="message.id"
-            icon="heart-outline"
-            size="small"
-            votableType="UserMessage"
-            [textAlignment]="'after'"
-          ></app-votes-display>
-        </nb-action>
-      </nb-actions>
     </div>
     <div class="time-container">
+      <app-votes-display
+        *ngIf="currentUser && totalVotesCount > 0"
+        (isBlocked)="isVotingBlocked = $event"
+        (votesCount)="totalVotesCount = $event"
+        [votableId]="message.id"
+        icon="heart-outline"
+        size="extra-small"
+        votableType="UserMessage"
+      ></app-votes-display>
       <p *ngIf="!showFullDateTime" class="time">
         {{ moment(message.created_at).format('h:mm A') }}
       </p>
