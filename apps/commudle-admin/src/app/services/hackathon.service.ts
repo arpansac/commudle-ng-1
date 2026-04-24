@@ -20,7 +20,6 @@ import {
   IPagination,
   IPaginationCount,
   IHackathonJudge,
-  EOfflineInviteStatus,
 } from '@commudle/shared-models';
 
 @Injectable({

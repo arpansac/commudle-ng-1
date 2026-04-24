@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IHackathonTeam } from '@commudle/shared-models';
+import { IHackathonTeam, IPaginationCount } from '@commudle/shared-models';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 
@@ -283,5 +283,31 @@ export class HackathonTeamService {
   teamRoundScores(teamId: number): Observable<any> {
     const params = new HttpParams().set('team_id', teamId);
     return this.http.get(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAM_SCORES), { params });
+  }
+
+  teamsWithScores(
+    hackathonId: number | string,
+    count = 10,
+    page = 1,
+    roundId?: number,
+  ): Observable<IPaginationCount<IHackathonTeam>> {
+    let params = new HttpParams().set('hackathon_id', hackathonId).set('count', count).set('page', page);
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    return this.http.get<IPaginationCount<IHackathonTeam>>(
+      this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAMS_WITH_SCORES),
+      { params },
+    );
+  }
+
+  teamDetailWithScores(teamId: number, roundId?: number): Observable<any> {
+    let params = new HttpParams().set('team_id', teamId);
+    if (roundId) {
+      params = params.set('round_id', roundId);
+    }
+    return this.http.get(this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAM_DETAIL_WITH_SCORES), {
+      params,
+    });
   }
 }

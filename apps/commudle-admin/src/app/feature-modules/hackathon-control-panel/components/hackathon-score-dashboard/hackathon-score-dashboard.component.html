@@ -4,43 +4,29 @@
     <h2 class="dashboard-title">Score Dashboard</h2>
   </div>
 
-  <!-- Filters -->
-  <div class="filters-section">
-    <div class="filters-header">
-      <span class="filters-title">Filters</span>
-      <button class="clear-btn" (click)="clearFilters()" *ngIf="selectedRoundId || minScore">Clear all</button>
-    </div>
-    <div class="filters-row">
-      <div class="filter-group">
-        <label>Round</label>
-        <select class="filter-input" [(ngModel)]="selectedRoundId" (ngModelChange)="onFilterChange()">
-          <option [ngValue]="null">All rounds</option>
-          <option *ngFor="let round of rounds" [ngValue]="round.id">{{ round.name }}</option>
-        </select>
+  <!-- Control Bar -->
+  <div class="control-bar">
+    <div class="control-left">
+      <div class="stat-chip stat-teams">
+        <fa-icon [icon]="icons.faUsers"></fa-icon>
+        <span class="stat-chip-value">{{ total }}</span>
+        <span class="stat-chip-label">Teams</span>
       </div>
-      <!-- <div class="filter-group">
-        <label>Min score</label>
-        <input
-          type="number"
-          class="filter-input"
-          placeholder="0"
-          [(ngModel)]="minScore"
-          (ngModelChange)="onFilterChange()"
-          min="0"
-        />
-      </div> -->
+      <div class="stat-chip stat-top-score">
+        <fa-icon [icon]="icons.faTrophy"></fa-icon>
+        <span class="stat-chip-value">{{ topScore }}</span>
+        <span class="stat-chip-label">Top Score</span>
+      </div>
     </div>
-  </div>
-
-  <!-- Stats -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <span class="stat-value">{{ total }}</span>
-      <span class="stat-label">Teams</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-value">{{ topScore }}</span>
-      <span class="stat-label">Top Score</span>
+    <div class="control-right">
+      <select class="round-select" [(ngModel)]="selectedRoundId" (ngModelChange)="onFilterChange()">
+        <option [ngValue]="null">All rounds</option>
+        <option *ngFor="let round of rounds" [ngValue]="round.id">{{ round.name }}</option>
+      </select>
+      <button class="action-btn refresh-btn" (click)="refreshData()">
+        <fa-icon [icon]="icons.faRotateRight"></fa-icon>
+      </button>
+      <button class="action-btn clear-btn" (click)="clearFilters()" *ngIf="selectedRoundId">Clear</button>
     </div>
   </div>
 
@@ -50,22 +36,18 @@
   </div>
 
   <!-- Team List -->
-  <div *ngIf="!isLoading && teamRows.length > 0" class="teams-list">
-    <div
-      *ngFor="let team of teamRows; let i = index"
-      class="team-card"
-      [ngClass]="{ 'team-card-expanded': team.expanded }"
-    >
+  <div *ngIf="!isLoading && teams.length > 0" class="teams-list">
+    <div *ngFor="let team of teams; let i = index" class="team-card" [class.team-card-expanded]="team.expanded">
       <!-- Team Summary Row -->
       <div class="team-summary" (click)="toggleExpand(team)">
         <div class="team-left">
           <span class="team-rank">#{{ (page - 1) * count + i + 1 }}</span>
           <div class="team-info">
-            <span class="team-name">{{ team.team_name }}</span>
-            <span class="team-meta"
-              >{{ team.members_count }} members · {{ team.rounds.length }} rounds ·
-              {{ team.total_evaluations }} evaluations</span
-            >
+            <span class="team-name">{{ team.name }}</span>
+            <span class="team-meta">
+              {{ team.team_members_count }} members · {{ team.total_rounds }} rounds ·
+              {{ team.total_evaluations }} evaluations
+            </span>
           </div>
         </div>
         <div class="team-right">
@@ -78,48 +60,61 @@
 
       <!-- Expanded: Round Details -->
       <div *ngIf="team.expanded" class="team-details">
-        <div *ngFor="let round of team.rounds" class="round-block">
-          <div class="round-header">
-            <span class="round-name">{{ round.round_name }}</span>
-            <div class="round-stats">
-              <span class="round-avg">Avg: {{ round.avg_score }}</span>
-              <span class="round-best">Best: {{ round.best_score }}</span>
-              <span class="round-evals"
-                >{{ round.evaluator_scores.length }} evaluator{{ round.evaluator_scores.length > 1 ? 's' : '' }}</span
-              >
-            </div>
-          </div>
+        <!-- Loading detail -->
+        <div *ngIf="team.detailLoading" class="detail-loading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
 
-          <!-- Evaluator Scores -->
-          <div class="evaluator-list">
-            <div *ngFor="let ev of round.evaluator_scores" class="evaluator-row">
-              <div class="evaluator-info">
-                <img
-                  *ngIf="ev.evaluator_photo"
-                  [src]="ev.evaluator_photo"
-                  class="evaluator-photo"
-                  [alt]="ev.evaluator_name"
-                />
-                <div *ngIf="!ev.evaluator_photo" class="evaluator-photo-placeholder">
-                  <fa-icon [icon]="icons.faUser"></fa-icon>
-                </div>
-                <span class="evaluator-name">{{ ev.evaluator_name }}</span>
+        <!-- Round blocks -->
+        <ng-container *ngIf="team.detailLoaded">
+          <div *ngIf="team.roundDetails.length === 0" class="no-rounds">No round data available for this team.</div>
+
+          <div *ngFor="let round of team.roundDetails" class="round-block">
+            <div class="round-header">
+              <span class="round-name">{{ round.round_name }}</span>
+              <div class="round-stats">
+                <span class="round-avg">Avg: {{ round.average_score }}</span>
+                <span class="round-best">Total: {{ round.total_scores }}</span>
+                <span class="round-evals" *ngIf="round.total_evaluations">
+                  {{ round.total_evaluations }} evaluator{{ round.total_evaluations > 1 ? 's' : '' }}
+                </span>
               </div>
-              <div class="evaluator-scores">
-                <div class="criteria-list">
-                  <div *ngFor="let c of ev.criteria" class="criteria-item">
-                    <span class="criteria-name">{{ c.text }}</span>
-                    <span class="criteria-score">{{ c.score }}</span>
+            </div>
+
+            <!-- Evaluator Scores -->
+            <div class="evaluator-list" *ngIf="round.scores?.length > 0">
+              <div *ngFor="let ev of round.scores" class="evaluator-row">
+                <div class="evaluator-info">
+                  <img
+                    *ngIf="ev.evaluator?.photo?.i64"
+                    [src]="ev.evaluator.photo.i64"
+                    class="evaluator-photo"
+                    [alt]="ev.evaluator.name"
+                  />
+                  <div *ngIf="!ev.evaluator?.photo?.i64" class="evaluator-photo-placeholder">
+                    <fa-icon [icon]="icons.faUser"></fa-icon>
+                  </div>
+                  <div class="evaluator-meta">
+                    <span class="evaluator-name">{{ ev.evaluator?.name }}</span>
+                    <span class="evaluator-type" *ngIf="ev.evaluator?.judge_type">{{ ev.evaluator.judge_type }}</span>
                   </div>
                 </div>
-                <div class="evaluator-total">
-                  <span class="evaluator-total-label">Total</span>
-                  <span class="evaluator-total-value">{{ ev.total_score }}</span>
+                <div class="evaluator-scores">
+                  <div class="criteria-list">
+                    <div *ngFor="let key of ev.score | keyvalue" class="criteria-item">
+                      <span class="criteria-name">{{ key.key }}</span>
+                      <span class="criteria-score">{{ key.value }}</span>
+                    </div>
+                  </div>
+                  <div class="evaluator-total">
+                    <span class="evaluator-total-label">Total</span>
+                    <span class="evaluator-total-value">{{ ev.total_score }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -137,7 +132,7 @@
   </div>
 
   <!-- Empty -->
-  <div *ngIf="!isLoading && teamRows.length === 0" class="empty-state">
+  <div *ngIf="!isLoading && teams.length === 0" class="empty-state">
     <nb-icon icon="clipboard-outline" class="empty-icon"></nb-icon>
     <p>No score data available</p>
   </div>

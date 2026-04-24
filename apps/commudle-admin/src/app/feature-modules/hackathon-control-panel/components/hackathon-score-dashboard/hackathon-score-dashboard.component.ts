@@ -1,11 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HackathonTeamRoundScoreService, RoundService, SeoService } from '@commudle/shared-services';
-import { EDbModels, IRound, IRoundScores, ITeamRow } from '@commudle/shared-models';
+import { HackathonTeamService, RoundService, SeoService } from '@commudle/shared-services';
+import { EDbModels, IHackathonTeam, IRound } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { Subscription } from 'rxjs';
-import { faChevronDown, faChevronUp, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faChevronUp,
+  faUser,
+  faFilter,
+  faRotateRight,
+  faTrophy,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
+
+type IExpandableTeam = IHackathonTeam & {
+  expanded?: boolean;
+  detailLoaded?: boolean;
+  detailLoading?: boolean;
+  roundDetails?: any[];
+};
 
 @Component({
   selector: 'commudle-hackathon-score-dashboard',
@@ -15,43 +30,32 @@ import { faChevronDown, faChevronUp, faUser } from '@fortawesome/free-solid-svg-
 })
 export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
   hackathon: IHackathon;
-  hackathonId: string;
   rounds: IRound[] = [];
-  teamRows: ITeamRow[] = [];
+  teams: IExpandableTeam[] = [];
   isLoading = true;
 
   page = 1;
   count = 15;
   total = 0;
-
-  selectedRoundId: number = null;
-  minScore: number = null;
-
-  teamsShown = 0;
+  selectedRoundId = null;
   topScore = 0;
-  globalTopScore: number = null;
-  avgScore = 0;
-  totalEvaluations = 0;
 
-  icons = { faChevronDown, faChevronUp, faUser };
+  icons = { faChevronDown, faChevronUp, faUser, faFilter, faRotateRight, faTrophy, faUsers };
   subscriptions: Subscription[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private hackathonService: HackathonService,
-    private scoreService: HackathonTeamRoundScoreService,
     private roundService: RoundService,
     private seoService: SeoService,
+    private hackathonTeamService: HackathonTeamService,
   ) {}
 
   ngOnInit(): void {
     this.seoService.noIndex(true);
     this.subscriptions.push(
       this.activatedRoute.parent.paramMap.subscribe((params) => {
-        this.hackathonId = params.get('hackathon_id');
-        this.fetchHackathon();
-        this.fetchRounds();
-        this.fetchScoreData();
+        this.fetchHackathon(params.get('hackathon_id'));
       }),
     );
   }
@@ -61,137 +65,87 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  fetchHackathon(): void {
+  fetchHackathon(hackathonId: string | number): void {
     this.subscriptions.push(
-      this.hackathonService.showHackathon(this.hackathonId).subscribe((data: IHackathon) => {
+      this.hackathonService.showHackathon(hackathonId).subscribe((data: IHackathon) => {
         this.hackathon = data;
+        this.fetchRounds();
+        this.fetchTeams();
       }),
     );
   }
 
   fetchRounds(): void {
     this.subscriptions.push(
-      this.roundService.indexRounds(this.hackathonId, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
+      this.roundService.indexRounds(this.hackathon.id, EDbModels.HACKATHON).subscribe((data: IRound[]) => {
         this.rounds = data;
       }),
     );
   }
 
-  fetchScoreData(): void {
+  fetchTeams(): void {
     this.isLoading = true;
-    this.subscriptions.push(
-      this.scoreService
-        .scoreDistributionIndex(
-          this.hackathonId,
-          this.page,
-          this.count,
-          this.selectedRoundId,
-          // null,
-          // null,
-          // null,
-          // this.minScore,
-        )
-        .subscribe((response: any) => {
-          const records = response?.teams || [];
-          this.total = response?.total || 0;
-          this.page = response?.page || 1;
-          this.processRecords(records);
-          if (this.globalTopScore === null && this.teamRows.length > 0) {
-            this.globalTopScore = this.teamRows[0].total_score;
-          }
-          this.isLoading = false;
-        }),
-    );
+    this.hackathonTeamService
+      .teamsWithScores(this.hackathon.id, this.count, this.page, this.selectedRoundId)
+      .subscribe((data) => {
+        this.teams = data.values;
+        this.topScore = this.teams.length > 0 ? this.teams[0].total_score : 0;
+        this.total = data.total;
+        this.isLoading = false;
+      });
   }
 
-  processRecords(records: any[]): void {
-    this.teamRows = records.map((record) => {
-      const team = record.team;
-      const scores: any[] = record.scores || [];
-      const roundsMap = new Map<number, IRoundScores>();
+  toggleExpand(team: IExpandableTeam): void {
+    team.expanded = !team.expanded;
 
-      scores.forEach((s) => {
-        const roundId = s.round.id;
-        if (!roundsMap.has(roundId)) {
-          roundsMap.set(roundId, {
-            round_id: roundId,
-            round_name: s.round.name,
-            evaluator_scores: [],
-            avg_score: 0,
-            best_score: 0,
-          });
-        }
-
-        const criteria = s.score
-          ? Object.entries(s.score).map(([text, score]) => ({ text, score: score as number }))
-          : [];
-
-        roundsMap.get(roundId).evaluator_scores.push({
-          evaluator_name: s.evaluator?.name || 'Unknown',
-          evaluator_photo: s.evaluator?.photo?.i32 || '',
-          total_score: s.total_score,
-          round_name: s.round.name,
-          criteria,
+    if (team.expanded && !team.detailLoaded) {
+      team.detailLoading = true;
+      this.hackathonTeamService.teamDetailWithScores(team.id, this.selectedRoundId).subscribe((data) => {
+        team.roundDetails = Object.keys(data.scores || {}).map((roundName) => {
+          const round = data.scores[roundName];
+          return {
+            round_name: roundName,
+            average_score: round.average_score,
+            total_evaluations: round.total_evaluations,
+            total_scores: round.total_scores,
+            scores: round.scores || [],
+          };
         });
+        team.detailLoaded = true;
+        team.detailLoading = false;
       });
-
-      const rounds = Array.from(roundsMap.values()).sort((a, b) => a.round_id - b.round_id);
-      let totalEvals = 0;
-      rounds.forEach((rd) => {
-        const vals = rd.evaluator_scores.map((e) => e.total_score);
-        rd.best_score = Math.max(...vals);
-        rd.avg_score = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-        totalEvals += vals.length;
-      });
-
-      const totalScore = record.total_team_score ?? 0;
-
-      return {
-        rank: 0,
-        team_id: team.id,
-        team_name: team.name,
-        members_count: team.team_members_count || 0,
-        rounds,
-        total_score: totalScore,
-        avg_score: rounds.length > 0 ? Math.round(totalScore / rounds.length) : 0,
-        total_evaluations: totalEvals,
-        expanded: false,
-      } as ITeamRow;
-    });
-
-    this.teamRows.sort((a, b) => b.total_score - a.total_score);
-    this.teamRows.forEach((r, i) => (r.rank = (this.page - 1) * this.count + i + 1));
-    this.computeStats();
-  }
-
-  computeStats(): void {
-    this.teamsShown = this.teamRows.length;
-    this.topScore = this.globalTopScore ?? (this.teamRows.length > 0 ? this.teamRows[0].total_score : 0);
-    const sum = this.teamRows.reduce((s, r) => s + r.total_score, 0);
-    this.avgScore = this.teamRows.length > 0 ? Math.round(sum / this.teamRows.length) : 0;
-    this.totalEvaluations = this.teamRows.reduce((s, r) => s + r.total_evaluations, 0);
-  }
-
-  toggleExpand(row: ITeamRow): void {
-    row.expanded = !row.expanded;
+    }
   }
 
   onFilterChange(): void {
     this.page = 1;
-    this.globalTopScore = null;
-    this.fetchScoreData();
+    this.resetExpandedTeams();
+    this.fetchTeams();
   }
 
   clearFilters(): void {
     this.selectedRoundId = null;
-    this.minScore = null;
     this.page = 1;
-    this.globalTopScore = null;
-    this.fetchScoreData();
+    this.resetExpandedTeams();
+    this.fetchTeams();
+  }
+
+  refreshData(): void {
+    this.page = 1;
+    this.resetExpandedTeams();
+    this.fetchTeams();
+  }
+
+  private resetExpandedTeams(): void {
+    this.teams.forEach((team) => {
+      team.expanded = false;
+      team.detailLoaded = false;
+      team.roundDetails = [];
+    });
   }
 
   onPageChange(newPage: number): void {
     this.page = newPage;
-    this.fetchScoreData();
+    this.fetchTeams();
   }
 }

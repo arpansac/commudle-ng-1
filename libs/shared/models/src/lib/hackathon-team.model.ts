@@ -43,6 +43,8 @@ export interface IHackathonTeam {
   hackathon_team_round_scores: IHackathonTeamRoundScore[];
   slot_assigned?: boolean;
   hackathon_team_round_score: IHackathonTeamRoundScore;
+  total_rounds?: number;
+  total_evaluations?: number;
 }
 
 export enum EHackathonRegistrationStatus {
