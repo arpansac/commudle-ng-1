@@ -330,7 +330,6 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
   }
 
   trackSlotFilter(data?) {
-    this.selectedEventLocationTrackId;
     if (data === 0) {
       this.selectedEventLocationTrackId = data;
     }
@@ -375,6 +374,7 @@ export class EventFormResponsesComponent implements OnInit, OnDestroy, AfterView
 
   setResponses(data) {
     this.getEventDataFromEntityGroup();
+    this.page = data?.page;
     this.totalEntries = data?.total || 0;
     this.rows = data?.data_form_entity_response_groups || [];
     this.tableRows = this.convertRowsToTableFormat(this.rows);

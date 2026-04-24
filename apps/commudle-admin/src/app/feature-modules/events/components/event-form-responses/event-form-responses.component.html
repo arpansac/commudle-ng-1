@@ -92,6 +92,7 @@
   <nb-card-footer>
     <div class="pagination-container">
       <app-pagination
+        *ngIf="totalEntries > 0"
         (goTo)="page = $event; getResponses()"
         (next)="page = $event; getResponses()"
         (previous)="page = $event; getResponses()"
@@ -422,6 +423,7 @@
   <nb-card-footer>
     <div class="pagination-container">
       <app-pagination
+        *ngIf="totalEntries > 0"
         (goTo)="page = $event; getResponses()"
         (next)="page = $event; getResponses()"
         (previous)="page = $event; getResponses()"
