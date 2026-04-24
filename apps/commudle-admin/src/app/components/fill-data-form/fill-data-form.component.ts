@@ -24,12 +24,14 @@ import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-m
 import { ConsentTypesEnum } from 'apps/shared-models/enums/consent-types.enum';
 import { UserConsentsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-consents/user-consents.component';
 import { SDataFormsService } from 'apps/shared-components/services/s-data-forms.service';
+import { environment } from 'apps/commudle-admin/src/environments/environment';
+import { EEventType } from '@commudle/shared-models';
 
 @Component({
-    selector: 'app-fill-data-form',
-    templateUrl: './fill-data-form.component.html',
-    styleUrls: ['./fill-data-form.component.scss'],
-    standalone: false
+  selector: 'app-fill-data-form',
+  templateUrl: './fill-data-form.component.html',
+  styleUrls: ['./fill-data-form.component.scss'],
+  standalone: false,
 })
 export class FillDataFormComponent implements OnInit, OnDestroy {
   @Input() existingResponses;
@@ -177,10 +179,64 @@ export class FillDataFormComponent implements OnInit, OnDestroy {
       if (!this.event.header_image_path) {
         this.seoService.setTag('og:image', this.community.logo_image_path.url);
       }
+      this.setEventSchema();
       // if (!this.redirectRoute) {
       //   this.redirectRoute = ['/communities', this.community.slug, 'events', this.event.slug];
       // }
     });
+  }
+
+  private setEventSchema() {
+    if (!this.event || !this.community) {
+      return;
+    }
+
+    let location: object;
+    let eventStatus: string;
+    if (this.event.event_type === EEventType.OFFLINE || this.event.custom_agenda === true) {
+      location = {
+        '@type': 'Place',
+        name: this.event.event_locations[0] ? this.event.event_locations[0].name : '',
+        address: this.event.event_locations[0] ? this.event.event_locations[0].address : '',
+      };
+      eventStatus = 'OfflineEventAttendanceMode';
+    } else {
+      location = {
+        '@type': 'VirtualLocation',
+        url: `${environment.app_url}/communities/${this.event.kommunity_slug}/events/${this.event.slug}`,
+      };
+      eventStatus = 'OnlineEventAttendanceMode';
+    }
+
+    if (this.dataFormEntity.redirectable_entity_type === 'Event') {
+      this.seoService.setSchema({
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        name: this.event.name,
+        startDate: this.event.start_time,
+        endDate: this.event.end_time,
+        url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+        image: this.event.header_image_path ? this.event.header_image_path : this.community.logo_image_path.url,
+        description: (this.event.description || '').replace(/<[^>]*>/g, '').substring(0, 200),
+        eventStatus: 'https://schema.org/EventScheduled',
+        eventAttendanceMode: `https://schema.org/${eventStatus}`,
+        location: location,
+        organizer: {
+          '@type': 'Organization',
+          name: this.community.name,
+          url: `${environment.app_url}/communities/${this.community.slug}`,
+        },
+        offers: {
+          '@type': 'Offer',
+          name: this.event.name,
+          url: `${environment.app_url}/communities/${this.community.slug}/events/${this.event.slug}`,
+        },
+        potentialAction: {
+          '@type': 'RegisterAction',
+          target: `${environment.app_url}/fill-form/${this.dataFormEntity.id}`,
+        },
+      });
+    }
   }
 
   onAcceptRoleButton() {
