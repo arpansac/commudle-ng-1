@@ -33,6 +33,7 @@ export class EventsComponent implements OnInit {
   faCalendarDays = faCalendarDays;
   faCalendarCheck = faCalendarCheck;
   EEventType = EEventType;
+  pastEventsCount = 0;
 
   count = 9;
   page = 1;
@@ -57,7 +58,6 @@ export class EventsComponent implements OnInit {
       this.community = data.community;
       this.getUpcomingEvents();
       this.getPastEvents();
-      this.seoService.setTitle(`Events | ${this.community.name}`);
     });
   }
 
@@ -65,9 +65,11 @@ export class EventsComponent implements OnInit {
     this.isLoadingPastEvents = true;
     this.eventsService.pGetCommunityEvents('past', this.community.id, this.page, this.count).subscribe((data) => {
       this.pastEvents = data.values;
+      this.pastEventsCount = data.total;
       this.isLoadingPastEvents = false;
       if (!this.isLoadingUpcomingEvents && !this.isLoadingPastEvents) {
         this.setSchema();
+        this.setMetaTags();
       }
       this.total = data.total;
       this.page = data.page;
@@ -89,8 +91,25 @@ export class EventsComponent implements OnInit {
       this.isLoadingUpcomingEvents = false;
       if (!this.isLoadingUpcomingEvents && !this.isLoadingPastEvents) {
         this.setSchema();
+        this.setMetaTags();
       }
     });
+  }
+
+  private setMetaTags() {
+    const upcomingNames = this.upcomingEvents.map((event) => event.name).join(', ');
+
+    let description = `Explore all events by ${this.community?.name}. Join now to stay updated.`;
+
+    if (this.upcomingEvents?.length > 0 && this.pastEventsCount > 0) {
+      description = `${this.community?.name} has ${upcomingNames} in upcoming events and ${this.pastEventsCount} past events. Join now to stay updated.`;
+    } else if (this.upcomingEvents?.length > 0) {
+      description = `${this.community?.name} has ${upcomingNames} in upcoming events. Join now to stay updated.`;
+    } else if (this.pastEventsCount > 0) {
+      description = `${this.community?.name} has organized ${this.pastEventsCount} past events. Join now to stay updated.`;
+    }
+
+    this.seoService.setTags(`Events | ${this.community?.name}`, description);
   }
 
   setSchema() {

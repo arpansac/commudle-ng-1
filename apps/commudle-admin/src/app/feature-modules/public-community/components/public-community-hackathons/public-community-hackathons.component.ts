@@ -9,10 +9,10 @@ import { Subscription } from 'rxjs';
 import { environment } from '@commudle/shared-environments';
 
 @Component({
-    selector: 'commudle-public-community-hackathons',
-    templateUrl: './public-community-hackathons.component.html',
-    styleUrls: ['./public-community-hackathons.component.scss'],
-    standalone: false
+  selector: 'commudle-public-community-hackathons',
+  templateUrl: './public-community-hackathons.component.html',
+  styleUrls: ['./public-community-hackathons.component.scss'],
+  standalone: false,
 })
 export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   EDbModels = EDbModels;
@@ -24,6 +24,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   seoDescription: string;
   schemaForHackathon = [];
   environment = environment;
+  pastHackathonsCount = 0;
 
   constructor(
     private hackathonService: HackathonService,
@@ -63,6 +64,7 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.hackathonService.pIndexHackathons(this.community.id, EDbModels.KOMMUNITY, 'past').subscribe((data) => {
         this.pastHackathons = data.values;
+        this.pastHackathonsCount = data.total;
         this.setSeoService();
         this.setSchema(this.pastHackathons);
       }),
@@ -70,18 +72,22 @@ export class PublicCommunityHackathonsComponent implements OnInit, OnDestroy {
   }
 
   setSeoService() {
-    if (this.upcomingHackathons?.length > 0 && this.upcomingHackathons[0].start_date) {
-      const startDate = new Date(this.upcomingHackathons[0].start_date);
-      const date = startDate.toDateString();
-      this.seoDescription =
-        'Participate in hackathons by ' +
-        this.community.name +
-        ' Upcoming hackathon ' +
-        this.upcomingHackathons[0].name +
-        ' on ' +
-        date;
-    } else {
-      this.seoDescription = 'Participate in hackathons by ' + this.community.name;
+    this.seoDescription = `Explore all hackathons by ${this.community?.name}. Join now to stay updated.`;
+
+    if (this.upcomingHackathons?.length > 0 && this.pastHackathonsCount > 0) {
+      this.seoDescription = `${this.community?.name} has ${this.upcomingHackathons
+        .map((hackathon) => hackathon.name)
+        .join(', ')} in upcoming hackathons and ${this.pastHackathonsCount} past hackathon${
+        this.pastHackathonsCount > 1 ? 's' : ''
+      }. Join now to stay updated.`;
+    } else if (this.upcomingHackathons?.length > 0) {
+      this.seoDescription = `${this.community?.name} has ${this.upcomingHackathons
+        .map((hackathon) => hackathon.name)
+        .join(', ')} in upcoming hackathon${this.upcomingHackathons?.length > 1 ? 's' : ''}. Join now to stay updated.`;
+    } else if (this.pastHackathonsCount > 0) {
+      this.seoDescription = `${this.community?.name} has organized ${this.pastHackathonsCount} past hackathon${
+        this.pastHackathonsCount > 1 ? 's' : ''
+      }. Join now to stay updated.`;
     }
 
     this.seoService.setTags(

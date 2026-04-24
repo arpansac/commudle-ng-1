@@ -19,10 +19,10 @@ import { ESidebarWidth } from 'apps/shared-components/sidebar/enum/sidebar.enum'
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { SidebarService } from 'apps/shared-components/sidebar/service/sidebar.service';
 @Component({
-    selector: 'commudle-channel-forum-dashboard',
-    templateUrl: './channel-forum-dashboard.component.html',
-    styleUrls: ['./channel-forum-dashboard.component.scss'],
-    standalone: false
+  selector: 'commudle-channel-forum-dashboard',
+  templateUrl: './channel-forum-dashboard.component.html',
+  styleUrls: ['./channel-forum-dashboard.component.scss'],
+  standalone: false,
 })
 export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   @Input() showCommunityList = false;
@@ -101,6 +101,7 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
       this.communityChannelManagerService.channelsByGroups$.subscribe((data) => {
         this.channels = data;
         if (data) {
+          this.setMeta(data);
           this.channelsQueried = true;
           if (this.selectedChannelOrFormId) {
             this.channelsCards = false;
@@ -283,10 +284,21 @@ export class ChannelForumDashboardComponent implements OnInit, OnDestroy {
   }
 
   // The `setMeta` function sets meta tags for SEO with information related to the selected community.
-  setMeta() {
+  setMeta(groupedChannels?: IGroupedChannels) {
+    const channelNames = groupedChannels
+      ? Object.values(groupedChannels)
+          .flat()
+          .map((channel) => channel?.name)
+          .join(', ')
+      : '';
+
+    const description = channelNames
+      ? `Join ${channelNames} channels by ${this.parent.name} and interact with the community members. Join now to get the latest updates of events, hackathons, forums, newsletters and more.`
+      : `Join channels by ${this.parent.name} and interact with the community members. Join now to get the latest updates of events, hackathons, forums, newsletters and more.`;
+
     this.seoService.setTags(
       `Channels | ${this.parent.name}`,
-      `Interact with members in channels for ${this.parent.name}! Share knowledge, network & grow together!`,
+      description,
       'https://commudle.com/assets/images/commudle-logo192.png',
     );
   }

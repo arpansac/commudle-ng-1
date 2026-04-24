@@ -12,10 +12,10 @@ import { EDomain } from '@commudle/shared-models';
 import { KeyValue, Location } from '@angular/common';
 
 @Component({
-    selector: 'app-members',
-    templateUrl: './members.component.html',
-    styleUrls: ['./members.component.scss'],
-    standalone: false
+  selector: 'app-members',
+  templateUrl: './members.component.html',
+  styleUrls: ['./members.component.scss'],
+  standalone: false,
 })
 export class MembersComponent implements OnInit, OnDestroy {
   community: ICommunity;
@@ -109,7 +109,7 @@ export class MembersComponent implements OnInit, OnDestroy {
         if (!params.query) {
           this.getMembers();
         }
-        this.seoService.setTitle(` Community Members | ${this.community.name}`);
+        this.setSeoMeta();
       }
     });
     this.members = [];
@@ -131,6 +131,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       this.total = 0;
       this.query = this.searchForm.get('name').value;
       this.queryParamsString = this.query;
+      this.setSeoMeta();
       this.generateParams(
         this.employer,
         this.employee,
@@ -230,9 +231,25 @@ export class MembersComponent implements OnInit, OnDestroy {
             this.page = data.page;
             this.total = data.total;
             this.isLoadingMembers = false;
+            this.setSeoMeta();
           }),
       );
     }
+  }
+
+  private setSeoMeta() {
+    if (!this.community?.name) {
+      return;
+    }
+
+    const searchQuery = this.query.trim();
+    const title = searchQuery
+      ? `Search ${searchQuery} | Members | ${this.community.name}`
+      : `Community Members | ${this.community.name}`;
+
+    const description = `${this.community.name} has ${this.total} members including developers, speakers, and tech professionals.`;
+
+    this.seoService.setTags(title, description);
   }
 
   originalOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
