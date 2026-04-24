@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featured-items.service';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
@@ -17,11 +18,14 @@ export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit,
   showSpinner = false;
   isMobileView: boolean;
   faUserGroup = faUserGroup;
+  private readonly isBrowser: boolean;
 
-  constructor(private featuredItemsService: FeaturedItemsService, private activatedRoute: ActivatedRoute) {}
+  constructor(private featuredItemsService: FeaturedItemsService, private activatedRoute: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    this.isMobileView = window.innerWidth <= 1024;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 1024 : false;
     this.getFeaturedCommunities();
   }
 

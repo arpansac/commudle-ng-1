@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featured-items.service';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
@@ -19,11 +20,14 @@ export class LabsFeaturedComponent implements OnInit {
   showSpinner = false;
   isMobileView: boolean;
   faFlask = faFlask;
+  private readonly isBrowser: boolean;
 
-  constructor(private featuredItemsService: FeaturedItemsService) {}
+  constructor(private featuredItemsService: FeaturedItemsService, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    this.isMobileView = window.innerWidth <= 1024;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 1024 : false;
     this.getFeaturedCommunities();
   }
 

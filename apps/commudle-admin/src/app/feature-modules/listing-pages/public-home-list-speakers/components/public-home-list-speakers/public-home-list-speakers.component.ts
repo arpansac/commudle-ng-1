@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from '@commudle/shared-services';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -18,17 +19,21 @@ export class PublicHomeListSpeakersComponent implements OnInit, OnDestroy {
   seoDesc: string;
 
   private destroy$ = new Subject<void>();
+  private readonly isBrowser: boolean;
 
   constructor(
     private footerService: FooterService,
     private seoService: SeoService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.isMobileView = window.innerWidth <= 640;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 640 : false;
 
     this.setTitle();
     this.router.events

@@ -1,5 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ToastrService } from './toastr.service';
 
 interface ShareObject {
@@ -15,8 +16,14 @@ interface ShareObject {
 export class ShareService {
   webNavigator: any = null;
 
-  constructor(private clipboard: Clipboard, private toastrService: ToastrService) {
-    this.webNavigator = window.navigator;
+  constructor(
+    private clipboard: Clipboard,
+    private toastrService: ToastrService,
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.webNavigator = window.navigator;
+    }
   }
 
   canShare(): boolean {

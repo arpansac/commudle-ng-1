@@ -43,7 +43,7 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   lastVisitedStepId: number;
   discussionChat: IDiscussion;
   messagesCount: number;
-  window: Window = window;
+  isMobile = false;
   environment = environment;
 
   faRss = faRss;
@@ -75,6 +75,7 @@ export class LabComponent implements OnInit, OnDestroy, AfterViewChecked {
   // we are calling setStep function and that in turn is calling window.scrollTo() function and since window isn't
   // defined on the server side, we need isBrowser
   ngOnInit() {
+    this.isMobile = this.isBrowser ? window.innerWidth < 768 : false;
     this.routeSubscriptions.push(
       this.activatedRoute.params.subscribe((data) => {
         this.getLab(data.lab_id);

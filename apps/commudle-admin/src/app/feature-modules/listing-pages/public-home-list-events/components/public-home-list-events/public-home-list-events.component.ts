@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
 import { SeoService } from 'apps/shared-services/seo.service';
 
@@ -11,12 +12,15 @@ import { SeoService } from 'apps/shared-services/seo.service';
 export class PublicHomeListEventsComponent implements OnInit, OnDestroy {
   isMobileView: boolean;
   seoPreviewImage: string;
+  private readonly isBrowser: boolean;
 
-  constructor(private seoService: SeoService, private footerService: FooterService) {}
+  constructor(private seoService: SeoService, private footerService: FooterService, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.isMobileView = window.innerWidth <= 640;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 640 : false;
     this.setMeta();
   }
 

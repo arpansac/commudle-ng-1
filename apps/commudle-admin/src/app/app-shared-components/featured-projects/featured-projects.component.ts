@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
 import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featured-items.service';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NbCardModule } from '@commudle/theme';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { FeaturedProjectsCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/featured-projects-card/featured-projects-card.component';
@@ -36,11 +36,14 @@ export class FeaturedProjectsComponent implements OnInit {
   showSpinner = true;
   isMobileView: boolean;
   faLightbulb = faLightbulb;
+  private readonly isBrowser: boolean;
 
-  constructor(private featuredItemsService: FeaturedItemsService) {}
+  constructor(private featuredItemsService: FeaturedItemsService, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    this.isMobileView = window.innerWidth <= 1024;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 1024 : false;
     this.getFeaturedProjects();
   }
 

@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { faAdd, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { IFeature } from 'apps/shared-models/features.model';
 import { CmsService } from 'apps/shared-services/cms.service';
@@ -18,11 +19,14 @@ export class FeaturesIndexComponent implements OnInit {
   faMinus = faMinus;
   isMobileView: boolean;
   selectedFeatureSlug: string;
+  private readonly isBrowser: boolean;
 
-  constructor(private cmsService: CmsService) {}
+  constructor(private cmsService: CmsService, @Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    this.isMobileView = window.innerWidth <= 640;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 640 : false;
     this.featureSlug.emit(this.features[0].slug.current);
     this.selectedFeatureSlug = this.features[0].slug.current;
   }

@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
 import { IPageInfo } from '@commudle/shared-models';
 import { FooterService } from 'apps/commudle-admin/src/app/services/footer.service';
@@ -20,16 +21,20 @@ export class PublicHomeListHackathonsHomeageComponent implements OnInit, OnDestr
   pageInfo: IPageInfo;
   limit = 20;
   isMobileView: boolean;
+  private readonly isBrowser: boolean;
 
   constructor(
     private hackathonService: HackathonService,
     private seoService: SeoService,
     private footerService: FooterService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.footerService.changeFooterStatus(true);
-    this.isMobileView = window.innerWidth <= 640;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 640 : false;
     this.getUpcomingHackathons();
     this.getPastHackathons();
     this.seoService.setTags(

@@ -64,7 +64,7 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.getPricingDetails();
     this.setFaqs();
     this.setTags();
-    this.isMobileView = window.innerWidth <= 1024;
+    this.isMobileView = this.isBrowser ? window.innerWidth <= 1024 : false;
     this.showAllFeatures = !this.isMobileView;
     this.footerService.changeFooterStatus(true);
     this.darkModeService.isDarkMode$
