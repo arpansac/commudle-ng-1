@@ -4,10 +4,10 @@ import { SeoService } from 'apps/shared-services/seo.service';
 import { MainNewslettersService } from '../../services/main-newsletters.service';
 
 @Component({
-    selector: 'app-index',
-    templateUrl: './index.component.html',
-    styleUrls: ['./index.component.scss'],
-    standalone: false
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
+  standalone: false,
 })
 export class IndexComponent implements OnInit, OnDestroy {
   page = 1;
@@ -20,6 +20,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getNewsLetters();
+    this.seoService.setTitle('Newsletters | Admin');
     this.seoService.noIndex(true);
   }
 
