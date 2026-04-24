@@ -101,9 +101,9 @@
                 </div>
                 <div class="evaluator-scores">
                   <div class="criteria-list">
-                    <div *ngFor="let key of ev.score | keyvalue" class="criteria-item">
-                      <span class="criteria-name">{{ key.key }}</span>
-                      <span class="criteria-score">{{ key.value }}</span>
+                    <div *ngFor="let score of ev.score" class="criteria-item">
+                      <span class="criteria-name">{{ score.text }}</span>
+                      <span class="criteria-score">{{ score.score }}</span>
                     </div>
                   </div>
                   <div class="evaluator-total">
