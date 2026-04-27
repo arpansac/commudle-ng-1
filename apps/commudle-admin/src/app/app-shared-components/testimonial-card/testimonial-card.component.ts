@@ -3,12 +3,13 @@ import { ITestimonial } from 'apps/shared-models/testimonial.model';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { SeoService } from '@commudle/shared-services';
 import { CmsService } from 'apps/shared-services/cms.service';
+import { EHttpContextFlag } from 'apps/shared-models/enums/http-context-tokens';
 
 @Component({
-    selector: 'commudle-testimonial-card',
-    templateUrl: './testimonial-card.component.html',
-    styleUrls: ['./testimonial-card.component.scss'],
-    standalone: false
+  selector: 'commudle-testimonial-card',
+  templateUrl: './testimonial-card.component.html',
+  styleUrls: ['./testimonial-card.component.scss'],
+  standalone: false,
 })
 export class TestimonialCardComponent implements OnInit {
   @Input() testimonials: ITestimonial[];
@@ -20,11 +21,13 @@ export class TestimonialCardComponent implements OnInit {
     this.testimonials.forEach((testimonial) => {
       this.setSchema(testimonial);
       if (testimonial.username) {
-        this.usersService.getProfile(testimonial.username).subscribe((data) => {
-          if (data) {
-            testimonial.user = data;
-          }
-        });
+        this.usersService
+          .getProfile(testimonial.username, [{ token: EHttpContextFlag.SKIP_ERROR_404, value: true }])
+          .subscribe((data) => {
+            if (data) {
+              testimonial.user = data;
+            }
+          });
       }
     });
   }
