@@ -11,8 +11,16 @@
         <fa-icon [icon]="faUserGroup"></fa-icon>
       </button>
       <div>
-        <h3 class="title">
-          <a [routerLink]="'.'" fragment="featured-communities">Featured Communities</a>
+        <h3 class="title section-heading-anchor">
+          Featured Communities
+          <a
+            [routerLink]="'.'"
+            fragment="featured-communities"
+            class="anchor-link"
+            aria-label="Link to featured communities section"
+          >
+            <fa-icon [icon]="faLink" class="anchor-icon-small"></fa-icon>
+          </a>
         </h3>
         <h4 class="sub-heading">Join the most active groups</h4>
       </div>

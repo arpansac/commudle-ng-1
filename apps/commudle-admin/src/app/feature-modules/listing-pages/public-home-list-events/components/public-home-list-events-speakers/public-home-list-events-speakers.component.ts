@@ -1,22 +1,23 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faMicrophone } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 import { IUser } from 'apps/shared-models/user.model';
 
 @Component({
-    selector: 'commudle-public-home-list-events-speakers',
-    templateUrl: './public-home-list-events-speakers.component.html',
-    styleUrls: ['./public-home-list-events-speakers.component.scss'],
-    standalone: false
+  selector: 'commudle-public-home-list-events-speakers',
+  templateUrl: './public-home-list-events-speakers.component.html',
+  styleUrls: ['./public-home-list-events-speakers.component.scss'],
+  standalone: false,
 })
 export class PublicHomeListEventsSpeakersComponent implements OnInit, AfterViewInit {
   @Input() parentType: string;
   @Input() eventId: string;
   @Input() communityGroupId: number;
   faMicrophone = faMicrophone;
+  faLink = faLink;
   speakers: IUser[] = [];
   pageInfo: IPageInfo;
   total: number;

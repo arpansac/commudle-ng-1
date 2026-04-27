@@ -2,18 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '@commudle/shared-environments';
 import { ICommunity, IHackathon } from '@commudle/shared-models';
 import { SeoService } from '@commudle/shared-services';
+import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IPageInfo } from 'apps/shared-models/page-info.model';
 
 @Component({
-    selector: 'commudle-upcoming-hackathons',
-    templateUrl: './upcoming-hackathons.component.html',
-    styleUrls: ['./upcoming-hackathons.component.scss'],
-    standalone: false
+  selector: 'commudle-upcoming-hackathons',
+  templateUrl: './upcoming-hackathons.component.html',
+  styleUrls: ['./upcoming-hackathons.component.scss'],
+  standalone: false,
 })
 export class UpcomingHackathonsComponent implements OnInit {
   upcomingHackathons = [];
+  faLink = faLink;
   showSpinner = false;
   pageInfo: IPageInfo;
   total: number;

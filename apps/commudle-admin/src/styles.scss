@@ -53,6 +53,31 @@ input {
   text-decoration: none;
 }
 
+// Reusable section heading fragment anchor styles
+.anchor-link {
+  @apply com-inline-flex com-items-center com-justify-center com-ml-2 com-no-underline com-text-gray-400;
+
+  fa-icon,
+  nb-icon {
+    @apply com-text-gray-400 com-leading-[0];
+  }
+
+  .anchor-icon-medium {
+    @apply com-text-lg;
+  }
+
+  .anchor-icon-small {
+    @apply com-text-sm;
+  }
+}
+
+.section-heading-anchor:hover .anchor-link {
+  @apply com-opacity-100;
+}
+.section-heading-anchor .anchor-link {
+  @apply com-opacity-0 com-transition-opacity com-duration-200;
+}
+
 .hidden {
   display: none;
 }

@@ -5,10 +5,7 @@ div {
     @apply com-m-0 md:com-mb-4 md:com-p-0 com-p-4 md:com-bg-transparent com-bg-Anti-Flash-White;
 
     .title {
-      @apply com-m-0 com-leading-[0];
-      a {
-        @apply md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0 com-no-underline;
-      }
+      @apply com-m-0 com-leading-[0] com-inline-flex com-items-center md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green;
     }
     .sub-heading {
       @apply md:com-text-xs com-text-sm com-font-normal com-text-gunmetal com-m-0;

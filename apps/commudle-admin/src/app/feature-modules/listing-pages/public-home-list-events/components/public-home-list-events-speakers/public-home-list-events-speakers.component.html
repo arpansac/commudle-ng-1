@@ -1,7 +1,12 @@
 <com-card *ngIf="speakers.length > 0" id="speakers">
   <com-card-body>
     <div class="heading">
-      <h3 class="title"><a [routerLink]="'.'" fragment="speakers">Speakers to Follow</a></h3>
+      <h3 class="title section-heading-anchor">
+        Speakers to Follow
+        <a [routerLink]="'.'" fragment="speakers" class="anchor-link" aria-label="Link to speakers section">
+          <fa-icon [icon]="faLink" class="anchor-icon-small"></fa-icon>
+        </a>
+      </h3>
       <h4 class="sub-heading">Network with speakers from events</h4>
     </div>
     <div class="user-profile-card-large">

@@ -1,6 +1,9 @@
 <div class="past-events" id="past-events">
-  <h2 class="title">
-    <a [routerLink]="'.'" fragment="past-events"><span>Past Events</span></a>
+  <h2 class="title section-heading-anchor">
+    <span>Past Events</span>
+    <a [routerLink]="'.'" fragment="past-events" class="anchor-link" aria-label="Link to past events section">
+      <fa-icon [icon]="faLink" class="anchor-icon-medium"></fa-icon>
+    </a>
   </h2>
   <div class="past-events-card-list">
     <commudle-event-card *ngFor="let event of pastEvents" [event]="event"></commudle-event-card>

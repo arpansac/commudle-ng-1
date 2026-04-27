@@ -1,6 +1,16 @@
 <div *ngIf="upcomingHackathons.length > 0" id="upcoming-hackathons">
   <div class="heading">
-    <h3 class="title"><a [routerLink]="'.'" fragment="upcoming-hackathons">Upcoming Hackathons</a></h3>
+    <h3 class="title section-heading-anchor">
+      Upcoming Hackathons
+      <a
+        [routerLink]="'.'"
+        fragment="upcoming-hackathons"
+        class="anchor-link"
+        aria-label="Link to upcoming hackathons section"
+      >
+        <fa-icon [icon]="faLink" class="anchor-icon-small"></fa-icon>
+      </a>
+    </h3>
     <h4 class="sub-heading">Check out amazing hackathons lined up</h4>
   </div>
   <app-skeleton-cards

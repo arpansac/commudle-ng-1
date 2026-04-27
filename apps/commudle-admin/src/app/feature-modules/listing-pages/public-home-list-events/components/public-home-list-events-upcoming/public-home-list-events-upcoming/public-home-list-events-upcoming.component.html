@@ -1,11 +1,13 @@
 <div id="upcoming-events" class="upcoming-events">
-  <h2 class="title">
-    <a [routerLink]="'.'" fragment="upcoming-events">
-      <div class="heading-subheading">
-        <span class="title">Upcoming Events</span><span class="sub-heading">Explore latest & exciting events</span>
-      </div></a
-    >
-  </h2>
+  <div class="heading-subheading">
+    <h2 class="title section-heading-anchor">
+      Upcoming Events
+      <a [routerLink]="'.'" fragment="upcoming-events" class="anchor-link" aria-label="Link to upcoming events section">
+        <fa-icon [icon]="faLink" class="anchor-icon-medium"></fa-icon>
+      </a>
+    </h2>
+    <span class="sub-heading">Explore latest & exciting events</span>
+  </div>
   <app-skeleton-cards
     [ImageShapeCircle]="false"
     [ImageShapeSquare]="true"

@@ -1,16 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { FeaturedItemsService } from 'apps/commudle-admin/src/app/services/featured-items.service';
 import { IFeaturedItems } from 'apps/shared-models/featured-items.model';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'commudle-public-home-list-events-featured-communities',
-    templateUrl: './public-home-list-events-featured-communities.component.html',
-    styleUrls: ['./public-home-list-events-featured-communities.component.scss'],
-    standalone: false
+  selector: 'commudle-public-home-list-events-featured-communities',
+  templateUrl: './public-home-list-events-featured-communities.component.html',
+  styleUrls: ['./public-home-list-events-featured-communities.component.scss'],
+  standalone: false,
 })
 export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() showCardsHorizontal = false;
@@ -21,8 +21,13 @@ export class PublicHomeListEventsFeaturedCommunitiesComponent implements OnInit,
   faUserGroup = faUserGroup;
   private readonly isBrowser: boolean;
   private readonly destroy$ = new Subject<void>();
+  faLink = faLink;
 
-  constructor(private featuredItemsService: FeaturedItemsService, private activatedRoute: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: object) {
+  constructor(
+    private featuredItemsService: FeaturedItemsService,
+    private activatedRoute: ActivatedRoute,
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 

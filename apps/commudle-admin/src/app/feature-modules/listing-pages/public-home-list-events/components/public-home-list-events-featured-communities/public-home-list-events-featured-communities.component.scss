@@ -16,9 +16,9 @@
       div {
         @apply com-flex com-flex-col;
         .title {
-          @apply com-flex com-m-0;
+          @apply com-flex com-m-0 md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0;
           a {
-            @apply md:com-text-sm com-text-base com-font-semibold com-text-Dark-Jungle-Green com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+            @apply com-no-underline;
           }
         }
         .sub-heading {
@@ -43,9 +43,9 @@
     .heading {
       @apply com-mt-0 com-mb-4 com-mx-0 md:com-p-4 com-px-4 com-py-3 com-flex com-flex-col com-bg-gradient-to-l com-from-gray-100 com-to-white md:com-rounded-t-xl com-rounded-none;
       .title {
-        @apply com-flex com-m-0;
+        @apply com-flex com-m-0 md:com-text-sm com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0;
         a {
-          @apply md:com-text-sm com-text-base com-font-semibold com-text-Yankees-Blue com-mb-1 com-mt-0 com-mx-0 com-no-underline;
+          @apply com-no-underline;
         }
       }
       .sub-heading {

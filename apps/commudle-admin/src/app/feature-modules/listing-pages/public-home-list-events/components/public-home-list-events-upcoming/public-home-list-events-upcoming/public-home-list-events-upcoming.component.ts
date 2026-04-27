@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faLink } from '@fortawesome/free-solid-svg-icons';
 import { EventsService } from 'apps/commudle-admin/src/app/services/events.service';
 import { ICommunity } from 'apps/shared-models/community.model';
 import { IEvent } from 'apps/shared-models/event.model';
@@ -18,6 +18,7 @@ export class PublicHomeListEventsUpcomingComponent implements OnInit, AfterViewI
   community: ICommunity;
   upcomingEvents: IEvent[] = [];
   faCalendarDays = faCalendarDays;
+  faLink = faLink;
   eventForSchema = [];
   page_info: IPageInfo;
   total: number;
