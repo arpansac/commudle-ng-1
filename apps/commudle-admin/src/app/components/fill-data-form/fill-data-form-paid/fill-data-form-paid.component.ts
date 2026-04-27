@@ -663,9 +663,8 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
   // create or update razorpay order
   createOrUpdateRazorpayOrder(etoId) {
     this.isLoadingPayment = true;
+    const amount = (this.totalPrice + this.totalTaxAmount) * 100;
     const orderDetails = {
-      amount: Math.round((this.totalPrice + this.totalTaxAmount) * 100),
-      currency: 'INR',
       notes: {
         event_name: this.event.name,
         event_id: this.event.id,
@@ -673,7 +672,7 @@ export class FillDataFormPaidComponent implements OnInit, OnDestroy, AfterViewIn
         edfeg_id: this.dataFormEntity.entity_id,
       },
     };
-    if (orderDetails.amount === 0) {
+    if (amount === 0) {
       this.router.navigate(['/fill-form', this.dataFormEntity.id, 'submitted'], {
         queryParams: { eto_uuid: this.eventTicketOrders[0].uuid },
       });
