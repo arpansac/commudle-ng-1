@@ -22,7 +22,7 @@ import { LibAuthwatchService } from 'apps/shared-services/lib-authwatch.service'
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import * as moment from 'moment';
 import { DiscussionPersonalChatChannel } from '../services/websockets/discussion-personal-chat.channel';
-import { IEditorValidator } from '@commudle/editor';
+import { EditorComponent, IEditorValidator } from '@commudle/editor';
 import { Subject, takeUntil } from 'rxjs';
 import { LoginAuthService } from 'apps/shared-services/login-auth.service';
 
@@ -54,6 +54,7 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy, After
   chatMessageForm;
   showEmojiForm = false;
   @ViewChild('inputElement', { static: true }) inputElement: ElementRef;
+  @ViewChild('chatEditor') chatEditor: EditorComponent;
   @ViewChild('messagesContainer') private messagesContainer: ElementRef<HTMLDivElement>;
   @ViewChild('loadPreviousSentinel') private loadPreviousSentinel: ElementRef<HTMLElement>;
 
@@ -106,6 +107,13 @@ export class DiscussionPersonalChatComponent implements OnInit, OnDestroy, After
 
   ngAfterViewInit(): void {
     this.setupLoadPreviousObserver();
+    this.focusChatEditor();
+  }
+
+  private focusChatEditor() {
+    setTimeout(() => {
+      this.chatEditor?.editor?.commands?.focus();
+    }, 0);
   }
 
   ngOnDestroy() {

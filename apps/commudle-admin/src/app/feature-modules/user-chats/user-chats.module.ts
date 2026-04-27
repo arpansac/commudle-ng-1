@@ -18,6 +18,7 @@ import { ChatsWindowComponent } from './components/chats-window/chats-window.com
 import { UserPersonalChatListComponent } from './components/user-personal-chat-list/user-personal-chat-list.component';
 import { EditorModule } from '@commudle/editor';
 import { InfiniteScrollModule } from '@commudle/infinite-scroll';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [ChatsContainerComponent, ChatsListComponent, ChatsWindowComponent, UserPersonalChatListComponent],
@@ -26,7 +27,6 @@ import { InfiniteScrollModule } from '@commudle/infinite-scroll';
     CommonModule,
     SharedComponentsModule,
     InfiniteScrollModule,
-
     // Nebular
     NbCardModule,
     NbListModule,
@@ -38,6 +38,7 @@ import { InfiniteScrollModule } from '@commudle/infinite-scroll';
     NbContextMenuModule,
     NbMenuModule.forRoot(),
     EditorModule,
+    FontAwesomeModule,
   ],
 })
 export class UserChatsModule {}

@@ -31,6 +31,7 @@
 
   <div class="send-message-form">
     <commudle-editor
+      #chatEditor
       *ngIf="currentUser && !blocked"
       [editable]="true"
       [placeholder]="'Type Here'"

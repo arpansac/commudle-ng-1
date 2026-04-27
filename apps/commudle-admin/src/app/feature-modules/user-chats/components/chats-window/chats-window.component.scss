@@ -5,7 +5,7 @@
     @apply com-h-full com-m-0;
 
     nb-card-header {
-      @apply com-p-4;
+      @apply com-px-4 com-py-3;
 
       .window-options {
         @apply com-flex com-justify-between com-items-center com-w-full;
@@ -23,7 +23,12 @@
         }
 
         .window-actions button {
-          @apply com-flex-shrink-0;
+          @apply com-flex-shrink-0 com-p-0 com-px-1;
+          &:active,
+          &:hover,
+          &:focus {
+            @apply com-bg-transparent com-border-transparent com-shadow-none;
+          }
         }
       }
     }

@@ -5,6 +5,7 @@ import { DiscussionPersonalChatChannel } from 'apps/shared-components/services/w
 import { IDiscussionFollower } from 'apps/shared-models/discussion-follower.model';
 import { IDiscussion } from 'apps/shared-models/discussion.model';
 import { NbMenuService } from '@commudle/theme';
+import { faDownLeftAndUpRightToCenter, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { filter, map, Subscription } from 'rxjs';
 
 @Component({
@@ -38,6 +39,8 @@ export class ChatsWindowComponent implements OnInit, OnDestroy {
   ];
 
   blocked = false;
+  faDownLeftAndUpRightToCenter = faDownLeftAndUpRightToCenter;
+  faUpRightAndDownLeftFromCenter = faUpRightAndDownLeftFromCenter;
 
   constructor(
     private sDiscussionService: SDiscussionsService,
@@ -98,6 +101,10 @@ export class ChatsWindowComponent implements OnInit, OnDestroy {
     if (window.innerWidth > 1000) {
       this.chatsWindowHeight = 50 - this.chatsWindowHeight;
     }
+  }
+
+  get isMinimized(): boolean {
+    return this.chatsWindowHeight === 0;
   }
 
   getDiscussion() {

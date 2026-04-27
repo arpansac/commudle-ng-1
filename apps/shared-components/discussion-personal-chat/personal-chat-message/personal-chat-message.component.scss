@@ -3,7 +3,7 @@ p {
 }
 
 .message-container {
-  @apply com-px-4 com-py-1 com-flex;
+  @apply com-px-4 com-py-1 com-flex com-flex-wrap;
 
   &.self-message {
     @apply com-justify-end;
@@ -114,7 +114,15 @@ p {
   }
 
   .replies {
+    @apply com-w-full com-mt-1 com-pl-3;
+
+    .reply-item {
+      @apply com-bg-gray-100 com-rounded-md;
+    }
+
     .reply-form {
+      @apply com-mt-2;
+
       emoji-mart {
         display: none;
         width: clamp(250px, 100%, 360px);

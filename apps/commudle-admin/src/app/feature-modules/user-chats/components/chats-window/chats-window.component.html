@@ -21,7 +21,7 @@
           </button>
           <!-- <nb-menu tag="menu" [items]="items"></nb-menu> -->
           <button (click)="toggleChatsWindowHeight()" ghost nbButton>
-            <nb-icon icon="minus" pack="eva"></nb-icon>
+            <fa-icon [icon]="isMinimized ? faUpRightAndDownLeftFromCenter : faDownLeftAndUpRightToCenter"></fa-icon>
           </button>
           <button (click)="closeChat()" ghost nbButton>
             <nb-icon icon="close" pack="eva"></nb-icon>

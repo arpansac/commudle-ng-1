@@ -111,19 +111,20 @@
     </div>
   </div>
   <div *ngIf="canReply" class="replies" [ngClass]="{ 'highlight-background': showActionButton[message.id] }">
-    <app-personal-chat-message
-      (sendDelete)="emitDelete(reply.id, reply.user.id === currentUser.id)"
-      (sendFlag)="emitFlag($event)"
-      *ngFor="let reply of message.user_messages"
-      [allActions]="allActions"
-      [canReply]="false"
-      [currentUser]="currentUser"
-      [message]="reply"
-      [permittedActions]="permittedActions"
-      [showFlagIcon]="showFlagIcon"
-      [showReplyIcon]="showReplyIcon"
-      [showFullDateTime]="showFullDateTime"
-    ></app-personal-chat-message>
+    <div *ngFor="let reply of message.user_messages" class="reply-item">
+      <app-personal-chat-message
+        (sendDelete)="emitDelete(reply.id, reply.user.id === currentUser.id)"
+        (sendFlag)="emitFlag($event)"
+        [allActions]="allActions"
+        [canReply]="false"
+        [currentUser]="currentUser"
+        [message]="reply"
+        [permittedActions]="permittedActions"
+        [showFlagIcon]="showFlagIcon"
+        [showReplyIcon]="showReplyIcon"
+        [showFullDateTime]="showFullDateTime"
+      ></app-personal-chat-message>
+    </div>
     <div *ngIf="showReplyForm" class="reply-form">
       <commudle-editor #replyEditor (contentChange)="emitReply($event)" [validators]="validators"></commudle-editor>
     </div>
