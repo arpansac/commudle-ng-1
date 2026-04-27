@@ -285,12 +285,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
   }
 
   private createRazorpayOrder(purchaseOrderId: number): void {
+    const amount = Math.round(this.totalPrice * 100);
     const orderDetails = {
-      amount: Math.round(this.totalPrice * 100),
-      currency: this.purchaseOrder.currency,
       subscription_months: this.subscriptionMonths,
     };
-    if (orderDetails['amount'] === 0) {
+    if (amount === 0) {
       this.handleFullDiscount();
     } else {
       this.razorpayService
