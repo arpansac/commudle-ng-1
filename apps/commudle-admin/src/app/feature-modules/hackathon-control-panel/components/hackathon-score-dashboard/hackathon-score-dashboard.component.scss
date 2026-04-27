@@ -1,22 +1,23 @@
 .score-dashboard {
-  @apply com-flex com-flex-col com-gap-6;
+  @apply com-flex com-flex-col com-gap-5;
 
+  // ── Header ──
   .dashboard-header {
     .dashboard-title {
-      @apply com-text-2xl com-font-bold com-text-gray-900 com-m-0;
+      @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
     }
   }
 
   // ── Control Bar ──
   .control-bar {
-    @apply com-flex com-flex-col com-gap-3 com-p-4 com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white;
+    @apply com-flex com-flex-col com-gap-3 com-px-4 com-py-3 com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white;
     @apply md:com-flex-row md:com-items-center md:com-justify-between;
 
     .control-left {
-      @apply com-flex com-items-center com-gap-2 com-flex-wrap;
+      @apply com-flex com-items-center com-gap-2;
 
       .stat-chip {
-        @apply com-inline-flex com-items-center com-gap-1.5 com-px-3 com-py-1.5 com-rounded-full com-text-xs com-font-medium com-border com-border-solid;
+        @apply com-inline-flex com-items-center com-gap-1.5 com-px-3 com-py-1 com-rounded-full com-text-xs;
 
         fa-icon {
           @apply com-text-10px;
@@ -32,15 +33,11 @@
         }
 
         &.stat-teams {
-          @apply com-bg-primary-100 com-text-primary-700 com-border-primary-200;
+          @apply com-bg-primary-100 com-text-primary-700;
         }
 
         &.stat-top-score {
-          @apply com-bg-green-100 com-text-green-700 com-border-green-200;
-        }
-
-        &.stat-rounds {
-          @apply com-bg-yellow-100 com-text-yellow-700 com-border-yellow-200;
+          @apply com-bg-green-100 com-text-green-700;
         }
       }
     }
@@ -49,16 +46,17 @@
       @apply com-flex com-items-center com-gap-2;
 
       .round-select {
-        @apply com-text-xs com-font-medium com-px-3 com-py-1.5 com-rounded-lg com-border com-border-solid com-border-gray-300 com-bg-gray-50 com-text-Yankees-Blue com-cursor-pointer com-min-w-[140px];
+        @apply com-text-xs com-font-medium com-px-3 com-py-1.5 com-rounded-lg com-border com-border-solid com-border-gray-300 com-bg-gray-50 com-text-Yankees-Blue com-cursor-pointer;
         appearance: auto;
+        min-width: 150px;
 
         &:focus {
-          @apply com-outline-none com-border-primary-500 com-bg-white;
+          @apply com-outline-none com-border-primary-400 com-bg-white;
         }
       }
 
       .action-btn {
-        @apply com-flex com-items-center com-justify-center com-px-2.5 com-py-1.5 com-rounded-lg com-border com-border-solid com-cursor-pointer com-text-xs com-font-medium com-transition-colors;
+        @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg com-border com-border-solid com-cursor-pointer com-transition-colors com-text-xs com-font-medium;
 
         &.refresh-btn {
           @apply com-text-primary-600 com-bg-primary-100 com-border-primary-200;
@@ -69,7 +67,7 @@
         }
 
         &.clear-btn {
-          @apply com-text-red-500 com-bg-white com-border-red-200;
+          @apply com-w-auto com-px-3 com-text-red-500 com-bg-white com-border-red-200;
 
           &:hover {
             @apply com-bg-red-500 com-text-white com-border-red-500;
@@ -79,212 +77,243 @@
     }
   }
 
+  // ── Loading ──
   .loading-state {
-    @apply com-text-center com-py-16;
+    @apply com-flex com-justify-center com-py-16;
   }
 
-  .empty-state {
-    @apply com-text-center com-py-16 com-bg-white com-rounded-lg com-border com-border-solid com-border-gray-200;
+  // ── Teams Container (single wrapper) ──
+  .teams-container {
+    @apply com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white com-overflow-hidden com-max-w-4xl;
 
-    .empty-icon {
-      @apply com-text-4xl com-text-gray-300 com-mb-2;
-    }
+    .team-block {
+      @apply com-border-0 com-border-b com-border-solid com-border-gray-200;
 
-    p {
-      @apply com-text-gray-400 com-m-0;
-    }
-  }
-
-  .teams-list {
-    @apply com-flex com-flex-col com-gap-3;
-
-    .team-card {
-      @apply com-rounded-lg com-border com-border-solid com-border-gray-200 com-bg-white com-overflow-hidden com-transition-all;
-
-      &:hover {
-        @apply com-shadow-sm;
+      &:last-child {
+        @apply com-border-b-0;
       }
 
-      .team-summary {
-        @apply com-flex com-items-center com-justify-between com-px-4 com-py-3 com-cursor-pointer com-select-none;
-        @apply md:com-px-6 md:com-py-4;
+      &.is-expanded {
+        @apply com-bg-gray-50;
 
-        .team-left {
-          @apply com-flex com-items-center com-gap-3;
-
-          .team-rank {
-            @apply com-text-sm com-font-bold com-text-gray-400 com-w-8 com-flex-shrink-0;
-          }
-
-          .team-avatar {
-            @apply com-w-10 com-h-10 com-rounded-full com-bg-primary-500 com-text-white com-flex com-items-center com-justify-center com-text-sm com-font-bold com-flex-shrink-0;
-          }
-
-          .team-info {
-            @apply com-flex com-flex-col;
-
-            .team-name {
-              @apply com-font-semibold com-text-gray-900 com-text-sm;
-              @apply md:com-text-base;
-            }
-
-            .team-meta {
-              @apply com-text-xs com-text-gray-400;
-            }
-          }
-        }
-
-        .team-right {
-          @apply com-flex com-items-center com-gap-4;
-
-          .team-score-summary {
-            @apply com-flex com-flex-col com-items-end;
-
-            .team-total-score {
-              @apply com-text-xl com-font-bold com-text-green-600;
-            }
-
-            .team-avg-label {
-              @apply com-text-[10px] com-text-gray-400;
-            }
-          }
-
-          .expand-icon {
-            @apply com-text-gray-400 com-text-sm;
-          }
+        .team-row {
+          @apply com-bg-white com-border-0 com-border-b com-border-solid com-border-gray-200;
         }
       }
 
-      .team-details {
-        @apply com-border-0 com-border-t com-border-solid com-border-gray-200 com-bg-gray-50;
+      // ── Team Row ──
+      .team-row {
+        @apply com-flex com-items-center com-gap-3 com-px-4 com-py-3 com-cursor-pointer com-select-none com-transition-colors;
+        @apply md:com-px-5;
 
-        .detail-loading {
-          @apply com-flex com-justify-center com-py-8;
+        &:hover {
+          @apply com-bg-gray-50;
         }
 
-        .no-rounds {
-          @apply com-text-center com-py-6 com-text-sm com-text-gray-400;
+        .team-rank {
+          @apply com-text-sm com-font-bold com-text-Yankees-Blue com-w-6 com-text-center com-flex-shrink-0;
         }
 
-        .round-block {
-          @apply com-px-4 com-py-4 com-border-0 com-border-b com-border-solid com-border-gray-200;
-          @apply md:com-px-6;
+        .team-name-col {
+          @apply com-flex com-flex-col com-min-w-0 com-flex-1;
+
+          .team-name {
+            @apply com-text-sm com-font-semibold com-text-Yankees-Blue com-truncate;
+          }
+
+          .team-meta {
+            @apply com-text-10px com-text-gray-400;
+          }
+        }
+
+        .team-artifacts {
+          @apply com-flex com-items-center com-gap-1.5 com-flex-shrink-0;
+
+          .artifact-chip {
+            @apply com-inline-flex com-items-center com-gap-1 com-px-2 com-py-1 com-rounded-full com-text-10px com-font-semibold com-no-underline com-transition-colors;
+
+            fa-icon {
+              @apply com-text-8px;
+            }
+
+            .link-icon {
+              @apply com-text-8px com-opacity-50;
+            }
+
+            &.build-chip {
+              @apply com-bg-primary-100 com-text-primary-700;
+
+              &:hover {
+                @apply com-bg-primary-500 com-text-white;
+
+                .link-icon {
+                  @apply com-opacity-100;
+                }
+              }
+            }
+
+            &.submission-chip {
+              @apply com-bg-yellow-100 com-text-yellow-700;
+            }
+          }
+        }
+
+        .team-score-col {
+          @apply com-flex com-items-center com-flex-shrink-0;
+
+          .score-value {
+            @apply com-text-sm com-font-bold com-text-green-600;
+          }
+        }
+
+        .team-evals-col {
+          @apply com-hidden;
+        }
+
+        .team-toggle {
+          @apply com-text-gray-400 com-text-xs com-flex-shrink-0;
+        }
+      }
+
+      // ── Expanded Area (no card, just indented) ──
+      .team-expand-area {
+        @apply com-px-4 com-py-4;
+        @apply md:com-px-5;
+        padding-left: calc(1.25rem + 36px); // indent past rank column
+
+        @media (max-width: 640px) {
+          padding-left: 1rem;
+        }
+
+        .expand-loading {
+          @apply com-flex com-justify-center com-py-6;
+        }
+
+        .expand-empty {
+          @apply com-text-sm com-text-gray-400 com-py-4;
+        }
+
+        // ── Round Section (left accent, no card) ──
+        .round-section {
+          @apply com-mb-5 com-pl-4 com-border-0 com-border-l-2 com-border-solid com-border-primary-300;
 
           &:last-child {
-            @apply com-border-b-0;
+            @apply com-mb-0;
           }
 
-          .round-header {
-            @apply com-flex com-flex-col com-gap-1 com-mb-3;
+          .round-title-row {
+            @apply com-flex com-flex-col com-gap-1.5 com-mb-3;
             @apply md:com-flex-row md:com-items-center md:com-justify-between;
 
             .round-name {
               @apply com-text-sm com-font-bold com-text-Yankees-Blue;
             }
 
-            .round-stats {
-              @apply com-flex com-items-center com-gap-3;
+            .round-pills {
+              @apply com-flex com-items-center com-gap-1.5 com-flex-wrap;
 
-              .round-avg,
-              .round-best,
-              .round-evals {
-                @apply com-text-xs com-px-2 com-py-0.5 com-rounded-full com-font-medium;
-              }
+              .pill {
+                @apply com-text-10px com-font-semibold com-px-2 com-py-0.5 com-rounded-full;
 
-              .round-avg {
-                @apply com-bg-blue-100 com-text-blue-700;
-              }
+                &.pill-blue {
+                  @apply com-bg-blue-100 com-text-blue-700;
+                }
 
-              .round-best {
-                @apply com-bg-green-100 com-text-green-700;
-              }
+                &.pill-green {
+                  @apply com-bg-green-100 com-text-green-700;
+                }
 
-              .round-evals {
-                @apply com-bg-gray-200 com-text-gray-600;
+                &.pill-gray {
+                  @apply com-bg-gray-200 com-text-gray-600;
+                }
               }
             }
           }
 
-          .evaluator-list {
-            @apply com-flex com-flex-col com-gap-2;
+          // ── Evaluator Table (compact stacked rows) ──
+          .eval-table {
+            @apply com-rounded-lg com-overflow-hidden;
 
-            .evaluator-row {
-              @apply com-flex com-flex-col com-gap-2 com-p-3 com-rounded-lg com-bg-white com-border com-border-solid com-border-gray-200;
-              @apply md:com-flex-row md:com-items-start md:com-justify-between;
+            .eval-row {
+              @apply com-flex com-items-center com-gap-3 com-px-3 com-py-2.5;
 
-              .evaluator-info {
-                @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-mb-2;
-                @apply md:com-mb-0 md:com-min-w-[160px];
+              &.eval-row-alt {
+                @apply com-bg-gray-100;
+              }
 
-                .evaluator-photo {
-                  @apply com-w-7 com-h-7 com-rounded-full com-object-cover com-flex-shrink-0;
+              .eval-person {
+                @apply com-flex com-items-center com-gap-2 com-flex-shrink-0 com-w-40;
+
+                .eval-avatar {
+                  @apply com-w-6 com-h-6 com-rounded-full com-object-cover com-flex-shrink-0;
                 }
 
-                .evaluator-photo-placeholder {
-                  @apply com-w-7 com-h-7 com-rounded-full com-bg-gray-300 com-flex com-items-center com-justify-center com-flex-shrink-0;
+                .eval-avatar-fallback {
+                  @apply com-w-6 com-h-6 com-rounded-full com-bg-gray-300 com-flex com-items-center com-justify-center com-flex-shrink-0;
 
                   fa-icon {
-                    @apply com-text-xs com-text-gray-500;
+                    @apply com-text-10px com-text-gray-500;
                   }
                 }
 
-                .evaluator-name {
-                  @apply com-text-sm com-font-medium com-text-gray-700;
-                }
+                .eval-name-block {
+                  @apply com-flex com-flex-col com-min-w-0;
 
-                .evaluator-meta {
-                  @apply com-flex com-flex-col;
+                  .eval-name {
+                    @apply com-text-xs com-font-semibold com-text-Yankees-Blue com-truncate;
+                  }
 
-                  .evaluator-type {
-                    @apply com-text-10px com-text-gray-400 com-uppercase com-tracking-wider;
+                  .eval-role {
+                    @apply com-text-10px com-text-gray-400 com-capitalize;
                   }
                 }
               }
 
-              .evaluator-scores {
-                @apply com-flex com-flex-col com-gap-2 com-flex-1;
-                @apply md:com-flex-row md:com-items-center md:com-justify-end md:com-gap-4;
+              .eval-criteria {
+                @apply com-flex com-flex-wrap com-gap-1 com-flex-1;
 
-                .criteria-list {
-                  @apply com-flex com-flex-wrap com-gap-1;
+                .criteria-tag {
+                  @apply com-inline-flex com-items-center com-gap-1 com-px-1.5 com-py-0.5 com-rounded com-bg-white com-text-10px;
 
-                  .criteria-item {
-                    @apply com-flex com-items-center com-gap-1 com-text-xs com-px-2 com-py-1 com-rounded com-bg-gray-100;
+                  .criteria-key {
+                    @apply com-text-gray-500 com-capitalize;
+                  }
 
-                    .criteria-name {
-                      @apply com-text-gray-500;
-                    }
-
-                    .criteria-score {
-                      @apply com-font-bold com-text-gray-800;
-                    }
+                  .criteria-val {
+                    @apply com-font-bold com-text-gray-800;
                   }
                 }
+              }
 
-                .evaluator-total {
-                  @apply com-flex com-items-center com-gap-2 com-flex-shrink-0;
-
-                  .evaluator-total-label {
-                    @apply com-text-xs com-text-gray-400 com-uppercase;
-                  }
-
-                  .evaluator-total-value {
-                    @apply com-text-lg com-font-bold com-text-green-600;
-                  }
-                }
+              .eval-total {
+                @apply com-text-sm com-font-bold com-text-green-600 com-flex-shrink-0 com-w-10 com-text-right;
               }
             }
           }
         }
       }
     }
-
-    .team-card-expanded {
-      @apply com-shadow-md com-border-primary-300;
-    }
   }
 
+  // ── Pagination ──
   .pagination-wrapper {
     @apply com-flex com-justify-center;
+  }
+
+  // ── Empty State ──
+  .empty-state {
+    @apply com-flex com-flex-col com-items-center com-justify-center com-py-16 com-bg-white com-rounded-lg com-border com-border-solid com-border-gray-200;
+
+    .empty-icon {
+      @apply com-text-4xl com-text-gray-300 com-mb-3;
+    }
+
+    .empty-title {
+      @apply com-text-sm com-font-semibold com-text-gray-600 com-m-0;
+    }
+
+    .empty-desc {
+      @apply com-text-xs com-text-gray-400 com-m-0 com-mt-1;
+    }
   }
 }

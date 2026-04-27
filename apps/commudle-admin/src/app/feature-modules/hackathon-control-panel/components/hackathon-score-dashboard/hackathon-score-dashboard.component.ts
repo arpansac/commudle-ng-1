@@ -13,6 +13,9 @@ import {
   faRotateRight,
   faTrophy,
   faUsers,
+  faCube,
+  faFileLines,
+  faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IExpandableTeam = IHackathonTeam & {
@@ -40,7 +43,18 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
   selectedRoundId = null;
   topScore = 0;
 
-  icons = { faChevronDown, faChevronUp, faUser, faFilter, faRotateRight, faTrophy, faUsers };
+  icons = {
+    faChevronDown,
+    faChevronUp,
+    faUser,
+    faFilter,
+    faRotateRight,
+    faTrophy,
+    faUsers,
+    faCube,
+    faFileLines,
+    faArrowUpRightFromSquare,
+  };
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -85,6 +99,9 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
 
   fetchTeams(): void {
     this.isLoading = true;
+    this.teams = [];
+    this.total = 0;
+    this.topScore = 0;
     this.hackathonTeamService
       .teamsWithScores(this.hackathon.id, this.count, this.page, this.selectedRoundId)
       .subscribe((data) => {

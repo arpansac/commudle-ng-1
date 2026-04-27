@@ -7,12 +7,12 @@
   <!-- Control Bar -->
   <div class="control-bar">
     <div class="control-left">
-      <div class="stat-chip stat-teams">
+      <div class="stat-chip stat-teams" *ngIf="total">
         <fa-icon [icon]="icons.faUsers"></fa-icon>
         <span class="stat-chip-value">{{ total }}</span>
         <span class="stat-chip-label">Teams</span>
       </div>
-      <div class="stat-chip stat-top-score">
+      <div class="stat-chip stat-top-score" *ngIf="topScore">
         <fa-icon [icon]="icons.faTrophy"></fa-icon>
         <span class="stat-chip-value">{{ topScore }}</span>
         <span class="stat-chip-label">Top Score</span>
@@ -35,81 +35,100 @@
     <app-loading-spinner></app-loading-spinner>
   </div>
 
-  <!-- Team List -->
-  <div *ngIf="!isLoading && teams.length > 0" class="teams-list">
-    <div *ngFor="let team of teams; let i = index" class="team-card" [class.team-card-expanded]="team.expanded">
-      <!-- Team Summary Row -->
-      <div class="team-summary" (click)="toggleExpand(team)">
-        <div class="team-left">
-          <span class="team-rank">#{{ (page - 1) * count + i + 1 }}</span>
-          <div class="team-info">
-            <span class="team-name">{{ team.name }}</span>
-            <span class="team-meta">
-              {{ team.team_members_count }} members · {{ team.total_rounds }} rounds ·
-              {{ team.total_evaluations }} evaluations
-            </span>
-          </div>
+  <!-- Teams Container (single wrapper, not per-team cards) -->
+  <div *ngIf="!isLoading && teams.length > 0" class="teams-container">
+    <div *ngFor="let team of teams; let i = index" class="team-block" [class.is-expanded]="team.expanded">
+      <!-- Team Row -->
+      <div class="team-row" (click)="toggleExpand(team)">
+        <div class="team-rank">
+          {{ (page - 1) * count + i + 1 }}
         </div>
-        <div class="team-right">
-          <div class="team-score-summary">
-            <span class="team-total-score">{{ team.total_score }}</span>
-          </div>
-          <fa-icon [icon]="team.expanded ? icons.faChevronUp : icons.faChevronDown" class="expand-icon"></fa-icon>
+        <div class="team-name-col">
+          <span class="team-name">{{ team.name }}</span>
+          <span class="team-meta">{{ team.team_members_count }} members</span>
+        </div>
+        <div class="team-artifacts">
+          <a
+            *ngIf="team.community_build"
+            class="artifact-chip build-chip"
+            [routerLink]="['/builds/', team.community_build.slug]"
+            target="_blank"
+            (click)="$event.stopPropagation()"
+          >
+            <fa-icon [icon]="icons.faCube"></fa-icon>
+            <span>Build</span>
+            <fa-icon [icon]="icons.faArrowUpRightFromSquare" class="link-icon"></fa-icon>
+          </a>
+          <span *ngIf="team.hackathon_team_round_submissions?.length" class="artifact-chip submission-chip">
+            <fa-icon [icon]="icons.faFileLines"></fa-icon>
+            <span
+              >{{ team.hackathon_team_round_submissions.length }} Submission{{
+                team.hackathon_team_round_submissions.length > 1 ? 's' : ''
+              }}</span
+            >
+          </span>
+        </div>
+        <div class="team-score-col">
+          <span class="score-value">{{ team.total_score }}</span>
+        </div>
+        <div class="team-toggle">
+          <fa-icon [icon]="team.expanded ? icons.faChevronUp : icons.faChevronDown"></fa-icon>
         </div>
       </div>
 
-      <!-- Expanded: Round Details -->
-      <div *ngIf="team.expanded" class="team-details">
-        <!-- Loading detail -->
-        <div *ngIf="team.detailLoading" class="detail-loading">
+      <!-- Expanded Detail (no card, just indented content) -->
+      <div *ngIf="team.expanded" class="team-expand-area">
+        <div *ngIf="team.detailLoading" class="expand-loading">
           <app-loading-spinner></app-loading-spinner>
         </div>
 
-        <!-- Round blocks -->
         <ng-container *ngIf="team.detailLoaded">
-          <div *ngIf="team.roundDetails.length === 0" class="no-rounds">No round data available for this team.</div>
+          <div *ngIf="team.roundDetails.length === 0" class="expand-empty">No score data for this team.</div>
 
-          <div *ngFor="let round of team.roundDetails" class="round-block">
-            <div class="round-header">
+          <!-- Round Sections (left accent border, no card) -->
+          <div *ngFor="let round of team.roundDetails" class="round-section">
+            <div class="round-title-row">
               <span class="round-name">{{ round.round_name }}</span>
-              <div class="round-stats">
-                <span class="round-avg">Avg: {{ round.average_score }}</span>
-                <span class="round-best">Total: {{ round.total_scores }}</span>
-                <span class="round-evals" *ngIf="round.total_evaluations">
-                  {{ round.total_evaluations }} evaluator{{ round.total_evaluations > 1 ? 's' : '' }}
+              <div class="round-pills">
+                <span class="pill pill-blue">Avg {{ round.average_score }}</span>
+                <span class="pill pill-green">Total {{ round.total_scores }}</span>
+                <span class="pill pill-gray" *ngIf="round.total_evaluations">
+                  {{ round.total_evaluations }} eval{{ round.total_evaluations > 1 ? 's' : '' }}
                 </span>
               </div>
             </div>
 
-            <!-- Evaluator Scores -->
-            <div class="evaluator-list" *ngIf="round.scores?.length > 0">
-              <div *ngFor="let ev of round.scores" class="evaluator-row">
-                <div class="evaluator-info">
+            <!-- Evaluator Table (flat rows, no cards) -->
+            <div class="eval-table" *ngIf="round.scores?.length > 0">
+              <div *ngFor="let ev of round.scores; let odd = odd" class="eval-row" [class.eval-row-alt]="odd">
+                <!-- Evaluator -->
+                <div class="eval-person">
                   <img
                     *ngIf="ev.evaluator?.photo?.i64"
                     [src]="ev.evaluator.photo.i64"
-                    class="evaluator-photo"
+                    class="eval-avatar"
                     [alt]="ev.evaluator.name"
                   />
-                  <div *ngIf="!ev.evaluator?.photo?.i64" class="evaluator-photo-placeholder">
+                  <div *ngIf="!ev.evaluator?.photo?.i64" class="eval-avatar-fallback">
                     <fa-icon [icon]="icons.faUser"></fa-icon>
                   </div>
-                  <div class="evaluator-meta">
-                    <span class="evaluator-name">{{ ev.evaluator?.name }}</span>
-                    <span class="evaluator-type" *ngIf="ev.evaluator?.judge_type">{{ ev.evaluator.judge_type }}</span>
+                  <div class="eval-name-block">
+                    <span class="eval-name">{{ ev.evaluator?.name }}</span>
+                    <span class="eval-role" *ngIf="ev.evaluator?.judge_type">{{ ev.evaluator.judge_type }}</span>
                   </div>
                 </div>
-                <div class="evaluator-scores">
-                  <div class="criteria-list">
-                    <div *ngFor="let score of ev.score" class="criteria-item">
-                      <span class="criteria-name">{{ score.text }}</span>
-                      <span class="criteria-score">{{ score.score }}</span>
-                    </div>
+
+                <!-- Criteria Scores (inline) -->
+                <div class="eval-criteria">
+                  <div *ngFor="let entry of ev.score | keyvalue" class="criteria-tag">
+                    <span class="criteria-key">{{ entry.key }}</span>
+                    <span class="criteria-val">{{ entry.value }}</span>
                   </div>
-                  <div class="evaluator-total">
-                    <span class="evaluator-total-label">Total</span>
-                    <span class="evaluator-total-value">{{ ev.total_score }}</span>
-                  </div>
+                </div>
+
+                <!-- Total -->
+                <div class="eval-total">
+                  {{ ev.total_score }}
                 </div>
               </div>
             </div>
@@ -133,7 +152,8 @@
 
   <!-- Empty -->
   <div *ngIf="!isLoading && teams.length === 0" class="empty-state">
-    <nb-icon icon="clipboard-outline" class="empty-icon"></nb-icon>
-    <p>No score data available</p>
+    <fa-icon [icon]="icons.faChartBar" class="empty-icon"></fa-icon>
+    <p class="empty-title">No score data available</p>
+    <p class="empty-desc">Teams will appear here once evaluations begin.</p>
   </div>
 </div>
