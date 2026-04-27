@@ -76,17 +76,20 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
         this.fetchHackathon(params.get('hackathon_id'));
       }),
     );
-    this.searchSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe((query) => {
-      this.searchQuery = query;
-      this.page = 1;
-      this.resetExpandedTeams();
-      this.fetchTeams();
-    });
+    this.subscriptions.push(
+      this.searchSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe((query) => {
+        this.searchQuery = query;
+        this.page = 1;
+        this.resetExpandedTeams();
+        this.fetchTeams();
+      }),
+    );
   }
 
   ngOnDestroy(): void {
     this.seoService.noIndex(false);
     this.subscriptions.forEach((s) => s.unsubscribe());
+    this.searchSubject.complete();
   }
 
   fetchHackathon(hackathonId: string | number): void {
