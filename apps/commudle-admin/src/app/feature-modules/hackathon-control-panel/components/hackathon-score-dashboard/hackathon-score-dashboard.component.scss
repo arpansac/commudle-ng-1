@@ -154,6 +154,14 @@
 
             &.submission-chip {
               @apply com-bg-yellow-100 com-text-yellow-700;
+
+              &:hover {
+                @apply com-bg-yellow-500 com-text-white;
+
+                .link-icon {
+                  @apply com-opacity-100;
+                }
+              }
             }
           }
         }
@@ -224,7 +232,7 @@
                 }
 
                 &.pill-gray {
-                  @apply com-bg-gray-200 com-text-gray-600;
+                  @apply com-bg-gray-200 com-text-tYankees-Blue;
                 }
               }
             }
@@ -280,7 +288,7 @@
                   }
 
                   .criteria-val {
-                    @apply com-font-bold com-text-gray-800;
+                    @apply com-font-bold com-text-Yankees-Blue;
                   }
                 }
               }

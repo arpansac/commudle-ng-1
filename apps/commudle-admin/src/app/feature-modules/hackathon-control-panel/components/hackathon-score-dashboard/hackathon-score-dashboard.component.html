@@ -40,9 +40,7 @@
     <div *ngFor="let team of teams; let i = index" class="team-block" [class.is-expanded]="team.expanded">
       <!-- Team Row -->
       <div class="team-row" (click)="toggleExpand(team)">
-        <div class="team-rank">
-          {{ (page - 1) * count + i + 1 }}
-        </div>
+        <div class="team-rank">#{{ (page - 1) * count + i + 1 }}</div>
         <div class="team-name-col">
           <span class="team-name">{{ team.name }}</span>
           <span class="team-meta">{{ team.team_members_count }} members</span>
@@ -59,14 +57,17 @@
             <span>Build</span>
             <fa-icon [icon]="icons.faArrowUpRightFromSquare" class="link-icon"></fa-icon>
           </a>
-          <span *ngIf="team.hackathon_team_round_submissions?.length" class="artifact-chip submission-chip">
+          <a
+            *ngFor="let sub of team.hackathon_team_round_submissions"
+            class="artifact-chip submission-chip"
+            [href]="sub.file_attachment?.url"
+            target="_blank"
+            (click)="$event.stopPropagation()"
+          >
             <fa-icon [icon]="icons.faFileLines"></fa-icon>
-            <span
-              >{{ team.hackathon_team_round_submissions.length }} Submission{{
-                team.hackathon_team_round_submissions.length > 1 ? 's' : ''
-              }}</span
-            >
-          </span>
+            <span>{{ sub.round?.name || 'Submission' }}</span>
+            <fa-icon [icon]="icons.faArrowUpRightFromSquare" class="link-icon"></fa-icon>
+          </a>
         </div>
         <div class="team-score-col">
           <span class="score-value">{{ team.total_score }}</span>
