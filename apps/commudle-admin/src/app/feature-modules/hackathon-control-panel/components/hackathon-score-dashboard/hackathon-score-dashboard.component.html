@@ -6,27 +6,50 @@
 
   <!-- Control Bar -->
   <div class="control-bar">
-    <div class="control-left">
-      <div class="stat-chip stat-teams" *ngIf="total">
-        <fa-icon [icon]="icons.faUsers"></fa-icon>
-        <span class="stat-chip-value">{{ total }}</span>
-        <span class="stat-chip-label">Teams</span>
+    <!-- Search -->
+    <div class="search-row">
+      <div class="search-wrapper">
+        <fa-icon [icon]="icons.faSearch" class="search-icon"></fa-icon>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search by team name..."
+          [ngModel]="searchQuery"
+          (ngModelChange)="onSearch($event)"
+        />
       </div>
-      <div class="stat-chip stat-top-score" *ngIf="topScore">
-        <fa-icon [icon]="icons.faTrophy"></fa-icon>
-        <span class="stat-chip-value">{{ topScore }}</span>
-        <span class="stat-chip-label">Top Score</span>
+      <div class="filter-actions">
+        <select class="round-select" [(ngModel)]="selectedRoundId" (ngModelChange)="onFilterChange()">
+          <option [ngValue]="null">All rounds</option>
+          <option *ngFor="let round of rounds" [ngValue]="round.id">{{ round.name }}</option>
+        </select>
+        <button class="icon-btn" (click)="refreshData()" title="Refresh">
+          <fa-icon [icon]="icons.faRotateRight"></fa-icon>
+        </button>
+        <button class="text-btn" (click)="clearFilters()" *ngIf="selectedRoundId || searchQuery">Reset</button>
       </div>
     </div>
-    <div class="control-right">
-      <select class="round-select" [(ngModel)]="selectedRoundId" (ngModelChange)="onFilterChange()">
-        <option [ngValue]="null">All rounds</option>
-        <option *ngFor="let round of rounds" [ngValue]="round.id">{{ round.name }}</option>
-      </select>
-      <button class="action-btn refresh-btn" (click)="refreshData()">
-        <fa-icon [icon]="icons.faRotateRight"></fa-icon>
-      </button>
-      <button class="action-btn clear-btn" (click)="clearFilters()" *ngIf="selectedRoundId">Clear</button>
+    <!-- Stats Row -->
+    <div class="stats-row" *ngIf="total || topScore">
+      <div class="stat-item" *ngIf="total">
+        <fa-icon [icon]="icons.faUsers"></fa-icon>
+        <strong>{{ total }}</strong>
+        <span>teams</span>
+      </div>
+      <span class="stat-divider" *ngIf="total && topScore">·</span>
+      <div class="stat-item" *ngIf="topScore">
+        <fa-icon [icon]="icons.faTrophy"></fa-icon>
+        <strong>{{ topScore }}</strong>
+        <span>top score</span>
+      </div>
+      <span class="stat-divider" *ngIf="(total || topScore) && selectedRoundId">·</span>
+      <div class="stat-item active-filter" *ngIf="selectedRoundId">
+        <span>Filtered by round</span>
+      </div>
+      <span class="stat-divider" *ngIf="(total || topScore) && searchQuery">·</span>
+      <div class="stat-item active-filter" *ngIf="searchQuery">
+        <span>Searching "{{ searchQuery }}"</span>
+      </div>
     </div>
   </div>
 

@@ -290,10 +290,14 @@ export class HackathonTeamService {
     count = 10,
     page = 1,
     roundId?: number,
+    query?: string,
   ): Observable<IPaginationCount<IHackathonTeam>> {
     let params = new HttpParams().set('hackathon_id', hackathonId).set('count', count).set('page', page);
     if (roundId) {
       params = params.set('round_id', roundId);
+    }
+    if (query) {
+      params = params.set('q', query);
     }
     return this.http.get<IPaginationCount<IHackathonTeam>>(
       this.apiRoutesService.getRoute(API_ROUTES.HACKATHONS.TEAMS.TEAMS_WITH_SCORES),

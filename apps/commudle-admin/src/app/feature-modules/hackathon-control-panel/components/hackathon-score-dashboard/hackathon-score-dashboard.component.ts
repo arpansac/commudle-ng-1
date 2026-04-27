@@ -4,7 +4,7 @@ import { HackathonTeamService, RoundService, SeoService } from '@commudle/shared
 import { EDbModels, IHackathonTeam, IRound } from '@commudle/shared-models';
 import { HackathonService } from 'apps/commudle-admin/src/app/services/hackathon.service';
 import { IHackathon } from 'apps/shared-models/hackathon.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import {
   faChevronDown,
   faChevronUp,
@@ -16,6 +16,7 @@ import {
   faCube,
   faFileLines,
   faArrowUpRightFromSquare,
+  faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 
 type IExpandableTeam = IHackathonTeam & {
@@ -42,6 +43,8 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
   total = 0;
   selectedRoundId = null;
   topScore = 0;
+  searchQuery = '';
+  private searchSubject = new Subject<string>();
 
   icons = {
     faChevronDown,
@@ -54,6 +57,7 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
     faCube,
     faFileLines,
     faArrowUpRightFromSquare,
+    faSearch: faMagnifyingGlass,
   };
   subscriptions: Subscription[] = [];
 
@@ -72,6 +76,12 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
         this.fetchHackathon(params.get('hackathon_id'));
       }),
     );
+    this.searchSubject.pipe(debounceTime(400), distinctUntilChanged()).subscribe((query) => {
+      this.searchQuery = query;
+      this.page = 1;
+      this.resetExpandedTeams();
+      this.fetchTeams();
+    });
   }
 
   ngOnDestroy(): void {
@@ -103,7 +113,7 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
     this.total = 0;
     this.topScore = 0;
     this.hackathonTeamService
-      .teamsWithScores(this.hackathon.id, this.count, this.page, this.selectedRoundId)
+      .teamsWithScores(this.hackathon.id, this.count, this.page, this.selectedRoundId, this.searchQuery || undefined)
       .subscribe((data) => {
         this.teams = data.values;
         this.topScore = this.teams.length > 0 ? this.teams[0].total_score : 0;
@@ -134,6 +144,10 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSearch(value: string): void {
+    this.searchSubject.next(value.trim());
+  }
+
   onFilterChange(): void {
     this.page = 1;
     this.resetExpandedTeams();
@@ -142,6 +156,7 @@ export class HackathonScoreDashboardComponent implements OnInit, OnDestroy {
 
   clearFilters(): void {
     this.selectedRoundId = null;
+    this.searchQuery = '';
     this.page = 1;
     this.resetExpandedTeams();
     this.fetchTeams();
