@@ -1,0 +1,74 @@
+{
+  "slug": "commudle-vs-luma",
+  "sections": [
+    {
+      "type": "commudle-section-hero-1",
+      "config": {
+        "title": "Commudle vs Hopin",
+        "subtitle": "Compare platforms for community events",
+        "ctaText": "Get Started"
+      }
+    },
+    {
+        "type": "commudle-section-hero-2",
+        "config": {
+            "title": "Build <strong>thriving</strong> tech communities",
+            "subtitle": "Commudle gives organizers everything they need — events, talks, hackathons, and more — in one place.",
+            "ctaText": "Get started for free"
+        }
+    },
+        {
+            "type": "commudle-section-hero-3",
+            "config": {
+                "heading": "Build thriving tech communities",
+                "subtext": "Commudle gives organizers everything they need — events, talks, hackathons, and more — in one place.",
+                "primaryCta": { "label": "Get started free", "routerLink": "/register" },
+                "secondaryCta": { "label": "Explore features", "routerLink": "/features" },
+                "stats": [
+                    { "value": "10+", "label": "Years of experience" },
+                    { "value": "1M+", "label": "Community members" },
+                    { "value": "10K+", "label": "Events hosted" }
+                ]
+        }
+    },
+    {
+        "type": "commudle-section-hero-4",
+        "config": {
+            "eyebrow": "#1 Meetup Alternative",
+            "heading": "Everything Meetup does — and everything it doesn't.",
+            "subtext": "Commudle gives tech communities a purpose-built home for events, talks, hackathons, and member growth. Compare and decide.",
+            "cta": { "label": "Try Commudle free", "routerLink": "/register" },
+            "ctaMicroCopy": ["Free to get started.", "No credit card required."],
+            "screenshot": { "src": "/assets/screenshots/commudle-dashboard.png", "alt": "Commudle community dashboard" },
+            "gradientTheme": "blue"
+        }
+    },
+    {
+        "type": "commudle-section-hero-5",
+        "config": {
+        "headingLine1": "Build thriving communities.",
+        "headingLine2": "Together.",
+        "line2ColorClass": "com-text-Caribbean-Green",
+        "subtext": "Commudle gives tech communities a purpose-built home — events, talks, hackathons, and everything in between.",
+        "primaryCta": { "label": "Get started free", "routerLink": "/register" },
+        "secondaryCta": { "label": "See how it works", "routerLink": "/features" }
+        }
+    },
+    {
+      "type": "commudle-section-feature-grid-1",
+      "config": {
+        "heading": "Why Commudle wins",
+        "items": [
+          {
+            "title": "Community-first",
+            "description": "Built for long-term engagement"
+          },
+          {
+            "title": "Better pricing",
+            "description": "More value at lower cost"
+          }
+        ]
+      }
+    }
+  ]
+}

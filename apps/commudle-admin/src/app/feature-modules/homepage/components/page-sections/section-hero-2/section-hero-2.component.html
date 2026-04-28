@@ -1,0 +1,53 @@
+<section class="com-bg-white com-py-16 com-overflow-x-hidden">
+  <div class="base-layout container">
+    <div class="com-flex com-flex-col md:com-flex-row com-items-center com-gap-12">
+      <!-- Left column: text content -->
+      <div class="com-flex-1 com-flex com-flex-col com-gap-6">
+        <h1 class="com-text-Page-Heading com-font-bold com-text-Yankees-Blue" [innerHTML]="safeTitle"></h1>
+
+        <p class="com-text-Paragraph-1 com-text-Auro-Metal-Saurus com-max-w-lg" [innerHTML]="safeSubtitle"></p>
+
+        <div *ngIf="config.ctaText">
+          <button nbButton status="primary" size="large" shape="semi-round">
+            {{ config.ctaText }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Right column: interactive orbital visual -->
+      <div class="com-flex-1 com-flex com-items-center com-justify-center com-py-8 md:com-py-0">
+        <div class="hero-visual" #visual>
+          <!-- Central pulsing core -->
+          <div class="hero-visual__core"></div>
+
+          <!-- Ring 1 — inner, fast clockwise -->
+          <div class="hero-visual__ring hero-visual__ring--1">
+            <div class="hero-visual__dot hero-visual__dot--1"></div>
+          </div>
+
+          <!-- Ring 2 — middle, counter-clockwise, two dots -->
+          <div class="hero-visual__ring hero-visual__ring--2">
+            <div class="hero-visual__dot hero-visual__dot--2"></div>
+            <div class="hero-visual__dot hero-visual__dot--2b"></div>
+          </div>
+
+          <!-- Ring 3 — outer, slow clockwise -->
+          <div class="hero-visual__ring hero-visual__ring--3">
+            <div class="hero-visual__dot hero-visual__dot--3"></div>
+          </div>
+
+          <!-- Floating community feature chips -->
+          <div class="hero-visual__chip hero-visual__chip--events" aria-hidden="true">
+            <span class="com-text-Caption com-font-semibold com-text-tYankees-Blue">Events</span>
+          </div>
+          <div class="hero-visual__chip hero-visual__chip--talks" aria-hidden="true">
+            <span class="com-text-Caption com-font-semibold com-text-tYankees-Blue">Talks</span>
+          </div>
+          <div class="hero-visual__chip hero-visual__chip--hackathons" aria-hidden="true">
+            <span class="com-text-Caption com-font-semibold com-text-tYankees-Blue">Hackathons</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

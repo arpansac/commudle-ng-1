@@ -1,0 +1,44 @@
+<section class="hero-section">
+  <!--
+    Mesh background layers — purely decorative, aria-hidden.
+    Layer 1 (.hero-mesh): dot-grid CSS pattern via background-image.
+    Layer 2 (.hero-glow): pulsing radial gradient centered behind the heading.
+  -->
+  <div class="hero-mesh" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <!-- Content container — sits above mesh layers -->
+  <div class="base-layout container">
+    <div class="hero-content">
+      <!-- Two-line large heading -->
+      <h1 class="hero-heading">
+        <span class="hero-heading__line1 com-text-tWhite com-block" [innerHTML]="safeLine1"></span>
+        <span class="hero-heading__line2 com-block" [class]="line2ColorClass" [innerHTML]="safeLine2"></span>
+      </h1>
+
+      <!-- Supporting subtitle -->
+      <p class="hero-subtext com-text-Paragraph-1 com-text-Cadet-Grey">
+        {{ config.subtext }}
+      </p>
+
+      <!-- CTA buttons -->
+      <div class="cta-row">
+        <button nbButton status="primary" size="large" shape="semi-round" [routerLink]="config.primaryCta.routerLink">
+          {{ config.primaryCta.label }}
+        </button>
+
+        <button
+          *ngIf="config.secondaryCta"
+          nbButton
+          status="basic"
+          outline
+          size="large"
+          shape="semi-round"
+          [routerLink]="config.secondaryCta?.routerLink"
+        >
+          {{ config.secondaryCta?.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+<div class="com-bg-white com-py-12">
+  <div class="base-layout container">
+    <h2 *ngIf="config.heading" class="com-text-Page-Section-Header com-text-Yankees-Blue com-mb-8">
+      {{ config.heading }}
+    </h2>
+
+    <div class="com-grid com-grid-cols-1 md:com-grid-cols-2 lg:com-grid-cols-3 com-gap-6">
+      <div *ngFor="let item of config.items" class="com-bg-Ghost-White com-rounded-10 com-p-6">
+        <h3 class="com-text-Card-Subheading com-text-Yankees-Blue">
+          {{ item.title }}
+        </h3>
+
+        <p class="com-text-Paragraph-2 com-text-Auro-Metal-Saurus com-mt-2">
+          {{ item.description }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+:host {
+  display: block;
+}
+
+// ─── Keyframes ────────────────────────────────────────────────────────────────
+
+// Pulse: the radial glow behind the heading gently expands and contracts.
+// opacity + scale keeps paint cheap (GPU-composited transforms only).
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.44;
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+}
+
+// Drift: the dot grid drifts diagonally, reinforcing the mesh texture feel.
+@keyframes mesh-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 32px 32px;
+  }
+}
+
+// ─── Section shell ────────────────────────────────────────────────────────────
+//
+// Background colour #0d1117 — a near-black dark navy.
+// This is intentionally a raw hex because there is no pinned dark-navy token
+// in tailwind.preset.js. All `t`-prefix tokens only pin to white or very light
+// values; the themed dark tokens flip to #ffffff in dark mode, which would
+// break this always-dark section.
+//
+// Content sits at z-index 2 above both mesh layers (z-index 0 and 1).
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: #0d1117;
+
+  // The global .base-layout class applies min-h-screen (100vh).
+  // This component-scoped rule wins via Angular's emulated encapsulation
+  // so the section is content-height, not full-viewport-height.
+  .base-layout {
+    min-height: 0;
+  }
+}
+
+// ─── Mesh dot-grid layer ─────────────────────────────────────────────────────
+//
+// CSS background-image trick: a radial-gradient 1 px dot centred in each
+// 32 × 32 tile. The `mesh-drift` animation slowly shifts the tile offset,
+// creating a subtle flowing motion without any JavaScript.
+
+.hero-mesh {
+  position: absolute;
+  inset: -32px; // overhang prevents edge flicker during drift
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  animation: mesh-drift 12s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+// ─── Radial glow layer ────────────────────────────────────────────────────────
+//
+// Centred elliptical glow in Caribbean-Green (#00d68f) that pulses.
+// Using the static hex since Caribbean-Green is a static token in the preset.
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 860px;
+  height: 440px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 214, 143, 0.18) 0%,
+    rgba(0, 214, 143, 0.06) 40%,
+    transparent 72%
+  );
+  animation: glow-pulse 5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ─── Content ─────────────────────────────────────────────────────────────────
+
+.hero-content {
+  @apply com-relative com-flex com-flex-col com-items-center com-text-center;
+  @apply com-py-16 md:com-py-20 lg:com-py-24 com-gap-8;
+  z-index: 2;
+}
+
+// ─── Heading ─────────────────────────────────────────────────────────────────
+//
+// `Public-Page-CTA-Heading` (60px) is the project's semantic token for
+// hero/CTA headings on public pages — this is exactly that use case.
+// font-weight: 800 (extra-bold) matches the heavy display weight of the
+// reference; Nebular / global styles expose this via com-font-extrabold.
+
+.hero-heading {
+  @apply com-text-Public-Page-CTA-Heading com-font-extrabold;
+  @apply com-leading-tight com-m-0;
+  max-width: 860px;
+
+  // line1 inherits its color class from the template (com-text-tWhite)
+  &__line1 {
+    @apply com-block;
+  }
+
+  // line2 color is applied dynamically via [class] binding in the template
+  &__line2 {
+    @apply com-block;
+  }
+}
+
+// ─── Subtitle ────────────────────────────────────────────────────────────────
+//
+// `Cadet-Grey` (#8F9BB3 static) — a mid-tone blue-gray that reads as muted
+// secondary text on the always-dark background in both light and dark modes.
+
+.hero-subtext {
+  @apply com-max-w-2xl com-text-center;
+}
+
+// ─── CTA row ─────────────────────────────────────────────────────────────────
+
+.cta-row {
+  @apply com-flex com-flex-wrap com-justify-center com-gap-4;
+
+  button {
+    @apply sm:com-w-auto com-w-full;
+  }
+}
+
+// ─── Accessibility: respect reduced-motion preference ─────────────────────────
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mesh {
+    animation: none !important;
+  }
+
+  .hero-glow {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,53 @@
+<section class="com-bg-white com-overflow-x-hidden">
+  <div class="base-layout container">
+    <!-- Two-column hero layout -->
+    <div class="hero-layout">
+      <!-- Left column: text content + CTAs -->
+      <div class="hero-layout__content">
+        <h1 class="com-text-Page-Heading com-font-bold com-text-Yankees-Blue">
+          {{ config.heading }}
+        </h1>
+
+        <p class="com-text-Paragraph-1 com-text-Auro-Metal-Saurus">
+          {{ config.subtext }}
+        </p>
+
+        <div class="cta-buttons">
+          <button nbButton status="primary" size="large" shape="semi-round" [routerLink]="config.primaryCta.routerLink">
+            {{ config.primaryCta.label }}
+          </button>
+
+          <button
+            *ngIf="config.secondaryCta"
+            nbButton
+            status="basic"
+            outline
+            size="large"
+            shape="semi-round"
+            [routerLink]="config.secondaryCta?.routerLink"
+          >
+            {{ config.secondaryCta.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Right column: abstract gradient visual shapes (decorative) -->
+      <div class="hero-visual" aria-hidden="true">
+        <!-- Large circle: blue → violet → red conic gradient -->
+        <div class="hero-visual__blob hero-visual__blob--circle"></div>
+        <!-- Tall rounded card: rose → peach warm gradient -->
+        <div class="hero-visual__blob hero-visual__blob--card"></div>
+        <!-- Thin accent strip: pink → orange gradient -->
+        <div class="hero-visual__blob hero-visual__blob--accent"></div>
+      </div>
+    </div>
+
+    <!-- Stats strip — rendered only when stats are provided -->
+    <div *ngIf="config.stats?.length" class="stats-strip">
+      <div *ngFor="let stat of config.stats || []" class="stats-strip__item">
+        <span class="stats-strip__value">{{ stat.value }}</span>
+        <span class="stats-strip__label">{{ stat.label }}</span>
+      </div>
+    </div>
+  </div>
+</section>

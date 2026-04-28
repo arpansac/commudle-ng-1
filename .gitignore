@@ -79,3 +79,8 @@ AGENTS.md
 .npmrc
 
 .firebase/
+
+.agents/
+
+
+skills-lock.json

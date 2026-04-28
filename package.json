@@ -14,7 +14,6 @@
   "dependencies": {
     "@100mslive/hms-video-store": "^0.13.1",
     "@100mslive/hms-virtual-background": "^1.14.1",
-    "hls.js": "^1.6.15",
     "@angular/animations": "19.2.9",
     "@angular/cdk": "19.2.9",
     "@angular/common": "19.2.9",
@@ -74,6 +73,8 @@
     "express-static-gzip": "^2.1.7",
     "grapesjs": "^0.21.8",
     "grapesjs-preset-newsletter": "^1.0.2",
+    "gsap": "^3.15.0",
+    "hls.js": "^1.6.15",
     "lean-qr": "^2.3.4",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",

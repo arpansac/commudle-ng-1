@@ -1,0 +1,81 @@
+<section class="com-relative com-overflow-hidden com-bg-white">
+  <!--
+    Animated gradient mesh — absolutely positioned on the right half.
+    The outer .hero-gradient sets perspective; #mesh is rotated by GSAP;
+    the five ribbons inside create the layered Stripe-style ribbon effect.
+    aria-hidden: purely decorative.
+  -->
+  <div class="hero-gradient" aria-hidden="true">
+    <div class="hero-gradient__mesh" #mesh>
+      <div class="hero-gradient__ribbon hero-gradient__ribbon--1"></div>
+      <div class="hero-gradient__ribbon hero-gradient__ribbon--2"></div>
+      <div class="hero-gradient__ribbon hero-gradient__ribbon--3"></div>
+      <div class="hero-gradient__ribbon hero-gradient__ribbon--4"></div>
+      <div class="hero-gradient__ribbon hero-gradient__ribbon--5"></div>
+    </div>
+  </div>
+
+  <!-- Page content container — sits above the gradient (z-index: 2) -->
+  <div class="base-layout container">
+    <div class="hero-layout">
+      <!-- ── Left column: text content + CTA ─────────────────────────────── -->
+      <div class="hero-layout__content">
+        <!-- Eyebrow label — e.g. "#1 Meetup Alternative" -->
+        <p class="hero-eyebrow">{{ config.eyebrow }}</p>
+
+        <!-- Main heading — HTML supported for inline emphasis -->
+        <h1 class="com-text-Page-Heading com-font-bold com-text-Yankees-Blue" [innerHTML]="safeHeading"></h1>
+
+        <!-- Subtitle -->
+        <p class="com-text-Paragraph-1 com-text-Auro-Metal-Saurus hero-subtext">
+          {{ config.subtext }}
+        </p>
+
+        <!-- CTA button + micro-copy -->
+        <div class="cta-group">
+          <button nbButton status="primary" size="large" shape="semi-round" [routerLink]="config.cta.routerLink">
+            {{ config.cta.label }}
+          </button>
+
+          <div *ngIf="config.ctaMicroCopy?.length" class="cta-microcopy">
+            <span
+              *ngFor="let line of config.ctaMicroCopy || []"
+              class="com-text-Caption com-text-Auro-Metal-Saurus com-block"
+            >
+              {{ line }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Right column: laptop mockup floating over the gradient ──────── -->
+      <div class="hero-layout__visual">
+        <div class="laptop-frame">
+          <!-- Screen body: dark bezel + inner screen area -->
+          <div class="laptop-frame__screen-wrap">
+            <div class="laptop-frame__screen">
+              <!-- Screenshot image — rendered when config.screenshot is set -->
+              <img
+                *ngIf="config.screenshot"
+                [src]="config.screenshot.src"
+                [alt]="config.screenshot.alt"
+                class="laptop-frame__screenshot"
+              />
+
+              <!-- Placeholder — rendered when no screenshot is configured -->
+              <div *ngIf="!config.screenshot" class="laptop-frame__placeholder">
+                <span class="com-text-Caption com-text-Auro-Metal-Saurus"> Screenshot placeholder </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom chin (narrow bezel below screen) -->
+          <div class="laptop-frame__chin"></div>
+
+          <!-- Keyboard base -->
+          <div class="laptop-frame__base"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+// The global .base-layout class applies min-h-screen (100vh).
+// This component-scoped rule wins via Angular's emulated encapsulation
+// so sections are content-height, not full-viewport-height.
+.base-layout {
+  min-height: 0;
+}
+
+// ─── Two-column hero layout ───────────────────────────────────────────────────
+
+.hero-layout {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-gap-12 com-items-center;
+  @apply com-py-16 md:com-py-20 lg:com-py-24;
+
+  &__content {
+    @apply com-flex com-flex-col com-gap-6;
+  }
+}
+
+// ─── CTA button row ───────────────────────────────────────────────────────────
+
+.cta-buttons {
+  @apply com-flex com-gap-4 com-flex-wrap;
+
+  button {
+    @apply sm:com-w-auto com-w-full;
+  }
+}
+
+// ─── Gradient visual (decorative, right column) ───────────────────────────────
+
+.hero-visual {
+  position: relative;
+  width: 100%;
+  height: 400px;
+
+  &__blob {
+    position: absolute;
+  }
+
+  // Large circle — blue #3366ff → violet #6f22df → red-pink #ff3d71 conic gradient.
+  // Hex values are the static equivalents of primary-500, Blue-Violet, and Infra-Red
+  // from tailwind.preset.js — used here as CSS gradient stops (not Tailwind classes).
+  &__blob--circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: conic-gradient(
+      from 200deg at 40% 60%,
+      #3366ff 0deg,
+      #6f22df 90deg,
+      #ff3d71 180deg,
+      #ff8a00 250deg,
+      #3366ff 360deg
+    );
+  }
+
+  // Tall rounded card — rose → peach warm gradient.
+  // #ff3d71 = Infra-Red, #ff8a00 = American-Orange, both from tailwind.preset.js.
+  &__blob--card {
+    width: 260px;
+    height: 340px;
+    border-radius: 40px;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(145deg, #ff3d71 0%, #ff8a00 60%, #fff5f0 100%);
+  }
+
+  // Thin vertical accent strip — pink/orange gradient.
+  &__blob--accent {
+    width: 100px;
+    height: 300px;
+    border-radius: 20px;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(180deg, #ff3d71 0%, #ff8a00 100%);
+  }
+}
+
+// ─── Stats strip ─────────────────────────────────────────────────────────────
+
+.stats-strip {
+  @apply com-flex com-flex-wrap com-gap-16 com-pb-16 md:com-pb-20 lg:com-pb-24;
+
+  &__item {
+    @apply com-flex com-flex-col com-gap-2;
+  }
+
+  &__value {
+    @apply com-text-Page-Heading com-font-bold com-text-Yankees-Blue;
+  }
+
+  &__label {
+    @apply com-text-Paragraph-1 com-text-Auro-Metal-Saurus;
+  }
+}
+
+// ─── Accessibility: respect reduced-motion preference ─────────────────────────
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual {
+    &__blob {
+      transition: none !important;
+    }
+  }
+}
