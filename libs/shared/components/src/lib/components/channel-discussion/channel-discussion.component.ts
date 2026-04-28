@@ -13,7 +13,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IEditorValidator } from '@commudle/editor';
 import { InfiniteScrollDirective } from '@commudle/infinite-scroll';
 import { EUserRoles, ICommunityChannel, IUserMessage, IPage } from '@commudle/shared-models';
@@ -68,6 +68,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
     public communityChannelHandlerService: CommunityChannelHandlerService,
     public authService: AuthService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private communityChannelManagerService: CommunityChannelManagerService,
     private communityChannelsService: CommunityChannelsService,
     private toastLogService: ToastrService,
@@ -172,7 +173,9 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
       comment: message.user_messages ? this.getUserMessages(message) : '',
     }));
 
-    const shareLink = this.isBrowser ? `${environment.app_url}${window.location.pathname}` : '';
+    const shareLink = this.isBrowser
+      ? `${environment.app_url}${window.location.pathname}`
+      : `${environment.app_url}${this.router.url.split('?')[0]}`;
     const firstMessageDate = this.channelOrForum.created_at;
 
     const discussionSchema = {

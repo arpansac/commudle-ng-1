@@ -28,7 +28,7 @@ import { NbMenuService, NbWindowRef, NbWindowService } from '@commudle/theme';
 import { environment } from '@commudle/shared-environments';
 import { filter } from 'rxjs';
 import { faReply, faShareNodes } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'commudle-community-forum-message',
@@ -77,6 +77,7 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
     private nbWindowService: NbWindowService,
     private nbMenuService: NbMenuService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private communityChannelManagerService: CommunityChannelManagerService,
     private communityChannelsService: CommunityChannelsService,
     private libToastLogService: ToastrService,
@@ -195,7 +196,7 @@ export class CommunityForumMessageComponent implements OnInit, AfterViewInit {
   seoSchema() {
     const shareLink = this.isBrowser
       ? `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`
-      : '';
+      : `${this.environment.app_url}${this.router.url.split('?')[0]}`;
     this.seoService.setSchema({
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',

@@ -27,7 +27,7 @@ import { CommunityChannelHandlerService } from 'libs/shared/components/src/lib/s
 import { NbDialogRef, NbDialogService, NbMenuService } from '@commudle/theme';
 import { environment } from '@commudle/shared-environments';
 import { filter } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { UserMessageReceiptHandlerService } from 'libs/shared/components/src/lib/services/user-message-receipt-handler.service';
 
@@ -82,6 +82,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
     private nbMenuService: NbMenuService,
     private communityChannelManagerService: CommunityChannelManagerService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private communityChannelsService: CommunityChannelsService,
     private libToastLogService: ToastrService,
     private seoService: SeoService,
@@ -229,7 +230,7 @@ export class CommunityChannelMessageComponent implements OnInit, AfterViewInit {
   seoSchema() {
     const shareLink = this.isBrowser
       ? `${this.environment.app_url}${window.location.pathname}?after=${this.cursor}`
-      : '';
+      : `${this.environment.app_url}${this.router.url.split('?')[0]}`;
     this.seoService.setSchema({
       '@context': 'https://schema.org',
       '@type': 'DiscussionForumPosting',

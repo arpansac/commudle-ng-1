@@ -56,10 +56,11 @@ export class PricingComponent implements OnInit, OnDestroy {
     private errorHandler: LibErrorHandlerService,
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: object,
-  ) {}
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
-    this.isBrowser = isPlatformBrowser(this.platformId);
     this.setExistingCommunities();
     this.getPricingDetails();
     this.setFaqs();

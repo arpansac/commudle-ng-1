@@ -1,6 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Inject, PLATFORM_ID } from '@angular/core';
 import { CookieConsentService } from 'apps/commudle-admin/src/app/services/cookie-consent.service';
 import { IsBrowserService } from 'apps/shared-services/is-browser.service';
 import { SeoService } from 'apps/shared-services/seo.service';
@@ -27,9 +25,8 @@ export class CookieConsentComponent implements OnInit {
     private isBrowserService: IsBrowserService,
     private seoService: SeoService,
     private fb: FormBuilder,
-    @Inject(PLATFORM_ID) private platformId: object,
   ) {
-    this.isBrowser = this.isBrowserService.isBrowser() && isPlatformBrowser(this.platformId);
+    this.isBrowser = this.isBrowserService.isBrowser();
     this.preferencesForm = this.fb.group({
       necessary: [{ value: true, disabled: true }],
       analytics: [true],
