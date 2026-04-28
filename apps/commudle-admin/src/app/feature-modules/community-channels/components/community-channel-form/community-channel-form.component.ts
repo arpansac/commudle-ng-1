@@ -141,6 +141,7 @@ export class CommunityChannelFormComponent implements OnInit, OnDestroy {
   async createChannel(formData) {
     const isCreated = await this.cmService.createChannel(formData);
     if (isCreated) {
+      this.removePreviousDefault();
       this.saved.emit(); //help to close the popup
     }
   }
@@ -148,6 +149,7 @@ export class CommunityChannelFormComponent implements OnInit, OnDestroy {
   async createForum(formData) {
     const isCreated = await this.cmService.createChannel(formData);
     if (isCreated) {
+      this.removePreviousDefault();
       this.saved.emit(); //help to close the popup
     }
   }
@@ -188,12 +190,21 @@ export class CommunityChannelFormComponent implements OnInit, OnDestroy {
     this.communityChannelsService.updateChannelForum(this.existingChannel.id, formData).subscribe((data) => {
       if (data) {
         this.existingChannel = data;
+        this.removePreviousDefault();
         this.cmService.findAndUpdateChannel(data);
         this.cmService.updateChannel(data);
         this.toastLogService.successDialog('Updated');
         this.saved.emit(); //help to close the popup
       }
     });
+  }
+
+  private removePreviousDefault() {
+    if (this.existingDefaultChannel) {
+      this.existingDefaultChannel.default = false;
+      this.cmService.findAndUpdateChannel(this.existingDefaultChannel);
+      this.existingDefaultChannel = null;
+    }
   }
 
   ngOnDestroy() {

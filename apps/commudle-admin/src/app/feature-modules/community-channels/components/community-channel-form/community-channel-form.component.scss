@@ -1,79 +1,63 @@
-.community-channel-form {
-  .field {
-    margin-bottom: 0.5rem;
+.channel-form {
+  @apply com-flex com-flex-col com-gap-4;
 
-    nb-checkbox {
-      margin-right: 0.5rem;
+  .form-field-container {
+    @apply com-flex com-flex-col com-gap-1;
+
+    .form-label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+
+      .required {
+        @apply com-text-red-500;
+      }
     }
 
-    label {
-      font-size: 0.8rem;
-      color: grey;
-    }
-  }
+    .logo-section {
+      .logo-preview {
+        @apply com-flex com-items-center com-gap-3;
 
-  .logo {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    label {
-      position: relative;
-      padding: 150px 0;
-      text-align: center;
-
-      > span {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        font-size: 1rem;
-        font-weight: 300;
-        color: grey;
-
-        nb-icon {
-          font-size: 2.5rem;
-          margin-bottom: 0.5rem;
+        img {
+          @apply com-w-20 com-h-20 com-rounded com-object-cover com-border com-border-gray-200;
         }
       }
 
-      input {
-        display: none;
+      .logo-upload {
+        @apply com-flex com-flex-col com-items-center com-justify-center com-gap-2;
+        @apply com-border com-border-dashed com-border-gray-300 com-rounded com-p-6;
+        @apply com-cursor-pointer com-text-gray-500;
+        @apply hover:com-border-primary-400 hover:com-bg-blue-50;
+
+        nb-icon {
+          font-size: 1.5rem;
+        }
+
+        small {
+          @apply com-text-Caption com-text-gray-500;
+        }
+
+        input {
+          @apply com-hidden;
+        }
       }
     }
 
-    .uploaded-logo {
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: flex-start;
-      margin: 0 auto;
-      img {
-        max-width: 100%;
-      }
-    }
-
-    .delete-logo-button {
-      text-align: center;
+    .options-list {
+      @apply com-flex com-flex-col com-gap-2;
+      @apply com-p-3 com-rounded com-bg-gray-50 com-border com-border-gray-100;
     }
   }
 }
 
-.action-button {
-  @apply com-sticky com-bottom-0 com-w-full com-bg-white com-py-2;
+.channel-form-actions {
+  @apply com-sticky com-bottom-0 com-w-full com-bg-white com-py-3 com-border-t com-border-gray-100;
 }
 
 .default-confirm-dialog {
-  .dialog-header {
+  .default-confirm-dialog-header {
     @apply com-flex com-justify-between com-items-center;
   }
 
-  .dialog-footer {
+  .default-confirm-dialog-footer {
     @apply com-flex com-justify-end com-gap-2;
   }
 }

@@ -1,53 +1,39 @@
-<nb-card>
-  <nb-card-body>
-    <div class="invite-form">
-      <div class="joining-link">
-        <div>
-          <p class="margin0">Link to join channel</p>
-          <nb-form-field (click)="copyJoinLinkToClipboard(tokenField)" class="clickable">
-            <nb-icon nbPrefix icon="copy-outline"></nb-icon>
-            <textarea
-              rows="1"
-              class="fontw-300"
-              readonly
-              type="text"
-              nbInput
-              value="{{ appURL }}/{{ redirectUrl }}/join/{{ joinToken }}"
-              #tokenField
-            >
-            </textarea>
-          </nb-form-field>
-          <p class="text-info" *ngIf="linkCopied">
-            <small> Link copied! </small>
-          </p>
-        </div>
-        <button
-          nbButton
-          status="info"
-          outline
-          size="tiny"
-          (click)="refreshJoinToken()"
-          *ngIf="
-            channelsRoles[communityChannel.id] &&
-            channelsRoles[communityChannel.id].includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)
-          "
-        >
-          <nb-icon icon="refresh"></nb-icon>
-          Create New Link
-        </button>
-      </div>
-      <div class="form">
-        <form [formGroup]="memberInviteForm" (ngSubmit)="sendMemberInvite()">
-          <label>
-            Invite friends, enter email id
-            <br />
-            <input class="fontw-300" nbInput formControlName="email" placeholder="type here..." fieldSize="small" />
-          </label>
-          <button type="submit" nbButton [disabled]="!memberInviteForm.valid" size="small" status="primary">
-            Send Invite
-          </button>
-        </form>
-      </div>
+<div class="invite-form">
+  <!-- Join Link Section -->
+  <div class="invite-section">
+    <label class="form-label">Link to join channel</label>
+    <div class="join-link-box">
+      <p class="join-link-url">{{ appURL }}/{{ redirectUrl }}/join/{{ joinToken }}</p>
+      <button nbButton ghost size="small" (click)="copyJoinLink()" type="button">
+        <nb-icon [icon]="linkCopied ? 'checkmark-circle-2-outline' : 'copy-outline'"></nb-icon>
+        {{ linkCopied ? 'Copied' : 'Copy' }}
+      </button>
     </div>
-  </nb-card-body>
-</nb-card>
+    <button
+      nbButton
+      status="info"
+      outline
+      size="small"
+      (click)="refreshJoinToken()"
+      type="button"
+      *ngIf="
+        channelsRoles[communityChannel.id] &&
+        channelsRoles[communityChannel.id].includes(EUserRoles.COMMUNITY_CHANNEL_ADMIN)
+      "
+    >
+      <nb-icon icon="refresh"></nb-icon>
+      Generate New Link
+    </button>
+  </div>
+
+  <!-- Email Invite Section -->
+  <div class="invite-section">
+    <label class="form-label">Invite by email</label>
+    <form [formGroup]="memberInviteForm" (ngSubmit)="sendMemberInvite()" class="email-invite-form">
+      <input nbInput fullWidth formControlName="email" placeholder="Enter email address" />
+      <button type="submit" nbButton [disabled]="!memberInviteForm.valid" size="small" status="primary">
+        Send Invite
+      </button>
+    </form>
+  </div>
+</div>

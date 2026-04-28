@@ -1,18 +1,16 @@
-<nb-card>
-  <nb-card-body>
-    <div class="archive-channel">
-      <p class="heading">Are you sure you want to ARCHIVE this channel?</p>
-      <div>
-        <form [formGroup]="archiveForm" (ngSubmit)="submitForm()">
-          <label> Type <strong>yes</strong> in CAPITALS to confirm </label>
-          <br />
-          <br />
-          <input nbInput formControlName="confirmation" type="text" />
-        </form>
-        <button (click)="submitForm()" nbButton [disabled]="!archiveForm.valid" outline status="danger" type="submit">
-          Archive
-        </button>
-      </div>
+<div class="archive-channel">
+  <div class="archive-channel-warning">
+    <nb-icon icon="alert-triangle-outline"></nb-icon>
+    <div>
+      <p class="archive-channel-heading">Are you sure you want to archive this channel?</p>
     </div>
-  </nb-card-body>
-</nb-card>
+  </div>
+
+  <form [formGroup]="archiveForm" (ngSubmit)="submitForm()" class="archive-channel-form">
+    <div class="form-field-container">
+      <label class="form-label">Type <strong>YES</strong> to confirm</label>
+      <input nbInput fullWidth formControlName="confirmation" type="text" placeholder="YES" />
+    </div>
+    <button nbButton [disabled]="!archiveForm.valid" outline status="danger" type="submit">Archive Channel</button>
+  </form>
+</div>

@@ -1,8 +1,28 @@
 .archive-channel {
-  .heading {
-    @apply com-text-red-500 com-text-lg com-font-bold com-pb-4 com-my-0;
+  @apply com-flex com-flex-col com-gap-4;
+
+  .archive-channel-warning {
+    @apply com-flex com-gap-3 com-p-3 com-rounded com-bg-red-100 com-border com-border-red-200;
+
+    nb-icon {
+      @apply com-text-red-500;
+      font-size: 1.25rem;
+    }
+
+    .archive-channel-heading {
+      @apply com-text-base com-font-medium com-text-red-600 com-my-0;
+    }
   }
-  div {
-    @apply com-flex com-gap-3 com-items-end;
+
+  .archive-channel-form {
+    @apply com-flex com-flex-col com-gap-3;
+
+    .form-field-container {
+      @apply com-flex com-flex-col com-gap-1;
+
+      .form-label {
+        @apply com-text-sm com-font-medium com-text-gray-700;
+      }
+    }
   }
 }

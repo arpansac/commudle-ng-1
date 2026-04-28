@@ -1,20 +1,33 @@
 .invite-form {
-  .joining-link {
-    nb-form-field, textarea {
-      max-width: none;;
-    }
-    textarea {
-      resize: none;
-      font-size: 14px;
-      width: 100%;
-    }
-  }
+  @apply com-flex com-flex-col com-gap-6;
 
+  .invite-section {
+    @apply com-flex com-flex-col com-gap-2;
 
-  .form {
-    border: 1px solid lightgrey;
-    border-radius: 5px;
-    padding: 15px;
-    margin-top: 2rem;
+    .form-label {
+      @apply com-text-sm com-font-medium com-text-gray-700;
+    }
+
+    .join-link-box {
+      @apply com-flex com-items-start com-justify-between com-gap-2;
+      @apply com-p-3 com-rounded com-bg-gray-50 com-border com-border-gray-200;
+
+      .join-link-url {
+        @apply com-text-sm com-text-gray-600 com-my-0 com-flex-1;
+        word-break: break-all;
+      }
+
+      button {
+        @apply com-shrink-0;
+      }
+    }
+
+    .email-invite-form {
+      @apply com-flex com-items-center com-gap-3;
+
+      input {
+        @apply com-flex-1;
+      }
+    }
   }
 }

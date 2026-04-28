@@ -1,35 +1,46 @@
-<nb-card>
-  <nb-card-header>
-    <h4>{{ channel.name }} > Settings</h4>
+<nb-card class="channel-settings">
+  <nb-card-header class="channel-settings-header">
+    <div class="channel-settings-title">
+      <nb-icon icon="settings-2-outline"></nb-icon>
+      <span>{{ channel.name }}</span>
+    </div>
     <button (click)="closeDialog()" ghost nbButton size="small" shape="round">
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
-  <nb-card-body>
+  <nb-card-body class="channel-settings-body">
     <nb-tabset>
       <nb-tab tabTitle="Edit">
-        <commudle-edit-channel
-          [channelId]="channel.id"
-          [discussionType]="discussionType"
-          (updateForm)="updateChannelForm($event)"
-        ></commudle-edit-channel>
+        <div class="tab-content">
+          <commudle-edit-channel
+            [channelId]="channel.id"
+            [discussionType]="discussionType"
+            (updateForm)="updateChannelForm($event)"
+          ></commudle-edit-channel>
+        </div>
       </nb-tab>
-      <nb-tab tabTitle="invite" [active]="invite">
-        <app-invite-form
-          [channelId]="channel.id"
-          (updateForm)="updateChannelForm()"
-          [redirectUrl]="redirectUrl"
-        ></app-invite-form>
+      <nb-tab tabTitle="Invite" [active]="invite">
+        <div class="tab-content">
+          <app-invite-form
+            [channelId]="channel.id"
+            (updateForm)="updateChannelForm()"
+            [redirectUrl]="redirectUrl"
+          ></app-invite-form>
+        </div>
       </nb-tab>
-      <nb-tab tabTitle="delete">
-        <app-delete-channel
-          [channelId]="channel.id"
-          (updateForm)="updateChannelForm()"
-          [currentUrl]="currentUrl"
-        ></app-delete-channel>
+      <nb-tab tabTitle="Delete">
+        <div class="tab-content">
+          <app-delete-channel
+            [channelId]="channel.id"
+            (updateForm)="updateChannelForm()"
+            [currentUrl]="currentUrl"
+          ></app-delete-channel>
+        </div>
       </nb-tab>
-      <nb-tab tabTitle="archive">
-        <commudle-archive [channelId]="channel.id" (updateForm)="updateChannelForm()"></commudle-archive>
+      <nb-tab tabTitle="Archive">
+        <div class="tab-content">
+          <commudle-archive [channelId]="channel.id" (updateForm)="updateChannelForm()"></commudle-archive>
+        </div>
       </nb-tab>
     </nb-tabset>
   </nb-card-body>

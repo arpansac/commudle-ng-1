@@ -9,10 +9,10 @@ import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-invite-form',
-    templateUrl: './invite-form.component.html',
-    styleUrls: ['./invite-form.component.scss'],
-    standalone: false
+  selector: 'app-invite-form',
+  templateUrl: './invite-form.component.html',
+  styleUrls: ['./invite-form.component.scss'],
+  standalone: false,
 })
 export class InviteFormComponent implements OnInit, OnDestroy {
   @Input() channelId: number;
@@ -64,12 +64,14 @@ export class InviteFormComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
-  copyJoinLinkToClipboard(elementRef) {
-    elementRef.select();
-    document.execCommand('copy');
-    elementRef.setSelectionRange(0, 0);
-
-    this.linkCopied = true;
+  copyJoinLink() {
+    const link = `${this.appURL}/${this.redirectUrl}/join/${this.joinToken}`;
+    if (this.isBrowser && navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(() => {
+        this.linkCopied = true;
+        this.toastLogService.successDialog('Link copied to clipboard', 2000);
+      });
+    }
   }
 
   getJoinToken() {

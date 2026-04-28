@@ -1,21 +1,19 @@
-<nb-card>
-  <nb-card-body>
-    <div class="delete-channel">
-      <p class="heading">Are you sure you want to DELETE this channel?</p>
-      <p class="text-basic">
-        A deleted channel can be recovered for upto 5 days by sending an email to more&#64;commudle.com.
+<div class="delete-channel">
+  <div class="delete-channel-warning">
+    <nb-icon icon="alert-triangle-outline"></nb-icon>
+    <div>
+      <p class="delete-channel-heading">Are you sure you want to delete this channel?</p>
+      <p class="delete-channel-info">
+        A deleted channel can be recovered for up to 5 days by sending an email to more&#64;commudle.com.
       </p>
-      <div>
-        <form [formGroup]="deleteForm" (ngSubmit)="submitForm()">
-          <label> Type <strong>yes</strong> in CAPITALS to confirm </label>
-          <br />
-          <br />
-          <input nbInput formControlName="confirmation" type="text" />
-        </form>
-        <button (click)="submitForm()" nbButton [disabled]="!deleteForm.valid" outline status="danger" type="submit">
-          Delete
-        </button>
-      </div>
     </div>
-  </nb-card-body>
-</nb-card>
+  </div>
+
+  <form [formGroup]="deleteForm" (ngSubmit)="submitForm()" class="delete-channel-form">
+    <div class="form-field-container">
+      <label class="form-label">Type <strong>YES</strong> to confirm</label>
+      <input nbInput fullWidth formControlName="confirmation" type="text" placeholder="YES" />
+    </div>
+    <button nbButton [disabled]="!deleteForm.valid" outline status="danger" type="submit">Delete Channel</button>
+  </form>
+</div>

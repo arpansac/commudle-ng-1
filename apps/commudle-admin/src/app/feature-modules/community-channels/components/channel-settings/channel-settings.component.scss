@@ -1,20 +1,38 @@
-nb-card {
+.channel-settings {
   @apply com-w-screen com-mx-0 md:com-w-[40dvw] com-max-h-[90dvh];
-  nb-card-header {
-    @apply com-flex com-justify-between;
-    button {
-      @apply com-w-max com-h-max;
-    }
-  }
-  nb-card-body {
-    @apply com-p-0 com-overflow-x-hidden;
-    ::ng-deep {
-      .tabset {
-        @apply com-overflow-x-scroll;
+
+  .channel-settings-header {
+    @apply com-flex com-justify-between com-items-center;
+
+    .channel-settings-title {
+      @apply com-flex com-items-center com-gap-2;
+
+      nb-icon {
+        @apply com-text-gray-600;
+      }
+
+      span {
+        @apply com-text-base com-font-medium com-text-Yankees-Blue com-truncate;
+        max-width: 280px;
       }
     }
+  }
+
+  .channel-settings-body {
+    @apply com-p-0 com-overflow-x-hidden;
+
+    ::ng-deep {
+      .tabset {
+        @apply com-overflow-x-auto;
+      }
+    }
+
     nb-tab {
       @apply com-p-0;
+    }
+
+    .tab-content {
+      @apply com-p-4;
     }
   }
 }

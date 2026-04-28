@@ -1,119 +1,123 @@
-<div>
-  <form (ngSubmit)="submitForm()" [formGroup]="communityChannelForm" class="community-channel-form">
-    <div class="logo field" *ngIf="discussionType === EDiscussionType.CHANNEL">
-      <div *ngIf="uploadedLogoImage || (existingChannel && existingChannel.logo)" class="uploaded-logo">
-        <img alt="Profile Picture" src="{{ uploadedLogoImage || existingChannel.logo.url }}" title="Profile Picture" />
-      </div>
-      <div class="delete-logo-button">
-        <button
-          (click)="removeLogo()"
-          *ngIf="uploadedLogoImage || (existingChannel && existingChannel.logo)"
-          ghost
-          nbButton
-          size="tiny"
-          status="danger"
-          type="button"
-        >
+<form [formGroup]="communityChannelForm" class="channel-form">
+  <!-- Logo Upload (Channel only) -->
+  <div class="form-field-container" *ngIf="discussionType === EDiscussionType.CHANNEL">
+    <label class="form-label">Channel Logo</label>
+    <div class="logo-section">
+      <div *ngIf="uploadedLogoImage || (existingChannel && existingChannel.logo)" class="logo-preview">
+        <img [src]="uploadedLogoImage || existingChannel.logo.url" alt="Channel Logo" />
+        <button (click)="removeLogo()" ghost nbButton size="tiny" status="danger" type="button">
           <nb-icon icon="close-circle"></nb-icon>
-          Remove Logo
+          Remove
         </button>
       </div>
-
-      <label [ngClass]="{ hidden: uploadedLogoImage || (existingChannel && existingChannel.logo) }" class="clickable">
-        <span>
-          <span>
-            <nb-icon icon="image-outline"></nb-icon>
-          </span>
-          <span>
-            Click To Upload A Logo
-            <br />
-            <small>(200x200)</small>
-          </span>
-        </span>
-        <input
-          (change)="displaySelectedLogo($event)"
-          accept="image/*"
-          formControlName="logo"
-          fullWidth
-          nbInput
-          type="file"
-        />
+      <label *ngIf="!uploadedLogoImage && !(existingChannel && existingChannel.logo)" class="logo-upload">
+        <nb-icon icon="image-outline"></nb-icon>
+        <span>Upload Logo</span>
+        <small>(200x200)</small>
+        <input (change)="displaySelectedLogo($event)" accept="image/*" formControlName="logo" type="file" />
       </label>
     </div>
+  </div>
 
-    <div class="field">
-      <label fullWidth>
-        <span>{{ discussionType === EDiscussionType.CHANNEL ? 'Name*' : 'Topic*' }}</span>
-        <input
-          formControlName="name"
-          fullWidth
-          nbInput
-          type="text"
-          [placeholder]="discussionType === EDiscussionType.CHANNEL ? 'Name' : 'Topic'"
-        />
-      </label>
-    </div>
+  <!-- Name / Topic -->
+  <div class="form-field-container">
+    <label class="form-label">
+      {{ discussionType === EDiscussionType.CHANNEL ? 'Name' : 'Topic' }}
+      <span class="required">*</span>
+    </label>
+    <input
+      formControlName="name"
+      fullWidth
+      nbInput
+      type="text"
+      [placeholder]="discussionType === EDiscussionType.CHANNEL ? 'Enter channel name' : 'Enter topic'"
+    />
+    <commudle-alert
+      *ngIf="communityChannelForm.get('name')?.touched && communityChannelForm.get('name')?.errors?.['required']"
+      [error]="true"
+      errorMessage="This field is required"
+    ></commudle-alert>
+  </div>
 
-    <div class="field" *ngIf="discussionType === EDiscussionType.FORUM">
-      <label fullWidth>
-        <span>Category Name*</span>
-        <input formControlName="group_name" fullWidth nbInput type="text" placeholder="general" />
-      </label>
-    </div>
+  <!-- Category Name (Forum only) -->
+  <div class="form-field-container" *ngIf="discussionType === EDiscussionType.FORUM">
+    <label class="form-label">Category Name <span class="required">*</span></label>
+    <input formControlName="group_name" fullWidth nbInput type="text" placeholder="e.g. general" />
+    <commudle-alert
+      *ngIf="communityChannelForm.get('group_name')?.touched && communityChannelForm.get('group_name')?.errors?.['required']"
+      [error]="true"
+      errorMessage="Category name is required"
+    ></commudle-alert>
+  </div>
 
-    <div class="field">
-      <label fullWidth>
-        Description*
-        <textarea formControlName="description" fullWidth nbInput type="text" placeholder="Description"></textarea>
-      </label>
-    </div>
+  <!-- Description -->
+  <div class="form-field-container">
+    <label class="form-label">Description <span class="required">*</span></label>
+    <textarea
+      formControlName="description"
+      fullWidth
+      nbInput
+      rows="4"
+      placeholder="Describe the purpose of this channel"
+    ></textarea>
+    <commudle-alert
+      *ngIf="communityChannelForm.get('description')?.touched && communityChannelForm.get('description')?.errors?.['required']"
+      [error]="true"
+      errorMessage="Description is required"
+    ></commudle-alert>
+  </div>
 
-    <div class="field com-flex com-flex-col">
+  <!-- Group Name (Channel only) -->
+  <div class="form-field-container" *ngIf="discussionType === EDiscussionType.CHANNEL">
+    <label class="form-label">Group Name</label>
+    <input formControlName="group_name" fullWidth nbInput type="text" placeholder="e.g. General" />
+  </div>
+
+  <!-- Options -->
+  <div class="form-field-container">
+    <label class="form-label">Options</label>
+    <div class="options-list">
       <nb-checkbox formControlName="is_private" status="basic">
-        Private: Allow only people with invite link or invitation email to join
+        Private: Only people with invite link or email can join
       </nb-checkbox>
-      <nb-checkbox formControlName="is_readonly" status="basic">
-        Readonly: Allow only admins to post in the group
-      </nb-checkbox>
+      <nb-checkbox formControlName="is_readonly" status="basic"> Readonly: Only admins can post </nb-checkbox>
       <nb-checkbox
-        *ngIf="existingChannel && existingChannel.display_type === EDiscussionType.CHANNEL"
+        *ngIf="
+          (existingChannel && existingChannel.display_type === EDiscussionType.CHANNEL) ||
+          (!existingChannel && discussionType === EDiscussionType.CHANNEL)
+        "
         formControlName="default"
         status="basic"
-        [disabled]="existingChannel.is_private"
+        [disabled]="existingChannel?.is_private"
       >
-        Default
+        Default channel
       </nb-checkbox>
-      <nb-checkbox
-        *ngIf="!existingChannel && discussionType === EDiscussionType.CHANNEL"
-        formControlName="default"
-        status="basic"
-      >
-        Default
-      </nb-checkbox>
-
       <commudle-alert
         [info]="existingChannel && existingChannel.is_private"
         message="Private channels cannot be marked as default"
       ></commudle-alert>
     </div>
+  </div>
+</form>
 
-    <div class="field" class="field" *ngIf="discussionType === EDiscussionType.CHANNEL">
-      <label fullWidth>
-        <span>Group Name (optional)</span>
-        <input formControlName="group_name" fullWidth nbInput type="text" />
-      </label>
-    </div>
-  </form>
-</div>
-<div class="action-button">
-  <button (click)="submitForm()" [disabled]="!communityChannelForm.valid" nbButton status="primary" type="submit">
-    Save
+<!-- Save Button -->
+<div class="channel-form-actions">
+  <button
+    (click)="submitForm()"
+    [disabled]="!communityChannelForm.valid"
+    nbButton
+    status="primary"
+    fullWidth
+    type="submit"
+  >
+    {{ existingChannel ? 'Update' : 'Create' }}
   </button>
 </div>
 
+<!-- Default Channel Confirmation Dialog -->
 <ng-template #defaultConfirmDialog let-ref="dialogRef">
   <nb-card class="default-confirm-dialog">
-    <nb-card-header class="dialog-header">
+    <nb-card-header class="default-confirm-dialog-header">
       <span>Change Default Channel</span>
       <button ghost nbButton size="small" (click)="ref.close(false)" shape="round">
         <nb-icon icon="close"></nb-icon>
@@ -127,7 +131,7 @@
       </p>
       <p>Do you want to continue?</p>
     </nb-card-body>
-    <nb-card-footer class="dialog-footer">
+    <nb-card-footer class="default-confirm-dialog-footer">
       <button nbButton status="basic" (click)="ref.close(false)">Cancel</button>
       <button nbButton status="primary" (click)="ref.close(true)">Confirm</button>
     </nb-card-footer>
