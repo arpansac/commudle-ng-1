@@ -67,3 +67,13 @@
 .action-button {
   @apply com-sticky com-bottom-0 com-w-full com-bg-white com-py-2;
 }
+
+.default-confirm-dialog {
+  .dialog-header {
+    @apply com-flex com-justify-between com-items-center;
+  }
+
+  .dialog-footer {
+    @apply com-flex com-justify-end com-gap-2;
+  }
+}

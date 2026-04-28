@@ -1,25 +1,29 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ICommunityChannel } from 'apps/shared-models/community-channel.model';
 import { LibToastLogService } from 'apps/shared-services/lib-toastlog.service';
 import { EDiscussionType } from 'apps/commudle-admin/src/app/feature-modules/community-channels/model/discussion-type.enum';
 import { Subscription } from 'rxjs';
 import { CommunityChannelManagerService, CommunityChannelsService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
+import { EDbModels } from '@commudle/shared-models';
 
 @Component({
-    selector: 'commudle-community-channel-form',
-    templateUrl: './community-channel-form.component.html',
-    styleUrls: ['./community-channel-form.component.scss'],
-    standalone: false
+  selector: 'commudle-community-channel-form',
+  templateUrl: './community-channel-form.component.html',
+  styleUrls: ['./community-channel-form.component.scss'],
+  standalone: false,
 })
-export class CommunityChannelFormComponent implements OnInit {
+export class CommunityChannelFormComponent implements OnInit, OnDestroy {
   @Input() existingChannel: ICommunityChannel;
   @Input() presetGroupName;
   @Input() discussionType: string;
   EDiscussionType = EDiscussionType;
 
   @Output() saved = new EventEmitter();
+
+  @ViewChild('defaultConfirmDialog', { static: true }) defaultConfirmDialog: TemplateRef<any>;
 
   uploadedLogoImageFile: File;
   uploadedLogoImage;
@@ -28,12 +32,16 @@ export class CommunityChannelFormComponent implements OnInit {
   communityChannelForm;
 
   subscriptions: Subscription[] = [];
+  parentId: number;
+  parentType: EDbModels;
+  existingDefaultChannel: ICommunityChannel;
 
   constructor(
     private cmService: CommunityChannelManagerService,
     private communityChannelsService: CommunityChannelsService,
     private fb: FormBuilder,
     private toastLogService: LibToastLogService,
+    private dialogService: NbDialogService,
   ) {
     this.communityChannelForm = this.fb.group({
       logo: [''],
@@ -48,6 +56,18 @@ export class CommunityChannelFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.cmService.parent$.subscribe((parent) => {
+        if (parent) {
+          this.parentId = parent.id;
+        }
+      }),
+      this.cmService.parentType$.subscribe((parentType) => {
+        if (parentType) {
+          this.parentType = parentType;
+        }
+      }),
+    );
     if (this.presetGroupName) {
       this.communityChannelForm.patchValue({
         group_name: this.presetGroupName,
@@ -72,6 +92,28 @@ export class CommunityChannelFormComponent implements OnInit {
   }
 
   submitForm() {
+    if (this.communityChannelForm.value.default && this.parentId && this.parentType) {
+      this.communityChannelsService.getDefaultChannel(this.parentId, this.parentType).subscribe((defaultChannel) => {
+        if (defaultChannel && (!this.existingChannel || defaultChannel.id !== this.existingChannel.id)) {
+          this.existingDefaultChannel = defaultChannel;
+          const dialogRef = this.dialogService.open(this.defaultConfirmDialog, {
+            closeOnBackdropClick: false,
+          });
+          dialogRef.onClose.subscribe((confirmed) => {
+            if (confirmed) {
+              this.proceedSubmit();
+            }
+          });
+        } else {
+          this.proceedSubmit();
+        }
+      });
+    } else {
+      this.proceedSubmit();
+    }
+  }
+
+  private proceedSubmit() {
     const formData: any = new FormData();
 
     const communityChannelFormData = this.communityChannelForm.value;
@@ -152,5 +194,9 @@ export class CommunityChannelFormComponent implements OnInit {
         this.saved.emit(); //help to close the popup
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
