@@ -150,11 +150,19 @@ nb-card-header {
 
 .no-mentors,
 .no-rounds,
-.no-mentors-message {
-  @apply com-text-center com-py-12 com-text-gray-600;
+.no-data-message {
+  @apply com-text-center com-py-12 com-text-gray-600 com-flex com-flex-col com-items-center com-gap-2;
+
+  .empty-icon {
+    @apply com-text-4xl com-text-gray-400 com-mb-2;
+  }
 
   p {
-    @apply com-text-lg com-mb-4;
+    @apply com-text-lg com-mb-0;
+  }
+
+  .sub-text {
+    @apply com-text-sm com-text-gray-500;
   }
 
   .filter-switch {

@@ -29,6 +29,28 @@
         [isLoading]="isLoading"
       >
       </commudle-data-table>
+      <div *ngIf="!isLoading && rounds.length === 0" class="no-data-message">
+        <nb-icon icon="calendar-outline" class="empty-icon"></nb-icon>
+        <p>No rounds found</p>
+        <p class="sub-text">Please create rounds first to start managing mentor slots.</p>
+      </div>
+      <div *ngIf="!isLoading && rounds.length > 0 && mentors.length === 0" class="no-data-message">
+        <nb-icon icon="people-outline" class="empty-icon"></nb-icon>
+        <p>
+          No
+          {{ mentorFilter === 'mentors' ? 'mentors' : mentorFilter === 'judges' ? 'judges' : 'mentors or judges' }}
+          found.
+        </p>
+        <div *ngIf="mentorFilter !== 'all'" class="filter-switch">
+          <p>Try switching to:</p>
+          <select class="filter-switch-select" (change)="onMentorFilterChange($any($event.target).value)">
+            <option value="" disabled selected>Select filter</option>
+            <option *ngIf="mentorFilter !== 'mentors'" value="mentors">Mentors</option>
+            <option *ngIf="mentorFilter !== 'judges'" value="judges">Judges</option>
+          </select>
+        </div>
+        <p *ngIf="mentorFilter === 'all'" class="sub-text">Please add mentors or judges to start managing slots.</p>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

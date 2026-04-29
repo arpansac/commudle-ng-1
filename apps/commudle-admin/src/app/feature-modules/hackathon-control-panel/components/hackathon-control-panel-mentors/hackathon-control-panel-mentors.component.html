@@ -37,7 +37,13 @@
         [isLoading]="isLoading"
       >
       </commudle-data-table>
-      <div *ngIf="rounds.length > 0 && mentors.length === 0 && !isLoading" class="no-mentors-message">
+      <div *ngIf="!isLoading && rounds.length === 0" class="no-data-message">
+        <nb-icon icon="calendar-outline" class="empty-icon"></nb-icon>
+        <p>No rounds found</p>
+        <p class="sub-text">Please create rounds first to start assigning teams to mentors.</p>
+      </div>
+      <div *ngIf="rounds.length > 0 && mentors.length === 0 && !isLoading" class="no-data-message">
+        <nb-icon icon="people-outline" class="empty-icon"></nb-icon>
         <p>
           No
           {{ mentorFilter === 'mentors' ? 'mentors' : mentorFilter === 'judges' ? 'judges' : 'mentors or judges' }}
@@ -51,7 +57,7 @@
             <option *ngIf="mentorFilter !== 'judges'" value="judges">Judges</option>
           </select>
         </div>
-        <p *ngIf="mentorFilter === 'all'">Please add mentors or judges to start assigning teams.</p>
+        <p *ngIf="mentorFilter === 'all'" class="sub-text">Please add mentors or judges to start assigning teams.</p>
       </div>
     </div>
   </nb-card-body>
