@@ -33,6 +33,21 @@
   </nb-card-body>
 </nb-card>
 
+<ng-template #mentorHeaderTemplate let-column="column">
+  <div class="mentor-header">
+    <span>Mentors ⬇️ / Rounds ➡️</span>
+    <select
+      class="mentor-filter-select"
+      [value]="mentorFilter"
+      (change)="onMentorFilterChange($any($event.target).value)"
+    >
+      <option value="all">All</option>
+      <option value="mentors">Mentors</option>
+      <option value="judges">Judges</option>
+    </select>
+  </div>
+</ng-template>
+
 <ng-template #mentorCellTemplate let-row="row" let-value="value">
   <div class="mentor-cell">
     <div class="mentor-info">

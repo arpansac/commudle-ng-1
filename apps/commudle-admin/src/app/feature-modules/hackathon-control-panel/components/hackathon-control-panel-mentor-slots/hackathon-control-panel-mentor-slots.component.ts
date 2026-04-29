@@ -8,7 +8,7 @@ import {
   TemplateRef,
   AfterViewInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -70,6 +70,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   isLoading = false;
   isFullscreen = false;
   mainSidebarExpanded = true;
+  mentorFilter: 'all' | 'mentors' | 'judges' = 'mentors';
   mainSidebarEventName = 'hackathonDashboard';
   tableColumns: DataTableColumn[] = [];
   tableRows: DataTableRow[] = [];
@@ -97,6 +98,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   isSlotRuleFormSubmitting = false;
 
   @ViewChild('mentorCellTemplate', { static: false }) mentorCellTemplate!: TemplateRef<unknown>;
+  @ViewChild('mentorHeaderTemplate', { static: false }) mentorHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('slotCellTemplate', { static: false }) slotCellTemplate!: TemplateRef<unknown>;
   @ViewChild('roundHeaderTemplate', { static: false }) roundHeaderTemplate!: TemplateRef<unknown>;
   @ViewChild('removeBookingDialog') removeBookingDialog: TemplateRef<any>;
@@ -129,6 +131,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
     private hackathonTeamService: HackathonTeamService,
     private roundMentorSlotBookingService: RoundMentorSlotBookingService,
     private roundMentorSlotBookingChannel: RoundMentorSlotBookingChannel,
+    private router: Router,
   ) {
     this.slotRuleForm = this.fb.group(
       {
@@ -152,6 +155,13 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
       this.hackathonId = params.get('hackathon_id');
       this.loadRoundAndMentors();
     });
+    this.activatedRoute.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const filter = params.get('filter') as 'all' | 'mentors' | 'judges';
+      this.mentorFilter = filter || 'mentors';
+      if (this.hackathonId) {
+        this.loadMentors();
+      }
+    });
     this.checkMainSidebarState();
   }
 
@@ -167,7 +177,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   buildTableColumns(): void {
-    if (!this.mentorCellTemplate || !this.slotCellTemplate || !this.roundHeaderTemplate) {
+    if (!this.mentorCellTemplate || !this.slotCellTemplate || !this.roundHeaderTemplate || !this.mentorHeaderTemplate) {
       return;
     }
     this.tableColumns = [
@@ -177,6 +187,7 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
         frozen: true,
         width: '250px',
         cellTemplate: this.mentorCellTemplate,
+        headerTemplate: this.mentorHeaderTemplate,
       },
       ...this.rounds.map((round) => {
         const slotCount = round.round_mentor_slot_rule ? round.round_mentor_slot_rule.slot_times.length : 1;
@@ -411,14 +422,30 @@ export class HackathonControlPanelMentorSlotsComponent implements OnInit, AfterV
   }
 
   private loadMentors(): void {
+    let judgeTypes: string[];
+    if (this.mentorFilter === 'all') {
+      judgeTypes = [EHackathonJudgeType.MENTOR, EHackathonJudgeType.JUDGE];
+    } else if (this.mentorFilter === 'judges') {
+      judgeTypes = [EHackathonJudgeType.JUDGE];
+    } else {
+      judgeTypes = [EHackathonJudgeType.MENTOR];
+    }
     this.hackathonService
-      .indexJudge(this.hackathonId, [EHackathonJudgeType.MENTOR], EJudgeInvitationStatus.ACCEPTED)
+      .indexJudge(this.hackathonId, judgeTypes, EJudgeInvitationStatus.ACCEPTED)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.mentors = data || [];
         this.buildTableData();
         this.cdr.markForCheck();
       });
+  }
+
+  onMentorFilterChange(filter: 'all' | 'mentors' | 'judges'): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { filter },
+      queryParamsHandling: 'merge',
+    });
   }
 
   private loadRounds(): void {
