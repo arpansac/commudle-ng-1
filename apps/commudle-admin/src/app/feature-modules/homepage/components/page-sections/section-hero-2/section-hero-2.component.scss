@@ -2,61 +2,43 @@
   display: block;
 }
 
-// The global .base-layout class applies min-h-screen (100vh).
-// This component-scoped rule wins via Angular's emulated encapsulation
-// so sections are content-height, not full-viewport-height.
 .base-layout {
   min-height: 0;
 }
-
-// ─── Keyframes ────────────────────────────────────────────────────────────────
 
 @keyframes spin-cw {
   to {
     transform: rotate(360deg);
   }
 }
-
 @keyframes spin-ccw {
   to {
     transform: rotate(-360deg);
   }
 }
 
+// pulse-core: 0%/100% = element defaults (scale 1, opacity 1), so only 50% needed.
 @keyframes pulse-core {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
   50% {
     transform: scale(1.1);
     opacity: 0.85;
   }
 }
 
+// float-chip: 0%/100% = translateY(0) = element default, so only 50% needed.
 @keyframes float-chip {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
   50% {
     transform: translateY(-8px);
   }
 }
-
-// ─── Orbital visual ───────────────────────────────────────────────────────────
 
 .hero-visual {
   position: relative;
   width: 280px;
   height: 280px;
   flex-shrink: 0;
-  // CSS-variable tilt updated by the component on mousemove
   transform: perspective(800px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   transition: transform 0.15s ease-out;
-
-  // ── Core ────────────────────────────────────────────────────────────────────
 
   &__core {
     position: absolute;
@@ -64,48 +46,38 @@
     left: 50%;
     width: 64px;
     height: 64px;
-    margin-left: -32px;
-    margin-top: -32px;
+    margin: -32px 0 0 -32px;
     animation: pulse-core 2.5s ease-in-out infinite;
     @apply com-rounded-full com-bg-primary-500 com-shadow-Card;
   }
-
-  // ── Orbit rings ─────────────────────────────────────────────────────────────
 
   &__ring {
     position: absolute;
     top: 50%;
     left: 50%;
-    border-style: solid;
-    border-width: 2px;
+    border: 2px solid;
     @apply com-rounded-full com-border-primary-200;
 
+    // margin shorthand: top right bottom left — centres each ring at (50%, 50%)
     &--1 {
       width: 120px;
       height: 120px;
-      margin-left: -60px;
-      margin-top: -60px;
+      margin: -60px 0 0 -60px;
       animation: spin-cw 8s linear infinite;
     }
-
     &--2 {
       width: 200px;
       height: 200px;
-      margin-left: -100px;
-      margin-top: -100px;
+      margin: -100px 0 0 -100px;
       animation: spin-ccw 12s linear infinite;
     }
-
     &--3 {
       width: 280px;
       height: 280px;
-      margin-left: -140px;
-      margin-top: -140px;
+      margin: -140px 0 0 -140px;
       animation: spin-cw 18s linear infinite;
     }
   }
-
-  // ── Orbit dots ──────────────────────────────────────────────────────────────
 
   &__dot {
     position: absolute;
@@ -116,39 +88,32 @@
     margin-left: -8px;
     @apply com-rounded-full;
 
-    // Counter-rotate each dot at the same speed as its parent ring so the dot
-    // appears to travel around the ring while remaining visually upright.
+    // Each dot counter-rotates at the same speed as its ring to stay visually upright.
     &--1 {
       @apply com-bg-primary-500;
       animation: spin-ccw 8s linear infinite;
     }
-
     &--2 {
       @apply com-bg-Caribbean-Green;
       animation: spin-cw 12s linear infinite;
     }
-
-    // Second dot on ring 2, positioned on the opposite side
     &--2b {
       top: auto;
       bottom: -8px;
       @apply com-bg-Blue-Lotus;
       animation: spin-cw 12s linear infinite;
     }
-
     &--3 {
       @apply com-bg-Brilliant-Azure;
       animation: spin-ccw 18s linear infinite;
     }
   }
 
-  // ── Floating community chips ─────────────────────────────────────────────────
-
+  // tWhite bg = always #ffffff; tYankees-Blue text required (design-guardrails §9)
   &__chip {
     position: absolute;
     padding: 6px 12px;
     white-space: nowrap;
-    // tWhite surface always stays #ffffff → must use tYankees-Blue text (see design-guardrails §9)
     @apply com-rounded-full com-bg-tWhite com-shadow-Card;
 
     &--events {
@@ -156,13 +121,11 @@
       right: -48px;
       animation: float-chip 3s ease-in-out infinite;
     }
-
     &--talks {
       top: 120px;
       right: -60px;
       animation: float-chip 3s ease-in-out 1s infinite;
     }
-
     &--hackathons {
       bottom: 24px;
       left: -60px;
@@ -171,13 +134,10 @@
   }
 }
 
-// ─── Accessibility: respect reduced-motion preference ─────────────────────────
-
 @media (prefers-reduced-motion: reduce) {
   .hero-visual {
     transform: none !important;
     transition: none !important;
-
     &__ring,
     &__dot,
     &__core,

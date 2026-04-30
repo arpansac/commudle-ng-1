@@ -5,7 +5,7 @@
     the five ribbons inside create the layered Stripe-style ribbon effect.
     aria-hidden: purely decorative.
   -->
-  <div class="hero-gradient" aria-hidden="true">
+  <div class="hero-gradient com-hidden md:com-block" aria-hidden="true">
     <div class="hero-gradient__mesh" #mesh>
       <div class="hero-gradient__ribbon hero-gradient__ribbon--1"></div>
       <div class="hero-gradient__ribbon hero-gradient__ribbon--2"></div>
@@ -16,7 +16,7 @@
   </div>
 
   <!-- Page content container — sits above the gradient (z-index: 2) -->
-  <div class="base-layout container">
+  <div class="base-layout container com-px-4 md:com-px-6">
     <div class="hero-layout">
       <!-- ── Left column: text content + CTA ─────────────────────────────── -->
       <div class="hero-layout__content">

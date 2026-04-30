@@ -2,28 +2,22 @@
   display: block;
 }
 
-// The global .base-layout class applies min-h-screen (100vh).
-// This component-scoped rule wins via Angular's emulated encapsulation
-// so sections are content-height, not full-viewport-height.
 .base-layout {
   min-height: 0;
 }
 
-// ─── Two-column hero layout ───────────────────────────────────────────────────
-
 .hero-layout {
   @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-items-center com-gap-12;
   @apply com-py-16 md:com-py-20 lg:com-py-24;
-  // Tall enough for gradient to fill the section visually
-  min-height: 580px;
+  @screen md {
+    min-height: 580px;
+  }
 
   &__content {
     @apply com-flex com-flex-col com-gap-6;
-    // Ensure text stack sits above the absolute gradient
     position: relative;
     z-index: 2;
   }
-
   &__visual {
     @apply com-flex com-justify-center com-items-center;
     position: relative;
@@ -31,56 +25,32 @@
   }
 }
 
-// ─── Eyebrow label ────────────────────────────────────────────────────────────
-
 .hero-eyebrow {
-  @apply com-text-Caption com-font-bold com-text-primary-600;
-  @apply com-uppercase com-tracking-widest;
+  @apply com-text-Caption com-font-bold com-text-primary-600 com-uppercase com-tracking-widest;
 }
-
-// ─── Subtitle ────────────────────────────────────────────────────────────────
-
 .hero-subtext {
   @apply com-max-w-lg;
 }
-
-// ─── CTA group ───────────────────────────────────────────────────────────────
-
 .cta-group {
   @apply com-flex com-flex-col com-gap-4;
 }
-
 .cta-microcopy {
   @apply com-flex com-flex-col com-gap-2;
 }
 
-// ─── Animated gradient mesh ──────────────────────────────────────────────────
-//
-// .hero-gradient — absolute container covering the right half of the section.
-// Extends 20% beyond top/bottom so that 3D rotation never reveals blank space.
-// overflow: hidden on the parent <section> clips any bleed.
-//
-// .hero-gradient__mesh — the element GSAP animates with rotationX/Y/Z.
-// perspective on the parent + transform on the child = genuine 3D depth.
-//
-// .hero-gradient__ribbon--N — flat layers with CSS-var-driven gradients.
-// --gc-a, --gc-b, --gc-c are written by the component's applyGradientColors().
-//
-// ─────────────────────────────────────────────────────────────────────────────
-
+// GSAP rotates __mesh in 3D; perspective must live on the PARENT (.hero-gradient).
+// Ribbon colors driven by CSS custom props --gc-a/b/c set by the component.
 .hero-gradient {
   position: absolute;
   right: -8%;
   top: -20%;
   bottom: -20%;
   width: 58%;
-  // Depth stage — perspective must be set on the PARENT of the rotating element
   perspective: 900px;
   pointer-events: none;
   z-index: 1;
 
-  // Soft white fade on the left edge — blends the gradient into the page
-  // background so the boundary between text and mesh feels seamless.
+  // White fade on left edge so the mesh blends into the page background.
   &::before {
     content: '';
     position: absolute;
@@ -97,8 +67,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    // GSAP targets this element — rotation applied here creates the 3D tilt
-    transform-origin: center center;
+    transform-origin: center;
   }
 
   &__ribbon {
@@ -106,35 +75,26 @@
     @apply com-inset-0;
     border-radius: 38%;
 
-    // Ribbon 1 — dominant primary diagonal sweep
     &--1 {
       background: linear-gradient(155deg, var(--gc-a) 0%, var(--gc-b) 55%, transparent 90%);
       opacity: 0.88;
       transform: scale(1.1);
     }
-
-    // Ribbon 2 — secondary angled layer, slightly rotated
     &--2 {
       background: linear-gradient(205deg, var(--gc-b) 0%, var(--gc-c) 58%, transparent 90%);
       opacity: 0.72;
       transform: rotate(18deg) scale(1.06);
     }
-
-    // Ribbon 3 — conic gradient for the centre-of-mass colour richness
     &--3 {
       background: conic-gradient(from 50deg at 62% 50%, var(--gc-c), var(--gc-a), var(--gc-b), transparent 65%);
       opacity: 0.58;
       transform: rotate(-12deg) scale(1.18);
     }
-
-    // Ribbon 4 — soft radial diffuse fill behind all ribbons
     &--4 {
       background: radial-gradient(ellipse 82% 76% at 64% 52%, var(--gc-a), var(--gc-b) 44%, transparent 74%);
       opacity: 0.46;
       transform: scale(1.28);
     }
-
-    // Ribbon 5 — specular white highlight strip for the glossy sheen
     &--5 {
       background: linear-gradient(118deg, transparent 32%, rgba(255, 255, 255, 0.38) 50%, transparent 68%);
       opacity: 0.6;
@@ -144,35 +104,19 @@
   }
 }
 
-// ─── Laptop frame ─────────────────────────────────────────────────────────────
-//
-// Pure-CSS laptop mockup. Structure:
-//   .laptop-frame
-//     ├── .laptop-frame__screen-wrap   (dark bezel, camera dot via ::before)
-//     │     └── .laptop-frame__screen  (inner display, 16:10 aspect ratio)
-//     │           ├── img              (screenshot — when provided)
-//     │           └── .placeholder     (fallback visual)
-//     ├── .laptop-frame__chin          (narrow bottom bezel)
-//     └── .laptop-frame__base          (keyboard area — wider than screen)
-//
-// Bezel colour #222b45 = tYankees-Blue hex — always dark navy in both modes.
-// ─────────────────────────────────────────────────────────────────────────────
-
+// #222b45 = tYankees-Blue hex — always dark navy, never flips to white in dark mode.
 .laptop-frame {
   width: 100%;
   max-width: 520px;
   border-radius: 10px 10px 4px 4px;
-  // Realistic laptop drop shadow
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22), 0 8px 20px rgba(0, 0, 0, 0.12);
 
   &__screen-wrap {
     border-radius: 10px 10px 0 0;
     padding: 20px 14px 8px;
-    // tYankees-Blue = #222b45 — static dark navy, stays dark in both themes
     background: #222b45;
     position: relative;
 
-    // Camera dot at top-centre of the bezel
     &::before {
       content: '';
       position: absolute;
@@ -190,31 +134,23 @@
     border-radius: 4px;
     overflow: hidden;
     width: 100%;
-    aspect-ratio: 16 / 10;
-    @apply com-bg-Ghost-White;
-    @apply com-flex com-items-center com-justify-center;
+    aspect-ratio: 16/10;
+    @apply com-bg-Ghost-White com-flex com-items-center com-justify-center;
   }
-
   &__screenshot {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-
   &__placeholder {
-    @apply com-flex com-items-center com-justify-center com-w-full com-h-full;
-    @apply com-bg-Ghost-White;
+    @apply com-flex com-items-center com-justify-center com-w-full com-h-full com-bg-Ghost-White;
   }
-
-  // Narrow bottom edge of the screen assembly
   &__chin {
     height: 10px;
     background: #1a2840;
     border-radius: 0 0 2px 2px;
   }
-
-  // Keyboard base — slightly wider to simulate the laptop body
   &__base {
     height: 8px;
     margin: 0 -28px;
@@ -223,21 +159,10 @@
   }
 }
 
-// ─── Accessibility: respect reduced-motion preference ─────────────────────────
-//
-// When the user has requested reduced motion, GSAP will still run its timeline
-// but the CSS transition on the mesh is removed so any residual motion is gone.
-// GSAP itself should be paused via matchMedia in a future enhancement.
-
+// Ribbons have no CSS transitions — only __mesh needs the reduced-motion reset.
 @media (prefers-reduced-motion: reduce) {
-  .hero-gradient {
-    &__mesh {
-      transform: none !important;
-      transition: none !important;
-    }
-
-    &__ribbon {
-      transition: none !important;
-    }
+  .hero-gradient__mesh {
+    transform: none !important;
+    transition: none !important;
   }
 }

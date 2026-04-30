@@ -40,7 +40,7 @@ import {
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { RouterModule } from '@angular/router';
 import { SectionRendererComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section-renderer/section-renderer.component';
-import { SECTION_TYPES } from 'apps/commudle-admin/src/app/feature-modules/page-sections/section.registry';
+import { SECTION_TYPES } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section.registry';
 
 @Component({
   selector: 'commudle-page-hackathon-management-platform',
@@ -101,37 +101,6 @@ export class PageHackathonManagementPlatformComponent implements OnInit, OnDestr
 
   // FAQ data
   faqs: IFaq[] = [];
-
-  pageConfig = [
-    {
-      type: SECTION_TYPES.HERO_1,
-      config: {
-        title: 'Test Hero Title',
-        subtitle: 'This is a test subtitle',
-        ctaText: 'Click Me',
-      },
-    },
-    {
-      type: SECTION_TYPES.FEATURE_GRID_1,
-      config: {
-        heading: 'FEATURE GRID 1',
-        items: [
-          {
-            title: 'Registrations',
-            description: 'Manage participants seamlessly',
-          },
-          {
-            title: 'Judging',
-            description: 'Evaluate submissions easily',
-          },
-          {
-            title: 'Communication',
-            description: 'Engage with participants in real-time',
-          },
-        ],
-      },
-    },
-  ];
 
   constructor(private seoService: SeoService, private footerService: FooterService) {}
 

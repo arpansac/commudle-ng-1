@@ -1,5 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subject } from 'rxjs';
 
 export interface SectionFeatureGrid1Item {
   title: string;
@@ -19,10 +20,13 @@ export interface SectionFeatureGrid1Config {
   styleUrls: ['./section-feature-grid-1.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SectionFeatureGrid1Component implements OnInit {
+export class SectionFeatureGrid1Component implements OnDestroy {
   @Input() config!: SectionFeatureGrid1Config;
 
-  ngOnInit(): void {
-    console.log('Feature Grid Config:', this.config);
+  private destroy$ = new Subject<void>();
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
