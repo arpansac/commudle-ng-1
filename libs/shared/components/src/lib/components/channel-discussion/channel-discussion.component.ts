@@ -39,6 +39,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
   @Input() discussionId!: number;
   @Input() discussionParent = '';
   @Input() fromLastRead = false;
+  @Input() autoFocusEditor = true;
   @Input() discussionType: string;
   @Input() channelOrForum: ICommunityChannel;
   @Input() shareMessageUrl: string;
@@ -121,7 +122,7 @@ export class ChannelDiscussionComponent implements OnInit, AfterViewInit, OnDest
       });
     });
 
-    if (this.isBrowser) {
+    if (this.isBrowser && this.autoFocusEditor) {
       setTimeout(() => {
         if (this.editorRef) {
           this.editorRef.focus();
