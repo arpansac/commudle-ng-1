@@ -4,6 +4,7 @@ import { SectionHero2Component } from './section-hero-2/section-hero-2.component
 import { SectionHero3Component } from './section-hero-3/section-hero-3.component';
 import { SectionHero4Component } from './section-hero-4/section-hero-4.component';
 import { SectionHero5Component } from './section-hero-5/section-hero-5.component';
+import { SectionHero6Component } from './section-hero-6/section-hero-6.component';
 import { SectionFeatureGrid1Component } from './section-feature-grid-1/section-feature-grid-1.component';
 
 export const SECTION_TYPES = {
@@ -12,6 +13,7 @@ export const SECTION_TYPES = {
   HERO_3: 'commudle-section-hero-3',
   HERO_4: 'commudle-section-hero-4',
   HERO_5: 'commudle-section-hero-5',
+  HERO_6: 'commudle-section-hero-6',
   FEATURE_GRID_1: 'commudle-section-feature-grid-1',
 } as const;
 
@@ -23,5 +25,6 @@ export const SECTION_COMPONENT_MAP: Partial<Record<SectionType, Type<any>>> = {
   [SECTION_TYPES.HERO_3]: SectionHero3Component,
   [SECTION_TYPES.HERO_4]: SectionHero4Component,
   [SECTION_TYPES.HERO_5]: SectionHero5Component,
+  [SECTION_TYPES.HERO_6]: SectionHero6Component,
   [SECTION_TYPES.FEATURE_GRID_1]: SectionFeatureGrid1Component,
 };

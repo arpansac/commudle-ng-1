@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SectionConfig } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section.types';
-import { SECTION_COMPONENT_MAP } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section.registry';
+import { SectionConfig } from '../section.types';
+import { SECTION_COMPONENT_MAP } from '../section.registry';
 
 @Component({
   selector: 'commudle-section-renderer',

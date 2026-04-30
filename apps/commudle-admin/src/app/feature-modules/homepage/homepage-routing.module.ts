@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { PageHackathonManagementPlatformComponent } from './components/custom-pages/page-hackathon-management-platform/page-hackathon-management-platform.component';
 import { PagePaidTicketingComponent } from './components/custom-pages/page-paid-ticketing/page-paid-ticketing.component';
-import { PageDynamicComponent } from './components/page-dynamic/page-dynamic.component';
+import { PageDynamicComponent } from './components/custom-pages/page-dynamic/page-dynamic.component';
 
 const routes = [
   {

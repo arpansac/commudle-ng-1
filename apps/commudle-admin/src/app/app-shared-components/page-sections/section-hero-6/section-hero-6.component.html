@@ -1,0 +1,62 @@
+<section class="hero-section">
+  <!-- Background layers (decorative, aria-hidden) -->
+  <div class="hero-mesh" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="base-layout container com-px-4 md:com-px-6">
+    <div class="hero-layout">
+      <!-- ── Left: text content ─────────────────────────────────────────── -->
+      <div class="hero-layout__content">
+        <!-- Animated campaign badge -->
+        <div class="campaign-badge">
+          <span class="campaign-badge__dot" aria-hidden="true"></span>
+          <span class="com-text-Caption com-font-semibold">{{ config.campaignName }}</span>
+        </div>
+
+        <!-- Main heading -->
+        <h1 class="hero-heading" [innerHTML]="safeHeading"></h1>
+
+        <!-- Subtitle -->
+        <p class="com-text-Paragraph-1 com-text-Cadet-Grey hero-subtext">
+          {{ config.subtext }}
+        </p>
+
+        <!-- CTA + live submission count -->
+        <div class="cta-group">
+          <button nbButton status="primary" size="large" shape="semi-round" [routerLink]="config.cta.routerLink">
+            {{ config.cta.label }}
+          </button>
+
+          <div *ngIf="config.submissionCount !== undefined" class="submission-count">
+            <span class="submission-count__number">{{ config.submissionCount | number }}</span>
+            <span class="submission-count__label com-text-Caption com-text-Cadet-Grey"> builds submitted so far </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Right: 3D rotating cube + floating category chips ──────────── -->
+      <div class="hero-visual com-hidden md:com-flex" aria-hidden="true">
+        <!-- Ambient spotlight glow under the cube -->
+        <div class="cube-glow"></div>
+
+        <!-- CSS preserve-3d rotating cube — each face has a distinct gradient -->
+        <div class="cube-wrap">
+          <div class="cube">
+            <div class="cube__face cube__face--front"></div>
+            <div class="cube__face cube__face--back"></div>
+            <div class="cube__face cube__face--right"></div>
+            <div class="cube__face cube__face--left"></div>
+            <div class="cube__face cube__face--top"></div>
+            <div class="cube__face cube__face--bottom"></div>
+          </div>
+        </div>
+
+        <!-- Floating build-category chips -->
+        <div class="chip chip--ai">AI</div>
+        <div class="chip chip--web">Web</div>
+        <div class="chip chip--mobile">Mobile</div>
+        <div class="chip chip--design">Design</div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -39,8 +39,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 import { RouterModule } from '@angular/router';
-import { SectionRendererComponent } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section-renderer/section-renderer.component';
-import { SECTION_TYPES } from 'apps/commudle-admin/src/app/feature-modules/homepage/components/page-sections/section.registry';
+import { SectionRendererComponent } from 'apps/commudle-admin/src/app/app-shared-components/page-sections/section-renderer/section-renderer.component';
 
 @Component({
   selector: 'commudle-page-hackathon-management-platform',

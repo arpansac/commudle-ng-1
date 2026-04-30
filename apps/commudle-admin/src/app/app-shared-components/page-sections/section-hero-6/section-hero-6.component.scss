@@ -1,0 +1,299 @@
+:host {
+  display: block;
+}
+
+// ── Keyframes ──────────────────────────────────────────────────────────────
+
+// Cube: constant Y-axis rotation with a slight fixed X-tilt for depth.
+@keyframes cube-spin {
+  from {
+    transform: rotateX(18deg) rotateY(0deg);
+  }
+  to {
+    transform: rotateX(18deg) rotateY(360deg);
+  }
+}
+
+// Ambient glow pulses scale + opacity.
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+// Dot grid drifts diagonally.
+@keyframes mesh-drift {
+  to {
+    background-position: 32px 32px;
+  }
+}
+
+// Badge dot blinks to signal a live campaign.
+@keyframes badge-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+// Chips float up and down with staggered delays.
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// ── Section shell ──────────────────────────────────────────────────────────
+
+// #0d1117: raw hex — no pinned dark-navy token exists; themed tokens flip to #fff in dark mode.
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: #0d1117;
+  .base-layout {
+    min-height: 0;
+  }
+}
+
+// Dot grid — amber-tinted dots to reinforce the campaign warmth.
+.hero-mesh {
+  position: absolute;
+  inset: -32px;
+  background-image: radial-gradient(circle, rgba(255, 170, 0, 0.22) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  animation: mesh-drift 14s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+// Amber radial glow centred behind the heading.
+// #ff8a00 = American-Orange static token from tailwind.preset.js.
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
+  max-width: 900px;
+  height: 46vw;
+  max-height: 460px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 138, 0, 0.16) 0%,
+    rgba(255, 138, 0, 0.05) 45%,
+    transparent 72%
+  );
+  animation: glow-pulse 5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ── Two-column layout ──────────────────────────────────────────────────────
+
+.hero-layout {
+  @apply com-grid com-grid-cols-1 md:com-grid-cols-2 com-items-center com-gap-12;
+  @apply com-py-16 md:com-py-20 lg:com-py-24;
+  position: relative;
+  z-index: 2;
+  &__content {
+    @apply com-flex com-flex-col com-gap-6;
+  }
+}
+
+// ── Campaign badge ─────────────────────────────────────────────────────────
+
+.campaign-badge {
+  @apply com-inline-flex com-items-center com-gap-2 com-self-start;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 138, 0, 0.45);
+  background: rgba(255, 138, 0, 0.1);
+  color: #ff8a00; // American-Orange
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff8a00;
+    animation: badge-blink 1.6s ease-in-out infinite;
+  }
+}
+
+// ── Heading + supporting text ──────────────────────────────────────────────
+
+.hero-heading {
+  @apply com-text-4xl md:com-text-5xl lg:com-text-Public-Page-CTA-Heading;
+  @apply com-font-extrabold com-leading-tight com-m-0 com-text-tWhite;
+
+  // Spans inside the heading (e.g. the accent word) glow amber.
+  span {
+    color: #ff8a00;
+  }
+}
+
+.hero-subtext {
+  @apply com-max-w-lg;
+}
+
+// ── CTA + submission count ─────────────────────────────────────────────────
+
+.cta-group {
+  @apply com-flex com-flex-col com-gap-4;
+}
+
+.submission-count {
+  @apply com-flex com-items-center com-gap-2;
+
+  &__number {
+    @apply com-text-Page-Subheading com-font-bold;
+    color: #ff8a00;
+  }
+}
+
+// ── Right visual container ─────────────────────────────────────────────────
+
+.hero-visual {
+  @apply com-flex com-items-center com-justify-center;
+  position: relative;
+  height: 400px;
+}
+
+// ── Cube spotlight glow ────────────────────────────────────────────────────
+
+.cube-glow {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 138, 0, 0.35) 0%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+// ── CSS 3D cube ────────────────────────────────────────────────────────────
+//
+// perspective lives on .cube-wrap (the parent);
+// the animation runs on .cube (the child) — identical pattern to hero-4.
+// Each face hex maps to tokens in tailwind.preset.js:
+//   front  #3366ff/  #6f22df = primary-500 / Blue-Violet
+//   back   #ff3d71 / #ff8a00 = Infra-Red   / American-Orange
+//   right  #00d68f / #2aa5ff = Caribbean-Green / Brilliant-Azure
+//   left   #635bff / #3366ff = Blue-Lotus  / primary-500
+//   top    #ff8a00 / #ff3d71 = American-Orange / Infra-Red
+//   bottom #2aa5ff / #00d68f = Brilliant-Azure / Caribbean-Green
+
+$face: 120px; // half the cube edge length — translateZ value
+
+.cube-wrap {
+  perspective: 700px;
+  width: 240px;
+  height: 240px;
+  flex-shrink: 0;
+}
+
+.cube {
+  width: 240px;
+  height: 240px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cube-spin 16s linear infinite;
+
+  &__face {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 0.92;
+
+    &--front {
+      transform: rotateY(0deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #3366ff, #6f22df);
+    }
+    &--back {
+      transform: rotateY(180deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #ff3d71, #ff8a00);
+    }
+    &--right {
+      transform: rotateY(90deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #00d68f, #2aa5ff);
+    }
+    &--left {
+      transform: rotateY(-90deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #635bff, #3366ff);
+    }
+    &--top {
+      transform: rotateX(90deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #ff8a00, #ff3d71);
+    }
+    &--bottom {
+      transform: rotateX(-90deg) translateZ(#{$face});
+      background: linear-gradient(135deg, #2aa5ff, #00d68f);
+    }
+  }
+}
+
+// ── Floating category chips ────────────────────────────────────────────────
+
+.chip {
+  position: absolute;
+  padding: 6px 14px;
+  border-radius: 999px;
+  @apply com-text-Caption com-font-bold;
+  // tWhite bg = always #ffffff; tYankees-Blue text required (design-guardrails §9)
+  @apply com-bg-tWhite com-text-tYankees-Blue com-shadow-Card;
+  white-space: nowrap;
+
+  &--ai {
+    top: 16px;
+    left: 10px;
+    animation: float 3s ease-in-out infinite;
+  }
+  &--web {
+    top: 20px;
+    right: 10px;
+    animation: float 3s ease-in-out 0.8s infinite;
+  }
+  &--mobile {
+    bottom: 60px;
+    left: 0;
+    animation: float 3s ease-in-out 1.6s infinite;
+  }
+  &--design {
+    bottom: 50px;
+    right: 0;
+    animation: float 3s ease-in-out 2.4s infinite;
+  }
+}
+
+// ── Reduced motion ─────────────────────────────────────────────────────────
+
+@media (prefers-reduced-motion: reduce) {
+  .cube {
+    animation: none !important;
+  }
+  .hero-mesh {
+    animation: none !important;
+  }
+  .hero-glow {
+    animation: none !important;
+  }
+  .chip {
+    animation: none !important;
+  }
+  .campaign-badge__dot {
+    animation: none !important;
+  }
+}
