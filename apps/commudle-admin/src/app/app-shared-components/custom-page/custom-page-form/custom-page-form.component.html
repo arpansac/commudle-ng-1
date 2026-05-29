@@ -9,7 +9,7 @@
   <form [formGroup]="customPageForm">
     <div class="title">
       <label for="title">Title*</label>
-      <input formControlName="title" fullWidth id="title" nbInput placeholder="Title" type="text" />
+      <input formControlName="title" fullWidth id="title" comInput placeholder="Title" type="text" />
       <commudle-alert
         *ngIf="
           customPageForm.controls['title'].touched &&
@@ -52,7 +52,7 @@
     </div>
     <div class="discription">
       <label for="description">Description*</label>
-      <textarea formControlName="description" fullWidth id="description" nbInput placeholder="Description"></textarea>
+      <textarea formControlName="description" fullWidth id="description" comInput placeholder="Description"></textarea>
       <commudle-alert
         *ngIf="
           customPageForm.controls['description'].touched &&

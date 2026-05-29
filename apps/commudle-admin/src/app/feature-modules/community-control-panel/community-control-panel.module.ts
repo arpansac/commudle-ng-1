@@ -61,6 +61,7 @@ import { ReusableComponentsModule } from 'apps/commudle-admin/src/app/feature-mo
 import { CommunityMailsSentStatsComponent } from './components/community-mails-sent-stats/community-mails-sent-stats.component';
 import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-components/help-section/help-section.component';
 import { CommudleButtonModule } from '@commudle/commudle-theme';
+import { CommudleInputModule } from '@commudle/commudle-theme';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { CommudleButtonModule } from '@commudle/commudle-theme';
     ReactiveFormsModule,
     EditorModule,
     SharedComponentsModule,
+    CommudleInputModule,
     Angular2SmartTableModule,
     FontAwesomeModule,
     SharedDirectivesModule,

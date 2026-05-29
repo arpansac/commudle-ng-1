@@ -90,7 +90,7 @@
               <input
                 formControlName="name"
                 fullWidth
-                nbInput
+                comInput
                 placeholder="Name of your project or course"
                 size="large"
                 type="text"
@@ -153,7 +153,7 @@
                     </p>
                   </span>
                   <span class="info-text">Select first image as the thumbnail</span>
-                  <input (change)="addImages($event)" accept="image/*" fullWidth multiple nbInput type="file" />
+                  <input (change)="addImages($event)" accept="image/*" fullWidth multiple comInput type="file" />
                 </label>
 
                 <div class="images">
@@ -198,7 +198,7 @@
                   <input
                     formControlName="link"
                     fullWidth
-                    nbInput
+                    comInput
                     placeholder="Link to Open Source Code"
                     size="large"
                     type="url"
@@ -224,7 +224,7 @@
                     <input
                       formControlName="live_app_link"
                       fullWidth
-                      nbInput
+                      comInput
                       placeholder="Link to live project"
                       size="large"
                       type="url"
@@ -260,7 +260,7 @@
               <input
                 formControlName="video_iframe"
                 fullWidth
-                nbInput
+                comInput
                 placeholder=" Video Demo (Iframe)"
                 size="large"
                 type="url"
@@ -303,8 +303,8 @@
                     [readonly]="true"
                     [value]="hackathonUserResponse.user_email"
                     fullWidth
-                    nbInput
-                    size="large"
+                    comInput
+                    fieldSize="large"
                     type="email"
                   />
                 </div>
@@ -321,7 +321,7 @@
                   <input
                     formControlName="value"
                     fullWidth
-                    nbInput
+                    comInput
                     placeholder="Enter email (we will send an invitation to join)"
                     required
                   />

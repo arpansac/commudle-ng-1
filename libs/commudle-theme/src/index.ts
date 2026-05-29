@@ -8,3 +8,6 @@ export * from './lib/components/commudle-card/card-footer/card-footer.component'
 export * from './lib/components/commudle-button/commudle-button.module';
 export * from './lib/components/commudle-button/com-button.component';
 export * from './lib/components/commudle-button/models/com-button.types';
+export * from './lib/components/commudle-input/commudle-input.module';
+export * from './lib/components/commudle-input/com-input.component';
+export * from './lib/components/commudle-input/models/com-input.types';

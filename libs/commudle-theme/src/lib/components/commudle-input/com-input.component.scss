@@ -1,0 +1,214 @@
+:host {
+  @apply com-appearance-none com-border com-border-solid com-font-normal com-w-full;
+  @apply com-bg-[#f7f9fc] com-border-Bright-Gray com-text-Yankees-Blue;
+  @apply placeholder:com-text-Cadet-Grey placeholder:com-text-ellipsis;
+  @apply focus:com-outline-none;
+
+  &.com-transition {
+    @apply com-transition-[border,background-color,color,box-shadow] com-duration-200 com-ease-in-out;
+  }
+
+  &.input-full-width {
+    @apply com-w-full;
+  }
+
+  &:not(.input-full-width) {
+    &.size-tiny {
+      @apply com-max-w-[220px];
+    }
+
+    &.size-small,
+    &.size-medium {
+      @apply com-max-w-[320px];
+    }
+
+    &.size-large,
+    &.size-giant {
+      @apply com-max-w-[480px];
+    }
+  }
+
+  &.size-tiny {
+    @apply com-text-[10px] com-font-normal com-leading-3 com-px-4 com-py-[7px];
+    @apply placeholder:com-text-[10px] placeholder:com-font-normal placeholder:com-leading-3;
+  }
+
+  &.size-small {
+    @apply com-text-sm com-font-normal com-px-4 com-py-1;
+    @apply placeholder:com-text-sm placeholder:com-font-normal;
+  }
+
+  &.size-medium {
+    @apply com-text-sm com-font-normal com-px-4 com-py-2;
+    @apply placeholder:com-text-sm placeholder:com-font-normal;
+  }
+
+  &.size-large {
+    @apply com-text-base com-font-normal com-px-4 com-py-10px;
+    @apply placeholder:com-text-base placeholder:com-font-normal;
+  }
+
+  &.size-giant {
+    @apply com-text-lg com-font-normal com-p-4;
+    @apply placeholder:com-text-lg placeholder:com-font-normal;
+  }
+
+  &.shape-rectangle {
+    @apply com-rounded;
+  }
+
+  &.shape-semi-round {
+    @apply com-rounded-xl;
+  }
+
+  &.shape-round {
+    @apply com-rounded-full;
+  }
+
+  &.status-basic {
+    @apply com-bg-Ghost-White com-border-Bright-Gray com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-primary-500;
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-primary-500;
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-primary-500;
+    }
+
+    &:disabled {
+      @apply com-bg-Bright-Gray-opacity-30 com-border-transparent com-text-Bright-Gray-opacity-30;
+      @apply placeholder:com-text-Bright-Gray-opacity-30;
+    }
+  }
+
+  &.status-primary {
+    @apply com-bg-Ghost-White com-border-primary-500 com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-[#598bff];
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-[#274bdb];
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-[#274bdb];
+    }
+
+    &:disabled {
+      @apply com-bg-Bright-Gray-opacity-30 com-border-transparent com-text-Bright-Gray-opacity-30;
+      @apply placeholder:com-text-Bright-Gray-opacity-30;
+    }
+  }
+
+  &.status-success {
+    @apply com-bg-[#f7f9fc] com-border-Caribbean-Green com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-[#2ce69b];
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-[#00b887];
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-[#00b887];
+    }
+
+    &:disabled {
+      @apply com-bg-[rgba(143,155,179,0.08)] com-border-transparent com-text-[rgba(143,155,179,0.48)];
+      @apply placeholder:com-text-[rgba(143,155,179,0.48)];
+    }
+  }
+
+  &.status-info {
+    @apply com-bg-[#f7f9fc] com-border-Azure com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-[#42aaff];
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-[#006fd6];
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-[#006fd6];
+    }
+
+    &:disabled {
+      @apply com-bg-[rgba(143,155,179,0.08)] com-border-transparent com-text-[rgba(143,155,179,0.48)];
+      @apply placeholder:com-text-[rgba(143,155,179,0.48)];
+    }
+  }
+
+  &.status-warning {
+    @apply com-bg-[#f7f9fc] com-border-Chrome-Yellow com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-[#ffc94d];
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-[#db8b00];
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-[#db8b00];
+    }
+
+    &:disabled {
+      @apply com-bg-[rgba(143,155,179,0.08)] com-border-transparent com-text-[rgba(143,155,179,0.48)];
+      @apply placeholder:com-text-[rgba(143,155,179,0.48)];
+    }
+  }
+
+  &.status-danger {
+    @apply com-bg-[#f7f9fc] com-border-Infra-Red com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-[#ff708d];
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-[#db2c66];
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-[#db2c66];
+    }
+
+    &:disabled {
+      @apply com-bg-[rgba(143,155,179,0.08)] com-border-transparent com-text-[rgba(143,155,179,0.48)];
+      @apply placeholder:com-text-[rgba(143,155,179,0.48)];
+    }
+  }
+
+  &.status-control {
+    @apply com-bg-white com-border-white com-text-Yankees-Blue;
+
+    &:hover {
+      @apply com-bg-white com-border-white;
+    }
+
+    &:focus {
+      @apply com-bg-white com-border-white;
+    }
+
+    &:focus:hover {
+      @apply com-bg-white com-border-white;
+    }
+
+    &:disabled {
+      @apply com-bg-[rgba(255,255,255,0.24)] com-border-transparent com-text-[rgba(255,255,255,0.48)];
+      @apply placeholder:com-text-[rgba(255,255,255,0.48)];
+    }
+  }
+}
