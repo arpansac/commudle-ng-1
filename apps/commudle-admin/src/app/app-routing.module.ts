@@ -231,6 +231,11 @@ const routes: Routes = [
     loadChildren: () => import('./feature-modules/pricing/pricing.module').then((m) => m.PricingModule),
   },
   {
+    path: 'subscriptions',
+    loadChildren: () =>
+      import('./feature-modules/subscription-plans/subscription-plans.module').then((m) => m.SubscriptionPlansModule),
+  },
+  {
     path: 'speaker-resources',
     loadChildren: () =>
       import('./feature-modules/speaker-resources/speaker-resources.module').then((m) => m.SpeakerResourcesModule),

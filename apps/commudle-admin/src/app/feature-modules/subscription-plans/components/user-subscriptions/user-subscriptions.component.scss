@@ -1,0 +1,146 @@
+.user-subscriptions {
+  @apply com-py-6;
+
+  .loading-state,
+  .empty-state,
+  .not-logged-in {
+    @apply com-flex com-flex-col com-items-center com-gap-3 com-py-20 com-text-gray-400;
+
+    nb-icon {
+      @apply com-text-4xl;
+    }
+
+    p {
+      @apply com-text-sm;
+    }
+
+    a[routerLink] {
+      @apply com-text-primary-600 com-underline;
+    }
+  }
+
+  .subscriptions-list {
+    @apply com-flex com-flex-col com-gap-4;
+
+    .subscription-card {
+      @apply com-bg-white com-border com-border-gray-200 com-rounded-xl com-p-5 com-flex com-flex-col com-gap-4;
+
+      .card-top {
+        @apply com-flex com-justify-between com-items-start com-gap-2;
+
+        .card-top-left {
+          @apply com-flex com-flex-col com-gap-0.5;
+
+          .plan-name {
+            @apply com-font-semibold com-text-gray-900 com-text-base;
+          }
+
+          .product-name {
+            @apply com-text-xs com-text-gray-400;
+          }
+        }
+
+        .status-badge {
+          @apply com-px-2.5 com-py-0.5 com-rounded-full com-text-xs com-font-semibold com-whitespace-nowrap;
+
+          &.status-active {
+            @apply com-bg-green-100 com-text-green-700;
+          }
+          &.status-cancelled {
+            @apply com-bg-gray-100 com-text-gray-500;
+          }
+          &.status-expired {
+            @apply com-bg-yellow-100 com-text-yellow-700;
+          }
+          &.status-failed {
+            @apply com-bg-red-100 com-text-red-600;
+          }
+          &.status-pending {
+            @apply com-bg-blue-100 com-text-blue-600;
+          }
+        }
+      }
+
+      .card-price {
+        @apply com-flex com-items-baseline com-gap-1;
+
+        .price {
+          @apply com-text-2xl com-font-bold com-text-gray-900;
+        }
+
+        .cycle {
+          @apply com-text-sm com-text-gray-400;
+        }
+      }
+
+      .card-divider {
+        @apply com-border-t com-border-gray-100;
+      }
+
+      .card-meta {
+        @apply com-grid com-grid-cols-2 com-gap-3;
+        @apply md:com-grid-cols-4;
+
+        .meta-item {
+          @apply com-flex com-flex-col com-gap-0.5;
+
+          .meta-label {
+            @apply com-text-xs com-text-gray-400;
+          }
+
+          .meta-value {
+            @apply com-text-sm com-font-medium com-text-gray-700;
+          }
+        }
+      }
+
+      .card-usage {
+        @apply com-flex com-flex-col com-gap-3;
+
+        .usage-item {
+          @apply com-flex com-flex-col com-gap-1.5;
+
+          .usage-row {
+            @apply com-flex com-justify-between;
+
+            .usage-label {
+              @apply com-text-sm com-text-gray-600;
+            }
+
+            .usage-count {
+              @apply com-text-sm com-font-medium com-text-gray-800;
+            }
+          }
+
+          .usage-bar {
+            @apply com-w-full com-h-1.5 com-bg-gray-100 com-rounded-full com-overflow-hidden;
+
+            .usage-bar-fill {
+              @apply com-h-full com-bg-primary-500 com-rounded-full com-transition-all;
+
+              &.usage-bar-full {
+                @apply com-bg-red-400;
+              }
+            }
+          }
+        }
+      }
+
+      .card-footer {
+        @apply com-flex com-justify-between com-items-center;
+
+        span {
+          @apply com-text-xs com-text-gray-400;
+        }
+
+        .rzp-id {
+          @apply com-font-mono;
+        }
+      }
+    }
+
+    .pagination-wrapper {
+      @apply com-flex com-justify-center com-pt-2;
+    }
+  }
+}

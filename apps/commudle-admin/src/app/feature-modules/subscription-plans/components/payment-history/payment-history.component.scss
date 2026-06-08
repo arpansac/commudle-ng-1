@@ -1,0 +1,11 @@
+.payment-history-empty {
+  @apply com-flex com-flex-col com-items-center com-gap-3 com-py-20 com-text-gray-400;
+
+  .empty-icon {
+    @apply com-text-5xl;
+  }
+
+  .empty-text {
+    @apply com-text-sm;
+  }
+}
