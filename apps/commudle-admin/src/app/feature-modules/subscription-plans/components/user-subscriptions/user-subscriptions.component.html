@@ -1,0 +1,114 @@
+<div class="user-subscriptions">
+  <div class="loading-state" *ngIf="isLoading">
+    <nb-spinner></nb-spinner>
+  </div>
+
+  <div class="not-logged-in" *ngIf="!isLoggedIn && !isLoading">
+    <nb-icon icon="lock-outline"></nb-icon>
+    <p>Please <a [routerLink]="['/login']">log in</a> to view your subscriptions.</p>
+  </div>
+
+  <div class="empty-state" *ngIf="isLoggedIn && !isLoading && subscriptions.length === 0">
+    <nb-icon icon="file-text-outline"></nb-icon>
+    <p>You have no subscriptions yet.</p>
+    <a [routerLink]="['/subscriptions']" nbButton status="primary" size="small">Browse Plans</a>
+  </div>
+
+  <div class="subscriptions-list" *ngIf="!isLoading && subscriptions.length > 0">
+    <div class="subscription-card" *ngFor="let sub of subscriptions">
+      <!-- Top row: plan name + status -->
+      <div class="card-top">
+        <div class="card-top-left">
+          <span class="plan-name">{{ sub.product_price?.plan_name || 'Subscription #' + sub.id }}</span>
+          <span class="product-name">{{ sub.product_price?.product_name }}</span>
+        </div>
+        <span class="status-badge" [ngClass]="getStatusClass(sub.status)">
+          {{ sub.status | titlecase }}
+        </span>
+      </div>
+
+      <!-- Price + cycle -->
+      <div class="card-price">
+        <span class="price">{{ sub.product_price?.final_price | currency : sub.product_price?.currency }}</span>
+        <span class="cycle">/ {{ sub.product_price?.billing_cycle }}</span>
+      </div>
+
+      <div class="card-divider"></div>
+
+      <!-- Dates -->
+      <div class="card-meta">
+        <div class="meta-item" *ngIf="sub.starts_at">
+          <span class="meta-label">Started</span>
+          <span class="meta-value">{{ sub.starts_at | date : 'mediumDate' }}</span>
+        </div>
+        <div class="meta-item" *ngIf="sub.ends_at">
+          <span class="meta-label">Expires</span>
+          <span class="meta-value">{{ sub.ends_at | date : 'mediumDate' }}</span>
+        </div>
+        <div class="meta-item" *ngIf="sub.next_billing_at">
+          <span class="meta-label">Next billing</span>
+          <span class="meta-value">{{ sub.next_billing_at | date : 'mediumDate' }}</span>
+        </div>
+        <div class="meta-item" *ngIf="sub.last_billed_at">
+          <span class="meta-label">Last billed</span>
+          <span class="meta-value">{{ sub.last_billed_at | date : 'mediumDate' }}</span>
+        </div>
+      </div>
+
+      <div class="card-divider"></div>
+
+      <!-- Usage -->
+      <div class="card-usage">
+        <div class="usage-item" *ngIf="sub.product_price?.can_create_kommunity">
+          <div class="usage-row">
+            <span class="usage-label">Communities</span>
+            <span class="usage-count"
+              >{{ sub.kommunities_count }} / {{ sub.product_price?.max_kommunities ?? '∞' }}</span
+            >
+          </div>
+          <div class="usage-bar" *ngIf="sub.product_price?.max_kommunities">
+            <div
+              class="usage-bar-fill"
+              [style.width.%]="getQuotaPercent(sub.kommunities_count, sub.product_price?.max_kommunities)"
+              [class.usage-bar-full]="getQuotaPercent(sub.kommunities_count, sub.product_price?.max_kommunities) >= 100"
+            ></div>
+          </div>
+        </div>
+        <div class="usage-item" *ngIf="sub.product_price?.can_create_community_group">
+          <div class="usage-row">
+            <span class="usage-label">Organizations</span>
+            <span class="usage-count"
+              >{{ sub.community_groups_count }} / {{ sub.product_price?.max_community_groups ?? '∞' }}</span
+            >
+          </div>
+          <div class="usage-bar" *ngIf="sub.product_price?.max_community_groups">
+            <div
+              class="usage-bar-fill"
+              [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
+              [class.usage-bar-full]="
+                getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups) >= 100
+              "
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <span>Purchased {{ sub.created_at | date : 'mediumDate' }}</span>
+        <span *ngIf="sub.rzp_subscription_id" class="rzp-id">{{ sub.rzp_subscription_id }}</span>
+      </div>
+    </div>
+
+    <div class="pagination-wrapper" *ngIf="total > count">
+      <app-pagination
+        [current]="page"
+        [count]="count"
+        [total]="total"
+        (goTo)="goToPage($event)"
+        (next)="goToPage($event)"
+        (previous)="goToPage($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>

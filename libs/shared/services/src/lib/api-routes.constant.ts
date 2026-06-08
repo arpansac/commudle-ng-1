@@ -1159,6 +1159,12 @@ export const API_ROUTES = {
     CREATE_PURCHASE_ORDER: 'api/v2/product_prices/create_purchase_order', //POST
   },
 
+  USER_SUBSCRIPTIONS: {
+    INDEX: 'api/v2/user_subscriptions', //GET - my subscriptions
+    SHOW: 'api/v2/user_subscriptions/show', //GET
+    CREATE: 'api/v2/user_subscriptions', //POST
+  },
+
   HACKATHON_TEAM_ROUND_SUBMISSIONS: {
     CREATE: 'api/v2/hackathon_team_round_submissions', //POST
     SHOW: 'api/v2/hackathon_team_round_submissions/show', //GET

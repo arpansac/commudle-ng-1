@@ -1,0 +1,11 @@
+.my-subscriptions-page {
+  @apply com-max-w-3xl com-mx-auto com-px-4 com-py-10;
+
+  .page-header {
+    @apply com-flex com-justify-between com-items-center com-mb-6;
+
+    .page-title {
+      @apply com-text-2xl com-font-bold com-text-gray-900;
+    }
+  }
+}
