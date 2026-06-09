@@ -236,6 +236,18 @@ const routes: Routes = [
       import('./feature-modules/subscription-plans/subscription-plans.module').then((m) => m.SubscriptionPlansModule),
   },
   {
+    path: 'create-community',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./feature-modules/subscription-plans/create-community.module').then((m) => m.CreateCommunityModule),
+  },
+  {
+    path: 'create-organization',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./feature-modules/subscription-plans/create-organization.module').then((m) => m.CreateOrganizationModule),
+  },
+  {
     path: 'speaker-resources',
     loadChildren: () =>
       import('./feature-modules/speaker-resources/speaker-resources.module').then((m) => m.SpeakerResourcesModule),

@@ -1,0 +1,269 @@
+<div class="create-community-page">
+  <div class="page-banner">
+    <div class="base-layout">
+      <div class="container">
+        <div class="banner-content">
+          <div class="banner-text">
+            <h1 class="banner-title">Create a Community</h1>
+            <p class="banner-subtitle">
+              Set up your tech community and start connecting with people who share your passion
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="base-layout thin">
+      <div class="container">
+        <form [formGroup]="communityForm" (ngSubmit)="submitForm()" class="community-form">
+          <!-- Organization (auto-detected from subscription) -->
+          <div class="form-section" *ngIf="isLoadingSubscription || autoOrg">
+            <div class="section-label">
+              <span class="section-icon">🏢</span>
+              <div>
+                <h3 class="section-title">Organization</h3>
+                <p class="section-desc">This community will be created under your organization</p>
+              </div>
+            </div>
+
+            <div class="org-loading" *ngIf="isLoadingSubscription">
+              <nb-spinner size="small"></nb-spinner>
+              <span>Loading organization...</span>
+            </div>
+
+            <div class="org-banner" *ngIf="autoOrg && !isLoadingSubscription">
+              <div class="org-avatar">{{ autoOrg.name?.charAt(0)?.toUpperCase() }}</div>
+              <div class="org-info">
+                <span class="org-name">{{ autoOrg.name }}</span>
+                <span class="org-slug">commudle.com/{{ autoOrg.slug }}</span>
+              </div>
+              <nb-icon icon="checkmark-circle-2" status="success"></nb-icon>
+            </div>
+          </div>
+
+          <!-- Basic Info -->
+          <div class="form-section">
+            <div class="section-label">
+              <span class="section-icon">📋</span>
+              <div>
+                <h3 class="section-title">Basic Information</h3>
+                <p class="section-desc">Tell people what your community is about</p>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Community Name <span class="required">*</span></label>
+              <input
+                nbInput
+                fullWidth
+                formControlName="name"
+                placeholder="e.g. GDG Chandigarh, Flutter India"
+                type="text"
+              />
+              <span
+                class="field-error"
+                *ngIf="communityForm.get('name').touched && communityForm.get('name').hasError('required')"
+              >
+                Community name is required
+              </span>
+              <span
+                class="field-error"
+                *ngIf="communityForm.get('name').touched && communityForm.get('name').hasError('maxlength')"
+              >
+                Maximum 100 characters allowed
+              </span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Mini Description <span class="required">*</span></label>
+              <input
+                nbInput
+                fullWidth
+                formControlName="mini_description"
+                placeholder="A short tagline for your community (max 160 chars)"
+                type="text"
+              />
+              <div class="char-count">{{ communityForm.get('mini_description').value?.length || 0 }}/160</div>
+              <span
+                class="field-error"
+                *ngIf="
+                  communityForm.get('mini_description').touched &&
+                  communityForm.get('mini_description').hasError('required')
+                "
+              >
+                Mini description is required
+              </span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">About</label>
+              <textarea
+                nbInput
+                fullWidth
+                formControlName="about"
+                placeholder="Describe your community in detail — its mission, values, and who it's for"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Location</label>
+              <input nbInput fullWidth formControlName="location" placeholder="e.g. Chandigarh, India" type="text" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Contact Email</label>
+              <input
+                nbInput
+                fullWidth
+                formControlName="contact_email"
+                placeholder="contact@mycommunity.com"
+                type="email"
+              />
+              <span
+                class="field-error"
+                *ngIf="
+                  communityForm.get('contact_email').touched && communityForm.get('contact_email').hasError('email')
+                "
+              >
+                Enter a valid email address
+              </span>
+            </div>
+          </div>
+
+          <!-- Media -->
+          <div class="form-section">
+            <div class="section-label">
+              <span class="section-icon">🖼️</span>
+              <div>
+                <h3 class="section-title">Media</h3>
+                <p class="section-desc">Upload images to represent your community visually</p>
+              </div>
+            </div>
+
+            <div class="image-upload-group">
+              <div class="upload-box" (click)="logoInput.click()">
+                <div class="upload-preview" *ngIf="logoPreview">
+                  <img [src]="logoPreview" alt="Logo Preview" />
+                  <button type="button" class="remove-image" (click)="$event.stopPropagation(); removeImage('logo')">
+                    <nb-icon icon="close-circle"></nb-icon>
+                  </button>
+                </div>
+                <div class="upload-placeholder" *ngIf="!logoPreview">
+                  <nb-icon icon="image-outline"></nb-icon>
+                  <p>Community Logo</p>
+                  <span>PNG, JPG, JPEG · Max 5MB</span>
+                </div>
+                <input
+                  #logoInput
+                  type="file"
+                  accept="image/png,image/jpg,image/jpeg"
+                  (change)="onImageChange($event, 'logo')"
+                />
+              </div>
+
+              <div class="upload-box banner" (click)="bannerInput.click()">
+                <div class="upload-preview" *ngIf="bannerPreview">
+                  <img [src]="bannerPreview" alt="Banner Preview" />
+                  <button type="button" class="remove-image" (click)="$event.stopPropagation(); removeImage('banner')">
+                    <nb-icon icon="close-circle"></nb-icon>
+                  </button>
+                </div>
+                <div class="upload-placeholder" *ngIf="!bannerPreview">
+                  <nb-icon icon="image-2-outline"></nb-icon>
+                  <p>Banner Image</p>
+                  <span>PNG, JPG, JPEG · Max 5MB · Recommended 1280×400</span>
+                </div>
+                <input
+                  #bannerInput
+                  type="file"
+                  accept="image/png,image/jpg,image/jpeg"
+                  (change)="onImageChange($event, 'banner')"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="form-section">
+            <div class="section-label">
+              <span class="section-icon">🔗</span>
+              <div>
+                <h3 class="section-title">Social Links <span class="optional-tag">Optional</span></h3>
+                <p class="section-desc">Help people find you on other platforms</p>
+              </div>
+            </div>
+
+            <div class="social-grid">
+              <div class="field-group">
+                <label class="field-label">Website</label>
+                <input nbInput fullWidth formControlName="website" placeholder="https://yourcommunity.com" type="url" />
+                <span
+                  class="field-error"
+                  *ngIf="communityForm.get('website').touched && communityForm.get('website').hasError('pattern')"
+                  >Enter a valid URL</span
+                >
+              </div>
+              <div class="field-group">
+                <label class="field-label">Twitter / X</label>
+                <input
+                  nbInput
+                  fullWidth
+                  formControlName="twitter"
+                  placeholder="https://twitter.com/handle"
+                  type="url"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label">LinkedIn</label>
+                <input
+                  nbInput
+                  fullWidth
+                  formControlName="linkedin"
+                  placeholder="https://linkedin.com/company/..."
+                  type="url"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label">GitHub</label>
+                <input nbInput fullWidth formControlName="github" placeholder="https://github.com/org" type="url" />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Instagram</label>
+                <input
+                  nbInput
+                  fullWidth
+                  formControlName="instagram"
+                  placeholder="https://instagram.com/handle"
+                  type="url"
+                />
+              </div>
+              <div class="field-group">
+                <label class="field-label">Facebook</label>
+                <input
+                  nbInput
+                  fullWidth
+                  formControlName="facebook"
+                  placeholder="https://facebook.com/page"
+                  type="url"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" nbButton status="basic" size="large" [routerLink]="['/subscriptions']">Cancel</button>
+            <button type="submit" nbButton status="primary" size="large" [disabled]="isSubmitting">
+              <nb-icon icon="checkmark-outline" *ngIf="!isSubmitting"></nb-icon>
+              <nb-spinner *ngIf="isSubmitting" size="small"></nb-spinner>
+              {{ isSubmitting ? 'Creating...' : 'Create Community' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,32 @@
-<div class="my-subscriptions-page">
-  <div class="page-header">
-    <h1 class="page-title">My Subscriptions</h1>
+<div class="subscriptions-page base-layout">
+  <div class="page-banner">
+    <div class="banner-content">
+      <div class="banner-text">
+        <h1 class="banner-title">My Subscriptions</h1>
+        <p class="banner-subtitle">Manage your active subscriptions and view payment history</p>
+      </div>
+    </div>
   </div>
 
-  <nb-route-tabset [tabs]="tabs" fullWidth></nb-route-tabset>
+  <div class="page-content">
+    <div class="base-layout">
+      <div class="container">
+        <div class="tabs-navigation">
+          <a
+            *ngFor="let tab of tabs"
+            [routerLink]="tab.route"
+            routerLinkActive="active-tab"
+            [routerLinkActiveOptions]="{ exact: tab.route === '' }"
+            class="tab-item"
+          >
+            {{ tab.title }}
+          </a>
+        </div>
+
+        <div class="content-wrapper">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
