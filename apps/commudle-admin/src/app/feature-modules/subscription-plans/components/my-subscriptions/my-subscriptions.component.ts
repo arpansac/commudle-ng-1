@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService, SeoService } from '@commudle/shared-services';
-import { Subject, takeUntil } from 'rxjs';
+import { SeoService } from '@commudle/shared-services';
 
 @Component({
   selector: 'commudle-my-subscriptions',
@@ -10,13 +9,11 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class MySubscriptionsComponent implements OnInit, OnDestroy {
   tabs = [
-    { title: 'Subscriptions', route: './subscriptions', responsive: true },
+    { title: 'Subscriptions', route: '.', responsive: true },
     { title: 'Payment History', route: './payment-history', responsive: true },
   ];
 
-  private destroy$ = new Subject<void>();
-
-  constructor(private seoService: SeoService, private authService: AuthService) {}
+  constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {
     this.seoService.setTags(
@@ -28,7 +25,6 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.seoService.noIndex(false);
   }
 }

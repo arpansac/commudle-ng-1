@@ -11,11 +11,11 @@ import { BaseApiService } from './base-api.service';
 export class UserSubscriptionService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  getSubscriptionPlans(): Observable<IUserSubscriptionPlan[]> {
-    return this.http.get<IUserSubscriptionPlan[]>(
-      this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.SUBSCRIPTION_PLANS),
-    );
-  }
+  // getSubscriptionPlans(): Observable<IUserSubscriptionPlan[]> {
+  //   return this.http.get<IUserSubscriptionPlan[]>(
+  //     this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.SUBSCRIPTION_PLANS),
+  //   );
+  // }
 
   getMySubscriptions(page = 1, count = 5): Observable<IPaginationCount<IUserSubscription>> {
     const params = new HttpParams().set('page', page).set('count', count);
@@ -28,6 +28,13 @@ export class UserSubscriptionService {
   createSubscription(productPriceId: number): Observable<IUserSubscription> {
     return this.http.post<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.CREATE), {
       user_subscription: { product_price_id: productPriceId },
+    });
+  }
+
+  getSubscription(id: number): Observable<IUserSubscription> {
+    const params = new HttpParams().set('id', id);
+    return this.http.get<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.SHOW), {
+      params,
     });
   }
 }

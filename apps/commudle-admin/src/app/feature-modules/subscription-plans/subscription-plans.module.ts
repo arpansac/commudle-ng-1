@@ -1,8 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NbButtonModule, NbCardModule, NbIconModule, NbRouteTabsetModule, NbSpinnerModule } from '@commudle/theme';
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbIconModule,
+  NbInputModule,
+  NbRouteTabsetModule,
+  NbSelectModule,
+  NbSpinnerModule,
+} from '@commudle/theme';
 import { MySubscriptionsComponent } from './components/my-subscriptions/my-subscriptions.component';
 import { UserSubscriptionsComponent } from './components/user-subscriptions/user-subscriptions.component';
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
@@ -15,6 +25,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
   imports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule,
     SubscriptionPlansRoutingModule,
     FontAwesomeModule,
     SharedPipesModule,
@@ -23,6 +34,9 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     NbButtonModule,
     NbIconModule,
     NbSpinnerModule,
+    NbInputModule,
+    NbSelectModule,
+    NbCheckboxModule,
     NbRouteTabsetModule,
   ],
 })

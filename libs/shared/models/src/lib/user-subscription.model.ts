@@ -14,6 +14,22 @@ export interface IUserSubscription {
   created_at: string;
   updated_at: string;
   product_price?: IUserSubscriptionPlan;
+  kommunities?: ISubscriptionKommunity[];
+  community_groups_list?: ISubscriptionCommunityGroup[];
+}
+
+export interface ISubscriptionKommunity {
+  id: number;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+export interface ISubscriptionCommunityGroup {
+  id: number;
+  name: string;
+  slug: string;
+  kommunities: ISubscriptionKommunity[];
 }
 
 export interface IUserSubscriptionPlan {
