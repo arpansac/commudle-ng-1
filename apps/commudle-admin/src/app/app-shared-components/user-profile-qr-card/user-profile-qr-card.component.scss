@@ -1,0 +1,45 @@
+:host {
+  @apply com-block;
+}
+
+.profile-qr-card {
+  @apply com-rounded-2xl com-overflow-hidden com-bg-white;
+  min-width: 360px;
+
+  .card-body {
+    @apply com-flex com-flex-col com-items-center com-px-8 com-py-6 com-gap-5;
+
+    .avatar-section {
+      @apply com-flex com-flex-col com-items-center com-gap-1;
+
+      .avatar {
+        @apply com-w-20 com-h-20 com-rounded-full com-object-cover com-border-4 com-border-white com-shadow-md;
+      }
+
+      .user-name {
+        @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0 com-mt-2;
+      }
+
+      .user-username {
+        @apply com-text-sm com-text-Cadet-Grey com-m-0;
+      }
+    }
+
+    .qr-section {
+      @apply com-flex com-flex-col com-items-center com-gap-3;
+
+      .qr-wrapper {
+        @apply com-p-4 com-bg-white com-rounded-xl com-shadow-sm com-border com-border-Bright-Gray;
+
+        .qr-canvas {
+          @apply com-block;
+          image-rendering: pixelated;
+        }
+      }
+
+      .scan-text {
+        @apply com-text-sm com-text-Cadet-Grey com-m-0 com-font-medium;
+      }
+    }
+  }
+}

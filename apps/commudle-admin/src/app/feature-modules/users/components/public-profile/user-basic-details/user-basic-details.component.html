@@ -16,6 +16,18 @@
             [disabled]="user.deactivated"
             [showText]="false"
           ></app-share-button>
+          <button
+            *ngIf="currentUser?.id === user.id"
+            (click)="openQrDialog()"
+            nbButton
+            shape="round"
+            size="small"
+            appearance="outline"
+            status="info"
+            class="qr-button"
+          >
+            <fa-icon [icon]="faQrcode"></fa-icon>
+          </button>
           <a
             *ngIf="currentUser?.id === user.id; else message"
             [routerLink]="[{ outlets: { p: ['settings', 'goals-and-skills'] } }]"
@@ -184,4 +196,18 @@
       <button (click)="ref.close()" ghost nbButton status="danger">Not Hiring Right Now</button>
     </com-card-footer>
   </com-card>
+</ng-template>
+
+<ng-template #qrCodeDialog let-ref="dialogRef">
+  <nb-card class="qr-dialog-card">
+    <nb-card-header class="com-flex com-justify-between com-items-center">
+      <span>Scan QR Code</span>
+      <button ghost nbButton size="small" (click)="ref.close()" shape="round">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </nb-card-header>
+    <nb-card-body class="com-p-0">
+      <commudle-user-profile-qr-card [user]="user"></commudle-user-profile-qr-card>
+    </nb-card-body>
+  </nb-card>
 </ng-template>

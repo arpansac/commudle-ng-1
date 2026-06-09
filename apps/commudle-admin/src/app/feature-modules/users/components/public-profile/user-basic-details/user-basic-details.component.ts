@@ -13,7 +13,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService, NbTagComponent, NbTagInputAddEvent, NbToastrService } from '@commudle/theme';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { UserChatsService } from 'apps/commudle-admin/src/app/feature-modules/user-chats/services/user-chats.service';
 import { UserProfileManagerService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-manager.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
@@ -25,10 +25,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { staticAssets } from 'apps/commudle-admin/src/assets/static-assets';
 
 @Component({
-    selector: 'app-user-basic-details',
-    templateUrl: './user-basic-details.component.html',
-    styleUrls: ['./user-basic-details.component.scss'],
-    standalone: false
+  selector: 'app-user-basic-details',
+  templateUrl: './user-basic-details.component.html',
+  styleUrls: ['./user-basic-details.component.scss'],
+  standalone: false,
 })
 export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   // this variable is set to true whenever the user has no active menu items
@@ -39,6 +39,7 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   currentUser: IUser;
   faExclamationTriangle = faExclamationTriangle;
   faPenToSquare = faPenToSquare;
+  faQrcode = faQrcode;
   staticAssets = staticAssets;
 
   // The updated tags
@@ -60,6 +61,7 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('editTags') editTags: TemplateRef<any>;
   @ViewChild('hiringDialogBox') hiringDialogBox: TemplateRef<any>;
   @ViewChild('enableHiring', { static: true }) enableHiring: TemplateRef<any>;
+  @ViewChild('qrCodeDialog') qrCodeDialog: TemplateRef<any>;
 
   private destroy$ = new Subject<void>();
 
@@ -106,6 +108,10 @@ export class UserBasicDetailsComponent implements OnInit, OnDestroy, OnChanges {
       closeOnEsc: false,
       closeOnBackdropClick: false,
     });
+  }
+
+  openQrDialog(): void {
+    this.dialogService.open(this.qrCodeDialog);
   }
 
   getUserTags() {

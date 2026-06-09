@@ -77,6 +77,7 @@ import { HelpSectionComponent } from 'apps/commudle-admin/src/app/app-shared-com
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { UserFeaturesStatsComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-features-stats/user-features-stats.component';
+import { UserProfileQrCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/user-profile-qr-card/user-profile-qr-card.component';
 
 @NgModule({
   declarations: [
@@ -158,6 +159,7 @@ import { UserFeaturesStatsComponent } from 'apps/commudle-admin/src/app/app-shar
     RecaptchaModule,
     SkeletonCardsComponent,
     UserFeaturesStatsComponent,
+    UserProfileQrCardComponent,
 
     CommudleCardModule,
   ],
