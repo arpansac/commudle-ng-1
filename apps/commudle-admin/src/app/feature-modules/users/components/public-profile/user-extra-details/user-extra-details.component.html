@@ -1,12 +1,78 @@
 <ng-container *ngIf="user">
+  <!-- 1. Featured Stats -->
+  <div class="user-stats">
+    <commudle-user-features-stats *appBreakpoints="'<=md'" [user]="user"></commudle-user-features-stats>
+  </div>
+
+  <!-- 2. About -->
   <app-user-basic-social [user]="user"></app-user-basic-social>
-  <app-user-social [user]="user"></app-user-social>
-  <commudle-user-hackathons [user]="user"></commudle-user-hackathons>
-  <commudle-user-hackathon-speaker-judge-mentor [user]="user"></commudle-user-hackathon-speaker-judge-mentor>
+
+  <!-- 3. Work History -->
   <app-user-work-history [user]="user"></app-user-work-history>
-  <app-user-resume [user]="user"></app-user-resume>
-  <app-user-contributions [user]="user"></app-user-contributions>
-  <app-user-badges [user]="user"></app-user-badges>
-  <!-- <app-user-feed [user]="user"></app-user-feed> -->
+
+  <!-- 4. Jobs -->
   <app-user-job *ngIf="hiring" [user]="user"></app-user-job>
+
+  <!-- 5. Resume -->
+  <app-user-resume [user]="user"></app-user-resume>
+
+  <!-- 6. Speaker Sessions & Hackathon Judging & Volunteer -->
+  <app-user-contributions
+    [user]="user"
+    [showBuilds]="false"
+    [showLabs]="false"
+    [showTalksAtEvents]="true"
+    [showAttendedEvents]="false"
+    [showCommunities]="false"
+  ></app-user-contributions>
+  <commudle-user-hackathon-speaker-judge-mentor [user]="user"></commudle-user-hackathon-speaker-judge-mentor>
+
+  <!-- 7. Badges (mobile) -->
+  <app-user-badges *appBreakpoints="'<=md'" [user]="user"></app-user-badges>
+
+  <!-- 8. Labs -->
+  <app-user-contributions
+    [user]="user"
+    [showBuilds]="false"
+    [showLabs]="true"
+    [showTalksAtEvents]="false"
+    [showAttendedEvents]="false"
+    [showCommunities]="false"
+  ></app-user-contributions>
+
+  <!-- 9. Builds -->
+  <app-user-contributions
+    [user]="user"
+    [showBuilds]="true"
+    [showLabs]="false"
+    [showTalksAtEvents]="false"
+    [showAttendedEvents]="false"
+    [showCommunities]="false"
+  ></app-user-contributions>
+
+  <!-- 10. Content -->
+  <app-user-social [user]="user"></app-user-social>
+
+  <!-- 11. Hackathon Participant -->
+  <commudle-user-hackathons [user]="user"></commudle-user-hackathons>
+
+  <!-- 12. Events (Attended) -->
+  <app-user-contributions
+    [user]="user"
+    [showBuilds]="false"
+    [showLabs]="false"
+    [showTalksAtEvents]="false"
+    [showAttendedEvents]="true"
+    [showCommunities]="false"
+  ></app-user-contributions>
+
+  <!-- 13. Communities -->
+  <app-user-contributions
+    [user]="user"
+    [showBuilds]="false"
+    [showLabs]="false"
+    [showTalksAtEvents]="false"
+    [showAttendedEvents]="false"
+    [showCommunities]="true"
+  ></app-user-contributions>
 </ng-container>

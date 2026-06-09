@@ -17,6 +17,11 @@ import { IEvent } from 'apps/shared-models/event.model';
 })
 export class UserContributionsComponent implements OnChanges, OnDestroy {
   @Input() user: IUser;
+  @Input() showBuilds = true;
+  @Input() showLabs = true;
+  @Input() showTalksAtEvents = true;
+  @Input() showAttendedEvents = true;
+  @Input() showCommunities = true;
 
   labs: ILab[] = [];
   communities: IUserRolesUser[] = [];

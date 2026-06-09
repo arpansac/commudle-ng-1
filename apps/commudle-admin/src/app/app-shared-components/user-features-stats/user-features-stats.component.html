@@ -1,0 +1,26 @@
+<!-- Desktop Layout: vertical list in right column -->
+<div *appBreakpoints="'>md'" class="desktop-stats">
+  <h4 class="desktop-stats-title">AT A GLANCE</h4>
+  <div class="desktop-stat-row" *ngFor="let stat of stats">
+    <div class="desktop-stat-left">
+      <div class="stat-icon">
+        <fa-icon [icon]="stat.icon"></fa-icon>
+      </div>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+    <span class="stat-count">{{ stat.count }}</span>
+  </div>
+</div>
+
+<!-- Mobile Layout: horizontal row of stat cards -->
+<div *appBreakpoints="'<=md'" class="mobile-stats">
+  <div class="stat-card" *ngFor="let stat of stats">
+    <div class="stat-icon">
+      <fa-icon [icon]="stat.icon"></fa-icon>
+    </div>
+    <div class="stat-info">
+      <span class="stat-count">{{ stat.count }}</span>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+  </div>
+</div>

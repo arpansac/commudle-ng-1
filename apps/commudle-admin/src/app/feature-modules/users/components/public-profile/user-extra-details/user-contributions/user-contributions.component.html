@@ -1,4 +1,4 @@
-<com-card *ngIf="builds?.length > 0" class="contribution-card" id="builds">
+<com-card *ngIf="showBuilds && builds?.length > 0" class="contribution-card" id="builds">
   <com-card-header>
     <a [routerLink]="'.'" fragment="builds">
       <fa-icon [icon]="faLightbulb" class="com-text-Caribbean-Green"></fa-icon>
@@ -12,7 +12,7 @@
   </com-card-body>
 </com-card>
 
-<com-card *ngIf="labs?.length > 0" class="contribution-card" id="labs">
+<com-card *ngIf="showLabs && labs?.length > 0" class="contribution-card" id="labs">
   <com-card-header>
     <a [routerLink]="'.'" fragment="labs">
       <fa-icon [icon]="faBookOpen" class="com-text-Infra-Red"></fa-icon>
@@ -26,7 +26,7 @@
   </com-card-body>
 </com-card>
 
-<com-card *ngIf="pastEvents?.length > 0" class="contribution-card" id="talks-at-events">
+<com-card *ngIf="showTalksAtEvents && pastEvents?.length > 0" class="contribution-card" id="talks-at-events">
   <com-card-header>
     <a [routerLink]="'.'" fragment="talks-at-events">
       <fa-icon [icon]="faCalendar" class="com-text-Azure"></fa-icon>
@@ -40,7 +40,7 @@
   </com-card-body>
 </com-card>
 
-<com-card *ngIf="attendedEvents?.length > 0" class="contribution-card" id="attended-events">
+<com-card *ngIf="showAttendedEvents && attendedEvents?.length > 0" class="contribution-card" id="attended-events">
   <com-card-header>
     <a [routerLink]="'.'" fragment="attended-events">
       <fa-icon [icon]="faIdBadge" class="com-text-Caribbean-Green"></fa-icon>
@@ -68,7 +68,7 @@
   </com-card-footer>
 </com-card>
 
-<com-card *ngIf="communities?.length > 0" class="contribution-card" id="communities">
+<com-card *ngIf="showCommunities && communities?.length > 0" class="contribution-card" id="communities">
   <com-card-header>
     <a [routerLink]="'.'" fragment="communities">
       <fa-icon [icon]="faUsers" class="com-text-Chrome-Yellow"></fa-icon>

@@ -1,0 +1,45 @@
+// Desktop
+.desktop-stats {
+  @apply com-p-4 com-bg-white com-rounded-lg;
+
+  .desktop-stats-title {
+    @apply com-text-sm com-font-semibold com-text-Cadet-Grey com-uppercase com-m-0;
+  }
+
+  .desktop-stat-row {
+    @apply com-flex com-flex-row com-items-center com-justify-between com-p-0 com-pt-4;
+
+    .desktop-stat-left {
+      @apply com-flex com-items-center com-gap-2;
+    }
+  }
+}
+
+// Mobile: horizontal row of stat cards
+.mobile-stats {
+  @apply com-flex com-items-stretch com-bg-white com-gap-2 com-p-3 com-rounded-lg com-shadow-sm com-border com-border-Bright-Gray com-overflow-x-auto com-flex-nowrap;
+
+  .stat-card {
+    @apply com-flex com-items-center com-gap-3 com-p-3 com-rounded-lg com-flex-shrink-0;
+
+    .stat-info {
+      @apply com-flex com-flex-col;
+
+      .stat-label {
+        @apply com-whitespace-nowrap;
+      }
+    }
+  }
+}
+
+.stat-icon {
+  @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg com-bg-blue-50 com-text-Azure com-text-base com-flex-shrink-0;
+}
+
+.stat-count {
+  @apply com-text-sm com-font-bold com-text-Yankees-Blue;
+}
+
+.stat-label {
+  @apply com-text-sm com-text-Yankees-Blue;
+}
