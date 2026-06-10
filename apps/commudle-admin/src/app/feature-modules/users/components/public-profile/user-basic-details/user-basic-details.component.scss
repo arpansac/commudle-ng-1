@@ -35,6 +35,34 @@ p {
       .avatar {
         @apply com-block com-h-32 com-w-32 md:com-h-[120px] md:com-w-[120px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
       }
+
+      &.expert-glow {
+        padding: 4px;
+        border-radius: 50%;
+        background: #2563eb !important;
+        width: auto !important;
+        height: auto !important;
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 40px rgba(37, 99, 235, 0.6), 0 0 60px rgba(96, 165, 250, 0.4),
+          0 0 80px rgba(37, 99, 235, 0.2);
+        animation: expertPulse 2s ease-in-out infinite;
+
+        .avatar {
+          @apply com-border-3 com-border-solid com-border-white;
+        }
+      }
+    }
+
+    @keyframes expertPulse {
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 40px rgba(37, 99, 235, 0.6), 0 0 60px rgba(96, 165, 250, 0.4),
+          0 0 80px rgba(37, 99, 235, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(37, 99, 235, 1), 0 0 60px rgba(37, 99, 235, 0.8), 0 0 90px rgba(96, 165, 250, 0.6),
+          0 0 120px rgba(37, 99, 235, 0.35);
+      }
     }
 
     .header {

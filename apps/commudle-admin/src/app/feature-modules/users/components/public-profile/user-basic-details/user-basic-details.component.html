@@ -3,7 +3,7 @@
     <app-user-cover-photo [user]="user" (coverImageUpdate)="updateProfile.emit()"></app-user-cover-photo>
     <div class="profile-header">
       <div class="action-buttons">
-        <div class="user-avatar">
+        <div class="user-avatar" [ngClass]="{ 'expert-glow': user.is_expert }">
           <img [alt]="user.name" [src]="user.avatar" [title]="user.name" class="avatar" />
         </div>
         <div class="action-btn-mobile">
@@ -104,6 +104,10 @@
                 <p>{{ user.location }}</p>
               </div>
             </div>
+            <div class="network">
+              <a routerLink="followers">{{ user.followers_count || 0 }} Followers </a>
+              <a routerLink="following">{{ user.followees_count || 0 }} Following </a>
+            </div>
             <div *ngIf="currentUser?.id === user.id" class="job-toggle-cards">
               <com-card class="job-toggle-card">
                 <div class="job-toggle-info">
@@ -127,10 +131,6 @@
               </com-card>
             </div>
           </div>
-        </div>
-        <div class="network">
-          <a routerLink="followers">{{ user.followers_count || 0 }} Followers </a>
-          <a routerLink="following">{{ user.followees_count || 0 }} Following </a>
         </div>
         <nb-tag-list *ngIf="user.tags?.length > 0" class="tags">
           <nb-tag *ngFor="let tag of user.tags" [text]="tag.name" appearance="outline" class="user-tags"></nb-tag>
