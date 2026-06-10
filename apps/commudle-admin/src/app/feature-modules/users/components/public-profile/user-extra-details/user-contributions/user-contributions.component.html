@@ -48,12 +48,36 @@
     </a>
   </com-card-header>
   <com-card-body>
-    <div class="grid">
-      <commudle-event-mini-card
-        *ngFor="let attendedEvent of attendedEvents"
-        [attendedEvent]="attendedEvent"
-        [cardType]="'attendedEventCard'"
-      ></commudle-event-mini-card>
+    <div class="attended-badge">
+      <span class="badge-count">{{ attendedEventsTotal }}</span>
+      <span class="badge-text">events attended</span>
+    </div>
+    <div class="attended-table">
+      <div class="attended-table-header">
+        <span class="col-date">DATE</span>
+        <span class="col-event">EVENT</span>
+        <span class="col-community">COMMUNITY</span>
+      </div>
+      <div class="attended-table-row" *ngFor="let attendedEvent of attendedEvents">
+        <div class="col-date">
+          <span class="date-text">{{ attendedEvent.start_time | date : 'd MMM yyyy' }}</span>
+        </div>
+        <div class="col-event">
+          <a
+            [routerLink]="[
+              '/communities',
+              attendedEvent.kommunity_slug || attendedEvent.community?.slug,
+              'events',
+              attendedEvent.slug
+            ]"
+          >
+            {{ attendedEvent.name }}
+          </a>
+        </div>
+        <div class="col-community" *ngIf="attendedEvent.kommunity">
+          <app-community-badge [community]="attendedEvent.kommunity" size="small"></app-community-badge>
+        </div>
+      </div>
     </div>
   </com-card-body>
   <com-card-footer
