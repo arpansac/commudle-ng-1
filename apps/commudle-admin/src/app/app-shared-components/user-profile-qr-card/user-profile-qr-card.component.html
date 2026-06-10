@@ -1,10 +1,13 @@
 <div *ngIf="user" class="profile-qr-card">
-  <div class="card-body">
-    <div class="avatar-section">
-      <img class="avatar" [src]="user.avatar" [alt]="user.name" />
-      <h3 class="user-name">{{ user.name }}</h3>
-      <p class="user-username">{{ '@' + user.username }}</p>
-    </div>
+  <div class="card-rings">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+  </div>
+  <div class="card-glass">
+    <commudle-user-profile [currentUser]="user" [addBackgroundColor]="false"></commudle-user-profile>
+
+    <div class="divider"></div>
 
     <div class="qr-section">
       <div class="qr-wrapper">

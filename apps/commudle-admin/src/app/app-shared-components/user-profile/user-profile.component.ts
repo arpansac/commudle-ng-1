@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ICurrentUser } from 'apps/shared-models/current_user.model';
 
@@ -9,9 +9,7 @@ import { ICurrentUser } from 'apps/shared-models/current_user.model';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent {
   @Input() currentUser: ICurrentUser;
-  constructor() {}
-
-  ngOnInit(): void {}
+  @Input() addBackgroundColor: true;
 }

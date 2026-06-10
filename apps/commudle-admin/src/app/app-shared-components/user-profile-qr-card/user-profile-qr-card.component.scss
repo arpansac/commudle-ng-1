@@ -3,33 +3,75 @@
 }
 
 .profile-qr-card {
-  @apply com-rounded-2xl com-overflow-hidden com-bg-white;
+  @apply com-relative com-rounded-2xl com-overflow-hidden;
   min-width: 360px;
+  background: linear-gradient(145deg, #eef2ff 0%, #f0f4ff 50%, #e8effe 100%);
+  @apply dark:com-from-[#0f172a] dark:com-via-[#1e293b] dark:com-to-[#0f1729] dark:com-bg-gradient-to-br;
 
-  .card-body {
-    @apply com-flex com-flex-col com-items-center com-px-8 com-py-6 com-gap-5;
+  .card-rings {
+    @apply com-absolute com-inset-0;
+    pointer-events: none;
+    z-index: 0;
 
-    .avatar-section {
-      @apply com-flex com-flex-col com-items-center com-gap-1;
+    .ring {
+      @apply com-absolute com-rounded-full;
+      border: 1px solid transparent;
+    }
 
-      .avatar {
-        @apply com-w-20 com-h-20 com-rounded-full com-object-cover com-border-4 com-border-white com-shadow-md;
-      }
+    .ring-1 {
+      width: 200px;
+      height: 200px;
+      top: -60px;
+      right: -60px;
+      border-color: rgba(37, 99, 235, 0.45);
+      box-shadow: 0 0 30px rgba(37, 99, 235, 0.12);
+    }
 
-      .user-name {
-        @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0 com-mt-2;
-      }
+    .ring-2 {
+      width: 150px;
+      height: 150px;
+      bottom: -40px;
+      left: -40px;
+      border-color: rgba(109, 40, 217, 0.4);
+      box-shadow: 0 0 25px rgba(109, 40, 217, 0.1);
+    }
 
-      .user-username {
-        @apply com-text-sm com-text-Cadet-Grey com-m-0;
-      }
+    .ring-3 {
+      width: 100px;
+      height: 100px;
+      top: 40%;
+      right: -20px;
+      border-color: rgba(8, 145, 178, 0.4);
+      box-shadow: 0 0 20px rgba(8, 145, 178, 0.08);
+    }
+  }
+
+  .card-glass {
+    @apply com-relative com-flex com-flex-col com-items-center com-px-8 com-py-8 com-gap-5;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7);
+    @apply dark:com-bg-transparent dark:com-border-0 dark:com-shadow-none;
+
+    .divider {
+      @apply com-w-full;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(100, 116, 139, 0.2), transparent);
     }
 
     .qr-section {
       @apply com-flex com-flex-col com-items-center com-gap-3;
 
       .qr-wrapper {
-        @apply com-p-4 com-bg-white com-rounded-xl com-shadow-sm com-border com-border-Bright-Gray;
+        @apply com-p-4 com-rounded-xl com-bg-tWhite com-transition-all;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15), 0 0 40px rgba(139, 92, 246, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+          transform: scale(1.08);
+          box-shadow: 0 8px 32px rgba(59, 130, 246, 0.25), 0 0 60px rgba(139, 92, 246, 0.1);
+        }
 
         .qr-canvas {
           @apply com-block;

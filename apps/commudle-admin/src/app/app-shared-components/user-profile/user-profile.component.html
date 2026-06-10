@@ -1,4 +1,4 @@
-<div *ngIf="currentUser" class="user">
+<div *ngIf="currentUser" class="user" [ngClass]="{ 'com-bg-Bright-Gray-opacity-30': addBackgroundColor }">
   <div class="user-image">
     <img [src]="currentUser.photo?.i96" [alt]="currentUser.name" [title]="currentUser.name" />
   </div>
