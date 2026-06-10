@@ -75,7 +75,7 @@ p {
       }
 
       .network {
-        @apply com-flex com-mt-3 com-gap-3;
+        @apply com-flex com-mt-4 com-gap-3;
 
         a {
           @apply com-text-sm com-font-medium com-text-Yankees-Blue com-no-underline;
@@ -84,6 +84,42 @@ p {
 
       .designation-location {
         @apply com-flex com-items-start com-flex-col com-gap-2 com-mt-2;
+      }
+
+      .job-toggle-cards {
+        @apply com-flex com-flex-col com-gap-2 com-mt-4 com-w-full;
+
+        .job-toggle-card {
+          @apply com-flex com-flex-row com-items-center com-justify-between com-px-3 com-py-2 com-rounded-lg com-border com-border-Bright-Gray;
+
+          .job-toggle-info {
+            @apply com-flex com-items-center com-gap-3;
+
+            .job-toggle-icon {
+              @apply com-text-xl;
+
+              &.open-to-work {
+                @apply com-text-green-500;
+              }
+
+              &.hiring {
+                @apply com-text-Azure;
+              }
+            }
+
+            .job-toggle-text {
+              @apply com-flex com-flex-col;
+
+              .job-toggle-title {
+                @apply com-text-sm com-font-semibold com-text-Yankees-Blue;
+              }
+
+              .job-toggle-subtitle {
+                @apply com-text-xs com-text-Cadet-Grey;
+              }
+            }
+          }
+        }
       }
 
       .designation {

@@ -1,23 +1,25 @@
-<div *ngIf="user">
-  <div
-    *ngIf="(user.is_employee && user.is_employer) || (user.looking_for_work && user.hiring)"
-    class="tag"
-    [ngClass]="{ large: size === 'large', medium: size === 'medium', small: size === 'small' }"
-  >
-    <div>
-      <p class="work">LOOKING FOR WORK</p>
-      <p class="hiring">HIRING</p>
-    </div>
+<div *ngIf="user" class="tags-container" [ngClass]="size">
+  <!-- Both tags: animate/slide between them -->
+  <div *ngIf="(user.is_employee && user.is_employer) || (user.looking_for_work && user.hiring)" class="tags-animated">
+    <span class="tag-pill work-pill animated-work">
+      <fa-icon [icon]="faBriefcase" class="tag-icon"></fa-icon>
+      Open to work
+    </span>
+    <span class="tag-pill hiring-pill animated-hiring">
+      <fa-icon [icon]="faUserGroup" class="tag-icon"></fa-icon>
+      Hiring
+    </span>
   </div>
-  <div
-    *ngIf="!(user.is_employee && user.is_employer) && !(user.looking_for_work && user.hiring)"
-    [ngClass]="{ large: size === 'large', medium: size === 'medium', small: size === 'small' }"
-  >
-    <div *ngIf="user.is_employee || user.looking_for_work">
-      <p class="work tags">LOOKING FOR WORK</p>
-    </div>
-    <div *ngIf="user.is_employer || user.hiring">
-      <p class="hiring tags">HIRING</p>
-    </div>
+
+  <!-- Only one tag: show statically -->
+  <div *ngIf="!(user.is_employee && user.is_employer) && !(user.looking_for_work && user.hiring)" class="tags-row">
+    <span *ngIf="user.is_employee || user.looking_for_work" class="tag-pill work-pill">
+      <fa-icon [icon]="faBriefcase" class="tag-icon"></fa-icon>
+      Open to work
+    </span>
+    <span *ngIf="user.is_employer || user.hiring" class="tag-pill hiring-pill">
+      <fa-icon [icon]="faUserGroup" class="tag-icon"></fa-icon>
+      Hiring
+    </span>
   </div>
 </div>

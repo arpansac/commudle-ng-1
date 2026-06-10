@@ -1,19 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IUser } from 'apps/shared-models/user.model';
+import { faBriefcase, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-hiring-looking-works-tags',
-    templateUrl: './hiring-looking-works-tags.component.html',
-    styleUrls: ['./hiring-looking-works-tags.component.scss'],
-    standalone: false
+  selector: 'app-hiring-looking-works-tags',
+  templateUrl: './hiring-looking-works-tags.component.html',
+  styleUrls: ['./hiring-looking-works-tags.component.scss'],
+  standalone: false,
 })
-export class HiringLookingWorksTagsComponent implements OnInit {
+export class HiringLookingWorksTagsComponent {
   @Input() user: IUser;
   @Input() fontSize = '14px';
-  /* Setting the default value of the size property to 'large' if the value is not passed in. */
   @Input() size: 'large' | 'medium' | 'small' = 'large';
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  faBriefcase = faBriefcase;
+  faUserGroup = faUserGroup;
 }

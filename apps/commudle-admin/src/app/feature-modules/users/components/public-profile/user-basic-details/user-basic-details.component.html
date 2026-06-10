@@ -67,7 +67,7 @@
       </div>
       <div class="user-info">
         <div class="header">
-          <div>
+          <div class="com-w-full">
             <div class="name-username">
               <div class="name">
                 <h1>
@@ -104,24 +104,28 @@
                 <p>{{ user.location }}</p>
               </div>
             </div>
-          </div>
-          <div *ngIf="currentUser?.id === user.id" class="job-tags">
-            <nb-toggle
-              (click)="openForWork()"
-              [(checked)]="user.is_employee"
-              status="basic"
-              labelPosition="right"
-              class="toggle-tag"
-              ><span> I'm looking for work</span>
-            </nb-toggle>
-            <nb-toggle
-              (click)="openForHiring()"
-              status="basic"
-              [(checked)]="user.is_employer"
-              labelPosition="right"
-              class="toggle-tag"
-              ><span>I'm hiring</span></nb-toggle
-            >
+            <div *ngIf="currentUser?.id === user.id" class="job-toggle-cards">
+              <com-card class="job-toggle-card">
+                <div class="job-toggle-info">
+                  <nb-icon icon="briefcase-outline" class="job-toggle-icon open-to-work"></nb-icon>
+                  <div class="job-toggle-text">
+                    <span class="job-toggle-title">Open to work</span>
+                    <span class="job-toggle-subtitle">Visible to recruiters and community members</span>
+                  </div>
+                </div>
+                <nb-toggle (click)="openForWork()" [(checked)]="user.is_employee" status="info"></nb-toggle>
+              </com-card>
+              <com-card class="job-toggle-card">
+                <div class="job-toggle-info">
+                  <nb-icon icon="people-outline" class="job-toggle-icon hiring"></nb-icon>
+                  <div class="job-toggle-text">
+                    <span class="job-toggle-title">Hiring</span>
+                    <span class="job-toggle-subtitle">Show that your team has open positions</span>
+                  </div>
+                </div>
+                <nb-toggle (click)="openForHiring()" [(checked)]="user.is_employer" status="info"></nb-toggle>
+              </com-card>
+            </div>
           </div>
         </div>
         <div class="network">
