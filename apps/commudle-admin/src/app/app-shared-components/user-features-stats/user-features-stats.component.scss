@@ -33,7 +33,31 @@
 }
 
 .stat-icon {
-  @apply com-flex com-items-center com-justify-center com-w-8 com-h-8 com-rounded-lg com-bg-blue-50 com-text-Azure com-text-base com-flex-shrink-0;
+  @apply com-flex com-items-center com-justify-center com-w-9 com-h-9 com-rounded-xl com-text-base com-flex-shrink-0;
+
+  &.icon-purple {
+    @apply com-text-purple-600 com-bg-purple-50;
+  }
+
+  &.icon-red {
+    @apply com-text-red-600 com-bg-red-50;
+  }
+
+  &.icon-teal {
+    @apply com-text-teal-600 com-bg-teal-50;
+  }
+
+  &.icon-amber {
+    @apply com-text-yellow-600 com-bg-yellow-50;
+  }
+
+  &.icon-green {
+    @apply com-text-green-600 com-bg-green-50;
+  }
+
+  &.icon-blue {
+    @apply com-text-blue-600 com-bg-blue-50;
+  }
 }
 
 .stat-count {
