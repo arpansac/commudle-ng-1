@@ -5,14 +5,16 @@
   <app-skeleton-cards *ngIf="isLoading" [cards]="4"></app-skeleton-cards>
 
   <ng-container *ngIf="!isLoading">
-    <div class="desktop-stat-row" *ngFor="let stat of stats">
-      <div class="desktop-stat-left">
-        <div class="stat-icon {{ stat.colorClass }}">
-          <fa-icon [icon]="stat.icon"></fa-icon>
+    <div class="features-container">
+      <div class="desktop-stat-row" *ngFor="let stat of stats">
+        <div class="desktop-stat-left">
+          <div class="stat-icon {{ stat.colorClass }}">
+            <fa-icon [icon]="stat.icon"></fa-icon>
+          </div>
+          <span class="stat-label">{{ stat.label }}</span>
         </div>
-        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-count">{{ stat.count }}</span>
       </div>
-      <span class="stat-count">{{ stat.count }}</span>
     </div>
   </ng-container>
 </div>

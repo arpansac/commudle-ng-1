@@ -3,16 +3,20 @@
   @apply com-p-4 com-bg-white com-rounded-lg;
 
   .desktop-stats-title {
-    @apply com-text-sm com-font-semibold com-text-Cadet-Grey com-uppercase com-m-0;
+    @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-4;
   }
 
   .desktop-stat-row {
-    @apply com-flex com-flex-row com-items-center com-justify-between com-p-0 com-pt-4;
+    @apply com-flex com-flex-row com-items-center com-justify-between com-p-0;
 
     .desktop-stat-left {
       @apply com-flex com-items-center com-gap-2;
     }
   }
+}
+
+.features-container {
+  @apply com-flex com-flex-col com-gap-4;
 }
 
 // Mobile: 2x2 grid of stat cards
@@ -33,7 +37,7 @@
 }
 
 .stat-icon {
-  @apply com-flex com-items-center com-justify-center com-w-9 com-h-9 com-rounded-xl com-text-base com-flex-shrink-0;
+  @apply com-flex com-items-center com-justify-center com-w-6 com-h-6 com-rounded-lg com-text-sm com-flex-shrink-0;
 
   &.icon-purple {
     @apply com-text-purple-600 com-bg-purple-50;
@@ -61,7 +65,7 @@
 }
 
 .stat-count {
-  @apply com-text-sm com-font-bold com-text-Yankees-Blue;
+  @apply com-text-sm com-font-medium com-text-Yankees-Blue;
 }
 
 .stat-label {
