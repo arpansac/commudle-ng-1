@@ -204,13 +204,13 @@
 
 <ng-template #qrCodeDialog let-ref="dialogRef">
   <nb-card class="qr-dialog-card">
-    <nb-card-header class="com-flex com-justify-between com-items-center">
+    <nb-card-header>
       <span>Scan QR Code</span>
       <button ghost nbButton size="small" (click)="ref.close()" shape="round">
         <nb-icon icon="close"></nb-icon>
       </button>
     </nb-card-header>
-    <nb-card-body class="com-p-0">
+    <nb-card-body>
       <commudle-user-profile-qr-card [user]="user"></commudle-user-profile-qr-card>
     </nb-card-body>
   </nb-card>

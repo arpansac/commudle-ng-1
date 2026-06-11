@@ -1,8 +1,8 @@
 .user {
-  @apply com-flex com-flex-col com-items-center com-rounded-t-[8px] com-text-center;
+  @apply com-flex com-flex-col com-items-center com-rounded-t-[8px] com-text-center com-p-4;
 
   .user-image {
-    @apply com-w-[80px] com-h-[80px] com-mt-6 com-mb-4;
+    @apply com-w-[80px] com-h-[80px] com-mb-4;
     img {
       @apply com-w-full com-h-full com-rounded-full com-bg-tWhite;
     }
@@ -19,11 +19,11 @@
     }
 
     .user-designation {
-      @apply com-text-xs com-font-medium com-text-Yankees-Blue com-m-0 com-mb-[26px];
+      @apply com-text-xs com-text-Yankees-Blue com-m-0 com-mb-4;
     }
 
     .count {
-      @apply com-flex com-flex-row com-gap-x-3 com-mb-6;
+      @apply com-flex com-flex-row com-gap-x-3 com-m-0;
 
       span {
         @apply com-text-xs com-font-medium com-text-black com-mr-1;

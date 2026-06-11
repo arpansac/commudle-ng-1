@@ -229,3 +229,14 @@ p {
     }
   }
 }
+
+.qr-dialog-card {
+  @apply com-m-0;
+  nb-card-header {
+    @apply com-flex com-justify-between com-items-center com-p-4;
+  }
+
+  nb-card-body {
+    @apply com-p-0;
+  }
+}
