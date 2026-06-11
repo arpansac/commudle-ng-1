@@ -1,38 +1,20 @@
-// Desktop
-.desktop-stats {
+.stats-container {
   @apply com-p-4 com-bg-white com-rounded-lg;
 
-  .desktop-stats-title {
-    @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-4;
-  }
-
-  .desktop-stat-row {
-    @apply com-flex com-flex-row com-items-center com-justify-between com-p-0;
-
-    .desktop-stat-left {
-      @apply com-flex com-items-center com-gap-2;
-    }
+  .stats-title {
+    @apply com-text-sm com-font-normal com-text-gray-500 com-m-0 com-mb-4 md:com-block com-hidden;
   }
 }
 
-.features-container {
-  @apply com-flex com-flex-col com-gap-4;
+.stats-grid {
+  @apply com-grid com-grid-cols-2 md:com-grid-cols-1 com-gap-4;
 }
 
-// Mobile: 2x2 grid of stat cards
-.mobile-stats {
-  @apply com-grid com-grid-cols-2 com-gap-2 com-bg-white com-rounded-lg com-shadow-sm com-border com-border-Bright-Gray;
+.stat-card {
+  @apply com-flex com-items-center com-gap-2 com-p-0 com-rounded-lg;
 
-  .stat-card {
-    @apply com-flex com-items-center com-gap-2 com-p-3 com-rounded-lg;
-
-    .stat-info {
-      @apply com-flex com-flex-col;
-
-      .stat-label {
-        @apply com-text-xs;
-      }
-    }
+  .stat-info {
+    @apply com-flex md:com-flex-row-reverse com-flex-col com-justify-between com-w-full;
   }
 }
 

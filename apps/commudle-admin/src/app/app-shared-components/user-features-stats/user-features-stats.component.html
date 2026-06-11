@@ -1,37 +1,76 @@
-<!-- Desktop Layout: vertical list in right column -->
-<div *appBreakpoints="'>md'" class="desktop-stats">
-  <h4 class="desktop-stats-title">AT A GLANCE</h4>
+<div class="stats-container">
+  <h4 class="stats-title">AT A GLANCE</h4>
 
   <app-skeleton-cards *ngIf="isLoading" [cards]="4"></app-skeleton-cards>
 
-  <ng-container *ngIf="!isLoading">
-    <div class="features-container">
-      <div class="desktop-stat-row" *ngFor="let stat of stats">
-        <div class="desktop-stat-left">
-          <div class="stat-icon {{ stat.colorClass }}">
-            <fa-icon [icon]="stat.icon"></fa-icon>
-          </div>
-          <span class="stat-label">{{ stat.label }}</span>
-        </div>
-        <span class="stat-count">{{ stat.count }}</span>
-      </div>
-    </div>
-  </ng-container>
-</div>
-
-<!-- Mobile Layout: 2x2 grid of stat cards -->
-<div *appBreakpoints="'<=md'" class="mobile-stats">
-  <app-skeleton-cards *ngIf="isLoading" [cards]="3"></app-skeleton-cards>
-
-  <ng-container *ngIf="!isLoading">
-    <div class="stat-card" *ngFor="let stat of stats">
-      <div class="stat-icon {{ stat.colorClass }}">
-        <fa-icon [icon]="stat.icon"></fa-icon>
+  <div class="stats-grid" *ngIf="!isLoading && userProfileDetails">
+    <!-- Profile Visits - only own profile -->
+    <div class="stat-card" *ngIf="currentUser?.id === user?.id">
+      <div class="stat-icon icon-purple">
+        <fa-icon [icon]="faEye"></fa-icon>
       </div>
       <div class="stat-info">
-        <span class="stat-count">{{ stat.count }}</span>
-        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-count">{{ userProfileDetails.profile_views?.overall?.ninety_days || 0 }}</span>
+        <span class="stat-label">Profile Visits</span>
       </div>
     </div>
-  </ng-container>
+
+    <!-- Talks Given -->
+    <div class="stat-card" *ngIf="userProfileDetails.speaker_events_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-red">
+        <fa-icon [icon]="faMicrophone"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.speaker_events_count || 0 }}</span>
+        <span class="stat-label">Talks Given</span>
+      </div>
+    </div>
+
+    <!-- Labs Published -->
+    <div class="stat-card" *ngIf="userProfileDetails.published_labs_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-teal">
+        <fa-icon [icon]="faFlask"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.published_labs_count || 0 }}</span>
+        <span class="stat-label">Labs</span>
+      </div>
+    </div>
+
+    <!-- Builds Published -->
+    <div
+      class="stat-card"
+      *ngIf="userProfileDetails.published_community_builds_count > 0 || currentUser?.id === user?.id"
+    >
+      <div class="stat-icon icon-amber">
+        <fa-icon [icon]="faLightbulb"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.published_community_builds_count || 0 }}</span>
+        <span class="stat-label">Builds</span>
+      </div>
+    </div>
+
+    <!-- Attended Events -->
+    <div class="stat-card" *ngIf="userProfileDetails.events_attended_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-green">
+        <fa-icon [icon]="faCalendarCheck"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.events_attended_count || 0 }}</span>
+        <span class="stat-label">Events</span>
+      </div>
+    </div>
+
+    <!-- Content Shared -->
+    <div class="stat-card" *ngIf="userProfileDetails.social_resources_count > 0 || currentUser?.id === user?.id">
+      <div class="stat-icon icon-blue">
+        <fa-icon [icon]="faBookmark"></fa-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-count">{{ userProfileDetails.social_resources_count || 0 }}</span>
+        <span class="stat-label">Content</span>
+      </div>
+    </div>
+  </div>
 </div>

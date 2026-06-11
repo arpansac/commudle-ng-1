@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -11,27 +11,42 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { IUser, IUserStat } from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
-import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { AuthService } from '@commudle/shared-services';
 import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { Subscription } from 'rxjs';
-import { StatItem } from './user-features-stats.model';
 
 @Component({
   selector: 'commudle-user-features-stats',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, SharedDirectivesModule, SkeletonCardsComponent],
+  imports: [CommonModule, FontAwesomeModule, SkeletonCardsComponent],
   templateUrl: './user-features-stats.component.html',
   styleUrls: ['./user-features-stats.component.scss'],
 })
-export class UserFeaturesStatsComponent implements OnChanges, OnDestroy {
+export class UserFeaturesStatsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
 
-  stats: StatItem[] = [];
+  currentUser: IUser;
+  userProfileDetails: IUserStat;
   isLoading = true;
+
+  faEye = faEye;
+  faMicrophone = faMicrophone;
+  faFlask = faFlask;
+  faLightbulb = faLightbulb;
+  faCalendarCheck = faCalendarCheck;
+  faBookmark = faBookmark;
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private appUsersService: AppUsersService) {}
+  constructor(private appUsersService: AppUsersService, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe((data) => {
+        this.currentUser = data;
+      }),
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user && changes.user.currentValue) {
@@ -47,50 +62,9 @@ export class UserFeaturesStatsComponent implements OnChanges, OnDestroy {
     this.isLoading = true;
     this.subscriptions.push(
       this.appUsersService.getProfileStats().subscribe((data: IUserStat) => {
-        this.buildStats(data);
+        this.userProfileDetails = data;
         this.isLoading = false;
       }),
     );
-  }
-
-  private buildStats(data: IUserStat): void {
-    this.stats = [
-      {
-        icon: faEye,
-        label: 'Profile Visits (90 Days)',
-        count: data.profile_views?.overall?.ninety_days || 0,
-        colorClass: 'icon-purple',
-      },
-      {
-        icon: faMicrophone,
-        label: 'Talks Given',
-        count: data.speaker_events_count || 0,
-        colorClass: 'icon-red',
-      },
-      {
-        icon: faFlask,
-        label: 'Labs Published',
-        count: data.published_labs_count || 0,
-        colorClass: 'icon-teal',
-      },
-      {
-        icon: faLightbulb,
-        label: 'Builds Published',
-        count: data.published_community_builds_count || 0,
-        colorClass: 'icon-amber',
-      },
-      {
-        icon: faCalendarCheck,
-        label: 'Attended Events',
-        count: data.events_attended_count || 0,
-        colorClass: 'icon-green',
-      },
-      {
-        icon: faBookmark,
-        label: 'Content Shared',
-        count: data.social_resources_count || 0,
-        colorClass: 'icon-blue',
-      },
-    ];
   }
 }
