@@ -75,7 +75,9 @@
                   ><commudle-user-expert-tick *ngIf="user.is_expert" [size]="'20px'"></commudle-user-expert-tick>
                 </h1>
                 <app-hiring-looking-works-tags
-                  *ngIf="!user.deactivated"
+                  *ngIf="
+                    !user.deactivated && (user.is_employee || user.is_employer || user.looking_for_work || user.hiring)
+                  "
                   [user]="user"
                   [size]="'large'"
                 ></app-hiring-looking-works-tags>
@@ -117,7 +119,7 @@
                     <span class="job-toggle-subtitle">Visible to recruiters across the world</span>
                   </div>
                 </div>
-                <nb-toggle (click)="openForWork()" [(checked)]="user.is_employee" status="info"></nb-toggle>
+                <nb-toggle (click)="openForWork()" [(checked)]="user.is_employee" status="success"></nb-toggle>
               </com-card>
               <com-card class="job-toggle-card">
                 <div class="job-toggle-info">
@@ -127,7 +129,7 @@
                     <span class="job-toggle-subtitle">Show that your team has open positions</span>
                   </div>
                 </div>
-                <nb-toggle (click)="openForHiring()" [(checked)]="user.is_employer" status="info"></nb-toggle>
+                <nb-toggle (click)="openForHiring()" [(checked)]="user.is_employer" status="success"></nb-toggle>
               </com-card>
             </div>
           </div>

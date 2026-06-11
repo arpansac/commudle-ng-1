@@ -10,14 +10,14 @@ p {
     @apply com-p-0;
 
     .profile-header {
-      @apply com-px-5 com-py-5 md:com-px-6 md:com-py-6;
+      @apply com-p-4;
 
       .action-buttons {
-        @apply com-flex com-flex-col com-items-center md:com-flex-row md:com-justify-between;
+        @apply com-flex com-flex-row com-items-center com-gap-3 md:com-justify-between;
       }
 
       .action-btn-mobile {
-        @apply com-flex com-items-center com-gap-2 md:com-mt-0 com-mt-4;
+        @apply com-flex com-items-center com-gap-2 com-w-full com-justify-start com-flex-wrap md:com-mt-0 md:com-w-auto md:com-justify-end;
       }
 
       .edit-icon {
@@ -30,7 +30,7 @@ p {
     }
 
     .user-avatar {
-      @apply md:com-h-[120px] md:com-w-[120px] com-rounded-full com-relative com-z-50 -com-mt-16 md:com-mt-[-80px] com-bg-white com-shadow-md;
+      @apply md:com-h-[120px] md:com-w-[120px] com-rounded-full com-relative com-z-50 -com-mt-20 md:com-mt-[-80px] com-bg-white com-shadow-md;
 
       .avatar {
         @apply com-block com-h-32 com-w-32 md:com-h-[120px] md:com-w-[120px] com-rounded-full com-object-cover com-object-center com-mx-auto com-border-3 com-border-solid com-border-white;
@@ -73,7 +73,7 @@ p {
       @apply com-w-full com-mt-4;
 
       .name {
-        @apply com-flex md:com-flex-row com-flex-col md:com-gap-2 com-gap-1 md:com-items-center com-items-center com-w-auto com-mb-1 md:com-flex-wrap com-flex-wrap;
+        @apply com-flex md:com-flex-row com-flex-col md:com-gap-2 com-gap-1 md:com-items-center com-items-start com-w-auto com-mb-1 md:com-flex-wrap com-flex-wrap;
 
         h1 {
           @apply com-text-3xl com-font-semibold com-text-Yankees-Blue com-flex com-items-center md:com-flex-shrink com-flex-shrink-0;
@@ -95,7 +95,7 @@ p {
       }
 
       .name-username {
-        @apply com-flex com-flex-col md:com-items-start com-items-center com-text-center md:com-text-left;
+        @apply com-flex com-flex-col md:com-items-start com-items-start com-text-left;
       }
 
       .job-tags {
@@ -131,7 +131,7 @@ p {
               }
 
               &.hiring {
-                @apply com-text-Azure;
+                @apply com-text-Chrome-Yellow;
               }
             }
 
@@ -158,7 +158,7 @@ p {
         }
 
         nb-icon {
-          @apply com-text-base com-text-Azure com-flex-shrink-0;
+          @apply com-text-base com-text-gray-500 com-flex-shrink-0;
         }
       }
 
@@ -170,7 +170,7 @@ p {
         }
 
         nb-icon {
-          @apply com-text-base com-text-Azure;
+          @apply com-text-base com-text-gray-500;
         }
       }
 
@@ -232,6 +232,7 @@ p {
 
 .qr-dialog-card {
   @apply com-m-0;
+
   nb-card-header {
     @apply com-flex com-justify-between com-items-center com-p-4;
   }
@@ -239,4 +240,8 @@ p {
   nb-card-body {
     @apply com-p-0;
   }
+}
+
+app-share-button {
+  @apply com-p-0;
 }
