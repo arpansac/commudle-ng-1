@@ -1,4 +1,16 @@
-<div class="stats-container">
+<div
+  class="stats-container"
+  *ngIf="
+    isLoading ||
+    (userProfileDetails &&
+      (currentUser?.id === user?.id ||
+        userProfileDetails.speaker_events_count > 0 ||
+        userProfileDetails.published_labs_count > 0 ||
+        userProfileDetails.published_community_builds_count > 0 ||
+        userProfileDetails.events_attended_count > 0 ||
+        userProfileDetails.social_resources_count > 0))
+  "
+>
   <h4 class="stats-title">AT A GLANCE</h4>
 
   <app-skeleton-cards *ngIf="isLoading" [cards]="4"></app-skeleton-cards>
