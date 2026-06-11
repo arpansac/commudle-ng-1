@@ -16,7 +16,7 @@
   }
 
   com-card-body {
-    @apply com-p-4 com-flex com-flex-wrap com-gap-4;
+    @apply com-p-4 com-flex com-flex-row com-flex-wrap com-gap-4;
 
     img {
       @apply com-max-h-[148px] com-max-w-[100px] com-h-full com-w-full;
