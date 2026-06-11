@@ -62,8 +62,9 @@
         <div class="col-date">
           <span class="date-text">{{ attendedEvent.start_time | date : 'd MMM yyyy' }}</span>
         </div>
-        <div class="col-event">
+        <div class="col-event-community">
           <a
+            class="event-link"
             [routerLink]="[
               '/communities',
               attendedEvent.kommunity_slug || attendedEvent.community?.slug,
@@ -73,10 +74,17 @@
           >
             {{ attendedEvent.name }}
           </a>
+          <ng-container *appBreakpoints="'<=md'">
+            <div class="col-community-mobile" *ngIf="attendedEvent.kommunity">
+              <app-community-badge [community]="attendedEvent.kommunity" size="small"></app-community-badge>
+            </div>
+          </ng-container>
         </div>
-        <div class="col-community" *ngIf="attendedEvent.kommunity">
-          <app-community-badge [community]="attendedEvent.kommunity" size="small"></app-community-badge>
-        </div>
+        <ng-container *appBreakpoints="'>md'">
+          <div class="col-community-desktop" *ngIf="attendedEvent.kommunity">
+            <app-community-badge [community]="attendedEvent.kommunity" size="small"></app-community-badge>
+          </div>
+        </ng-container>
       </div>
     </div>
   </com-card-body>
