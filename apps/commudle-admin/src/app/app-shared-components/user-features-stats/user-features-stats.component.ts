@@ -12,13 +12,14 @@ import {
 import { IUser, IUserStat } from '@commudle/shared-models';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
 import { SharedDirectivesModule } from 'apps/shared-directives/shared-directives.module';
+import { SkeletonCardsComponent } from 'apps/commudle-admin/src/app/feature-modules/skeleton-screens/components/skeleton-cards/skeleton-cards.component';
 import { Subscription } from 'rxjs';
 import { StatItem } from './user-features-stats.model';
 
 @Component({
   selector: 'commudle-user-features-stats',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, SharedDirectivesModule],
+  imports: [CommonModule, FontAwesomeModule, SharedDirectivesModule, SkeletonCardsComponent],
   templateUrl: './user-features-stats.component.html',
   styleUrls: ['./user-features-stats.component.scss'],
 })
@@ -26,6 +27,7 @@ export class UserFeaturesStatsComponent implements OnChanges, OnDestroy {
   @Input() user: IUser;
 
   stats: StatItem[] = [];
+  isLoading = true;
 
   private subscriptions: Subscription[] = [];
 
@@ -42,9 +44,11 @@ export class UserFeaturesStatsComponent implements OnChanges, OnDestroy {
   }
 
   private fetchProfileStats(): void {
+    this.isLoading = true;
     this.subscriptions.push(
       this.appUsersService.getProfileStats().subscribe((data: IUserStat) => {
         this.buildStats(data);
+        this.isLoading = false;
       }),
     );
   }
