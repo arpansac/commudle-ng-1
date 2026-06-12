@@ -108,6 +108,14 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     return subscription.kommunities_count < max;
   }
 
+  canCreateCommunityGroup(subscription: IUserSubscription): boolean {
+    if (subscription.status !== 'active') return false;
+    if (!subscription.product_price?.can_create_community_group) return false;
+    const max = subscription.product_price?.max_community_groups;
+    if (!max) return true;
+    return subscription.community_groups_count < max;
+  }
+
   createCommunity(subscription: IUserSubscription | null): void {
     const eligible = this.activeSubscriptions().filter((s) => this.canCreateKommunity(s));
     if (eligible.length === 0) return;

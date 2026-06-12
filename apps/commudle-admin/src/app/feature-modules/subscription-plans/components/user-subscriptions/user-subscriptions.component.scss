@@ -275,14 +275,18 @@
         @apply com-border-t com-border-gray-100 com-bg-gray-50 com-flex-wrap com-gap-3;
 
         .actions-left {
-          @apply com-flex com-items-center com-gap-3 com-flex-wrap;
+          @apply com-flex com-items-start com-gap-4 com-flex-wrap;
+
+          .action-group {
+            @apply com-flex com-flex-col com-gap-1;
+          }
 
           .slots-text {
-            @apply com-text-xs com-text-gray-500;
+            @apply com-text-xs com-text-gray-500 com-pl-0.5;
           }
 
           .quota-full-text {
-            @apply com-text-Infra-Red;
+            @apply com-text-xs com-text-Infra-Red com-pl-0.5;
           }
         }
 
@@ -293,6 +297,6 @@
     }
   }
   .pagination-wrapper {
-    @apply com-flex com-justify-center com-my-6;
+    @apply com-my-6;
   }
 }
