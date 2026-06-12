@@ -53,8 +53,4 @@ export class UserProfileQrCardComponent implements OnChanges, AfterViewInit {
       }
     }, 0);
   }
-
-  copyProfileLink(): void {
-    navigator.clipboard.writeText(this.profileUrl);
-  }
 }

@@ -6,10 +6,7 @@
         <app-loading-spinner *ngIf="isLoadingEvents"></app-loading-spinner>
         <div class="event-horizontal-card">
           <div *ngFor="let event of upcomingEvents">
-            <commudle-event-horizontal-card
-              [event]="event"
-              [hostCommunity]="community"
-            ></commudle-event-horizontal-card>
+            <commudle-event-horizontal-card [event]="event"></commudle-event-horizontal-card>
           </div>
         </div>
       </com-card-body>

@@ -109,7 +109,7 @@ p {
       @apply com-flex com-items-center com-flex-shrink-0 com-overflow-hidden;
       max-width: 140px;
 
-      ::ng-deep app-community-badge {
+      app-community-badge {
         @apply com-overflow-hidden;
 
         .community-badge a {
