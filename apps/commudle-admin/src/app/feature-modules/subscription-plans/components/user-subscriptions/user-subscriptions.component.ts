@@ -12,7 +12,6 @@ import { Subject, takeUntil, filter } from 'rxjs';
 })
 export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   subscriptions: IUserSubscription[] = [];
-  isLoading = true;
   isLoggedIn = false;
   page = 1;
   count = 5;
@@ -36,8 +35,6 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
         this.isLoggedIn = verified;
         if (verified) {
           this.fetchSubscriptions();
-        } else {
-          this.isLoading = false;
         }
       });
   }
@@ -152,7 +149,6 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   private fetchSubscriptions(): void {
-    this.isLoading = true;
     this.userSubscriptionService
       .getMySubscriptions(this.page, this.count)
       .pipe(takeUntil(this.destroy$))
@@ -161,9 +157,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
           this.subscriptions = res.values;
           this.total = res.total;
           this.page = res.page;
-          this.isLoading = false;
         },
-        error: () => (this.isLoading = false),
       });
   }
 }

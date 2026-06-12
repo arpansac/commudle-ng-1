@@ -1,22 +1,18 @@
 <div class="user-subscriptions">
-  <div class="loading-state" *ngIf="isLoading">
-    <nb-spinner></nb-spinner>
-  </div>
-
-  <div class="not-logged-in" *ngIf="!isLoggedIn && !isLoading">
+  <div class="not-logged-in" *ngIf="!isLoggedIn">
     <nb-icon icon="lock-outline"></nb-icon>
     <p>Please <a [routerLink]="['/login']">log in</a> to view your subscriptions.</p>
   </div>
 
-  <div class="empty-state" *ngIf="isLoggedIn && !isLoading && subscriptions.length === 0">
+  <div class="empty-state" *ngIf="isLoggedIn && subscriptions.length === 0">
     <nb-icon icon="credit-card-outline"></nb-icon>
     <p>You have no active subscriptions yet.</p>
     <a [routerLink]="['/pricing']" nbButton status="primary" size="small">Browse Plans</a>
   </div>
 
-  <div class="subscriptions-wrapper" *ngIf="!isLoading && subscriptions.length > 0">
+  <div class="subscriptions-wrapper" *ngIf="subscriptions.length > 0">
     <!-- Top create buttons -->
-    <div class="page-actions">
+    <!-- <div class="page-actions">
       <button nbButton status="primary" size="medium" (click)="createCommunity(null)">
         <nb-icon icon="plus-outline"></nb-icon>
         Create Community
@@ -25,7 +21,7 @@
         <nb-icon icon="plus-outline"></nb-icon>
         Create Organization
       </button>
-    </div>
+    </div> -->
 
     <!-- Active subscriptions -->
     <div class="section-label" *ngIf="activeSubscriptions().length > 0">Active Plans</div>
@@ -69,35 +65,10 @@
           </div>
         </div>
 
-        <!-- Org block (only for org plan) -->
-        <div
-          class="org-block"
-          *ngIf="sub.product_price?.can_create_community_group && sub.community_groups_list?.length > 0"
-        >
-          <div class="org-block-inner" *ngFor="let cg of sub.community_groups_list">
-            <div class="org-avatar">{{ cg.name?.charAt(0)?.toUpperCase() }}</div>
-            <div class="org-info">
-              <span class="org-name">{{ cg.name }}</span>
-              <span class="org-url">commudle.com/{{ cg.slug }}</span>
-            </div>
-            <a [routerLink]="['/communities', cg.slug]" class="org-manage-btn">Manage Org →</a>
-          </div>
-        </div>
-
         <!-- Community quota -->
-        <div
-          class="quota-block"
-          *ngIf="sub.product_price?.can_create_kommunity || sub.product_price?.can_create_community_group"
-        >
+        <div class="quota-block" *ngIf="sub.product_price?.can_create_kommunity">
           <div class="quota-row">
-            <span class="quota-label">
-              🌐
-              {{
-                sub.product_price?.can_create_community_group
-                  ? 'Communities inside Organization'
-                  : 'Communities Created'
-              }}
-            </span>
+            <span class="quota-label"> 🌐 Communities Created </span>
             <span
               class="quota-count"
               [ngClass]="getQuotaClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
@@ -115,17 +86,70 @@
           </div>
         </div>
 
-        <!-- Communities list -->
-        <ul class="communities-list" *ngIf="sub.kommunities?.length > 0">
-          <li class="community-item" *ngFor="let community of sub.kommunities">
-            <span class="community-dot"></span>
-            <span class="community-name">{{ community.name }}</span>
-            <span class="community-date">{{ community.created_at | date : 'MMM d' }}</span>
-            <a [routerLink]="['/communities', community.slug]" class="community-view">
-              View <nb-icon icon="arrow-forward-outline"></nb-icon>
-            </a>
-          </li>
-        </ul>
+        <!-- Communities list accordion -->
+        <details class="accordion-block" *ngIf="sub.kommunities?.length > 0">
+          <summary class="accordion-summary">
+            <span class="accordion-label"
+              >🌐 Communities <span class="accordion-count">{{ sub.kommunities.length }}</span></span
+            >
+            <span class="accordion-chevron">›</span>
+          </summary>
+          <div class="accordion-body">
+            <div class="community-item" *ngFor="let community of sub.kommunities">
+              <span class="community-dot"></span>
+              <span class="community-name">{{ community.name }}</span>
+              <span class="community-date">{{ community.created_at | date : 'MMM d' }}</span>
+              <a [routerLink]="['/communities', community.slug]" class="community-view">
+                View <nb-icon icon="arrow-forward-outline"></nb-icon>
+              </a>
+            </div>
+          </div>
+        </details>
+
+        <!-- Organization quota -->
+        <div class="quota-block" *ngIf="sub.product_price?.can_create_community_group">
+          <div class="quota-row">
+            <span class="quota-label"> 🏢 Organizations Created </span>
+            <span
+              class="quota-count"
+              [ngClass]="getQuotaClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
+            >
+              {{ sub.community_groups_count }} of {{ sub.product_price?.max_community_groups ?? '∞' }} used
+              &nbsp;·&nbsp;
+              {{ getRemainingText(sub.community_groups_count, sub.product_price?.max_community_groups) }}
+            </span>
+          </div>
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              [ngClass]="getProgressClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
+              [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Org block accordion -->
+        <details
+          class="accordion-block"
+          *ngIf="sub.product_price?.can_create_community_group && sub.community_groups_list?.length > 0"
+        >
+          <summary class="accordion-summary">
+            <span class="accordion-label"
+              >🏢 Organizations <span class="accordion-count">{{ sub.community_groups_list?.length }}</span></span
+            >
+            <span class="accordion-chevron">›</span>
+          </summary>
+          <div class="accordion-body">
+            <div class="org-block-inner" *ngFor="let cg of sub.community_groups_list">
+              <div class="org-avatar">{{ cg.name?.charAt(0)?.toUpperCase() }}</div>
+              <div class="org-info">
+                <span class="org-name">{{ cg.name }}</span>
+                <span class="org-url" *ngIf="cg.kommunities?.length > 0">{{ cg.kommunities.length }} communities</span>
+              </div>
+              <a [routerLink]="['/orgs', cg.slug]" class="org-manage-btn">Manage →</a>
+            </div>
+          </div>
+        </details>
 
         <!-- Expired notice -->
         <div class="expired-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
@@ -154,7 +178,7 @@
               Quota full — upgrade to create more
             </span>
           </div>
-          <div class="actions-right">
+          <!-- <div class="actions-right">
             <button nbButton status="basic" size="small" (click)="viewBillingHistory(sub)">Billing History</button>
             <button
               nbButton
@@ -166,12 +190,12 @@
             >
               Cancel Plan
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
 
-    <div class="pagination-wrapper" *ngIf="total > count">
+    <div class="pagination-wrapper">
       <app-pagination
         [current]="page"
         [count]="count"
