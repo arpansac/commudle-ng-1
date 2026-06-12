@@ -7,7 +7,11 @@
   </com-card-header>
   <com-card-body>
     <div class="grid">
-      <app-user-build-card *ngFor="let build of builds" [build]="build" [showBuildAuthor]="false"></app-user-build-card>
+      <app-user-build-card
+        *ngFor="let build of builds"
+        [build]="build"
+        [showBuildAuthor]="currentUser?.id !== build.user?.id"
+      ></app-user-build-card>
     </div>
   </com-card-body>
 </com-card>

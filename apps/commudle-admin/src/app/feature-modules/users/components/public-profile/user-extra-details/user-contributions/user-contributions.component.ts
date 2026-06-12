@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { UserProfileMenuService } from 'apps/commudle-admin/src/app/feature-modules/users/services/user-profile-menu.service';
 import { AppUsersService } from 'apps/commudle-admin/src/app/services/app-users.service';
+import { AuthService } from '@commudle/shared-services';
 import { ICommunityBuild } from 'apps/shared-models/community-build.model';
 import { ILab } from 'apps/shared-models/lab.model';
 import { IUser } from 'apps/shared-models/user.model';
@@ -15,7 +16,7 @@ import { IEvent } from 'apps/shared-models/event.model';
   styleUrls: ['./user-contributions.component.scss'],
   standalone: false,
 })
-export class UserContributionsComponent implements OnChanges, OnDestroy {
+export class UserContributionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: IUser;
   @Input() showBuilds = true;
   @Input() showLabs = true;
@@ -23,6 +24,7 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   @Input() showAttendedEvents = true;
   @Input() showCommunities = true;
 
+  currentUser: IUser;
   labs: ILab[] = [];
   communities: IUserRolesUser[] = [];
   communitiesCount = 6;
@@ -44,7 +46,19 @@ export class UserContributionsComponent implements OnChanges, OnDestroy {
   faBookOpen = faBookOpen;
   faIdBadge = faIdBadge;
 
-  constructor(private appUsersService: AppUsersService, public userProfileMenuService: UserProfileMenuService) {}
+  constructor(
+    private appUsersService: AppUsersService,
+    public userProfileMenuService: UserProfileMenuService,
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
+    this.subscriptions.push(
+      this.authService.currentUser$.subscribe((data) => {
+        this.currentUser = data;
+      }),
+    );
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user) {
