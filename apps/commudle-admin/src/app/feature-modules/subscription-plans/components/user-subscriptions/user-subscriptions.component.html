@@ -161,22 +161,45 @@
         <!-- Card actions -->
         <div class="card-actions">
           <div class="actions-left">
-            <button
-              nbButton
-              status="primary"
-              size="small"
-              [disabled]="sub.status !== 'active' || !canCreateKommunity(sub)"
-              (click)="createCommunity(sub)"
-            >
-              <nb-icon icon="plus-outline"></nb-icon>
-              {{ sub.product_price?.can_create_community_group ? 'Add Community to Org' : 'Create Community' }}
-            </button>
-            <span class="slots-text" *ngIf="sub.status === 'active' && sub.product_price?.max_kommunities">
-              {{ getRemaining(sub.kommunities_count, sub.product_price?.max_kommunities) }} slots remaining
-            </span>
-            <span class="slots-text quota-full-text" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
-              Quota full — upgrade to create more
-            </span>
+            <!-- Create Community button -->
+            <div class="action-group" *ngIf="sub.product_price?.can_create_kommunity">
+              <button
+                nbButton
+                status="primary"
+                size="small"
+                [disabled]="sub.status !== 'active' || !canCreateKommunity(sub)"
+                (click)="createCommunity(sub)"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Create Community
+              </button>
+              <span class="slots-text" *ngIf="sub.status === 'active' && sub.product_price?.max_kommunities">
+                {{ getRemaining(sub.kommunities_count, sub.product_price?.max_kommunities) }} slots remaining
+              </span>
+              <span class="slots-text quota-full-text" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
+                Quota full, upgrade to create more
+              </span>
+            </div>
+
+            <!-- Create Organization button -->
+            <div class="action-group" *ngIf="sub.product_price?.can_create_community_group">
+              <button
+                nbButton
+                status="info"
+                size="small"
+                [disabled]="sub.status !== 'active' || !canCreateCommunityGroup(sub)"
+                (click)="createOrganization(sub)"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+                Create Organization
+              </button>
+              <span class="slots-text" *ngIf="sub.status === 'active' && sub.product_price?.max_community_groups">
+                {{ getRemaining(sub.community_groups_count, sub.product_price?.max_community_groups) }} slots remaining
+              </span>
+              <span class="slots-text quota-full-text" *ngIf="!canCreateCommunityGroup(sub) && sub.status === 'active'">
+                Quota full, upgrade to create more
+              </span>
+            </div>
           </div>
           <!-- <div class="actions-right">
             <button nbButton status="basic" size="small" (click)="viewBillingHistory(sub)">Billing History</button>
