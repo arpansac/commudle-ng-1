@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUserSubscription } from '@commudle/shared-models';
 import { AuthService, UserSubscriptionService } from '@commudle/shared-services';
+import { NbDialogService } from '@commudle/theme';
+import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
+import { CreateCommunityGroupFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-group-form/create-community-group-form.component';
 import { Subject, takeUntil, filter } from 'rxjs';
 
 @Component({
@@ -23,6 +26,7 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     private userSubscriptionService: UserSubscriptionService,
     private authService: AuthService,
     private router: Router,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -124,8 +128,9 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
       // TODO: show plan picker when multiple eligible
       return;
     }
-    this.router.navigate(['/create-community'], {
-      queryParams: { subscription_id: target.id },
+    this.dialogService.open(CreateCommunityFormComponent, {
+      context: { subscriptionId: target.id },
+      closeOnBackdropClick: false,
     });
   }
 
@@ -134,8 +139,9 @@ export class UserSubscriptionsComponent implements OnInit, OnDestroy {
     if (eligible.length === 0) return;
     const target = subscription ?? (eligible.length === 1 ? eligible[0] : null);
     if (!target) return;
-    this.router.navigate(['/create-organization'], {
-      queryParams: { subscription_id: target.id },
+    this.dialogService.open(CreateCommunityGroupFormComponent, {
+      context: { subscriptionId: target.id },
+      closeOnBackdropClick: false,
     });
   }
 

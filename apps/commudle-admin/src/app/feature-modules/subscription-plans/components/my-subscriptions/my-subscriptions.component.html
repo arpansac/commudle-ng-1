@@ -1,31 +1,48 @@
-<div class="subscriptions-page base-layout">
-  <div class="page-banner">
-    <div class="banner-content">
-      <div class="banner-text">
-        <h1 class="banner-title">My Subscriptions</h1>
-        <p class="banner-subtitle">Manage your active subscriptions and view payment history</p>
-      </div>
-    </div>
-  </div>
+<div class="my-subscriptions-page">
+  <div class="base-layout">
+    <div class="container">
+      <div class="dashboard-layout">
+        <!-- ── Left sidebar ── -->
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-title">
+            <h1 class="page-title">My Subscriptions</h1>
+            <p class="page-subtitle">Manage your plans and communities.</p>
+          </div>
 
-  <div class="page-content">
-    <div class="base-layout">
-      <div class="container">
-        <div class="tabs-navigation">
-          <a
-            *ngFor="let tab of tabs"
-            [routerLink]="tab.route"
-            routerLinkActive="active-tab"
-            [routerLinkActiveOptions]="{ exact: tab.route === '' }"
-            class="tab-item"
-          >
-            {{ tab.title }}
-          </a>
-        </div>
+          <!-- Nav -->
+          <nav class="sidebar-nav">
+            <a
+              *ngFor="let tab of tabs"
+              [routerLink]="tab.route"
+              routerLinkActive="nav-active"
+              [routerLinkActiveOptions]="{ exact: tab.exact }"
+              class="nav-item"
+            >
+              {{ tab.title }}
+            </a>
+          </nav>
 
-        <div class="content-wrapper">
+          <!-- Stats -->
+          <div class="sidebar-stats">
+            <div class="stat-item">
+              <span class="stat-value">{{ activeCount }}</span>
+              <span class="stat-label">Active Plans</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">{{ totalCommunities }}</span>
+              <span class="stat-label">Communities</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value">{{ totalOrganizations }}</span>
+              <span class="stat-label">Organizations</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ── Main content ── -->
+        <main class="dashboard-main">
           <router-outlet></router-outlet>
-        </div>
+        </main>
       </div>
     </div>
   </div>
