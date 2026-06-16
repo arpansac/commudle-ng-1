@@ -59,6 +59,8 @@ import { LinkyModule } from 'ngx-linky';
 import { EmailPreviewComponent } from 'apps/commudle-admin/src/app/app-shared-components/email-preview/email-preview.component';
 import { EventRegisteredCardComponent } from './event-cards/event-registered-card/event-registered-card.component';
 import { EventLargeCardComponent } from 'apps/commudle-admin/src/app/app-shared-components/event-large-card/event-large-card.component';
+import { CreateCommunityFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-form/create-community-form.component';
+import { CreateCommunityGroupFormComponent } from 'apps/commudle-admin/src/app/app-shared-components/create-community-group-form/create-community-group-form.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +113,8 @@ import { EventLargeCardComponent } from 'apps/commudle-admin/src/app/app-shared-
     EmailPreviewComponent,
     EventRegisteredCardComponent,
     EventLargeCardComponent,
+    CreateCommunityFormComponent,
+    CreateCommunityGroupFormComponent,
   ],
   imports: [
     CommonModule,
@@ -142,6 +146,8 @@ import { EventLargeCardComponent } from 'apps/commudle-admin/src/app/app-shared-
     UserPersonalConnectComponent,
     ListingPageHeaderComponent,
     EventLargeCardComponent,
+    CreateCommunityFormComponent,
+    CreateCommunityGroupFormComponent,
 
     // Nebular
     NbRadioModule,

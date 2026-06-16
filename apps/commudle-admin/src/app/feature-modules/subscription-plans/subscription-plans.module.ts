@@ -7,6 +7,7 @@ import {
   NbButtonModule,
   NbCardModule,
   NbCheckboxModule,
+  NbDialogModule,
   NbIconModule,
   NbInputModule,
   NbRouteTabsetModule,
@@ -38,6 +39,7 @@ import { SharedComponentsModule } from 'apps/shared-components/shared-components
     NbSelectModule,
     NbCheckboxModule,
     NbRouteTabsetModule,
+    NbDialogModule,
   ],
 })
 export class SubscriptionPlansModule {}

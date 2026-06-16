@@ -1,0 +1,251 @@
+<div class="create-community-group-form">
+  <div class="form-header">
+    <div class="header-top">
+      <h4 class="form-title">Create New Organization</h4>
+      <button nbButton ghost size="small" shape="round" (click)="close()">
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </div>
+    <p class="form-subtitle">An organization can have multiple community chapters under it.</p>
+  </div>
+
+  <div class="form-body">
+    <form [formGroup]="communityGroupForm" (ngSubmit)="createCommunityGroup()" class="community-group-create-form">
+      <!-- ── Basic Info ── -->
+      <div class="section-heading">Basic Info</div>
+
+      <div role="group">
+        <div>
+          <label>
+            Name *
+            <input nbInput fullWidth formControlName="name" type="text" placeholder="e.g. Google Developer Groups" />
+          </label>
+          <span *ngIf="communityGroupForm.get('name').touched && communityGroupForm.get('name').hasError('required')">
+            <commudle-alert [error]="true" errorMessage="Name is required."></commudle-alert>
+          </span>
+          <span *ngIf="communityGroupForm.get('name').touched && communityGroupForm.get('name').hasError('minlength')">
+            <commudle-alert [error]="true" errorMessage="Name must be at least 3 characters."></commudle-alert>
+          </span>
+        </div>
+      </div>
+
+      <!-- Slug -->
+      <div role="group">
+        <div>
+          <label>
+            Organization URL Slug *
+            <div class="slug-wrap">
+              <span class="slug-prefix">commudle.com/orgs/</span>
+              <input
+                nbInput
+                fullWidth
+                formControlName="slug"
+                type="text"
+                placeholder="gdg"
+                class="slug-field"
+                (input)="onSlugInput()"
+              />
+              <span class="slug-status-icon">
+                <fa-icon *ngIf="slugCheckState === 'checking'" [icon]="icons.faSpinner" class="slug-checking"></fa-icon>
+                <fa-icon
+                  *ngIf="slugCheckState === 'available'"
+                  [icon]="icons.faCheckCircle"
+                  class="slug-available"
+                ></fa-icon>
+                <fa-icon *ngIf="slugCheckState === 'taken'" [icon]="icons.faTimesCircle" class="slug-taken"></fa-icon>
+              </span>
+            </div>
+          </label>
+          <span *ngIf="communityGroupForm.get('slug').touched && communityGroupForm.get('slug').hasError('required')">
+            <commudle-alert [error]="true" errorMessage="Slug is required."></commudle-alert>
+          </span>
+          <span *ngIf="communityGroupForm.get('slug').touched && communityGroupForm.get('slug').hasError('pattern')">
+            <commudle-alert
+              [error]="true"
+              errorMessage="Only lowercase letters, numbers and hyphens allowed."
+            ></commudle-alert>
+          </span>
+          <span *ngIf="slugCheckState === 'taken'">
+            <commudle-alert
+              [error]="true"
+              errorMessage="This slug is already taken. Please choose another."
+            ></commudle-alert>
+          </span>
+          <div class="slug-info-box">
+            <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
+            <span
+              >The slug forms your organization's permanent URL and <strong>cannot be changed</strong> after
+              creation.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div role="group">
+        <div>
+          <label>
+            Contact Email *
+            <input
+              nbInput
+              fullWidth
+              formControlName="contact_email"
+              type="email"
+              placeholder="hello@organization.com"
+            />
+          </label>
+          <span
+            *ngIf="
+              communityGroupForm.get('contact_email').touched &&
+              communityGroupForm.get('contact_email').hasError('required')
+            "
+          >
+            <commudle-alert [error]="true" errorMessage="Email is required."></commudle-alert>
+          </span>
+          <span
+            *ngIf="
+              communityGroupForm.get('contact_email').touched &&
+              communityGroupForm.get('contact_email').hasError('email')
+            "
+          >
+            <commudle-alert [error]="true" errorMessage="Please enter a valid email."></commudle-alert>
+          </span>
+        </div>
+      </div>
+
+      <div role="group">
+        <div>
+          <label>
+            Tagline *
+            <textarea
+              nbInput
+              fullWidth
+              formControlName="mini_description"
+              rows="2"
+              placeholder="A short one-liner about your organization (max 200 characters)"
+            ></textarea>
+          </label>
+          <span
+            *ngIf="
+              communityGroupForm.get('mini_description').touched &&
+              communityGroupForm.get('mini_description').hasError('required')
+            "
+          >
+            <commudle-alert [error]="true" errorMessage="Tagline is required."></commudle-alert>
+          </span>
+        </div>
+      </div>
+
+      <div role="group">
+        <div>
+          <label>
+            Website
+            <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourorg.com" />
+          </label>
+        </div>
+      </div>
+
+      <!-- About (TinyMCE) -->
+      <div class="about" role="group">
+        <label>
+          About
+          <editor [init]="tinyMCE" formControlName="description"></editor>
+        </label>
+      </div>
+
+      <!-- ── Logo & Theme ── -->
+      <div class="section-heading">Logo & Theme</div>
+
+      <!-- Theme color + Logo preview -->
+      <div role="group">
+        <div>
+          <label>Theme Color</label>
+          <div class="theme-color-wrap">
+            <div class="color-preview" [style.background-color]="themeColor"></div>
+            <input type="color" [value]="themeColor" (input)="onThemeColorChange($event)" class="color-input" />
+            <span class="color-value">{{ themeColor }}</span>
+          </div>
+        </div>
+        <div>
+          <label>Logo <small>(PNG, JPG · max 5MB)</small></label>
+          <div class="logo-preview-box" [style.background-color]="themeColor">
+            <div *ngIf="logoPreview" class="logo-preview-inner">
+              <img [src]="logoPreview" alt="Logo preview" />
+              <button nbButton status="danger" size="tiny" type="button" (click)="removeLogo()">
+                <nb-icon icon="close-circle"></nb-icon> Remove
+              </button>
+            </div>
+            <label *ngIf="!logoPreview" class="logo-upload-label" (click)="logoInput.click()">
+              <nb-icon icon="image-outline"></nb-icon>
+              <span>Click to upload logo</span>
+              <input
+                #logoInput
+                type="file"
+                accept="image/png,image/jpg,image/jpeg"
+                class="hidden-input"
+                (change)="onLogoSelected($event)"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Social Links ── -->
+      <div class="section-heading">Social Links</div>
+
+      <div role="group">
+        <div>
+          <label>
+            <fa-icon [icon]="icons.faFacebook" class="social-icon social-facebook"></fa-icon> Facebook
+            <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+          </label>
+        </div>
+        <div>
+          <label>
+            <fa-icon [icon]="icons.faTwitter" class="social-icon social-twitter"></fa-icon> Twitter / X
+            <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
+          </label>
+        </div>
+      </div>
+
+      <div role="group">
+        <div>
+          <label>
+            <fa-icon [icon]="icons.faGithub" class="social-icon"></fa-icon> GitHub
+            <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
+          </label>
+        </div>
+        <div>
+          <label>
+            <fa-icon [icon]="icons.faLinkedin" class="social-icon social-linkedin"></fa-icon> LinkedIn
+            <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
+          </label>
+        </div>
+      </div>
+
+      <div role="group">
+        <div>
+          <label>
+            <fa-icon [icon]="icons.faInstagram" class="social-icon social-instagram"></fa-icon> Instagram
+            <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="form-footer">
+    <button nbButton ghost (click)="close()" [disabled]="isSubmitting" type="button">Cancel</button>
+    <button
+      nbButton
+      status="primary"
+      type="button"
+      [disabled]="
+        communityGroupForm.invalid || isSubmitting || slugCheckState === 'taken' || slugCheckState === 'checking'
+      "
+      (click)="createCommunityGroup()"
+    >
+      <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
+      {{ isSubmitting ? 'Creating...' : 'Create Organization' }}
+    </button>
+  </div>
+</div>
