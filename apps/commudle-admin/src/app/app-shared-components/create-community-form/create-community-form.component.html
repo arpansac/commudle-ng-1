@@ -1,92 +1,35 @@
-<div class="create-community-form">
-  <div class="form-header">
-    <div class="header-top">
-      <h4 class="form-title">Create New Community</h4>
+<com-card class="create-community-form">
+  <com-card-header>
+    <div class="cf-header">
+      <div>
+        <h4 class="cf-title">Create New Community</h4>
+        <p class="cf-subtitle">Fill in the details below to set up your community.</p>
+      </div>
       <button nbButton ghost size="small" shape="round" (click)="close()">
         <nb-icon icon="close"></nb-icon>
       </button>
     </div>
-    <p class="form-subtitle">Fill in the details below to set up your community.</p>
-  </div>
+  </com-card-header>
 
-  <div class="form-body">
-    <form [formGroup]="communityForm" (ngSubmit)="createCommunity()" class="community-create-form">
+  <com-card-body>
+    <form [formGroup]="communityForm" (ngSubmit)="createCommunity()" class="cf-form">
       <!-- ── Basic Info ── -->
-      <div class="section-heading">Basic Info</div>
+      <p class="cf-section-label">Basic Info</p>
 
-      <div role="group">
-        <div>
-          <label>
-            Name *
-            <input nbInput fullWidth formControlName="name" type="text" placeholder="e.g. GDG New Delhi" />
-          </label>
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Community Name <span class="cf-required">*</span></label>
+          <input nbInput fullWidth formControlName="name" type="text" placeholder="e.g. GDG New Delhi" />
           <span *ngIf="communityForm.get('name').touched && communityForm.get('name').hasError('required')">
             <commudle-alert [error]="true" errorMessage="Name is required."></commudle-alert>
           </span>
           <span *ngIf="communityForm.get('name').touched && communityForm.get('name').hasError('minlength')">
-            <commudle-alert [error]="true" errorMessage="Name must be at least 3 characters."></commudle-alert>
+            <commudle-alert [error]="true" errorMessage="Minimum 3 characters required."></commudle-alert>
           </span>
         </div>
-      </div>
-
-      <!-- Slug -->
-      <div role="group">
-        <div>
-          <label>
-            Community URL Slug *
-            <div class="slug-wrap">
-              <span class="slug-prefix">commudle.com/communities/</span>
-              <input
-                nbInput
-                fullWidth
-                formControlName="slug"
-                type="text"
-                placeholder="gdg-new-delhi"
-                class="slug-field"
-                (input)="onSlugInput()"
-              />
-              <span class="slug-status-icon">
-                <fa-icon *ngIf="slugCheckState === 'checking'" [icon]="icons.faSpinner" class="slug-checking"></fa-icon>
-                <fa-icon
-                  *ngIf="slugCheckState === 'available'"
-                  [icon]="icons.faCheckCircle"
-                  class="slug-available"
-                ></fa-icon>
-                <fa-icon *ngIf="slugCheckState === 'taken'" [icon]="icons.faTimesCircle" class="slug-taken"></fa-icon>
-              </span>
-            </div>
-          </label>
-          <span *ngIf="communityForm.get('slug').touched && communityForm.get('slug').hasError('required')">
-            <commudle-alert [error]="true" errorMessage="Slug is required."></commudle-alert>
-          </span>
-          <span *ngIf="communityForm.get('slug').touched && communityForm.get('slug').hasError('pattern')">
-            <commudle-alert
-              [error]="true"
-              errorMessage="Only lowercase letters, numbers and hyphens allowed."
-            ></commudle-alert>
-          </span>
-          <span *ngIf="slugCheckState === 'taken'">
-            <commudle-alert
-              [error]="true"
-              errorMessage="This slug is already taken. Please choose another."
-            ></commudle-alert>
-          </span>
-          <div class="slug-info-box">
-            <fa-icon [icon]="icons.faCircleInfo"></fa-icon>
-            <span
-              >The slug forms your community's permanent URL and <strong>cannot be changed</strong> after
-              creation.</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label>
-            Contact Email *
-            <input nbInput fullWidth formControlName="contact_email" type="email" placeholder="hello@community.com" />
-          </label>
+        <div class="cf-field">
+          <label class="cf-label">Contact Email <span class="cf-required">*</span></label>
+          <input nbInput fullWidth formControlName="contact_email" type="email" placeholder="hello@community.com" />
           <span
             *ngIf="
               communityForm.get('contact_email').touched && communityForm.get('contact_email').hasError('required')
@@ -97,23 +40,61 @@
           <span
             *ngIf="communityForm.get('contact_email').touched && communityForm.get('contact_email').hasError('email')"
           >
-            <commudle-alert [error]="true" errorMessage="Please enter a valid email."></commudle-alert>
+            <commudle-alert [error]="true" errorMessage="Enter a valid email address."></commudle-alert>
           </span>
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Mini Description *
+      <div class="cf-row">
+        <div class="cf-field cf-field-full">
+          <label class="cf-label">URL Slug <span class="cf-required">*</span></label>
+          <div class="cf-slug">
+            <span class="cf-slug-prefix">commudle.com/communities/</span>
             <input
               nbInput
-              fullWidth
-              formControlName="mini_description"
+              formControlName="slug"
               type="text"
-              placeholder="A short one-liner about your community"
+              placeholder="gdg-new-delhi"
+              class="cf-slug-input"
+              (input)="onSlugInput()"
             />
-          </label>
+            <span class="cf-slug-status">
+              <fa-icon
+                *ngIf="slugCheckState === 'checking'"
+                [icon]="icons.faSpinner"
+                class="cf-slug-checking"
+              ></fa-icon>
+              <fa-icon
+                *ngIf="slugCheckState === 'available'"
+                [icon]="icons.faCheckCircle"
+                class="cf-slug-available"
+              ></fa-icon>
+              <fa-icon *ngIf="slugCheckState === 'taken'" [icon]="icons.faTimesCircle" class="cf-slug-taken"></fa-icon>
+            </span>
+          </div>
+          <span *ngIf="communityForm.get('slug').touched && communityForm.get('slug').hasError('required')">
+            <commudle-alert [error]="true" errorMessage="Slug is required."></commudle-alert>
+          </span>
+          <span *ngIf="communityForm.get('slug').touched && communityForm.get('slug').hasError('pattern')">
+            <commudle-alert [error]="true" errorMessage="Lowercase letters, numbers and hyphens only."></commudle-alert>
+          </span>
+          <span *ngIf="slugCheckState === 'taken'">
+            <commudle-alert [error]="true" errorMessage="This slug is already taken."></commudle-alert>
+          </span>
+          <commudle-alert [info]="true" message="Permanent — cannot be changed after creation."></commudle-alert>
+        </div>
+      </div>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Mini Description <span class="cf-required">*</span></label>
+          <input
+            nbInput
+            fullWidth
+            formControlName="mini_description"
+            type="text"
+            placeholder="A short one-liner about your community"
+          />
           <span
             *ngIf="
               communityForm.get('mini_description').touched &&
@@ -123,143 +104,129 @@
             <commudle-alert [error]="true" errorMessage="Mini description is required."></commudle-alert>
           </span>
         </div>
-      </div>
-
-      <div role="group">
-        <div>
-          <label>
-            Location
-            <input nbInput fullWidth formControlName="location" type="text" placeholder="e.g. New Delhi, India" />
-          </label>
+        <div class="cf-field">
+          <label class="cf-label">Location</label>
+          <input nbInput fullWidth formControlName="location" type="text" placeholder="e.g. New Delhi, India" />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            Website
-            <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourcommunity.com" />
-          </label>
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Website</label>
+          <input nbInput fullWidth formControlName="website" type="url" placeholder="https://yourcommunity.com" />
         </div>
       </div>
 
-      <!-- About (TinyMCE) -->
-      <div class="about" role="group">
-        <label>
-          About
-          <editor [init]="tinyMCE" formControlName="about"></editor>
-        </label>
+      <div class="cf-field cf-field-full">
+        <label class="cf-label">About</label>
+        <editor [init]="tinyMCE" formControlName="about"></editor>
       </div>
 
       <!-- ── Images ── -->
-      <div class="section-heading">Images</div>
+      <p class="cf-section-label">Images</p>
 
-      <!-- Logo -->
-      <div role="group">
-        <div>
-          <label>Logo <small>(PNG, JPG · max 5MB)</small></label>
-          <label *ngIf="!logoPreview" class="upload-area" (click)="logoInput.click()">
-            <fa-icon [icon]="icons.faImage" class="upload-icon"></fa-icon>
-            <span>Click to upload logo</span>
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Logo <span class="cf-hint">(PNG, JPG · max 5MB)</span></label>
+          <label *ngIf="!logoPreview" class="cf-upload" (click)="logoInput.click()">
+            <fa-icon [icon]="icons.faImage" class="cf-upload-icon"></fa-icon>
+            <span>Click to upload</span>
             <input
               #logoInput
               type="file"
               accept="image/png,image/jpg,image/jpeg"
-              class="hidden-input"
+              class="cf-hidden"
               (change)="onLogoSelected($event)"
             />
           </label>
-          <div *ngIf="logoPreview" class="image-preview-block">
-            <img [src]="logoPreview" alt="Logo preview" class="logo-preview" />
+          <div *ngIf="logoPreview" class="cf-preview">
+            <img [src]="logoPreview" alt="Logo" class="cf-preview-logo" />
             <button nbButton status="danger" outline size="tiny" type="button" (click)="removeLogo()">
+              <nb-icon icon="trash-2-outline"></nb-icon> Remove
+            </button>
+          </div>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Banner Image <span class="cf-hint">(1280×320px · max 5MB)</span></label>
+          <label *ngIf="!bannerPreview" class="cf-upload cf-upload-banner" (click)="bannerInput.click()">
+            <fa-icon [icon]="icons.faUpload" class="cf-upload-icon"></fa-icon>
+            <span>Click to upload</span>
+            <input
+              #bannerInput
+              type="file"
+              accept="image/png,image/jpg,image/jpeg"
+              class="cf-hidden"
+              (change)="onBannerSelected($event)"
+            />
+          </label>
+          <div *ngIf="bannerPreview" class="cf-preview">
+            <img [src]="bannerPreview" alt="Banner" class="cf-preview-banner" />
+            <button nbButton status="danger" outline size="tiny" type="button" (click)="removeBanner()">
               <nb-icon icon="trash-2-outline"></nb-icon> Remove
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Banner -->
-      <div role="group">
-        <div>
-          <label>Banner Image <small>(PNG, JPG · max 5MB · 1280×320px)</small></label>
-          <label *ngIf="!bannerPreview" class="upload-area upload-area-banner" (click)="bannerInput.click()">
-            <fa-icon [icon]="icons.faUpload" class="upload-icon"></fa-icon>
-            <span>Click to upload banner</span>
-            <small>(1280px × 320px)</small>
-            <input
-              #bannerInput
-              type="file"
-              accept="image/png,image/jpg,image/jpeg"
-              class="hidden-input"
-              (change)="onBannerSelected($event)"
-            />
-          </label>
-          <div *ngIf="bannerPreview" class="image-preview-block">
-            <div class="com-flex com-justify-center com-mb-2">
-              <button nbButton status="danger" outline size="tiny" type="button" (click)="removeBanner()">
-                <nb-icon icon="trash-2-outline"></nb-icon> Remove
-              </button>
-            </div>
-            <img [src]="bannerPreview" alt="Banner preview" class="banner-preview" />
-          </div>
-        </div>
-      </div>
-
       <!-- ── Social Links ── -->
-      <div class="section-heading">Social Links</div>
+      <p class="cf-section-label">Social Links</p>
 
-      <div role="group">
-        <div>
-          <label>
-            <fa-icon [icon]="icons.faFacebook" class="social-icon social-facebook"></fa-icon> Facebook
-            <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <fa-icon [icon]="icons.faFacebook" class="cf-social-icon cf-facebook"></fa-icon> Facebook
           </label>
+          <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
         </div>
-        <div>
-          <label>
-            <fa-icon [icon]="icons.faTwitter" class="social-icon social-twitter"></fa-icon> Twitter / X
-            <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <fa-icon [icon]="icons.faTwitter" class="cf-social-icon cf-twitter"></fa-icon> Twitter / X
           </label>
+          <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            <fa-icon [icon]="icons.faGithub" class="social-icon"></fa-icon> GitHub
-            <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <fa-icon [icon]="icons.faGithub" class="cf-social-icon"></fa-icon> GitHub
           </label>
+          <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
         </div>
-        <div>
-          <label>
-            <fa-icon [icon]="icons.faLinkedin" class="social-icon social-linkedin"></fa-icon> LinkedIn
-            <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <fa-icon [icon]="icons.faLinkedin" class="cf-social-icon cf-linkedin"></fa-icon> LinkedIn
           </label>
+          <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
         </div>
       </div>
 
-      <div role="group">
-        <div>
-          <label>
-            <fa-icon [icon]="icons.faInstagram" class="social-icon social-instagram"></fa-icon> Instagram
-            <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label cf-social-label">
+            <fa-icon [icon]="icons.faInstagram" class="cf-social-icon cf-instagram"></fa-icon> Instagram
           </label>
+          <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
         </div>
       </div>
     </form>
-  </div>
+  </com-card-body>
 
-  <div class="form-footer">
-    <button nbButton ghost (click)="close()" [disabled]="isSubmitting" type="button">Cancel</button>
-    <button
-      nbButton
-      status="primary"
-      type="button"
-      [disabled]="communityForm.invalid || isSubmitting || slugCheckState === 'taken' || slugCheckState === 'checking'"
-      (click)="createCommunity()"
-    >
-      <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="spinning"></nb-icon>
-      {{ isSubmitting ? 'Creating...' : 'Create Community' }}
-    </button>
-  </div>
-</div>
+  <com-card-footer>
+    <div class="cf-footer">
+      <button nbButton ghost (click)="close()" [disabled]="isSubmitting" type="button">Cancel</button>
+      <button
+        nbButton
+        status="primary"
+        type="button"
+        [disabled]="
+          communityForm.invalid || isSubmitting || slugCheckState === 'taken' || slugCheckState === 'checking'
+        "
+        (click)="createCommunity()"
+      >
+        <nb-icon *ngIf="isSubmitting" icon="loader-outline" class="cf-spinning"></nb-icon>
+        {{ isSubmitting ? 'Creating...' : 'Create Community' }}
+      </button>
+    </div>
+  </com-card-footer>
+</com-card>

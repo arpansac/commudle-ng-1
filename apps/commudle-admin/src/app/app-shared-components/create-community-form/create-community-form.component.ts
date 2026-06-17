@@ -1,14 +1,18 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { NbDialogRef, NbButtonModule, NbInputModule, NbFormFieldModule, NbIconModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
+import { CommudleCardModule } from '@commudle/commudle-theme';
+import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
+import { ToastrService } from '@commudle/shared-services';
+import { Router } from '@angular/router';
 import {
   faXmark,
   faSpinner,
-  faCircleInfo,
   faCheckCircle,
   faTimesCircle,
   faTrash,
@@ -26,6 +30,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     NbButtonModule,
     NbInputModule,
     NbFormFieldModule,
@@ -33,6 +38,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
     FontAwesomeModule,
     EditorModule,
     SharedComponentsModule,
+    CommudleCardModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
@@ -52,7 +58,6 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
   readonly icons = {
     faXmark,
     faSpinner,
-    faCircleInfo,
     faCheckCircle,
     faTimesCircle,
     faTrash,
@@ -99,7 +104,13 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private dialogRef: NbDialogRef<CreateCommunityFormComponent>) {}
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: NbDialogRef<CreateCommunityFormComponent>,
+    private communitiesService: CommunitiesService,
+    private toastrService: ToastrService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.communityForm = this.fb.group({
@@ -176,7 +187,29 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
       this.communityForm.markAllAsTouched();
       return;
     }
-    // TODO: wire to CommunitiesService
+
+    this.isSubmitting = true;
+    const formData = new FormData();
+    const values = this.communityForm.value;
+
+    Object.keys(values).forEach((key) => {
+      if (values[key] != null && values[key] !== '') {
+        formData.append(`community[${key}]`, values[key]);
+      }
+    });
+
+    if (this.logoFile) formData.append('community[logo_image]', this.logoFile);
+    if (this.bannerFile) formData.append('community[banner_image]', this.bannerFile);
+
+    // this.communitiesService.create(formData, null, this.subscriptionId).subscribe({
+    //   next: (community) => {
+    //     this.isSubmitting = false;
+    //     this.toastrService.successDialog('Community created successfully!');
+    //     this.dialogRef.close(community);
+    //     this.router.navigate(['/admin/communities', community.slug]);
+    //   },
+    //   error: () => (this.isSubmitting = false),
+    // });
   }
 
   close(): void {

@@ -1,18 +1,16 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { NbDialogRef, NbButtonModule, NbInputModule, NbFormFieldModule, NbIconModule } from '@commudle/theme';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
-import {
-  faXmark,
-  faSpinner,
-  faCircleInfo,
-  faCheckCircle,
-  faTimesCircle,
-  faImage,
-} from '@fortawesome/free-solid-svg-icons';
+import { CommudleCardModule } from '@commudle/commudle-theme';
+import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
+import { ToastrService } from '@commudle/shared-services';
+import { Router } from '@angular/router';
+import { faXmark, faSpinner, faCheckCircle, faTimesCircle, faImage } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook, faTwitter, faGithub, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 
@@ -24,6 +22,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     NbButtonModule,
     NbInputModule,
     NbFormFieldModule,
@@ -31,6 +30,7 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
     FontAwesomeModule,
     EditorModule,
     SharedComponentsModule,
+    CommudleCardModule,
   ],
   providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
@@ -49,7 +49,6 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   readonly icons = {
     faXmark,
     faSpinner,
-    faCircleInfo,
     faCheckCircle,
     faTimesCircle,
     faImage,
@@ -94,7 +93,13 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private dialogRef: NbDialogRef<CreateCommunityGroupFormComponent>) {}
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: NbDialogRef<CreateCommunityGroupFormComponent>,
+    private communityGroupsService: CommunityGroupsService,
+    private toastrService: ToastrService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.communityGroupForm = this.fb.group({
@@ -167,7 +172,28 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
       this.communityGroupForm.markAllAsTouched();
       return;
     }
-    // TODO: wire to CommunityGroupsService
+
+    this.isSubmitting = true;
+    const formData = new FormData();
+    const values = this.communityGroupForm.value;
+
+    Object.keys(values).forEach((key) => {
+      if (values[key] != null && values[key] !== '') {
+        formData.append(`community_group[${key}]`, values[key]);
+      }
+    });
+
+    if (this.logoFile) formData.append('community_group[logo]', this.logoFile);
+
+    // this.communityGroupsService.create(formData, this.subscriptionId).subscribe({
+    //   next: (communityGroup) => {
+    //     this.isSubmitting = false;
+    //     this.toastrService.successDialog('Organization created successfully!');
+    //     this.dialogRef.close(communityGroup);
+    //     this.router.navigate(['/orgs', communityGroup.slug]);
+    //   },
+    //   error: () => (this.isSubmitting = false),
+    // });
   }
 
   close(): void {

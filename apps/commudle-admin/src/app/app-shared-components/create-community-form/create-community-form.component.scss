@@ -1,175 +1,161 @@
+:host {
+  display: contents;
+}
+
 .create-community-form {
-  @apply com-w-[100dvw] md:com-w-[680px] com-bg-white com-rounded-xl com-overflow-hidden com-flex com-flex-col;
+  @apply com-w-[100dvw] md:com-w-[680px] com-flex com-flex-col;
   max-height: 90dvh;
+}
 
-  .form-header {
-    @apply com-px-6 com-pt-5 com-pb-4 com-border-b com-border-gray-100 com-flex-shrink-0;
+// ── Header ────────────────────────────────────────────
+.cf-header {
+  @apply com-flex com-items-start com-justify-between com-gap-4 com-w-full;
 
-    .header-top {
-      @apply com-flex com-items-center com-justify-between com-mb-1;
-
-      .form-title {
-        @apply com-text-xl com-font-bold com-text-Yankees-Blue com-m-0;
-      }
-    }
-
-    .form-subtitle {
-      @apply com-text-sm com-text-gray-500 com-m-0;
-    }
+  .cf-title {
+    @apply com-text-lg com-font-bold com-text-Yankees-Blue com-m-0 com-leading-tight;
   }
 
-  .form-body {
-    @apply com-overflow-y-auto com-flex-1 com-px-6 com-py-4;
+  .cf-subtitle {
+    @apply com-text-sm com-text-gray-500 com-m-0 com-mt-1;
+  }
+}
 
-    .community-create-form {
-      .section-heading {
-        @apply com-font-bold com-text-sm com-text-gray-500 com-uppercase com-tracking-wider;
-        @apply com-pb-2 com-mb-2 com-mt-6 com-border-b com-border-gray-100;
+// ── Form ──────────────────────────────────────────────
+.cf-form {
+  @apply com-flex com-flex-col com-gap-0;
+}
 
-        &:first-child {
-          @apply com-mt-0;
-        }
-      }
+// ── Section label ─────────────────────────────────────
+.cf-section-label {
+  @apply com-text-xs com-font-bold com-uppercase com-tracking-widest com-text-gray-400;
+  @apply com-m-0 com-mt-6 com-mb-3 com-pb-2 com-border-b com-border-gray-100;
 
-      div[role='group'] {
-        @apply com-flex com-flex-col com-gap-0;
+  &:first-child {
+    @apply com-mt-0;
+  }
+}
 
-        @screen md {
-          @apply com-flex-row com-gap-4;
-        }
+// ── Row — two columns on md+ ──────────────────────────
+.cf-row {
+  @apply com-grid com-grid-cols-1 com-gap-4 com-mb-4;
+  @screen md {
+    @apply com-grid-cols-2;
+  }
+}
 
-        > div {
-          @apply com-my-2 com-w-full;
-        }
+// ── Individual field ──────────────────────────────────
+.cf-field {
+  @apply com-flex com-flex-col com-gap-1;
 
-        label {
-          @apply com-flex com-flex-col com-gap-1 com-text-sm com-font-semibold com-text-gray-700;
+  &.cf-field-full {
+    @apply com-col-span-full;
+  }
+}
 
-          small {
-            @apply com-font-normal com-text-gray-400;
-          }
-        }
-      }
+// ── Label ─────────────────────────────────────────────
+.cf-label {
+  @apply com-text-sm com-font-semibold com-text-gray-700 com-flex com-items-center com-gap-1.5;
+}
 
-      .about {
-        div[role='group'] > div,
-        > label {
-          width: 100% !important;
-        }
+.cf-required {
+  @apply com-text-red-500;
+}
 
-        label {
-          @apply com-flex com-flex-col com-gap-1 com-text-sm com-font-semibold com-text-gray-700 com-my-2 com-w-full;
-        }
-      }
+.cf-hint {
+  @apply com-text-xs com-text-gray-400 com-font-normal;
+}
 
-      // Slug
-      .slug-wrap {
-        @apply com-flex com-items-center com-border com-border-gray-300 com-rounded-md com-overflow-hidden com-bg-white com-mt-1;
+// ── Slug ──────────────────────────────────────────────
+.cf-slug {
+  @apply com-flex com-items-center com-border com-border-gray-300 com-rounded-md com-overflow-hidden;
 
-        .slug-prefix {
-          @apply com-px-2 com-py-2 com-text-xs com-text-gray-400 com-bg-gray-50 com-border-r com-border-gray-300 com-whitespace-nowrap com-flex-shrink-0;
-        }
-
-        .slug-field {
-          @apply com-flex-1 com-border-none com-rounded-none com-shadow-none;
-          outline: none !important;
-          box-shadow: none !important;
-        }
-
-        .slug-status-icon {
-          @apply com-px-2 com-flex-shrink-0;
-
-          fa-icon {
-            @apply com-text-sm;
-          }
-          .slug-checking {
-            @apply com-animate-spin com-text-gray-400;
-          }
-          .slug-available {
-            @apply com-text-green-500;
-          }
-          .slug-taken {
-            @apply com-text-red-500;
-          }
-        }
-      }
-
-      .slug-info-box {
-        @apply com-flex com-items-start com-gap-2 com-mt-2;
-        @apply com-bg-amber-50 com-border com-border-amber-200 com-rounded-lg com-px-3 com-py-2;
-
-        fa-icon {
-          @apply com-text-amber-500 com-flex-shrink-0 com-text-sm com-mt-0.5;
-        }
-
-        span {
-          @apply com-text-xs com-text-amber-800 com-leading-relaxed;
-
-          strong {
-            @apply com-font-semibold;
-          }
-        }
-      }
-
-      // Image uploads
-      .hidden-input {
-        @apply com-hidden;
-      }
-
-      .upload-area {
-        @apply com-flex com-flex-col com-items-center com-justify-center com-gap-2;
-        @apply com-border-2 com-border-dashed com-border-gray-300 com-rounded-lg;
-        @apply com-py-6 com-cursor-pointer com-mt-1 com-transition-colors;
-        @apply hover:com-border-primary-400 hover:com-bg-primary-100;
-        @apply com-text-sm com-text-gray-500 com-font-normal;
-
-        &.upload-area-banner {
-          @apply com-py-5;
-        }
-
-        .upload-icon {
-          @apply com-text-2xl com-text-gray-400;
-        }
-      }
-
-      .image-preview-block {
-        @apply com-flex com-flex-col com-gap-2 com-mt-2;
-
-        .logo-preview {
-          @apply com-w-24 com-h-24 com-rounded-lg com-object-cover;
-        }
-
-        .banner-preview {
-          @apply com-w-full com-h-28 com-rounded-lg com-object-cover;
-        }
-      }
-
-      // Social icons
-      .social-icon {
-        @apply com-text-sm;
-
-        &.social-facebook {
-          @apply com-text-blue-600;
-        }
-        &.social-twitter {
-          @apply com-text-sky-500;
-        }
-        &.social-linkedin {
-          @apply com-text-blue-700;
-        }
-        &.social-instagram {
-          @apply com-text-pink-500;
-        }
-      }
-    }
+  .cf-slug-prefix {
+    @apply com-flex-shrink-0 com-px-3 com-py-2 com-text-xs com-text-gray-400 com-bg-gray-50;
+    @apply com-border-r com-border-gray-300 com-whitespace-nowrap;
   }
 
-  .form-footer {
-    @apply com-px-6 com-py-4 com-border-t com-border-gray-100 com-flex-shrink-0;
-    @apply com-flex com-justify-end com-gap-3;
+  .cf-slug-input {
+    @apply com-flex-1 com-min-w-0 com-border-none com-rounded-none;
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
-    .spinning {
-      @apply com-animate-spin;
+  .cf-slug-status {
+    @apply com-flex-shrink-0 com-px-3;
+
+    fa-icon {
+      @apply com-text-sm;
     }
+    .cf-slug-checking {
+      @apply com-animate-spin com-text-gray-400;
+    }
+    .cf-slug-available {
+      @apply com-text-green-500;
+    }
+    .cf-slug-taken {
+      @apply com-text-red-500;
+    }
+  }
+}
+
+// ── Upload areas ──────────────────────────────────────
+.cf-hidden {
+  @apply com-hidden;
+}
+
+.cf-upload {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-gap-2;
+  @apply com-border-2 com-border-dashed com-border-gray-200 com-rounded-xl;
+  @apply com-py-8 com-cursor-pointer com-transition-colors com-duration-150;
+  @apply com-text-sm com-text-gray-400 com-font-normal;
+  @apply hover:com-border-primary-400 hover:com-bg-primary-100;
+
+  &.cf-upload-banner {
+    @apply com-py-6;
+  }
+
+  .cf-upload-icon {
+    @apply com-text-2xl com-text-gray-300;
+  }
+}
+
+.cf-preview {
+  @apply com-flex com-flex-col com-gap-2 com-items-start;
+
+  .cf-preview-logo {
+    @apply com-w-20 com-h-20 com-rounded-xl com-object-cover com-border com-border-gray-200;
+  }
+
+  .cf-preview-banner {
+    @apply com-w-full com-h-24 com-rounded-xl com-object-cover com-border com-border-gray-200;
+  }
+}
+
+// ── Social labels ─────────────────────────────────────
+.cf-social-label {
+  @apply com-flex com-flex-row com-items-center com-gap-2;
+}
+
+.cf-social-icon {
+  @apply com-text-base com-flex-shrink-0;
+}
+.cf-facebook {
+  @apply com-text-blue-600;
+}
+.cf-twitter {
+  @apply com-text-sky-500;
+}
+.cf-linkedin {
+  @apply com-text-blue-700;
+}
+.cf-instagram {
+  @apply com-text-pink-500;
+}
+
+// ── Footer ────────────────────────────────────────────
+.cf-footer {
+  @apply com-flex com-justify-end com-items-center com-gap-3 com-w-full;
+  .cf-spinning {
+    @apply com-animate-spin;
   }
 }
