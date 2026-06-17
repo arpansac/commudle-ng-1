@@ -14,19 +14,28 @@
 
   <!-- Subscription cards -->
   <div class="subscriptions-list" *ngIf="subscriptions.length > 0">
-    <div class="sub-card" *ngFor="let sub of subscriptions" [class.sub-card-inactive]="sub.status !== 'active'">
-      <!-- ── Plan header ── -->
-      <div class="sub-header">
-        <div class="sub-header-left">
-          <div class="plan-badge">
-            <span class="plan-icon">{{ sub.product_price?.can_create_community_group ? '🏢' : '🌐' }}</span>
-          </div>
+    <com-card
+      *ngFor="let sub of subscriptions"
+      [accent]="
+        sub.status === 'active'
+          ? 'success'
+          : sub.status === 'expired' || sub.status === 'cancelled'
+          ? 'warning'
+          : 'danger'
+      "
+      class="sub-card"
+      [class.sub-card-inactive]="sub.status !== 'active'"
+    >
+      <!-- ── Header ── -->
+      <com-card-header class="sub-header">
+        <div class="header-left">
+          <span class="plan-icon">{{ sub.product_price?.can_create_community_group ? '🏢' : '🌐' }}</span>
           <div>
             <h3 class="plan-name">{{ sub.product_price?.plan_name || 'Subscription' }}</h3>
             <span class="plan-product">{{ sub.product_price?.product_name }}</span>
           </div>
         </div>
-        <div class="sub-header-right">
+        <div class="header-right">
           <span class="status-pill" [ngClass]="getStatusClass(sub.status)">
             <span class="status-dot"></span>{{ sub.status | titlecase }}
           </span>
@@ -34,32 +43,34 @@
             {{ getDaysLeft(sub) }}d left
           </span>
         </div>
-      </div>
+      </com-card-header>
 
-      <!-- ── Billing row ── -->
-      <div class="billing-row">
-        <div class="billing-item">
-          <span class="billing-label">Price</span>
-          <span class="billing-value">
-            {{ sub.product_price?.final_price | currency : sub.product_price?.currency : 'symbol' : '1.0-0' }}
-            <span class="billing-cycle">/ {{ sub.product_price?.billing_cycle }}</span>
-          </span>
+      <!-- ── Body ── -->
+      <com-card-body class="sub-body">
+        <!-- Billing row -->
+        <div class="billing-row">
+          <div class="billing-item">
+            <span class="billing-label">Price</span>
+            <span class="billing-value">
+              {{ sub.product_price?.final_price | currency : sub.product_price?.currency : 'symbol' : '1.0-0' }}
+              <span class="billing-cycle">/ {{ sub.product_price?.billing_cycle }}</span>
+            </span>
+          </div>
+          <div class="billing-divider"></div>
+          <div class="billing-item">
+            <span class="billing-label">Started</span>
+            <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
+          </div>
+          <ng-container *ngIf="sub.ends_at">
+            <div class="billing-divider"></div>
+            <div class="billing-item">
+              <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
+              <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
+            </div>
+          </ng-container>
         </div>
-        <div class="billing-divider"></div>
-        <div class="billing-item">
-          <span class="billing-label">Started</span>
-          <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
-        </div>
-        <div class="billing-divider" *ngIf="sub.ends_at"></div>
-        <div class="billing-item" *ngIf="sub.ends_at">
-          <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
-          <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
-        </div>
-      </div>
 
-      <!-- ── Usage section ── -->
-      <div class="usage-section">
-        <!-- Community quota + list -->
+        <!-- Community usage -->
         <div class="usage-block" *ngIf="sub.product_price?.can_create_kommunity">
           <div class="usage-header">
             <span class="usage-title">🌐 Communities</span>
@@ -93,7 +104,7 @@
           </details>
         </div>
 
-        <!-- Org quota + list -->
+        <!-- Org usage -->
         <div class="usage-block" *ngIf="sub.product_price?.can_create_community_group">
           <div class="usage-header">
             <span class="usage-title">🏢 Organizations</span>
@@ -133,17 +144,17 @@
             </div>
           </details>
         </div>
-      </div>
 
-      <!-- ── Expired notice ── -->
-      <div class="expired-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
-        <nb-icon icon="alert-triangle-outline"></nb-icon>
-        <span>Subscription {{ sub.status }}. Communities are still active but new creation is blocked.</span>
-        <button nbButton status="warning" size="tiny" (click)="renewPlan(sub)">Renew</button>
-      </div>
+        <!-- Expired notice -->
+        <div class="expired-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
+          <nb-icon icon="alert-triangle-outline"></nb-icon>
+          <span>Subscription {{ sub.status }}. Communities are still active but new creation is blocked.</span>
+          <button nbButton status="warning" size="tiny" (click)="renewPlan(sub)">Renew</button>
+        </div>
+      </com-card-body>
 
-      <!-- ── Actions ── -->
-      <div class="sub-actions">
+      <!-- ── Footer ── -->
+      <com-card-footer class="sub-footer">
         <div class="action-group" *ngIf="sub.product_price?.can_create_kommunity">
           <button
             nbButton
@@ -161,7 +172,6 @@
             Quota full
           </span>
         </div>
-
         <div class="action-group" *ngIf="sub.product_price?.can_create_community_group">
           <button
             nbButton
@@ -179,8 +189,8 @@
             Quota full
           </span>
         </div>
-      </div>
-    </div>
+      </com-card-footer>
+    </com-card>
 
     <div class="pagination-wrapper" *ngIf="total > count">
       <app-pagination
