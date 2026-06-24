@@ -64,19 +64,29 @@ export class RazorpayService {
     }
     return this.http.post<IRazorpayOrder>(
       this.baseApiService.getRoute(API_ROUTES.RAZORPAY.FIND_OR_CREATE_ORDER),
-      {
-        order_details: orderDetails,
-      },
+      { order_details: orderDetails },
       { params },
     );
   }
 
-  createOrUpdatePayment(response, hasError = false, paymentId?: string): Observable<any> {
+  createRzpSubscription(purchaseOrderId: number): Observable<{ rzp_subscription_id: string; status: string }> {
+    const params = new HttpParams().set('po_id', purchaseOrderId);
+    return this.http.post<{ rzp_subscription_id: string; status: string }>(
+      this.baseApiService.getRoute(API_ROUTES.RAZORPAY.CREATE_RZP_SUBSCRIPTION),
+      {},
+      { params },
+    );
+  }
+
+  createOrUpdatePayment(response, hasError = false, paymentId?: string, subscriptionId?: string): Observable<any> {
     let params = new HttpParams();
-    let requestBody: { has_error?: boolean; payment_error?: any; payment_details?: any } = {}; // Define the type of requestBody
+    let requestBody: { has_error?: boolean; payment_error?: any; payment_details?: any; subscription_id?: string } = {};
 
     if (paymentId) {
-      params = new HttpParams().set('payment_id', paymentId);
+      params = params.set('payment_id', paymentId);
+    }
+    if (subscriptionId) {
+      params = params.set('subscription_id', subscriptionId);
     }
     if (hasError === true) {
       requestBody = { has_error: hasError, payment_error: response };

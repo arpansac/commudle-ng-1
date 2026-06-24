@@ -63,6 +63,9 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SysAdminDiscountCodeComponent } from './components/sys-admin-discount-code/sys-admin-discount-code.component';
 import { DiscountCodeFormComponent } from './components/sys-admin-discount-code/discount-code-form/discount-code-form.component';
 import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-orders.component';
+import { RazorpayPlansComponent } from './components/razorpay-plans/razorpay-plans.component';
+import { AdminProductPricesComponent } from './components/razorpay-plans/product-prices/product-prices.component';
+import { AdminRzpPlansComponent } from './components/razorpay-plans/rzp-plans/rzp-plans.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +104,9 @@ import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-o
     DiscountCodeFormComponent,
     PurchaseOrdersComponent,
     AdminSpamDetectorsComponent,
+    RazorpayPlansComponent,
+    AdminProductPricesComponent,
+    AdminRzpPlansComponent,
   ],
   imports: [
     CommonModule,

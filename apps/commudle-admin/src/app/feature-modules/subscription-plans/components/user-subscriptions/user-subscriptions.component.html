@@ -7,9 +7,30 @@
 
   <!-- No subscriptions -->
   <div class="empty-state" *ngIf="isLoggedIn && subscriptions.length === 0">
-    <nb-icon icon="credit-card-outline"></nb-icon>
-    <p>You have no active subscriptions yet.</p>
-    <a [routerLink]="['/pricing']" nbButton status="primary" size="small">Browse Plans</a>
+    <div class="empty-state-icon">
+      <nb-icon icon="credit-card-outline"></nb-icon>
+    </div>
+    <div class="empty-state-content">
+      <h3 class="empty-state-title">No active subscriptions</h3>
+      <p class="empty-state-desc">
+        Choose a plan to start building and growing your developer communities on Commudle.
+      </p>
+      <a [routerLink]="['/pricing']" nbButton status="primary" shape="semi-round" size="medium"> View Pricing Plans </a>
+    </div>
+    <div class="empty-state-features">
+      <div class="empty-feature-item">
+        <nb-icon icon="calendar-outline"></nb-icon>
+        <span>Manage Events &amp; Hackathons</span>
+      </div>
+      <div class="empty-feature-item">
+        <nb-icon icon="people-outline"></nb-icon>
+        <span>Unlimited Community Members</span>
+      </div>
+      <div class="empty-feature-item">
+        <nb-icon icon="email-outline"></nb-icon>
+        <span>Newsletters &amp; Channels</span>
+      </div>
+    </div>
   </div>
 
   <!-- Subscription cards -->

@@ -30,6 +30,25 @@ export class CommunitiesService {
     );
   }
 
+  createWithSubscription(
+    formData: FormData,
+    subscriptionId: number,
+    communityGroupId?: string,
+  ): Observable<ICommunity> {
+    let params = new HttpParams().set('user_subscription_id', subscriptionId);
+    if (communityGroupId) params = params.set('community_group_id', communityGroupId);
+    return this.http.post<ICommunity>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITIES.CREATE), formData, {
+      params,
+    });
+  }
+
+  checkSlug(slug: string): Observable<{ available: boolean }> {
+    const params = new HttpParams().set('slug', slug);
+    return this.http.get<{ available: boolean }>(this.apiRoutesService.getRoute(API_ROUTES.COMMUNITIES.CHECK_SLUG), {
+      params,
+    });
+  }
+
   getRoleCommunities(role: string): Observable<ICommunities> {
     const params = new HttpParams().set('role', role);
     return this.http

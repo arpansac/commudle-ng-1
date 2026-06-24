@@ -185,6 +185,11 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
       this.paymentPaid = true;
       if (lastSegment !== 'complete') {
         this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+      } else if (
+        this.purchaseOrder.orderable_type === EDbModels.PRODUCT_PRICE &&
+        this.productPrice?.is_subscription_plan
+      ) {
+        this.router.navigate(['/subscriptions']);
       }
     } else if (lastSegment === 'complete') {
       this.router.navigate(['checkout', this.purchaseOrder.uuid]);
@@ -289,6 +294,27 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     const orderDetails = {
       subscription_months: this.subscriptionMonths,
     };
+
+    // Use Razorpay Subscription flow for subscription plans
+    if (this.productPrice?.is_subscription_plan) {
+      this.razorpayService
+        .createRzpSubscription(purchaseOrderId)
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => {
+            if (!this.isLoadingPayment) this.isLoadingPayment = false;
+          }),
+        )
+        .subscribe({
+          next: (data) => this.razorPaySubscriptionSubmit(data.rzp_subscription_id),
+          error: () => {
+            this.isLoadingPayment = false;
+            this.toastrService.errorDialog('Failed to create subscription');
+          },
+        });
+      return;
+    }
+
     if (amount === 0) {
       this.handleFullDiscount();
     } else {
@@ -312,6 +338,69 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  private razorPaySubscriptionSubmit(rzpSubscriptionId: string): void {
+    const options = {
+      key: environment.razorpay_key,
+      subscription_id: rzpSubscriptionId,
+      name: this.productPrice?.product_name || 'Commudle',
+      description: this.productPrice?.plan_name || 'Subscription Plan',
+      handler: (response: {
+        razorpay_payment_id: string;
+        razorpay_subscription_id: string;
+        razorpay_signature: string;
+      }) => {
+        this.openLoadingDialog();
+        this.razorpayService
+          .createOrUpdatePayment(
+            {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_subscription_id: response.razorpay_subscription_id,
+              razorpay_signature: response.razorpay_signature,
+            },
+            false,
+            undefined,
+            rzpSubscriptionId,
+          )
+          .pipe(
+            takeUntil(this.destroy$),
+            finalize(() => {
+              this.isLoadingPayment = false;
+              this.closeLoadingDialog();
+            }),
+          )
+          .subscribe({
+            next: () => {
+              this.toastrService.successDialog('Subscription activated successfully!');
+              this.paymentPaid = true;
+              this.router.navigate(['/subscriptions']);
+            },
+            error: () => {
+              this.toastrService.errorDialog('Payment processing failed');
+            },
+          });
+      },
+      prefill: {
+        name: this.currentUser?.name || '',
+        email: this.currentUser?.email || '',
+        contact: this.currentUser?.phone || '',
+      },
+      modal: {
+        escape: false,
+        ondismiss: () => {
+          this.isLoadingPayment = false;
+          this.dialogService.open(this.paymentErrorDialog, { closeOnBackdropClick: false });
+        },
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', (response: { error: { description: string } }) => {
+      this.isLoadingPayment = false;
+      this.toastrService.errorDialog(`Payment failed: ${response.error.description}`);
+    });
+    rzp.open();
+  }
+
   private handleFullDiscount() {
     this.purchaseOrderService
       .markPaidForFullyDiscounted(this.purchaseOrder.uuid)
@@ -332,7 +421,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
           }
           this.toastrService.successDialog('Order completed successfully');
           this.paymentPaid = true;
-          this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+          if (
+            this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
+            this.productPrice?.is_subscription_plan
+          ) {
+            this.router.navigate(['/subscriptions']);
+          } else {
+            this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+          }
         },
         error: () => {
           this.toastrService.errorDialog('Failed to complete order');
@@ -374,7 +470,14 @@ export class CheckoutPageComponent implements OnInit, OnDestroy {
                 }
                 this.toastrService.successDialog('Your Payment Was Received Successfully');
                 this.paymentPaid = true;
-                this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+                if (
+                  this.purchaseOrder?.orderable_type === EDbModels.PRODUCT_PRICE &&
+                  this.productPrice?.is_subscription_plan
+                ) {
+                  this.router.navigate(['/subscriptions']);
+                } else {
+                  this.router.navigate(['checkout', this.purchaseOrder.uuid, 'complete']);
+                }
               }
             },
             error: () => {

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IUserSubscription } from '@commudle/shared-models';
 import { AuthService, SeoService, UserSubscriptionService } from '@commudle/shared-services';
 import { Subject, takeUntil, filter } from 'rxjs';
 
@@ -15,7 +14,10 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
     { title: 'Payment History', route: './payment-history', exact: false },
   ];
 
-  subscriptions: IUserSubscription[] = [];
+  activeCount = 0;
+  totalCommunities = 0;
+  totalOrganizations = 0;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -38,7 +40,7 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe((verified) => {
-        if (verified) this.fetchSubscriptions();
+        if (verified) this.fetchStats();
       });
   }
 
@@ -48,22 +50,14 @@ export class MySubscriptionsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get activeCount(): number {
-    return this.subscriptions.filter((s) => s.status === 'active').length;
-  }
-
-  get totalCommunities(): number {
-    return this.subscriptions.reduce((sum, s) => sum + (s.kommunities_count || 0), 0);
-  }
-
-  get totalOrganizations(): number {
-    return this.subscriptions.reduce((sum, s) => sum + (s.community_groups_count || 0), 0);
-  }
-
-  private fetchSubscriptions(): void {
+  private fetchStats(): void {
     this.userSubscriptionService
-      .getMySubscriptions(1, 100)
+      .getStats()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => (this.subscriptions = res.values));
+      .subscribe((stats) => {
+        this.activeCount = stats.active_count;
+        this.totalCommunities = stats.total_communities;
+        this.totalOrganizations = stats.total_organizations;
+      });
   }
 }

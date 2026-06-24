@@ -33,6 +33,9 @@ import { CampaignPurchaseOrdersComponent } from 'apps/commudle-admin/src/app/fea
 import { SysAdminCampaignStatsComponent } from 'apps/commudle-admin/src/app/feature-modules/sys-admin/components/admin-campaigns/sys-admin-campaign-stats/sys-admin-campaign-stats.component';
 import { PurchaseOrdersComponent } from './components/purchase-orders/purchase-orders.component';
 import { AdminSpamDetectorsComponent } from './components/admin-spam-detectors/admin-spam-detectors.component';
+import { RazorpayPlansComponent } from './components/razorpay-plans/razorpay-plans.component';
+import { AdminProductPricesComponent } from './components/razorpay-plans/product-prices/product-prices.component';
+import { AdminRzpPlansComponent } from './components/razorpay-plans/rzp-plans/rzp-plans.component';
 
 const routes = [
   {
@@ -177,6 +180,14 @@ const routes = [
       {
         path: 'purchase-orders',
         component: PurchaseOrdersComponent,
+      },
+      {
+        path: 'razorpay-plans',
+        component: RazorpayPlansComponent,
+        children: [
+          { path: '', component: AdminProductPricesComponent },
+          { path: 'rzp-plans', component: AdminRzpPlansComponent },
+        ],
       },
     ],
   },

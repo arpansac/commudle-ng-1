@@ -25,6 +25,12 @@ export class UserSubscriptionService {
     );
   }
 
+  getStats(): Observable<{ active_count: number; total_communities: number; total_organizations: number }> {
+    return this.http.get<{ active_count: number; total_communities: number; total_organizations: number }>(
+      this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.STATS),
+    );
+  }
+
   createSubscription(productPriceId: number): Observable<IUserSubscription> {
     return this.http.post<IUserSubscription>(this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.CREATE), {
       user_subscription: { product_price_id: productPriceId },
