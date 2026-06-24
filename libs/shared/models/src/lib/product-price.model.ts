@@ -1,4 +1,5 @@
 export interface IProductPrice {
+  id?: number;
   product_name: string;
   plan_name: string;
   original_price: number;
@@ -10,4 +11,25 @@ export interface IProductPrice {
   uuid: string;
   description: string;
   min_subscription_duration_months: number;
+  is_subscription_plan: boolean;
+  billing_cycle?: string;
+  rzp_plan_id?: string;
+}
+
+export interface IRazorpayPlan {
+  id: string;
+  entity: string;
+  interval: number;
+  period: string;
+  item: {
+    id: string;
+    active: boolean;
+    amount: number;
+    unit_amount: number;
+    currency: string;
+    name: string;
+    description: string;
+  };
+  notes: Record<string, string>;
+  created_at: number;
 }

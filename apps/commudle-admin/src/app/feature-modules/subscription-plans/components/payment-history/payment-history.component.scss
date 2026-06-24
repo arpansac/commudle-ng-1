@@ -1,11 +1,36 @@
 .payment-history-empty {
-  @apply com-flex com-flex-col com-items-center com-gap-3 com-py-20 com-text-gray-400;
+  @apply com-flex com-flex-col com-items-center com-gap-8 com-py-16 com-text-center;
 
-  .empty-icon {
-    @apply com-text-5xl;
+  .empty-icon-wrapper {
+    @apply com-w-20 com-h-20 com-rounded-2xl com-bg-primary-100;
+    @apply com-flex com-items-center com-justify-center;
+
+    nb-icon {
+      @apply com-text-4xl com-text-primary-500;
+    }
   }
 
-  .empty-text {
-    @apply com-text-sm;
+  .empty-content {
+    @apply com-flex com-flex-col com-items-center com-gap-3 com-max-w-sm;
+
+    .empty-title {
+      @apply com-text-Card-Subheading com-font-bold com-text-Yankees-Blue com-m-0;
+    }
+
+    .empty-desc {
+      @apply com-text-Paragraph-2 com-text-gray-500 com-m-0 com-leading-relaxed;
+    }
+  }
+
+  .empty-features {
+    @apply com-flex com-flex-col com-gap-3 sm:com-flex-row sm:com-gap-6;
+
+    .empty-feature {
+      @apply com-flex com-items-center com-gap-2 com-text-Caption com-text-gray-500;
+
+      nb-icon {
+        @apply com-text-base com-text-Caribbean-Green com-flex-shrink-0;
+      }
+    }
   }
 }

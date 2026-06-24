@@ -201,15 +201,19 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
     if (this.logoFile) formData.append('community[logo_image]', this.logoFile);
     if (this.bannerFile) formData.append('community[banner_image]', this.bannerFile);
 
-    // this.communitiesService.create(formData, null, this.subscriptionId).subscribe({
-    //   next: (community) => {
-    //     this.isSubmitting = false;
-    //     this.toastrService.successDialog('Community created successfully!');
-    //     this.dialogRef.close(community);
-    //     this.router.navigate(['/admin/communities', community.slug]);
-    //   },
-    //   error: () => (this.isSubmitting = false),
-    // });
+    this.communitiesService.createWithSubscription(formData, this.subscriptionId).subscribe({
+      next: (community: any) => {
+        this.isSubmitting = false;
+        this.toastrService.successDialog('Community created successfully!');
+        this.dialogRef.close(community);
+        this.router.navigate(['/communities', community.slug]);
+      },
+      error: (err: any) => {
+        this.isSubmitting = false;
+        const msg = err?.error?.message || 'Failed to create community. Please try again.';
+        this.toastrService.errorDialog(msg);
+      },
+    });
   }
 
   close(): void {
@@ -237,9 +241,12 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
 
   private checkSlugAvailability(slug: string): void {
     this.slugCheckState = 'checking';
-    // TODO: replace with real API call e.g. this.communitiesService.checkSlug(slug)
-    setTimeout(() => {
-      this.slugCheckState = 'available';
-    }, 600);
+    this.communitiesService
+      .checkSlug(slug)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => (this.slugCheckState = res.available ? 'available' : 'taken'),
+        error: () => (this.slugCheckState = 'idle'),
+      });
   }
 }
