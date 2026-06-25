@@ -1,3 +1,5 @@
+import { IPurchaseOrder } from './purchase-order.model';
+
 export interface IUserSubscription {
   id: number;
   user_id: number;
@@ -15,7 +17,8 @@ export interface IUserSubscription {
   updated_at: string;
   product_price?: IUserSubscriptionPlan;
   kommunities?: ISubscriptionKommunity[];
-  community_groups_list?: ISubscriptionCommunityGroup[];
+  community_groups?: ISubscriptionCommunityGroup[];
+  purchase_order: IPurchaseOrder;
 }
 
 export interface ISubscriptionKommunity {

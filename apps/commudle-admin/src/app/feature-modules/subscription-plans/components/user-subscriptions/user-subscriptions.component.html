@@ -1,227 +1,224 @@
 <div class="user-subscriptions">
-  <!-- Not logged in -->
-  <div class="empty-state" *ngIf="!isLoggedIn">
-    <nb-icon icon="lock-outline"></nb-icon>
-    <p>Please <a [routerLink]="['/login']">log in</a> to view your subscriptions.</p>
-  </div>
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-  <!-- No subscriptions -->
-  <div class="empty-state" *ngIf="isLoggedIn && subscriptions.length === 0">
-    <div class="empty-state-icon">
-      <nb-icon icon="credit-card-outline"></nb-icon>
-    </div>
-    <div class="empty-state-content">
-      <h3 class="empty-state-title">No active subscriptions</h3>
-      <p class="empty-state-desc">
-        Choose a plan to start building and growing your developer communities on Commudle.
-      </p>
-      <a [routerLink]="['/pricing']" nbButton status="primary" shape="semi-round" size="medium"> View Pricing Plans </a>
-    </div>
-    <div class="empty-state-features">
-      <div class="empty-feature-item">
-        <nb-icon icon="calendar-outline"></nb-icon>
-        <span>Manage Events &amp; Hackathons</span>
+  <ng-container *ngIf="!isLoading">
+    <!-- No subscriptions -->
+    <div class="empty-state" *ngIf="isLoggedIn && subscriptions.length === 0">
+      <div class="empty-state-icon">
+        <nb-icon icon="credit-card-outline"></nb-icon>
       </div>
-      <div class="empty-feature-item">
-        <nb-icon icon="people-outline"></nb-icon>
-        <span>Unlimited Community Members</span>
+      <div class="empty-state-content">
+        <h3 class="empty-state-title">No active subscriptions</h3>
+        <p class="empty-state-desc">
+          Choose a plan to start building and growing your developer communities on Commudle.
+        </p>
+        <a [routerLink]="['/pricing']" nbButton status="primary" shape="semi-round" size="medium">
+          View Pricing Plans
+        </a>
       </div>
-      <div class="empty-feature-item">
-        <nb-icon icon="email-outline"></nb-icon>
-        <span>Newsletters &amp; Channels</span>
+      <div class="empty-state-features">
+        <div class="empty-feature-item">
+          <nb-icon icon="calendar-outline"></nb-icon>
+          <span>Manage Events &amp; Hackathons</span>
+        </div>
+        <div class="empty-feature-item">
+          <nb-icon icon="people-outline"></nb-icon>
+          <span>Unlimited Community Members</span>
+        </div>
+        <div class="empty-feature-item">
+          <nb-icon icon="email-outline"></nb-icon>
+          <span>Newsletters &amp; Channels</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Subscription cards -->
-  <div class="subscriptions-list" *ngIf="subscriptions.length > 0">
-    <com-card
-      *ngFor="let sub of subscriptions"
-      [accent]="
-        sub.status === 'active'
-          ? 'success'
-          : sub.status === 'expired' || sub.status === 'cancelled'
-          ? 'warning'
-          : 'danger'
-      "
-      class="sub-card"
-      [class.sub-card-inactive]="sub.status !== 'active'"
-    >
-      <!-- ── Header ── -->
-      <com-card-header class="sub-header">
-        <div class="header-left">
-          <span class="plan-icon">{{ sub.product_price?.can_create_community_group ? '🏢' : '🌐' }}</span>
-          <div>
-            <h3 class="plan-name">{{ sub.product_price?.plan_name || 'Subscription' }}</h3>
-            <span class="plan-product">{{ sub.product_price?.product_name }}</span>
+    <!-- Subscription cards -->
+    <div class="subscriptions-list" *ngIf="subscriptions.length > 0">
+      <com-card *ngFor="let sub of subscriptions" class="sub-card">
+        <!-- ── Header ── -->
+        <com-card-header class="sub-header">
+          <div class="header-left">
+            <span class="plan-icon">{{ sub.product_price?.can_create_community_group ? '🏢' : '🌐' }}</span>
+            <div>
+              <h3 class="plan-name">{{ sub.product_price?.plan_name || 'Subscription' }}</h3>
+              <span class="plan-product">{{ sub.product_price?.product_name }}</span>
+            </div>
           </div>
-        </div>
-        <div class="header-right">
-          <span class="status-pill" [ngClass]="getStatusClass(sub.status)">
-            <span class="status-dot"></span>{{ sub.status | titlecase }}
-          </span>
-          <span class="days-chip" *ngIf="getDaysLeft(sub) > 0 && sub.status === 'active'">
-            {{ getDaysLeft(sub) }}d left
-          </span>
-        </div>
-      </com-card-header>
-
-      <!-- ── Body ── -->
-      <com-card-body class="sub-body">
-        <!-- Billing row -->
-        <div class="billing-row">
-          <div class="billing-item">
-            <span class="billing-label">Price</span>
-            <span class="billing-value">
-              {{ sub.product_price?.final_price | currency : sub.product_price?.currency : 'symbol' : '1.0-0' }}
-              <span class="billing-cycle">/ {{ sub.product_price?.billing_cycle }}</span>
+          <div class="header-right">
+            <span class="status-pill" [ngClass]="getStatusClass(sub.status)">
+              <span class="status-dot"></span>{{ sub.status | titlecase }}
             </span>
+            <span class="days-chip" *ngIf="getDaysLeft(sub) > 0 && sub.status === 'active'">
+              {{ getDaysLeft(sub) }}d left
+            </span>
+            <a
+              *ngIf="sub.status === 'pending' && sub.purchase_order?.uuid"
+              [routerLink]="['/checkout', sub.purchase_order.uuid]"
+              class="pay-now-chip"
+            >
+              <nb-icon icon="credit-card-outline"></nb-icon>
+              Complete Payment
+            </a>
           </div>
-          <div class="billing-divider"></div>
-          <div class="billing-item">
-            <span class="billing-label">Started</span>
-            <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
-          </div>
-          <ng-container *ngIf="sub.ends_at">
+        </com-card-header>
+
+        <!-- ── Body ── -->
+        <com-card-body class="sub-body">
+          <!-- Billing row -->
+          <div class="billing-row">
+            <div class="billing-item">
+              <span class="billing-label">Price</span>
+              <span class="billing-value">
+                {{ sub.product_price?.final_price | currency : sub.product_price?.currency : 'symbol' : '1.0-0' }}
+                <span class="billing-cycle">/ {{ sub.product_price?.billing_cycle }}</span>
+              </span>
+            </div>
             <div class="billing-divider"></div>
             <div class="billing-item">
-              <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
-              <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
+              <span class="billing-label">Started</span>
+              <span class="billing-value">{{ sub.starts_at | date : 'MMM d, y' }}</span>
             </div>
-          </ng-container>
-        </div>
+            <ng-container *ngIf="sub.ends_at">
+              <div class="billing-divider"></div>
+              <div class="billing-item">
+                <span class="billing-label">{{ sub.status === 'active' ? 'Renews' : 'Ended' }}</span>
+                <span class="billing-value">{{ sub.ends_at | date : 'MMM d, y' }}</span>
+              </div>
+            </ng-container>
+          </div>
 
-        <!-- Community usage -->
-        <div class="usage-block" *ngIf="sub.product_price?.can_create_kommunity">
-          <div class="usage-header">
-            <span class="usage-title">🌐 Communities</span>
-            <span
-              class="usage-count"
-              [ngClass]="getQuotaClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
-            >
-              {{ sub.kommunities_count }} / {{ sub.product_price?.max_kommunities ?? '∞' }}
-            </span>
-          </div>
-          <div class="progress-track" *ngIf="sub.product_price?.max_kommunities">
-            <div
-              class="progress-fill"
-              [ngClass]="getProgressClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
-              [style.width.%]="getQuotaPercent(sub.kommunities_count, sub.product_price?.max_kommunities)"
-            ></div>
-          </div>
-          <details class="inline-accordion" *ngIf="sub.kommunities?.length > 0">
-            <summary>
-              View {{ sub.kommunities.length }} {{ sub.kommunities.length === 1 ? 'community' : 'communities' }}
-              <span class="chevron">›</span>
-            </summary>
-            <div class="inline-list">
-              <a *ngFor="let c of sub.kommunities" [routerLink]="['/communities', c.slug]" class="inline-item">
-                <span class="inline-dot"></span>
-                <span class="inline-name">{{ c.name }}</span>
-                <span class="inline-date">{{ c.created_at | date : 'MMM d' }}</span>
-                <nb-icon icon="arrow-forward-outline" class="inline-arrow"></nb-icon>
-              </a>
-            </div>
-          </details>
-        </div>
-
-        <!-- Org usage -->
-        <div class="usage-block" *ngIf="sub.product_price?.can_create_community_group">
-          <div class="usage-header">
-            <span class="usage-title">🏢 Organizations</span>
-            <span
-              class="usage-count"
-              [ngClass]="getQuotaClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
-            >
-              {{ sub.community_groups_count }} / {{ sub.product_price?.max_community_groups ?? '∞' }}
-            </span>
-          </div>
-          <div class="progress-track" *ngIf="sub.product_price?.max_community_groups">
-            <div
-              class="progress-fill"
-              [ngClass]="getProgressClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
-              [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
-            ></div>
-          </div>
-          <details class="inline-accordion" *ngIf="sub.community_groups_list?.length > 0">
-            <summary>
-              View {{ sub.community_groups_list.length }}
-              {{ sub.community_groups_list.length === 1 ? 'organization' : 'organizations' }}
-              <span class="chevron">›</span>
-            </summary>
-            <div class="inline-list">
-              <a
-                *ngFor="let cg of sub.community_groups_list"
-                [routerLink]="['/orgs', cg.slug]"
-                class="inline-item inline-item-org"
+          <!-- Community usage -->
+          <div class="usage-block" *ngIf="sub.product_price?.can_create_kommunity">
+            <div class="usage-header">
+              <span class="usage-title">🌐 Communities</span>
+              <span
+                class="usage-count"
+                [ngClass]="getQuotaClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
               >
-                <span class="org-avatar">{{ cg.name?.charAt(0)?.toUpperCase() }}</span>
-                <span class="inline-name">{{ cg.name }}</span>
-                <span class="inline-date" *ngIf="cg.kommunities?.length > 0"
-                  >{{ cg.kommunities.length }} communities</span
-                >
-                <nb-icon icon="arrow-forward-outline" class="inline-arrow"></nb-icon>
-              </a>
+                {{ sub.kommunities_count }} / {{ sub.product_price?.max_kommunities ?? '∞' }}
+              </span>
             </div>
-          </details>
-        </div>
+            <div class="progress-track" *ngIf="sub.product_price?.max_kommunities">
+              <div
+                class="progress-fill"
+                [ngClass]="getProgressClass(sub.kommunities_count, sub.product_price?.max_kommunities)"
+                [style.width.%]="getQuotaPercent(sub.kommunities_count, sub.product_price?.max_kommunities)"
+              ></div>
+            </div>
+            <details class="inline-accordion" *ngIf="sub.kommunities?.length > 0">
+              <summary>
+                View {{ sub.kommunities.length }} {{ sub.kommunities.length === 1 ? 'community' : 'communities' }}
+                <span class="chevron">›</span>
+              </summary>
+              <div class="inline-list">
+                <a *ngFor="let c of sub.kommunities" [routerLink]="['/communities', c.slug]" class="inline-item">
+                  <span class="inline-dot"></span>
+                  <span class="inline-name">{{ c.name }}</span>
+                  <span class="inline-date">{{ c.created_at | date : 'MMM d' }}</span>
+                  <nb-icon icon="arrow-forward-outline" class="inline-arrow"></nb-icon>
+                </a>
+              </div>
+            </details>
+          </div>
 
-        <!-- Expired notice -->
-        <div class="expired-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
-          <nb-icon icon="alert-triangle-outline"></nb-icon>
-          <span>Subscription {{ sub.status }}. Communities are still active but new creation is blocked.</span>
-          <button nbButton status="warning" size="tiny" (click)="renewPlan(sub)">Renew</button>
-        </div>
-      </com-card-body>
+          <!-- Org usage -->
+          <div class="usage-block" *ngIf="sub.product_price?.can_create_community_group">
+            <div class="usage-header">
+              <span class="usage-title">🏢 Organizations</span>
+              <span
+                class="usage-count"
+                [ngClass]="getQuotaClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
+              >
+                {{ sub.community_groups_count }} / {{ sub.product_price?.max_community_groups ?? '∞' }}
+              </span>
+            </div>
+            <div class="progress-track" *ngIf="sub.product_price?.max_community_groups">
+              <div
+                class="progress-fill"
+                [ngClass]="getProgressClass(sub.community_groups_count, sub.product_price?.max_community_groups)"
+                [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
+              ></div>
+            </div>
+            <details class="inline-accordion" *ngIf="sub.community_groups_list?.length > 0">
+              <summary>
+                View {{ sub.community_groups_list.length }}
+                {{ sub.community_groups_list.length === 1 ? 'organization' : 'organizations' }}
+                <span class="chevron">›</span>
+              </summary>
+              <div class="inline-list">
+                <a
+                  *ngFor="let cg of sub.community_groups_list"
+                  [routerLink]="['/orgs', cg.slug]"
+                  class="inline-item inline-item-org"
+                >
+                  <span class="org-avatar">{{ cg.name?.charAt(0)?.toUpperCase() }}</span>
+                  <span class="inline-name">{{ cg.name }}</span>
+                  <span class="inline-date" *ngIf="cg.kommunities?.length > 0"
+                    >{{ cg.kommunities.length }} communities</span
+                  >
+                  <nb-icon icon="arrow-forward-outline" class="inline-arrow"></nb-icon>
+                </a>
+              </div>
+            </details>
+          </div>
 
-      <!-- ── Footer ── -->
-      <com-card-footer class="sub-footer">
-        <div class="action-group" *ngIf="sub.product_price?.can_create_kommunity">
-          <button
-            nbButton
-            status="primary"
-            size="small"
-            [disabled]="sub.status !== 'active' || !canCreateKommunity(sub)"
-            (click)="createCommunity(sub)"
-          >
-            <nb-icon icon="plus-outline"></nb-icon> New Community
-          </button>
-          <span class="action-hint" *ngIf="sub.status === 'active' && sub.product_price?.max_kommunities">
-            {{ getRemaining(sub.kommunities_count, sub.product_price?.max_kommunities) }} slots left
-          </span>
-          <span class="action-hint action-hint-full" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
-            Quota full
-          </span>
-        </div>
-        <div class="action-group" *ngIf="sub.product_price?.can_create_community_group">
-          <button
-            nbButton
-            status="info"
-            size="small"
-            [disabled]="sub.status !== 'active' || !canCreateCommunityGroup(sub)"
-            (click)="createOrganization(sub)"
-          >
-            <nb-icon icon="plus-outline"></nb-icon> New Organization
-          </button>
-          <span class="action-hint" *ngIf="sub.status === 'active' && sub.product_price?.max_community_groups">
-            {{ getRemaining(sub.community_groups_count, sub.product_price?.max_community_groups) }} slots left
-          </span>
-          <span class="action-hint action-hint-full" *ngIf="!canCreateCommunityGroup(sub) && sub.status === 'active'">
-            Quota full
-          </span>
-        </div>
-      </com-card-footer>
-    </com-card>
+          <!-- Expired notice -->
+          <div class="expired-notice" *ngIf="sub.status === 'expired' || sub.status === 'cancelled'">
+            <nb-icon icon="alert-triangle-outline"></nb-icon>
+            <span>Subscription {{ sub.status }}. Communities are still active but new creation is blocked.</span>
+            <button nbButton status="warning" size="tiny" (click)="renewPlan(sub)">Renew</button>
+          </div>
+        </com-card-body>
 
-    <div class="pagination-wrapper" *ngIf="total > count">
-      <app-pagination
-        [current]="page"
-        [count]="count"
-        [total]="total"
-        (goTo)="goToPage($event)"
-        (next)="goToPage($event)"
-        (previous)="goToPage($event)"
-      ></app-pagination>
+        <!-- ── Footer ── -->
+        <com-card-footer class="sub-footer">
+          <div class="action-group" *ngIf="sub.product_price?.can_create_kommunity">
+            <button
+              nbButton
+              status="primary"
+              size="small"
+              [disabled]="sub.status !== 'active' || !canCreateKommunity(sub)"
+              (click)="createCommunity(sub)"
+            >
+              <nb-icon icon="plus-outline"></nb-icon> New Community
+            </button>
+            <span class="action-hint" *ngIf="sub.status === 'active' && sub.product_price?.max_kommunities">
+              {{ getRemaining(sub.kommunities_count, sub.product_price?.max_kommunities) }} slots left
+            </span>
+            <span class="action-hint action-hint-full" *ngIf="!canCreateKommunity(sub) && sub.status === 'active'">
+              Quota full
+            </span>
+          </div>
+          <div class="action-group" *ngIf="sub.product_price?.can_create_community_group">
+            <button
+              nbButton
+              status="info"
+              size="small"
+              [disabled]="sub.status !== 'active' || !canCreateCommunityGroup(sub)"
+              (click)="createOrganization(sub)"
+            >
+              <nb-icon icon="plus-outline"></nb-icon> New Organization
+            </button>
+            <span class="action-hint" *ngIf="sub.status === 'active' && sub.product_price?.max_community_groups">
+              {{ getRemaining(sub.community_groups_count, sub.product_price?.max_community_groups) }} slots left
+            </span>
+            <span class="action-hint action-hint-full" *ngIf="!canCreateCommunityGroup(sub) && sub.status === 'active'">
+              Quota full
+            </span>
+          </div>
+        </com-card-footer>
+      </com-card>
+
+      <div class="pagination-wrapper" *ngIf="total > count">
+        <app-pagination
+          [current]="page"
+          [count]="count"
+          [total]="total"
+          (goTo)="goToPage($event)"
+          (next)="goToPage($event)"
+          (previous)="goToPage($event)"
+        ></app-pagination>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>
