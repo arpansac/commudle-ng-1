@@ -59,17 +59,13 @@
               (input)="onSlugInput()"
             />
             <span class="cf-slug-status">
-              <fa-icon
-                *ngIf="slugCheckState === 'checking'"
-                [icon]="icons.faSpinner"
-                class="cf-slug-checking"
-              ></fa-icon>
-              <fa-icon
+              <nb-icon *ngIf="slugCheckState === 'checking'" icon="loader-outline" class="cf-slug-checking"></nb-icon>
+              <nb-icon
                 *ngIf="slugCheckState === 'available'"
-                [icon]="icons.faCheckCircle"
+                icon="checkmark-circle-2-outline"
                 class="cf-slug-available"
-              ></fa-icon>
-              <fa-icon *ngIf="slugCheckState === 'taken'" [icon]="icons.faTimesCircle" class="cf-slug-taken"></fa-icon>
+              ></nb-icon>
+              <nb-icon *ngIf="slugCheckState === 'taken'" icon="close-circle-outline" class="cf-slug-taken"></nb-icon>
             </span>
           </div>
           <span *ngIf="communityForm.get('slug').touched && communityForm.get('slug').hasError('required')">
@@ -129,7 +125,7 @@
         <div class="cf-field">
           <label class="cf-label">Logo <span class="cf-hint">(PNG, JPG · max 5MB)</span></label>
           <label *ngIf="!logoPreview" class="cf-upload" (click)="logoInput.click()">
-            <fa-icon [icon]="icons.faImage" class="cf-upload-icon"></fa-icon>
+            <nb-icon icon="image-outline" class="cf-upload-icon"></nb-icon>
             <span>Click to upload</span>
             <input
               #logoInput
@@ -149,7 +145,7 @@
         <div class="cf-field">
           <label class="cf-label">Banner Image <span class="cf-hint">(1280×320px · max 5MB)</span></label>
           <label *ngIf="!bannerPreview" class="cf-upload cf-upload-banner" (click)="bannerInput.click()">
-            <fa-icon [icon]="icons.faUpload" class="cf-upload-icon"></fa-icon>
+            <nb-icon icon="upload-outline" class="cf-upload-icon"></nb-icon>
             <span>Click to upload</span>
             <input
               #bannerInput
@@ -174,13 +170,13 @@
       <div class="cf-row">
         <div class="cf-field">
           <label class="cf-label cf-social-label">
-            <fa-icon [icon]="icons.faFacebook" class="cf-social-icon cf-facebook"></fa-icon> Facebook
+            <nb-icon icon="facebook-outline" class="cf-social-icon cf-facebook"></nb-icon> Facebook
           </label>
           <input nbInput fullWidth formControlName="facebook" type="url" placeholder="https://facebook.com/..." />
         </div>
         <div class="cf-field">
           <label class="cf-label cf-social-label">
-            <fa-icon [icon]="icons.faTwitter" class="cf-social-icon cf-twitter"></fa-icon> Twitter / X
+            <nb-icon icon="twitter-outline" class="cf-social-icon cf-twitter"></nb-icon> Twitter / X
           </label>
           <input nbInput fullWidth formControlName="twitter" type="url" placeholder="https://twitter.com/..." />
         </div>
@@ -189,13 +185,13 @@
       <div class="cf-row">
         <div class="cf-field">
           <label class="cf-label cf-social-label">
-            <fa-icon [icon]="icons.faGithub" class="cf-social-icon"></fa-icon> GitHub
+            <nb-icon icon="github-outline" class="cf-social-icon"></nb-icon> GitHub
           </label>
           <input nbInput fullWidth formControlName="github" type="url" placeholder="https://github.com/..." />
         </div>
         <div class="cf-field">
           <label class="cf-label cf-social-label">
-            <fa-icon [icon]="icons.faLinkedin" class="cf-social-icon cf-linkedin"></fa-icon> LinkedIn
+            <nb-icon icon="linkedin-outline" class="cf-social-icon cf-linkedin"></nb-icon> LinkedIn
           </label>
           <input nbInput fullWidth formControlName="linkedin" type="url" placeholder="https://linkedin.com/..." />
         </div>
@@ -204,7 +200,7 @@
       <div class="cf-row">
         <div class="cf-field">
           <label class="cf-label cf-social-label">
-            <fa-icon [icon]="icons.faInstagram" class="cf-social-icon cf-instagram"></fa-icon> Instagram
+            <nb-icon icon="at-outline" class="cf-social-icon cf-instagram"></nb-icon> Instagram
           </label>
           <input nbInput fullWidth formControlName="instagram" type="url" placeholder="https://instagram.com/..." />
         </div>

@@ -3,23 +3,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NbDialogRef, NbButtonModule, NbInputModule, NbFormFieldModule, NbIconModule } from '@commudle/theme';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { CommunitiesService } from 'apps/commudle-admin/src/app/services/communities.service';
 import { ToastrService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
-import {
-  faXmark,
-  faSpinner,
-  faCheckCircle,
-  faTimesCircle,
-  faTrash,
-  faImage,
-  faUpload,
-} from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faTwitter, faGithub, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
@@ -35,7 +24,6 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
     NbInputModule,
     NbFormFieldModule,
     NbIconModule,
-    FontAwesomeModule,
     EditorModule,
     SharedComponentsModule,
     CommudleCardModule,
@@ -54,21 +42,6 @@ export class CreateCommunityFormComponent implements OnInit, OnDestroy {
   logoFile: File | null = null;
   bannerPreview: string | null = null;
   bannerFile: File | null = null;
-
-  readonly icons = {
-    faXmark,
-    faSpinner,
-    faCheckCircle,
-    faTimesCircle,
-    faTrash,
-    faImage,
-    faUpload,
-    faFacebook,
-    faTwitter,
-    faGithub,
-    faLinkedin,
-    faInstagram,
-  };
 
   readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
   readonly maxImageSize = 5 * 1024 * 1024;

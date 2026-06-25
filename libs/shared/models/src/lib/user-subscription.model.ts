@@ -1,4 +1,7 @@
+import { ICommunity } from './community.model';
 import { IPurchaseOrder } from './purchase-order.model';
+import { ICommunityGroup } from './community-group.model';
+import { IProductPrice } from './product-price.model';
 
 export interface IUserSubscription {
   id: number;
@@ -15,40 +18,10 @@ export interface IUserSubscription {
   community_groups_count: number;
   created_at: string;
   updated_at: string;
-  product_price?: IUserSubscriptionPlan;
-  kommunities?: ISubscriptionKommunity[];
-  community_groups?: ISubscriptionCommunityGroup[];
+  product_price?: IProductPrice;
+  kommunities?: ICommunity[];
+  community_groups?: ICommunityGroup[];
   purchase_order: IPurchaseOrder;
-}
-
-export interface ISubscriptionKommunity {
-  id: number;
-  name: string;
-  slug: string;
-  created_at: string;
-}
-
-export interface ISubscriptionCommunityGroup {
-  id: number;
-  name: string;
-  slug: string;
-  kommunities: ISubscriptionKommunity[];
-}
-
-export interface IUserSubscriptionPlan {
-  id: number;
-  plan_name: string;
-  product_name: string;
-  original_price: number;
-  final_price: number;
-  currency: string;
-  billing_cycle: EBillingCycle;
-  can_create_kommunity: boolean;
-  can_create_community_group: boolean;
-  max_kommunities: number;
-  max_community_groups: number;
-  description: string;
-  uuid: string;
 }
 
 export enum EUserSubscriptionStatus {
