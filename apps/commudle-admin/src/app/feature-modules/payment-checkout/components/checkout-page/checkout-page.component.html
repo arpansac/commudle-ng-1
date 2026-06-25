@@ -138,9 +138,20 @@
 
               <!-- Price -->
               <div class="payment-details">
-                <span class="heading">Price</span>
+                <span class="heading">Price per community</span>
                 <span class="value">
                   {{ purchaseOrder.price / 100 | currency : purchaseOrder.currency }}
+                  <span class="billing-cycle-note" *ngIf="productPrice?.billing_cycle === 'yearly'">/mo</span>
+                </span>
+              </div>
+
+              <!-- Annual billing callout -->
+              <div class="annual-billing-callout" *ngIf="productPrice?.billing_cycle === 'yearly'">
+                <nb-icon icon="info-outline"></nb-icon>
+                <span>
+                  Annual plan, billed as
+                  <strong>{{ (purchaseOrder.price / 100) * 12 * quantity | currency : purchaseOrder.currency }}</strong>
+                  for 12 months
                 </span>
               </div>
 
