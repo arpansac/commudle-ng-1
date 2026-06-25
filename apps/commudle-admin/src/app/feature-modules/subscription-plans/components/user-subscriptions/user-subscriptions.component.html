@@ -139,15 +139,15 @@
                 [style.width.%]="getQuotaPercent(sub.community_groups_count, sub.product_price?.max_community_groups)"
               ></div>
             </div>
-            <details class="inline-accordion" *ngIf="sub.community_groups_list?.length > 0">
+            <details class="inline-accordion" *ngIf="sub.community_groups?.length > 0">
               <summary>
-                View {{ sub.community_groups_list.length }}
-                {{ sub.community_groups_list.length === 1 ? 'organization' : 'organizations' }}
+                View {{ sub.community_groups.length }}
+                {{ sub.community_groups.length === 1 ? 'organization' : 'organizations' }}
                 <span class="chevron">›</span>
               </summary>
               <div class="inline-list">
                 <a
-                  *ngFor="let cg of sub.community_groups_list"
+                  *ngFor="let cg of sub.community_groups"
                   [routerLink]="['/orgs', cg.slug]"
                   class="inline-item inline-item-org"
                 >
