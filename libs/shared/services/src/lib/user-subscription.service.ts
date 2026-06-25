@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUserSubscription, IUserSubscriptionPlan, IPaginationCount } from '@commudle/shared-models';
+import { IUserSubscription, IPaginationCount } from '@commudle/shared-models';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 
@@ -11,8 +11,8 @@ import { BaseApiService } from './base-api.service';
 export class UserSubscriptionService {
   constructor(private http: HttpClient, private baseApiService: BaseApiService) {}
 
-  // getSubscriptionPlans(): Observable<IUserSubscriptionPlan[]> {
-  //   return this.http.get<IUserSubscriptionPlan[]>(
+  // getSubscriptionPlans(): Observable<IProductPrice[]> {
+  //   return this.http.get<IProductPrice[]>(
   //     this.baseApiService.getRoute(API_ROUTES.PRODUCT_PRICES.SUBSCRIPTION_PLANS),
   //   );
   // }

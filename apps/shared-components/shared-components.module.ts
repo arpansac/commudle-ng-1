@@ -43,6 +43,7 @@ import { AlertComponent } from './alert/alert.component';
 import { BadgeComponent } from './badge/badge.component';
 import { BannerImageComponent } from './banner-image/banner-image.component';
 import { CommunityBadgeComponent } from './community-badge/community-badge.component';
+import { CommunityGroupBadgeComponent } from './community-group-badge/community-group-badge.component';
 import { CookieConsentComponent } from './cookie-consent/cookie-consent.component';
 import { DataFormFillComponent } from './data-form-fill/data-form-fill.component';
 import { DiscussionPersonalChatComponent } from './discussion-personal-chat/discussion-personal-chat.component';
@@ -111,6 +112,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     WorkInProgressComponent,
     UserProfileHorizontalComponent,
     CommunityBadgeComponent,
+    CommunityGroupBadgeComponent,
     VideoStreamComponent,
     PollsComponent,
     PollCreateFormComponent,
@@ -224,6 +226,7 @@ import { CommudleCardModule } from '@commudle/commudle-theme';
     UserProfileHorizontalComponent,
     BadgeComponent,
     CommunityBadgeComponent,
+    CommunityGroupBadgeComponent,
     VideoStreamComponent,
     PollsComponent,
     PollResultComponent,

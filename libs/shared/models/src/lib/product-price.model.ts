@@ -13,7 +13,12 @@ export interface IProductPrice {
   min_subscription_duration_months: number;
   is_subscription_plan: boolean;
   billing_cycle?: string;
+  max_kommunities?: number;
+  can_create_community_group?: boolean;
+  can_create_kommunity?: boolean;
+  rzp_billing_interval?: number;
   rzp_plan_id?: string;
+  max_community_groups?: number;
 }
 
 export interface IRazorpayPlan {
