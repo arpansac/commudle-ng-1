@@ -25,64 +25,21 @@
                     <fa-icon [icon]="faBuilding"></fa-icon>
                   </div>
                 </div>
-                <div class="social-links">
-                  <a
-                    *ngIf="communityGroup.twitter"
-                    href="{{ communityGroup.twitter | completeurl : 'twitter' }}"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <nb-icon icon="twitter" status="primary"></nb-icon>
-                  </a>
-                  <a
-                    *ngIf="communityGroup.linkedin"
-                    href="{{ communityGroup.linkedin | completeurl : 'linkedin' }}"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <nb-icon icon="linkedin" status="primary"></nb-icon>
-                  </a>
-                  <a
-                    *ngIf="communityGroup.facebook"
-                    href="{{ communityGroup.facebook | completeurl : 'facebook' }}"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <nb-icon icon="facebook" status="primary"></nb-icon>
-                  </a>
-                  <a
-                    *ngIf="communityGroup.github"
-                    href="{{ communityGroup.github | completeurl : 'github' }}"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <nb-icon icon="github" status="primary"></nb-icon>
-                  </a>
-                  <a
-                    *ngIf="communityGroup.website"
-                    href="{{ communityGroup.website }}"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    <nb-icon icon="info" status="primary"></nb-icon>
-                  </a>
-                </div>
               </div>
               <p class="mini-description">
                 {{ communityGroup.mini_description }}
               </p>
               <div class="links">
-                <app-badge
-                  [text]="communityGroup.member_count"
-                  [fontColor]="'com-text-tAuro-Metal-Saurus'"
-                  [nbIcon]="'people-outline'"
-                  [fontSize]="'small'"
-                  [borderRadius]="'round'"
-                  [color]="'com-bg-Bright-Gray-Light'"
-                ></app-badge>
+                <p class="member-count">
+                  <a [routerLink]="['/orgs', communityGroup.slug, 'communities']">
+                    <fa-icon [icon]="faUserGroup"></fa-icon>
+                    {{ communityGroup.member_count }} Members
+                  </a>
+                </p>
                 <div *ngIf="isOrganizer">
                   <a
                     nbButton
+                    size="small"
                     status="danger"
                     shape="semi-round"
                     [routerLink]="['/admin', 'orgs', communityGroup.slug]"
@@ -95,7 +52,8 @@
             </div>
           </div>
         </div>
-        <div class="page-menu">
+        <div #stickySentinel class="sticky-sentinel"></div>
+        <div class="menu-items-footer menu-items-footer-sticky" [ngClass]="{ 'sticky-active': isMenuSticky }">
           <div class="menu-items d-flex">
             <a [routerLink]="['/orgs', communityGroup.slug, 'about']" class="d-flex" routerLinkActive="active">
               <fa-icon [icon]="faCircleInfo"></fa-icon>

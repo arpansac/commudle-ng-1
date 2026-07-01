@@ -4,16 +4,23 @@ import { ActivatedRoute } from '@angular/router';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription } from 'rxjs';
+import { faTwitter, faLinkedinIn, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-community-group-about',
-    templateUrl: './community-group-about.component.html',
-    styleUrls: ['./community-group-about.component.scss'],
-    standalone: false
+  selector: 'app-community-group-about',
+  templateUrl: './community-group-about.component.html',
+  styleUrls: ['./community-group-about.component.scss'],
+  standalone: false,
 })
 export class CommunityGroupAboutComponent implements OnInit, OnDestroy {
   communityGroup: ICommunityGroup;
   description;
+  faTwitter = faTwitter;
+  faLinkedinIn = faLinkedinIn;
+  faFacebookF = faFacebookF;
+  faGithub = faGithub;
+  faGlobe = faGlobe;
 
   subscriptions: Subscription[] = [];
 

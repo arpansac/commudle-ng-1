@@ -1,6 +1,15 @@
 nb-card {
   @apply com-mx-0;
+
   nb-card-body {
     @apply com-min-h-[300px];
+  }
+}
+
+.community-social-links {
+  @apply com-flex com-gap-3 com-mt-6 com-flex-wrap;
+
+  a {
+    @apply com-no-underline;
   }
 }

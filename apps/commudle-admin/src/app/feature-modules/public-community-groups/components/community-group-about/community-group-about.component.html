@@ -1,5 +1,81 @@
 <nb-card>
   <nb-card-body>
     <div class="description" [innerHTML]="description"></div>
+    <div
+      class="community-social-links"
+      *ngIf="
+        communityGroup.twitter ||
+        communityGroup.linkedin ||
+        communityGroup.facebook ||
+        communityGroup.github ||
+        communityGroup.website
+      "
+    >
+      <a
+        *ngIf="communityGroup.twitter"
+        [href]="communityGroup.twitter | completeurl : 'twitter'"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <app-badge
+          [faIcon]="faTwitter"
+          [fontColor]="'com-text-primary-500'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-blue-50'"
+        ></app-badge>
+      </a>
+      <a
+        *ngIf="communityGroup.linkedin"
+        [href]="communityGroup.linkedin | completeurl : 'linkedin'"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <app-badge
+          [faIcon]="faLinkedinIn"
+          [fontColor]="'com-text-primary-500'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-blue-50'"
+        ></app-badge>
+      </a>
+      <a
+        *ngIf="communityGroup.facebook"
+        [href]="communityGroup.facebook | completeurl : 'facebook'"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <app-badge
+          [faIcon]="faFacebookF"
+          [fontColor]="'com-text-primary-500'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-blue-50'"
+        ></app-badge>
+      </a>
+      <a
+        *ngIf="communityGroup.github"
+        [href]="communityGroup.github | completeurl : 'github'"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <app-badge
+          [faIcon]="faGithub"
+          [fontColor]="'com-text-primary-500'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-blue-50'"
+        ></app-badge>
+      </a>
+      <a *ngIf="communityGroup.website" [href]="communityGroup.website" rel="noreferrer" target="_blank">
+        <app-badge
+          [faIcon]="faGlobe"
+          [fontColor]="'com-text-primary-500'"
+          [fontSize]="'small'"
+          [borderRadius]="'round'"
+          [color]="'com-bg-blue-50'"
+        ></app-badge>
+      </a>
+    </div>
   </nb-card-body>
 </nb-card>

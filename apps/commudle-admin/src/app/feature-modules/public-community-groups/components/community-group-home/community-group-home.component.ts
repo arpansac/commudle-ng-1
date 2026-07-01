@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ICommunityGroup } from 'apps/shared-models/community-group.model';
 import { SeoService } from 'apps/shared-services/seo.service';
 import { Subscription, map } from 'rxjs';
@@ -13,7 +14,9 @@ import {
   faBuilding,
   faPencil,
   faCaretDown,
+  faGlobe,
 } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter, faLinkedinIn, faFacebookF, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { NbMenuService } from '@commudle/theme';
 import { CustomPageService } from 'apps/commudle-admin/src/app/services/custom-page.service';
@@ -25,19 +28,28 @@ interface CustomMenuItem {
 }
 
 @Component({
-    selector: 'app-community-group-home',
-    templateUrl: './community-group-home.component.html',
-    styleUrls: ['./community-group-home.component.scss'],
-    standalone: false
+  selector: 'app-community-group-home',
+  templateUrl: './community-group-home.component.html',
+  styleUrls: ['./community-group-home.component.scss'],
+  standalone: false,
 })
-export class CommunityGroupHomeComponent implements OnInit, OnDestroy {
+export class CommunityGroupHomeComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('stickySentinel') stickySentinel: ElementRef;
   communityGroup: ICommunityGroup;
   subscriptions: Subscription[] = [];
   isOrganizer = false;
+  isMenuSticky = false;
+  private observer: IntersectionObserver;
+  private isBrowser: boolean;
 
   //icons
   faUserGroup = faUserGroup;
   faCircleInfo = faCircleInfo;
+  faTwitter = faTwitter;
+  faLinkedinIn = faLinkedinIn;
+  faFacebookF = faFacebookF;
+  faGithub = faGithub;
+  faGlobe = faGlobe;
   faComments = faComments;
   faHashtag = faHashtag;
   faCalendarWeek = faCalendarWeek;
@@ -57,7 +69,10 @@ export class CommunityGroupHomeComponent implements OnInit, OnDestroy {
     private nbMenuService: NbMenuService,
     private customPageService: CustomPageService,
     private router: Router,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
     this.items = [];
@@ -89,8 +104,21 @@ export class CommunityGroupHomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit() {
+    if (this.isBrowser && this.stickySentinel) {
+      this.observer = new IntersectionObserver(
+        ([entry]) => {
+          this.isMenuSticky = !entry.isIntersecting;
+        },
+        { threshold: [0] },
+      );
+      this.observer.observe(this.stickySentinel.nativeElement);
+    }
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this.observer?.disconnect();
   }
 
   checkOrganizer() {
