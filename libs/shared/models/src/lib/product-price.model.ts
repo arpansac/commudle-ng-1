@@ -19,6 +19,8 @@ export interface IProductPrice {
   rzp_billing_interval?: number;
   rzp_plan_id?: string;
   max_community_groups?: number;
+  trial_period_days?: number;
+  trial_enabled?: boolean;
 }
 
 export interface IRazorpayPlan {

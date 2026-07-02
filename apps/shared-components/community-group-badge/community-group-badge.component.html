@@ -5,7 +5,7 @@
     medium: size === 'medium'
   }"
 >
-  <a [routerLink]="['/orgs', communityGroup.slug]">
+  <a [routerLink]="[routeBase, communityGroup.slug]">
     <div class="logo">
       <img
         *ngIf="communityGroup.logo?.url"

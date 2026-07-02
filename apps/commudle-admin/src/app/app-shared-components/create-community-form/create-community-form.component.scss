@@ -2,7 +2,8 @@
   display: contents;
 }
 
-.create-community-form {
+.create-community-form,
+.create-community-group-form {
   @apply com-w-[100dvw] md:com-w-[680px] com-flex com-flex-col;
   max-height: 90dvh;
 }
@@ -16,7 +17,7 @@
   }
 
   .cf-subtitle {
-    @apply com-text-sm com-text-gray-500 com-m-0 com-mt-1;
+    @apply com-text-sm com-text-gray-400 com-m-0 com-mt-0.5;
   }
 }
 
@@ -28,31 +29,123 @@
 // ── Section label ─────────────────────────────────────
 .cf-section-label {
   @apply com-text-xs com-font-bold com-uppercase com-tracking-widest com-text-gray-400;
-  @apply com-m-0 com-mt-6 com-mb-3 com-pb-2 com-border-b com-border-gray-100;
+  @apply com-m-0 com-mt-5 com-mb-3 com-pb-2 com-border-b com-border-gray-100;
+}
 
-  &:first-child {
-    @apply com-mt-0;
+// ── Images row ────────────────────────────────────────
+.cf-images-row {
+  @apply com-flex com-gap-4 com-mb-2 com-items-start;
+
+  @screen md {
+    @apply com-flex-nowrap;
   }
 }
 
-// ── Row — two columns on md+ ──────────────────────────
+.cf-image-field {
+  @apply com-flex com-flex-col com-gap-2;
+
+  &.cf-image-field-banner {
+    @apply com-flex-1 com-min-w-0;
+  }
+}
+
+// ── Upload boxes ──────────────────────────────────────
+.cf-upload-box {
+  @apply com-flex com-flex-col com-items-center com-justify-center com-gap-1.5;
+  @apply com-border-2 com-border-dashed com-border-gray-200 com-rounded-xl;
+  @apply com-cursor-pointer com-transition-colors com-overflow-hidden com-relative;
+  @apply hover:com-border-primary-400 hover:com-bg-primary-100;
+
+  &.cf-upload-square {
+    @apply com-w-24 com-h-24 com-flex-shrink-0;
+  }
+
+  &.cf-upload-banner {
+    @apply com-w-full;
+    min-height: 96px;
+  }
+
+  .cf-preview-img {
+    @apply com-w-full com-h-full com-object-cover com-absolute com-inset-0;
+  }
+
+  .cf-upload-icon {
+    @apply com-text-2xl com-text-gray-300;
+  }
+
+  .cf-upload-text {
+    @apply com-text-xs com-text-gray-400;
+  }
+}
+
+// ── Org logo canvas (theme color bg) ──────────────────
+.cf-logo-canvas {
+  @apply com-w-24 com-h-24 com-rounded-xl com-flex com-flex-col com-items-center com-justify-center;
+  @apply com-cursor-pointer com-overflow-hidden com-relative com-transition-opacity com-flex-shrink-0;
+  @apply hover:com-opacity-80;
+
+  .cf-logo-img {
+    @apply com-w-full com-h-full com-object-contain;
+  }
+
+  .cf-upload-icon {
+    @apply com-text-2xl com-text-white com-opacity-80;
+  }
+
+  .cf-upload-text {
+    @apply com-text-xs com-text-white com-opacity-70 com-mt-0.5;
+  }
+}
+
+// ── Theme color picker ────────────────────────────────
+.cf-color-picker-row {
+  @apply com-flex com-items-center com-gap-3;
+
+  .cf-color-meta {
+    @apply com-flex com-flex-col com-gap-0.5;
+
+    .cf-color-value {
+      @apply com-text-sm com-font-mono com-font-semibold com-text-Yankees-Blue;
+    }
+  }
+}
+
+.cf-color-preview {
+  @apply com-w-full com-h-8 com-rounded-lg com-border com-border-gray-200 com-transition-colors;
+}
+
+.cf-color-input {
+  @apply com-w-10 com-h-10 com-rounded-lg com-border com-border-gray-200 com-cursor-pointer com-flex-shrink-0;
+  padding: 2px;
+  appearance: none;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    @apply com-rounded-md com-border-none;
+  }
+}
+
+.cf-hidden {
+  @apply com-hidden;
+}
+
+// ── Row ───────────────────────────────────────────────
 .cf-row {
   @apply com-grid com-grid-cols-1 com-gap-4 com-mb-4;
+
   @screen md {
     @apply com-grid-cols-2;
   }
 }
 
-// ── Individual field ──────────────────────────────────
+// ── Field ─────────────────────────────────────────────
 .cf-field {
-  @apply com-flex com-flex-col com-gap-1;
-
-  &.cf-field-full {
-    @apply com-col-span-full;
-  }
+  @apply com-flex com-flex-col com-gap-1 com-mb-4;
 }
 
-// ── Label ─────────────────────────────────────────────
 .cf-label {
   @apply com-text-sm com-font-semibold com-text-gray-700 com-flex com-items-center com-gap-1.5;
 }
@@ -65,69 +158,16 @@
   @apply com-text-xs com-text-gray-400 com-font-normal;
 }
 
-// ── Slug ──────────────────────────────────────────────
-.cf-slug {
-  @apply com-flex com-items-center com-border com-border-gray-300 com-rounded-md com-overflow-hidden;
-
-  .cf-slug-prefix {
-    @apply com-flex-shrink-0 com-px-3 com-py-2 com-text-xs com-text-gray-400 com-bg-gray-50;
-    @apply com-border-r com-border-gray-300 com-whitespace-nowrap;
-  }
-
-  .cf-slug-input {
-    @apply com-flex-1 com-min-w-0 com-border-none com-rounded-none;
-    box-shadow: none !important;
-    outline: none !important;
-  }
-
-  .cf-slug-status {
-    @apply com-flex-shrink-0 com-px-3;
-
-    fa-icon {
-      @apply com-text-sm;
-    }
-    .cf-slug-checking {
-      @apply com-animate-spin com-text-gray-400;
-    }
-    .cf-slug-available {
-      @apply com-text-green-500;
-    }
-    .cf-slug-taken {
-      @apply com-text-red-500;
-    }
-  }
+.cf-field-hint {
+  @apply com-text-xs com-text-gray-400;
 }
 
-// ── Upload areas ──────────────────────────────────────
-.cf-hidden {
-  @apply com-hidden;
-}
+// ── Slug preview ──────────────────────────────────────
+.cf-slug-preview {
+  @apply com-text-xs com-text-gray-500 com-m-0 com-mt-1 com-font-mono;
 
-.cf-upload {
-  @apply com-flex com-flex-col com-items-center com-justify-center com-gap-2;
-  @apply com-border-2 com-border-dashed com-border-gray-200 com-rounded-xl;
-  @apply com-py-8 com-cursor-pointer com-transition-colors com-duration-150;
-  @apply com-text-sm com-text-gray-400 com-font-normal;
-  @apply hover:com-border-primary-400 hover:com-bg-primary-100;
-
-  &.cf-upload-banner {
-    @apply com-py-6;
-  }
-
-  .cf-upload-icon {
-    @apply com-text-2xl com-text-gray-300;
-  }
-}
-
-.cf-preview {
-  @apply com-flex com-flex-col com-gap-2 com-items-start;
-
-  .cf-preview-logo {
-    @apply com-w-20 com-h-20 com-rounded-xl com-object-cover com-border com-border-gray-200;
-  }
-
-  .cf-preview-banner {
-    @apply com-w-full com-h-24 com-rounded-xl com-object-cover com-border com-border-gray-200;
+  strong {
+    @apply com-text-primary-600;
   }
 }
 
@@ -139,6 +179,7 @@
 .cf-social-icon {
   @apply com-text-base com-flex-shrink-0;
 }
+
 .cf-facebook {
   @apply com-text-blue-600;
 }
@@ -155,6 +196,7 @@
 // ── Footer ────────────────────────────────────────────
 .cf-footer {
   @apply com-flex com-justify-end com-items-center com-gap-3 com-w-full;
+
   .cf-spinning {
     @apply com-animate-spin;
   }

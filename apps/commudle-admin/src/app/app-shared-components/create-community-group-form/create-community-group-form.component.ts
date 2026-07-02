@@ -3,16 +3,14 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NbDialogRef, NbButtonModule, NbInputModule, NbFormFieldModule, NbIconModule } from '@commudle/theme';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { SharedComponentsModule } from 'apps/shared-components/shared-components.module';
 import { CommudleCardModule } from '@commudle/commudle-theme';
 import { CommunityGroupsService } from 'apps/commudle-admin/src/app/services/community-groups.service';
 import { ToastrService } from '@commudle/shared-services';
 import { Router } from '@angular/router';
-import { faXmark, faSpinner, faCheckCircle, faTimesCircle, faImage } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook, faTwitter, faGithub, faLinkedin, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ICommunityGroup } from '@commudle/shared-models';
 
 @Component({
   selector: 'commudle-create-community-group-form',
@@ -27,12 +25,9 @@ import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
     NbInputModule,
     NbFormFieldModule,
     NbIconModule,
-    FontAwesomeModule,
-    EditorModule,
     SharedComponentsModule,
     CommudleCardModule,
   ],
-  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }],
 })
 export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
   @Input() subscriptionId: number;
@@ -44,53 +39,10 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   logoPreview: string | null = null;
   logoFile: File | null = null;
-  themeColor = '#166534';
+  themeColor = '#3366ff';
 
-  readonly icons = {
-    faXmark,
-    faSpinner,
-    faCheckCircle,
-    faTimesCircle,
-    faImage,
-    faFacebook,
-    faTwitter,
-    faGithub,
-    faLinkedin,
-    faInstagram,
-  };
-
-  readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
-  readonly maxImageSize = 5 * 1024 * 1024;
-
-  readonly tinyMCE = {
-    min_height: 300,
-    menubar: false,
-    convert_urls: false,
-    placeholder: 'Tell people what your organization is about...',
-    content_style:
-      "@import url('https://fonts.googleapis.com/css?family=Inter'); body { font-family: 'Inter'; font-size: 16px !important; }",
-    plugins: [
-      'advlist',
-      'autolink',
-      'lists',
-      'link',
-      'charmap',
-      'preview',
-      'anchor',
-      'visualblocks',
-      'code',
-      'insertdatetime',
-      'table',
-      'help',
-      'wordcount',
-      'autoresize',
-    ],
-    toolbar: 'bold italic | link | alignleft aligncenter alignright | bullist numlist | removeformat',
-    default_link_target: '_blank',
-    branding: false,
-    license_key: 'gpl',
-  };
-
+  private readonly allowedImageTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+  private readonly maxImageSize = 5 * 1024 * 1024;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -122,8 +74,13 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((name: string) => {
         if (!this.isSlugEdited) {
-          this.communityGroupForm.get('slug').setValue(this.toSlug(name), { emitEvent: false });
-          this.slugCheckState = 'idle';
+          const slug = this.toSlug(name);
+          this.communityGroupForm.get('slug').setValue(slug, { emitEvent: false });
+          if (slug && this.communityGroupForm.get('slug').valid) {
+            this.checkSlugAvailability(slug);
+          } else {
+            this.slugCheckState = 'idle';
+          }
         }
       });
 
@@ -155,7 +112,11 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   onLogoSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file || !this.isValidImage(file)) return;
+    if (!file) return;
+    if (!this.allowedImageTypes.includes(file.type) || file.size > this.maxImageSize) {
+      this.toastrService.warningDialog('Invalid image. Use PNG/JPG under 5MB.');
+      return;
+    }
     this.logoFile = file;
     const reader = new FileReader();
     reader.onload = () => (this.logoPreview = reader.result as string);
@@ -185,23 +146,21 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
     if (this.logoFile) formData.append('community_group[logo]', this.logoFile);
 
-    // this.communityGroupsService.create(formData, this.subscriptionId).subscribe({
-    //   next: (communityGroup) => {
-    //     this.isSubmitting = false;
-    //     this.toastrService.successDialog('Organization created successfully!');
-    //     this.dialogRef.close(communityGroup);
-    //     this.router.navigate(['/orgs', communityGroup.slug]);
-    //   },
-    //   error: () => (this.isSubmitting = false),
-    // });
+    this.communityGroupsService.create(formData, this.subscriptionId).subscribe({
+      next: (communityGroup: ICommunityGroup) => {
+        this.isSubmitting = false;
+        this.toastrService.successDialog('Organization created successfully!');
+        this.dialogRef.close(communityGroup);
+        this.router.navigate(['/orgs', communityGroup.slug]);
+      },
+      error: () => {
+        this.isSubmitting = false;
+      },
+    });
   }
 
   close(): void {
     this.dialogRef.close();
-  }
-
-  private isValidImage(file: File): boolean {
-    return this.allowedImageTypes.includes(file.type) && file.size <= this.maxImageSize;
   }
 
   private toSlug(value: string): string {
@@ -215,9 +174,12 @@ export class CreateCommunityGroupFormComponent implements OnInit, OnDestroy {
 
   private checkSlugAvailability(slug: string): void {
     this.slugCheckState = 'checking';
-    // TODO: replace with real API call e.g. this.communityGroupsService.checkSlug(slug)
-    setTimeout(() => {
-      this.slugCheckState = 'available';
-    }, 600);
+    this.communityGroupsService
+      .checkSlug(slug)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => (this.slugCheckState = res.available ? 'available' : 'taken'),
+        error: () => (this.slugCheckState = 'idle'),
+      });
   }
 }

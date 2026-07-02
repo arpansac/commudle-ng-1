@@ -69,8 +69,14 @@ export class RazorpayService {
     );
   }
 
-  createRzpSubscription(purchaseOrderId: number): Observable<{ rzp_subscription_id: string; status: string }> {
-    const params = new HttpParams().set('po_id', purchaseOrderId);
+  createRzpSubscription(
+    purchaseOrderId: number,
+    withTrial = false,
+  ): Observable<{ rzp_subscription_id: string; status: string }> {
+    let params = new HttpParams().set('po_id', purchaseOrderId);
+    if (withTrial) {
+      params = params.set('with_trial', true);
+    }
     return this.http.post<{ rzp_subscription_id: string; status: string }>(
       this.baseApiService.getRoute(API_ROUTES.RAZORPAY.CREATE_RZP_SUBSCRIPTION),
       {},

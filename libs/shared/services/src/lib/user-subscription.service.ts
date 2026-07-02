@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUserSubscription, IPaginationCount } from '@commudle/shared-models';
+import { IUserSubscription, IPaginationCount, IPurchaseOrder } from '@commudle/shared-models';
 import { API_ROUTES } from './api-routes.constant';
 import { BaseApiService } from './base-api.service';
 
@@ -28,6 +28,14 @@ export class UserSubscriptionService {
   getStats(): Observable<{ active_count: number; total_communities: number; total_organizations: number }> {
     return this.http.get<{ active_count: number; total_communities: number; total_organizations: number }>(
       this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.STATS),
+    );
+  }
+
+  getPaymentHistory(page = 1, count = 10): Observable<IPaginationCount<IPurchaseOrder>> {
+    const params = new HttpParams().set('page', page).set('count', count);
+    return this.http.get<IPaginationCount<IPurchaseOrder>>(
+      this.baseApiService.getRoute(API_ROUTES.USER_SUBSCRIPTIONS.PAYMENT_HISTORY),
+      { params },
     );
   }
 

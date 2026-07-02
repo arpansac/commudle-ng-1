@@ -12,4 +12,5 @@ export class CommunityBadgeComponent {
   @Input() background: string;
   @Input() size: 'small' | 'medium' = 'medium';
   @Input() textColor = 'com-text-gray-500';
+  @Input() routeBase = '/communities';
 }

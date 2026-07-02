@@ -3,7 +3,12 @@
 <div class="product-price-container" *ngIf="productPrice && !isLoading">
   <!-- Header -->
   <div class="pp-header">
-    <div class="pp-plan-badge">{{ productPrice.billing_cycle | titlecase }} Plan</div>
+    <div class="pp-badges">
+      <div class="pp-plan-badge">{{ productPrice.billing_cycle | titlecase }} Plan</div>
+      <div class="pp-trial-badge" *ngIf="productPrice.trial_enabled && productPrice.trial_period_days">
+        {{ productPrice.trial_period_days }}-day free trial
+      </div>
+    </div>
     <h3 class="pp-product-name">{{ productPrice.product_name }}</h3>
     <p class="pp-plan-name">{{ productPrice.plan_name }}</p>
     <p class="pp-description" *ngIf="productPrice.description">{{ productPrice.description }}</p>
